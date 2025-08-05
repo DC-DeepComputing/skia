@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71df3a97_b09ddb35",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-05T16:16:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf1693aa_1b169b34",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 52
+      },
+      "revId": "6fb94b2633eae7c844898d9f14b6044437c3a95b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6337c49_99d9b67a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-05T15:03:05Z",
       "side": 1,
       "message": "I\u0027d remove the diff above this point, for the assembly, the context makes the changes much more obvious vs. the above diff summary IMO",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 11
+      },
+      "revId": "6fb94b2633eae7c844898d9f14b6044437c3a95b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7060c824_07e76f85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-05T16:16:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6337c49_99d9b67a",
       "range": {
         "startLine": 51,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "479fd1ac_7b88faa3",
+        "filename": "src/gpu/graphite/vk/VulkanSpirvTransforms.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-05T16:16:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58abcf89_d3a9d548",
+      "range": {
+        "startLine": 355,
+        "startChar": 4,
+        "endLine": 355,
+        "endChar": 20
+      },
+      "revId": "6fb94b2633eae7c844898d9f14b6044437c3a95b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f25ef73_d8629697",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-08-05T15:03:05Z",
       "side": 1,
       "message": "nit: Can we make this `enum class ReservedId : int32_t` and remove the `Id` prefix in the names?\n\nI prefer explicit backing types if we are having to cast them and Skia style generally prefers class enums.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "6fb94b2633eae7c844898d9f14b6044437c3a95b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8acb77a_38749b98",
+        "filename": "src/sksl/codegen/SkSLCodeGenTypes.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-05T16:16:26Z",
+      "side": 1,
+      "message": "Resolved offline, this\u0027ll end up with too many casts.",
+      "parentUuid": "8f25ef73_d8629697",
       "range": {
         "startLine": 20,
         "startChar": 0,
