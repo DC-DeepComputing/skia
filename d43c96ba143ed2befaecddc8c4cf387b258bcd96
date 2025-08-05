@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "563029d8_16fa2e1b",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-08-05T13:40:41Z",
+      "side": 1,
+      "message": "Just a note, this is a change in behavior in the case where someone calls moveTo and then addRect (or whatever). Not sure whether that ever happens.",
+      "range": {
+        "startLine": 698,
+        "startChar": 0,
+        "endLine": 698,
+        "endChar": 19
+      },
+      "revId": "d43c96ba143ed2befaecddc8c4cf387b258bcd96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
