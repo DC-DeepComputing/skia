@@ -34,6 +34,190 @@
       "parentUuid": "55ed874c_7f80c058",
       "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91e07391_fb13a22f",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "This is similar to the `vk_format_to_aspect_flags` function in VulkanTexture, although that was written for `VkFormat` before `TextureFormat` existed.\n\nWe could add a `GetVkImageAspectFlags(TextureFormat)` function to VulkanGraphiteUtils.h and remove both of these.  The VulkanTexture can get its TextureFormat by either mapping vkInfo.fFormat back or calling `TextureInfoPriv::ViewFormat(info)`",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 1
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4adb000_323cecd4",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "We could remove this type and pass it in as an argument, or infer it as a constant variable inside by doing something like `static constexpr bool isMSAARTSS \u003d std::is_same_type_v\u003cAttachmentDescription, VkAttachmentDescription2\u003e`.",
+      "range": {
+        "startLine": 224,
+        "startChar": 15,
+        "endLine": 224,
+        "endChar": 50
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdd85913_3a987b41",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "We should add an assert that if `needLoadMSAAFromResolveSubpass` is true, that the resolve.fFormat is not kUnsupported, and if `isMultisampledRenderToSingleSampled` is true, that resolve.fFormat is kUnsupported.",
+      "range": {
+        "startLine": 228,
+        "startChar": 35,
+        "endLine": 228,
+        "endChar": 65
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb4bbe0_0bbe911a",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "if we keep this parameter in the template, let\u0027s add `/*isMRTSS\u003d*/true`.",
+      "range": {
+        "startLine": 414,
+        "startChar": 33,
+        "endLine": 414,
+        "endChar": 37
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a01b33_2e89782b",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "nit: line up past the `(` above",
+      "range": {
+        "startLine": 68,
+        "startChar": 9,
+        "endLine": 68,
+        "endChar": 10
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "800b76d1_93317764",
+        "filename": "src/gpu/vk/VulkanInterface.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "nit: \"Vulkan 1.2\" to match other comments above (also could update the 1.3 below)",
+      "range": {
+        "startLine": 203,
+        "startChar": 49,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "375ea25f_ce7e2b45",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "Should this be updated to kNextRelease since the comment was removed?",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 25,
+        "endChar": 57
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb0364bd_e6ff4360",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:29:00Z",
+      "side": 1,
+      "message": "kNextRelease?",
+      "range": {
+        "startLine": 90,
+        "startChar": 51,
+        "endLine": 90,
+        "endChar": 57
+      },
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
