@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7c95da_24c1a9a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-05T13:56:01Z",
+      "side": 1,
+      "message": "any impact on performance with the extra math per sample?\n\nwondering if we could have two diff stages, one for \"normal\" sized image, and one for very large ones.",
+      "revId": "260e9149ba3edfd05ec1cdd645542894d0530645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
