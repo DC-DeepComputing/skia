@@ -1368,6 +1368,73 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             }
             return true;
         }
+        case k_subgroupAdd_IntrinsicKind: {
+            this->write("simd_sum(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_subgroupAll_IntrinsicKind: {
+            // NOTE MSL Spec: simd_ballot(expr).all() returns true if all threads were active and
+            // evaluated the expr to true. (simd_vote::all() does not look at which threads are
+            // active.)
+            this->write("simd_ballot(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(").all()");
+            return true;
+        }
+        case k_subgroupAny_IntrinsicKind: {
+            this->write("simd_ballot(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(").any()");
+            return true;
+        }
+        case k_subgroupBallot_IntrinsicKind: {
+            this->write("uint4(as_type<uint2>((simd_vote::vote_t)simd_ballot(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")), 0, 0)");
+            return true;
+        }
+        case k_subgroupBroadcast_IntrinsicKind: {
+            this->write("simd_broadcast(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(", ushort(");
+            this->writeExpression(*arguments[1], Precedence::kSequence);
+            this->write("))");
+            return true;
+        }
+        case k_subgroupExclusiveSum_IntrinsicKind: {
+            this->write("simd_prefix_exclusive_sum(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_subgroupInclusiveSum_IntrinsicKind: {
+            this->write("simd_prefix_inclusive_sum(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_subgroupMax_IntrinsicKind: {
+            this->write("simd_max(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_subgroupMin_IntrinsicKind: {
+            this->write("simd_min(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_subgroupShuffle_IntrinsicKind: {
+            this->write("simd_shuffle(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(", ushort(");
+            this->writeExpression(*arguments[1], Precedence::kSequence);
+            this->write("))");
+            return true;
+        }
         default:
             return false;
     }
@@ -1832,6 +1899,15 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
             break;
         case SK_INSTANCEID_BUILTIN:
             this->write("sk_InstanceID");
+            break;
+        case SK_LANEID_BUILTIN:
+            this->write("sk_LaneID");
+            break;
+        case SK_SUBGROUPSIZE_BUILTIN:
+            this->write("sk_SubgroupSize");
+            break;
+        case SK_SUBGROUPID_BUILTIN:
+            // no builtin
             break;
         case SK_CLOCKWISE_BUILTIN:
             // We'd set the front facing winding in the MTLRenderCommandEncoder to be counter
@@ -2586,6 +2662,21 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                             break;
                         case SK_LOCALINVOCATIONINDEX_BUILTIN:
                             attr = " [[thread_index_in_threadgroup]]";
+                            break;
+                        case SK_SUBGROUPSIZE_BUILTIN:
+                            attr = " [[threads_per_simdgroup]]";
+                            break;
+                        case SK_SUBGROUPID_BUILTIN:
+                            // Does not exist for metal, instead construct via:
+                            // thread_index_in_threadgroup / threads_per_simdgroup but only if the
+                            // threadgroup is one dimensional. Otherwise reconstruct via atomics.
+                            //
+                            // MSL Spec: "For standard Metal compute functions (other than tile
+                            // functions), SIMD-groups are linear and one-dimensional. (Threadgroups
+                            // may be multidimensional.)"
+                            break;
+                        case SK_LANEID_BUILTIN:
+                            attr = " [[thread_index_in_simdgroup]]";
                             break;
                         default:
                             break;
