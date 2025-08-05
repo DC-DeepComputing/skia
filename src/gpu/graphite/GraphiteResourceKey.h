@@ -20,7 +20,7 @@ namespace skgpu::graphite {
  * resource and whether or not the resource can be shared is handled externally through coordination
  * between the ResourceCache and ResourceProvider.
  */
-class GraphiteResourceKey : public skgpu::ResourceKey {
+class GraphiteResourceKey : public ResourceKey {
 public:
     /** Generate a unique ResourceType. */
     static ResourceType GenerateResourceType();

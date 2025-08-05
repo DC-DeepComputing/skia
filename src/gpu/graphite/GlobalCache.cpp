@@ -358,7 +358,7 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
     SkAutoSpinlock lock{fSpinLock};
 
-    skia_private::STArray<1, skgpu::UniqueKey> toRemove;
+    skia_private::STArray<1, UniqueKey> toRemove;
     // This is only called when a pipeline failed to compile, so it is not performance critical.
     fGraphicsPipelineCache.foreach([&toRemove, pipeline](const UniqueKey* key,
                                                          const sk_sp<GraphicsPipeline>* inCache) {
@@ -373,7 +373,7 @@ void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
     // occurrence of pipeline in fGraphicsPipelineCache in release builds.
     SkASSERT(toRemove.size() <= 1);
 
-    for (const skgpu::UniqueKey& k : toRemove) {
+    for (const UniqueKey& k : toRemove) {
         fGraphicsPipelineCache.remove(k);
     }
 }
@@ -381,7 +381,7 @@ void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
 void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
     SkAutoSpinlock lock{fSpinLock};
 
-    skia_private::TArray<skgpu::UniqueKey> toRemove;
+    skia_private::TArray<UniqueKey> toRemove;
 
     // This is probably fine for now but is looping from most-recently-used to least-recently-used.
     // It seems like a reverse loop with an early out could be more efficient.
@@ -392,7 +392,7 @@ void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTim
         }
     });
 
-    for (const skgpu::UniqueKey& k : toRemove) {
+    for (const UniqueKey& k : toRemove) {
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsPurges;
 #endif

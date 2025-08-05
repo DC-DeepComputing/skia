@@ -237,7 +237,7 @@ private:
     void onSetLabel() override{}
 
     // This avoids an inherits via dominance warning on MSVC.
-    void computeScratchKey(skgpu::ScratchKey* key) const override {
+    void computeScratchKey(ScratchKey* key) const override {
         GrTexture::computeScratchKey(key);
     }
 };

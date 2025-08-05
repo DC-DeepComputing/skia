@@ -21,10 +21,10 @@
 
 class GrCaps;
 class GrGpu;
-
-namespace skgpu {
 class ScratchKey;
 class UniqueKey;
+
+namespace skgpu {
 enum class Mipmapped : bool;
 }  // namespace skgpu
 
@@ -69,7 +69,7 @@ public:
                                                  skgpu::Mipmapped mipmapped,
                                                  GrProtected isProtected,
                                                  GrMemoryless memoryless,
-                                                 skgpu::UniqueKey* key);
+                                                 UniqueKey* key);
 
     // TODO: Once attachments start having multiple usages, we'll need to figure out how to search
     // the cache for an attachment that simply contains the requested usage instead of equaling it.
@@ -81,7 +81,7 @@ public:
                                   skgpu::Mipmapped mipmapped,
                                   GrProtected,
                                   GrMemoryless,
-                                  skgpu::ScratchKey* key);
+                                  ScratchKey* key);
 
 protected:
     GrAttachment(GrGpu* gpu,
@@ -103,7 +103,7 @@ private:
 
     void onSetLabel() override{}
 
-    void computeScratchKey(skgpu::ScratchKey*) const final;
+    void computeScratchKey(ScratchKey*) const final;
 
     const char* getResourceType() const override {
         if (fSupportedUsages == UsageFlags::kStencilAttachment) {

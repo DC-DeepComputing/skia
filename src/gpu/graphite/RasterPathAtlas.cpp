@@ -114,7 +114,7 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
     }
 
     // Failed to add to atlases, try to add to ProxyCache
-    skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
+    UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
     struct PathDrawContext {
         const Shape& fShape;

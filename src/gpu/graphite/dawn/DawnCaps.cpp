@@ -34,9 +34,9 @@
 
 namespace {
 
-skgpu::UniqueKey::Domain get_pipeline_domain() {
-    static const skgpu::UniqueKey::Domain kDawnGraphicsPipelineDomain =
-            skgpu::UniqueKey::GenerateDomain();
+UniqueKey::Domain get_pipeline_domain() {
+    static const UniqueKey::Domain kDawnGraphicsPipelineDomain =
+            UniqueKey::GenerateDomain();
 
     return kDawnGraphicsPipelineDomain;
 }
@@ -1135,7 +1135,7 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
 UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
+        static const UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
         // The key is made up of a single uint32_t corresponding to the compute step ID.
         UniqueKey::Builder builder(&pipelineKey, kComputePipelineDomain, 1, "ComputePipeline");
         builder[0] = pipelineDesc.computeStep()->uniqueID();

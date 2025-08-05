@@ -210,7 +210,7 @@ void GrResourceCache::refResource(GrGpuResource* resource) {
     this->validate();
 }
 
-GrGpuResource* GrResourceCache::findAndRefScratchResource(const skgpu::ScratchKey& scratchKey) {
+GrGpuResource* GrResourceCache::findAndRefScratchResource(const ScratchKey& scratchKey) {
     SkASSERT(scratchKey.isValid());
 
     GrGpuResource* resource = fScratchMap.find(scratchKey);
@@ -250,7 +250,7 @@ void GrResourceCache::removeUniqueKey(GrGpuResource* resource) {
     this->validate();
 }
 
-void GrResourceCache::changeUniqueKey(GrGpuResource* resource, const skgpu::UniqueKey& newKey) {
+void GrResourceCache::changeUniqueKey(GrGpuResource* resource, const UniqueKey& newKey) {
     ASSERT_SINGLE_OWNER
     SkASSERT(resource);
     SkASSERT(this->isInCache(resource));
@@ -791,8 +791,8 @@ void GrResourceCache::validate() const {
                 ++fLocked;
             }
 
-            const skgpu::ScratchKey& scratchKey = resource->resourcePriv().getScratchKey();
-            const skgpu::UniqueKey& uniqueKey = resource->getUniqueKey();
+            const ScratchKey& scratchKey = resource->resourcePriv().getScratchKey();
+            const UniqueKey& uniqueKey = resource->getUniqueKey();
 
             if (resource->cacheAccess().isUsableAsScratch()) {
                 SkASSERT(!uniqueKey.isValid());

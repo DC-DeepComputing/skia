@@ -2286,7 +2286,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     GlobalCache* globalCache = precompileContext->priv().globalCache();
 
-    std::vector<skgpu::UniqueKey> origKeys;
+    std::vector<UniqueKey> origKeys;
 
     UniqueKeyUtils::FetchUniqueKeys(precompileContext, &origKeys);
 
@@ -2315,7 +2315,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
     SkASSERT_RELEASE(numBeforeReset == postRecreate);
 
     {
-        std::vector<skgpu::UniqueKey> recreatedKeys;
+        std::vector<UniqueKey> recreatedKeys;
 
         UniqueKeyUtils::FetchUniqueKeys(precompileContext, &recreatedKeys);
 
@@ -2331,9 +2331,9 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 #ifdef SK_DEBUG
 void GraphitePrecompileTestingSink::LogMissingKey(
         skgpu::graphite::PrecompileContext* precompileContext,
-        const skgpu::UniqueKey& missingKey,
+        const UniqueKey& missingKey,
         const char* missingKeyName,
-        const std::vector<skgpu::UniqueKey>& pool,
+        const std::vector<UniqueKey>& pool,
         const char* poolName) {
     using namespace skgpu::graphite;
 
@@ -2355,7 +2355,7 @@ void GraphitePrecompileTestingSink::LogMissingKey(
 
     SkDebugf("Have %d %s keys -----------------\n", (int) pool.size(), poolName);
     int count = 0;
-    for (const skgpu::UniqueKey& b : pool) {
+    for (const UniqueKey& b : pool) {
 
         GraphicsPipelineDesc recreatedPipelineDesc;
         RenderPassDesc recreatedRenderPassDesc;
@@ -2376,12 +2376,12 @@ void GraphitePrecompileTestingSink::LogMissingKey(
 
 void GraphitePrecompileTestingSink::CompareKeys(
         skgpu::graphite::PrecompileContext* precompileContext,
-        const std::vector<skgpu::UniqueKey>& vA,
+        const std::vector<UniqueKey>& vA,
         const char* aName,
-        const std::vector<skgpu::UniqueKey>& vB,
+        const std::vector<UniqueKey>& vB,
         const char* bName) {
 
-    for (const skgpu::UniqueKey& a : vA) {
+    for (const UniqueKey& a : vA) {
         if (std::find(vB.begin(), vB.end(), a) == vB.end()) {
 #ifdef SK_DEBUG
             LogMissingKey(precompileContext, a, aName, vB, bName);

@@ -39,7 +39,7 @@ size_t GrAttachment::onGpuMemorySize() const {
     return 0;
 }
 
-static void build_key(skgpu::ResourceKey::Builder* builder,
+static void build_key(ResourceKey::Builder* builder,
                       const GrCaps& caps,
                       const GrBackendFormat& format,
                       SkISize dimensions,
@@ -74,10 +74,10 @@ void GrAttachment::ComputeSharedAttachmentUniqueKey(const GrCaps& caps,
                                                     skgpu::Mipmapped mipmapped,
                                                     GrProtected isProtected,
                                                     GrMemoryless memoryless,
-                                                    skgpu::UniqueKey* key) {
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+                                                    UniqueKey* key) {
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
 
-    skgpu::UniqueKey::Builder builder(key, kDomain, 5);
+    UniqueKey::Builder builder(key, kDomain, 5);
     build_key(&builder, caps, format, dimensions, requiredUsage, sampleCnt, mipmapped, isProtected,
               memoryless);
 }
@@ -90,15 +90,15 @@ void GrAttachment::ComputeScratchKey(const GrCaps& caps,
                                      skgpu::Mipmapped mipmapped,
                                      GrProtected isProtected,
                                      GrMemoryless memoryless,
-                                     skgpu::ScratchKey* key) {
-    static const skgpu::ScratchKey::ResourceType kType = skgpu::ScratchKey::GenerateResourceType();
+                                     ScratchKey* key) {
+    static const ScratchKey::ResourceType kType = ScratchKey::GenerateResourceType();
 
-    skgpu::ScratchKey::Builder builder(key, kType, 5);
+    ScratchKey::Builder builder(key, kType, 5);
     build_key(&builder, caps, format, dimensions, requiredUsage, sampleCnt, mipmapped, isProtected,
               memoryless);
 }
 
-void GrAttachment::computeScratchKey(skgpu::ScratchKey* key) const {
+void GrAttachment::computeScratchKey(ScratchKey* key) const {
     // We do don't cache GrAttachments as scratch resources when used for stencils or textures. For
     // stencils we share/cache them with unique keys so that they can be shared. Textures are in a
     // weird place on the Vulkan backend. Currently, GrVkTexture contains a GrAttachment (GrVkImage)

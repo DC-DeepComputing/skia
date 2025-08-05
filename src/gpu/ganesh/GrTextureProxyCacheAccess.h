@@ -21,7 +21,7 @@ class UniqueKey;
  */
 class GrTextureProxy::CacheAccess {
 private:
-    void setUniqueKey(GrProxyProvider* proxyProvider, const skgpu::UniqueKey& key) {
+    void setUniqueKey(GrProxyProvider* proxyProvider, const UniqueKey& key) {
         fTextureProxy->setUniqueKey(proxyProvider, key);
     }
 

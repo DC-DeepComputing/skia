@@ -27,7 +27,7 @@ class ScratchKey;
     data members or virtual methods. */
 class GrSurfaceProxyPriv {
 public:
-    void computeScratchKey(const GrCaps& caps, skgpu::ScratchKey* key) const {
+    void computeScratchKey(const GrCaps& caps, ScratchKey* key) const {
         return fProxy->computeScratchKey(caps, key);
     }
 
