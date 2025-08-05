@@ -571,20 +571,14 @@ size_t SkPath::approximateBytesUsed() const {
     return size;
 }
 
-bool SkPath::getLastPt(SkPoint* lastPt) const {
+std::optional<SkPoint> SkPath::getLastPt() const {
     SkDEBUGCODE(this->validate();)
 
-    int count = fPathRef->countPoints();
+    const int count = fPathRef->countPoints();
     if (count > 0) {
-        if (lastPt) {
-            *lastPt = fPathRef->atPoint(count - 1);
-        }
-        return true;
+        return fPathRef->atPoint(count - 1);
     }
-    if (lastPt) {
-        lastPt->set(0, 0);
-    }
-    return false;
+    return {};
 }
 
 void SkPath::setPt(int index, SkScalar x, SkScalar y) {
@@ -1099,6 +1093,37 @@ SkPath& SkPath::addCircle(SkScalar x, SkScalar y, SkScalar r, SkPathDirection di
 
 SkPath& SkPath::arcTo(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle,
                       bool forceMoveTo) {
+#if 1
+    startAngle = SkScalarMod(startAngle, 360.0f);
+
+    if (fPathRef->countVerbs() == 0) {
+        forceMoveTo = true;
+    }
+
+    bool isArc = this->hasOnlyMoveTos();
+
+    SkPathRawShapes::Arc raw(oval, startAngle, sweepAngle, forceMoveTo, isArc, this->getLastPt());
+
+    const SkPoint* pts = raw.points().data();
+    const float* cns = raw.conics().data();
+    for (auto v : raw.verbs()) {
+        switch (v) {
+            case SkPathVerb::kMove: this->moveTo(*pts++); break;
+            case SkPathVerb::kLine: this->lineTo(*pts++); break;
+            case SkPathVerb::kConic:
+                this->conicTo(pts[0], pts[1], *cns++);
+                pts += 2;
+                break;
+            default: SkASSERT(false); break;
+        }
+    }
+//    this->addRaw(raw);
+
+    if (raw.isArc()) {
+        SkPathRef::Editor ed(&fPathRef);
+        ed.setIsArc(SkArc::Make(oval, startAngle, sweepAngle, SkArc::Type::kArc));
+    }
+#else
     if (oval.width() < 0 || oval.height() < 0) {
         return *this;
     }
@@ -1170,6 +1195,7 @@ SkPath& SkPath::arcTo(const SkRect& oval, SkScalar startAngle, SkScalar sweepAng
     } else {
         addPt(singlePt);
     }
+#endif
     return *this;
 }
 
