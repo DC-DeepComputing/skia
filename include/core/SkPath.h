@@ -622,15 +622,25 @@ public:
     }
 #endif
 
-    /** Returns last point on SkPath in lastPt. Returns false if SkPoint array is empty,
-        storing (0, 0) if lastPt is not nullptr.
+    /*
+     * Returns last point on SkPath in lastPt. Returns {} if SkPoint array is empty.
+     */
+    std::optional<SkPoint> getLastPt() const;
 
-        @param lastPt  storage for final SkPoint in SkPoint array; may be nullptr
-        @return        true if SkPoint array contains one or more SkPoint
-
-        example: https://fiddle.skia.org/c/@Path_getLastPt
-    */
-    bool getLastPt(SkPoint* lastPt) const;
+    // deprecated, use optional variant
+    bool getLastPt(SkPoint* lastPt) const {
+        if (auto p = this->getLastPt()) {
+            if (lastPt) {
+                *lastPt = *p;
+            }
+            return true;
+        } else {
+            if (lastPt) {
+                *lastPt = {0, 0};
+            }
+            return false;
+        }
+    }
 
     /** \enum SkPath::SegmentMask
         SegmentMask constants correspond to each drawing Verb type in SkPath; for
