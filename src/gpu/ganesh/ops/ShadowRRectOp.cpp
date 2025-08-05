@@ -727,9 +727,9 @@ private:
 namespace skgpu::ganesh::ShadowRRectOp {
 
 static GrSurfaceProxyView create_falloff_texture(GrRecordingContext* rContext) {
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, kDomain, 0, "Shadow Gaussian Falloff");
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    UniqueKey::Builder builder(&key, kDomain, 0, "Shadow Gaussian Falloff");
     builder.finish();
 
     auto threadSafeCache = rContext->priv().threadSafeCache();

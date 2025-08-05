@@ -164,7 +164,7 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
                                                   const SkIRect& unclippedDevShapeBounds,
                                                   const SkIRect& clipBounds,
                                                   SkIRect* drawRect,
-                                                  skgpu::UniqueKey* key) {
+                                                  UniqueKey* key) {
     SkASSERT(filter);
     SkASSERT(!shape.style().applies());
 
@@ -461,9 +461,9 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     // 1 / textureRadius. This is done to avoid overflow in length().
     SkMatrix texM = SkMatrix::Scale(kProfileTextureWidth, 1.f);
 
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "1-D Circular Blur");
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    UniqueKey::Builder builder(&key, kDomain, 1, "1-D Circular Blur");
     builder[0] = sigmaToCircleRRatioFixed;
     builder.finish();
 
@@ -541,9 +541,9 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
 
     int width = skgpu::ComputeIntegralTableWidth(sixSigma);
 
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "Rect Blur Mask");
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    UniqueKey::Builder builder(&key, kDomain, 1, "Rect Blur Mask");
     builder[0] = width;
     builder.finish();
 
@@ -714,13 +714,13 @@ std::unique_ptr<GrFragmentProcessor> MakeRectBlur(GrRecordingContext* context,
 
 static constexpr auto kBlurredRRectMaskOrigin = kTopLeft_GrSurfaceOrigin;
 
-static void make_blurred_rrect_key(skgpu::UniqueKey* key,
+static void make_blurred_rrect_key(UniqueKey* key,
                                    const SkRRect& rrectToDraw,
                                    float xformedSigma) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(xformedSigma));
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
 
-    skgpu::UniqueKey::Builder builder(key, kDomain, 9, "RoundRect Blur Mask");
+    UniqueKey::Builder builder(key, kDomain, 9, "RoundRect Blur Mask");
     builder[0] = SkScalarCeilToInt(xformedSigma - 1 / 6.0f);
 
     int index = 1;
@@ -824,7 +824,7 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
         const SkISize& dimensions,
         float xformedSigma) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(xformedSigma));
-    skgpu::UniqueKey key;
+    UniqueKey key;
     make_blurred_rrect_key(&key, rrectToDraw, xformedSigma);
 
     auto threadSafeCache = rContext->priv().threadSafeCache();
@@ -1132,7 +1132,7 @@ static bool direct_filter_mask(GrRecordingContext* context,
 // The key and clip-bounds are computed together because the caching decision can impact the
 // clip-bound - since we only cache un-clipped masks the clip can be removed entirely.
 // A 'false' return value indicates that the shape is known to be clipped away.
-static bool compute_key_and_clip_bounds(skgpu::UniqueKey* maskKey,
+static bool compute_key_and_clip_bounds(UniqueKey* maskKey,
                                         SkIRect* boundsForClip,
                                         const GrCaps* caps,
                                         const SkMatrix& viewMatrix,
@@ -1176,8 +1176,8 @@ static bool compute_key_and_clip_bounds(skgpu::UniqueKey* maskKey,
     }
 
     if (useCache) {
-        static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-        skgpu::UniqueKey::Builder builder(maskKey, kDomain, 5 + 2 + shape.unstyledKeySize(),
+        static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+        UniqueKey::Builder builder(maskKey, kDomain, 5 + 2 + shape.unstyledKeySize(),
                                           "Mask Filtered Masks");
 
         // We require the upper left 2x2 of the matrix to match exactly for a cache hit.
@@ -1292,7 +1292,7 @@ static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
                                                   const SkIRect& unclippedDevShapeBounds,
                                                   const SkIRect& clipBounds,
                                                   SkIRect* maskRect,
-                                                  skgpu::UniqueKey* key) {
+                                                  UniqueKey* key) {
     if (!can_filter_mask(filter, shape, unclippedDevShapeBounds, clipBounds, viewMatrix,
                          maskRect)) {
         return {};
@@ -1418,7 +1418,7 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
         }
     }
 
-    skgpu::UniqueKey maskKey;
+    UniqueKey maskKey;
     SkIRect boundsForClip;
     if (!compute_key_and_clip_bounds(&maskKey, &boundsForClip,
                                      sdc->caps(),

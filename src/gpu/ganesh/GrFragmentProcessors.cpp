@@ -729,8 +729,8 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
         info.imageInfo = info.imageInfo.makeColorType(kRGBA_8888_SkColorType);
     }
 
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+    UniqueKey key;
     std::tuple keyData = {dstCS->toXYZD50Hash(),
                           dstCS->transferFnHash(),
                           static_cast<uint32_t>(dstColorType),
@@ -738,7 +738,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
                           shader->tile(),
                           info.tileScale,
                           info.props};
-    skgpu::UniqueKey::Builder builder(
+    UniqueKey::Builder builder(
             &key, kDomain, sizeof(keyData) / sizeof(uint32_t), "Picture Shader Image");
     memcpy(&builder[0], &keyData, sizeof(keyData));
     builder.finish();

@@ -88,7 +88,7 @@ bool GrTexture::StealBackendTexture(sk_sp<GrTexture> texture,
     return true;
 }
 
-void GrTexture::computeScratchKey(skgpu::ScratchKey* key) const {
+void GrTexture::computeScratchKey(ScratchKey* key) const {
     if (!this->getGpu()->caps()->isFormatCompressed(this->backendFormat())) {
         int sampleCount = 1;
         GrRenderable renderable = GrRenderable::kNo;
@@ -109,8 +109,8 @@ void GrTexture::ComputeScratchKey(const GrCaps& caps,
                                   int sampleCnt,
                                   skgpu::Mipmapped mipmapped,
                                   GrProtected isProtected,
-                                  skgpu::ScratchKey* key) {
-    static const skgpu::ScratchKey::ResourceType kType = skgpu::ScratchKey::GenerateResourceType();
+                                  ScratchKey* key) {
+    static const ScratchKey::ResourceType kType = ScratchKey::GenerateResourceType();
     SkASSERT(!dimensions.isEmpty());
     SkASSERT(sampleCnt > 0);
     SkASSERT(1 == sampleCnt || renderable == GrRenderable::kYes);
@@ -122,7 +122,7 @@ void GrTexture::ComputeScratchKey(const GrCaps& caps,
 
     uint64_t formatKey = caps.computeFormatKey(format);
 
-    skgpu::ScratchKey::Builder builder(key, kType, 5);
+    ScratchKey::Builder builder(key, kType, 5);
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
     builder[2] = formatKey & 0xFFFFFFFF;

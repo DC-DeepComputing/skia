@@ -239,11 +239,11 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
         const RendererProvider* rendererProvider = precompileContext->priv().rendererProvider();
         const ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
 
-        std::vector<skgpu::UniqueKey> generatedKeys;
+        std::vector<UniqueKey> generatedKeys;
 
         UniqueKeyUtils::FetchUniqueKeys(precompileContext, &generatedKeys);
 
-        for (const skgpu::UniqueKey& key : generatedKeys) {
+        for (const UniqueKey& key : generatedKeys) {
             GraphicsPipelineDesc pipelineDesc;
             RenderPassDesc renderPassDesc;
             UniqueKeyUtils::ExtractKeyDescs(precompileContext, key, &pipelineDesc, &renderPassDesc);

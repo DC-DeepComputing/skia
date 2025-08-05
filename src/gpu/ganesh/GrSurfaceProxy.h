@@ -252,9 +252,9 @@ public:
     virtual const GrRenderTargetProxy* asRenderTargetProxy() const { return nullptr; }
 
     /** @return The unique key for this proxy. May be invalid. */
-    virtual const skgpu::UniqueKey& getUniqueKey() const {
+    virtual const UniqueKey& getUniqueKey() const {
         // Base class never has a valid unique key.
-        static const skgpu::UniqueKey kInvalidKey;
+        static const UniqueKey kInvalidKey;
         return kInvalidKey;
     }
 
@@ -416,7 +416,7 @@ protected:
     bool ignoredByResourceAllocator() const { return fIgnoredByResourceAllocator; }
     void setIgnoredByResourceAllocator() { fIgnoredByResourceAllocator = true; }
 
-    void computeScratchKey(const GrCaps&, skgpu::ScratchKey*) const;
+    void computeScratchKey(const GrCaps&, ScratchKey*) const;
 
     virtual sk_sp<GrSurface> createSurface(GrResourceProvider*) const = 0;
     void assign(sk_sp<GrSurface> surface);
@@ -440,7 +440,7 @@ protected:
                          int sampleCnt,
                          GrRenderable,
                          skgpu::Mipmapped,
-                         const skgpu::UniqueKey*);
+                         const UniqueKey*);
 
     // For deferred proxies this will be null until the proxy is instantiated.
     // For wrapped proxies it will point to the wrapped resource.

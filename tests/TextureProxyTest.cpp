@@ -185,7 +185,7 @@ static void basic_test(GrDirectContext* dContext,
 
     int startCacheCount = cache->getResourceCount();
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     if (proxy->getUniqueKey().isValid()) {
         key = proxy->getUniqueKey();
     } else {
@@ -211,7 +211,7 @@ static void basic_test(GrDirectContext* dContext,
 
     // Once instantiated, the backing resource should have the same key
     SkAssertResult(proxy->instantiate(resourceProvider));
-    const skgpu::UniqueKey texKey = proxy->peekSurface()->getUniqueKey();
+    const UniqueKey texKey = proxy->peekSurface()->getUniqueKey();
     REPORTER_ASSERT(reporter, texKey.isValid());
     REPORTER_ASSERT(reporter, key == texKey);
 
@@ -334,9 +334,9 @@ static void invalidation_and_instantiation_test(GrDirectContext* dContext,
     GrResourceCache* cache = dContext->priv().getResourceCache();
     REPORTER_ASSERT(reporter, 0 == cache->getResourceCount());
 
-    static skgpu::UniqueKey::Domain d = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, d, 1, nullptr);
+    static UniqueKey::Domain d = UniqueKey::GenerateDomain();
+    UniqueKey key;
+    UniqueKey::Builder builder(&key, d, 1, nullptr);
     builder[0] = 0;
     builder.finish();
 
@@ -347,7 +347,7 @@ static void invalidation_and_instantiation_test(GrDirectContext* dContext,
 
     // Send an invalidation message, which will be sitting in the cache's inbox
     SkMessageBus<skgpu::UniqueKeyInvalidatedMessage, uint32_t>::Post(
-            skgpu::UniqueKeyInvalidatedMessage(key, dContext->priv().contextID()));
+        skgpu::UniqueKeyInvalidatedMessage(key, dContext->priv().contextID()));
 
     REPORTER_ASSERT(reporter, 1 == proxyProvider->numUniqueKeyProxies_TestOnly());
     REPORTER_ASSERT(reporter, 0 == cache->getResourceCount());

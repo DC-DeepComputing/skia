@@ -67,13 +67,13 @@ private:
     SkRasterClip         fRasterClip;
 };
 
-skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
+UniqueKey GeneratePathMaskKey(const Shape& shape,
                                      const Transform& transform,
                                      const SkStrokeRec& strokeRec,
                                      skvx::half2 maskOrigin,
                                      skvx::half2 maskSize);
 
-skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
+UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
                                      SkIRect maskDeviceBounds,
                                      bool includeBounds,

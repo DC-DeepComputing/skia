@@ -81,7 +81,7 @@ public:
     /**
      * Return the texture proxy's unique key. It will be invalid if the proxy doesn't have one.
      */
-    const skgpu::UniqueKey& getUniqueKey() const override {
+    const UniqueKey& getUniqueKey() const override {
 #ifdef SK_DEBUG
         if (this->isInstantiated() && fUniqueKey.isValid() && fSyncTargetKey &&
             fCreatingProvider == GrDDLProvider::kNo) {
@@ -201,7 +201,7 @@ private:
     // uniquely-keyed textureProxy is also always set on the backing GrTexture.
     GrDDLProvider    fCreatingProvider = GrDDLProvider::kNo;
 
-    skgpu::UniqueKey      fUniqueKey;
+    UniqueKey      fUniqueKey;
     GrProxyProvider* fProxyProvider; // only set when fUniqueKey is valid
 
     LazySurfaceDesc callbackDesc() const override;
@@ -214,7 +214,7 @@ private:
     size_t onUninstantiatedGpuMemorySize() const override;
 
     // Methods made available via GrTextureProxy::CacheAccess
-    void setUniqueKey(GrProxyProvider*, const skgpu::UniqueKey&);
+    void setUniqueKey(GrProxyProvider*, const UniqueKey&);
     void clearUniqueKey();
 
     SkDEBUGCODE(void onValidateSurface(const GrSurface*) override;)
