@@ -50,6 +50,7 @@ skia_filegroup(
     name = "jpeg_decode_srcs",
     srcs = [
         "SkJpegMetadataDecoder.h",
+        "SkXmp.h",
     ],
     visibility = ["//src/codec:__pkg__"],
 )
