@@ -122,7 +122,7 @@ bool is_newer_better(SkData* incumbent, SkData* challenger) {
 // When the SkPathRef genID changes, invalidate a corresponding GrResource described by key.
 class UniqueKeyInvalidator : public SkIDChangeListener {
 public:
-    UniqueKeyInvalidator(const skgpu::UniqueKey& key, uint32_t contextUniqueID)
+    UniqueKeyInvalidator(const UniqueKey& key, uint32_t contextUniqueID)
             : fMsg(key, contextUniqueID, /* inThreadSafeCache */ true) {}
 
 private:
@@ -276,17 +276,17 @@ private:
         return path;
     }
 
-    static void CreateKey(skgpu::UniqueKey* key,
+    static void CreateKey(UniqueKey* key,
                           const GrStyledShape& shape,
                           const SkIRect& devClipBounds) {
-        static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+        static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
 
         bool inverseFill = shape.inverseFilled();
 
         static constexpr int kClipBoundsCnt = sizeof(devClipBounds) / sizeof(uint32_t);
         int shapeKeyDataCnt = shape.unstyledKeySize();
         SkASSERT(shapeKeyDataCnt >= 0);
-        skgpu::UniqueKey::Builder builder(key, kDomain, shapeKeyDataCnt + kClipBoundsCnt, "Path");
+        UniqueKey::Builder builder(key, kDomain, shapeKeyDataCnt + kClipBoundsCnt, "Path");
         shape.writeUnstyledKey(&builder[0]);
         // For inverse fills, the tessellation is dependent on clip bounds.
         if (inverseFill) {
@@ -326,7 +326,7 @@ private:
         GrResourceProvider* rp = target->resourceProvider();
         auto threadSafeCache = target->threadSafeCache();
 
-        skgpu::UniqueKey key;
+        UniqueKey key;
         CreateKey(&key, fShape, fDevClipBounds);
 
         SkScalar tol = GrPathUtils::scaleToleranceToSrc(GrPathUtils::kDefaultTolerance,
@@ -485,7 +485,7 @@ private:
 
         auto threadSafeViewCache = rContext->priv().threadSafeCache();
 
-        skgpu::UniqueKey key;
+        UniqueKey key;
         CreateKey(&key, fShape, fDevClipBounds);
 
         SkScalar tol = GrPathUtils::scaleToleranceToSrc(GrPathUtils::kDefaultTolerance,

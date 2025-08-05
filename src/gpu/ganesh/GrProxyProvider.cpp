@@ -58,7 +58,7 @@ GrProxyProvider::~GrProxyProvider() {
     }
 }
 
-bool GrProxyProvider::assignUniqueKeyToProxy(const skgpu::UniqueKey& key, GrTextureProxy* proxy) {
+bool GrProxyProvider::assignUniqueKeyToProxy(const UniqueKey& key, GrTextureProxy* proxy) {
     ASSERT_SINGLE_OWNER
     SkASSERT(key.isValid());
     if (this->isAbandoned() || !proxy) {
@@ -110,7 +110,7 @@ void GrProxyProvider::removeUniqueKeyFromProxy(GrTextureProxy* proxy) {
     this->processInvalidUniqueKey(proxy->getUniqueKey(), proxy, InvalidateGPUResource::kYes);
 }
 
-sk_sp<GrTextureProxy> GrProxyProvider::findProxyByUniqueKey(const skgpu::UniqueKey& key) {
+sk_sp<GrTextureProxy> GrProxyProvider::findProxyByUniqueKey(const UniqueKey& key) {
     ASSERT_SINGLE_OWNER
 
     if (this->isAbandoned()) {
@@ -224,7 +224,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createWrapped(sk_sp<GrTexture> tex,
     }
 }
 
-sk_sp<GrTextureProxy> GrProxyProvider::findOrCreateProxyByUniqueKey(const skgpu::UniqueKey& key,
+sk_sp<GrTextureProxy> GrProxyProvider::findOrCreateProxyByUniqueKey(const UniqueKey& key,
                                                                     UseAllocator useAllocator) {
     ASSERT_SINGLE_OWNER
 
@@ -260,7 +260,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::findOrCreateProxyByUniqueKey(const skgpu:
 }
 
 GrSurfaceProxyView GrProxyProvider::findCachedProxyWithColorTypeFallback(
-        const skgpu::UniqueKey& key,
+        const UniqueKey& key,
         GrSurfaceOrigin origin,
         GrColorType ct,
         int sampleCnt) {
@@ -956,13 +956,13 @@ sk_sp<GrTextureProxy> GrProxyProvider::MakeFullyLazyProxy(LazyInstantiateCallbac
     }
 }
 
-void GrProxyProvider::processInvalidUniqueKey(const skgpu::UniqueKey& key,
+void GrProxyProvider::processInvalidUniqueKey(const UniqueKey& key,
                                               GrTextureProxy* proxy,
                                               InvalidateGPUResource invalidateGPUResource) {
     this->processInvalidUniqueKeyImpl(key, proxy, invalidateGPUResource, RemoveTableEntry::kYes);
 }
 
-void GrProxyProvider::processInvalidUniqueKeyImpl(const skgpu::UniqueKey& key,
+void GrProxyProvider::processInvalidUniqueKeyImpl(const UniqueKey& key,
                                                   GrTextureProxy* proxy,
                                                   InvalidateGPUResource invalidateGPUResource,
                                                   RemoveTableEntry removeTableEntry) {

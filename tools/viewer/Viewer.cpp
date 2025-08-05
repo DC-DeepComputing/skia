@@ -2871,7 +2871,7 @@ void Viewer::drawImGui() {
 #if defined(SK_GRAPHITE)
                     if (skgpu::graphite::Context* gctx = fWindow->graphiteContext()) {
                         int index = 1;
-                        auto callback = [&](const skgpu::UniqueKey& key,
+                        auto callback = [&](const UniqueKey& key,
                                             const skgpu::graphite::GraphicsPipeline* pipeline) {
                             // Retrieve the shaders from the pipeline.
                             const skgpu::graphite::GraphicsPipeline::PipelineInfo& pipelineInfo =

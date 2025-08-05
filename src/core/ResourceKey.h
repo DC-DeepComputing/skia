@@ -24,8 +24,6 @@
 
 class TestResource;
 
-namespace skgpu {
-
 uint32_t ResourceKeyHash(const uint32_t* data, size_t size);
 
 /**
@@ -317,15 +315,17 @@ private:
  * and only constructed once.
  */
 
+namespace skgpu {
+
 /** Place outside of function/class definitions. */
 #define SKGPU_DECLARE_STATIC_UNIQUE_KEY(name) static SkOnce name##_once
 
 /** Place inside function where the key is used. */
 #define SKGPU_DEFINE_STATIC_UNIQUE_KEY(name)                                \
-    static SkAlignedSTStorage<1, skgpu::UniqueKey> name##_storage;          \
+    static SkAlignedSTStorage<1, UniqueKey> name##_storage;          \
     name##_once(skgpu::skgpu_init_static_unique_key_once, &name##_storage); \
-    static const skgpu::UniqueKey& name =                                   \
-        *reinterpret_cast<skgpu::UniqueKey*>(name##_storage.get())
+    static const UniqueKey& name =                                   \
+        *reinterpret_cast<UniqueKey*>(name##_storage.get())
 
 static inline void skgpu_init_static_unique_key_once(SkAlignedSTStorage<1, UniqueKey>* keyStorage) {
     UniqueKey* key = new (keyStorage->get()) UniqueKey;

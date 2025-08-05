@@ -73,7 +73,7 @@ public:
                                   int sampleCnt,
                                   skgpu::Mipmapped,
                                   GrProtected,
-                                  skgpu::ScratchKey* key);
+                                  ScratchKey* key);
 
 protected:
     GrTexture(GrGpu*,
@@ -85,7 +85,7 @@ protected:
 
     virtual bool onStealBackendTexture(GrBackendTexture*, SkImages::BackendTextureReleaseProc*) = 0;
 
-    void computeScratchKey(skgpu::ScratchKey*) const override;
+    void computeScratchKey(ScratchKey*) const override;
 
 private:
     size_t onGpuMemorySize() const override;

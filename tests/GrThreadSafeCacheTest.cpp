@@ -113,9 +113,9 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> new_SDC(GrRecordingCon
                                                    skgpu::Budgeted::kYes);
 }
 
-static void create_view_key(skgpu::UniqueKey* key, int wh, int id) {
-    static const skgpu::UniqueKey::Domain kViewDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kViewDomain, 1);
+static void create_view_key(UniqueKey* key, int wh, int id) {
+    static const UniqueKey::Domain kViewDomain = UniqueKey::GenerateDomain();
+    UniqueKey::Builder builder(key, kViewDomain, 1);
     builder[0] = wh;
     builder.finish();
 
@@ -124,9 +124,9 @@ static void create_view_key(skgpu::UniqueKey* key, int wh, int id) {
     }
 }
 
-static void create_vert_key(skgpu::UniqueKey* key, int wh, int id) {
-    static const skgpu::UniqueKey::Domain kVertDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kVertDomain, 1);
+static void create_vert_key(UniqueKey* key, int wh, int id) {
+    static const UniqueKey::Domain kVertDomain = UniqueKey::GenerateDomain();
+    UniqueKey::Builder builder(key, kVertDomain, 1);
     builder[0] = wh;
     builder.finish();
 
@@ -271,7 +271,7 @@ public:
             return false;
         }
 
-        skgpu::UniqueKey key;
+        UniqueKey key;
         create_view_key(&key, wh, kNoID);
 
         auto threadSafeCache = this->threadSafeCache();
@@ -357,7 +357,7 @@ public:
             return false;
         }
 
-        skgpu::UniqueKey key;
+        UniqueKey key;
         create_vert_key(&key, wh, kNoID);
 
         auto threadSafeCache = this->threadSafeCache();
@@ -558,7 +558,7 @@ private:
                 ++fStats->fNumLazyCreations;
             }
 
-            skgpu::UniqueKey key;
+            UniqueKey key;
             create_vert_key(&key, fWH, fID);
 
             // We can "fail the lookup" to simulate a threaded race condition
@@ -728,7 +728,7 @@ GrSurfaceProxyView TestHelper::AccessCachedView(GrRecordingContext* rContext,
                                                 int wh,
                                                 bool failLookup, bool failFillingIn, int id,
                                                 Stats* stats) {
-    skgpu::UniqueKey key;
+    UniqueKey key;
     create_view_key(&key, wh, id);
 
     if (GrDirectContext* dContext = rContext->asDirectContext()) {
@@ -1568,7 +1568,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache14,
 static void test_15(GrDirectContext* dContext, skiatest::Reporter* reporter,
                     TestHelper::addAccessFP addAccess,
                     TestHelper::checkFP check,
-                    void (*create_key)(skgpu::UniqueKey*, int wh, int id)) {
+                    void (*create_key)(UniqueKey*, int wh, int id)) {
 
     TestHelper helper(dContext);
 
@@ -1579,7 +1579,7 @@ static void test_15(GrDirectContext* dContext, skiatest::Reporter* reporter,
 
     REPORTER_ASSERT(reporter, helper.numCacheEntries() == 1);
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     (*create_key)(&key, kImageWH, kNoID);
 
     skgpu::UniqueKeyInvalidatedMessage msg(key, dContext->priv().contextID(),
@@ -1633,7 +1633,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kNever) {
-    skgpu::UniqueKey key;
+    UniqueKey key;
     create_vert_key(&key, kImageWH, kNoID);
 
     TestHelper helper(ctxInfo.directContext(), newer_is_always_better);

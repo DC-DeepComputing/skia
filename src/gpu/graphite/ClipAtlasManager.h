@@ -60,7 +60,7 @@ private:
                      std::string_view label, const Caps*);
 
         sk_sp<TextureProxy> findOrCreateEntry(Recorder* recorder,
-                                              const skgpu::UniqueKey&,
+                                              const UniqueKey&,
                                               const ClipStack::ElementList*,
                                               SkIRect maskDeviceBounds,
                                               SkIRect keyBounds,
@@ -88,9 +88,9 @@ private:
             MaskHashEntry* fNext = nullptr;
         };
         struct UniqueKeyHash {
-            uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+            uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
         };
-        using MaskCache = skia_private::THashMap<skgpu::UniqueKey, MaskHashEntry, UniqueKeyHash>;
+        using MaskCache = skia_private::THashMap<UniqueKey, MaskHashEntry, UniqueKeyHash>;
         MaskCache fMaskCache;
         int fHashEntryCount = 0;
 
@@ -99,7 +99,7 @@ private:
         // PlotLocator, index into the fKeyLists array to get the MaskKeyList for that Plot,
         // then iterate through the list and remove entries matching those keys from the MaskCache.
         struct MaskKeyEntry {
-            skgpu::UniqueKey fKey;
+            UniqueKey fKey;
             SkIRect fBounds;
             SK_DECLARE_INTERNAL_LLIST_INTERFACE(MaskKeyEntry);
         };

@@ -1728,15 +1728,15 @@ void non_simple_draws(SkCanvas* canvas, const SkPaint& paint, const DrawData& dr
 
 #ifdef SK_DEBUG
 void dump_keys(PrecompileContext* precompileContext,
-               const std::vector<skgpu::UniqueKey>& needleKeys,
-               const std::vector<skgpu::UniqueKey>& hayStackKeys,
+               const std::vector<UniqueKey>& needleKeys,
+               const std::vector<UniqueKey>& hayStackKeys,
                const char* needleName,
                const char* haystackName) {
 
     SkDebugf("-------------------------- %zu %s pipelines\n", needleKeys.size(), needleName);
 
     int count = 0;
-    for (const skgpu::UniqueKey& k : needleKeys) {
+    for (const UniqueKey& k : needleKeys) {
         bool found = std::find(hayStackKeys.begin(), hayStackKeys.end(), k) != hayStackKeys.end();
 
         GraphicsPipelineDesc originalPipelineDesc;
@@ -1767,7 +1767,7 @@ void check_draw(skiatest::Reporter* reporter,
                 sk_sp<SkShader> clipShader) {
     static const DrawData kDrawData;
 
-    std::vector<skgpu::UniqueKey> precompileKeys, drawKeys;
+    std::vector<UniqueKey> precompileKeys, drawKeys;
 
     UniqueKeyUtils::FetchUniqueKeys(precompileContext, &precompileKeys);
 
@@ -1894,7 +1894,7 @@ void check_draw(skiatest::Reporter* reporter,
     // Actually using the SkPaint with the specified type of draw shouldn't have added
     // any additional pipelines
     int missingPipelines = 0;
-    for (const skgpu::UniqueKey& k : drawKeys) {
+    for (const UniqueKey& k : drawKeys) {
         bool found =
                 std::find(precompileKeys.begin(), precompileKeys.end(), k) != precompileKeys.end();
         if (!found) {

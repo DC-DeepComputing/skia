@@ -186,7 +186,7 @@ bool GrTextureProxy::ProxiesAreCompatibleAsDynamicState(const GrSurfaceProxy* fi
            first->backendFormat() == second->backendFormat();
 }
 
-void GrTextureProxy::setUniqueKey(GrProxyProvider* proxyProvider, const skgpu::UniqueKey& key) {
+void GrTextureProxy::setUniqueKey(GrProxyProvider* proxyProvider, const UniqueKey& key) {
     SkASSERT(key.isValid());
     SkASSERT(!fUniqueKey.isValid()); // proxies can only ever get one uniqueKey
 

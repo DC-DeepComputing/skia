@@ -278,7 +278,7 @@ GrSurfaceProxyView LockTextureProxyView(GrRecordingContext* rContext,
                                         const SkImage_Lazy* img,
                                         GrImageTexGenPolicy texGenPolicy,
                                         skgpu::Mipmapped mipmapped) {
-    skgpu::UniqueKey key;
+    UniqueKey key;
     if (texGenPolicy == GrImageTexGenPolicy::kDraw) {
         GrMakeKeyFromImageID(&key, img->uniqueID(), SkIRect::MakeSize(img->dimensions()));
     }
@@ -666,14 +666,14 @@ GrSurfaceProxyView FindOrMakeCachedMipmappedView(GrRecordingContext* rContext,
     }
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
 
-    skgpu::UniqueKey baseKey;
+    UniqueKey baseKey;
     GrMakeKeyFromImageID(&baseKey, imageUniqueID, SkIRect::MakeSize(view.dimensions()));
     SkASSERT(baseKey.isValid());
-    skgpu::UniqueKey mipmappedKey;
-    static const skgpu::UniqueKey::Domain kMipmappedDomain = skgpu::UniqueKey::GenerateDomain();
+    UniqueKey mipmappedKey;
+    static const UniqueKey::Domain kMipmappedDomain = UniqueKey::GenerateDomain();
     {  // No extra values beyond the domain are required. Must name the var to please
        // clang-tidy.
-        skgpu::UniqueKey::Builder b(&mipmappedKey, baseKey, kMipmappedDomain, 0);
+        UniqueKey::Builder b(&mipmappedKey, baseKey, kMipmappedDomain, 0);
     }
     SkASSERT(mipmappedKey.isValid());
     if (sk_sp<GrTextureProxy> cachedMippedView =
@@ -766,7 +766,7 @@ public:
         // filters can be evaluated on other threads with DDLs.
         auto threadSafeCache = fContext->priv().threadSafeCache();
 
-        skgpu::UniqueKey key;
+        UniqueKey key;
         SkIRect subset = SkIRect::MakePtSize(data.pixelRefOrigin(), data.dimensions());
         GrMakeKeyFromImageID(&key, data.getGenerationID(), subset);
 

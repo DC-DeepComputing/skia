@@ -393,9 +393,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest9,
 static sk_sp<TextureProxy> find_or_create_by_key(Recorder* recorder, int id, bool* regenerated) {
     *regenerated = false;
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     {
-        static const skgpu::UniqueKey::Domain kTestDomain = UniqueKey::GenerateDomain();
+        static const UniqueKey::Domain kTestDomain = UniqueKey::GenerateDomain();
         UniqueKey::Builder builder(&key, kTestDomain, 1, "TestExplicitKey");
         builder[0] = id;
     }

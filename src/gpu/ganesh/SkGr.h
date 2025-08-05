@@ -38,11 +38,12 @@ class SkBlender;
 class SkIDChangeListener;
 class SkMatrix;
 class SkPaint;
+class UniqueKey;
 enum class GrColorType;
 enum GrSurfaceOrigin : int;
 struct SkIRect;
 
-namespace skgpu { class UniqueKey; }
+
 namespace skgpu::ganesh { class SurfaceDrawContext; }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -191,15 +192,15 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeUncachedBitmapProxyView(
  *      - SkImage
  *      - SkImageGenerator
  */
-void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds);
+void GrMakeKeyFromImageID(UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds);
 
 /**
- * Makes a SkIDChangeListener from a skgpu::UniqueKey. The key will be invalidated in the resource
+ * Makes a SkIDChangeListener from a UniqueKey. The key will be invalidated in the resource
  * cache if the ID becomes invalid. This also modifies the key so that it will cause the listener
  * to be deregistered if the key is destroyed (to prevent unbounded listener growth when resources
  * are purged before listeners trigger).
  */
-sk_sp<SkIDChangeListener> GrMakeUniqueKeyInvalidationListener(skgpu::UniqueKey*,
+sk_sp<SkIDChangeListener> GrMakeUniqueKeyInvalidationListener(UniqueKey*,
                                                               uint32_t contextID);
 
 static inline bool GrValidCubicResampler(SkCubicResampler cubic) {
