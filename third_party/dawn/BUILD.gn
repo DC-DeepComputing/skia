@@ -1,0 +1,28 @@
+config("tint_api_config") {
+  include_dirs = [
+    "../externals/dawn",
+    "../externals/dawn/include",
+  ]
+
+  defines = [
+    "TINT_BUILD_WGSL_READER=1",
+    "TINT_BUILD_WGSL_WRITER=1",
+  ]
+
+  lib_dirs = [ "$root_out_dir" ]
+
+  libs = [ "tint_combined" ]
+}
+
+action("tint_cmake") {
+  script = "build_dawn.py"
+  sources = [ "//DEPS" ]
+  outputs = [ "$root_out_dir/libtint_combined.a" ]
+  args = [ "libtint_combined.a" ]
+}
+
+group("tint") {
+  deps = [ ":tint_cmake" ]
+
+  public_configs = [ ":tint_api_config" ]
+}
