@@ -115,7 +115,7 @@ sk_sp<TextureProxy> PathAtlas::DrawAtlasMgr::findOrCreateEntry(Recorder* recorde
                                                                SkIVector transformedMaskOffset,
                                                                skvx::half2* outPos) {
     // TODO: pull this out so we don't have to recalculate it for each atlas?
-    skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
+    UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
     AtlasLocator* cachedLocator = fShapeCache.find(maskKey);
     if (cachedLocator) {

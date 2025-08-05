@@ -168,9 +168,9 @@ protected:
     private:
         // Tracks whether a shape is already in the DrawAtlas, and its location in the atlas
         struct UniqueKeyHash {
-            uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+            uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
         };
-        using ShapeCache = skia_private::THashMap<skgpu::UniqueKey, AtlasLocator, UniqueKeyHash>;
+        using ShapeCache = skia_private::THashMap<UniqueKey, AtlasLocator, UniqueKeyHash>;
         ShapeCache fShapeCache;
 
         // List of stored keys per Plot, used to invalidate cache entries.
@@ -178,7 +178,7 @@ protected:
         // PlotLocator, index into the fKeyLists array to get the ShapeKeyList for that Plot,
         // then iterate through the list and remove entries matching those keys from the ShapeCache.
         struct ShapeKeyEntry {
-            skgpu::UniqueKey fKey;
+            UniqueKey fKey;
             SK_DECLARE_INTERNAL_LLIST_INTERFACE(ShapeKeyEntry);
         };
         using ShapeKeyList = SkTInternalLList<ShapeKeyEntry>;

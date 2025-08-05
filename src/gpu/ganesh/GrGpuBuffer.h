@@ -16,10 +16,8 @@
 #include <string_view>
 
 class GrGpu;
-
-namespace skgpu {
 class ScratchKey;
-}
+
 
 class GrGpuBuffer : public GrGpuResource, public GrBuffer {
 public:
@@ -27,7 +25,7 @@ public:
      * Computes a scratch key for a GPU-side buffer with a "dynamic" access pattern. (Buffers with
      * "static" and "stream" patterns are disqualified by nature from being cached and reused.)
      */
-    static void ComputeScratchKeyForDynamicBuffer(size_t size, GrGpuBufferType, skgpu::ScratchKey*);
+    static void ComputeScratchKeyForDynamicBuffer(size_t size, GrGpuBufferType, ScratchKey*);
 
     GrAccessPattern accessPattern() const { return fAccessPattern; }
 
@@ -133,7 +131,7 @@ private:
     size_t onGpuMemorySize() const override { return fSizeInBytes; }
     void onSetLabel() override{}
     const char* getResourceType() const override { return "Buffer Object"; }
-    void computeScratchKey(skgpu::ScratchKey* key) const override;
+    void computeScratchKey(ScratchKey* key) const override;
 
     size_t            fSizeInBytes;
     GrAccessPattern   fAccessPattern;

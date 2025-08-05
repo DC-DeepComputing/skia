@@ -26,9 +26,8 @@
 
 //#define TEST_VIA_SVG
 
-namespace skgpu {
 class UniqueKey;
-}
+
 namespace skiagm::verifiers {
 class VerifierList;
 }

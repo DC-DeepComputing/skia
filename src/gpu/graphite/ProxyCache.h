@@ -16,10 +16,10 @@
 
 class SkBitmap;
 class SkIDChangeListener;
+class UniqueKey;
 
 namespace skgpu {
     enum class Mipmapped : bool;
-    class UniqueKey;
 }
 
 namespace skgpu::graphite {

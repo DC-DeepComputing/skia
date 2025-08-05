@@ -327,7 +327,7 @@ sk_sp<GrTexture> GrResourceProvider::createApproxTexture(SkISize dimensions,
                                label);
 }
 
-sk_sp<GrTexture> GrResourceProvider::findAndRefScratchTexture(const skgpu::ScratchKey& key,
+sk_sp<GrTexture> GrResourceProvider::findAndRefScratchTexture(const ScratchKey& key,
                                                               std::string_view label) {
     ASSERT_SINGLE_OWNER
     SkASSERT(!this->isAbandoned());
@@ -363,7 +363,7 @@ sk_sp<GrTexture> GrResourceProvider::findAndRefScratchTexture(SkISize dimensions
     // We could make initial clears work with scratch textures but it is a rare case so we just opt
     // to fall back to making a new texture.
     if (fGpu->caps()->reuseScratchTextures() || renderable == GrRenderable::kYes) {
-        skgpu::ScratchKey key;
+        ScratchKey key;
         GrTexture::ComputeScratchKey(*this->caps(), format, dimensions, renderable,
                                      renderTargetSampleCnt, mipmapped, isProtected, &key);
         return this->findAndRefScratchTexture(key, label);
@@ -420,7 +420,7 @@ sk_sp<GrRenderTarget> GrResourceProvider::wrapVulkanSecondaryCBAsRenderTarget(
 
 }
 
-void GrResourceProvider::assignUniqueKeyToResource(const skgpu::UniqueKey& key,
+void GrResourceProvider::assignUniqueKeyToResource(const UniqueKey& key,
                                                    GrGpuResource* resource) {
     ASSERT_SINGLE_OWNER
     if (this->isAbandoned() || !resource) {
@@ -429,7 +429,7 @@ void GrResourceProvider::assignUniqueKeyToResource(const skgpu::UniqueKey& key,
     resource->resourcePriv().setUniqueKey(key);
 }
 
-sk_sp<GrGpuResource> GrResourceProvider::findResourceByUniqueKey(const skgpu::UniqueKey& key) {
+sk_sp<GrGpuResource> GrResourceProvider::findResourceByUniqueKey(const UniqueKey& key) {
     ASSERT_SINGLE_OWNER
     return this->isAbandoned() ? nullptr
                                : sk_sp<GrGpuResource>(fCache->findAndRefUniqueResource(key));
@@ -438,7 +438,7 @@ sk_sp<GrGpuResource> GrResourceProvider::findResourceByUniqueKey(const skgpu::Un
 sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                                     size_t size,
                                                                     const void* staticData,
-                                                                    const skgpu::UniqueKey& key) {
+                                                                    const UniqueKey& key) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(key)) {
         return buffer;
     }
@@ -460,7 +460,7 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferT
 sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
         GrGpuBufferType intendedType,
         size_t size,
-        const skgpu::UniqueKey& uniqueKey,
+        const UniqueKey& uniqueKey,
         InitializeBufferFn initializeBufferFn) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(uniqueKey)) {
         return buffer;
@@ -504,7 +504,7 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
         int patternSize,
         int reps,
         int vertCount,
-        const skgpu::UniqueKey* key) {
+        const UniqueKey* key) {
     size_t bufferSize = patternSize * reps * sizeof(uint16_t);
 
     sk_sp<GrGpuBuffer> buffer = this->createBuffer(bufferSize,
@@ -620,7 +620,7 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
     size_t mid = floorPow2 + (floorPow2 >> 1);
     allocSize = (allocSize <= mid) ? mid : ceilPow2;
 
-    skgpu::ScratchKey key;
+    ScratchKey key;
     GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(allocSize, intendedType, &key);
     auto buffer =
             sk_sp<GrGpuBuffer>(static_cast<GrGpuBuffer*>(this->cache()->findAndRefScratchResource(
@@ -672,7 +672,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
     }
 
     if (!rt->wasDestroyed() && rt->canAttemptStencilAttachment(useMSAASurface)) {
-        skgpu::UniqueKey sbKey;
+        UniqueKey sbKey;
 
 #if 0
         if (this->caps()->oversizedStencilSupport()) {
@@ -735,7 +735,7 @@ sk_sp<GrAttachment> GrResourceProvider::getDiscardableMSAAAttachment(SkISize dim
         return nullptr;
     }
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     GrAttachment::ComputeSharedAttachmentUniqueKey(*this->caps(),
                                                    format,
                                                    dimensions,
@@ -808,7 +808,7 @@ sk_sp<GrAttachment> GrResourceProvider::refScratchMSAAAttachment(SkISize dimensi
                                           skgpu::Mipmapped::kNo,
                                           GrTextureType::kNone));
 
-    skgpu::ScratchKey key;
+    ScratchKey key;
     GrAttachment::ComputeScratchKey(*this->caps(),
                                     format,
                                     dimensions,

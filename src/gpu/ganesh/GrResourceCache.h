@@ -145,11 +145,11 @@ public:
     /**
      * Find a resource that matches a scratch key.
      */
-    GrGpuResource* findAndRefScratchResource(const skgpu::ScratchKey& scratchKey);
+    GrGpuResource* findAndRefScratchResource(const ScratchKey& scratchKey);
 
 #ifdef SK_DEBUG
     // This is not particularly fast and only used for validation, so debug only.
-    int countScratchEntriesForKey(const skgpu::ScratchKey& scratchKey) const {
+    int countScratchEntriesForKey(const ScratchKey& scratchKey) const {
         return fScratchMap.countForKey(scratchKey);
     }
 #endif
@@ -157,7 +157,7 @@ public:
     /**
      * Find a resource that matches a unique key.
      */
-    GrGpuResource* findAndRefUniqueResource(const skgpu::UniqueKey& key) {
+    GrGpuResource* findAndRefUniqueResource(const UniqueKey& key) {
         GrGpuResource* resource = fUniqueHash.find(key);
         if (resource) {
             this->refAndMakeResourceMRU(resource);
@@ -168,7 +168,7 @@ public:
     /**
      * Query whether a unique key exists in the cache.
      */
-    bool hasUniqueKey(const skgpu::UniqueKey& key) const {
+    bool hasUniqueKey(const UniqueKey& key) const {
         return SkToBool(fUniqueHash.find(key));
     }
 
@@ -305,7 +305,7 @@ private:
     void insertResource(GrGpuResource*);
     void removeResource(GrGpuResource*);
     void notifyARefCntReachedZero(GrGpuResource*, GrGpuResource::LastRemovedRef);
-    void changeUniqueKey(GrGpuResource*, const skgpu::UniqueKey&);
+    void changeUniqueKey(GrGpuResource*, const UniqueKey&);
     void removeUniqueKey(GrGpuResource*);
     void willRemoveScratchKey(const GrGpuResource*);
     void didChangeBudgetStatus(GrGpuResource*);
@@ -334,21 +334,21 @@ private:
     class AutoValidate;
 
     struct ScratchMapTraits {
-        static const skgpu::ScratchKey& GetKey(const GrGpuResource& r) {
+        static const ScratchKey& GetKey(const GrGpuResource& r) {
             return r.resourcePriv().getScratchKey();
         }
 
-        static uint32_t Hash(const skgpu::ScratchKey& key) { return key.hash(); }
+        static uint32_t Hash(const ScratchKey& key) { return key.hash(); }
         static void OnFree(GrGpuResource*) { }
     };
-    typedef SkTMultiMap<GrGpuResource, skgpu::ScratchKey, ScratchMapTraits> ScratchMap;
+    typedef SkTMultiMap<GrGpuResource, ScratchKey, ScratchMapTraits> ScratchMap;
 
     struct UniqueHashTraits {
-        static const skgpu::UniqueKey& GetKey(const GrGpuResource& r) { return r.getUniqueKey(); }
+        static const UniqueKey& GetKey(const GrGpuResource& r) { return r.getUniqueKey(); }
 
-        static uint32_t Hash(const skgpu::UniqueKey& key) { return key.hash(); }
+        static uint32_t Hash(const UniqueKey& key) { return key.hash(); }
     };
-    typedef SkTDynamicHash<GrGpuResource, skgpu::UniqueKey, UniqueHashTraits> UniqueHash;
+    typedef SkTDynamicHash<GrGpuResource, UniqueKey, UniqueHashTraits> UniqueHash;
 
     static bool CompareTimestamp(GrGpuResource* const& a, GrGpuResource* const& b) {
         return a->cacheAccess().timestamp() < b->cacheAccess().timestamp();
@@ -452,7 +452,7 @@ private:
     /**
      * Called by GrGpuResources to change their unique keys.
      */
-    void changeUniqueKey(GrGpuResource* resource, const skgpu::UniqueKey& newKey) {
+    void changeUniqueKey(GrGpuResource* resource, const UniqueKey& newKey) {
          fCache->changeUniqueKey(resource, newKey);
     }
 

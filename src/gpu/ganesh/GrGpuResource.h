@@ -188,7 +188,7 @@ public:
 
     /** Returns the current unique key for the resource. It will be invalid if the resource has no
         associated unique key. */
-    const skgpu::UniqueKey& getUniqueKey() const { return fUniqueKey; }
+    const UniqueKey& getUniqueKey() const { return fUniqueKey; }
 
     std::string getLabel() const { return fLabel; }
 
@@ -291,7 +291,7 @@ private:
      * resources and populate the scratchKey with the key.
      * By default resources are not recycled as scratch.
      **/
-    virtual void computeScratchKey(skgpu::ScratchKey*) const {}
+    virtual void computeScratchKey(ScratchKey*) const {}
 
     /**
      * Removes references to objects in the underlying 3D API without freeing them.
@@ -309,7 +309,7 @@ private:
     virtual void onSetLabel() = 0;
 
     // See comments in CacheAccess and ResourcePriv.
-    void setUniqueKey(const skgpu::UniqueKey&);
+    void setUniqueKey(const UniqueKey&);
     void removeUniqueKey();
     void notifyARefCntIsZero(LastRemovedRef removedRef) const;
     void removeScratchKey();
@@ -329,8 +329,8 @@ private:
     skgpu::StdSteadyClock::time_point fTimeWhenBecamePurgeable;
 
     static const size_t kInvalidGpuMemorySize = ~static_cast<size_t>(0);
-    skgpu::ScratchKey fScratchKey;
-    skgpu::UniqueKey fUniqueKey;
+    ScratchKey fScratchKey;
+    UniqueKey fUniqueKey;
 
     // This is not ref'ed but abandon() or release() will be called before the GrGpu object
     // is destroyed. Those calls will set this to NULL.

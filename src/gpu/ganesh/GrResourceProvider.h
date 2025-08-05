@@ -37,6 +37,8 @@ class GrResourceProviderPriv;
 class GrSemaphore;
 class GrTexture;
 class SkData;
+class UniqueKey;
+class ScratchKey;
 
 enum class SkBackingFit;
 struct GrVkDrawableInfo;
@@ -44,9 +46,7 @@ struct SkImageInfo;
 struct SkISize;
 
 namespace skgpu {
-class ScratchKey;
 class SingleOwner;
-class UniqueKey;
 enum class Budgeted : bool;
 enum class Mipmapped : bool;
 enum class Protected : bool;
@@ -67,7 +67,7 @@ public:
      */
     template <typename T = GrGpuResource>
     typename std::enable_if<std::is_base_of<GrGpuResource, T>::value, sk_sp<T>>::type
-    findByUniqueKey(const skgpu::UniqueKey& key) {
+    findByUniqueKey(const UniqueKey& key) {
         return sk_sp<T>(static_cast<T*>(this->findResourceByUniqueKey(key).release()));
     }
 
@@ -137,7 +137,7 @@ public:
      * Search the cache for a scratch texture matching the provided arguments. Failing that
      * it returns null. If non-null, the resulting texture is always budgeted.
      */
-    sk_sp<GrTexture> findAndRefScratchTexture(const skgpu::ScratchKey&, std::string_view label);
+    sk_sp<GrTexture> findAndRefScratchTexture(const ScratchKey&, std::string_view label);
     sk_sp<GrTexture> findAndRefScratchTexture(SkISize dimensions,
                                               const GrBackendFormat&,
                                               GrTextureType textureType,
@@ -220,7 +220,7 @@ public:
     using InitializeBufferFn = void(*)(skgpu::VertexWriter, size_t bufferSize);
     sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                     size_t size,
-                                                    const skgpu::UniqueKey& key,
+                                                    const UniqueKey& key,
                                                     InitializeBufferFn);
 
     /**
@@ -236,7 +236,7 @@ public:
     sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                     size_t size,
                                                     const void* staticData,
-                                                    const skgpu::UniqueKey& key);
+                                                    const UniqueKey& key);
 
     /**
      * Either finds and refs, or creates an index buffer with a repeating pattern for drawing
@@ -255,7 +255,7 @@ public:
                                                               int patternSize,
                                                               int reps,
                                                               int vertCount,
-                                                              const skgpu::UniqueKey& key) {
+                                                              const UniqueKey& key) {
         if (auto buffer = this->findByUniqueKey<const GrGpuBuffer>(key)) {
             return buffer;
         }
@@ -346,7 +346,7 @@ public:
      * Assigns a unique key to a resource. If the key is associated with another resource that
      * association is removed and replaced by this resource.
      */
-    void assignUniqueKeyToResource(const skgpu::UniqueKey&, GrGpuResource*);
+    void assignUniqueKeyToResource(const UniqueKey&, GrGpuResource*);
 
     [[nodiscard]] std::unique_ptr<GrSemaphore> makeSemaphore(bool isOwned = true);
 
@@ -367,7 +367,7 @@ public:
     inline const GrResourceProviderPriv priv() const;  // NOLINT(readability-const-return-type)
 
 private:
-    sk_sp<GrGpuResource> findResourceByUniqueKey(const skgpu::UniqueKey&);
+    sk_sp<GrGpuResource> findResourceByUniqueKey(const UniqueKey&);
 
     /*
      * Try to find an existing scratch texture that exactly matches 'desc'. If successful
@@ -433,7 +433,7 @@ private:
                                                         int patternSize,
                                                         int reps,
                                                         int vertCount,
-                                                        const skgpu::UniqueKey* key);
+                                                        const UniqueKey* key);
 
     sk_sp<const GrGpuBuffer> createNonAAQuadIndexBuffer();
     sk_sp<const GrGpuBuffer> createAAQuadIndexBuffer();
