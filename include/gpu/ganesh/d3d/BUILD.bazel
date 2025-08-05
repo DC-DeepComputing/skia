@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "generate_cpp_files_for_headers", "skia_filegroup")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -6,12 +6,19 @@ package(
 
 licenses(["notice"])
 
+PUBLIC_HEADERS = [
+    "GrD3DBackendContext.h",
+    "GrD3DTypes.h",
+]
+
 # Not yet referenced by Bazel target.
 # Exported to //gn/gpu.gni:skia_direct3d_sources.
 skia_filegroup(
     name = "public_hdrs",
-    srcs = [
-        "GrD3DBackendContext.h",
-        "GrD3DTypes.h",
-    ],
+    srcs = PUBLIC_HEADERS,
+)
+
+generate_cpp_files_for_headers(
+    name = "headers_to_compile",
+    headers = PUBLIC_HEADERS,
 )
