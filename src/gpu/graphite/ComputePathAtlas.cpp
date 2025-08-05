@@ -324,7 +324,7 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
         SkIVector transformedMaskOffset,
         skvx::half2* outPos) {
 
-    skgpu::UniqueKey maskKey;
+    UniqueKey maskKey;
     if (!shape.isVolatilePath()) {
         // Try to locate or add to cached DrawAtlas
         sk_sp<TextureProxy> proxy = fCachedAtlasMgr.findOrCreateEntry(fRecorder,

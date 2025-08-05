@@ -38,9 +38,9 @@
 namespace skgpu::graphite {
 
 namespace {
-skgpu::UniqueKey::Domain get_pipeline_domain() {
-    static const skgpu::UniqueKey::Domain kVulkanGraphicsPipelineDomain =
-            skgpu::UniqueKey::GenerateDomain();
+UniqueKey::Domain get_pipeline_domain() {
+    static const UniqueKey::Domain kVulkanGraphicsPipelineDomain =
+            UniqueKey::GenerateDomain();
 
     return kVulkanGraphicsPipelineDomain;
 }

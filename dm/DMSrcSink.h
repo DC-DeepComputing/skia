@@ -26,9 +26,8 @@
 
 //#define TEST_VIA_SVG
 
-namespace skgpu {
 class UniqueKey;
-}
+
 namespace skiagm::verifiers {
 class VerifierList;
 }
@@ -630,15 +629,15 @@ private:
 
 #ifdef SK_DEBUG
     static void LogMissingKey(skgpu::graphite::PrecompileContext*,
-                              const skgpu::UniqueKey& missingKey,
+                              const UniqueKey& missingKey,
                               const char* missingKeyName,
-                              const std::vector<skgpu::UniqueKey>& pool,
+                              const std::vector<UniqueKey>& pool,
                               const char* poolName);
 #endif
 
     static void CompareKeys(skgpu::graphite::PrecompileContext*,
-                            const std::vector<skgpu::UniqueKey>& vA, const char* aName,
-                            const std::vector<skgpu::UniqueKey>& vB, const char* bName);
+                            const std::vector<UniqueKey>& vA, const char* aName,
+                            const std::vector<UniqueKey>& vB, const char* bName);
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE

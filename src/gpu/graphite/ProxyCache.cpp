@@ -25,14 +25,14 @@ DECLARE_SKMESSAGEBUS_MESSAGE(skgpu::UniqueKeyInvalidatedMsg_Graphite, uint32_t,
 
 namespace {
 
-void make_bitmap_key(skgpu::UniqueKey* key, const SkBitmap& bm) {
+void make_bitmap_key(UniqueKey* key, const SkBitmap& bm) {
     SkASSERT(key);
 
     SkIPoint origin = bm.pixelRefOrigin();
     SkIRect subset = SkIRect::MakePtSize(origin, bm.dimensions());
 
-    static const skgpu::UniqueKey::Domain kProxyCacheDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kProxyCacheDomain, 5, "ProxyCache");
+    static const UniqueKey::Domain kProxyCacheDomain = UniqueKey::GenerateDomain();
+    UniqueKey::Builder builder(key, kProxyCacheDomain, 5, "ProxyCache");
     builder[0] = bm.pixelRef()->getGenerationID();
     builder[1] = subset.fLeft;
     builder[2] = subset.fTop;
@@ -40,11 +40,11 @@ void make_bitmap_key(skgpu::UniqueKey* key, const SkBitmap& bm) {
     builder[4] = subset.fBottom;
 }
 
-sk_sp<SkIDChangeListener> make_unique_key_invalidation_listener(const skgpu::UniqueKey& key,
+sk_sp<SkIDChangeListener> make_unique_key_invalidation_listener(const UniqueKey& key,
                                                                 uint32_t recorderID) {
     class Listener : public SkIDChangeListener {
     public:
-        Listener(const skgpu::UniqueKey& key, uint32_t recorderUniqueID)
+        Listener(const UniqueKey& key, uint32_t recorderUniqueID)
                 : fMsg(key, recorderUniqueID) {}
 
         void changed() override {
@@ -98,7 +98,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
                                                         const SkBitmap& bitmap,
                                                         std::string_view label) {
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     make_bitmap_key(&key, bitmap);
     return this->findOrCreateCachedProxy(
             recorder, key, &bitmap,
@@ -168,7 +168,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
 
 void ProxyCache::purgeAll() {
     // removeEntriesAndListeners() without having to copy out all of the keys
-    fCache.foreach([](const skgpu::UniqueKey&, const CacheEntry* entry) {
+    fCache.foreach([](const UniqueKey&, const CacheEntry* entry) {
         if (entry->fListener) {
             entry->fListener->markShouldDeregister();
         }
@@ -177,7 +177,7 @@ void ProxyCache::purgeAll() {
 }
 
 void ProxyCache::processInvalidKeyMsgs() {
-    TArray<skgpu::UniqueKeyInvalidatedMsg_Graphite> invalidKeyMsgs;
+    TArray<UniqueKeyInvalidatedMsg_Graphite> invalidKeyMsgs;
     fInvalidUniqueKeyInbox.poll(&invalidKeyMsgs);
 
     if (!invalidKeyMsgs.empty()) {
@@ -212,9 +212,9 @@ void ProxyCache::removeEntriesAndListeners(SkSpan<const UniqueKey> toRemove) {
 void ProxyCache::freeUniquelyHeld() {
     this->processInvalidKeyMsgs();
 
-    skia_private::TArray<skgpu::UniqueKey> toRemove;
+    skia_private::TArray<UniqueKey> toRemove;
 
-    fCache.foreach([&](const skgpu::UniqueKey& key, const CacheEntry* entry) {
+    fCache.foreach([&](const UniqueKey& key, const CacheEntry* entry) {
         SkASSERT(entry->fProxy);
         if (entry->fProxy->unique()) {
             toRemove.push_back(key);
@@ -227,9 +227,9 @@ void ProxyCache::freeUniquelyHeld() {
 void ProxyCache::purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_point* purgeTime) {
     this->processInvalidKeyMsgs();
 
-    skia_private::TArray<skgpu::UniqueKey> toRemove;
+    skia_private::TArray<UniqueKey> toRemove;
 
-    fCache.foreach([&](const skgpu::UniqueKey& key, const CacheEntry* entry) {
+    fCache.foreach([&](const UniqueKey& key, const CacheEntry* entry) {
         SkASSERT(entry->fProxy);
         if (Resource* resource = entry->fProxy->texture();
             resource &&
@@ -248,7 +248,7 @@ int ProxyCache::numCached() const {
 
 sk_sp<TextureProxy> ProxyCache::find(const SkBitmap& bitmap) {
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
 
     make_bitmap_key(&key, bitmap);
 

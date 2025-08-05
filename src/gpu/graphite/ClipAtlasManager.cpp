@@ -115,7 +115,7 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                                         SkIRect maskDeviceBounds,
                                                         SkIPoint* outPos) {
     // For the ClipAtlas cache, we don't include the bounds in the key
-    skgpu::UniqueKey maskKey;
+    UniqueKey maskKey;
     bool usesPathKey;
     // The keyBounds are the maskDeviceBounds relative to the full transformed mask. We use this
     // to ensure we capture the situation where the maskDeviceBounds are equal in two cases but
@@ -221,7 +221,7 @@ ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
 
 sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
             Recorder* recorder,
-            const skgpu::UniqueKey& maskKey,
+            const UniqueKey& maskKey,
             const ClipStack::ElementList* elementList,
             SkIRect maskDeviceBounds,
             SkIRect keyBounds,

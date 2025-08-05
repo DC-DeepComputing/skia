@@ -875,9 +875,9 @@ TextureInfo MtlCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo
 
 namespace {
 
-skgpu::UniqueKey::Domain get_domain() {
-    static const skgpu::UniqueKey::Domain kMtlGraphicsPipelineDomain =
-            skgpu::UniqueKey::GenerateDomain();
+UniqueKey::Domain get_domain() {
+    static const UniqueKey::Domain kMtlGraphicsPipelineDomain =
+            UniqueKey::GenerateDomain();
 
     return kMtlGraphicsPipelineDomain;
 }
@@ -1072,7 +1072,7 @@ uint32_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) con
 UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
+        static const UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
         // The key is made up of a single uint32_t corresponding to the compute step ID.
         UniqueKey::Builder builder(&pipelineKey, kComputePipelineDomain, 1, "ComputePipeline");
         builder[0] = pipelineDesc.computeStep()->uniqueID();

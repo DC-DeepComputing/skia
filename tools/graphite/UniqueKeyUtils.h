@@ -12,9 +12,7 @@
 
 #include <vector>
 
-namespace skgpu {
-    class UniqueKey;
-}
+class UniqueKey;
 
 namespace skgpu::graphite {
     class Context;
@@ -29,7 +27,7 @@ namespace skgpu::graphite {
 namespace UniqueKeyUtils {
 
 void FetchUniqueKeys(skgpu::graphite::PrecompileContext*,
-                     std::vector<skgpu::UniqueKey>* keys);
+                     std::vector<UniqueKey>* keys);
 
 #ifdef SK_DEBUG
 void DumpDescs(skgpu::graphite::PrecompileContext*,
@@ -41,7 +39,7 @@ void DumpDescs(skgpu::graphite::PrecompileContext*,
 // and a RenderPassDesc and checks that the reassembled pieces match the
 // original.
 bool ExtractKeyDescs(skgpu::graphite::PrecompileContext*,
-                     const skgpu::UniqueKey&,
+                     const UniqueKey&,
                      skgpu::graphite::GraphicsPipelineDesc*,
                      skgpu::graphite::RenderPassDesc*);
 

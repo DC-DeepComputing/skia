@@ -58,12 +58,12 @@ class SkBlender;
 class SkColorSpace;
 enum SkColorType : int;
 
-void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds) {
+void GrMakeKeyFromImageID(UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds) {
     SkASSERT(key);
     SkASSERT(imageID);
     SkASSERT(!imageBounds.isEmpty());
-    static const skgpu::UniqueKey::Domain kImageIDDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kImageIDDomain, 5, "Image");
+    static const UniqueKey::Domain kImageIDDomain = UniqueKey::GenerateDomain();
+    UniqueKey::Builder builder(key, kImageIDDomain, 5, "Image");
     builder[0] = imageID;
     builder[1] = imageBounds.fLeft;
     builder[2] = imageBounds.fTop;
@@ -73,11 +73,11 @@ void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect
 
 ////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkIDChangeListener> GrMakeUniqueKeyInvalidationListener(skgpu::UniqueKey* key,
+sk_sp<SkIDChangeListener> GrMakeUniqueKeyInvalidationListener(UniqueKey* key,
                                                               uint32_t contextID) {
     class Listener : public SkIDChangeListener {
     public:
-        Listener(const skgpu::UniqueKey& key, uint32_t contextUniqueID)
+        Listener(const UniqueKey& key, uint32_t contextUniqueID)
                 : fMsg(key, contextUniqueID) {}
 
         void changed() override {
@@ -198,7 +198,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
     const GrCaps* caps = rContext->priv().caps();
 
-    skgpu::UniqueKey key;
+    UniqueKey key;
     SkIPoint origin = bitmap.pixelRefOrigin();
     SkIRect subset = SkIRect::MakePtSize(origin, bitmap.dimensions());
     GrMakeKeyFromImageID(&key, bitmap.pixelRef()->getGenerationID(), subset);

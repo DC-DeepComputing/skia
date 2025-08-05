@@ -2123,15 +2123,15 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
     };
 
     auto generateMask = [&](SkRect drawBounds) {
-        skgpu::UniqueKey priorKey = cs->testingOnly_getLastSWMaskKey();
+        UniqueKey priorKey = cs->testingOnly_getLastSWMaskKey();
         drawRect(drawBounds);
-        skgpu::UniqueKey newKey = cs->testingOnly_getLastSWMaskKey();
+        UniqueKey newKey = cs->testingOnly_getLastSWMaskKey();
         REPORTER_ASSERT(r, priorKey != newKey, "Did not generate a new SW mask key as expected");
         return newKey;
     };
 
-    auto verifyKeys = [&](const std::vector<skgpu::UniqueKey>& expectedKeys,
-                          const std::vector<skgpu::UniqueKey>& releasedKeys) {
+    auto verifyKeys = [&](const std::vector<UniqueKey>& expectedKeys,
+                          const std::vector<UniqueKey>& releasedKeys) {
         context->flush();
         GrProxyProvider* proxyProvider = context->priv().proxyProvider();
 
@@ -2160,20 +2160,20 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
     // Creates a mask for a complex clip
     cs->save();
     addMaskRequiringClip(5.f, 5.f, 20.f);
-    skgpu::UniqueKey keyADepth1 = generateMask({0.f, 0.f, 20.f, 20.f});
-    skgpu::UniqueKey keyBDepth1 = generateMask({10.f, 10.f, 30.f, 30.f});
+    UniqueKey keyADepth1 = generateMask({0.f, 0.f, 20.f, 20.f});
+    UniqueKey keyBDepth1 = generateMask({10.f, 10.f, 30.f, 30.f});
     verifyKeys({keyADepth1, keyBDepth1}, {});
 
     // Creates a new mask for a new save record, but doesn't delete the old records
     cs->save();
     addMaskRequiringClip(6.f, 6.f, 15.f);
-    skgpu::UniqueKey keyADepth2 = generateMask({0.f, 0.f, 20.f, 20.f});
-    skgpu::UniqueKey keyBDepth2 = generateMask({10.f, 10.f, 30.f, 30.f});
+    UniqueKey keyADepth2 = generateMask({0.f, 0.f, 20.f, 20.f});
+    UniqueKey keyBDepth2 = generateMask({10.f, 10.f, 30.f, 30.f});
     verifyKeys({keyADepth1, keyBDepth1, keyADepth2, keyBDepth2}, {});
 
     // Release after modifying the current record (even if we don't draw anything)
     addMaskRequiringClip(4.f, 4.f, 15.f);
-    skgpu::UniqueKey keyCDepth2 = generateMask({4.f, 4.f, 16.f, 20.f});
+    UniqueKey keyCDepth2 = generateMask({4.f, 4.f, 16.f, 20.f});
     verifyKeys({keyADepth1, keyBDepth1, keyCDepth2}, {keyADepth2, keyBDepth2});
 
     // Release after restoring an older record

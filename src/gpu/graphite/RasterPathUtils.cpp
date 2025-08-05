@@ -105,7 +105,7 @@ void RasterMaskHelper::drawClip(const Shape& shape,
     }
 }
 
-uint32_t add_transform_key(skgpu::UniqueKey::Builder* builder,
+uint32_t add_transform_key(UniqueKey::Builder* builder,
                            int startIndex,
                            const Transform& transform) {
     // We require the upper left 2x2 of the matrix to match exactly for a cache hit.
@@ -137,20 +137,20 @@ uint32_t add_transform_key(skgpu::UniqueKey::Builder* builder,
     return fracBits;
 }
 
-skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
+UniqueKey GeneratePathMaskKey(const Shape& shape,
                                      const Transform& transform,
                                      const SkStrokeRec& strokeRec,
                                      skvx::half2 maskOrigin,
                                      skvx::half2 maskSize) {
-    skgpu::UniqueKey maskKey;
+    UniqueKey maskKey;
     {
-        static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+        static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
         int styleKeySize = 7;
         if (!strokeRec.isHairlineStyle() && !strokeRec.isFillStyle()) {
             // Add space for width and miter if needed
             styleKeySize += 2;
         }
-        skgpu::UniqueKey::Builder builder(&maskKey, kDomain, styleKeySize + shape.keySize(),
+        UniqueKey::Builder builder(&maskKey, kDomain, styleKeySize + shape.keySize(),
                                           "Raster Path Mask");
         builder[0] = maskOrigin.x() | (maskOrigin.y() << 16);
         builder[1] = maskSize.x() | (maskSize.y() << 16);
@@ -178,16 +178,16 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
     return maskKey;
 }
 
-skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
+UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
                                      SkIRect maskDeviceBounds,
                                      bool includeBounds,
                                      SkIRect* keyBounds,
                                      bool* usesPathKey) {
     static constexpr int kMaxShapeCountForKey = 2;
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
 
-    skgpu::UniqueKey maskKey;
+    UniqueKey maskKey;
     // if the element list is too large we just use the stackRecordID
     if (elementsForMask->size() <= kMaxShapeCountForKey) {
         constexpr int kXformKeySize = 5;
@@ -206,7 +206,7 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
             if (includeBounds) {
                 keySize += 2;
             }
-            skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
+            UniqueKey::Builder builder(&maskKey, kDomain, keySize,
                                               "Clip Path Mask");
             int elementKeyIndex = 0;
             Rect unclippedBounds = Rect::InfiniteInverted();
@@ -253,7 +253,7 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
     }
 
     // Either we have too many elements or at least one shape can't create a key
-    skgpu::UniqueKey::Builder builder(&maskKey, kDomain, 1, "Clip SaveRecord Mask");
+    UniqueKey::Builder builder(&maskKey, kDomain, 1, "Clip SaveRecord Mask");
     builder[0] = stackRecordID;
 
     *usesPathKey = false;

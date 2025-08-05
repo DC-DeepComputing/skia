@@ -152,21 +152,21 @@ private:
     Register* findOrCreateRegisterFor(GrSurfaceProxy* proxy);
 
     struct FreePoolTraits {
-        static const skgpu::ScratchKey& GetKey(const Register& r) {
+        static const ScratchKey& GetKey(const Register& r) {
             return r.scratchKey();
         }
 
-        static uint32_t Hash(const skgpu::ScratchKey& key) { return key.hash(); }
+        static uint32_t Hash(const ScratchKey& key) { return key.hash(); }
         static void OnFree(Register* r) { }
     };
-    typedef SkTMultiMap<Register, skgpu::ScratchKey, FreePoolTraits> FreePoolMultiMap;
+    typedef SkTMultiMap<Register, ScratchKey, FreePoolTraits> FreePoolMultiMap;
 
     typedef skia_private::THashMap<uint32_t, Interval*, GrCheapHash> IntvlHash;
 
     struct UniqueKeyHash {
-        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+        uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
     };
-    typedef skia_private::THashMap<skgpu::UniqueKey, Register*, UniqueKeyHash>
+    typedef skia_private::THashMap<UniqueKey, Register*, UniqueKeyHash>
             UniqueKeyRegisterHash;
 
     // Each proxy – with some exceptions – is assigned a register. After all assignments are made,
@@ -176,10 +176,10 @@ private:
     class Register {
     public:
         // It's OK to pass an invalid scratch key iff the proxy has a unique key.
-        Register(GrSurfaceProxy* originatingProxy, skgpu::ScratchKey, GrResourceProvider*);
+        Register(GrSurfaceProxy* originatingProxy, ScratchKey, GrResourceProvider*);
 
-        const skgpu::ScratchKey& scratchKey() const { return fScratchKey; }
-        const skgpu::UniqueKey& uniqueKey() const { return fOriginatingProxy->getUniqueKey(); }
+        const ScratchKey& scratchKey() const { return fScratchKey; }
+        const UniqueKey& uniqueKey() const { return fOriginatingProxy->getUniqueKey(); }
 
         bool accountedForInBudget() const { return fAccountedForInBudget; }
         void setAccountedForInBudget() { fAccountedForInBudget = true; }
@@ -199,7 +199,7 @@ private:
 
     private:
         GrSurfaceProxy*   fOriginatingProxy;
-        skgpu::ScratchKey fScratchKey; // free pool wants a reference to this.
+        ScratchKey fScratchKey; // free pool wants a reference to this.
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
 

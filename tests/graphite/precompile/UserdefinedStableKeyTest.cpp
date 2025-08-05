@@ -95,7 +95,7 @@ bool draw_with_normal_api(skgpu::graphite::Context* context,
 void fetch_keys_and_reset(skiatest::Reporter* reporter,
                           PipelineCallBackHandler* handler,
                           PrecompileContext* precompileContext,
-                          std::vector<skgpu::UniqueKey>* uniqueKeys,
+                          std::vector<UniqueKey>* uniqueKeys,
                           std::vector<sk_sp<SkData>>* serializedKeys,
                           bool reset) {
     UniqueKeyUtils::FetchUniqueKeys(precompileContext, uniqueKeys);
@@ -128,7 +128,7 @@ void reset_and_recreate_pipelines_with_serialized_keys(
     // None of the user-defined stable runtime effects should've been transmuted to not-stable
     REPORTER_ASSERT(reporter, !shaderCodeDictionary->numUserDefinedRuntimeEffects());
 
-    std::vector<skgpu::UniqueKey> origKeys;
+    std::vector<UniqueKey> origKeys;
     std::vector<sk_sp<SkData>> androidStyleKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -147,7 +147,7 @@ void reset_and_recreate_pipelines_with_serialized_keys(
     // None of the user-defined stable runtime effects should've been transmuted to not-stable
     REPORTER_ASSERT(reporter, !shaderCodeDictionary->numUserDefinedRuntimeEffects());
 
-    std::vector<skgpu::UniqueKey> recreatedKeys;
+    std::vector<UniqueKey> recreatedKeys;
     std::vector<sk_sp<SkData>> recreatedAndroidStyleKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -187,7 +187,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
 
     draw_with_normal_api(context, recorder, paint);
 
-    std::vector<skgpu::UniqueKey> origKeys;
+    std::vector<UniqueKey> origKeys;
     std::vector<sk_sp<SkData>> androidStyleKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -205,7 +205,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
                DrawTypeFlags::kSimpleShape,
                { renderPassProps });
 
-    std::vector<skgpu::UniqueKey> recreatedKeys;
+    std::vector<UniqueKey> recreatedKeys;
     std::vector<sk_sp<SkData>> recreatedAndroidStyleKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -214,7 +214,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
     // The normal precompile API will overgenerate, so we need to search for a match
     {
         bool foundIt = false;
-        for (const skgpu::UniqueKey& k : recreatedKeys) {
+        for (const UniqueKey& k : recreatedKeys) {
             if (origKeys[0] == k) {
                 foundIt = true;
                 break;
@@ -276,7 +276,7 @@ void test_sksl_reuse(skiatest::Reporter* reporter,
 
     draw_with_normal_api(context, recorder, blessedPaint);
 
-    std::vector<skgpu::UniqueKey> origKeys;
+    std::vector<UniqueKey> origKeys;
     std::vector<sk_sp<SkData>> serializedKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -288,7 +288,7 @@ void test_sksl_reuse(skiatest::Reporter* reporter,
 
     draw_with_normal_api(context, recorder, cursedPaint);
 
-    std::vector<skgpu::UniqueKey> recreatedKeys;
+    std::vector<UniqueKey> recreatedKeys;
     std::vector<sk_sp<SkData>> recreatedSerializedKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,
@@ -312,7 +312,7 @@ void test_get_pipeline_label_api(skiatest::Reporter* reporter,
 
     draw_with_normal_api(context, recorder, paint);
 
-    std::vector<skgpu::UniqueKey> origKeys;
+    std::vector<UniqueKey> origKeys;
     std::vector<sk_sp<SkData>> androidStyleKeys;
 
     fetch_keys_and_reset(reporter, handler, precompileContext,

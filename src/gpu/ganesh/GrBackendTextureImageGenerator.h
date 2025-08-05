@@ -85,7 +85,7 @@ private:
 
         // We use this key so that we don't rewrap the GrBackendTexture in a GrTexture for each
         // proxy created from this generator for a particular borrowing context.
-        skgpu::UniqueKey                 fBorrowedTextureKey;
+        UniqueKey                 fBorrowedTextureKey;
         // There is no ref associated with this pointer. We rely on our atomic bookkeeping with the
         // context ID to know when this pointer is valid and safe to use. This is used to make sure
         // all uses of the wrapped texture are finished on the borrowing context before we open
