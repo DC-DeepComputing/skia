@@ -469,6 +469,7 @@ std::string GenerateCoordManipulationPreamble(const ShaderInfo& shaderInfo,
                 localArgs.fFragCoord =
                         GenerateCoordNormalizeExpression(shaderInfo, node, defaultArgs);
             }
+            // Here is where we need to add support
         } else {
             SkASSERT(node->codeSnippetId() == (int) BuiltInCodeSnippetID::kCoordClampShader);
             localArgs.fFragCoord = SkSL::String::printf("clamp(%s, %s.LT, %s.RB)",
@@ -1197,7 +1198,9 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             /*name=*/"Image",
             /*staticFn=*/"sk_image_shader",
-            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
+            SnippetRequirementFlags::kLocalCoords |
+            SnippetRequirementFlags::kStoresSamplerDescData |
+            SnippetRequirementFlags::kInvImgSize,
             /*uniforms=*/{ { "invImgSize",            SkSLType::kFloat2 },
                            { "subset",                SkSLType::kFloat4 },
                            { "tilemodeX",             SkSLType::kInt },
@@ -1208,7 +1211,9 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCubicImageShader] = {
             /*name=*/"CubicImage",
             /*staticFn=*/"sk_cubic_image_shader",
-            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
+            SnippetRequirementFlags::kLocalCoords |
+            SnippetRequirementFlags::kStoresSamplerDescData |
+            SnippetRequirementFlags::kInvImgSize,
             /*uniforms=*/{ { "invImgSize",            SkSLType::kFloat2 },
                            { "subset",                SkSLType::kFloat4 },
                            { "tilemodeX",             SkSLType::kInt },
@@ -1227,7 +1232,9 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShaderClamp] = {
             /*name=*/"ImageShaderClamp",
             /*staticFn=*/"sk_image_shader_clamp",
-            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
+            SnippetRequirementFlags::kLocalCoords |
+            SnippetRequirementFlags::kStoresSamplerDescData |
+            SnippetRequirementFlags::kInvImgSize,
             /*uniforms=*/{ { "invImgSize",            SkSLType::kFloat2 },
                            { "subsetInsetClamp",      SkSLType::kFloat4 } },
             /*texturesAndSamplers=*/{"image"}

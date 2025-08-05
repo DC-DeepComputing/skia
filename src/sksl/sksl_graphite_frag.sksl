@@ -420,6 +420,7 @@ $pure half4 sk_image_shader(float2 coords,
                             int tileModeY,
                             int filterMode,
                             sampler2D s) {
+//    float2 testInvImgSize = image
     return $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
                                 filterMode, float2($kLinearInset), s);
 }

@@ -141,6 +141,7 @@ private:
     bool fHasGradientBuffer = false;
     bool fHasSsboIndicesVarying = false;
     bool fNeedsLocalCoords = false;
+    bool fNeedsInvImgSize = false;
 };
 
 }  // namespace skgpu::graphite

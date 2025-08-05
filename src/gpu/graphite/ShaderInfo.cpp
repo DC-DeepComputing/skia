@@ -406,6 +406,8 @@ SkSLType sksl_type_for_lifted_expression(
         case ShaderSnippet::LiftableExpressionType::kNone:
             return SkSLType::kVoid;
         case ShaderSnippet::LiftableExpressionType::kLocalCoords:
+            [[fallthrough]];
+        case ShaderSnippet::LiftableExpressionType::kInvImgSize:
             return SkSLType::kFloat2;
         case ShaderSnippet::LiftableExpressionType::kPriorStageOutput:
             return SkSLType::kHalf4;
@@ -861,6 +863,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     *rootNodes = key.getRootNodes(caps, dict, &shaderNodeAlloc, availableVaryings);
     fNeedsLocalCoords = !rootNodes->empty() && SkToBool((*rootNodes)[0]->requiredFlags() &
                                                         SnippetRequirementFlags::kLocalCoords);
+    fNeedsInvImgSize = !rootNodes->empty() && SkToBool((*rootNodes)[0]->requiredFlags() &
+                                                        SnippetRequirementFlags::kInvImgSize);
 
     // TODO(b/366220690): aggregateSnippetData() goes away entirely once the VulkanGraphicsPipeline
     // is updated to use the extracted SamplerDescs directly.
@@ -1073,6 +1077,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                               this->shadingSsboIndex(),
                               RenderStep::ssboIndicesVarying());
     }
+
+    // if (fNeedsInvImgSize) {
+    //     // TODO: query type don't hard code
+    //     SkSL::String::appendf(&mainBody, "float2 invImgSize = 1/$query_inv_img_size(image);\n");
+    // }
 
     if (step->emitsPrimitiveColor()) {
         mainBody += "half4 primitiveColor;";
