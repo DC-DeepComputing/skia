@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fec255f3_7a0d2123",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T16:50:57Z",
+      "side": 1,
+      "message": "Canary failures seem to be flakes unrelated to this change.",
+      "revId": "0eee22182b07c636f466752724e5721f560ee889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
