@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4aebde2_08b03ef9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-05T14:29:49Z",
+      "side": 1,
+      "message": "Added (large) documentation block -- ptal",
+      "revId": "5b30eaf6b59f85041c6e08ebdda4c269b71e242b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
