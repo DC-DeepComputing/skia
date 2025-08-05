@@ -7,6 +7,7 @@
 
 #include "modules/skottie/src/layers/shapelayer/ShapeLayer.h"
 
+#include "include/core/SkPathTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "modules/jsonreader/SkJSONReader.h"
@@ -298,8 +299,21 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachShape(const skjson::ArrayValue* 
             auto geo = drawGeos.size() > 1
                 ? ShapeBuilder::MergeGeometry(std::move(drawGeos), sksg::Merge::Mode::kMerge)
                 : drawGeos[0];
-
             SkASSERT(geo);
+
+            // Unlike Skia, Lottie specifies the fill rule on paint, not on geometry.  This is the
+            // point of transfer, where we relocate the property to the geometry node as a local
+            // wrapper.
+            static constexpr SkPathFillType gFillTypes[] = {
+                SkPathFillType::kWinding,  // "r": 1
+                SkPathFillType::kEvenOdd,  // "r": 2
+            };
+            const auto ft = gFillTypes[std::min(ParseDefault<size_t>(rec->fJson["r"], 1) - 1,
+                                                std::size(gFillTypes) - 1)];
+            if (ft != SkPathFillType::kDefault) {
+                geo = sksg::FillTypeOverride::Make(std::move(geo), ft);
+            }
+
             add_draw(sksg::Draw::Make(std::move(geo), std::move(paint)), *rec);
             ctx->fCommittedAnimators = fCurrentAnimatorScope->size();
         } break;
