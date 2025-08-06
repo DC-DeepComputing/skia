@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a8a47df_a6652bd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T21:34:47Z",
+      "side": 1,
+      "message": "Clearly I would need to update out tests more cleanly... but I think we can get a way with this -- enforce that we never have consecutive kMoves (no reason to).\n\nWDYT?",
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
