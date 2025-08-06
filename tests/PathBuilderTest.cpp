@@ -594,7 +594,7 @@ DEF_TEST(SkPathBuilder_lineToMoveTo, reporter) {
     SkPath result = pb.detach();
 
     auto iter = SkPathPriv::Iterate(result).begin();
-    assertIsMoveTo(reporter, &iter, 5, -1);
+//    assertIsMoveTo(reporter, &iter, 5, -1);
     assertIsMoveTo(reporter, &iter, 20, 3);
     assertIsLineTo(reporter, &iter, 7, 11);
     assertIsLineTo(reporter, &iter, 8, 12);

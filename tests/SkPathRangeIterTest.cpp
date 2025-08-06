@@ -37,7 +37,7 @@ DEF_TEST(SkPath_RangeIter, r) {
         Verb::kLine,
         Verb::kClose,
         Verb::kMove,
-        Verb::kMove
+//        Verb::kMove
     };
 
     class : SkRandom {

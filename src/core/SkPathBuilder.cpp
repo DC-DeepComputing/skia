@@ -160,6 +160,11 @@ SkRect SkPathBuilder::computeBounds() const {
  */
 
 SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
+    if (!fVerbs.empty() && fVerbs.back() == SkPathVerb::kMove) {
+        fPts.back() = pt;
+        return *this;
+    }
+
     // only needed while SkPath is mutable
     fLastMoveIndex = SkToInt(fPts.size());
 
