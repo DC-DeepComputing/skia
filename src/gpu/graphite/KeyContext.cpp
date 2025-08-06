@@ -15,11 +15,15 @@
 namespace skgpu::graphite {
 
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
+                       FloatStorageManager* fsm,
+                       PipelineDataGatherer* pipelineDataGatherer,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
                        SkEnumBitMask<KeyGenFlags> initialFlags,
                        const SkColor4f& paintColor)
         : fRecorder(recorder)
+        , fFloatStorageManager(fsm)
+        , fPipelineDataGatherer(pipelineDataGatherer)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)

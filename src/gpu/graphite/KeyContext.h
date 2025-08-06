@@ -22,6 +22,8 @@ namespace skgpu::graphite {
 
 class Caps;
 enum class DstReadStrategy : uint8_t;
+class FloatStorageManager;
+class PipelineDataGatherer;
 class Recorder;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
@@ -50,16 +52,22 @@ class KeyContext {
 public:
     // Constructor for the pre-compile code path (i.e., no Recorder)
     KeyContext(const Caps* caps,
+               FloatStorageManager* fsm,
+               PipelineDataGatherer* pipelineDataGatherer,
                ShaderCodeDictionary* dict,
                RuntimeEffectDictionary* rtEffectDict,
                const SkColorInfo& dstColorInfo)
-            : fDictionary(dict)
+            : fFloatStorageManager(fsm)
+            , fPipelineDataGatherer(pipelineDataGatherer)
+            , fDictionary(dict)
             , fRTEffectDict(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
             , fCaps(caps) {}
 
     // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
     KeyContext(Recorder*,
+               FloatStorageManager* fsm,
+               PipelineDataGatherer* pipelineDataGatherer,
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
                SkEnumBitMask<KeyGenFlags> initialFlags,
@@ -74,6 +82,8 @@ public:
     const SkM44& local2Dev() const { return fLocal2Dev; }
     const SkMatrix* localMatrix() const { return fLocalMatrix; }
 
+    FloatStorageManager* fsm() const { return fFloatStorageManager; }
+    PipelineDataGatherer* pipelineDataGatherer() const { return fPipelineDataGatherer; }
     ShaderCodeDictionary* dict() const { return fDictionary; }
     RuntimeEffectDictionary* rtEffectDict() const { return fRTEffectDict; }
 
@@ -83,7 +93,15 @@ public:
 
     SkEnumBitMask<KeyGenFlags> flags() const { return fKeyGenFlags; }
 
+    // BAD?
+    void SetFloatStorageManager(FloatStorageManager* fsm) { fFloatStorageManager = fsm; }
+    void SetPipelineDataGatherer(PipelineDataGatherer* pipelineDataGatherer) {
+        fPipelineDataGatherer = pipelineDataGatherer;
+    }
+
 protected:
+    FloatStorageManager* fFloatStorageManager;
+    PipelineDataGatherer* fPipelineDataGatherer;
     Recorder* fRecorder = nullptr;
     SkM44 fLocal2Dev;
     SkMatrix* fLocalMatrix = nullptr;

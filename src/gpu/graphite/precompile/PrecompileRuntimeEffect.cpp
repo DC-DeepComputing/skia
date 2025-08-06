@@ -115,15 +115,14 @@ private:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
 
         SkASSERT(desiredCombination < this->numCombinations());
 
         SkSpan<const SkRuntimeEffect::Child> childInfo = fEffect->children();
 
-        if (!RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { fEffect })) {
-            RuntimeEffectBlock::AddNoOpEffect(keyContext, builder, gatherer, fEffect.get());
+        if (!RuntimeEffectBlock::BeginBlock(keyContext, builder, { fEffect })) {
+            RuntimeEffectBlock::AddNoOpEffect(keyContext, builder, fEffect.get());
             return;
         }
 
@@ -144,7 +143,7 @@ private:
 
             SkASSERT(precompilebase_is_valid_as_child(option.get()));
             if (option) {
-                option->priv().addToKey(childContext, builder, gatherer, childOptions);
+                option->priv().addToKey(childContext, builder, childOptions);
             } else {
                 SkASSERT(childOptions == 0);
 
@@ -152,7 +151,7 @@ private:
                 switch (childInfo[rowIndex].type) {
                     case SkRuntimeEffect::ChildType::kShader:
                         // A missing shader returns transparent black
-                        SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
+                        SolidColorShaderBlock::AddBlock(childContext, builder,
                                                         SK_PMColor4fTRANSPARENT);
                         break;
 
@@ -163,13 +162,13 @@ private:
 
                     case SkRuntimeEffect::ChildType::kBlender:
                         // A "passthrough" blender performs `blend_src_over(src, dest)`.
-                        AddFixedBlendMode(childContext, builder, gatherer, SkBlendMode::kSrcOver);
+                        AddFixedBlendMode(childContext, builder, SkBlendMode::kSrcOver);
                         break;
                 }
             }
         }
 
-        RuntimeEffectBlock::HandleIntrinsics(keyContext, builder, gatherer, fEffect.get());
+        RuntimeEffectBlock::HandleIntrinsics(keyContext, builder, fEffect.get());
 
         builder->endBlock();
     }

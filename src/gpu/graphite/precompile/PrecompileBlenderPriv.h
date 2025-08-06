@@ -28,9 +28,8 @@ public:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const {
-        fPrecompileBlender->addToKey(keyContext, builder, gatherer, desiredCombination);
+        fPrecompileBlender->addToKey(keyContext, builder, desiredCombination);
     }
 
 private:

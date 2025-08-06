@@ -52,14 +52,17 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
     SkDEBUGCODE(builder->checkReset());
     SkDEBUGCODE(gatherer->checkReset());
 
+    //TODO CHECK ME
     KeyContext keyContext(recorder,
+                          nullptr,
+                          gatherer,
                           local2Dev,
                           targetColorInfo,
                           geometry.isShape() || geometry.isEdgeAAQuad()
                                   ? KeyGenFlags::kDefault
                                   : KeyGenFlags::kDisableSamplingOptimization,
                           p.color());
-    p.toKey(keyContext, builder, gatherer);
+    p.toKey(keyContext, builder);
 
     return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
 }
