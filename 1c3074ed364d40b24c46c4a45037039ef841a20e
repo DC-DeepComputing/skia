@@ -33,6 +33,24 @@
       "message": "Can we try deleting this in the same CL?\n\nI ran a quick search and can\u0027t find any references in Chromium/Android/G3/Flutter.",
       "revId": "1c3074ed364d40b24c46c4a45037039ef841a20e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cfa294c_b6bb41eb",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T13:30:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e070d292_9bdea678",
+      "revId": "1c3074ed364d40b24c46c4a45037039ef841a20e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
