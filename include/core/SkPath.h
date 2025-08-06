@@ -582,28 +582,17 @@ public:
         kExtend_AddPathMode,
     };
 
-    /** Returns SkPath with SkPoint array offset by (dx, dy).
-
-        @param dx  offset added to SkPoint array x-axis coordinates
-        @param dy  offset added to SkPoint array y-axis coordinates
+    /** Apply the matrix to this path, and return the result, respecting the choice
+     *  to apply perspective-clipping or not.
+     *
+     *  @param matrix  SkMatrix to apply to SkPath
+     *  @param pc      whether to apply perspective clipping
+     *  @return        transformed path
     */
+    SkPath makeTransform(const SkMatrix& matrix) const;
+
     SkPath makeOffset(SkScalar dx, SkScalar dy) const {
-        SkPath dst;
-        this->offset(dx, dy, &dst);
-        return dst;
-    }
-
-    /** Return a copy of SkPath with verb array, SkPoint array, and weight transformed
-        by matrix. makeTransform may change verbs and increase their number.
-
-        @param matrix  SkMatrix to apply to SkPath
-        @param pc      whether to apply perspective clipping
-        @return        SkPath
-    */
-    SkPath makeTransform(const SkMatrix& matrix) const {
-        SkPath dst;
-        this->transform(matrix, &dst);
-        return dst;
+        return this->makeTransform(SkMatrix::Translate(dx, dy));
     }
 
     SkPath makeScale(SkScalar sx, SkScalar sy) const {
