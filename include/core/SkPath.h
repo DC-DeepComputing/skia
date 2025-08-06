@@ -275,15 +275,8 @@ public:
     */
     bool isRRect(SkRRect* rrect) const;
 
-    /** Returns true if path is representable as an oval arc. In other words, could this
-        path be drawn using SkCanvas::drawArc.
-
-        arc  receives parameters of arc
-
-       @param arc  storage for arc; may be nullptr
-       @return     true if SkPath contains only a single arc from an oval
-    */
-    bool isArc(SkArc* arc) const;
+    // Deprecated -- will be removed
+    bool isArc(SkArc*) const { return false; }
 
     /** Returns if SkPath is empty.
         Empty SkPath may have FillType but has no SkPoint, SkPath::Verb, or conic weight.
