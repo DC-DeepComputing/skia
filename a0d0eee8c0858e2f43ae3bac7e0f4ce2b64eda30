@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9a39dc8_1c65b95a",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:42:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7bf46c8_fa49bd7d",
+      "range": {
+        "startLine": 29,
+        "startChar": 43,
+        "endLine": 29,
+        "endChar": 44
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdcf1990_9ad25776",
@@ -129,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9786ae2c_372894d7",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:42:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52dcd157_5bff6ffc",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 74
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d700bf4_42d45975",
@@ -166,6 +214,30 @@
       "side": 1,
       "message": "empty dst is well defined, we always scale by dst/src, and if dst is 0, that is just fine. no need for a \u0027check\u0027",
       "parentUuid": "9d700bf4_42d45975",
+      "range": {
+        "startLine": 560,
+        "startChar": 8,
+        "endLine": 560,
+        "endChar": 21
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6195e5f_4d418451",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:42:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b12dff7_34d03224",
       "range": {
         "startLine": 560,
         "startChar": 8,
