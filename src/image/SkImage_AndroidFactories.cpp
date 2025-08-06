@@ -95,17 +95,14 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
                                                   GrSurfaceOrigin surfaceOrigin) {
     AHardwareBuffer_Desc bufferDesc;
     AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
-
     if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE)) {
         return nullptr;
     }
-
 
     GrBackendFormat backendFormat = GrAHardwareBufferUtils::GetBackendFormat(dContext,
                                                                              hardwareBuffer,
                                                                              bufferDesc.format,
                                                                              true);
-
     if (!backendFormat.isValid()) {
         return nullptr;
     }
@@ -113,9 +110,7 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
     GrAHardwareBufferUtils::DeleteImageProc deleteImageProc = nullptr;
     GrAHardwareBufferUtils::UpdateImageProc updateImageProc = nullptr;
     GrAHardwareBufferUtils::TexImageCtx deleteImageCtx = nullptr;
-
     const bool isRenderable = SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_FRAMEBUFFER);
-
     GrBackendTexture backendTexture =
             GrAHardwareBufferUtils::MakeBackendTexture(dContext, hardwareBuffer,
                                                        bufferDesc.width, bufferDesc.height,
@@ -129,9 +124,9 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 
     auto releaseHelper = skgpu::RefCntedCallback::Make(deleteImageProc, deleteImageCtx);
 
-    SkColorType colorType =
-            AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
-
+    SkColorType colorType = backendFormat.textureType() == GrTextureType::kExternal
+            ? AHardwareBufferUtils::kExternalFormatColorType
+            : AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
     GrColorType grColorType = SkColorTypeToGrColorType(colorType);
 
     GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();
