@@ -276,13 +276,12 @@ SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
             dir = SkPathDirectionToFirst(fIsA.fRRectOrOval.fDirection);
             SkASSERT(fConvexity == SkPathConvexity::kConvex);
             break;
-        case SkPathIsAType::kArc: [[fallthrough]];
-        case SkPathIsAType::kArcWedge:
+        case SkPathIsAType::kArc:
             pr->setIsArc(SkArc::Make(
                 fIsA.fArc.fArcOval,
                 fIsA.fArc.fStartAngle,
                 fIsA.fArc.fSweepAngle,
-                SkPathIsATypeToArcType(fType)
+                SkArc::Type::kArc
             ));
             break;
         default: break;

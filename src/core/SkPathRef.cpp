@@ -215,8 +215,9 @@ void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
     // arc. For now, don't bother handling that (we'd also need to fixup the angles for negative
     // scale, etc.)
     bool rectStaysRect = matrix.rectStaysRect();
-    const SkPathIsAType newType =
-            (rectStaysRect && !SkPathIsAArc(src.fType)) ? src.fType : SkPathIsAType::kGeneral;
+    const SkPathIsAType newType = (rectStaysRect && src.fType != SkPathIsAType::kArc)
+                                ? src.fType
+                                : SkPathIsAType::kGeneral;
     (*dst)->fType = newType;
     if (newType == SkPathIsAType::kOval || newType == SkPathIsAType::kRRect) {
         auto [dir, start] =
@@ -546,8 +547,7 @@ bool SkPathRef::isValid() const {
                 return false;
             }
             break;
-        case SkPathIsAType::kArc: [[fallthrough]];
-        case SkPathIsAType::kArcWedge:
+        case SkPathIsAType::kArc:
             if (!(fIsA.fArc.fArcOval.isFinite() &&
                   SkIsFinite(fIsA.fArc.fStartAngle, fIsA.fArc.fSweepAngle))) {
                 return false;

@@ -81,28 +81,13 @@ struct SkPathArcInfo {
  *                  Note: we don't store its radii -- we deduce those when isRRect() is
  *                        called, by examining the points/verbs.
  *      kArc      : store the oval's bounds and start/sweep angles that for the arc.
- *      kArcWedge : same as kArc, but we note that we're a wedge (see SkArc::Type)
  */
 enum class SkPathIsAType : uint8_t {
     kGeneral,
     kOval,
     kRRect,
     kArc,
-    kArcWedge,
 };
-
-static inline bool SkPathIsAArc(SkPathIsAType t) {
-    return t == SkPathIsAType::kArc || t == SkPathIsAType::kArcWedge;
-}
-
-static inline SkPathIsAType SkArcTypeToIsAType(SkArc::Type t) {
-    return t == SkArc::Type::kArc ? SkPathIsAType::kArc : SkPathIsAType::kArcWedge;
-}
-
-static inline SkArc::Type SkPathIsATypeToArcType(SkPathIsAType t) {
-    SkASSERT(SkPathIsAArc(t));
-    return t == SkPathIsAType::kArc ? SkArc::Type::kArc : SkArc::Type::kWedge;
-}
 
 union SkPathIsAData {
     // no extra data for kGeneral (or deduced Rect)
@@ -281,9 +266,9 @@ public:
     std::optional<SkPathRRectInfo> isRRect() const;
 
     std::optional<SkArc> isArc() const {
-        if (SkPathIsAArc(fType)) {
+        if (fType == SkPathIsAType::kArc) {
             return SkArc::Make(fIsA.fArc.fArcOval, fIsA.fArc.fStartAngle, fIsA.fArc.fSweepAngle,
-                               SkPathIsATypeToArcType(fType));
+                               SkArc::Type::kArc);
         }
         return {};
     }
@@ -539,7 +524,7 @@ private:
     }
 
     void setIsArc(const SkArc& arc) {
-        fType = SkArcTypeToIsAType(arc.fType);
+        fType = SkPathIsAType::kArc;
         fIsA.fArc.fArcOval    = arc.fOval;
         fIsA.fArc.fStartAngle = arc.fStartAngle;
         fIsA.fArc.fSweepAngle = arc.fSweepAngle;
