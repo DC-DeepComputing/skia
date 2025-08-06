@@ -571,20 +571,14 @@ size_t SkPath::approximateBytesUsed() const {
     return size;
 }
 
-bool SkPath::getLastPt(SkPoint* lastPt) const {
+std::optional<SkPoint> SkPath::getLastPt() const {
     SkDEBUGCODE(this->validate();)
 
-    int count = fPathRef->countPoints();
+    const int count = fPathRef->countPoints();
     if (count > 0) {
-        if (lastPt) {
-            *lastPt = fPathRef->atPoint(count - 1);
-        }
-        return true;
+        return fPathRef->atPoint(count - 1);
     }
-    if (lastPt) {
-        lastPt->set(0, 0);
-    }
-    return false;
+    return {};
 }
 
 void SkPath::setPt(int index, SkScalar x, SkScalar y) {
@@ -907,82 +901,6 @@ void SkPath::addRaw(const SkPathRaw& raw) {
     }
 }
 
-static bool arc_is_lone_point(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle,
-                              SkPoint* pt) {
-    if (0 == sweepAngle && (0 == startAngle || SkIntToScalar(360) == startAngle)) {
-        // Chrome uses this path to move into and out of ovals. If not
-        // treated as a special case the moves can distort the oval's
-        // bounding box (and break the circle special case).
-        pt->set(oval.fRight, oval.centerY());
-        return true;
-    } else if (0 == oval.width() && 0 == oval.height()) {
-        // Chrome will sometimes create 0 radius round rects. Having degenerate
-        // quad segments in the path prevents the path from being recognized as
-        // a rect.
-        // TODO: optimizing the case where only one of width or height is zero
-        // should also be considered. This case, however, doesn't seem to be
-        // as common as the single point case.
-        pt->set(oval.fRight, oval.fTop);
-        return true;
-    }
-    return false;
-}
-
-// Return the unit vectors pointing at the start/stop points for the given start/sweep angles
-//
-static void angles_to_unit_vectors(SkScalar startAngle, SkScalar sweepAngle,
-                                   SkVector* startV, SkVector* stopV, SkRotationDirection* dir) {
-    SkScalar startRad = SkDegreesToRadians(startAngle),
-             stopRad  = SkDegreesToRadians(startAngle + sweepAngle);
-
-    startV->fY = SkScalarSinSnapToZero(startRad);
-    startV->fX = SkScalarCosSnapToZero(startRad);
-    stopV->fY = SkScalarSinSnapToZero(stopRad);
-    stopV->fX = SkScalarCosSnapToZero(stopRad);
-
-    /*  If the sweep angle is nearly (but less than) 360, then due to precision
-     loss in radians-conversion and/or sin/cos, we may end up with coincident
-     vectors, which will fool SkBuildQuadArc into doing nothing (bad) instead
-     of drawing a nearly complete circle (good).
-     e.g. canvas.drawArc(0, 359.99, ...)
-     -vs- canvas.drawArc(0, 359.9, ...)
-     We try to detect this edge case, and tweak the stop vector
-     */
-    if (*startV == *stopV) {
-        SkScalar sw = SkScalarAbs(sweepAngle);
-        if (sw < SkIntToScalar(360) && sw > SkIntToScalar(359)) {
-            // make a guess at a tiny angle (in radians) to tweak by
-            SkScalar deltaRad = SkScalarCopySign(SK_Scalar1/512, sweepAngle);
-            // not sure how much will be enough, so we use a loop
-            do {
-                stopRad -= deltaRad;
-                stopV->fY = SkScalarSinSnapToZero(stopRad);
-                stopV->fX = SkScalarCosSnapToZero(stopRad);
-            } while (*startV == *stopV);
-        }
-    }
-    *dir = sweepAngle > 0 ? kCW_SkRotationDirection : kCCW_SkRotationDirection;
-}
-
-/**
- *  If this returns 0, then the caller should just line-to the singlePt, else it should
- *  ignore singlePt and append the specified number of conics.
- */
-static int build_arc_conics(const SkRect& oval, const SkVector& start, const SkVector& stop,
-                            SkRotationDirection dir, SkConic conics[SkConic::kMaxConicsForArc],
-                            SkPoint* singlePt) {
-    SkMatrix    matrix;
-
-    matrix.setScale(SkScalarHalf(oval.width()), SkScalarHalf(oval.height()));
-    matrix.postTranslate(oval.centerX(), oval.centerY());
-
-    int count = SkConic::BuildUnitArc(start, stop, dir, &matrix, conics);
-    if (0 == count) {
-        *singlePt = matrix.mapPoint(stop);
-    }
-    return count;
-}
-
 SkPath& SkPath::addRoundRect(const SkRect& rect, SkSpan<const SkScalar> radii,
                              SkPathDirection dir) {
     SkASSERT(radii.size() >= 8);
@@ -1099,76 +1017,34 @@ SkPath& SkPath::addCircle(SkScalar x, SkScalar y, SkScalar r, SkPathDirection di
 
 SkPath& SkPath::arcTo(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle,
                       bool forceMoveTo) {
-    if (oval.width() < 0 || oval.height() < 0) {
-        return *this;
-    }
-
     startAngle = SkScalarMod(startAngle, 360.0f);
 
     if (fPathRef->countVerbs() == 0) {
         forceMoveTo = true;
     }
 
-    SkPoint lonePt;
-    if (arc_is_lone_point(oval, startAngle, sweepAngle, &lonePt)) {
-        return forceMoveTo ? this->moveTo(lonePt) : this->lineTo(lonePt);
-    }
-
-    SkVector startV, stopV;
-    SkRotationDirection dir;
-    angles_to_unit_vectors(startAngle, sweepAngle, &startV, &stopV, &dir);
-
-    SkPoint singlePt;
-
     bool isArc = this->hasOnlyMoveTos();
 
-    // Adds a move-to to 'pt' if forceMoveTo is true. Otherwise a lineTo unless we're sufficiently
-    // close to 'pt' currently. This prevents spurious lineTos when adding a series of contiguous
-    // arcs from the same oval.
-    auto addPt = [&forceMoveTo, &isArc, this](const SkPoint& pt) {
-        SkPoint lastPt;
-        if (forceMoveTo) {
-            this->moveTo(pt);
-        } else if (!this->getLastPt(&lastPt) ||
-                   !SkScalarNearlyEqual(lastPt.fX, pt.fX) ||
-                   !SkScalarNearlyEqual(lastPt.fY, pt.fY)) {
-            this->lineTo(pt);
-            isArc = false;
-        }
-    };
+    SkPathRawShapes::Arc raw(oval, startAngle, sweepAngle, forceMoveTo, isArc, this->getLastPt());
 
-    // At this point, we know that the arc is not a lone point, but startV == stopV
-    // indicates that the sweepAngle is too small such that angles_to_unit_vectors
-    // cannot handle it.
-    if (startV == stopV) {
-        SkScalar endAngle = SkDegreesToRadians(startAngle + sweepAngle);
-        SkScalar radiusX = oval.width() / 2;
-        SkScalar radiusY = oval.height() / 2;
-        // We do not use SkScalar[Sin|Cos]SnapToZero here. When sin(startAngle) is 0 and sweepAngle
-        // is very small and radius is huge, the expected behavior here is to draw a line. But
-        // calling SkScalarSinSnapToZero will make sin(endAngle) be 0 which will then draw a dot.
-        singlePt.set(oval.centerX() + radiusX * SkScalarCos(endAngle),
-                     oval.centerY() + radiusY * SkScalarSin(endAngle));
-        addPt(singlePt);
-        return *this;
+    // Need custom raw walker, that doesn't assume we start with kMove
+    const SkPoint* pts = raw.points().data();
+    const float* cns = raw.conics().data();
+    for (auto v : raw.verbs()) {
+        switch (v) {
+            case SkPathVerb::kMove: this->moveTo(*pts++); break;
+            case SkPathVerb::kLine: this->lineTo(*pts++); break;
+            case SkPathVerb::kConic:
+                this->conicTo(pts[0], pts[1], *cns++);
+                pts += 2;
+                break;
+            default: SkASSERT(false); break;
+        }
     }
 
-    SkConic conics[SkConic::kMaxConicsForArc];
-    int count = build_arc_conics(oval, startV, stopV, dir, conics, &singlePt);
-    if (count) {
-        // Conics take two points. Add one to the verb in case there is a moveto.
-        this->incReserve(count * 2 + 1, count + 1, count);
-        const SkPoint& pt = conics[0].fPts[0];
-        addPt(pt);
-        for (int i = 0; i < count; ++i) {
-            this->conicTo(conics[i].fPts[1], conics[i].fPts[2], conics[i].fW);
-        }
-        if (isArc) {
-            SkPathRef::Editor ed(&fPathRef);
-            ed.setIsArc(SkArc::Make(oval, startAngle, sweepAngle, SkArc::Type::kArc));
-        }
-    } else {
-        addPt(singlePt);
+    if (raw.isArc()) {
+        SkPathRef::Editor ed(&fPathRef);
+        ed.setIsArc(SkArc::Make(oval, startAngle, sweepAngle, SkArc::Type::kArc));
     }
     return *this;
 }
