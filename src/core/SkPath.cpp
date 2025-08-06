@@ -1570,116 +1570,17 @@ void SkPath::offset(SkScalar dx, SkScalar dy, SkPath* dst) const {
     this->transform(matrix, dst);
 }
 
-static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
-                               int level = 2) {
-    if (--level >= 0) {
-        SkPoint tmp[7];
-
-        SkChopCubicAtHalf(pts, tmp);
-        subdivide_cubic_to(path, &tmp[0], level);
-        subdivide_cubic_to(path, &tmp[3], level);
-    } else {
-        path->cubicTo(pts[1], pts[2], pts[3]);
-    }
+SkPath SkPath::makeTransform(const SkMatrix& mx) const {
+    SkPathBuilder bu(*this);
+    bu.transform(mx);
+    return bu.detach();
 }
 
 void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
-    if (matrix.isIdentity()) {
-        if (dst != nullptr && dst != this) {
-            *dst = *this;
-        }
-        return;
-    }
-
-    SkDEBUGCODE(this->validate();)
     if (dst == nullptr) {
         dst = const_cast<SkPath*>(this);
     }
-
-    if (matrix.hasPerspective()) {
-        SkPath  tmp;
-        tmp.fFillType = fFillType;
-
-        SkPath clipped;
-        const SkPath* src = this;
-        if (SkPathPriv::PerspectiveClip(*this, matrix, &clipped)) {
-            src = &clipped;
-        }
-
-        SkPath::Iter iter(*src, false);
-        while (auto rec = iter.next()) {
-            const SkSpan<const SkPoint> pts = rec->fPoints;
-            switch (rec->fVerb) {
-                case SkPathVerb::kMove:
-                    tmp.moveTo(pts[0]);
-                    break;
-                case SkPathVerb::kLine:
-                    tmp.lineTo(pts[1]);
-                    break;
-                case SkPathVerb::kQuad:
-                    // promote the quad to a conic
-                    tmp.conicTo(pts[1], pts[2],
-                                SkConic::TransformW(pts.data(), SK_Scalar1, matrix));
-                    break;
-                case SkPathVerb::kConic:
-                    tmp.conicTo(pts[1], pts[2],
-                                SkConic::TransformW(pts.data(), rec->fConicWeight, matrix));
-                    break;
-                case SkPathVerb::kCubic:
-                    subdivide_cubic_to(&tmp, pts.data());
-                    break;
-                case SkPathVerb::kClose:
-                    tmp.close();
-                    break;
-            }
-        }
-
-        dst->swap(tmp);
-        SkPathRef::Editor ed(&dst->fPathRef);
-        matrix.mapPoints({ed.writablePoints(), ed.pathRef()->countPoints()});
-        dst->setFirstDirection(SkPathFirstDirection::kUnknown);
-    } else {
-        SkPathConvexity convexity = this->getConvexityOrUnknown();
-
-        SkPathRef::CreateTransformedCopy(&dst->fPathRef, *fPathRef, matrix);
-
-        if (this != dst) {
-            dst->fLastMoveToIndex = fLastMoveToIndex;
-            dst->fFillType = fFillType;
-            dst->fIsVolatile = fIsVolatile;
-        }
-
-        // Due to finite/fragile float numerics, we can't assume that a convex path remains
-        // convex after a transformation, so mark it as unknown here.
-        // However, some transformations are thought to be safe:
-        //    axis-aligned values under scale/translate.
-        //
-        if (convexity == SkPathConvexity::kConvex &&
-            (!matrix.isScaleTranslate() || !SkPathPriv::IsAxisAligned(*this))) {
-            // Not safe to still assume we're convex...
-            convexity = SkPathConvexity::kUnknown;
-        }
-        dst->setConvexity(convexity);
-
-        if (this->getFirstDirection() == SkPathFirstDirection::kUnknown) {
-            dst->setFirstDirection(SkPathFirstDirection::kUnknown);
-        } else {
-            SkScalar det2x2 =
-                matrix.get(SkMatrix::kMScaleX) * matrix.get(SkMatrix::kMScaleY) -
-                matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
-            if (det2x2 < 0) {
-                dst->setFirstDirection(
-                        SkPathPriv::OppositeFirstDirection(
-                            (SkPathFirstDirection)this->getFirstDirection()));
-            } else if (det2x2 > 0) {
-                dst->setFirstDirection(this->getFirstDirection());
-            } else {
-                dst->setFirstDirection(SkPathFirstDirection::kUnknown);
-            }
-        }
-
-        SkDEBUGCODE(dst->validate();)
-    }
+    *dst = this->makeTransform(matrix);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
