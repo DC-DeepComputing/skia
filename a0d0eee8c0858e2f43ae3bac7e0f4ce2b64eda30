@@ -33,6 +33,29 @@
       "message": "ptal",
       "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f38111_5888b558",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-06T17:23:43Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 29,
+        "startChar": 43,
+        "endLine": 29,
+        "endChar": 44
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
