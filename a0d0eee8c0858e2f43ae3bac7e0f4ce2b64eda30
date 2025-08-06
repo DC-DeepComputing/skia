@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7bf46c8_fa49bd7d",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:38:34Z",
+      "side": 1,
+      "message": "Ooops, that was me making sure skia built w/o that flag. Will fix.",
+      "parentUuid": "60f38111_5888b558",
+      "range": {
+        "startLine": 29,
+        "startChar": 43,
+        "endLine": 29,
+        "endChar": 44
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fdcf1990_9ad25776",
         "filename": "include/core/SkMatrix.h",
         "patchSetId": 2
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52dcd157_5bff6ffc",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:38:34Z",
+      "side": 1,
+      "message": "Not exactly -- ScaleTranslate doesn\u0027t force the translates (last column) to be zero just because the scales are zero. We will get\n\n| 0 0 tx |\n| 0 0 ty |\n| 0 0  1 |",
+      "parentUuid": "fdcf1990_9ad25776",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 74
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d700bf4_42d45975",
         "filename": "src/core/SkMatrix.cpp",
         "patchSetId": 2
@@ -94,6 +142,30 @@
       "writtenOn": "2025-08-06T17:53:44Z",
       "side": 1,
       "message": "Why don\u0027t we have to check if dst is empty anymore?",
+      "range": {
+        "startLine": 560,
+        "startChar": 8,
+        "endLine": 560,
+        "endChar": 21
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b12dff7_34d03224",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-06T18:38:34Z",
+      "side": 1,
+      "message": "empty dst is well defined, we always scale by dst/src, and if dst is 0, that is just fine. no need for a \u0027check\u0027",
+      "parentUuid": "9d700bf4_42d45975",
       "range": {
         "startLine": 560,
         "startChar": 8,
