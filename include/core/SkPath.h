@@ -283,7 +283,7 @@ public:
        @param arc  storage for arc; may be nullptr
        @return     true if SkPath contains only a single arc from an oval
     */
-    bool isArc(SkArc* arc) const;
+    bool isArcx(SkArc* arc) const;
 
     /** Returns if SkPath is empty.
         Empty SkPath may have FillType but has no SkPoint, SkPath::Verb, or conic weight.
