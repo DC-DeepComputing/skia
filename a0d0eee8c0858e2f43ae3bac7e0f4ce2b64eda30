@@ -56,6 +56,52 @@
       },
       "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcf1990_9ad25776",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-06T17:53:44Z",
+      "side": 1,
+      "message": "Doesn\u0027t this preserve the same behavior as before as per ScaleTranslate()?\n(   | 0 0 0 |\n    | 0 0 0 |\n    | 0 0 1 | )",
+      "range": {
+        "startLine": 1126,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 74
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d700bf4_42d45975",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-06T17:53:44Z",
+      "side": 1,
+      "message": "Why don\u0027t we have to check if dst is empty anymore?",
+      "range": {
+        "startLine": 560,
+        "startChar": 8,
+        "endLine": 560,
+        "endChar": 21
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
