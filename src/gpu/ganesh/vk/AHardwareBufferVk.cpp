@@ -35,6 +35,8 @@ GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffe
         return GrBackendFormat();
     }
 
+    // TODO: Use value returned by VkAndroidHardwareBufferFormatPropertiesANDROID rather than this
+    // switch statement.
     VkFormat bufferVkFormat = VK_FORMAT_UNDEFINED;
     switch (bufferFormat) {
         case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM: {

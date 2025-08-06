@@ -121,14 +121,15 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
         return nullptr;
     }
 
-    SkColorType colorType =
-            AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+    SkColorType colorType = backendFormat.textureType() == GrTextureType::kExternal
+            ? AHardwareBufferUtils::kExternalFormatColorType
+            : AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
 
     // Will call deleteImageProc if SkSurface creation fails.
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
                                                               backendTexture,
                                                               origin,
-                                                              0,
+                                                              /*sampleCnt=*/0,
                                                               colorType,
                                                               std::move(colorSpace),
                                                               surfaceProps,
