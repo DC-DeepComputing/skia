@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f0d6a4_15a8d45f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-06T22:16:10Z",
+      "side": 1,
+      "message": "It looks like this change may be causing the roll into Android to fail on a single CTS test.",
+      "revId": "3dd66f1c742d15ef6341c0b490b567326d486eb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
