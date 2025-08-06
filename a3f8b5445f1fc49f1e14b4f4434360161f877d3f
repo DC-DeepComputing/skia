@@ -33,6 +33,23 @@
       "message": "Ran display_list_unittests in my local Flutter checkout, it passes with this CL.",
       "revId": "a3f8b5445f1fc49f1e14b4f4434360161f877d3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ada6c72b_8f876444",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-06T22:18:58Z",
+      "side": 1,
+      "message": "AFAICT all the canary failures are unrelated.",
+      "revId": "a3f8b5445f1fc49f1e14b4f4434360161f877d3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
