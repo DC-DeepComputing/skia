@@ -15,6 +15,8 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 
 #include <android/hardware_buffer.h>
 
@@ -65,8 +67,14 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(Recorder* recorder,
         return nullptr;
     }
 
-    SkColorType colorType =
-            AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+    // If the backend texture uses an external format, the color type should be ignored in favor
+    // of a default value. Otherwise, it is possible to end up with a mismatch of color type and
+    // backend texture format values.
+    const bool texUsesExternalFormat =
+            TextureInfoPriv::ViewFormat(backendTexture.info()) == TextureFormat::kExternal;
+    SkColorType colorType = texUsesExternalFormat
+            ? AHardwareBufferUtils::kExternalFormatColorType
+            : AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
 
     // Will call 'releaseP' if SkSurface creation fails.
     return SkSurfaces::WrapBackendTexture(recorder,

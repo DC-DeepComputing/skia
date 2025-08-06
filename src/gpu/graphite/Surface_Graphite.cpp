@@ -196,6 +196,7 @@ bool validate_backend_texture(const Caps* caps,
         return false;
     }
 
+    // Only check this when not importing as external
     return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
 }
 
