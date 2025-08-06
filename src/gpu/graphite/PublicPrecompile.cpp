@@ -131,7 +131,9 @@ void Precompile(PrecompileContext* precompileContext,
                                          caps->getDstReadStrategy());
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, rpp.fDstCS);
-            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
+
+            // TODO CHECK THIS!
+            KeyContext keyContext(caps, nullptr, nullptr, dict, rtEffectDict.get(), ci);
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
                 PrecompileCombinations(
@@ -262,7 +264,7 @@ void Precompile(PrecompileContext* precompileContext,
 void PrecompileCombinations(const RendererProvider* rendererProvider,
                             ResourceProvider* resourceProvider,
                             const PaintOptions& options,
-                            const KeyContext& keyContext,
+                            KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
                             Coverage coverage,
@@ -274,10 +276,13 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
+    FloatStorageManager fsm;
+
+    keyContext.SetFloatStorageManager(&fsm);
+    keyContext.SetPipelineDataGatherer(&gatherer);
 
     options.priv().buildCombinations(
         keyContext,
-        &gatherer,
         drawTypes,
         withPrimitiveBlender,
         coverage,

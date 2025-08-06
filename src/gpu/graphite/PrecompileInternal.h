@@ -23,7 +23,7 @@ struct RenderPassDesc;
 void PrecompileCombinations(const RendererProvider*,
                             ResourceProvider*,
                             const PaintOptions&,
-                            const KeyContext&,
+                            KeyContext&,
                             DrawTypeFlags,
                             bool withPrimitiveBlender,
                             Coverage,
