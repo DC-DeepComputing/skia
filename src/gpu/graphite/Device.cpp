@@ -42,9 +42,12 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTo.h"
+#include "include/utils/SkShadowUtils.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/core/SkBlurMask.h"
+#include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkPaintPriv.h"
@@ -102,6 +105,7 @@
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 #include "src/text/gpu/VertexFiller.h"
+#include "src/utils/SkDashPathPriv.h"
 
 #include <algorithm>
 #include <atomic>
@@ -2229,6 +2233,100 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
 
     this->drawGeometry(this->localToDeviceTransform(), Geometry(*analyticBlur), paint, style);
     return true;
+}
+
+bool can_do_analytic_shadow(const Transform& localToDevice, const SkDrawShadowRec& rec) {
+    // We need to be able to map the device-space shadow radii into local space to adjust geometry
+    // FIXME handle isSimilarity too
+    if (localToDevice.type() > Transform::Type::kRectStaysRect) {
+        return false;
+    }
+    // If there is perspective in the shadow casting, then the final matrix for the shadow won't be
+    // axis-aligned so it can't be handled by drawBlurredRRect.
+    bool tiltZPlane = SkToBool(!SkScalarNearlyZero(rec.fZPlaneParams.fX) ||
+                               !SkScalarNearlyZero(rec.fZPlaneParams.fY));
+    bool skipAnalytic = SkToBool(rec.fFlags & SkShadowFlags::kGeometricOnly_ShadowFlag);
+    return !tiltZPlane && !skipAnalytic;
+}
+
+void Device::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShadowRec& rec) {
+    SkRRect rrect;
+    if (SkRect oval; path.isOval(&oval)) {
+        rrect.setOval(oval);
+    } else if (path.isRRect(&rrect)) {
+        // already set
+    } else if (SkRect rect; path.isRect(&rect)) {
+        rrect.setRect(rect);
+    }
+
+    SkDrawShadowRec partialRec = rec;
+    if (!rrect.isEmpty() && can_do_analytic_shadow(this->localToDeviceTransform(), rec)) {
+        // If the shadow parameters are suitable, this is could be handled by drawBlurredRRect.
+        if (SkColorGetA(rec.fAmbientColor) > 0) {
+            SkScalar devSpaceOutset = SkDrawShadowMetrics::AmbientBlurRadius(rec.fZPlaneParams.fZ);
+            SkScalar oneOverA = SkDrawShadowMetrics::AmbientRecipAlpha(rec.fZPlaneParams.fZ);
+            SkScalar blurRadius = 0.5f*devSpaceOutset*oneOverA;
+            SkScalar strokeWidth = 0.5f*(devSpaceOutset - blurRadius);
+
+            // The strokeWidth is in device space, so map back to local space to calculate the
+            // outsets applied to the local rrect.
+            SkV4 localOutset = this->localToDeviceTransform().inverse().map(0.5f * strokeWidth, 0.5f * strokeWidth, 0.f, 0.f);
+            SkRRect paddedRRect;
+            rrect.outset(localOutset.x, localOutset.y, &paddedRRect);
+
+            std::optional<AnalyticBlurMask> ambient = AnalyticBlurMask::Make(fRecorder, this->localToDeviceTransform(), SkBlurMask::ConvertRadiusToSigma(blurRadius), paddedRRect);
+            SkDebugf("attempted ambient = %d\n", ambient.has_value());
+            if (ambient.has_value()) {
+                partialRec.fAmbientColor = SK_ColorTRANSPARENT; // disable ambient if we fall back to regular path for spot shadow
+                SkPaint ambientPaint;
+                ambientPaint.setColor(rec.fAmbientColor);
+                this->drawGeometry(this->localToDeviceTransform(), Geometry(*ambient), ambientPaint, DefaultFillStyle());
+            } // else will fall back to default impl's handling
+        }
+        if (SkColorGetA(rec.fSpotColor) > 0) {
+            SkPoint3 devLightPos = rec.fLightPos;
+            bool directional = SkToBool(rec.fFlags & SkShadowFlags::kDirectionalLight_ShadowFlag);
+            if (!directional) {
+                SkV4 mappedXY = this->localToDeviceTransform().matrix().map(devLightPos.fX, devLightPos.fY, 0.f, 1.f);
+                devLightPos.fX = mappedXY.x;
+                devLightPos.fY = mappedXY.y;
+            }
+
+            SkMatrix shadowMatrix;
+            SkScalar radius;
+            if (SkDrawShadowMetrics::GetSpotShadowTransform(devLightPos, rec.fLightRadius,
+                                                            canvas->getLocalToDeviceAs3x3(),
+                                                            rec.fZPlaneParams,
+                                                            rrect.getBounds(), directional,
+                                                            &shadowMatrix, &radius)) {
+                Transform spotTransform{SkM44(shadowMatrix)};
+                std::optional<AnalyticBlurMask> spot = AnalyticBlurMask::Make(fRecorder, spotTransform, SkBlurMask::ConvertRadiusToSigma(radius), rrect);
+                SkDebugf("attempted spot = %d\n", spot.has_value());
+                if (spot.has_value()) {
+                    // Disable spot if we fall back to regular path for ambient shadow
+                    partialRec.fSpotColor = SK_ColorTRANSPARENT;
+                    // *AND* if we do have to fallback for the ambient shadow, render it now before
+                    // we do a fast spot shadow.
+                    if (SkColorGetA(partialRec.fAmbientColor) > 0) {
+                        this->SkDevice::drawShadow(canvas, path, partialRec);
+                    }
+                    SkPaint spotPaint;
+                    spotPaint.setColor(rec.fSpotColor);
+                    this->drawGeometry(spotTransform, Geometry(*spot), spotPaint, DefaultFillStyle());
+                    return;
+                } // otherwise fallback to default implementation
+            }
+        }
+    } else {
+        SkDebugf("cannot do analytic shadow\n");
+    }
+
+    // Fall back to the regular implementation (which will do either drawVertices or a
+    // blur mask filter, which should be image-based since we short-circuited that the path
+    // to go through drawBlurredRect).
+    if (SkColorGetA(partialRec.fAmbientColor) > 0 || SkColorGetA(partialRec.fSpotColor) > 0) {
+        this->SkDevice::drawShadow(canvas, path, rec);
+    }
 }
 
 } // namespace skgpu::graphite

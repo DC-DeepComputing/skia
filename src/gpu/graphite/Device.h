@@ -246,6 +246,7 @@ public:
                           const SkSamplingOptions&, const SkPaint&) override;
 
     bool drawBlurredRRect(const SkRRect&, const SkPaint&, float deviceSigma) override;
+    void drawShadow(SkCanvas*, const SkPath&, const SkDrawShadowRec&) override;
 
 private:
     class IntersectionTreeSet;
