@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2262e305_bbfb2409",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-06T13:59:29Z",
+      "side": 1,
+      "message": "Might be affecting Flutter, https://github.com/flutter/flutter/pull/173298, \"Linux linux_unopt\" with https://logs.chromium.org/logs/flutter/buildbucket/cr-buildbucket/8707347698281016929/+/u/test:_test:_Host_Tests_for_host_debug_unopt/stdout which reports\n\n```\n\u001b[0;32m[ RUN      ] \u001b[mDisplayListTest.ClipRectRRectPathPromoteToClipRect\n../../../flutter/display_list/display_list_unittests.cc:5254: Failure\nValue of: clip_path.IsRoundRect()\n  Actual: false\nExpected: true\n\n\u001b[0;31m[  FAILED  ] \u001b[mDisplayListTest.ClipRectRRectPathPromoteToClipRect (0 ms)\n```",
+      "revId": "7f076ee124a8d2e6c45d480a978356e43c10a71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
