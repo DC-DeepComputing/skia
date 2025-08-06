@@ -154,7 +154,6 @@ int PaintOptions::numCombinations() const {
 void PaintOptions::createKey(const KeyContext& keyContext,
                              TextureFormat targetFormat,
                              PaintParamsKeyBuilder* keyBuilder,
-                             PipelineDataGatherer* gatherer,
                              int desiredCombination,
                              bool addPrimitiveBlender,
                              bool addAnalyticClip,
@@ -213,13 +212,12 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        fDither,
                        addAnalyticClip);
 
-    option.toKey(keyContext, keyBuilder, gatherer);
+    option.toKey(keyContext, keyBuilder);
 }
 
 namespace {
 
 void create_image_drawing_pipelines(const KeyContext& keyContext,
-                                    PipelineDataGatherer* gatherer,
                                     const PaintOptions& orig,
                                     const RenderPassDesc& renderPassDesc,
                                     const PaintOptionsPriv::ProcessCombination& processCombination) {
@@ -236,7 +234,6 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
     imagePaintOptions.priv().addColorFilter(nullptr);
 
     imagePaintOptions.priv().buildCombinations(keyContext,
-                                               gatherer,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
                                                Coverage::kSingleChannel,
@@ -248,7 +245,6 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
 
 void PaintOptions::buildCombinations(
         const KeyContext& keyContext,
-        PipelineDataGatherer* gatherer,
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
         Coverage coverage,
@@ -298,17 +294,16 @@ void PaintOptions::buildCombinations(
             tmp.setColorFilters(newCFs);
         }
 
-        tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              renderPassDesc, processCombination);
+        tmp.buildCombinations(keyContext, drawTypes, withPrimitiveBlender, coverage, renderPassDesc,
+                              processCombination);
 
-        create_image_drawing_pipelines(keyContext, gatherer, *this,
-                                       renderPassDesc, processCombination);
+        create_image_drawing_pipelines(keyContext, *this, renderPassDesc, processCombination);
 
         for (const sk_sp<PrecompileImageFilter>& o : fImageFilterOptions) {
-            o->createPipelines(keyContext, gatherer, renderPassDesc, processCombination);
+            o->createPipelines(keyContext, renderPassDesc, processCombination);
         }
         for (const sk_sp<PrecompileMaskFilter>& o : fMaskFilterOptions) {
-            o->createPipelines(keyContext, gatherer, *this, renderPassDesc, processCombination);
+            o->createPipelines(keyContext, *this, renderPassDesc, processCombination);
         }
     } else {
         int numCombinations = this->numCombinations();
@@ -316,10 +311,10 @@ void PaintOptions::buildCombinations(
             // Since the precompilation path's uniforms aren't used and don't change the key,
             // the exact layout doesn't matter
 
-            gatherer->resetForDraw();
+            keyContext.pipelineDataGatherer()->resetForDraw();
 
             this->createKey(keyContext, renderPassDesc.fColorAttachment.fFormat,
-                            &builder, gatherer, i, withPrimitiveBlender,
+                            &builder, i, withPrimitiveBlender,
                             SkToBool(drawTypes & DrawTypeFlags::kAnalyticClip), coverage);
 
             // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned

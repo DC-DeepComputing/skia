@@ -29,11 +29,10 @@ protected:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const final {
         SkASSERT(desiredCombination == 0); // The blend mode blender only ever has one combination
 
-        AddBlendMode(keyContext, builder, gatherer, fBlendMode);
+        AddBlendMode(keyContext, builder, fBlendMode);
     }
 
 private:

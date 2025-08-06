@@ -1914,12 +1914,16 @@ void check_draw(skiatest::Reporter* reporter,
 
 }
 
-KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
+// TODO CHECK ME!
+KeyContext create_key_context(Context* context, FloatStorageManager* fsm,
+                              PipelineDataGatherer* gatherer,  RuntimeEffectDictionary* rtDict) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                             SkColorSpace::MakeSRGB());
     return KeyContext(context->priv().caps(),
+                      fsm,
+                      gatherer,
                       dict,
                       rtDict,
                       destColorInfo);
@@ -1954,6 +1958,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
     PaintParamsKeyBuilder builder(dict);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    FloatStorageManager fsm;
 
     for (bool withPrimitiveBlender: {false, true}) {
 
@@ -2001,6 +2006,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         SkDEBUGCODE(paramsGatherer.resetForDraw());
         UniquePaintParamsID paintID =
                 ExtractPaintData(recorder,
+                                 &fsm,
                                  &paramsGatherer,
                                  &builder,
                                  Layout::kMetal,
@@ -2018,7 +2024,6 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
 
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
-                                              &precompileGatherer,
                                               hasAnalyticClip ? DrawTypeFlags::kAnalyticClip
                                                               : DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
@@ -2188,6 +2193,7 @@ void run_test(skiatest::Reporter* reporter,
     extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
                              paint, paintOptions, s, bm, cf, mf, imageFilter, clipType,
                              clipShader, dt, seed, &rand, verbose);
+    // TODO: gatherer and FSM might be needed here? Currently nullptr
     precompile_vs_real_draws_subtest(reporter, context, precompileContext,
                                      testContext, recorder.get(),
                                      paint, paintOptions, clipType, clipShader, dt, verbose);
@@ -2239,7 +2245,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
              context,
              precompileContext.get(),
              testContext,
-             create_key_context(context, rtDict.get()),
+             create_key_context(context, nullptr, nullptr, rtDict.get()),
              shaderType,
              blenderType,
              colorFilterType,
@@ -2267,7 +2273,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
-    KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
+    KeyContext precompileKeyContext(create_key_context(context, nullptr, nullptr, rtDict.get()));
 
     ShaderType shaders[] = {
             ShaderType::kImage,
