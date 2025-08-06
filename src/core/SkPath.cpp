@@ -684,10 +684,14 @@ SkPath& SkPath::moveTo(SkScalar x, SkScalar y) {
 
     SkPathRef::Editor ed(&fPathRef);
 
-    // remember our index
-    fLastMoveToIndex = fPathRef->countPoints();
+    if (!fPathRef->fVerbs.empty() && fPathRef->fVerbs.back() == SkPathVerb::kMove) {
+        fPathRef->fPoints.back() = {x, y};
+    } else {
+        // remember our index
+        fLastMoveToIndex = fPathRef->countPoints();
 
-    ed.growForVerb(SkPathVerb::kMove)->set(x, y);
+        ed.growForVerb(SkPathVerb::kMove)->set(x, y);
+    }
 
     return this->dirtyAfterEdit();
 }
