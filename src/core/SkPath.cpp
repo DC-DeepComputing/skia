@@ -58,22 +58,6 @@ static float poly_eval(float A, float B, float C, float D, float t) {
 
 ////////////////////////////////////////////////////////////////////////////
 
-/**
- *  Path.bounds is defined to be the bounds of all the control points.
- *  If we called bounds.join(r) we would skip r if r was empty, which breaks
- *  our promise. Hence we have a custom joiner that doesn't look at emptiness
- */
-static void joinNoEmptyChecks(SkRect* dst, const SkRect& src) {
-    dst->fLeft = std::min(dst->fLeft, src.fLeft);
-    dst->fTop = std::min(dst->fTop, src.fTop);
-    dst->fRight = std::max(dst->fRight, src.fRight);
-    dst->fBottom = std::max(dst->fBottom, src.fBottom);
-}
-
-static bool is_degenerate(const SkPath& path) {
-    return (path.countVerbs() - SkPathPriv::LeadingMoveToCount(path)) == 0;
-}
-
 class SkAutoDisableDirectionCheck {
 public:
     SkAutoDisableDirectionCheck(SkPath* path) : fPath(path) {
@@ -87,49 +71,6 @@ public:
 private:
     SkPath*                 fPath;
     SkPathFirstDirection    fSaved;
-};
-
-/*  This class's constructor/destructor bracket a path editing operation. It is
-    used when we know the bounds of the amount we are going to add to the path
-    (usually a new contour, but not required).
-
-    It captures some state about the path up front (i.e. if it already has a
-    cached bounds), and then if it can, it updates the cache bounds explicitly,
-    avoiding the need to revisit all of the points in getBounds().
-
-    It also notes if the path was originally degenerate, and if so, sets
-    isConvex to true. Thus it can only be used if the contour being added is
-    convex.
- */
-class SkAutoPathBoundsUpdate {
-public:
-    SkAutoPathBoundsUpdate(SkPath* path, const SkRect& r) : fPath(path), fRect(r) {
-        // Cannot use fRect for our bounds unless we know it is sorted
-        fRect.sort();
-        // Mark the path's bounds as dirty if (1) they are, or (2) the path
-        // is non-finite, and therefore its bounds are not meaningful
-        fHasValidBounds = path->hasComputedBounds() && path->isFinite();
-        fEmpty = path->isEmpty();
-        if (fHasValidBounds && !fEmpty) {
-            joinNoEmptyChecks(&fRect, fPath->getBounds());
-        }
-        fDegenerate = is_degenerate(*path);
-    }
-
-    ~SkAutoPathBoundsUpdate() {
-        fPath->setConvexity(fDegenerate ? SkPathConvexity::kConvex
-                                            : SkPathConvexity::kUnknown);
-        if ((fEmpty || fHasValidBounds) && fRect.isFinite()) {
-            fPath->setBounds(fRect);
-        }
-    }
-
-private:
-    SkPath* fPath;
-    SkRect  fRect;
-    bool    fHasValidBounds;
-    bool    fDegenerate;
-    bool    fEmpty;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -856,7 +797,6 @@ SkPath& SkPath::addRect(const SkRect &rect, SkPathDirection dir, unsigned startI
     this->setFirstDirection(this->hasOnlyMoveTos() ? (SkPathFirstDirection)dir
                                                    : SkPathFirstDirection::kUnknown);
     SkAutoDisableDirectionCheck addc(this);
-    SkAutoPathBoundsUpdate apbu(this, rect);
 
     this->addRaw(SkPathRawShapes::Rect(rect, dir, startIndex));
 
@@ -1012,7 +952,6 @@ SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned sta
         this->setFirstDirection(this->hasOnlyMoveTos() ? (SkPathFirstDirection)dir
                                                        : SkPathFirstDirection::kUnknown);
 
-        SkAutoPathBoundsUpdate apbu(this, bounds);
         SkAutoDisableDirectionCheck addc(this);
 
         this->addRaw(SkPathRawShapes::RRect(rrect, dir, startIndex));
@@ -1079,7 +1018,6 @@ SkPath& SkPath::addOval(const SkRect &oval, SkPathDirection dir, unsigned startP
     }
 
     SkAutoDisableDirectionCheck addc(this);
-    SkAutoPathBoundsUpdate apbu(this, oval);
 
     this->addRaw(SkPathRawShapes::Oval(oval, dir, startPointIndex));
 
