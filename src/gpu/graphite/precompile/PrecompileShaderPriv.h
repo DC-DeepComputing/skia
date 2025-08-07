@@ -32,9 +32,8 @@ public:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const {
-        fPrecompileShader->addToKey(keyContext, builder, gatherer, desiredCombination);
+        fPrecompileShader->addToKey(keyContext, builder, desiredCombination);
     }
 
 private:

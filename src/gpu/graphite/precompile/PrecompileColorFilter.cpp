@@ -82,7 +82,6 @@ private:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -106,16 +105,16 @@ private:
             // A "passthrough" color filter returns the input color as-is.
             builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
         } else if (!inner) {
-            outer->priv().addToKey(keyContext, builder, gatherer, outerChildOptions);
+            outer->priv().addToKey(keyContext, builder, outerChildOptions);
         } else if (!outer) {
-            inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
+            inner->priv().addToKey(keyContext, builder, innerChildOptions);
         } else {
-            Compose(keyContext, builder, gatherer,
+            Compose(keyContext, builder,
                     /* addInnerToKey= */ [&]() -> void {
-                        inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
+                        inner->priv().addToKey(keyContext, builder, innerChildOptions);
                     },
                     /* addOuterToKey= */ [&]() -> void {
-                        outer->priv().addToKey(keyContext, builder, gatherer, outerChildOptions);
+                        outer->priv().addToKey(keyContext, builder, outerChildOptions);
                     });
         }
     }
@@ -150,7 +149,6 @@ private:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         auto [blender, option ] = fBlendOptions.selectOption(desiredCombination);
         SkASSERT(option == 0 && blender->priv().asBlendMode().has_value());
@@ -158,8 +156,7 @@ private:
         SkBlendMode representativeBlendMode = *blender->priv().asBlendMode();
 
         // Here the color is just a stand-in for a later value.
-        AddBlendModeColorFilter(keyContext, builder, gatherer,
-                                representativeBlendMode, SK_PMColor4fWHITE);
+        AddBlendModeColorFilter(keyContext, builder, representativeBlendMode, SK_PMColor4fWHITE);
     }
 
     // NOTE: The BlendMode color filter can only be created with SkBlendModes, not arbitrary
@@ -202,7 +199,6 @@ public:
 private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
@@ -214,7 +210,7 @@ private:
         MatrixColorFilterBlock::MatrixColorFilterData matrixCFData(
                 kIdentity, fInHSLA, /* clamp= */ true);
 
-        MatrixColorFilterBlock::AddBlock(keyContext, builder, gatherer, matrixCFData);
+        MatrixColorFilterBlock::AddBlock(keyContext, builder, matrixCFData);
     }
 
     bool fInHSLA;
@@ -242,7 +238,6 @@ private:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         const int srcCombination = desiredCombination % fSrc.size();
         const int dstCombination = desiredCombination / fSrc.size();
@@ -256,7 +251,7 @@ private:
                         fSrc[srcCombination].get(), kAlphaType,
                         fDst[dstCombination].get(), kAlphaType);
 
-        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, csData);
+        ColorSpaceTransformBlock::AddBlock(keyContext, builder, csData);
     }
 
     std::vector<sk_sp<SkColorSpace>> fSrc;
@@ -311,13 +306,12 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
 class PrecompileTableColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
         TableColorFilterBlock::TableColorFilterData data(/* proxy= */ nullptr);
 
-        TableColorFilterBlock::AddBlock(keyContext, builder, gatherer, data);
+        TableColorFilterBlock::AddBlock(keyContext, builder, data);
     }
 };
 
@@ -369,7 +363,6 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Overdraw() {
 class PrecompileGaussianColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
@@ -401,7 +394,6 @@ private:
 
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
-                  PipelineDataGatherer* gatherer,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumChildCombos);
 
@@ -417,20 +409,19 @@ private:
 
         // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
         // while appearing as one block to the parent node.
-        Compose(keyContext, builder, gatherer,
+        Compose(keyContext, builder,
                 /* addInnerToKey= */ [&]() -> void {
                     // Inner compose
-                    Compose(keyContext, builder, gatherer,
+                    Compose(keyContext, builder,
                             /* addInnerToKey= */ [&]() -> void {
                                 // Innermost (inner of inner compose)
                                 ColorSpaceTransformBlock::ColorSpaceTransformData data1(
                                         dstCS.get(), dstAT, workingCS.get(), workingAT);
-                                ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
-                                                                   data1);
+                                ColorSpaceTransformBlock::AddBlock(keyContext, builder, data1);
                             },
                             /* addOuterToKey= */ [&]() -> void {
                                 // Middle (outer of inner compose)
-                                AddToKey<PrecompileColorFilter>(workingContext, builder, gatherer,
+                                AddToKey<PrecompileColorFilter>(workingContext, builder,
                                                                 fChildOptions, desiredCombination);
                             });
                 },
@@ -438,7 +429,7 @@ private:
                     // Outermost (outer of outer compose)
                     ColorSpaceTransformBlock::ColorSpaceTransformData data2(
                             workingCS.get(), workingAT, dstCS.get(), dstAT);
-                    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data2);
+                    ColorSpaceTransformBlock::AddBlock(keyContext, builder, data2);
                 });
     }
 

@@ -35,6 +35,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class DrawContext;
+class FloatStorageManager;
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
@@ -60,22 +61,15 @@ enum class DstColorType {
  */
 
 struct SolidColorShaderBlock {
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const SkPMColor4f&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const SkPMColor4f&);
 };
 
 struct RGBPaintColorBlock {
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*);
 };
 
 struct AlphaOnlyPaintColorBlock {
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*);
 };
 
 struct GradientShaderBlocks {
@@ -136,10 +130,7 @@ struct GradientShaderBlocks {
         SkGradientShader::Interpolation fInterpolation;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const GradientData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const GradientData&);
 };
 
 struct LocalMatrixShaderBlock {
@@ -153,10 +144,7 @@ struct LocalMatrixShaderBlock {
         const SkMatrix fLocalMatrix;
     };
 
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*,
-                           const LMShaderData&);
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, const LMShaderData&);
 };
 
 struct ImageShaderBlock {
@@ -178,10 +166,7 @@ struct ImageShaderBlock {
         ImmutableSamplerInfo fImmutableSamplerInfo;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const ImageData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const ImageData&);
 };
 
 struct YUVImageShaderBlock {
@@ -210,10 +195,7 @@ struct YUVImageShaderBlock {
         sk_sp<TextureProxy> fTextureProxies[4];
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const ImageData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const ImageData&);
 };
 
 struct CoordNormalizeShaderBlock {
@@ -224,10 +206,7 @@ struct CoordNormalizeShaderBlock {
         SkSize fInvDimensions;
     };
 
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*,
-                           const CoordNormalizeData&);
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, const CoordNormalizeData&);
 };
 
 struct CoordClampShaderBlock {
@@ -238,10 +217,7 @@ struct CoordClampShaderBlock {
     };
 
     // The gatherer and data should be null or non-null together
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*,
-                           const CoordClampData&);
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, const CoordClampData&);
 };
 
 struct DitherShaderBlock {
@@ -254,10 +230,7 @@ struct DitherShaderBlock {
         sk_sp<TextureProxy> fLUTProxy;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const DitherData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const DitherData&);
 };
 
 struct PerlinNoiseShaderBlock {
@@ -289,34 +262,23 @@ struct PerlinNoiseShaderBlock {
     };
 
     // The gatherer and data should be null or non-null together
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const PerlinNoiseData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const PerlinNoiseData&);
 };
 
 struct BlendComposeBlock {
-    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*);
 };
 
 struct PorterDuffBlenderBlock {
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         SkSpan<const float> coeffs);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, SkSpan<const float> coeffs);
 };
 
 struct HSLCBlenderBlock {
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         SkSpan<const float> coeffs);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, SkSpan<const float> coeffs);
 };
 
 struct ComposeBlock {
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*);
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*);
 };
 
 struct MatrixColorFilterBlock {
@@ -338,10 +300,7 @@ struct MatrixColorFilterBlock {
     };
 
     // The gatherer and matrixCFData should be null or non-null together
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const MatrixColorFilterData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const MatrixColorFilterData&);
 };
 
 struct TableColorFilterBlock {
@@ -351,10 +310,7 @@ struct TableColorFilterBlock {
         sk_sp<TextureProxy> fTextureProxy;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const TableColorFilterData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const TableColorFilterData&);
 };
 
 struct ColorSpaceTransformBlock {
@@ -371,10 +327,7 @@ struct ColorSpaceTransformBlock {
         ReadSwizzle            fReadSwizzle = ReadSwizzle::kRGBA;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const ColorSpaceTransformData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const ColorSpaceTransformData&);
 };
 
 struct NonMSAAClipBlock {
@@ -404,20 +357,14 @@ struct NonMSAAClipBlock {
         sk_sp<TextureProxy> fAtlasTexture;
     };
 
-    static void AddBlock(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
-                         const NonMSAAClipData&);
+    static void AddBlock(const KeyContext&, PaintParamsKeyBuilder*, const NonMSAAClipData&);
 };
 
 /**
  * Adds a block that references the primitive color produced by the RenderStep and accounts for
  * color space transformation.
  */
-void AddPrimitiveColor(const KeyContext&,
-                       PaintParamsKeyBuilder*,
-                       PipelineDataGatherer*,
-                       bool skipColorXform);
+void AddPrimitiveColor(const KeyContext&, PaintParamsKeyBuilder*, bool skipColorXform);
 
 /**
  * Blend mode color filters blend their input (as the dst color) with some given color (supplied
@@ -425,7 +372,6 @@ void AddPrimitiveColor(const KeyContext&,
  */
 void AddBlendModeColorFilter(const KeyContext&,
                              PaintParamsKeyBuilder*,
-                             PipelineDataGatherer*,
                              SkBlendMode,
                              const SkPMColor4f& srcColor);
 
@@ -448,28 +394,16 @@ struct RuntimeEffectBlock {
     };
 
     // On a false return, no block has been started
-    static bool BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*,
-                           const ShaderData&);
+    static bool BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, const ShaderData&);
 
     // Add a no-op placeholder for an incorrect runtime effect
-    static void AddNoOpEffect(const KeyContext&,
-                              PaintParamsKeyBuilder*,
-                              PipelineDataGatherer*,
-                              SkRuntimeEffect*);
+    static void AddNoOpEffect(const KeyContext&, PaintParamsKeyBuilder*, SkRuntimeEffect*);
 
     // Add a post-amble for runtime effects that use the toLinearSrgb/fromLinearSrgb intrinsics
-    static void HandleIntrinsics(const KeyContext&,
-                                 PaintParamsKeyBuilder*,
-                                 PipelineDataGatherer*,
-                                 const SkRuntimeEffect*);
+    static void HandleIntrinsics(const KeyContext&, PaintParamsKeyBuilder*, const SkRuntimeEffect*);
 };
 
-void AddToKey(const KeyContext&,
-              PaintParamsKeyBuilder*,
-              PipelineDataGatherer*,
-              const SkBlender*);
+void AddToKey(const KeyContext&, PaintParamsKeyBuilder*, const SkBlender*);
 
 /**
  *  Add implementation details, for the specified backend, of this SkColorFilter to the
@@ -477,12 +411,10 @@ void AddToKey(const KeyContext&,
  *
  *  @param keyContext backend context for key creation
  *  @param builder    builder for creating the key for this SkShader
- *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param filter     This function is a no-op if filter is null.
  */
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
-              PipelineDataGatherer* gatherer,
               const SkColorFilter* filter);
 
 /**
@@ -491,13 +423,9 @@ void AddToKey(const KeyContext& keyContext,
  *
  *  @param keyContext backend context for key creation
  *  @param builder    builder for creating the key for this SkShader
- *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param shader     This function is a no-op if shader is null.
  */
-void AddToKey(const KeyContext& keyContext,
-              PaintParamsKeyBuilder* builder,
-              PipelineDataGatherer* gatherer,
-              const SkShader* shader);
+void AddToKey(const KeyContext& keyContext, PaintParamsKeyBuilder* builder, const SkShader* shader);
 
 // TODO(b/330864257) These visitation functions are redundant with AddToKey, except that they are
 // executed in the Device::drawGeometry() stack frame, whereas the keys are currently deferred until
@@ -510,11 +438,10 @@ void NotifyImagesInUse(Recorder*, DrawContext*, const SkShader*);
 template <typename AddBlendToKeyT, typename AddSrcToKeyT, typename AddDstToKeyT>
 void Blend(const KeyContext& keyContext,
            PaintParamsKeyBuilder* keyBuilder,
-           PipelineDataGatherer* gatherer,
            AddBlendToKeyT addBlendToKey,
            AddSrcToKeyT addSrcToKey,
            AddDstToKeyT addDstToKey) {
-    BlendComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+    BlendComposeBlock::BeginBlock(keyContext, keyBuilder);
 
         addSrcToKey();
 
@@ -528,10 +455,9 @@ void Blend(const KeyContext& keyContext,
 template <typename AddInnerToKeyT, typename AddOuterToKeyT>
 void Compose(const KeyContext& keyContext,
              PaintParamsKeyBuilder* keyBuilder,
-             PipelineDataGatherer* gatherer,
              AddInnerToKeyT addInnerToKey,
              AddOuterToKeyT addOuterToKey) {
-    ComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+    ComposeBlock::BeginBlock(keyContext, keyBuilder);
 
         addInnerToKey();
 
