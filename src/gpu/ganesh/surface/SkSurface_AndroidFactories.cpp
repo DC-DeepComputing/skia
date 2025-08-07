@@ -114,21 +114,22 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
                                                        &deleteImageCtx,
                                                        isProtectedContent,
                                                        backendFormat,
-                                                       true,
+                                                       /*isRenderable=*/true,
                                                        fromWindowLocal);
     if (!backendTexture.isValid()) {
         SkDebugf("%s failed due to backend texture creation failing", __func__);
         return nullptr;
     }
 
-    SkColorType colorType =
-            AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+    SkColorType colorType = backendFormat.textureType() == GrTextureType::kExternal
+            ? AHardwareBufferUtils::kExternalFormatColorType
+            : AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
 
     // Will call deleteImageProc if SkSurface creation fails.
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
                                                               backendTexture,
                                                               origin,
-                                                              0,
+                                                              /*sampleCnt=*/0,
                                                               colorType,
                                                               std::move(colorSpace),
                                                               surfaceProps,

@@ -39,8 +39,13 @@ std::unique_ptr<GrAHardwareBufferImageGenerator> GrAHardwareBufferImageGenerator
     AHardwareBuffer_Desc bufferDesc;
     AHardwareBuffer_describe(graphicBuffer, &bufferDesc);
 
+    // For initial image generator creation, use the SkColorType associated with the
+    // AHwBuffer's format. Later, during actual image generation, we can update the color type
+    // to be AHardwareBufferUtils::kExternalFormatColorType if it is determined that we are
+    // importing the AHwBuffer using an external format.
     SkColorType colorType =
             AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+
     SkImageInfo info = SkImageInfo::Make(bufferDesc.width, bufferDesc.height, colorType,
                                          alphaType, std::move(colorSpace));
 
@@ -81,7 +86,7 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
                                                                              fHardwareBuffer,
                                                                              fBufferFormat,
                                                                              false);
-
+    // TODO: Check if external before assigning.
     GrColorType grColorType = SkColorTypeToGrColorType(this->getInfo().colorType());
 
     int width = this->getInfo().width();
@@ -181,6 +186,19 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::onGenerateTexture(
         const SkImageInfo& info,
         skgpu::Mipmapped mipmapped,
         GrImageTexGenPolicy texGenPolicy) {
+    // Now that the generator is actually creating a texture, we should analyze whether the
+    // AHwBuffer is being imported using an external format. If so, update the color type.
+
+    // kExternal?
+    // backendFormat
+    GrBackendFormat backendFormat =
+            GrAHardwareBufferUtils::GetBackendFormat(context->asDirectContext(),
+                                                     fHardwareBuffer,
+                                                     bufferDesc.format,
+                                                     /*requireKnownFormat=*/false);
+    if (backendFormat.textureType() == GrTextureType::kExternal) {
+
+    }
     GrSurfaceProxyView texProxyView = this->makeView(context);
     if (!texProxyView.proxy()) {
         return {};

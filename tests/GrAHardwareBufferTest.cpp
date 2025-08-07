@@ -174,7 +174,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     ///////////////////////////////////////////////////////////////////////////
 
     sk_sp<SkImage> image = SkImages::DeferredFromAHardwareBuffer(
-            buffer, kPremul_SkAlphaType, nullptr, surfaceOrigin);
+            buffer, kPremul_SkAlphaType, /*cs=*/nullptr, surfaceOrigin);
     REPORTER_ASSERT(reporter, image);
 
     ///////////////////////////////////////////////////////////////////////////

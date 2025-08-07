@@ -31,8 +31,8 @@ extern "C" {
  */
 class GrAHardwareBufferImageGenerator : public GrTextureGenerator {
 public:
-    static std::unique_ptr<GrAHardwareBufferImageGenerator> Make(AHardwareBuffer*, SkAlphaType,
-                                                  sk_sp<SkColorSpace>, GrSurfaceOrigin);
+    static std::unique_ptr<GrAHardwareBufferImageGenerator> Make(
+            AHardwareBuffer*, SkAlphaType, sk_sp<SkColorSpace>, GrSurfaceOrigin);
 
     ~GrAHardwareBufferImageGenerator() override;
 

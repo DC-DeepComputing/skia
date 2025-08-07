@@ -213,6 +213,7 @@ sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
 
     const GrCaps* caps = context->priv().caps();
 
+    // kExternal?
     GrColorType grColorType = SkColorTypeToGrColorType(colorType);
     if (GrColorType::kUnknown == grColorType) {
         return nullptr;
