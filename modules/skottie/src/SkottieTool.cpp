@@ -558,9 +558,11 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const auto scale_matrix = SkMatrix::RectToRect(SkRect::MakeSize(anim->size()),
-                                                   SkRect::MakeIWH(FLAGS_width, FLAGS_height),
-                                                   SkMatrix::kCenter_ScaleToFit);
+    // Since we've already checked anim->size(), this will succeed.
+    const SkMatrix scale_matrix = SkMatrix::Rect2Rect(SkRect::MakeSize(anim->size()),
+                                                      SkRect::MakeIWH(FLAGS_width, FLAGS_height),
+                                                      SkMatrix::kCenter_ScaleToFit).value();
+
     logger->report();
 
     const auto t0 = SkTPin(FLAGS_t0, 0.0, 1.0),
@@ -600,7 +602,7 @@ int main(int argc, char** argv) {
         // flush out any pending async operations.
         std::unique_ptr<FrameGenerator> singleton_generator;
         if (FLAGS_gpu) {
-            singleton_generator = FrameGenerator::Make(sink.get(), fmt, scale_matrix);
+            singleton_generator = FrameGenerator::Make(sink.get(), fmt, *scale_matrix);
         }
 
         tg.batch(frame_count, [&](int i) {
@@ -613,7 +615,7 @@ int main(int argc, char** argv) {
                     build_animation(nullptr, precomp_interceptor).release();
             thread_local static auto* gen = singleton_generator
                     ? singleton_generator.get()
-                    : FrameGenerator::Make(sink.get(), fmt, scale_matrix).release();
+                    : FrameGenerator::Make(sink.get(), fmt, *scale_matrix).release();
 
             if (gen && anim) {
                 anim->seekFrame(frame0 + i * fps_scale);
