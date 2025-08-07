@@ -16,6 +16,24 @@
       "message": "Just checking, but this was all previously enforced by IWYU jobs. Do we have any jobs which are building these targets?",
       "revId": "f7606fd601d9eaca5d7ed391233b27611fbe7b02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e7c34f4_29e26a05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-07T20:47:34Z",
+      "side": 1,
+      "message": "`BazelBuild-full_library-release-linux_x64` should be it",
+      "parentUuid": "e81f66cd_1d0ffcc8",
+      "revId": "f7606fd601d9eaca5d7ed391233b27611fbe7b02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
