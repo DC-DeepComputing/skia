@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f5abc12_5079e3ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-07T02:38:30Z",
+      "side": 1,
+      "message": "The internal change to SpiderSymbol is to remove a few copies of the license (still there, just don\u0027t need three copies) and the addition of a new name in a new locale.",
+      "revId": "13ed0838c3819b74671e5fe690ffb74aa5c3f221",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
