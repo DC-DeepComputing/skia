@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68246ebb_2d1f37dc",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-07T16:54:51Z",
+      "side": 0,
+      "message": "Let\u0027s keep this comment, but move it up to above so it\u0027s not longer than line length",
+      "range": {
+        "startLine": 167,
+        "startChar": 48,
+        "endLine": 167,
+        "endChar": 103
+      },
+      "revId": "763bba9c33fd62d949fdb9f5f40ebf23a9cf8568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
