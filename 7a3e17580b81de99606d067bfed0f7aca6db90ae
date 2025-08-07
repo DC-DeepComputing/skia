@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "067a1417_03de62a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T16:14:35Z",
+      "side": 1,
+      "message": "sorry -- lots +1s removing the skottietool check -- ptal",
+      "revId": "7a3e17580b81de99606d067bfed0f7aca6db90ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
