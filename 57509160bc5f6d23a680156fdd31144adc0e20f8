@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebaacb7f_4a610f43",
+        "filename": "relnotes/color_type_from_buffer_format_update.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-08-07T17:07:30Z",
+      "side": 1,
+      "message": "Nit: capitalization.",
+      "range": {
+        "startLine": 2,
+        "startChar": 80,
+        "endLine": 2,
+        "endChar": 99
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a5a2eebf_2486e388",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "relnotes/color_type_from_buffer_format_update.md",
+              "range": {
+                "startLine": 2,
+                "startChar": 0,
+                "endLine": 3,
+                "endChar": 0
+              },
+              "replacement": "`AHardwareBufferUtils::GetSkColorTypeFromBufferFormat`, which is shared between Graphite and Ganesh.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "57509160bc5f6d23a680156fdd31144adc0e20f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
