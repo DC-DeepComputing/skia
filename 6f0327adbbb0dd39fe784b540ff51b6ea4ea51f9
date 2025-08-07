@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e731a9_db54dbe4",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfcc70dc_c6ab7552",
+      "range": {
+        "startLine": 597,
+        "startChar": 0,
+        "endLine": 597,
+        "endChar": 45
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "530a133a_4ea7f80a",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-07T13:30:29Z",
       "side": 1,
       "message": "here and below, the `//` need cleanup like in PathBuilderTest",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 778,
+        "endChar": 77
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d934ec75_f0cc9822",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "530a133a_4ea7f80a",
       "range": {
         "startLine": 777,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d30f9cc_1b43534b",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3247,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c84abecc_f9ba6d43",
+      "range": {
+        "startLine": 3223,
+        "startChar": 0,
+        "endLine": 3247,
+        "endChar": 53
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f63567ec_6f962e1b",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-08-07T13:30:29Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 21
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca7babc1_63d5fefb",
+        "filename": "tests/SkPathRangeIterTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f63567ec_6f962e1b",
       "range": {
         "startLine": 40,
         "startChar": 0,
