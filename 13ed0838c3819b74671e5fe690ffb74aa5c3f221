@@ -39,6 +39,30 @@
       },
       "revId": "13ed0838c3819b74671e5fe690ffb74aa5c3f221",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "661fc8d3_5239b8ff",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-07T13:23:47Z",
+      "side": 1,
+      "message": "I don\u0027t think it changes the meaning to the compiler, but it is a signal to humans that this really isn\u0027t supposed to ever change.",
+      "parentUuid": "05d660ae_8458f15e",
+      "range": {
+        "startLine": 49,
+        "startChar": 31,
+        "endLine": 49,
+        "endChar": 36
+      },
+      "revId": "13ed0838c3819b74671e5fe690ffb74aa5c3f221",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
