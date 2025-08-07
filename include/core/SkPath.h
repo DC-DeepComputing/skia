@@ -2022,9 +2022,8 @@ private:
                                SkPathFillType fillType,
                                bool isVolatile);
 
-    friend class SkAutoPathBoundsUpdate;
+    friend class SkAutoAddSimpleShape;
     friend class SkAutoDisableOvalCheck;
-    friend class SkAutoDisableDirectionCheck;
     friend class SkPathBuilder;
     friend class SkPathEdgeIter;
     friend class SkPathWriter;
