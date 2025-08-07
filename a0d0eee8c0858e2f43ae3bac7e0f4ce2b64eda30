@@ -177,6 +177,52 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e046d91b_27d7411b",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-07T12:22:48Z",
+      "side": 1,
+      "message": "Kind of a bummer to break the naming pattern due to ambiguity, but I guess we can circle back and clean up after migrating clients?",
+      "range": {
+        "startLine": 1128,
+        "startChar": 35,
+        "endLine": 1128,
+        "endChar": 44
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af45237d_2eccc597",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-07T12:22:48Z",
+      "side": 1,
+      "message": "The animation factory checks the size and would return nullptr for empty.  We can assert instead.",
+      "range": {
+        "startLine": 564,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 5
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d700bf4_42d45975",
