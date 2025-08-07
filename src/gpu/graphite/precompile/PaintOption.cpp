@@ -56,10 +56,9 @@ PaintOption::PaintOption(bool opaquePaintColor,
 }
 
 void PaintOption::toKey(const KeyContext& keyContext,
-                        PaintParamsKeyBuilder* keyBuilder,
-                        PipelineDataGatherer* gatherer) const {
+                        PaintParamsKeyBuilder* keyBuilder) const {
     // Root Node 0 is the source color, which is the output of all effects post dithering
-    this->handleDithering(keyContext, keyBuilder, gatherer);
+    this->handleDithering(keyContext, keyBuilder);
 
     // Root Node 1 is the final blender
     std::optional<SkBlendMode> finalBlendMode =
@@ -67,44 +66,41 @@ void PaintOption::toKey(const KeyContext& keyContext,
                                  : SkBlendMode::kSrcOver;
     if (finalBlendMode) {
         if (!fDstReadRequired) {
-            AddFixedBlendMode(keyContext, keyBuilder, gatherer, *finalBlendMode);
+            AddFixedBlendMode(keyContext, keyBuilder, *finalBlendMode);
         } else {
-            AddBlendMode(keyContext, keyBuilder, gatherer, *finalBlendMode);
+            AddBlendMode(keyContext, keyBuilder, *finalBlendMode);
         }
     } else {
         SkASSERT(this->finalBlender());
-        fFinalBlender.first->priv().addToKey(keyContext, keyBuilder, gatherer,
-                                             fFinalBlender.second);
+        fFinalBlender.first->priv().addToKey(keyContext, keyBuilder, fFinalBlender.second);
     }
 
     // Optional Root Node 2 is the clip
-    this->handleClipping(keyContext, keyBuilder, gatherer);
+    this->handleClipping(keyContext, keyBuilder);
 }
 
 void PaintOption::addPaintColorToKey(const KeyContext& keyContext,
-                                     PaintParamsKeyBuilder* builder,
-                                     PipelineDataGatherer* gatherer) const {
+                                     PaintParamsKeyBuilder* builder) const {
     if (fShader.first) {
-        fShader.first->priv().addToKey(keyContext, builder, gatherer, fShader.second);
+        fShader.first->priv().addToKey(keyContext, builder, fShader.second);
     } else {
-        RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
+        RGBPaintColorBlock::AddBlock(keyContext, builder);
     }
 }
 
 void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
-                                       PaintParamsKeyBuilder* keyBuilder,
-                                       PipelineDataGatherer* gatherer) const {
+                                       PaintParamsKeyBuilder* keyBuilder) const {
     if (!fHasPrimitiveBlender) {
-        this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+        this->addPaintColorToKey(keyContext, keyBuilder);
         return;
     }
 
     if (fSkipColorXform && fPrimitiveBlendMode == SkBlendMode::kDst) {
-        AddPrimitiveColor(keyContext, keyBuilder, gatherer, fSkipColorXform);
+        AddPrimitiveColor(keyContext, keyBuilder, fSkipColorXform);
         return;
     }
 
-    Blend(keyContext, keyBuilder, gatherer,
+    Blend(keyContext, keyBuilder,
             /* addBlendToKey= */ [&] () -> void {
                 /**
                  * TODO: Allow clients to provide precompile SkBlender options for primitive
@@ -112,58 +108,56 @@ void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                  */
                 AddToKey(keyContext,
                          keyBuilder,
-                         gatherer,
                          SkBlender::Mode(fPrimitiveBlendMode).get());
             },
             /* addSrcToKey= */ [&]() -> void {
-                this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+                this->addPaintColorToKey(keyContext, keyBuilder);
             },
             /* addDstToKey= */ [&]() -> void {
-                AddPrimitiveColor(keyContext, keyBuilder, gatherer, fSkipColorXform);
+                AddPrimitiveColor(keyContext, keyBuilder, fSkipColorXform);
             });
 }
 
 void PaintOption::handlePaintAlpha(const KeyContext& keyContext,
-                                   PaintParamsKeyBuilder* keyBuilder,
-                                   PipelineDataGatherer* gatherer) const {
+                                   PaintParamsKeyBuilder* keyBuilder) const {
 
     if (!fShader.first && !fHasPrimitiveBlender) {
         // If there is no shader and no primitive blending the input to the colorFilter stage
         // is just the premultiplied paint color.
-        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, gatherer, SK_PMColor4fWHITE);
+        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, SK_PMColor4fWHITE);
         return;
     }
 
     if (!fOpaquePaintColor) {
-        Blend(keyContext, keyBuilder, gatherer,
+        Blend(keyContext, keyBuilder,
               /* addBlendToKey= */ [&] () -> void {
-                  AddFixedBlendMode(keyContext, keyBuilder, gatherer, SkBlendMode::kSrcIn);
+                  AddFixedBlendMode(keyContext, keyBuilder, SkBlendMode::kSrcIn);
               },
               /* addSrcToKey= */ [&]() -> void {
-                  this->handlePrimitiveColor(keyContext, keyBuilder, gatherer);
+                  this->handlePrimitiveColor(keyContext, keyBuilder);
               },
               /* addDstToKey= */ [&]() -> void {
-                  AlphaOnlyPaintColorBlock::AddBlock(keyContext, keyBuilder, gatherer);
+                  AlphaOnlyPaintColorBlock::AddBlock(keyContext, keyBuilder);
               });
     } else {
-        this->handlePrimitiveColor(keyContext, keyBuilder, gatherer);
+        this->handlePrimitiveColor(keyContext, keyBuilder);
     }
 }
 
 void PaintOption::handleColorFilter(const KeyContext& keyContext,
-                                    PaintParamsKeyBuilder* builder,
-                                    PipelineDataGatherer* gatherer) const {
+                                    PaintParamsKeyBuilder* builder) const {
     if (fColorFilter.first) {
-        Compose(keyContext, builder, gatherer,
+        Compose(keyContext, builder,
                 /* addInnerToKey= */ [&]() -> void {
-                    this->handlePaintAlpha(keyContext, builder, gatherer);
+                    this->handlePaintAlpha(keyContext, builder);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    fColorFilter.first->priv().addToKey(keyContext, builder, gatherer,
+                    fColorFilter.first->priv().addToKey(keyContext,
+                                                        builder,
                                                         fColorFilter.second);
                 });
     } else {
-        this->handlePaintAlpha(keyContext, builder, gatherer);
+        this->handlePaintAlpha(keyContext, builder);
     }
 }
 
@@ -188,29 +182,27 @@ bool PaintOption::shouldDither(SkColorType dstCT) const {
 }
 
 void PaintOption::handleDithering(const KeyContext& keyContext,
-                                  PaintParamsKeyBuilder* builder,
-                                  PipelineDataGatherer* gatherer) const {
+                                  PaintParamsKeyBuilder* builder) const {
 
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (this->shouldDither(ct)) {
-        Compose(keyContext, builder, gatherer,
+        Compose(keyContext, builder,
                 /* addInnerToKey= */ [&]() -> void {
-                    this->handleColorFilter(keyContext, builder, gatherer);
+                    this->handleColorFilter(keyContext, builder);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    AddDitherBlock(keyContext, builder, gatherer, ct);
+                    AddDitherBlock(keyContext, builder, ct);
                 });
     } else
 #endif
     {
-        this->handleColorFilter(keyContext, builder, gatherer);
+        this->handleColorFilter(keyContext, builder);
     }
 }
 
 void PaintOption::handleClipping(const KeyContext& keyContext,
-                                 PaintParamsKeyBuilder* builder,
-                                 PipelineDataGatherer* gatherer) const {
+                                 PaintParamsKeyBuilder* builder) const {
     if (fAnalyticClip) {
         NonMSAAClipBlock::NonMSAAClipData data(
                 /* rect= */ {},
@@ -224,25 +216,23 @@ void PaintOption::handleClipping(const KeyContext& keyContext,
         if (fClipShader.first) {
             // For both an analytic clip and clip shader, we need to compose them together into
             // a single clipping root node.
-            Blend(keyContext, builder, gatherer,
+            Blend(keyContext, builder,
                     /* addBlendToKey= */ [&]() -> void {
-                        AddFixedBlendMode(keyContext, builder, gatherer, SkBlendMode::kModulate);
+                        AddFixedBlendMode(keyContext, builder, SkBlendMode::kModulate);
                     },
                     /* addSrcToKey= */ [&]() -> void {
-                        NonMSAAClipBlock::AddBlock(keyContext, builder, gatherer, data);
+                        NonMSAAClipBlock::AddBlock(keyContext, builder, data);
                     },
                     /* addDstToKey= */ [&]() -> void {
-                        fClipShader.first->priv().addToKey(keyContext, builder, gatherer,
-                                                           fClipShader.second);
+                        fClipShader.first->priv().addToKey(keyContext, builder, fClipShader.second);
                     });
         } else {
             // Without a clip shader, the analytic clip can be the clipping root node.
-            NonMSAAClipBlock::AddBlock(keyContext, builder, gatherer, data);
+            NonMSAAClipBlock::AddBlock(keyContext, builder, data);
         }
     } else if (fClipShader.first) {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.
-        fClipShader.first->priv().addToKey(keyContext, builder, gatherer,
-                                           fClipShader.second);
+        fClipShader.first->priv().addToKey(keyContext, builder, fClipShader.second);
     }
 }
 
