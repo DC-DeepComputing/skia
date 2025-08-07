@@ -71,7 +71,16 @@ static void joinNoEmptyChecks(SkRect* dst, const SkRect& src) {
 }
 
 static bool is_degenerate(const SkPath& path) {
-    return (path.countVerbs() - SkPathPriv::LeadingMoveToCount(path)) == 0;
+#ifdef SK_DEBUGx
+    SkSpan<const SkPathVerb> verbs = path.fPathRef->verbs();
+    if (verbs.size() > 0) {
+        SkASSERT(verbs[0] == SkPathVerb::kMove);
+        if (verbs.size() > 1) {
+            SkASSERT(verbs[1] != SkPathVerb::kMove);
+        }
+    }
+#endif
+    return path.countVerbs() <= 1;
 }
 
 class SkAutoDisableDirectionCheck {
@@ -120,7 +129,7 @@ public:
         fPath->setConvexity(fDegenerate ? SkPathConvexity::kConvex
                                             : SkPathConvexity::kUnknown);
         if ((fEmpty || fHasValidBounds) && fRect.isFinite()) {
-            fPath->setBounds(fRect);
+         //   fPath->setBounds(fRect);
         }
     }
 
@@ -684,10 +693,14 @@ SkPath& SkPath::moveTo(SkScalar x, SkScalar y) {
 
     SkPathRef::Editor ed(&fPathRef);
 
-    // remember our index
-    fLastMoveToIndex = fPathRef->countPoints();
+    if (!fPathRef->fVerbs.empty() && fPathRef->fVerbs.back() == SkPathVerb::kMove) {
+        fPathRef->fPoints.back() = {x, y};
+    } else {
+        // remember our index
+        fLastMoveToIndex = fPathRef->countPoints();
 
-    ed.growForVerb(SkPathVerb::kMove)->set(x, y);
+        ed.growForVerb(SkPathVerb::kMove)->set(x, y);
+    }
 
     return this->dirtyAfterEdit();
 }
@@ -2264,10 +2277,9 @@ SkPathConvexity SkPath::computeConvexity() const {
         return setFail();
     }
 
-    // pointCount potentially includes a block of leading moveTos and trailing moveTos. Convexity
-    // only cares about the last of the initial moveTos and the verbs before the final moveTos.
+    // pointCount potentially includes trailing moveTos. Convexity
+    // only cares about the verbs before the final moveTo.
     int pointCount = this->countPoints();
-    int skipCount = SkPathPriv::LeadingMoveToCount(*this) - 1;
 
     if (fLastMoveToIndex >= 0) {
         if (fLastMoveToIndex == pointCount - 1) {
@@ -2277,17 +2289,13 @@ SkPathConvexity SkPath::computeConvexity() const {
                 verbs--;
                 pointCount--;
             }
-        } else if (fLastMoveToIndex != skipCount) {
+        } else if (fLastMoveToIndex != 0) {
             // There's an additional moveTo between two blocks of other verbs, so the path must have
             // more than one contour and cannot be convex.
             return setComputedConvexity(SkPathConvexity::kConcave);
         } // else no trailing or intermediate moveTos to worry about
     }
     const SkPoint* points = fPathRef->points();
-    if (skipCount > 0) {
-        points += skipCount;
-        pointCount -= skipCount;
-    }
 
     // Check to see if path changes direction more than three times as quick concave test
     SkPathConvexity convexity = Convexicator::BySign(points, pointCount);
