@@ -16,6 +16,29 @@
       "message": "The internal change to SpiderSymbol is to remove a few copies of the license (still there, just don\u0027t need three copies) and the addition of a new name in a new locale.",
       "revId": "13ed0838c3819b74671e5fe690ffb74aa5c3f221",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05d660ae_8458f15e",
+        "filename": "tests/TypefaceTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-07T04:00:07Z",
+      "side": 1,
+      "message": "does `const` do anything here?",
+      "range": {
+        "startLine": 49,
+        "startChar": 31,
+        "endLine": 49,
+        "endChar": 36
+      },
+      "revId": "13ed0838c3819b74671e5fe690ffb74aa5c3f221",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
