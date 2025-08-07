@@ -16,6 +16,98 @@
       "message": "Clearly I would need to update out tests more cleanly... but I think we can get a way with this -- enforce that we never have consecutive kMoves (no reason to).\n\nWDYT?",
       "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfcc70dc_c6ab7552",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-07T13:30:29Z",
+      "side": 1,
+      "message": "nit: delete this line, or position `//` over and add a comment saying this moveTo is merged?",
+      "range": {
+        "startLine": 597,
+        "startChar": 0,
+        "endLine": 597,
+        "endChar": 45
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "530a133a_4ea7f80a",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-07T13:30:29Z",
+      "side": 1,
+      "message": "here and below, the `//` need cleanup like in PathBuilderTest",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 778,
+        "endChar": 77
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c84abecc_f9ba6d43",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3247,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-07T13:30:29Z",
+      "side": 1,
+      "message": "This should be replaced with a new test",
+      "range": {
+        "startLine": 3223,
+        "startChar": 0,
+        "endLine": 3247,
+        "endChar": 53
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f63567ec_6f962e1b",
+        "filename": "tests/SkPathRangeIterTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-07T13:30:29Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 21
+      },
+      "revId": "6f0327adbbb0dd39fe784b540ff51b6ea4ea51f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
