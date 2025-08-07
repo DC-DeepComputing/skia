@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "551b4adf_30bb2d9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T22:25:11Z",
+      "side": 1,
+      "message": "hope so -- still only have 1 +1",
+      "revId": "0743268ac05216bf3ebea32d9a9d6d4037ff4798",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5392e3c7_311ceebc",
@@ -14,6 +31,24 @@
       "writtenOn": "2025-08-07T21:30:33Z",
       "side": 1,
       "message": "This is in autosubmit right now, and should land soon.",
+      "revId": "0743268ac05216bf3ebea32d9a9d6d4037ff4798",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f00bda3_e77293a6",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T22:25:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5392e3c7_311ceebc",
       "revId": "0743268ac05216bf3ebea32d9a9d6d4037ff4798",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
