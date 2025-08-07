@@ -1,0 +1,26 @@
+# Copyright 2025 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+if (defined(skia_partition_alloc_dir)) {
+  import("${skia_partition_alloc_dir}/partition_alloc.gni")
+} else {
+  enable_backup_ref_ptr_support = false
+}
+
+config("skia_root_includes") {
+  include_dirs = [ "../../" ]
+}
+
+source_set("test_support") {
+  testonly = true
+  public = [ "TestSupport.h" ]
+  sources = [ "TestSupport.cpp" ]
+  configs += [ ":skia_root_includes" ]
+
+  if (enable_backup_ref_ptr_support) {
+    deps = [ "//src/partition_alloc" ]
+    defines = [ "SKIA_ENABLE_PARTITION_ALLOC" ]
+  }
+}
