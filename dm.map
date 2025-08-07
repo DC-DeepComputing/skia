@@ -1,0 +1,72 @@
+{
+global:
+  # Standard C runtime symbols
+  __bss_start;
+  __data_start;
+  data_start;
+  _edata;
+  _end;
+  _IO_stdin_used;
+  _fini;
+  _init;
+  __libc_csu_fini;
+  __libc_csu_init;
+  _start;
+
+  # Memory allocation symbols.  We want DM and any libraries to
+  # share the same heap, so it is correct to export these symbols.
+  aligned_alloc;
+  calloc;
+  cfree;
+  free;
+  __free_hook;
+  __libc_calloc;
+  __libc_cfree;
+  __libc_free;
+  __libc_malloc;
+  __libc_memalign;
+  __libc_pvalloc;
+  __libc_realloc;
+  __libc_valloc;
+  mallinfo;
+  malloc;
+  __malloc_hook;
+  malloc_size;
+  malloc_stats;
+  malloc_usable_size;
+  mallopt;
+  memalign;
+  __memalign_hook;
+  __posix_memalign;
+  posix_memalign;
+  pvalloc;
+  realloc;
+  __realloc_hook;
+  valloc;
+
+  # C++ operator new and operator delete symbols.
+  _ZdaPv;
+  _ZdaPvm;
+  _ZdaPvmSt11align_val_t;
+  _ZdaPvRKSt9nothrow_t;
+  _ZdaPvSt11align_val_t;
+  _ZdaPvSt11align_val_tRKSt9nothrow_t;
+  _ZdlPv;
+  _ZdlPvm;
+  _ZdlPvmSt11align_val_t;
+  _ZdlPvRKSt9nothrow_t;
+  _ZdlPvSt11align_val_t;
+  _ZdlPvSt11align_val_tRKSt9nothrow_t;
+  _Znam;
+  _ZnamRKSt9nothrow_t;
+  _ZnamSt11align_val_t;
+  _ZnamSt11align_val_tRKSt9nothrow_t;
+  _Znwm;
+  _ZnwmRKSt9nothrow_t;
+  _ZnwmSt11align_val_t;
+  _ZnwmSt11align_val_tRKSt9nothrow_t;
+
+local:
+  # Hide all other symbols by default.
+  *;
+};
