@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5392e3c7_311ceebc",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-07T21:30:33Z",
+      "side": 1,
+      "message": "This is in autosubmit right now, and should land soon.",
+      "revId": "0743268ac05216bf3ebea32d9a9d6d4037ff4798",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
