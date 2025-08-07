@@ -247,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "423b53e5_9d7a967a",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T15:01:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af45237d_2eccc597",
+      "range": {
+        "startLine": 564,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 5
+      },
+      "revId": "a0d0eee8c0858e2f43ae3bac7e0f4ce2b64eda30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d700bf4_42d45975",
