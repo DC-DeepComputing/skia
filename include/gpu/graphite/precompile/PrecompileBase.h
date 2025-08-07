@@ -15,7 +15,6 @@ namespace skgpu::graphite {
 
 class KeyContext;
 class PaintParamsKeyBuilder;
-class PipelineDataGatherer;
 class PrecompileBasePriv;
 
 /** \class PrecompileBase
@@ -53,7 +52,6 @@ protected:
 
     virtual void addToKey(const KeyContext&,
                           PaintParamsKeyBuilder*,
-                          PipelineDataGatherer*,
                           int desiredCombination) const = 0;
 
     // This returns the desired option along with the child options.
@@ -66,7 +64,6 @@ protected:
     template<typename T>
     static void AddToKey(const KeyContext&,
                          PaintParamsKeyBuilder*,
-                         PipelineDataGatherer*,
                          SkSpan<const sk_sp<T>> options,
                          int desiredOption);
 
