@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ff6ce951_534c6e73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-07T14:56:34Z",
+      "side": 1,
+      "message": "Added that link in a comment in the code",
+      "parentUuid": "0cfe15b1_17744ed0",
+      "revId": "a3f8b5445f1fc49f1e14b4f4434360161f877d3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ecf1b2da_6b5b228c",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
