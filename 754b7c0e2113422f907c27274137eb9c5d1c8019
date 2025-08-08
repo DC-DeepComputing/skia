@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec3ab8f_bd4b76aa",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-08T15:40:59Z",
+      "side": 0,
+      "message": "Looks like we missed this reset() in the new setRectToRect impl.",
+      "revId": "754b7c0e2113422f907c27274137eb9c5d1c8019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
