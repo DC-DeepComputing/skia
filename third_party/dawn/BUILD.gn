@@ -1,0 +1,39 @@
+config("tint_api_config") {
+  include_dirs = [
+    "../externals/dawn",
+    "../externals/dawn/include",
+  ]
+
+  defines = [
+    "TINT_BUILD_WGSL_READER=1",
+    "TINT_BUILD_WGSL_WRITER=1",
+  ]
+
+  # The build script produces libtint_combined.a in the root output directory.
+  lib_dirs = [ "$root_out_dir" ]
+  libs = [ "tint_combined" ]
+}
+
+# This action invokes a python script to build Tint using CMake. We use
+# CMake instead of the GN rules because Dawn/Tint's GN rules require Chromium's
+# toolchain, which we, Skia, do not want to have a dependency on.
+# The result is a single static library that can be linked into Skia.
+action("tint_cmake") {
+  script = "build_tint.py"
+
+  # The DEPS file is used as a proxy for all of Dawn's sources. A change to
+  # DEPS will trigger a re-build of Tint.
+  sources = [ "//DEPS" ]
+
+  # The script will place the final library in this location.
+  outputs = [ "$root_out_dir/libtint_combined.a" ]
+
+  # Pass the output path to the script so it knows where to place the library
+  args = [ rebase_path("$root_out_dir/libtint_combined.a", root_build_dir) ]
+}
+
+group("tint") {
+  deps = [ ":tint_cmake" ]
+
+  public_configs = [ ":tint_api_config" ]
+}
