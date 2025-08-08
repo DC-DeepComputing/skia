@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f28d900_23c05026",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-08-08T16:59:37Z",
+      "side": 1,
+      "message": "Is this script guaranteed to be run from this directory?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 73
+      },
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626042e4_b8b4d8ca",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-08-08T16:59:37Z",
+      "side": 1,
+      "message": "Similar question, is this relative to //third_party/dawn?",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 11
+      },
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
