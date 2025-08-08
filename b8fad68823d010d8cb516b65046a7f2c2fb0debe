@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fda4bc9_f5af2629",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-08T21:07:21Z",
+      "side": 1,
+      "message": "I updated build_tint.py to output a .d file. Rather than use ninja to generate this, I used globs to approximate it (I could only get ninja to output stuff for the entire Dawn build, which seemed like overkill).",
+      "parentUuid": "5e38c213_8ae28170",
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f28d900_23c05026",
