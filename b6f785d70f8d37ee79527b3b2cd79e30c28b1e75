@@ -16,6 +16,29 @@
       "message": "rebased -- ptal",
       "revId": "b6f785d70f8d37ee79527b3b2cd79e30c28b1e75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd1b14e_9268cd60",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-08T19:10:51Z",
+      "side": 1,
+      "message": "`SkAutoPathConvexityUpdate` now :)",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 84,
+        "endChar": 28
+      },
+      "revId": "b6f785d70f8d37ee79527b3b2cd79e30c28b1e75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
