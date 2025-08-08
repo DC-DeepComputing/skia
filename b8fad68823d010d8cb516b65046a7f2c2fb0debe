@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e38c213_8ae28170",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-08T17:13:26Z",
+      "side": 1,
+      "message": "I suppose this is fine but will also catch any change to `DEPS`. The way to do this in general (and more correctly) would be to have `build_tint.py` run `ninja -C $build_dir -tdeps` and massage that into a `.d` file (take every line that starts with four spaces, sort and unique them, then put them all on one long line that starts with `target: `) and then specify that `.d` file as the [`depfile`](https://gn.googlesource.com/gn/+/main/docs/reference.md#var_depfile).",
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f28d900_23c05026",
         "filename": "third_party/dawn/build_tint.py",
         "patchSetId": 10
