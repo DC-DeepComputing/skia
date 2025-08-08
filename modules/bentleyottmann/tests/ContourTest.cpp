@@ -27,7 +27,6 @@ DEF_TEST(CFC_Contours_Basic, r) {
     {
         // Path with a bunch of moves.
         SkPathBuilder b;
-        b.moveTo(10, 10);
         b.moveTo(20, 20);
         b.close();
         SkPath p = b.detach();
@@ -37,7 +36,6 @@ DEF_TEST(CFC_Contours_Basic, r) {
     {
         // LineTo, but no close.
         SkPathBuilder b;
-        b.moveTo(10, 10);
         b.moveTo(20, 20);
         b.lineTo(30, 30);
         SkPath p = b.detach();
@@ -55,7 +53,6 @@ DEF_TEST(CFC_Contours_Basic, r) {
     {
         // LineTo with close.
         SkPathBuilder b;
-        b.moveTo(10, 10);
         b.moveTo(20, 20);
         b.lineTo(30, 30);
         b.close();
@@ -76,7 +73,6 @@ DEF_TEST(CFC_Contours_Basic, r) {
     {
         // LineTo with close and extra moves.
         SkPathBuilder b;
-        b.moveTo(10, 10);
         b.moveTo(20, 20);
         b.lineTo(30, 30);
         b.close();
