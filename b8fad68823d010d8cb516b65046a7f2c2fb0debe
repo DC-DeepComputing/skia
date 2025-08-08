@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f063315c_b7c52601",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-08T18:55:34Z",
+      "side": 1,
+      "message": "Yes, GN invokes the script from the root build directory. If that changes, I suppose we could parameterize it and have GN point to the Dawn checkout.",
+      "parentUuid": "0f28d900_23c05026",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 73
+      },
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "626042e4_b8b4d8ca",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-08T16:59:37Z",
       "side": 1,
       "message": "Similar question, is this relative to //third_party/dawn?",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 11
+      },
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8990d7d0_d7ab3dd4",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-08T18:55:34Z",
+      "side": 1,
+      "message": "This relative to the root build directory. e.g. $SKIA_ROOT/out/Dawn/cmake/dawn. It can go anywhere, and doesn\u0027t have to be anywhere close to the Dawn source files.",
+      "parentUuid": "626042e4_b8b4d8ca",
       "range": {
         "startLine": 27,
         "startChar": 2,
