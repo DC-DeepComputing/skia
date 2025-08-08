@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68867441_b6058520",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-08T16:30:59Z",
+      "side": 1,
+      "message": "This won\u0027t land until the fix is verified and the merge is approved Monday morning, but we should have it ready to go.",
+      "revId": "26a1ea5cec55129f5dd752eeccdbf59411282eae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
