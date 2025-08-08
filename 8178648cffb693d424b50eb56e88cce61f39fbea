@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ca8c7a0_8bb1d0e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-08T15:06:01Z",
+      "side": 1,
+      "message": "This appears to be causing android.graphics.cts.MatrixTest#testSetRectToRect to fail.\n\n```\narrays first differed at element [0]; expected:\u003c1.0\u003e but was:\u003c0.0\u003e\n\tat org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:78)\n\tat org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:28)\n\tat org.junit.Assert.assertArrayEquals(Assert.java:502)\n\tat org.junit.Assert.assertArrayEquals(Assert.java:516)\n\tat android.graphics.cts.MatrixTest.verifyMatrix(MatrixTest.java:722)\n\tat android.graphics.cts.MatrixTest.testSetRectToRect(MatrixTest.java:506)\n```\n\nhttps://android.googlesource.com/platform/cts/+/refs/heads/main/tests/tests/graphics/src/android/graphics/cts/MatrixTest.java#511\n\n(the line numbers don\u0027t line up at the moment, but 506 in the trace is 511 in that link).",
+      "revId": "8178648cffb693d424b50eb56e88cce61f39fbea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
