@@ -8,14 +8,17 @@
 #include "experimental/rust_png/decoder/SkPngRustDecoder.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
+#include "modules/skcms/src/skcms_public.h"
 #include "tests/FakeStreams.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -669,4 +672,19 @@ DEF_TEST(RustPngCodec_exif_orientation, r) {
     }
 
     REPORTER_ASSERT(r, codec->getOrigin() == kRightTop_SkEncodedOrigin);
+}
+
+DEF_TEST(RustPngCodec_f16_trc_tables, r) {
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, "images/f16-trc-tables.png");
+    REPORTER_ASSERT(r, codec);
+
+    const SkImageInfo info = codec->getInfo();
+    REPORTER_ASSERT(r, info.colorSpace());
+
+    // Decoding to F16 without color space conversion.
+    const SkImageInfo dstInfo = info.makeColorType(kRGBA_F16_SkColorType)
+                                    .makeColorSpace(nullptr);
+    // This should not crash.
+    auto [image, result] = codec->getImage(dstInfo);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
 }
