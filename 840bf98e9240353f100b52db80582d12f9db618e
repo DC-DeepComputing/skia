@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebfbfaa8_d174c48b",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-08T13:14:04Z",
+      "side": 1,
+      "message": "We could look into if this is still necessary?",
+      "range": {
+        "startLine": 820,
+        "startChar": 13,
+        "endLine": 822,
+        "endChar": 66
+      },
+      "revId": "840bf98e9240353f100b52db80582d12f9db618e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
