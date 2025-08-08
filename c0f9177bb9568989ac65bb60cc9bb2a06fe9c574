@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69f45f23_e625a904",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-08T15:13:28Z",
+      "side": 1,
+      "message": "I was going to say this seemed like a footgun, but I like how it is changed in the next CL so lgtm as it\u0027 stemporary.",
+      "range": {
+        "startLine": 81,
+        "startChar": 21,
+        "endLine": 83,
+        "endChar": 0
+      },
+      "revId": "c0f9177bb9568989ac65bb60cc9bb2a06fe9c574",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
