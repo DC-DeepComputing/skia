@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daeae4b7_eff58afd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-08T17:16:12Z",
+      "side": 1,
+      "message": "On Gen12 Intel drivers for some devices this improved the time to clear the depth buffer almost 4x.",
+      "revId": "4d66646f4894e5a1bd57167af09f75c6d2300a50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
