@@ -473,6 +473,34 @@ static void test_addPath_and_injected_moveTo(skiatest::Reporter* reporter) {
     test_before_after_lineto(path3c, {20,50}, {20,50});
 }
 
+static void test_addPath_convexity(skiatest::Reporter* reporter) {
+    auto circle = SkPath::Circle(10, 10, 10);
+    REPORTER_ASSERT(reporter, circle.isConvex());
+
+    {
+        SkPath path;
+        path.addPath(circle);
+        REPORTER_ASSERT(reporter, path.isConvex());
+    }
+    {
+        SkPath path;
+        path.moveTo(0, 0);
+        path.addPath(circle);
+        REPORTER_ASSERT(reporter, path.isConvex());
+    }
+    {
+        SkPathBuilder builder;
+        builder.addPath(circle);
+        REPORTER_ASSERT(reporter, builder.detach().isConvex());
+    }
+    {
+        SkPathBuilder builder;
+        builder.moveTo(0, 0);
+        builder.addPath(circle);
+        REPORTER_ASSERT(reporter, builder.detach().isConvex());
+    }
+}
+
 DEF_TEST(pathbuilder_addPath, reporter) {
     const auto p = SkPath()
         .moveTo(10, 10)
@@ -494,6 +522,8 @@ DEF_TEST(pathbuilder_addPath, reporter) {
     test_addEmptyPath(reporter, SkPath::kExtend_AddPathMode);
     test_addEmptyPath(reporter, SkPath::kAppend_AddPathMode);
     test_addPath_and_injected_moveTo(reporter);
+
+    test_addPath_convexity(reporter);
 }
 
 DEF_TEST(pathbuilder_addpath_crbug_1153516, r) {
