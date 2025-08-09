@@ -472,7 +472,7 @@ public:
                     if (font.getCollectionIndex() != static_cast<size_t>(xmlFont.fIndex)) {
                         continue;
                     }
-
+#if 0
                     auto&& xmlVariation = xmlFont.fVariationDesignPosition;
                     if (font.getAxisCount() != static_cast<size_t>(xmlVariation.size())) {
                         continue;
@@ -493,7 +493,7 @@ public:
                     if (xmlFont.fWeight != 0 && xmlFont.fWeight != font.getWeight()) {
                         continue;
                     }
-
+#endif
                     for (auto&& xmlName : xmlFamily->fNames) {
                         extraFamilyNames.push_back(xmlName);
                     }
