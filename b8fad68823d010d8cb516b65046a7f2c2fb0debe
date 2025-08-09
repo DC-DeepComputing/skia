@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b671908_5ef5bdea",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-09T19:02:33Z",
+      "side": 1,
+      "message": "It turns out that `ninja -tdeps` on a target only works if there was a `depfile` for that target. This is generally the case for our compile actions, but for most other targets it isn\u0027t. So generally one would need to use `ninja -tdeps \u003ctarget\u003e` to get the dynamic dependencies of a target (add those, if any), then use `ninja -tinputs \u003ctarget\u003e` to get the list of inputs (add those) and the recurse on the inputs.\n\nWhen `ninja -tdeps` is used at the top level one gets effectively the result of evaluating this recursively, since the output is the concatenation of everything done in a build. Unfortunately, `ninja` doesn\u0027t seem to have a tool to just do this recursive lookup for any given target directly.\n\nI\u0027d like to get this right because this might end up being a model for how Skia should shell out to build other things as well.",
+      "parentUuid": "8fda4bc9_f5af2629",
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f28d900_23c05026",
         "filename": "third_party/dawn/build_tint.py",
         "patchSetId": 10

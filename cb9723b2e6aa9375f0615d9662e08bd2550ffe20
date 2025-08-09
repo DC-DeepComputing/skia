@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f12a929_d1cabd29",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-09T19:02:33Z",
+      "side": 1,
+      "message": "Can this build command be explicit about which targets to build? We\u0027re pulling down all of dawn and just building tint, and any good re-build logic is going to depend on the fact we\u0027re just building parts.\n\nAlso, I\u0027d prefer to just call `ninja` directly here and specify the targets.",
+      "revId": "cb9723b2e6aa9375f0615d9662e08bd2550ffe20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
