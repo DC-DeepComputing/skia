@@ -24,6 +24,7 @@
 #include <optional>
 #include <tuple>
 
+class SkPathData;
 class SkRRect;
 struct SkPathRaw;
 
@@ -95,6 +96,9 @@ public:
         @return  SkPath representing the current state of the builder.
      */
     SkPath detach();
+
+    sk_sp<SkPathData> snapshotData() const;
+    sk_sp<SkPathData> detachData();
 
     /** Sets SkPathFillType, the rule used to fill SkPath. While there is no
         check that ft is legal, values outside of SkPathFillType are not supported.
