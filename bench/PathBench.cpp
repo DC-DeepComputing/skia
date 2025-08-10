@@ -22,6 +22,7 @@
 
 #include "src/core/SkDraw.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkPathData.h"
 
 using namespace skia_private;
 
@@ -481,11 +482,15 @@ protected:
     }
 
     void onDelayedSetup() override {
-        fMatrix.setScale(5 * SK_Scalar1, 6 * SK_Scalar1);
+        fMatrix.setScale(1.00001f, 1.00001f);
         this->createData(10, 100);
         fPaths.reset(kPathCnt);
         for (int i = 0; i < kPathCnt; ++i) {
             this->makePath(&fPaths[i]);
+
+            SkPathBuilder bu;
+            bu.addPath(fPaths[i]);
+            fPDatas[i] = bu.detachData();
         }
         this->finishedMakingPaths();
         if (!fInPlace) {
@@ -496,12 +501,13 @@ protected:
     void onDraw(int loops, SkCanvas*) override {
         if (fInPlace) {
             for (int i = 0; i < loops; ++i) {
-                fPaths[i & (kPathCnt - 1)].transform(fMatrix);
+                int idx = i & (kPathCnt - 1);
+                fPaths[idx].makeTransform(fMatrix).getBounds();
             }
         } else {
             for (int i = 0; i < loops; ++i) {
                 int idx = i & (kPathCnt - 1);
-                fPaths[idx].transform(fMatrix, &fTransformed[idx]);
+                fPDatas[idx]->transform(fMatrix)->bounds();
             }
         }
     }
@@ -513,6 +519,7 @@ private:
     };
     AutoTArray<SkPath> fPaths;
     AutoTArray<SkPath> fTransformed;
+    std::array<sk_sp<SkPathData>, kPathCnt> fPDatas;
 
     SkMatrix fMatrix;
     bool fInPlace;
