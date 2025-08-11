@@ -16,6 +16,24 @@
       "message": "This should be done after building with `ninja`. That should pick up all the headers, etc.",
       "revId": "55ca31bf3a805ee519f450c80b206a26f09677da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1644397_4d1a9a88",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-11T15:45:56Z",
+      "side": 1,
+      "message": "And for that to work we might need to add `-d keepdepfile` on the `ninja` invocation below (which should be \"above\"). This is a little subtle, see https://github.com/ninja-build/ninja/issues/2424 for the intent on ninja\u0027s side.",
+      "parentUuid": "182904a5_e2c0df04",
+      "revId": "55ca31bf3a805ee519f450c80b206a26f09677da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
