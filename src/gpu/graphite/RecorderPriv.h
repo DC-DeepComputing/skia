@@ -39,6 +39,7 @@ class Caps;
 class Context;
 class Device;
 class DrawBufferManager;
+class FloatStorageManager;
 class ProxyCache;
 class RendererProvider;
 class ResourceCache;
@@ -82,6 +83,7 @@ public:
     UploadList* rootUploadList() { return fRecorder->fRootUploads.get(); }
     DrawBufferManager* drawBufferManager() { return fRecorder->fDrawBufferManager.get(); }
     UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
+    FloatStorageManager* floatStorageManager() { return fRecorder->fFloatStorageManager.get(); }
 
     AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
     TokenTracker* tokenTracker() { return fRecorder->fTokenTracker.get(); }

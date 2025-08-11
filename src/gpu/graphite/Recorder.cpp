@@ -34,6 +34,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -114,6 +115,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
+        , fFloatStorageManager(std::make_unique<FloatStorageManager>())
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fRequireOrderedRecordings(options.fRequireOrderedRecordings.has_value()
@@ -237,6 +239,7 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict->reset();
+    fFloatStorageManager->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
     if (!fRequireOrderedRecordings) {
         fAtlasProvider->invalidateAtlases();
