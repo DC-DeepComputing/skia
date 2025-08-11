@@ -105,6 +105,7 @@ static void make_image_tiles(int tileW, int tileH, int m, int n, const SkColor c
 
 namespace skiagm {
 
+// anchor comment
 class DrawImageSetGM : public GM {
 private:
     SkString getName() const override { return SkString("draw_image_set"); }

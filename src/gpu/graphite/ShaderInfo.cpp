@@ -1069,7 +1069,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     if (fHasSsboIndicesVarying) {
         SkSL::String::appendf(&mainBody,
-                              "%s = %s.y;\n",
+                              "while (true) { "
+                              "     %s = subgroupBroadcastFirst(%s.y);"
+                              "     if (%s == %s.y) { ",
+                              this->shadingSsboIndex(),
+                              RenderStep::ssboIndicesVarying(),
                               this->shadingSsboIndex(),
                               RenderStep::ssboIndicesVarying());
     }
@@ -1232,6 +1236,9 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                 }
             }
         }
+    }
+    if (fHasSsboIndicesVarying) {
+        mainBody += "break; \n } \n } ";
     }
     mainBody += "}\n";
 
