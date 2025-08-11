@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b29a435_e5437344",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-11T13:55:45Z",
+      "side": 1,
+      "message": "This can be written to match the structure of the t\u003d0 check like:\n\n    (tValue \u003c\u003d 1.00005 \u0026\u0026 (tValue \u003e\u003d 1.0 || sk_doubles_nearly_equal_ulps(tValue, 1.0))\n    \nwhich makes following the logic a little simpler for the two cases IMO",
+      "range": {
+        "startLine": 132,
+        "startChar": 12,
+        "endLine": 133,
+        "endChar": 32
+      },
+      "revId": "4628039b6056384d7faddcfd67c269b5b09706fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
