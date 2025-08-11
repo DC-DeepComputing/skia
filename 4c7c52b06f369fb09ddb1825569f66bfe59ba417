@@ -24,6 +24,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "581d7e1a_ca5b2d22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f62afbb8_6f398fba",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 66
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8933a7e3_461bff03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f62afbb8_6f398fba",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 66
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad2795cb_5435a6ee",
@@ -37,6 +85,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "Maybe `floatStorageManager()` to match the other getters since they don\u0027t go full acronym?",
+      "range": {
+        "startLine": 85,
+        "startChar": 25,
+        "endLine": 85,
+        "endChar": 28
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53231f15_5e41fa7d",
+        "filename": "src/gpu/graphite/KeyContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad2795cb_5435a6ee",
       "range": {
         "startLine": 85,
         "startChar": 25,
@@ -70,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8edbd5c1_88dd28c5",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56acdb43_60e38a81",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 116
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3eea3e5_c0107b8f",
@@ -83,6 +179,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 123
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aa0fc1f_78d72a30",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3eea3e5_c0107b8f",
       "range": {
         "startLine": 172,
         "startChar": 0,
@@ -116,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf378eb_80bcd58c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae7d8fa_3dee4a62",
+      "range": {
+        "startLine": 942,
+        "startChar": 0,
+        "endLine": 942,
+        "endChar": 115
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f53524b_e63f0947",
@@ -129,6 +273,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 952,
+        "startChar": 0,
+        "endLine": 952,
+        "endChar": 120
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6dca5b5_43330c82",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f53524b_e63f0947",
       "range": {
         "startLine": 952,
         "startChar": 0,
@@ -162,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b0eef9_d694b715",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1b696f3_f8d8cd8d",
+      "range": {
+        "startLine": 964,
+        "startChar": 0,
+        "endLine": 964,
+        "endChar": 114
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c87c22fa_d6b70967",
@@ -175,6 +367,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1014,
+        "endChar": 116
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0062278_a6543fe2",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c87c22fa_d6b70967",
       "range": {
         "startLine": 1014,
         "startChar": 0,
@@ -208,6 +424,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27379b2f_742f4929",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad8befb_ccc11b75",
+      "range": {
+        "startLine": 1018,
+        "startChar": 0,
+        "endLine": 1018,
+        "endChar": 112
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4683938a_4de196cf",
@@ -221,6 +461,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 1233,
+        "startChar": 0,
+        "endLine": 1233,
+        "endChar": 119
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2661da_e17fb595",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1233,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4683938a_4de196cf",
       "range": {
         "startLine": 1233,
         "startChar": 0,
@@ -254,6 +518,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48e91f1e_f1689988",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1245,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccfb3208_bcbfffe3",
+      "range": {
+        "startLine": 1245,
+        "startChar": 0,
+        "endLine": 1245,
+        "endChar": 119
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3da5327_440dae06",
@@ -267,6 +555,30 @@
       "writtenOn": "2025-08-07T16:54:51Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 1252,
+        "startChar": 0,
+        "endLine": 1252,
+        "endChar": 115
+      },
+      "revId": "4c7c52b06f369fb09ddb1825569f66bfe59ba417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5859b1_f2cea048",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1252,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-11T01:50:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3da5327_440dae06",
       "range": {
         "startLine": 1252,
         "startChar": 0,
