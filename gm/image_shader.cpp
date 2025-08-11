@@ -167,6 +167,7 @@ static sk_sp<SkImage> make_checker_img(int w, int h, SkColor c0, SkColor c1, int
     return bm.asImage();
 }
 
+// Anchor comment
 DEF_SIMPLE_GM(drawimage_sampling, canvas, 500, 500) {
     constexpr int N = 256;
     constexpr float kScale = 1.0f/6;

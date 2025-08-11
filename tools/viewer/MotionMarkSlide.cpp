@@ -758,7 +758,7 @@ protected:
     double fLastTime = -1;
 };
 
-
+// ANCHOR COMMENT
 class BouncingTaggedImage : public BouncingParticle {
 public:
     BouncingTaggedImage(SkRandom* random, SkSize stageSize, SkSize particleSize, float maxVelocity)

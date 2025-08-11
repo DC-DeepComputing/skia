@@ -1069,7 +1069,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     if (fHasSsboIndicesVarying) {
         SkSL::String::appendf(&mainBody,
-                              "%s = %s.y;\n",
+                              "%s = subgroupBroadcast(%s.y, 0);",
                               this->shadingSsboIndex(),
                               RenderStep::ssboIndicesVarying());
     }
