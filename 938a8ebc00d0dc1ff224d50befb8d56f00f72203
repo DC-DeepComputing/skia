@@ -16,6 +16,23 @@
       "message": "This fixed the crashes, so I think my plausible scenario was what was occurring in the wild. Cherry-picking back to m140.",
       "revId": "938a8ebc00d0dc1ff224d50befb8d56f00f72203",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4b159c_208d2755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-11T13:56:15Z",
+      "side": 1,
+      "message": "And merge approved",
+      "revId": "938a8ebc00d0dc1ff224d50befb8d56f00f72203",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
