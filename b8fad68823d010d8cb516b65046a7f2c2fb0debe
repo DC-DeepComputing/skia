@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5b3e87_169c6f31",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-11T15:32:29Z",
+      "side": 1,
+      "message": "Done. I made recursive calls to ninja -tinputs to accomplish this.\n\nThe generated .d file isn\u0027t perfect. For example, it doesn\u0027t include the .h files, likely because the tint GN rules don\u0027t list those, so if there was a header only change, we wouldn\u0027t notice and possiblely have a stale build.",
+      "parentUuid": "7b671908_5ef5bdea",
+      "revId": "b8fad68823d010d8cb516b65046a7f2c2fb0debe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f28d900_23c05026",
