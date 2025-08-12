@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70e5ef4e_3686a77a",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-12T17:47:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1fdad0b_ce48d4c8",
+      "revId": "3c656c8e283642ec6ac8d3b5e1e54de7e46d1286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78088042_348fb3b5",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-08-12T13:59:39Z",
       "side": 1,
       "message": "After some experimentation, it appears Preview (pdfkit) really doesn\u0027t like this `eq`.",
+      "range": {
+        "startLine": 147,
+        "startChar": 31,
+        "endLine": 147,
+        "endChar": 33
+      },
+      "revId": "3c656c8e283642ec6ac8d3b5e1e54de7e46d1286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd240902_b02dc2ab",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-12T17:47:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78088042_348fb3b5",
       "range": {
         "startLine": 147,
         "startChar": 31,
