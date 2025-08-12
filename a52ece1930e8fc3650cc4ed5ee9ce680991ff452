@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503447d8_9f5c21b7",
+        "filename": "docs/examples/Conic_Weight_a.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-12T13:39:42Z",
+      "side": 1,
+      "message": "We could now drop pointCount (here and some other docs):\n\n`for (const auto\u0026 pt : rec.fPoints) {`",
+      "revId": "a52ece1930e8fc3650cc4ed5ee9ce680991ff452",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
