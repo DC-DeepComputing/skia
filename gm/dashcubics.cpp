@@ -24,6 +24,7 @@
 #include <math.h>
 #include <utility>
 
+#if 0
 using namespace skia_private;
 
 /*
@@ -177,3 +178,4 @@ private:
 };
 DEF_GM(return new TrimGM;)
 
+#endif

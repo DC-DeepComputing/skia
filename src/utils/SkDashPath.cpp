@@ -28,6 +28,8 @@
 #include <cstddef>
 #include <cstdint>
 
+bool gAllowDashing;
+
 static inline int is_even(int x) {
     return !(x & 1);
 }
@@ -174,6 +176,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     if (!cullRect) {
         SkPoint pts[2];
         if (srcPath.isLine(pts) && pts[0] == pts[1]) {
+            if (gAllowDashing) SkDebugf("---- dashbigrects: isLine1 is true\n");
             adjust_zero_length_line(pts);
             dstPath->moveTo(pts[0]);
             dstPath->lineTo(pts[1]);
@@ -189,6 +192,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     {
         SkPoint pts[2];
         if (srcPath.isLine(pts)) {
+            if (gAllowDashing) SkDebugf("---- dashbigrects: isLine2 is true\n");
             if (clip_line(pts, bounds, intervalLength, 0)) {
                 dstPath->moveTo(pts[0]);
                 dstPath->lineTo(pts[1]);
@@ -199,6 +203,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     }
 
     if (srcPath.isRect(nullptr)) {
+        if (gAllowDashing) SkDebugf("---- dashbigrects: isRect is true\n");
         // We'll break the rect into four lines, culling each separately.
         SkPath::Iter iter(srcPath, false);
 
@@ -226,6 +231,9 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
             SkASSERT(v.fX == 0 || v.fY == 0);
             accum += SkScalarAbs(v.fX + v.fY);
         }
+
+        if (gAllowDashing) SkDebugf("---- dashbigrects: clipped dstPts: %d\n", dstPath->countPoints());
+
         return !dstPath->isEmpty();
     }
 
@@ -305,7 +313,6 @@ private:
     SkScalar fPathLength;
 };
 
-
 bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeRec* rec,
                                 const SkRect* cullRect, SkSpan<const SkScalar> aIntervals,
                                 SkScalar initialDashLength, int32_t initialDashIndex,
@@ -326,11 +333,22 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
 
     SkPath cullPathStorage;
     const SkPath* srcPtr = &src;
+
+    if (gAllowDashing) SkDebugf("---- dashbigrects: calling clip_path\n");
     if (cull_path(src, *rec, cullRect, intervalLength, &cullPathStorage)) {
+        if (gAllowDashing) SkDebugf("---- dashbigrects: clip_path succeeded\n");
         // if rect is closed, starts in a dash, and ends in a dash, add the initial join
         // potentially a better fix is described here: skbug.com/40038693
+
+        bool b0 = src.isRect(nullptr);
+        bool b1 = src.isLastContourClosed();
+        bool b2 = is_even(initialDashIndex);
+        if (gAllowDashing) SkDebugf("---- dashbigrects: bools %d %d %d\n", b0, b1, b2);
+
         if (src.isRect(nullptr) && src.isLastContourClosed() && is_even(initialDashIndex)) {
+
             SkScalar pathLength = SkPathMeasure(src, false, rec->getResScale()).getLength();
+            if (gAllowDashing) SkDebugf("---- dashbigrects: pathLength %g\n", pathLength);
             SkScalar endPhase = SkScalarMod(pathLength + startPhase, intervalLength);
             size_t index = 0;
             while (endPhase > intervals[index]) {
@@ -373,6 +391,8 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
             }
         }
         srcPtr = &cullPathStorage;
+    } else {
+        if (gAllowDashing) SkDebugf("---- dashbigrects: clip_path failed\n");
     }
 
     SpecialLineRec lineRec;
@@ -398,6 +418,7 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
         dashCount += length * (count >> 1) / intervalLength;
         if (dashCount > kMaxDashCount) {
             dst->reset();
+        if (gAllowDashing) SkDebugf("---- dashbigrects: OOPS, max dash count %g %g\n", dashCount, kMaxDashCount);
             return false;
         }
 
