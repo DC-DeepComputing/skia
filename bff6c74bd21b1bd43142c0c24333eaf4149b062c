@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38432196_53d66dc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-12T15:34:45Z",
+      "side": 1,
+      "message": "Had to fix some bazel configuration code upstream. This CL can now add the appropriate update to the grvk bazel build file.",
+      "revId": "bff6c74bd21b1bd43142c0c24333eaf4149b062c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
