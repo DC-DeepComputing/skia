@@ -43,3 +43,52 @@ group("tint") {
 
   public_configs = [ ":tint_api_config" ]
 }
+
+# A list of the dawn libraries we want to build and link against.
+# The names here are without the "lib" prefix and ".a" suffix.
+dawn_lib_names = [
+  "webgpu_dawn",
+  "dawn_proc",
+  "dawn_native",
+]
+
+# A list of the full library file names.
+dawn_lib_files = []
+foreach(lib, dawn_lib_names) {
+  dawn_lib_files += [ "lib${lib}.a" ]
+}
+
+config("dawn_api_config") {
+  include_dirs = [
+    "../externals/dawn",
+    "../externals/dawn/include",
+    "$target_gen_dir/include",
+  ]
+  lib_dirs = [ root_out_dir ]
+  libs = dawn_lib_names
+}
+
+action("dawn_cmake") {
+  script = "build_dawn.py"
+
+  sources = [ "build_dawn.py" ]
+
+  outputs = []
+  foreach(lib, dawn_lib_files) {
+    outputs += [ "$root_out_dir/$lib" ]
+  }
+
+  depfile = "$target_gen_dir/dawn_libs.d"
+
+  args = [
+    rebase_path(root_out_dir, root_build_dir),
+    rebase_path(target_gen_dir, root_build_dir),
+  ]
+  args += dawn_lib_files
+}
+
+group("dawn") {
+  deps = [ ":dawn_cmake" ]
+
+  public_configs = [ ":dawn_api_config" ]
+}
