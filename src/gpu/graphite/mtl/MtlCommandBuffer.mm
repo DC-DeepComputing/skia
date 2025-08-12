@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -357,6 +358,20 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         // commands. When the DrawPass is partially offscreen individual draw commands will be
         // culled while preserving state changing commands.
         return;
+    }
+
+    // TODO Helper function or something
+    if (drawPass->floatStorageManager()->hasData()) {
+        BindBufferInfo* bbi = drawPass->floatStorageManager()->getBufferInfo();
+        id<MTLBuffer> mtlBuffer = bbi->fBuffer ?
+            static_cast<const MtlBuffer*>(bbi->fBuffer)->mtlBuffer() : nullptr;
+        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer,
+                                                     bbi->fOffset,
+                                                     MtlGraphicsPipeline::kGradientBufferIndex);
+        fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer,
+                                                       bbi->fOffset,
+                                                       MtlGraphicsPipeline::kGradientBufferIndex);
+        //printf("%p %u %u\n", bbi->fBuffer, bbi->fSize, bbi->fOffset);
     }
 
     drawPass->addResourceRefs(this);

@@ -430,9 +430,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // The initial layout we pass here is not important as it will be re-assigned when writing
     // shading and geometry uniforms below.
     PipelineDataGatherer gatherer(uniformLayout);
-    // Track the grad buffers
-    FloatStorageManager floatStorageManager;
-
+    drawPass->setFloatStorageManager(recorder->priv().floatStorageManager());
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
 
@@ -444,7 +442,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         if (draw.fPaintParams.has_value()) {
             shaderID = ExtractPaintData(recorder,
-                                        &floatStorageManager,
+                                        drawPass->floatStorageManager(),
                                         &gatherer,
                                         &builder,
                                         uniformLayout,
@@ -488,12 +486,15 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         passBounds.join(draw.fDrawParams.clip().drawBounds());
     }
 
-    GradientBufferTracker gradientBufferTracker;
-    if (!gradientBufferTracker.writeData(floatStorageManager.data(), bufferMgr)) {
-        // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
-        // Early out now since the next Recording snap will fail.
-        return nullptr;
-    }
+    // GradientBufferTracker gradientBufferTracker;
+    // if (!gradientBufferTracker.writeData(floatStorageManager->data(), bufferMgr)) {
+    //     // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
+    //     // Early out now since the next Recording snap will fail.
+    //     return nullptr;
+    // }
+
+    // drawPass->floatStorageManager()->finalize(bufferMgr);
+    // drawPass->bindFloatStorageIfNeeded();
 
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
@@ -514,7 +515,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // All large gradients pack their data into a single buffer throughout the draw pass,
     // therefore the gradient buffer only needs to be bound once.
-    gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
+    // gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
     UniformTracker geometryUniformTracker(useStorageBuffers);
     UniformTracker shadingUniformTracker(useStorageBuffers);
 
@@ -720,6 +721,19 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fSampledTextures[i]->refTexture());
     }
+}
+
+// void DrawPass::bindFloatStorageIfNeeded() {
+//     SkASSERT(fFloatStorageManager->isFinalized());
+//     if (fFloatStorageManager->hasData()) {
+//         this->fCommandList.bindUniformBuffer(*fFloatStorageManager->getBufferInfo(),
+//                                              UniformSlot::kGradient);
+//     }
+//     printf("Trying to bind: %s\n", fFloatStorageManager->hasData() ? "Yes" : "No" );
+// }
+
+void DrawPass::setFloatStorageManager(sk_sp<FloatStorageManager> manager) {
+    fFloatStorageManager = std::move(manager);
 }
 
 } // namespace skgpu::graphite

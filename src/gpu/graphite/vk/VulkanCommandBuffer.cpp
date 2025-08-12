@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -944,6 +945,13 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+    //TODO Helper function or something
+    if (drawPass->floatStorageManager()->hasData()) {
+        fUniformBuffersToBind[VulkanGraphicsPipeline::kGradientBufferIndex] =
+            *drawPass->floatStorageManager()->getBufferInfo();
+        fBindUniformBuffers = true;
+    }
+
     drawPass->addResourceRefs(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {

@@ -640,6 +640,13 @@ bool DawnCommandBuffer::endRenderPass() {
 }
 
 bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+    //TODO Helper function or something
+    if (drawPass->floatStorageManager()->hasData()) {
+        fBoundUniforms[DawnGraphicsPipeline::kGradientBufferIndex] =
+                *drawPass->floatStorageManager()->getBufferInfo();
+        fBoundUniformBuffersDirty = true;
+    }
+
     drawPass->addResourceRefs(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
