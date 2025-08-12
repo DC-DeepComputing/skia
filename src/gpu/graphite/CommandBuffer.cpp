@@ -107,6 +107,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
 
     SkIRect renderPassBounds;
     for (const auto& drawPass : drawPasses) {
+        drawPass->bindFloatStorageIfNeeded();
         renderPassBounds.join(drawPass->bounds());
     }
     if (renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kClear) {
