@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a379514_d9935847",
+        "filename": "example/external_client/custom_skia_config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-12T17:40:58Z",
+      "side": 1,
+      "message": "This doesn\u0027t exist, so you\u0027ll need to copy the config_setting also",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 21
+      },
+      "revId": "cefd5a37b4b089cf8f73fb6dd258b910c763be87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
