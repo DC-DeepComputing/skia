@@ -52,6 +52,24 @@
       "parentUuid": "ba524fc0_b60ce30a",
       "revId": "a52ece1930e8fc3650cc4ed5ee9ce680991ff452",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d599ef9b_922d03f4",
+        "filename": "docs/examples/Conic_Weight_a.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-12T14:57:44Z",
+      "side": 1,
+      "message": "good catch. done.",
+      "parentUuid": "ba524fc0_b60ce30a",
+      "revId": "a52ece1930e8fc3650cc4ed5ee9ce680991ff452",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
