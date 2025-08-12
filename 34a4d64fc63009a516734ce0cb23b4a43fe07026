@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7a0d5c1_f2cfa02e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-12T14:27:37Z",
+      "side": 1,
+      "message": "FYI, this is being exercised by the SwiftShader bots (for both compressed and non-compressed formats).\n\nIn practice (on Android), the compressed formats are going to use host-image-copy, while non-compressed uses buffer-backed copy. That means the change on its own is not going to help since RE and HWUI don\u0027t seem to be using compressed formats.\n\nHowever, there are some use-cases with non-compressed formats that could benefit from host-image-copy and they need to be experimented with. For example, we could always enable host-image-copy on non-renderable textures if it helps with Android\u0027s use cases. In ANGLE, that has improved some applications while regressing others (but it follows ARM\u0027s driver behavior). Alternatively (and preferably), the application can indicate which textures it thinks are going to be upload heavy and we enable host-image-copy on those only (but this needs a new public API).\n\nTL;DR, let\u0027s get the base in, and we\u0027ll experiment with non-compressed formats later.",
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5537061f_bd329cd4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2100,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-12T14:27:37Z",
+      "side": 1,
+      "message": "While I haven\u0027t broken anything with this change, I think an existing bug here is that if the application uses other extensions it could be setting other bits here that don\u0027t fit. Maybe the usage flags should also be given their own uint32?",
+      "range": {
+        "startLine": 2099,
+        "startChar": 25,
+        "endLine": 2100,
+        "endChar": 52
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
