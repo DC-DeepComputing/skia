@@ -27,6 +27,7 @@
 #include <math.h>
 #include <initializer_list>
 
+#if 0
 static void drawline(SkCanvas* canvas, int on, int off, const SkPaint& paint,
                      SkScalar finalX = SkIntToScalar(600), SkScalar finalY = SkIntToScalar(0),
                      SkScalar phase = SkIntToScalar(0),
@@ -511,7 +512,7 @@ DEF_SIMPLE_GM(longlinedash, canvas, 512, 512) {
     p.setPathEffect(SkDashPathEffect::Make(intervals, 0));
     canvas->drawRect(SkRect::MakeXYWH(-10000, 100, 20000, 20), p);
 }
-
+#endif
 DEF_SIMPLE_GM(dashbigrects, canvas, 256, 256) {
     SkRandom rand;
 
@@ -547,10 +548,17 @@ DEF_SIMPLE_GM(dashbigrects, canvas, 256, 256) {
         p.setColor(ToolUtils::color_to_565(rand.nextU() | (0xFF << 24)));
 
         int offset = 2 * i * kHalfStrokeWidth + kHalfStrokeWidth;
+
+        SkDebugf("---- dashbigrects: before draw\n");
         canvas->drawRect(SkRect::MakeXYWH(offset, offset, gWidthHeights[i], gWidthHeights[i]), p);
+        SkDebugf("---- dashbigrects: after draw\n");
+
+        if (i == 0) {
+            return; // just want to see one draw
+        }
     }
 }
-
+#if 0
 DEF_SIMPLE_GM(longwavyline, canvas, 512, 512) {
     SkPaint p;
     p.setAntiAlias(true);
@@ -672,3 +680,4 @@ DEF_GM(return new Dashing3GM;)
 DEF_GM(return new Dashing4GM;)
 DEF_GM(return new Dashing5GM(true);)
 DEF_GM(return new Dashing5GM(false);)
+#endif

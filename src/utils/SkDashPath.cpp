@@ -174,6 +174,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     if (!cullRect) {
         SkPoint pts[2];
         if (srcPath.isLine(pts) && pts[0] == pts[1]) {
+            SkDebugf("---- dashbigrects: isLine1 is true\n");
             adjust_zero_length_line(pts);
             dstPath->moveTo(pts[0]);
             dstPath->lineTo(pts[1]);
@@ -189,6 +190,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     {
         SkPoint pts[2];
         if (srcPath.isLine(pts)) {
+            SkDebugf("---- dashbigrects: isLine2 is true\n");
             if (clip_line(pts, bounds, intervalLength, 0)) {
                 dstPath->moveTo(pts[0]);
                 dstPath->lineTo(pts[1]);
@@ -199,6 +201,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     }
 
     if (srcPath.isRect(nullptr)) {
+        SkDebugf("---- dashbigrects: isRect is true\n");
         // We'll break the rect into four lines, culling each separately.
         SkPath::Iter iter(srcPath, false);
 
@@ -326,7 +329,9 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
 
     SkPath cullPathStorage;
     const SkPath* srcPtr = &src;
+    SkDebugf("---- dashbigrects: calling clip_path\n");
     if (cull_path(src, *rec, cullRect, intervalLength, &cullPathStorage)) {
+        SkDebugf("---- dashbigrects: clip_path succeeded\n");
         // if rect is closed, starts in a dash, and ends in a dash, add the initial join
         // potentially a better fix is described here: skbug.com/40038693
         if (src.isRect(nullptr) && src.isLastContourClosed() && is_even(initialDashIndex)) {
@@ -373,6 +378,8 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
             }
         }
         srcPtr = &cullPathStorage;
+    } else {
+        SkDebugf("---- dashbigrects: clip_path failed\n");
     }
 
     SpecialLineRec lineRec;
