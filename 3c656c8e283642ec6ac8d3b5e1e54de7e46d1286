@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1fdad0b_ce48d4c8",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-12T14:01:40Z",
+      "side": 1,
+      "message": "On the one hand putting the unpremul step here would avoid `roll`s but it would mean duplicating the unpremul code for every interval, which could be very costly in code size.",
+      "revId": "3c656c8e283642ec6ac8d3b5e1e54de7e46d1286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78088042_348fb3b5",
         "filename": "src/pdf/SkPDFGradientShader.cpp",
         "patchSetId": 2
