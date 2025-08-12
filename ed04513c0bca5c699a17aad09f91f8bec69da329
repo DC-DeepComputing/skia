@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "372d7324_5bc332f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-12T18:50:17Z",
+      "side": 1,
+      "message": "Unfortunately, some of the SkParagraph tests appear to be failing on some of the NativeFonts jobs due to this change.",
+      "revId": "ed04513c0bca5c699a17aad09f91f8bec69da329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
