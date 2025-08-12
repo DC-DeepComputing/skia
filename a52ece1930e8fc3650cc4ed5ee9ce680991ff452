@@ -16,6 +16,24 @@
       "message": "We could now drop pointCount (here and some other docs):\n\n`for (const auto\u0026 pt : rec.fPoints) {`",
       "revId": "a52ece1930e8fc3650cc4ed5ee9ce680991ff452",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba524fc0_b60ce30a",
+        "filename": "docs/examples/Conic_Weight_a.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-12T14:42:35Z",
+      "side": 1,
+      "message": "Now, or in follow-up CL?",
+      "parentUuid": "503447d8_9f5c21b7",
+      "revId": "a52ece1930e8fc3650cc4ed5ee9ce680991ff452",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
