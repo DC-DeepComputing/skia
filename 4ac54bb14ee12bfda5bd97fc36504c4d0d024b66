@@ -125,6 +125,57 @@
       "message": "overlength",
       "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37aaefb5_fbaa290d",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-12T15:41:59Z",
+      "side": 1,
+      "message": "nit: we can skip explicit initialization for inputSpace and outputSpace.",
+      "range": {
+        "startLine": 114,
+        "startChar": 35,
+        "endLine": 114,
+        "endChar": 44
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ee89e58d_c48e203d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/shaders/SkWorkingColorSpaceShader.cpp",
+              "range": {
+                "startLine": 114,
+                "startChar": 0,
+                "endLine": 115,
+                "endChar": 0
+              },
+              "replacement": "    sk_sp\u003cSkColorSpace\u003e inputSpace;\n"
+            },
+            {
+              "path": "src/shaders/SkWorkingColorSpaceShader.cpp",
+              "range": {
+                "startLine": 126,
+                "startChar": 0,
+                "endLine": 127,
+                "endChar": 0
+              },
+              "replacement": "    sk_sp\u003cSkColorSpace\u003e outputSpace;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
