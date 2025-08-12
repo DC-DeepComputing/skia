@@ -547,7 +547,14 @@ DEF_SIMPLE_GM(dashbigrects, canvas, 256, 256) {
         p.setColor(ToolUtils::color_to_565(rand.nextU() | (0xFF << 24)));
 
         int offset = 2 * i * kHalfStrokeWidth + kHalfStrokeWidth;
+
+        SkDebugf("---- dashbigrects: before draw\n");
         canvas->drawRect(SkRect::MakeXYWH(offset, offset, gWidthHeights[i], gWidthHeights[i]), p);
+        SkDebugf("---- dashbigrects: after draw\n");
+
+        if (i == 0) {
+            return; // just want to see one draw
+        }
     }
 }
 
