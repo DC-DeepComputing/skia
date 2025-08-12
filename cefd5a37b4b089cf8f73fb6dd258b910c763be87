@@ -22,6 +22,30 @@
       },
       "revId": "cefd5a37b4b089cf8f73fb6dd258b910c763be87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ebe2b4f_84c1e079",
+        "filename": "example/external_client/custom_skia_config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-12T17:42:42Z",
+      "side": 1,
+      "message": "aw beans",
+      "parentUuid": "4a379514_d9935847",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 21
+      },
+      "revId": "cefd5a37b4b089cf8f73fb6dd258b910c763be87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
