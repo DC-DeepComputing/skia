@@ -34,6 +34,24 @@
       "parentUuid": "182904a5_e2c0df04",
       "revId": "55ca31bf3a805ee519f450c80b206a26f09677da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25f133c4_f135f10a",
+        "filename": "third_party/dawn/build_tint.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-12T14:23:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1644397_4d1a9a88",
+      "revId": "55ca31bf3a805ee519f450c80b206a26f09677da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
