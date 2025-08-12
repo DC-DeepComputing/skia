@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78088042_348fb3b5",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-12T13:59:39Z",
+      "side": 1,
+      "message": "After some experimentation, it appears Preview (pdfkit) really doesn\u0027t like this `eq`.",
+      "range": {
+        "startLine": 147,
+        "startChar": 31,
+        "endLine": 147,
+        "endChar": 33
+      },
+      "revId": "3c656c8e283642ec6ac8d3b5e1e54de7e46d1286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
