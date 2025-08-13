@@ -358,6 +358,8 @@ void CommandLineFlags::Parse(int argc, const char* const* argv) {
 namespace {
 
 template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const char* name) {
+    return strcmp(name, "dashbigrects") != 0;
+
     int    count      = strings.size();
     size_t testLen    = strlen(name);
     bool   anyExclude = count == 0;
