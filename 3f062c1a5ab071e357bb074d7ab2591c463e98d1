@@ -16,6 +16,167 @@
       "message": "PTAL",
       "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed3abbe8_db7891ad",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "We should assert that the FSM is not finalized if we are trying to add data to it.",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 470,
+        "endChar": 64
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2395eb_c1952b5e",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "This is a pretty serious violation of behavior so I think we can have it be an assert.",
+      "range": {
+        "startLine": 483,
+        "startChar": 0,
+        "endLine": 485,
+        "endChar": 19
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7468d0ef_4fbd5f40",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "If `writer` fails, we need to fail the Recorder::snap() so `finalize()` needs to return a bool.",
+      "range": {
+        "startLine": 491,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 25
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6ffb75_3d1965ea",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "After we write the data here, we can reset `fGradientStorage` and `fGradientOffsetCache` since nothing will be appended anymore from the CPU side.",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 85
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd800905_8bb73efe",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "Now that the FSM\u0027s lifetime goes beyond a single DrawPass, we can\u0027t use a bare pointer as the key anymore.  A DrawPass that adds one SkShader can drop all of its refs to the paint params that keep the shader alive and some new surface\u0027s paints could end up with a new SkShader assigned to the same address depending on what the caller was doing to create its paints.\n\nI believe we proposed adding a unique ID field to SkShaderBase so we could key off of that.  Otherwise we need to change this to `sk_sp\u003cSkGradientBaseShader\u003e` and add a hash function that looks at just the underlying bare address (vs. trying to also factor in the ref count, which I think the default hash would do).",
+      "range": {
+        "startLine": 524,
+        "startChar": 27,
+        "endLine": 524,
+        "endChar": 54
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c211d135_0b54af0a",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "All of this can be consolidated into `std::optional\u003cBindBufferInfo\u003e fBufferInfo`.  If the the buffer info has no value, it\u0027s not finalized yet.  If we finalize the FSM but there was no gradient data, we set it to a default initialized BBI, and otherwise to the BBI that has the uploaded data.  When finalize() can fail there aren\u0027t other cases we need to worry about I don\u0027t think.",
+      "range": {
+        "startLine": 526,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 26
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca6ee384_d88c98ab",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-13T16:01:37Z",
+      "side": 1,
+      "message": "nit: Skia style adds a `ref` prefix to these sorts of function names when they return a smart pointer that lets the caller add a ref, e.g. `refFloatStorageManager()`.",
+      "range": {
+        "startLine": 87,
+        "startChar": 31,
+        "endLine": 87,
+        "endChar": 50
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
