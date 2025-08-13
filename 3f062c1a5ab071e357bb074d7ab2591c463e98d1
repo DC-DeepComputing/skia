@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b67fc992_6d36a27d",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed3abbe8_db7891ad",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 470,
+        "endChar": 64
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b2395eb_c1952b5e",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-13T16:01:37Z",
       "side": 1,
       "message": "This is a pretty serious violation of behavior so I think we can have it be an assert.",
+      "range": {
+        "startLine": 483,
+        "startChar": 0,
+        "endLine": 485,
+        "endChar": 19
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82726132_1dcf8b86",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b2395eb_c1952b5e",
       "range": {
         "startLine": 483,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f859ac54_b5350215",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7468d0ef_4fbd5f40",
+      "range": {
+        "startLine": 491,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 25
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d6ffb75_3d1965ea",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-08-13T16:01:37Z",
       "side": 1,
       "message": "After we write the data here, we can reset `fGradientStorage` and `fGradientOffsetCache` since nothing will be appended anymore from the CPU side.",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 85
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77328e61_6ce1ce0c",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d6ffb75_3d1965ea",
       "range": {
         "startLine": 492,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b152cbb_4264cb40",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd800905_8bb73efe",
+      "range": {
+        "startLine": 524,
+        "startChar": 27,
+        "endLine": 524,
+        "endChar": 54
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c211d135_0b54af0a",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5c5a127_29f8c3ca",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c211d135_0b54af0a",
+      "range": {
+        "startLine": 526,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 26
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca6ee384_d88c98ab",
@@ -169,6 +313,30 @@
       "writtenOn": "2025-08-13T16:01:37Z",
       "side": 1,
       "message": "nit: Skia style adds a `ref` prefix to these sorts of function names when they return a smart pointer that lets the caller add a ref, e.g. `refFloatStorageManager()`.",
+      "range": {
+        "startLine": 87,
+        "startChar": 31,
+        "endLine": 87,
+        "endChar": 50
+      },
+      "revId": "3f062c1a5ab071e357bb074d7ab2591c463e98d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d1f9d31_530b8de9",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-13T21:57:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca6ee384_d88c98ab",
       "range": {
         "startLine": 87,
         "startChar": 31,
