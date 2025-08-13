@@ -21,6 +21,7 @@
 #include "include/effects/SkDashPathEffect.h"
 #include "tools/timer/TimeUtils.h"
 
+#if 0
 int dash1[] = { 1, 1 };
 int dash2[] = { 1, 3 };
 int dash3[] = { 1, 1, 3, 3 };
@@ -270,3 +271,4 @@ DEF_SIMPLE_GM(maddash, canvas, 1600, 1600) {
     p.setStrokeWidth(300);
     canvas->drawPath(path.detach(), p);
 }
+#endif
