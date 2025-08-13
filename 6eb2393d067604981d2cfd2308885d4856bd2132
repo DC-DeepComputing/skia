@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "357c9f66_b74ebe87",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-13T17:49:06Z",
+      "side": 1,
+      "message": "No, the point of this change is that it works correctly on all versions.",
+      "parentUuid": "a17eab9f_544138a6",
+      "revId": "6eb2393d067604981d2cfd2308885d4856bd2132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d79defb8_e2a878f4",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-08-13T16:49:02Z",
       "side": 1,
       "message": "Does the comparison make sense if a.axis \u003e b.axis, or is there something preventing that case (SkAssert if so)?",
+      "revId": "6eb2393d067604981d2cfd2308885d4856bd2132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d69c86_c26f8121",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-13T17:49:06Z",
+      "side": 1,
+      "message": "I don\u0027t know what I was thinking (probably about everything else in this change). I suppose this \"worked\" because it doesn\u0027t matter what the sort order is, just that both lists are sorted the same way.",
+      "parentUuid": "d79defb8_e2a878f4",
       "revId": "6eb2393d067604981d2cfd2308885d4856bd2132",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
