@@ -1,4 +1,4 @@
-#Fuzzing
+# Fuzzing
 In this folder, we keep our _fuzzers_ (bits of code that takes a randomized input and executes code
 randomly, focusing on specific APIs). For example, we have a codec fuzzer which takes a mutated
 png/jpeg or similar file and attempts to turn it into an `SkImage`. We also have a canvas fuzzer
