@@ -28,6 +28,8 @@
 #include <cstddef>
 #include <cstdint>
 
+bool gAllowDashing;
+
 static inline int is_even(int x) {
     return !(x & 1);
 }
@@ -174,6 +176,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     if (!cullRect) {
         SkPoint pts[2];
         if (srcPath.isLine(pts) && pts[0] == pts[1]) {
+            if (gAllowDashing) SkDebugf("---- dashbigrects: isLine1 is true\n");
             adjust_zero_length_line(pts);
             dstPath->moveTo(pts[0]);
             dstPath->lineTo(pts[1]);
@@ -189,6 +192,7 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     {
         SkPoint pts[2];
         if (srcPath.isLine(pts)) {
+            if (gAllowDashing) SkDebugf("---- dashbigrects: isLine2 is true\n");
             if (clip_line(pts, bounds, intervalLength, 0)) {
                 dstPath->moveTo(pts[0]);
                 dstPath->lineTo(pts[1]);
@@ -199,6 +203,8 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
     }
 
     if (srcPath.isRect(nullptr)) {
+        if (gAllowDashing)
+            SkDebugf("---- dashbigrects: isRect is true\n");
         // We'll break the rect into four lines, culling each separately.
         SkPath::Iter iter(srcPath, false);
 
@@ -226,6 +232,9 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
             SkASSERT(v.fX == 0 || v.fY == 0);
             accum += SkScalarAbs(v.fX + v.fY);
         }
+
+        if (gAllowDashing) SkDebugf("---- dashbigrects: clipped dstPts: %d\n", dstPath->countPoints());
+
         return !dstPath->isEmpty();
     }
 
@@ -305,7 +314,6 @@ private:
     SkScalar fPathLength;
 };
 
-
 bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeRec* rec,
                                 const SkRect* cullRect, SkSpan<const SkScalar> aIntervals,
                                 SkScalar initialDashLength, int32_t initialDashIndex,
@@ -326,12 +334,25 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
 
     SkPath cullPathStorage;
     const SkPath* srcPtr = &src;
+
+    if (gAllowDashing) SkDebugf("---- dashbigrects: calling clip_path\n");
     if (cull_path(src, *rec, cullRect, intervalLength, &cullPathStorage)) {
+        if (gAllowDashing)
+            SkDebugf("---- dashbigrects: clip_path succeeded\n");
         // if rect is closed, starts in a dash, and ends in a dash, add the initial join
         // potentially a better fix is described here: skbug.com/40038693
+
+        bool b0 = src.isRect(nullptr);
+        bool b1 = src.isLastContourClosed();
+        bool b2 = is_even(initialDashIndex);
+        if (gAllowDashing) SkDebugf("---- dashbigrects: bools %d %d %d\n", b0, b1, b2);
+
         if (src.isRect(nullptr) && src.isLastContourClosed() && is_even(initialDashIndex)) {
+
             SkScalar pathLength = SkPathMeasure(src, false, rec->getResScale()).getLength();
+            if (gAllowDashing) SkDebugf("---- dashbigrects: pathLength %g\n", pathLength);
             SkScalar endPhase = SkScalarMod(pathLength + startPhase, intervalLength);
+            if (gAllowDashing) SkDebugf("---- dashbigrects: endPhase %g interval[0] %g\n", endPhase, intervals[0]);
             size_t index = 0;
             while (endPhase > intervals[index]) {
                 endPhase -= intervals[index++];
@@ -347,6 +368,7 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
             }
             // if dash ends inside "on", or ends at beginning of "off"
             if (is_even(index) == (endPhase > 0)) {
+                if (gAllowDashing) SkDebugf("---- dashbigrects: inside is_even\n");
                 SkPoint midPoint = src.getPoint(0);
                 // get vector at end of rect
                 int last = src.countPoints() - 1;
@@ -373,6 +395,11 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
             }
         }
         srcPtr = &cullPathStorage;
+
+        if (gAllowDashing) SkDebugf("---- dashbigrects: srcPtr count %d\n", srcPtr->countPoints());
+
+    } else {
+        if (gAllowDashing) SkDebugf("---- dashbigrects: clip_path failed\n");
     }
 
     SpecialLineRec lineRec;
@@ -387,6 +414,8 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
         SkScalar    length = meas.getLength();
         size_t      index = initialDashIndex;
 
+        if (gAllowDashing) SkDebugf("---- dashbigrects: inside do { length %g, initialIndex %zu\n", length, index);
+
         // Since the path length / dash length ratio may be arbitrarily large, we can exert
         // significant memory pressure while attempting to build the filtered path. To avoid this,
         // we simply give up dashing beyond a certain threshold.
@@ -395,9 +424,14 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
         // 90 million dash segments and crashing the memory allocator. A limit of 1 million
         // segments seems reasonable: at 2 verbs per segment * 9 bytes per verb, this caps the
         // maximum dash memory overhead at roughly 17MB per path.
+
+        if (gAllowDashing) SkDebugf("---- dashbigrects: dashCount %g count %zu, intervalLength %g\n",
+                                    dashCount, count, intervalLength);
+
         dashCount += length * (count >> 1) / intervalLength;
         if (dashCount > kMaxDashCount) {
             dst->reset();
+        if (gAllowDashing) SkDebugf("---- dashbigrects: OOPS, max dash count %g %g\n", dashCount, kMaxDashCount);
             return false;
         }
 
