@@ -16,6 +16,24 @@
       "message": "While this does work and fixes many tests in Chromium when attempting to use the this font manager, it fails when running on Android 15 and 16. While this does work and is a correct way to do the comparison, on Android 15 and 16 `AFont_getAxis*` are no longer useful as only the single most default member of a family is reported. On Android 14 and below `ASystemFontIterator_next` would report an entry for each listing in xml file, but in 15 and 16 it will only report one member for each font file from each family.\n\nHow this shows up in Chromium is that there are no bold or italic system fonts (or any weights other than 400). It might be possible to work around this by testing if on Android \u003e\u003d 15 and pulling out all the named instances of each font file, but this isn\u0027t entirely correct either.",
       "revId": "9109b1ca9c4351e72881084566db64c106477424",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feb3ce19_bd99cab4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-13T20:44:07Z",
+      "side": 1,
+      "message": "After a bit of investigation, it appears the undocumented behavior here is that the axes reported by AFont are the pinned axes. All other axes may \"float\" as needed. AFont currently does not report the `supportedAxes` so it must be assumed that all known axes (`wght`, `wdth`, `ital`, `slnt`, `opsz`) which are not specified may \"float\".",
+      "parentUuid": "0ae25b71_621d3452",
+      "revId": "9109b1ca9c4351e72881084566db64c106477424",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
