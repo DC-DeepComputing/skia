@@ -3,6 +3,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a17eab9f_544138a6",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-08-13T17:14:47Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we check for the Android version somewhere in the code below?",
+      "fixSuggestions": [
+        {
+          "fixId": "7242fe5a_a6e4b94a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkFontMgr_android_ndk.cpp",
+              "range": {
+                "startLine": 543,
+                "startChar": 0,
+                "endLine": 544,
+                "endChar": 0
+              },
+              "replacement": "        // In Android \u003e\u003d 15 AFont does not report any axis which is set to default. This makes\n        // it impossible to match a font in fonts.xml which specifies a default axis.\n        // TODO: https://code.google.com/p/android/issues/detail?id\u003d300787\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6eb2393d067604981d2cfd2308885d4856bd2132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d79defb8_e2a878f4",
         "filename": "src/ports/SkFontMgr_android_ndk.cpp",
         "patchSetId": 2
