@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d79defb8_e2a878f4",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-13T16:49:02Z",
+      "side": 1,
+      "message": "Does the comparison make sense if a.axis \u003e b.axis, or is there something preventing that case (SkAssert if so)?",
+      "revId": "6eb2393d067604981d2cfd2308885d4856bd2132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
