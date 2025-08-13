@@ -5690,25 +5690,24 @@ static void test_edger(skiatest::Reporter* r,
 static void assert_points(skiatest::Reporter* reporter,
                           const SkPath& path, const std::initializer_list<SkPoint>& list) {
     const SkPoint* expected = list.begin();
-    SkPath::RawIter iter(path);
-    for (size_t i = 0;;) {
-        SkPoint pts[4];
-        switch (iter.next(pts)) {
-            case SkPath::kDone_Verb:
-                REPORTER_ASSERT(reporter, i == list.size());
-                return;
-            case SkPath::kMove_Verb:
-                REPORTER_ASSERT(reporter, pts[0] == expected[i]);
+    SkPath::Iter iter(path, false);
+    size_t i = 0;
+    while (auto rec = iter.next()) {
+        switch (rec->fVerb) {
+            case SkPathVerb::kMove:
+                REPORTER_ASSERT(reporter, rec->fPoints[0] == expected[i]);
                 i++;
                 break;
-            case SkPath::kLine_Verb:
-                REPORTER_ASSERT(reporter, pts[1] == expected[i]);
+            case SkPathVerb::kLine:
+                REPORTER_ASSERT(reporter, rec->fPoints[1] == expected[i]);
                 i++;
                 break;
-            case SkPath::kClose_Verb: break;
+            case SkPathVerb::kClose:
+                break;
             default: SkASSERT(false);
         }
     }
+    REPORTER_ASSERT(reporter, i == list.size());
 }
 
 static void test_addRect_and_trailing_lineTo(skiatest::Reporter* reporter) {
