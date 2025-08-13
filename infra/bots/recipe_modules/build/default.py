@@ -213,7 +213,7 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
     args['skia_use_cpp20'] = 'true'
   if 'SwiftShader' in extra_tokens:
     swiftshader_root = skia_dir.joinpath('third_party', 'externals', 'swiftshader')
-    # Swiftshader will need to make ninja be on the path
+    # Swiftshader will need to have ninja be on the path
     ninja_root = skia_dir.joinpath('third_party', 'ninja')
     swiftshader_out = out_dir.joinpath('swiftshader_out')
     compile_swiftshader(api, extra_tokens, swiftshader_root, ninja_root, cc, cxx, swiftshader_out)
@@ -371,7 +371,13 @@ def compile_fn(api, checkout_root, out_dir):
   args, env, ccache = get_compile_flags(api, checkout_root, out_dir, workdir)
   gn_args = finalize_gn_flags(args)
   gn = skia_dir.joinpath('bin', 'gn')
-  ninja = skia_dir.joinpath('third_party', 'ninja', 'ninja')
+  ninja_root = skia_dir.joinpath('third_party', 'ninja')
+  ninja = skia_dir.joinpath(ninja_root, 'ninja')
+
+  # Putting ninja on the path makes it easier for subcommands to find it
+  # (e.g. when building Dawn via CMake+ninja)
+  existing_path = env.get('PATH', '%%(PATH)s')
+  env['PATH'] = '%s:%s' % (ninja_root, existing_path)
 
   with api.context(cwd=skia_dir):
     with api.env(env):
