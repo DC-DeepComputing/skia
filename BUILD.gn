@@ -1223,7 +1223,10 @@ optional("graphite") {
     }
     if (is_debug) {
       sources += skia_sksl_validate_spirv_sources
-      deps += [ "//third_party/externals/spirv-tools:spvtools" ]
+      deps += [
+        "//third_party/externals/spirv-tools:spvtools",
+        "//third_party/externals/spirv-tools:spvtools_val",
+      ]
     }
   }
   if (skia_enable_precompile) {
