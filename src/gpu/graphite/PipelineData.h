@@ -18,8 +18,10 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
@@ -457,17 +459,9 @@ private:
  * Aggregates gradient color and stop information into a single buffer to be bound once for a
  * DrawPass. It de-duplicates gradient data by caching based on the SkGradientBaseShader pointer.
  */
-class FloatStorageManager {
+class FloatStorageManager : public SkRefCnt {
 public:
     FloatStorageManager() = default;
-
-    void reset() {
-        fGradientStorage.clear();
-        fGradientOffsetCache.reset();
-    }
-
-    // All accumulated gradient data.
-    SkSpan<const float> data() const { return fGradientStorage; }
 
     // Checks if data already exists for the requested gradient shader. If so, it returns
     // a nullptr and the existing offset. If not, it allocates space, caches the offset,
@@ -484,6 +478,33 @@ public:
         return {ptr, offset};
     }
 
+    void finalize(DrawBufferManager* bufferMgr) {
+        if (fIsFinalized) {
+            SKGPU_LOG_W("Warning, attempting to finalize a floatStorageManager that was already"
+                        "finaliezed!");
+            return;
+        }
+
+        if (!fGradientStorage.empty()) {
+            auto [writer, bufferInfo] = bufferMgr->getSsboWriter(fGradientStorage.size(),
+                                                                 sizeof(float));
+            if (writer) {
+                writer.write(fGradientStorage.data(), fGradientStorage.size_bytes());
+                fBufferInfo = bufferInfo;
+                fHasData = true;
+            }
+        }
+
+        fIsFinalized = true;
+        return;
+    }
+
+    BindBufferInfo* getBufferInfo() {
+        return &fBufferInfo;
+    }
+
+    bool hasData() const { return fHasData; }
+    SkDEBUGCODE(bool isFinalized() const { return fIsFinalized; })
 private:
     // Allocates space for a given number of floats and returns a pointer to the start
     // of the new allocation and its offset from the beginning of the buffer.
@@ -501,6 +522,10 @@ private:
 
     // We use the shader's address as a key to de-duplicate gradient data.
     skia_private::THashMap<const SkGradientBaseShader*, int> fGradientOffsetCache;
+
+    BindBufferInfo fBufferInfo;
+    bool fIsFinalized = false;
+    bool fHasData = false;
 };
 
 } // namespace skgpu::graphite

@@ -34,6 +34,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -114,6 +115,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
+        , fFloatStorageManager(sk_make_sp<FloatStorageManager>())
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fRequireOrderedRecordings(options.fRequireOrderedRecordings.has_value()
@@ -197,6 +199,8 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Collect all pending tasks on the deferred recording canvas and any other tracked device.
     this->priv().flushTrackedDevices();
 
+    fFloatStorageManager->finalize(fDrawBufferManager.get());
+
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
     ScratchResourceManager scratchManager{fResourceProvider, std::move(fProxyReadCounts)};
@@ -238,6 +242,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
+    fFloatStorageManager = sk_make_sp<FloatStorageManager>();
     if (!fRequireOrderedRecordings) {
         fAtlasProvider->invalidateAtlases();
     }

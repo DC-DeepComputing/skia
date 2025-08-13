@@ -355,11 +355,13 @@ private:
 
 DrawPass::DrawPass(sk_sp<TextureProxy> target,
                    std::pair<LoadOp, StoreOp> ops,
-                   std::array<float, 4> clearColor)
+                   std::array<float, 4> clearColor,
+                   sk_sp<FloatStorageManager> floatStorageManager)
         : fTarget(std::move(target))
         , fBounds(SkIRect::MakeEmpty())
         , fOps(ops)
-        , fClearColor(clearColor) {}
+        , fClearColor(clearColor)
+        , fFloatStorageManager(floatStorageManager) {}
 
 DrawPass::~DrawPass() = default;
 
@@ -402,7 +404,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor));
+    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor,
+                                                    recorder->priv().floatStorageManager()));
 
     Rect passBounds = Rect::InfiniteInverted();
 
@@ -430,9 +433,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // The initial layout we pass here is not important as it will be re-assigned when writing
     // shading and geometry uniforms below.
     PipelineDataGatherer gatherer(uniformLayout);
-    // Track the grad buffers
-    FloatStorageManager floatStorageManager;
-
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
 
@@ -444,7 +444,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         if (draw.fPaintParams.has_value()) {
             shaderID = ExtractPaintData(recorder,
-                                        &floatStorageManager,
+                                        drawPass->floatStorageManager(),
                                         &gatherer,
                                         &builder,
                                         uniformLayout,
@@ -488,13 +488,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         passBounds.join(draw.fDrawParams.clip().drawBounds());
     }
 
-    GradientBufferTracker gradientBufferTracker;
-    if (!gradientBufferTracker.writeData(floatStorageManager.data(), bufferMgr)) {
-        // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
-        // Early out now since the next Recording snap will fail.
-        return nullptr;
-    }
-
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
     // explore radix sort that is always O(n). Brief testing suggested std::sort was faster than
@@ -514,7 +507,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // All large gradients pack their data into a single buffer throughout the draw pass,
     // therefore the gradient buffer only needs to be bound once.
-    gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
+    // gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
     UniformTracker geometryUniformTracker(useStorageBuffers);
     UniformTracker shadingUniformTracker(useStorageBuffers);
 
