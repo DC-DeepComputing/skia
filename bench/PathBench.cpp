@@ -22,6 +22,7 @@
 
 #include "src/core/SkDraw.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkPathData.h"
 
 using namespace skia_private;
 
@@ -481,11 +482,15 @@ protected:
     }
 
     void onDelayedSetup() override {
-        fMatrix.setScale(5 * SK_Scalar1, 6 * SK_Scalar1);
+        fMatrix.setScale(1.00001f, 1.00001f);
         this->createData(10, 100);
         fPaths.reset(kPathCnt);
         for (int i = 0; i < kPathCnt; ++i) {
             this->makePath(&fPaths[i]);
+
+            SkPathBuilder bu;
+            bu.addPath(fPaths[i]);
+            fPDatas[i] = bu.detachData();
         }
         this->finishedMakingPaths();
         if (!fInPlace) {
@@ -496,12 +501,13 @@ protected:
     void onDraw(int loops, SkCanvas*) override {
         if (fInPlace) {
             for (int i = 0; i < loops; ++i) {
-                fPaths[i & (kPathCnt - 1)].transform(fMatrix);
+                int idx = i & (kPathCnt - 1);
+                fPaths[idx].makeTransform(fMatrix).getBounds();
             }
         } else {
             for (int i = 0; i < loops; ++i) {
                 int idx = i & (kPathCnt - 1);
-                fPaths[idx].transform(fMatrix, &fTransformed[idx]);
+                fPDatas[idx]->transform(fMatrix)->bounds();
             }
         }
     }
@@ -513,19 +519,34 @@ private:
     };
     AutoTArray<SkPath> fPaths;
     AutoTArray<SkPath> fTransformed;
+    std::array<sk_sp<SkPathData>, kPathCnt> fPDatas;
 
     SkMatrix fMatrix;
     bool fInPlace;
     using INHERITED = RandomPathBench;
 };
 
+enum class BenchPathType {
+    kPath,
+    kBuilder,
+    kData,
+};
+
 class PathTransformPerspectiveBench : public Benchmark {
 public:
-    PathTransformPerspectiveBench(bool useBuilder) : fUseBuilder(useBuilder) {}
+    PathTransformPerspectiveBench(BenchPathType t) : fType(t) {
+        const char* suffix = nullptr;
+        switch (t) {
+            case BenchPathType::kPath: suffix = "path"; break;
+            case BenchPathType::kBuilder: suffix = "builder"; break;
+            case BenchPathType::kData: suffix = "data"; break;
+        }
+        fName.printf("transform_perspective_%s", suffix);
+    }
 
 protected:
     const char* onGetName() override {
-        return fUseBuilder ? "transform_perspective_builder" : "transform_perspective_path";
+        return fName.c_str();
     }
 
     bool isSuitableFor(Backend backend) override {
@@ -537,29 +558,39 @@ protected:
         fBuilderSrc.addOval(r);
         fBuilderSrc.addOval(r.makeInset(10, 10));
         fPathSrc = fBuilderSrc.snapshot();
+        fPData = fBuilderSrc.snapshotData();
 
-        fMatrix[6] = 1;
+        fMatrix[6] = 0.0000001f;
     }
 
     void onDraw(int loops, SkCanvas*) override {
-        if (fUseBuilder) {
-            for (int i = 0; i < loops; ++i) {
-                fBuilderSrc.transform(fMatrix);
-                (void)fBuilderSrc.snapshot();
-            }
-        } else {
-            for (int i = 0; i < loops; ++i) {
-                (void)fPathSrc.makeTransform(fMatrix);
-            }
+        // we ask for bounds each time, to ensure we're playing fair, as some
+        // techniques compute bounds up front after a transform, and some defer
+        // it until it is first requested.
+        for (int i = 0; i < loops; ++i) {
+            switch (fType) {
+                case BenchPathType::kPath:
+                    fPathSrc.makeTransform(fMatrix).getBounds();
+                    break;
+                case BenchPathType::kBuilder:
+                    fBuilderSrc.transform(fMatrix);
+                    fBuilderSrc.snapshot().getBounds();
+                    break;
+                case BenchPathType::kData:
+                    fPData->transform(fMatrix)->bounds();
+                    break;
+                }
         }
     }
 
 private:
     SkPath          fPathSrc;
     SkPathBuilder   fBuilderSrc;
+    sk_sp<SkPathData> fPData;
 
-    SkMatrix fMatrix;
-    bool fUseBuilder;
+    SkMatrix      fMatrix;
+    BenchPathType fType;
+    SkString      fName;
 };
 
 class PathEqualityBench : public RandomPathBench {
@@ -1251,8 +1282,9 @@ DEF_BENCH( return new PathTransformBench(true); )
 DEF_BENCH( return new PathTransformBench(false); )
 DEF_BENCH( return new PathEqualityBench(); )
 
-DEF_BENCH( return new PathTransformPerspectiveBench(true); )
-DEF_BENCH( return new PathTransformPerspectiveBench(false); )
+DEF_BENCH( return new PathTransformPerspectiveBench(BenchPathType::kData); )
+DEF_BENCH( return new PathTransformPerspectiveBench(BenchPathType::kBuilder); )
+DEF_BENCH( return new PathTransformPerspectiveBench(BenchPathType::kPath); )
 
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAdd_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddTrans_AddType); )
