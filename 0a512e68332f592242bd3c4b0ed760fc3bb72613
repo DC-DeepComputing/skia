@@ -16,6 +16,23 @@
       "message": "Looking at the gold diffs:\n* dashcubics is actually an improvement. The circular caps were being incorrectly generated and now this matches raster and ganesh non-tessellation behavior.\n* circular_arcs_stroke_square is a change in calculating the cap direction for a very short curve produced by the path measurer, it was wrong before and it\u0027s still wrong just differently so.",
       "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fe862f_9d899372",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-13T13:22:31Z",
+      "side": 1,
+      "message": "Overlength",
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
