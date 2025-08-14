@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d3a602_fe4fe4bd",
+        "filename": "include/android/AHardwareBufferUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-14T14:00:54Z",
+      "side": 1,
+      "message": "I\u0027d keep this comment in the `default:` case, and just add a more general public comment like \"// SkColorType expected for AHBs imported as external images\"",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 11
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637f06de_e1098554",
+        "filename": "include/android/AHardwareBufferUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-14T14:00:54Z",
+      "side": 1,
+      "message": "Since this is a public header, I don\u0027t think we should be including details about what VulkanCaps expects.",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 10
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb9e979_e71d8bf6",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-14T14:00:54Z",
+      "side": 1,
+      "message": "Stylistically, comments inside function bodies should just be `//` even if they are big.",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 92,
+        "endChar": 7
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24e4fb68_72466c2d",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-14T14:00:54Z",
+      "side": 1,
+      "message": "You can just leave the `} else` without a `{` and then have the next line be `#endif` followed by a `{`.  This automatically turns it either into the else-block or into just a scoping block and we don\u0027t have to deal with if-else-endif pound defines.",
+      "range": {
+        "startLine": 126,
+        "startChar": 11,
+        "endLine": 129,
+        "endChar": 6
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ef48ab_a61c42e9",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-14T14:00:54Z",
+      "side": 1,
+      "message": "SkASSERT doesn\u0027t do anything if SK_DEBUG is not defined, so you don\u0027t have to guard them with `#if defined(SK_DEBUG)`.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 21
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
