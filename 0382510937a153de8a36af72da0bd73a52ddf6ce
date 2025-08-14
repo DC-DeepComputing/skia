@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22dba42e_288c6e22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-14T18:13:21Z",
+      "side": 1,
+      "message": "Locally, it is very hard to get reproducible numbers that show much of a diff ever, but since I\u0027m now investigating a \u0027faster\u0027 iter than either the old or new one, I\u0027m happy to revert this CL, so we can be measuring future ideas against the old baseline.",
+      "revId": "0382510937a153de8a36af72da0bd73a52ddf6ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
