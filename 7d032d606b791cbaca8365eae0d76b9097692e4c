@@ -16,6 +16,24 @@
       "message": "I believe we have planned work to alleviate this problem using a similar mechanism to how promise images are released. Brian could speak to progress there. But generally, as this impacts Ganesh+GL, I\u0027m hesitant to make involved changes to Ganesh\u0027s thread/memory/resource handling at this point.",
       "revId": "7d032d606b791cbaca8365eae0d76b9097692e4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17dff4ef_b90f360e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2025-08-14T04:49:00Z",
+      "side": 1,
+      "message": "OK, I understand your point. I encountered this issue when using Skia at work. I believe this problem only occurs when using the GL backend (VK shouldn’t have this problem, right?). For Skia’s users, it should behave the same and remain transparent regardless of the backend they are using. Therefore, I tried to fix this and hope it can be resolved. Is there anything that can be improved? Thanks!",
+      "parentUuid": "e224cd8d_c055a2fa",
+      "revId": "7d032d606b791cbaca8365eae0d76b9097692e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
