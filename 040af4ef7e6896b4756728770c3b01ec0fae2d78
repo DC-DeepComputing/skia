@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeaf83e1_f6ace1a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-14T15:17:02Z",
+      "side": 1,
+      "message": "The two failing Vulkan jobs are expected to still fail. This CL only fixed the GL and ANGLE jobs.",
+      "revId": "040af4ef7e6896b4756728770c3b01ec0fae2d78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
