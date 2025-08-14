@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3752809_d498b88b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-14T17:21:14Z",
+      "side": 1,
+      "message": "I think this is the basis for all iterators going forward. Even clients (like chrome currently using SkPath::RawIter) should switch to it.",
+      "revId": "5ad9a9fa0963584161d8b1cdf464f707f0d4d0f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
