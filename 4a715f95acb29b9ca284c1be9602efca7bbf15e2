@@ -69,6 +69,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c775ba8_28c23f87",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T14:28:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f705cea2_cc7ac9d8",
+      "range": {
+        "startLine": 499,
+        "startChar": 26,
+        "endLine": 499,
+        "endChar": 40
+      },
+      "revId": "4a715f95acb29b9ca284c1be9602efca7bbf15e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8636dbe_d320ae79",
@@ -110,6 +134,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cc2a486_d3c0e26e",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T14:28:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8636dbe_d320ae79",
+      "range": {
+        "startLine": 523,
+        "startChar": 27,
+        "endLine": 523,
+        "endChar": 34
+      },
+      "revId": "4a715f95acb29b9ca284c1be9602efca7bbf15e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4640843_0f7092fb",
@@ -133,6 +181,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9758b8c3_e5bb9a49",
+        "filename": "src/shaders/SkShaderBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T14:28:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4640843_0f7092fb",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "4a715f95acb29b9ca284c1be9602efca7bbf15e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96244705_5617ea7a",
@@ -146,6 +218,30 @@
       "writtenOn": "2025-08-14T13:51:37Z",
       "side": 1,
       "message": "We should wrap this in a loop to check that `id` is not SK_InvalidUniqueID, similar to https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkImageFilter.cpp;drc\u003dd3ff0fc4ed435f672bd7492f7b6e3063bac2dab2;l\u003d144 (although it\u0027s not using the named constant like it should).",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 14
+      },
+      "revId": "4a715f95acb29b9ca284c1be9602efca7bbf15e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3813abee_b4370bf0",
+        "filename": "src/shaders/SkShaderBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T14:28:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96244705_5617ea7a",
       "range": {
         "startLine": 31,
         "startChar": 0,
