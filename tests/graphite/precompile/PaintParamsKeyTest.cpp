@@ -1989,21 +1989,24 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         }
 
         SkDEBUGCODE(paramsGatherer.resetForDraw());
-        UniquePaintParamsID paintID =
-                ExtractPaintData(recorder,
-                                 precompileKeyContext.floatStorageManager(),
-                                 &paramsGatherer,
-                                 precompileKeyContext.paintParamsKeyBuilder(),
-                                 Layout::kMetal,
-                                 {},
-                                 PaintParams(paint,
-                                             primitiveBlender,
-                                             clipData,
-                                             std::move(modifiedClipShader),
-                                             dstReadRequired,
-                                             /* skipColorXform= */ false),
-                                 {},
-                                 precompileKeyContext.dstColorInfo());
+        // UniquePaintParamsID paintID =
+        //         ExtractPaintData(recorder,
+        //                          precompileKeyContext.floatStorageManager(),
+        //                          &paramsGatherer,
+        //                          precompileKeyContext.paintParamsKeyBuilder(),
+        //                          Layout::kMetal,
+        //                          {},
+        //                          PaintParams(paint,
+        //                                      primitiveBlender,
+        //                                      clipData,
+        //                                      std::move(modifiedClipShader),
+        //                                      dstReadRequired,
+        //                                      /* skipColorXform= */ false),
+        //                          {},
+        //                          precompileKeyContext.dstColorInfo());
+
+        // FIX ME !
+        UniquePaintParamsID paintID{};
 
         RenderPassDesc unusedRenderPassDesc;
 

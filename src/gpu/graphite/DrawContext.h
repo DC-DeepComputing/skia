@@ -72,13 +72,18 @@ public:
 
     void clear(const SkColor4f& clearColor);
     void discard();
+    void internalDiscard();
 
     void recordDraw(const Renderer* renderer,
                     const Transform& localToDevice,
                     const Geometry& geometry,
                     const Clip& clip,
                     DrawOrder ordering,
-                    const PaintParams* paint,
+                    UniquePaintParamsID paintID,
+                    DstReadStrategy dstReadStrategy,
+                    bool dependsOnDst,
+                    SkBlendMode finalBlendMode,
+                    PipelineDataGatherer* gatherer,
                     const StrokeStyle* stroke);
 
     bool recordUpload(Recorder* recorder,
@@ -98,13 +103,14 @@ public:
     // if compute path generation is not supported.
     PathAtlas* getComputePathAtlas(Recorder*);
 
+    // TODO CHECK THIS!
     // Moves all accumulated pending recorded operations (draws and uploads), and any other
     // dependent tasks into the DrawTask currently being built.
     void flush(Recorder*);
 
     // Flushes (if needed) and completes the current DrawTask, returning it to the caller.
     // Subsequent recorded operations will be added to a new DrawTask.
-    sk_sp<Task> snapDrawTask(Recorder*);
+    sk_sp<Task> snapDrawTask();
 
     // Returns the dst read strategy to use when/if a paint requires a dst read
     DstReadStrategy dstReadStrategy() const { return fDstReadStrategy; }

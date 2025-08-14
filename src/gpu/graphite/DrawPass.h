@@ -25,7 +25,6 @@ struct SkImageInfo;
 namespace skgpu::graphite {
 
 class CommandBuffer;
-class DrawList;
 class FloatStorageManager;
 class GraphicsPipeline;
 class Recorder;
@@ -56,24 +55,24 @@ public:
 
     // Create a DrawPass that renders the DrawList into `target` with the given load/store ops and
     // clear color.
-    static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
-                                          sk_sp<TextureProxy> target,
-                                          const SkImageInfo& targetInfo,
-                                          std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor,
-                                          const DstReadStrategy dstReadStrategy);
+    // static std::unique_ptr<DrawPass> Make(Recorder*,
+    //                                       std::unique_ptr<DrawList>,
+    //                                       sk_sp<TextureProxy> target,
+    //                                       const SkImageInfo& targetInfo,
+    //                                       std::pair<LoadOp, StoreOp>,
+    //                                       std::array<float, 4> clearColor,
+    //                                       const DstReadStrategy dstReadStrategy);
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.
-    const SkIRect&      bounds() const { return fBounds;       }
-    TextureProxy* target() const { return fTarget.get(); }
-    FloatStorageManager* floatStorageManager() const { return fFloatStorageManager.get(); }
-    std::pair<LoadOp, StoreOp> ops() const { return fOps; }
-    std::array<float, 4> clearColor() const { return fClearColor; }
+    const SkIRect&              bounds()              const { return fBounds;                    }
+    TextureProxy*               target()              const { return fTarget.get();              }
+    FloatStorageManager*        floatStorageManager() const { return fFloatStorageManager.get(); }
+    std::pair<LoadOp, StoreOp>  ops()                 const { return fOps;                       }
+    std::array<float, 4>        clearColor()          const { return fClearColor;                }
 
-    size_t vertexBufferSize()  const { return 0; }
-    size_t uniformBufferSize() const { return 0; }
+    // size_t vertexBufferSize()  const { return 0; }
+    // size_t uniformBufferSize() const { return 0; }
 
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
@@ -86,7 +85,7 @@ public:
         return fCommandList.commands();
     }
 
-    const GraphicsPipeline* getPipeline(size_t index) const {
+    const GraphicsPipeline* getPipeline(int32_t index) const {
         return fFullPipelines[index].get();
     }
 
@@ -98,7 +97,7 @@ public:
     void addResourceRefs(CommandBuffer*) const;
 
 private:
-    class SortKey;
+    friend class DrawList; // for constructor
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,

@@ -334,20 +334,22 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
                                                              blender->asBlendMode(),
                                                              coverage)
                                    : false;
-    UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
-                                                   &floatStorageManager,
-                                                   &gatherer,
-                                                   &builder,
-                                                   layout,
-                                                   {},
-                                                   PaintParams(paint,
-                                                               /* primitiveBlender= */ nullptr,
-                                                               /* nonMSAAClip= */ {},
-                                                               /* clipShader= */ nullptr,
-                                                               dstReadRequired,
-                                                               /* skipColorXform= */ false),
-                                                   {},
-                                                   ci);
+    // UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
+    //                                                &floatStorageManager,
+    //                                                &gatherer,
+    //                                                &builder,
+    //                                                layout,
+    //                                                {},
+    //                                                PaintParams(paint,
+    //                                                            /* primitiveBlender= */ nullptr,
+    //                                                            /* nonMSAAClip= */ {},
+    //                                                            /* clipShader= */ nullptr,
+    //                                                            dstReadRequired,
+    //                                                            /* skipColorXform= */ false),
+    //                                                {},
+    //                                                ci);
+
+    UniquePaintParamsID paintID{}; //FIXME!!!
 
     RenderPassDesc unusedRenderPassDesc;
 
