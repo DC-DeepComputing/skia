@@ -115,7 +115,7 @@ protected:
                 for (int i = 0; i < loops; ++i) {
                     auto iter = SkPathPriv::Raw(fPath).iter();
                     while (auto r = iter.next()) {
-                        handle((int)r->vrb, r->pts.data());
+                        handle((int)r->fVerb, r->fPoints.data());
                     }
                 }
                 break;
