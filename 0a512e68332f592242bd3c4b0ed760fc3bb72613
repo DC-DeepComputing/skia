@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "393e44d5_a3f92d5e",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T17:47:35Z",
+      "side": 1,
+      "message": "Nit: midtangent",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 59
+      },
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e5b1051_bffc0b82",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-14T17:47:35Z",
+      "side": 1,
+      "message": "Nit: midtagent",
+      "range": {
+        "startLine": 190,
+        "startChar": 49,
+        "endLine": 190,
+        "endChar": 59
+      },
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00fe862f_9d899372",
         "filename": "src/gpu/tessellate/PatchWriter.h",
         "patchSetId": 3
