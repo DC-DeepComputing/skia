@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55e4932_7c1d7292",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-14T15:53:09Z",
+      "side": 1,
+      "message": "See prior patchset successfully pass the preciously failing job. Added a comment and re-running CQ now.",
+      "revId": "bbe806dac36c9bbfb638f8b73558114203ea664a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
