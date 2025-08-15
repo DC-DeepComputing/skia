@@ -522,7 +522,7 @@ impl Reader {
     /// returns `true` and populates the `gamma` out parameter.  Otherwise,
     /// returns `false`.
     fn try_get_gama(&self, gamma: &mut f32) -> bool {
-        match self.reader.info().gama_chunk.as_ref() {
+        match self.reader.info().source_gamma.as_ref() {
             None => false,
             Some(&scaled_float) => {
                 *gamma = png_u32_into_f32(scaled_float);
