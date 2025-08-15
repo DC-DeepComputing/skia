@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dba3c68d_e7f5f89a",
+        "filename": "include/android/AHardwareBufferUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-15T15:32:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9d3a602_fe4fe4bd",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 11
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "637f06de_e1098554",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-14T14:00:54Z",
       "side": 1,
       "message": "Since this is a public header, I don\u0027t think we should be including details about what VulkanCaps expects.",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 10
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c88207f_07716b76",
+        "filename": "include/android/AHardwareBufferUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-15T15:32:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "637f06de_e1098554",
       "range": {
         "startLine": 20,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7f93cf_1dccf6ee",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-15T15:32:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eb9e979_e71d8bf6",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 92,
+        "endChar": 7
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24e4fb68_72466c2d",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca08b326_750f6b51",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-15T15:32:23Z",
+      "side": 1,
+      "message": "That is more streamlined; thank you!",
+      "parentUuid": "24e4fb68_72466c2d",
+      "range": {
+        "startLine": 126,
+        "startChar": 11,
+        "endLine": 129,
+        "endChar": 6
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8ef48ab_a61c42e9",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-08-14T14:00:54Z",
       "side": 1,
       "message": "SkASSERT doesn\u0027t do anything if SK_DEBUG is not defined, so you don\u0027t have to guard them with `#if defined(SK_DEBUG)`.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 21
+      },
+      "revId": "5d0965a8111025491f3c524cf8048aaceac0a856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "637cee5d_9650485a",
+        "filename": "src/gpu/graphite/surface/Surface_AndroidFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-15T15:32:23Z",
+      "side": 1,
+      "message": "As discussed offline, I removed these #defines and also just included the headers needed for this debug assertion for all builds since it should be trivial.",
+      "parentUuid": "e8ef48ab_a61c42e9",
       "range": {
         "startLine": 139,
         "startChar": 0,
