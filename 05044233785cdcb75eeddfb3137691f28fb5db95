@@ -16,6 +16,23 @@
       "message": "PTAL; this causes Skia to not compile with the newest clang. If (like me) you\u0027re not familiar with the intrinsics, LLVM has good documentation at https://clang.llvm.org/docs/LanguageExtensions.html#builtin-convertvector, and intel has documentation at https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html (instruction set reference V, search for VCVTPH2PS, it has a convenient diagram)",
       "revId": "05044233785cdcb75eeddfb3137691f28fb5db95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e962a562_886d898c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3538120
+      },
+      "writtenOn": "2025-08-15T14:02:40Z",
+      "side": 1,
+      "message": "Hoping to get this reviewed quicker, this is blocking all of clang gardening since it turns all our bots red",
+      "revId": "05044233785cdcb75eeddfb3137691f28fb5db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
