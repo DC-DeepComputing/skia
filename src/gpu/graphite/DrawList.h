@@ -27,6 +27,7 @@
 
 namespace skgpu::graphite {
 
+class DrawPass;
 class Geometry;
 class Renderer;
 
@@ -90,6 +91,13 @@ public:
                     const StrokeStyle* stroke);
 
     bool prepareSortKeys(Recorder* recorder, const SkImageInfo& targetInfo);
+
+    std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
+                                           sk_sp<TextureProxy> target,
+                                           const SkImageInfo& targetInfo,
+                                           std::pair<LoadOp, StoreOp> ops,
+                                           std::array<float, 4> clearColor,
+                                           const DstReadStrategy dstReadStrategy);
 
     int renderStepCount() const { return fRenderStepCount; }
 
@@ -255,12 +263,13 @@ private:
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 
     std::vector<SortKey> fSortKeys;
-    const std::vector<SortKey>& getSortKeys(); //Move to a public ?
 
     UniformDataCache fGeometryUniformDataCache;
     UniformDataCache fShadingUniformDataCache;
     TextureDataCache fTextureDataCache;
     GraphicsPipelineCache fPipelineCache;
+
+    void internalReset();
 };
 
 } // namespace skgpu::graphite
