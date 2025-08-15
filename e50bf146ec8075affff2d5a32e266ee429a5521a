@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "357f3b21_5a449fe6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-15T12:48:28Z",
+      "side": 1,
+      "message": "I don\u0027t see the new bench being added, was it supposed to be in this cl?",
+      "range": {
+        "startLine": 24,
+        "startChar": 97,
+        "endLine": 24,
+        "endChar": 113
+      },
+      "revId": "e50bf146ec8075affff2d5a32e266ee429a5521a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e53fbe5_5271e733",
+        "filename": "src/core/SkPathIter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-15T12:48:28Z",
+      "side": 1,
+      "message": "prolly not needed anymore",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 28
+      },
+      "revId": "e50bf146ec8075affff2d5a32e266ee429a5521a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41eeabfc_7dfa3db1",
+        "filename": "src/core/SkPathIter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-15T12:48:28Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 28
+      },
+      "revId": "e50bf146ec8075affff2d5a32e266ee429a5521a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
