@@ -7,6 +7,7 @@
 #
 """Builds Tint using CMake."""
 
+import argparse
 import hashlib
 import glob
 import os
@@ -45,7 +46,7 @@ def discover_dependencies(build_dir, targets):
     for line in inputs:
       line = line.strip()
       if line.startswith("/"):
-        continue # file, which are always absolute paths, skip it
+        continue  # file, which are always absolute paths, skip it
       if line not in seen_targets:
         worklist.add(line)
         seen_targets.add(line)
@@ -108,15 +109,19 @@ def copy_if_changed(src, dest):
 
 
 def main():
-  if len(sys.argv) != 3:
-    print("Usage: build_tint.py <output_path> <depfile_path>", file=sys.stderr)
-    sys.exit(1)
+  parser = argparse.ArgumentParser(description="Build Tint using CMake.")
+  parser.add_argument("--cc", required=True, help="Path to the C compiler.")
+  parser.add_argument("--cxx", required=True, help="Path to the C++ compiler.")
+  parser.add_argument(
+      "--output_path", required=True, help="Path to the output library.")
+  parser.add_argument(
+      "--depfile_path", required=True, help="Path to the depfile to generate.")
+  args = parser.parse_args()
 
-  output_path = sys.argv[1]
-  depfile_path = sys.argv[2]
-  # Assume Dawn is checked out in $SKIA_ROOT/third_party/externals and we
-  # are running from out/SomeBuildDirectory
-  dawn_dir = os.path.join("..", "..", "third_party", "externals", "dawn")
+  output_path = args.output_path
+  depfile_path = args.depfile_path
+  script_dir = os.path.dirname(os.path.realpath(__file__))
+  dawn_dir = os.path.join(script_dir, "..", "externals", "dawn")
 
   # We will build everything in a temporary directory (under out/SomeBuildDirectory).
   # The build can be invoked in parallel for different toolchains, so we use
@@ -135,6 +140,8 @@ def main():
       dawn_dir,
       "-B",
       build_dir,
+      f"-DCMAKE_C_COMPILER={args.cc}",
+      f"-DCMAKE_CXX_COMPILER={args.cxx}",
       # Fetch dependencies using DEPS, which is required for stand-alone builds.
       "-DDAWN_FETCH_DEPENDENCIES=ON",
       "-DDAWN_ENABLE_INSTALL=ON",
@@ -177,28 +184,10 @@ def main():
                    "libabsl_strings.a")
   ]
 
-  # https://stackoverflow.com/a/23621751
-  # We first create a "thin" archive. A thin archive does not contain the
-  # object files themselves, but rather references to them.
-  #   c: Create the archive.
-  #   q: Quickly append files (no checking for replacement).
-  #   T: Create a thin archive.
-  combined_thin_archive = os.path.join(build_dir, "out", "combined_tint_thin.a")
-  os.makedirs(os.path.dirname(combined_thin_archive), exist_ok=True)
-  combine_cmd = ["ar", "cqT", combined_thin_archive] + tint_libs + absl_libs
-  subprocess.run(combine_cmd, check=True)
-
-  # We'll be relocating the output, so a thin archive doesn't work. To create
-  # a regular, "fat" archive, we use an MRI script with 'ar'.
   combined_archive = os.path.join(build_dir, "out", "libtint_combined.a")
-  mri_script = f"""
-create {combined_archive}
-addlib {combined_thin_archive}
-save
-end
-"""
-  # The 'ar -M' command reads commands from stdin to modify the archive.
-  subprocess.run(["ar", "-M"], input=mri_script.encode("utf-8"), check=True)
+  os.makedirs(os.path.dirname(combined_archive), exist_ok=True)
+  combine_cmd = ["ar", "cq", combined_archive] + tint_libs + absl_libs
+  subprocess.run(combine_cmd, check=True)
 
   # Copy the final archive to the location expected by GN.
   # We check hashes to avoid unnecessary updates to the "last modified" datum
