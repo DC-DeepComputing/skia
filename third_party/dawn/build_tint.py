@@ -114,9 +114,8 @@ def main():
 
   output_path = sys.argv[1]
   depfile_path = sys.argv[2]
-  # Assume Dawn is checked out in $SKIA_ROOT/third_party/externals and we
-  # are running from out/SomeBuildDirectory
-  dawn_dir = os.path.join("..", "..", "third_party", "externals", "dawn")
+  script_dir = os.path.dirname(os.path.realpath(__file__))
+  dawn_dir = os.path.join(script_dir, "..", "externals", "dawn")
 
   # We will build everything in a temporary directory (under out/SomeBuildDirectory).
   # The build can be invoked in parallel for different toolchains, so we use
