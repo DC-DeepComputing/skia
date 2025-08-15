@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45f6687a_7ad1f3ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-08-15T18:21:26Z",
+      "side": 1,
+      "message": "Only API OWNERS can approve changes to `include/**`",
+      "revId": "b567b85b20ff38a42d9468901bfdd9fd6ff27ee7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
