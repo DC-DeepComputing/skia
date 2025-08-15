@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bc40a1c_418cfcaa",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:22:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "393e44d5_a3f92d5e",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 59
+      },
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e5b1051_bffc0b82",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d3587df_5795d3d7",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:22:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e5b1051_bffc0b82",
+      "range": {
+        "startLine": 190,
+        "startChar": 49,
+        "endLine": 190,
+        "endChar": 59
+      },
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00fe862f_9d899372",
@@ -77,6 +125,24 @@
       "writtenOn": "2025-08-13T13:22:31Z",
       "side": 1,
       "message": "Overlength",
+      "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8199c86b_5802fd85",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:22:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00fe862f_9d899372",
       "revId": "0a512e68332f592242bd3c4b0ed760fc3bb72613",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
