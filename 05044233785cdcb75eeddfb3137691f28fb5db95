@@ -50,6 +50,24 @@
       "message": "This change needs to land in skcms\u0027s source of truth https://skia.googlesource.com/skcms/",
       "revId": "05044233785cdcb75eeddfb3137691f28fb5db95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eb71001_bea353d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3538120
+      },
+      "writtenOn": "2025-08-15T14:33:01Z",
+      "side": 1,
+      "message": "Got it, thanks for letting me know: https://skia-review.googlesource.com/c/skcms/+/1038217",
+      "parentUuid": "94dcf0c8_a30341d6",
+      "revId": "05044233785cdcb75eeddfb3137691f28fb5db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
