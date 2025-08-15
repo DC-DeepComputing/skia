@@ -19,8 +19,9 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
-#include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
@@ -524,6 +525,128 @@ private:
     skia_private::THashMap<uint32_t, int> fGradientOffsetCache;
 
     std::optional<BindBufferInfo> fBufferInfo = std::nullopt;
+};
+
+// Writes uniform data either to uniform buffers or to shared storage buffers, and tracks when
+// bindings need to change between draws.
+class UniformTracker {
+public:
+    UniformTracker(bool useStorageBuffers) : fUseStorageBuffers(useStorageBuffers) {}
+
+    bool writeUniforms(UniformDataCache& uniformCache,
+                       DrawBufferManager* bufferMgr,
+                       UniformDataCache::Index index) {
+        if (index >= UniformDataCache::kInvalidIndex) {
+            return false;
+        }
+
+        if (index == fLastIndex) {
+            return false;
+        }
+        fLastIndex = index;
+
+        UniformDataCache::Entry& uniformData = uniformCache.lookup(index);
+        const size_t uniformDataSize = uniformData.fCpuData.size();
+
+        // Upload the uniform data if we haven't already.
+        // Alternatively, re-upload the uniform data to avoid a rebind if we're using storage
+        // buffers. This will result in more data uploaded, but the tradeoff seems worthwhile.
+        if (!uniformData.fBufferBinding.fBuffer ||
+            (fUseStorageBuffers && uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer)) {
+            UniformWriter writer;
+            std::tie(writer, uniformData.fBufferBinding) =
+                    fUseStorageBuffers ? bufferMgr->getAlignedSsboWriter(1, uniformDataSize)
+                                       : bufferMgr->getUniformWriter(1, uniformDataSize);
+
+            // Early out if buffer mapping failed.
+            if (!writer) {
+                return {};
+            }
+
+            writer.write(uniformData.fCpuData.data(), uniformDataSize);
+
+            if (fUseStorageBuffers) {
+                // When using storage buffers, store the SSBO index in the binding's offset field
+                // and always use the entire buffer's size in the size field.
+                SkASSERT(uniformData.fBufferBinding.fOffset % uniformDataSize == 0);
+                uniformData.fBufferBinding.fOffset /= uniformDataSize;
+                uniformData.fBufferBinding.fSize = uniformData.fBufferBinding.fBuffer->size();
+            }
+        }
+
+        const bool needsRebind =
+                uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer ||
+                (!fUseStorageBuffers && uniformData.fBufferBinding.fOffset != fLastBinding.fOffset);
+
+        fLastBinding = uniformData.fBufferBinding;
+
+        return needsRebind;
+    }
+
+    void bindUniforms(UniformSlot slot, DrawPassCommands::List* commandList) {
+        BindBufferInfo binding = fLastBinding;
+        if (fUseStorageBuffers) {
+            // Track the SSBO index in fLastBinding, but set offset = 0 in the actual used binding.
+            binding.fOffset = 0;
+        }
+        commandList->bindUniformBuffer(binding, slot);
+    }
+
+    uint32_t ssboIndex() const {
+        // The SSBO index for the last-bound storage buffer is stored in the binding's offset field.
+        return fLastBinding.fOffset;
+    }
+
+private:
+    // Internally track the last binding returned, so that we know whether new uploads or rebindings
+    // are necessary. If we're using SSBOs, this is treated specially -- the fOffset field holds the
+    // index in the storage buffer of the last-written uniforms, and the offsets used for actual
+    // bindings are always zero.
+    BindBufferInfo fLastBinding;
+
+    // This keeps track of the last index used for writing uniforms from a provided uniform cache.
+    // If a provided index matches the last index, the uniforms are assumed to already be written
+    // and no additional uploading is performed. This assumes a UniformTracker will always be
+    // provided with the same uniform cache.
+    UniformDataCache::Index fLastIndex = UniformDataCache::kInvalidIndex;
+
+    const bool fUseStorageBuffers;
+};
+
+// Tracks when to issue BindTexturesAndSamplers commands to a command list and converts
+// TextureDataBlocks to that representation as needed.
+class TextureTracker {
+public:
+    TextureTracker(TextureDataCache* textureCache)
+            : fTextureCache(textureCache) {}
+
+    bool setCurrentTextureBindings(TextureDataCache::Index bindingIndex) {
+        if (bindingIndex < TextureDataCache::kInvalidIndex && fLastIndex != bindingIndex) {
+            fLastIndex = bindingIndex;
+            return true;
+        }
+        // No binding change
+        return false;
+    }
+
+    void bindTextures(DrawPassCommands::List* commandList) {
+        SkASSERT(fLastIndex < TextureDataCache::kInvalidIndex);
+        TextureDataBlock binding = fTextureCache->lookup(fLastIndex);
+
+        auto [textures, samplers] =
+                commandList->bindDeferredTexturesAndSamplers(binding.numTextures());
+
+        for (int i = 0; i < binding.numTextures(); ++i) {
+            auto [t, s] = binding.texture(i);
+            textures[i] = t.get();
+            samplers[i] = s;
+        }
+    }
+
+private:
+    TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
+
+    TextureDataCache* const fTextureCache;
 };
 
 } // namespace skgpu::graphite
