@@ -79,6 +79,9 @@ public:
                     const Clip& clip,
                     DrawOrder ordering,
                     const PaintParams* paint,
+                    UniquePaintParamsID paintID,
+                    bool dstReadReq,
+                    PipelineDataGatherer* gatherer,
                     const StrokeStyle* stroke);
 
     bool recordUpload(Recorder* recorder,

@@ -88,6 +88,9 @@ public:
                     const Clip& clip,
                     DrawOrder ordering,
                     const PaintParams* paint,
+                    UniquePaintParamsID paintID,
+                    bool dstReadReq,
+                    PipelineDataGatherer* gatherer,
                     const StrokeStyle* stroke);
 
     bool prepareSortKeys(Recorder* recorder, const SkImageInfo& targetInfo);
