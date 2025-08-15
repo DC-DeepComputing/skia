@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0204ff03_e818f692",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cc0e9f5_08bf852d",
+      "range": {
+        "startLine": 197,
+        "startChar": 82,
+        "endLine": 197,
+        "endChar": 93
+      },
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92d27c0b_8f721282",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-12T15:37:06Z",
       "side": 1,
       "message": "have been ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 72,
+        "endLine": 75,
+        "endChar": 76
+      },
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96be3bd3_5c810cca",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92d27c0b_8f721282",
       "range": {
         "startLine": 75,
         "startChar": 72,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a745c7f4_eb15e193",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6247c402_f1191d89",
+      "range": {
+        "startLine": 76,
+        "startChar": 22,
+        "endLine": 76,
+        "endChar": 26
+      },
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c40667c_5c2836f8",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-08-12T15:37:06Z",
       "side": 1,
       "message": "always *converted* from ?",
+      "range": {
+        "startLine": 84,
+        "startChar": 53,
+        "endLine": 84,
+        "endChar": 64
+      },
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0476a10d_4cf296aa",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c40667c_5c2836f8",
       "range": {
         "startLine": 84,
         "startChar": 53,
@@ -123,6 +219,24 @@
       "writtenOn": "2025-08-12T15:37:06Z",
       "side": 1,
       "message": "overlength",
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a80462_56a16f81",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49505c21_cc84dc80",
       "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -174,6 +288,30 @@
           ]
         }
       ],
+      "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dce0a715_ba3779ce",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T16:04:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37aaefb5_fbaa290d",
+      "range": {
+        "startLine": 114,
+        "startChar": 35,
+        "endLine": 114,
+        "endChar": 44
+      },
       "revId": "4ac54bb14ee12bfda5bd97fc36504c4d0d024b66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
