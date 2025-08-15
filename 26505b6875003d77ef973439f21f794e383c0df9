@@ -16,6 +16,24 @@
       "message": "When finished interpolating in premul the values left on the stack should look like the following, where `rgb0`,`a0` is the (initial, unpremultiplied) color at the beginning of a range and `rgb1`,`a1` is the (initial, unpremultiplied) color at the end of the range, and `t` is how far along that range the point is (all values 0 to 1).\n\n```((rgb1*a1-rgb0*a0)*t+rgb0*a0)/((a1-a0)*t+a0)```\n\nThe initial `rgb*a` premuls are done ahead of time. The `rgb` and `a` are interpolated, the `rgb/a` is done and the `a` is discarded (will be provided by the transparency mask shader).",
       "revId": "26505b6875003d77ef973439f21f794e383c0df9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7029366_d61445bc",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-15T15:41:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d66b9ad_c3262c1e",
+      "revId": "26505b6875003d77ef973439f21f794e383c0df9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

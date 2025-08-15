@@ -16,6 +16,24 @@
       "message": "The one difficulty with this is it will make almost every gradient with a non-opaque color stop that Chromium currently produces a Type1 (Function based) shader. CSS unfortunately spec\u0027ed gradient interpolation to be in premul, which means there is no way to create a gradient from transparent blue to opaque red, for example, so Chromium is always requesting interpolation in premul. In addition to being slower to compute, Poppler has some issues with applying the matrix and pdf.js just doesn\u0027t support them (draws pink). Reader, Pdfium, and Preview are all fine with this though.\n\nUnfortunately, the overall function to interpolate in premul and then unpremul is not linear, which seems to force being function based.",
       "revId": "2b8564e659a4548fe4a47c9ea7c492d86dfe6fba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa2d1792_8662eaf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-15T15:41:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61a1ece6_bed38e16",
+      "revId": "2b8564e659a4548fe4a47c9ea7c492d86dfe6fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
