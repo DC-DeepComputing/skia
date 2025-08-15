@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97030440_9d4cdd56",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:54:52Z",
+      "side": 1,
+      "message": "We only want to snap the SKPs if we are transitioning from true to false I think, or we can assert that `capturing !\u003d fIsCurrentlyCapturing` at the beginning.",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 34
+      },
+      "revId": "5662bf0ca86072a4e80efbb4a1b0dac3806119d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "870624d1_15be608e",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:54:52Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 31,
+        "startChar": 12,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "5662bf0ca86072a4e80efbb4a1b0dac3806119d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
