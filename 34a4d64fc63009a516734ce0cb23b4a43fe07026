@@ -20,6 +20,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "edce2dac_e0e8406d",
+        "filename": "src/gpu/graphite/Texture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "nit; I\u0027d put these default impls in the header.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 79
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc57675_382671da",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "nit: Recorder",
+      "range": {
+        "startLine": 277,
+        "startChar": 43,
+        "endLine": 277,
+        "endChar": 50
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a97c3c_8001c3c3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1740,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "default: return false and the SkUNREACHABLE are redundant. Assuming the compiler isn\u0027t complaining about missed VkImageTiling cases, I\u0027d prefer no default case.",
+      "range": {
+        "startLine": 1737,
+        "startChar": 0,
+        "endLine": 1740,
+        "endChar": 18
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5537061f_bd329cd4",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 3
@@ -36,6 +105,99 @@
         "startChar": 25,
         "endLine": 2100,
         "endChar": 52
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62378c36_07fc7813",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "Yes, that could happen if we are importing an existing texture.  Looking at `ResourceKey` we have 6 inline ints available for data and are currently only using 5 (for the non-ycbcr case) so we should be able to adjust this to have usage flags separately and not impact key stack allocation performance.",
+      "parentUuid": "5537061f_bd329cd4",
+      "range": {
+        "startLine": 2099,
+        "startChar": 25,
+        "endLine": 2100,
+        "endChar": 52
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e49c47c_da80a2dd",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 506,
+        "startChar": 8,
+        "endLine": 506,
+        "endChar": 26
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37bd86c8_6ccd10d8",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "This is a more general question, but how hard would it be to have Recorder (and eventually TextureUtils that handles regular image uploads on creation, not via BackendTexture) create UploadInstances and we split that logic into two phases.  One prepares all of the data into the list of `MipLevel` CPU data objects and then the other phase either turns into an UploadTask and will handle creating the cpu-\u003egpu xfer buffer and copy to it, but otherwise we can pass the MipLevels to this updateOnHostImpl function directly w/o needing to have two virtuals (technically per-backend if Dawn gets this extension eventually) that share a lot of the preparatory logic",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 547,
+        "endChar": 40
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c796bf6_81c12ee0",
+        "filename": "src/gpu/vk/VulkanInterface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-15T14:49:55Z",
+      "side": 1,
+      "message": "\"not used\" or just \"unused\"?",
+      "range": {
+        "startLine": 257,
+        "startChar": 58,
+        "endLine": 257,
+        "endChar": 68
       },
       "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
