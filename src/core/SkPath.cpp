@@ -838,7 +838,7 @@ void SkPath::addRaw(const SkPathRaw& raw) {
             case SkPathVerb::kMove:  this->moveTo( pts[0]); break;
             case SkPathVerb::kLine:  this->lineTo( pts[1]); break;
             case SkPathVerb::kQuad:  this->quadTo( pts[1], pts[2]); break;
-            case SkPathVerb::kConic: this->conicTo(pts[1], pts[2], rec->fConicWeight); break;
+            case SkPathVerb::kConic: this->conicTo(pts[1], pts[2], rec->conicWeight()); break;
             case SkPathVerb::kCubic: this->cubicTo(pts[1], pts[2], pts[3]); break;
             case SkPathVerb::kClose: this->close(); break;
         }
