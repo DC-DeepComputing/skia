@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3aee5c7_dbc54c5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-16T14:50:10Z",
+      "side": 1,
+      "message": "shouldn\u0027t have merged these two ideas in the first place\n- new faster iter\n- trying it out on some internal user",
+      "revId": "24337e210f1338e4590eecf7320c6470557b058d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
