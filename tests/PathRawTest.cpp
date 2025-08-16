@@ -146,7 +146,7 @@ static void check_iter(skiatest::Reporter* reporter, const SkPathRaw& raw,
                 REPORTER_ASSERT(reporter, pts[pIndex++] == r->fPoints[1]);
                 REPORTER_ASSERT(reporter, pts[pIndex++] == r->fPoints[2]);
                 REPORTER_ASSERT(reporter, cIndex < cns.size());
-                REPORTER_ASSERT(reporter, cns[cIndex++] == r->fConicWeight);
+                REPORTER_ASSERT(reporter, cns[cIndex++] == r->conicWeight());
                 break;
             case SkPathVerb::kCubic:
                 REPORTER_ASSERT(reporter, pIndex+2 < pts.size());
