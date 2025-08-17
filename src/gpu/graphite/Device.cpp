@@ -103,6 +103,8 @@
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 #include "src/text/gpu/VertexFiller.h"
 
+#include "src/gpu/graphite/KeyContext.h"
+
 #include <algorithm>
 #include <atomic>
 #include <cstddef>
@@ -519,6 +521,12 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
                     fRecorder->priv().caps()->defaultMSAASamplesCount());
         }
     }
+
+    const bool useStorageBuffers = fRecorder->priv().caps()->storageBufferSupport();
+    const auto& bindingReq = fRecorder->priv().caps()->resourceBindingRequirements();
+    fDataGatherer = std::make_unique<PipelineDataGatherer>(
+            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout);
+    fKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(fRecorder->priv().shaderCodeDictionary());
 }
 
 Device::~Device() {
@@ -1512,6 +1520,20 @@ void Device::drawGeometry(const Transform& localToDevice,
                         skipColorXform};
     const bool dependsOnDst = paint_depends_on_dst(shading) ||
                               clip.shader() || !clip.nonMSAAClip().isEmpty();
+    KeyContext keyContext{fRecorder,
+                          fRecorder->priv().refFloatStorageManager().get(),
+                          fKeyBuilder.get(),
+                          fDataGatherer.get(),
+                          localToDevice.matrix(),
+                          fDC->colorInfo(),
+                          geometry.isShape() || geometry.isEdgeAAQuad()
+                                ? KeyGenFlags::kDefault
+                                : KeyGenFlags::kDisableSamplingOptimization,
+                          paint.getColor4f()};
+    fDataGatherer->resetForDraw();
+    shading.toKey(keyContext);
+    UniquePaintParamsID paintID =
+            fRecorder->priv().shaderCodeDictionary()->findOrCreate(fKeyBuilder.get());
 
     // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
     // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
@@ -1685,8 +1707,8 @@ void Device::drawGeometry(const Transform& localToDevice,
         // Record the draw as a fill since stroking is handled by the atlas render/upload.
         SkASSERT(atlasMask.has_value());
         auto [mask, origin] = *atlasMask;
-        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask),
-                        clip, order, &shading, nullptr);
+        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
+                        order, &shading, paintID, dstReadRequired, fDataGatherer.get(), nullptr);
     } else {
         if (styleType == SkStrokeRec::kStroke_Style ||
             styleType == SkStrokeRec::kHairline_Style ||
@@ -1697,7 +1719,8 @@ void Device::drawGeometry(const Transform& localToDevice,
             fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                    : renderer,
-                            localToDevice, geometry, clip, order, &shading, &stroke);
+                            localToDevice, geometry, clip, order, &shading, paintID,
+                            dstReadRequired, fDataGatherer.get(), &stroke);
         }
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
@@ -1711,14 +1734,15 @@ void Device::drawGeometry(const Transform& localToDevice,
                 // we do want to sort the inner fill to maximize overdraw reduction
                 orderWithoutCoverage.reverseDepthAsStencil();
 
-                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(),
-                                localToDevice, Geometry(Shape(innerFillBounds)),
-                                clip, orderWithoutCoverage, &shading, nullptr);
+                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
+                                Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
+                                &shading, paintID, dstReadRequired, fDataGatherer.get(), nullptr);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
             }
-            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, nullptr);
+            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, paintID,
+                            dstReadRequired, fDataGatherer.get(), nullptr);
         }
     }
 
@@ -1762,15 +1786,17 @@ void Device::drawClipShape(const Transform& localToDevice,
     SkASSERT(renderer->coverage() == Coverage::kNone && renderer->requiresMSAA());
     SkASSERT(pathAtlas == nullptr);
 
-    // Clips draws are depth-only (null PaintParams), and filled (null StrokeStyle).
-    // TODO: Remove this CPU-transform once perspective is supported for all path renderers
+    // Clips draws are depth-only (invalid UniquePaintParamsID), and filled (null StrokeStyle).
+    // The data gatherer must be reset so that the DrawList can use it for any RenderStep data.
+    fDataGatherer->resetForDraw();
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = geometry.shape().asPath();
         devicePath.transform(localToDevice.matrix().asM33());
         fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
-                        nullptr, nullptr);
+                        nullptr, {}, false, fDataGatherer.get(), nullptr);
     } else {
-        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, nullptr, nullptr);
+        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, nullptr, {}, false,
+                        fDataGatherer.get(), nullptr);
     }
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
@@ -2052,7 +2078,13 @@ void Device::internalFlush() {
     fDisjointStencilSet->reset();
     fCurrentDepth = DrawOrder::kClearDepth;
 
-     // Any cleanup in the AtlasProvider
+    const bool useStorageBuffers = fRecorder->priv().caps()->storageBufferSupport();
+    const auto& bindingReq = fRecorder->priv().caps()->resourceBindingRequirements();
+    fDataGatherer = std::make_unique<PipelineDataGatherer>(
+            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout);
+    fKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(fRecorder->priv().shaderCodeDictionary());
+
+    // Any cleanup in the AtlasProvider
     fRecorder->priv().atlasProvider()->compact();
 }
 

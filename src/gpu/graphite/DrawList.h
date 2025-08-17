@@ -88,18 +88,25 @@ public:
                     const Clip& clip,
                     DrawOrder ordering,
                     const PaintParams* paint,
+                    UniquePaintParamsID paintID,
+                    bool dstReadReq,
+                    PipelineDataGatherer* gatherer,
                     const StrokeStyle* stroke);
-
-    bool prepareSortKeys(Recorder* recorder, const SkImageInfo& targetInfo);
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
-                                           std::pair<LoadOp, StoreOp> ops,
-                                           std::array<float, 4> clearColor,
                                            const DstReadStrategy dstReadStrategy);
 
     int renderStepCount() const { return fRenderStepCount; }
+
+    bool modifiesTarget() const {
+        return this->renderStepCount() > 0 || fLoadOp == LoadOp::kClear;
+    }
+
+    // Discard all previously recorded draws and set to the requested load op (with optional clear
+    // color).
+    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f});
 
     // Bounds for a dst read required by this DrawList. These bounds are only valid if drawsReadDst
     // returns true.
@@ -269,7 +276,8 @@ private:
     TextureDataCache fTextureDataCache;
     GraphicsPipelineCache fPipelineCache;
 
-    void internalReset();
+    LoadOp fLoadOp = LoadOp::kLoad;
+    std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 };
 
 } // namespace skgpu::graphite
