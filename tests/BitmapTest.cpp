@@ -16,6 +16,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -27,6 +28,18 @@
 
 #include <cstddef>
 #include <initializer_list>
+
+static void test_skspan(skiatest::Reporter* reporter) {
+    SkBitmap bm;
+    bm.allocN32Pixels(1, 1);
+    bm.eraseColor(SK_ColorGRAY);
+    SkSpan<const uint8_t> skspan = bm.byteSpan();
+    REPORTER_ASSERT(reporter, skspan.size() == 4u);
+    REPORTER_ASSERT(reporter, skspan[0] == SkColorGetB(SK_ColorGRAY));
+    REPORTER_ASSERT(reporter, skspan[1] == SkColorGetG(SK_ColorGRAY));
+    REPORTER_ASSERT(reporter, skspan[2] == SkColorGetR(SK_ColorGRAY));
+    REPORTER_ASSERT(reporter, skspan[3] == SkColorGetA(SK_ColorGRAY));
+}
 
 static void test_peekpixels(skiatest::Reporter* reporter) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(10, 10);
@@ -172,6 +185,7 @@ DEF_TEST(Bitmap, reporter) {
     test_allocpixels(reporter);
     test_bigalloc(reporter);
     test_peekpixels(reporter);
+    test_skspan(reporter);
 }
 
 DEF_TEST(Bitmap_setColorSpace, r) {
