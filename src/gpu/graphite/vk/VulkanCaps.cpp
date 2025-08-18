@@ -1990,6 +1990,8 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
 
     if (ycbcrInfo.isValid()) {
         SkASSERT(ycbcrInfo.fFormat != VK_FORMAT_UNDEFINED || ycbcrInfo.fExternalFormat != 0);
+        // TODO: this path looks wrong, see if it's hit in any tests.
+        SkASSERT(ycbcrInfo.fFormat == VK_FORMAT_UNDEFINED && ycbcrInfo.fExternalFormat == 0);
         ImmutableSamplerInfo packedInfo = VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrInfo);
 
         builder[i++] = packedInfo.fNonFormatYcbcrConversionInfo;
