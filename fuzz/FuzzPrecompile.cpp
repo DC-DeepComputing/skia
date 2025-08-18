@@ -24,7 +24,6 @@
 #include "modules/skcms/skcms.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/gpu/graphite/ContextPriv.h"
-#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -328,29 +327,26 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     fuzz->next(&temp);
     Coverage coverage = coverageOptions[temp % 3];
 
-    const SkBlenderBase* blender = as_BB(paint.getBlender());
-    bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                             TextureFormat::kRGBA8,
-                                                             blender->asBlendMode(),
-                                                             coverage)
-                                   : false;
-    UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
-                                                   &floatStorageManager,
-                                                   &gatherer,
-                                                   &builder,
-                                                   layout,
-                                                   {},
-                                                   PaintParams(paint,
-                                                               /* primitiveBlender= */ nullptr,
-                                                               /* nonMSAAClip= */ {},
-                                                               /* clipShader= */ nullptr,
-                                                               dstReadRequired,
-                                                               /* skipColorXform= */ false),
-                                                   {},
-                                                   ci);
+    PaintParams pp = PaintParams(paint,
+                                 /* primitiveBlender= */ nullptr,
+                                 /* nonMSAAClip= */ {},
+                                 /* clipShader= */ nullptr,
+                                 coverage,
+                                 /* skipColorXform= */ false);
+    SkDEBUGCODE(builder.checkReset());
+    SkDEBUGCODE(gatherer.checkReset());
+    KeyContext keyContext(recorder.get(),
+                          &floatStorageManager,
+                          &builder,
+                          &gatherer,
+                          {},
+                          ci,
+                          KeyGenFlags::kDisableSamplingOptimization,
+                          pp.color());
+    pp.toKey(keyContext, TextureFormat::kRGBA8);
+    UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(&builder);
 
     RenderPassDesc unusedRenderPassDesc;
-
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(precompileKeyContext,
                                           DrawTypeFlags::kNone,
