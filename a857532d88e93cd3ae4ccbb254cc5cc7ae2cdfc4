@@ -16,6 +16,47 @@
       "message": "Maybe this is trying to make the same files available but it wasn\u0027t working for me.",
       "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd0e00d7_6f34c948",
+        "filename": "bazel/external/libjpeg_turbo/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-18T17:40:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "510cdc3e_6e0e8155",
+      "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad34b54_7835026c",
+        "filename": "bazel/external/libjpeg_turbo/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-18T17:40:10Z",
+      "side": 1,
+      "message": "There\u0027s probably no harm in always having `simd/arm` be in the list of includes instead of adding it conditionally.",
+      "range": {
+        "startLine": 241,
+        "startChar": 13,
+        "endLine": 241,
+        "endChar": 17
+      },
+      "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
