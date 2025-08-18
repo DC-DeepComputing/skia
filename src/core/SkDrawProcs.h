@@ -10,9 +10,10 @@
 
 #include "include/core/SkPaint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkTypes.h"
 class SkMatrix;
 
-bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
+SK_API bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
                                    SkScalar* coverage);
 
 /**

@@ -231,7 +231,7 @@ static void draw_points(SkCanvas::PointMode mode,
                         const SkIRect& bounds,
                         SkDevice* device) {
     SkRasterClip rc(bounds);
-    SkDraw draw;
+    skcpu::Draw draw;
     draw.fDst = SkPixmap(SkImageInfo::MakeUnknown(bounds.right(), bounds.bottom()), nullptr, 0);
     draw.fCTM = &device->localToDevice();
     draw.fRC = &rc;
@@ -493,7 +493,7 @@ void SkPDFDevice::drawPoints(SkCanvas::PointMode mode,
         set_style(&paint, SkPaint::kStroke_Style);
     }
 
-    // SkDraw::drawPoints converts to multiple calls to fDevice->drawPath.
+    // skcpu::Draw::drawPoints converts to multiple calls to fDevice->drawPath.
     // We only use this when there's a path effect or perspective because of the overhead
     // of multiple calls to setUpContentEntry it causes.
     if (paint->getPathEffect() || this->localToDevice().hasPerspective()) {
@@ -602,7 +602,7 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
 
     SkIRect bounds = clipStack.bounds(this->bounds()).roundOut();
     SkMaskBuilder sourceMask;
-    if (!SkDraw::DrawToMask(path, bounds, paint->getMaskFilter(), &SkMatrix::I(),
+    if (!skcpu::Draw::DrawToMask(path, bounds, paint->getMaskFilter(), &SkMatrix::I(),
                             &sourceMask, SkMaskBuilder::kComputeBoundsAndRenderImage_CreateMode,
                             initStyle)) {
         return;
