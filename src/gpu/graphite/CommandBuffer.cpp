@@ -55,10 +55,12 @@ void CommandBuffer::resetCommandBuffer() {
 }
 
 void CommandBuffer::trackResource(sk_sp<Resource> resource) {
+    resource->setBackendLabel();
     fTrackedUsageResources.push_back(std::move(resource));
 }
 
 void CommandBuffer::trackCommandBufferResource(sk_sp<Resource> resource) {
+    resource->setBackendLabel();
     fCommandBufferResources.push_back(std::move(resource));
 }
 

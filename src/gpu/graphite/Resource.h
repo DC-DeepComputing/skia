@@ -222,8 +222,15 @@ public:
         fLabel = label;
 
         if (!fLabel.empty()) {
+            fNeedsBackendLabelSet = true;
+        }
+    }
+
+    void setBackendLabel() {
+        if (!fNeedsBackendLabelSet) {
             const std::string fullLabel = "Skia_" + fLabel;
             this->setBackendLabel(fullLabel.c_str());
+            fNeedsBackendLabelSet = false;
         }
     }
 
@@ -678,6 +685,8 @@ private:
 
     // String used to describe the current use of this Resource.
     std::string fLabel;
+    // Bool to track if backend label needs to be set.
+    bool fNeedsBackendLabelSet;
 };
 
 } // namespace skgpu::graphite
