@@ -57,6 +57,30 @@
       },
       "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5b34c38_3521fa34",
+        "filename": "bazel/external/libjpeg_turbo/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-08-18T17:45:05Z",
+      "side": 1,
+      "message": "👍\n\nI tried removing the copts flags as well.",
+      "parentUuid": "aad34b54_7835026c",
+      "range": {
+        "startLine": 241,
+        "startChar": 13,
+        "endLine": 241,
+        "endChar": 17
+      },
+      "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
