@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "510cdc3e_6e0e8155",
+        "filename": "bazel/external/libjpeg_turbo/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-08-18T17:28:45Z",
+      "side": 1,
+      "message": "Maybe this is trying to make the same files available but it wasn\u0027t working for me.",
+      "revId": "a857532d88e93cd3ae4ccbb254cc5cc7ae2cdfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
