@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde98511_3bdc5307",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-18T15:58:33Z",
+      "side": 1,
+      "message": "FYI Devon has a fix for the gcc failures which I\u0027ll include once it lands: https://skia-review.googlesource.com/c/skcms/+/1040717",
+      "revId": "f42933a936d32db5d977cc23a21632784b7a8862",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
