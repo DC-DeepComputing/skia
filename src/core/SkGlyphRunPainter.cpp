@@ -7,6 +7,8 @@
 
 #include "src/core/SkGlyphRunPainter.h"
 
+#include "src/core/SkDraw.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -205,8 +207,9 @@ prepare_for_direct_bitmap_drawing(SkStrike* strike,
 }
 }  // namespace
 
-// -- SkGlyphRunListPainterCPU ---------------------------------------------------------------------
-SkGlyphRunListPainterCPU::SkGlyphRunListPainterCPU(const SkSurfaceProps& props,
+namespace skcpu {
+// -- GlyphRunListPainter ---------------------------------------------------------------------
+GlyphRunListPainter::GlyphRunListPainter(const SkSurfaceProps& props,
                                                    SkColorType colorType,
                                                    SkColorSpace* cs)
         : fDeviceProps{props}
@@ -214,7 +217,7 @@ SkGlyphRunListPainterCPU::SkGlyphRunListPainterCPU(const SkSurfaceProps& props,
         , fColorType{colorType}
         , fScalerContextFlags{compute_scaler_context_flags(cs)} {}
 
-void SkGlyphRunListPainterCPU::drawForBitmapDevice(SkCanvas* canvas,
+void GlyphRunListPainter::drawForBitmapDevice(SkCanvas* canvas,
                                                    const BitmapDevicePainter* bitmapDevice,
                                                    const sktext::GlyphRunList& glyphRunList,
                                                    const SkPaint& paint,
@@ -261,7 +264,7 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(SkCanvas* canvas,
                 // The paint we draw paths with must have the same anti-aliasing state as the
                 // runFont allowing the paths to have the same edging as the glyph masks.
                 SkPaint pathPaint = paint;
-                pathPaint.setAntiAlias(runFont.hasSomeAntiAliasing());
+                pathPaint.setAntiAlias(runFont.getEdging() != SkFont::Edging::kAlias);
 
                 const bool stroking = pathPaint.getStyle() != SkPaint::kFill_Style;
                 const bool hairline = pathPaint.getStrokeWidth() == 0;
@@ -418,3 +421,5 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(SkCanvas* canvas,
         //  rejects in a more sophisticated stage.
     }
 }
+}  // namespace skcpu
+

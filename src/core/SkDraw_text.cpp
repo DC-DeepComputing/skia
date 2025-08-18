@@ -50,7 +50,8 @@ static bool check_glyph_position(SkPoint position) {
              lt(position.fY, INT_MIN - (INT16_MIN + 0 /*UINT16_MIN*/)));
 }
 
-void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const {
+namespace skcpu {
+void Draw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const {
     SkSTArenaAlloc<kSkBlitterContextSize> alloc;
     SkBlitter* blitter = SkBlitter::Choose(fDst,
                                            *fCTM,
@@ -123,8 +124,8 @@ void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& 
     }
 }
 
-void SkDraw::drawGlyphRunList(SkCanvas* canvas,
-                              SkGlyphRunListPainterCPU* glyphPainter,
+void Draw::drawGlyphRunList(SkCanvas* canvas,
+                              GlyphRunListPainter* glyphPainter,
                               const sktext::GlyphRunList& glyphRunList,
                               const SkPaint& paint) const {
 
@@ -136,6 +137,8 @@ void SkDraw::drawGlyphRunList(SkCanvas* canvas,
 
     glyphPainter->drawForBitmapDevice(canvas, this, glyphRunList, paint, *fCTM);
 }
+} // namespace skcpu
+
 
 #if defined _WIN32
 #pragma warning ( pop )

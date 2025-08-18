@@ -7,6 +7,8 @@
 
 #include "include/core/SkOverdrawCanvas.h"
 
+#include "src/core/SkDraw.h"
+
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorType.h"
@@ -58,7 +60,7 @@ SkOverdrawCanvas::SkOverdrawCanvas(SkCanvas* canvas)
 }
 
 namespace {
-class TextDevice : public SkNoPixelsDevice, public SkGlyphRunListPainterCPU::BitmapDevicePainter {
+class TextDevice : public SkNoPixelsDevice, public skcpu::BitmapDevicePainter {
 public:
     TextDevice(SkCanvas* overdrawCanvas, const SkSurfaceProps& props)
             : SkNoPixelsDevice{SkIRect::MakeWH(32767, 32767), props},
@@ -90,7 +92,7 @@ public:
 
 private:
     SkCanvas* const fOverdrawCanvas;
-    SkGlyphRunListPainterCPU fPainter;
+    skcpu::GlyphRunListPainter fPainter;
 };
 }  // namespace
 

@@ -154,7 +154,7 @@ private:
     skcpu::RecorderImpl* fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
-    SkGlyphRunListPainterCPU fGlyphPainter;
+    skcpu::GlyphRunListPainter fGlyphPainter;
 };
 
 #endif // SkBitmapDevice_DEFINED

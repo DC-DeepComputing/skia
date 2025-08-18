@@ -10,9 +10,11 @@
 
 #include "include/core/SkPaint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkTypes.h"
 class SkMatrix;
 
-bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
+namespace skcpu {
+SK_API bool DrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
                                    SkScalar* coverage);
 
 /**
@@ -21,7 +23,7 @@ bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
  *  a stroke by drawing a hairline with partial coverage). If any of these
  *  conditions are false, then this returns false and coverage is ignored.
  */
-inline bool SkDrawTreatAsHairline(const SkPaint& paint, const SkMatrix& matrix,
+inline bool DrawTreatAAStrokeAsHairline(const SkPaint& paint, const SkMatrix& matrix,
                                   SkScalar* coverage) {
     if (SkPaint::kStroke_Style != paint.getStyle()) {
         return false;
@@ -37,7 +39,9 @@ inline bool SkDrawTreatAsHairline(const SkPaint& paint, const SkMatrix& matrix,
         return false;
     }
 
-    return SkDrawTreatAAStrokeAsHairline(strokeWidth, matrix, coverage);
+    return DrawTreatAAStrokeAsHairline(strokeWidth, matrix, coverage);
 }
+} // namespace skcpu
+
 
 #endif

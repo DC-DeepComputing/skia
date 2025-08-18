@@ -1740,7 +1740,7 @@ bool SurfaceDrawContext::drawSimpleShape(const GrClip* clip,
             // for and outsets thin non-aa rects to 1px, the path renderer could be skipped.
             SkScalar coverage;
             if (aaType == GrAAType::kCoverage ||
-                !SkDrawTreatAAStrokeAsHairline(shape.style().strokeRec().getWidth(), viewMatrix,
+                !skcpu::DrawTreatAAStrokeAsHairline(shape.style().strokeRec().getWidth(), viewMatrix,
                                                &coverage)) {
                 this->drawStrokedLine(clip, std::move(*paint), aa, viewMatrix, linePts,
                                       shape.style().strokeRec());
