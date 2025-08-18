@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb903549_6f8bb6e6",
+        "filename": "src/gpu/graphite/Texture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "These are `virtual` functions, putting them in the headers doesn\u0027t affect performance (only increases compile time).",
+      "parentUuid": "edce2dac_e0e8406d",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 79
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fc57675_382671da",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "630e1d91_5c9aee23",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fc57675_382671da",
+      "range": {
+        "startLine": 277,
+        "startChar": 43,
+        "endLine": 277,
+        "endChar": 50
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27a97c3c_8001c3c3",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-08-15T14:49:55Z",
       "side": 1,
       "message": "default: return false and the SkUNREACHABLE are redundant. Assuming the compiler isn\u0027t complaining about missed VkImageTiling cases, I\u0027d prefer no default case.",
+      "range": {
+        "startLine": 1737,
+        "startChar": 0,
+        "endLine": 1740,
+        "endChar": 18
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f6d67c_05e17ccf",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1740,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27a97c3c_8001c3c3",
       "range": {
         "startLine": 1737,
         "startChar": 0,
@@ -134,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "904f6996_a3aea356",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2100,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "Fixed here: https://skia-review.googlesource.com/c/skia/+/1040837",
+      "parentUuid": "62378c36_07fc7813",
+      "range": {
+        "startLine": 2099,
+        "startChar": 25,
+        "endLine": 2100,
+        "endChar": 52
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e49c47c_da80a2dd",
@@ -147,6 +243,30 @@
       "writtenOn": "2025-08-15T14:49:55Z",
       "side": 1,
       "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 506,
+        "startChar": 8,
+        "endLine": 506,
+        "endChar": 26
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd8616fd_9cff0c6c",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e49c47c_da80a2dd",
       "range": {
         "startLine": 506,
         "startChar": 8,
@@ -182,6 +302,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "623b39b4_e58ecd7d",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "That\u0027s probably reasonable, I\u0027m not sure what complications I might run into. Gonna give that a shot in a separate CL and either squash it or land separately.\n\n(For posterity, dawn has QueueWriteTexture that could potentially do host-image-copy, but IIUC it just does host-\u003ebuffer-\u003eimage except on the GL backend)",
+      "parentUuid": "37bd86c8_6ccd10d8",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 547,
+        "endChar": 40
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c796bf6_81c12ee0",
         "filename": "src/gpu/vk/VulkanInterface.h",
         "patchSetId": 3
@@ -193,6 +337,30 @@
       "writtenOn": "2025-08-15T14:49:55Z",
       "side": 1,
       "message": "\"not used\" or just \"unused\"?",
+      "range": {
+        "startLine": 257,
+        "startChar": 58,
+        "endLine": 257,
+        "endChar": 68
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f7801a_9a503956",
+        "filename": "src/gpu/vk/VulkanInterface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-18T19:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c796bf6_81c12ee0",
       "range": {
         "startLine": 257,
         "startChar": 58,
