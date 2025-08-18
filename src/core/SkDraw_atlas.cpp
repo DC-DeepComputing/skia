@@ -69,7 +69,7 @@ static void load_color(SkRasterPipelineContexts::UniformColorCtx* ctx, const flo
     ctx->rgba[3] = SkScalarRoundToInt(rgba[3]*255); ctx->a = rgba[3];
 }
 
-void SkDraw::drawAtlas(SkSpan<const SkRSXform> xform,
+void skcpu::Draw::drawAtlas(SkSpan<const SkRSXform> xform,
                        SkSpan<const SkRect> textures,
                        SkSpan<const SkColor> colors,
                        sk_sp<SkBlender> blender,

@@ -184,7 +184,7 @@ static void fill_triangle(const VertState& state, SkBlitter* blitter, const SkRa
     }
 }
 
-void SkDraw::drawFixedVertices(const SkVertices* vertices,
+void skcpu::Draw::drawFixedVertices(const SkVertices* vertices,
                                sk_sp<SkBlender> blender,
                                const SkPaint& paint,
                                const SkMatrix& ctmInverse,
@@ -306,7 +306,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
     }
 }
 
-void SkDraw::drawVertices(const SkVertices* vertices,
+void skcpu::Draw::drawVertices(const SkVertices* vertices,
                           sk_sp<SkBlender> blender,
                           const SkPaint& paint,
                           bool skipColorXform) const {
