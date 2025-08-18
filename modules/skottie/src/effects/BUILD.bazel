@@ -14,6 +14,7 @@ skia_filegroup(
         "BulgeEffect.cpp",
         "CCTonerEffect.cpp",
         "CornerPinEffect.cpp",
+        "CylinderEffect.cpp",
         "DirectionalBlur.cpp",
         "DisplacementMapEffect.cpp",
         "DropShadowEffect.cpp",

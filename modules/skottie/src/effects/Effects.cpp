@@ -64,6 +64,7 @@ EffectBuilder::EffectBuilderT EffectBuilder::findBuilder(const skjson::ObjectVal
         { "ADBE Tint"                   , &EffectBuilder::attachTintEffect               },
         { "ADBE Tritone"                , &EffectBuilder::attachTritoneEffect            },
         { "ADBE Venetian Blinds"        , &EffectBuilder::attachVenetianBlindsEffect     },
+        { "CC Cylinder"                 , &EffectBuilder::attachCylinderEffect           },
         { "CC Sphere"                   , &EffectBuilder::attachSphereEffect             },
         { "CC Toner"                    , &EffectBuilder::attachCCTonerEffect            },
         { "SkSL Color Filter"           , &EffectBuilder::attachSkSLColorFilter          },
