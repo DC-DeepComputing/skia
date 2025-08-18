@@ -543,6 +543,7 @@ sk_sp<ComputePipeline> GlobalCache::addComputePipeline(const UniqueKey& key,
 void GlobalCache::addStaticResource(sk_sp<Resource> resource) {
     SkAutoSpinlock lock{fSpinLock};
 
+    resource->setBackendLabel();
     fStaticResource.push_back(std::move(resource));
 }
 
