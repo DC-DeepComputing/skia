@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ab1b6e1_95cc27b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-18T13:58:15Z",
+      "side": 1,
+      "message": "I think some detail about what is going wrong (esp. on the Chrome side) would be good here",
+      "revId": "6ba9f52fac65568c4a53b3e825b22eb6525287b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "680a47bb_d5ca9bb3",
@@ -14,6 +31,23 @@
       "writtenOn": "2025-08-15T18:29:57Z",
       "side": 1,
       "message": "This seems to address the accuracy issues at the border of periodic tiling while keeping scrolling content smooth in my subjective opinion.  I disabled overscrolling for clamp/decal because during blur sigma animations I could notice some resolution popping",
+      "revId": "6ba9f52fac65568c4a53b3e825b22eb6525287b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc4e2cb4_1855b6c3",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-18T13:58:15Z",
+      "side": 1,
+      "message": "One line ?",
       "revId": "6ba9f52fac65568c4a53b3e825b22eb6525287b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
