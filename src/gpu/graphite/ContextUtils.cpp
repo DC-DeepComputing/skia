@@ -63,7 +63,7 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
                                   ? KeyGenFlags::kDefault
                                   : KeyGenFlags::kDisableSamplingOptimization,
                           p.color());
-    p.toKey(keyContext);
+    //p.toKey(keyContext);
 
     return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
 }
