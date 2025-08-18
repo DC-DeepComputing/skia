@@ -1962,12 +1962,12 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         };
         Coverage coverage = coverageOptions[rand->nextULessThan(3)];
 
-        const SkBlenderBase* blender = as_BB(paint.getBlender());
-        bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                                 TextureFormat::kRGBA8,
-                                                                 blender->asBlendMode(),
-                                                                 coverage)
-                                       : false;
+        // const SkBlenderBase* blender = as_BB(paint.getBlender());
+        // bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
+        //                                                          TextureFormat::kRGBA8,
+        //                                                          blender->asBlendMode(),
+        //                                                          coverage)
+        //                                : false;
 
         // In the normal API this modification happens in SkDevice::clipShader()
         // All clipShaders get wrapped in a CTMShader
@@ -2000,7 +2000,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                              primitiveBlender,
                                              clipData,
                                              std::move(modifiedClipShader),
-                                             dstReadRequired,
+                                             coverage,
                                              /* skipColorXform= */ false),
                                  {},
                                  precompileKeyContext.dstColorInfo());
