@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontScanner.h"
 #include "include/core/SkStream.h"
@@ -12,18 +13,24 @@
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_android_ndk.h"
 #include "include/private/base/SkAssert.h"
+#include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
 #include "src/base/SkTSort.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/core/SkOSFile.h"
 #include "src/core/SkTHash.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+#if defined(SK_BUILD_FOR_ANDROID)
 #include <android/api-level.h>
+#else
+#define __ANDROID_API__ 0
+#define __ANDROID_API_R__ 30
+int android_get_device_api_level() { return __ANDROID_API__; };
+#endif
 
 using namespace skia_private;
 
@@ -255,21 +262,63 @@ private:
     static_assert(::sk_is_trivially_relocatable<decltype(fTag)>::value);
 };
 
+static constexpr SkFourByteTag wghtTag = SkSetFourByteTag('w','g','h','t');
+static constexpr SkFourByteTag wdthTag = SkSetFourByteTag('w','d','t','h');
+static constexpr SkFourByteTag slntTag = SkSetFourByteTag('s','l','n','t');
+static constexpr SkFourByteTag italTag = SkSetFourByteTag('i','t','a','l');
+
 class SkTypeface_AndroidNDK : public SkTypeface_proxy {
 public:
-   static sk_sp<SkTypeface_AndroidNDK> Make(sk_sp<SkTypeface> realTypeface,
+    struct AutoAxis {
+        static constexpr struct KnownAxis {
+            SkFourByteTag tag;
+            int flag;
+        } kKnownAxis[] = {
+            { wghtTag, 1 << 0 },
+            { wdthTag, 1 << 1 },
+            { slntTag, 1 << 2 },
+            { italTag, 1 << 3 },
+        };
+
+        AutoAxis() = default;
+        AutoAxis(const AutoAxis&) = default;
+        AutoAxis& operator=(const AutoAxis&) = default;
+        AutoAxis(SkSpan<const SkFontArguments::VariationPosition::Coordinate> pos) {
+            for (auto&& coord : pos) {
+                for (auto&& axis : kKnownAxis) {
+                    if (coord.axis == axis.tag) {
+                        fFlags |= axis.flag;
+                    }
+                }
+            }
+        }
+
+        void remove(const AutoAxis& that) {
+            fFlags &= ~that.fFlags;
+        }
+
+        bool weight() const { return SkToBool(fFlags & kKnownAxis[0].flag); }
+        bool width() const { return SkToBool(fFlags & kKnownAxis[1].flag); }
+        bool slant() const { return SkToBool(fFlags & kKnownAxis[2].flag); }
+        bool italic() const { return SkToBool(fFlags & kKnownAxis[3].flag); }
+        bool none() const { return fFlags == 0; }
+        uint8_t fFlags = 0;
+    };
+    static sk_sp<SkTypeface_AndroidNDK> Make(sk_sp<SkTypeface> realTypeface,
                                              const SkFontStyle& style,
                                              bool isFixedPitch,
                                              const SkString& familyName,
                                              TArray<SkString>&& extraFamilyNames,
-                                             TArray<SkLanguage>&& lang) {
+                                             TArray<SkLanguage>&& lang,
+                                             const AutoAxis& autoAxis) {
         SkASSERT(realTypeface);
         return sk_sp<SkTypeface_AndroidNDK>(new SkTypeface_AndroidNDK(std::move(realTypeface),
                                                                       style,
                                                                       isFixedPitch,
                                                                       familyName,
                                                                       std::move(extraFamilyNames),
-                                                                      std::move(lang)));
+                                                                      std::move(lang),
+                                                                      autoAxis));
     }
 
 private:
@@ -278,11 +327,13 @@ private:
                           bool isFixedPitch,
                           const SkString& familyName,
                           TArray<SkString>&& extraFamilyNames,
-                          TArray<SkLanguage>&& lang)
+                          TArray<SkLanguage>&& lang,
+                          const AutoAxis& autoAxis)
         : SkTypeface_proxy(std::move(realTypeface), style, isFixedPitch)
         , fFamilyName(familyName)
         , fExtraFamilyNames(std::move(extraFamilyNames))
         , fLang(std::move(lang))
+        , fAutoAxis(autoAxis)
     { }
 
     void onGetFamilyName(SkString* familyName) const override {
@@ -303,13 +354,16 @@ private:
         if (proxy == nullptr) {
             return nullptr;
         }
+        SkFontStyle style = proxy->fontStyle();
+        bool fixedPitch = proxy->isFixedPitch();
         return SkTypeface_AndroidNDK::Make(
                 std::move(proxy),
-                this->fontStyle(),
-                this->isFixedPitch(),
+                style,
+                fixedPitch,
                 fFamilyName,
                 TArray<SkString>(fExtraFamilyNames),
-                TArray<SkLanguage>());
+                TArray<SkLanguage>(),
+                AutoAxis());
     }
 
     SkFontStyle onGetFontStyle() const override {
@@ -356,7 +410,71 @@ public:
     const SkString fFamilyName;
     const TArray<SkString> fExtraFamilyNames;
     const STArray<4, SkLanguage> fLang;
+    const AutoAxis fAutoAxis;
 };
+
+sk_sp<SkTypeface> tweakForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontStyle style) {
+    if (!typeface) {
+        return typeface;
+    }
+
+    SkFontStyle typefaceStyle = typeface->fontStyle();
+    if (typefaceStyle == style || typeface->fAutoAxis.none()) {
+        return typeface;
+    }
+
+    SkFontArguments::VariationPosition::Coordinate coord[4];
+    int numCoords = 0;
+    if (typefaceStyle.weight() != style.weight() && typeface->fAutoAxis.weight()) {
+        coord[numCoords++] = {wghtTag, static_cast<float>(style.weight())};
+    }
+    if (typefaceStyle.width() != style.width() && typeface->fAutoAxis.width()) {
+        coord[numCoords++] = {wdthTag, SkFontDescriptor::SkFontWidthAxisValueForStyleWidth(style.width())};
+    }
+    if (typefaceStyle.slant() != style.slant()) {
+        switch (style.slant()) {
+        case SkFontStyle::Slant::kItalic_Slant:
+            if (typeface->fAutoAxis.italic()) {
+                coord[numCoords++] = {italTag, 1.0};
+            }
+            break;
+        case SkFontStyle::Slant::kOblique_Slant:
+            if (typeface->fAutoAxis.slant()) {
+                coord[numCoords++] = {slntTag, -7.0};
+            }
+            break;
+        case SkFontStyle::Slant::kUpright_Slant:
+            if (typeface->fAutoAxis.italic()) {
+                coord[numCoords++] = {italTag, 0.0};
+            }
+            if (typeface->fAutoAxis.slant()) {
+                coord[numCoords++] = {slntTag, 0.0};
+            }
+            break;
+        }
+    }
+    if (numCoords == 0) {
+        return typeface;
+    }
+
+    // Cache key is (typefaceId, style) for request cache.
+
+    sk_sp<SkTypeface> newTypeface = typeface->makeClone(SkFontArguments().setVariationDesignPosition({coord, numCoords}));
+    if (!newTypeface) {
+        return typeface;
+    }
+    if constexpr (kSkFontMgrVerbose) {
+        SkFontStyle s = newTypeface->fontStyle();
+        SkDebugf("Variant weight:%d width: %d slant %d\n", s.weight(), s.width(), s.slant());
+    }
+
+    // TODO: check if newTypeface is in the cache
+    // If in cache, add typeface to request cache and return typeface.
+    // Add newTypeface to typeface request cache and return newTypeface.
+    // key could be base typeface id (and not requested style since the resolution may be different) and variation position
+    // key could be file path, collection index, variation position
+    return newTypeface;
+}
 
 class SkFontStyleSet_AndroidNDK : public SkFontStyleSet {
 public:
@@ -376,17 +494,20 @@ public:
             name->reset();
         }
     }
-    sk_sp<SkTypeface> createTypeface(int index) override {
+    sk_sp<SkTypeface_AndroidNDK> createATypeface(int index) {
         if (index < 0 || fStyles.size() <= index) {
             return nullptr;
         }
         return fStyles[index];
     }
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        return createATypeface(index);
+    }
 
-    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+    sk_sp<SkTypeface_AndroidNDK> matchAStyle(const SkFontStyle& pattern) {
         sk_sp<SkTypeface> match = this->matchStyleCSS3(pattern);
+        sk_sp<SkTypeface_AndroidNDK> amatch(static_cast<SkTypeface_AndroidNDK*>(match.release()));
         if constexpr (kSkFontMgrVerbose) {
-            SkTypeface_AndroidNDK* amatch = static_cast<SkTypeface_AndroidNDK*>(match.get());
             SkString name;
             amatch->getFamilyName(&name);
             SkString resourceName;
@@ -397,7 +518,10 @@ public:
                      name.c_str(), fontStyle.weight(), fontStyle.width(), fontStyle.slant(),
                      resourceName.c_str());
         }
-        return match;
+        return amatch;
+    }
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return tweakForStyle(this->matchAStyle(pattern), pattern);
     }
 
 private:
@@ -417,6 +541,8 @@ struct NameToFamily {
 };
 
 class SkFontMgr_AndroidNDK : public SkFontMgr {
+    using Coordinate = SkFontArguments::VariationPosition::Coordinate;
+
     void addSystemTypeface(sk_sp<SkTypeface_AndroidNDK> typeface, const SkString& name) {
         NameToFamily* nameToFamily = nullptr;
         for (NameToFamily& current : fNameToFamilyMap) {
@@ -510,7 +636,7 @@ protected:
         return sk_ref_sp(fNameToFamilyMap[index].styleSet);
     }
 
-    sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
+    sk_sp<SkFontStyleSet_AndroidNDK> onMatchAFamily(const char familyName[]) const {
         if (!familyName) {
             return nullptr;
         }
@@ -522,15 +648,34 @@ protected:
         }
         return nullptr;
     }
+    sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
+        return this->onMatchAFamily(familyName);
+    }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                          const SkFontStyle& style) const override
     {
-        sk_sp<SkFontStyleSet> sset(this->onMatchFamily(familyName));
+        sk_sp<SkFontStyleSet_AndroidNDK> sset(this->onMatchAFamily(familyName));
         if (!sset) {
             return nullptr;
         }
         return sset->matchStyle(style);
+    }
+
+    static SkSpan<Coordinate> GetVariation(const SkTypeface& typeface,
+                                           AutoSTArray<4, Coordinate>& storage) {
+        if (storage.size() < 4) {
+            storage.reset(4);
+        }
+        int numAxes = typeface.getVariationDesignPosition(SkSpan(storage));
+        if (SkToInt(storage.size()) < numAxes) {
+            storage.reset(numAxes);
+            numAxes = typeface.getVariationDesignPosition(SkSpan(storage));
+        }
+        if (numAxes < 0) {
+            numAxes = 0;
+        }
+        return SkSpan<Coordinate>(storage.data(), numAxes);
     }
 
     static TArray<SkString> GetExtraFamilyNames(const SkAFont& font, const SkTypeface& typeface,
@@ -540,31 +685,15 @@ protected:
         // If a font matches an entry in fonts.xml, add the fonts.xml family name as well.
 
         // In Android <= 14 AFont reports the variation as specified in fonts.xml.
-        // In Android >= 15 AFont does not report any axis which is set to default.
-
-        using Coordinate = SkFontArguments::VariationPosition::Coordinate;
+        // In Android >= 15 AFont only reports fixed axes.
         auto coordinateLess = [](const Coordinate& a, const Coordinate& b) -> bool {
             return a.axis != b.axis ? a.axis < b.axis : a.value < b.value;
         };
         auto coordinateEqual = [](const Coordinate& a, const Coordinate& b) -> bool {
             return a.axis == b.axis && a.value == b.value;
         };
-        auto getVariation = [](const SkTypeface& typeface, AutoSTArray<4, Coordinate>& storage) {
-            if (storage.size() < 4) {
-                storage.reset(4);
-            }
-            int numAxes = typeface.getVariationDesignPosition(SkSpan(storage));
-            if (SkToInt(storage.size()) < numAxes) {
-                storage.reset(numAxes);
-                numAxes = typeface.getVariationDesignPosition(SkSpan(storage));
-            }
-            if (numAxes < 0) {
-                numAxes = 0;
-            }
-            return SkSpan<Coordinate>(storage.data(), numAxes);
-        };
         AutoSTArray<4, Coordinate> variationStorage;
-        SkSpan<Coordinate> variation = getVariation(typeface, variationStorage);
+        SkSpan<Coordinate> variation = GetVariation(typeface, variationStorage);
         SkTQSort(variation.begin(), variation.end(), coordinateLess);
 
         AutoSTArray<4, Coordinate> xmlVariationStorage;
@@ -600,7 +729,7 @@ protected:
                     continue;
                 }
 
-                SkSpan<Coordinate> xmlVariation = getVariation(*xmlFont.fTypeface,
+                SkSpan<Coordinate> xmlVariation = GetVariation(*xmlFont.fTypeface,
                                                                xmlVariationStorage);
                 if (variation.size() != xmlVariation.size()) {
                     SkDEBUGFAIL("Clone does not have same number of axes.");
@@ -660,20 +789,18 @@ protected:
             return nullptr;
         }
 
-        constexpr SkFourByteTag wdth = SkSetFourByteTag('w','d','t','h');
         size_t requestAxisCount = font.getAxisCount();
         if (!SkTFitsIn<int>(requestAxisCount)) {
             if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Axis count unreasonable!"); }
             return nullptr;
         }
-        using Coordinate = SkFontArguments::VariationPosition::Coordinate;
         AutoSTMalloc<4, Coordinate> requestAxisValues(requestAxisCount);
         std::optional<int> requestedWidth;
         for (size_t i = 0; i < requestAxisCount; ++i) {
             uint32_t tag = font.getAxisTag(i);
             float value = font.getAxisValue(i);
             requestAxisValues[i] = { tag, value };
-            if (tag == wdth) {
+            if (tag == wdthTag) {
                 // Set the width based on the requested `wdth` axis value.
                 requestedWidth = SkFontDescriptor::SkFontStyleWidthForWidthAxisValue(value);
             }
@@ -693,6 +820,12 @@ protected:
             }
             return nullptr;
         }
+        AutoSTArray<4, Coordinate> variationStorage;
+        SkSpan<Coordinate> variation = GetVariation(*proxy, variationStorage);
+        SkTypeface_AndroidNDK::AutoAxis autoAxis(variation);
+        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates,
+                                                               requestedPosition.coordinateCount)));
+
         SkFontStyle style = proxy->fontStyle();
         int weight = SkTo<int>(font.getWeight());
         SkFontStyle::Slant slant = style.slant();
@@ -746,7 +879,7 @@ protected:
 
         return SkTypeface_AndroidNDK::Make(
             proxy, style, proxy->isFixedPitch(),
-            familyName, std::move(extraFamilyNames), std::move(skLangs));
+            familyName, std::move(extraFamilyNames), std::move(skLangs), autoAxis);
     }
 
 
@@ -791,10 +924,10 @@ protected:
         // Look through the styles that match in each family.
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {
             SkFontStyleSet_AndroidNDK* family = fNameToFamilyMap[i].styleSet;
-            sk_sp<SkTypeface> face(family->matchStyle(style));
+            sk_sp<SkTypeface_AndroidNDK> face(family->matchAStyle(style));
             auto aface = static_cast<SkTypeface_AndroidNDK*>(face.get());
             if (has_locale_and_character(aface, langTag, character, "style", &step)) {
-                return face;
+                return tweakForStyle(std::move(face), style);
             }
         }
 
@@ -813,10 +946,10 @@ protected:
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {
             SkFontStyleSet_AndroidNDK* family = fNameToFamilyMap[i].styleSet;
             for (int j = 0; j < family->count(); ++j) {
-                sk_sp<SkTypeface> face(family->createTypeface(j));
+                sk_sp<SkTypeface_AndroidNDK> face(family->createATypeface(j));
                 auto aface = static_cast<SkTypeface_AndroidNDK*>(face.get());
                 if (has_locale_and_character(aface, langTag, character, "anything", &step)) {
-                    return face;
+                    return tweakForStyle(std::move(face), style);
                 }
             }
         }
