@@ -236,7 +236,12 @@ cc_library(
         "-Iexternal/libjpeg_turbo/simd/arm/",
         "-Iexternal/+cpp_modules+libjpeg_turbo/simd/arm/",
     ],
-    includes = ["src"],
+    includes = ["src"] + select({
+        ":arm_or_arm64": [
+            "simd/arm",
+        ],
+        "//conditions:default": [],
+    }),
     local_defines = JPEGTURBO_DEFINES,
     textual_hdrs = JPEGTURBO_TEXT_HDRS,
     visibility = ["//visibility:public"],
