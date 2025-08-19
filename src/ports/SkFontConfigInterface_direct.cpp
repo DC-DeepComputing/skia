@@ -514,13 +514,17 @@ bool SkFontConfigInterfaceDirect::isAccessible(const char* filename) {
 bool SkFontConfigInterfaceDirect::isValidPattern(FcPattern* pattern) {
 #ifdef SK_FONT_CONFIG_INTERFACE_ONLY_ALLOW_SFNT_FONTS
     const char* font_format = get_string(pattern, FC_FONTFORMAT);
-    if (font_format
-        && 0 != strcmp(font_format, kFontFormatTrueType)
-        && 0 != strcmp(font_format, kFontFormatCFF))
+    if (!font_format || (0 != strcmp(font_format, kFontFormatTrueType) &&
+                         0 != strcmp(font_format, kFontFormatCFF)))
     {
         return false;
     }
 #endif
+
+    const char* family = get_string(pattern, FC_FAMILY);
+    if (!family) {
+      return false;
+    }
 
     // fontconfig can also return fonts which are unreadable
     const char* c_filename = get_string(pattern, FC_FILE);
@@ -611,6 +615,10 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     fcpattern_from_skfontstyle(style, pattern);
 
     FcPatternAddBool(pattern, FC_SCALABLE, FcTrue);
+
+    // TODO(https://crbug.com/439788709): Move the key name to FC_FONT_WRAPPER
+    // once the build issue is fixed on the Chrome side.
+    FcPatternAddString(pattern, "fontwrapper", reinterpret_cast<const FcChar8*>("SFNT"));
 
     FcConfigSubstitute(fc, pattern, FcMatchPattern);
     FcDefaultSubstitute(pattern);
