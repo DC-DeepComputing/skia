@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cddf5d23_5b4af5ff",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-08-19T15:34:59Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "c49b2bc0_b5ce71a4",
+      "revId": "b03e14ee4188d1848044a66a34dbf0a1040f66eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bacc1f79_51ebc25d",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-19T15:21:33Z",
       "side": 1,
       "message": "Should put a comment on this that the purpose is to prioritize SFNT housed fonts over others, like WOFF and WOFF2 so that matches are more likely to be valid.",
+      "revId": "b03e14ee4188d1848044a66a34dbf0a1040f66eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "430b67b8_bd8108fb",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-08-19T15:34:59Z",
+      "side": 1,
+      "message": "Sure, comment added.",
+      "parentUuid": "bacc1f79_51ebc25d",
       "revId": "b03e14ee4188d1848044a66a34dbf0a1040f66eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
