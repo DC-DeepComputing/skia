@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee5f2af8_246d6b59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-08-19T14:26:49Z",
+      "side": 1,
+      "message": "I think this should work with FontConfig below 2.15, too:\nFcPatternAddString will just return false - as the id cannot be found, but I don\u0027t think it makes the pattern invalid.\n\nSecondly, in that situation, we check for `font_format` being present - which would still filter woff2 fonts, as Fontations indexing didn\u0027t add a `font_format` object to the pattern.",
+      "revId": "2594e675e4b0f79d232c300cc7fed06a38f38bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
