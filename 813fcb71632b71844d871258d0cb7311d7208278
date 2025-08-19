@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6897f912_59a5307b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T15:34:06Z",
+      "side": 1,
+      "message": "Not 100% sure what\u0027s going on with the chrome canary\u0027s Bitmap profile failures; I\u0027m assuming I was just based on a bad revision, so rebasing and trying again.",
+      "revId": "813fcb71632b71844d871258d0cb7311d7208278",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
