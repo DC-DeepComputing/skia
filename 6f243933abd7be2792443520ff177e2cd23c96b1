@@ -16,6 +16,52 @@
       "message": "Please take a look.",
       "revId": "6f243933abd7be2792443520ff177e2cd23c96b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "914e9a50_1befe0bc",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T15:27:47Z",
+      "side": 1,
+      "message": "nit: maybe name it `syncBackendLabel()`?",
+      "range": {
+        "startLine": 229,
+        "startChar": 9,
+        "endLine": 229,
+        "endChar": 24
+      },
+      "revId": "6f243933abd7be2792443520ff177e2cd23c96b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "777d2f2e_4d1e483f",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T15:27:47Z",
+      "side": 1,
+      "message": "These need to be thread safe somehow because `fLabel` and `fNeedsBackendLabelSet` are modified on the Recorder threads (main/compositor thread in chrome at the moment), and `fLabel` is read on the context thread and `fNeedsBackendLabelSet` is modified there as well.\n\nIt\u0027s tricky to pin down a restricted threading model for labels, but here are the constraints that I see:\n1. setBackendLabel(string_view) is only going to be called on the context thread (within the command buffer or during creation for static resources)\n2. The Resource labels are set via the ResourceProvider right now, either after pulling a resource from the ResourceCache or right after creating a new one before inserting it into the ResourceCache, or after wrapping a backend resource (which won\u0027t go in the cache but is a new object that is only visible to the current thread). The cache\u0027s mutex is held already when querying the ResourceCache so if we change `findAndRefResource` the new label as a parameter, then we can set them on the Resource while the cache lock is already held.\n3. The ResourceProvider would still be responsible for setting the initial label when it created the resource for the first time to keep parity between wrapped backend resources and owned resources.\n4. The resource\u0027s label is queried to set the initial label of a TextureProxy when it\u0027s wrapping an existing texture. I think this could be removed if we separately provided the label to `TextureProxy::Wrap()` since the original label object is available still.\n\nI *think* everything would be safe at that point and preserve the current behavior, given that there are multiple ResourceCaches and how labels have been assigned in the past.\n\nThe tricky thing about resource labels (that\u0027s always been an issue) is what the labels should be when it\u0027s a shareable resource or a scratch resource.  An unshared resource\u0027s label may change over time but it\u0027ll always be a single label at a given point in time. For shareable resources and scratch resources, (eventually) they will be accessible from multiple threads with potentially different purposes. In practice the shareable resources will all have the same label anyways but scratch resource\u0027s labels actually change during the course of a command buffer. Right now they end up using the label of the last usage within the command buffer.\n\nThese issues become a bit more pronounced as we move to a single ResourceCache that\u0027s shared by all threads. For now I think, we move forward with steps 1-4 above, we can work out a label tracking system that is more connected to a Recording (so that backend labels can be set during InsertRecording and otherwise held by the Recording so simultaneous use of a Resource doesn\u0027t mess up the label state).",
+      "range": {
+        "startLine": 687,
+        "startChar": 0,
+        "endLine": 689,
+        "endChar": 39
+      },
+      "revId": "6f243933abd7be2792443520ff177e2cd23c96b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
