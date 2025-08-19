@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4d40ea1_0dfe11f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T17:05:41Z",
+      "side": 1,
+      "message": "Hmm, locally I\u0027m seeing a test failure with SwiftShader in the `UpdateBackendTextureFinishedProcTest` test, I thought SwiftShader bots run in CQ, but looks like they don\u0027t.",
+      "parentUuid": "f7a0d5c1_f2cfa02e",
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edce2dac_e0e8406d",
         "filename": "src/gpu/graphite/Texture.cpp",
         "patchSetId": 3
