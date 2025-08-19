@@ -22,6 +22,30 @@
       },
       "revId": "52be71aacfc2836d6b9346cd7c27e47c6f1e0329",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe4d85e1_01298218",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-19T15:50:10Z",
+      "side": 1,
+      "message": "Good point. I\u0027ve added a comment re lifetime. From code search it appears our clients want to just pass in a pointer. For Android/HWUI, the executor is static and, for Flutter, the VM owns it.",
+      "parentUuid": "b8915025_d22b3bf4",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 36
+      },
+      "revId": "52be71aacfc2836d6b9346cd7c27e47c6f1e0329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
