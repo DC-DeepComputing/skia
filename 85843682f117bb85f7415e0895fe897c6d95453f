@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04921c01_b1d97702",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-19T15:51:58Z",
+      "side": 1,
+      "message": "I think it is 15, see  https://releases.llvm.org/15.0.0/tools/clang/docs/ReleaseNotes.html for `_Float16`.",
+      "range": {
+        "startLine": 154,
+        "startChar": 45,
+        "endLine": 154,
+        "endChar": 47
+      },
+      "revId": "85843682f117bb85f7415e0895fe897c6d95453f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
