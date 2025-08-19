@@ -16,6 +16,24 @@
       "message": "If I\u0027m not mistaken, this path had an accounting bug. `num32DataCnt` was either 5 or 5+3. But one of the ints accounted in the 5 is in the `else` block; this path only wrote 7 ints.\n\nBut the assert below never fired. That makes me wonder if any path hits this at all. Testing that in https://skia-review.googlesource.com/c/skia/+/1040856. Likely a testing gap here.",
       "revId": "6b828d735a579e555486c33f416fee399ca4b529",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0186e4e0_8d2cff65",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1997,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T03:59:49Z",
+      "side": 0,
+      "message": "No failing tests in that CL, this path is not hit in tests 😞",
+      "parentUuid": "e1c8ffd8_41a549b1",
+      "revId": "6b828d735a579e555486c33f416fee399ca4b529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
