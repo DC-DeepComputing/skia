@@ -16,6 +16,155 @@
       "message": "Gemini helped me produce this\nhttp://graphviz/#e90905044d5fa7b4d20a9f9184f75def\n\nI\u0027ve done several passes for accuracy. WDYT?",
       "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e271ae89_a392e205",
+        "filename": "docs/architecture/CPU.dot",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "This part is kinda confusing, because I would expect \"A -\u003e B\" to read as \"A calls/uses B\".  But the diagram has stuff like \"SkPath -\u003e SkCanvas\", which is the opposite.\n\nIt does make some sense as a data flow view though (SkPath is an input for SkCanvas draws), so I\u0027m not sure how to improve.  Maybe we\u0027re trying to fold too many concepts into a single diagram or arrow style.",
+      "range": {
+        "startLine": 10,
+        "startChar": 7,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14d8801f_bd010dc1",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "Technically any stroke width \u003c 1 is (visually) thinner than a hairline, which creates an annoying discontinuity at 0.\n\nThe interesting property of a hairline is that it does not scale with the CTM.",
+      "range": {
+        "startLine": 19,
+        "startChar": 22,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad41f78_7ddca517",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "Also conics, though I\u0027m not sure we\u0027re trying to be exhaustive here.",
+      "range": {
+        "startLine": 25,
+        "startChar": 78,
+        "endLine": 26,
+        "endChar": 17
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ebbacf0_3834d0ad",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "Parametric?",
+      "range": {
+        "startLine": 28,
+        "startChar": 51,
+        "endLine": 28,
+        "endChar": 61
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3049f7e7_ddff7c10",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "Another important role for fontmgr is font fallback: given a collection of fonts and some ordering heuristics, find a typeface that supports a given character.",
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c63708d6_6e7fcc43",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "Maybe worth pointing out that there are non-vector (bitmap) font formats, and rasterization relies on a glyph (mask) cache for performance.",
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b485de86_9ba689e0",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:27:15Z",
+      "side": 1,
+      "message": "(coverage)",
+      "range": {
+        "startLine": 101,
+        "startChar": 38,
+        "endLine": 101,
+        "endChar": 56
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
