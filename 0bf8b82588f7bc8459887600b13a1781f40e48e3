@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "104e8d4a_cc81f8d7",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T19:29:28Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com, _functionally_, your suggestion made things better.\n\nI don\u0027t like how lots of the same information is sent to both UploadSource and UploadInstance in the end. I could cache these parameters in `UploadSource` itself for `UploadInstance` to pick up; that\u0027d be some minor copies with purely aesthetic benefits. If you have no preference here, I think I\u0027ll do that.",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d5e86f3_bdb90b07",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T19:29:28Z",
+      "side": 1,
+      "message": "Another tiny point is `UploadInstance::Make` can\u0027t really fail now unless something catastrophic happened. Same with `uploadDataOnHost`, failure is only due to catastrophic events (Vulkan driver returned failure). Any preferences here? Would you rather:\n\n* If host-copy catastrophically fails, fail right away or still try the buffer copy path?\n* Log or no log on failure?",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
