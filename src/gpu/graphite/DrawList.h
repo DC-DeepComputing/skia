@@ -87,19 +87,26 @@ public:
                     const Geometry& geometry,
                     const Clip& clip,
                     DrawOrder ordering,
-                    const PaintParams* paint,
+                    UniquePaintParamsID paintID,
+                    bool dstReadReq,
+                    bool usesAdvancedBlend,
+                    PipelineDataGatherer* gatherer,
                     const StrokeStyle* stroke);
-
-    bool prepareSortKeys(Recorder* recorder, const SkImageInfo& targetInfo);
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
-                                           std::pair<LoadOp, StoreOp> ops,
-                                           std::array<float, 4> clearColor,
                                            const DstReadStrategy dstReadStrategy);
 
     int renderStepCount() const { return fRenderStepCount; }
+
+    bool modifiesTarget() const {
+        return this->renderStepCount() > 0 || fLoadOp == LoadOp::kClear;
+    }
+
+    // Discard all previously recorded draws and set to the requested load op (with optional clear
+    // color).
+    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f});
 
     // Bounds for a dst read required by this DrawList. These bounds are only valid if drawsReadDst
     // returns true.
@@ -115,20 +122,25 @@ private:
     friend class DrawPass;
 
     struct Draw {
-        const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
-        DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
-        std::optional<PaintParams> fPaintParams; // Not present implies depth-only draw
-
+        public:
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
-             const Clip& clip, DrawOrder order, const PaintParams* paint,
+             const Clip& clip, DrawOrder order, bool dstReadReq, bool usesAdvancedBlend,
              const StrokeStyle* stroke)
                 : fRenderer(renderer)
                 , fDrawParams(transform, geometry, clip, order, stroke)
-                , fPaintParams(paint ? std::optional<PaintParams>(*paint) : std::nullopt) {}
+                , fDstReadReq(dstReadReq)
+                , fUsesAdvancedBlend(usesAdvancedBlend) {}
 
-        bool readsFromDst() const {
-            return fPaintParams.has_value() ? fPaintParams.value().dstReadRequired() : false;
-        }
+        const DrawParams& drawParams() const { return fDrawParams;        }
+        const Renderer* renderer()     const { return fRenderer;          }
+        bool dstReadReq()              const { return fDstReadReq;        }
+        bool usesAdvancedBlend()       const { return fUsesAdvancedBlend; }
+
+        private:
+            const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
+            DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
+            bool fDstReadReq;
+            bool fUsesAdvancedBlend;
     };
 
     // Helper to manage packed fields within a uint64_t
@@ -173,8 +185,8 @@ private:
                 UniformDataCache::Index geomUniformIndex,
                 UniformDataCache::Index shadingUniformIndex,
                 TextureDataCache::Index textureBindingIndex)
-            : fPipelineKey(ColorDepthOrderField::set(draw->fDrawParams.order().paintOrder().bits()) |
-                        StencilIndexField::set(draw->fDrawParams.order().stencilIndex().bits())  |
+            : fPipelineKey(ColorDepthOrderField::set(draw->drawParams().order().paintOrder().bits()) |
+                        StencilIndexField::set(draw->drawParams().order().stencilIndex().bits())  |
                         RenderStepField::set(static_cast<uint32_t>(renderStep))                  |
                         PipelineField::set(pipelineIndex))
             , fUniformKey(GeometryUniformField::set(geomUniformIndex)   |
@@ -182,7 +194,7 @@ private:
                         TextureBindingsField::set(textureBindingIndex))
             , fDraw(draw) {
             SkASSERT(pipelineIndex < GraphicsPipelineCache::kInvalidIndex);
-            SkASSERT(renderStep <= draw->fRenderer->numRenderSteps());
+            SkASSERT(renderStep <= draw->renderer()->numRenderSteps());
         }
 
         bool operator<(const SortKey& k) const {
@@ -191,7 +203,7 @@ private:
         }
 
         const RenderStep& renderStep() const {
-            return fDraw->fRenderer->step(RenderStepField::get(fPipelineKey));
+            return fDraw->renderer()->step(RenderStepField::get(fPipelineKey));
         }
 
         const DrawList::Draw& draw() const { return *fDraw; }
@@ -269,7 +281,8 @@ private:
     TextureDataCache fTextureDataCache;
     GraphicsPipelineCache fPipelineCache;
 
-    void internalReset();
+    LoadOp fLoadOp = LoadOp::kLoad;
+    std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 };
 
 } // namespace skgpu::graphite
