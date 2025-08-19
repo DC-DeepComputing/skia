@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "587b239e_8b1019af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T17:11:21Z",
+      "side": 1,
+      "message": "Adding Rob for additional thoughts on the current approach and long term plan around resource labels.",
+      "revId": "6f243933abd7be2792443520ff177e2cd23c96b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "914e9a50_1befe0bc",
