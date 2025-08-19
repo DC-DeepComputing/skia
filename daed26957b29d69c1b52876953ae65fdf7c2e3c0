@@ -34,6 +34,24 @@
       "parentUuid": "2ad5126c_c6f42a40",
       "revId": "daed26957b29d69c1b52876953ae65fdf7c2e3c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cf916ff_2dce211f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T17:48:52Z",
+      "side": 1,
+      "message": "Yes. From local build on Linux:\n\n```\n../../src/gpu/graphite/Device.cpp: In member function ‘virtual void skgpu::graphite::Device::drawDRRect(const SkRRect\u0026, const SkRRect\u0026, const SkPaint\u0026)’:\n../../src/gpu/graphite/Device.cpp:985:57: warning: suggest parentheses around comparison in operand of ‘\u0026’ [-Wparentheses]\n  985 |     if (!all((gap \u003e tolerance) \u0026 abs(gap - strokeWidth) \u003c\u003d tolerance)) {\n      |                                  ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~\n```",
+      "parentUuid": "bf388c3e_0478e9e1",
+      "revId": "daed26957b29d69c1b52876953ae65fdf7c2e3c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
