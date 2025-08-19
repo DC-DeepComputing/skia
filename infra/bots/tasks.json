@@ -19887,10 +19887,6 @@
           "path": "cache/ccache"
         },
         {
-          "name": "docker",
-          "path": "cache/docker"
-        },
-        {
           "name": "git",
           "path": "cache/git"
         },
@@ -19979,9 +19975,6 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
-        "CLOUDSDK_PYTHON": [
-          "cipd_bin_packages/cpython3/bin/python3"
-        ],
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
