@@ -344,6 +344,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0709cd69_0731f18a",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T19:21:42Z",
+      "side": 1,
+      "message": "Let\u0027s review the change in the next CL, but I\u0027ll definitely squash it in this: https://skia-review.googlesource.com/c/skia/+/1041697\n\nThat change has a little fix that\u0027s annoying to backport to this one (the memory row length for non-compressed should be divided by bytes-per-pixel).",
+      "parentUuid": "623b39b4_e58ecd7d",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 547,
+        "endChar": 40
+      },
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c796bf6_81c12ee0",
         "filename": "src/gpu/vk/VulkanInterface.h",
         "patchSetId": 3
