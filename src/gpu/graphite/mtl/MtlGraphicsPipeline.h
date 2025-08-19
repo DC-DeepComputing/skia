@@ -52,6 +52,8 @@ public:
                                                            MtlResourceProvider*,
                                                            const RenderPassDesc&);
 
+    bool isReady() const override;
+
     ~MtlGraphicsPipeline() override {}
 
     id<MTLRenderPipelineState> mtlPipelineState() const { return fPipelineState.get(); }
@@ -59,6 +61,9 @@ public:
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
 
 private:
+    bool fAsync = false;
+    bool fAsyncFinished = false;
+
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                         const PipelineInfo& pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,

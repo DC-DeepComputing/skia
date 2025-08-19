@@ -51,6 +51,59 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
+sk_sp<GraphicsPipeline> ResourceProvider::tradeIn(GraphicsPipelineHandle* handle) {
+    PipelineManager* pipelineManager = fSharedContext->pipelineManager();
+
+    return pipelineManager->tradeIn(this, handle);
+}
+
+std::unique_ptr<GraphicsPipelineHandle> ResourceProvider::createGraphicsPipelineHandle(
+        const RuntimeEffectDictionary* runtimeDict,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    PipelineManager* pipelineManager = fSharedContext->pipelineManager();
+
+    return pipelineManager->createHandle(this,
+                                         pipelineDesc,
+                                         renderPassDesc,
+                                         pipelineCreationFlags);
+
+#if 0
+    // TODO: if we stored all this info in the GraphicsPipelineHandle we could defer kicking
+    // off the compilation
+    Compilinator* compilinator = fSharedContext->compilinator();
+    compilinator->compilinate(this,
+                              runtimeDict,
+                              handle,
+                              pipelineDesc,
+                              renderPassDesc,
+                              pipelineCreationFlags);
+
+    return handle;
+#endif
+}
+
+sk_sp<GraphicsPipeline> ResourceProvider::findGraphicsPipeline(
+        const UniqueKey& pipelineKey,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    auto globalCache = fSharedContext->globalCache();
+
+    uint32_t compilationID = 0;
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags,
+                                                                         &compilationID);
+    if (pipeline && pipeline->didAsyncCompilationFail()) {
+        // If the pipeline failed, remove it from the cache and fall through to retry
+        globalCache->removeGraphicsPipeline(pipeline.get());
+        pipeline.reset();
+    }
+
+    return pipeline;
+}
+
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -88,17 +141,47 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
         static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[forPrecompile]),
-                             TRACE_EVENT_SCOPE_THREAD,
+        SkDebugf("%s %u %s %u: %s\n",
+        //TRACE_EVENT_INSTANT2("skia.gpu",
+//                             TRACE_EVENT_SCOPE_THREAD,
                              "key", pipelineKey.hash(),
-                             "compilationID", compilationID);
+                             "compilationID", compilationID,
+                 TRACE_STR_STATIC(kNames[forPrecompile]));
+
+        SkDebugf("key %u compilationID %u: %s\n",
+                 pipelineKey.hash(),
+                 compilationID,
+                 to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str());
 #endif
+
+        skgpu::StdSteadyClock::time_point compileStart = skgpu::StdSteadyClock::now();
 
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
                                                 pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags,
                                                 compilationID);
+
+        skgpu::StdSteadyClock::time_point compileEnd = skgpu::StdSteadyClock::now();
+        auto compileTime = compileEnd - compileStart;
+
+        pipeline->set0(std::chrono::duration_cast<std::chrono::nanoseconds>(compileTime).count()/1000000.0f);
+        float waitTime = 0.0f;
+
+        static const char* kNames2[2] = { "EndBuildN", "EndBuildP" };
+        SkDebugf("key %u compilationID %u: %s compile-time, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f\n",
+                 pipelineKey.hash(),
+                 compilationID,
+                 kNames2[forPrecompile],
+                 pipeline->fD0,
+                 pipeline->fD1,
+                 pipeline->fD2,
+                 pipeline->fD3,
+                 pipeline->fD4,
+                 pipeline->fD5,
+                 pipeline->fD6,
+                 waitTime,
+                 pipeline->fD0+waitTime);
+
         if (pipeline) {
             globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
