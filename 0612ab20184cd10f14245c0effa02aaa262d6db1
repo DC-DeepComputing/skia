@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f69bd5_03eaa2b7",
+        "filename": "include/core/SkPathIter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:56:17Z",
+      "side": 1,
+      "message": "Pretty weird that Gerrit doesn\u0027t flag this as a merge conflict.  Needs rebase.",
+      "revId": "0612ab20184cd10f14245c0effa02aaa262d6db1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04832fa7_10e372b1",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-19T20:56:17Z",
+      "side": 1,
+      "message": "Can delete.",
+      "revId": "0612ab20184cd10f14245c0effa02aaa262d6db1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
