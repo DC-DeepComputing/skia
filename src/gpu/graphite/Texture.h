@@ -23,7 +23,7 @@ enum class Budgeted : bool;
 
 namespace skgpu::graphite {
 
-struct MipLevel;
+class UploadSource;
 
 class Texture : public Resource {
 public:
@@ -41,10 +41,12 @@ public:
 
     const Texture* asTexture() const override { return this; }
 
-    // Called from Recorder::updateCompressedBackendTexture, attempts to write to the texture on the
-    // host directly. If that is possible and done, `true` is returned.
-    virtual bool updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels);
-    virtual bool updateCompressedDataOnHost(const void* data, size_t dataSize);
+    virtual bool canUploadOnHost(const UploadSource&) const { return false; }
+
+    // With the assumption that source.canUploadOnHost() is true, attempts to write to the
+    // texture on the host directly. Returns `false` only if driver calls fail. In Vulkan, the image
+    // will be in the VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL layout at the end.
+    virtual bool uploadDataOnHost(const UploadSource& source);
 
 protected:
     Texture(const SharedContext*,

@@ -493,11 +493,8 @@ void VulkanTexture::addCachedFramebuffer(sk_sp<VulkanFramebuffer> fb) {
     fCachedFramebuffers.push_back(std::move(fb));
 }
 
-bool VulkanTexture::updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels) {
-    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
-
+bool VulkanTexture::canUploadOnHost(const UploadSource& source) const {
     // Can't use host-image-copy if the usage flag is not set.
-    const TextureInfo& textureInfo = this->textureInfo();
     if ((this->vulkanTextureInfo().fImageUsageFlags & VK_IMAGE_USAGE_HOST_TRANSFER_BIT) == 0) {
         return false;
     }
@@ -507,103 +504,35 @@ bool VulkanTexture::updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const 
         return false;
     }
 
-    SkASSERT(sharedContext->caps()->isTexturable(textureInfo));
-    SkASSERT(sharedContext->caps()->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(),
-                                                                         textureInfo));
-
-    const unsigned int mipLevelCount = levels.size();
-
-    // We assume that if the texture has mip levels, all the levels are uploaded.
-#ifdef SK_DEBUG
-    const SkISize dimensions = this->dimensions();
-    unsigned int numExpectedLevels = 1;
-    if (textureInfo.mipmapped() == Mipmapped::kYes) {
-        numExpectedLevels =
-                SkMipmap::ComputeLevelCount(dimensions.width(), dimensions.height()) + 1;
-    }
-    SkASSERT(mipLevelCount == numExpectedLevels);
-#endif
-
-    for (unsigned int i = 0; i < mipLevelCount; ++i) {
-        // We do not allow any gaps in the mip data
-        if (!levels[i].fPixels) {
-            return false;
-        }
-    }
-
-    SkColorType supportedColorType;
-    bool isRGB888Format;
-    std::tie(supportedColorType, isRGB888Format) =
-            sharedContext->caps()->supportedWritePixelsColorType(
-                    colorInfo.colorType(), textureInfo, colorInfo.colorType());
-    if (supportedColorType == kUnknown_SkColorType) {
-        return false;
-    } else if (isRGB888Format) {
+    if (source.isRGB888Format()) {
         // Need to transform RGBX8 to RGBA8 in a temp memory anyway, might as well use the buffer
         // upload path for faster temp memory -> image copy by the GPU.
         return false;
     }
-
-    return updateDataOnHostImpl(levels);
-}
-
-bool VulkanTexture::updateCompressedDataOnHost(const void* data, size_t dataSize) {
-    // Can't use host-image-copy if the usage flag is not set.
-    const TextureInfo& textureInfo = this->textureInfo();
-    if ((this->vulkanTextureInfo().fImageUsageFlags & VK_IMAGE_USAGE_HOST_TRANSFER_BIT) == 0) {
-        return false;
-    }
-
-    // Can't use host-image-copy if the image is busy on the GPU.
-    if (this->isTextureBusyOnGPU()) {
-        return false;
-    }
-
-    SkASSERT(this->sharedContext()->caps()->isTexturable(textureInfo));
-
-    const SkTextureCompressionType compression =
-            TextureFormatCompressionType(TextureInfoPriv::ViewFormat(textureInfo));
-    if (compression == SkTextureCompressionType::kNone) {
-        return false;
-    }
-
-    const SkISize dimensions = this->dimensions();
-    skia_private::STArray<16, size_t> srcMipOffsets;
-    SkDEBUGCODE(size_t computedSize =) SkCompressedDataSize(
-            compression, dimensions, &srcMipOffsets, textureInfo.mipmapped() == Mipmapped::kYes);
-    SkASSERT(computedSize == dataSize);
-
-    const unsigned int mipLevelCount = srcMipOffsets.size();
-
-    skia_private::STArray<16, MipLevel> levels;
-    levels.resize(mipLevelCount);
-    for (unsigned int i = 0; i < mipLevelCount; ++i) {
-        levels[i].fPixels = SkTAddOffset<const void>(data, srcMipOffsets[i]);
-        levels[i].fRowBytes = 0;  // Tightly packed
-    }
-
-    return updateDataOnHostImpl(levels);
-}
-
-bool VulkanTexture::updateDataOnHostImpl(SkSpan<const MipLevel> levels) {
-    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
-    const unsigned int mipLevelCount = levels.size();
-
-    const TextureInfo& textureInfo = this->textureInfo();
-    const TextureFormat format = TextureInfoPriv::ViewFormat(textureInfo);
-    const VkImageAspectFlags aspectFlags = GetVkImageAspectFlags(format);
 
     // For now, only use host-image-copy if the image has never been used. If needed in the future,
     // we could inspect the VkPhysicalDeviceHostImageCopyProperties::pCopySrcLayouts array to know
     // which layouts the image can be to be used with HIC. However, a better solution could be to
     // recreate the VkImage even if the existing one is busy on the GPU, since this function
     // entirely overwrites the texture anyway.
-    //
-    // The image is placed in the SHADER_READ_ONLY layout per the promise of
-    // Recorder::update*BackendTexture.
     if (this->currentLayout() != VK_IMAGE_LAYOUT_UNDEFINED) {
         return false;
     }
+
+    return true;
+}
+
+bool VulkanTexture::uploadDataOnHost(const UploadSource& source) {
+    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
+    SkSpan<const MipLevel> levels = source.levels();
+    const unsigned int mipLevelCount = levels.size();
+
+    const TextureInfo& textureInfo = this->textureInfo();
+    const TextureFormat format = TextureInfoPriv::ViewFormat(textureInfo);
+    const VkImageAspectFlags aspectFlags = GetVkImageAspectFlags(format);
+
+    SkASSERT(this->currentLayout() == VK_IMAGE_LAYOUT_UNDEFINED);
+
     VkHostImageLayoutTransitionInfo transition = {};
     transition.sType = VK_STRUCTURE_TYPE_HOST_IMAGE_LAYOUT_TRANSITION_INFO;
     transition.image = fImage;
@@ -617,6 +546,7 @@ bool VulkanTexture::updateDataOnHostImpl(SkSpan<const MipLevel> levels) {
                     TransitionImageLayout(sharedContext->device(), 1, &transition)) != VK_SUCCESS) {
         return false;
     }
+    this->updateImageLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 
     TArray<VkMemoryToImageCopy> copyRegions(mipLevelCount);
 
@@ -625,10 +555,15 @@ bool VulkanTexture::updateDataOnHostImpl(SkSpan<const MipLevel> levels) {
     int32_t currentWidth = dimensions.width();
     int32_t currentHeight = dimensions.height();
     for (unsigned int currentMipLevel = 0; currentMipLevel < mipLevelCount; currentMipLevel++) {
+        // Upload data for compressed formats are fully packed. If this changes, the division by
+        // bytes-per-pixel should be adjusted for compressed formats.
+        SkASSERT(source.compression() == SkTextureCompressionType::kNone ||
+                 levels[currentMipLevel].fRowBytes == 0);
+
         VkMemoryToImageCopy copyRegion = {};
         copyRegion.sType = VK_STRUCTURE_TYPE_MEMORY_TO_IMAGE_COPY;
         copyRegion.pHostPointer = levels[currentMipLevel].fPixels;
-        copyRegion.memoryRowLength = levels[currentMipLevel].fRowBytes;
+        copyRegion.memoryRowLength = levels[currentMipLevel].fRowBytes / source.bytesPerPixel();
         copyRegion.memoryImageHeight = 0;  // Tightly packed
         copyRegion.imageSubresource.aspectMask = aspectFlags;
         copyRegion.imageSubresource.mipLevel = currentMipLevel;

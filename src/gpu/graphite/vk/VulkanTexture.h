@@ -103,8 +103,8 @@ public:
                                                   const VulkanTexture* depthStencilTexture) const;
     void addCachedFramebuffer(sk_sp<VulkanFramebuffer>);
 
-    bool updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels) override;
-    bool updateCompressedDataOnHost(const void* data, size_t dataSize) override;
+    bool canUploadOnHost(const UploadSource&) const override;
+    bool uploadDataOnHost(const UploadSource& source) override;
 
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
@@ -119,8 +119,6 @@ private:
     void freeGpuData() override;
 
     size_t onUpdateGpuMemorySize() override;
-
-    bool updateDataOnHostImpl(SkSpan<const MipLevel> levels);
 
     VkImage fImage;
     VulkanAlloc fMemoryAlloc;
