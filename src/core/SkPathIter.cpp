@@ -25,6 +25,10 @@ std::optional<SkPathIter::Rec> SkPathIter::next() {
     SkPathVerb v;
     switch (v = fVerbs[vIndex++]) {
         case SkPathVerb::kMove:
+            // snuff out trailing moves
+            if (vIndex == fVerbs.size()) {
+                return {};
+            }
             fClosePointStorage[1] = fPoints[pIndex++]; // remember for close
             return Rec{{&fClosePointStorage[1], 1}, w, v};
         case SkPathVerb::kLine:  n = 1; break;
