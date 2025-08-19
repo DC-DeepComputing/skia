@@ -48,7 +48,6 @@
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
-#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
@@ -1962,13 +1961,6 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         };
         Coverage coverage = coverageOptions[rand->nextULessThan(3)];
 
-        const SkBlenderBase* blender = as_BB(paint.getBlender());
-        bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                                 TextureFormat::kRGBA8,
-                                                                 blender->asBlendMode(),
-                                                                 coverage)
-                                       : false;
-
         // In the normal API this modification happens in SkDevice::clipShader()
         // All clipShaders get wrapped in a CTMShader
         sk_sp<SkShader> modifiedClipShader = clipShader
@@ -1988,22 +1980,25 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
             clipData.fAnalyticClip.fRadius = 5;
         }
 
-        SkDEBUGCODE(paramsGatherer.resetForDraw());
-        UniquePaintParamsID paintID =
-                ExtractPaintData(recorder,
-                                 precompileKeyContext.floatStorageManager(),
-                                 &paramsGatherer,
-                                 precompileKeyContext.paintParamsKeyBuilder(),
-                                 Layout::kMetal,
-                                 {},
-                                 PaintParams(paint,
-                                             primitiveBlender,
-                                             clipData,
-                                             std::move(modifiedClipShader),
-                                             dstReadRequired,
-                                             /* skipColorXform= */ false),
-                                 {},
-                                 precompileKeyContext.dstColorInfo());
+        PaintParams pp = PaintParams(paint,
+                                     primitiveBlender,
+                                     clipData,
+                                     std::move(modifiedClipShader),
+                                     coverage,
+                                     /* skipColorXform= */ false);
+        SkDEBUGCODE(precompileKeyContext.paintParamsKeyBuilder()->checkReset());
+        SkDEBUGCODE(paramsGatherer.checkReset());
+        KeyContext keyContext(recorder,
+                              precompileKeyContext.floatStorageManager(),
+                              precompileKeyContext.paintParamsKeyBuilder(),
+                              &paramsGatherer,
+                              {},
+                              precompileKeyContext.dstColorInfo(),
+                              KeyGenFlags::kDisableSamplingOptimization,
+                              pp.color());
+        pp.toKey(keyContext, TextureFormat::kRGBA8);
+        UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(
+                                      precompileKeyContext.paintParamsKeyBuilder());
 
         RenderPassDesc unusedRenderPassDesc;
 
