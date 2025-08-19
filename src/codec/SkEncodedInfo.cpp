@@ -28,3 +28,10 @@ SkEncodedInfo::ICCProfile::ICCProfile(const skcms_ICCProfile& profile, sk_sp<SkD
     : fProfile(profile)
     , fData(std::move(data))
 {}
+
+SkEncodedInfo SkEncodedInfo::makeMetadataEncoded(const SkHdrMetadataEncoded& hdr_metadata_encoded) {
+    auto copy = *this;
+    copy.fHdrMetadataEncoded = hdr_metadata_encoded;
+    return copy;
+}
+

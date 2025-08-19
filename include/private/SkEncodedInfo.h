@@ -16,6 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
+#include "include/private/SkHdrMetadata.h"
 #include "modules/skcms/skcms.h"
 
 #include <cstdint>
@@ -259,6 +260,12 @@ public:
         return fColorDepth;
     }
 
+    // Set or return the encoded HDR metadata.
+    SkEncodedInfo makeEncodedHdrMetadata(const SkEncodedHdrMetadata&);
+    const SkEncodedHdrMetadata& getEncodedHdrMetadata() const {
+        return fEncodedHdrMetadata;
+    }
+
 private:
     SkEncodedInfo(int width, int height, Color color, Alpha alpha,
             uint8_t bitsPerComponent, uint8_t colorDepth, std::unique_ptr<ICCProfile> profile)
@@ -278,6 +285,7 @@ private:
     uint8_t                     fBitsPerComponent;
     uint8_t                     fColorDepth;
     std::unique_ptr<ICCProfile> fProfile;
+    SkEncodedHdrMetadata        fEncodedHdrMetadata;
 };
 
 #endif
