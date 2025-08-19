@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e1b982f_10b1c7f9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "This logic has been updated recently since I first wrote the WIP code that moved the dstreadrequired logic into PaintParams. I think having PaintParams is still the right place for all of that logic but we should take a careful look to make sure all of it is still equivalent to this logic (in particular around the primitive blender and the handling of kDstOut for the final blend).",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 28
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "653d7ead_6361a76e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1767,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "If `recordDraw` calls `rewindForRenderStep` at the end of its loop over the render steps, it leaves the PipelineDataGatherer render for subsequent draws or render steps, and then this logic in `drawGeometry` can go away.",
+      "range": {
+        "startLine": 1765,
+        "startChar": 0,
+        "endLine": 1767,
+        "endChar": 13
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b316297f_b92ff754",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "Just `fDataGatherer-\u003eresetForDraw();` to make it clear that we don\u0027t need any paint data at all for these draws?",
+      "range": {
+        "startLine": 1815,
+        "startChar": 0,
+        "endLine": 1815,
+        "endChar": 38
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e37777f6_12c1a68b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "I think there are reset/rewind functions we can use on these objects so we aren\u0027t re-allocating them every time we flush a Device. \n\nAlso, I believe in my WIP you started from, I\u0027d put these on the Device because I\u0027d been thinking that that was how managing the float storage manager would be easiest. Now that that is in the Recorder, I think it should be okay to reuse the KeyBuilder and data gatherer for every Device in a Recorder (exception being when we encounter an SkPictureShader or SkPictureImage during uniform extraction, so maybe Recorder has a stack of them that get checked out/returned to the recorder. Ideally we then have 1 set that reuses memory for almost every single draw, and occasionally we might have a 2nd one that is temporary).  Then we can just delete them at the end of snap() to prevent one unexpectedly large frame from holding on to too much memory (or re-allocate with the amount actually used in the prior frame, etc).",
+      "range": {
+        "startLine": 2108,
+        "startChar": 4,
+        "endLine": 2111,
+        "endChar": 100
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db73d99_3b345908",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "If we call `rewindForRenderStep` at the end of the for-loop instead of here, I think it gets rid of the need for the restorePaint functions you added.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 40
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12ad9b34_03fabfd9",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "shift back to line up with `struct`",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 15
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "481513ee_8aec4453",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "shift back a tab",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 36
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1786bd4_315380cc",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "this may warrant being turned into an enum at this point. Advanced blends hadn\u0027t been implemented when I first mocked up the toKey function.\n\nAnything with a dst read or an advanced blend must also have dependsOnDst \u003d true.  An advanced blend may or may not have dst read being true. This could be represented as an enum + SkEnumBitmask like:\n\n    enum class PaintDstUsage : uint8_t {\n        kNone \u003d 0b000,\n        kDependsOnDst \u003d 0b001,\n        kDstReadReq \u003d 0b011,   // Includes kDependsOnDst automatically\n        kAdvancedBlend \u003d 0b101 // \"\"\n    };",
+      "range": {
+        "startLine": 74,
+        "startChar": 30,
+        "endLine": 76,
+        "endChar": 55
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40a55328_98f1c739",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "These are doing the same purpose as the existing `endPaintData()` and `rewindForRenderStep()`.  If needed we should just expand how those work, or adjust where they are called from to handle the multi-draw case.",
+      "range": {
+        "startLine": 350,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 5
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76590ce3_86fa2cc9",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T18:51:43Z",
+      "side": 1,
+      "message": "Eventually the plan for uniform binding is to have a single binding to a struct/tuple that wraps the paint uniform definition and render step uniform definition.\n\nThe paint uniform fields would be declared first in this type, so their layout is unchanged regardless of the render steps that get combined afterwards. This means that in that world, the UniformManager can have a marked index/alignment-requirement for when the paint uniforms end and rewinding back for a new RS or draw just resets the index into its current storage.\n\nRight now that we have two bindings makes that approach a little more complicated because it\u0027d be nice to avoid the storage copying when restoring the RS changes but the RS collection isn\u0027t meant to depend on the prior alignment at all (so it\u0027s a little different than the existing support for pushing/popping structs).\n\nI think the simplest thing would be to add a second fUniformManager field to PipelineDataGatherer so that the paint uniforms that get collected can remain unmodified and uncopied while RS\u0027s or multiple draws are processed.",
+      "range": {
+        "startLine": 449,
+        "startChar": 0,
+        "endLine": 454,
+        "endChar": 42
+      },
+      "revId": "e1a1c9967ecdb952d5b102f1a3b1c8f311c06f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
