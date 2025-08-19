@@ -344,6 +344,21 @@ public:
         fUniformManager.reset();
         fTextures.clear();
         fPaintTextureCount = 0;
+        fSavedState.reset();
+    }
+
+    void savePaintData() {
+        fSavedState.emplace();
+        fSavedState->fUniformData = fUniformManager.storage();
+        fSavedState->fTextures = fTextures;
+        fSavedState->fPaintTextureCount = fPaintTextureCount;
+    }
+
+    void restorePaintData() {
+        SkASSERT(fSavedState.has_value());
+        fUniformManager.setStorage(fSavedState->fUniformData);
+        fTextures = fSavedState->fTextures;
+        fPaintTextureCount = fSavedState->fPaintTextureCount;
     }
 
 #if defined(SK_DEBUG)
@@ -430,6 +445,15 @@ private:
     UniformManager fUniformManager;
     skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
     int fPaintTextureCount = 0;
+
+    struct SavedState {
+        SkTDArray<char> fUniformData;
+        skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
+        int fPaintTextureCount;
+    };
+    std::optional<SavedState> fSavedState;
+
+
 };
 
 #ifdef SK_DEBUG

@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/precompile/PaintOption.h"
 #include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
 #include "src/gpu/graphite/precompile/PrecompileBaseComplete.h"
@@ -191,9 +192,6 @@ void PaintOptions::createKey(const KeyContext& keyContext,
         finalBlender = { PrecompileBlenders::Mode(SkBlendMode::kSrcOver), 0 };
     }
 
-    PrecompileBlender* blender = finalBlender.first.get();
-    std::optional<SkBlendMode> blendMode = blender ? blender->priv().asBlendMode()
-                                                   : SkBlendMode::kSrcOver;
     PaintOption option(fPaintColorIsOpaque,
                        finalBlender,
                        PrecompileBase::SelectOption(SkSpan(fShaderOptions),
@@ -204,14 +202,11 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        fPrimitiveBlendMode,
                        fSkipColorXform,
                        clipShader,
-                       /*dstReadRequired=*/!CanUseHardwareBlending(keyContext.caps(),
-                                                                   targetFormat,
-                                                                   blendMode,
-                                                                   coverage),
+                       coverage,
                        fDither,
                        addAnalyticClip);
 
-    option.toKey(keyContext);
+    option.toKey(keyContext, targetFormat);
 }
 
 namespace {

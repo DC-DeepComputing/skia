@@ -12,11 +12,13 @@
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/precompile/PrecompileBasePriv.h"
 #include "src/gpu/graphite/precompile/PrecompileBlenderPriv.h"
 #include "src/gpu/graphite/precompile/PrecompileShaderPriv.h"
@@ -31,7 +33,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
                          SkBlendMode primitiveBlendMode,
                          bool skipColorXform,
                          const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
-                         bool dstReadRequired,
+                         Coverage coverage,
                          bool dither,
                          bool analyticClip)
         : fOpaquePaintColor(opaquePaintColor)
@@ -42,7 +44,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
         , fHasPrimitiveBlender(hasPrimitiveBlender)
         , fSkipColorXform(skipColorXform)
         , fClipShader(clipShader)
-        , fDstReadRequired(dstReadRequired)
+        , fRendererCoverage(coverage)
         , fDither(dither)
         , fAnalyticClip(analyticClip) {
     if (!fHasPrimitiveBlender) {
@@ -55,7 +57,8 @@ PaintOption::PaintOption(bool opaquePaintColor,
     }
 }
 
-void PaintOption::toKey(const KeyContext& keyContext) const {
+void PaintOption::toKey(const KeyContext& keyContext,
+                        TextureFormat targetFormat) const {
     // Root Node 0 is the source color, which is the output of all effects post dithering
     this->handleDithering(keyContext);
 
@@ -63,8 +66,22 @@ void PaintOption::toKey(const KeyContext& keyContext) const {
     std::optional<SkBlendMode> finalBlendMode =
             this->finalBlender() ? this->finalBlender()->priv().asBlendMode()
                                  : SkBlendMode::kSrcOver;
+
+    Coverage finalCoverage = fRendererCoverage;
+    // In paint params, this is "NonMSAAClip", but we don't consider AtlasClip here.
+    if (fClipShader.first || fAnalyticClip) {
+        finalCoverage = Coverage::kSingleChannel;
+    }
+
+    // TODO check this?
+    //bool dependsOnDst = finalCoverage != Coverage::kNone;
+    bool dstReadReq = !CanUseHardwareBlending(keyContext.caps(),
+                                              targetFormat,
+                                              finalBlendMode,
+                                              finalCoverage);
+
     if (finalBlendMode) {
-        if (!fDstReadRequired) {
+        if (!dstReadReq) {
             AddFixedBlendMode(keyContext, *finalBlendMode);
         } else {
             AddBlendMode(keyContext, *finalBlendMode);
