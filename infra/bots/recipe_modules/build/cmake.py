@@ -4,46 +4,56 @@
 
 from . import util
 
-DOCKER_IMAGE = 'gcr.io/skia-public/cmake-release:3.29.0_v1'
-INNER_BUILD_SCRIPT = '/SRC/skia/infra/cmake/build_skia.sh'
+
+def finalize_gn_flags(args):
+  if args.get('extra_cflags'):
+    args['extra_cflags'] = repr(args['extra_cflags']).replace("'", '"')
+  if args.get('extra_ldflags'):
+    args['extra_ldflags'] = repr(args['extra_ldflags']).replace("'", '"')
+  return ' '.join('%s=%s' % (k,v) for (k,v) in sorted(args.items()))
 
 
 def compile_fn(api, checkout_root, _ignore):
   out_dir = api.vars.cache_dir.joinpath('docker', 'cmake')
   configuration = api.vars.builder_cfg.get('configuration', '')
-  if configuration != 'Release': # pragma: nocover
-    # If a debug mode is wanted, update the infra/cmake/build_skia.sh
-    # to support that also.
-    raise 'Only Release mode supported for CMake'
 
-  # We want to make sure the directories exist and were created by chrome-bot,
-  # because if that isn't the case, docker will make them and they will be
-  # owned by root, which causes mysterious failures. To mitigate this risk
-  # further, we don't use the same out_dir as everyone else (thus the _ignore)
-  # param. Instead, we use a "cmake" subdirectory in the "docker" named_cache.
-  api.file.ensure_directory('mkdirs out_dir', out_dir, mode=0o777)
+  skia_dir      = checkout_root.joinpath('skia')
+  extra_tokens  = api.vars.extra_tokens
 
-  # This uses the cmake docker image and says "run the
-  # build_skia.sh helper script in there". Additionally, it binds two
-  # folders: the Skia checkout to /SRC and the output directory to /OUT
-  # The called helper script will make the compile happen and put the
-  # output in the right spot.  The neat thing is that since the Skia checkout
-  # (and, by extension, the build script) is not a part of the image, but
-  # bound in at runtime, we don't have to re-build the image, except when the
-  # toolchain changes.
-  cmd = ['docker', 'run', '--rm', '--volume', '%s:/SRC' % checkout_root,
-         '--volume', '%s:/OUT' % out_dir,
-         DOCKER_IMAGE, INNER_BUILD_SCRIPT]
-  # It's always Release mode (for now?) This is mostly an FYI
-  # thing, to make sure we don't break CMake users.
+  with api.context(cwd=skia_dir):
+    api.run(api.step, 'fetch-gn',
+            cmd=['python3', skia_dir.joinpath('bin', 'fetch-gn')],
+            infra_step=True)
 
-  # Override DOCKER_CONFIG set by Kitchen.
-  env = {'DOCKER_CONFIG': '/home/chrome-bot/.docker'}
-  with api.env(env):
-    api.run(
-        api.step,
-        'Build Skia using CMake in Docker',
-        cmd=cmd)
+    api.run(api.step, 'fetch-ninja',
+            cmd=['python3', skia_dir.joinpath('bin', 'fetch-ninja')],
+            infra_step=True)
+
+  workdir = api.path.start_dir
+  args, env, ccache = get_compile_flags(api, checkout_root, out_dir, workdir)
+  if configuration != 'Debug':
+    args['is_debug'] = 'false'
+  gn_args = finalize_gn_flags(args)
+  gn = skia_dir.joinpath('bin', 'gn')
+  ninja = skia_dir.joinpath('third_party', 'ninja', 'ninja')
+
+  with api.context(cwd=skia_dir):
+    with api.env(env):
+      if ccache:
+        api.run(api.step, 'ccache stats-start', cmd=[ccache, '-s'])
+      api.run(api.step, 'gn gen',
+              cmd=[gn, 'gen', out_dir, '--args=' + gn_args,
+                   '--ide=json',
+                   '--json-ide-script=' + out_dir + '/gn/gn_to_cmake.py',
+                   '--json-ide-script-args="--ninja-executable=' + out_dir + '/third_party/ninja/ninja"'])
+      api.run(api.step, 'gn clean',
+              cmd=[gn, 'clean', out_dir])
+      with api.context(cwd=out_dir, env={'CC': '/usr/local/bin/clang', 'CXX': '/usr/local/bin/clang++'}):
+        api.run(api.step, 'cmake generate', cmd=['cmake', '-G"Unix Makefiles"', '.'])
+        api.run(api.step, 'cmake build', cmd=['cmake', '--build', '.', '--parallel', '8'])
+
+      if ccache:
+        api.run(api.step, 'ccache stats-end', cmd=[ccache, '-s'])
 
 def copy_build_products(api, src, dst):
   util.copy_listed_files(api, src, dst, util.DEFAULT_BUILD_PRODUCTS)
