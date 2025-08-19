@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8915025_d22b3bf4",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-19T14:05:17Z",
+      "side": 1,
+      "message": "Does it make sense for this to be a unique_ptr with its lifetime tied to the Context? Or should we comment here that its lifetime must exceed the Context\u0027s?",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 36
+      },
+      "revId": "52be71aacfc2836d6b9346cd7c27e47c6f1e0329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
