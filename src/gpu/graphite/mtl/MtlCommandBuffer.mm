@@ -385,7 +385,7 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                this->bindGraphicsPipeline(drawPass->getPipeline1(bgp->fPipelineIndex));
                 break;
             }
             case DrawPassCommands::Type::kSetBlendConstants: {

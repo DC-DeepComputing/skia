@@ -24,10 +24,12 @@ static Layout get_binding_layout(const Caps* caps) {
 
 SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
                              BackendApi backend,
+                             SkExecutor* executor,
                              SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
     : fCaps(std::move(caps))
     , fBackend(backend)
     , fGlobalCache()
+    , fCompilinator(executor)
     , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
 
 SharedContext::~SharedContext() {
