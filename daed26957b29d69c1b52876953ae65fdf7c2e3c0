@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad5126c_c6f42a40",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-19T17:02:50Z",
+      "side": 1,
+      "message": "FYI, there\u0027s a warning about this `\u0026`",
+      "revId": "daed26957b29d69c1b52876953ae65fdf7c2e3c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
