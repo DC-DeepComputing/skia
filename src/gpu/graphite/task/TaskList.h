@@ -50,6 +50,7 @@ public:
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor);
 
 private:
+public:
     template <typename Fn> // (Task*)->Status
     Task::Status visitTasks(Fn);
 

@@ -1,0 +1,130 @@
+/*
+ * Copyright 2025 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_NewObjects_DEFINED
+#define skgpu_graphite_NewObjects_DEFINED
+
+#include "src/base/SkSpinlock.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
+
+class SkExecutor;
+class SkTaskGroup;
+
+namespace skgpu::graphite {
+
+class ResourceProvider;
+class RuntimeEffectDictionary;
+
+/*
+ * Here is the plan:
+ *    The handle will be ref counted
+ *    While the PipelineMgr is actively tracking a Pipeline's compilation it will return the
+ *        same handle (from its active list)
+ *    When the Pipeline's compilation finishes, the Mgr will be notified and it will update
+ *        the single Handle and remove it from its active list (i.e., drop its ref)
+ *    The Handles that have been distributed already will lock the Pipeline in the Pipeline cache
+ *    If a new compilation request for the same pipeline arrives it will cause the allocation
+ *        of a new handle that just wraps the existing pipeline (since it doesn't need compilation)
+ *        and won't be added to the Mgr's active list
+ *    This means that while the Pipeline is being compiled there will be a 1-to-1 mapping
+ *        from handle to Pipeline but, once compilation is complete, there will be a many-to-one
+ *        mapping.
+ *    The ref count will be useful during the compilation phase but almost pure overhead once
+ *        the pipeline is compiled. Perhaps there is a better system. The problem is that:
+ *           we only want to signal completion on one handle (-> refCounting)
+ *           we want to hand handles out to lots of folks
+ *           we don't want the Mgr to always have a Handle - since that complicates Pipeline purging
+ *    Having the handles be block allocated could reduce the (allocation) cost of this plan
+ *
+ * Alternatively, I have considered just handing out a new Handle for each usage. This doesn't
+ * require a ref count but makes signalling completion more complicated.
+ *
+ * Another alternative would be for the handle to hold all the info needed for compilation (i.e.,
+ * a GraphicsPipelineDesc/RenderPassDesc). The DrawPass could then hold them, just as it currently
+ * holds GraphicsPipelineDesc/RenderPassDesc's, and then trade them in for Pipelines in ZZZ.
+ */
+class GraphicsPipelineHandle {
+public:
+    bool isReady() const { return fIsReady; }
+    bool failed() const { return fFailed; }
+    bool autoDelete() const { return fAutoDelete; }
+
+    // Can this be moved to the Mgr?
+    sk_sp<GraphicsPipeline> wait() {
+        SkASSERT(fIsReady);
+        return fPipeline;
+    }
+
+private:
+    friend class Compilinator;     // for update1
+    friend class PipelineManager;  // for ctor
+
+    GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline, bool autoDelete)
+            : fPipeline(std::move(pipeline))
+            , fIsReady(SkToBool(fPipeline))
+            , fAutoDelete(autoDelete) {}
+
+    void update1(sk_sp<GraphicsPipeline> pipeline) {
+        SkASSERT(!fIsReady);
+        fPipeline = std::move(pipeline);
+        fIsReady = true;
+    }
+
+    void markFailed() {
+        fFailed = true;
+    }
+
+    sk_sp<GraphicsPipeline> fPipeline;
+    bool fIsReady = false;
+    bool fFailed = false;
+    const bool fAutoDelete;
+};
+
+class Compilinator {
+public:
+    Compilinator(SkExecutor*);
+    ~Compilinator();
+
+    void compilinate(ResourceProvider*,
+                     const RuntimeEffectDictionary*,
+                     GraphicsPipelineHandle*,
+                     const GraphicsPipelineDesc&,
+                     const RenderPassDesc&,
+                     SkEnumBitMask<PipelineCreationFlags>);
+
+private:
+    static void ResolveHandle(ResourceProvider* resourceProvider,
+                              const RuntimeEffectDictionary* runtimeDict,
+                              GraphicsPipelineHandle* handle,
+                              const GraphicsPipelineDesc& pipelineDesc,
+                              const RenderPassDesc& renderPassDesc);
+
+    // fTaskGroup must appear before anything that uses it (e.g. fGpu), so that it is destroyed
+    // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
+    // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
+    // invoked after objects they depend upon have already been destroyed.
+    std::unique_ptr<SkTaskGroup> fTaskGroup;
+};
+
+class PipelineManager {
+public:
+    PipelineManager();
+    ~PipelineManager();
+
+    GraphicsPipelineHandle* createHandle1(sk_sp<GraphicsPipeline> pipeline,
+                                         bool autoDelete) SK_EXCLUDES(fSpinLock);
+
+private:
+    mutable SkSpinlock fSpinLock;
+
+    // TODO: replace this with a block allocated thing
+    std::vector<GraphicsPipelineHandle*> fMemoryToDeallocate SK_GUARDED_BY(fSpinLock);
+};
+
+} // namespace skgpu::graphite
+
+#endif // skgpu_graphite_NewObjects_DEFINED
