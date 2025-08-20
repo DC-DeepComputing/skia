@@ -17,19 +17,6 @@
 
 namespace skgpu::graphite {
 
-namespace {
-
-bool paint_uses_advanced_blend_equation(std::optional<PaintParams> drawPaintParams) {
-    if (!drawPaintParams.has_value() || !drawPaintParams.value().asFinalBlendMode().has_value()) {
-        return false;
-    }
-
-    return (int)drawPaintParams.value().asFinalBlendMode().value() >
-           (int)SkBlendMode::kLastCoeffMode;
-}
-
-} // anonymous
-
 const Transform& DrawList::deduplicateTransform(const Transform& localToDevice) {
     // TODO: This is a pretty simple deduplication strategy and doesn't take advantage of the stack
     // knowledge that Device has.
@@ -44,7 +31,10 @@ void DrawList::recordDraw(const Renderer* renderer,
                           const Geometry& geometry,
                           const Clip& clip,
                           DrawOrder ordering,
-                          const PaintParams* paint,
+                          UniquePaintParamsID paintID,
+                          bool dstReadReq,
+                          bool usesAdvancedBlend,
+                          PipelineDataGatherer* gatherer,
                           const StrokeStyle* stroke) {
     SkASSERT(localToDevice.valid());
     SkASSERT(!geometry.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
@@ -53,14 +43,57 @@ void DrawList::recordDraw(const Renderer* renderer,
 
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
 
-    fDraws.emplace_back(renderer, this->deduplicateTransform(localToDevice),
-                        geometry, clip, ordering, paint, stroke);
+    // Create a sort key for every render step in this draw, extracting out any
+    // RenderStep-specific data.
+    UniformDataCache::Index shadingUniformIndex = UniformDataCache::kInvalidIndex;
+    if (paintID.isValid()) {
+        UniformDataBlock paintUniforms = gatherer->endPaintData();
+        if (paintUniforms) {
+            shadingUniformIndex = fShadingUniformDataCache.insert(paintUniforms);
+        }
+    }
 
-    // Accumulate renderer information for each draw added to this list
+    const Draw& draw = fDraws.emplace_back(renderer,
+                                           this->deduplicateTransform(localToDevice),
+                                           geometry,
+                                           clip,
+                                           ordering,
+                                           dstReadReq,
+                                           usesAdvancedBlend,
+                                           stroke);
+
     fRenderStepCount += renderer->numRenderSteps();
+
+    for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
+        gatherer->rewindForRenderStep();
+
+        const RenderStep* const step = draw.renderer()->steps()[stepIndex];
+        const bool performsShading = step->performsShading();
+
+        GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
+                { step->renderStepID(),
+                  performsShading ? paintID : UniquePaintParamsID::Invalid() });
+
+        step->writeUniformsAndTextures(draw.drawParams(), gatherer);
+        auto [stepUniforms, combinedTextures] = gatherer->endRenderStepData(performsShading);
+
+        UniformDataCache::Index geomUniformIndex = stepUniforms ?
+                fGeometryUniformDataCache.insert(stepUniforms) : UniformDataCache::kInvalidIndex;
+        TextureDataCache::Index textureBindingIndex = combinedTextures ?
+                fTextureDataCache.insert(combinedTextures) : TextureDataCache::kInvalidIndex;
+
+        fSortKeys.push_back({&draw,
+                             stepIndex,
+                             pipelineIndex,
+                             geomUniformIndex,
+                             performsShading ? shadingUniformIndex : UniformDataCache::kInvalidIndex,
+                             textureBindingIndex});
+    }
+
+    fPassBounds.join(clip.drawBounds());
     fRequiresMSAA |= renderer->requiresMSAA();
     fDepthStencilFlags |= renderer->depthStencilFlags();
-    if (paint && paint->dstReadRequired()) {
+    if (dstReadReq) {
         // For paints that read from the dst, update the bounds. It may later be determined that the
         // DstReadStrategy does not require them, but they are inexpensive to track.
         fDstReadBounds.join(clip.drawBounds());
@@ -73,82 +106,9 @@ void DrawList::recordDraw(const Renderer* renderer,
 #endif
 }
 
-bool DrawList::prepareSortKeys(Recorder* recorder,
-                               const SkImageInfo& targetInfo) {
-    // Geometry uniforms are currently always UBO-backed.
-    const Caps* caps = recorder->priv().caps();
-    const bool useStorageBuffers = caps->storageBufferSupport();
-    const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
-    Layout uniformLayout =
-            useStorageBuffers ? bindingReqs.fStorageBufferLayout : bindingReqs.fUniformBufferLayout;
-
-    ShaderCodeDictionary* dict = recorder->priv().shaderCodeDictionary();
-    PaintParamsKeyBuilder builder(dict);
-
-    // The initial layout we pass here is not important as it will be re-assigned when writing
-    // shading and geometry uniforms below.
-    PipelineDataGatherer gatherer(uniformLayout);
-    fSortKeys.reserve(fRenderStepCount);
-
-    for (const DrawList::Draw& draw : fDraws.items()) {
-        gatherer.resetForDraw();
-
-        UniquePaintParamsID shaderID = UniquePaintParamsID::Invalid();
-        UniformDataCache::Index shadingUniformIndex = UniformDataCache::kInvalidIndex;
-
-        if (draw.fPaintParams.has_value()) {
-            shaderID = ExtractPaintData(recorder,
-                                        recorder->priv().refFloatStorageManager().get(),
-                                        &gatherer,
-                                        &builder,
-                                        uniformLayout,
-                                        draw.fDrawParams.transform(),
-                                        draw.fPaintParams.value(),
-                                        draw.fDrawParams.geometry(),
-                                        targetInfo.colorInfo());
-
-            if (shaderID.isValid()) {
-                UniformDataBlock paintUniforms = gatherer.endPaintData();
-                if (paintUniforms) {
-                    shadingUniformIndex = fShadingUniformDataCache.insert(paintUniforms);
-                }
-            }
-        } // else depth-only, no paint data
-
-        // Create a sort key for every render step in this draw, extracting out any
-        // RenderStep-specific data.
-        for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
-            gatherer.rewindForRenderStep();
-
-            const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
-            const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
-
-            GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
-                    { step->renderStepID(),
-                    performsShading ? shaderID : UniquePaintParamsID::Invalid() });
-
-            step->writeUniformsAndTextures(draw.fDrawParams, &gatherer);
-            auto [stepUniforms, combinedTextures] = gatherer.endRenderStepData(performsShading);
-
-            UniformDataCache::Index geomUniformIndex = stepUniforms ?
-                    fGeometryUniformDataCache.insert(stepUniforms) : UniformDataCache::kInvalidIndex;
-            TextureDataCache::Index textureBindingIndex = combinedTextures ?
-                    fTextureDataCache.insert(combinedTextures) : TextureDataCache::kInvalidIndex;
-
-            fSortKeys.push_back({&draw, stepIndex, pipelineIndex,
-                                 geomUniformIndex, shadingUniformIndex, textureBindingIndex});
-        }
-
-        fPassBounds.join(draw.fDrawParams.clip().drawBounds());
-    }
-    return true;
-}
-
 std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                                                  sk_sp<TextureProxy> target,
                                                  const SkImageInfo& targetInfo,
-                                                 std::pair<LoadOp, StoreOp> ops,
-                                                 std::array<float, 4> clearColor,
                                                  const DstReadStrategy dstReadStrategy) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
@@ -165,9 +125,6 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     // In pseudo tests, manipulating the pointer or having to mask out indices was about 15% slower
     // than an 8 byte key and unmodified pointer.
     static_assert(sizeof(SortKey) == SkAlignTo(16 + sizeof(void*), alignof(SortKey)));
-    if (!this->prepareSortKeys(recorder, targetInfo)) {
-        return nullptr;
-    }
 
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
@@ -182,7 +139,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor,
+    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, {fLoadOp, StoreOp::kStore}, fClearColor,
                                                     recorder->priv().refFloatStorageManager()));
 
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
@@ -248,22 +205,20 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                  key.textureBindingIndex() != TextureDataCache::kInvalidIndex);
 
         std::optional<SkIRect> newScissor =
-                renderStep.getScissor(draw.fDrawParams, lastScissor, targetBounds);
+                renderStep.getScissor(draw.drawParams(), lastScissor, targetBounds);
 
         // Determine + analyze draw properties to inform whether we need to issue barriers before
         // issuing draw calls.
-        bool drawsOverlap = priorDrawPaintOrder != draw.fDrawParams.order().paintOrder();
-        bool drawUsesAdvancedBlendMode = paint_uses_advanced_blend_equation(draw.fPaintParams);
-
+        bool drawsOverlap = priorDrawPaintOrder != draw.drawParams().order().paintOrder();
         std::optional<BarrierType> barrierToAddBeforeDraws = std::nullopt;
-        if (dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()) {
+        if (dstReadStrategy == DstReadStrategy::kReadFromInput && draw.dstReadReq()) {
             barrierToAddBeforeDraws = BarrierType::kReadDstFromInput;
         }
-        if (drawUsesAdvancedBlendMode &&
+        if (draw.usesAdvancedBlend() &&
             caps->supportsHardwareAdvancedBlending() &&
             advancedBlendsRequireBarrier) {
             // A draw should only read from the dst OR use hardware for advanced blend modes.
-            SkASSERT(!draw.readsFromDst());
+            SkASSERT(draw.dstReadReq());
 
             barrierToAddBeforeDraws = BarrierType::kAdvancedNoncoherentBlend;
         }
@@ -317,7 +272,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
         uint32_t shadingSsboIndex = useStorageBuffers ? shadingUniformTracker.ssboIndex() : 0;
         skvx::uint2 ssboIndices = {geometrySsboIndex, shadingSsboIndex};
-        renderStep.writeVertices(&drawWriter, draw.fDrawParams, ssboIndices);
+        renderStep.writeVertices(&drawWriter, draw.drawParams(), ssboIndices);
 
         if (bufferMgr->hasMappingFailed()) {
             SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
@@ -325,7 +280,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         }
 
         // Update priorDrawPaintOrder value before iterating to analyze the next draw.
-        priorDrawPaintOrder = draw.fDrawParams.order().paintOrder();
+        priorDrawPaintOrder = draw.drawParams().order().paintOrder();
     }
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
@@ -338,12 +293,15 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     TRACE_COUNTER1("skia.gpu", "# textures", drawPass->fSampledTextures.size());
     TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count());
 
-    this->internalReset();
+    this->reset(LoadOp::kLoad);
 
     return drawPass;
 }
 
-void DrawList::internalReset() {
+void DrawList::reset(LoadOp loadOp, SkColor4f color) {
+    fLoadOp = loadOp;
+    fClearColor = color.premul().array();
+
     fSortKeys.clear();
     fDraws.reset();
     fTransforms.reset();

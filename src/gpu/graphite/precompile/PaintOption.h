@@ -12,6 +12,7 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextUtils.h"
 
 namespace skgpu::graphite {
 
@@ -34,13 +35,13 @@ public:
                 SkBlendMode primitiveBlendMode,
                 bool skipColorXform,
                 const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
-                bool dstReadRequired,
+                Coverage coverage,
                 bool dither,
                 bool analyticClip);
 
     const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
 
-    void toKey(const KeyContext&) const;
+    void toKey(const KeyContext&, TextureFormat) const;
 
 private:
     void addPaintColorToKey(const KeyContext&) const;
@@ -59,7 +60,7 @@ private:
     bool fHasPrimitiveBlender;
     bool fSkipColorXform;
     std::pair<sk_sp<PrecompileShader>, int> fClipShader;
-    bool fDstReadRequired;
+    Coverage fRendererCoverage;
     bool fDither;
     bool fAnalyticClip;
 };
