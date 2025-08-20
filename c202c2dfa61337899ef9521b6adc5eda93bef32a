@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e72e435_bfc858db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-20T21:12:12Z",
+      "side": 1,
+      "message": "The primary motivation for this is to add the move constructor for `AutoSTArray`, `trim_to`, and `kCount`. The other changes are right now for consistency and ease of testing.\n\nIn particular, `trim_to` and `kCount` allow for the user to \"allocate\" the whole storage (using `kCount`) to make it legal to pass the storage into interfaces which can optimistically take a buffer and fill it out if it is big enough (always returning the size of the buffer needed) and then use `trim_to` to shrink the allocation if necessary.",
+      "revId": "c202c2dfa61337899ef9521b6adc5eda93bef32a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
