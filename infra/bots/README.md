@@ -49,6 +49,34 @@ Or:
 	$ make -C infra/bots test
 
 
+Running A Newly-Added Job
+-------
+When adding a new job, the resultant Gerrit CL will not actually run the new
+job when a CQ Dry Run is started. It also is not listed as a possible Tryjob.
+
+In order to trigger it to run before landing the change, you can use the
+`sk try` utility.
+
+To do so, you must first login to luci-auth.
+
+	$ luci-auth login
+
+If you haven't yet fetched `sk` for your skia directory, run the following
+command to obtain it.
+
+	$ ./bin/fetch-sk
+
+You can then use sk try to kick off jobs.
+
+	$ ./bin/sk try [name of job]
+
+So for example, if you wanted to run
+"Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All", that command would be
+
+	$ ./bin/sk try Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All
+
+This change's Gerrit review page UI should now display the job's status.
+
 Recipes
 -------
 
