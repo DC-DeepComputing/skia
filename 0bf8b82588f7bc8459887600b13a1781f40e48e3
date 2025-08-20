@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb19c1a8_6ab7f237",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-20T14:32:36Z",
+      "side": 1,
+      "message": "Sounds good, let\u0027s keep it as-is then",
+      "parentUuid": "817470b5_a999d54a",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d5e86f3_bdb90b07",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "We have logs for the UploadInstance failures (which is really only when the buffer creation fails), so having log failures for the uploadDataOnHost is a good idea.\n\nI am leaning towards failing right away and *not* trying the buffer copy path. This should make it easier to identify bad drivers or unanticipated conditions in the wild.  If something shows up in the future that is clearly resolved by having the fallback, then we can add it back in or (per-device disable the copy-on-host conditions to just go straight to copy-by-buffer). My assumption is that if the device is having catastrophic events, trying to map a vkbuffer and run copy commands are likely to fail too.",
       "parentUuid": "6d5e86f3_bdb90b07",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "766d07ba_51110d5f",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-20T14:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52b65ebb_6e135019",
       "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
