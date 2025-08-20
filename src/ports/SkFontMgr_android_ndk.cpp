@@ -16,10 +16,12 @@
 #include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
+#include "src/base/SkSharedMutex.h"
 #include "src/base/SkTSearch.h"
 #include "src/base/SkTSort.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
@@ -413,7 +415,65 @@ public:
     const AutoAxis fAutoAxis;
 };
 
-sk_sp<SkTypeface> tweakForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontStyle style) {
+class TypefaceCache : public SkRefCnt {
+public:
+    TypefaceCache() : fRequests(64), fMatches(64) {}
+    ~TypefaceCache() override {}
+
+    class Request {
+    public:
+        Request(SkTypefaceID id, SkFontStyle style) : id(id), style(style) {}
+        bool operator==(const Request& that) const {
+            return this->id == that.id && this->style == that.style;
+        }
+    private:
+        SkTypefaceID id;
+        SkFontStyle style;
+    };
+    sk_sp<SkTypeface> find(const Request& request) {
+        SkAutoSharedMutexShared lock(fMutex);
+        sk_sp<SkTypeface>* typeface = fRequests.find(request);
+        if (typeface) {
+            return *typeface;
+        }
+        return nullptr;
+    }
+    void add(const Request& request, sk_sp<SkTypeface> typeface) {
+        SkAutoSharedMutexExclusive lock(fMutex);
+        fRequests.insert_or_update(request, std::move(typeface));
+    }
+
+    using Coordinate = SkFontArguments::VariationPosition::Coordinate;
+    class Match {
+    public:
+        Match(SkTypefaceID id) : id(id) {}
+        bool operator==(const Match& that) const {
+            return this->id == that.id;
+        }
+    private:
+        SkTypefaceID id;
+        // TODO: axis
+    };
+    sk_sp<SkTypeface> find(const Match& match) {
+        SkAutoSharedMutexShared lock(fMutex);
+        sk_sp<SkTypeface>* typeface = fMatches.find(match);
+        if (typeface) {
+            return *typeface;
+        }
+        return nullptr;
+    }
+    void add(const Match& match, sk_sp<SkTypeface> typeface) {
+        SkAutoSharedMutexExclusive lock(fMutex);
+        fMatches.insert_or_update(match, typeface);
+    }
+private:
+    SkLRUCache<Request, sk_sp<SkTypeface>> fRequests;
+    SkLRUCache<Match, sk_sp<SkTypeface>> fMatches;
+    SkSharedMutex fMutex;
+};
+
+sk_sp<SkTypeface> tweakForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontStyle style,
+                                TypefaceCache& cache) {
     if (!typeface) {
         return typeface;
     }
@@ -458,7 +518,11 @@ sk_sp<SkTypeface> tweakForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontS
         return typeface;
     }
 
-    // TODO: need request cache and identity cache.
+    using Request = TypefaceCache::Request;
+    sk_sp<SkTypeface> cachedTypeface = cache.find(Request(typeface->uniqueID(), style));
+    if (cachedTypeface) {
+        return cachedTypeface;
+    }
 
     sk_sp<SkTypeface> newTypeface = typeface->makeClone(
         SkFontArguments().setVariationDesignPosition({coord, numCoords}));
@@ -470,12 +534,24 @@ sk_sp<SkTypeface> tweakForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontS
         SkDebugf("Variant weight:%d width: %d slant %d\n", s.weight(), s.width(), s.slant());
     }
 
+    // TODO: get the variation position off of newTypeface, sort it, and create match.
+    using Match = TypefaceCache::Match;
+    cachedTypeface = cache.find(Match(typeface->uniqueID()));
+
+    if (cachedTypeface) {
+        cache.add(Request(typeface->uniqueID(), style), cachedTypeface);
+        return cachedTypeface;
+    }
+
+    // TOOD: this is the same thing being looked for above.
+    cache.add(Match(typeface->uniqueID()), newTypeface);
+    cache.add(Request(typeface->uniqueID(), style), newTypeface);
     return newTypeface;
 }
 
 class SkFontStyleSet_AndroidNDK : public SkFontStyleSet {
 public:
-    explicit SkFontStyleSet_AndroidNDK() { }
+    explicit SkFontStyleSet_AndroidNDK(sk_sp<TypefaceCache> cache) : fCache(cache) {}
 
     int count() override {
         return fStyles.size();
@@ -518,11 +594,12 @@ public:
         return amatch;
     }
     sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
-        return tweakForStyle(this->matchAStyle(pattern), pattern);
+        return tweakForStyle(this->matchAStyle(pattern), pattern, *fCache);
     }
 
 private:
     TArray<sk_sp<SkTypeface_AndroidNDK>> fStyles;
+    sk_sp<TypefaceCache> fCache;
     friend class SkFontMgr_AndroidNDK;
 };
 
@@ -549,7 +626,7 @@ class SkFontMgr_AndroidNDK : public SkFontMgr {
             }
         }
         if (!nameToFamily) {
-            sk_sp<SkFontStyleSet_AndroidNDK> newSet(new SkFontStyleSet_AndroidNDK());
+            sk_sp<SkFontStyleSet_AndroidNDK> newSet(new SkFontStyleSet_AndroidNDK(fCache));
             SkAutoAsciiToLC tolc(name.c_str());
             nameToFamily = &fNameToFamilyMap.emplace_back(
                 NameToFamily{name, SkString(tolc.lc(), tolc.length()), newSet.get()});
@@ -564,6 +641,7 @@ public:
                          std::unique_ptr<SkFontScanner> scanner)
         : fAPI(androidFontAPI)
         , fScanner(std::move(scanner))
+        , fCache(new TypefaceCache())
     {
         SkASystemFontIterator fontIter(fAPI);
         if (!fontIter) {
@@ -924,7 +1002,7 @@ protected:
             sk_sp<SkTypeface_AndroidNDK> face(family->matchAStyle(style));
             auto aface = static_cast<SkTypeface_AndroidNDK*>(face.get());
             if (has_locale_and_character(aface, langTag, character, "style", &step)) {
-                return tweakForStyle(std::move(face), style);
+                return tweakForStyle(std::move(face), style, *fCache);
             }
         }
 
@@ -946,7 +1024,7 @@ protected:
                 sk_sp<SkTypeface_AndroidNDK> face(family->createATypeface(j));
                 auto aface = static_cast<SkTypeface_AndroidNDK*>(face.get());
                 if (has_locale_and_character(aface, langTag, character, "anything", &step)) {
-                    return tweakForStyle(std::move(face), style);
+                    return tweakForStyle(std::move(face), style, *fCache);
                 }
             }
         }
@@ -1033,10 +1111,11 @@ private:
     const AndroidFontAPI& fAPI;
     std::unique_ptr<SkFontScanner> fScanner;
 
+    TArray<NameToFamily> fNameToFamilyMap;
     TArray<sk_sp<SkFontStyleSet_AndroidNDK>> fStyleSets;
     sk_sp<SkFontStyleSet> fDefaultStyleSet;
 
-    TArray<NameToFamily> fNameToFamilyMap;
+    sk_sp<TypefaceCache> fCache;
 
     void findDefaultStyleSet() {
         SkASSERT(!fStyleSets.empty());
