@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c43f13_0e0f6a63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4285186
+      },
+      "writtenOn": "2025-08-20T08:09:34Z",
+      "side": 1,
+      "message": "Hi! Is there any chance to include these changes to the library? It would be super useful. Thanks!",
+      "revId": "d79e30ba3f049f58d7061053f4ba89e7d81afba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
