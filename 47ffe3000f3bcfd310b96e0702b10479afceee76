@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e2e1bc1_f36b0ebe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-20T15:03:54Z",
+      "side": 1,
+      "message": "Adding Graphite SwiftShader test jobs. I expect at least one of the new tasks to fail given that there\u0027s a known validation layer error - let\u0027s find out.",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
