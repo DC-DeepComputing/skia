@@ -52,6 +52,24 @@
       "parentUuid": "bf388c3e_0478e9e1",
       "revId": "daed26957b29d69c1b52876953ae65fdf7c2e3c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18622fe1_ef26c24e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-20T19:05:27Z",
+      "side": 1,
+      "message": "Fixed in https://skia-review.googlesource.com/c/skia/+/1042638",
+      "parentUuid": "4cf916ff_2dce211f",
+      "revId": "daed26957b29d69c1b52876953ae65fdf7c2e3c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
