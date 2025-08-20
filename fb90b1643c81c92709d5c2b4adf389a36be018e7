@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de6de2f8_fe38419b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-20T15:49:21Z",
+      "side": 1,
+      "message": "nit: Add that this change follows up https://skia-review.googlesource.com/c/skia/+/1041638 and should fix test failures that resulted from not excluding these on protected contexts",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "fb90b1643c81c92709d5c2b4adf389a36be018e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
