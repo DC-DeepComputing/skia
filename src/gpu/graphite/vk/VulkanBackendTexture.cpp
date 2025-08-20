@@ -12,13 +12,40 @@
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
 #include <cstdint>
+#include <optional>
+
+#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+// Define a shorter macro to indicate whether this BackendTexture may be based on an AHardwareBuffer
+#define COULD_BE_AHARDWAREBUFFER
+#include "include/android/AHardwareBufferUtils.h"
+#include "include/core/SkColorType.h"
+
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+// When building for the Android framework, there are formats defined outside of those publicly
+// available in android/hardware_buffer.h.
+#include <vndk/hardware_buffer.h>
+#endif
+
+#endif
 
 namespace skgpu::graphite {
 
 class VulkanBackendTextureData final : public BackendTextureData {
 public:
-    VulkanBackendTextureData(VulkanAlloc alloc, sk_sp<skgpu::MutableTextureState> mts, VkImage vImg)
-            : fMemoryAlloc(alloc), fMutableState(mts), fVkImage(vImg) {}
+    VulkanBackendTextureData(VulkanAlloc alloc,
+                             sk_sp<skgpu::MutableTextureState> mts,
+                             VkImage vImg
+#if defined(COULD_BE_AHARDWAREBUFFER)
+                             , std::optional<uint32_t> hwBufFormat
+#endif
+                            )
+            : fMemoryAlloc(alloc)
+            , fMutableState(mts)
+            , fVkImage(vImg)
+#if defined(COULD_BE_AHARDWAREBUFFER)
+            , fAHwBufFormat(hwBufFormat)
+#endif
+            {}
 
 #if defined(SK_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kVulkan; }
@@ -28,10 +55,68 @@ public:
     VulkanAlloc memoryAllocator() const { return fMemoryAlloc; }
     sk_sp<skgpu::MutableTextureState> mutableState() const { return fMutableState; }
 
+#if defined(COULD_BE_AHARDWAREBUFFER)
+    SkColorType getSkColorType(bool usesExternalFormat) const {
+
+        // Determine the color type for the hardware buffer based on its format.
+        //
+        // In most cases, using `AHardwareBufferUtils::GetSkColorTypeFromBufferFormat` is
+        // sufficient. However, it is possible that Skia determines that the AHwBuf should be
+        // imported using an external format. In this case - even though we can never write to a
+        // texture using an external format - Skia validity checks will expect the usage of
+        // kExternalFormatColorType, so enforce that here.
+        if (usesExternalFormat) {
+            return AHardwareBufferUtils::kExternalFormatColorType;
+        }
+
+        if (fAHwBufFormat.has_value()) {
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+            // Check for a special case - the usage of AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM - when
+            // building for the Android framework.
+            //
+            // Skia internal piping and validity checks rely upon SkSurfaces having a defined
+            // SkColorType that is compatible with a texture's color information. b/431290055
+            // exposed a case where we could end up using an SkColorType that is not compatible with
+            // the BackendTexture's VkFormat.
+            //
+            // Essentially, the issue arose in a case where the driver may report that a certain
+            // VkFormat can be used when importing the AHwBuf via
+            // VkAndroidHardwareBufferFormatPropertiesANDROID.
+            // When *creating* an SkSurface or SkImage from an AHwBuf-based BackendTexture, its
+            // color type is determined by the AHwBuf format (using
+            // `AHardwareBufferUtils::GetSkColorTypeFromBufferFormat`). However, when *validating*
+            // those objects, Skia checks whether the color type is compatible with
+            // the texture's VkFormat (which is a separate value from the AHwBuf format).
+            //
+            // Ideally, we would simply add the bug's AHwBuf format to
+            // `GetSkColorTypeFromBufferFormat` and map to the expected SkColorType. However, this
+            // utility is shared b/w ganesh and graphite, and adding this functionality introduced
+            // complexity within ganesh. One such obstacle is that its
+            // SkImages::DeferredFromAHardwareBuffer API does not know the AHwBuf format at
+            // creation. While this could be worked around, the change would be fairly invasive for
+            // minimal reward given that no clients have requested that we support this format in
+            // ganesh.
+            //
+            // Therefore, simply manually check for this case within graphite.
+            if (fAHwBufFormat.value() == AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM) {
+                return SkColorType::kBGRA_8888_SkColorType;
+            }
+#endif
+            return AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(fAHwBufFormat.value());
+        }
+
+        return SkColorType::kUnknown_SkColorType;
+    }
+#endif // COULD_BE_AHARDWAREBUFFER
+
 private:
     VulkanAlloc fMemoryAlloc;
     sk_sp<skgpu::MutableTextureState> fMutableState;
     VkImage fVkImage;
+
+#if defined(COULD_BE_AHARDWAREBUFFER)
+    std::optional<uint32_t> fAHwBufFormat;
+#endif
 
     void copyTo(AnyBackendTextureData& dstData) const override {
         // Don't assert that dstData has a Vulkan type() because it could be

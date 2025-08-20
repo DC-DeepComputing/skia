@@ -210,7 +210,11 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions
             skgpu::MutableTextureStates::GetVkQueueFamilyIndex(
                     createdTextureInfo.fMutableState.get()),
             createdTextureInfo.fImage,
-            createdTextureInfo.fMemoryAlloc);
+            createdTextureInfo.fMemoryAlloc
+#if defined(SK_BUILD_FOR_ANDROID)
+            std::nullopt,
+#endif
+        );
 }
 
 namespace {
@@ -647,7 +651,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     return pipeline;
 }
 
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(SK_BUILD_FOR_ANDROID)
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* hardwareBuffer,
                                                               bool isRenderable,
@@ -786,14 +790,17 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
         return {};
     }
 
+    AHardwareBuffer_Desc bufferDesc;
+    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+
     return BackendTextures::MakeVulkan(dimensions,
                                        vkTexInfo,
                                        VK_IMAGE_LAYOUT_UNDEFINED,
                                        VK_QUEUE_FAMILY_FOREIGN_EXT,
                                        image,
-                                       alloc);
+                                       alloc,
+                                       {bufferDesc.format});
 }
-
 #endif // SK_BUILD_FOR_ANDROID
 
 } // namespace skgpu::graphite
