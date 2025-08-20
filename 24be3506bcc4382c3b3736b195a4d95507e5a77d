@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1237c04c_aee0d910",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-20T18:22:36Z",
+      "side": 1,
+      "message": "I personally struggled to connect the \"how to add jobs\" documentation to \"how do I trigger said new job?\" which is covered in the SK CLI Tool docs, so I added a reference to those in a location that I thought made sense. LMKWYT!",
+      "revId": "24be3506bcc4382c3b3736b195a4d95507e5a77d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
