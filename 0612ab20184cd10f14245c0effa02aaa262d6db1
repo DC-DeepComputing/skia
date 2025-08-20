@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d59476e7_a1f462af",
+        "filename": "include/core/SkPathIter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-20T00:56:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07f69bd5_03eaa2b7",
+      "revId": "0612ab20184cd10f14245c0effa02aaa262d6db1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04832fa7_10e372b1",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-19T20:56:17Z",
       "side": 1,
       "message": "Can delete.",
+      "revId": "0612ab20184cd10f14245c0effa02aaa262d6db1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74bf64af_669b9f25",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-20T00:56:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04832fa7_10e372b1",
       "revId": "0612ab20184cd10f14245c0effa02aaa262d6db1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
