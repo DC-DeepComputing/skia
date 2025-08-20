@@ -267,6 +267,17 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
 
 } // anonymous namespace
 
+bool MtlGraphicsPipeline::isReady() const {
+    if (!fAsync) {
+        return true;
+    }
+    if (fAsyncFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         const MtlSharedContext* sharedContext,
         MtlResourceProvider* resourceProvider,
@@ -276,6 +287,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
+    skgpu::StdSteadyClock::time_point t1 = skgpu::StdSteadyClock::now();
+
     SkSL::NativeShader vsMSL, fsMSL;
     SkSL::Program::Interface vsInterface, fsInterface;
 
@@ -302,6 +315,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                              renderPassDesc.fWriteSwizzle,
                              renderPassDesc.fDstReadStrategy);
 
+    skgpu::StdSteadyClock::time_point t2 = skgpu::StdSteadyClock::now();
+
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
     if (!SkSLToMSL(sharedContext->caps()->shaderCaps(),
@@ -314,6 +329,13 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         return nullptr;
     }
 
+    skgpu::StdSteadyClock::time_point t3 = skgpu::StdSteadyClock::now();
+
+    auto fsLibrary = MtlCompileShaderLibrary(
+            sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
+
+    skgpu::StdSteadyClock::time_point t4 = skgpu::StdSteadyClock::now();
+
     const std::string& vsSkSL = shaderInfo->vertexSkSL();
     if (!SkSLToMSL(sharedContext->caps()->shaderCaps(),
                    vsSkSL,
@@ -325,16 +347,18 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         return nullptr;
     }
 
+    skgpu::StdSteadyClock::time_point t5 = skgpu::StdSteadyClock::now();
+
     auto vsLibrary = MtlCompileShaderLibrary(
             sharedContext, shaderInfo->vsLabel(), vsMSL.fText, errorHandler);
-    auto fsLibrary = MtlCompileShaderLibrary(
-            sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
+
+    skgpu::StdSteadyClock::time_point t6 = skgpu::StdSteadyClock::now();
 
     sk_cfp<id<MTLDepthStencilState>> dss =
             resourceProvider->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID, true };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);
@@ -342,7 +366,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
-    return Make(sharedContext,
+
+    sk_sp<MtlGraphicsPipeline> pipeline = Make(sharedContext,
                 pipelineLabel,
                 pipelineInfo,
                 {vsLibrary.get(), "vertexMain"},
@@ -355,6 +380,26 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                 step->depthStencilSettings().fStencilReferenceValue,
                 blendInfo,
                 renderPassDesc);
+
+    skgpu::StdSteadyClock::time_point t7 = skgpu::StdSteadyClock::now();
+
+    auto d1 = t2 - t1;
+    auto d2 = t3 - t2;
+    auto d3 = t4 - t3;
+    auto d4 = t5 - t4;
+    auto d5 = t6 - t5;
+    auto d6 = t7 - t6;
+
+    pipeline->set1(
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d1).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d2).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d3).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d4).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d5).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d6).count()/1000000.0f);
+
+
+    return pipeline;
 }
 
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
