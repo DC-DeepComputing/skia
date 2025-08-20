@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "817470b5_a999d54a",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-20T13:17:35Z",
+      "side": 1,
+      "message": "I have some work in progress to change to how the CPU data conversion functions are implemented, where a function will be returned for handling a given TextureFormat + src/dst colorinfo.  At that point, I think that function could be stored on the UploadSource and none of the redundant parameters would need to be placed in UploadInstance.\n\nI\u0027m hoping to come back to that work very soon, so it wouldn\u0027t be in this state for long. I\u0027m inclined to keep it this way and clean it up then, instead of requiring storing the color infos on the UploadSource.  But it also shouldn\u0027t be a performance cost to store the dimensions and two SkColorInfos on the UploadSource.",
+      "parentUuid": "104e8d4a_cc81f8d7",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d5e86f3_bdb90b07",
         "filename": "src/gpu/graphite/Recorder.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-19T19:29:28Z",
       "side": 1,
       "message": "Another tiny point is `UploadInstance::Make` can\u0027t really fail now unless something catastrophic happened. Same with `uploadDataOnHost`, failure is only due to catastrophic events (Vulkan driver returned failure). Any preferences here? Would you rather:\n\n* If host-copy catastrophically fails, fail right away or still try the buffer copy path?\n* Log or no log on failure?",
+      "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b65ebb_6e135019",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-20T13:17:35Z",
+      "side": 1,
+      "message": "We have logs for the UploadInstance failures (which is really only when the buffer creation fails), so having log failures for the uploadDataOnHost is a good idea.\n\nI am leaning towards failing right away and *not* trying the buffer copy path. This should make it easier to identify bad drivers or unanticipated conditions in the wild.  If something shows up in the future that is clearly resolved by having the fallback, then we can add it back in or (per-device disable the copy-on-host conditions to just go straight to copy-by-buffer). My assumption is that if the device is having catastrophic events, trying to map a vkbuffer and run copy commands are likely to fail too.",
+      "parentUuid": "6d5e86f3_bdb90b07",
       "revId": "0bf8b82588f7bc8459887600b13a1781f40e48e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
