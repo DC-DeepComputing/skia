@@ -49,6 +49,34 @@ Or:
 	$ make -C infra/bots test
 
 
+Upon adding a new try job, you may want to test whether it runs successfully
+before landing the change. However, the Gerrit CL adding the tryjob does
+not automatically run it, and it also is not included in Gerrit's UI in the
+list of available try jobs.
+
+In order to trigger it to run before landing the change, you can use the
+SK CLI tool. See the [SK CLI Tool docs](https://chromium.googlesource.com/skia/+/HEAD/site/docs/dev/tools/sk.md) for more information.
+
+If you haven't yet fetched it from your skia directory, you can do so by
+running the following command.
+
+	$ ./bin/fetch-sk
+
+To kick off jobs, you also must be logged in to luci-auth.
+
+	$ luci-auth login
+
+You can then use the SK CLI tool to trigger jobs:
+
+	$ ./bin/sk try [name of job]
+
+So for example, if you wanted to run
+"Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All", that command would be
+
+	$ ./bin/sk try Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All
+
+This change's Gerrit review page UI should now display the job's status.
+
 Recipes
 -------
 
