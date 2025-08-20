@@ -275,7 +275,7 @@ bool GrDirectContext::init() {
     // DDL TODO: we need to think through how the task group & persistent cache
     // get passed on to/shared between all the DDLRecorders created with this context.
     if (this->options().fExecutor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*this->options().fExecutor);
+        fTaskGroup1 = std::make_unique<SkTaskGroup>(*this->options().fExecutor);
     }
 
     fPersistentCache = this->options().fPersistentCache;

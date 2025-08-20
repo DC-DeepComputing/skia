@@ -96,12 +96,12 @@ DEF_GANESH_TEST(GrContextFactory_executorAndTaskGroup, reporter, options, CtsEnf
         skgpu::ContextType ctxType = static_cast<skgpu::ContextType>(i);
         ContextInfo serialInfo = serialFactory.getContextInfo(ctxType);
         if (auto serialContext = serialInfo.directContext()) {
-            REPORTER_ASSERT(reporter, nullptr == serialContext->priv().getTaskGroup());
+            REPORTER_ASSERT(reporter, nullptr == serialContext->priv().getTaskGroup1());
         }
 
         ContextInfo threadedInfo = threadedFactory.getContextInfo(ctxType);
         if (auto threadedContext = threadedInfo.directContext()) {
-            REPORTER_ASSERT(reporter, nullptr != threadedContext->priv().getTaskGroup());
+            REPORTER_ASSERT(reporter, nullptr != threadedContext->priv().getTaskGroup1());
         }
     }
 }
