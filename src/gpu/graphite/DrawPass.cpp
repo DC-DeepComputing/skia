@@ -608,10 +608,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     drawWriter.flush();
 
     drawPass->fBounds = passBounds.roundOut().asSkIRect();
-    drawPass->fPipelineDescs   = pipelineCache.detach();
+    drawPass->fPipelineDescs1   = pipelineCache.detach();
     drawPass->fSampledTextures = textureDataCache.detachTextures();
 
-    TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs.size());
+    TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs1.size());
     TRACE_COUNTER1("skia.gpu", "# textures", drawPass->fSampledTextures.size());
     TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count());
 
@@ -623,7 +623,26 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RenderPassDesc& renderPassDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
-    fFullPipelines.reserve(fPipelineDescs.size());
+    //$$ replace the 'fFullPipelines' vector with handles
+    fPipelineHandles.reserve(fPipelineDescs1.size());
+    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs1) {
+        std::unique_ptr<GraphicsPipelineHandle> handle =
+                resourceProvider->createGraphicsPipelineHandle1(pipelineDesc,
+                                                               renderPassDesc,
+                                                               PipelineCreationFlags::kNone);
+        if (!handle) {
+            SKGPU_LOG_W("Failed to create GraphicsPipelineHandle for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fPipelineHandles.push_back(std::move(handle));
+    }
+
+    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // once we've created pipelines, so we drop the storage for them here.
+    fPipelineDescs1.clear();
+
+    fFullPipelines1.reserve(fPipelineDescs1.size());
+#if 0
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
@@ -634,9 +653,19 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
         fFullPipelines.push_back(std::move(pipeline));
     }
-    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
-    // once we've created pipelines, so we drop the storage for them here.
-    fPipelineDescs.clear();
+#else
+    // TODO: move this wait loop until later - where Dawn does its wait
+    for (const std::unique_ptr<GraphicsPipelineHandle>& handle : fPipelineHandles) {
+        sk_sp<GraphicsPipeline> pipeline = resourceProvider->tradeIn1(handle.get());
+        if (!pipeline) {
+            SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fFullPipelines1.push_back(std::move(pipeline));
+    }
+    fPipelineHandles.clear();
+#endif
+
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // It should not have been possible to draw an Image that has an invalid texture info
@@ -659,10 +688,10 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     {
         TRACE_EVENT0_ALWAYS("skia.shaders", "GraphitePipelineUse");
         TRACE_EVENT0_ALWAYS("skia.shaders", TRACE_STR_COPY(renderPassDesc.toString().c_str()));
-        for (int i = 0 ; i < fFullPipelines.size(); ++i) {
+        for (int i = 0 ; i < fFullPipelines1.size(); ++i) {
             TRACE_EVENT_INSTANT1_ALWAYS(
                     "skia.shaders",
-                    TRACE_STR_COPY(fFullPipelines[i]->getPipelineInfo().fLabel.c_str()),
+                    TRACE_STR_COPY(fFullPipelines1[i]->getPipelineInfo().fLabel.c_str()),
                     TRACE_EVENT_SCOPE_THREAD,
                     "area", sk_float_saturate2int(fPipelineDrawAreas[i]));
         }
@@ -673,8 +702,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 }
 
 void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
-    for (int i = 0; i < fFullPipelines.size(); ++i) {
-        commandBuffer->trackResource(fFullPipelines[i]);
+    for (int i = 0; i < fFullPipelines1.size(); ++i) {
+        commandBuffer->trackResource(fFullPipelines1[i]);
     }
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fSampledTextures[i]->refTexture());

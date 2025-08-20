@@ -1004,7 +1004,7 @@ private:
     // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
     // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
     // invoked after objects they depend upon have already been destroyed.
-    std::unique_ptr<SkTaskGroup>              fTaskGroup;
+    std::unique_ptr<SkTaskGroup>              fTaskGroup1;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<GrGpu>                    fGpu;
     std::unique_ptr<GrResourceCache>          fResourceCache;
