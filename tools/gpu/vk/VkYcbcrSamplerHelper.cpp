@@ -225,7 +225,11 @@ bool VkYcbcrSamplerHelper::createBackendTexture(uint32_t width, uint32_t height)
                                                             VK_IMAGE_LAYOUT_UNDEFINED,
                                                             /*queueFamilyIndex=*/0,
                                                             fImage,
-                                                            alloc);
+                                                            alloc
+#if defined(SK_BUILD_FOR_ANDROID)
+                                                            , std::nullopt
+#endif
+                                                           );
     return true;
 }
 #endif // SK_GRAPHITE

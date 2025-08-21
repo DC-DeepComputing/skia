@@ -210,7 +210,11 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions
             skgpu::MutableTextureStates::GetVkQueueFamilyIndex(
                     createdTextureInfo.fMutableState.get()),
             createdTextureInfo.fImage,
-            createdTextureInfo.fMemoryAlloc);
+            createdTextureInfo.fMemoryAlloc
+#if defined(SK_BUILD_FOR_ANDROID)
+            , std::nullopt
+#endif
+        );
 }
 
 namespace {
@@ -647,7 +651,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     return pipeline;
 }
 
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(SK_BUILD_FOR_ANDROID)
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* hardwareBuffer,
                                                               bool isRenderable,
@@ -786,14 +790,27 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
         return {};
     }
 
+    // TODO: We really shouldn't ever reference AHardwareBuffers if we are using any API below level
+    // 26 when they were defined. However, add the API level guard here to avoid compiler
+    // complaints. Eventually, it would be nice to have our build files perform this check and
+    // define a macro that encapsulates both requirements (building for Android and API level >= 26)
+    // that we can reference here (and reference when choosing whether we should even build files
+    // that are only used when AHardwareBuffers are available).
+    std::optional<uint32_t> hwBufFormat;
+#if __ANDROID_API__ >= 26
+    AHardwareBuffer_Desc bufferDesc;
+    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+    hwBufFormat = bufferDesc.format;
+#endif
+
     return BackendTextures::MakeVulkan(dimensions,
                                        vkTexInfo,
                                        VK_IMAGE_LAYOUT_UNDEFINED,
                                        VK_QUEUE_FAMILY_FOREIGN_EXT,
                                        image,
-                                       alloc);
+                                       alloc,
+                                       hwBufFormat);
 }
-
 #endif // SK_BUILD_FOR_ANDROID
 
 } // namespace skgpu::graphite
