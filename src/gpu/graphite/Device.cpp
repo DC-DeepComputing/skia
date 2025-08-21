@@ -1481,20 +1481,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     const SkBlenderBase* blender = as_BB(paint.getBlender());
     const std::optional<SkBlendMode> blendMode = blender ? blender->asBlendMode()
                                                          : SkBlendMode::kSrcOver;
-    Coverage rendererCoverage = renderer ? renderer->coverage()
-                                         : Coverage::kSingleChannel;
-    if (clip.needsCoverage() && rendererCoverage == Coverage::kNone) {
-        // Must upgrade to single channel coverage if the clip requires coverage;
-        // but preserve LCD coverage if the Renderer uses that.
-        rendererCoverage = Coverage::kSingleChannel;
-    }
-
-    TextureFormat targetFormat = TextureInfoPriv::ViewFormat(fDC->target()->textureInfo());
-    bool dstReadRequired = !CanUseHardwareBlending(fRecorder->priv().caps(),
-                                                   targetFormat,
-                                                   blendMode,
-                                                   rendererCoverage);
-
+    Coverage rendererCoverage = renderer ? renderer->coverage() : Coverage::kSingleChannel;
     // A primitive blender should be ignored if there is no primitive color to blend against.
     // Additionally, if a renderer emits a primitive color, then a null primitive blender should
     // be interpreted as SrcOver blending mode.
@@ -1503,13 +1490,24 @@ void Device::drawGeometry(const Transform& localToDevice,
     } else if (!SkToBool(primitiveBlender)) {
         primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
     }
-
+    TextureFormat targetFormat = TextureInfoPriv::ViewFormat(fDC->target()->textureInfo());
     PaintParams shading{paint,
                         std::move(primitiveBlender),
                         clip.nonMSAAClip(),
                         sk_ref_sp(clip.shader()),
-                        dstReadRequired,
+                        rendererCoverage,
+                        targetFormat,
                         skipColorXform};
+    if (clip.needsCoverage() && rendererCoverage == Coverage::kNone) {
+        // Must upgrade to single channel coverage if the clip requires coverage;
+        // but preserve LCD coverage if the Renderer uses that.
+        rendererCoverage = Coverage::kSingleChannel;
+    }
+
+    bool dstReadRequired = !CanUseHardwareBlending(fRecorder->priv().caps(),
+                                                   targetFormat,
+                                                   blendMode,
+                                                   rendererCoverage);
     const bool dependsOnDst = paint_depends_on_dst(shading) ||
                               clip.shader() || !clip.nonMSAAClip().isEmpty();
 
