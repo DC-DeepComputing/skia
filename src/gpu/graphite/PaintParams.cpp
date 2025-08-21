@@ -15,6 +15,7 @@
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/DitherUtils.h"
+#include "src/gpu/graphite/ContextUtils.cpp"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Log.h"
@@ -48,14 +49,30 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
     return p.shader() && !as_SB(p.shader())->isConstant();
 }
 
+bool blendmode_depends_on_dst(SkBlendMode blendMode, bool srcIsOpaque) {
+    if (blendMode == SkBlendMode::kSrc || blendMode == SkBlendMode::kClear) {
+        // src and clear blending never depends on dst
+        return false;
+    }
+
+    if (blendMode == SkBlendMode::kSrcOver) {
+        // src-over depends on dst if src is transparent (a != 1)
+        return !srcIsOpaque;
+    }
+
+    // TODO: Are their other modes that don't depend on dst that can be trivially detected?
+    return true;
+}
+
 } // anonymous namespace
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
                          const NonMSAAClip& nonMSAAClip,
                          sk_sp<SkShader> clipShader,
-                         bool dstReadRequired,
-                         bool skipColorXform)
+                         Coverage coverage,
+                         bool skipColorXform,
+                         TextureFormat targetFormat)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
@@ -63,7 +80,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fPrimitiveBlender(std::move(primitiveBlender))
         , fNonMSAAClip(nonMSAAClip)
         , fClipShader(std::move(clipShader))
-        , fDstReadRequired(dstReadRequired)
+        , fRendererCoverage(coverage)
         , fSkipColorXform(skipColorXform)
         , fDither(paint.isDither()) {
     if (!fPrimitiveBlender) {
@@ -322,14 +339,28 @@ void PaintParams::handleClipping(const KeyContext& keyContext) const {
     }
 }
 
-void PaintParams::toKey(const KeyContext& keyContext) const {
+std::optional<PaintParams::Result> PaintParams::toKey(const KeyContext& keyContext) const {
     // Root Node 0 is the source color, which is the output of all effects post dithering
-    this->handleDithering(keyContext);
+    bool isOpaque = this->handleDithering(keyContext);
 
     // Root Node 1 is the final blender
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+    bool usesAdvancedBlend = finalBlendMode.has_value() &&
+                             (int)finalBlendMode.value() > (int)SkBlendMode::kLastCoeffMode;
+
+    Coverage finalCoverage = fRendererCoverage;
+    if ((fClipShader || !fNonMSAAClip.isEmpty()) && fRendererCoverage == Coverage::kNone) {
+        finalCoverage = Coverage::kSingleChannel;
+    }
+
+    bool dependsOnDst = fClipShader || !fNonMSAAClip.isEmpty();
+    bool dstReadReq = !CanUseHardwareBlending(keyContext.recorder()->priv().caps(),
+                                              fTargetFormat,
+                                              finalBlendMode,
+                                              finalCoverage);
+
     if (finalBlendMode) {
-        if (!fDstReadRequired) {
+        if (!dstReadReq) {
             // With no shader blending, be as explicit as possible about the final blend
             AddFixedBlendMode(keyContext, *finalBlendMode);
         } else {
@@ -340,12 +371,19 @@ void PaintParams::toKey(const KeyContext& keyContext) const {
             // not requiring lots of pipelines.
             AddBlendMode(keyContext, *finalBlendMode);
         }
+
+        // Blend modes can be analyzed to determine if specific src colors still depend on the dst.
+        dependsOnDst |= blendmode_depends_on_dst(*finalBlendMode, isOpaque);
     } else {
         AddToKey(keyContext, fFinalBlender.get());
+        // Cannot inspect runtime blenders to pessimistically assume they will always use the dst.
+        dependsOnDst = true;
     }
 
     // Optional Root Node 2 is the clip
     this->handleClipping(keyContext);
+
+    return Result{dependsOnDst, dstReadReq, usesAdvancedBlend};
 }
 
 // TODO(b/330864257): Can be deleted once keys are determined by the Device draw.
