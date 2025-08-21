@@ -16,6 +16,24 @@
       "message": "Original bug reporter brought up a good point, for accuracy we could just not have lowp stage for large images which I don\u0027t have a problem with. wdyt",
       "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830aeed4_38c72ac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-21T20:36:03Z",
+      "side": 1,
+      "message": "This works for the specific bug repro, where we use makeScale.\n\nI think we might have a more general problem when drawing the shader though.  E.g.\n\n  - reasonably sized image\n  - image shader with a very small scale\n  - fill a large device area with the shader\n\nI suspect this setup could yield very large sample coordinates in \"image space\" which can still overflow, and is only loosely related to the image size.\n\nI guess I should write a test to verify this theory :)",
+      "parentUuid": "ddea004e_21f8ef47",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
