@@ -718,7 +718,12 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
         && sampling.mipmap != SkMipmapMode::kLinear
         && fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
 
-        p->append(SkRasterPipelineOp::bilerp_clamp_8888, upper.gather);
+        if (upper.pm.width()  > (1 << 15) || upper.pm.height()  > (1 << 15)) {
+            p->append(SkRasterPipelineOp::bilerp_clamp_8888_large, upper.gather);
+        } else {
+            p->append(SkRasterPipelineOp::bilerp_clamp_8888, upper.gather);
+        }
+
         if (ct == kBGRA_8888_SkColorType) {
             p->append(SkRasterPipelineOp::swap_rb);
         }
