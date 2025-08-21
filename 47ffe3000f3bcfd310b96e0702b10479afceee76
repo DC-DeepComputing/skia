@@ -16,6 +16,57 @@
       "message": "Adding Graphite SwiftShader test jobs. I expect at least one of the new tasks to fail given that there\u0027s a known validation layer error - let\u0027s find out.",
       "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cafea70_1abe5ebb",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-21T12:13:55Z",
+      "side": 1,
+      "message": "These are, presumably, on the SwiftShader auto-roller, why fire them off if anything else changes ?",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa963658_4889ecc3",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-21T12:13:55Z",
+      "side": 1,
+      "message": "Should this be: \"src/sksl/generated/.*\" ?",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dabd56be_58e8a1e8",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-21T12:13:55Z",
+      "side": 1,
+      "message": "Maybe \"tests/graphite/.*\" ?",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
