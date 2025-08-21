@@ -45,23 +45,26 @@ namespace SkImages {
 
 using namespace skgpu::graphite;
 
-static bool validate_backend_texture(const skgpu::graphite::Caps* caps,
-                                     const skgpu::graphite::BackendTexture& texture,
+static bool validate_texture_info(const Caps* caps, const TextureInfo& texInfo, const SkColorInfo& colorInfo) {
+    if (!SkColorInfoIsValid(colorInfo)) {
+        return false;
+    }
+
+    const TextureFormatInfo& formatInfo = caps->getFormatInfo(TextureInfoPriv::ViewFormat(texInfo));
+    SkEnumBitMask<TextureFormatInfo::Supports> texSupport =
+            caps->supportedOperations(texInfo) &
+            formatInfo.supportedOperations(TextureFormatInfo::Tiling::kOptimal, colorInfo.colorType());
+    return SkToBool(texSupport & TextureFormatInfo::Supports::kTexture);
+}
+
+static bool validate_backend_texture(const Caps* caps,
+                                     const BackendTexture& texture,
                                      const SkColorInfo& info) {
     if (!texture.isValid() || texture.dimensions().width() <= 0 ||
         texture.dimensions().height() <= 0) {
         return false;
     }
-
-    if (!SkColorInfoIsValid(info)) {
-        return false;
-    }
-
-    if (!caps->isTexturable(texture.info())) {
-        return false;
-    }
-
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    return validate_texture_info(caps, texture.info(), info);
 }
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
@@ -191,7 +194,7 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
         return nullptr;
     }
 
-    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), textureInfo)) {
+    if (!validate_texture_info(caps, textureInfo, colorInfo)) {
         SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
         return nullptr;
     }

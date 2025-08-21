@@ -8,10 +8,16 @@
 #ifndef skgpu_graphite_TextureFormat_DEFINED
 #define skgpu_graphite_TextureFormat_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTextureCompressionType.h"
+#include "include/private/base/SkTArray.h"
+#include "src/base/SkEnumBitMask.h"
+#include "src/gpu/Swizzle.h"
 
 #include <stddef.h>
 #include <cstdint>
+
+enum SkColorType : int;
 
 namespace skgpu::graphite {
 
@@ -130,6 +136,83 @@ enum class TextureFormat : uint8_t {
 };
 static constexpr int kTextureFormatCount = static_cast<int>(TextureFormat::kLast) + 1;
 
+/**
+ * The FormatInfo table stored on Caps defines behavior for how core Graphite interprets or works with
+ * TextureFormats, such as compatible SkColorTypes, what swizzle to use when reading or writing data
+ * during shading, and what data transforms are needed before uploading or after a readback.
+ *
+ * Some of this is determined independent of each backend (such as SkColorType mapping and swizzles)
+ * but each backend Caps marks which operations are supported on the current hardware for each
+ * TextureFormat during initialization. This is separate and must be combined with the usage
+ * capabilities of a specific texture. As such, TextureFormatInfos are not created directly but are
+ * provided by Caps.
+ */
+class TextureFormatInfo {
+public:
+// FIXME I think we should require resolve-ability for renderability.
+    enum class Supports : uint8_t {
+        kNone     = 0b000000, // Format is unsupported
+        kRender   = 0b000001, // Format can be used as a rendering attachment
+        kTexture  = 0b000010, // Format can be sampled within a shader
+        kReadback = 0b000100, // Format can be transferred from GPU to CPU
+        kUpload   = 0b001000, // Format can be transferred from CPU to GPU
+        kResolve  = 0b010000, // Format can be resolved to at the end of a render pass
+        kStorage  = 0b100000, // Format can be read and written to in a compute pipeline
+    };
+    enum class SampleCount : uint8_t {
+        k1  = 0x01,
+        k2  = 0x02,
+        k4  = 0x04,
+        k8  = 0x08,
+        k16 = 0x10
+    };
+    enum class Tiling : uint8_t {
+        kOptimal,
+        kLinear
+    };
+
+    SkSpan<SkColorType> compatibleColorTypes() const;
+
+    SkEnumBitMask<Supports> supportedOperations(Tiling tiling) const {
+        return fSupportFlags[(int) tiling];
+    }
+    SkEnumBitMask<Supports> supportedOperations(Tiling, SkColorType) const;
+
+    SkEnumBitMask<SampleCount> supportedSampleCounts(Tiling tiling) const {
+        return fSupportedSampleCounts[(int) tiling];
+    }
+
+    // Assumes kTexture and/or kRender are supported operations for the color type and tiling of the
+    // actual texture.
+    Swizzle getReadSwizzle(SkColorType) const;
+    Swizzle getWriteSwizzle(SkColorType) const;
+
+    // Returns a function that copy data from the source buffer to destination buffer, for either
+    // upload to the GPU or readback from the GPU. For uploads, `cpuSrcType` is the actual format of
+    // the source buffer data to be uploaded, and `gpuDstType` is the compatible SkColorType that
+    // the texture format will be interpreted with. The destination buffer can be a GPU mapped
+    // buffer.
+    //
+    // For readback, `gpuSrcType` is how the texture format is to be interpreted before conversion
+    // to the `cpuDstType`, which is final format data will be written as into the destinatio
+    // buffer. The source buffer can be a GPU mapped buffer.
+    //
+    // This also returns a flag indicating that the transfer operations is the identity conversion,
+    // allowing the transfer to be skipped if the source buffer can otherwise be provided to the
+    // client.
+    using DataTransferFn = void;
+    DataTransferFn getUploadTransferFn(SkColorType cpuSrcType, SkColorType gpuDstType) const;
+    DataTransferFn getReadbackTransferFn(SkColorType gpuSrcType, SkColorType cpuDstType) const;
+
+private:
+    const TextureFormat fFormat;
+
+    SkEnumBitMask<Supports>    fSupportFlags[2];
+    SkEnumBitMask<SampleCount> fSupportedSampleCounts[2];
+};
+SK_MAKE_BITMASK_OPS(TextureFormatInfo::Supports)
+SK_MAKE_BITMASK_OPS(TextureFormatInfo::SampleCount)
+
 const char* TextureFormatName(TextureFormat);
 
 SkTextureCompressionType TextureFormatCompressionType(TextureFormat);
@@ -151,6 +234,12 @@ bool TextureFormatIsMultiplanar(TextureFormat);
 bool TextureFormatAutoClamps(TextureFormat);
 
 bool TextureFormatIsFloatingPoint(TextureFormat);
+
+// Formats are ordered from most preferred to least based on the policies described above in
+// TextureFormat. These must still be filtered by support for a given Caps. A TextureFormat that
+// can used with the provided SkColorType is not necessarily included in this list, e.g. we often
+// allow BGR vs RGB mismatches between CPU and GPU layouts if that's what the client provides.
+SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType);
 
 } // namespace skgpu::graphite
 

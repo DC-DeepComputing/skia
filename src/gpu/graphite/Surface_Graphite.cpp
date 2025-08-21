@@ -179,24 +179,27 @@ using namespace skgpu::graphite;
 
 namespace {
 
-bool validate_backend_texture(const Caps* caps,
-                              const BackendTexture& texture,
-                              const SkColorInfo& info) {
+static bool validate_texture_info(const Caps* caps, const TextureInfo& texInfo, const SkColorInfo& colorInfo) {
+    if (!SkColorInfoIsValid(colorInfo)) {
+        return false;
+    }
+
+    const TextureFormatInfo& formatInfo = caps->getFormatInfo(TextureInfoPriv::ViewFormat(texInfo));
+    SkEnumBitMask<TextureFormatInfo::Supports> texSupport =
+            caps->supportedOperations(texInfo) &
+            formatInfo.supportedOperations(TextureFormatInfo::Tiling::kOptimal, colorInfo.colorType());
+    return SkToBool(texSupport & TextureFormatInfo::Supports::kRender);
+}
+
+static bool validate_backend_texture(const Caps* caps,
+                                     const BackendTexture& texture,
+                                     const SkColorInfo& info) {
     if (!texture.isValid() ||
         texture.dimensions().width() <= 0 ||
         texture.dimensions().height() <= 0) {
         return false;
     }
-
-    if (!SkColorInfoIsValid(info)) {
-        return false;
-    }
-
-    if (!caps->isRenderable(texture.info())) {
-        return false;
-    }
-
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    return validate_texture_info(caps, texture.info(), info);
 }
 
 } // anonymous namespace

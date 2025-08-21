@@ -49,6 +49,28 @@ class PaintParams;
 class Renderer;
 enum class DepthStencilFlags : int;
 
+static bool validate_texture_info(const Caps* caps, const TextureInfo& texInfo, const SkColorInfo& colorInfo) {
+    if (!SkColorInfoIsValid(colorInfo)) {
+        return false;
+    }
+
+    const TextureFormatInfo& formatInfo = caps->getFormatInfo(TextureInfoPriv::ViewFormat(texInfo));
+    SkEnumBitMask<TextureFormatInfo::Supports> texSupport =
+            caps->supportedOperations(texInfo) &
+            formatInfo.supportedOperations(TextureFormatInfo::Tiling::kOptimal, colorInfo.colorType());
+    return SkToBool(texSupport & TextureFormatInfo::Supports::kTexture);
+}
+
+static bool validate_backend_texture(const Caps* caps,
+                                     const BackendTexture& texture,
+                                     const SkColorInfo& info) {
+    if (!texture.isValid() || texture.dimensions().width() <= 0 ||
+        texture.dimensions().height() <= 0) {
+        return false;
+    }
+    return validate_texture_info(caps, texture.info(), info);
+}
+
 sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
@@ -62,10 +84,9 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {
         return nullptr;
     }
-    if (!caps->isRenderable(target->textureInfo())) {
-        return nullptr;
-    }
-    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), target->textureInfo())) {
+
+    if (!(caps->supportedOperations(target->textureInfo(), colorInfo.colorType()) &
+          TextureFormatInfo::Supports::kRender)) {
         return nullptr;
     }
 

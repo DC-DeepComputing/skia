@@ -17,6 +17,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/text/gpu/SubRunControl.h"
 
 #include <cstddef>
@@ -42,7 +43,6 @@ class RendererProvider;
 class TextureInfo;
 enum class DepthStencilFlags : int;
 enum class PathRendererStrategy;
-enum class TextureFormat : uint8_t;
 struct AttachmentDesc;
 struct ContextOptions;
 struct RenderPassDesc;
@@ -146,12 +146,6 @@ public:
                                       RenderPassDesc*,
                                       const RendererProvider*) const { return false; }
 
-    bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
-
-    bool isTexturable(const TextureInfo&) const;
-    virtual bool isRenderable(const TextureInfo&) const = 0;
-    virtual bool isStorage(const TextureInfo&) const = 0;
-
     virtual bool loadOpAffectsMSAAPipelines() const { return false; }
 
     int maxTextureSize() const { return fMaxTextureSize; }
@@ -203,56 +197,23 @@ public:
     }
 
     /**
-     * Backends may have restrictions on what types of textures support Device::writePixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, pixels are written to it, and then that is copied or drawn into the the surface.
+     * Return the supported capabilities for a given TextureFormat. The returned capabilities must
+     * still be combined with what is supported by a given Texture resource object.
      */
-    virtual bool supportsWritePixels(const TextureInfo& textureInfo) const = 0;
+    const TextureFormatInfo& getFormatInfo(TextureFormat) const;
 
     /**
-     * Backends may have restrictions on what types of textures support Device::readPixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, the original texture is copied or drawn into it, and then pixels read from
-     * the temporary texture.
+     * Return the supported capabilities for textures created with the given TextureInfo, when
+     * interpreted as the given SkColorType (for the SkColorInfo of the wrapping SkImage or
+     * SkSurface).
      */
-    virtual bool supportsReadPixels(const TextureInfo& textureInfo) const = 0;
-
-    /**
-     * Given a dst pixel config and a src color type what color type must the caller coax the
-     * the data into in order to use writePixels.
-     *
-     * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
-     * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
-     * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
-     */
-    virtual std::pair<SkColorType, bool /*isRGB888Format*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const = 0;
-
-    /**
-     * Given a src surface's color type and its texture info as well as a color type the caller
-     * would like read into, this provides a legal color type that the caller can use for
-     * readPixels. The returned color type may differ from the passed dstColorType, in
-     * which case the caller must convert the read pixel data (see GrConvertPixels). When converting
-     * to dstColorType the swizzle in the returned struct should be applied. The caller must check
-     * the returned color type for kUnknown.
-     *
-     * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
-     * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
-     * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
-     */
-    virtual std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const = 0;
+    SkEnumBitMask<TextureFormatInfo::Supports> supportedOperations(const TextureInfo&,
+                                                                   SkColorType) const;
 
     /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
      * back. If not, provides an alternative (perhaps lower bit depth and/or unorm instead of float)
-     * color type that is supported or kUnknown if there no renderable fallback format.
+     * color type that is supported or kUnknown if there is no renderable fallback format.
      */
     SkColorType getRenderableColorType(SkColorType) const;
 
@@ -358,18 +319,6 @@ public:
     bool supportsHardwareAdvancedBlending() const {
         return fBlendEqSupport > BlendEquationSupport::kBasic;
     }
-
-    /**
-     * Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
-     * passed in SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
-
-    /**
-     * Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
-     * SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
     /**
      * Includes the following dynamic state:
@@ -482,32 +431,6 @@ protected:
         }
     }
 
-    /* ColorTypeInfo for a specific format. Used in format tables. */
-    struct ColorTypeInfo {
-        ColorTypeInfo() = default;
-        ColorTypeInfo(SkColorType ct, SkColorType transferCt, uint32_t flags,
-                      skgpu::Swizzle readSwizzle, skgpu::Swizzle writeSwizzle)
-                : fColorType(ct)
-                , fTransferColorType(transferCt)
-                , fFlags(flags)
-                , fReadSwizzle(readSwizzle)
-                , fWriteSwizzle(writeSwizzle) {}
-
-        SkColorType fColorType = kUnknown_SkColorType;
-        SkColorType fTransferColorType = kUnknown_SkColorType;
-        enum {
-            kUploadData_Flag = 0x1,
-            /**
-             * Does Graphite itself support rendering to this colorType & format pair. Renderability
-             * still additionally depends on if the format itself is renderable.
-             */
-            kRenderable_Flag = 0x2,
-        };
-        uint32_t fFlags = 0;
-
-        skgpu::Swizzle fReadSwizzle;
-        skgpu::Swizzle fWriteSwizzle;
-    };
 
     int fMaxTextureSize = 0;
     uint8_t fDefaultMSAASamples = 4;
@@ -582,8 +505,8 @@ protected:
     bool fUsePipelineLibraries = false;
 
 private:
-    virtual bool onIsTexturable(const TextureInfo&) const = 0;
-    virtual const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const = 0;
+    // FIXME should we just calculate this and store it on the TextureInfo like the view format?
+    virtual SkEnumBitMask<TextureFormatInfo::Supports> supportedOperations(const TextureInfo&) const = 0;
 
     sk_sp<SkCapabilities> fCapabilities;
 };
