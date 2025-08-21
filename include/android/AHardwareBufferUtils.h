@@ -10,7 +10,7 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkTypes.h"
 
-#if __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 namespace AHardwareBufferUtils {
 
@@ -21,6 +21,6 @@ SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
 
 }  // namespace AHardwareBufferUtils
 
-#endif
+#endif // AHARDWAREBUFFERS_DEFINED
 
 #endif // AHardwareBufferUtils_DEFINED

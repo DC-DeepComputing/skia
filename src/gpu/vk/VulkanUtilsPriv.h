@@ -314,7 +314,7 @@ static constexpr const char* VkFormatToStr(VkFormat vkFormat) {
 [[nodiscard]] bool SerializeVkYCbCrInfo(SkWStream*, const VulkanYcbcrConversionInfo&);
 [[nodiscard]] bool DeserializeVkYCbCrInfo(SkStream*, VulkanYcbcrConversionInfo* out);
 
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(AHARDWAREBUFFERS_DEFINED)
 /**
  * Vulkan AHardwareBuffer utility functions shared between graphite and ganesh
 */
@@ -337,7 +337,7 @@ bool AllocateAndBindImageMemory(skgpu::VulkanAlloc* outVulkanAlloc,
                                 const skgpu::VulkanInterface*,
                                 VkDevice);
 
-#endif // SK_BUILD_FOR_ANDROID
+#endif // AHARDWAREBUFFERS_DEFINED
 
 /**
  * Calls faultProc with faultContext; passes debug info if VK_EXT_device_fault is supported/enabled.

@@ -7,7 +7,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/AHardwareBufferUtils.h"
 #include "include/android/GrAHardwareBufferUtils.h"
@@ -140,4 +140,4 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
 
 }  // namespace SkSurfaces
 
-#endif
+#endif // AHARDWAREBUFFERS_DEFINED

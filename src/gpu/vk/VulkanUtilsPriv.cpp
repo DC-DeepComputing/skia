@@ -264,7 +264,7 @@ bool GetAHardwareBufferProperties(
         // are the only failure codes, but some platforms may report others, such as
         // VK_ERROR_FORMAT_NOT_SUPPORTED (-11).
         SkDebugf("Failed to get AndroidHardwareBufferProperties (result:%d)", result);
-#if __ANDROID_API__ >= 26
+#if AHARDWAREBUFFERS_DEFINED
         AHardwareBuffer_Desc hwbDesc;
         AHardwareBuffer_describe(hwBuffer, &hwbDesc);
         SkDebugf("^ %" PRIu32 "x%" PRIu32 " AHB -- format:%" PRIu32 ", usage:%" PRIu64

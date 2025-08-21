@@ -9,7 +9,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(SK_GANESH) && defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/SkImageAndroid.h"
 #include "include/android/SkSurfaceAndroid.h"
@@ -296,4 +296,4 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_ImportAsSurface,
     surface_draw_test_helper(reporter, context_info, kBottomLeft_GrSurfaceOrigin);
 }
 
-#endif
+#endif // AHARDWAREBUFFERS_DEFINED

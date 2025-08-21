@@ -7,7 +7,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/graphite/SurfaceAndroid.h"
 #include "include/core/SkBitmap.h"
@@ -221,4 +221,4 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Graphite_AHardwareBuffer_ImportAsSurfac
     surface.reset();
 }
 
-#endif // __ANDROID_API__ >= 26
+#endif // AHARDWAREBUFFERS_DEFINED

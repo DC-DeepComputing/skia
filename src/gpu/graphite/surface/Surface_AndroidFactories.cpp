@@ -7,7 +7,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/AHardwareBufferUtils.h"
 #include "include/android/graphite/SurfaceAndroid.h"
@@ -146,4 +146,4 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(Recorder* recorder,
 
 }  // namespace SkSurfaces
 
-#endif // __ANDROID_API__ >= 26
+#endif // AHARDWAREBUFFERS_DEFINED

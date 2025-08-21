@@ -966,6 +966,7 @@ optional("gpu") {
     # this lib is required to link against AHardwareBuffer
     if (defined(ndk_api) && ndk_api >= 26) {
       libs += [ "android" ]
+      public_defines += [ "AHARDWAREBUFFERS_DEFINED" ]
     }
   }
 
@@ -981,6 +982,7 @@ optional("gpu") {
       # this lib is required to link against AHardwareBuffer
       if (defined(ndk_api) && ndk_api >= 26) {
         libs += [ "android" ]
+        public_defines += [ "AHARDWAREBUFFERS_DEFINED" ]
       }
     } else if (skia_use_egl) {
       if (skia_use_epoxy_egl) {
