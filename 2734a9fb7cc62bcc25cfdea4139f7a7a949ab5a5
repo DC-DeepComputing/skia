@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddea004e_21f8ef47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-21T18:58:52Z",
+      "side": 1,
+      "message": "Original bug reporter brought up a good point, for accuracy we could just not have lowp stage for large images which I don\u0027t have a problem with. wdyt",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
