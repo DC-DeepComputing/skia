@@ -33,6 +33,23 @@
       "message": "-\u003emichaelludwig b/c of OOO",
       "revId": "fa614400656122ccaeda82c5d685351659d0a412",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536dd7f2_feb2fc16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-21T15:28:33Z",
+      "side": 1,
+      "message": "The android canary has been struggling to create CLs, so hard to test this up front. \n\nWould you expect this to impact Android, e.g. https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:frameworks/native/libs/renderengine/skia/ColorSpaces.cpp;drc\u003d891edd812296d9b11bf3cc56804cfedbcbdfd2e0;l\u003d73 or https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:frameworks/base/libs/hwui/effects/GainmapRenderer.cpp;drc\u003d891edd812296d9b11bf3cc56804cfedbcbdfd2e0;l\u003d57\n\nI have not fully processed all of Android\u0027s colorspace code and custom sksl, but I\u0027m hopeful that a lot of it can be simplified if they can use the new kPQ and kHLG TFs that embed the OOTF parameters. Is that work you are planning to do, or able to advise on?",
+      "revId": "fa614400656122ccaeda82c5d685351659d0a412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
