@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e844ee2_6960a772",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-21T15:53:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6c0ff00_342cfe09",
+      "range": {
+        "startLine": 246,
+        "startChar": 9,
+        "endLine": 246,
+        "endChar": 16
+      },
+      "revId": "b31472dcb7ebaf9f473359303f306cd8356cfe03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "269b7ff3_85da92e6",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50302e90_a4781528",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-21T15:53:18Z",
+      "side": 1,
+      "message": "Ah, naming things.\n\n`folly::small_vector` uses `MaxInline` but doesn\u0027t seems to expose it.\n\n`eastl::fixed_vector` uses `kMaxSize` and is somewhat misleading.\n\n`kNumPreallocatedObjects` isn\u0027t right because no objects are preallocated (just the space for them).\n\n`kPreallocatedCount` isn\u0027t bad since it goes along with the documentation, but the documentation is bad. The storage isn\u0027t really \"preallocated\" it\u0027s just inline, like `std::optional` where the specification uses the term `nested within`. Also, it isn\u0027t \"on the Stack\".\n\nNote that the template parameter is named `kCountRequested`, so the current name of just `kCount` makes sense since it\u0027s the actual count one ended up with. If we change this name the template name might want to be updated to `kInlineCountRequested`?\n\nAlso, while it seems like this name should be more descriptive doing so would probably just be verbose. What else could `kCount` even be referring to here? Obviously not the runtime count. The only other count is the `kCountRequested` and so we know it goes with that.\n\nI would prefer to use the standard term \"size\" instead of \"count\" but there\u0027s a lot of \"count\" going on here already.\n\nIn the end I\u0027m leaning toward leaving these as is. This is an internal only type so if we find it confusing in the future we can always change it. However, I will update the documentation comment.",
+      "parentUuid": "269b7ff3_85da92e6",
+      "revId": "b31472dcb7ebaf9f473359303f306cd8356cfe03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3c7a050_3a06ce84",
@@ -54,6 +96,24 @@
       "writtenOn": "2025-08-21T12:01:19Z",
       "side": 1,
       "message": "Same here ?",
+      "revId": "b31472dcb7ebaf9f473359303f306cd8356cfe03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e89b11de_f5117def",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-21T15:53:18Z",
+      "side": 1,
+      "message": "See long winded discussion above.",
+      "parentUuid": "c3c7a050_3a06ce84",
       "revId": "b31472dcb7ebaf9f473359303f306cd8356cfe03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
