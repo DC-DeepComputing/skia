@@ -651,7 +651,7 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                if (!this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex)))
+                if (!this->bindGraphicsPipeline(drawPass->getPipeline1(bgp->fPipelineIndex)))
                     SK_UNLIKELY { return false; }
                 break;
             }
@@ -752,6 +752,7 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     SkASSERT(fActiveRenderPassEncoder);
 
+    //$$
     auto* dawnGraphicsPipeline = static_cast<const DawnGraphicsPipeline*>(graphicsPipeline);
     auto& wgpuPipeline = dawnGraphicsPipeline->dawnRenderPipeline();
     if (!wgpuPipeline) SK_UNLIKELY {

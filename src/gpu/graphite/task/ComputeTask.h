@@ -36,7 +36,7 @@ public:
 
     ~ComputeTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;

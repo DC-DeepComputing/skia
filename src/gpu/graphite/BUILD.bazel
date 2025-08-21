@@ -80,6 +80,8 @@ GRAPHITE_FILES = [
     "KeyHelpers.cpp",
     "KeyHelpers.h",
     "Log.h",
+    "NewObjects.cpp",
+    "NewObjects.h",
     "PaintParams.cpp",
     "PaintParams.h",
     "PaintParamsKey.cpp",

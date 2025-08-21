@@ -32,6 +32,8 @@ class TextureProxy;
 
 class RecordingPriv {
 public:
+    bool arePipelinesReady() const;
+
     TextureProxy* deferredTargetProxy();
     const Texture* setupDeferredTarget(ResourceProvider*,
                                        Surface* targetSurface,
@@ -47,7 +49,7 @@ public:
 
     void setFailureResultForFinishedProcs();
 
-    bool prepareResources(ResourceProvider*, ScratchResourceManager*, RuntimeEffectDictionary*);
+    bool prepareResources1(ResourceProvider*, ScratchResourceManager*, RuntimeEffectDictionary*);
 
     bool addCommands(Context*,
                      CommandBuffer*,

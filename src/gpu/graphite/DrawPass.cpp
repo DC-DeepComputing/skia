@@ -250,7 +250,7 @@ class DrawPass::SortKey {
 public:
     SortKey(const DrawList::Draw* draw,
             int renderStep,
-            GraphicsPipelineCache::Index pipelineIndex,
+            GraphicsPipelineCache1::Index pipelineIndex,
             UniformDataCache::Index geomUniformIndex,
             UniformDataCache::Index shadingUniformIndex,
             TextureDataCache::Index textureBindingIndex)
@@ -262,7 +262,7 @@ public:
                       ShadingUniformField::set(shadingUniformIndex) |
                       TextureBindingsField::set(textureBindingIndex))
         , fDraw(draw) {
-        SkASSERT(pipelineIndex < GraphicsPipelineCache::kInvalidIndex);
+        SkASSERT(pipelineIndex < GraphicsPipelineCache1::kInvalidIndex);
         SkASSERT(renderStep <= draw->fRenderer->numRenderSteps());
     }
 
@@ -277,7 +277,7 @@ public:
 
     const DrawList::Draw& draw() const { return *fDraw; }
 
-    GraphicsPipelineCache::Index pipelineIndex() const {
+    GraphicsPipelineCache1::Index pipelineIndex() const {
         return PipelineField::get(fPipelineKey);
     }
     UniformDataCache::Index geometryUniformIndex() const {
@@ -387,7 +387,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         return nullptr;
     }
 
-    GraphicsPipelineCache pipelineCache;
+    GraphicsPipelineCache1 pipelineCache1;
 
     // Geometry uniforms are currently always UBO-backed.
     const Caps* caps = recorder->priv().caps();
@@ -438,7 +438,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
-            GraphicsPipelineCache::Index pipelineIndex = pipelineCache.insert(
+            GraphicsPipelineCache1::Index pipelineIndex = pipelineCache1.insert(
                     { step->renderStepID(),
                     performsShading ? shaderID : UniquePaintParamsID::Invalid() });
 
@@ -466,7 +466,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // bugs in the DrawOrder determination code?
     std::sort(keys.begin(), keys.end());
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
-    GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
+    GraphicsPipelineCache1::Index lastPipeline = GraphicsPipelineCache1::kInvalidIndex;
     const SkIRect targetBounds = SkIRect::MakeSize(targetInfo.dimensions());
     SkIRect lastScissor = targetBounds;
 
@@ -493,7 +493,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
 #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
     // Accumulate rough pixel area touched by each pipeline as we iterate the SortKeys
-    drawPass->fPipelineDrawAreas.push_back_n(pipelineCache.count(), 0.f);
+    drawPass->fPipelineDrawAreas.push_back_n(pipelineCache1.count(), 0.f);
 #endif
 
     TextureTracker textureBindingTracker(&textureDataCache);
@@ -608,22 +608,43 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     drawWriter.flush();
 
     drawPass->fBounds = passBounds.roundOut().asSkIRect();
-    drawPass->fPipelineDescs   = pipelineCache.detach();
+    drawPass->fPipelineDescs1   = pipelineCache1.detach();
     drawPass->fSampledTextures = textureDataCache.detachTextures();
 
-    TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs.size());
+    TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs1.size());
     TRACE_COUNTER1("skia.gpu", "# textures", drawPass->fSampledTextures.size());
     TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count());
 
     return drawPass;
 }
 
-bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
+// This is occurring during Recorder::snap
+bool DrawPass::prepareResources1(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
-    fFullPipelines.reserve(fPipelineDescs.size());
+    //$$ replace the 'fFullPipelines' vector with handles
+    fPipelineHandles.reserve(fPipelineDescs1.size());
+    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs1) {
+        // TODO: I think the handle can be returned by value
+        std::unique_ptr<GraphicsPipelineHandle> handle =
+                resourceProvider->createGraphicsPipelineHandle1(pipelineDesc,
+                                                               renderPassDesc,
+                                                               PipelineCreationFlags::kNone);
+        if (!handle) {
+            SKGPU_LOG_W("Failed to create GraphicsPipelineHandle for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fPipelineHandles.push_back(std::move(handle));
+    }
+
+    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // once we've created pipelines, so we drop the storage for them here.
+    fPipelineDescs1.clear();
+
+    fFullPipelines1.reserve(fPipelineDescs1.size());
+#if 0
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
@@ -634,9 +655,20 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
         fFullPipelines.push_back(std::move(pipeline));
     }
-    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
-    // once we've created pipelines, so we drop the storage for them here.
-    fPipelineDescs.clear();
+#else
+    // TODO: kick off the task here but move the tradeIn/wait to later - where Dawn does its wait
+    for (const std::unique_ptr<GraphicsPipelineHandle>& handle : fPipelineHandles) {
+        resourceProvider->kickOffTask(runtimeDict, handle.get());
+        sk_sp<GraphicsPipeline> pipeline = resourceProvider->tradeIn1(handle.get());
+        if (!pipeline) {
+            SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fFullPipelines1.push_back(std::move(pipeline));
+    }
+    fPipelineHandles.clear();
+#endif
+
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // It should not have been possible to draw an Image that has an invalid texture info
@@ -646,7 +678,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         // was cached for reuse across Recordings, it's possible that the initializing Recording
         // failed, leaving the TextureProxy in a bad state (and currently with no way to reconstruct
         // the tasks required to initialize it).
-        // TODO(b/409888039): Once TextureProxies track their dependendent tasks to include in all
+        // TODO(b/409888039): Once TextureProxies track their dependent tasks to include in all
         // Recordings, this "should" be able to changed to asserts.
         if (!fSampledTextures[i]->isInstantiated() && !fSampledTextures[i]->isLazy()) {
             SKGPU_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
@@ -659,10 +691,10 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     {
         TRACE_EVENT0_ALWAYS("skia.shaders", "GraphitePipelineUse");
         TRACE_EVENT0_ALWAYS("skia.shaders", TRACE_STR_COPY(renderPassDesc.toString().c_str()));
-        for (int i = 0 ; i < fFullPipelines.size(); ++i) {
+        for (int i = 0 ; i < fFullPipelines1.size(); ++i) {
             TRACE_EVENT_INSTANT1_ALWAYS(
                     "skia.shaders",
-                    TRACE_STR_COPY(fFullPipelines[i]->getPipelineInfo().fLabel.c_str()),
+                    TRACE_STR_COPY(fFullPipelines1[i]->getPipelineInfo().fLabel.c_str()),
                     TRACE_EVENT_SCOPE_THREAD,
                     "area", sk_float_saturate2int(fPipelineDrawAreas[i]));
         }
@@ -673,8 +705,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 }
 
 void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
-    for (int i = 0; i < fFullPipelines.size(); ++i) {
-        commandBuffer->trackResource(fFullPipelines[i]);
+    for (int i = 0; i < fFullPipelines1.size(); ++i) {
+        commandBuffer->trackResource(fFullPipelines1[i]);
     }
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fSampledTextures[i]->refTexture());

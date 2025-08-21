@@ -132,6 +132,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/KeyHelpers.cpp",
   "$_src/gpu/graphite/KeyHelpers.h",
   "$_src/gpu/graphite/Log.h",
+  "$_src/gpu/graphite/NewObjects.cpp",
+  "$_src/gpu/graphite/NewObjects.h",
   "$_src/gpu/graphite/PaintParams.cpp",
   "$_src/gpu/graphite/PaintParams.h",
   "$_src/gpu/graphite/PaintParamsKey.cpp",

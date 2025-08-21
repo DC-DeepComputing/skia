@@ -223,7 +223,7 @@ private:
 // A GraphicsPipelineCache is used to de-duplicate GraphicsPipelineDescs when they will all be
 // used with the same as-yet-undeterminied RenderPassDesc. Once collected the indices can then be
 // used to map to the resolved GraphicsPipelines after resources have been prepared.
-using GraphicsPipelineCache = DenseBiMap<GraphicsPipelineDesc>;
+using GraphicsPipelineCache1 = DenseBiMap<GraphicsPipelineDesc>;
 
 // A UniformDataCache is used to deduplicate uniform data blocks uploaded to uniform / storage
 // buffers for a DrawPass pipeline.

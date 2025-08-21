@@ -32,7 +32,7 @@ public:
     static sk_sp<SynchronizeToCpuTask> Make(sk_sp<Buffer>);
     ~SynchronizeToCpuTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override {
         return Status::kSuccess;

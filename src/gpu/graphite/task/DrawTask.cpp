@@ -18,7 +18,7 @@ DrawTask::DrawTask(sk_sp<TextureProxy> target) : fTarget(std::move(target)) {}
 
 DrawTask::~DrawTask() = default;
 
-Task::Status DrawTask::prepareResources(ResourceProvider* resourceProvider,
+Task::Status DrawTask::prepareResources1(ResourceProvider* resourceProvider,
                                         ScratchResourceManager* scratchManager,
                                         const RuntimeEffectDictionary* rteDict) {
     const int pendingReadCount = scratchManager->pendingReadCount(fTarget.get());
@@ -49,7 +49,7 @@ Task::Status DrawTask::prepareResources(ResourceProvider* resourceProvider,
     // what we want since the child tasks are what will actually instantiate any scratch device and
     // trigger returns of any grand-child resources. The above markResourceInUse() should happen
     // above this so that pending returns are handled in caller's scope.
-    return fChildTasks.prepareResources(resourceProvider, scratchManager, rteDict);
+    return fChildTasks.prepareResources1(resourceProvider, scratchManager, rteDict);
 }
 
 void DrawTask::onUseCompleted(ScratchResourceManager* scratchManager) {
