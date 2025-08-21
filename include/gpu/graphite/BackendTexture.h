@@ -46,7 +46,12 @@ private:
 
     // Size determined by looking at the BackendTextureData subclasses, then guessing-and-checking.
     // Compiler will complain if this is too small - in that case, just increase the number.
-    inline constexpr static size_t kMaxSubclassSize = 72;
+    inline constexpr static size_t kMaxSubclassSize =
+#if defined(SK_BUILD_FOR_ANDROID)
+            80;
+#else
+            72;
+#endif
     using AnyBackendTextureData = SkAnySubclass<BackendTextureData, kMaxSubclassSize>;
 
     template <typename SomeBackendTextureData>

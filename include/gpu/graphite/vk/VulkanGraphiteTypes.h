@@ -94,7 +94,11 @@ SK_API BackendTexture MakeVulkan(SkISize dimensions,
                                  VkImageLayout,
                                  uint32_t queueFamilyIndex,
                                  VkImage,
-                                 VulkanAlloc);
+                                 VulkanAlloc
+#if defined(SK_BUILD_FOR_ANDROID)
+                                 , std::optional<uint32_t> aHwBufFormat
+#endif
+                                );
 }  // namespace BackendTextures
 
 namespace BackendSemaphores {

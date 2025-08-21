@@ -386,7 +386,11 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
                                                                        VK_IMAGE_LAYOUT_UNDEFINED,
                                                                        fPresentQueueIndex,
                                                                        fImages[i],
-                                                                       skgpu::VulkanAlloc());
+                                                                       skgpu::VulkanAlloc()
+#if defined(SK_BUILD_FOR_ANDROID)
+                                                                       , std::nullopt
+#endif
+                                                                      );
 
         fSurfaces[i] = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                       backendTex,
