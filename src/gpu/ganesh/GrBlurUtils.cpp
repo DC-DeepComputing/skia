@@ -1501,10 +1501,17 @@ bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
     const SkScalar srcRight = std::max<SkScalar>(srcRadiiUR.fX, srcRadiiLR.fX);
     const SkScalar srcBot = std::max<SkScalar>(srcRadiiLL.fY, srcRadiiLR.fY);
 
-    int newRRWidth = 2 * devBlurRadius + devLeft + devRight + 1;
-    int newRRHeight = 2 * devBlurRadius + devTop + devBot + 1;
-    widthHeight->fWidth = newRRWidth + 2 * devBlurRadius;
-    widthHeight->fHeight = newRRHeight + 2 * devBlurRadius;
+    int64_t width64 = (int64_t)4 * devBlurRadius + devLeft + devRight + 1;
+    int64_t height64 = (int64_t)4 * devBlurRadius + devTop + devBot + 1;
+
+    if (width64 > SK_MaxS32 || height64 > SK_MaxS32) {
+        return false;
+    }
+
+    int newRRWidth = (int)((int64_t)2 * devBlurRadius + devLeft + devRight + 1);
+    int newRRHeight = (int)((int64_t)2 * devBlurRadius + devTop + devBot + 1);
+    widthHeight->fWidth = (int)width64;
+    widthHeight->fHeight = (int)height64;
 
     const SkRect srcProxyRect = srcRRect.getBounds().makeOutset(srcBlurRadius, srcBlurRadius);
 
