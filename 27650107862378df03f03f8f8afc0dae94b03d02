@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb3e3f8_5a4f6e6d",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-21T16:19:15Z",
+      "side": 1,
+      "message": "How much do we gain with this vs. `SkPath makeVolatile(bool) const`?\n\nIf the wrapper/flyweight type is cheap enough, we shouldn\u0027t need to worry about making copies, in theory.\n\nOne thing that comes to mind is pathref uniqueness - atm that matters COW, so clients could make things worse if they don\u0027t discard the old wrapper.  Then again, when pathref becomes immutable that should not matter.",
+      "range": {
+        "startLine": 676,
+        "startChar": 12,
+        "endLine": 676,
+        "endChar": 25
+      },
+      "revId": "27650107862378df03f03f8f8afc0dae94b03d02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
