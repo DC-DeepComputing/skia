@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1879b39e_27442f9e",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1504,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-08-21T11:44:58Z",
+      "side": 1,
+      "message": "You might want to check out SkSafeMath",
+      "revId": "511d80f4d899ac044e456dd0cc295801ba691083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
