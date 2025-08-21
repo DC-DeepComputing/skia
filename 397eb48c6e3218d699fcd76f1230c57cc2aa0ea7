@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f986e5_55242d6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-21T21:07:49Z",
+      "side": 1,
+      "message": "The intent is that both of these land at the same time. However, this is split into one CL that does the \"adjustment\" and another CL that does the \"cache\".",
+      "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
