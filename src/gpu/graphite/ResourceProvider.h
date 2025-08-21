@@ -17,6 +17,8 @@
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#if defined(SK_BUILD_FOR_ANDROID) &&
+
 struct AHardwareBuffer;
 struct SkSamplingOptions;
 class SkTraceMemoryDump;

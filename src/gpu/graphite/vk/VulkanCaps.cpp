@@ -198,7 +198,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fMaxUniformBufferRange = deviceLimits.maxUniformBufferRange;
     fMaxStorageBufferRange = deviceLimits.maxStorageBufferRange;
 
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(AHARDWAREBUFFERS_DEFINED)
     if (extensions->hasExtension(
             VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)) {
         fSupportsAHardwareBufferImages = true;

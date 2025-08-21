@@ -7,7 +7,7 @@
 
 #include "include/android/GrAHardwareBufferUtils.h"
 
-#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 #define GL_GLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
 

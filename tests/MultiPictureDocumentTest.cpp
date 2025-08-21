@@ -185,7 +185,7 @@ DEF_TEST(SkMultiPictureDocument_Serialize_and_deserialize, reporter) {
 }
 #endif
 
-#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(SK_GANESH) && defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/AHardwareBufferUtils.h"
 #include "include/android/GrAHardwareBufferUtils.h"
@@ -424,4 +424,4 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(img.get(), expectedImages[0].get()));
 }
 
-#endif // android compilation
+#endif // AHARDWAREBUFFERS_DEFINED

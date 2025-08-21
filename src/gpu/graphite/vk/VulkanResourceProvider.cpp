@@ -647,8 +647,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     return pipeline;
 }
 
-#ifdef SK_BUILD_FOR_ANDROID
-
+#if defined(AHARDWAREBUFFERS_DEFINED)
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* hardwareBuffer,
                                                               bool isRenderable,
                                                               bool isProtectedContent,
@@ -793,7 +792,6 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                        image,
                                        alloc);
 }
-
-#endif // SK_BUILD_FOR_ANDROID
+#endif // AHARDWAREBUFFERS_DEFINED
 
 } // namespace skgpu::graphite

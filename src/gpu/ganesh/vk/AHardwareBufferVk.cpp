@@ -7,7 +7,7 @@
 
 #include "include/android/GrAHardwareBufferUtils.h"
 
-#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
@@ -353,4 +353,4 @@ GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* dContext,
 
 }  // namespace GrAHardwareBufferUtils
 
-#endif
+#endif // AHARDWAREBUFFERS_DEFINED

@@ -7,7 +7,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/android/SkImageAndroid.h"
 
@@ -173,4 +173,4 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 
 }  // namespace SkImages
 
-#endif // defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#endif // AHARDWAREBUFFERS_DEFINED

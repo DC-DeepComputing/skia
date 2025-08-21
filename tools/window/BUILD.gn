@@ -119,6 +119,7 @@ skia_component("window") {
       ]
     }
     if (is_android) {
+      public_defines = [ "AHARDWAREBUFFERS_DEFINED" ]
       sources += [ "android/VulkanWindowContext_android.cpp" ]
       if (skia_enable_graphite) {
         sources += [ "android/GraphiteVulkanWindowContext_android.cpp" ]

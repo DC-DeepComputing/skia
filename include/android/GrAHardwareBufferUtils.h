@@ -9,7 +9,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(AHARDWAREBUFFERS_DEFINED)
 
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -93,5 +93,5 @@ GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* dContext,
 
 }  // namespace GrAHardwareBufferUtils
 
-#endif
-#endif
+#endif // AHARDWAREBUFFERS_DEFINED
+#endif // GrAHardwareBufferUtils_DEFINED

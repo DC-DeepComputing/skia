@@ -17,7 +17,7 @@
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 
-#ifdef  SK_BUILD_FOR_ANDROID
+#if defined(AHARDWAREBUFFERS_DEFINED)
 extern "C" {
     typedef struct AHardwareBuffer AHardwareBuffer;
 }
@@ -100,13 +100,15 @@ private:
     sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
-#ifdef SK_BUILD_FOR_ANDROID
+
+#if defined(AHARDWAREBUFFERS_DEFINED)
     BackendTexture onCreateBackendTexture(AHardwareBuffer*,
                                           bool isRenderable,
                                           bool isProtectedContent,
                                           SkISize dimensions,
                                           bool fromAndroidWindow) const override;
 #endif
+
     void onDeleteBackendTexture(const BackendTexture&) override;
 
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;

@@ -9,7 +9,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26 && defined(SK_VULKAN)
+#if defined(SK_GANESH) && defined(AHARDWAREBUFFERS_DEFINED) && defined(SK_VULKAN)
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -1368,6 +1368,5 @@ DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs,
 }
 #endif
 
-#endif  // defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) &&
-        // __ANDROID_API__ >= 26 && defined(SK_VULKAN)
+#endif  // defined(SK_GANESH) && defined(AHARDWAREBUFFERS_DEFINED) && defined(SK_VULKAN)
 
