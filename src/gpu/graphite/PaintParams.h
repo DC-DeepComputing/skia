@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 
 class SkColorInfo;
@@ -38,7 +39,8 @@ public:
                          sk_sp<SkBlender> primitiveBlender,
                          const NonMSAAClip& nonMSAAClip,
                          sk_sp<SkShader> clipShader,
-                         bool dstReadRequired,
+                         Coverage coverage,
+                         TextureFormat targetFormat,
                          bool skipColorXform);
 
     PaintParams(const PaintParams&);
@@ -91,6 +93,8 @@ private:
     sk_sp<SkBlender>     fPrimitiveBlender;
     NonMSAAClip          fNonMSAAClip;
     sk_sp<SkShader>      fClipShader;
+    Coverage             fRendererCoverage;
+    TextureFormat        fTargetFormat;
     bool                 fDstReadRequired;
     bool                 fSkipColorXform;
     bool                 fDither;
