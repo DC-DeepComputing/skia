@@ -102,7 +102,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   SkIRect dstReadBounds,
                                   SkIPoint resolveOffset,
                                   SkISize viewportDims,
-                                  const DrawPassList& drawPasses) {
+                                  DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     SkIRect renderPassBounds;

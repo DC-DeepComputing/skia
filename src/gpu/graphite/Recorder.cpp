@@ -226,7 +226,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     // In both the "task failed" case and the "everything is discarded" case, there's no work that
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so
     // kDiscard will return a non-null Recording that has no tasks in it.
-    valid &= recording->priv().prepareResources(fResourceProvider,
+    valid &= recording->priv().prepareResources1(fResourceProvider,
                                                 &scratchManager,
                                                 fRuntimeEffectDict.get());
     if (!valid) {

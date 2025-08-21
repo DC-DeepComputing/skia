@@ -158,6 +158,8 @@ MTLStencilDescriptor* stencil_face_to_mtl(DepthStencilSettings::Face face) {
 
 sk_cfp<id<MTLDepthStencilState>> MtlResourceProvider::findOrCreateCompatibleDepthStencilState(
             const DepthStencilSettings& depthStencilSettings) {
+    SkAutoSpinlock lock{fSpinLock};
+
     sk_cfp<id<MTLDepthStencilState>>* depthStencilState;
     depthStencilState = fDepthStencilStates.find(depthStencilSettings);
     if (!depthStencilState) {

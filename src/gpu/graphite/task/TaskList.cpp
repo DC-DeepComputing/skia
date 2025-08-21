@@ -37,13 +37,13 @@ Status TaskList::visitTasks(Fn fn) {
     return discardCount == fTasks.size() ? Status::kDiscard : Status::kSuccess;
 }
 
-Status TaskList::prepareResources(ResourceProvider* resourceProvider,
+Status TaskList::prepareResources1(ResourceProvider* resourceProvider,
                                   ScratchResourceManager* scratchManager,
                                   const RuntimeEffectDictionary* runtimeDict) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "# tasks", fTasks.size());
     scratchManager->pushScope();
     Status status = this->visitTasks([&](Task* task) {
-        return task->prepareResources(resourceProvider, scratchManager, runtimeDict);
+        return task->prepareResources1(resourceProvider, scratchManager, runtimeDict);
     });
     scratchManager->popScope();
     return status;

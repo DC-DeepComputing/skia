@@ -54,7 +54,7 @@ public:
 
     // Instantiate and prepare any Resources that must happen while the Task is still on the
     // Recorder.
-    virtual Status prepareResources(ResourceProvider*,
+    virtual Status prepareResources1(ResourceProvider*,
                                     ScratchResourceManager*,
                                     const RuntimeEffectDictionary*) = 0;
 

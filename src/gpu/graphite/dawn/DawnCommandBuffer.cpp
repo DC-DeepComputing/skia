@@ -240,12 +240,12 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const Texture* depthStencilTexture,
                                         SkIPoint resolveOffset,
                                         SkIRect viewport,
-                                        const DrawPassList& drawPasses) {
+                                        DrawPassList& drawPasses) {
     // `viewport` has already been translated by the replay translation by the base CommandBuffer
     if (!SkIRect::Intersects(viewport, fRenderPassBounds)) SK_UNLIKELY {
-            // The entire pass is offscreen
-            return true;
-        }
+        // The entire pass is offscreen
+        return true;
+    }
 
 
     UniformManager intrinsicValues{Layout::kStd140};
@@ -639,19 +639,22 @@ bool DawnCommandBuffer::endRenderPass() {
     return blitSucceeded;
 }
 
-bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+bool DawnCommandBuffer::addDrawPass(DrawPass* drawPass) {
     // If there is gradient data to bind, it must be done prior to draws.
     if (drawPass->floatStorageManager()->hasData()) {
         this->bindUniformBuffer(drawPass->floatStorageManager()->getBufferInfo(),
                                 UniformSlot::kGradient);
     }
 
-    drawPass->addResourceRefs(this);
+    if (!drawPass->addResourceRefs(this)) SK_UNLIKELY {
+        return false;
+    }
+
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                if (!this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex)))
+                if (!this->bindGraphicsPipeline(drawPass->getPipeline1(bgp->fPipelineIndex)))
                     SK_UNLIKELY { return false; }
                 break;
             }
@@ -752,6 +755,7 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     SkASSERT(fActiveRenderPassEncoder);
 
+    //$$
     auto* dawnGraphicsPipeline = static_cast<const DawnGraphicsPipeline*>(graphicsPipeline);
     auto& wgpuPipeline = dawnGraphicsPipeline->dawnRenderPipeline();
     if (!wgpuPipeline) SK_UNLIKELY {
