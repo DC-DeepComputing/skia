@@ -328,12 +328,12 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     fuzz->next(&temp);
     Coverage coverage = coverageOptions[temp % 3];
 
-    const SkBlenderBase* blender = as_BB(paint.getBlender());
-    bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                             TextureFormat::kRGBA8,
-                                                             blender->asBlendMode(),
-                                                             coverage)
-                                   : false;
+    // const SkBlenderBase* blender = as_BB(paint.getBlender());
+    // bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
+    //                                                          TextureFormat::kRGBA8,
+    //                                                          blender->asBlendMode(),
+    //                                                          coverage)
+    //                               : false;
     UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
                                                    &floatStorageManager,
                                                    &gatherer,
@@ -344,7 +344,8 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
                                                                /* primitiveBlender= */ nullptr,
                                                                /* nonMSAAClip= */ {},
                                                                /* clipShader= */ nullptr,
-                                                               dstReadRequired,
+                                                               coverage,
+                                                               TextureFormat::kRGBA8,
                                                                /* skipColorXform= */ false),
                                                    {},
                                                    ci);
