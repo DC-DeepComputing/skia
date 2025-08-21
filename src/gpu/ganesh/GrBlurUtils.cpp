@@ -45,6 +45,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkFloatBits.h"
+#include "src/base/SkSafeMath.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkBlurMaskFilterImpl.h"
 #include "src/core/SkColorData.h"
@@ -1501,10 +1502,25 @@ bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
     const SkScalar srcRight = std::max<SkScalar>(srcRadiiUR.fX, srcRadiiLR.fX);
     const SkScalar srcBot = std::max<SkScalar>(srcRadiiLL.fY, srcRadiiLR.fY);
 
-    int newRRWidth = 2 * devBlurRadius + devLeft + devRight + 1;
-    int newRRHeight = 2 * devBlurRadius + devTop + devBot + 1;
-    widthHeight->fWidth = newRRWidth + 2 * devBlurRadius;
-    widthHeight->fHeight = newRRHeight + 2 * devBlurRadius;
+    SkSafeMath safe;
+    size_t newRRWidth_safe = safe.add((size_t)devLeft, (size_t)devRight);
+    newRRWidth_safe = safe.add(newRRWidth_safe, safe.mul(2, (size_t)devBlurRadius));
+    newRRWidth_safe = safe.add(newRRWidth_safe, 1);
+
+    size_t newRRHeight_safe = safe.add((size_t)devTop, (size_t)devBot);
+    newRRHeight_safe = safe.add(newRRHeight_safe, safe.mul(2, (size_t)devBlurRadius));
+    newRRHeight_safe = safe.add(newRRHeight_safe, 1);
+
+    size_t width_safe = safe.add(newRRWidth_safe, safe.mul(2, (size_t)devBlurRadius));
+    size_t height_safe = safe.add(newRRHeight_safe, safe.mul(2, (size_t)devBlurRadius));
+
+    if (!safe.ok()) {
+        return false;
+    }
+    int newRRWidth = (int)newRRWidth_safe;
+    int newRRHeight = (int)newRRHeight_safe;
+    widthHeight->fWidth = (int)width_safe;
+    widthHeight->fHeight = (int)height_safe;
 
     const SkRect srcProxyRect = srcRRect.getBounds().makeOutset(srcBlurRadius, srcBlurRadius);
 
