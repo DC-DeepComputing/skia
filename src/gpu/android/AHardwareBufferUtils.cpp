@@ -11,6 +11,12 @@
 
 #include <android/hardware_buffer.h>
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_GRAPHITE)
+// When building for the Android framework, there are formats defined outside of those publicly
+// available in android/hardware_buffer.h.
+#include <vndk/hardware_buffer.h>
+#endif
+
 namespace AHardwareBufferUtils {
 
 SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
@@ -35,6 +41,16 @@ SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
         case AHARDWAREBUFFER_FORMAT_R8_UNORM:
             return kAlpha_8_SkColorType;
 #endif
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_GRAPHITE)
+        // Only check for this Android framework-exclusive format when building for Graphite. Adding
+        // this case in Ganesh introduced additional complexity (e.g., Ganesh's
+        // SkImages::DeferredFromAHardwareBuffer API does not know the AHwBuf format at
+        // creation, so internal Skia color type compatibility validation checks fail). Such
+        // obstacles *could* be worked around but would require more invasive changes, and no
+        // clients have requested that we support this format in ganesh.
+        case AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM:
+            return kBGRA_8888_SkColorType;
+#endif
         default:
             // Given that we only use this texture as a source, colorType will not impact how Skia
             // uses the texture. The only potential affect this is anticipated to have is that for
@@ -46,4 +62,4 @@ SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
 
 }  // namespace AHardwareBufferUtils
 
-#endif
+#endif // __ANDROID_API__
