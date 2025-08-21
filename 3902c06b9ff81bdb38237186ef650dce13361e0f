@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbb481d9_007491a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-21T15:35:47Z",
+      "side": 1,
+      "message": "Unfortunately, this seems to be breaking `Build-Ubuntu24.04-Clang-x86_64-Debug-RustPNG` even though it passed when run here as part of the CQ.",
+      "revId": "3902c06b9ff81bdb38237186ef650dce13361e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
