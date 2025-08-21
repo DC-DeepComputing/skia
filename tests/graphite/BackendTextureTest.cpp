@@ -203,7 +203,11 @@ DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureMutableStateTest, repor
                                                          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                                          /*queueFamilyIndex=*/1,
                                                          VK_NULL_HANDLE,
-                                                         skgpu::VulkanAlloc());
+                                                         skgpu::VulkanAlloc()
+#if defined(SK_BUILD_FOR_ANDROID)
+                                                        , std::nullopt
+#endif
+                                                        );
 
     REPORTER_ASSERT(reporter, texture.isValid());
     REPORTER_ASSERT(
