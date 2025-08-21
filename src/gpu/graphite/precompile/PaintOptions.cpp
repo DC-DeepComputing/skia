@@ -191,9 +191,9 @@ void PaintOptions::createKey(const KeyContext& keyContext,
         finalBlender = { PrecompileBlenders::Mode(SkBlendMode::kSrcOver), 0 };
     }
 
-    PrecompileBlender* blender = finalBlender.first.get();
-    std::optional<SkBlendMode> blendMode = blender ? blender->priv().asBlendMode()
-                                                   : SkBlendMode::kSrcOver;
+    // PrecompileBlender* blender = finalBlender.first.get();
+    // std::optional<SkBlendMode> blendMode = blender ? blender->priv().asBlendMode()
+    //                                                : SkBlendMode::kSrcOver;
     PaintOption option(fPaintColorIsOpaque,
                        finalBlender,
                        PrecompileBase::SelectOption(SkSpan(fShaderOptions),
@@ -204,10 +204,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        fPrimitiveBlendMode,
                        fSkipColorXform,
                        clipShader,
-                       /*dstReadRequired=*/!CanUseHardwareBlending(keyContext.caps(),
-                                                                   targetFormat,
-                                                                   blendMode,
-                                                                   coverage),
+                       coverage,
+                       targetFormat,
                        fDither,
                        addAnalyticClip);
 
