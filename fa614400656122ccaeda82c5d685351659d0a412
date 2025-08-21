@@ -50,6 +50,41 @@
       "message": "The android canary has been struggling to create CLs, so hard to test this up front. \n\nWould you expect this to impact Android, e.g. https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:frameworks/native/libs/renderengine/skia/ColorSpaces.cpp;drc\u003d891edd812296d9b11bf3cc56804cfedbcbdfd2e0;l\u003d73 or https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:frameworks/base/libs/hwui/effects/GainmapRenderer.cpp;drc\u003d891edd812296d9b11bf3cc56804cfedbcbdfd2e0;l\u003d57\n\nI have not fully processed all of Android\u0027s colorspace code and custom sksl, but I\u0027m hopeful that a lot of it can be simplified if they can use the new kPQ and kHLG TFs that embed the OOTF parameters. Is that work you are planning to do, or able to advise on?",
       "revId": "fa614400656122ccaeda82c5d685351659d0a412",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "441d1120_3a70cfd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-21T16:48:03Z",
+      "side": 1,
+      "message": "Thanks",
+      "revId": "fa614400656122ccaeda82c5d685351659d0a412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99df170a_23f9074a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-21T16:48:03Z",
+      "side": 1,
+      "message": "This shouldn\u0027t change Android\u0027s behavior, because they\u0027re using those custom HLGish/PQish surfaces as hard-coded values.\n\nYes, I\u0027m talking with Alec and John from CoGS about this. They would like to move over to the new version as well (in particular to share HLG and PQ and tone mapping implementations).",
+      "parentUuid": "536dd7f2_feb2fc16",
+      "revId": "fa614400656122ccaeda82c5d685351659d0a412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
