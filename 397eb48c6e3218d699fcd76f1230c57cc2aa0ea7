@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e08b4f_d9539c36",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-22T13:44:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8980118_7b490dc3",
+      "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69e31f02_09a61426",
@@ -48,6 +66,30 @@
       "writtenOn": "2025-08-22T13:27:40Z",
       "side": 1,
       "message": "nit: `std::move(cache)`",
+      "range": {
+        "startLine": 662,
+        "startChar": 76,
+        "endLine": 662,
+        "endChar": 81
+      },
+      "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f52ae6b5_bf5a0156",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-22T13:44:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69e31f02_09a61426",
       "range": {
         "startLine": 662,
         "startChar": 76,
