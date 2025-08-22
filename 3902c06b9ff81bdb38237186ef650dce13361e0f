@@ -34,6 +34,24 @@
       "parentUuid": "dbb481d9_007491a9",
       "revId": "3902c06b9ff81bdb38237186ef650dce13361e0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "497aedee_d5f91366",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-08-22T08:16:59Z",
+      "side": 1,
+      "message": "I must have missed to submit this yesterday: Bazel tends to smuggle other crate upgrades into the `Bazel.lock` file. Is the reason one of those?\n\nSo, thank you for following up with that change!",
+      "parentUuid": "dbb481d9_007491a9",
+      "revId": "3902c06b9ff81bdb38237186ef650dce13361e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
