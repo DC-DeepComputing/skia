@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5bc6b6f_c501638a",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-22T13:53:04Z",
+      "side": 1,
+      "message": "nit: `width_for_usWidth[width \u0026 0xF]`?",
+      "revId": "576fe784c8c50f56c48e5cf2a62c2f5020870f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
