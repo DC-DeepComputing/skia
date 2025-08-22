@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f322dc6_64c2501b",
+        "filename": "gm/image_shader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-22T15:46:40Z",
+      "side": 1,
+      "message": "Hm yeah I see the issue. I\u0027m not really sure where this is happening in raster pipeline right now, trying to figure that out.",
+      "range": {
+        "startLine": 263,
+        "startChar": 24,
+        "endLine": 263,
+        "endChar": 25
+      },
+      "revId": "c056489dd0b4955559129ade60210eb6b6df5415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
