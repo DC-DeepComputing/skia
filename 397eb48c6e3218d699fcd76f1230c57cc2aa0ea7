@@ -16,6 +16,46 @@
       "message": "The intent is that both of these land at the same time. However, this is split into one CL that does the \"adjustment\" and another CL that does the \"cache\".",
       "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8980118_7b490dc3",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-22T13:27:40Z",
+      "side": 1,
+      "message": "nit: looks like we don\u0027t use this in the local scope, you could push the declaration down to the conditionals (`if (sk_sp\u003cSkTypeface\u003e cachedTypeface \u003d cache.find(...)) {`).",
+      "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e31f02_09a61426",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-22T13:27:40Z",
+      "side": 1,
+      "message": "nit: `std::move(cache)`",
+      "range": {
+        "startLine": 662,
+        "startChar": 76,
+        "endLine": 662,
+        "endChar": 81
+      },
+      "revId": "397eb48c6e3218d699fcd76f1230c57cc2aa0ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
