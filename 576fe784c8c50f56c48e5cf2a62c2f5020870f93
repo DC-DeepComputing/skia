@@ -16,6 +16,24 @@
       "message": "nit: `width_for_usWidth[width \u0026 0xF]`?",
       "revId": "576fe784c8c50f56c48e5cf2a62c2f5020870f93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37e55680_7504a17d",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-22T14:51:45Z",
+      "side": 1,
+      "message": "So this came about because [of where this was copied from](https://skia.googlesource.com/skia/+/0b699d6f4361240775c4dab1ef001050c85b89d7/src/core/SkFontDescriptor.cpp#117). While both are equivalent ( `foo[bar]` is just shorthand for `*(foo + bar)` after all), it is true that in this context there is no reason to write these in the \"unexpected order\" anymore.",
+      "parentUuid": "d5bc6b6f_c501638a",
+      "revId": "576fe784c8c50f56c48e5cf2a62c2f5020870f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
