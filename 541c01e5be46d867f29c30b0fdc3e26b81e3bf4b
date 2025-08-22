@@ -16,6 +16,23 @@
       "message": "Fingers crossed!",
       "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aafc62c2_aef08063",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-22T12:19:23Z",
+      "side": 1,
+      "message": "This is triggering asserts for \"linear-glf16 gm  colorspace\":\n\n\tstart linear-glf16 gm  colorspace\n../../../../../../skia/src/codec/SkCodec.cpp:875: fatal error: \"check(skcms_Transform(src, fSrcXformFormat, skcms_AlphaFormat_Unpremul, srcProfile, dst, fDstXformFormat, fDstXformAlphaFormat, fDstProfile, count))\"\n\nhttps://logs.chromium.org/logs/skia/72e7e5b78df8a111/+/steps/symbolized_dm/0/stdout",
+      "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
