@@ -87,6 +87,24 @@
       "parentUuid": "aca0e84d_f75f12fa",
       "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c828937_787c929d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-22T14:59:47Z",
+      "side": 1,
+      "message": "This repros for me (needs the funky config): `out/Debug/dm --config linear-glf16 -m colorspace`",
+      "parentUuid": "ce7d9bdb_cafb8c59",
+      "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
