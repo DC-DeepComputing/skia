@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d00765be_d61dad0e",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-22T17:29:22Z",
+      "side": 1,
+      "message": "shouldn\u0027t these asserts just be `dependsOnDst \u003d\u003d draw.dependsOnDst()`? and same for dstReadReq?",
+      "range": {
+        "startLine": 432,
+        "startChar": 21,
+        "endLine": 432,
+        "endChar": 36
+      },
+      "revId": "77d204c330cf100e4f3ebfe497f324b20fcd405d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e697c0af_6ba6c713",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-22T17:29:22Z",
+      "side": 1,
+      "message": "I think this should also cover kDstOut",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 45
+      },
+      "revId": "77d204c330cf100e4f3ebfe497f324b20fcd405d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0c247f_d6ab3645",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-22T17:29:22Z",
+      "side": 1,
+      "message": "targetFormat is not being set to fTargetFormat, but I\u0027m not sure why that would lead to a buffer overrun error, unless that\u0027s how SkUNREACHABLE gets reported if we pass an invalid value into a switch statement that covers all the regular format cases, e.g. `TextureFormatAutoClamps` used when determining how kPlus blend mode is handled.",
+      "range": {
+        "startLine": 75,
+        "startChar": 25,
+        "endLine": 75,
+        "endChar": 51
+      },
+      "revId": "77d204c330cf100e4f3ebfe497f324b20fcd405d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

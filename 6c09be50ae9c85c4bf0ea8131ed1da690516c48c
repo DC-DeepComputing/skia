@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c23d275_07f532b3",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-22T17:29:22Z",
+      "side": 0,
+      "message": "If the nested addPaintColorToKey() returns true for srcIsOpaque, and fPrimitiveBlender is kSrcOver or kSrc, then this will continue to be opaque (see paint_depends_on_dst in Device.cpp)",
+      "range": {
+        "startLine": 200,
+        "startChar": 11,
+        "endLine": 200,
+        "endChar": 16
+      },
+      "revId": "6c09be50ae9c85c4bf0ea8131ed1da690516c48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
