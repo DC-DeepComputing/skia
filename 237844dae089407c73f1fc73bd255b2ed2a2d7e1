@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "989a85f8_778596d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4012184
+      },
+      "writtenOn": "2025-08-22T06:51:06Z",
+      "side": 1,
+      "message": "Thank you so much for merging this PR!\n\nI don\u0027t know if it something that you can fix on your side, but the skia-codereview-bot notifying back on GitHub is going rogue https://github.com/google/skia/pull/198 (125+ notifications of \"has been merged\" in the past hours)",
+      "revId": "237844dae089407c73f1fc73bd255b2ed2a2d7e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
