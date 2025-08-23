@@ -22,6 +22,30 @@
       },
       "revId": "27650107862378df03f03f8f8afc0dae94b03d02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d3f00ac_a7f378a6",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-23T15:53:20Z",
+      "side": 1,
+      "message": "Haven\u0027t thought about that yet. At the moment I was just making this public-under-immutable since we had many internal sites that used to call it, and I was trying to make it easier to have us build cleanly using Eric\u0027s FLAG (so we could then move onto clients.\n\nCan we try your idea, of changing this to a factory, in a separate CL?",
+      "parentUuid": "feb3e3f8_5a4f6e6d",
+      "range": {
+        "startLine": 676,
+        "startChar": 12,
+        "endLine": 676,
+        "endChar": 25
+      },
+      "revId": "27650107862378df03f03f8f8afc0dae94b03d02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
