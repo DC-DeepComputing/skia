@@ -205,7 +205,7 @@ std::optional<SkPathPriv::RectContour> SkPathPriv::IsRectContour(SkSpan<const Sk
     }};
 }
 
-bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currVerb,
+bool SkPathPriv::IsRectContourx(const SkPath& path, bool allowPartial, int* currVerb,
                                const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
                                SkRect* rect) {
     // This crazy signature passes us a path, and a pointer into ints points-array.
@@ -242,16 +242,27 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
     return false;
 }
 
-bool SkPathPriv::IsNestedFillRects(const SkPath& path, SkRect rects[2], SkPathDirection dirs[2]) {
-    SkDEBUGCODE(path.validate();)
-    int currVerb = 0;
-    const SkPoint* pts = path.fPathRef->points();
+bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPathDirection dirs[2]) {
     SkPathDirection testDirs[2];
     SkRect testRects[2];
-    if (!IsRectContour(path, true, &currVerb, &pts, nullptr, &testDirs[0], &testRects[0])) {
+
+    SkSpan<const SkPoint> pts = raw.points();
+    SkSpan<const SkPathVerb> vbs = raw.verbs();
+
+    auto rc = IsRectContour(pts, vbs, true);
+    if (!rc) {
         return false;
     }
-    if (IsRectContour(path, false, &currVerb, &pts, nullptr, &testDirs[1], &testRects[1])) {
+
+    testDirs[0] = rc->fDirection;
+    testRects[0] = rc->fRect;
+    pts = pts.last(pts.size() - rc->fPointsConsumed);
+    vbs = vbs.last(vbs.size() - rc->fVerbsConsumed);
+
+    rc = IsRectContour(pts, vbs, false);
+    if (rc) {
+        testDirs[1] = rc->fDirection;
+        testRects[1] = rc->fRect;
         if (testRects[0].contains(testRects[1])) {
             if (rects) {
                 rects[0] = testRects[0];
@@ -278,3 +289,7 @@ bool SkPathPriv::IsNestedFillRects(const SkPath& path, SkRect rects[2], SkPathDi
     return false;
 }
 
+bool SkPathPriv::IsNestedFillRects(const SkPath& path, SkRect rects[2], SkPathDirection dirs[2]) {
+    SkDEBUGCODE(path.validate();)
+    return IsNestedFillRects(SkPathPriv::Raw(path), rects, dirs);
+}
