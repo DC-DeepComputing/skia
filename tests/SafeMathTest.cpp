@@ -51,4 +51,47 @@ DEF_TEST(SafeMath, r) {
         (void) safe.mul(max, max);
         REPORTER_ASSERT(r, !safe);
     }
+
+    {
+        int maxInt = std::numeric_limits<int>::max();
+        int minInt = std::numeric_limits<int>::min();
+        int sqrtMax = 46340; // floor(sqrt(std::numeric_limits<int>::max()))
+
+        SkSafeMath safe;
+
+        // Zero and one identity
+        REPORTER_ASSERT(r, safe.mulInt(maxInt, 1) == maxInt);
+        REPORTER_ASSERT(r, safe.ok());
+        REPORTER_ASSERT(r, safe.mulInt(maxInt, 0) == 0);
+        REPORTER_ASSERT(r, safe.ok());
+
+        // Simple positive overflow
+        (void)safe.mulInt(maxInt, 2);
+        REPORTER_ASSERT(r, !safe.ok());
+
+        // Positive overflow just over the limit
+        safe = {};
+        (void)safe.mulInt(sqrtMax + 1, sqrtMax + 1);
+        REPORTER_ASSERT(r, !safe.ok());
+
+        // Underflow with a negative multiplier
+        safe = {};
+        (void)safe.mulInt(maxInt, -2);
+        REPORTER_ASSERT(r, !safe.ok());
+
+        // Underflow with minInt
+        safe = {};
+        (void)safe.mulInt(minInt, 2);
+        REPORTER_ASSERT(r, !safe.ok());
+
+        // Overflow with two negative numbers
+        safe = {};
+        (void)safe.mulInt(minInt, minInt);
+        REPORTER_ASSERT(r, !safe.ok());
+
+        // Two's complement minInt * -1
+        safe = {};
+        (void)safe.mulInt(minInt, -1);
+        REPORTER_ASSERT(r, !safe.ok());
+    }
 }
