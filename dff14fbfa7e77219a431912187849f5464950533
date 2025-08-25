@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d08a6a24_dc994ffe",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-25T12:47:43Z",
+      "side": 1,
+      "message": "nit: `SkToSizeT`",
+      "range": {
+        "startLine": 1689,
+        "startChar": 52,
+        "endLine": 1689,
+        "endChar": 60
+      },
+      "revId": "dff14fbfa7e77219a431912187849f5464950533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
