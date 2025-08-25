@@ -385,6 +385,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                errorHandler)) {
             return {};
         }
+    }
+
+    if (hasFragmentSkSL) {
         if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->fsLabel().c_str(), fsCode,
                                          &fsModule, errorHandler)) {
             return {};
@@ -401,6 +404,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                            errorHandler)) {
         return {};
     }
+
     if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->vsLabel().c_str(), vsCode,
                                      &vsModule, errorHandler)) {
         return {};
@@ -787,6 +791,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
     return fAsyncPipelineCreation &&
            fAsyncPipelineCreation->fFinished &&
            !fAsyncPipelineCreation->fRenderPipeline;
+}
+
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {

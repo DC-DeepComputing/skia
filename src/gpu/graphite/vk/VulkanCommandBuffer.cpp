@@ -951,7 +951,10 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                       UniformSlot::kGradient);
     }
 
-    drawPass->addResourceRefs(this);
+    if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
+        return false;
+    }
+
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
