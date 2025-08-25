@@ -372,7 +372,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
 
         SkTaskGroup* taskGroup = nullptr;
         if (auto direct = args.fContext->asDirectContext()) {
-            taskGroup = direct->priv().getTaskGroup();
+            taskGroup = direct->priv().getTaskGroup2();
         }
 
         if (taskGroup) {

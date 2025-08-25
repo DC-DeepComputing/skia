@@ -475,7 +475,7 @@ UploadTask::UploadTask(UploadInstance instance) {
 
 UploadTask::~UploadTask() {}
 
-Task::Status UploadTask::prepareResources(ResourceProvider* resourceProvider,
+Task::Status UploadTask::prepareResources1(ResourceProvider* resourceProvider,
                                           ScratchResourceManager*,
                                           const RuntimeEffectDictionary*) {
     for (int i = 0; i < fInstances.size(); ++i) {

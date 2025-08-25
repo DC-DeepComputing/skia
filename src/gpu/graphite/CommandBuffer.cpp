@@ -94,7 +94,8 @@ SkSpan<const sk_sp<Buffer>> CommandBuffer::buffersToAsyncMapOnSubmit() const {
     return fBuffersToAsyncMap;
 }
 
-bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
+bool CommandBuffer::addRenderPass(ResourceProvider* resourceProvider,
+                                  const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> colorTexture,
                                   sk_sp<Texture> resolveTexture,
                                   sk_sp<Texture> depthStencilTexture,
@@ -102,7 +103,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   SkIRect dstReadBounds,
                                   SkIPoint resolveOffset,
                                   SkISize viewportDims,
-                                  const DrawPassList& drawPasses) {
+                                  DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     SkIRect renderPassBounds;
