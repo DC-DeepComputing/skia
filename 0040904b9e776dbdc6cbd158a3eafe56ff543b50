@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5df1db56_ce268fa6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T15:40:25Z",
+      "side": 1,
+      "message": "nit: The header line in a commit message should read as if it follows \"This commit\"\n\n[this commit] Fixes overflow issues in Ganesh rrect blurring",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "0040904b9e776dbdc6cbd158a3eafe56ff543b50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4bd99a3_3683e15c",
         "filename": "tests/SafeMathTest.cpp",
         "patchSetId": 7
