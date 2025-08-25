@@ -98,8 +98,6 @@ public:
     void addResourceRefs(CommandBuffer*) const;
 
 private:
-    class SortKey;
-
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
              std::array<float, 4> clearColor,
