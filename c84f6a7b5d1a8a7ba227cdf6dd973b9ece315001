@@ -22,6 +22,30 @@
       },
       "revId": "c84f6a7b5d1a8a7ba227cdf6dd973b9ece315001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd337737_ea43bf87",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-25T14:57:19Z",
+      "side": 1,
+      "message": "Now used and added int specific SkSafe operations.",
+      "parentUuid": "462e589c_7e1015aa",
+      "range": {
+        "startLine": 1520,
+        "startChar": 8,
+        "endLine": 1520,
+        "endChar": 18
+      },
+      "revId": "c84f6a7b5d1a8a7ba227cdf6dd973b9ece315001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
