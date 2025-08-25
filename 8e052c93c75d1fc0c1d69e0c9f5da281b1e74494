@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b077a1_aa1169db",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-25T12:39:44Z",
+      "side": 1,
+      "message": "Can this take a point span? It may help get rid of the point copies in hair_path.",
+      "range": {
+        "startLine": 517,
+        "startChar": 16,
+        "endLine": 517,
+        "endChar": 41
+      },
+      "revId": "8e052c93c75d1fc0c1d69e0c9f5da281b1e74494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
