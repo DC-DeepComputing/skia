@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "462e589c_7e1015aa",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T14:10:20Z",
+      "side": 1,
+      "message": "I think you can use `safe.castTo` to also check that the result isn\u0027t going to overflow an int.",
+      "range": {
+        "startLine": 1520,
+        "startChar": 8,
+        "endLine": 1520,
+        "endChar": 18
+      },
+      "revId": "c84f6a7b5d1a8a7ba227cdf6dd973b9ece315001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
