@@ -22,6 +22,30 @@
       },
       "revId": "8e052c93c75d1fc0c1d69e0c9f5da281b1e74494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87b52bb7_77cced6b",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-25T16:03:57Z",
+      "side": 1,
+      "message": "It modifies the point values (ugh), so we can\u0027t get rid of the copy if we\u0027re going to call this guy.",
+      "parentUuid": "17b077a1_aa1169db",
+      "range": {
+        "startLine": 517,
+        "startChar": 16,
+        "endLine": 517,
+        "endChar": 41
+      },
+      "revId": "8e052c93c75d1fc0c1d69e0c9f5da281b1e74494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
