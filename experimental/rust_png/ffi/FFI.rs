@@ -189,6 +189,9 @@ mod ffi {
             row: &[u8],
             bits_per_pixel: u8,
         );
+        unsafe fn read_row(
+            self: &mut Reader,
+            output_buffer: &mut [u8]) -> DecodingResult;
 
         fn new_writer(
             output: UniquePtr<WriteTrait>,
@@ -687,6 +690,19 @@ impl Reader {
             panic!("This function should only be called after decoding an interlaced row");
         };
         png::expand_interlaced_row(img, img_row_stride, row, adam7info, bits_per_pixel);
+    }
+
+    /// Decodes the next row directly into a caller-provided buffer - see
+    /// https://docs.rs/png/0.18.0-rc.3/png/struct.Reader.html#method.read_row
+    fn read_row(&mut self, output_buffer: &mut [u8]) -> ffi::DecodingResult {
+        match self.reader.read_row(output_buffer) {
+            Ok(Some(info)) => {
+                self.last_interlace_info = Some(info);
+                ffi::DecodingResult::Success
+            }
+            Ok(None) => ffi::DecodingResult::Success,
+            Err(e) => ffi::DecodingResult::from(Some(&e)),
+        }
     }
 }
 
