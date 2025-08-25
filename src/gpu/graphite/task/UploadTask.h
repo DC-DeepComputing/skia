@@ -162,7 +162,7 @@ public:
 
     ~UploadTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
 

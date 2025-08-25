@@ -158,14 +158,15 @@ void MtlCommandBuffer::addSignalSemaphores(size_t numSignalSemaphores,
     }
 }
 
-bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
+bool MtlCommandBuffer::onAddRenderPass(ResourceProvider* resourceProvider,
+                                       const RenderPassDesc& renderPassDesc,
                                        SkIRect renderPassBounds,
                                        const Texture* colorTexture,
                                        const Texture* resolveTexture,
                                        const Texture* depthStencilTexture,
                                        SkIPoint resolveOffset,
                                        SkIRect viewport,
-                                       const DrawPassList& drawPasses) {
+                                       DrawPassList& drawPasses) {
     SkASSERT(resolveOffset.isZero());
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
@@ -174,8 +175,10 @@ bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     this->setViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height(), 0, 1);
     this->updateIntrinsicUniforms(viewport);
 
-    for (const auto& drawPass : drawPasses) {
-        this->addDrawPass(drawPass.get());
+    for (auto& drawPass : drawPasses) {
+        if (!this->addDrawPass(resourceProvider, drawPass.get())) {
+            return false;
+        }
     }
 
     this->endRenderPass();
@@ -350,14 +353,15 @@ void MtlCommandBuffer::endRenderPass() {
     fDrawIsOffscreen = false;
 }
 
-void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+bool MtlCommandBuffer::addDrawPass(ResourceProvider* resourceProvider,
+                                   DrawPass* drawPass) {
     const SkIRect replayedBounds = drawPass->bounds().makeOffset(fReplayTranslation.x(),
                                                                  fReplayTranslation.y());
     if (!SkIRect::Intersects(replayedBounds, fRenderPassBounds)) {
         // The entire DrawPass is offscreen given the replay translation so skip adding any
         // commands. When the DrawPass is partially offscreen individual draw commands will be
         // culled while preserving state changing commands.
-        return;
+        return true;
     }
 
     // If there is gradient data to bind, it must be done prior to draws.
@@ -366,7 +370,9 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                 UniformSlot::kGradient);
     }
 
-    drawPass->addResourceRefs(this);
+    if (!drawPass->addResourceRefs(resourceProvider, this)) SK_UNLIKELY {
+        return false;
+    }
 
     for (auto[type, cmdPtr] : drawPass->commands()) {
         // Skip draw commands if they'd be offscreen.
@@ -385,7 +391,7 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                this->bindGraphicsPipeline(drawPass->getPipeline1(bgp->fPipelineIndex));
                 break;
             }
             case DrawPassCommands::Type::kSetBlendConstants: {
@@ -487,6 +493,8 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
         }
     }
+
+    return true;
 }
 
 MtlBlitCommandEncoder* MtlCommandBuffer::getBlitCommandEncoder() {

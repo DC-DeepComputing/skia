@@ -30,6 +30,7 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
     : fCaps(std::move(caps))
     , fBackend(backend)
     , fGlobalCache()
+    , fPipelineManager(nullptr) // executor)
     , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
 
 SharedContext::~SharedContext() {
