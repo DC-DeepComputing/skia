@@ -22,6 +22,30 @@
       },
       "revId": "f66568af613bc308146a075f3ff4d6f4b5a8f0a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c78daf2_4d18bc98",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-25T20:48:33Z",
+      "side": 1,
+      "message": "This exists in RC 1 so we\u0027re fine for now.",
+      "parentUuid": "30d9f093_bd8f14c9",
+      "range": {
+        "startLine": 694,
+        "startChar": 28,
+        "endLine": 694,
+        "endChar": 38
+      },
+      "revId": "f66568af613bc308146a075f3ff4d6f4b5a8f0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
