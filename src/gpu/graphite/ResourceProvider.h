@@ -38,6 +38,7 @@ class ComputePipeline;
 class ComputePipelineDesc;
 class GlobalCache;
 class GraphicsPipelineDesc;
+class GraphicsPipelineHandle;
 class GraphiteResourceKey;
 class ResourceCache;
 class RuntimeEffectDictionary;
@@ -51,12 +52,25 @@ class ResourceProvider {
 public:
     virtual ~ResourceProvider();
 
+    void kickOffTask(const RuntimeEffectDictionary*, const GraphicsPipelineHandle&);
+    sk_sp<GraphicsPipeline> tradeIn1(const GraphicsPipelineHandle&);
+
+    GraphicsPipelineHandle createGraphicsPipelineHandle1(
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>);
+
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
             const RuntimeEffectDictionary*,
+            const UniqueKey& pipelineKey,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone);
+
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+            const UniqueKey& pipelineKey,
             SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone);
 
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);

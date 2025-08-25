@@ -13,6 +13,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 
 #include <array>
 #include <cstddef>
@@ -21,6 +22,8 @@
 #include <utility>
 
 struct SkImageInfo;
+
+#define SK_TRACE_GRAPHITE_PIPELINE_USE 1
 
 namespace skgpu::graphite {
 
@@ -78,7 +81,7 @@ public:
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
     // etc.
-    bool prepareResources(ResourceProvider*,
+    bool prepareResources1(ResourceProvider*,
                           const RuntimeEffectDictionary*,
                           const RenderPassDesc&);
 
@@ -86,16 +89,17 @@ public:
         return fCommandList.commands();
     }
 
-    const GraphicsPipeline* getPipeline(size_t index) const {
-        return fFullPipelines[index].get();
+    const GraphicsPipeline* getPipeline1(size_t index) const {
+        SkASSERT(fPipelineHandles.empty());
+        return fFullPipelines1[index].get();
     }
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
     // Not valid until after prepareResources() is called
-    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
+    SkSpan<const sk_sp<GraphicsPipeline>> pipelines1() const { return fFullPipelines1; }
 
-    void addResourceRefs(CommandBuffer*) const;
+    [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
 private:
     class SortKey;
@@ -113,13 +117,19 @@ private:
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;
 
-    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
+    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into
     // an array of actual GraphicsPipelines.
-    skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
+    skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs1;
+
+    // TODO: we should be able to remove fPipelineDescs and fFullPipelines in favor of just
+    // fPipelineHandles
 
     // These resources all get instantiated during prepareResources.
-    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
+    skia_private::TArray<GraphicsPipelineHandle> fPipelineHandles;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
+
+    // These get resolved (from the pipeline handles) in XXX
+    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines1;
 
     sk_sp<FloatStorageManager> fFloatStorageManager;
 

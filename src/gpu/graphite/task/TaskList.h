@@ -40,7 +40,7 @@ public:
     // Returns kDiscard if all children were discarded.
     // Returns kFail if any child failed.
     // Automatically removes tasks from its list if they return kDiscard.
-    Task::Status prepareResources(ResourceProvider*,
+    Task::Status prepareResources1(ResourceProvider*,
                                   ScratchResourceManager*,
                                   const RuntimeEffectDictionary*);
     Task::Status addCommands(Context*, CommandBuffer*, Task::ReplayTargetData);
@@ -50,6 +50,7 @@ public:
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor);
 
 private:
+public:
     template <typename Fn> // (Task*)->Status
     Task::Status visitTasks(Fn);
 

@@ -62,6 +62,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -233,6 +234,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
+
+//    bool arePipelinesReady = info.fRecording->priv().arePipelinesReady();
+//    SkDebugf("Context::insertRecording arePipelinesReady: %s\n", arePipelinesReady ? "true"
+//                                                                                   : "false");
 
     return fQueueManager->addRecording(info, this);
 }

@@ -47,7 +47,7 @@ CopyBufferToBufferTask::CopyBufferToBufferTask(const Buffer* srcBuffer,
 
 CopyBufferToBufferTask::~CopyBufferToBufferTask() = default;
 
-Task::Status CopyBufferToBufferTask::prepareResources(ResourceProvider*,
+Task::Status CopyBufferToBufferTask::prepareResources1(ResourceProvider*,
                                                       ScratchResourceManager*,
                                                       const RuntimeEffectDictionary*) {
     return Status::kSuccess;
@@ -92,7 +92,7 @@ CopyTextureToBufferTask::CopyTextureToBufferTask(sk_sp<TextureProxy> textureProx
 
 CopyTextureToBufferTask::~CopyTextureToBufferTask() {}
 
-Task::Status CopyTextureToBufferTask::prepareResources(ResourceProvider* resourceProvider,
+Task::Status CopyTextureToBufferTask::prepareResources1(ResourceProvider* resourceProvider,
                                                        ScratchResourceManager*,
                                                        const RuntimeEffectDictionary*) {
     // If the source texture hasn't been instantiated yet, it means there was no prior task that
@@ -151,7 +151,7 @@ CopyTextureToTextureTask::CopyTextureToTextureTask(sk_sp<TextureProxy> srcProxy,
 
 CopyTextureToTextureTask::~CopyTextureToTextureTask() {}
 
-Task::Status CopyTextureToTextureTask::prepareResources(ResourceProvider* resourceProvider,
+Task::Status CopyTextureToTextureTask::prepareResources1(ResourceProvider* resourceProvider,
                                                         ScratchResourceManager*,
                                                         const RuntimeEffectDictionary*) {
     // Do not instantiate the src proxy. If the source texture hasn't been instantiated yet, it

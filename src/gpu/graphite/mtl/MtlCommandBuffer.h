@@ -72,14 +72,15 @@ private:
 
     void onResetCommandBuffer() override;
 
-    bool onAddRenderPass(const RenderPassDesc&,
+    bool onAddRenderPass(ResourceProvider*,
+                         const RenderPassDesc&,
                          SkIRect renderPassBounds,
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
                          SkIPoint resolveOffset,
                          SkIRect viewport,
-                         const DrawPassList&) override;
+                         DrawPassList&) override;
     bool onAddComputePass(DispatchGroupSpan) override;
 
     // Methods for populating a MTLRenderCommandEncoder:
@@ -89,7 +90,7 @@ private:
                          const Texture* depthStencilTexture);
     void endRenderPass();
 
-    void addDrawPass(const DrawPass*);
+    [[nodiscard]] bool addDrawPass(ResourceProvider*, DrawPass*);
 
     void updateIntrinsicUniforms(SkIRect viewport);
 

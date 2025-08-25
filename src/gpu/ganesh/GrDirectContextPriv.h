@@ -118,7 +118,7 @@ public:
     std::unique_ptr<GrFragmentProcessor> createPMToUPMEffect(std::unique_ptr<GrFragmentProcessor>);
     std::unique_ptr<GrFragmentProcessor> createUPMToPMEffect(std::unique_ptr<GrFragmentProcessor>);
 
-    SkTaskGroup* getTaskGroup() { return this->context()->fTaskGroup.get(); }
+    SkTaskGroup* getTaskGroup2() { return this->context()->fTaskGroup2.get(); }
 
     GrResourceProvider* resourceProvider() { return this->context()->fResourceProvider.get(); }
     const GrResourceProvider* resourceProvider() const {

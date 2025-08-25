@@ -137,10 +137,10 @@ private:
     using Lock = SkMutex;
 
     TArray<std::thread> fThreads;
-    WorkList              fWork;
-    Lock                  fWorkLock;
-    SkSemaphore           fWorkAvailable;
-    bool                  fAllowBorrowing;
+    WorkList            fWork;
+    Lock                fWorkLock;
+    SkSemaphore         fWorkAvailable;
+    bool                fAllowBorrowing;
 };
 
 std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {
