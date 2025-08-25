@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad7cb10d_eebe83f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-25T16:27:03Z",
+      "side": 1,
+      "message": "Does it make sense to keep this name with the namespace in place?  Alternatively (future CLs): move all cpu-only code under `skcpu/Draw.{h,cpp}` etc.",
+      "range": {
+        "startLine": 13,
+        "startChar": 42,
+        "endLine": 13,
+        "endChar": 48
+      },
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16805362_06b3e1f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-25T16:27:03Z",
+      "side": 1,
+      "message": "The namespacing part adds a lot of noise.  Is the plan to eventually have all the software-only bits under `skcpu::`?  Might be worth doing that separately across the board to see what the end result looks like.  Up to you.",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d6b5d95_b4d708a8",
+        "filename": "src/core/SkDraw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-25T16:27:03Z",
+      "side": 1,
+      "message": "Not for this CL, but it looks like `Draw` could be final if we fold in the `SkBitmapDevice::BDDraw` functionality (it only needs a specialized constructor, no overrides).",
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
