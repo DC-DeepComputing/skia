@@ -722,10 +722,6 @@ void SkPngRustCodec::expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
     // full-frame-width `decodedInterlacedFullWidthRow`.  This is needed because
     // `applyXformRow` requires full-width rows as input (can't change
     // `SkSwizzler::fSrcWidth` after `initializeXforms`).
-    //
-    // TODO(https://crbug.com/399891492): Having `Reader.read_row` API (see
-    // https://github.com/image-rs/image-png/pull/493) would help avoid
-    // an extra copy here.
     decodedInterlacedFullWidthRow.resize(this->getEncodedRowBytes(), 0x00);
     SkASSERT_RELEASE(decodedInterlacedFullWidthRow.size() >= srcRow.size());
     memcpy(decodedInterlacedFullWidthRow.data(), srcRow.data(), srcRow.size());
@@ -743,26 +739,68 @@ void SkPngRustCodec::expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
                                         dstBytesPerPixel * 8u);
 }
 
+// Given the dstInfo and the rust colortype/bits per component, determines if we
+// can use rust_png::Reader::read_row to decode directly into dst.
+bool SkPngRustCodec::canReadRow() {
+    rust_png::ColorType color_type = fReader->output_color_type();
+    uint8_t bits_per_component =  fReader->output_bits_per_component();
+    switch (this->dstInfo().colorType()) {
+        case kRGBA_8888_SkColorType:
+            if (color_type == rust_png::ColorType::Rgba
+                && bits_per_component == 8) {
+                return true;
+            }
+            break;
+        case kGray_8_SkColorType:
+            if (color_type == rust_png::ColorType::Grayscale
+                && bits_per_component == 8) {
+                return true;
+            }
+            break;
+        default:
+            break;
+    }
+    return false;
+}
+
 SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                                                   int* rowsDecodedPtr) {
     this->initializeXformParams();
 
     int rowsDecoded = 0;
     bool interlaced = fReader->interlaced();
+    const bool readRow = this->canReadRow();
     while (true) {
-        // TODO(https://crbug.com/357876243): Avoid an unconditional buffer hop
-        // through buffer owned by `fReader` (e.g. when we can decode directly
-        // into `dst`, because the pixel format received from `fReader` is
-        // similar enough to `dstInfo`).
         rust::Slice<const uint8_t> decodedRow;
+        rust::Slice<uint8_t> dstSlice = decodingState.fPreblendBuffer.empty()
+            ? rust::Slice<uint8_t>(decodingState.fDst)
+            : rust::Slice<uint8_t>(decodingState.fPreblendBuffer);
 
         fStreamIsPositionedAtStartOfFrameData = false;
-        Result result = ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
+        Result result = readRow ? ToSkCodecResult(fReader->read_row(dstSlice))
+                                : ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
         if (result != kSuccess) {
             if (result == kIncompleteInput && rowsDecodedPtr) {
                 *rowsDecodedPtr = rowsDecoded;
             }
             return result;
+        }
+
+        // Skip color transforming the row.
+        if (readRow) {
+            if (decodingState.fDst.empty()) { // This is how FFI layer says "no more rows".
+                return kSuccess;
+            }
+            if (!decodingState.fPreblendBuffer.empty()) {
+                blendRow(decodingState.fDst,
+                         decodingState.fPreblendBuffer,
+                         this->dstInfo().colorType(),
+                         this->dstInfo().alphaType());
+            }
+            decodingState.fDst = decodingState.fDst.subspan(
+                std::min(decodingState.fDstRowStride, decodingState.fDst.size()));
+            rowsDecoded++;
+            continue;
         }
 
         if (decodedRow.empty()) {  // This is how FFI layer says "no more rows".
