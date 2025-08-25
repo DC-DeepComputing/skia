@@ -39,7 +39,7 @@ public:
 
     ~CopyBufferToBufferTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
 
@@ -69,7 +69,7 @@ public:
 
     ~CopyTextureToBufferTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
 
@@ -103,7 +103,7 @@ public:
 
     ~CopyTextureToTextureTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
 

@@ -32,12 +32,12 @@ ComputeTask::ComputeTask(DispatchGroupList dispatchGroups)
 
 ComputeTask::~ComputeTask() = default;
 
-Task::Status ComputeTask::prepareResources(ResourceProvider* provider,
+Task::Status ComputeTask::prepareResources1(ResourceProvider* provider,
                                            ScratchResourceManager* scratchManager,
                                            const RuntimeEffectDictionary* rtd) {
     for (auto& child : fChildTasks) {
         if (child) {
-            Status status = child->prepareResources(provider, scratchManager, rtd);
+            Status status = child->prepareResources1(provider, scratchManager, rtd);
             if (status == Status::kFail) {
                 return Status::kFail;
             } else if (status == Status::kDiscard) {

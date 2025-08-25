@@ -124,7 +124,7 @@ RenderPassTask::RenderPassTask(DrawPassList passes,
 
 RenderPassTask::~RenderPassTask() = default;
 
-Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
+Task::Status RenderPassTask::prepareResources1(ResourceProvider* resourceProvider,
                                               ScratchResourceManager* scratchManager,
                                               const RuntimeEffectDictionary* runtimeDict) {
     SkASSERT(fTarget);
@@ -153,7 +153,7 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     for (const auto& drawPass: fDrawPasses) {
-        if (!drawPass->prepareResources(resourceProvider, runtimeDict, fRenderPassDesc)) {
+        if (!drawPass->prepareResources1(resourceProvider, runtimeDict, fRenderPassDesc)) {
             return Status::kFail;
         }
     }
@@ -268,7 +268,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
 
 bool RenderPassTask::visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
     for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
-        for (const sk_sp<GraphicsPipeline>& pipeline : pass->pipelines()) {
+        for (const sk_sp<GraphicsPipeline>& pipeline : pass->pipelines1()) {
             if (!visitor(pipeline.get())) {
                 return false;
             }

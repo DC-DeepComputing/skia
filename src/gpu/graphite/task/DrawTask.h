@@ -35,7 +35,7 @@ public:
     explicit DrawTask(sk_sp<TextureProxy> target);
     ~DrawTask() override;
 
-    Status prepareResources(ResourceProvider*,
+    Status prepareResources1(ResourceProvider*,
                             ScratchResourceManager*,
                             const RuntimeEffectDictionary*) override;
 

@@ -20,7 +20,10 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineCreationTask.h"
+#include "src/gpu/graphite/PipelineManager.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceCache.h"
@@ -51,15 +54,61 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
+void ResourceProvider::kickOffPipelineCreationTask(const RuntimeEffectDictionary* runtimeDict,
+                                                   const GraphicsPipelineHandle& handle) {
+    PipelineManager* pipelineManager = fSharedContext->pipelineManager();
+
+    pipelineManager->kickOffPipelineCreationTask(this, runtimeDict, handle);
+}
+
+sk_sp<GraphicsPipeline> ResourceProvider::resolveHandle(const GraphicsPipelineHandle& handle) {
+    PipelineManager* pipelineManager = fSharedContext->pipelineManager();
+
+    return pipelineManager->resolveHandle(handle);
+}
+
+GraphicsPipelineHandle ResourceProvider::createGraphicsPipelineHandle1(
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    PipelineManager* pipelineManager = fSharedContext->pipelineManager();
+
+    return pipelineManager->createHandle(this,
+                                         pipelineDesc,
+                                         renderPassDesc,
+                                         pipelineCreationFlags);
+}
+
+sk_sp<GraphicsPipeline> ResourceProvider::findGraphicsPipeline(
+        const UniqueKey& pipelineKey,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    auto globalCache = fSharedContext->globalCache();
+
+    uint32_t compilationID = 0;
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags,
+                                                                         &compilationID);
+    if (pipeline && pipeline->didAsyncCompilationFail()) {
+        // If the pipeline failed, remove it from the cache and fall through to retry
+        globalCache->removeGraphicsPipeline(pipeline.get());
+        pipeline.reset();
+    }
+
+    return pipeline;
+}
+
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
 
     auto globalCache = fSharedContext->globalCache();
-    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
-                                                                            renderPassDesc);
+//    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
+//                                                                            renderPassDesc);
 
     uint32_t compilationID = 0;
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
@@ -83,22 +132,34 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
 
-#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+#if 0 // defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool forPrecompile =
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
         static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[forPrecompile]),
-                             TRACE_EVENT_SCOPE_THREAD,
+        SkDebugf("%s %u %s %u: %s\n",
+        //TRACE_EVENT_INSTANT2("skia.gpu",
+//                             TRACE_EVENT_SCOPE_THREAD,
                              "key", pipelineKey.hash(),
-                             "compilationID", compilationID);
+                             "compilationID", compilationID,
+                 TRACE_STR_STATIC(kNames[forPrecompile]));
+
+        SkDebugf("key %u compilationID %u: %s\n",
+                 pipelineKey.hash(),
+                 compilationID,
+                 to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str());
 #endif
+
+        skgpu::StdSteadyClock::time_point compileStart = skgpu::StdSteadyClock::now();
 
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
                                                 pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags,
                                                 compilationID);
+
+        skgpu::StdSteadyClock::time_point compileEnd = skgpu::StdSteadyClock::now();
+        auto compileTime = compileEnd - compileStart;
+
         if (pipeline) {
             globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent

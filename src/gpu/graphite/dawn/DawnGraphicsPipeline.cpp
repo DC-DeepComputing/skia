@@ -385,11 +385,18 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                errorHandler)) {
             return {};
         }
+    }
+
+    skgpu::StdSteadyClock::time_point t3 = skgpu::StdSteadyClock::now();
+
+    if (hasFragmentSkSL) {
         if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->fsLabel().c_str(), fsCode,
                                          &fsModule, errorHandler)) {
             return {};
         }
     }
+
+    skgpu::StdSteadyClock::time_point t4 = skgpu::StdSteadyClock::now();
 
     const std::string& vsSkSL = shaderInfo->vertexSkSL();
     if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
@@ -401,10 +408,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                            errorHandler)) {
         return {};
     }
+
+    skgpu::StdSteadyClock::time_point t5 = skgpu::StdSteadyClock::now();
+
     if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->vsLabel().c_str(), vsCode,
                                      &vsModule, errorHandler)) {
         return {};
     }
+
+    skgpu::StdSteadyClock::time_point t6 = skgpu::StdSteadyClock::now();
 
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
@@ -742,7 +754,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     }
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID, true };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode.fText);
@@ -789,6 +801,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
            !fAsyncPipelineCreation->fRenderPipeline;
 }
 
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     if (!fAsyncPipelineCreation) {
         static const wgpu::RenderPipeline kNullPipeline = nullptr;
@@ -802,10 +825,11 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
 
-#if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitBeginN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+#if 0 // defined(SK_PIPELINE_LIFETIME_LOGGING)
+    SkDebugf("%s %u %s %u: WaitBeginN\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+//                         TRACE_STR_STATIC("WaitBeginN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
                          "compilationID", this->getPipelineInfo().fCompilationID);
 #endif
@@ -822,12 +846,22 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(waitInfo.completed);
 
-#if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitEndN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+#if 0 //defined(SK_PIPELINE_LIFETIME_LOGGING)
+    SkDebugf("%s %u %s %u: WaitEndN, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+                         //TRACE_STR_STATIC("WaitEndN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
-                         "compilationID", this->getPipelineInfo().fCompilationID);
+                         "compilationID", this->getPipelineInfo().fCompilationID,
+                         fD0,
+                         fD1,
+                         fD2,
+                         fD3,
+                         fD4,
+                         fD5,
+                         fD6,
+                         waitTime,
+                         fD0+waitTime);
 #endif
 
 #endif

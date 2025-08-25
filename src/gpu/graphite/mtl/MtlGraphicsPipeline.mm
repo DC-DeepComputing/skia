@@ -267,9 +267,20 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
 
 } // anonymous namespace
 
+bool MtlGraphicsPipeline::isReady() const {
+    if (!fAsync) {
+        return true;
+    }
+    if (fAsyncFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         const MtlSharedContext* sharedContext,
-        MtlResourceProvider* resourceProvider,
+        MtlResourceProvider* resourceProvider1,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -314,6 +325,9 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         return nullptr;
     }
 
+    auto fsLibrary = MtlCompileShaderLibrary(
+            sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
+
     const std::string& vsSkSL = shaderInfo->vertexSkSL();
     if (!SkSLToMSL(sharedContext->caps()->shaderCaps(),
                    vsSkSL,
@@ -327,14 +341,12 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     auto vsLibrary = MtlCompileShaderLibrary(
             sharedContext, shaderInfo->vsLabel(), vsMSL.fText, errorHandler);
-    auto fsLibrary = MtlCompileShaderLibrary(
-            sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
 
     sk_cfp<id<MTLDepthStencilState>> dss =
-            resourceProvider->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
+            resourceProvider1->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID, true };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);
@@ -342,6 +354,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
+
     return Make(sharedContext,
                 pipelineLabel,
                 pipelineInfo,

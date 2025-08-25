@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+//#define SK_PIPELINE_LIFETIME_LOGGING 1
+
 namespace skgpu::graphite {
 
 class ShaderInfo;
@@ -38,6 +40,11 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
+    uint32_t hash() const {
+        SkASSERT(fPipelineInfo.fUniqueKeyHash);
+        return fPipelineInfo.fUniqueKeyHash;
+    }
+
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
     DstReadStrategy dstReadStrategy() const { return fPipelineInfo.fDstReadStrategy; }
@@ -52,7 +59,7 @@ public:
 
         // NOTE: Subclasses must manually fill in native shader code in GPU_TEST_UTILS builds.
         PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>,
-                     uint32_t uniqueKeyHash, uint32_t compilationID);
+                     uint32_t uniqueKeyHash, uint32_t compilationID, bool);
 
         DstReadStrategy fDstReadStrategy = DstReadStrategy::kNoneRequired;
         int  fNumFragTexturesAndSamplers = 0;
@@ -95,6 +102,8 @@ public:
     // asynchronously, we may create a GraphicsPipeline object that later "fails" and need to remove
     // it from the GlobalCache.
     virtual bool didAsyncCompilationFail() const { return false; }
+
+    virtual bool isReady() const = 0;
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
