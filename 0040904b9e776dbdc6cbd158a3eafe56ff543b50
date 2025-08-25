@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2728a9d9_e8353aa2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-25T17:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5df1db56_ce268fa6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "0040904b9e776dbdc6cbd158a3eafe56ff543b50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4bd99a3_3683e15c",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-25T15:39:17Z",
       "side": 1,
       "message": "nit: `const` (or even `constexpr`)",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 11
+      },
+      "revId": "0040904b9e776dbdc6cbd158a3eafe56ff543b50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "721db439_cecca83a",
+        "filename": "tests/SafeMathTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-25T17:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4bd99a3_3683e15c",
       "range": {
         "startLine": 56,
         "startChar": 8,
