@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8cd35e9_54790524",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T15:01:56Z",
+      "side": 1,
+      "message": "This should be int or all the other ints in this function should be int32_t (leaning towards the former). I believe int and int32_t are usually the same, but int could be 16 bits (or 64 on some wild systems)",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 23
+      },
+      "revId": "fe5bb219f694bce4d97e09c9b800ed1c91575934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
