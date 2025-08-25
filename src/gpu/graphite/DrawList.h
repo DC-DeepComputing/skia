@@ -85,7 +85,9 @@ public:
                     const Clip& clip,
                     DrawOrder ordering,
                     const PaintParams* paint,
-                    const StrokeStyle* stroke);
+                    const StrokeStyle* stroke,
+                    bool dependsOnDst,
+                    bool dstReadReq);
 
     int renderStepCount() const { return fRenderStepCount; }
 
@@ -103,20 +105,27 @@ private:
     friend class DrawPass;
 
     struct Draw {
-        const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
-        DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
-        std::optional<PaintParams> fPaintParams; // Not present implies depth-only draw
-
+    public:
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
-             const Clip& clip, DrawOrder order, const PaintParams* paint,
-             const StrokeStyle* stroke)
+             const Clip& clip, DrawOrder order, const PaintParams* paint, const StrokeStyle* stroke,
+             uint32_t dependsOnDst, uint32_t dstReadReq)
                 : fRenderer(renderer)
                 , fDrawParams(transform, geometry, clip, order, stroke)
-                , fPaintParams(paint ? std::optional<PaintParams>(*paint) : std::nullopt) {}
+                , fPaintParams(paint ? std::optional<PaintParams>(*paint) : std::nullopt)
+                , fDependsOnDst(dependsOnDst ? 1 : 0)
+                , fDstReadReq(dstReadReq ? 1 : 0) {}
+        const Renderer* renderer()                      const { return fRenderer;          }
+        const DrawParams& drawParams()                  const { return fDrawParams;        }
+        const std::optional<PaintParams>& paintParams() const { return fPaintParams;       }
+        uint32_t dependsOnDst()                         const { return fDependsOnDst != 0; }
+        uint32_t dstReadReq()                           const { return fDstReadReq != 0;   }
 
-        bool readsFromDst() const {
-            return fPaintParams.has_value() ? fPaintParams.value().dstReadRequired() : false;
-        }
+    private:
+        const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
+        DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
+        std::optional<PaintParams> fPaintParams;
+        uint32_t fDependsOnDst;
+        uint32_t fDstReadReq;
     };
 
     // The returned Transform reference remains valid for the lifetime of the DrawList.
