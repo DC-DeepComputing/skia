@@ -49,6 +49,54 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2976dd65_9be13b4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T16:50:49Z",
+      "side": 1,
+      "message": "Yeah, maybe once everything is under the namespace, we make a folder for skcpu (or just cpu? to align with gpu?). I didn\u0027t want to muddy the git history (more than I did/will) and didn\u0027t want to do the Bazel plumbing quite yet 😊",
+      "parentUuid": "ad7cb10d_eebe83f5",
+      "range": {
+        "startLine": 13,
+        "startChar": 42,
+        "endLine": 13,
+        "endChar": 48
+      },
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d79776_d4859e03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T16:50:49Z",
+      "side": 1,
+      "message": "\u003e Is the plan to eventually have all the software-only bits under skcpu::\n\nYes, that\u0027s the plan. This felt easier to do gradually.",
+      "parentUuid": "16805362_06b3e1f8",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2d6b5d95_b4d708a8",
         "filename": "src/core/SkDraw.h",
         "patchSetId": 11
@@ -60,6 +108,24 @@
       "writtenOn": "2025-08-25T16:27:03Z",
       "side": 1,
       "message": "Not for this CL, but it looks like `Draw` could be final if we fold in the `SkBitmapDevice::BDDraw` functionality (it only needs a specialized constructor, no overrides).",
+      "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "324ab439_b12c7ec6",
+        "filename": "src/core/SkDraw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T16:50:49Z",
+      "side": 1,
+      "message": "Acknowledged.",
+      "parentUuid": "2d6b5d95_b4d708a8",
       "revId": "f1e508f07a70afa291c58034b010324bbd84855f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
