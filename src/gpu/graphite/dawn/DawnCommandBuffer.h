@@ -59,14 +59,15 @@ private:
     void onResetCommandBuffer() override;
     bool setNewCommandBufferResources() override;
 
-    bool onAddRenderPass(const RenderPassDesc&,
+    bool onAddRenderPass(ResourceProvider*,
+                         const RenderPassDesc&,
                          SkIRect renderPassBounds,
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
                          SkIPoint resolveOffset,
                          SkIRect viewport,
-                         const DrawPassList&) override;
+                         DrawPassList&) override;
     bool onAddComputePass(DispatchGroupSpan) override;
 
     // Methods for populating a Dawn RenderPassEncoder:
@@ -91,7 +92,7 @@ private:
                         const SkIRect& dstBounds);
     bool endRenderPass();
 
-    bool addDrawPass(const DrawPass*);
+    [[nodiscard]] bool addDrawPass(ResourceProvider*, DrawPass*);
 
     bool bindGraphicsPipeline(const GraphicsPipeline*);
     void setBlendConstants(std::array<float, 4> blendConstants);

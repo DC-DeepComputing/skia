@@ -96,7 +96,8 @@ public:
     // a non-zero `resolveOffset` which is the the offset for resolving:
     // - The color texture's (0, 0, w, h) region.
     // - And store in the resolve texture's (resolveOffset.x, resolveOffset.y, w, h) region.
-    bool addRenderPass(const RenderPassDesc&,
+    bool addRenderPass(ResourceProvider*,
+                       const RenderPassDesc&,
                        sk_sp<Texture> colorTexture,
                        sk_sp<Texture> resolveTexture,
                        sk_sp<Texture> depthStencilTexture,
@@ -104,7 +105,7 @@ public:
                        SkIRect dstReadBounds,
                        SkIPoint resolveOffset,
                        SkISize viewportDims,
-                       const DrawPassList& drawPasses);
+                       DrawPassList& drawPasses);
 
     bool addComputePass(DispatchGroupSpan dispatchGroups);
 
@@ -173,14 +174,15 @@ private:
 
     // Renderpass, viewport bounds have already been adjusted by the replay translation. The render
     // pass bounds has been intersected with the color attachment bounds.
-    virtual bool onAddRenderPass(const RenderPassDesc&,
+    virtual bool onAddRenderPass(ResourceProvider*,
+                                 const RenderPassDesc&,
                                  SkIRect renderPassBounds,
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,
                                  SkIPoint resolveOffset,
                                  SkIRect viewport,
-                                 const DrawPassList& drawPasses) = 0;
+                                 DrawPassList& drawPasses) = 0;
 
     virtual bool onAddComputePass(DispatchGroupSpan dispatchGroups) = 0;
 

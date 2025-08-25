@@ -15,8 +15,10 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineCreationTask.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
@@ -64,15 +66,11 @@ void compile(const RendererProvider* rendererProvider,
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
                                                                : UniquePaintParamsID::Invalid();
 
-            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
-                    keyContext.rtEffectDict(),
+
+            resourceProvider->createGraphicsPipelineHandle1(
                     { s->renderStepID(), paintID },
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);
-            if (!pipeline) {
-                SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
-                return;
-            }
         }
     }
 }
@@ -162,6 +160,7 @@ void Precompile(PrecompileContext* precompileContext,
                 // pipelines.
                 const RenderStep* renderStep =
                     rendererProvider->lookup(RenderStep::RenderStepID::kCoverBounds_InverseCover);
+#if 0
                 sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                         keyContext.rtEffectDict(),
                         { renderStep->renderStepID(), UniquePaintParamsID::Invalid() },
@@ -171,6 +170,12 @@ void Precompile(PrecompileContext* precompileContext,
                     SKGPU_LOG_W("Failed to create \"CoverBoundsRenderStep[InverseCover] + (empty)\""
                                 " precompile Pipeline!");
                 }
+#else
+                resourceProvider->createGraphicsPipelineHandle1(
+                        { renderStep->renderStepID(), UniquePaintParamsID::Invalid() },
+                        renderPassDesc,
+                        PipelineCreationFlags::kForPrecompilation);
+#endif
             }
 
             if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
