@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30d9f093_bd8f14c9",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-25T18:49:12Z",
+      "side": 1,
+      "message": "Right now we\u0027ve pinned RC 1, not RC 3. Does this call exist in RC 1 or do we need to update?",
+      "range": {
+        "startLine": 694,
+        "startChar": 28,
+        "endLine": 694,
+        "endChar": 38
+      },
+      "revId": "f66568af613bc308146a075f3ff4d6f4b5a8f0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
