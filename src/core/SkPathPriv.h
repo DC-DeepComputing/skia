@@ -313,10 +313,6 @@ public:
                                                     SkSpan<const SkPathVerb> vbSpan,
                                                     bool allowPartial);
 
-    static bool IsRectContour(const SkPath&, bool allowPartial, int* currVerb,
-                              const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
-                              SkRect* rect);
-
     /** Returns true if SkPath is equivalent to nested SkRect pair when filled.
      If false, rect and dirs are unchanged.
      If true, rect and dirs are written to if not nullptr:
@@ -328,6 +324,8 @@ public:
      @param dirs  storage for SkPathDirection pair; may be nullptr
      @return      true if SkPath contains nested SkRect pair
      */
+    static bool IsNestedFillRects(const SkPathRaw&, SkRect rect[2],
+                                  SkPathDirection dirs[2] = nullptr);
     static bool IsNestedFillRects(const SkPath&, SkRect rect[2],
                                   SkPathDirection dirs[2] = nullptr);
 
