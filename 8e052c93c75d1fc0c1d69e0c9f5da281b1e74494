@@ -94,6 +94,30 @@
       },
       "revId": "8e052c93c75d1fc0c1d69e0c9f5da281b1e74494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00eda68_fc9f4349",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-25T16:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9afdda64_4f54ebfc",
+      "range": {
+        "startLine": 517,
+        "startChar": 16,
+        "endLine": 517,
+        "endChar": 41
+      },
+      "revId": "8e052c93c75d1fc0c1d69e0c9f5da281b1e74494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
