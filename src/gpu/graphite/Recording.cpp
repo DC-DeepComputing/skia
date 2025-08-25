@@ -17,6 +17,7 @@
 #include "src/core/SkChecksum.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
@@ -146,6 +147,28 @@ void RecordingPriv::setFailureResultForFinishedProcs() {
     fRecording->fFinishedProcs.clear();
 }
 
+bool Recording::arePipelinesReady() const {
+    std::vector<const GraphicsPipeline*> pipelines;
+
+    fRootTaskList->visitPipelines(
+        [&](const GraphicsPipeline* pipeline) {
+            pipelines.push_back(pipeline);
+            return true;
+        });
+
+    for (auto p : pipelines) {
+        if (!p->isReady()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool RecordingPriv::arePipelinesReady() const {
+    return fRecording->arePipelinesReady();
+}
+
 TextureProxy* RecordingPriv::deferredTargetProxy() {
     return fRecording->fTargetProxyData ? fRecording->fTargetProxyData->lazyProxy() : nullptr;
 }
@@ -198,10 +221,10 @@ const Texture* RecordingPriv::setupDeferredTarget(ResourceProvider* resourceProv
     return surfaceTexture->texture();
 }
 
-bool RecordingPriv::prepareResources(ResourceProvider* resourceProvider,
+bool RecordingPriv::prepareResources1(ResourceProvider* resourceProvider,
                                      ScratchResourceManager* scratchManager,
                                      RuntimeEffectDictionary* rteDict) {
-    Task::Status status = fRecording->fRootTaskList->prepareResources(
+    Task::Status status = fRecording->fRootTaskList->prepareResources1(
             resourceProvider, scratchManager, rteDict);
     if (status == Task::Status::kSuccess) {
         fRecording->fRootTaskList->visitProxies([&](const TextureProxy* proxy) {
