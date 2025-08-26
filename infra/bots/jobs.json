@@ -329,8 +329,22 @@
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-SK_CPU_LIMIT_SSE41"},
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-SK_FORCE_RASTER_PIPELINE_BLITTER"},
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-Static"},
-  {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-SwiftShader"},
-  {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-SwiftShader_Graphite"},
+  {
+    "name": "Build-Ubuntu24.04-Clang-x86_64-Release-SwiftShader",
+    "cq_config": {
+        "location_regexes": [
+            "DEPS"
+        ]
+    }
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-x86_64-Release-SwiftShader_Graphite",
+    "cq_config": {
+        "location_regexes": [
+            "DEPS"
+        ]
+    }
+  },
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-TSAN"},
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-TSAN_Graphite_Dawn_Vulkan"},
   {"name": "Build-Ubuntu24.04-Clang-x86_64-Release-TSAN_Graphite_Native_Vulkan"},
@@ -870,7 +884,18 @@
   {"name": "Test-Ubuntu24.04-Clang-GCE-CPU-Rome-x86_64-Debug-All"},
   {"name": "Test-Ubuntu24.04-Clang-GCE-CPU-Rome-x86_64-Release-All"},
   {"name": "Test-Ubuntu24.04-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader"},
+  {
+    "name": "Test-Ubuntu24.04-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader_Graphite",
+    "cq_config": {
+        "location_regexes": [
+            "(include|src)/gpu/graphite/vk/.*",
+            "(include|src)/sksl/codegen/.*",
+            "tests/.*"
+        ]
+    }
+  },
   {"name": "Test-Ubuntu24.04-Clang-GCE-GPU-SwiftShader-x86_64-Release-All-SwiftShader"},
+  {"name": "Test-Ubuntu24.04-Clang-GCE-GPU-SwiftShader-x86_64-Release-All-SwiftShader_Graphite"},
   {"name": "Test-Ubuntu24.04-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All"},
   {"name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All"},
   {"name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All-ASAN_Vulkan"},

@@ -175,7 +175,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	sampleCount := 0
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
-		configs = append(configs, "vk", "vkdmsaa")
+		if b.extraConfig("Graphite") {
+			configs = append(configs, "grvk")
+		} else {
+			configs = append(configs, "vk", "vkdmsaa")
+		}
 		// skbug.com/40043920
 		skip(ALL, "test", ALL, "GrThreadSafeCache16Verts")
 		// b/296440036
