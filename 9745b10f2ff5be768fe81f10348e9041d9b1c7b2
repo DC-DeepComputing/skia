@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab796e8_c10c7457",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4263896
+      },
+      "writtenOn": "2025-08-26T11:39:59Z",
+      "side": 1,
+      "message": "Hi, \nI’ve made the changes we discussed over email. I tried to upload them as a new patchset to this reland (CL 1032958), but Gerrit wouldn’t let me, I get a permissions warning(below) and the push gets rejected.\n\n`$ git cl upload\nFound change with 1 commit...\nWARNING: Change 1032958 is owned by jlavrova@google.com, but Gerrit knows you as:\n  * manoj.mohan@zohocorp.com (preferred)\nUploading may fail due to lack of permissions.`\n\nCould you give me access to let me add a patchset here? If that’s not possible or preferred, I can spin up a new CL that references this one. LMK what works. Thanks!",
+      "revId": "9745b10f2ff5be768fe81f10348e9041d9b1c7b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
