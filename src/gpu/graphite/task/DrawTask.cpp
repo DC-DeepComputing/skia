@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/task/DrawTask.h"
 
 #include "include/private/base/SkAssert.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
@@ -20,7 +21,7 @@ DrawTask::~DrawTask() = default;
 
 Task::Status DrawTask::prepareResources(ResourceProvider* resourceProvider,
                                         ScratchResourceManager* scratchManager,
-                                        const RuntimeEffectDictionary* rteDict) {
+                                        sk_sp<const RuntimeEffectDictionary> rteDict) {
     const int pendingReadCount = scratchManager->pendingReadCount(fTarget.get());
     if (pendingReadCount) {
         // This DrawTask defines the content of a scratch device that has incremented the pending

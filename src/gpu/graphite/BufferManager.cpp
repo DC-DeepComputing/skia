@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/task/ClearBuffersTask.h"
 #include "src/gpu/graphite/task/CopyTask.h"
