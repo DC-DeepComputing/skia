@@ -623,9 +623,14 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RenderPassDesc& renderPassDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
+    const Caps* caps = resourceProvider->caps();
+
     fFullPipelines.reserve(fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+
+        UniqueKey pipelineKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
+                                                                       pipelineKey,
                                                                        pipelineDesc,
                                                                        renderPassDesc);
         if (!pipeline) {
