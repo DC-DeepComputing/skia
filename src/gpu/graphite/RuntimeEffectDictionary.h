@@ -19,7 +19,7 @@ namespace skgpu::graphite {
 // We keep track of all SkRuntimeEffects that are used by a recording, along with their code
 // snippet ID. This ensures that we have a live reference to every effect that we're going to
 // paint, and gives us a way to retrieve their shader text when we see their code-snippet ID.
-class RuntimeEffectDictionary {
+class RuntimeEffectDictionary : public SkRefCnt {
 public:
     const SkRuntimeEffect* find(int codeSnippetID) const {
         sk_sp<const SkRuntimeEffect>* effect = fDict.find(codeSnippetID);
@@ -27,8 +27,6 @@ public:
     }
 
     void set(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
-
-    void reset() { fDict.reset(); }
 
     bool empty() const { return fDict.empty(); }
 
