@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a339dc_0ee9b462",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T17:20:59Z",
+      "side": 1,
+      "message": "LGTM - depending on when this lands in relation to the CL that adds graphite SwiftShader test jobs (https://skia-review.googlesource.com/c/skia/+/1042576), you may have to re-enable running the failing test.",
+      "revId": "344850010bb6429d4eb024a11e0ad40b23f51aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
