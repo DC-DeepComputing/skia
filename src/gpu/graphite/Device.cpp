@@ -71,6 +71,7 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PathAtlas.h"
@@ -141,8 +142,9 @@ const SkStrokeRec& DefaultFillStyle() {
     return kFillStyle;
 }
 
+#if defined(SK_DEBUG)
 bool paint_depends_on_dst(const PaintParams& paintParams) {
-    std::optional<SkBlendMode> bm = paintParams.asFinalBlendMode();
+    std::optional<SkBlendMode> bm = paintParams.finalBlendMode();
     if (!bm.has_value()) {
         return true; // Runtime blenders always depend on the dst
     }
@@ -177,13 +179,14 @@ bool paint_depends_on_dst(const PaintParams& paintParams) {
     }
     return srcIsTransparent;
 }
+#endif
 
 /** If the paint can be reduced to a solid flood-fill, determine the correct color to fill with. */
 std::optional<SkColor4f> extract_paint_color(const PaintParams& paint,
                                              const SkColorInfo& dstColorInfo) {
     SkASSERT(!paint_depends_on_dst(paint));
 
-    std::optional<SkBlendMode> bm = paint.asFinalBlendMode();
+    std::optional<SkBlendMode> bm = paint.finalBlendMode();
     // Since we don't depend on the dst, a dst-out blend mode implies source is
     // opaque, which causes dst-out to behave like clear.
     if (bm == SkBlendMode::kClear || bm == SkBlendMode::kDstOut) {
@@ -518,6 +521,12 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
                     fRecorder->priv().caps()->defaultMSAASamplesCount());
         }
     }
+
+    const bool useStorageBuffers = fRecorder->priv().caps()->storageBufferSupport();
+    const auto& bindingReq = fRecorder->priv().caps()->resourceBindingRequirements();
+    fDataGatherer = std::make_unique<PipelineDataGatherer>(
+            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout);
+    fKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(fRecorder->priv().shaderCodeDictionary());
 }
 
 Device::~Device() {
@@ -1476,41 +1485,49 @@ void Device::drawGeometry(const Transform& localToDevice,
         clip.outsetBoundsForAA();
     }
 
-    // Figure out what dst color requirements we have, if any.
-    const SkBlenderBase* blender = as_BB(paint.getBlender());
-    const std::optional<SkBlendMode> blendMode = blender ? blender->asBlendMode()
-                                                         : SkBlendMode::kSrcOver;
-
-    // A primitive blender should be ignored if there is no primitive color to blend against.
-    // Additionally, if a renderer emits a primitive color, then a null primitive blender should
-    // be interpreted as SrcOver blending mode.
+    // Determine the paint ID and collect the paint uniforms now before anything has been recorded.
+    // The paint may reference an SkPicture or a Graphite-backed dynamic SkImage that can trigger
+    // a flush of the Recorder.
     if (!renderer || !renderer->emitsPrimitiveColor()) {
+        // Ignore primitive blender if the renderer doesn't support it
         primitiveBlender = nullptr;
     } else if (!SkToBool(primitiveBlender)) {
+        // A null blender is normally equivalent to SrcOver; coerce it to non-null so that nullity
+        // can be used by PaintParamsKeyBuilder to know when to add primitive blending blocks.
         primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
     }
 
-    Coverage rendererCoverage = renderer ? renderer->coverage()
-                                         : Coverage::kSingleChannel;
-    TextureFormat targetFormat = TextureInfoPriv::ViewFormat(fDC->target()->textureInfo());
-    PaintParams shading{paint,
+    PaintParams shading{fRecorder->priv().caps(),
+                        paint,
                         std::move(primitiveBlender),
                         clip.nonMSAAClip(),
                         sk_ref_sp(clip.shader()),
-                        rendererCoverage,
-                        targetFormat,
+                        renderer ? renderer->coverage() : Coverage::kSingleChannel,
+                        TextureInfoPriv::ViewFormat(fDC->target()->textureInfo()),
                         skipColorXform};
-    if (clip.needsCoverage() && rendererCoverage == Coverage::kNone) {
-        // Must upgrade to single channel coverage if the clip requires coverage;
-        // but preserve LCD coverage if the Renderer uses that.
-        rendererCoverage = Coverage::kSingleChannel;
+
+    KeyContext keyContext{fRecorder,
+                          fRecorder->priv().refFloatStorageManager().get(),
+                          fKeyBuilder.get(),
+                          fDataGatherer.get(),
+                          localToDevice.matrix(),
+                          fDC->colorInfo(),
+                          geometry.isShape() || geometry.isEdgeAAQuad()
+                                ? KeyGenFlags::kDefault
+                                : KeyGenFlags::kDisableSamplingOptimization,
+                          paint.getColor4f()};
+    fDataGatherer->resetForDraw();
+
+    auto keyResult = shading.toKey(keyContext);
+    if (!keyResult) {
+        // Converting the SkPaint to a pipeline and set of uniform values + sampled textures failed.
+        // TODO: Log warning, mark the entire Recorder as in a bad state? or somehow bubble up to
+        // the client that the last draw failed?
+        return;
     }
-    bool dstReadRequired = !CanUseHardwareBlending(fRecorder->priv().caps(),
-                                                   targetFormat,
-                                                   blendMode,
-                                                   rendererCoverage);
-    const bool dependsOnDst = paint_depends_on_dst(shading) ||
-                              clip.shader() || !clip.nonMSAAClip().isEmpty();
+    fDataGatherer->savePaintData();
+
+    auto [paintID, dependsOnDst, dstReadRequired, usesAdvancedBlend] = *keyResult;
 
     // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
     // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
@@ -1534,7 +1551,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             // discarded dst can still be accessed. For non-floating point formats, that is fine,
             // but float formats can have NaNs after a discard that cause blending to fail. To
             // avoid that scenario, we clear to a known value instead.
-            if (shading.asFinalBlendMode() == SkBlendMode::kSrcOver &&
+            if (shading.finalBlendMode() == SkBlendMode::kSrcOver &&
                 TextureFormatIsFloatingPoint(
                         TextureInfoPriv::ViewFormat(fDC->target()->textureInfo()))) {
                 fDC->clear(SkColors::kMagenta); // This color doesn't matter
@@ -1650,7 +1667,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     order.dependsOnPaintersOrder(clipOrder);
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly.
-    if (rendererCoverage != Coverage::kNone || dependsOnDst) {
+    if (shading.rendererCoverage() != Coverage::kNone || dependsOnDst) {
         CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
         order.dependsOnPaintersOrder(prevDraw);
@@ -1673,10 +1690,6 @@ void Device::drawGeometry(const Transform& localToDevice,
         order.reverseDepthAsStencil();
     }
 
-    // TODO(b/330864257): This is an extra traversal of all paint effects, that can be avoided when
-    // the paint key itself is determined inside this function.
-    shading.notifyImagesInUse(fRecorder, fDC.get());
-
     // If an atlas path renderer was chosen, then record a single CoverageMaskShape draw.
     // The shape will be scheduled to be rendered or uploaded into the atlas during the
     // next invocation of flushPendingWork().
@@ -1684,9 +1697,11 @@ void Device::drawGeometry(const Transform& localToDevice,
         // Record the draw as a fill since stroking is handled by the atlas render/upload.
         SkASSERT(atlasMask.has_value());
         auto [mask, origin] = *atlasMask;
-        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask),
-                        clip, order, &shading, nullptr, dependsOnDst, dstReadRequired);
+        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
+                        order, paintID, dstReadRequired, usesAdvancedBlend, fDataGatherer.get(),
+                        nullptr);
     } else {
+        bool drawRecorded = false;
         if (styleType == SkStrokeRec::kStroke_Style ||
             styleType == SkStrokeRec::kHairline_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
@@ -1696,8 +1711,9 @@ void Device::drawGeometry(const Transform& localToDevice,
             fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                    : renderer,
-                            localToDevice, geometry, clip, order, &shading, &stroke, dependsOnDst,
-                            dstReadRequired);
+                            localToDevice, geometry, clip, order, paintID, dstReadRequired,
+                            usesAdvancedBlend, fDataGatherer.get(), &stroke);
+            drawRecorded = true;
         }
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
@@ -1711,15 +1727,24 @@ void Device::drawGeometry(const Transform& localToDevice,
                 // we do want to sort the inner fill to maximize overdraw reduction
                 orderWithoutCoverage.reverseDepthAsStencil();
 
+                if (drawRecorded) {
+                    fDataGatherer->restorePaintData();
+                }
                 fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                                 Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                &shading, nullptr,  dependsOnDst, dstReadRequired);
+                                paintID, dstReadRequired, usesAdvancedBlend, fDataGatherer.get(),
+                                nullptr);
+                drawRecorded = true;
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
             }
-            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, nullptr,
-                            dependsOnDst, dstReadRequired);
+
+            if (drawRecorded) {
+                fDataGatherer->restorePaintData();
+            }
+            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID,
+                            dstReadRequired, usesAdvancedBlend, fDataGatherer.get(), nullptr);
         }
     }
 
@@ -1763,17 +1788,19 @@ void Device::drawClipShape(const Transform& localToDevice,
     SkASSERT(renderer->coverage() == Coverage::kNone && renderer->requiresMSAA());
     SkASSERT(pathAtlas == nullptr);
 
-    // Clips draws are depth-only (null PaintParams), and filled (null StrokeStyle).
-    // TODO: Remove this CPU-transform once perspective is supported for all path renderers
+    // Clips draws are depth-only (invalid UniquePaintParamsID), and filled (null StrokeStyle).
+    // The data gatherer must be reset so that the DrawList can use it for any RenderStep data.
+    fDataGatherer->resetForDraw();
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = geometry.shape().asPath();
         devicePath.transform(localToDevice.matrix().asM33());
         fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
-                        /*paint*/nullptr, /*stroke*/nullptr, /*dependsOnDst*/false,
-                        /*dstReadReq*/false);
+                        /*paintID*/{}, /*dstReadReq*/false, /*usesAdvancedBlend*/false,
+                        fDataGatherer.get(), /*stroke*/nullptr);
     } else {
-        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, /*paint*/nullptr,
-                        /*stroke*/nullptr, /*dependsOnDst*/false,  /*dstReadReq*/false);
+        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, /*paintID*/{},
+                        /*dstReadReq*/false, /*usesAdvancedBlend*/false,fDataGatherer.get(),
+                        /*stroke*/nullptr);
     }
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
@@ -2007,7 +2034,7 @@ void Device::flushPendingWork(DrawContext* drawContext) {
     }
 
     this->internalFlush();
-    sk_sp<Task> drawTask = fDC->snapDrawTask(fRecorder);
+    sk_sp<Task> drawTask = fDC->snapDrawTask();
     if (drawContext) {
         drawContext->recordDependency(std::move(drawTask));
     } else {
@@ -2055,7 +2082,13 @@ void Device::internalFlush() {
     fDisjointStencilSet->reset();
     fCurrentDepth = DrawOrder::kClearDepth;
 
-     // Any cleanup in the AtlasProvider
+    const bool useStorageBuffers = fRecorder->priv().caps()->storageBufferSupport();
+    const auto& bindingReq = fRecorder->priv().caps()->resourceBindingRequirements();
+    fDataGatherer = std::make_unique<PipelineDataGatherer>(
+            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout);
+    fKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(fRecorder->priv().shaderCodeDictionary());
+
+    // Any cleanup in the AtlasProvider
     fRecorder->priv().atlasProvider()->compact();
 }
 
