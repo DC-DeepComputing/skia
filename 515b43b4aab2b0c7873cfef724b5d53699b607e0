@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba3cbb5e_f7bca1fe",
+        "filename": "bench/HairlinePathBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-26T13:12:16Z",
+      "side": 1,
+      "message": "Not new to this CL, but we should move path initialization to `onDelayedSetup`, out of the timed method.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 61
+      },
+      "revId": "515b43b4aab2b0c7873cfef724b5d53699b607e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c9a9b2_c69f42ce",
+        "filename": "bench/PathBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-26T13:12:16Z",
+      "side": 1,
+      "message": "Same.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 9
+      },
+      "revId": "515b43b4aab2b0c7873cfef724b5d53699b607e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
