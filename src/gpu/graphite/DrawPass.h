@@ -78,8 +78,15 @@ public:
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
     // etc.
+    // Note that, due to possible threaded compilation, the Pipelines are not guaranteed to be
+    // complete until Context::insertRecording time.
+
+    // The dictionary is needed at prepareResources/snap time but must live until
+    // insert time. I guess one could snap, and then immediately delete it - leaving the
+    // compilation threads hanging. I believe this is what is going on with precompile.
+    // The precompilation is kicked off and then the temp runtime dict is getting deleted.
     bool prepareResources(ResourceProvider*,
-                          const RuntimeEffectDictionary*,
+                          sk_sp<const RuntimeEffectDictionary>,
                           const RenderPassDesc&);
 
     DrawPassCommands::List::Iter commands() const {
