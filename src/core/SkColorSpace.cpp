@@ -15,47 +15,57 @@
 #include <cmath>
 #include <cstring>
 
+static bool xyz_almost_equal(const skcms_Matrix3x3& mA, const skcms_Matrix3x3& mB) {
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) {
+            if (!color_space_almost_equal(mA.vals[r][c], mB.vals[r][c])) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 namespace SkNamedPrimaries {
 
+// Rec. ITU-T H.273, Table 2.
+const struct {
+    CicpId cicp_id;
+    SkColorSpacePrimaries sk_primaries;
+} cicp_table[] = {
+    { CicpId::kRec709, kRec709 },
+    { CicpId::kRec470SystemM, kRec470SystemM },
+    { CicpId::kRec470SystemBG, kRec470SystemBG },
+    { CicpId::kRec601, kRec601 },
+    { CicpId::kSMPTE_ST_240, kSMPTE_ST_240 },
+    { CicpId::kGenericFilm, kGenericFilm },
+    { CicpId::kRec2020, kRec2020 },
+    { CicpId::kSMPTE_ST_428_1, kSMPTE_ST_428_1 },
+    { CicpId::kSMPTE_RP_431_2, kSMPTE_RP_431_2 },
+    { CicpId::kSMPTE_EG_432_1, kSMPTE_EG_432_1 },
+    { CicpId::kITU_T_H273_Value22, kITU_T_H273_Value22 },
+};
+
 bool GetCicp(CicpId primaries, SkColorSpacePrimaries& sk_primaries) {
-    // Rec. ITU-T H.273, Table 2.
-    switch (primaries) {
-        case CicpId::kRec709:
-            sk_primaries = kRec709;
+    for (const auto& table_entry : cicp_table) {
+        if (primaries == table_entry.cicp_id) {
+            sk_primaries = table_entry.sk_primaries;
             return true;
-        case CicpId::kRec470SystemM:
-            sk_primaries = kRec470SystemM;
-            return true;
-        case CicpId::kRec470SystemBG:
-            sk_primaries = kRec470SystemBG;
-            return true;
-        case CicpId::kRec601:
-            sk_primaries = kRec601;
-            return true;
-        case CicpId::kSMPTE_ST_240:
-            sk_primaries = kSMPTE_ST_240;
-            return true;
-        case CicpId::kGenericFilm:
-            sk_primaries = kGenericFilm;
-            return true;
-        case CicpId::kRec2020:
-            sk_primaries = kRec2020;
-            return true;
-        case CicpId::kSMPTE_ST_428_1:
-            sk_primaries = kSMPTE_ST_428_1;
-            return true;
-        case CicpId::kSMPTE_RP_431_2:
-            sk_primaries = kSMPTE_RP_431_2;
-            return true;
-        case CicpId::kSMPTE_EG_432_1:
-            sk_primaries = kSMPTE_EG_432_1;
-            return true;
-        case CicpId::kITU_T_H273_Value22:
-            sk_primaries = kITU_T_H273_Value22;
-            return true;
-        default:
-            // Reserved or unimplemented.
-            break;
+        }
+    }
+    return false;
+}
+
+bool GetCicpFromMatrix(const skcms_Matrix3x3& m, CicpId& primaries) {
+    for (const auto& table_entry : cicp_table) {
+        skcms_Matrix3x3 table_entry_m;
+        if (table_entry.sk_primaries.toXYZD50(&table_entry_m)) {
+            if (xyz_almost_equal(m, table_entry_m)) {
+                primaries = table_entry.cicp_id;
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -64,51 +74,32 @@ bool GetCicp(CicpId primaries, SkColorSpacePrimaries& sk_primaries) {
 
 namespace SkNamedTransferFn {
 
+// Rec. ITU-T H.273, Table 3.
+const struct {
+    CicpId cicp_id;
+    skcms_TransferFunction trfn;
+} cicp_table[] = {
+    { SkNamedTransferFn::CicpId::kRec709, kRec709 },
+    { SkNamedTransferFn::CicpId::kRec470SystemM, kRec470SystemM },
+    { SkNamedTransferFn::CicpId::kRec470SystemBG, kRec470SystemBG },
+    { SkNamedTransferFn::CicpId::kRec601, kRec601 },
+    { SkNamedTransferFn::CicpId::kSMPTE_ST_240, kSMPTE_ST_240 },
+    { SkNamedTransferFn::CicpId::kLinear, SkNamedTransferFn::kLinear },
+    { SkNamedTransferFn::CicpId::kIEC61966_2_4, kIEC61966_2_4 },
+    { SkNamedTransferFn::CicpId::kIEC61966_2_1, SkNamedTransferFn::kIEC61966_2_1 },
+    { SkNamedTransferFn::CicpId::kRec2020_10bit, kRec2020_10bit },
+    { SkNamedTransferFn::CicpId::kRec2020_12bit, kRec2020_12bit },
+    { SkNamedTransferFn::CicpId::kPQ, SkNamedTransferFn::kPQ },
+    { SkNamedTransferFn::CicpId::kSMPTE_ST_428_1, kSMPTE_ST_428_1 },
+    { SkNamedTransferFn::CicpId::kHLG, SkNamedTransferFn::kHLG },
+};
+
 bool GetCicp(SkNamedTransferFn::CicpId transfer_characteristics, skcms_TransferFunction& trfn) {
-    // Rec. ITU-T H.273, Table 3.
-    switch (transfer_characteristics) {
-        case SkNamedTransferFn::CicpId::kRec709:
-            trfn = kRec709;
-            return true;
-        case SkNamedTransferFn::CicpId::kRec470SystemM:
-            trfn = kRec470SystemM;
-            return true;
-        case SkNamedTransferFn::CicpId::kRec470SystemBG:
-            trfn = kRec470SystemBG;
-            return true;
-        case SkNamedTransferFn::CicpId::kRec601:
-            trfn = kRec601;
-            return true;
-        case SkNamedTransferFn::CicpId::kSMPTE_ST_240:
-            trfn = kSMPTE_ST_240;
-            return true;
-        case SkNamedTransferFn::CicpId::kLinear:
-            trfn = SkNamedTransferFn::kLinear;
-            return true;
-        case SkNamedTransferFn::CicpId::kIEC61966_2_4:
-            trfn = kIEC61966_2_4;
-            break;
-        case SkNamedTransferFn::CicpId::kIEC61966_2_1:
-            trfn = SkNamedTransferFn::kIEC61966_2_1;
-            return true;
-        case SkNamedTransferFn::CicpId::kRec2020_10bit:
-            trfn = kRec2020_10bit;
-            return true;
-        case SkNamedTransferFn::CicpId::kRec2020_12bit:
-            trfn = kRec2020_12bit;
-            return true;
-        case SkNamedTransferFn::CicpId::kPQ:
-            trfn = SkNamedTransferFn::kPQ;
-            return true;
-        case SkNamedTransferFn::CicpId::kSMPTE_ST_428_1:
-            trfn = kSMPTE_ST_428_1;
-            return true;
-        case SkNamedTransferFn::CicpId::kHLG:
-            trfn = SkNamedTransferFn::kHLG;
-            return true;
-        default:
-            // Reserved or unimplemented.
-            break;
+    for (const auto& table_entry : cicp_table) {
+      if (transfer_characteristics == table_entry.cicp_id) {
+        trfn = table_entry.trfn;
+        return true;
+      }
     }
     return false;
 }
@@ -125,18 +116,6 @@ SkColorSpace::SkColorSpace(const skcms_TransferFunction& transferFn,
         , fToXYZD50(toXYZD50) {
     fTransferFnHash = SkChecksum::Hash32(&fTransferFn, 7*sizeof(float));
     fToXYZD50Hash = SkChecksum::Hash32(&fToXYZD50, 9*sizeof(float));
-}
-
-static bool xyz_almost_equal(const skcms_Matrix3x3& mA, const skcms_Matrix3x3& mB) {
-    for (int r = 0; r < 3; ++r) {
-        for (int c = 0; c < 3; ++c) {
-            if (!color_space_almost_equal(mA.vals[r][c], mB.vals[r][c])) {
-                return false;
-            }
-        }
-    }
-
-    return true;
 }
 
 sk_sp<SkColorSpace> SkColorSpace::MakeRGB(const skcms_TransferFunction& transferFn,
@@ -306,8 +285,42 @@ sk_sp<SkColorSpace> SkColorSpace::makeColorSpin() const {
 
 void SkColorSpace::toProfile(skcms_ICCProfile* profile) const {
     skcms_Init               (profile);
-    skcms_SetTransferFunction(profile, &fTransferFn);
     skcms_SetXYZD50          (profile, &fToXYZD50);
+    switch (skcms_TransferFunction_getType(&fTransferFn)) {
+        case skcms_TFType_sRGBish:
+            skcms_SetTransferFunction(profile, &fTransferFn);
+            break;
+        case skcms_TFType_PQ:
+        case skcms_TFType_PQish:
+            profile->has_CICP = true;
+            profile->CICP.transfer_characteristics =
+                static_cast<uint8_t>(SkNamedTransferFn::CicpId::kPQ);
+            break;
+        case skcms_TFType_HLG:
+        case skcms_TFType_HLGish:
+            profile->has_CICP = true;
+            profile->CICP.transfer_characteristics =
+                static_cast<uint8_t>(SkNamedTransferFn::CicpId::kHLG);
+        default:
+            break;
+    }
+    if (profile->has_CICP) {
+        profile->CICP.matrix_coefficients = 0;
+        profile->CICP.video_full_range_flag = 1;
+        // Look up the CICP values for the toXYZD50 matrix. If there is no
+        // match, then use value 2 indicating that the color primaries are
+        // known to the application.
+        SkNamedPrimaries::CicpId primaries_id = SkNamedPrimaries::CicpId::kRec709;
+        if (SkNamedPrimaries::GetCicpFromMatrix(fToXYZD50, primaries_id)) {
+            profile->CICP.color_primaries = static_cast<uint8_t>(primaries_id);
+        } else {
+            profile->CICP.color_primaries = 2;
+        }
+        // The PQ and HLG parametric formulations for skcms_TransferFunction
+        // are internal to Skia and should not be put into an ICC profile.
+        // Set a default analytic TRC value because callers expect this.
+        skcms_SetTransferFunction(profile, &SkNamedTransferFn::kSRGB);
+    }
 }
 
 sk_sp<SkColorSpace> SkColorSpace::Make(const skcms_ICCProfile& profile) {
