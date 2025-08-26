@@ -203,7 +203,7 @@ void GlobalCache::LogPurge(void* context, const UniqueKey& key, sk_sp<GraphicsPi
 #endif
 }
 
-sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
+sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline1(
         const UniqueKey& key,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t *compilationID) {

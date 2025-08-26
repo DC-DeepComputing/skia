@@ -50,7 +50,7 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+    sk_sp<GraphicsPipeline> findGraphicsPipeline1(
         const UniqueKey&,
         SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone,
         uint32_t* compilationID = nullptr) SK_EXCLUDES(fSpinLock);
