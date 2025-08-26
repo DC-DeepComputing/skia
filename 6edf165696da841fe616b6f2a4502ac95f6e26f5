@@ -39,6 +39,30 @@
       },
       "revId": "6edf165696da841fe616b6f2a4502ac95f6e26f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae8d770_92524a81",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-26T19:08:46Z",
+      "side": 1,
+      "message": "The old code had an implied copy in its next(pathPts) method, and some of the case statements modify pathPts. I was trying to minimize the logic change in this CL.",
+      "parentUuid": "5906dc15_682477b1",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 386,
+        "endChar": 69
+      },
+      "revId": "6edf165696da841fe616b6f2a4502ac95f6e26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
