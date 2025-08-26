@@ -1997,10 +1997,8 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               precompileKeyContext.dstColorInfo(),
                               KeyGenFlags::kDisableSamplingOptimization,
                               paintParams.color());
-        paintParams.toKey(keyContext);
-        UniquePaintParamsID paintID =
-                recorder->priv().shaderCodeDictionary()->findOrCreate(
-                        precompileKeyContext.paintParamsKeyBuilder());
+        // Assert here?
+        UniquePaintParamsID paintID = std::get<0>(*paintParams.toKey(keyContext));
 
         RenderPassDesc unusedRenderPassDesc;
         std::vector<UniquePaintParamsID> precompileIDs;
