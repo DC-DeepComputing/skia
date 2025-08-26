@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/task/TaskList.h"
 
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>
@@ -39,7 +40,7 @@ Status TaskList::visitTasks(Fn fn) {
 
 Status TaskList::prepareResources(ResourceProvider* resourceProvider,
                                   ScratchResourceManager* scratchManager,
-                                  const RuntimeEffectDictionary* runtimeDict) {
+                                  sk_sp<const RuntimeEffectDictionary> runtimeDict) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "# tasks", fTasks.size());
     scratchManager->pushScope();
     Status status = this->visitTasks([&](Task* task) {
