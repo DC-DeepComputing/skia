@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41db1b0b_88feb739",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-08-26T13:36:21Z",
+      "side": 1,
+      "message": "Seems like a surprising default :-/",
+      "revId": "98484bcd8324d91e4b9a25c38c270ee7bbcdd40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
