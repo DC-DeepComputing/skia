@@ -113,6 +113,8 @@ private:
     IsAnimated onIsAnimated() override;
     const SkFrameHolder* getFrameHolder() const override;
     std::unique_ptr<SkStream> getEncodedData() const override;
+    // Determines whether or not we can read from the rust decoder directly into dst.
+    bool canReadRow();
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;
