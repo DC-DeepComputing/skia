@@ -105,6 +105,24 @@
       "parentUuid": "ce7d9bdb_cafb8c59",
       "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f8b7986_7202b88c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-26T10:50:35Z",
+      "side": 1,
+      "message": "I\u0027ve written [this patch](https://skia-review.googlesource.com/c/skia/+/1045636) to address the issue.\n\nMy sense is that we should limit our use of skcms to just do table-based color transforms. Everything else should use Skia\u0027s transformation code.",
+      "parentUuid": "5c828937_787c929d",
+      "revId": "541c01e5be46d867f29c30b0fdc3e26b81e3bf4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
