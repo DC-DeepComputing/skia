@@ -10,6 +10,7 @@
 #include "include/private/base/SkAssert.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"  // IWYU pragma: keep
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/Sampler.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -34,7 +35,7 @@ ComputeTask::~ComputeTask() = default;
 
 Task::Status ComputeTask::prepareResources(ResourceProvider* provider,
                                            ScratchResourceManager* scratchManager,
-                                           const RuntimeEffectDictionary* rtd) {
+                                           sk_sp<const RuntimeEffectDictionary> rtd) {
     for (auto& child : fChildTasks) {
         if (child) {
             Status status = child->prepareResources(provider, scratchManager, rtd);
