@@ -51,10 +51,15 @@ class ResourceProvider {
 public:
     virtual ~ResourceProvider();
 
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+            const UniqueKey& pipelineKey,
+            SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone);
+
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
             const RuntimeEffectDictionary*,
+            const UniqueKey& pipelineKey,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone);
