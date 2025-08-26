@@ -26,6 +26,7 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class Recorder;
 class TextureProxy;
+class UniquePaintParamsID;
 
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
@@ -63,18 +64,17 @@ public:
     SkBlender* primitiveBlender() const { return fPrimitiveBlender.get(); }
     sk_sp<SkBlender> refPrimitiveBlender() const;
 
-    TextureFormat targetFormat() const { return fTargetFormat;   }
+    //CHECKME
+    //TextureFormat targetFormat() const { return fTargetFormat;   }
     bool skipColorXform()        const { return fSkipColorXform; }
     bool dither()                const { return fDither;         }
 
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
-    using Result = std::tuple</*dependsOnDst*/bool, /*dstReadRequired*/bool,
+    using Result = std::tuple<UniquePaintParamsID, /*dependsOnDst*/bool, /*dstReadRequired*/bool,
                               /*usesAdvancedBlend*/bool>;
     std::optional<Result> toKey(const KeyContext&) const;
-
-    void notifyImagesInUse(Recorder*, DrawContext*) const;
 
 private:
     bool addPaintColorToKey(const KeyContext&) const;
