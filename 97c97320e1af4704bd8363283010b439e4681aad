@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08f88a12_a631a00e",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-26T18:59:18Z",
+      "side": 1,
+      "message": "This is a note for the future work, but the reason `toKey()` returns an optional is so that we can actually signal an error and drop recording the draw entirely.\n\nRight now, if there are any problems during PaintParamsKey building, we record an error code ID or add a passthrough block in places and then carry on even though the ideal behavior is the draw was skipped. Since it\u0027s too late for that we don\u0027t have a lot of choice.\n\nOnce we extract paint keys up front, we can have KeyHelpers signal errors correctly and have toKey() return a nullopt instead. Then drawGeometry() can check for that and skip further work.",
+      "range": {
+        "startLine": 431,
+        "startChar": 0,
+        "endLine": 431,
+        "endChar": 71
+      },
+      "revId": "97c97320e1af4704bd8363283010b439e4681aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4940f2c6_01cae635",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-26T18:59:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this anymore, it was covered by the recent changes in Device that you\u0027re now matching.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 91
+      },
+      "revId": "97c97320e1af4704bd8363283010b439e4681aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
