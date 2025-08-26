@@ -34,6 +34,24 @@
       "parentUuid": "dab796e8_c10c7457",
       "revId": "9745b10f2ff5be768fe81f10348e9041d9b1c7b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516a4068_b07e0f00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4263896
+      },
+      "writtenOn": "2025-08-26T17:49:08Z",
+      "side": 1,
+      "message": "Thanks for adding me to AUTHORS.\nI still wasn’t able to push a patchset to the reland (Gerrit keeps rejecting it), so I created a new CL: https://skia-review.googlesource.com/c/skia/+/1046056.\nI skipped additional AUTHORS changes in the new CL since there’s already an entry for my org at line 120 (Zoho Corporation Private Limited \u003c*@zohocorp.com\u003e). If you’d prefer I add a per-user entry as well, happy to include it just let me know.",
+      "parentUuid": "724630c7_6e6508cf",
+      "revId": "9745b10f2ff5be768fe81f10348e9041d9b1c7b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
