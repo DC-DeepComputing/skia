@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc3cbfaa_a2b0aca3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-08-26T14:05:13Z",
+      "side": 1,
+      "message": "Thanks for the attempt at fixing the roll problems that occured in the past. Do you have an owner for rotating the utility crates, in particular CXX? \n\nIMO there\u0027s nothing wrong with letting bytemuck update with Fontations crates - as I don\u0027t think an other Skia Rust libs use it. I would prefer a situation in which we never get around to updating CXX.",
+      "revId": "ae3b089b015e1107063dd9b6b0caa4dcef1fb0a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
