@@ -98,7 +98,7 @@ public:
     void addResourceRefs(CommandBuffer*) const;
 
 private:
-    class SortKey;
+    friend class DrawList; // For the constructor
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
