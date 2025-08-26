@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d757f53b_5774a5c1",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-26T19:57:14Z",
+      "side": 1,
+      "message": "nit: suggested",
+      "range": {
+        "startLine": 896,
+        "startChar": 66,
+        "endLine": 896,
+        "endChar": 74
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ccfe1121_da3ea6b8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 896,
+                "startChar": 0,
+                "endLine": 897,
+                "endChar": 0
+              },
+              "replacement": "            // but clients would benefit from having the driver\u0027s suggested VkFormat be used rather\n"
+            }
+          ]
+        }
+      ],
+      "revId": "89ab687ce189d4720af849bc909a61565481bd3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c024974_5bb5a2d3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-26T19:57:14Z",
+      "side": 1,
+      "message": "This is kRGBA_8888 in this case",
+      "range": {
+        "startLine": 921,
+        "startChar": 58,
+        "endLine": 921,
+        "endChar": 68
+      },
+      "revId": "89ab687ce189d4720af849bc909a61565481bd3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
