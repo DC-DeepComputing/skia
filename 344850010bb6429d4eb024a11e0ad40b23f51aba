@@ -34,6 +34,24 @@
       "parentUuid": "60a339dc_0ee9b462",
       "revId": "344850010bb6429d4eb024a11e0ad40b23f51aba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59e81008_7ef355fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T17:35:07Z",
+      "side": 1,
+      "message": "SGTM! Go ahead then - I figured out the bots. :)",
+      "parentUuid": "4c5c0cd1_674319a5",
+      "revId": "344850010bb6429d4eb024a11e0ad40b23f51aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
