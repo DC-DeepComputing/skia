@@ -17,12 +17,14 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkDebug.h"
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 class SkColorSpace;
 class SkImage;
@@ -291,6 +293,41 @@ public:
         @return  size in bytes of image buffer
     */
     size_t computeByteSize() const { return fPixmap.computeByteSize(); }
+
+    /** Returns a read-only span view of the pixel buffer as uint8_t.
+    The span covers the entire pixel data, with no row padding.
+    Returns std::nullopt if rowBytes() does not equal width() times bytesPerPixel().
+    This allows the caller to safely handle non-contiguous pixel storage.
+
+    @return read-only span containing the pixel buffer,
+            or std::nullopt if rows are padded
+    */
+    std::optional<SkSpan<const uint8_t>> maybeByteSpan() const {
+        if (this->rowBytes() != static_cast<size_t>(this->info().width() * this->bytesPerPixel())) {
+            return std::nullopt;
+        }
+        return SkSpan<const uint8_t>(static_cast<const uint8_t*>(this->getPixels()),
+                                     this->computeByteSize());
+    }
+
+    /** Returns a writable span view of the pixel buffer as uint8_t.
+    The span covers the entire pixel data, with no row padding.
+    Returns std::nullopt if the pixel buffer is empty, if the storage is immutable,
+    or if rowBytes() does not equal width() times bytesPerPixel().
+    This allows the caller to safely handle empty, immutable, or non-contiguous pixel storage.
+
+    @return writable span containing the pixel buffer,
+            or std::nullopt if buffer is empty, immutable, or rows are padded
+    */
+    std::optional<SkSpan<uint8_t>> maybeByteSpan() {
+        if (this->empty() || this->isImmutable() == false) {
+            return std::nullopt;
+        }
+        if (this->rowBytes() != static_cast<size_t>(this->info().width() * this->bytesPerPixel())) {
+            return std::nullopt;
+        }
+        return SkSpan<uint8_t>(static_cast<uint8_t*>(this->getPixels()), this->computeByteSize());
+    }
 
     /** Returns true if pixels can not change.
 

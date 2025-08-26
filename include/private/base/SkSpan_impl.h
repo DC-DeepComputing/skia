@@ -16,6 +16,7 @@
 #include <initializer_list>
 #include <iterator>
 #include <limits>
+#include <ranges>
 #include <utility>
 
 // Having this be an export works around IWYU churn related to
@@ -125,5 +126,9 @@ private:
 template <typename Container>
 SkSpan(Container&&) ->
         SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<Container>()))>>;
+
+namespace std::ranges {
+template <typename T> inline constexpr bool enable_borrowed_range<SkSpan<T>> = true;
+}
 
 #endif  // SkSpan_DEFINED
