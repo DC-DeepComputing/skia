@@ -13,6 +13,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 
 #include <array>
 #include <cstddef>
@@ -78,24 +79,40 @@ public:
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
     // etc.
+    // Note that, due to possible threaded compilation, the Pipelines are not guaranteed to be
+    // complete until Context::insertRecording time.
+
+    // The dictionary is needed at prepareResources/snap time but must live until
+    // insert time. I guess one could snap, and then immediately delete it - leaving the
+    // compilation threads hanging. I believe this is what is going on with precompile.
+    // The precompilation is kicked off and then the temp runtime dict is getting deleted.
     bool prepareResources(ResourceProvider*,
-                          const RuntimeEffectDictionary*,
+                          sk_sp<const RuntimeEffectDictionary>,
                           const RenderPassDesc&);
 
     DrawPassCommands::List::Iter commands() const {
         return fCommandList.commands();
     }
 
+    // This should only be called after addResourceRefs() has been called (i.e., at
+    // Context::insertRecording time) so all the PipelineHandles will have been resolved to
+    // Pipelines
     const GraphicsPipeline* getPipeline(size_t index) const {
+        SkASSERT(fPipelineHandles.empty());
         return fFullPipelines[index].get();
     }
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
-    // Not valid until after prepareResources() is called
-    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
 
-    void addResourceRefs(CommandBuffer*) const;
+    // Not valid until after after addResourceRefs() is called (i.e., at Context::insertRecording
+    // time) so all the PipelineHandles will have been resolved to Pipelines
+    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const {
+        SkASSERT(fPipelineHandles.empty());
+        return fFullPipelines;
+    }
+
+    [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
 private:
     class SortKey;
@@ -113,13 +130,16 @@ private:
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;
 
-    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
-    // an array of actual GraphicsPipelines.
+    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into
+    // an array of actual GraphicsPipelines (i.e., fFullPipelines).
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
 
     // These resources all get instantiated during prepareResources.
-    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
+    skia_private::TArray<GraphicsPipelineHandle> fPipelineHandles;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
+
+    // These get resolved (from the GraphicsPipelineHandles) in addResourceRefs
+    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
 
     sk_sp<FloatStorageManager> fFloatStorageManager;
 

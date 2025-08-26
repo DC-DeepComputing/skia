@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureFormat.h"
@@ -126,7 +127,7 @@ RenderPassTask::~RenderPassTask() = default;
 
 Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
                                               ScratchResourceManager* scratchManager,
-                                              const RuntimeEffectDictionary* runtimeDict) {
+                                              sk_sp<const RuntimeEffectDictionary> runtimeDict) {
     SkASSERT(fTarget);
 
     bool instantiated;

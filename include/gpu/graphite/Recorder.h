@@ -277,7 +277,12 @@ private:
     sk_sp<SharedContext> fSharedContext;
     ResourceProvider* fResourceProvider; // May point to the Context's resource provider
     std::unique_ptr<ResourceProvider> fOwnedResourceProvider; // May be null
-    std::unique_ptr<RuntimeEffectDictionary> fRuntimeEffectDict;
+
+    // Each runtime effect dictionary lives for just one Recording. While the recording
+    // it is filled with runtime effects. In snap(), ownership of it is assumed by the
+    // PipelineCreationTasks that could require its contents and a new one takes its place
+    // here.
+    sk_sp<RuntimeEffectDictionary> fRuntimeEffectDict;
 
     // NOTE: These are stored by pointer to allow them to be forward declared.
     std::unique_ptr<TaskList> fRootTaskList;

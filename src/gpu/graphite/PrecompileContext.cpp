@@ -9,12 +9,14 @@
 #include "include/core/SkTypes.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/PipelineCreationTask.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
 
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
@@ -62,7 +64,7 @@ void PrecompileContext::reportPipelineStats(StatOptions option) {
 
 bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 #if defined(SK_ENABLE_PRECOMPILE)
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    sk_sp<RuntimeEffectDictionary> rtEffectDict = sk_make_sp<RuntimeEffectDictionary>();
 
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
@@ -75,6 +77,13 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         return false;
     }
 
+#if 1
+    GraphicsPipelineHandle handle = fResourceProvider->createGraphicsPipelineHandle(
+            pipelineDesc,
+            renderPassDesc,
+            PipelineCreationFlags::kForPrecompilation);
+    fResourceProvider->kickOffPipelineCreationTask(rtEffectDict, handle);
+#else
     sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
             rtEffectDict.get(),
             pipelineDesc,
@@ -84,7 +93,9 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
         return false;
     }
+#endif
 
+    // Precompiling a serialized pipeline key shouldn't ever add a new runtime effect
     SkASSERT(rtEffectDict->empty());
 
     return true;

@@ -104,7 +104,7 @@ public:
                        SkIRect dstReadBounds,
                        SkIPoint resolveOffset,
                        SkISize viewportDims,
-                       const DrawPassList& drawPasses);
+                       DrawPassList& drawPasses);
 
     bool addComputePass(DispatchGroupSpan dispatchGroups);
 
@@ -180,7 +180,7 @@ private:
                                  const Texture* depthStencilTexture,
                                  SkIPoint resolveOffset,
                                  SkIRect viewport,
-                                 const DrawPassList& drawPasses) = 0;
+                                 DrawPassList& drawPasses) = 0;
 
     virtual bool onAddComputePass(DispatchGroupSpan dispatchGroups) = 0;
 
