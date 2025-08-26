@@ -2192,7 +2192,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    sk_sp<RuntimeEffectDictionary> rtDict = sk_make_sp<RuntimeEffectDictionary>();
 
     FloatStorageManager floatStorageManager;
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
@@ -2203,7 +2203,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                           &builder,
                           &gatherer,
                           dict,
-                          rtDict.get(),
+                          rtDict,
                           SkColorInfo(kRGBA_8888_SkColorType,
                                       kPremul_SkAlphaType,
                                       SkColorSpace::MakeSRGB()));
@@ -2269,7 +2269,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    sk_sp<RuntimeEffectDictionary> rtDict = sk_make_sp<RuntimeEffectDictionary>();
 
     FloatStorageManager floatStorageManager;
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
@@ -2280,7 +2280,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                     &builder,
                                     &gatherer,
                                     dict,
-                                    rtDict.get(),
+                                    rtDict,
                                     SkColorInfo(kRGBA_8888_SkColorType,
                                                 kPremul_SkAlphaType,
                                                 SkColorSpace::MakeSRGB()));
