@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6131eee_c68d2d93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-26T20:26:08Z",
+      "side": 1,
+      "message": "I have gone as far out of the way as I possibly can to avoid hacks like this, but in this case I see no means of correctly interpreting the data which is being provided.",
+      "revId": "338d5e1c4481b72cfe08fd7cfa6fed82735c6026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
