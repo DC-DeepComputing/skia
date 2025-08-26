@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abebce99_41081378",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T17:19:02Z",
+      "side": 1,
+      "message": "OK, I see the tests at least get run on the autoroller (https://skia-review.googlesource.com/c/skia/+/1045418?tab\u003dchecks ran `Test-Ubuntu24.04-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader`) so I\u0027ll remove the build triggering upon a DEPS update. Will have to see how to make sure the graphite one gets run for that roller, too; but that can be a separate endeavor.",
+      "parentUuid": "5cafea70_1abe5ebb",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa963658_4889ecc3",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9eb284d_aa79ed13",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T17:19:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa963658_4889ecc3",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dabd56be_58e8a1e8",
@@ -65,6 +101,24 @@
       "writtenOn": "2025-08-21T12:13:55Z",
       "side": 1,
       "message": "Maybe \"tests/graphite/.*\" ?",
+      "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9495c15c_8c75618f",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T17:19:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dabd56be_58e8a1e8",
       "revId": "47ffe3000f3bcfd310b96e0702b10479afceee76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
