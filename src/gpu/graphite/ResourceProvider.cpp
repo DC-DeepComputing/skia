@@ -51,21 +51,39 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
-sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
-        const RuntimeEffectDictionary* runtimeDict,
-        const GraphicsPipelineDesc& pipelineDesc,
-        const RenderPassDesc& renderPassDesc,
+sk_sp<GraphicsPipeline> ResourceProvider::findGraphicsPipeline(
+        const UniqueKey& pipelineKey,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
 
     auto globalCache = fSharedContext->globalCache();
-    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
-                                                                            renderPassDesc);
 
     uint32_t compilationID = 0;
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
                                                                          pipelineCreationFlags,
                                                                          &compilationID);
-    if (pipeline && pipeline->didAsyncCompilationFail()) {
+    if (pipeline && pipeline->didAsyncCompilationFail()) SK_UNLIKELY {
+        // If the pipeline failed, remove it from the cache and fall through to retry
+        globalCache->removeGraphicsPipeline(pipeline.get());
+        pipeline.reset();
+    }
+
+    return pipeline;
+}
+
+sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    auto globalCache = fSharedContext->globalCache();
+
+    uint32_t compilationID = 0;
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags,
+                                                                         &compilationID);
+    if (pipeline && pipeline->didAsyncCompilationFail()) SK_UNLIKELY {
         // If the pipeline failed, remove it from the cache and fall through to retry
         globalCache->removeGraphicsPipeline(pipeline.get());
         pipeline.reset();
