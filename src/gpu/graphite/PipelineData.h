@@ -19,8 +19,8 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
-#include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
@@ -343,6 +343,25 @@ public:
         fUniformManager.reset();
         fTextures.clear();
         fPaintTextureCount = 0;
+        fSavedState.reset();
+    }
+
+    void savePaintData() {
+        fSavedState.emplace();
+        fSavedState->fUniformData = fUniformManager.storage();
+        fSavedState->fAlignment = fUniformManager.alignment();
+        fSavedState->fTextures = fTextures;
+        fSavedState->fPaintTextureCount = fPaintTextureCount;
+    }
+
+    void restorePaintData() {
+        //SkASSERT(fSavedState.has_value());
+        if (fSavedState.has_value()) {
+            fUniformManager.setStorage(fSavedState->fUniformData);
+            fUniformManager.setReqAlignment(fSavedState->fAlignment);
+            fTextures = fSavedState->fTextures;
+            fPaintTextureCount = fSavedState->fPaintTextureCount;
+        }
     }
 
 #if defined(SK_DEBUG)
@@ -429,6 +448,14 @@ private:
     UniformManager fUniformManager;
     skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
     int fPaintTextureCount = 0;
+
+    struct SavedState {
+        SkTDArray<char> fUniformData;
+        skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
+        int fPaintTextureCount;
+        uint32_t fAlignment;
+    };
+    std::optional<SavedState> fSavedState;
 };
 
 #ifdef SK_DEBUG

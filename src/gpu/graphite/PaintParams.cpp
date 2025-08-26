@@ -396,26 +396,17 @@ std::optional<PaintParams::Result> PaintParams::toKey(const KeyContext& keyConte
     // Optional Root Node 2 is the clip
     this->handleClipping(keyContext);
 
-    return Result{dependsOnDst, dstReadReq, usesAdvancedBlend};
-}
+    UniquePaintParamsID paintID =
+            keyContext.recorder()->priv().shaderCodeDictionary()->findOrCreate(
+                    keyContext.paintParamsKeyBuilder());
 
-// TODO(b/330864257): Can be deleted once keys are determined by the Device draw.
-void PaintParams::notifyImagesInUse(Recorder* recorder,
-                                    DrawContext* drawContext) const {
-    if (fShader) {
-        NotifyImagesInUse(recorder, drawContext, fShader.get());
-    }
-    if (fPrimitiveBlender) {
-        NotifyImagesInUse(recorder, drawContext, fPrimitiveBlender.get());
-    }
-    if (fColorFilter) {
-        NotifyImagesInUse(recorder, drawContext, fColorFilter.get());
-    }
-    if (fFinalBlender) {
-        NotifyImagesInUse(recorder, drawContext, fFinalBlender.get());
-    }
-    if (fClipShader) {
-        NotifyImagesInUse(recorder, drawContext, fClipShader.get());
+    if (!paintID.isValid()) {
+        return {};
+    } else {
+        // If we don't depend on the dst, we'd better not be required to read from the dst.
+        // No longer always true!
+        // SkASSERT(dependsOnDst || !dstReadReq);
+        return Result{paintID, dependsOnDst, dstReadReq, usesAdvancedBlend};
     }
 }
 
