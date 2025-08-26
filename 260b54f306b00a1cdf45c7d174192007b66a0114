@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d44cc35_032de939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-26T16:06:49Z",
+      "side": 1,
+      "message": "Hi Michael! Took a stab at implementing what we talked about offline for the AHwBuf format bug (b/431290055). I am hoping you could weigh in on whether this appropriately captured what we discussed...happy to chat more if this isn\u0027t quite what you imagined. I did my best to document the rationale within comments.\n\nOnce you TAL, I am planning to ask the bug issuer to test out this change before landing it - is that reasonable to ask of them or do you think they are not set up to do that easily?\n\nThanks! :)",
+      "revId": "260b54f306b00a1cdf45c7d174192007b66a0114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
