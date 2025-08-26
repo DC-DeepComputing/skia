@@ -196,6 +196,9 @@ bool validate_backend_texture(const Caps* caps,
         return false;
     }
 
+    // texture info will have VkFormat VK_FORMAT_B8G8R8A8_UNORM
+    // color type will be kExternalFormatColorType since we do not check for
+    // AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM in AHardwareBufferUtils.
     return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
 }
 
