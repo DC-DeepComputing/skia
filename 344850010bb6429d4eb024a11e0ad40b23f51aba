@@ -16,6 +16,24 @@
       "message": "LGTM - depending on when this lands in relation to the CL that adds graphite SwiftShader test jobs (https://skia-review.googlesource.com/c/skia/+/1042576), you may have to re-enable running the failing test.",
       "revId": "344850010bb6429d4eb024a11e0ad40b23f51aba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c5c0cd1_674319a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-26T17:34:23Z",
+      "side": 1,
+      "message": "I\u0027m thinking we can have this ready, and as soon as you can verify the swiftshader bots work as expected, I can land these before you finalize that CL so we don\u0027t have to suppress / unsuppress tests and VVL errors.\n\nI suspect you may find other things to suppress even after these (like skbug.com/440041023)",
+      "parentUuid": "60a339dc_0ee9b462",
+      "revId": "344850010bb6429d4eb024a11e0ad40b23f51aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
