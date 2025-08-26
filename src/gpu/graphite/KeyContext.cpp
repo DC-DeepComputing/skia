@@ -11,8 +11,26 @@
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 
 namespace skgpu::graphite {
+
+sk_sp<RuntimeEffectDictionary> KeyContext::rtEffectDict() const { return fRTEffectDict; }
+
+KeyContext::KeyContext(const Caps* caps,
+                       FloatStorageManager* floatStorageManager,
+                       PaintParamsKeyBuilder* paintParamsKeyBuilder,
+                       PipelineDataGatherer* pipelineDataGatherer,
+                       ShaderCodeDictionary* dict,
+                       sk_sp<RuntimeEffectDictionary> rtEffectDict,
+                       const SkColorInfo& dstColorInfo)
+            : fFloatStorageManager(floatStorageManager)
+            , fPaintParamsKeyBuilder(paintParamsKeyBuilder)
+            , fPipelineDataGatherer(pipelineDataGatherer)
+            , fDictionary(dict)
+            , fRTEffectDict(std::move(rtEffectDict))
+            , fDstColorInfo(dstColorInfo)
+            , fCaps(caps) {}
 
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        FloatStorageManager* floatStorageManager,
@@ -50,6 +68,8 @@ KeyContext::KeyContext(const KeyContext& other)
         , fPaintColor(other.fPaintColor)
         , fKeyGenFlags(other.fKeyGenFlags)
         , fCaps(other.fCaps) {}
+
+KeyContext::~KeyContext() {}
 
 KeyContextForRuntimeEffect::KeyContextForRuntimeEffect(const KeyContext& other,
                                                        const SkRuntimeEffect* effect,

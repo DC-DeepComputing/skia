@@ -56,7 +56,7 @@ public:
     // Recorder.
     virtual Status prepareResources(ResourceProvider*,
                                     ScratchResourceManager*,
-                                    const RuntimeEffectDictionary*) = 0;
+                                    sk_sp<const RuntimeEffectDictionary>) = 0;
 
     // Returns true on success; false on failure.
     virtual Status addCommands(Context*, CommandBuffer*, ReplayTargetData) = 0;
