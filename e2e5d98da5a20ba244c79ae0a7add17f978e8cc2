@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5fd9c78_4720095e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T17:33:01Z",
+      "side": 1,
+      "message": "new upload makes it explicitly an inline wrapper (should make it slightly faster too).",
+      "parentUuid": "88e1a11f_c57df4bc",
+      "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bff4ab58_9aa52c62",
         "filename": "src/core/SkPathPriv.cpp",
         "patchSetId": 3
@@ -108,6 +126,30 @@
           ]
         }
       ],
+      "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1432c8a1_f19e0682",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T17:33:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bff4ab58_9aa52c62",
+      "range": {
+        "startLine": 222,
+        "startChar": 10,
+        "endLine": 222,
+        "endChar": 52
+      },
       "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
