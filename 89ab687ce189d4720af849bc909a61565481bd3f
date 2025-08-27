@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df9e5907_c3973656",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-27T14:17:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d757f53b_5774a5c1",
+      "range": {
+        "startLine": 896,
+        "startChar": 66,
+        "endLine": 896,
+        "endChar": 74
+      },
+      "revId": "89ab687ce189d4720af849bc909a61565481bd3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c024974_5bb5a2d3",
@@ -55,6 +79,30 @@
       "writtenOn": "2025-08-26T19:57:14Z",
       "side": 1,
       "message": "This is kRGBA_8888 in this case",
+      "range": {
+        "startLine": 921,
+        "startChar": 58,
+        "endLine": 921,
+        "endChar": 68
+      },
+      "revId": "89ab687ce189d4720af849bc909a61565481bd3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "737ef272_894518d4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-27T14:17:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c024974_5bb5a2d3",
       "range": {
         "startLine": 921,
         "startChar": 58,
