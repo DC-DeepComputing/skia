@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0ddc3ad_53d70ba4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T15:10:01Z",
+      "side": 1,
+      "message": "Chromium is running into this after https://skia-review.googlesource.com/c/skia/+/1045356",
+      "revId": "f51f189cd68334eb8b749565a6a62a58a67349b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
