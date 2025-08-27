@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "873b0dbe_2ba862fa",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T14:19:17Z",
+      "side": 1,
+      "message": "Interestingly, there is no practical difference in C++.  I would still write `static const` just so I don\u0027t have to think about it, but I recently found that with the newer C++ standards global scope `const` has internal linkage.\n\nhttps://en.cppreference.com/w/cpp/language/storage_duration.html#:~:text\u003dsince%20C%2B%2B20)-,Notes,-Names%20at%20the",
+      "parentUuid": "97f93e42_b1fadaff",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e29822f_18645fc8",
         "filename": "src/core/SkPathRawShapes.cpp",
         "patchSetId": 6
