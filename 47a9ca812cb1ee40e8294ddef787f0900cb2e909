@@ -33,6 +33,24 @@
       "message": "Looks like forEachBidiRegion is only used in CK (exposed as public API).  Is that something we care about, or we could remove?",
       "revId": "47a9ca812cb1ee40e8294ddef787f0900cb2e909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6db8136_c1e31dbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-08-27T18:25:50Z",
+      "side": 1,
+      "message": "We do care about it.",
+      "parentUuid": "5535f012_6c2b07cc",
+      "revId": "47a9ca812cb1ee40e8294ddef787f0900cb2e909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
