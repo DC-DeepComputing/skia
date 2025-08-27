@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5be9b5ea_5722ae97",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T15:27:59Z",
+      "side": 1,
+      "message": "Neat!",
+      "parentUuid": "873b0dbe_2ba862fa",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e29822f_18645fc8",
         "filename": "src/core/SkPathRawShapes.cpp",
         "patchSetId": 6
