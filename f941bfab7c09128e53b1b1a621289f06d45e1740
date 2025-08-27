@@ -46,6 +46,30 @@
       },
       "revId": "f941bfab7c09128e53b1b1a621289f06d45e1740",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cce25609_cdf62cf9",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-27T15:17:47Z",
+      "side": 0,
+      "message": "Yeah, I saw Skia doesn\u0027t even use VkEvents - just wanted to make sure I wasn\u0027t overlooking a possibility that we run into a similar issue. Also, ISWYM - I was thinking \"hey if they invalidate the cache anyway, why\u0027s a flag so bad?\"; but I am with you now. Thank you for the explanation!",
+      "parentUuid": "49ae8052_bbce331a",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "f941bfab7c09128e53b1b1a621289f06d45e1740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
