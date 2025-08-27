@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeff07be_a4f46dcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-27T15:20:10Z",
+      "side": 1,
+      "message": "this should unblock the skcms roll",
+      "revId": "ca51521598ef3c1461e5182d47d0cb6a8f44cb64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
