@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931aef10_04654700",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:19:50Z",
+      "side": 1,
+      "message": "Werp, I suppose the existing `SkPath` tests do call into the `SkPathRaw` ones",
+      "parentUuid": "88e1a11f_c57df4bc",
+      "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bff4ab58_9aa52c62",
