@@ -52,6 +52,24 @@
       "parentUuid": "7a27f62f_db3766e5",
       "revId": "cf0b3088245ae53894b380a3aeac796c9458ce87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42fd0bc9_deea11c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-27T21:09:09Z",
+      "side": 1,
+      "message": "@fmalita@google.com Previous chromium failures were due to alpha types between src and dst not being equal, but we still skipped xform which led to the differences. The reason for the differences in OS was because of the native byte type. So android jobs were not opting for the color xform when they should have. In these cases we should return false from canReadRows() in order to preserve the original behavior, and only copy straight to dst when alpha type, profile, and colortype are all the same I think. Png docs says that the data is always unpremul, so we can only decode to dst when dst is unpremul.",
+      "parentUuid": "0253f9b1_b989415c",
+      "revId": "cf0b3088245ae53894b380a3aeac796c9458ce87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
