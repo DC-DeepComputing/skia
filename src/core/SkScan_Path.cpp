@@ -25,6 +25,7 @@
 #include "src/core/SkEdgeBuilder.h"
 #include "src/core/SkFDot6.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkPathRawShapes.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkScan.h"
@@ -600,7 +601,7 @@ static SkIRect conservative_round_to_int(const SkRect& src) {
     };
 }
 
-void SkScan::FillPathRaw(const SkPathRaw& raw, const SkRegion& origClip, SkBlitter* blitter) {
+void SkScan::FillPath(const SkPathRaw& raw, const SkRegion& origClip, SkBlitter* blitter) {
     if (origClip.isEmpty()) {
         return;
     }
@@ -654,10 +655,6 @@ void SkScan::FillPathRaw(const SkPathRaw& raw, const SkRegion& origClip, SkBlitt
     } else {
         // what does it mean to not have a blitter if path.isInverseFillType???
     }
-}
-
-void SkScan::FillPath(const SkPath& path, const SkRegion& origClip, SkBlitter* blitter) {
-    FillPathRaw(SkPathPriv::Raw(path), origClip, blitter);
 }
 
 bool SkScan::PathRequiresTiling(const SkIRect& bounds) {
@@ -738,7 +735,8 @@ void SkScan::FillTriangle(const SkPoint pts[], const SkRasterClip& clip,
     // Use FixedMax/2 as the limit so we can subtract two edges and still store that in Fixed.
     const SkScalar limit = SK_MaxS16 >> 1;
     if (!SkRect::MakeLTRB(-limit, -limit, limit, limit).contains(r)) {
-        FillPath(SkPath::Polygon({pts, 3}, false), clip, blitter);
+        SkPathRawShapes::Triangle tri({pts, 3});
+        FillPath(tri, clip, blitter);
         return;
     }
 
@@ -764,20 +762,20 @@ void SkScan::FillTriangle(const SkPoint pts[], const SkRasterClip& clip,
     }
 }
 
-void SkScan::FillPathRaw(const SkPathRaw& raw, const SkRasterClip& clip, SkBlitter* blitter) {
+void SkScan::FillPath(const SkPathRaw& raw, const SkRasterClip& clip, SkBlitter* blitter) {
     if (clip.isEmpty()) {
         return;
     }
 
     if (clip.isBW()) {
-        SkScan::FillPathRaw(raw, clip.bwRgn(), blitter);
+        SkScan::FillPath(raw, clip.bwRgn(), blitter);
     } else {
         SkRegion        tmp;
         SkAAClipBlitter aaBlitter;
 
         tmp.setRect(clip.getBounds());
         aaBlitter.init(blitter, &clip.aaRgn());
-        SkScan::FillPathRaw(raw, tmp, &aaBlitter);
+        SkScan::FillPath(raw, tmp, &aaBlitter);
     }
 }
 
