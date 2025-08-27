@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04cf7c59_7ec71fe2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-27T12:52:10Z",
+      "side": 1,
+      "message": "Any idea why tests only fail on android builds for chromium canary?",
+      "revId": "cf386b1358216fbca767063b113e102b5ecefed7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
