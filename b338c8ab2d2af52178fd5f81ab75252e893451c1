@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a201df1_f1ed50c3",
+        "filename": "docs/architecture/CPU.dot",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "You are right, I\u0027m trying to represent more of a data flow diagram than an architecture diagram here. The flow of data is what I wanted to both develop a better understanding of and document for future reference. I\u0027ve updated the name and wording to reflect that. Hopefully that makes things more clear for people that aren\u0027t me :)",
+      "parentUuid": "e271ae89_a392e205",
+      "range": {
+        "startLine": 10,
+        "startChar": 7,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14d8801f_bd010dc1",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-19T20:27:15Z",
       "side": 1,
       "message": "Technically any stroke width \u003c 1 is (visually) thinner than a hairline, which creates an annoying discontinuity at 0.\n\nThe interesting property of a hairline is that it does not scale with the CTM.",
+      "range": {
+        "startLine": 19,
+        "startChar": 22,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c19f6fb8_adf4f67e",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14d8801f_bd010dc1",
       "range": {
         "startLine": 19,
         "startChar": 22,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f2ff459_f9a547f3",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ad41f78_7ddca517",
+      "range": {
+        "startLine": 25,
+        "startChar": 78,
+        "endLine": 26,
+        "endChar": 17
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ebbacf0_3834d0ad",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-08-19T20:27:15Z",
       "side": 1,
       "message": "Parametric?",
+      "range": {
+        "startLine": 28,
+        "startChar": 51,
+        "endLine": 28,
+        "endChar": 61
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad475ec4_8f61c0aa",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ebbacf0_3834d0ad",
       "range": {
         "startLine": 28,
         "startChar": 51,
@@ -127,6 +223,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c92e7b5_be567b2b",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3049f7e7_ddff7c10",
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c63708d6_6e7fcc43",
@@ -144,6 +258,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c4df0d_bde99847",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c63708d6_6e7fcc43",
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b485de86_9ba689e0",
@@ -157,6 +289,30 @@
       "writtenOn": "2025-08-19T20:27:15Z",
       "side": 1,
       "message": "(coverage)",
+      "range": {
+        "startLine": 101,
+        "startChar": 38,
+        "endLine": 101,
+        "endChar": 56
+      },
+      "revId": "b338c8ab2d2af52178fd5f81ab75252e893451c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d84bc8_342c3902",
+        "filename": "docs/architecture/CPU.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b485de86_9ba689e0",
       "range": {
         "startLine": 101,
         "startChar": 38,
