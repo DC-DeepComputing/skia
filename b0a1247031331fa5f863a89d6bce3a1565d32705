@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07972ac9_7413e828",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-27T21:57:44Z",
+      "side": 1,
+      "message": "Once again, there is no information available to fix this, so just need to hack this in. Fortunately, this one was fixed in U and so this hack might eventually be removed. Without this hack on Android T and earlier any request for Roboto will be unable to find the 400 (normal) weight.\n\nWith the old font manager there never was a font named Roboto (it was named \"sans-serif\" by the fonts.xml) so this was never a problem. With this new font manager there are now fonts named Roboto (since we weren\u0027t given the names we must use whatever names the font has inside).",
+      "revId": "b0a1247031331fa5f863a89d6bce3a1565d32705",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
