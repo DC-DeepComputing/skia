@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "484e7386_c084a694",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T17:04:36Z",
+      "side": 1,
+      "message": "If you like.\n\nThe existing \"related\u0027 note was just meant temporally, as that other CL overlapped with this one, hence the current need to rebase.",
+      "parentUuid": "161a8aeb_e948a2cf",
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8aeeb862_db1fde5b",
