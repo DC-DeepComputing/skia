@@ -16,6 +16,23 @@
       "message": "Follow up on https://skia-review.googlesource.com/c/skia/+/1046877.",
       "revId": "47a9ca812cb1ee40e8294ddef787f0900cb2e909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5535f012_6c2b07cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T18:20:52Z",
+      "side": 1,
+      "message": "Looks like forEachBidiRegion is only used in CK (exposed as public API).  Is that something we care about, or we could remove?",
+      "revId": "47a9ca812cb1ee40e8294ddef787f0900cb2e909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
