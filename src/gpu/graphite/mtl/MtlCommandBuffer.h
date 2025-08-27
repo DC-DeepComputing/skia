@@ -89,7 +89,7 @@ private:
                          const Texture* depthStencilTexture);
     void endRenderPass();
 
-    void addDrawPass(const DrawPass*);
+    [[nodiscard]] bool addDrawPass(const DrawPass*);
 
     void updateIntrinsicUniforms(SkIRect viewport);
 
