@@ -16,6 +16,47 @@
       "message": "ptal",
       "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff4ab58_9aa52c62",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T13:14:51Z",
+      "side": 1,
+      "message": "`pts.subspan(rc-\u003efPointsConsumed)`?",
+      "range": {
+        "startLine": 222,
+        "startChar": 10,
+        "endLine": 222,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3894a3a7_51f5b864",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathPriv.cpp",
+              "range": {
+                "startLine": 222,
+                "startChar": 0,
+                "endLine": 224,
+                "endChar": 0
+              },
+              "replacement": "    pts \u003d pts.subspan(rc-\u003efPointsConsumed);\n    vbs \u003d vbs.subspan(rc-\u003efVerbsConsumed);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e2e5d98da5a20ba244c79ae0a7add17f978e8cc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
