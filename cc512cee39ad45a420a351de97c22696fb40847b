@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "161a8aeb_e948a2cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T13:52:45Z",
+      "side": 1,
+      "message": "I guess https://skia-review.googlesource.com/c/skia/+/1023456 laid the groundwork for this? Might be worth mentioning also",
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8aeeb862_db1fde5b",
@@ -14,6 +31,75 @@
       "writtenOn": "2025-08-26T19:06:18Z",
       "side": 1,
       "message": "rebased -- ptal",
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97f93e42_b1fadaff",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T13:52:45Z",
+      "side": 1,
+      "message": "nit: `const static`",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e29822f_18645fc8",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T13:52:45Z",
+      "side": 1,
+      "message": "Is SkRect::BoundsOrEmpty() safer here?",
+      "range": {
+        "startLine": 198,
+        "startChar": 16,
+        "endLine": 198,
+        "endChar": 43
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d778dcca_b3ddd28c",
+        "filename": "src/core/SkScan.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T13:52:45Z",
+      "side": 1,
+      "message": "Note to self, these functions are updated at the linked CL https://skia-review.googlesource.com/c/skia/+/1044476",
+      "range": {
+        "startLine": 66,
+        "startChar": 16,
+        "endLine": 66,
+        "endChar": 24
+      },
       "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
