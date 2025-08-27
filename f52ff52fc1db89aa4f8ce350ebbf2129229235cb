@@ -16,6 +16,29 @@
       "message": "rebased -- ptal",
       "revId": "f52ff52fc1db89aa4f8ce350ebbf2129229235cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26c4d31_a6e79f86",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T15:35:49Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1044557/6/src/core/SkDraw.cpp moves this also. Should one CL depend on the other?",
+      "range": {
+        "startLine": 914,
+        "startChar": 8,
+        "endLine": 914,
+        "endChar": 14
+      },
+      "revId": "f52ff52fc1db89aa4f8ce350ebbf2129229235cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
