@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1af3a01_976247cf",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T17:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5be9b5ea_5722ae97",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e29822f_18645fc8",
@@ -119,6 +143,30 @@
       "writtenOn": "2025-08-27T13:52:45Z",
       "side": 1,
       "message": "Is SkRect::BoundsOrEmpty() safer here?",
+      "range": {
+        "startLine": 198,
+        "startChar": 16,
+        "endLine": 198,
+        "endChar": 43
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "478f1ead_47da3647",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T17:02:30Z",
+      "side": 1,
+      "message": "Depends what we want. Calling .value() means we\u0027d get a debugassert if we failed, which boundsorempty won\u0027t do... it would give 0,0,0,0 as the bounds, which would *not* agree with the points we were given.\n\nI think at this level (notice all of these \"shapes\" are private) we\u0027re can at most just assert that the caller knew what was being passed int. (e.g., notice we assert that the span has 3 values, but that is not a runtime check).",
+      "parentUuid": "9e29822f_18645fc8",
       "range": {
         "startLine": 198,
         "startChar": 16,
