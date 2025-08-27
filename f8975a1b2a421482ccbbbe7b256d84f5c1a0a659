@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "304e0b1d_5a0a2091",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-27T17:55:22Z",
+      "side": 1,
+      "message": "(A reminder that if any of these is failing solely due to validation error, `DebugUtilsMessenger` has a way to skip them so the tests can run even if not completely per-spec)",
+      "revId": "f8975a1b2a421482ccbbbe7b256d84f5c1a0a659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
