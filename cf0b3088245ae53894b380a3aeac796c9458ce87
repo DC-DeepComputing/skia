@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22d1d03_cf3f1b01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T13:19:12Z",
+      "side": 1,
+      "message": "Looks like this may need guarding for Chromium.  The reported diffs are substantial though, do you know what\u0027s going on with those tests?\n\n```\nChecking top\nshouldBe 0,128,0 +/-10\nat (20, 24) expected: 0,128,0 was 0,255,0\n...\nExpected equality of these values:\n  bitmap_color\n    Which is: 2281736448\n  expected_color\n    Which is: 2281701632\nBitmap: 136,0,137,0Expected: 136,0,1,0\n```",
+      "revId": "cf0b3088245ae53894b380a3aeac796c9458ce87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
