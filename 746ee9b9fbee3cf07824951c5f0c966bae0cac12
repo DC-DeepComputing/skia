@@ -22,6 +22,30 @@
       },
       "revId": "746ee9b9fbee3cf07824951c5f0c966bae0cac12",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e8d153_55c5bc05",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-27T17:25:09Z",
+      "side": 1,
+      "message": "Something like `ptrdiff` would certainly be better here - ISWYM. Pinged Florin",
+      "parentUuid": "39dab9a1_e86016ec",
+      "range": {
+        "startLine": 280,
+        "startChar": 16,
+        "endLine": 280,
+        "endChar": 24
+      },
+      "revId": "746ee9b9fbee3cf07824951c5f0c966bae0cac12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
