@@ -39,6 +39,30 @@
       },
       "revId": "f52ff52fc1db89aa4f8ce350ebbf2129229235cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b68bf23_963a82c7",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-27T16:12:31Z",
+      "side": 1,
+      "message": "yea, they conflict with eachother (minorly) -- so I\u0027ll have to land one, and the (trivially) rebase the other. C\u0027est la vie",
+      "parentUuid": "a26c4d31_a6e79f86",
+      "range": {
+        "startLine": 914,
+        "startChar": 8,
+        "endLine": 914,
+        "endChar": 14
+      },
+      "revId": "f52ff52fc1db89aa4f8ce350ebbf2129229235cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
