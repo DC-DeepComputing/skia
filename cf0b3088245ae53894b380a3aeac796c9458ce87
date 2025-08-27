@@ -34,6 +34,24 @@
       "parentUuid": "a22d1d03_cf3f1b01",
       "revId": "cf0b3088245ae53894b380a3aeac796c9458ce87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0253f9b1_b989415c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T13:24:57Z",
+      "side": 1,
+      "message": "Hmm, no idea.  If image-rs has platform-specific code it could be a bug upstream.",
+      "parentUuid": "7a27f62f_db3766e5",
+      "revId": "cf0b3088245ae53894b380a3aeac796c9458ce87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
