@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf9054f6_dda3f4c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-27T20:50:31Z",
+      "side": 1,
+      "message": "This should fix the g3 failures:\n\n```\nIn file included from third_party/skia/HEAD/modules/skshaper/utils/FactoryHelpers.h:10:\nIn file included from ./third_party/skia/HEAD/modules/skshaper/include/SkShaper.h:11:\nIn file included from ./third_party/skia/HEAD/include/core/SkFont.h:11:\nIn file included from ./third_party/skia/HEAD/include/core/SkPath.h:16:\n./third_party/skia/HEAD/include/core/SkRefCnt.h:151:12: error: member access into incomplete type \u0027SkUnicode\u0027\n  151 |         obj-\u003eunref();\n      |            ^\n./third_party/skia/HEAD/include/core/SkRefCnt.h:256:9: note: in instantiation of function template specialization \u0027SkSafeUnref\u003cSkUnicode\u003e\u0027 requested here\n  256 |         SkSafeUnref(fPtr);\n      |         ^\nthird_party/skia/HEAD/modules/skshaper/utils/FactoryHelpers.h:38:22: note: in instantiation of member function \u0027sk_sp\u003cSkUnicode\u003e::~sk_sp\u0027 requested here\n   38 |     sk_sp\u003cSkUnicode\u003e uc;\n      |                      ^\n./third_party/skia/HEAD/modules/skshaper/include/SkShaper_factory.h:20:7: note: forward declaration of \u0027SkUnicode\u0027\n   20 | class SkUnicode;\n      |       ^\n1 error generated.\n```\n\nI guess they are building with UNICODE_AVAILABLE but without HARFBUZZ_AVAILABLE.",
+      "revId": "870ebd7078ccdc84d9349950c30a84d71cbe0257",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
