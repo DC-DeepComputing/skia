@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39dab9a1_e86016ec",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-27T17:19:17Z",
+      "side": 1,
+      "message": "This `uint16_t` (and adding a cast) is just wrong here. At the very least it should be `int` since that\u0027s what `utf16Units` is. This variable is used as a `SkBidiIterator::Position` which is probably what it should logically be (it\u0027s an `int32_t`). To be safely correct this should be `ptrdiff_t` but the current code falls apart if any diffs are greater than `SkBidiIterator::Position` anyway.",
+      "range": {
+        "startLine": 280,
+        "startChar": 16,
+        "endLine": 280,
+        "endChar": 24
+      },
+      "revId": "746ee9b9fbee3cf07824951c5f0c966bae0cac12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
