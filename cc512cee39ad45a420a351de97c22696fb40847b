@@ -239,6 +239,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c3833df5_d5580a4f",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-27T17:15:01Z",
+      "side": 1,
+      "message": "Cool. I get to delete my long response about throwing exceptions on untrusted user input :) This is a cleaner solution.",
+      "parentUuid": "478f1ead_47da3647",
+      "range": {
+        "startLine": 198,
+        "startChar": 16,
+        "endLine": 198,
+        "endChar": 43
+      },
+      "revId": "cc512cee39ad45a420a351de97c22696fb40847b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d778dcca_b3ddd28c",
         "filename": "src/core/SkScan.h",
         "patchSetId": 6
