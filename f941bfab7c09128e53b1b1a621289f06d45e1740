@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "352278d8_b77f3a74",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-27T14:26:59Z",
+      "side": 0,
+      "message": "Even if this functionality is guaranteed by the spec, is it possible for us to fall into the edge case of a host write happening after queue submission and synchronization is done? And does adding the flag have a downside even if it is redundant?\n\nJust questions for my understanding... otherwise LGTM, thank you for updating the comment docs!",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "f941bfab7c09128e53b1b1a621289f06d45e1740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
