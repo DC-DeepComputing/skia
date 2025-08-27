@@ -22,6 +22,30 @@
       },
       "revId": "f941bfab7c09128e53b1b1a621289f06d45e1740",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ae8052_bbce331a",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-27T15:00:16Z",
+      "side": 0,
+      "message": "\u003e is it possible for us to fall into the edge case of a host write happening after queue submission and synchronization is done?\n\nNope. The only way to synchronize a running command buffer with the host is with VkEvents, and Skia doesn\u0027t use them (even then, such a usage is dodgy and should never be needed by Skia).\n\n\u003e does adding the flag have a downside even if it is redundant?\n\nYes. All other access flags are internal to the GPU, meaning you might overinvalidate/overflush some core-local caches but the damage is contained at the gpu-global cache. The HOST access bits invalidate/flush that gpu-global cache, which is more expensive.\n\nHere\u0027s a diagram, lol:\n\n```\n+------------------------------+\n|           Memory             |\n+------------------------------+\n              ^\n              |  HOST bit traffic\n              V\n    +----------------------+\n    |       GPU L2         |\n    +----------------------+\n      ^         ^         ^\n      |  Other  |   bits  |\n      V         V         V\n    +----+    +----+    +----+\n    | L1 |    | L1 |    | L1 |\n    +----+    +----+    +----+\n```",
+      "parentUuid": "352278d8_b77f3a74",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "f941bfab7c09128e53b1b1a621289f06d45e1740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
