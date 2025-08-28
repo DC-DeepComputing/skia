@@ -232,6 +232,11 @@ public:
 
     size_t size() const { return fStorage.size(); }
 
+    const SkTDArray<char>& storage() const { return fStorage; }
+    void setStorage(const SkTDArray<char>& storage) { fStorage = storage; }
+    int alignment() const { return fReqAlignment; }
+    void setReqAlignment(int alignment) { fReqAlignment = alignment; }
+
     void resetWithNewLayout(Layout layout);
     void reset() { this->resetWithNewLayout(fLayout); }
 
