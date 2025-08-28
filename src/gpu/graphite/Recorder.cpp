@@ -154,7 +154,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              fSharedContext->caps(),
                                                              fUploadBufferManager.get(),
                                                              dbmOpts);
-
     SkASSERT(fResourceProvider);
 }
 
