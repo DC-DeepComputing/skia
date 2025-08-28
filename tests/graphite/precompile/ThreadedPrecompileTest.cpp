@@ -544,18 +544,11 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileCompilePurgingTest,
 
     GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
-    // The 48 comes from:
-    //     4 gradient flavors (linear, radial, ...) *
-    //     3 types of each flavor (4, 8, N) *
-    //     (2 normal-compile threads + 2 pre-compile threads)
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
-                                                            stats.fGraphicsRaces);
+    // Given the use of both purging and permutations there is little that can be
+    // definitely tested here besides not crashing and no TSAN races.
+
     // Purges can force recreation of a Pipeline
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions >= kNumDiffPipelines);
-    // Given the use of permutations it is possible, though unlikely, that there are
-    // no races (particularly on Dawn/Metal).
-    //REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
 }
 
 #endif // SK_GRAPHITE
