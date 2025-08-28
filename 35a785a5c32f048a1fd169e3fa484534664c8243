@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87ec8e05_a1b85e5a",
+        "filename": "infra/cmake/build_skia.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-08-28T14:32:32Z",
+      "side": 1,
+      "message": "IMO we should keep this pinned, even if it\u0027s being updated now.",
+      "range": {
+        "startLine": 12,
+        "startChar": 100,
+        "endLine": 12,
+        "endChar": 106
+      },
+      "revId": "35a785a5c32f048a1fd169e3fa484534664c8243",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
