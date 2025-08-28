@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04ad3ddb_01952dbe",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4992964_607ff565",
+      "range": {
+        "startLine": 763,
+        "startChar": 8,
+        "endLine": 764,
+        "endChar": 78
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95bcf5af_8f115b1d",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-28T18:06:23Z",
       "side": 1,
       "message": "Let\u0027s check this first (cheap), before comparing the profiles.",
+      "range": {
+        "startLine": 767,
+        "startChar": 0,
+        "endLine": 770,
+        "endChar": 5
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb2d3ce_5c351b2e",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95bcf5af_8f115b1d",
       "range": {
         "startLine": 767,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4b78b5d_024fcf92",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "58b5fe2d_f6dc8859",
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b82dc9d_5a286daf",
@@ -77,6 +143,24 @@
       "writtenOn": "2025-08-28T18:06:23Z",
       "side": 1,
       "message": "Let\u0027s move this out of the loop, to avoid reallocating on every iteration when interlaced.",
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39207bb_ab146ba1",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Done. Although I don\u0027t think we can avoid memset to 0 because the decoded interlaced row may be less than the full row size and we don\u0027t want extra data left over from the last row.\nI define the dstSlice in the loop since it\u0027s just a pointer and this feels better for readability.",
+      "parentUuid": "8b82dc9d_5a286daf",
       "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -122,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "236a0553_8f6ac8bb",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bb9e29d_d1154fa3",
+      "range": {
+        "startLine": 874,
+        "startChar": 59,
+        "endLine": 874,
+        "endChar": 64
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7935e446_f58e244f",
@@ -135,6 +243,30 @@
       "writtenOn": "2025-08-28T18:06:23Z",
       "side": 1,
       "message": "false?",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 45
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c4305f8_1604cc68",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:27:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7935e446_f58e244f",
       "range": {
         "startLine": 82,
         "startChar": 41,
