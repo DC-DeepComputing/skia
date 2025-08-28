@@ -83,6 +83,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0bb9e29d_d1154fa3",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:10:57Z",
+      "side": 1,
+      "message": "nit: not needed, the default value initializer is equivalent.",
+      "range": {
+        "startLine": 874,
+        "startChar": 59,
+        "endLine": 874,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3ce56488_6d06ceb2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 874,
+                "startChar": 0,
+                "endLine": 875,
+                "endChar": 0
+              },
+              "replacement": "            fullWidthRow.resize(this-\u003egetEncodedRowBytes());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7935e446_f58e244f",
         "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.h",
         "patchSetId": 24
