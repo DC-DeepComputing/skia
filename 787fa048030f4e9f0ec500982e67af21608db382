@@ -33,6 +33,41 @@
       "message": "For reference, here\u0027s what the colorspace gm used to produce:\nhttps://gold.skia.org/img/images/95d9bac24f9c402dcaffd7acbff946a3.png\nThen after the skcms roll (https://skia.googlesource.com/skia.git/+show/f3c8b4c677f55f20abb8f189ed0fb245e2b43572 https://skia-review.googlesource.com/c/skcms/+/1046556)\nhttps://gold.skia.org/img/images/8d94fc8fa99e2e1394466275c89657c1.png\n\nWe\u0027ll need to re-approve that gm after the new colorspace lands.",
       "revId": "787fa048030f4e9f0ec500982e67af21608db382",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe0fcf8e_06476d26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-28T19:53:11Z",
+      "side": 1,
+      "message": "Yeah, the right-most version was missing a scale in a step (and so was ~4x brighter than it should be).",
+      "parentUuid": "4563856e_5f99d3d5",
+      "revId": "787fa048030f4e9f0ec500982e67af21608db382",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b4a60e_4eb1b82b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-28T19:53:11Z",
+      "side": 1,
+      "message": "Thanks, sorry I missed this!",
+      "revId": "787fa048030f4e9f0ec500982e67af21608db382",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
