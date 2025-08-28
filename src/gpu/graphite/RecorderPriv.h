@@ -80,6 +80,10 @@ public:
     DrawBufferManager* drawBufferManager() { return fRecorder->fDrawBufferManager.get(); }
     UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
     sk_sp<FloatStorageManager> refFloatStorageManager() { return fRecorder->fFloatStorageManager; }
+    PipelineDataGatherer* pipelineDataGatherer() { return fRecorder->fPipelineDataGatherer.get(); }
+    PaintParamsKeyBuilder* paintParamsKeyBuilder() {
+        return fRecorder->fPaintParamsKeyBuilder.get();
+    }
 
     AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
     TokenTracker* tokenTracker() { return fRecorder->fTokenTracker.get(); }
