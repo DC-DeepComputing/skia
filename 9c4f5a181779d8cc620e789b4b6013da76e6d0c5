@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10715c72_0f824a22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T17:19:01Z",
+      "side": 1,
+      "message": "Bug: 441605278",
+      "revId": "9c4f5a181779d8cc620e789b4b6013da76e6d0c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
