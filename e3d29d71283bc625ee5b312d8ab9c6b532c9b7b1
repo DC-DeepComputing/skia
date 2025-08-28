@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bca89ad_26fa2f3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-28T14:13:06Z",
+      "side": 1,
+      "message": "Interesting. This is quite implementation specific -- will it be (auto) updated as the implementation changes? How will we know if/when the two get out of sync?",
+      "revId": "e3d29d71283bc625ee5b312d8ab9c6b532c9b7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
