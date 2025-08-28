@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "514f40c5_ccccc512",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-28T14:24:53Z",
+      "side": 1,
+      "message": "Verified that \"dm --config linear-glf16 -m colorspace\" works now that skcms has rolled.",
+      "revId": "cfe244b6c00719cb057f81ab22daba6171ea03e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
