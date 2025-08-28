@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/task/TaskList.h"
 
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>

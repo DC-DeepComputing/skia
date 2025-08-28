@@ -66,7 +66,7 @@ private:
                          const Texture* depthStencilTexture,
                          SkIPoint resolveOffset,
                          SkIRect viewport,
-                         const DrawPassList&) override;
+                         DrawPassList&) override;
     bool onAddComputePass(DispatchGroupSpan) override;
 
     // Methods for populating a Dawn RenderPassEncoder:
