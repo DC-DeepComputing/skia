@@ -165,6 +165,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931cb079_4a5085e3",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-28T19:56:07Z",
+      "side": 1,
+      "message": "Actually, reader::next_interlace_row() handles setting the correct Adam7Info, last_interlace_info() so it should be okay and only reading what it needs to.",
+      "parentUuid": "f39207bb_ab146ba1",
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bb9e29d_d1154fa3",
