@@ -76,6 +76,8 @@ class Clip;
 class DrawContext;
 class Geometry;
 class Image;
+class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 class PathAtlas;
 class Renderer;
 class Shape;
@@ -125,7 +127,7 @@ public:
     //   task list. Note, no lastTask will be recorded in this case.
     // - Else, flushed tasks are added to the root task list, and if this device is a scratch
     //   device, the last task will be recorded.
-    void flushPendingWork(DrawContext*);
+    void flushPendingWork(DrawContext*, bool shouldResetKeyHelpers = true);
 
     const Transform& localToDeviceTransform();
 
@@ -330,7 +332,7 @@ private:
     bool needsFlushBeforeDraw(int numNewRenderSteps, DstReadStrategy);
 
     // Flush internal work, such as pending clip draws and atlas uploads, into the Device's DrawTask
-    void internalFlush();
+    void internalFlush(bool shouldResetKeyHelpers = true);
 
     Recorder* fRecorder;
     sk_sp<DrawContext> fDC;

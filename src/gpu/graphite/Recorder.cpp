@@ -34,6 +34,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
@@ -154,6 +155,13 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              fSharedContext->caps(),
                                                              fUploadBufferManager.get(),
                                                              dbmOpts);
+
+    const auto& bindingReq = fSharedContext->caps()->resourceBindingRequirements();
+    fPipelineDataGatherer = std::make_unique<PipelineDataGatherer>(
+            fSharedContext->caps()->storageBufferSupport() ? bindingReq.fStorageBufferLayout :
+                                                             bindingReq.fUniformBufferLayout);
+    fPaintParamsKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(
+            fSharedContext->shaderCodeDictionary());
 
     SkASSERT(fResourceProvider);
 }

@@ -53,6 +53,8 @@ class Device;
 class DrawBufferManager;
 class FloatStorageManager;
 class ImageProvider;
+class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 class ProxyReadCountMap;
 class RecorderPriv;
 class ResourceProvider;
@@ -283,6 +285,9 @@ private:
     std::unique_ptr<TaskList> fRootTaskList;
     // Aggregated one-time uploads that preceed all tasks in the root task list.
     std::unique_ptr<UploadList> fRootUploads;
+
+    std::unique_ptr<PaintParamsKeyBuilder> fPaintParamsKeyBuilder;
+    std::unique_ptr<PipelineDataGatherer> fPipelineDataGatherer;
 
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
