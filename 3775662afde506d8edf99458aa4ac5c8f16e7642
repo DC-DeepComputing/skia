@@ -22,6 +22,30 @@
       },
       "revId": "3775662afde506d8edf99458aa4ac5c8f16e7642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "294abcca_7d8bcf63",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-28T13:45:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a58b390_1897c523",
+      "range": {
+        "startLine": 523,
+        "startChar": 21,
+        "endLine": 523,
+        "endChar": 32
+      },
+      "revId": "3775662afde506d8edf99458aa4ac5c8f16e7642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
