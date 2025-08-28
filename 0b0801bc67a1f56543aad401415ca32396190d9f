@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64fe0c91_ce2df353",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Even though you check if the `UploadSource` is valid before calling this method, maybe add an `SkASSERT(source.isValid())` (which only triggers when building in debug) just in case we somehow end up calling this later on in the future and accidentally omit that check.",
+      "range": {
+        "startLine": 156,
+        "startChar": 1,
+        "endLine": 172,
+        "endChar": 65
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f9b76c_7826c9c9",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Perhaps `Could not create compressed UploadSource` to differentiate from the uncompressed alternative?",
+      "range": {
+        "startLine": 455,
+        "startChar": 53,
+        "endLine": 455,
+        "endChar": 82
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c01649b_513bab43",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Let\u0027s move this information down into the Vulkan backend implementation (` VulkanTexture::uploadDataOnHost`)",
+      "range": {
+        "startLine": 47,
+        "startChar": 80,
+        "endLine": 48,
+        "endChar": 81
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0773751b_65914b12",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "nit: You could also use the version of `ComputeLevelCount` that takes in `SkISize` (aka `dimensions` or `textureProxy.dimensions()`) directly if that would help fit it on to one line. Otherwise, there might be an extra space to be removed here - should just be 2 tab indents from `numExpectedLevels` (hard to tell with how gerrit shows whitespace - might be fine).",
+      "range": {
+        "startLine": 120,
+        "startChar": 44,
+        "endLine": 120,
+        "endChar": 83
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835cc619_ef474474",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "nit: Perhaps \n```\n    SkASSERT(!source.isRGB888Format() || (supportedColorType \u003d\u003d kRGB_888x_SkColorType \u0026\u0026 \n                                          dstColorInfo.colorType() \u003d\u003d kRGB_888x_SkColorType));\n```\n?\nThat may be uglier... just an idea to avoid an empty `if` block on release builds (not that it really matters).",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 5
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d54b335_ec221965",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Perhaps define this as a named static constant rather than magic #?",
+      "range": {
+        "startLine": 152,
+        "startChar": 45,
+        "endLine": 152,
+        "endChar": 46
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "809b4751_ebe79d53",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "The casting between `size_t` and `uint32_t` is somewhat annoying, but it seems cumbersome to make everything agree on one data type. WDYT about propagating the use of `size_t` into the looping below/into the helper?",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 66
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ac1aca6_5d5dd8c4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Is there a clean way for us to detect if, for whatever reason, this unlikely path does occur and warn accordingly? I suppose it may be overkill to iterate over `pCopyDstLayouts` to see if that layout is actually present... I just don\u0027t like depending upon this if it isn\u0027t in the spec. Do you know if there\u0027s a VVL warning that would catch this?",
+      "range": {
+        "startLine": 277,
+        "startChar": 96,
+        "endLine": 281,
+        "endChar": 100
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea4c29bd_b7caf1e8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1738,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Maybe add a similar comment here (like where you declare `fIsEfficientWithHostImageCopy`) that host image copies are always efficient when using linear tiling.",
+      "range": {
+        "startLine": 1737,
+        "startChar": 0,
+        "endLine": 1738,
+        "endChar": 24
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89985fa4_4dc11e27",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1743,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Perhaps add `SkUNREACHABLE;` in the default case or before returning false to enforce that we do not encounter unexpected cases.",
+      "range": {
+        "startLine": 1739,
+        "startChar": 0,
+        "endLine": 1743,
+        "endChar": 17
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb34e115_84ad397d",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "nit: I know this isn\u0027t from this CL, but line length",
+      "range": {
+        "startLine": 445,
+        "startChar": 100,
+        "endLine": 445,
+        "endChar": 101
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f8d495_611de16e",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-08-28T19:23:50Z",
+      "side": 1,
+      "message": "Ideally we would still test this in Vulkan when host image copy is not supported/used.\n\nWDYT about promoting `supportsHostImageCopy()` to from \u0027VulkanCaps\u0027 --\u003e `Caps`?\nI think this makes sense considering that graphite makes decisions based on this information. We could also then assert that `supportsHostImageCopy()` is true when we attempt to do so, and it would allow us to check that caps flag here rather than not performing this assert any time we use Vulkan.",
+      "range": {
+        "startLine": 272,
+        "startChar": 8,
+        "endLine": 272,
+        "endChar": 49
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
