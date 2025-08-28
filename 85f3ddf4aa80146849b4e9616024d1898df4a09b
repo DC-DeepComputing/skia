@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4992964_607ff565",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:06:23Z",
+      "side": 1,
+      "message": "nit: I think we can consolidate these as\n`!!this-\u003egetEncodedInfo().profile() !\u003d !!this-\u003edstInfo().colorSpace()`\n\n(or with SkToBool)\n\nThen if we move this conditional before the prev one, we could update the latter to only look at one of them and assert the other:\n\n```\n    if (this-\u003egetEncodedInfo().profile()) {\n        SkASSERT(this-\u003edstInfo().colorSpace());\n        ...\n```",
+      "range": {
+        "startLine": 763,
+        "startChar": 8,
+        "endLine": 764,
+        "endChar": 78
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95bcf5af_8f115b1d",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:06:23Z",
+      "side": 1,
+      "message": "Let\u0027s check this first (cheap), before comparing the profiles.",
+      "range": {
+        "startLine": 767,
+        "startChar": 0,
+        "endLine": 770,
+        "endChar": 5
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58b5fe2d_f6dc8859",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:06:23Z",
+      "side": 1,
+      "message": "I guess this could also be refactored to validate before profiles, but only if not too hairy.  It\u0027s a good practice to have the quick/cheap rejects first, before the more expensive ones (skcms_ApproximatelyEqualProfiles), though I\u0027m not sure how much that matters here.",
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b82dc9d_5a286daf",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:06:23Z",
+      "side": 1,
+      "message": "Let\u0027s move this out of the loop, to avoid reallocating on every iteration when interlaced.",
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7935e446_f58e244f",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-28T18:06:23Z",
+      "side": 1,
+      "message": "false?",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 45
+      },
+      "revId": "85f3ddf4aa80146849b4e9616024d1898df4a09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
