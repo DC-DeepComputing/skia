@@ -16,6 +16,24 @@
       "message": "Interesting. This is quite implementation specific -- will it be (auto) updated as the implementation changes? How will we know if/when the two get out of sync?",
       "revId": "e3d29d71283bc625ee5b312d8ab9c6b532c9b7b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc65b82_9293dd09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-28T14:17:57Z",
+      "side": 1,
+      "message": "Snarky response: All documentation is wrong and out of date but some documentation is useful.\n\nLess snarky response: The .dot diagram was generated with a LLM (and some guidance) based on the Skia source code as it is. I am curious to see if I can use that tool to regenerate and update the diagrams/docs occasionally.\n\nMostly though, I tried to write some docs and make diagrams that I would find useful and I checked it in on the off chance others find it useful too.",
+      "parentUuid": "0bca89ad_26fa2f3c",
+      "revId": "e3d29d71283bc625ee5b312d8ab9c6b532c9b7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
