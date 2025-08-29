@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31e8b08_3c84dcfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-29T15:05:15Z",
+      "side": 1,
+      "message": "Split this off of the extract early CL; will set this as the parent.",
+      "revId": "b33b0011f532c98d7128e1094d170ea4421f1dd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
