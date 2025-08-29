@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b23e307a_fa97d913",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-29T15:14:39Z",
+      "side": 1,
+      "message": "An alternative that would avoid having to update the RenderStep and DrawPass code (and would match the end state we want when we consolidate to a single binding), would be to have `PipelineDataGatherer` track its active UniformManager.\n\nAfter `resetForDraw()`, the active manager is `fPaintUniformManager`, and after `endPaintData()` it switches to `fRenderStepUniformManager`. It stays with that manager even after `rewindForRenderStep()` and `endRenderStepData()`, since any future recorded uniforms would still be for a different render step.",
+      "range": {
+        "startLine": 410,
+        "startChar": 3,
+        "endLine": 439,
+        "endChar": 98
+      },
+      "revId": "667d41496d93346bfee77ac041bfafaee7de999b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
