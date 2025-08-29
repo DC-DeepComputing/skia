@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54e5e463_4a496e22",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-29T20:40:22Z",
+      "side": 1,
+      "message": "nit: could move the declaration after the conditional, closer to first use.",
+      "revId": "174560520dec6c636a7dee9b04195bfd211cdc08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
