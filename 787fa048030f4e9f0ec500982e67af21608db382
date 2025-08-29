@@ -68,6 +68,24 @@
       "message": "Thanks, sorry I missed this!",
       "revId": "787fa048030f4e9f0ec500982e67af21608db382",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98dd3a00_0c5f680d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-29T13:17:22Z",
+      "side": 1,
+      "message": "And for completeness, here\u0027s what the colorspace gm looks like with this change landed https://gold.skia.org/img/images/673dc8f0776a0bdca5f0f4960d23359a.png",
+      "parentUuid": "fe0fcf8e_06476d26",
+      "revId": "787fa048030f4e9f0ec500982e67af21608db382",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
