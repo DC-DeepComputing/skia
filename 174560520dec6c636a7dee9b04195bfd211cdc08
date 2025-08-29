@@ -16,6 +16,24 @@
       "message": "nit: could move the declaration after the conditional, closer to first use.",
       "revId": "174560520dec6c636a7dee9b04195bfd211cdc08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ba8f025_b1f0d3f2",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-29T20:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54e5e463_4a496e22",
+      "revId": "174560520dec6c636a7dee9b04195bfd211cdc08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
