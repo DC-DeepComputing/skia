@@ -22,6 +22,30 @@
       },
       "revId": "667d41496d93346bfee77ac041bfafaee7de999b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "273d7f3f_ca4b3216",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-29T15:26:36Z",
+      "side": 1,
+      "message": "Yea I didn\u0027t realize the uniform managers were used contiguously until after I made the changes, this is better lol.",
+      "parentUuid": "b23e307a_fa97d913",
+      "range": {
+        "startLine": 410,
+        "startChar": 3,
+        "endLine": 439,
+        "endChar": 98
+      },
+      "revId": "667d41496d93346bfee77ac041bfafaee7de999b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
