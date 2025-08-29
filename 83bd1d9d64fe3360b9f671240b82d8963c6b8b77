@@ -16,6 +16,23 @@
       "message": "ptal ... the actual skcms_TransferFunction that was specified was unusable. This at least maps to what the specifications request.\n\nIn some circumstances we\u0027ll want to use sRGB as the transfer function, but this is definitely the way the wind is blowing.",
       "revId": "83bd1d9d64fe3360b9f671240b82d8963c6b8b77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1845a3cb_0d87784c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-08-29T13:26:33Z",
+      "side": 1,
+      "message": "Gah, sorry, I sent this out when I mean to send out a different CL. (I was waiting for this to pass the tests first)",
+      "revId": "83bd1d9d64fe3360b9f671240b82d8963c6b8b77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
