@@ -16,6 +16,69 @@
       "message": "PTAL",
       "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d65a444_32bdcc0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-29T17:39:59Z",
+      "side": 1,
+      "message": "This should be linked to the extract-early bug since it\u0027s laying the ground work.",
+      "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70e6dbc0_b0c13c80",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-29T17:39:59Z",
+      "side": 1,
+      "message": "Ah I suppose we can\u0027t set the render step manager as active inside endPaintData() if there was no paint to record.\n\nWe can avoid requiring this extra function by either setting the active manager in `rewindForRenderStep`, although that would be redundant and might not work out in the next CL if we move the rewind to be at the end. The other option would be to have `resetForDraw()` take a boolean for whether or not to expect paint uniforms in the draw.\n\nBut it\u0027s not really a big deal because once we go to a single uniform binding, there will only be a single UniformManager again and `setRenderStepManagerActive()` can be removed.",
+      "range": {
+        "startLine": 452,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 46
+      },
+      "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed4eb63c_c4830886",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-29T17:39:59Z",
+      "side": 1,
+      "message": "nit: camel case for these two variables.",
+      "range": {
+        "startLine": 196,
+        "startChar": 18,
+        "endLine": 196,
+        "endChar": 38
+      },
+      "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
