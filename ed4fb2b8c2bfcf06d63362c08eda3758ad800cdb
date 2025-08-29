@@ -16,6 +16,29 @@
       "message": "Ok, this is the Rec709 change that I mentioned earlier.\n\nThis will at least create a use-able version (although not always one that will match overlays).",
       "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e23665a4_d1b9f788",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-29T13:38:57Z",
+      "side": 1,
+      "message": "So I\u0027m reading the table entry and note from that spec, but it\u0027s not clear to me how the 2.4 value falls out of that and why all the other values would be 0. Can you expound?",
+      "range": {
+        "startLine": 139,
+        "startChar": 3,
+        "endLine": 139,
+        "endChar": 32
+      },
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
