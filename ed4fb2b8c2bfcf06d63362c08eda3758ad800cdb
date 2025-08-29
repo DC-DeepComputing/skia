@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "649a6da3_18ced381",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-08-29T15:30:48Z",
+      "side": 1,
+      "message": "But LGTM otherwise (don\u0027t have CR permission)",
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5413063c_2f9cef4a",
