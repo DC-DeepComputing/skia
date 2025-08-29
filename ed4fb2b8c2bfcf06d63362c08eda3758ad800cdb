@@ -78,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97eebb2f_3e8c3816",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-08-29T15:30:34Z",
+      "side": 1,
+      "message": "eg https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/libs/hwui/utils/Color.cpp;l\u003d299;drc\u003dc044abcbbd39b50c2d69cc300b0c37d6e5751826",
+      "parentUuid": "5413063c_2f9cef4a",
+      "range": {
+        "startLine": 130,
+        "startChar": 40,
+        "endLine": 130,
+        "endChar": 48
+      },
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e23665a4_d1b9f788",
         "filename": "include/core/SkColorSpace.h",
         "patchSetId": 1
