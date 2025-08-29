@@ -62,10 +62,9 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {
         return nullptr;
     }
-    if (!caps->isRenderable(target->textureInfo())) {
-        return nullptr;
-    }
-    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), target->textureInfo())) {
+
+    if (!(caps->supportedOperations(target->textureInfo(), colorInfo.colorType()) &
+          TextureFormatInfo::Supports::kRender)) {
         return nullptr;
     }
 

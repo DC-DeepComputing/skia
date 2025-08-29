@@ -608,7 +608,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
         // equivalent view for the blitting operation.
         Swizzle readSwizzle = fRecorder->priv().caps()->getReadSwizzle(
                 colorInfo.colorType(), this->target()->textureInfo());
-        srcView = {sk_ref_sp(this->target()), readSwizzle};
+        srcView = {fDC->refTarget(), readSwizzle};
     }
     std::string label = this->target()->label();
     if (label.empty()) {
@@ -667,7 +667,7 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
 
     // TODO: canvas2DFastPath?
 
-    if (!fRecorder->priv().caps()->supportsWritePixels(target->textureInfo())) {
+    if (!fRecorder->priv().caps()->isCopyDst(target->textureInfo())) {
         auto image = SkImages::RasterFromPixmap(src, nullptr, nullptr);
         image = SkImages::TextureFromImage(fRecorder, image.get());
         if (!image) {
@@ -676,6 +676,7 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
 
         SkPaint paint;
         paint.setBlendMode(SkBlendMode::kSrc);
+        // FIXME auto restore device transform?
         this->drawImageRect(image.get(),
                             /*src=*/nullptr,
                             SkRect::MakeXYWH(x, y, src.width(), src.height()),
@@ -686,6 +687,7 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     }
 
     // TODO: check for flips and either handle here or pass info to UploadTask
+    // FIXME: remove this TODO, we shouldn't have any flip that needs to apply, we only render top-left
 
     // Determine rect to copy
     SkIRect dstRect = SkIRect::MakePtSize({x, y}, src.dimensions());
@@ -704,6 +706,9 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     // The new upload will be executed before any new draws are recorded and also ensures that
     // the next call to flushDeviceToRecorder() will produce a non-null DrawTask. If this Device's
     // target is mipmapped, mipmap generation tasks will be added automatically at that point.
+
+    // FIXME have this attempt creating an UploadInstance and then if it fails fall back to
+    // upload and render?
     return fDC->recordUpload(fRecorder, fDC->refTarget(), src.info().colorInfo(),
                              this->imageInfo().colorInfo(), levels, dstRect, nullptr);
 }

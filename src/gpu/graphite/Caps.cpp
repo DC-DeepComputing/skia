@@ -61,18 +61,35 @@ SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
     return colorAttachmentDimensions;
 }
 
-bool Caps::isTexturable(const TextureInfo& info) const {
-    if (info.numSamples() > 1) {
-        return false;
-    }
-    return this->onIsTexturable(info);
+bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA=false) const {
+    // Base rule -> sampleCount = 1
+    // Vulkan -> kExternal + ycbcr is texturable otherwise check flags
+    // Dawn
+    // Metal
+    return SkToBool(this->supportedOperations(info) & TextureFormatInfo::Supports::kSample);
 }
 
-bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkTextureCompressionType handling
-    // (can be handled by setting up the colorTypeInfo instead?)
+bool Caps::isRenderable(const TextureInfo& info) const {
+    // Base
+    // Vulkan -> also checks supported sample count
+    return SkToBool(this->supportedOperations(info) & TextureFormatInfo::Supports::kRender);
+}
 
-    return SkToBool(this->getColorTypeInfo(ct, info));
+bool Caps::isCopyableSrc(const TextureInfo& info) const {
+    // base rule -> not protected, sample count = 1, not compressed, not external
+    return SkToBool(this->supportedOperations(info) & TextureFormatInfo::Supports::kCopySrc);
+}
+
+bool Caps::isCopyableDst(const TextureInfo& info) const {
+    // base rule -> sample count = 1, not external
+    return SkToBool(this->supportedOperations(info) & TextureFormatInfo::Supports::kCopyDst);
+}
+
+bool Caps::isStorage(const TextureInfo& info) const {
+    // base rule -> sample count = 1, not external
+    // vulkan -> also texturable
+
+    return SkToBool(this->supportedOperations(info) & TextureFormatInfo::Supports::kStorage);
 }
 
 static inline SkColorType color_type_fallback(SkColorType ct) {
