@@ -141,7 +141,8 @@ void SDFTextLCDRenderStep::writeVertices(DrawWriter* dw,
 void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                     PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer->renderStepUniformManager(),
+                                                 this->uniforms());)
 
     const SubRunData& subRunData = params.geometry().subRunData();
     unsigned int numProxies;
@@ -152,11 +153,11 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxies && numProxies > 0);
 
     // write uniforms
-    gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
-    gatherer->write(subRunData.deviceToLocal());
+    gatherer->writeRenderStep(params.transform().matrix());  // subRunDeviceMatrix
+    gatherer->writeRenderStep(subRunData.deviceToLocal());
     SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
                                    1.f/proxies[0]->dimensions().height()};
-    gatherer->write(atlasDimensionsInverse);
+    gatherer->writeRenderStep(atlasDimensionsInverse);
 
     // compute and write pixelGeometry vector
     SkV2 pixelGeometryDelta = {0, 0};
@@ -168,7 +169,7 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
     if (SkPixelGeometryIsBGR(subRunData.pixelGeometry())) {
         pixelGeometryDelta = -pixelGeometryDelta;
     }
-    gatherer->writeHalf(pixelGeometryDelta);
+    gatherer->writeHalfRenderStep(pixelGeometryDelta);
 
     // compute and write gamma adjustment
     auto dfAdjustTable = sktext::gpu::DistanceFieldAdjustTable::Get();
@@ -180,7 +181,7 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                         subRunData.useGammaCorrectDistanceTable());
     SkV4 gammaParams = {redCorrection, greenCorrection, blueCorrection,
                         subRunData.useGammaCorrectDistanceTable() ? 1.f : 0.f};
-    gatherer->writeHalf(gammaParams);
+    gatherer->writeHalfRenderStep(gammaParams);
 
     // write textures and samplers
     for (unsigned int i = 0; i < numProxies; ++i) {
