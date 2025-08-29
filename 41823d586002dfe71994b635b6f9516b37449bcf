@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a51dcb70_e086d8d8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-29T18:52:02Z",
+      "side": 1,
+      "message": "Yea those were my thoughts as well, no nice place to switch the active manager.",
+      "parentUuid": "70e6dbc0_b0c13c80",
+      "range": {
+        "startLine": 452,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 46
+      },
+      "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed4eb63c_c4830886",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-08-29T17:39:59Z",
       "side": 1,
       "message": "nit: camel case for these two variables.",
+      "range": {
+        "startLine": 196,
+        "startChar": 18,
+        "endLine": 196,
+        "endChar": 38
+      },
+      "revId": "41823d586002dfe71994b635b6f9516b37449bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca8e48f9_9bb1fdbc",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-08-29T18:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed4eb63c_c4830886",
       "range": {
         "startLine": 196,
         "startChar": 18,
