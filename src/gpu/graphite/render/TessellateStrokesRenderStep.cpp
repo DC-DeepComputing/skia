@@ -245,21 +245,21 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
 void TessellateStrokesRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                            PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer->renderStepUniformManager(),
+                                                 this->uniforms());)
     // TODO: Implement perspective
     SkASSERT(params.transform().type() < Transform::Type::kPerspective);
-
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
     // affineMatrix = float4 (2x2 of transform), translate = float2, maxScale = float
     // Column-major 2x2 of the transform.
     SkV4 upper = {params.transform().matrix().rc(0, 0), params.transform().matrix().rc(1, 0),
                   params.transform().matrix().rc(0, 1), params.transform().matrix().rc(1, 1)};
-    gatherer->write(upper);
+    gatherer->writeRenderStep(upper);
 
-    gatherer->write(SkPoint{params.transform().matrix().rc(0, 3),
+    gatherer->writeRenderStep(SkPoint{params.transform().matrix().rc(0, 3),
                             params.transform().matrix().rc(1, 3)});
 
-    gatherer->write(params.transform().maxScaleFactor());
+    gatherer->writeRenderStep(params.transform().maxScaleFactor());
 }
 
 }  // namespace skgpu::graphite

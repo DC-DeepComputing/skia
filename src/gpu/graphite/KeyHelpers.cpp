@@ -97,18 +97,19 @@ public:
 
     ~ScopedUniformWriter() {
         if (fGatherer) {
-            fGatherer->endStruct();
+            fGatherer->endStructPaint();
         }
     }
 
 private:
     ScopedUniformWriter(PipelineDataGatherer* gatherer, const ShaderSnippet* snippet)
 #if defined(SK_DEBUG)
-        : fValidator(gatherer, snippet->fUniforms, SkToBool(snippet->fUniformStructName))
+        : fValidator(gatherer->paintUniformManager(), snippet->fUniforms,
+                     SkToBool(snippet->fUniformStructName))
 #endif
     {
         if (snippet->fUniformStructName) {
-            gatherer->beginStruct(snippet->fRequiredAlignment);
+            gatherer->beginStructPaint(snippet->fRequiredAlignment);
             fGatherer = gatherer;
         } else {
             fGatherer = nullptr;
@@ -124,7 +125,7 @@ private:
 
 void add_solid_uniform_data(const KeyContext& keyContext, const SkPMColor4f& premulColor) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kSolidColorShader)
-    keyContext.pipelineDataGatherer()->write(premulColor);
+    keyContext.pipelineDataGatherer()->writePaint(premulColor);
 }
 
 } // anonymous namespace
@@ -171,12 +172,12 @@ void add_gradient_preamble(const GradientShaderBlocks::GradientData& gradData,
     if (gradData.fNumStops <= kInternalStopLimit) {
         if (gradData.fNumStops <= 4) {
             // Round up to 4 stops.
-            gatherer->writeArray(SkSpan{gradData.fColors, 4});
-            gatherer->write(gradData.fOffsets[0]);
+            gatherer->writeArrayPaint(SkSpan{gradData.fColors, 4});
+            gatherer->writePaint(gradData.fOffsets[0]);
         } else if (gradData.fNumStops <= 8) {
             // Round up to 8 stops.
-            gatherer->writeArray(SkSpan{gradData.fColors, 8});
-            gatherer->writeArray(SkSpan{gradData.fOffsets, 2});
+            gatherer->writeArrayPaint(SkSpan{gradData.fColors, 8});
+            gatherer->writeArrayPaint(SkSpan{gradData.fOffsets, 2});
         } else {
             // Did kNumInternalStorageStops change?
             SkUNREACHABLE;
@@ -208,15 +209,15 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
     bool inputPremul = static_cast<bool>(gradData.fInterpolation.fInPremul);
 
     if (gradData.fNumStops > kInternalStopLimit) {
-        gatherer->write(gradData.fNumStops);
+        gatherer->writePaint(gradData.fNumStops);
         if (gradData.fUseStorageBuffer) {
-            gatherer->write(bufferOffset);
+            gatherer->writePaint(bufferOffset);
         }
     }
 
-    gatherer->write(static_cast<int>(gradData.fTM));
-    gatherer->write(static_cast<int>(gradData.fInterpolation.fColorSpace));
-    gatherer->write(static_cast<int>(inputPremul));
+    gatherer->writePaint(static_cast<int>(gradData.fTM));
+    gatherer->writePaint(static_cast<int>(gradData.fInterpolation.fColorSpace));
+    gatherer->writePaint(static_cast<int>(inputPremul));
 }
 
 void add_linear_gradient_uniform_data(const KeyContext& keyContext,
@@ -246,8 +247,8 @@ void add_sweep_gradient_uniform_data(const KeyContext& keyContext,
     BEGIN_WRITE_UNIFORMS(keyContext, codeSnippetID)
 
     add_gradient_preamble(gradData, keyContext.pipelineDataGatherer());
-    keyContext.pipelineDataGatherer()->write(gradData.fBias);
-    keyContext.pipelineDataGatherer()->write(gradData.fScale);
+    keyContext.pipelineDataGatherer()->writePaint(gradData.fBias);
+    keyContext.pipelineDataGatherer()->writePaint(gradData.fScale);
     add_gradient_postamble(gradData, bufferOffset, keyContext.pipelineDataGatherer());
 };
 
@@ -279,10 +280,10 @@ void add_conical_gradient_uniform_data(const KeyContext& keyContext,
     }
 
     add_gradient_preamble(gradData, keyContext.pipelineDataGatherer());
-    keyContext.pipelineDataGatherer()->write(gradData.fRadii[0]);
-    keyContext.pipelineDataGatherer()->write(dRadius);
-    keyContext.pipelineDataGatherer()->write(a);
-    keyContext.pipelineDataGatherer()->write(invA);
+    keyContext.pipelineDataGatherer()->writePaint(gradData.fRadii[0]);
+    keyContext.pipelineDataGatherer()->writePaint(dRadius);
+    keyContext.pipelineDataGatherer()->writePaint(a);
+    keyContext.pipelineDataGatherer()->writePaint(invA);
     add_gradient_postamble(gradData, bufferOffset, keyContext.pipelineDataGatherer());
 };
 
@@ -461,16 +462,16 @@ void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
         keyContext.paintParamsKeyBuilder()->beginBlock(
                 BuiltInCodeSnippetID::kLocalMatrixShaderPersp);
         BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kLocalMatrixShaderPersp)
-        keyContext.pipelineDataGatherer()->write(m);
+        keyContext.pipelineDataGatherer()->writePaint(m);
     } else {
         // For an affine 2D transform, we only need to upload the upper 2x2 and XY translation.
         keyContext.paintParamsKeyBuilder()->beginBlock(BuiltInCodeSnippetID::kLocalMatrixShader);
 
         BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kLocalMatrixShader)
         // The upper 2x2 is expected to be in column major order, but SkMatrix is 3x3 row major.
-        keyContext.pipelineDataGatherer()->write(SkV4{m.getScaleX(), m.getSkewY(),
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{m.getScaleX(), m.getSkewY(),
                              m.getSkewX(),  m.getScaleY()});
-        keyContext.pipelineDataGatherer()->write(SkV2{m.getTranslateX(), m.getTranslateY()});
+        keyContext.pipelineDataGatherer()->writePaint(SkV2{m.getTranslateX(), m.getTranslateY()});
     }
 }
 
@@ -483,12 +484,12 @@ void add_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(!imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                              1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fSampling.filter));
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.first));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.second));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fSampling.filter));
 }
 
 void add_clamp_image_uniform_data(const KeyContext& keyContext,
@@ -496,7 +497,7 @@ void add_clamp_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(!imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kImageShaderClamp)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
 
     // Matches GrTextureEffect::kLinearInset, to make sure we don't touch an outer row or column
@@ -510,7 +511,7 @@ void add_clamp_image_uniform_data(const KeyContext& keyContext,
         subsetInsetClamp.roundOut(&subsetInsetClamp);
     }
     subsetInsetClamp.inset(kLinearInset, kLinearInset);
-    keyContext.pipelineDataGatherer()->write(subsetInsetClamp);
+    keyContext.pipelineDataGatherer()->writePaint(subsetInsetClamp);
 }
 
 void add_cubic_image_uniform_data(const KeyContext& keyContext,
@@ -518,13 +519,13 @@ void add_cubic_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCubicImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.first));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.second));
     const SkCubicResampler& cubic = imgData.fSampling.cubic;
-    keyContext.pipelineDataGatherer()->writeHalf(
+    keyContext.pipelineDataGatherer()->writeHalfPaint(
             SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
 }
 
@@ -621,54 +622,54 @@ void add_yuv_image_uniform_data(const KeyContext& keyContext,
                                 const YUVImageShaderBlock::ImageData& imgData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kYUVImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
                                                           1.f/imgData.fImgSizeUV.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(imgData.fLinearFilterUVInset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fSampling.filter));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fSamplingUV.filter));
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fLinearFilterUVInset);
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.first));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.second));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fSampling.filter));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fSamplingUV.filter));
 
     for (int i = 0; i < 4; ++i) {
-        keyContext.pipelineDataGatherer()->writeHalf(imgData.fChannelSelect[i]);
+        keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fChannelSelect[i]);
     }
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBMatrix);
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBTranslate);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBMatrix);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBTranslate);
 }
 
 void add_cubic_yuv_image_uniform_data(const KeyContext& keyContext,
                                       const YUVImageShaderBlock::ImageData& imgData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCubicYUVImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
                                                           1.f/imgData.fImgSizeUV.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.first));
+    keyContext.pipelineDataGatherer()->writePaint(SkTo<int>(imgData.fTileModes.second));
     const SkCubicResampler& cubic = imgData.fSampling.cubic;
-    keyContext.pipelineDataGatherer()->writeHalf(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
+    keyContext.pipelineDataGatherer()->writeHalfPaint(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
 
     for (int i = 0; i < 4; ++i) {
-        keyContext.pipelineDataGatherer()->writeHalf(imgData.fChannelSelect[i]);
+        keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fChannelSelect[i]);
     }
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBMatrix);
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBTranslate);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBMatrix);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBTranslate);
 }
 
 void add_hw_yuv_image_uniform_data(const KeyContext& keyContext,
                                    const YUVImageShaderBlock::ImageData& imgData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kHWYUVImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
                                                           1.f/imgData.fImgSizeUV.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
 
     SkPoint linearFilterUVInset = imgData.fLinearFilterUVInset;
     // We sign-encode whether we need to adjust the UV coords by applying `fLinearFilterUVInset` for
@@ -684,24 +685,24 @@ void add_hw_yuv_image_uniform_data(const KeyContext& keyContext,
                  imgData.fTileModes.second == SkTileMode::kClamp);
         linearFilterUVInset.fY = -linearFilterUVInset.fY;
     }
-    keyContext.pipelineDataGatherer()->write(linearFilterUVInset);
+    keyContext.pipelineDataGatherer()->writePaint(linearFilterUVInset);
 
     for (int i = 0; i < 4; ++i) {
-        keyContext.pipelineDataGatherer()->writeHalf(imgData.fChannelSelect[i]);
+        keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fChannelSelect[i]);
     }
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBMatrix);
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBTranslate);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBMatrix);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBTranslate);
 }
 
 void add_hw_yuv_no_swizzle_image_uniform_data(const KeyContext& keyContext,
                                               const YUVImageShaderBlock::ImageData& imgData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSize.width(),
                                                           1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
+    keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(1.f/imgData.fImgSizeUV.width(),
                                                           1.f/imgData.fImgSizeUV.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(imgData.fSubset);
 
     SkPoint linearFilterUVInset = imgData.fLinearFilterUVInset;
     // We sign-encode whether we need to adjust the UV coords by applying `fLinearFilterUVInset` for
@@ -717,16 +718,16 @@ void add_hw_yuv_no_swizzle_image_uniform_data(const KeyContext& keyContext,
                  imgData.fTileModes.second == SkTileMode::kClamp);
         linearFilterUVInset.fY = -linearFilterUVInset.fY;
     }
-    keyContext.pipelineDataGatherer()->write(linearFilterUVInset);
+    keyContext.pipelineDataGatherer()->writePaint(linearFilterUVInset);
 
-    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBMatrix);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(imgData.fYUVtoRGBMatrix);
     SkV4 yuvToRGBXlateAlphaParam = {
         imgData.fYUVtoRGBTranslate.fX,
         imgData.fYUVtoRGBTranslate.fY,
         imgData.fYUVtoRGBTranslate.fZ,
         imgData.fAlphaParam
     };
-    keyContext.pipelineDataGatherer()->writeHalf(yuvToRGBXlateAlphaParam);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(yuvToRGBXlateAlphaParam);
 }
 
 } // anonymous namespace
@@ -823,7 +824,7 @@ namespace {
 void add_coord_normalize_uniform_data(const KeyContext& keyContext,
                                       const CoordNormalizeShaderBlock::CoordNormalizeData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCoordNormalizeShader)
-    keyContext.pipelineDataGatherer()->write(data.fInvDimensions);
+    keyContext.pipelineDataGatherer()->writePaint(data.fInvDimensions);
 }
 
 } // anonymous namespace
@@ -841,7 +842,7 @@ namespace {
 void add_coordclamp_uniform_data(const KeyContext& keyContext,
                                  const CoordClampShaderBlock::CoordClampData& clampData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCoordClampShader)
-    keyContext.pipelineDataGatherer()->write(clampData.fSubset);
+    keyContext.pipelineDataGatherer()->writePaint(clampData.fSubset);
 }
 
 } // anonymous namespace
@@ -860,7 +861,7 @@ void add_dither_uniform_data(const KeyContext& keyContext,
                              const DitherShaderBlock::DitherData& ditherData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kDitherShader)
 
-    keyContext.pipelineDataGatherer()->writeHalf(ditherData.fRange);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(ditherData.fRange);
 }
 
 } // anonymous namespace
@@ -884,11 +885,11 @@ void add_perlin_noise_uniform_data(const KeyContext& keyContext,
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kPerlinNoiseShader)
 
     auto gatherer = keyContext.pipelineDataGatherer();
-    gatherer->write(noiseData.fBaseFrequency);
-    gatherer->write(noiseData.fStitchData);
-    gatherer->write(static_cast<int>(noiseData.fType));
-    gatherer->write(noiseData.fNumOctaves);
-    gatherer->write(static_cast<int>(noiseData.stitching()));
+    gatherer->writePaint(noiseData.fBaseFrequency);
+    gatherer->writePaint(noiseData.fStitchData);
+    gatherer->writePaint(static_cast<int>(noiseData.fType));
+    gatherer->writePaint(noiseData.fNumOctaves);
+    gatherer->writePaint(static_cast<int>(noiseData.stitching()));
 
     static const std::pair<SkTileMode, SkTileMode> kRepeatXTileModes =
             { SkTileMode::kRepeat, SkTileMode::kClamp };
@@ -918,7 +919,8 @@ void BlendComposeBlock::BeginBlock(const KeyContext& keyContext) {
 void PorterDuffBlenderBlock::AddBlock(const KeyContext& keyContext, SkSpan<const float> coeffs) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kPorterDuffBlender)
     SkASSERT(coeffs.size() == 4);
-    keyContext.pipelineDataGatherer()->writeHalf(SkV4{coeffs[0], coeffs[1], coeffs[2], coeffs[3]});
+    keyContext.pipelineDataGatherer()->writeHalfPaint(SkV4{coeffs[0], coeffs[1],
+                                                           coeffs[2], coeffs[3]});
 
     keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPorterDuffBlender);
 }
@@ -928,7 +930,7 @@ void PorterDuffBlenderBlock::AddBlock(const KeyContext& keyContext, SkSpan<const
 void HSLCBlenderBlock::AddBlock(const KeyContext& keyContext, SkSpan<const float> coeffs) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kHSLCBlender)
     SkASSERT(coeffs.size() == 2);
-    keyContext.pipelineDataGatherer()->writeHalf(SkV2{coeffs[0], coeffs[1]});
+    keyContext.pipelineDataGatherer()->writeHalfPaint(SkV2{coeffs[0], coeffs[1]});
 
     keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kHSLCBlender);
 }
@@ -947,16 +949,16 @@ void add_matrix_colorfilter_uniform_data(const KeyContext& keyContext,
                                          const MatrixColorFilterBlock::MatrixColorFilterData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kMatrixColorFilter)
     auto gatherer = keyContext.pipelineDataGatherer();
-    gatherer->writeHalf(data.fMatrix);
-    gatherer->writeHalf(data.fTranslate);
+    gatherer->writeHalfPaint(data.fMatrix);
+    gatherer->writeHalfPaint(data.fTranslate);
     if (data.fClamp) {
-        gatherer->writeHalf(SkV2{0.f, 1.f});
+        gatherer->writeHalfPaint(SkV2{0.f, 1.f});
     } else {
         // Alpha is always clamped to 1. RGB clamp to the max finite half value.
         static constexpr float kUnclamped = 65504.f; // SK_HalfMax converted back to float
         SkASSERT(SkHalfToFloat(SkFloatToHalf(kUnclamped)) == kUnclamped);
         SkASSERT(SkHalfToFloat(SkFloatToHalf(-kUnclamped)) == -kUnclamped);
-        gatherer->writeHalf(SkV2{-kUnclamped, kUnclamped});
+        gatherer->writeHalfPaint(SkV2{-kUnclamped, kUnclamped});
     }
 }
 
@@ -965,8 +967,8 @@ void add_hsl_matrix_colorfilter_uniform_data(
         const MatrixColorFilterBlock::MatrixColorFilterData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kHSLMatrixColorFilter)
     auto gatherer = keyContext.pipelineDataGatherer();
-    gatherer->writeHalf(data.fMatrix);
-    gatherer->writeHalf(data.fTranslate);
+    gatherer->writeHalfPaint(data.fMatrix);
+    gatherer->writeHalfPaint(data.fTranslate);
 }
 
 } // anonymous namespace
@@ -1051,7 +1053,7 @@ void add_color_space_uniforms(const KeyContext& keyContext,
         SkASSERT(!(steps.fFlags.unpremul && steps.fFlags.premul));
         // And given these assertions, the 6 cases encoded in srcW and dstW are reduced to:
         //    identity, do unpremul, do premul, and make opaque (alpha swizzle 1)
-        keyContext.pipelineDataGatherer()->writeHalf(SkV2{srcW, dstW});
+        keyContext.pipelineDataGatherer()->writeHalfPaint(SkV2{srcW, dstW});
         return;
     }
 
@@ -1080,7 +1082,7 @@ void add_color_space_uniforms(const KeyContext& keyContext,
                             m[1], m[4], m[7],
                             m[2], m[5], m[8]);
     }
-    keyContext.pipelineDataGatherer()->writeHalf(gamutTransform);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(gamutTransform);
 
     // To encode which transfer function to apply, we use the src and dst gamma values:
     // - identity: 0
@@ -1096,19 +1098,19 @@ void add_color_space_uniforms(const KeyContext& keyContext,
                            type == skcms_TFType_PQish ? -2.f :
                            type == skcms_TFType_HLGish ? -1.f :
                                                          0.f;
-        keyContext.pipelineDataGatherer()->write(SkV4{srcG, steps.fSrcTF.a,
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{srcG, steps.fSrcTF.a,
                                                       steps.fSrcTF.b, steps.fSrcTF.c});
-        keyContext.pipelineDataGatherer()->write(SkV4{steps.fSrcTF.d, steps.fSrcTF.e,
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{steps.fSrcTF.d, steps.fSrcTF.e,
                                                       steps.fSrcTF.f, srcW});
     } else if (treatLinearAsSRGB) {
         // Branchless identity function with g=1 (sRGB-ish)
         static constexpr skcms_TransferFunction kI = SkNamedTransferFn::kLinear;
-        keyContext.pipelineDataGatherer()->write(SkV4{kI.g, kI.a, kI.b, kI.c});
-        keyContext.pipelineDataGatherer()->write(SkV4{kI.d, kI.e, kI.f, srcW});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{kI.g, kI.a, kI.b, kI.c});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{kI.d, kI.e, kI.f, srcW});
     } else {
         // Branched identity that actually skips all operations
-        keyContext.pipelineDataGatherer()->write(SkV4{0.f, 0.f, 0.f, 0.f});
-        keyContext.pipelineDataGatherer()->write(SkV4{0.f, 0.f, 0.f, srcW});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{0.f, 0.f, 0.f, 0.f});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{0.f, 0.f, 0.f, srcW});
     }
 
     if (steps.fFlags.encode) {
@@ -1117,17 +1119,17 @@ void add_color_space_uniforms(const KeyContext& keyContext,
                            type == skcms_TFType_PQish ? -2.f :
                            type == skcms_TFType_HLGinvish ? -1.f :
                                                             0.f;
-        keyContext.pipelineDataGatherer()->write(SkV4{dstG, steps.fDstTFInv.a,
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{dstG, steps.fDstTFInv.a,
                                                       steps.fDstTFInv.b, steps.fDstTFInv.c});
-        keyContext.pipelineDataGatherer()->write(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e,
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e,
                                                       steps.fDstTFInv.f, dstW});
     } else if (treatLinearAsSRGB) {
         static constexpr skcms_TransferFunction kI = SkNamedTransferFn::kLinear;
-        keyContext.pipelineDataGatherer()->write(SkV4{kI.g, kI.a, kI.b, kI.c});
-        keyContext.pipelineDataGatherer()->write(SkV4{kI.d, kI.e, kI.f, dstW});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{kI.g, kI.a, kI.b, kI.c});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{kI.d, kI.e, kI.f, dstW});
     } else {
-        keyContext.pipelineDataGatherer()->write(SkV4{0.f, 0.f, 0.f, 0.f});
-        keyContext.pipelineDataGatherer()->write(SkV4{0.f, 0.f, 0.f, dstW});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{0.f, 0.f, 0.f, 0.f});
+        keyContext.pipelineDataGatherer()->writePaint(SkV4{0.f, 0.f, 0.f, dstW});
     }
 
     const bool hasOOTFUniforms = id == BuiltInCodeSnippetID::kColorSpaceXformColorFilter;
@@ -1155,8 +1157,8 @@ void add_color_space_uniforms(const KeyContext& keyContext,
           }
         }
 
-        keyContext.pipelineDataGatherer()->write(src_ootf);
-        keyContext.pipelineDataGatherer()->write(dst_ootf);
+        keyContext.pipelineDataGatherer()->writePaint(src_ootf);
+        keyContext.pipelineDataGatherer()->writePaint(dst_ootf);
     } else {
       SkASSERT(!steps.fFlags.src_ootf);
       SkASSERT(!steps.fFlags.dst_ootf);
@@ -1222,25 +1224,25 @@ namespace {
 void add_analytic_clip_data(const KeyContext& keyContext,
                             const NonMSAAClipBlock::NonMSAAClipData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticClip)
-    keyContext.pipelineDataGatherer()->write(data.fRect);
-    keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
-    keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
+    keyContext.pipelineDataGatherer()->writePaint(data.fRect);
+    keyContext.pipelineDataGatherer()->writePaint(data.fRadiusPlusHalf);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(data.fEdgeSelect);
 }
 
 void add_analytic_and_atlas_clip_data(const KeyContext& keyContext,
                                       const NonMSAAClipBlock::NonMSAAClipData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticAndAtlasClip)
-    keyContext.pipelineDataGatherer()->write(data.fRect);
-    keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
-    keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
-    keyContext.pipelineDataGatherer()->write(data.fTexCoordOffset);
-    keyContext.pipelineDataGatherer()->write(data.fMaskBounds);
+    keyContext.pipelineDataGatherer()->writePaint(data.fRect);
+    keyContext.pipelineDataGatherer()->writePaint(data.fRadiusPlusHalf);
+    keyContext.pipelineDataGatherer()->writeHalfPaint(data.fEdgeSelect);
+    keyContext.pipelineDataGatherer()->writePaint(data.fTexCoordOffset);
+    keyContext.pipelineDataGatherer()->writePaint(data.fMaskBounds);
     if (data.fAtlasTexture) {
-        keyContext.pipelineDataGatherer()->write(
+        keyContext.pipelineDataGatherer()->writePaint(
                 SkSize::Make(1.f/data.fAtlasTexture->dimensions().width(),
                              1.f/data.fAtlasTexture->dimensions().height()));
     } else {
-        keyContext.pipelineDataGatherer()->write(SkSize::Make(0, 0));
+        keyContext.pipelineDataGatherer()->writePaint(SkSize::Make(0, 0));
     }
 }
 
@@ -1337,7 +1339,8 @@ static void gather_runtime_effect_uniforms(const KeyContext& keyContext,
         return;  // precompiling
     }
 
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, graphiteUniforms);)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer->paintUniformManager(),
+                                                 graphiteUniforms);)
 
     SkSpan<const SkRuntimeEffect::Uniform> rtsUniforms = effect->uniforms();
 
@@ -1349,7 +1352,7 @@ static void gather_runtime_effect_uniforms(const KeyContext& keyContext,
             // Get a pointer to the offset in our data for this uniform.
             const uint8_t* uniformPtr = uniformBase + rtsUniforms[index].offset;
             // Pass the uniform data to the gatherer.
-            gatherer->write(uniform, uniformPtr);
+            gatherer->writePaint(uniform, uniformPtr);
         }
     }
 }

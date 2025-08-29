@@ -21,7 +21,6 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
     const Caps* caps = context->priv().caps();
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
 
-    // Setup caches
     UniformDataCache uCache;
     TextureDataCache tCache;
 
@@ -56,8 +55,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
     TextureDataCache::Index tID1;
     {
         PipelineDataGatherer gatherer{Layout::kStd430};
-        SkDEBUGCODE(UniformExpectationsValidator uev(&gatherer, kUniforms);)
-        gatherer.write(SkV4{1.f, 2.f, 3.f, 4.f});
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.renderStepUniformManager(),
+                                                     kUniforms);)
+        gatherer.writeRenderStep(SkV4{1.f, 2.f, 3.f, 4.f});
         gatherer.add(proxyA, {});
 
         auto [udb, tdb] = gatherer.endRenderStepData(/*performsShading=*/true);
@@ -69,7 +69,6 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
         REPORTER_ASSERT(reporter, tCache.bindingCount() == 1);
         REPORTER_ASSERT(reporter, tCache.uniqueTextureCount() == 1);
 
-        // Verify lookup
         REPORTER_ASSERT(reporter, uCache.lookup(uID1).fCpuData == udb);
         REPORTER_ASSERT(reporter, tCache.lookup(tID1) == tdb);
     }
@@ -77,9 +76,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
     // Block B: Add the exact same data to test de-duplication
     {
         PipelineDataGatherer gatherer{Layout::kStd430};
-        SkDEBUGCODE(UniformExpectationsValidator uev(&gatherer, kUniforms);)
-        gatherer.write(SkV4{1.f, 2.f, 3.f, 4.f}); // Same uniform data
-        gatherer.add(proxyA, {});                 // Same texture
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.renderStepUniformManager(),
+                                                     kUniforms);)
+        gatherer.writeRenderStep(SkV4{1.f, 2.f, 3.f, 4.f}); // Same uniform data
+        gatherer.add(proxyA, {});                           // Same texture
 
         auto [udb, tdb] = gatherer.endRenderStepData(/*performsShading=*/true);
 
@@ -89,20 +89,22 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
         REPORTER_ASSERT(reporter, uID2 == uID1); // Index should be the same
         REPORTER_ASSERT(reporter, tID2 == tID1); // Index should be the same
 
-        REPORTER_ASSERT(reporter, uCache.count() == 1); // Count should NOT increase
+        REPORTER_ASSERT(reporter, uCache.count() == 1);        // Count should NOT increase
         REPORTER_ASSERT(reporter, tCache.bindingCount() == 1); // Count should NOT increase
     }
 
     // Block C: Add new unique uniforms but the same texture
+    UniformDataCache::Index uID3;
     {
         PipelineDataGatherer gatherer{Layout::kStd430};
-        SkDEBUGCODE(UniformExpectationsValidator uev(&gatherer, kUniforms);)
-        gatherer.write(SkV4{5.f, 6.f, 7.f, 8.f}); // Different uniform data
-        gatherer.add(proxyA, {});                 // Same texture
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.renderStepUniformManager(),
+                                                     kUniforms);)
+        gatherer.writeRenderStep(SkV4{5.f, 6.f, 7.f, 8.f}); // Different uniform data
+        gatherer.add(proxyA, {});                           // Same texture
 
         auto [udb, tdb] = gatherer.endRenderStepData(/*performsShading=*/true);
 
-        UniformDataCache::Index uID3 = uCache.insert(udb);
+        uID3 = uCache.insert(udb);
         TextureDataCache::Index tID3 = tCache.insert(tdb);
 
         REPORTER_ASSERT(reporter, uID3 != uID1); // New unique uniform index
@@ -115,9 +117,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
     // Block D: Add the same uniforms but a new unique texture
     {
         PipelineDataGatherer gatherer{Layout::kStd430};
-        SkDEBUGCODE(UniformExpectationsValidator uev(&gatherer, kUniforms);)
-        gatherer.write(SkV4{1.f, 2.f, 3.f, 4.f}); // Same uniform data as Block A
-        gatherer.add(proxyB, {});                 // Different texture
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.renderStepUniformManager(),
+                                                     kUniforms);)
+        gatherer.writeRenderStep(SkV4{1.f, 2.f, 3.f, 4.f}); // Same uniform data as Block A
+        gatherer.add(proxyB, {});                           // Different texture
 
         auto [udb, tdb] = gatherer.endRenderStepData(/*performsShading=*/true);
 
@@ -130,5 +133,32 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
         REPORTER_ASSERT(reporter, uCache.count() == 2);        // Uniform count does not increase
         REPORTER_ASSERT(reporter, tCache.bindingCount() == 2); // Texture count increases
         REPORTER_ASSERT(reporter, tCache.uniqueTextureCount() == 2);
+    }
+
+    // Block E: Add a unique paint uniform.
+    UniformDataCache::Index uID5;
+    {
+        PipelineDataGatherer gatherer{Layout::kStd430};
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.paintUniformManager(), kUniforms);)
+        gatherer.writePaint(SkV4{10.f, 20.f, 30.f, 40.f}); // New unique paint uniform data
+
+        UniformDataBlock udb = gatherer.endPaintData();
+        uID5 = uCache.insert(udb);
+
+        REPORTER_ASSERT(reporter, uID5 != uID1 && uID5 != uID3); // New unique uniform index
+        REPORTER_ASSERT(reporter, uCache.count() == 3);          // Uniform count increases
+    }
+
+    // Block F: Add the same paint uniform to test de-duplication.
+    {
+        PipelineDataGatherer gatherer{Layout::kStd430};
+        SkDEBUGCODE(UniformExpectationsValidator uev(gatherer.paintUniformManager(), kUniforms);)
+        gatherer.writePaint(SkV4{10.f, 20.f, 30.f, 40.f}); // Same paint uniform data as Block E
+
+        UniformDataBlock udb = gatherer.endPaintData();
+        UniformDataCache::Index uID6 = uCache.insert(udb);
+
+        REPORTER_ASSERT(reporter, uID6 == uID5);        // Index should be the same
+        REPORTER_ASSERT(reporter, uCache.count() == 3); // Count should NOT increase
     }
 }

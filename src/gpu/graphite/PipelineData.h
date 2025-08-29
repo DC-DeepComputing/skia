@@ -336,11 +336,13 @@ public:
 
 class PipelineDataGatherer {
 public:
-    PipelineDataGatherer(Layout layout) : fUniformManager(layout) {}
+    PipelineDataGatherer(Layout layout)
+            : fPaintUniformManager(layout), fRenderStepUniformManager(layout) {}
 
-    // Fully resets uniforms and textures
+    // Fully resets both uniforms (paint and renderstep)and textures
     void resetForDraw() {
-        fUniformManager.reset();
+        fPaintUniformManager.reset();
+        fRenderStepUniformManager.reset();
         fTextures.clear();
         fPaintTextureCount = 0;
     }
@@ -349,13 +351,14 @@ public:
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
     void checkReset() const {
         SkASSERT(fTextures.empty());
-        SkASSERT(fUniformManager.isReset());
+        SkASSERT(fPaintUniformManager.isReset());
+        SkASSERT(fRenderStepUniformManager.isReset());
         SkASSERT(fPaintTextureCount == 0);
     }
 
     void checkRewind() const {
         SkASSERT(fTextures.size() == fPaintTextureCount);
-        SkASSERT(fUniformManager.isReset());
+        SkASSERT(fRenderStepUniformManager.isReset());
     }
 #endif // SK_DEBUG
 
@@ -366,7 +369,7 @@ public:
         // TODO: Once paint and renderstep uniforms are combined, endPaintData() will return void
         // and this will just save the state of the UniformManager to rewind to.
         fPaintTextureCount = fTextures.size();
-        return UniformDataBlock::Wrap(&fUniformManager);
+        return UniformDataBlock::Wrap(&fPaintUniformManager);
     }
 
     // Mark the end of extract uniforms and textures from the RenderStep that will be combined with
@@ -385,7 +388,7 @@ public:
         if (!performsShading) {
             textures = textures.subspan(fPaintTextureCount);
         }
-        return {UniformDataBlock::Wrap(&fUniformManager), TextureDataBlock(textures)};
+        return {UniformDataBlock::Wrap(&fRenderStepUniformManager), TextureDataBlock(textures)};
     }
 
     // Rewind the PipelineDataGatherer to collect new uniforms and textures for another RenderStep
@@ -394,7 +397,7 @@ public:
         fTextures.resize_back(fPaintTextureCount);
         // TODO: Eventually this will not reset the uniform manager, but set its current byte offset
         // and required alignment to what was saved in endPaintData().
-        fUniformManager.reset();
+        fRenderStepUniformManager.reset();
     }
 
     // Append a sampled texture that will be bound with a sampler matching `samplerDesc`. Textures
@@ -404,20 +407,36 @@ public:
     }
 
     // Mimic the type-safe API available in UniformManager
-    template <typename T> void write(const T& t) { fUniformManager.write(t); }
-    template <typename T> void writeHalf(const T& t) { fUniformManager.writeHalf(t); }
-    template <typename T> void writeArray(SkSpan<const T> t) { fUniformManager.writeArray(t); }
-    template <typename T> void writeHalfArray(SkSpan<const T> t) {
-        fUniformManager.writeHalfArray(t);
+    template <typename T> void writePaint(const T& t) {
+        fPaintUniformManager.write(t);
+    }
+    template <typename T> void writeRenderStep(const T& t) {
+        fRenderStepUniformManager.write(t);
+    }
+    template <typename T> void writeHalfPaint(const T& t) {
+        fPaintUniformManager.writeHalf(t);
+    }
+    template <typename T> void writeHalfRenderStep(const T& t) {
+        fRenderStepUniformManager.writeHalf(t);
+    }
+    template <typename T> void writeArrayPaint(SkSpan<const T> t) {
+        fPaintUniformManager.writeArray(t);
+    }
+    void writePaint(const Uniform& u, const void* data) {
+        fPaintUniformManager.write(u, data);
+    }
+    void writePaintColor(const SkPMColor4f& color) {
+        fPaintUniformManager.writePaintColor(color);
+    }
+    void beginStructPaint(int baseAligment) {
+        fPaintUniformManager.beginStruct(baseAligment);
+    }
+    void endStructPaint() {
+        fPaintUniformManager.endStruct();
     }
 
-    void write(const Uniform& u, const void* data) { fUniformManager.write(u, data); }
-
-    void writePaintColor(const SkPMColor4f& color) { fUniformManager.writePaintColor(color); }
-
-    void beginStruct(int baseAligment) { fUniformManager.beginStruct(baseAligment); }
-    void endStruct() { fUniformManager.endStruct(); }
-
+    SkDEBUGCODE(UniformManager* paintUniformManager() {return &fPaintUniformManager; })
+    SkDEBUGCODE(UniformManager* renderStepUniformManager() { return &fRenderStepUniformManager; })
 private:
     SkDEBUGCODE(friend class UniformExpectationsValidator;)
 
@@ -426,7 +445,8 @@ private:
     // and textures.
     // TODO: Right now paint uniforms and renderstep uniforms are bound separately so rewind() only
     // applies to the textures.
-    UniformManager fUniformManager;
+    UniformManager fPaintUniformManager;
+    UniformManager fRenderStepUniformManager;
     skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
     int fPaintTextureCount = 0;
 };
@@ -434,19 +454,19 @@ private:
 #ifdef SK_DEBUG
 class UniformExpectationsValidator {
 public:
-    UniformExpectationsValidator(PipelineDataGatherer* gatherer,
+    UniformExpectationsValidator(UniformManager* manager,
                                  SkSpan<const Uniform> expectedUniforms,
                                  bool isSubstruct=false)
-            : fGatherer(gatherer) {
-        fGatherer->fUniformManager.setExpectedUniforms(expectedUniforms, isSubstruct);
+            : fManager(manager) {
+        fManager->setExpectedUniforms(expectedUniforms, isSubstruct);
     }
 
     ~UniformExpectationsValidator() {
-        fGatherer->fUniformManager.doneWithExpectedUniforms();
+        fManager->doneWithExpectedUniforms();
     }
 
 private:
-    PipelineDataGatherer* fGatherer;
+    UniformManager* fManager;
 
     UniformExpectationsValidator(UniformExpectationsValidator &&) = delete;
     UniformExpectationsValidator(const UniformExpectationsValidator &) = delete;

@@ -142,7 +142,8 @@ void SDFTextRenderStep::writeVertices(DrawWriter* dw,
 void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                  PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer->renderStepUniformManager(),
+                                                 this->uniforms());)
 
     const SubRunData& subRunData = params.geometry().subRunData();
     unsigned int numProxies;
@@ -153,11 +154,11 @@ void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxies && numProxies > 0);
 
     // write uniforms
-    gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
-    gatherer->write(subRunData.deviceToLocal());
+    gatherer->writeRenderStep(params.transform().matrix());  // subRunDeviceMatrix
+    gatherer->writeRenderStep(subRunData.deviceToLocal());
     SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
                                    1.f/proxies[0]->dimensions().height()};
-    gatherer->write(atlasDimensionsInverse);
+    gatherer->writeRenderStep(atlasDimensionsInverse);
 
     float gammaAdjustment = 0;
     // TODO: generate LCD adjustment
@@ -169,7 +170,7 @@ void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gammaAdjustment = dfAdjustTable->getAdjustment(lum, subRunData.useGammaCorrectDistanceTable());
 #endif
     SkV2 gammaParams = {gammaAdjustment, subRunData.useGammaCorrectDistanceTable() ? 1.f : 0.f};
-    gatherer->writeHalf(gammaParams);
+    gatherer->writeHalfRenderStep(gammaParams);
 
     // write textures and samplers
     for (unsigned int i = 0; i < numProxies; ++i) {
