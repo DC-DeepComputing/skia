@@ -213,7 +213,7 @@ void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
 void CoverageMaskRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                       PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms(), false, true);)
 
     const CoverageMaskShape& coverageMask = params.geometry().coverageMaskShape();
     const TextureProxy* proxy = coverageMask.textureProxy();
@@ -232,7 +232,7 @@ void CoverageMaskRenderStep::writeUniformsAndTextures(const DrawParams& params,
     maskToDevice.preScale(proxy->dimensions().width(), proxy->dimensions().height());
 
     // Write uniforms:
-    gatherer->write(maskToDevice);
+    gatherer->writeRenderStep(maskToDevice);
 
     // Write textures and samplers:
     const bool pixelAligned =

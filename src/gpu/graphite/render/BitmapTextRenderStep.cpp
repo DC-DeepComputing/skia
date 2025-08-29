@@ -171,7 +171,7 @@ void BitmapTextRenderStep::writeVertices(DrawWriter* dw,
 void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                     PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms(), false, true);)
 
     const SubRunData& subRunData = params.geometry().subRunData();
     unsigned int numProxies;
@@ -182,11 +182,11 @@ void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxies && numProxies > 0);
 
     // write uniforms
-    gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
-    gatherer->write(subRunData.deviceToLocal());
+    gatherer->writeRenderStep(params.transform().matrix());  // subRunDeviceMatrix
+    gatherer->writeRenderStep(subRunData.deviceToLocal());
     SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
                                    1.f/proxies[0]->dimensions().height()};
-    gatherer->write(atlasDimensionsInverse);
+    gatherer->writeRenderStep(atlasDimensionsInverse);
 
     // write textures and samplers
     for (unsigned int i = 0; i < numProxies; ++i) {

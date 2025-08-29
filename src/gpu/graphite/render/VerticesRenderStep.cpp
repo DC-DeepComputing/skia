@@ -209,9 +209,9 @@ void VerticesRenderStep::writeUniformsAndTextures(const DrawParams& params,
     // Vertices are transformed on the GPU. Store PaintDepth as a uniform to avoid copying the
     // same depth for each vertex.
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
-    gatherer->write(params.transform().matrix());
-    gatherer->write(params.order().depthAsFloat());
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms(), false, true);)
+    gatherer->writeRenderStep(params.transform().matrix());
+    gatherer->writeRenderStep(params.order().depthAsFloat());
 }
 
 }  // namespace skgpu::graphite

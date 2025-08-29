@@ -87,16 +87,16 @@ void AnalyticBlurRenderStep::writeVertices(DrawWriter* writer,
 void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                       PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms(), false, true);)
 
-    gatherer->write(params.transform().matrix());
+    gatherer->writeRenderStep(params.transform().matrix());
 
     const AnalyticBlurMask& blur = params.geometry().analyticBlurMask();
-    gatherer->write(blur.deviceToScaledShape().asM33());
-    gatherer->write(blur.shapeData().asSkRect());
-    gatherer->writeHalf(blur.blurData());
-    gatherer->write(static_cast<int>(blur.shapeType()));
-    gatherer->write(params.order().depthAsFloat());
+    gatherer->writeRenderStep(blur.deviceToScaledShape().asM33());
+    gatherer->writeRenderStep(blur.shapeData().asSkRect());
+    gatherer->writeHalfRenderStep(blur.blurData());
+    gatherer->writeRenderStep(static_cast<int>(blur.shapeType()));
+    gatherer->writeRenderStep(params.order().depthAsFloat());
 
     SkSamplingOptions samplingOptions = blur.shapeType() == AnalyticBlurMask::ShapeType::kRect
                                                 ? SkFilterMode::kLinear

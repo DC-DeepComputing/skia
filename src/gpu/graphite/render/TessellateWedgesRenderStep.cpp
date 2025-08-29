@@ -208,9 +208,9 @@ void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
 void TessellateWedgesRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                           PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(gatherer->checkRewind());
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms(), false, true);)
 
-    gatherer->write(params.transform().matrix());
+    gatherer->writeRenderStep(params.transform().matrix());
 }
 
 }  // namespace skgpu::graphite
