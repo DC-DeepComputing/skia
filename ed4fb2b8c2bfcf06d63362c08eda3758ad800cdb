@@ -37,6 +37,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5413063c_2f9cef4a",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-08-29T15:20:46Z",
+      "side": 1,
+      "message": "note android uses kRec2020 instead of kRec709 in the cases we don\u0027t rewrite to sRGB.",
+      "range": {
+        "startLine": 130,
+        "startChar": 40,
+        "endLine": 130,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bb39fa93_79621d6b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkColorSpace.h",
+              "range": {
+                "startLine": 130,
+                "startChar": 0,
+                "endLine": 130,
+                "endChar": 0
+              },
+              "replacement": "// Note that Android uses this kRec2020 instead of kRec709.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e23665a4_d1b9f788",
         "filename": "include/core/SkColorSpace.h",
         "patchSetId": 1
@@ -96,6 +137,30 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "ba0f2ea3_62522a55",
+      "range": {
+        "startLine": 139,
+        "startChar": 3,
+        "endLine": 139,
+        "endChar": 32
+      },
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0339d3a6_8da9d0fd",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-08-29T15:20:46Z",
+      "side": 1,
+      "message": "Should we make it explicit in the doc that we\u0027re using those values?",
+      "parentUuid": "e400016f_a80857ea",
       "range": {
         "startLine": 139,
         "startChar": 3,
