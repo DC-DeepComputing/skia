@@ -77,7 +77,11 @@ public:
      *  or the contour is known to be convex, return kUnknown. If the direction was determined,
      *  it is cached to make subsequent calls return quickly.
      */
-    static SkPathFirstDirection ComputeFirstDirection(const SkPath&);
+    static SkPathFirstDirection ComputeFirstDirection(const SkPathRaw&);
+
+    static SkPathFirstDirection ComputeFirstDirection(const SkPath& path) {
+        return ComputeFirstDirection(SkPathPriv::Raw(path));
+    }
 
     static bool IsClosedSingleContour(SkSpan<const SkPathVerb> verbs) {
         if (verbs.empty()) {
