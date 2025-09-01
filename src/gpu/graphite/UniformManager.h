@@ -224,16 +224,19 @@ public:
     SkSpan<const char> finish() {
         if (fStorage.empty()) {
             return SkSpan<const char>();
-        } else {
+        } else if (fReqAlignment) {
+            // A render step may have no uniforms, leaving fReqAlignment as 0 after a rewind. If
+            // paint data exists, storage will still be non-empty, so we guard against alignTo(0).
             this->alignTo(fReqAlignment);
-            return SkSpan(fStorage);
         }
+        return SkSpan(fStorage);
     }
 
     size_t size() const { return fStorage.size(); }
 
     void resetWithNewLayout(Layout layout);
     void reset() { this->resetWithNewLayout(fLayout); }
+    void rewindTo(size_t size);
 
     // scalars
     void write(float f)     { this->write<SkSLType::kFloat>(&f); }

@@ -272,6 +272,25 @@ bool UniformManager::isReset() const {
     return fStorage.empty();
 }
 
+void UniformManager::rewindTo(size_t size) {
+    SkASSERT(size <= (size_t)fStorage.size());
+    fStorage.resize(size);
+
+    // Reset tracking state for the 'new' block being built after the rewind point.
+    // The overall layout and whether a paint color was written (in the preserved part)
+    // should remain unchanged.
+    fReqAlignment = 0;
+    fStructBaseAlignment = 0;
+
+#ifdef SK_DEBUG
+    // The offset calculator must be reset to the new size.
+    fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(fLayout, size);
+    fSubstructCalculator = {};
+    fExpectedUniforms = {};
+    fExpectedUniformIndex = 0;
+#endif
+}
+
 void UniformManager::setExpectedUniforms(SkSpan<const Uniform> expected, bool isSubstruct) {
     fExpectedUniforms = expected;
     fExpectedUniformIndex = 0;
