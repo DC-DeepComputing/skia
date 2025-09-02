@@ -70,6 +70,41 @@
       },
       "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "043e92ac_9a2fd63e",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2551,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-02T16:08:54Z",
+      "side": 1,
+      "message": "This used to be guarded by the `ymaxCross` check, I think it would still make sense to only call `setFirstDirection` when d !\u003d unknown (if only to avoid unneeded atomic churn).",
+      "fixSuggestions": [
+        {
+          "fixId": "42932cd1_ac60455a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath.cpp",
+              "range": {
+                "startLine": 2551,
+                "startChar": 0,
+                "endLine": 2552,
+                "endChar": 0
+              },
+              "replacement": "    if (d !\u003d SkPathFirstDirection::kUnknown) {\n        path.setFirstDirection(d);\n    }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
