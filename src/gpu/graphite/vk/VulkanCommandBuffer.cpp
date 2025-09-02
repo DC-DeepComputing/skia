@@ -979,6 +979,7 @@ bool VulkanCommandBuffer::addDrawPass(DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindAppendDataBuffer: {
                 auto bdb = static_cast<DrawPassCommands::BindAppendDataBuffer*>(cmdPtr);
+                // Make mappable?
                 this->bindInputBuffer(bdb->fAppendData.fBuffer, bdb->fAppendData.fOffset,
                                       VulkanGraphicsPipeline::kAppendDataBufferIndex);
                 break;
