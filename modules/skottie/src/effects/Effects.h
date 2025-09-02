@@ -95,6 +95,8 @@ private:
                                                            sk_sp<sksg::RenderNode>) const;
     sk_sp<sksg::RenderNode> attachSphereEffect            (const skjson::ArrayValue&,
                                                            sk_sp<sksg::RenderNode>) const;
+    sk_sp<sksg::RenderNode> attachCylinderEffect          (const skjson::ArrayValue&,
+                                                           sk_sp<sksg::RenderNode>) const;
     sk_sp<sksg::RenderNode> attachThresholdEffect         (const skjson::ArrayValue&,
                                                            sk_sp<sksg::RenderNode>) const;
     sk_sp<sksg::RenderNode> attachTintEffect              (const skjson::ArrayValue&,
