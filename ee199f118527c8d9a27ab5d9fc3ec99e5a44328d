@@ -16,6 +16,144 @@
       "message": "PTAL",
       "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1b96c3_09c9a49b",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "If UniformManager remembers the start offset of its first recorded uniform, then `Wrap` should work for both the paint and render step subspans.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 60
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1960ed88_c5638cc1",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "Add a `// For SkSpan constructor` comment here (assuming we don\u0027t just reuse Wrap)",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 38
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a57134bd_57ffaaab",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "This is leaking an internal detail so not something I\u0027d put into a public comment.",
+      "range": {
+        "startLine": 402,
+        "startChar": 58,
+        "endLine": 402,
+        "endChar": 92
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c29103_172789bb",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "This validation would also need to subtract the `fStartingOffset`.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 0
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b5c7f5_a6049618",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "While we still have 2 bindings for renderstep and paint uniforms, we have to separately track the required alignment for each subspan collected here.\n\nThe alignment and writing of data for paints starts out simple because it can assume it starts at offset 0 so the data is pre-aligned for any type.\n\nWhile the `fReqAlignment` is set back to 0, there are subtle bugs with the actual written data and the subspan for renderstep data because it\u0027s starting at whatever offset the aligned paint data ended at. In practice, this often won\u0027t show an issue because everything is typically 4 or 16 byte aligned, but I think we need to have `UniformManager` actually store this starting offset instead of PipelineDataGatherer.\n\nThe perk is that finish() for renderstep data can just return the exact subspan it needs.\n\nSee longer comment in alignTo().",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 41
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6388ab_d5e41a13",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-02T14:42:35Z",
+      "side": 1,
+      "message": "In alignTo() and append(), we need to ensure that all of the data is at the correct alignment relative to the starting byte index of the storage. This is 0 currently, but if we reusing the UniformManager but still having 2 bindings, the render step data will start at some offset in this CPU data but then be copied to GPU data based on its determined required alignment.\n\nThe actual CPU data can be unaligned since we are just memcpy\u0027ing things into it and not accessing uniforms themselves in this storage.\n\nTo calculate the correct GPU-alignment relative to the starting offset, we just need to have UniformManager remember its starting offset (default 0, set to the paint data later on) and then `offset \u003d fStorage.size() - fStartingOffset` before we call SkAlignTo on it or check for it being pre-aligned (up in alignTo).",
+      "range": {
+        "startLine": 536,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 0
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
