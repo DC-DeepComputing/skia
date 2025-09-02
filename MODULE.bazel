@@ -130,7 +130,7 @@ crate.spec(
 )
 crate.spec(
     package = "png",
-    version = "=0.18.0-rc",
+    version = "=0.18.0",
 )
 crate.spec(
     features = [
