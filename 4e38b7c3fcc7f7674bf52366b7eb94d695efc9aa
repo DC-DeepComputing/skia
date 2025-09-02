@@ -22,6 +22,30 @@
       },
       "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23cc4191_0ce6b027",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-02T16:02:29Z",
+      "side": 1,
+      "message": "yes -- clarified the CL description",
+      "parentUuid": "0a3f223b_160f6b58",
+      "range": {
+        "startLine": 10,
+        "startChar": 25,
+        "endLine": 10,
+        "endChar": 60
+      },
+      "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
