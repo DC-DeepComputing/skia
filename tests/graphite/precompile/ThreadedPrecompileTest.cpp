@@ -130,6 +130,9 @@ std::pair<SkPaint, PaintOptions> conical(int numStops) {
 
 // The 12 comes from 4 types of gradient times 3 combinations (i.e., 4,8,N) for each one.
 static constexpr int kNumDiffPipelines = 12;
+// With the current PipelineManager's behavior we expect two Pipeline Cache searches
+// per Pipline
+static constexpr int kNumExpectedCacheSearchesPerPipeline = 2;
 
 typedef std::pair<SkPaint, PaintOptions> (*GradientCreationFunc)(int numStops);
 
@@ -397,18 +400,28 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileTest,
              kDontPermute);
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+    const PipelineManager::Stats& mgrStats =
+            context->priv().sharedContext()->pipelineManager()->getStats();
 
     // The 48 comes from:
     //     4 gradient flavors (linear, radial, ...) *
     //     3 types of each flavor (4, 8, N) *
     //     4 precompile threads
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    constexpr int kExpectedPipelines = kNumDiffPipelines * kNumPrecompileThreads;  // 48
+    constexpr int kNumExpectedSearches = kNumExpectedCacheSearchesPerPipeline *
+                                         kExpectedPipelines;
+
+    const int kNumHolisticMisses = stats.fGraphicsCacheMisses + mgrStats.fFoundTasksPreemptive;
+
+    REPORTER_ASSERT(reporter,
+                    stats.fGraphicsCacheHits + kNumHolisticMisses == kNumExpectedSearches);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
     REPORTER_ASSERT(reporter, stats.fGraphicsPurges == 0);
 
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
-                                                            stats.fGraphicsRaces);
+    REPORTER_ASSERT(reporter,
+                    kNumHolisticMisses == kNumExpectedCacheSearchesPerPipeline *
+                                           (stats.fGraphicsCacheAdditions + stats.fGraphicsRaces));
 }
 
 // This test runs two threads compiling the gradient flavours and two threads
@@ -427,18 +440,22 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileCompileTest,
              kDontPermute);
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+    const PipelineManager::Stats& mgrStats =
+            context->priv().sharedContext()->pipelineManager()->getStats();
 
     // The 48 comes from:
     //     4 gradient flavors (linear, radial, ...) *
     //     3 types of each flavor (4, 8, N) *
     //     (2 normal-compile threads + 2 pre-compile threads)
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits +
+                                      stats.fGraphicsCacheMisses +
+                              mgrStats.fFoundTasksPreemptive == 2*48);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
     REPORTER_ASSERT(reporter, stats.fGraphicsPurges == 0);
 
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
-                                                            stats.fGraphicsRaces);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses + mgrStats.fFoundTasksPreemptive
+                              == kNumExpectedCacheSearchesPerPipeline*(stats.fGraphicsCacheAdditions + stats.fGraphicsRaces));
 }
 
 // This test compiles the gradient flavors on a thread and then tests out the time-based
@@ -468,7 +485,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelineCompilePurgingTest,
     GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumExpectedCacheSearchesPerPipeline *
+                                                            kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
     // Every created Pipeline should've been used since the start of this test
@@ -484,7 +502,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelineCompilePurgingTest,
     stats = context->priv().globalCache()->getStats();
 
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumExpectedCacheSearchesPerPipeline *
+                                                            kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
     // None of the created Pipelines should've been used since we started to sleep - so they
@@ -519,7 +538,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompilePurgingTest,
     GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumExpectedCacheSearchesPerPipeline *
+                                                            kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
     // Precompilation doesn't count as a use so all the Pipelines will be purged even though
@@ -544,18 +564,11 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileCompilePurgingTest,
 
     GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
-    // The 48 comes from:
-    //     4 gradient flavors (linear, radial, ...) *
-    //     3 types of each flavor (4, 8, N) *
-    //     (2 normal-compile threads + 2 pre-compile threads)
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
-                                                            stats.fGraphicsRaces);
+    // Given the use of both purging and permutations there is little that can be
+    // definitely tested here besides not crashing and no TSAN races.
+
     // Purges can force recreation of a Pipeline
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions >= kNumDiffPipelines);
-    // Given the use of permutations it is possible, though unlikely, that there are
-    // no races (particularly on Dawn/Metal).
-    //REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
 }
 
 #endif // SK_GRAPHITE
