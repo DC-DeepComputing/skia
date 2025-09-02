@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d37d14_6014e8ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Resolving since SwiftShader bots are now up and running correctly.",
+      "parentUuid": "e4d40ea1_0dfe11f7",
+      "revId": "34a4d64fc63009a516734ce0cb23b4a43fe07026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edce2dac_e0e8406d",

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e133ef_106cbdae",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64fe0c91_ce2df353",
+      "range": {
+        "startLine": 156,
+        "startChar": 1,
+        "endLine": 172,
+        "endChar": 65
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7f9b76c_7826c9c9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "Perhaps `Could not create compressed UploadSource` to differentiate from the uncompressed alternative?",
+      "range": {
+        "startLine": 455,
+        "startChar": 53,
+        "endLine": 455,
+        "endChar": 82
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aab0dad9_aa190cdf",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7f9b76c_7826c9c9",
       "range": {
         "startLine": 455,
         "startChar": 53,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9346520b_4880b308",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c01649b_513bab43",
+      "range": {
+        "startLine": 47,
+        "startChar": 80,
+        "endLine": 48,
+        "endChar": 81
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0773751b_65914b12",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "nit: You could also use the version of `ComputeLevelCount` that takes in `SkISize` (aka `dimensions` or `textureProxy.dimensions()`) directly if that would help fit it on to one line. Otherwise, there might be an extra space to be removed here - should just be 2 tab indents from `numExpectedLevels` (hard to tell with how gerrit shows whitespace - might be fine).",
+      "range": {
+        "startLine": 120,
+        "startChar": 44,
+        "endLine": 120,
+        "endChar": 83
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eba60af_10d3689e",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Thanks for the pointer. I see a bunch of these, let me follow up with a clean up CL separately.",
+      "parentUuid": "0773751b_65914b12",
       "range": {
         "startLine": 120,
         "startChar": 44,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30996620_f259d019",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "835cc619_ef474474",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 5
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d54b335_ec221965",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "Perhaps define this as a named static constant rather than magic #?",
+      "range": {
+        "startLine": 152,
+        "startChar": 45,
+        "endLine": 152,
+        "endChar": 46
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c894a41_d47110cf",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d54b335_ec221965",
       "range": {
         "startLine": 152,
         "startChar": 45,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ac1143a_38160635",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Tried it, it ended up needing more casts. `upload.fCopyData.push_back(...)` needs it for `fMipLevel` which is uint32. Elsewhere, comparison with `TArray::size` (which returns `int`!) also needs casts.\n\nI kept it as 32-bit.",
+      "parentUuid": "809b4751_ebe79d53",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 66
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ac1aca6_5d5dd8c4",
@@ -175,6 +343,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "Is there a clean way for us to detect if, for whatever reason, this unlikely path does occur and warn accordingly? I suppose it may be overkill to iterate over `pCopyDstLayouts` to see if that layout is actually present... I just don\u0027t like depending upon this if it isn\u0027t in the spec. Do you know if there\u0027s a VVL warning that would catch this?",
+      "range": {
+        "startLine": 277,
+        "startChar": 96,
+        "endLine": 281,
+        "endChar": 100
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf2c65e_1c568c68",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "We _do_ check if the layout is present. That\u0027s done below, and yes VVL would catch it if we use a layout that\u0027s not supported:\n\n```\n        // vkTransitionImageLayout from this extension can be used to transition between image\n        // layouts on the host, with the allowed old and new layouts found in pCopySrcLayouts and\n        // pCopyDstLayouts respectively.  The GENERAL layout is required to be found in both.  Skia\n        // has two use cases for this function; initialization (UNDEFINED-\u003eGENERAL) and after\n        // texture updates (GENERAL-\u003eSHADER_READ_ONLY, per Recorder::update*BackendTexture).\n        props-\u003efHicHasShaderReadOnlyDstLayout \u003d\n                std::find(props-\u003efHic.pCopyDstLayouts,\n                          props-\u003efHic.pCopyDstLayouts + props-\u003efHic.copyDstLayoutCount,\n                          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);\n```\n\nFWIW, I noticed that ARM drivers (surprisingly) don\u0027t advertise support for this layout, but they absolutely do and should. I\u0027ve notified them about it, but anyway the issue will resolve itself with VK_KHR_unified_image_layouts which requires that all compatible layouts be advertised as supporting HIC.\n\nFor now, I\u0027m not in a hurry to implement the fall back; by the time we figure out where to best use HIC in Android / or how to add support for compressed formats there, the ARM driver should catch up.",
+      "parentUuid": "9ac1aca6_5d5dd8c4",
       "range": {
         "startLine": 277,
         "startChar": 96,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a51b1f_f359d88a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1738,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea4c29bd_b7caf1e8",
+      "range": {
+        "startLine": 1737,
+        "startChar": 0,
+        "endLine": 1738,
+        "endChar": 24
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89985fa4_4dc11e27",
@@ -221,6 +437,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "Perhaps add `SkUNREACHABLE;` in the default case or before returning false to enforce that we do not encounter unexpected cases.",
+      "range": {
+        "startLine": 1739,
+        "startChar": 0,
+        "endLine": 1743,
+        "endChar": 17
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3986bc62_90a29bdb",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1743,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "The `default` cannot use unreachable, the tiling could be `VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT` one day for example. Regarding unreachable, see this comment: https://skia-review.googlesource.com/c/skia/+/1036198/comment/27a97c3c_8001c3c3/",
+      "parentUuid": "89985fa4_4dc11e27",
       "range": {
         "startLine": 1739,
         "startChar": 0,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e18f6597_3b8171c1",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb34e115_84ad397d",
+      "range": {
+        "startLine": 445,
+        "startChar": 100,
+        "endLine": 445,
+        "endChar": 101
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9f8d495_611de16e",
@@ -267,6 +531,30 @@
       "writtenOn": "2025-08-28T19:23:50Z",
       "side": 1,
       "message": "Ideally we would still test this in Vulkan when host image copy is not supported/used.\n\nWDYT about promoting `supportsHostImageCopy()` to from \u0027VulkanCaps\u0027 --\u003e `Caps`?\nI think this makes sense considering that graphite makes decisions based on this information. We could also then assert that `supportsHostImageCopy()` is true when we attempt to do so, and it would allow us to check that caps flag here rather than not performing this assert any time we use Vulkan.",
+      "range": {
+        "startLine": 272,
+        "startChar": 8,
+        "endLine": 272,
+        "endChar": 49
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb328e92_f1d23545",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:46:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9f8d495_611de16e",
       "range": {
         "startLine": 272,
         "startChar": 8,
