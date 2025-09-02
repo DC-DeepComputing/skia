@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a3f223b_160f6b58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-02T15:56:09Z",
+      "side": 1,
+      "message": "The right way to go meaning, getting rid of the first direction field in SkPath entirely (and the `enum class SkPathFirstDirection`)?",
+      "range": {
+        "startLine": 10,
+        "startChar": 25,
+        "endLine": 10,
+        "endChar": 60
+      },
+      "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
