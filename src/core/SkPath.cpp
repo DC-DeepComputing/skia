@@ -2540,13 +2540,6 @@ SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPath& path) {
         return d;
     }
 
-    // We don't want to pay the cost for computing convexity if it is unknown,
-    // so we call getConvexityOrUnknown() instead of isConvex().
-    if (path.getConvexityOrUnknown() == SkPathConvexity::kConvex) {
-        SkASSERT(d == SkPathFirstDirection::kUnknown);
-        return d;
-    }
-
     d = ComputeFirstDirection(SkPathPriv::Raw(path));
     if (d != SkPathFirstDirection::kUnknown) {
         path.setFirstDirection(d);
