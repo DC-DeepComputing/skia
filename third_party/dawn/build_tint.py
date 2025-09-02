@@ -7,6 +7,7 @@
 #
 """Builds Tint using CMake."""
 
+import argparse
 import hashlib
 import glob
 import os
@@ -18,7 +19,8 @@ import sys
 
 def discover_dependencies(build_dir, targets):
   """Runs ninja -tinputs recursively to discover all targets, then uses
-  ninja -tdeps to get all source files for those targets."""
+  ninja -tdeps to get all source files and object files for those targets.
+  Returns a tuple of (list of source files, list of object files)."""
   # The worklist contains ninja targets we need to find the inputs for.
   worklist = set(targets)
   # We keep track of all ninja targets we've ever seen to avoid cycles and
@@ -45,15 +47,19 @@ def discover_dependencies(build_dir, targets):
     for line in inputs:
       line = line.strip()
       if line.startswith("/"):
-        continue # file, which are always absolute paths, skip it
+        continue  # file, which are always absolute paths, skip it
       if line not in seen_targets:
         worklist.add(line)
         seen_targets.add(line)
 
+  object_files = []
+  for target in seen_targets:
+    if target.endswith(".o"):
+      object_files.append(target)
+  object_files.sort()
+
   # Now that we have all the targets, get the dependencies for them.
   source_files = set()
-  # We pass all seen targets to the deps command. This includes the initial
-  # targets and any intermediate targets discovered.
   cmd = ["ninja", "-C", build_dir, "-tdeps"] + list(seen_targets)
   output = subprocess.check_output(cmd).decode("utf-8").splitlines()
 
@@ -76,7 +82,7 @@ def discover_dependencies(build_dir, targets):
 
   result = list(source_files)
   result.sort()
-  return result
+  return result, object_files
 
 
 def write_depfile(output_path, depfile_path, dependencies):
@@ -108,20 +114,34 @@ def copy_if_changed(src, dest):
 
 
 def main():
-  if len(sys.argv) != 3:
-    print("Usage: build_tint.py <output_path> <depfile_path>", file=sys.stderr)
-    sys.exit(1)
+  parser = argparse.ArgumentParser(description="Build Tint using CMake.")
+  parser.add_argument("--cc", required=True, help="Path to the C compiler.")
+  parser.add_argument("--cxx", required=True, help="Path to the C++ compiler.")
+  parser.add_argument(
+      "--cxx_flags",
+      default=[],
+      action="append",
+      help="C++ compiler flags. Can be specified multiple times.")
+  parser.add_argument(
+      "--ld_flags",
+      default=[],
+      action="append",
+      help="Linker flags. Can be specified multiple times.")
+  parser.add_argument(
+      "--output_path", required=True, help="Path to the output library.")
+  parser.add_argument(
+      "--depfile_path", required=True, help="Path to the depfile to generate.")
+  args = parser.parse_args()
 
-  output_path = sys.argv[1]
-  depfile_path = sys.argv[2]
-  # Assume Dawn is checked out in $SKIA_ROOT/third_party/externals and we
-  # are running from out/SomeBuildDirectory
-  dawn_dir = os.path.join("..", "..", "third_party", "externals", "dawn")
+  output_path = args.output_path
+  depfile_path = args.depfile_path
+  script_dir = os.path.dirname(os.path.realpath(__file__))
+  dawn_dir = os.path.join(script_dir, "..", "externals", "dawn")
 
   # We will build everything in a temporary directory (under out/SomeBuildDirectory).
   # The build can be invoked in parallel for different toolchains, so we use
   # part of the output path to create a unique build directory.
-  build_dir = os.path.join("cmake", os.path.dirname(output_path), "dawn")
+  build_dir = os.path.join("cmake", os.path.dirname(output_path), "dawn_for_tint")
 
   # Make sure cmake and ninja are on PATH
   subprocess.run(["cmake", "--version"], check=True)
@@ -135,6 +155,8 @@ def main():
       dawn_dir,
       "-B",
       build_dir,
+      f"-DCMAKE_C_COMPILER={args.cc}",
+      f"-DCMAKE_CXX_COMPILER={args.cxx}",
       # Fetch dependencies using DEPS, which is required for stand-alone builds.
       "-DDAWN_FETCH_DEPENDENCIES=ON",
       "-DDAWN_ENABLE_INSTALL=ON",
@@ -151,6 +173,14 @@ def main():
       "-G",
       "Ninja",
   ]
+  if args.cxx_flags:
+    cxx_flags = " ".join(args.cxx_flags)
+    configure_cmd.append(f"-DCMAKE_CXX_FLAGS={cxx_flags}")
+  if args.ld_flags:
+    ld_flags = " ".join(args.ld_flags)
+    configure_cmd.append(f"-DCMAKE_EXE_LINKER_FLAGS={ld_flags}")
+    configure_cmd.append(f"-DCMAKE_SHARED_LINKER_FLAGS={ld_flags}")
+    configure_cmd.append(f"-DCMAKE_MODULE_LINKER_FLAGS={ld_flags}")
   subprocess.run(configure_cmd, check=True)
 
   # These tint targets (and their deps) are what Skia needs to build
@@ -159,51 +189,28 @@ def main():
   build_cmd = ["ninja", "-C", build_dir, "-dkeepdepfile"] + tint_targets
   subprocess.run(build_cmd, check=True)
 
+  dependencies, object_files = discover_dependencies(build_dir, tint_targets)
   # Generate the depfile. This lists all source files that the Tint library
   # depends on. This allows GN to know when to re-run this script.
-  dependencies = discover_dependencies(build_dir, tint_targets)
   write_depfile(output_path, depfile_path, dependencies)
 
-  # After building, Tint consists of 90+ small static libraries. For easier
+  # After building, Tint consists of many small object files. For easier
   # consumption by GN, we combine them into a single archive using ar.
-  tint_libs = glob.glob(os.path.join(build_dir, "src", "tint", "lib*.a"))
-  if not tint_libs:
-    sys.exit("Error: No static libraries found for Tint.")
+  lib_name = os.path.basename(output_path)
+  gen_library_path = os.path.join(build_dir, lib_name)
+  # ar can fail if the archive already exists, e.g. "archive is malformed"
+  if os.path.exists(gen_library_path):
+    os.remove(gen_library_path)
 
-  # Tint also depends on Abseil. Combining Tint's deps into the library makes
-  # consumption by GN easier.
-  absl_libs = [
-      os.path.join(build_dir, "third_party", "abseil", "absl", "strings",
-                   "libabsl_strings.a")
-  ]
-
-  # https://stackoverflow.com/a/23621751
-  # We first create a "thin" archive. A thin archive does not contain the
-  # object files themselves, but rather references to them.
-  #   c: Create the archive.
-  #   q: Quickly append files (no checking for replacement).
-  #   T: Create a thin archive.
-  combined_thin_archive = os.path.join(build_dir, "out", "combined_tint_thin.a")
-  os.makedirs(os.path.dirname(combined_thin_archive), exist_ok=True)
-  combine_cmd = ["ar", "cqT", combined_thin_archive] + tint_libs + absl_libs
-  subprocess.run(combine_cmd, check=True)
-
-  # We'll be relocating the output, so a thin archive doesn't work. To create
-  # a regular, "fat" archive, we use an MRI script with 'ar'.
-  combined_archive = os.path.join(build_dir, "out", "libtint_combined.a")
-  mri_script = f"""
-create {combined_archive}
-addlib {combined_thin_archive}
-save
-end
-"""
-  # The 'ar -M' command reads commands from stdin to modify the archive.
-  subprocess.run(["ar", "-M"], input=mri_script.encode("utf-8"), check=True)
+  # Use ar to join all the object files that comprise the necessary libraries
+  # and any transitive dependencies into one .a file.
+  combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
+  subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
 
   # Copy the final archive to the location expected by GN.
   # We check hashes to avoid unnecessary updates to the "last modified" datum
   # of the file, which can cause GN to unnecessarily rebuild downstream dependencies.
-  copy_if_changed(combined_archive, os.path.join(os.getcwd(), output_path))
+  copy_if_changed(gen_library_path, os.path.join(os.getcwd(), output_path))
 
 
 if __name__ == "__main__":
