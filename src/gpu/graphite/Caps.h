@@ -17,6 +17,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/text/gpu/SubRunControl.h"
 
 #include <cstddef>
@@ -42,7 +43,6 @@ class RendererProvider;
 class TextureInfo;
 enum class DepthStencilFlags : int;
 enum class PathRendererStrategy;
-enum class TextureFormat : uint8_t;
 struct AttachmentDesc;
 struct ContextOptions;
 struct RenderPassDesc;
@@ -110,9 +110,9 @@ public:
      * TODO(b/390473370): Once backends initialize a Caps-level format table, these will not need
      * to be virtual anymore:
      */
-    virtual bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const = 0;
+    // virtual bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const = 0;
     /* Return the TextureFormat that satisfies `dsFlags`. */
-    virtual TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const = 0;
+    // virtual TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const = 0;
 
     virtual TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
                                                         Protected,
@@ -145,12 +145,6 @@ public:
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,
                                       const RendererProvider*) const { return false; }
-
-    bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
-
-    bool isTexturable(const TextureInfo&) const;
-    virtual bool isRenderable(const TextureInfo&) const = 0;
-    virtual bool isStorage(const TextureInfo&) const = 0;
 
     virtual bool loadOpAffectsMSAAPipelines() const { return false; }
 
@@ -203,56 +197,47 @@ public:
     }
 
     /**
-     * Backends may have restrictions on what types of textures support Device::writePixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, pixels are written to it, and then that is copied or drawn into the the surface.
+     * Return the supported capabilities for a given TextureFormat. The returned capabilities must
+     * still be combined with what is supported by a given Texture resource object.
      */
-    virtual bool supportsWritePixels(const TextureInfo& textureInfo) const = 0;
+    const TextureFormatInfo& getFormatInfo(TextureFormat format) const {
+        return fFormatTable[static_cast<int>(format)];
+    }
+    const TextureFormatInfo& getFormatInfo(const TextureInfo& info) const {
+        return this->getFormatInfo(TextureInfoPriv::ViewFormat(info));
+    }
 
     /**
-     * Backends may have restrictions on what types of textures support Device::readPixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, the original texture is copied or drawn into it, and then pixels read from
-     * the temporary texture.
+     * Return the supported capabilities for textures created with the given TextureInfo, when
+     * interpreted as the given SkColorType (for the SkColorInfo of the wrapping SkImage or
+     * SkSurface).
      */
-    virtual bool supportsReadPixels(const TextureInfo& textureInfo) const = 0;
+    SkEnumBitMask<TextureFormatInfo::Supports> supportedOperations(const TextureInfo& info,
+                                                                   SkColorType colorType) const {
+        return this->supportedOperations(info) &
+               this->getFormatInfo(info).supportedOperations(TextureFormatInfo::Tiling::kOptimal,
+                                                             colorType);
+    }
 
-    /**
-     * Given a dst pixel config and a src color type what color type must the caller coax the
-     * the data into in order to use writePixels.
-     *
-     * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
-     * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
-     * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
-     */
-    virtual std::pair<SkColorType, bool /*isRGB888Format*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const = 0;
-
-    /**
-     * Given a src surface's color type and its texture info as well as a color type the caller
-     * would like read into, this provides a legal color type that the caller can use for
-     * readPixels. The returned color type may differ from the passed dstColorType, in
-     * which case the caller must convert the read pixel data (see GrConvertPixels). When converting
-     * to dstColorType the swizzle in the returned struct should be applied. The caller must check
-     * the returned color type for kUnknown.
-     *
-     * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
-     * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
-     * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
-     */
-    virtual std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const = 0;
+    // If true, the texture can be sampled within a shader (possibly with MSAA, although by default
+    // we consider multisampled textures not to be sampleable because that requires backend-specific
+    // shader code not exposed in SkSL).
+    bool isTexturable(const TextureInfo&, bool allowMSAA=false) const;
+    // If true, the texture can be rasterized and/or resolved to (possibly with MSAA)
+    bool isRenderable(const TextureInfo&) const;
+    // If true, the texture can be the source of data copied to another texture or to a buffer.
+    // If false, the texture can only be copied via drawing (which requires isTexturable()).
+    bool isCopyableSrc(const TextureInfo&) const;
+    // If true, the texture can be the destination of data copied from another texture or buffer.
+    // If false, the texture can only be updated by drawing (which requires isRenderable()).
+    bool isCopyableDst(const TextureInfo&) const;
+    // If true, the texture can be used as a storage texture in compute shaders.
+    bool isStorage(const TextureInfo&) const;
 
     /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
      * back. If not, provides an alternative (perhaps lower bit depth and/or unorm instead of float)
-     * color type that is supported or kUnknown if there no renderable fallback format.
+     * color type that is supported or kUnknown if there is no renderable fallback format.
      */
     SkColorType getRenderableColorType(SkColorType) const;
 
@@ -360,18 +345,6 @@ public:
     }
 
     /**
-     * Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
-     * passed in SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
-
-    /**
-     * Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
-     * SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
-
-    /**
      * Includes the following dynamic state:
      *
      * * Line width, depth bias, depth bounds, stencil compare mask, stencil write mask and stencil
@@ -449,11 +422,22 @@ public:
 protected:
     Caps();
 
-    /**
-     * Subclasses must call this at the end of their init method in order to do final processing on
-     * the caps.
-     */
+
+    // Subclasses must call this at the end of their init method in order to do final processing on
+    // the caps.
     void finishInitialization(const ContextOptions&);
+
+    // Subclasses must call this per each supported BackendFormat
+    void initFormat(TextureFormat format,
+                    std::pair<SkEnumBitMask<TextureFormatInfo::Supports>, SkEnumBitMask<TextureFormatInfo::SampleCount>> optimal,
+                    std::pair<SkEnumBitMask<TextureFormatInfo::Supports>, SkEnumBitMask<TextureFormatInfo::SampleCount>> linear) {
+        SkASSERT(format != TextureFormat::kUnsupported);
+        SkASSERT(!fFormatTable[(int) format].isValid());
+
+        // FIXME supports assertions based on compressed/external/multiplanar/tiling?
+
+        fFormatTable[(int) format] = TextureFormatInfo(format, optimal, linear);
+    }
 
 #if defined(GPU_TEST_UTILS)
     void setDeviceName(std::string n) {
@@ -465,6 +449,8 @@ protected:
      * There are only a few possible valid sample counts (1, 2, 4, 8, 16). So we can key on those 5
      * options instead of the actual sample value.
      */
+     // FIXME: Part of SampleCount enum declaration?
+     // Should we just make SampleCount public?
     static inline uint32_t SamplesToKey(uint32_t numSamples) {
         switch (numSamples) {
             case 1:
@@ -482,32 +468,6 @@ protected:
         }
     }
 
-    /* ColorTypeInfo for a specific format. Used in format tables. */
-    struct ColorTypeInfo {
-        ColorTypeInfo() = default;
-        ColorTypeInfo(SkColorType ct, SkColorType transferCt, uint32_t flags,
-                      skgpu::Swizzle readSwizzle, skgpu::Swizzle writeSwizzle)
-                : fColorType(ct)
-                , fTransferColorType(transferCt)
-                , fFlags(flags)
-                , fReadSwizzle(readSwizzle)
-                , fWriteSwizzle(writeSwizzle) {}
-
-        SkColorType fColorType = kUnknown_SkColorType;
-        SkColorType fTransferColorType = kUnknown_SkColorType;
-        enum {
-            kUploadData_Flag = 0x1,
-            /**
-             * Does Graphite itself support rendering to this colorType & format pair. Renderability
-             * still additionally depends on if the format itself is renderable.
-             */
-            kRenderable_Flag = 0x2,
-        };
-        uint32_t fFlags = 0;
-
-        skgpu::Swizzle fReadSwizzle;
-        skgpu::Swizzle fWriteSwizzle;
-    };
 
     int fMaxTextureSize = 0;
     uint8_t fDefaultMSAASamples = 4;
@@ -543,6 +503,8 @@ protected:
     ResourceBindingRequirements fResourceBindingReqs;
 
     GpuStatsFlags fSupportedGpuStats = GpuStatsFlags::kNone;
+
+    std::array<TextureFormatInfo, kTextureFormatCount> fFormatTable;
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Client-provided Caps
@@ -582,8 +544,11 @@ protected:
     bool fUsePipelineLibraries = false;
 
 private:
-    virtual bool onIsTexturable(const TextureInfo&) const = 0;
-    virtual const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const = 0;
+    // FIXME should we just calculate this and store it on the TextureInfo like the view format?
+    virtual SkEnumBitMask<TextureFormatInfo::Supports> supportedOperations(const TextureInfo&) const = 0;
+
+    bool isSupported(const TextureInfo&, TextureFormatInfo::Supports test,
+                     bool allowMSAA, bool allowExternal, bool allowCompressed, bool allowProtected) const;
 
     sk_sp<SkCapabilities> fCapabilities;
 };

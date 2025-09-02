@@ -22,9 +22,6 @@ public:
     MtlCaps(const id<MTLDevice>, const ContextOptions&);
     ~MtlCaps() override {}
 
-    bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const override;
-    TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const override;
-
     TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
                                                 Protected,
                                                 Discardable) const override;
@@ -61,9 +58,6 @@ public:
     bool isApple() const { return fGPUFamily == GPUFamily::kApple;    }
     bool isIntel() const { return fGPUFamily == GPUFamily::kMacIntel; }
 
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
-
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
                             ResourceType,
@@ -83,72 +77,7 @@ private:
     };
     static bool GetGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* group);
 
-    MTLPixelFormat getFormatFromColorType(SkColorType colorType) const {
-        int idx = static_cast<int>(colorType);
-        return fColorTypeToFormatTable[idx];
-    }
-
-    const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
-
-    bool onIsTexturable(const TextureInfo&) const override;
-    bool isTexturable(MTLPixelFormat) const;
-
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
-
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const override;
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const override;
-
-    struct FormatInfo {
-        uint32_t colorTypeFlags(SkColorType colorType) const {
-            for (int i = 0; i < fColorTypeInfoCount; ++i) {
-                if (fColorTypeInfos[i].fColorType == colorType) {
-                    return fColorTypeInfos[i].fFlags;
-                }
-            }
-            return 0;
-        }
-
-        enum {
-            kTexturable_Flag  = 0x01,
-            kRenderable_Flag  = 0x02, // Render attachment (color or depth/stencil)
-            kMSAA_Flag        = 0x04,
-            kResolve_Flag     = 0x08,
-            kStorage_Flag     = 0x10,
-        };
-        static const uint16_t kAllFlags =
-                kTexturable_Flag | kRenderable_Flag | kMSAA_Flag | kResolve_Flag | kStorage_Flag;
-
-        uint16_t fFlags = 0;
-
-        std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
-        int fColorTypeInfoCount = 0;
-    };
-#ifdef SK_BUILD_FOR_MAC
-    inline static constexpr size_t kNumMtlFormats = 23;
-#else
-    inline static constexpr size_t kNumMtlFormats = 21;
-#endif
-
-    static size_t GetFormatIndex(MTLPixelFormat);
-    FormatInfo fFormatTable[kNumMtlFormats];
-
-    const FormatInfo& getFormatInfo(const MTLPixelFormat pixelFormat) const {
-        size_t index = GetFormatIndex(pixelFormat);
-        return fFormatTable[index];
-    }
-
-    MTLPixelFormat fColorTypeToFormatTable[kSkColorTypeCnt];
-    void setColorType(SkColorType, std::initializer_list<MTLPixelFormat> formats);
-
-    // A vector of the viable sample counts (e.g., { 1, 2, 4, 8 }).
-    std::vector<uint32_t> fColorSampleCounts;
+    SkEnumBitMask<TextureFormatInfo::Supports> supportedOperations(const TextureInfo&) const override;
 
     GPUFamily fGPUFamily;
     int fFamilyGroup;

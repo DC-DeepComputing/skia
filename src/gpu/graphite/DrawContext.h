@@ -114,7 +114,7 @@ public:
 private:
     DrawContext(const Caps*, sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
 
-    sk_sp<TextureProxy> fTarget;
+    sk_sp<TextureProxy> fTarget; // FIXME fWriteView instead?
     TextureProxyView fReadView;
     SkImageInfo fImageInfo;
     const SkSurfaceProps fSurfaceProps;

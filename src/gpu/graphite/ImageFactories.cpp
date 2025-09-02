@@ -45,23 +45,15 @@ namespace SkImages {
 
 using namespace skgpu::graphite;
 
-static bool validate_backend_texture(const skgpu::graphite::Caps* caps,
-                                     const skgpu::graphite::BackendTexture& texture,
-                                     const SkColorInfo& info) {
-    if (!texture.isValid() || texture.dimensions().width() <= 0 ||
-        texture.dimensions().height() <= 0) {
+static bool validate_texture_info(const Caps* caps,
+                                  const TextureInfo& texInfo,
+                                  const SkImageInfo& imageInfo) {
+    if (!SkImageInfoIsValid(imageInfo)) {
         return false;
     }
 
-    if (!SkColorInfoIsValid(info)) {
-        return false;
-    }
-
-    if (!caps->isTexturable(texture.info())) {
-        return false;
-    }
-
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    auto support = caps->supportedOperations(texInfo, imageInfo.colorInfo().colorType());
+    return SkToBool(support & TextureFormatInfo::Supports::kTexture);
 }
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
@@ -83,9 +75,11 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     const Caps* caps = recorder->priv().caps();
 
     SkColorInfo info(ct, at, std::move(cs));
-
-    if (!validate_backend_texture(caps, backendTex, info)) {
-        return nullptr;
+    if (!backendTex.isValid() ||
+        !validate_texture_info(caps,
+                               backendTex.info(),
+                               SkImageInfo::Make(backendTex.dimensions(), info))) {
+        return false;
     }
 
     if (label.empty()) {
@@ -184,15 +178,8 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
     }
 
     const Caps* caps = recorder->priv().caps();
-
-    SkImageInfo info = SkImageInfo::Make(dimensions, colorInfo);
-    if (!SkImageInfoIsValid(info)) {
-        SKGPU_LOG_W("Invalid SkImageInfo");
-        return nullptr;
-    }
-
-    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), textureInfo)) {
-        SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
+    if (!validate_texture_info(caps, textureInfo, SkImageInfo::Make(dimensions, colorInfo))) {
+        SKGPU_LOG_W("Incompatible dimensions, SkColorType and TextureInfo");
         return nullptr;
     }
 

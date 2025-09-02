@@ -13,6 +13,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 #include <algorithm>
@@ -61,18 +62,71 @@ SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
     return colorAttachmentDimensions;
 }
 
-bool Caps::isTexturable(const TextureInfo& info) const {
-    if (info.numSamples() > 1) {
+bool Caps::isSupported(const TextureInfo& info, TextureFormatInfo::Supports test,
+                       bool allowMSAA, bool allowExternal, bool allowCompressed, bool allowProtected) {
+    // FIXME get this from info? We can almost assume we only use kOptimal except for vello
+    // and eventually other compute things
+    static constexpr TextureFormatInfo::Tiling kTiling = TextureFormatInfo::Tiling::kOptimal;
+
+    TextureFormat format = TextureInfoPriv::ViewFormat(info);
+    const TextureFormatInfo& formatInfo = this->getFormatInfo(format);
+    const auto supports = formatInfo.supportedOperations(kTiling) &
+                          this->supportedOperations(info);
+
+    if (SkToBool(supports & test)) {
+        // Basic rules that should be reflected in the supported operations bit masks
+        // FIXME: allowMSAA would need to be passed into supportedOperations() to correctly mask out
+        // the kSample bit when we want to externally enforce only single-sampled texturing.
+        SkASSERT((allowProtected  || info.isProtected() == Protected::kNo) &&
+                 (allowMSAA       || info.numSamples() == 1) &&
+                 (allowCompressed || TextureFormatCompressionType(format) ==
+                                            SkTextureCompressionType::kNone) &&
+                 (allowExternal   || format != TextureFormat::kExternal));
+        SkASSERT(formatInfo.supportedSampleCounts(kTiling) & info.numSamples()); // FIXME store SampleCount on TextureInfo?
+        return true;
+    } else {
         return false;
     }
-    return this->onIsTexturable(info);
 }
 
-bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkTextureCompressionType handling
-    // (can be handled by setting up the colorTypeInfo instead?)
+bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA) const {
+    return this->isSupported(info, TextureFormatInfo::Supports::kSample,
+                             allowMSAA,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/true,
+                             /*allowProtected=*/true);
+}
 
-    return SkToBool(this->getColorTypeInfo(ct, info));
+bool Caps::isRenderable(const TextureInfo& info) const {
+    return this->isSupported(info, TextureFormatInfo::Supports::kRender,
+                             /*allowMSAA=*/true,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isCopyableSrc(const TextureInfo& info) const {
+    return this->isSupported(info, TextureFormatInfo::Supports::kCopySrc,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/false);
+}
+
+bool Caps::isCopyableDst(const TextureInfo& info) const {
+    return this->isSupported(info, TextureFormatInfo::Supports::kCopyDst,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/true,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isStorage(const TextureInfo& info) const {
+    return this->isSupported(info, TextureFormatInfo::Supports::kStorage,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/false);
 }
 
 static inline SkColorType color_type_fallback(SkColorType ct) {
@@ -112,29 +166,6 @@ SkColorType Caps::getRenderableColorType(SkColorType ct) const {
         ct = color_type_fallback(ct);
     } while (ct != kUnknown_SkColorType);
     return kUnknown_SkColorType;
-}
-
-skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkTextureCompressionType handling
-    // (can be handled by setting up the colorTypeInfo instead?)
-
-    auto colorTypeInfo = this->getColorTypeInfo(ct, info);
-    if (!colorTypeInfo) {
-        SkDEBUGFAILF("Illegal color type (%d) and format combination.", static_cast<int>(ct));
-        return {};
-    }
-
-    return colorTypeInfo->fReadSwizzle;
-}
-
-skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const TextureInfo& info) const {
-    auto colorTypeInfo = this->getColorTypeInfo(ct, info);
-    if (!colorTypeInfo) {
-        SkDEBUGFAILF("Illegal color type (%d) and format combination.", static_cast<int>(ct));
-        return {};
-    }
-
-    return colorTypeInfo->fWriteSwizzle;
 }
 
 DstReadStrategy Caps::getDstReadStrategy() const {

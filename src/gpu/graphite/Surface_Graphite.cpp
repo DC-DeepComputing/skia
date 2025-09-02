@@ -179,24 +179,14 @@ using namespace skgpu::graphite;
 
 namespace {
 
-bool validate_backend_texture(const Caps* caps,
-                              const BackendTexture& texture,
-                              const SkColorInfo& info) {
-    if (!texture.isValid() ||
-        texture.dimensions().width() <= 0 ||
-        texture.dimensions().height() <= 0) {
+static bool validate_backend_texture(const Caps* caps,
+                                     const BackendTexture& texture,
+                                     const SkColorInfo& info) {
+    if (!texture.isValid() || !SkImageInfoIsValid(SkImageInfo::Make(texture.dimensions(), info))) {
         return false;
     }
-
-    if (!SkColorInfoIsValid(info)) {
-        return false;
-    }
-
-    if (!caps->isRenderable(texture.info())) {
-        return false;
-    }
-
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    return SkToBool(caps->supportedOperations(texture.info(), info.colorType()) &
+                    TextureFormatInfo::Supports::kRender);
 }
 
 } // anonymous namespace
