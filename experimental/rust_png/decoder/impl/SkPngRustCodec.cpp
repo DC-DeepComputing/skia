@@ -486,6 +486,16 @@ bool IsValidFctlIfAny(const SkEncodedInfo& imageInfo,
     return true;
 }
 
+bool IsValidActlIfAny(const rust_png::Reader& reader) {
+    if (!reader.has_actl_chunk()) {
+      return true;
+    }
+    // If there is an actl chunk, 0 is not a valid value for num_frames.
+    // See https://www.w3.org/TR/png-3/#acTL-chunk
+    uint32_t num_frames = reader.get_actl_num_frames();
+    return num_frames;
+}
+
 }  // namespace
 
 // static
@@ -511,6 +521,11 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     SkEncodedInfo& imageInfo = *maybeImageInfo;
 
     if (!IsValidFctlIfAny(imageInfo, *reader)) {
+        *result = kErrorInInput;
+        return nullptr;
+    }
+
+    if (!IsValidActlIfAny(*reader)) {
         *result = kErrorInInput;
         return nullptr;
     }
