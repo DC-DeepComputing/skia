@@ -189,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f9c1b20_d949a76c",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-02T16:53:27Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1049227",
+      "parentUuid": "0eba60af_10d3689e",
+      "range": {
+        "startLine": 120,
+        "startChar": 44,
+        "endLine": 120,
+        "endChar": 83
+      },
+      "revId": "0b0801bc67a1f56543aad401415ca32396190d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "835cc619_ef474474",
