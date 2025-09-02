@@ -105,6 +105,24 @@
       ],
       "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62f1f9bd_a8d8741d",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2551,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-02T16:53:50Z",
+      "side": 1,
+      "message": "ok. I was aiming for simplicity instead (since I don\u0027t know how to measure the savings given the hyper-low frequency this is called).",
+      "parentUuid": "043e92ac_9a2fd63e",
+      "revId": "4e38b7c3fcc7f7674bf52366b7eb94d695efc9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
