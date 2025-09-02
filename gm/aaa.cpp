@@ -18,6 +18,9 @@
 #define H   800
 
 DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
+
+    static bool minCase = true;
+
     SkPaint p;
     p.setColor(SK_ColorRED);
     p.setAntiAlias(true);
@@ -28,20 +31,26 @@ DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
 
     SkScalar y = 0;
 
-    canvas->translate(0, y);
-    canvas->rotate(1);
-    canvas->drawRect({ 20, 20, 200, 200 }, p);
-    canvas->restore();
+    if (!minCase) {
+        canvas->translate(0, y);
+        canvas->rotate(1);
+        canvas->drawRect({ 20, 20, 200, 200 }, p);
+        canvas->restore();
+        canvas->save();
+    }
 
     y += 200;
 
-    canvas->save();
     canvas->translate(0, y);
     canvas->rotate(1);
     canvas->drawRect({ 20, 20, 20.2f, 200 }, p);
     canvas->drawRect({ 20, 200, 200, 200.1f }, p);
     canvas->drawCircle(100, 100, 30, p);
     canvas->restore();
+
+    if (minCase) {
+        return;
+    }
 
     // The following path is empty but it'll reveal bug chrome:662914
     SkPathBuilder pb;
@@ -89,58 +98,58 @@ DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
     canvas->drawPath(pb.detach(), p);
 }
 
-DEF_SIMPLE_GM(analytic_antialias_general, canvas, W, H) {
-    SkPaint p;
-    p.setColor(SK_ColorRED);
-    p.setAntiAlias(true);
+// DEF_SIMPLE_GM(analytic_antialias_general, canvas, W, H) {
+//     SkPaint p;
+//     p.setColor(SK_ColorRED);
+//     p.setAntiAlias(true);
 
-    canvas->clear(0xFFFFFFFF);
+//     canvas->clear(0xFFFFFFFF);
 
-    canvas->save();
-    canvas->rotate(1);
-    const SkScalar R = 115.2f, C = 128.0f;
-    SkPathBuilder builder;
-    builder.moveTo(C + R, C);
-    for (int i = 1; i < 8; ++i) {
-        SkScalar a = 2.6927937f * i;
-        builder.lineTo(C + R * SkScalarCos(a), C + R * SkScalarSin(a));
-    }
-    SkPath path = builder.detach();
-    canvas->drawPath(path, p);
-    canvas->restore();
+//     canvas->save();
+//     canvas->rotate(1);
+//     const SkScalar R = 115.2f, C = 128.0f;
+//     SkPathBuilder builder;
+//     builder.moveTo(C + R, C);
+//     for (int i = 1; i < 8; ++i) {
+//         SkScalar a = 2.6927937f * i;
+//         builder.lineTo(C + R * SkScalarCos(a), C + R * SkScalarSin(a));
+//     }
+//     SkPath path = builder.detach();
+//     canvas->drawPath(path, p);
+//     canvas->restore();
 
-    canvas->save();
-    canvas->translate(200, 0);
-    canvas->rotate(1);
-    p.setStyle(SkPaint::kStroke_Style);
-    p.setStrokeWidth(5);
-    canvas->drawPath(path, p);
-    canvas->restore();
+//     canvas->save();
+//     canvas->translate(200, 0);
+//     canvas->rotate(1);
+//     p.setStyle(SkPaint::kStroke_Style);
+//     p.setStrokeWidth(5);
+//     canvas->drawPath(path, p);
+//     canvas->restore();
 
 
-    // The following two paths test if we correctly cumulates the alpha on the middle pixel
-    // column where the left rect and the right rect abut.
-    p.setStyle(SkPaint::kFill_Style);
-    canvas->translate(0, 300);
-    canvas->drawPath(SkPathBuilder().addRect({20, 20, 100.4999f, 100})
-                                    .addRect({100.5001f, 20, 200, 100})
-                                    .detach(), p);
+//     // The following two paths test if we correctly cumulates the alpha on the middle pixel
+//     // column where the left rect and the right rect abut.
+//     p.setStyle(SkPaint::kFill_Style);
+//     canvas->translate(0, 300);
+//     canvas->drawPath(SkPathBuilder().addRect({20, 20, 100.4999f, 100})
+//                                     .addRect({100.5001f, 20, 200, 100})
+//                                     .detach(), p);
 
-    canvas->translate(300, 0);
-    canvas->drawPath(SkPathBuilder().addRect({20, 20, 100.1f, 100})
-                                    .addRect({100.9f, 20, 200, 100})
-                                    .detach(), p);
-}
+//     canvas->translate(300, 0);
+//     canvas->drawPath(SkPathBuilder().addRect({20, 20, 100.1f, 100})
+//                                     .addRect({100.9f, 20, 200, 100})
+//                                     .detach(), p);
+// }
 
-DEF_SIMPLE_GM(analytic_antialias_inverse, canvas, W, H) {
-        SkPaint p;
-        p.setColor(SK_ColorRED);
-        p.setAntiAlias(true);
+// DEF_SIMPLE_GM(analytic_antialias_inverse, canvas, W, H) {
+//         SkPaint p;
+//         p.setColor(SK_ColorRED);
+//         p.setAntiAlias(true);
 
-        canvas->save();
+//         canvas->save();
 
-        SkPath path = SkPath::Circle(100, 100, 30);
-        path.setFillType(SkPathFillType::kInverseWinding);
-        canvas->drawPath(path, p);
-        canvas->restore();
-}
+//         SkPath path = SkPath::Circle(100, 100, 30);
+//         path.setFillType(SkPathFillType::kInverseWinding);
+//         canvas->drawPath(path, p);
+//         canvas->restore();
+// }

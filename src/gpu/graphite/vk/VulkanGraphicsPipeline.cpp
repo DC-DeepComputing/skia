@@ -895,6 +895,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 renderPassDesc.fSampleCount > 1 &&
                 shaderInfo->dstReadStrategy() == DstReadStrategy::kReadFromInput;
         if (options.fMultisampleInputLoad) {
+            SKGPU_LOG_W(
+                    "nikipre: Transforming SPIR-V to account for multisample input load dst read");
             fsSPIRV = TransformSPIRV(fsSPIRV, options);
         }
 

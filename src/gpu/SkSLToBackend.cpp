@@ -68,6 +68,9 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
             SkDebugf("%s:\n", backendLabel);
             if (output->isBinary()) {
                 const std::string asHex = SkShaderUtils::SpirvAsHexStream(output->fBinary);
+
+                // Disassemble this for printing?
+
                 SkShaderUtils::PrintLineByLine(asHex);
             } else {
                 SkShaderUtils::PrintLineByLine(output->fText);
