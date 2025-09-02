@@ -210,6 +210,30 @@
       },
       "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3bd2013_64b1d7ba",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-02T09:24:29Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "0339d3a6_8da9d0fd",
+      "range": {
+        "startLine": 139,
+        "startChar": 3,
+        "endLine": 139,
+        "endChar": 32
+      },
+      "revId": "ed4fb2b8c2bfcf06d63362c08eda3758ad800cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
