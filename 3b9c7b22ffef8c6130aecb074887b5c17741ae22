@@ -16,6 +16,24 @@
       "message": "As a sidenote: I am not sure the clamping that was introduced is working as intended - dependencies such as bitflags are still getting pulled. That makes me unsure whether we want to stick with the clamping and go back to using just version numbers without `\u003d` if we may anyway need to deal with consequences of rolling crates in the dependency graph.",
       "revId": "3b9c7b22ffef8c6130aecb074887b5c17741ae22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457f1723_01f96be3",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-03T17:11:19Z",
+      "side": 1,
+      "message": "The `\u003d` is necessary to avoid issues with cxx and png, and doesn\u0027t seem to be hurting other deps, so I think it\u0027s fine. We don\u0027t specify all dependencies and transitive dependencies for rust, just the top level ones. And that\u0027s fine I think.",
+      "parentUuid": "9801a94c_ecc793f0",
+      "revId": "3b9c7b22ffef8c6130aecb074887b5c17741ae22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
