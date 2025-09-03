@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO (b/412351769): inspect CaptureManager / output capture
-    context->endCapture();
+    auto capture = context->endCapture();
 
     printf("done\n");
     return 0;
