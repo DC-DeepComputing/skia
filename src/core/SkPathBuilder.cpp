@@ -293,7 +293,7 @@ SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
     //  unknown, convex_cw, convex_ccw, concave
     // Do we ever have direction w/o convexity, or viceversa (inside path)?
     //
-    auto path = SkPath(std::move(pr), fFillType, fIsVolatile, fConvexity, dir);
+    auto path = SkPath(std::move(pr), fFillType, fIsVolatile, fConvexity);
 
     // This hopefully can go away in the future when Paths are immutable,
     // but if while they are still editable, we need to correctly set this.
