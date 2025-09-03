@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd21e7d7_2429db23",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T19:22:03Z",
+      "side": 1,
+      "message": "nit: Pipeline",
+      "fixSuggestions": [
+        {
+          "fixId": "c416aa85_8e118ece",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+              "range": {
+                "startLine": 134,
+                "startChar": 0,
+                "endLine": 135,
+                "endChar": 0
+              },
+              "replacement": "// per Pipeline\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
