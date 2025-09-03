@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9801a94c_ecc793f0",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-09-03T16:42:46Z",
+      "side": 1,
+      "message": "As a sidenote: I am not sure the clamping that was introduced is working as intended - dependencies such as bitflags are still getting pulled. That makes me unsure whether we want to stick with the clamping and go back to using just version numbers without `\u003d` if we may anyway need to deal with consequences of rolling crates in the dependency graph.",
+      "revId": "3b9c7b22ffef8c6130aecb074887b5c17741ae22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
