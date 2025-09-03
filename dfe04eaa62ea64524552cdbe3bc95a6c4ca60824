@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cd3c54a_bff9fa97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-09-03T18:21:07Z",
+      "side": 1,
+      "message": "the android canary failure is unrelated. i will re-run it once the android autoroller clears up.",
+      "revId": "dfe04eaa62ea64524552cdbe3bc95a6c4ca60824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
