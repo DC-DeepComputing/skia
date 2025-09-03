@@ -16,6 +16,24 @@
       "message": "Once bot failures are addressed this LGTM. I have it on my to-do list to look into swiftshader failures - they seem to happen only sometimes on a threaded test.",
       "revId": "01cb779289290573479f95a8896a2631e38d7fb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04c37a52_72b42041",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-03T14:30:23Z",
+      "side": 1,
+      "message": "Thanks. It\u0027s an assert failure I haven\u0027t been able to reproduce yet, but busy with other things for the moment.",
+      "parentUuid": "8be73a98_f80c6286",
+      "revId": "01cb779289290573479f95a8896a2631e38d7fb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
