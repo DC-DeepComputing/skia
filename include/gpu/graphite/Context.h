@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -288,7 +289,7 @@ public:
     /*
      * Ends the SkCapture and returns the collected draws and surface creation.
      */
-    void endCapture();
+    sk_sp<SkData> endCapture();
 
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();
