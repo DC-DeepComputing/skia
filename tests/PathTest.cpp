@@ -3774,6 +3774,54 @@ static void test_arc(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, p.isConvex());
 }
 
+/*
+ *  Currently we are inconsistent in how we handle "flipped" rectangles when they are
+ *  passed to a Path builder. This test just documents which ones return the input, and
+ *  which ones modify/fix the attribute.
+ */
+static void test_flipped_bounds(skiatest::Reporter* reporter) {
+    const SkRect rect = { 100, 0, 0, 100 };
+    SkASSERT(rect.width() < 0 && rect.height() > 0);  // we're flipped
+
+    auto NEGATE = [](bool pred) { return !pred; };
+
+    for (auto dir : {SkPathDirection::kCW, SkPathDirection::kCCW}) {
+        SkRect r;
+        SkPathDirection d;
+
+        // Rects
+
+        SkPath path = SkPath::Rect(rect, dir);
+        REPORTER_ASSERT(reporter, path.isRect(&r, nullptr, &d));
+        REPORTER_ASSERT(reporter, NEGATE(r == rect));
+        REPORTER_ASSERT(reporter, NEGATE(d == dir));
+
+        auto raw = SkPathPriv::Raw(path);
+        auto rinfo = SkPathPriv::IsRectContour(raw.points(), raw.verbs(), false);
+        REPORTER_ASSERT(reporter, rinfo.has_value());
+        REPORTER_ASSERT(reporter, NEGATE(rinfo->fRect == rect));
+        REPORTER_ASSERT(reporter, NEGATE(rinfo->fDirection == dir));
+
+        // Ovals
+
+        path = SkPath::Oval(rect, dir);
+        REPORTER_ASSERT(reporter, path.isOval(&r));
+        REPORTER_ASSERT(reporter, NEGATE(r == rect));
+
+        auto oinfo = SkPathPriv::IsOval(path);
+        REPORTER_ASSERT(reporter, oinfo.has_value());
+        REPORTER_ASSERT(reporter, NEGATE(oinfo->fBounds == rect));
+        REPORTER_ASSERT(reporter, oinfo->fDirection == dir);
+
+        // RRects
+
+        SkRRect rr;
+        rr.setRect(rect);
+        // SkRRect itself "sorts" the input, so we cannot create a flipped rrect
+        REPORTER_ASSERT(reporter, NEGATE(rr.rect() == rect));
+    }
+}
+
 static inline SkScalar oval_start_index_to_angle(unsigned start) {
     switch (start) {
         case 0:
@@ -5071,6 +5119,8 @@ DEF_TEST(Paths, reporter) {
     test_skbug_3239(reporter);
     test_bounds_crbug_513799(reporter);
     test_fuzz_crbug_638223();
+
+    test_flipped_bounds(reporter);
 }
 
 DEF_TEST(conservatively_contains_rect, reporter) {
