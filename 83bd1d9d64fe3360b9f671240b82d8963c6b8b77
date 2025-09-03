@@ -75,6 +75,65 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d53b6e_da06c1d5",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-03T16:41:00Z",
+      "side": 1,
+      "message": "Yes, exactly. SkColorSpace::Make, when the skcms_ICCProfile has has_CICP true, will use that to create the space.",
+      "parentUuid": "a030be04_7c582c78",
+      "range": {
+        "startLine": 146,
+        "startChar": 40,
+        "endLine": 146,
+        "endChar": 75
+      },
+      "revId": "83bd1d9d64fe3360b9f671240b82d8963c6b8b77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8afd29af_157dbfbf",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-03T16:41:00Z",
+      "side": 1,
+      "message": "Change to else-if",
+      "fixSuggestions": [
+        {
+          "fixId": "536c0bc3_86b46275",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkColorSpace.cpp",
+              "range": {
+                "startLine": 91,
+                "startChar": 0,
+                "endLine": 95,
+                "endChar": 0
+              },
+              "replacement": "        } else if (!table_entry.sk_primaries.toXYZD50(\u0026table_entry_to_xyzd50)) {\n            continue;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "83bd1d9d64fe3360b9f671240b82d8963c6b8b77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3dede7d9_877bfacc",
