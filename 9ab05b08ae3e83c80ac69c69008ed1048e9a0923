@@ -16,6 +16,24 @@
       "message": "Looks like this broke `Build-Ubuntu24.04-Clang-x86_64-Release-CMake` with\n\n```\nIn file included from /SRC/skia/modules/skcms/src/skcms_TransformHsw.cc:56:\n/SRC/skia/modules/skcms/src/Transform_inl.h:155:13: error: _Float16 is not supported on this target\n    typedef _Float16 __attribute__((vector_size(16))) F16;\n            ^\n1 error generated.\n```\n\nThe output indicates that this is using system clang, which appears to be `Clang 11.0.1`. Looks like support was added in https://reviews.llvm.org/D114099  and https://reviews.llvm.org/D128571 which ended up in Clang 15 https://releases.llvm.org/15.0.0/tools/clang/docs/ReleaseNotes.html . I\u0027m actually surprised things have been building for so long with Clang 11.\n\nFrom the Clang 11, I assume this is actually running in debian bullseye, however `infra/docker/cmake-release/Dockerfile` says it is buster-backports, so this is still a debian 10 image. Should probably update that.",
       "revId": "9ab05b08ae3e83c80ac69c69008ed1048e9a0923",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ee50c91_671334c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-03T13:15:47Z",
+      "side": 1,
+      "message": "Our Docker CMake task now uses Clang 19\nhttps://skia-review.googlesource.com/c/skia/+/1045117\nhttps://skia-review.googlesource.com/c/skia/+/1045237",
+      "parentUuid": "14b28586_8e8bd62c",
+      "revId": "9ab05b08ae3e83c80ac69c69008ed1048e9a0923",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
