@@ -448,7 +448,7 @@ public:
             builder.conicWeights(),
             builder.computeBounds(),
             builder.fillType(),
-            builder.fConvexity == SkPathConvexity::kConvex,
+            builder.computeIsConvex(),
             SkTo<uint8_t>(builder.fSegmentMask),
         };
     }

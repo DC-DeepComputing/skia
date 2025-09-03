@@ -942,7 +942,6 @@ private:
 
     SkPathFillType  fFillType;
     bool            fIsVolatile;
-    SkPathConvexity fConvexity;
 
     unsigned    fSegmentMask;
     SkPoint     fLastMovePoint;
@@ -968,6 +967,8 @@ private:
     SkPathBuilder& privateReversePathTo(const SkPath&);
 
     std::tuple<SkPoint*, SkScalar*> growForVerbsInPath(const SkPathRef& path);
+
+    bool computeIsConvex() const;
 
     friend class SkPathPriv;
     friend class SkStroke;
