@@ -16,6 +16,24 @@
       "message": "This commit seems to have broken the android autoroller. e.g.: https://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/35442961?tab\u003dchecks",
       "revId": "75c9323c868fadc8bbc01f13b7871b32d773e47e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51afff51_1177da3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-09-03T18:17:13Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1050156",
+      "parentUuid": "d1cf316a_7622799c",
+      "revId": "75c9323c868fadc8bbc01f13b7871b32d773e47e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
