@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f8cfbe_3c74bab7",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "610dcba0_e22cb53e",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 6
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "628ae27b_d3384c98",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60963344_01662d85",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "628ae27b_d3384c98",
+      "range": {
+        "startLine": 1488,
+        "startChar": 0,
+        "endLine": 1490,
+        "endChar": 31
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e439848_fabb1c28",
@@ -94,6 +142,30 @@
       "writtenOn": "2025-09-02T20:36:12Z",
       "side": 1,
       "message": "I would call SKGPU_LOG_W but I don\u0027t think I\u0027d fail the entire Recorder.\n\nOriginally Rob and I discussed having an \"error\" paint that we\u0027d draw instead so clients could rely on the pixels being initialized still but I think we can move to that as follow-up.",
+      "range": {
+        "startLine": 1524,
+        "startChar": 8,
+        "endLine": 1525,
+        "endChar": 48
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b8e37d_74b9a38d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e439848_fabb1c28",
       "range": {
         "startLine": 1524,
         "startChar": 8,
@@ -129,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1979e31b_0b8e7be4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1596,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "I\u0027ve kept the reset inside `internalFlush()`, because without it, the gatherer still has sk_sp\u0027s to textures, which causes the nonVolatileImage test to fail.",
+      "parentUuid": "96953a06_c9f713e4",
+      "range": {
+        "startLine": 1596,
+        "startChar": 60,
+        "endLine": 1596,
+        "endChar": 65
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a7b07ce_d267f5db",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 22
@@ -140,6 +236,30 @@
       "writtenOn": "2025-09-02T20:36:12Z",
       "side": 1,
       "message": "UniquePaintParamsID::Invalid()",
+      "range": {
+        "startLine": 1786,
+        "startChar": 24,
+        "endLine": 1786,
+        "endChar": 37
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79741428_301b0bc5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1786,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7b07ce_d267f5db",
       "range": {
         "startLine": 1786,
         "startChar": 24,
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c26e69c_a62b2ab1",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82891051_4a955d57",
+      "range": {
+        "startLine": 119,
+        "startChar": 9,
+        "endLine": 119,
+        "endChar": 24
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46699697_3e797142",
@@ -186,6 +330,30 @@
       "writtenOn": "2025-09-02T20:36:12Z",
       "side": 1,
       "message": "WDYT about having the `DrawList::Draw` store an optional\u003cBarrierType\u003e so that this logic is hoisted to where it\u0027s recorded?\n\nWe always know at the DrawContext level what the the DstReadStrategy will be if anything actually requires a dst read.",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 9
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43ac7fe_aa0fbeef",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46699697_3e797142",
       "range": {
         "startLine": 341,
         "startChar": 0,
@@ -219,6 +387,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41c3e4a_cefdc637",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "806255b8_19251559",
+      "range": {
+        "startLine": 90,
+        "startChar": 47,
+        "endLine": 90,
+        "endChar": 50
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e6c6adb_207d6d36",
@@ -242,6 +434,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5485ee55_039d8880",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e6c6adb_207d6d36",
+      "range": {
+        "startLine": 2003,
+        "startChar": 44,
+        "endLine": 2003,
+        "endChar": 61
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac002763_e99bb7d8",
@@ -255,6 +471,30 @@
       "writtenOn": "2025-09-02T20:36:12Z",
       "side": 1,
       "message": "`UniquePaintParamsID::Invalid()`",
+      "range": {
+        "startLine": 2004,
+        "startChar": 32,
+        "endLine": 2004,
+        "endChar": 84
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2650fa19_9e6e84ed",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2004,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-03T18:33:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac002763_e99bb7d8",
       "range": {
         "startLine": 2004,
         "startChar": 32,
