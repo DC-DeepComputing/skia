@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e24f90a_bd1b97b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-09-03T21:55:40Z",
+      "side": 1,
+      "message": "the android canary failure seems unrelated. i\u0027ll go ahead and submit this.",
+      "revId": "b234e71c8389b3835e6d870c5eae192888de1543",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
