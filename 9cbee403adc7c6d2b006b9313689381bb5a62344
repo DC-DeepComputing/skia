@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9f1650d_73f5c692",
+        "filename": "include/android/SkHeifDecoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-03T19:41:21Z",
+      "side": 0,
+      "message": "I double checked that this file isn\u0027t referenced in the BUILD.bazel file.",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "9cbee403adc7c6d2b006b9313689381bb5a62344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
