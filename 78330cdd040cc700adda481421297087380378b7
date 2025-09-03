@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7adfaee_c4fc7faa",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1591,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-03T16:18:42Z",
+      "side": 1,
+      "message": "Would it make sense to preserve the convexity bit, if known to be convex (kConvex_Unknown)?",
+      "range": {
+        "startLine": 1591,
+        "startChar": 32,
+        "endLine": 1591,
+        "endChar": 57
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84f03b73_1008700a",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-03T16:18:42Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we also return if known to be concave?",
+      "range": {
+        "startLine": 2171,
+        "startChar": 8,
+        "endLine": 2171,
+        "endChar": 32
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e2fe2f_61e9d751",
+        "filename": "src/core/SkPathEnums.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-03T16:18:42Z",
+      "side": 1,
+      "message": "`SkUNREACHABLE;` instead?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 39
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
