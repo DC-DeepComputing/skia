@@ -63,6 +63,24 @@
       "message": "Could we tweak the test asserts to account for rect inversion instead?",
       "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f990459_fcb6ee26",
+        "filename": "tests/GrStyledShapeTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-04T17:16:43Z",
+      "side": 1,
+      "message": "What do you want it to assert?",
+      "parentUuid": "80dc303f_4ae754eb",
+      "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
