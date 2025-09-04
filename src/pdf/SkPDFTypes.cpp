@@ -599,7 +599,7 @@ SkPDFIndirectReference SkPDFStreamOut(std::unique_ptr<SkPDFDict> dict,
         // Pass ownership of both pointers into a std::function, which should
         // only be executed once.
         doc->incrementJobCount();
-        executor->add([dictPtr, contentPtr, compress, doc, ref]() {
+        executor->add1([dictPtr, contentPtr, compress, doc, ref]() {
             serialize_stream(dictPtr, contentPtr, compress, doc, ref);
             delete dictPtr;
             delete contentPtr;
