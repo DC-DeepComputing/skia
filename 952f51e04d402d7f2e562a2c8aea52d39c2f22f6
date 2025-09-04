@@ -225,6 +225,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f18f59d5_e65de253",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-04T14:17:53Z",
+      "side": 1,
+      "message": "WDYT about having `drawGeomery()` and `drawClipShape()` reset the gatherer/builders at the end of their work, and assert `checkReset()` at the beginning.  Then we always drop refs ASAP and wouldn\u0027t need to do anything extra in internalFlush()",
+      "parentUuid": "1979e31b_0b8e7be4",
+      "range": {
+        "startLine": 1596,
+        "startChar": 60,
+        "endLine": 1596,
+        "endChar": 65
+      },
+      "revId": "952f51e04d402d7f2e562a2c8aea52d39c2f22f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a7b07ce_d267f5db",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 22
