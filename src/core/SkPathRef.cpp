@@ -215,7 +215,7 @@ void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
     const SkPathIsAType newType = matrix.rectStaysRect() ? src.fType : SkPathIsAType::kGeneral;
 
     (*dst)->fType = newType;
-    if (newType == SkPathIsAType::kOval || newType == SkPathIsAType::kRRect) {
+    if (newType != SkPathIsAType::kGeneral) {
         auto [dir, start] =
         SkPathPriv::TransformDirAndStart(matrix, newType == SkPathIsAType::kRRect,
                                          src.fIsA.fDirection, src.fIsA.fStartIndex);
@@ -529,6 +529,11 @@ std::optional<SkPathRRectInfo> SkPathRef::isRRect() const {
 bool SkPathRef::isValid() const {
     switch (fType) {
         case SkPathIsAType::kGeneral:
+            break;
+        case SkPathIsAType::kRect:
+            if (fIsA.fStartIndex >= 4) {
+                return false;
+            }
             break;
         case SkPathIsAType::kOval:
             if (fIsA.fStartIndex >= 4) {
