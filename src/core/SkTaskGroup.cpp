@@ -13,12 +13,13 @@
 
 SkTaskGroup::SkTaskGroup(SkExecutor& executor) : fPending(0), fExecutor(executor) {}
 
-void SkTaskGroup::add(std::function<void(void)> fn) {
+void SkTaskGroup::add(std::function<void(void)> fn, bool hiLow) {
     fPending.fetch_add(+1, std::memory_order_relaxed);
     fExecutor.add([this, fn{std::move(fn)}] {
         fn();
         fPending.fetch_add(-1, std::memory_order_release);
-    });
+    },
+    hiLow);
 }
 
 void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
@@ -28,7 +29,8 @@ void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
         fExecutor.add([fn, i, this] {
             fn(i);
             fPending.fetch_add(-1, std::memory_order_release);
-        });
+        },
+        false);
     }
 }
 
@@ -42,7 +44,7 @@ void SkTaskGroup::wait() {
     // no thread ever blocks waiting for others to do its work.
     // (We may end up doing work that's not part of our task group.  That's fine.)
     while (!this->done()) {
-        fExecutor.borrow();
+        fExecutor.borrow1();
     }
 }
 

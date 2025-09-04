@@ -267,7 +267,7 @@ void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup, GrDirectConte
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
 
-            taskGroup->add([direct, info]() { CreateBETexturesForPromiseImage(direct, info); });
+            taskGroup->add([direct, info]() { CreateBETexturesForPromiseImage(direct, info); }, true);
         }
     } else {
         for (int i = 0; i < fImageInfo.size(); ++i) {
@@ -281,7 +281,7 @@ void DDLPromiseImageHelper::deleteAllFromGPU(SkTaskGroup* taskGroup, GrDirectCon
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
 
-            taskGroup->add([info]() { DeleteBETexturesForPromiseImage(info); });
+            taskGroup->add([info]() { DeleteBETexturesForPromiseImage(info); }, true);
         }
     } else {
         for (int i = 0; i < fImageInfo.size(); ++i) {

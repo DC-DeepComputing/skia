@@ -414,7 +414,7 @@ SkPDFIndirectReference SkPDFSerializeImage(const SkImage* img,
             serialize_image(img, encodingQuality, doc, ref);
             SkSafeUnref(img);
             doc->signalJobComplete();
-        });
+        }, true);
         return ref;
     }
     serialize_image(img, encodingQuality, doc, ref);

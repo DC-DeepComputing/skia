@@ -604,7 +604,7 @@ SkPDFIndirectReference SkPDFStreamOut(std::unique_ptr<SkPDFDict> dict,
             delete dictPtr;
             delete contentPtr;
             doc->signalJobComplete();
-        });
+        }, true);
         return ref;
     }
     serialize_stream(dict.get(), content.get(), compress, doc, ref);

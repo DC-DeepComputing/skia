@@ -27,10 +27,10 @@ public:
     static void SetDefault(SkExecutor*);  // Does not take ownership.  Not thread safe.
 
     // Add work to execute.
-    virtual void add(std::function<void(void)>) = 0;
+    virtual void add(std::function<void(void)>, bool hiLow) = 0;
 
     // If it makes sense for this executor, use this thread to execute work for a little while.
-    virtual void borrow() {}
+    virtual void borrow1() {}
 
 protected:
     SkExecutor() = default;

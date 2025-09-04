@@ -1845,7 +1845,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
     gpuTestCtx->makeNotCurrent();
 
     // Job one for the GPU thread is to make 'gpuTestCtx' current!
-    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeCurrent(); });
+    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeCurrent(); }, true);
 
     // TODO: move the image upload to the utility thread
     promiseImageHelper.uploadAllToGPU(gpuTaskGroup, dContext);
@@ -1879,7 +1879,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
     // there is nothing in the DAG to automatically force the required order.
     gpuTaskGroup->add([dstSurface, ddl = tiles.composeDDL()]() {
                           skgpu::ganesh::DrawDDL(dstSurface, ddl);
-                      });
+                      }, true);
 
     // This should be the only explicit flush for the entire DDL draw.
     gpuTaskGroup->add([dContext]() {
@@ -1891,7 +1891,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
                                            // bit by which thread possesses the direct context.
                                            dContext->flush();
                                            dContext->submit(GrSyncCpu::kYes);
-                                       });
+                                       }, true);
 
     // The backend textures are created on the gpuThread by the 'uploadAllToGPU' call.
     // It is simpler to also delete them at this point on the gpuThread.
@@ -1901,7 +1901,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
 
     // A flush has already been scheduled on the gpu thread along with the clean up of the backend
     // textures so it is safe to schedule making 'gpuTestCtx' not current on the gpuThread.
-    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeNotCurrent(); });
+    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeNotCurrent(); }, true);
 
     // All the work is scheduled on the gpu thread, we just need to wait
     gpuTaskGroup->wait();

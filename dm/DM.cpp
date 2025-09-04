@@ -1302,7 +1302,7 @@ struct Task {
                         }
                     }
                 }
-            });
+            }, true);
         }
         done(task.sink.tag.c_str(), task.src.tag.c_str(), task.src.options.c_str(), name.c_str());
     }
@@ -1678,14 +1678,14 @@ int main(int argc, char** argv) {
             if (src->serial() || sink->serial()) {
                 serial.push_back(task);
             } else {
-                parallel.add([task] { Task::Run(task); });
+                parallel.add([task] { Task::Run(task); }, true);
             }
         }
     }
 
 #if !defined(SK_DISABLE_LEGACY_TESTS)
     for (skiatest::Test& test : *gCPUTests) {
-        parallel.add([test] { run_cpu_test(test); });
+        parallel.add([test] { run_cpu_test(test); }, true);
     }
 #endif // !SK_DISABLE_LEGACY_TESTS
 

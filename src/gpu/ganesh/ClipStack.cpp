@@ -402,7 +402,7 @@ GrSurfaceProxyView render_sw_mask(GrRecordingContext* context,
             uploaderRaw->signalAndFreeData();
         };
 
-        taskGroup->add(std::move(drawAndUploadMask));
+        taskGroup->add(std::move(drawAndUploadMask), true);
         proxy->texPriv().setDeferredUploader(std::move(uploader));
 
         return {std::move(proxy), kMaskOrigin, swizzle};

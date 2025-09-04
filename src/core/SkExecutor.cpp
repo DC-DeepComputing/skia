@@ -33,9 +33,9 @@ using namespace skia_private;
 
 SkExecutor::~SkExecutor() {}
 
-// The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
+// The default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
 class SkTrivialExecutor final : public SkExecutor {
-    void add(std::function<void(void)> work) override {
+    void add(std::function<void(void)> work, bool hiLow) override {
         work();
     }
 };
@@ -83,7 +83,7 @@ public:
     ~SkThreadPool() override {
         // Signal each thread that it's time to shut down.
         for (int i = 0; i < fThreads.size(); i++) {
-            this->add(nullptr);
+            this->add(nullptr, true);
         }
         // Wait for each thread to shut down.
         for (int i = 0; i < fThreads.size(); i++) {
@@ -91,17 +91,21 @@ public:
         }
     }
 
-    void add(std::function<void(void)> work) override {
+    void add(std::function<void(void)> work, bool hiLow) override {
         // Add some work to our pile of work to do.
         {
             SkAutoMutexExclusive lock(fWorkLock);
-            fWork.emplace_back(std::move(work));
+            if (hiLow) {
+                fHighWork.emplace_back(std::move(work));
+            } else {
+                fLowWork.emplace_back(std::move(work));
+            }
         }
         // Tell the Loop() threads to pick it up.
         fWorkAvailable.signal(1);
     }
 
-    void borrow() override {
+    void borrow1() override {
         // If there is work waiting and we're allowed to borrow work, do it.
         if (fAllowBorrowing && fWorkAvailable.try_wait()) {
             SkAssertResult(this->do_work());
@@ -114,8 +118,13 @@ private:
         std::function<void(void)> work;
         {
             SkAutoMutexExclusive lock(fWorkLock);
-            SkASSERT(!fWork.empty());        // TODO: if (fWork.empty()) { return true; } ?
-            work = pop(&fWork);
+            //SkASSERT(!fWork.empty());        // TODO: if (fWork.empty()) { return true; } ?
+
+            if (!fHighWork.empty()) {
+                work = pop(&fHighWork);
+            } else if (!fLowWork.empty()) {
+                work = pop(&fLowWork);
+            }
         }
 
         if (!work) {
@@ -137,10 +146,11 @@ private:
     using Lock = SkMutex;
 
     TArray<std::thread> fThreads;
-    WorkList              fWork;
-    Lock                  fWorkLock;
-    SkSemaphore           fWorkAvailable;
-    bool                  fAllowBorrowing;
+    WorkList            fHighWork;
+    WorkList            fLowWork;
+    Lock                fWorkLock;
+    SkSemaphore         fWorkAvailable;
+    bool                fAllowBorrowing;
 };
 
 std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {

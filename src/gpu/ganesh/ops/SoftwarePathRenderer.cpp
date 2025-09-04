@@ -397,7 +397,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
                 }
                 uploaderRaw->signalAndFreeData();
             };
-            taskGroup->add(std::move(drawAndUploadMask));
+            taskGroup->add(std::move(drawAndUploadMask), true);
             view.asTextureProxy()->texPriv().setDeferredUploader(std::move(uploader));
         } else {
             GrSWMaskHelper helper;

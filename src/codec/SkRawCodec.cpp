@@ -165,7 +165,7 @@ public:
                     SkAutoMutexExclusive lock(mutex);
                     exceptions.push_back(dng_exception(dng_error_unknown));
                 }
-            });
+            }, true);
         }
 
         taskGroup.wait();
