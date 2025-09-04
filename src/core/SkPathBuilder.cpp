@@ -149,7 +149,7 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
     if (!fVerbs.empty() && fVerbs.back() == SkPathVerb::kMove) {
         fPts.back() = pt;
 
-        SkASSERT(fType != SkPathIsAType::kOval && fType != SkPathIsAType::kRRect);
+        SkASSERT(fType == SkPathIsAType::kGeneral);
         SkASSERT(fNeedsMoveVerb == false);
         SkASSERT(fConvexity == SkPathConvexity::kUnknown);
         SkASSERT(fLastMoveIndex == SkToInt(fPts.size()) - 1);
@@ -160,9 +160,7 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
         fVerbs.push_back(SkPathVerb::kMove);
 
         fNeedsMoveVerb = false;
-        if (fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) {
-            fType = SkPathIsAType::kGeneral;
-        }
+        fType = SkPathIsAType::kGeneral;
         fConvexity = SkPathConvexity::kUnknown;
     }
     fLastMovePoint = pt;
@@ -276,6 +274,11 @@ SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
 
     switch (fType) {
         case SkPathIsAType::kGeneral:
+            break;
+        case SkPathIsAType::kRect:
+            pr->setIsRect(fIsA.fDirection, fIsA.fStartIndex);
+            dir = SkPathDirectionToFirst(fIsA.fDirection);
+            SkASSERT(fConvexity == SkPathConvexity::kConvex);
             break;
         case SkPathIsAType::kOval:
             pr->setIsOval(fIsA.fDirection, fIsA.fStartIndex);
@@ -701,7 +704,9 @@ SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, u
     this->addRaw(SkPathRawShapes::Rect(rect, dir, index));
 
     if (wasEmpty) {
-        // now we're a rect
+        fType            = SkPathIsAType::kRect;
+        fIsA.fDirection  = dir;
+        fIsA.fStartIndex = index % 4;
         fConvexity = SkPathConvexity::kConvex;
     }
     return *this;
@@ -1025,7 +1030,7 @@ SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix) {
         }
 
         // If we're still a special case, check if we need to reverse our winding
-        if (fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) {
+        if (fType != SkPathIsAType::kGeneral) {
             auto [dir, start] =
             SkPathPriv::TransformDirAndStart(matrix, fType == SkPathIsAType::kRRect,
                                              fIsA.fDirection, fIsA.fStartIndex);
