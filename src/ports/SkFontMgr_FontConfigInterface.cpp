@@ -17,6 +17,7 @@
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkFontConfigTypeface.h"
+#include "src/ports/SkTypeface_FreeType.h"
 
 #include <new>
 
@@ -242,7 +243,7 @@ protected:
             return nullptr;  // don't accept too large fonts (>= 1GB) for safety.
         }
 
-        return fScanner->MakeFromStream(std::move(stream), args);
+        return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
     }
 
     sk_sp<SkTypeface> onMakeFromFile(const char path[], int ttcIndex) const override {
