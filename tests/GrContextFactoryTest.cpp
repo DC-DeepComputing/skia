@@ -89,7 +89,7 @@ DEF_GANESH_TEST(GrContextFactory_executorAndTaskGroup, reporter, options, CtsEnf
         contextOptions.fExecutor = nullptr;
         GrContextFactory serialFactory(contextOptions);
 
-        std::unique_ptr<SkExecutor> threadPool = SkExecutor::MakeFIFOThreadPool(1);
+        std::unique_ptr<SkExecutor> threadPool = SkExecutor::MakeFIFOThreadPool1(1);
         contextOptions.fExecutor = threadPool.get();
         GrContextFactory threadedFactory(contextOptions);
 

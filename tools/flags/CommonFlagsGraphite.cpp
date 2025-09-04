@@ -27,7 +27,7 @@ DEFINE_int(internalMSAATileSize, 0, "Run Graphite w/ limited MSAA texture's size
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
     static std::unique_ptr<SkExecutor> gGpuExecutor =
-            (0 != FLAGS_gpuThreads) ? SkExecutor::MakeFIFOThreadPool(FLAGS_gpuThreads)
+            (0 != FLAGS_gpuThreads) ? SkExecutor::MakeFIFOThreadPool1(FLAGS_gpuThreads)
                                     : nullptr;
 
     testOptions->fContextOptions.fExecutor = gGpuExecutor.get();
