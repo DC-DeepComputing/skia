@@ -52,6 +52,24 @@
       "parentUuid": "b7a0e7e6_28fa5fbe",
       "revId": "bd1fd9d3c5ce28f9c3e92ad9775899b0fc7f2b29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d9aabb_c0b8511d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-09-04T20:33:54Z",
+      "side": 1,
+      "message": "Yep, https://chromium-review.googlesource.com/c/chromium/src/+/6917834 fixes it.",
+      "parentUuid": "d1812694_f3379103",
+      "revId": "bd1fd9d3c5ce28f9c3e92ad9775899b0fc7f2b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
