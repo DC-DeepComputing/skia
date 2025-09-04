@@ -3137,9 +3137,13 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
         case k_inverse_IntrinsicKind:
             return this->assembleInversePolyfill(call);
 
-        case k_inversesqrt_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("inverseSqrt", call);
-
+        case k_inversesqrt_IntrinsicKind: {
+            std::string argument = this->assembleExpression(*arguments.front(), Precedence::kSequence);
+            if (all_arguments_constant(arguments)) {
+                argument = this->writeScratchLet(argument);
+            }
+            return this->writeScratchLet("(1.0 / sqrt(" + argument + "))");
+        }
         case k_lessThan_IntrinsicKind:
             return this->assembleBinaryOpIntrinsic(OperatorKind::LT, call, parentPrecedence);
 

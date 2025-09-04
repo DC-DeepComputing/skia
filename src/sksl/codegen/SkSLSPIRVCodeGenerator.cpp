@@ -2039,6 +2039,27 @@ SpvId SPIRVCodeGenerator::writeIntrinsicCall(const FunctionCall& c, SPIRVBlob& o
     }
     switch (intrinsic.opKind) {
         case kGLSL_STD_450_IntrinsicOpcodeKind: {
+            if (function.intrinsicKind() == k_inversesqrt_IntrinsicKind) {
+                SpvId argumentId = this->writeExpression(*arguments[0], out);
+                const Type& argType = arguments[0]->type();
+
+                SpvId sqrtResultId = this->nextId(&c.type());
+                this->writeOpCode(SpvOpExtInst, 6, out);
+                this->writeWord(this->getType(argType), out);
+                this->writeWord(sqrtResultId, out);
+                this->writeWord(fGLSLExtendedInstructions, out);
+                this->writeWord(GLSLstd450Sqrt, out);
+                this->writeWord(argumentId, out);
+
+                // SpvId result = OpFDiv <resultType> <resultId> 1.0 sqrt
+                SpvId one = this->writeLiteral(1.0, argType.componentType());
+                one = this->splat(argType, one, out);
+                SpvId result = this->nextId(&c.type());
+                this->writeInstruction(SpvOpFDiv, this->getType(c.type()), result, one,
+                                    sqrtResultId, out);
+                return result;
+            }
+
             SpvId result = this->nextId(&c.type());
             TArray<SpvId> argumentIds;
             argumentIds.reserve_exact(arguments.size());
