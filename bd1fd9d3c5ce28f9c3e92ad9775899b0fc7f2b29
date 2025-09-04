@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7c9f1db_5f1ccab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-09-04T19:19:48Z",
+      "side": 1,
+      "message": "You\u0027re looking in the wrong place. The only thing this could do is correctly use Fontations instead of FreeType. Most likely the fact that the emoji aren\u0027t showing up is due to lack of registration of a PNG codec (which is now needed due to the modularization of Skia, though Chromium may not need that). The idea was to get Chromium process to register one of the PNG codecs when initializing Skia on anything process that needs PNGs decoded (like for bitmap emojis). The right change would be to either always register one or change the Skia build in Chromium to always build one into the default list, which should still be possible.",
+      "revId": "bd1fd9d3c5ce28f9c3e92ad9775899b0fc7f2b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
