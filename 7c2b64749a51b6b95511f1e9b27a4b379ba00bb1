@@ -16,6 +16,24 @@
       "message": "Is there a link to the failing test? If it\u0027s something that expects the old HLG behavior, it should get updated.",
       "revId": "7c2b64749a51b6b95511f1e9b27a4b379ba00bb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9865ebc_db3dfae2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-09-04T17:11:43Z",
+      "side": 1,
+      "message": "Agreed -- the revert is temporary to unblock the roller. Internal links shared over chat.",
+      "parentUuid": "7c4e1999_a1d1ed9b",
+      "revId": "7c2b64749a51b6b95511f1e9b27a4b379ba00bb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
