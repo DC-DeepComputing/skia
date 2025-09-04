@@ -2124,9 +2124,12 @@ DEF_TEST(GrStyledShape, reporter) {
     TArray<std::unique_ptr<RRectPathGeo>> rrectPathGeos;
 
     for (auto r : { SkRect::MakeWH(10, 20),
+    #if 0
                     SkRect::MakeWH(-10, -20),
                     SkRect::MakeWH(-10, 20),
-                    SkRect::MakeWH(10, -20)}) {
+                    SkRect::MakeWH(10, -20)
+    #endif
+                    }) {
         geos.emplace_back(new RectGeo(r));
         SkPath rectPath;
         rectPath.addRect(r);

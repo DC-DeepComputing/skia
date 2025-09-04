@@ -67,8 +67,7 @@ struct SkPathRRectInfo {
  *  Here are the special "types" we have APIs for (e.g. isRRect()) and what we store:
  *
  *      kGeneral  : no identifying shape, no extra data
- *      (Rect)    : no tag, but isRect() will examing the points/verbs, and try to
- *                  deduce that it represents a rect.
+ *      kRect     : store the rect, direction, and start-index (for dashing).
  *      kOval     : the path bounds is also the oval's bounds -- we store the direction
  *                  and start_index (important for dashing). see SkPathMakers.h
  *      kRRect    : same as kOval for implicit bounds, direction and start_index.
@@ -77,6 +76,7 @@ struct SkPathRRectInfo {
  */
 enum class SkPathIsAType : uint8_t {
     kGeneral,
+    kRect,
     kOval,
     kRRect,
 };
@@ -193,6 +193,10 @@ public:
          */
         SkPathRef* pathRef() { return fPathRef; }
 
+        void setIsRect(SkPathDirection dir, unsigned start) {
+            fPathRef->setIsRect(dir, start);
+        }
+
         void setIsOval(SkPathDirection dir, unsigned start) {
             fPathRef->setIsOval(dir, start);
         }
@@ -230,6 +234,17 @@ public:
      *  Returns 0 for an empty path (no segments).
      */
     uint32_t getSegmentMasks() const { return fSegmentMask; }
+
+    std::optional<SkPathRectInfo> isRect() const {
+        if (fType == SkPathIsAType::kRect) {
+            return {{
+                this->getBounds(),
+                fIsA.fDirection,
+                fIsA.fStartIndex,
+            }};
+        }
+        return {};
+    }
 
     /** Returns Info struct if the path is an oval, else return {}.
      *  Tracking whether a path is an oval is considered an
@@ -488,6 +503,12 @@ private:
      * Called the first time someone calls CreateEmpty to actually create the singleton.
      */
     friend SkPathRef* sk_create_empty_pathref();
+
+    void setIsRect(SkPathDirection dir, unsigned start) {
+        fType = SkPathIsAType::kRect;
+        fIsA.fDirection  = dir;
+        fIsA.fStartIndex = SkToU8(start);
+    }
 
     void setIsOval(SkPathDirection dir, unsigned start) {
         fType = SkPathIsAType::kOval;
