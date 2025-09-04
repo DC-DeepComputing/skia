@@ -1365,3 +1365,56 @@ DEF_BENCH( return new PathBuildBench("addOval", [](SkPath* path, const SkRect& r
 DEF_BENCH( return new PathBuildBench("addRRect", [](SkPath* path, const SkRect& r) {
     path->addRRect(SkRRect::MakeRectXY(r, 0.1f, 0.1f));
 }));
+
+class PathIsABench : public Benchmark {
+    const SkPath fPath;
+    SkString     fName;
+public:
+    PathIsABench(const char name[], const SkPath& path) : fPath(path) {
+        fName.printf("path_isa_rect_%s", name);
+    }
+
+    SkRect fBounds;
+    bool   fIsClosed;
+
+protected:
+    const char* onGetName() override {
+        return fName.c_str();
+    }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        for (int i = 0; i < loops; ++i) {
+            (void)fPath.isRect(&fBounds, &fIsClosed, nullptr);
+        }
+    }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering;
+    }
+
+private:
+    using INHERITED = Benchmark;
+};
+
+DEF_BENCH( return new PathIsABench("explicit", []() {
+    return SkPath::Rect({1, 2, 3, 4});
+}()));
+DEF_BENCH( return new PathIsABench("implicit", []() {
+    // This builds exactly the same points/verbs as the SkPath::Rect() factory,
+    // but that *also* tells the path that it *is* a rect, which is
+    // cached in the PathRef.
+    //
+    // Manually constructing it forces isRect() to 'deduce' that it is a path
+    // by sniffing the points/verbs.
+    SkPathBuilder bu;
+    bu.moveTo(1, 2).lineTo(3, 2).lineTo(3, 4).lineTo(1, 4).close();
+    return bu.detach();
+}()));
+DEF_BENCH( return new PathIsABench("empty", []() {
+    return SkPath();
+}()));
+DEF_BENCH( return new PathIsABench("not_a_rect", []() {
+    SkPathBuilder bu;
+    bu.moveTo(1, 2).lineTo(3, 2).lineTo(3, 4).lineTo(0, 0); // last line breaks the pattern
+    return bu.detach();
+}()));

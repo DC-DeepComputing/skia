@@ -438,11 +438,34 @@ void SkPath::validateRef() const {
     fPathRef->validate();
 }
 #endif
+
 bool SkPath::isRect(SkRect* rect, bool* isClosed, SkPathDirection* direction) const {
     SkDEBUGCODE(this->validate();)
-    SkSpan<const SkPoint> pts = {fPathRef->points(), fPathRef->countPoints()};
-    SkSpan<const SkPathVerb> vbs = fPathRef->verbs();
-    if (auto rc = SkPathPriv::IsRectContour(pts, vbs, false)) {
+
+    if (auto info = fPathRef->isRect()) {
+#ifdef SK_DEBUG
+        // self-consistency check -- does our cache agree with what we can deduce
+        if (auto rc = SkPathPriv::IsRectContour(fPathRef->pointSpan(), fPathRef->verbs(), false)) {
+            SkASSERT(rc->fRect == info->fRect);
+            SkASSERT(rc->fDirection == info->fDirection);
+            SkASSERT(rc->fIsClosed);    // our info is implicitly closed
+        }
+#endif
+        if (rect) {
+            *rect = info->fRect;
+        }
+        if (isClosed) {
+            *isClosed = true;
+        }
+        if (direction) {
+            *direction = info->fDirection;
+        }
+        return true;
+    }
+
+    // We may still be a rect, just not one identifie by the pathref, so we can
+    // try to "deduce" if we are rectangular with IsRectContour.
+    if (auto rc = SkPathPriv::IsRectContour(fPathRef->pointSpan(), fPathRef->verbs(), false)) {
         if (rect) {
             *rect = rc->fRect;
         }
@@ -806,9 +829,17 @@ SkPath& SkPath::addRect(const SkRect &rect, SkPathDirection dir, unsigned startI
     assert_known_direction(dir);
     this->setFirstDirection(this->hasOnlyMoveTos() ? (SkPathFirstDirection)dir
                                                    : SkPathFirstDirection::kUnknown);
+
+    bool isRect = hasOnlyMoveTos();
+
     SkAutoAddSimpleShape addc(this);
 
     this->addRaw(SkPathRawShapes::Rect(rect, dir, startIndex));
+
+    if (isRect) {
+        SkPathRef::Editor ed(&fPathRef);
+        ed.setIsRect(dir, startIndex % 4);
+    }
 
     return *this;
 }
@@ -1626,6 +1657,11 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
             }
         }
 
+#if 1
+        if (auto info = dst->fPathRef->isRect()) {
+            SkASSERT(SkPathDirectionToFirst(info->fDirection) == dst->getFirstDirection());
+        }
+#endif
         SkDEBUGCODE(dst->validate();)
     }
 }
@@ -3076,6 +3112,8 @@ int SkPath::ConvertConicToQuads(const SkPoint& p0, const SkPoint& p1, const SkPo
 }
 
 std::optional<SkPathRectInfo> SkPathPriv::IsSimpleRect(const SkPath& path, bool isSimpleFill) {
+    // todo: check fPathRef->isRect()
+
     if (path.getSegmentMasks() != SkPath::kLine_SegmentMask) {
         return {};
     }
