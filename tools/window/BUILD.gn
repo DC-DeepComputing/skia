@@ -5,10 +5,6 @@
 
 import("../../gn/skia.gni")
 
-if (skia_use_dawn) {
-  import("//third_party/externals/dawn/scripts/dawn_features.gni")
-}
-
 config("public_config") {
   defines = []
   include_dirs = [ "." ]
