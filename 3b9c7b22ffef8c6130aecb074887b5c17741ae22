@@ -34,6 +34,24 @@
       "parentUuid": "9801a94c_ecc793f0",
       "revId": "3b9c7b22ffef8c6130aecb074887b5c17741ae22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "686bc5d4_dafa2a4c",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-09-04T06:58:41Z",
+      "side": 1,
+      "message": "Ack for `cxx` and `png`.",
+      "parentUuid": "457f1723_01f96be3",
+      "revId": "3b9c7b22ffef8c6130aecb074887b5c17741ae22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
