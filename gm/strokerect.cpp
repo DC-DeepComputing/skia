@@ -100,7 +100,7 @@ protected:
 
                 SkAutoCanvasRestore acr(canvas, true);
                 for (size_t j = 0; j < std::size(gRects); ++j) {
-                    const SkRect& r = gRects[j];
+                    const SkRect& r = gRects[j].makeSorted();
 
                     SkPath fillPath = skpathutils::FillPathWithPaint(SkPath::Rect(r), paint);
                     draw_path(canvas, fillPath, r, join, doFill);
