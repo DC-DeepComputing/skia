@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6721e530_c3bf78ae",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-04T16:56:36Z",
+      "side": 1,
+      "message": "Unrelated: kinda odd to return the direction (but not the start index) for isRect, and not for isOval/isRRect.",
+      "range": {
+        "startLine": 442,
+        "startChar": 50,
+        "endLine": 442,
+        "endChar": 76
+      },
+      "revId": "666eb6091f57f6dd358f88e378f47bc02390c245",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b3cbb0d_aa5c1d8f",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-04T16:56:36Z",
+      "side": 1,
+      "message": "nit: is this inlinable?",
+      "range": {
+        "startLine": 840,
+        "startChar": 0,
+        "endLine": 841,
+        "endChar": 42
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ebec55f1_d30ed0ae",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath.cpp",
+              "range": {
+                "startLine": 840,
+                "startChar": 0,
+                "endLine": 842,
+                "endChar": 0
+              },
+              "replacement": "        SkPathRef::Editor(\u0026fPathRef).setIsRect(dir, startIndex % 4);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "666eb6091f57f6dd358f88e378f47bc02390c245",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

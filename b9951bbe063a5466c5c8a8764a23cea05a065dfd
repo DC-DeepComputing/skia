@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63d27c72_52700745",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1660,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-04T16:56:36Z",
+      "side": 1,
+      "message": "SkDEBUGCODE?",
+      "range": {
+        "startLine": 1660,
+        "startChar": 0,
+        "endLine": 1660,
+        "endChar": 5
+      },
+      "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80dc303f_4ae754eb",
+        "filename": "tests/GrStyledShapeTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-04T16:56:36Z",
+      "side": 1,
+      "message": "Could we tweak the test asserts to account for rect inversion instead?",
+      "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
