@@ -63,6 +63,30 @@
       ],
       "revId": "666eb6091f57f6dd358f88e378f47bc02390c245",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "498ff27b_b456942e",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-04T17:16:12Z",
+      "side": 1,
+      "message": "Not strictly, since the point is to run the constructor/destructor of the Editor, so we can get exclusive access to the pathref. I can make your change to save on the \\n but I think it will compile to the same either way.",
+      "parentUuid": "4b3cbb0d_aa5c1d8f",
+      "range": {
+        "startLine": 840,
+        "startChar": 0,
+        "endLine": 841,
+        "endChar": 42
+      },
+      "revId": "666eb6091f57f6dd358f88e378f47bc02390c245",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
