@@ -81,6 +81,24 @@
       "parentUuid": "80dc303f_4ae754eb",
       "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8202822_2315ee00",
+        "filename": "tests/GrStyledShapeTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-05T22:08:48Z",
+      "side": 1,
+      "message": "I was thinking of keeping the current asserts but adjust their direction to match new behavior.\n\nPer conversation, sounds like the failing asserts are somewhat misplaced in this unit test.\n\nIf we\u0027re going to keep these inputs commented out let\u0027s add some docs explaining why.",
+      "parentUuid": "1f990459_fcb6ee26",
+      "revId": "b9951bbe063a5466c5c8a8764a23cea05a065dfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

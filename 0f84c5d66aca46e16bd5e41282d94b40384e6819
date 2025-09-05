@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "156a2525_50ee4894",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-05T22:08:48Z",
+      "side": 1,
+      "message": "Is this not holding anymore?",
+      "revId": "0f84c5d66aca46e16bd5e41282d94b40384e6819",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
