@@ -34,6 +34,24 @@
       "parentUuid": "ddea004e_21f8ef47",
       "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c57cfd26_8e6a83af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-05T19:03:49Z",
+      "side": 1,
+      "message": "@fmalita@google.com Looking more into this scenario, the Gold example shows an inconsistency with SkARGB32_Shader_Blitter where there was under/over flow happening in the matrixProc when converting from fixed 32.32 to 16.16. I added a default clamp to that function. \n\nThis problem still existed when using the rasterpipeline_blitter however, which I think this is a reasonable solution for. By checking our device bounds in shader space, we can see if we will deal with numbers small/large enough that the lowp implementation won\u0027t handle correctly.",
+      "parentUuid": "830aeed4_38c72ac5",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
