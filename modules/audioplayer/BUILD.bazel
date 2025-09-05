@@ -10,6 +10,7 @@ skia_objc_library(
     name = "audioplayer_mac",
     srcs = ["SkAudioPlayer_mac.mm"],
     hdrs = ["SkAudioPlayer.h"],
+    copts = ["-fno-objc-arc"],
     features = ["layering_check"],
     sdk_frameworks = ["AVFoundation"],
     deps = ["//:core"],

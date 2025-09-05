@@ -209,6 +209,7 @@ skia_objc_library(
         ":mac_ganesh_gl_hdrs",
         ":mac_ganesh_metal_hdrs",
     ],
+    copts = ["-fno-objc-arc"],
     sdk_frameworks = [
         "QuartzCore",
         "Cocoa",

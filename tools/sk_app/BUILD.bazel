@@ -51,6 +51,7 @@ skia_objc_library(
         "CommandSet.h",
         "Window.h",
     ],
+    copts = ["-fno-objc-arc"],
     deps = [
         "//tools/fonts:font_tool_utils",
         "//tools/skui",

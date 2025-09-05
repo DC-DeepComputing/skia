@@ -69,6 +69,7 @@ skia_objc_library(
     name = "autorelease_pool_objc",
     srcs = ["AutoreleasePool.mm"],
     hdrs = ["AutoreleasePool.h"],
+    copts = ["-fno-objc-arc"],
     visibility = ["//tools/gpu:__pkg__"],
     deps = ["//src/base"],
 )
