@@ -2039,6 +2039,136 @@ SpvId SPIRVCodeGenerator::writeIntrinsicCall(const FunctionCall& c, SPIRVBlob& o
     }
     switch (intrinsic.opKind) {
         case kGLSL_STD_450_IntrinsicOpcodeKind: {
+            if (function.intrinsicKind() == k_inversesqrt_IntrinsicKind) {
+                SpvId argumentId = this->writeExpression(*arguments[0], out);
+                const Type& argType = arguments[0]->type();
+
+                SpvId sqrtResultId = this->nextId(&c.type());
+                this->writeOpCode(SpvOpExtInst, 6, out);
+                this->writeWord(this->getType(argType), out);
+                this->writeWord(sqrtResultId, out);
+                this->writeWord(fGLSLExtendedInstructions, out);
+                this->writeWord(GLSLstd450Sqrt, out);
+                this->writeWord(argumentId, out);
+
+                // SpvId result = OpFDiv <resultType> <resultId> 1.0 sqrt
+                SpvId one = this->writeLiteral(1.0, argType.componentType());
+                one = this->splat(argType, one, out);
+                SpvId result = this->nextId(&c.type());
+                this->writeInstruction(SpvOpFDiv, this->getType(c.type()), result, one,
+                                    sqrtResultId, out);
+                return result;
+            }
+
+            if (function.intrinsicKind() == k_inverse_IntrinsicKind &&
+                arguments[0]->type().matches(*fContext.fTypes.fFloat3x3)) {
+
+                const Type& mat33 = *fContext.fTypes.fFloat3x3;
+                const Type& vec3 = *fContext.fTypes.fFloat3;
+                const Type& scalar = *fContext.fTypes.fFloat;
+
+                SpvId mat = this->writeExpression(*arguments[0], out);
+
+                SpvId c0 = this->writeOpCompositeExtract(vec3, mat, 0, out);
+                SpvId c1 = this->writeOpCompositeExtract(vec3, mat, 1, out);
+                SpvId c2 = this->writeOpCompositeExtract(vec3, mat, 2, out);
+
+                SpvId m00 = this->writeOpCompositeExtract(scalar, c0, 0, out);
+                SpvId m10 = this->writeOpCompositeExtract(scalar, c0, 1, out);
+                SpvId m20 = this->writeOpCompositeExtract(scalar, c0, 2, out);
+                SpvId m01 = this->writeOpCompositeExtract(scalar, c1, 0, out);
+                SpvId m11 = this->writeOpCompositeExtract(scalar, c1, 1, out);
+                SpvId m21 = this->writeOpCompositeExtract(scalar, c1, 2, out);
+                SpvId m02 = this->writeOpCompositeExtract(scalar, c2, 0, out);
+                SpvId m12 = this->writeOpCompositeExtract(scalar, c2, 1, out);
+                SpvId m22 = this->writeOpCompositeExtract(scalar, c2, 2, out);
+
+                SpvId t00 = this->writeBinaryExpression(scalar, m11, OperatorKind::STAR, scalar, m22, scalar, out);
+                SpvId t01 = this->writeBinaryExpression(scalar, m12, OperatorKind::STAR, scalar, m21, scalar, out);
+                SpvId adj00 = this->writeBinaryExpression(scalar, t00, OperatorKind::MINUS, scalar, t01, scalar, out);
+
+                SpvId t02 = this->writeBinaryExpression(scalar, m02, OperatorKind::STAR, scalar, m21, scalar, out);
+                SpvId t03 = this->writeBinaryExpression(scalar, m01, OperatorKind::STAR, scalar, m22, scalar, out);
+                SpvId adj10 = this->writeBinaryExpression(scalar, t02, OperatorKind::MINUS, scalar, t03, scalar, out);
+
+                SpvId t04 = this->writeBinaryExpression(scalar, m01, OperatorKind::STAR, scalar, m12, scalar, out);
+                SpvId t05 = this->writeBinaryExpression(scalar, m02, OperatorKind::STAR, scalar, m11, scalar, out);
+                SpvId adj20 = this->writeBinaryExpression(scalar, t04, OperatorKind::MINUS, scalar, t05, scalar, out);
+
+                SpvId t10 = this->writeBinaryExpression(scalar, m12, OperatorKind::STAR, scalar, m20, scalar, out);
+                SpvId t11 = this->writeBinaryExpression(scalar, m10, OperatorKind::STAR, scalar, m22, scalar, out);
+                SpvId adj01 = this->writeBinaryExpression(scalar, t10, OperatorKind::MINUS, scalar, t11, scalar, out);
+
+                SpvId t12 = this->writeBinaryExpression(scalar, m00, OperatorKind::STAR, scalar, m22, scalar, out);
+                SpvId t13 = this->writeBinaryExpression(scalar, m02, OperatorKind::STAR, scalar, m20, scalar, out);
+                SpvId adj11 = this->writeBinaryExpression(scalar, t12, OperatorKind::MINUS, scalar, t13, scalar, out);
+
+                SpvId t14 = this->writeBinaryExpression(scalar, m02, OperatorKind::STAR, scalar, m10, scalar, out);
+                SpvId t15 = this->writeBinaryExpression(scalar, m00, OperatorKind::STAR, scalar, m12, scalar, out);
+                SpvId adj21 = this->writeBinaryExpression(scalar, t14, OperatorKind::MINUS, scalar, t15, scalar, out);
+
+                SpvId t20 = this->writeBinaryExpression(scalar, m10, OperatorKind::STAR, scalar, m21, scalar, out);
+                SpvId t21 = this->writeBinaryExpression(scalar, m11, OperatorKind::STAR, scalar, m20, scalar, out);
+                SpvId adj02 = this->writeBinaryExpression(scalar, t20, OperatorKind::MINUS, scalar, t21, scalar, out);
+
+                SpvId t22 = this->writeBinaryExpression(scalar, m01, OperatorKind::STAR, scalar, m20, scalar, out);
+                SpvId t23 = this->writeBinaryExpression(scalar, m00, OperatorKind::STAR, scalar, m21, scalar, out);
+                SpvId adj12 = this->writeBinaryExpression(scalar, t22, OperatorKind::MINUS, scalar, t23, scalar, out);
+
+                SpvId t24 = this->writeBinaryExpression(scalar, m00, OperatorKind::STAR, scalar, m11, scalar, out);
+                SpvId t25 = this->writeBinaryExpression(scalar, m01, OperatorKind::STAR, scalar, m10, scalar, out);
+                SpvId adj22 = this->writeBinaryExpression(scalar, t24, OperatorKind::MINUS, scalar, t25, scalar, out);
+
+                SpvId det_part1 = this->writeBinaryExpression(scalar, m00, OperatorKind::STAR, scalar, adj00, scalar, out);
+                SpvId det_part2 = this->writeBinaryExpression(scalar, m01, OperatorKind::STAR, scalar, adj01, scalar, out);
+                SpvId det_part3 = this->writeBinaryExpression(scalar, m02, OperatorKind::STAR, scalar, adj02, scalar, out);
+                SpvId det = this->writeBinaryExpression(scalar, det_part1, OperatorKind::PLUS, scalar, det_part2, scalar, out);
+                det = this->writeBinaryExpression(scalar, det, OperatorKind::PLUS, scalar, det_part3, scalar, out);
+
+                SpvId epsilon = this->writeLiteral(1e-6, scalar);
+                skia_private::TArray<SpvId> absDetArgs = {det};
+                SpvId absDet = this->nextId(&scalar);
+                this->writeGLSLExtendedInstruction(
+                        scalar, absDet, GLSLstd450FAbs, GLSLstd450SAbs, GLSLstd450SAbs, absDetArgs, out);
+                SpvId isSingular = this->writeBinaryExpression(
+                        scalar, absDet, OperatorKind::LT, scalar, epsilon, *fContext.fTypes.fBool, out);
+
+                SpvId thenLabel = this->nextId(nullptr);
+                SpvId elseLabel = this->nextId(nullptr);
+                SpvId mergeLabel = this->nextId(nullptr);
+                this->writeInstruction(SpvOpSelectionMerge, mergeLabel, SpvSelectionControlMaskNone, out);
+                this->writeInstruction(SpvOpBranchConditional, isSingular, thenLabel, elseLabel, out);
+
+                this->writeLabel(thenLabel, kBranchIsOnPreviousLine, out);
+                SpvId one = this->writeLiteral(1.0, scalar);
+                SpvId zero = this->writeLiteral(0.0, scalar);
+                SpvId idCol0 = this->writeOpCompositeConstruct(vec3, {one, zero, zero}, out);
+                SpvId idCol1 = this->writeOpCompositeConstruct(vec3, {zero, one, zero}, out);
+                SpvId idCol2 = this->writeOpCompositeConstruct(vec3, {zero, zero, one}, out);
+                SpvId identityMatrix = this->writeOpCompositeConstruct(mat33, {idCol0, idCol1, idCol2}, out);
+                this->writeInstruction(SpvOpBranch, mergeLabel, out);
+                SpvId thenBlock = fCurrentBlock;
+
+                this->writeLabel(elseLabel, kBranchIsOnPreviousLine, out);
+                SpvId invDet = this->writeReciprocal(scalar, det, out);
+                SpvId adjCol0 = this->writeOpCompositeConstruct(vec3, {adj00, adj10, adj20}, out);
+                SpvId adjCol1 = this->writeOpCompositeConstruct(vec3, {adj01, adj11, adj21}, out);
+                SpvId adjCol2 = this->writeOpCompositeConstruct(vec3, {adj02, adj12, adj22}, out);
+                SpvId adjMatrix = this->writeOpCompositeConstruct(mat33, {adjCol0, adjCol1, adjCol2}, out);
+                SpvId inverseMatrix = this->nextId(&c.type());
+                this->writeInstruction(SpvOpMatrixTimesScalar, this->getType(mat33), inverseMatrix, adjMatrix, invDet, out);
+                this->writeInstruction(SpvOpBranch, mergeLabel, out);
+                SpvId elseBlock = fCurrentBlock;
+
+                this->writeLabel(mergeLabel, kBranchIsOnPreviousLine, out);
+                SpvId result = this->nextId(&c.type());
+                this->writeInstruction(SpvOpPhi, this->getType(mat33), result,
+                                    identityMatrix, thenBlock,
+                                    inverseMatrix, elseBlock,
+                                    out);
+                return result;
+            }
+
             SpvId result = this->nextId(&c.type());
             TArray<SpvId> argumentIds;
             argumentIds.reserve_exact(arguments.size());
