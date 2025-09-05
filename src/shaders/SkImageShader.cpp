@@ -718,7 +718,26 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
         && sampling.mipmap != SkMipmapMode::kLinear
         && fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
 
-        p->append(SkRasterPipelineOp::bilerp_clamp_8888, upper.gather);
+        SkRect src = SkRect::Make(upper.pm.bounds());
+        bool shouldUseHighPClamp = false;
+        std::array<SkPoint, 4> quad = src.toQuad();
+        // baseInv guaranteed to be non inf.
+        baseInv.mapPoints(quad);
+        SkRect dst;
+        dst.setBounds(quad);
+        for (float val : SkSpan<const float>(dst.asScalars(), 4)) {
+            if (val > INT16_MAX || val < INT16_MIN) {
+                shouldUseHighPClamp = true;
+                break;
+            }
+        }
+
+        if (shouldUseHighPClamp) {
+            p->append(SkRasterPipelineOp::bilerp_clamp_8888_large, upper.gather);
+        } else {
+            p->append(SkRasterPipelineOp::bilerp_clamp_8888, upper.gather);
+        }
+
         if (ct == kBGRA_8888_SkColorType) {
             p->append(SkRasterPipelineOp::swap_rb);
         }
