@@ -34,7 +34,7 @@
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/ManagedBackendTexture.h"
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include <vulkan/vulkan_core.h>
 

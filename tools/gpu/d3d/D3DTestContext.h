@@ -8,7 +8,7 @@
 #ifndef D3DTestContext_DEFINED
 #define D3DTestContext_DEFINED
 
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #ifdef SK_DIRECT3D
 

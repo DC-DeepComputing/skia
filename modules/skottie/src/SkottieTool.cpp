@@ -43,7 +43,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/gpu/ContextType.h"
-#include "tools/gpu/GrContextFactory.h"
+#include "tools/gpu/ganesh/GrContextFactory.h"
 #endif
 
 #if !defined(CPU_ONLY) && !defined(GPU_ONLY)

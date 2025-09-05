@@ -57,8 +57,6 @@
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 #include "src/utils/SkOSPath.h"
-#include "tools/DDLPromiseImageHelper.h"
-#include "tools/DDLTileHelper.h"
 #include "tools/EncodeUtils.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/Resources.h"
@@ -68,8 +66,10 @@
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
-#include "tools/gpu/MemoryCache.h"
 #include "tools/gpu/TestCanvas.h"
+#include "tools/gpu/ganesh/DDLPromiseImageHelper.h"
+#include "tools/gpu/ganesh/DDLTileHelper.h"
+#include "tools/gpu/ganesh/MemoryCache.h"
 
 #if defined(SK_BUILD_FOR_ANDROID)
 #include "include/ports/SkImageGeneratorNDK.h"

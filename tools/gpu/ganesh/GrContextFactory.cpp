@@ -6,9 +6,10 @@
  * found in the LICENSE file.
  */
 
+#include "tools/gpu/ganesh/GrContextFactory.h"
+
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tools/gpu/GrContextFactory.h"
 #ifdef SK_GL
 #include "tools/gpu/gl/GLTestContext.h"
 #endif

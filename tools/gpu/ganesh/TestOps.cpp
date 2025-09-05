@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/gpu/TestOps.h"
+#include "tools/gpu/ganesh/TestOps.h"
 
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/BufferWriter.h"

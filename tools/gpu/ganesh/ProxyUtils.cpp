@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include "include/core/SkColor.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -124,6 +124,6 @@ GrProgramInfo* CreateProgramInfo(const GrCaps* caps,
                                                        primitiveType, renderPassXferBarriers,
                                                        colorLoadOp, flags, stencilSettings);
 }
-#endif // defined(SK_GANESH)
+#endif  // defined(SK_GANESH)
 
 }  // namespace sk_gpu_test

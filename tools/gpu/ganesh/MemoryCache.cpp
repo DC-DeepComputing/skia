@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/gpu/MemoryCache.h"
+#include "tools/gpu/ganesh/MemoryCache.h"
 
 #include "src/base/SkBase64.h"
 #include "src/core/SkMD5.h"

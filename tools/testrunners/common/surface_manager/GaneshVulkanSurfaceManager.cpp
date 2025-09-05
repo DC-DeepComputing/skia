@@ -9,7 +9,7 @@
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
-#include "tools/gpu/GrContextFactory.h"
+#include "tools/gpu/ganesh/GrContextFactory.h"
 #include "tools/testrunners/common/surface_manager/SurfaceManager.h"
 
 #include <string>

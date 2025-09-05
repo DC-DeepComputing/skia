@@ -75,8 +75,8 @@
 #include "tools/ToolUtils.h"
 #include "tools/gpu/FenceSync.h"
 #include "tools/gpu/ManagedBackendTexture.h"
-#include "tools/gpu/ProxyUtils.h"
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #include <algorithm>
 #include <cmath>

@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/DDLPromiseImageHelper.h"
+#include "tools/gpu/ganesh/DDLPromiseImageHelper.h"
 
 #include "include/core/SkPicture.h"
 #include "include/core/SkSerialProcs.h"

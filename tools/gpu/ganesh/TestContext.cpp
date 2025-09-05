@@ -6,7 +6,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/core/SkTraceEvent.h"

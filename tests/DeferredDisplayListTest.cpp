@@ -41,7 +41,7 @@
 #include "tests/Test.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include <cstddef>
 #include <initializer_list>

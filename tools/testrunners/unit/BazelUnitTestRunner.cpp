@@ -23,7 +23,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "tools/gpu/ContextType.h"
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 #endif
 
 #include <ctime>

@@ -53,7 +53,7 @@
 #include "tools/ToolUtils.h"
 #include "tools/gpu/ContextType.h"
 #include "tools/gpu/ManagedBackendTexture.h"
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include <array>
 #include <functional>

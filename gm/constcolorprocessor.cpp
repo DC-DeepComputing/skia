@@ -39,7 +39,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
-#include "tools/gpu/TestOps.h"
+#include "tools/gpu/ganesh/TestOps.h"
 
 #include <utility>
 

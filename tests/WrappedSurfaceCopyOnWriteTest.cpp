@@ -42,7 +42,7 @@
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include <functional>
 #include <memory>

@@ -8,7 +8,7 @@
 #ifndef MtlTestContext_h
 #define MtlTestContext_h
 
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #ifdef SK_METAL
 

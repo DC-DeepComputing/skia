@@ -2136,29 +2136,19 @@ if (skia_enable_tools) {
       "tools/gpu/BackendSurfaceFactory.h",
       "tools/gpu/BackendTextureImageFactory.cpp",
       "tools/gpu/BackendTextureImageFactory.h",
+      "tools/gpu/CompressedTexture.cpp",
+      "tools/gpu/CompressedTexture.h",
       "tools/gpu/ContextType.cpp",
       "tools/gpu/ContextType.h",
       "tools/gpu/FlushFinishTracker.cpp",
       "tools/gpu/FlushFinishTracker.h",
-      "tools/gpu/GrContextFactory.cpp",
-      "tools/gpu/GrContextFactory.h",
-      "tools/gpu/GrTest.cpp",
       "tools/gpu/ManagedBackendTexture.cpp",
       "tools/gpu/ManagedBackendTexture.h",
-      "tools/gpu/MemoryCache.cpp",
-      "tools/gpu/MemoryCache.h",
-      "tools/gpu/ProtectedUtils.cpp",
       "tools/gpu/ProtectedUtils.h",
-      "tools/gpu/ProxyUtils.cpp",
-      "tools/gpu/ProxyUtils.h",
       "tools/gpu/TestCanvas.cpp",
       "tools/gpu/TestCanvas.h",
-      "tools/gpu/TestContext.cpp",
-      "tools/gpu/TestOps.cpp",
-      "tools/gpu/TestOps.h",
       "tools/gpu/YUVUtils.cpp",
       "tools/gpu/YUVUtils.h",
-      "tools/gpu/mock/MockTestContext.cpp",
       "tools/text/gpu/TextBlobTools.cpp",
     ]
 
@@ -2216,9 +2206,6 @@ if (skia_enable_tools) {
       sources += [ "tools/gpu/vk/VkYcbcrSamplerHelper.cpp" ]
       all_dependent_configs += [ ":vulkan_memory_allocator" ]
     }
-    if (skia_use_metal) {
-      sources += [ "tools/gpu/mtl/MtlTestContext.mm" ]
-    }
     if (skia_use_direct3d) {
       sources += [ "tools/gpu/d3d/D3DTestContext.cpp" ]
       sources += [ "tools/gpu/d3d/D3DTestUtils.cpp" ]
@@ -2229,17 +2216,32 @@ if (skia_enable_tools) {
         cflags_cc = [ "-Wno-microsoft-cast" ]
       }
     }
-    if (!skia_enable_ganesh) {
-      sources -= [ "tools/gpu/GrTest.cpp" ]
-      sources -= [ "tools/gpu/TestOps.cpp" ]
-      sources -= [ "tools/gpu/TestOps.h" ]
-    } else {
+    if (skia_enable_ganesh) {
       sources += [
         "tools/gpu/ganesh/AtlasTextOpTools.cpp",
         "tools/gpu/ganesh/AtlasTextOpTools.h",
+        "tools/gpu/ganesh/DDLPromiseImageHelper.cpp",
+        "tools/gpu/ganesh/DDLPromiseImageHelper.h",
+        "tools/gpu/ganesh/DDLTileHelper.cpp",
+        "tools/gpu/ganesh/DDLTileHelper.h",
         "tools/gpu/ganesh/GrAtlasTools.cpp",
         "tools/gpu/ganesh/GrAtlasTools.h",
+        "tools/gpu/ganesh/GrContextFactory.cpp",
+        "tools/gpu/ganesh/GrContextFactory.h",
+        "tools/gpu/ganesh/GrTest.cpp",
+        "tools/gpu/ganesh/MemoryCache.cpp",
+        "tools/gpu/ganesh/MemoryCache.h",
+        "tools/gpu/ganesh/ProtectedUtils_Ganesh.cpp",
+        "tools/gpu/ganesh/ProxyUtils.cpp",
+        "tools/gpu/ganesh/ProxyUtils.h",
+        "tools/gpu/ganesh/TestContext.cpp",
+        "tools/gpu/ganesh/TestOps.cpp",
+        "tools/gpu/ganesh/TestOps.h",
+        "tools/gpu/mock/MockTestContext.cpp",
       ]
+      if (skia_use_metal) {
+        sources += [ "tools/gpu/mtl/MtlTestContext.mm" ]
+      }
     }
     if (skia_enable_graphite) {
       sources += [
@@ -2337,10 +2339,6 @@ if (skia_enable_tools) {
     sources = [
       "tools/AndroidSkDebugToStdOut.cpp",
       "tools/AutoreleasePool.h",
-      "tools/DDLPromiseImageHelper.cpp",
-      "tools/DDLPromiseImageHelper.h",
-      "tools/DDLTileHelper.cpp",
-      "tools/DDLTileHelper.h",
       "tools/DecodeUtils.cpp",
       "tools/DecodeUtils.h",
       "tools/EncodeUtils.cpp",
