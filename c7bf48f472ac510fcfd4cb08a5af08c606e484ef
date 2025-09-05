@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c88cc24_1ffb7bdf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-09-05T08:52:36Z",
+      "side": 1,
+      "message": "Sorry, this should have been:\n\"... that the font wrapper is WOFF(2), and what the filename is.\"\n\nCompare: https://gitlab.freedesktop.org/fontconfig/fontconfig/-/blob/main/fc-fontations/mod.rs?ref_type\u003dheads#L119",
+      "revId": "c7bf48f472ac510fcfd4cb08a5af08c606e484ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
