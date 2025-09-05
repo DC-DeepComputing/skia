@@ -179,7 +179,8 @@ static bool create_pipeline_for_blitter(const SkPixmap& dst,
     *isOpaqueOut = shader->isOpaque() && dstPaintColor->fA == 1.0f;
     *isConstantOut = shader->isConstant();
     if (shader->appendRootStages(
-                SkStageRec{shaderPipeline, alloc, dstCT, dstCS, *dstPaintColor, props}, ctm)) {
+                    SkStageRec{shaderPipeline, alloc, dstCT, dstCS, *dstPaintColor, props, dst.bounds()},
+                    ctm)) {
         if (dstPaintColor->fA != 1.0f) {
             shaderPipeline->append(SkRasterPipelineOp::scale_1_float,
                                    alloc->make<float>(dstPaintColor->fA));
@@ -319,7 +320,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
         SkColorType clipCT = kRGBA_8888_SkColorType;
         SkColorSpace* clipCS = nullptr;
         SkSurfaceProps props{}; // default OK; clipShader doesn't render text
-        SkStageRec rec = {clipP, alloc, clipCT, clipCS, SkColors::kBlack, props};
+        SkStageRec rec = {clipP, alloc, clipCT, clipCS, SkColors::kBlack, props, dst.bounds()};
         if (as_SB(clipShader)->appendRootStages(rec, SkMatrix::I())) {
             struct Storage {
                 // large enough for highp (float) or lowp(U16)
@@ -341,7 +342,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     if (auto colorFilter = paint.getColorFilter()) {
         SkSurfaceProps props{}; // default OK; colorFilter doesn't render text
         SkStageRec rec = {
-                colorPipeline, alloc, dst.colorType(), dst.colorSpace(), dstPaintColor, props};
+                colorPipeline, alloc, dst.colorType(), dst.colorSpace(), dstPaintColor, props, dst.bounds()};
         if (!as_CFB(colorFilter)->appendStages(rec, is_opaque)) {
             return nullptr;
         }
@@ -465,7 +466,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     {
         SkSurfaceProps props{};  // default OK; blender doesn't render text
         SkStageRec rec = {
-                blendPipeline, alloc, dst.colorType(), dst.colorSpace(), dstPaintColor, props};
+                blendPipeline, alloc, dst.colorType(), dst.colorSpace(), dstPaintColor, props, dst.bounds()};
         if (!as_BB(blender)->appendStages(rec)) {
             return nullptr;
         }
