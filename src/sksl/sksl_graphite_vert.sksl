@@ -828,7 +828,10 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
         // Until a counter-example is found, GPUs seem to discard triangles with NaN vertices,
         // which has the same effect as outsetting by the zero vector with this mesh, so we
         // don't bother guarding the normalize() (yet).
-        devPos.xy += devPos.z * normalize(nx + ny);
+        float2 outset = nx + ny;
+        if (dot(outset, outset) > kEpsilon * kEpsilon) {
+            devPos.xy += devPos.z * normalize(outset);
+        }
 
         // By construction these points are 1px away from the outer edge in device space.
         if (deviceSpaceDistances) {
