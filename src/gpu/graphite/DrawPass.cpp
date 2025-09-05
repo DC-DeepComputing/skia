@@ -449,6 +449,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         // Create a sort key for every render step in this draw, extracting out any
         // RenderStep-specific data.
+        gatherer.setRenderStepManagerActive();
         for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
             gatherer.rewindForRenderStep();
 
@@ -521,7 +522,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const bool pipelineChange = key.pipelineIndex() != lastPipeline;
 #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
         drawPass->fPipelineDrawAreas[key.pipelineIndex()] +=
-                draw.fDrawParams.clip().drawBounds().area();
+                draw.drawParams().clip().drawBounds().area();
 #endif
 
         const bool geomBindingChange = geometryUniformTracker.writeUniforms(
