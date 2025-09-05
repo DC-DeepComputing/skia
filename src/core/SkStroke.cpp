@@ -1441,7 +1441,7 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
         SkRect rect;
         bool isClosed = false;
         SkPathDirection dir;
-        if (src.isRect(&rect, &isClosed, &dir) && isClosed) {
+        if (src.isRect(&rect, &isClosed, &dir) && isClosed && !rect.isEmpty()) {
             this->strokeRect(rect, dst, dir);
             // our answer should preserve the inverseness of the src
             if (src.isInverseFillType()) {
@@ -1578,6 +1578,8 @@ static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer,
 void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
                           SkPathDirection dir) const {
     SkASSERT(dst != nullptr);
+    SkASSERT(!origRect.isEmpty());
+
     dst->reset();
 
     SkScalar radius = SkScalarHalf(fWidth);
@@ -1596,12 +1598,24 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
     rw = rect.width();
     rh = rect.height();
 
-    SkRect r(rect);
-    r.outset(radius, radius);
+    // To match normal path stroking, if we have a zero width and height,
+    // we should draw nothing.
+    if (rw == 0 && rh == 0) {
+        return;
+    }
 
     SkPaint::Join join = (SkPaint::Join)fJoin;
     if (SkPaint::kMiter_Join == join && fMiterLimit < SK_ScalarSqrt2) {
         join = SkPaint::kBevel_Join;
+    }
+
+    SkRect r(rect);
+    if (join == SkPaint::kRound_Join) {
+        r.outset(radius, radius);
+    } else {
+        // To match normal path stroking, if we have a zero width or height, we don't
+        // simulate the joins that would normal be in perpendicular to that.
+        r.outset(rh > 0 ? radius : 0, rw > 0 ? radius : 0);
     }
 
     switch (join) {
