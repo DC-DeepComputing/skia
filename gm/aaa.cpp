@@ -65,7 +65,7 @@ DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
     pb.close();
     SkPath path = pb.detach();
     // Manually setting convexity is required. Otherwise, this path will be considered concave.
-    SkPathPriv::SetConvexity(path, SkPathConvexity::kConvex);
+    SkPathPriv::SetConvexity(path, SkPathConvexity::kConvex_CCW);
     canvas->drawPath(path, p);
 
     // skbug.com/40038820
