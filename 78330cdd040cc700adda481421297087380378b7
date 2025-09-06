@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0404aa4_7fc5e22a",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1591,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-06T13:36:16Z",
+      "side": 1,
+      "message": "If determinant \u003d\u003d 0, then we\u0027ve collapsed the path to a line or point.\n\nI can change it to Convex_Degenerate (or Concave) -- either makes sense to me. Unknown (as you point out) is probably wrong, \u0027cause there\u0027s not really anything\nuseful to compute later.",
+      "parentUuid": "f7adfaee_c4fc7faa",
+      "range": {
+        "startLine": 1591,
+        "startChar": 32,
+        "endLine": 1591,
+        "endChar": 57
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84f03b73_1008700a",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbaa0792_3fd3f4e0",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-06T13:36:16Z",
+      "side": 1,
+      "message": "good thinking. Done.",
+      "parentUuid": "84f03b73_1008700a",
+      "range": {
+        "startLine": 2171,
+        "startChar": 8,
+        "endLine": 2171,
+        "endChar": 32
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29e2fe2f_61e9d751",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-03T16:18:42Z",
       "side": 1,
       "message": "`SkUNREACHABLE;` instead?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 39
+      },
+      "revId": "78330cdd040cc700adda481421297087380378b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4cc15df_e0d62b59",
+        "filename": "src/core/SkPathEnums.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-06T13:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29e2fe2f_61e9d751",
       "range": {
         "startLine": 52,
         "startChar": 0,
