@@ -289,7 +289,9 @@ DEF_TEST_SCANNERS(FontMgrAndroidLegacyMakeTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom, std::move(fs)));
+    const bool debugVerbose = false;
+
+    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom, std::move(fs), debugVerbose));
     sk_sp<SkTypeface> t(fm->legacyMakeTypeface("non-existent-font", SkFontStyle()));
     REPORTER_ASSERT(reporter, nullptr == t);
 }
@@ -325,7 +327,9 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemVariableTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
+    const bool debugVerbose = false;
+
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs), debugVerbose));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf"
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("sans-serif", SkFontStyle()));
 
@@ -402,7 +406,9 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
+    const bool debugVerbose = false;
+
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs), debugVerbose));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf", which doesn't have a '!'
     // but "TestTTC" has a bold font which does have '!' and is marked as fallback for "sans-serif"
     // and should take precedence over the same font marked as normal weight next to it.
