@@ -271,9 +271,7 @@ public:
 private:
     SkPath getPath() const {
         SkASSERT(!fShape.style().applies());
-        SkPath path;
-        fShape.asPath(&path);
-        return path;
+        return fShape.asPath();
     }
 
     static void CreateKey(skgpu::UniqueKey* key,
@@ -315,10 +313,8 @@ private:
         vmi.mapRect(&clipBounds);
 
         SkASSERT(!shape.style().applies());
-        SkPath path;
-        shape.asPath(&path);
-
-        return GrTriangulator::PathToTriangles(path, tol, clipBounds, allocator, isLinear);
+        return GrTriangulator::PathToTriangles(shape.asPath(), tol, clipBounds,
+                                               allocator, isLinear);
     }
 
     void createNonAAMesh(GrMeshDrawTarget* target) {
@@ -633,8 +629,7 @@ PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
         return CanDrawPath::kNo;
     }
 
-    SkPath path;
-    args.fShape->asPath(&path);
+    SkPath path = args.fShape->asPath();
     int verbCount = path.countVerbs();
     // Don't use this path renderer if we exceed the max verb count.
     if (verbCount > kMaxGPUPathRendererVerbs) {

@@ -477,10 +477,8 @@ void Device::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> pts, con
                                  paint,
                                  this->localToDevice(),
                                  &grPaint)) {
-                SkPath path;
+                SkPath path = SkPath::Line(pts[0], pts[1]);
                 path.setIsVolatile(true);
-                path.moveTo(pts[0]);
-                path.lineTo(pts[1]);
                 fSurfaceDrawContext->drawPath(this->clip(),
                                               std::move(grPaint),
                                               aa,
@@ -687,15 +685,14 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
         }
     }
 
-    SkPath path;
-    path.setIsVolatile(true);
-    path.addRRect(outer);
-    path.addRRect(inner);
-    path.setFillType(SkPathFillType::kEvenOdd);
+    SkPathBuilder builder(SkPathFillType::kEvenOdd);
+    builder.setIsVolatile(true);
+    builder.addRRect(outer);
+    builder.addRRect(inner);
 
     // TODO: We are losing the possible mutability of the path here but this should probably be
     // fixed by upgrading GrStyledShape to handle DRRects.
-    GrStyledShape shape(path, paint);
+    GrStyledShape shape(builder.detach(), paint);
 
     GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
                                          paint, this->localToDevice(), shape);
