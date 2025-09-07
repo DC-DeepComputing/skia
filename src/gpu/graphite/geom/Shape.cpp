@@ -117,15 +117,10 @@ SkPath Shape::asPath() const {
     }
 
     if (fType == Type::kArc) {
-        SkPath out;
+        SkPathFillType ft = fInverted ? SkPathFillType::kInverseWinding
+                                      : SkPathFillType::kWinding;
         // Filled ovals are already culled out so we assume no simple fills
-        SkPathPriv::CreateDrawArcPath(&out, fArc, /*isFillNoPathEffect=*/false);
-        // CreateDrawArcPath resets the output path and configures its fill
-        // type, so we just have to ensure invertedness is correct.
-        if (fInverted) {
-            out.toggleInverseFillType();
-        }
-        return out;
+        return SkPathPriv::CreateDrawArcPath(fArc, /*isFillNoPathEffect=*/false, ft);
     }
 
     SkPathBuilder builder(this->fillType());

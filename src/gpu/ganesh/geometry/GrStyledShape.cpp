@@ -365,7 +365,7 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
             srcForPathEffect = &parent.fShape.path();
         } else {
             srcForPathEffect = tmpPath.init();
-            parent.asPath(tmpPath.get());
+            tmpPath.set(parent.asPath());
         }
         // Should we consider bounds? Would have to include in key, but it'd be nice to know
         // if the bounds actually modified anything before including in key.
@@ -389,10 +389,7 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
             // once produces the same key.
             tmpParent.init(fShape.path(), GrStyle(strokeRec, nullptr));
             tmpParent->setInheritedKey(parent, GrStyle::Apply::kPathEffectOnly, scale);
-            if (!tmpPath.isValid()) {
-                tmpPath.init();
-            }
-            tmpParent->asPath(tmpPath.get());
+            tmpPath.set(tmpParent->asPath());
             SkStrokeRec::InitStyle fillOrHairline;
             // The parent shape may have simplified away the strokeRec, check for that here.
             if (tmpParent->style().applies()) {
@@ -415,7 +412,7 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
             srcForParentStyle = &parent.fShape.path();
         } else {
             srcForParentStyle = tmpPath.init();
-            parent.asPath(tmpPath.get());
+            tmpPath.set(parent.asPath());
         }
         SkStrokeRec::InitStyle fillOrHairline;
         SkASSERT(parent.fStyle.applies());
