@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d55ab96_742ba503",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-08T13:26:50Z",
+      "side": 1,
+      "message": "I wonder if this should extend Task even if it doesn\u0027t go into the regular TaskLists? Even if it doesn\u0027t, maybe we still put it in the `task/` subdirectory? If we don\u0027t extend Task, we should add a comment explaining why it\u0027s a \"task\" but not a Task.",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e829a895_31aeb615",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-08T13:26:50Z",
+      "side": 1,
+      "message": "Can we combine these and use nullity as not completed? Otherwise it should be safe if we only ever access fPipeline after fCompleted returns true.",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 41
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ec81fc_a3127759",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-08T13:26:50Z",
+      "side": 1,
+      "message": "nit: maybe begin, start, or post?",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 36
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd21e7d7_2429db23",
         "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
         "patchSetId": 18
