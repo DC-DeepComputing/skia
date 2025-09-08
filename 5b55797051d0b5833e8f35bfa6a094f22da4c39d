@@ -34,6 +34,52 @@
       "parentUuid": "67fd2767_a5bce309",
       "revId": "5b55797051d0b5833e8f35bfa6a094f22da4c39d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "021acdde_30d67dd9",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-08T20:10:31Z",
+      "side": 1,
+      "message": "Let\u0027s add srcs here and then we don\u0027t need `_without_keys`",
+      "range": {
+        "startLine": 182,
+        "startChar": 8,
+        "endLine": 182,
+        "endChar": 12
+      },
+      "revId": "5b55797051d0b5833e8f35bfa6a094f22da4c39d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a69444_72ecb1d7",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-08T20:10:31Z",
+      "side": 1,
+      "message": "nit: don\u0027t need these prints",
+      "range": {
+        "startLine": 215,
+        "startChar": 8,
+        "endLine": 215,
+        "endChar": 13
+      },
+      "revId": "5b55797051d0b5833e8f35bfa6a094f22da4c39d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
