@@ -38,6 +38,7 @@ class ComputePipeline;
 class ComputePipelineDesc;
 class GlobalCache;
 class GraphicsPipelineDesc;
+class GraphicsPipelineHandle;
 class GraphiteResourceKey;
 class ResourceCache;
 class RuntimeEffectDictionary;
@@ -50,6 +51,15 @@ class TextureInfo;
 class ResourceProvider {
 public:
     virtual ~ResourceProvider();
+
+    GraphicsPipelineHandle createGraphicsPipelineHandle(
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>);
+
+    void kickOffPipelineCreationTask(sk_sp<const RuntimeEffectDictionary>,
+                                     const GraphicsPipelineHandle&);
+    sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
 
     sk_sp<GraphicsPipeline> findGraphicsPipeline(
             const UniqueKey& pipelineKey,
