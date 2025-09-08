@@ -22,6 +22,23 @@
       },
       "revId": "24da288d60b4a0f3097b016027408b1f8968ef2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14f30388_6129bcc0",
+        "filename": "src/core/SkPathEnums.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-08T13:17:01Z",
+      "side": 1,
+      "message": "You can also drop this return.",
+      "revId": "24da288d60b4a0f3097b016027408b1f8968ef2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
