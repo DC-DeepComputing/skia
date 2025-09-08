@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc0b6f0_da0b6de1",
+        "filename": "src/gpu/ganesh/geometry/GrShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-08T13:07:42Z",
+      "side": 1,
+      "message": "nit: A?",
+      "range": {
+        "startLine": 232,
+        "startChar": 13,
+        "endLine": 232,
+        "endChar": 14
+      },
+      "revId": "87e774b2fcca54de69453eb0a50f05567e7e799d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
