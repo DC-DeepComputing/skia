@@ -6992,6 +6992,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -7021,7 +7026,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -7290,6 +7296,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -7319,7 +7330,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -7409,6 +7421,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -7438,7 +7455,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -7528,6 +7546,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -7557,7 +7580,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -7656,6 +7680,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -7687,6 +7716,7 @@
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin",
           "bazelisk_mac_amd64"
         ],
         "VPYTHON_DEFAULT_SPEC": [
@@ -9082,6 +9112,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -9111,7 +9146,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -9393,6 +9429,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -9422,7 +9463,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -10502,6 +10544,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -10531,7 +10578,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -10846,6 +10894,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -10875,7 +10928,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -10974,6 +11028,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -11005,6 +11064,7 @@
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin",
           "bazelisk_mac_amd64"
         ],
         "VPYTHON_DEFAULT_SPEC": [
@@ -11607,6 +11667,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -11636,7 +11701,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -11735,6 +11801,11 @@
           "name": "skia/bots/ccache_mac",
           "path": "ccache_mac",
           "version": "version:1"
+        },
+        {
+          "name": "skia/bots/cmake_mac",
+          "path": "cmake_mac",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -11766,6 +11837,7 @@
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
+          "cmake_mac/bin",
           "bazelisk_mac_amd64"
         ],
         "VPYTHON_DEFAULT_SPEC": [
@@ -14854,6 +14926,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -14884,7 +14961,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -14961,6 +15039,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -14991,7 +15074,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -15488,6 +15572,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -15518,7 +15607,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -15595,6 +15685,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -15625,7 +15720,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -16299,6 +16395,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -16329,7 +16430,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -16406,6 +16508,11 @@
           "name": "skia/bots/android_ndk_linux",
           "path": "android_ndk_linux",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -16436,7 +16543,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -17044,6 +17152,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -17074,7 +17187,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -17658,6 +17772,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -17688,7 +17807,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -17783,6 +17903,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -17815,6 +17940,7 @@
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin",
           "bazelisk_linux_amd64"
         ],
         "VPYTHON_DEFAULT_SPEC": [
@@ -18410,7 +18536,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -18508,7 +18635,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -18606,7 +18734,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -19555,6 +19684,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -19585,7 +19719,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -20169,6 +20304,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -20199,7 +20339,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -20294,6 +20435,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -20326,6 +20472,7 @@
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin",
           "bazelisk_linux_amd64"
         ],
         "VPYTHON_DEFAULT_SPEC": [
@@ -21189,7 +21336,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -21287,7 +21435,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -21466,6 +21615,11 @@
           "name": "skia/bots/clang_linux",
           "path": "clang_linux",
           "version": "version:32"
+        },
+        {
+          "name": "skia/bots/cmake_linux",
+          "path": "cmake_linux",
+          "version": "version:5"
         }
       ],
       "command": [
@@ -21496,7 +21650,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_linux/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -23906,6 +24061,11 @@
           "name": "skia/bots/clang_win",
           "path": "clang_win",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -23938,7 +24098,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -24015,6 +24176,11 @@
           "name": "skia/bots/clang_win",
           "path": "clang_win",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -24047,7 +24213,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -24640,6 +24807,11 @@
           "name": "skia/bots/clang_win",
           "path": "clang_win",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -24672,7 +24844,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -24749,6 +24922,11 @@
           "name": "skia/bots/clang_win",
           "path": "clang_win",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -24781,7 +24959,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -24858,6 +25037,11 @@
           "name": "skia/bots/clang_win",
           "path": "clang_win",
           "version": "version:18"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -24890,7 +25074,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -25868,6 +26053,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -25900,7 +26090,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -25972,6 +26163,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -26004,7 +26200,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -26076,6 +26273,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -26108,7 +26310,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -26423,6 +26626,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -26455,7 +26663,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -26770,6 +26979,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -26802,7 +27016,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -26874,6 +27089,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -26906,7 +27126,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -26978,6 +27199,11 @@
           "name": "infra/tools/luci/vpython3/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:bc3b1d21144b010d91632329513cffc357b5ce1a"
+        },
+        {
+          "name": "skia/bots/cmake_win",
+          "path": "cmake_win",
+          "version": "version:1"
         }
       ],
       "command": [
@@ -27010,7 +27236,8 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
+          "cipd_bin_packages/cpython3/bin",
+          "cmake_win/bin"
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
