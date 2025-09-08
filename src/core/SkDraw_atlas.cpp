@@ -99,7 +99,7 @@ void Draw::drawAtlas(SkSpan<const SkRSXform> xform,
     SkRasterPipeline pipeline(&alloc);
     SkSurfaceProps props = SkSurfacePropsCopyOrDefault(fProps);
     SkStageRec rec = {&pipeline, &alloc, fDst.colorType(), fDst.colorSpace(),
-                      p.getColor4f(), props};
+                      p.getColor4f(), props, fDst.bounds()};
     // We pass an identity matrix here rather than the CTM. The CTM gets folded into the
     // per-triangle matrix.
     if (!as_SB(transformShader)->appendRootStages(rec, SkMatrix::I())) {
