@@ -13,7 +13,7 @@
 
 #include "include/private/base/SkTArray.h"
 #include "tools/gpu/ContextType.h"
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #ifdef SK_GL
 #include "tools/gpu/gl/GLTestContext.h"

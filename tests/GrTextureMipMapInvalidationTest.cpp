@@ -30,7 +30,7 @@
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tools/gpu/ProxyUtils.h"
+#include "tools/gpu/ganesh/ProxyUtils.h"
 
 #include <cstdint>
 #include <functional>

@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/DDLTileHelper.h"
+#include "tools/gpu/ganesh/DDLTileHelper.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
@@ -23,7 +23,7 @@
 #include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
-#include "tools/DDLPromiseImageHelper.h"
+#include "tools/gpu/ganesh/DDLPromiseImageHelper.h"
 
 void DDLTileHelper::TileData::init(int id,
                                    GrDirectContext* direct,

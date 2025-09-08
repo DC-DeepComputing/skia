@@ -10,7 +10,7 @@
 
 #include "include/gpu/ganesh/gl/GrGLInterface.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 namespace sk_gpu_test {
 /**

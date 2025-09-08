@@ -32,7 +32,7 @@
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/ContextType.h"
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #include <cstring>
 #include <cstdint>

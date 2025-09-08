@@ -8,7 +8,7 @@
 #ifndef VkTestContext_DEFINED
 #define VkTestContext_DEFINED
 
-#include "tools/gpu/TestContext.h"
+#include "tools/gpu/ganesh/TestContext.h"
 
 #ifdef SK_VULKAN
 

@@ -12,6 +12,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/BackendTextureImageFactory.h"
+#include "tools/gpu/ManagedBackendTexture.h"
 
 namespace ProtectedUtils {
 

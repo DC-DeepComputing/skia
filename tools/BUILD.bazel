@@ -85,27 +85,6 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "ddl_utils",
-    testonly = True,
-    srcs = [
-        "DDLPromiseImageHelper.cpp",
-        "DDLPromiseImageHelper.h",
-        "DDLTileHelper.cpp",
-        "DDLTileHelper.h",
-    ],
-    hdrs = [
-        "DDLPromiseImageHelper.h",
-        "DDLTileHelper.h",
-    ],
-    visibility = ["//dm:__pkg__"],
-    deps = [
-        "//:core",
-        "//src/codec:codec_support_priv",
-        "//src/gpu/ganesh:ganesh_TEST_UTIL",
-    ],
-)
-
-skia_cc_library(
     name = "test_font_data_provider",
     testonly = True,
     srcs = ["TestFontDataProvider.cpp"],
