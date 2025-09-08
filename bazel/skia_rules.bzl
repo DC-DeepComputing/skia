@@ -168,10 +168,19 @@ def skia_filegroup(**kwargs):
     """A wrapper around filegroup allowing us to customize visibility in G3."""
     native.filegroup(**kwargs)
 
+def _without_keys(d, keys):
+    return {k: v for k, v in d.items() if k not in keys}
+
+_COMPILE_HEADERS = (".h", ".hh", ".hpp", "hxx")
+
+def _headers(files):
+    return [f for f in files if f.endswith(_COMPILE_HEADERS)]
+
 def skia_objc_library(
         name,
         copts = DEFAULT_OBJC_COPTS,
         deps = [],
+        non_arc_srcs = [],
         ios_frameworks = [],
         mac_frameworks = [],
         sdk_frameworks = [],
@@ -192,6 +201,9 @@ def skia_objc_library(
         sdk_frameworks: https://bazel.build/reference/be/objective-c#objc_library.sdk_frameworks
                         except this should only be a list, not a select.
         **kwargs: Normal arguments to objc_library
+
+    We re-implement the non_arc_srcs attribute because at least on a Mac with Bazel 8.2.1 it
+    crashes if we pass non_arc_srcs straight through to the objc_library (explicitly or in kwargs).
     """
     if len(ios_frameworks) > 0 or len(mac_frameworks) > 0:
         sdk_frameworks += select({
@@ -199,12 +211,28 @@ def skia_objc_library(
             "@platforms//os:macos": mac_frameworks,
             "//conditions:default": [],
         })
+    if len(non_arc_srcs) > 0:
+        print("non_arc_srcs:")
+        print(non_arc_srcs)
+        objc_library(
+            name = name + "_non_arc",
+            copts = copts + ["-fno-objc-arc"],
+            deps = deps,
+            # Make sure headers that might be needed are visible as below we strip out srcs and hdrs
+            # from kwargs
+            srcs = non_arc_srcs + _headers(kwargs.get("srcs", [])) + kwargs.get("hdrs", []),
+            sdk_frameworks = sdk_frameworks,
+            **(_without_keys(kwargs, ["srcs", "hdrs"]))
+        )
+        deps = deps + [name + "_non_arc"]
     objc_library(
         name = name,
         copts = copts,
         deps = deps,
+        # Make sure any headers in non_arc_srcs are visible here
+        srcs = kwargs.get("srcs", []) + _headers(non_arc_srcs),
         sdk_frameworks = sdk_frameworks,
-        **kwargs
+        **(_without_keys(kwargs, ["srcs"]))
     )
 
 def split_srcs_and_hdrs(name, files, visibility = None):
