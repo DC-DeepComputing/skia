@@ -85,7 +85,6 @@ sk_sp<GraphicsPipeline> ResourceProvider::findGraphicsPipeline(
         const UniqueKey& pipelineKey,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t *compilationID) {
-
     auto globalCache = fSharedContext->globalCache();
 
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,

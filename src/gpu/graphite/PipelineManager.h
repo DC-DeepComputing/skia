@@ -17,6 +17,9 @@ namespace skgpu {
 class UniqueKey;
 }
 
+class SkExecutor;
+class SkTaskGroup;
+
 namespace skgpu::graphite {
 
 class GraphicsPipeline;
@@ -30,7 +33,8 @@ class RuntimeEffectDictionary;
 
 class PipelineManager {
 public:
-    PipelineManager();
+    PipelineManager(SkExecutor* executor);
+
     ~PipelineManager();
 
     GraphicsPipelineHandle createHandle(
@@ -67,6 +71,10 @@ private:
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>) SK_EXCLUDES(fSpinLock);
 
+    void kickOffPipelineCreationTask(ResourceProvider*,
+                                     sk_sp<const RuntimeEffectDictionary>,
+                                     const GraphicsPipelineHandle&);
+
     void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
 
     struct Traits {
@@ -80,6 +88,11 @@ private:
 #if defined(GPU_TEST_UTILS)
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
+    // fTaskGroup must appear before anything that uses it (e.g. fGpu), so that it is destroyed
+    // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
+    // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
+    // invoked after objects they depend upon have already been destroyed.
+    std::unique_ptr<SkTaskGroup> fTaskGroup;
 };
 
 } // namespace skgpu::graphite
