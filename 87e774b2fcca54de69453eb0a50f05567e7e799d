@@ -22,6 +22,30 @@
       },
       "revId": "87e774b2fcca54de69453eb0a50f05567e7e799d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb50310_3986ba33",
+        "filename": "src/gpu/ganesh/geometry/GrShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-08T15:03:14Z",
+      "side": 1,
+      "message": "Ya caught me -- that was a work-around during development -- will revert.",
+      "parentUuid": "4cc0b6f0_da0b6de1",
+      "range": {
+        "startLine": 232,
+        "startChar": 13,
+        "endLine": 232,
+        "endChar": 14
+      },
+      "revId": "87e774b2fcca54de69453eb0a50f05567e7e799d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
