@@ -34,6 +34,24 @@
       "parentUuid": "4b2318c2_39b2da46",
       "revId": "0c2b0a00b7b5a988d687fbc3152ffa92b1b90abd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a27df1_dfbbcaf5",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-08T18:18:41Z",
+      "side": 0,
+      "message": "Ack.",
+      "parentUuid": "ab9c6033_94a2f287",
+      "revId": "0c2b0a00b7b5a988d687fbc3152ffa92b1b90abd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
