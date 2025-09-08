@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2eeab5_d186287b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-08T15:17:45Z",
+      "side": 1,
+      "message": "Switched to file-local flag to control verbose output -- ptal",
+      "revId": "7b70b2be4629802c2aaa92588c7888d14b330ea3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
