@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b2318c2_39b2da46",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-08T15:30:22Z",
+      "side": 0,
+      "message": "Are we guaranteed that `tmpPath` is empty here?  It looks like it can get initialized above when `!parent.fShape.isPath()`, and old asPath always clears when `!this-\u003eisPath() \u0026\u0026 !this-\u003eisArc()`.\n\nThat seems to leave `!this-\u003eisPath() \u0026\u0026 this-\u003eisArc()` as a problematic case where this second asPath call appends to a non-empty `tmpPath` (whether intentional or not), and the new impl changes this behavior.  Maybe `SkAssert(tmpPath.isEmpty())` here to see if anything triggers.",
+      "revId": "0c2b0a00b7b5a988d687fbc3152ffa92b1b90abd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

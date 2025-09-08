@@ -16,6 +16,29 @@
       "message": "reverted misssname -- PTAL",
       "revId": "f2dc20924d5fea8c6e19a4454aa99722c85dc6e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39fc4464_40453619",
+        "filename": "src/gpu/ganesh/geometry/GrShape.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-08T15:30:22Z",
+      "side": 1,
+      "message": "nit: no longer needed",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 431,
+        "endChar": 42
+      },
+      "revId": "f2dc20924d5fea8c6e19a4454aa99722c85dc6e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
