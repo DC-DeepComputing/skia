@@ -1273,6 +1273,9 @@ func (b *jobBuilder) compile() string {
 				// https://dawn.googlesource.com/dawn/+/516701da8184655a47c92a573cc84da7db5e69d4/generator/dawn_version_generator.py#21
 				b.usesGit()
 			}
+			if b.extraConfig("Dawn") {
+				b.usesCMake()
+			}
 
 			// Android bots require a toolchain.
 			if b.extraConfig("Android") {
@@ -1307,7 +1310,7 @@ func (b *jobBuilder) compile() string {
 					}
 				}
 				if b.extraConfig("SwiftShader") {
-					b.asset("cmake_linux")
+					b.usesCMake()
 				}
 				b.asset("ccache_linux")
 				b.usesCCache()
