@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "9a901a0cef4deeacf763b44719cad6f1df816b0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ee9a9e_e876ad5e",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-08T13:05:51Z",
+      "side": 1,
+      "message": "You shouldn\u0027t need to cast to ints to use a comparison operator on enums",
+      "range": {
+        "startLine": 84,
+        "startChar": 38,
+        "endLine": 84,
+        "endChar": 43
+      },
+      "revId": "9a901a0cef4deeacf763b44719cad6f1df816b0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
