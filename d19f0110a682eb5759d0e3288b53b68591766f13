@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c98c359_cbe65d7f",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-08T14:46:53Z",
+      "side": 1,
+      "message": "For now I\u0027ve added a comment and we should discuss when you\u0027re back. Maybe we should rename it to PipelineCreationInfo.",
+      "parentUuid": "3d55ab96_742ba503",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e829a895_31aeb615",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb8d22d_fbb5732b",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-08T14:46:53Z",
+      "side": 1,
+      "message": "Let\u0027s hold off on this until the threaded version since that is when it actually comes into play. In this version \u0027fCompleted\u0027 doesn\u0027t really do anything since everything is synchronous.",
+      "parentUuid": "e829a895_31aeb615",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 41
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51ec81fc_a3127759",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-08T13:26:50Z",
       "side": 1,
       "message": "nit: maybe begin, start, or post?",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 36
+      },
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e542cf2_dfdd505a",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-08T14:46:53Z",
+      "side": 1,
+      "message": "Went w/ start...",
+      "parentUuid": "51ec81fc_a3127759",
       "range": {
         "startLine": 42,
         "startChar": 9,
@@ -101,6 +173,24 @@
           ]
         }
       ],
+      "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8407a660_8455ebc9",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-08T14:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd21e7d7_2429db23",
       "revId": "d19f0110a682eb5759d0e3288b53b68591766f13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
