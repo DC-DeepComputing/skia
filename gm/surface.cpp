@@ -27,16 +27,21 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/gpu/ganesh/GrDirectContext.h"
-#include "include/gpu/ganesh/GrRecordingContext.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#if defined(SK_GRAPHITE)
-#include "include/gpu/graphite/Surface.h"
-#endif
 #include "include/utils/SkTextUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
+#endif
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Surface.h"
+#include "tools/gpu/BackendSurfaceFactory.h"
+#endif
 
 #define W 800
 #define H 100
@@ -59,14 +64,16 @@ static sk_sp<SkSurface> make_surface(GrRecordingContext* ctx,
     SkSurfaceProps props(flags, geo, contrast, gamma);
 #if defined(SK_GRAPHITE)
     if (recorder) {
-            return SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kNo, &props);
-    } else
+        return SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kNo, &props);
+        return SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kNo, &props);
+    }
 #endif
+#if defined(SK_GANESH)
     if (ctx) {
         return SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info, 0, &props);
-    } else {
-        return SkSurfaces::Raster(info, &props);
     }
+#endif
+    return SkSurfaces::Raster(info, &props);
 }
 
 static void test_draw(SkCanvas* canvas, const char label[]) {
@@ -219,7 +226,9 @@ enum SurfaceType {
 }
 
 static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, SurfaceType type) {
+#if defined(SK_GANESH)
     GrDirectContext* direct = GrAsDirectContext(canvas->recordingContext());
+#endif
 #if defined(SK_GRAPHITE)
     skgpu::graphite::Recorder* recorder = canvas->recorder();
 #endif
@@ -232,10 +241,13 @@ static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, Su
                 return sk_gpu_test::MakeBackendTextureSurface(recorder, ii);
             }
 #endif
-            if (!direct) {
-                return nullptr;
+#if defined(SK_GANESH)
+            if (direct) {
+                return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1);
             }
-            return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1);
+#endif
+            return nullptr;
+
         case kBackendRenderTarget:
 #if defined(SK_GRAPHITE)
             if (recorder) {
@@ -245,10 +257,15 @@ static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, Su
                                                 /*surfaceProps=*/nullptr);
             }
 #endif
-            return sk_gpu_test::MakeBackendRenderTargetSurface(direct,
-                                                               ii,
-                                                               kTopLeft_GrSurfaceOrigin,
-                                                               1);
+#if defined(SK_GANESH)
+            if (direct) {
+                return sk_gpu_test::MakeBackendRenderTargetSurface(direct,
+                                                                   ii,
+                                                                   kTopLeft_GrSurfaceOrigin,
+                                                                   1);
+            }
+#endif
+            return nullptr;
     }
     return nullptr;
 }
@@ -263,6 +280,7 @@ using MakeSurfaceFn = std::function<sk_sp<SkSurface>(const SkImageInfo&)>;
         main(canvas, MakeSurfaceFn(make));                          \
     }
 
+#if defined(SK_GANESH)
 #define DEF_BACKEND_SURFACE_TEST(name, canvas, main, type, W, H)                                \
     DEF_SIMPLE_GM_CAN_FAIL(name, canvas, err_msg, W, H) {                                       \
         GrDirectContext* direct = GrAsDirectContext(canvas->recordingContext());                \
@@ -275,6 +293,9 @@ using MakeSurfaceFn = std::function<sk_sp<SkSurface>(const SkImageInfo&)>;
         main(canvas, MakeSurfaceFn(make));                                                      \
         return skiagm::DrawResult::kOk;                                                         \
     }
+#else
+#define DEF_BACKEND_SURFACE_TEST(...)
+#endif
 
 #define DEF_BET_SURFACE_TEST(name, canvas, main, W, H)                  \
     DEF_BACKEND_SURFACE_TEST(SK_MACRO_CONCAT(name, _bet), canvas, main, \
