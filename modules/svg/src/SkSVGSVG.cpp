@@ -39,7 +39,7 @@ bool SkSVGSVG::onPrepareToRender(SkSVGRenderContext* ctx) const {
     auto contentMatrix = SkMatrix::Translate(viewPortRect.x(), viewPortRect.y());
     auto viewPort      = SkSize::Make(viewPortRect.width(), viewPortRect.height());
 
-    if (fViewBox.isValid()) {
+    if (fViewBox.has_value()) {
         const SkRect& viewBox = *fViewBox;
 
         // An empty viewbox disables rendering.
@@ -66,6 +66,7 @@ bool SkSVGSVG::onPrepareToRender(SkSVGRenderContext* ctx) const {
 }
 
 void SkSVGSVG::onSetAttribute(SkSVGAttribute attr, const SkSVGValue& v) {
+#if 0
     switch (attr) {
     case SkSVGAttribute::kX:
         if (const auto* x = v.as<SkSVGLengthValue>()) {
@@ -100,6 +101,7 @@ void SkSVGSVG::onSetAttribute(SkSVGAttribute attr, const SkSVGValue& v) {
     default:
         this->INHERITED::onSetAttribute(attr, v);
     }
+    #endif
 }
 
 // https://www.w3.org/TR/SVG11/coords.html#IntrinsicSizing
