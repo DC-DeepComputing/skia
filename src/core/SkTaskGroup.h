@@ -25,6 +25,7 @@ public:
 
     // Add a task to this SkTaskGroup.
     void add(std::function<void(void)> fn);
+    void add(std::function<void(void)> fn, int workList);
 
     // Add a batch of N tasks, all calling fn with different arguments.
     void batch(int N, std::function<void(int)> fn);
