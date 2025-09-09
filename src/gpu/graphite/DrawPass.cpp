@@ -637,6 +637,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     return drawPass;
 }
 
+// This occurs at Recorder::snap time
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 sk_sp<const RuntimeEffectDictionary> runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
@@ -655,6 +656,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     // once we've created pipeline handles, so we drop the storage for them here.
     fPipelineDescs.clear();
 
+#if 0
     // TODO(robertphillips): move this resolvePipeline loop to addResourceRefs
     fFullPipelines.reserve(fPipelineHandles.size());
     for (const GraphicsPipelineHandle& handle : fPipelineHandles) {
@@ -666,6 +668,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         fFullPipelines.push_back(std::move(pipeline));
     }
     fPipelineHandles.clear();
+#endif
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // It should not have been possible to draw an Image that has an invalid texture info
@@ -675,7 +678,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         // was cached for reuse across Recordings, it's possible that the initializing Recording
         // failed, leaving the TextureProxy in a bad state (and currently with no way to reconstruct
         // the tasks required to initialize it).
-        // TODO(b/409888039): Once TextureProxies track their dependendent tasks to include in all
+        // TODO(b/409888039): Once TextureProxies track their dependent tasks to include in all
         // Recordings, this "should" be able to changed to asserts.
         if (!fSampledTextures[i]->isInstantiated() && !fSampledTextures[i]->isLazy()) {
             SKGPU_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
@@ -701,11 +704,31 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
+// This occurs at Context::insertRecording time
 bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
                                CommandBuffer* commandBuffer) {
-    for (int i = 0; i < fFullPipelines.size(); ++i) {
-        commandBuffer->trackResource(fFullPipelines[i]);
+
+#if 1
+    if (!fPipelineHandles.empty()) {
+        fFullPipelines.reserve(fPipelineHandles.size());
+        for (const GraphicsPipelineHandle& handle : fPipelineHandles) {
+            sk_sp<GraphicsPipeline> pipeline = resourceProvider->resolveHandle(handle);
+            if (!pipeline) {
+                SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+                // TODO: need to mark the recording as bad!!!!
+                return false;
+            }
+
+            commandBuffer->trackResource(pipeline);
+            fFullPipelines.push_back(std::move(pipeline));
+        }
+        fPipelineHandles.clear();
+    } else {
+        for (int i = 0; i < fFullPipelines.size(); ++i) {
+            commandBuffer->trackResource(fFullPipelines[i]);
+        }
     }
+#endif
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackCommandBufferResource(fSampledTextures[i]->refTexture());
     }
