@@ -70,6 +70,24 @@
       "parentUuid": "c57cfd26_8e6a83af",
       "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc71ac38_46297dda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-09T16:03:20Z",
+      "side": 1,
+      "message": "Hm yeah I updated this to use the bounds of the actual geometry and it\u0027s definitely more convoluted. This does help gm\u0027s where we were doing highp after checking the whole dst rect when we could\u0027ve been using lowp because we only need a subset which is the geometry. \n\nI\u0027m skeptical of updating stages to use saturating arithmetic because I\u0027m weary of adding too much latency for the lowp functions as well as correctness, which we can achieve by just switching to highp when appropriate and otherwise wouldn\u0027t be with saturation. Although testing it out by adding saturation to the default case of the floor_() function [1], it does \"solve\" the bugs by having expected outputs for the gm\u0027s here [2] and here [3]... just not technically correct and not sure about regressions.\n\nLMK if you have any thoughts.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/opts/SkRasterPipeline_opts.h;drc\u003d48d6f7175422b2c969c14258f9f8d5b196c28d18;l\u003d5582\n\n[2]https://skia-review.googlesource.com/c/skia/+/1043716\n\n[3]https://skia-review.googlesource.com/c/skia/+/1030356",
+      "parentUuid": "c28f1717_50296091",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
