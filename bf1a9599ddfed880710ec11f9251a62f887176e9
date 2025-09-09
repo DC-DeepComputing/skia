@@ -51,6 +51,23 @@
       "message": "I have to tentatively give it a +1 to run the Canary",
       "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fea4b0dd_6be9b18b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-09T16:36:58Z",
+      "side": 1,
+      "message": "Cool, Canary passed. LGTM",
+      "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
