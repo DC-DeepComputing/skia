@@ -507,8 +507,8 @@ SkShaper::RunHandler::Buffer SkSVGTextContext::runBuffer(const RunInfo& ri) {
 
     fRuns.push_back({
         ri.fFont,
-        fCurrentFill.isValid()   ? std::make_unique<SkPaint>(*fCurrentFill)   : nullptr,
-        fCurrentStroke.isValid() ? std::make_unique<SkPaint>(*fCurrentStroke) : nullptr,
+        fCurrentFill.has_value()   ? std::make_unique<SkPaint>(*fCurrentFill)   : nullptr,
+        fCurrentStroke.has_value() ? std::make_unique<SkPaint>(*fCurrentStroke) : nullptr,
         std::make_unique<SkGlyphID[]         >(ri.glyphCount),
         std::make_unique<SkPoint[]           >(ri.glyphCount),
         std::make_unique<PositionAdjustment[]>(ri.glyphCount),
