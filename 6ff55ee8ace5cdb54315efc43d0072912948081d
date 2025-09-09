@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c2e18f4_bd67a053",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-09T13:36:18Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com PTAL. There is a threading issue (leading to VVL errors) with the swiftshader bot due to skbug.com/443206434, which I can reproduce locally without this CL too.",
+      "revId": "6ff55ee8ace5cdb54315efc43d0072912948081d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
