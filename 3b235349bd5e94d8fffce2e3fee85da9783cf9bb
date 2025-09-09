@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a97a5b2d_04ccfb32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-09T17:50:02Z",
+      "side": 1,
+      "message": "had to rebase (so lots your +1s) -- ptal",
+      "revId": "3b235349bd5e94d8fffce2e3fee85da9783cf9bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
