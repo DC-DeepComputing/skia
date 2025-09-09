@@ -34,6 +34,23 @@
       "parentUuid": "1863f345_ea01ce6d",
       "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e9b3f72_c016761d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-09T15:03:12Z",
+      "side": 1,
+      "message": "I have to tentatively give it a +1 to run the Canary",
+      "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
