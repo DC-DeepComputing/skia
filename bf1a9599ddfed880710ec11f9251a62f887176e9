@@ -16,6 +16,24 @@
       "message": "Kicked off Canary-G3 now that http://cl/804556990 has landed",
       "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ed1d4b2_d41cf647",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-09T14:58:12Z",
+      "side": 1,
+      "message": "It looks like the Canary failed but I can\u0027t see the results to know why.",
+      "parentUuid": "1863f345_ea01ce6d",
+      "revId": "bf1a9599ddfed880710ec11f9251a62f887176e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
