@@ -52,6 +52,24 @@
       "parentUuid": "830aeed4_38c72ac5",
       "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c28f1717_50296091",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-09T13:44:06Z",
+      "side": 1,
+      "message": "Tracking dev bounds is getting pretty complex, and I think if we do go that route we should also look at more than the dst pixmap bounds (clip bounds, actual shape being drawn).\n\nWhat if we focus on updating the stages to always use saturating arithmetic?  Might take a few iterations, but is seems a more localized fix than plumbing bounds and trying to guess if we are going to overflow or not.\n\n(sorry, I kinda lost the context, don\u0027t recall all the remaining bugs are here)",
+      "parentUuid": "c57cfd26_8e6a83af",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
