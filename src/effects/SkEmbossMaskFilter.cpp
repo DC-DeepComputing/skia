@@ -92,7 +92,7 @@ bool SkEmbossMaskFilter::filterMask(SkMaskBuilder* dst, const SkMask& src,
         return false;
     }
 
-    dst->format() = SkMask::k3D_Format;
+    dst->fFormat = SkMask::k3D_Format;
     if (margin) {
         margin->set(SkScalarCeilToInt(3*sigma), SkScalarCeilToInt(3*sigma));
     }
@@ -111,7 +111,7 @@ bool SkEmbossMaskFilter::filterMask(SkMaskBuilder* dst, const SkMask& src,
         }
         size_t planeSize = dst->computeImageSize();
         SkASSERT(planeSize != 0);  // if totalSize didn't overflow, this can't either
-        dst->image() = SkMaskBuilder::AllocImage(totalSize);
+        dst->fImage = SkMaskBuilder::AllocImage(totalSize);
         memcpy(dst->image(), alphaPlane, planeSize);
         SkMaskBuilder::FreeImage(alphaPlane);
     }

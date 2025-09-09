@@ -20,7 +20,6 @@ class SkPath;
 class SkRegion;
 enum class SkClipOp;
 struct SkMask;
-struct SkMaskBuilder;
 
 class SkAAClip {
 public:
@@ -51,8 +50,10 @@ public:
     /**
      *  Allocates a mask the size of the aaclip, and expands its data into
      *  the mask, using kA8_Format. Used for tests and visualization purposes.
+     *
+     *  Caller must call SkMask::FreeImage() when they're finished
      */
-    void copyToMask(SkMaskBuilder*) const;
+    SkMask copyToMask() const;
 
     bool quickContains(const SkIRect& r) const {
         return this->quickContains(r.fLeft, r.fTop, r.fRight, r.fBottom);

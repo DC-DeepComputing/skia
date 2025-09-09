@@ -59,8 +59,8 @@ bool DrawToMask(const SkPath& devPath,
                 const SkIRect& clipBounds,
                 const SkMaskFilter*,
                 const SkMatrix* filterMatrix,
-                SkMaskBuilder* dst,
-                SkMaskBuilder::CreateMode mode,
+                SkMask* dst,
+                SkMask::CreateMode mode,
                 SkStrokeRec::InitStyle style);
 
 /**

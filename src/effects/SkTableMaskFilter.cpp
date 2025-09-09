@@ -79,13 +79,10 @@ bool SkTableMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
         return false;
     }
 
-    dst->bounds() = src.fBounds;
-    dst->rowBytes() = SkAlign4(dst->fBounds.width());
-    dst->format() = SkMask::kA8_Format;
-    dst->image() = nullptr;
+    *dst = SkMask(nullptr, src.fBounds, SkAlign4(src.fBounds.width()), SkMask::kA8_Format);
 
     if (src.fImage) {
-        dst->image() = SkMaskBuilder::AllocImage(dst->computeImageSize());
+        dst->fImage = SkMaskBuilder::AllocImage(dst->computeImageSize());
 
         const uint8_t* srcP = src.fImage;
         uint8_t* dstP = dst->image();

@@ -57,7 +57,7 @@ public:
                         applying the filter. If returning false, ignore this parameter.
         @return true if the dst mask was correctly created.
     */
-    virtual bool filterMask(SkMaskBuilder* dst, const SkMask& src, const SkMatrix&,
+    virtual bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
                             SkIPoint* margin) const = 0;
 
     enum class Type {

@@ -55,7 +55,7 @@ bool SDFMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
     }
 
     *dst = SkMaskBuilder::PrepareDestination(SK_DistanceFieldPad, SK_DistanceFieldPad, src);
-    dst->format() = SkMask::kSDF_Format;
+    dst->fFormat = SkMask::kSDF_Format;
 
     if (margin) {
         margin->set(SK_DistanceFieldPad, SK_DistanceFieldPad);
@@ -65,7 +65,7 @@ bool SDFMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
         return true;
     }
     if (dst->fImage == nullptr) {
-        dst->bounds().setEmpty();
+        dst->fBounds.setEmpty();
         return false;
     }
 

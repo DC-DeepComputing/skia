@@ -48,7 +48,7 @@ static void rect_memcpy(void* dst, size_t dstRB, const void* src, size_t srcRB,
     }
 }
 
-bool SkShaderMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src, const SkMatrix& ctm,
+bool SkShaderMaskFilterImpl::filterMask(SkMask* dst, const SkMask& src, const SkMatrix& ctm,
                                         SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format) {
         return false;
@@ -57,12 +57,13 @@ bool SkShaderMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src, c
     if (margin) {
         margin->set(0, 0);
     }
-    dst->bounds()   = src.fBounds;
-    dst->rowBytes() = src.fBounds.width();   // need alignment?
-    dst->format()   = SkMask::kA8_Format;
+
+    dst->fBounds   = src.fBounds;
+    dst->fRowBytes = src.fBounds.width();   // need alignment?
+    dst->fFormat   = SkMask::kA8_Format;
 
     if (src.fImage == nullptr) {
-        dst->image() = nullptr;
+        dst->fImage = nullptr;
         return true;
     }
     size_t size = dst->computeImageSize();
@@ -71,7 +72,7 @@ bool SkShaderMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src, c
     }
 
     // Allocate and initialize dst image with a copy of the src image
-    dst->image() = SkMaskBuilder::AllocImage(size);
+    dst->fImage = SkMaskBuilder::AllocImage(size);
     rect_memcpy(dst->image(), dst->fRowBytes, src.fImage, src.fRowBytes,
                 src.fBounds.width() * sizeof(uint8_t), src.fBounds.height());
 

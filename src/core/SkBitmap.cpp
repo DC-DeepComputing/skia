@@ -346,14 +346,14 @@ bool SkBitmap::installPixels(const SkPixmap& pixmap) {
                                nullptr, nullptr);
 }
 
-bool SkBitmap::installMaskPixels(SkMaskBuilder& mask) {
+bool SkBitmap::installMaskPixels(const SkMask& mask) {
     if (SkMask::kA8_Format != mask.fFormat) {
         this->reset();
         return false;
     }
     return this->installPixels(SkImageInfo::MakeA8(mask.fBounds.width(),
                                                    mask.fBounds.height()),
-                               mask.image(), mask.fRowBytes);
+                               (void*)mask.fImage, mask.fRowBytes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -542,14 +542,14 @@ bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
 
     SkBitmap    tmpBitmap;
     SkMatrix    identity;
-    SkMaskBuilder      srcM, dstM;
+    SkMask      srcM, dstM;
 
     if (this->width() == 0 || this->height() == 0) {
         return false;
     }
-    srcM.bounds().setWH(this->width(), this->height());
-    srcM.rowBytes() = SkAlign4(this->width());
-    srcM.format() = SkMask::kA8_Format;
+    srcM.fBounds.setWH(this->width(), this->height());
+    srcM.fRowBytes = SkAlign4(this->width());
+    srcM.fFormat   = SkMask::kA8_Format;
 
     SkMaskFilter* filter = paint ? paint->getMaskFilter() : nullptr;
 
@@ -559,7 +559,7 @@ bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
         if (!as_MFB(filter)->filterMask(&dstM, srcM, identity, nullptr)) {
             goto NO_FILTER_CASE;
         }
-        dstM.rowBytes() = SkAlign4(dstM.fBounds.width());
+        dstM.fRowBytes = SkAlign4(dstM.fBounds.width());
     } else {
     NO_FILTER_CASE:
         tmpBitmap.setInfo(SkImageInfo::MakeA8(this->width(), this->height()), srcM.fRowBytes);
@@ -576,14 +576,14 @@ bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
         tmpBitmap.swap(*dst);
         return true;
     }
-    srcM.image() = SkMaskBuilder::AllocImage(srcM.computeImageSize());
-    SkAutoMaskFreeImage srcCleanup(srcM.image());
+    srcM.fImage = SkMask::AllocImage(srcM.computeImageSize());
+    SkAutoMaskFreeImage srcCleanup(srcM.fImage);
 
-    GetBitmapAlpha(*this, srcM.image(), srcM.fRowBytes);
+    GetBitmapAlpha(*this, srcM.fImage, srcM.fRowBytes);
     if (!as_MFB(filter)->filterMask(&dstM, srcM, identity, nullptr)) {
         goto NO_FILTER_CASE;
     }
-    SkAutoMaskFreeImage dstCleanup(dstM.image());
+    SkAutoMaskFreeImage dstCleanup(dstM.fImage);
 
     tmpBitmap.setInfo(SkImageInfo::MakeA8(dstM.fBounds.width(), dstM.fBounds.height()),
                       dstM.fRowBytes);

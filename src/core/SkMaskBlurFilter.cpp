@@ -908,7 +908,7 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
         return {SkTo<int32_t>(radiusX), SkTo<int32_t>(radiusY)};
     }
     if (dst->fImage == nullptr) {
-        dst->bounds().setEmpty();
+        dst->fBounds.setEmpty();
         return {0, 0};
     }
 
@@ -983,7 +983,7 @@ SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMaskBuilder* dst) const {
         return {SkTo<int32_t>(borderW), SkTo<int32_t>(borderH)};
     }
     if (dst->fImage == nullptr) {
-        dst->bounds().setEmpty();
+        dst->fBounds.setEmpty();
         return {0, 0};
     }
 

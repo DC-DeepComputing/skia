@@ -1697,12 +1697,12 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     ftGlyph.bitmap_left = mask.fBounds.fLeft;
                 }
                 if (mask.fBounds.fTop < -ftGlyph.bitmap_top) {
-                    mask.image() += mask.fRowBytes * (-ftGlyph.bitmap_top - mask.fBounds.fTop);
-                    mask.bounds().fTop = -ftGlyph.bitmap_top;
+                    mask.fImage += mask.fRowBytes * (-ftGlyph.bitmap_top - mask.fBounds.fTop);
+                    mask.fBounds.fTop = -ftGlyph.bitmap_top;
                 }
                 if (mask.fBounds.fLeft < ftGlyph.bitmap_left) {
-                    mask.image() += sizeof(uint16_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
-                    mask.bounds().fLeft = ftGlyph.bitmap_left;
+                    mask.fImage += sizeof(uint16_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
+                    mask.fBounds.fLeft = ftGlyph.bitmap_left;
                 }
                 // Origins aligned, clean up the width and height.
                 int ftVertScale = (doVert ? 3 : 1);
@@ -1714,10 +1714,10 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     ftGlyph.bitmap.width = mask.fBounds.width() * ftHoriScale;
                 }
                 if (SkToInt(ftGlyph.bitmap.rows) < mask.fBounds.height() * ftVertScale) {
-                    mask.bounds().fBottom = mask.fBounds.fTop + ftGlyph.bitmap.rows / ftVertScale;
+                    mask.fBounds.fBottom = mask.fBounds.fTop + ftGlyph.bitmap.rows / ftVertScale;
                 }
                 if (SkToInt(ftGlyph.bitmap.width) < mask.fBounds.width() * ftHoriScale) {
-                    mask.bounds().fRight = mask.fBounds.fLeft + ftGlyph.bitmap.width / ftHoriScale;
+                    mask.fBounds.fRight = mask.fBounds.fLeft + ftGlyph.bitmap.width / ftHoriScale;
                 }
                 if (preBlend.isApplicable()) {
                     copyFT2LCD16<true>(ftGlyph.bitmap, &mask, doBGR,

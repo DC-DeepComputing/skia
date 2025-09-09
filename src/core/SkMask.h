@@ -18,6 +18,185 @@
 #include <cstdint>
 #include <memory>
 
+struct SkMask {
+    enum CreateMode {
+        kJustComputeBounds_CreateMode,      //!< compute bounds and return
+        kJustRenderImage_CreateMode,        //!< render into preallocate mask
+        kComputeBoundsAndRenderImage_CreateMode  //!< compute bounds, alloc image and render into it
+    };
+
+    enum Format : uint8_t {
+        kBW_Format, //!< 1bit per pixel mask (e.g. monochrome)
+        kA8_Format, //!< 8bits per pixel mask (e.g. antialiasing)
+        k3D_Format, //!< 3 8bit per pixl planes: alpha, mul, add
+        kARGB32_Format,         //!< SkPMColor
+        kLCD16_Format,          //!< 565 alpha for r/g/b
+        kSDF_Format,            //!< 8bits representing signed distance field
+    };
+
+    enum {
+        kCountMaskFormats = kSDF_Format + 1
+    };
+
+    SkMask() : fImage(nullptr), fBounds{0, 0, 0, 0}, fRowBytes(0), fFormat(kBW_Format) {}
+    SkMask(const SkMask&) = default;
+    SkMask(SkMask&&) = default;
+    SkMask(const uint8_t* img, const SkIRect& bounds, size_t rowBytes, Format format)
+        : fImage(const_cast<uint8_t*>(img))
+        , fBounds(bounds)
+        , fRowBytes(SkToU32(rowBytes))
+        , fFormat(format)
+    {
+        if (format != kBW_Format && rowBytes != 0) {
+            const int w = bounds.width();
+            SkASSERT((unsigned)w <= rowBytes);
+        }
+    }
+
+    SkMask& operator=(const SkMask&) = default;
+
+    SkIRect getBounds() const { return fBounds; }
+    Format format() const { return fFormat; }
+    size_t rowBytes() const { return fRowBytes; }
+
+    /** Return the byte size of the mask, assuming only 1 plane.
+        Does not account for k3D_Format. For that, use computeTotalImageSize().
+        If there is an overflow of 32bits, then returns 0.
+    */
+    static size_t ComputeImageSize(SkISize, size_t rowBytes);
+
+    /** Return the byte size of the mask, taking into account
+        any extra planes (e.g. k3D_Format).
+        If there is an overflow of 32bits, then returns 0.
+    */
+    static size_t ComputeTotalImageSize(SkISize, size_t rowBytes, Format);
+
+    enum AllocType {
+        kUninit_Alloc,
+        kZeroInit_Alloc,
+    };
+    static uint8_t* AllocImage(size_t bytes, AllocType = kUninit_Alloc);
+    static void FreeImage(void* image);
+
+    static bool IsValidFormat(unsigned format) { return format < (unsigned)kCountMaskFormats; }
+
+    /** Returns true if the mask is empty: i.e. it has an empty bounds.
+     */
+    bool isEmpty() const { return fBounds.isEmpty(); }
+
+    /** Return the byte size of the mask, assuming only 1 plane.
+        Does not account for k3D_Format. For that, use computeTotalImageSize().
+        If there is an overflow of 32bits, then returns 0.
+    */
+    size_t computeImageSize() const;
+
+    /** Return the byte size of the mask, taking into account
+        any extra planes (e.g. k3D_Format).
+        If there is an overflow of 32bits, then returns 0.
+    */
+    size_t computeTotalImageSize() const;
+
+    uint8_t* image() { return fImage; }
+    const uint8_t* image() const { return fImage; }
+
+    /** Returns the address of the byte that holds the specified bit.
+        Asserts that the mask is kBW_Format, and that x,y are in range.
+        x,y are in the same coordiate space as fBounds.
+    */
+    uint8_t* getAddr1(int x, int y) {
+        SkASSERT(kBW_Format == fFormat);
+        SkASSERT(fBounds.contains(x, y));
+        SkASSERT(fImage != nullptr);
+        return fImage + ((x - fBounds.fLeft) >> 3) + (y - fBounds.fTop) * fRowBytes;
+    }
+
+    /** Returns the address of the specified byte.
+        Asserts that the mask is kA8_Format, and that x,y are in range.
+        x,y are in the same coordiate space as fBounds.
+    */
+    uint8_t* getAddr8(int x, int y) {
+        SkASSERT(kA8_Format == fFormat || kSDF_Format == fFormat);
+        SkASSERT(fBounds.contains(x, y));
+        SkASSERT(fImage != nullptr);
+        return fImage + x - fBounds.fLeft + (y - fBounds.fTop) * fRowBytes;
+    }
+
+    /**
+     *  Return the address of the specified 16bit mask. In the debug build,
+     *  this asserts that the mask's format is kLCD16_Format, and that (x,y)
+     *  are contained in the mask's fBounds.
+     */
+    uint16_t* getAddrLCD16(int x, int y) {
+        SkASSERT(kLCD16_Format == fFormat);
+        SkASSERT(fBounds.contains(x, y));
+        SkASSERT(fImage != nullptr);
+        uint16_t* row = (uint16_t*)(fImage + (y - fBounds.fTop) * fRowBytes);
+        return row + (x - fBounds.fLeft);
+    }
+
+    /**
+     *  Return the address of the specified 32bit mask. In the debug build,
+     *  this asserts that the mask's format is 32bits, and that (x,y)
+     *  are contained in the mask's fBounds.
+     */
+    uint32_t* getAddr32(int x, int y) {
+        SkASSERT(kARGB32_Format == fFormat);
+        SkASSERT(fBounds.contains(x, y));
+        SkASSERT(fImage != nullptr);
+        uint32_t* row = (uint32_t*)(fImage + (y - fBounds.fTop) * fRowBytes);
+        return row + (x - fBounds.fLeft);
+    }
+
+    /**
+     *  Returns the address of the specified pixel, computing the pixel-size
+     *  at runtime based on the mask format. This will be slightly slower than
+     *  using one of the routines where the format is implied by the name
+     *  e.g. getAddr8 or getAddr32.
+     *
+     *  x,y must be contained by the mask's bounds (this is asserted in the
+     *  debug build, but not checked in the release build.)
+     *
+     *  This should not be called with kBW_Format, as it will give unspecified
+     *  results (and assert in the debug build).
+     */
+    void* getAddr(int x, int y);
+
+#define CONSTIFY(T, method)                             \
+    const T* method(int x, int y) const {               \
+        return const_cast<SkMask*>(this)->method(x, y); \
+    }
+
+    CONSTIFY(uint8_t, getAddr1)
+    CONSTIFY(uint8_t, getAddr8)
+    CONSTIFY(uint16_t, getAddrLCD16)
+    CONSTIFY(uint32_t, getAddr32)
+    CONSTIFY(void, getAddr)
+
+#undef CONSTIFY
+
+    /** Iterates over the coverage values along a scanline in a given SkMask::Format. Provides
+     *  constructor, copy constructor for creating
+     *  operator++, operator-- for iterating over the coverage values on a scanline
+     *  operator>>= to add row bytes
+     *  operator* to get the coverage value at the current location
+     *  operator< to compare two iterators
+     */
+    template <Format F> struct AlphaIter;
+
+    uint8_t*    fImage;
+    SkIRect     fBounds;
+    uint32_t    fRowBytes;
+    Format      fFormat;
+
+    /**
+     *  Returns initial destination mask data padded by radiusX and radiusY
+     */
+    static SkMask PrepareDestination(int radiusX, int radiusY, const SkMask& src);
+};
+
+using SkMaskBuilder = SkMask;
+
+#if 0
 /** \class SkMask
     SkMask is used to describe alpha bitmaps, either 1bit, 8bit, or
     the 3-channel 3D format. These are passed to SkMaskFilter objects.
@@ -132,6 +311,7 @@ struct SkMask {
      */
     template <Format F> struct AlphaIter;
 };
+#endif
 
 template <> struct SkMask::AlphaIter<SkMask::kBW_Format> {
     AlphaIter(const uint8_t* ptr, int offset) : fPtr(ptr), fOffset(7 - offset) {}
@@ -216,6 +396,7 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#if 0
 struct SkMaskBuilder : public SkMask {
     SkMaskBuilder() : SkMask(nullptr, {0}, 0, SkMask::Format::kBW_Format) {}
     SkMaskBuilder(const SkMaskBuilder&) = delete;
@@ -306,6 +487,7 @@ struct SkMaskBuilder : public SkMask {
      */
     static SkMaskBuilder PrepareDestination(int radiusX, int radiusY, const SkMask& src);
 };
+#endif
 
 /**
  *  \using SkAutoMaskImage
@@ -313,6 +495,7 @@ struct SkMaskBuilder : public SkMask {
  *  Stack class used to manage the fImage buffer in a SkMask.
  *  When this object loses scope, the buffer is freed with SkMask::FreeImage().
  */
-using SkAutoMaskFreeImage = std::unique_ptr<uint8_t, SkFunctionObject<SkMaskBuilder::FreeImage>>;
+using SkAutoMaskFreeImage = std::unique_ptr<uint8_t, SkFunctionObject<SkMask::FreeImage>>;
+
 
 #endif

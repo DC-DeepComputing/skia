@@ -850,7 +850,7 @@ bool SkAAClip::Builder::blitPath(SkAAClip* target, const SkPath& path, bool doAA
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SkAAClip::copyToMask(SkMaskBuilder* mask) const {
+SkMask SkAAClip::copyToMask() const {
     auto expandRowToMask = [](uint8_t* dst, const uint8_t* row, int width) {
         while (width > 0) {
             int n = row[0];
@@ -863,31 +863,28 @@ void SkAAClip::copyToMask(SkMaskBuilder* mask) const {
         SkASSERT(0 == width);
     };
 
-    mask->format() = SkMask::kA8_Format;
     if (this->isEmpty()) {
-        mask->bounds().setEmpty();
-        mask->image() = nullptr;
-        mask->rowBytes() = 0;
-        return;
+        return SkMask(nullptr, SkIRect::MakeEmpty(), 0, SkMask::kA8_Format);
     }
 
-    mask->bounds() = fBounds;
-    mask->rowBytes() = fBounds.width();
-    size_t size = mask->computeImageSize();
-    mask->image() = SkMaskBuilder::AllocImage(size);
+    const size_t rowBytes = fBounds.width();
+    size_t size  = SkMask::ComputeImageSize(fBounds.size(), rowBytes);
+    uint8_t* dst = SkMask::AllocImage(size);
+
+    SkMask mask(dst, fBounds, rowBytes, SkMask::kA8_Format);
 
     Iter iter = RunHead::Iterate(*this);
-    uint8_t* dst = mask->image();
     const int width = fBounds.width();
 
     int y = fBounds.fTop;
     while (!iter.done()) {
         do {
             expandRowToMask(dst, iter.data(), width);
-            dst += mask->fRowBytes;
+            dst += rowBytes;
         } while (++y < iter.bottom());
         iter.next();
     }
+    return mask;
 }
 
 #ifdef SK_DEBUG
@@ -1923,13 +1920,13 @@ void SkAAClipBlitter::blitMask(const SkMask& origMask, const SkIRect& clip) {
     const SkMask* mask = &origMask;
 
     // if we're BW, we need to upscale to A8 (ugh)
-    SkMaskBuilder  grayMask;
+    SkMask grayMask;
     if (SkMask::kBW_Format == origMask.fFormat) {
-        grayMask.format() = SkMask::kA8_Format;
-        grayMask.bounds() = origMask.fBounds;
-        grayMask.rowBytes() = origMask.fBounds.width();
+        grayMask.fFormat = SkMask::kA8_Format;
+        grayMask.fBounds = origMask.fBounds;
+        grayMask.fRowBytes = origMask.fBounds.width();
         size_t size = grayMask.computeImageSize();
-        grayMask.image() = reinterpret_cast<uint8_t*>(
+        grayMask.fImage = reinterpret_cast<uint8_t*>(
             fGrayMaskScratch.reset(size, SkAutoMalloc::kReuse_OnShrink));
 
         upscaleBW2A8(&grayMask, origMask);
@@ -1946,12 +1943,12 @@ void SkAAClipBlitter::blitMask(const SkMask& origMask, const SkIRect& clip) {
     const int width = clip.width();
     MergeAAProc mergeProc = find_merge_aa_proc(mask->fFormat);
 
-    SkMaskBuilder rowMask;
-    rowMask.format() = SkMask::k3D_Format == mask->fFormat ? SkMask::kA8_Format : mask->fFormat;
-    rowMask.bounds().fLeft = clip.fLeft;
-    rowMask.bounds().fRight = clip.fRight;
-    rowMask.rowBytes() = mask->fRowBytes; // doesn't matter, since our height==1
-    rowMask.image() = (uint8_t*)fScanlineScratch;
+    SkMask rowMask;
+    rowMask.fFormat = SkMask::k3D_Format == mask->fFormat ? SkMask::kA8_Format : mask->fFormat;
+    rowMask.fBounds.fLeft = clip.fLeft;
+    rowMask.fBounds.fRight = clip.fRight;
+    rowMask.fRowBytes = mask->fRowBytes; // doesn't matter, since our height==1
+    rowMask.fImage = (uint8_t*)fScanlineScratch;
 
     int y = clip.fTop;
     const int stopY = y + clip.height();
@@ -1965,9 +1962,9 @@ void SkAAClipBlitter::blitMask(const SkMask& origMask, const SkIRect& clip) {
         int initialCount;
         row = fAAClip->findX(row, clip.fLeft, &initialCount);
         do {
-            mergeProc(src, width, row, initialCount, rowMask.image());
-            rowMask.bounds().fTop = y;
-            rowMask.bounds().fBottom = y + 1;
+            mergeProc(src, width, row, initialCount, fScanlineScratch);
+            rowMask.fBounds.fTop = y;
+            rowMask.fBounds.fBottom = y + 1;
             fBlitter->blitMask(rowMask, rowMask.fBounds);
             src = (const void*)((const char*)src + srcRB);
         } while (++y < localStopY);

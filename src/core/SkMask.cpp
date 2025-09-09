@@ -27,16 +27,24 @@ static int32_t safeMul32(int32_t a, int32_t b) {
     return 0;
 }
 
-size_t SkMask::computeImageSize() const {
-    return safeMul32(fBounds.height(), fRowBytes);
+size_t SkMask::ComputeImageSize(SkISize dim, size_t rowBytes) {
+    return safeMul32(dim.height(), rowBytes);
 }
 
-size_t SkMask::computeTotalImageSize() const {
-    size_t size = this->computeImageSize();
-    if (fFormat == SkMask::k3D_Format) {
+size_t SkMask::ComputeTotalImageSize(SkISize dim, size_t rowBytes, Format format) {
+    size_t size = ComputeImageSize(dim, rowBytes);
+    if (format == SkMask::k3D_Format) {
         size = safeMul32(SkToS32(size), 3);
     }
     return size;
+}
+
+size_t SkMask::computeImageSize() const {
+    return ComputeImageSize(fBounds.size(), fRowBytes);
+}
+
+size_t SkMask::computeTotalImageSize() const {
+    return ComputeTotalImageSize(fBounds.size(), fRowBytes, fFormat);
 }
 
 /** We explicitly use this allocator for SkBimap pixels, so that we can
@@ -58,12 +66,11 @@ void SkMaskBuilder::FreeImage(void* image) {
     sk_free(image);
 }
 
-SkMaskBuilder SkMaskBuilder::PrepareDestination(int radiusX, int radiusY, const SkMask& src) {
+SkMask SkMask::PrepareDestination(int radiusX, int radiusY, const SkMask& src) {
     SkSafeMath safe;
 
-    SkMaskBuilder dst;
-    dst.image() = nullptr;
-    dst.format() = SkMask::kA8_Format;
+    SkMask dst;
+    dst.fFormat = SkMask::kA8_Format;
 
     // dstW = srcW + 2 * radiusX;
     size_t dstW = safe.add(src.fBounds.width(), safe.add(radiusX, radiusX));
@@ -74,18 +81,16 @@ SkMaskBuilder SkMaskBuilder::PrepareDestination(int radiusX, int radiusY, const 
 
     // We can only deal with masks that fit in INT_MAX and sides that fit in int.
     if (!SkTFitsIn<int>(dstW) || !SkTFitsIn<int>(dstH) || toAlloc > INT_MAX || !safe) {
-        dst.bounds().setEmpty();
-        dst.rowBytes() = 0;
         return dst;
     }
 
-    dst.bounds().setWH(SkTo<int>(dstW), SkTo<int>(dstH));
-    dst.bounds().offset(src.fBounds.x(), src.fBounds.y());
-    dst.bounds().offset(-radiusX, -radiusY);
-    dst.rowBytes() = SkTo<uint32_t>(dstW);
+    dst.fBounds.setWH(SkTo<int>(dstW), SkTo<int>(dstH));
+    dst.fBounds.offset(src.fBounds.x(), src.fBounds.y());
+    dst.fBounds.offset(-radiusX, -radiusY);
+    dst.fRowBytes = SkTo<uint32_t>(dstW);
 
     if (src.fImage != nullptr) {
-        dst.image() = SkMaskBuilder::AllocImage(toAlloc);
+        dst.fImage = SkMaskBuilder::AllocImage(toAlloc);
     }
 
     return dst;
@@ -109,12 +114,12 @@ static int maskFormatToShift(SkMask::Format format) {
     return gMaskFormatToShift[format];
 }
 
-const void* SkMask::getAddr(int x, int y) const {
+void* SkMask::getAddr(int x, int y) {
     SkASSERT(kBW_Format != fFormat);
     SkASSERT(fBounds.contains(x, y));
     SkASSERT(fImage);
 
-    const char* addr = (const char*)fImage;
+    uint8_t* addr = fImage;
     addr += (y - fBounds.fTop) * fRowBytes;
     addr += (x - fBounds.fLeft) << maskFormatToShift(fFormat);
     return addr;

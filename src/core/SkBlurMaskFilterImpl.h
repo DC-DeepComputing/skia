@@ -36,7 +36,7 @@ public:
 
     // From SkMaskFilterBase.h
     SkMask::Format getFormat() const override;
-    bool filterMask(SkMaskBuilder* dst, const SkMask& src, const SkMatrix&,
+    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
                     SkIPoint* margin) const override;
     SkMaskFilterBase::Type type() const override { return SkMaskFilterBase::Type::kBlur; }
 
@@ -62,11 +62,11 @@ private:
                                                const SkIRect& clipBounds,
                                                SkResourceCache*) const override;
 
-    bool filterRectMask(SkMaskBuilder* dstM,
+    bool filterRectMask(SkMask* dstM,
                         const SkRect& r,
                         const SkMatrix& matrix,
                         SkIPoint* margin,
-                        SkMaskBuilder::CreateMode createMode) const;
+                        SkMask::CreateMode createMode) const;
 
     SK_FLATTENABLE_HOOKS(SkBlurMaskFilterImpl)
 

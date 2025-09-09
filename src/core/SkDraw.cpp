@@ -485,7 +485,7 @@ void Draw::drawDevMask(const SkMask& srcM,
 
     const SkMask* mask = &srcM;
 
-    SkMaskBuilder dstM;
+    SkMask dstM;
     if (paint.getMaskFilter() &&
         as_MFB(paint.getMaskFilter())->filterMask(&dstM, srcM, *fCTM, nullptr)) {
         mask = &dstM;
@@ -540,7 +540,7 @@ void Draw::drawBitmapAsMask(const SkBitmap& bitmap,
 
         r.setIWH(bitmap.width(), bitmap.height());
         fCTM->mapRect(&r);
-        r.round(&mask.bounds());
+        r.round(&mask.fBounds);
 
         // set the mask's bounds to the transformed bitmap-bounds,
         // clipped to the actual device and further limited by the clip bounds
@@ -549,13 +549,13 @@ void Draw::drawBitmapAsMask(const SkBitmap& bitmap,
             SkIRect devBounds = fDst.bounds();
             devBounds.intersect(fRC->getBounds().makeOutset(1, 1));
             // need intersect(l, t, r, b) on irect
-            if (!mask.bounds().intersect(devBounds)) {
+            if (!mask.fBounds.intersect(devBounds)) {
                 return;
             }
         }
 
-        mask.format() = SkMask::kA8_Format;
-        mask.rowBytes() = SkAlign4(mask.fBounds.width());
+        mask.fFormat = SkMask::kA8_Format;
+        mask.fRowBytes = SkAlign4(mask.fBounds.width());
         size_t size = mask.computeImageSize();
         if (0 == size) {
             // the mask is too big to allocated, draw nothing
@@ -564,7 +564,7 @@ void Draw::drawBitmapAsMask(const SkBitmap& bitmap,
 
         // allocate (and clear) our temp buffer to hold the transformed bitmap
         AutoTMalloc<uint8_t> storage(size);
-        mask.image() = storage.get();
+        mask.fImage = storage.get();
         memset(mask.image(), 0, size);
 
         // now draw our bitmap(src) into mask(dst), transformed by the matrix
@@ -1144,20 +1144,20 @@ bool DrawToMask(const SkPath& devPath,
                                               SK_ScalarInfinity,
                                               SK_ScalarInfinity};
         SkRect pathBounds = devPath.isInverseFillType() ? kInverseBounds : devPath.getBounds();
-        if (!compute_mask_bounds(pathBounds, clipBounds, filter, filterMatrix, &dst->bounds())) {
+        if (!compute_mask_bounds(pathBounds, clipBounds, filter, filterMatrix, &dst->fBounds)) {
             return false;
         }
     }
 
     if (SkMaskBuilder::kComputeBoundsAndRenderImage_CreateMode == mode) {
-        dst->format() = SkMask::kA8_Format;
-        dst->rowBytes() = dst->fBounds.width();
+        dst->fFormat = SkMask::kA8_Format;
+        dst->fRowBytes = dst->fBounds.width();
         size_t size = dst->computeImageSize();
         if (0 == size) {
             // we're too big to allocate the mask, abort
             return false;
         }
-        dst->image() = SkMaskBuilder::AllocImage(size, SkMaskBuilder::kZeroInit_Alloc);
+        dst->fImage = SkMaskBuilder::AllocImage(size, SkMaskBuilder::kZeroInit_Alloc);
     }
 
     if (SkMaskBuilder::kJustComputeBounds_CreateMode != mode) {

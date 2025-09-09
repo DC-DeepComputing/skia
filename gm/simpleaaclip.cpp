@@ -29,13 +29,11 @@ namespace skiagm {
 
 static void paint_rgn(SkCanvas* canvas, const SkAAClip& clip,
                       const SkPaint& paint) {
-    SkMaskBuilder mask;
-    SkBitmap bm;
-
-    clip.copyToMask(&mask);
+    SkMask mask = clip.copyToMask();
 
     SkAutoMaskFreeImage amfi(mask.image());
 
+    SkBitmap bm;
     bm.installMaskPixels(mask);
 
     // need to copy for deferred drawing test to work

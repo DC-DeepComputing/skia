@@ -678,7 +678,7 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
                                     unfilteredGlyph->maskFormat());
             size_t imageSize = unfilteredGlyph->imageSize();
             tmpGlyphImageStorage.reset(imageSize);
-            srcMask.image() = static_cast<uint8_t*>(tmpGlyphImageStorage.get());
+            srcMask.fImage = static_cast<uint8_t*>(tmpGlyphImageStorage.get());
             memcpy(srcMask.image(), unfilteredGlyph->fImage, imageSize);
         }
 
@@ -691,38 +691,38 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
         // Find the intersection of src and dst while updating the fImages.
         if (srcMask.fBounds.fTop < dstMask.fBounds.fTop) {
             int32_t topDiff = dstMask.fBounds.fTop - srcMask.fBounds.fTop;
-            srcMask.image() += srcMask.fRowBytes * topDiff;
-            srcMask.bounds().fTop = dstMask.fBounds.fTop;
+            srcMask.fImage += srcMask.fRowBytes * topDiff;
+            srcMask.fBounds.fTop = dstMask.fBounds.fTop;
         }
         if (dstMask.fBounds.fTop < srcMask.fBounds.fTop) {
             int32_t topDiff = srcMask.fBounds.fTop - dstMask.fBounds.fTop;
-            dstMask.image() += dstMask.fRowBytes * topDiff;
-            dstMask.bounds().fTop = srcMask.fBounds.fTop;
+            dstMask.fImage += dstMask.fRowBytes * topDiff;
+            dstMask.fBounds.fTop = srcMask.fBounds.fTop;
         }
 
         if (srcMask.fBounds.fLeft < dstMask.fBounds.fLeft) {
             int32_t leftDiff = dstMask.fBounds.fLeft - srcMask.fBounds.fLeft;
-            srcMask.image() += leftDiff;
-            srcMask.bounds().fLeft = dstMask.fBounds.fLeft;
+            srcMask.fImage += leftDiff;
+            srcMask.fBounds.fLeft = dstMask.fBounds.fLeft;
         }
         if (dstMask.fBounds.fLeft < srcMask.fBounds.fLeft) {
             int32_t leftDiff = srcMask.fBounds.fLeft - dstMask.fBounds.fLeft;
-            dstMask.image() += leftDiff;
-            dstMask.bounds().fLeft = srcMask.fBounds.fLeft;
+            dstMask.fImage += leftDiff;
+            dstMask.fBounds.fLeft = srcMask.fBounds.fLeft;
         }
 
         if (srcMask.fBounds.fBottom < dstMask.fBounds.fBottom) {
-            dstMask.bounds().fBottom = srcMask.fBounds.fBottom;
+            dstMask.fBounds.fBottom = srcMask.fBounds.fBottom;
         }
         if (dstMask.fBounds.fBottom < srcMask.fBounds.fBottom) {
-            srcMask.bounds().fBottom = dstMask.fBounds.fBottom;
+            srcMask.fBounds.fBottom = dstMask.fBounds.fBottom;
         }
 
         if (srcMask.fBounds.fRight < dstMask.fBounds.fRight) {
-            dstMask.bounds().fRight = srcMask.fBounds.fRight;
+            dstMask.fBounds.fRight = srcMask.fBounds.fRight;
         }
         if (dstMask.fBounds.fRight < srcMask.fBounds.fRight) {
-            srcMask.bounds().fRight = dstMask.fBounds.fRight;
+            srcMask.fBounds.fRight = dstMask.fBounds.fRight;
         }
 
         SkASSERT(srcMask.fBounds == dstMask.fBounds);

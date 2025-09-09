@@ -185,12 +185,12 @@ DEF_TEST(BlurDrawing, reporter) {
 static void ground_truth_2d(int width, int height,
                             SkScalar sigma,
                             int* result, int resultCount) {
-    SkMaskBuilder src, dst;
+    SkMask src, dst;
 
-    src.bounds().setWH(width, height);
-    src.format() = SkMask::kA8_Format;
-    src.rowBytes() = src.fBounds.width();
-    src.image() = SkMaskBuilder::AllocImage(src.computeTotalImageSize());
+    src.fBounds.setWH(width, height);
+    src.fFormat = SkMask::kA8_Format;
+    src.fRowBytes = src.fBounds.width();
+    src.fImage = SkMaskBuilder::AllocImage(src.computeTotalImageSize());
 
     memset(src.image(), 0xff, src.computeTotalImageSize());
 
