@@ -78,9 +78,9 @@ const char* kDebugLayerNames[] = {
     // single merged layer
     "VK_LAYER_KHRONOS_validation",
     // not included in standard_validation
-    //"VK_LAYER_LUNARG_api_dump",
-    //"VK_LAYER_LUNARG_vktrace",
-    //"VK_LAYER_LUNARG_screenshot",
+    // "VK_LAYER_LUNARG_api_dump",
+    // "VK_LAYER_LUNARG_vktrace",
+    // "VK_LAYER_LUNARG_screenshot",
 };
 
 static uint32_t remove_patch_version(uint32_t specVersion) {
@@ -88,9 +88,8 @@ static uint32_t remove_patch_version(uint32_t specVersion) {
 }
 
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
-static int should_include_debug_layer(const char* layerName,
-                                       uint32_t layerCount, VkLayerProperties* layers,
-                                       uint32_t version) {
+static int should_include_debug_layer(
+        const char* layerName, uint32_t layerCount, VkLayerProperties* layers, uint32_t version) {
     for (uint32_t i = 0; i < layerCount; ++i) {
         if (!strcmp(layerName, layers[i].layerName)) {
             // Since the layers intercept the vulkan calls and forward them on, we need to make sure
@@ -281,6 +280,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
                                              nonPatchVersion);
         if (idx != -1) {
             instanceLayers->push_back() = layers[idx];
+            SkDebugf("Enabling instance debug layer %s.\n", kDebugLayerNames[i]);
         }
     }
     delete[] layers;
@@ -375,6 +375,7 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
                                              nonPatchVersion);
         if (idx != -1) {
             deviceLayers->push_back() = layers[idx];
+            SkDebugf("Enabling device debug layer %s.\n", kDebugLayerNames[i]);
         }
     }
     delete[] layers;
@@ -654,6 +655,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     layerSettingsCreateInfo.pSettings = layerSettings;
     if (hasDebugExtension && hasLayerSettingsExt) {
         instance_create.pNext = &layerSettingsCreateInfo;
+        SkDebugf("Utilizing instance validation extension VkLayerSettingsCreateInfoEXT.\n");
     }
 #endif
 
