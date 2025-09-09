@@ -14,10 +14,9 @@
 #include "include/private/base/SkNoncopyable.h"
 #include "modules/svg/include/SkSVGTypes.h"
 
-#include "src/base/SkTLazy.h"
-
 #include <cstdint>
 #include <cstring>
+#include <optional>
 #include <tuple>
 #include <vector>
 
@@ -36,7 +35,7 @@ public:
     //      so they can be used by parse<T>():
     bool parse(SkSVGIntegerType* v) { return parseInteger(v); }
 
-    template <typename T> using ParseResult = SkTLazy<T>;
+    template <typename T> using ParseResult = std::optional<T>;
 
     template <typename T> static ParseResult<T> parse(const char* value) {
         ParseResult<T> result;
