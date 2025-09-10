@@ -88,6 +88,7 @@ sk_sp<const SkCapabilities> SkSurface::capabilities() {
 }
 
 sk_sp<SkImage> SkSurface::makeImageSnapshot() {
+    asSB(this)->createCaptureBreakpoint();
     return asSB(this)->refCachedImage();
 }
 
