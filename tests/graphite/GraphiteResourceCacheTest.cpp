@@ -209,7 +209,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
     const Resource* imageResourcePtr = imageProxy->texture();
     REPORTER_ASSERT(reporter, imageResourcePtr);
     // There is an extra resource for the buffer that is uploading the data to the texture
-    const int buffersUsedForUpload = context->priv().caps()->supportsHostImageCopy() ? 0 : 1;
+    const int buffersUsedForUpload = !context->priv().caps()->protectedSupport() &&
+                                      context->priv().caps()->supportsHostImageCopy() ? 0 : 1;
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 2 + buffersUsedForUpload);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 1);
     REPORTER_ASSERT(reporter, imageResourcePtr->budgeted() == Budgeted::kNo);
