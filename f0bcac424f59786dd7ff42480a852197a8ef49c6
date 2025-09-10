@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10a6856_4987339d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "For my own reference, this added the `imageshader_tinyscale` gm which is supposed to look something like https://gold.skia.org/img/images/7660509c085d2fd76b51d9d41005fe02.png but looks like https://gold.skia.org/img/images/2b32d4d626fbef0ab719dbb7e963e2f6.png (bad) for some traces (backup: http://screen/6yJDUtABHJwNC5o).\n\nI do notice that this gm still draws the same for some traces (https://gold.skia.org/search?crs\u003dgerrit\u0026issue\u003d1043476\u0026left_filter\u003dname%3Dimageshader_tinyscale\u0026master\u003dtrue\u0026negative\u003dtrue\u0026patchsets\u003d15\u0026positive\u003dtrue backup http://screen/9wJtML8Egftdi5v). Was the intent of this CL to fix all, some, or none of those cases?",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba7b3274_7f4efbe8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Thank you for the review order!",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 6
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ef3e69a_6e3d6ce2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Overall LGTM. Some questions and suggestions below.",
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe811ddd_f159db63",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "nit: run `git clang-format origin/main` to tidy up these long lines",
+      "range": {
+        "startLine": 714,
+        "startChar": 100,
+        "endLine": 714,
+        "endChar": 109
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb50615_b950ede8",
+        "filename": "src/core/SkCoreBlitters.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "I\u0027d prefer not to have this pop in \"automatically\". I\u0027d prefer to explicitly set all calls of this (e.g. having to justify why SkRect::MakeEmpty() is necessary instead of it \"just happening\"). So let\u0027s remove this default value.",
+      "range": {
+        "startLine": 125,
+        "startChar": 64,
+        "endLine": 125,
+        "endChar": 79
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523bbd68_7a413bcd",
+        "filename": "src/core/SkEffectPriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "suggested comment: `The device-space bounding box of the geometry being drawn. An empty value can be used when it is expensive to compute, in which case a heuristic will be used if necessary.`",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 10
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67190cb7_05eee083",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Especially for local static function (with only 2 callsites), let\u0027s remove the default value.",
+      "range": {
+        "startLine": 165,
+        "startChar": 64,
+        "endLine": 165,
+        "endChar": 78
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd45aae5_965740e9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 5096,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment along the lines of \"This version exists to allow a shader to force high precision\". Maybe we even consider calling it `bilerp_clamp_8888_force_highp`?",
+      "range": {
+        "startLine": 5096,
+        "startChar": 5,
+        "endLine": 5096,
+        "endChar": 16
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "494fe07a_abbd26e6",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Can we use SkMatrix::mapRect here or did you do it this way for performance?",
+      "range": {
+        "startLine": 727,
+        "startChar": 12,
+        "endLine": 729,
+        "endChar": 45
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2e790d_241ea864",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T14:33:48Z",
+      "side": 1,
+      "message": "Do we need to add in a NaN or infinity check for the transformed points?",
+      "range": {
+        "startLine": 731,
+        "startChar": 20,
+        "endLine": 731,
+        "endChar": 23
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
