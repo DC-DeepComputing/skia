@@ -83,6 +83,8 @@ private:
 
     void setCaptureManager(sk_sp<SkCaptureManager> captureManager);
 
+    virtual void initialize() {}
+
     std::unique_ptr<const Caps> fCaps; // Provided by backend subclass
 
     BackendApi fBackend;
