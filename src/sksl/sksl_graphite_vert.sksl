@@ -577,6 +577,7 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
                                 out float4 yRadii,
                                 out float2 strokeParams,
                                 out float2 perPixelControl,
+                                out float4 testValue,
                                 // Render Step
                                 out float2 stepLocalCoords) {
     const float kMiterScale = 1.0;
@@ -595,6 +596,7 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
     float4 xs, ys; // ordered TL, TR, BR, BL
     float4 edgeAA = float4(1.0); // ordered L,T,R,B. 1 = AA, 0 = no AA
     bool strokedLine = false;
+
     if (xRadiiOrFlags.x < -1.0) {
         // Stroked [round] rect or line
         // If y > 0, unpack the line end points, otherwise unpack the rect edges
