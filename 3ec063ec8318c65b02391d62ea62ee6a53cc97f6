@@ -22,6 +22,30 @@
       },
       "revId": "3ec063ec8318c65b02391d62ea62ee6a53cc97f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e40e49a_27d90ae9",
+        "filename": "tools/gpu/CompressedTexture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-10T13:23:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39b3f667_e7f7899f",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "3ec063ec8318c65b02391d62ea62ee6a53cc97f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
