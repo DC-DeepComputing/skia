@@ -834,13 +834,20 @@ DEF_TEST(SkPathBuilder_Path_arcTo, reporter) {
         builder.arcTo(r, start, sweep, true);
 
         auto bupath = builder.snapshot();
-        REPORTER_ASSERT(reporter, bupath == path);
+
+        if (bupath != path) {
+            REPORTER_ASSERT(reporter, bupath == path);
+        }
     };
 
-    // this specific case was known to fail before
-    const SkRect r = {-18, -18, 18, 18};
-    float start = 375, sweep = 320;
+    // these specific cases were known to fail before
+    SkRect r = {0, 0, 40, 40};
+    float start = 10, sweep = 180;
+    check_both_methods(r, start, sweep);
 
+    r = {-18, -18, 18, 18};
+    start = 375;
+    sweep = 320;
     check_both_methods(r, start, sweep);
 
     // so now try a lot of other variants
