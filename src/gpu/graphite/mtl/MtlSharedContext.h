@@ -39,6 +39,9 @@ public:
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
 
+    sk_cfp<id<MTLDepthStencilState>> findOrCreateCompatibleDepthStencilState(
+            const DepthStencilSettings&) SK_EXCLUDES(fSpinLock);
+
 private:
 
     MtlSharedContext(sk_cfp<id<MTLDevice>>,
@@ -50,6 +53,14 @@ private:
     sk_sp<skgpu::MtlMemoryAllocator> fMemoryAllocator;
 
     sk_cfp<id<MTLDevice>> fDevice;
+
+    mutable SkSpinlock fSpinLock;
+
+    // In the current Graphite class structure 'fDepthStencilStates' would more appropriately
+    // go in a new MtlGlobalCache class. However, GlobalCache may go away as a concept, in
+    // which case, this would be a reasonable place for this cache.
+    skia_private::THashMap<DepthStencilSettings, sk_cfp<id<MTLDepthStencilState>>>
+            fDepthStencilStates SK_GUARDED_BY(fSpinLock);
 };
 
 } // namespace skgpu::graphite
