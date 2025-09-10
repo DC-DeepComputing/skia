@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/utils/SkPaintFilterCanvas.h"
+#include "src/base/SkTLazy.h"
 #include "src/core/SkDevice.h"
 #include "src/image/SkSurface_Base.h"
 #include "src/shaders/SkShaderBase.h"
@@ -60,7 +61,7 @@ bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
         baseInfo->fColors = info->fColors;
         baseInfo->fColorOffsets = info->fColorOffsets;
     }
-    if (as_SB(shader)->asGradient(baseInfo.getMaybeNull()) != SkShaderBase::GradientType::kLinear) {
+    if (as_SB(shader)->asGradient(SkOptAddressOrNull(baseInfo)) != SkShaderBase::GradientType::kLinear) {
         return false;
     }
     if (info) {
