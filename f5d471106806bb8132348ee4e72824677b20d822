@@ -16,6 +16,92 @@
       "message": "ptal -- this is the start of plumbing PNG metadata (the end-to-end patch works, but I need to re-generate the test images because of [this bug](https://github.com/w3c/png/issues/539)).",
       "revId": "f5d471106806bb8132348ee4e72824677b20d822",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10d4db6_3c5a5c30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-10T21:23:15Z",
+      "side": 1,
+      "message": "I am not a Skia committer, so take my feedback with a grain of salt.",
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc79e757_75e98f1c",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-10T21:23:15Z",
+      "side": 1,
+      "message": "No **immediate** concerns, but I am curious why this header is in a _private_ directory.  Will there be a separate, _public_ API that Blink can use for getting the decoded HDR metadata?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e77fd30b_b1c88418",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-10T21:23:15Z",
+      "side": 1,
+      "message": "This LGTM, but I don\u0027t understand why this is needed for the Rust PNG integration, which exposes pre-parsed data (two `u32`s rather than a sequence of bytes).  See https://docs.rs/png/latest/png/struct.ContentLightLevelInfo.html\n\nSame question for `serialize`, `parsePngChunk`, and `serializePngChunk`.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f038dd4d_22ab659b",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-10T21:23:15Z",
+      "side": 1,
+      "message": "Same question as above - this LGTM, but why do we need `parse` and `serialize` methods?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
