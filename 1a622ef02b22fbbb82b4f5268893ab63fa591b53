@@ -16,6 +16,24 @@
       "message": "Riddle me this ...\n\nGo to modules/svg/src/SkSVGSVG.cpp and change #if 0 to #if 1 -- and watch it not compile .... (but why?)",
       "revId": "1a622ef02b22fbbb82b4f5268893ab63fa591b53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38bc37d1_9cdd710b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-10T02:43:10Z",
+      "side": 1,
+      "message": "Well, with explicit casts, it builds/runs.",
+      "parentUuid": "f4650eaf_4c7e7534",
+      "revId": "1a622ef02b22fbbb82b4f5268893ab63fa591b53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
