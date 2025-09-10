@@ -23,7 +23,7 @@ public:
 
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
-    void serializeCapture();
+    sk_sp<SkData> serializeCapture();
 
     void toggleCapture(bool capturing) {
         if (capturing != fIsCurrentlyCapturing && !capturing) {
