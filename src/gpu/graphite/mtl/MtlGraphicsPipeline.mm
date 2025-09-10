@@ -267,9 +267,19 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
 
 } // anonymous namespace
 
+bool MtlGraphicsPipeline::isReady() const {
+    if (!fAsync) {
+        return true;
+    }
+    if (fAsyncFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
-        const MtlSharedContext* sharedContext,
-        MtlResourceProvider* resourceProvider,
+        MtlSharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -331,7 +341,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
             sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
 
     sk_cfp<id<MTLDepthStencilState>> dss =
-            resourceProvider->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
+            sharedContext->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
                                pipelineKey.hash(), compilationID };
@@ -358,8 +368,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 }
 
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
-        const MtlSharedContext* sharedContext,
-        MtlResourceProvider* resourceProvider,
+        MtlSharedContext* sharedContext,
         const RenderPassDesc& renderPassDesc) {
     static const char* kLoadMSAAShaderText =
             "#include <metal_stdlib>\n"
@@ -390,7 +399,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
                                               sharedContext->caps()->shaderErrorHandler());
     BlendInfo noBlend{}; // default is equivalent to kSrc blending
     sk_cfp<id<MTLDepthStencilState>> ignoreDS =
-            resourceProvider->findOrCreateCompatibleDepthStencilState({});
+            sharedContext->findOrCreateCompatibleDepthStencilState({});
 
     std::string pipelineLabel = "LoadMSAAFromResolve + ";
     pipelineLabel += renderPassDesc.toString().c_str();
