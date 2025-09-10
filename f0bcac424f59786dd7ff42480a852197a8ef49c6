@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c364ec0a_a5ec7884",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "That version of the uses the legacy shader SkARGB32_Shader_Blitter, which doesn\u0027t use rasterpipeline for blitting and I addressed this in a different cl (https://skia-review.googlesource.com/c/skia/+/1052816). \n\nBut locally you can force use the raster pipeline blitter and that GM will draw incorrectly without this change and correctly with it.",
+      "parentUuid": "b10a6856_4987339d",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ba7b3274_7f4efbe8",
         "filename": "/COMMIT_MSG",
         "patchSetId": 15
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8f46772_c9cedf60",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe811ddd_f159db63",
+      "range": {
+        "startLine": 714,
+        "startChar": 100,
+        "endLine": 714,
+        "endChar": 109
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2eb50615_b950ede8",
@@ -100,6 +148,30 @@
       "writtenOn": "2025-09-10T14:33:48Z",
       "side": 1,
       "message": "I\u0027d prefer not to have this pop in \"automatically\". I\u0027d prefer to explicitly set all calls of this (e.g. having to justify why SkRect::MakeEmpty() is necessary instead of it \"just happening\"). So let\u0027s remove this default value.",
+      "range": {
+        "startLine": 125,
+        "startChar": 64,
+        "endLine": 125,
+        "endChar": 79
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6838208_80ed8ba2",
+        "filename": "src/core/SkCoreBlitters.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2eb50615_b950ede8",
       "range": {
         "startLine": 125,
         "startChar": 64,
@@ -133,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0afe7f0_e211cbd3",
+        "filename": "src/core/SkEffectPriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "523bbd68_7a413bcd",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 10
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67190cb7_05eee083",
@@ -156,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e799d0aa_548b27a6",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67190cb7_05eee083",
+      "range": {
+        "startLine": 165,
+        "startChar": 64,
+        "endLine": 165,
+        "endChar": 78
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd45aae5_965740e9",
@@ -169,6 +289,30 @@
       "writtenOn": "2025-09-10T14:33:48Z",
       "side": 1,
       "message": "Let\u0027s add a comment along the lines of \"This version exists to allow a shader to force high precision\". Maybe we even consider calling it `bilerp_clamp_8888_force_highp`?",
+      "range": {
+        "startLine": 5096,
+        "startChar": 5,
+        "endLine": 5096,
+        "endChar": 16
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d55c7966_cafe1974",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 5096,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd45aae5_965740e9",
       "range": {
         "startLine": 5096,
         "startChar": 5,
@@ -204,6 +348,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8f901e7_d7e89f4b",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "I did it this way in case there is a perspective transform and we may not get a rect from the transformation.",
+      "parentUuid": "494fe07a_abbd26e6",
+      "range": {
+        "startLine": 727,
+        "startChar": 12,
+        "endLine": 729,
+        "endChar": 45
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba2e790d_241ea864",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 15
@@ -215,6 +383,30 @@
       "writtenOn": "2025-09-10T14:33:48Z",
       "side": 1,
       "message": "Do we need to add in a NaN or infinity check for the transformed points?",
+      "range": {
+        "startLine": 731,
+        "startChar": 20,
+        "endLine": 731,
+        "endChar": 23
+      },
+      "revId": "f0bcac424f59786dd7ff42480a852197a8ef49c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d07c0aad_eb280f8f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-10T16:07:49Z",
+      "side": 1,
+      "message": "Done, in these cases we will force highp instead of doing the old behavior",
+      "parentUuid": "ba2e790d_241ea864",
       "range": {
         "startLine": 731,
         "startChar": 20,
