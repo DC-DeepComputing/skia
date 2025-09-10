@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e197577e_2b16e862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-10T20:16:14Z",
+      "side": 1,
+      "message": "ptal -- this is the start of plumbing PNG metadata (the end-to-end patch works, but I need to re-generate the test images because of [this bug](https://github.com/w3c/png/issues/539)).",
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
