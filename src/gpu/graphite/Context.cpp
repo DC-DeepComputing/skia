@@ -170,6 +170,8 @@ bool Context::finishInitialization() {
         return false;
     }
 
+    fSharedContext->initialize();
+
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
