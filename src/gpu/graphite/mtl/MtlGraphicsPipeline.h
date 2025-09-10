@@ -39,8 +39,7 @@ public:
     inline static constexpr unsigned int kAppendDataBufferIndex = 4;
     inline static constexpr unsigned int kGradientBufferIndex = 5;
 
-    static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
-                                           MtlResourceProvider*,
+    static sk_sp<MtlGraphicsPipeline> Make(MtlSharedContext*,
                                            const RuntimeEffectDictionary*,
                                            const UniqueKey&,
                                            const GraphicsPipelineDesc&,
@@ -48,8 +47,7 @@ public:
                                            SkEnumBitMask<PipelineCreationFlags>,
                                            uint32_t compilationID);
 
-    static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(const MtlSharedContext*,
-                                                           MtlResourceProvider*,
+    static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(MtlSharedContext*,
                                                            const RenderPassDesc&);
 
     ~MtlGraphicsPipeline() override {}
