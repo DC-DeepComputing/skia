@@ -16,6 +16,9 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 
+static constexpr int kHighPriorityWorkList = 0;
+static constexpr int kLowPriorityWorkList = 1;
+
 namespace skgpu::graphite {
 
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
@@ -24,8 +27,19 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager() {}
-PipelineManager::~PipelineManager() {}
+PipelineManager::PipelineManager(SkExecutor* executor) {
+    if (executor) {
+        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
+    }
+}
+// TODO: do we need a join here?!
+PipelineManager::~PipelineManager() {
+    // This should've been handled in ~ResourceProvider
+    if (fTaskGroup) {
+        fTaskGroup->discardAllPendingWork();
+        fTaskGroup->wait();
+    }
+}
 
 const UniqueKey& PipelineManager::Traits::GetKey(const sk_sp<PipelineCreationTask>& task) {
     return task->fPipelineKey;
@@ -33,6 +47,61 @@ const UniqueKey& PipelineManager::Traits::GetKey(const sk_sp<PipelineCreationTas
 
 uint32_t PipelineManager::Traits::Hash(const UniqueKey& pipelineKey) {
     return pipelineKey.hash();
+}
+
+// TODO: do we need refs on the resourceProvider or the runtimeDict ?
+void PipelineManager::startPipelineCreationTask(ResourceProvider* resourceProvider,
+                                                sk_sp<const RuntimeEffectDictionary> runtimeDict,
+                                                const GraphicsPipelineHandle& handle) {
+    if (std::holds_alternative<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline)) {
+        return;
+    }
+
+    // !!! Being in the active task list doesn't mean that it has or hasn't already been kicked off
+    // We need to guard against the case where two DrawPasses have the same Pipeline/Task and
+    // don't kick it off multiple times.
+    sk_sp<PipelineCreationTask> task =
+            std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
+
+    if (task->fInProgress.exchange(true)) {
+        return; // someone else already kicked off the task
+    }
+
+    if (fTaskGroup) {
+        // It seems like this doesn't need a sk_sp<PipelineTask> - just a PipelineTask*
+        auto compileTask = [resourceProvider, runtimeDict, this, task] {
+            task->fPipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                    runtimeDict.get(),
+                    task->fPipelineKey,
+                    task->fGraphicsPipelineDesc,
+                    task->fRenderPassDesc,
+                    task->fPipelineCreationFlags);
+
+            task->fCompleted = true;
+            task->signalComplete();
+
+            this->removeTask(task.get());
+        };
+
+        fTaskGroup->add(std::move(compileTask),
+                        task->forPrecompile() ? kLowPriorityWorkList : kHighPriorityWorkList);
+    } else {
+        sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                runtimeDict.get(),
+                task->fPipelineKey,
+                task->fGraphicsPipelineDesc,
+                task->fRenderPassDesc,
+                task->fPipelineCreationFlags);
+
+        if (!pipeline) {
+            SKGPU_LOG_W("Failed to create GraphicsPipeline!");
+        }
+
+        if (!task->fCompleted.exchange(true)) {
+            task->fPipeline = pipeline;
+            this->removeTask(task.get());
+        }
+    }
 }
 
 GraphicsPipelineHandle PipelineManager::createHandle(
@@ -64,33 +133,6 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     return GraphicsPipelineHandle(std::move(task));
 }
 
-void PipelineManager::startPipelineCreationTask(ResourceProvider* resourceProvider,
-                                                sk_sp<const RuntimeEffectDictionary> runtimeDict,
-                                                const GraphicsPipelineHandle& handle) {
-    if (std::holds_alternative<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline)) {
-        return;
-    }
-
-    sk_sp<PipelineCreationTask> task =
-            std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
-
-    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
-            runtimeDict.get(),
-            task->fPipelineKey,
-            task->fGraphicsPipelineDesc,
-            task->fRenderPassDesc,
-            task->fPipelineCreationFlags);
-
-    if (!pipeline) {
-        SKGPU_LOG_W("Failed to create GraphicsPipeline!");
-    }
-
-    if (!task->fCompleted.exchange(true)) {
-        task->fPipeline = pipeline;
-        this->removeTask(task.get());
-    }
-}
-
 sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHandle& handle) {
     if (std::holds_alternative<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline)) {
         return std::get<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline);
@@ -101,11 +143,19 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
     sk_sp<PipelineCreationTask> task =
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
-    // For the non-threaded version of the PipelineManager, whenever a thread gets here it
-    // will already have blindly executed the task (in DrawPass::prepareResources).
-    SkASSERT(task->fCompleted);
+    if (!task->fCompleted) {
+        task->wait();
+    }
     return task->fPipeline;
 }
+
+void PipelineManager::shutDown() {
+    if (fTaskGroup) {
+        fTaskGroup->discardAllPendingWork();
+        fTaskGroup->wait();
+    }
+}
+
 
 #if defined(GPU_TEST_UTILS)
 PipelineManager::Stats PipelineManager::getStats() const {
@@ -165,9 +215,9 @@ void PipelineManager::removeTask(PipelineCreationTask* task) {
 
     // TODO(robertphillips): this guard is only necessary in the non-threaded version of
     // the PipelineManager
-    if (fActiveTasks.findOrNull(task->fPipelineKey)) {
+//    if (fActiveTasks.findOrNull(task->fPipelineKey)) {
         fActiveTasks.remove(task->fPipelineKey);
-    }
+//    }
 }
 
 } // namespace skgpu::graphite

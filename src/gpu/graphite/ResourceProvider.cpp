@@ -52,6 +52,9 @@ ResourceProvider::ResourceProvider(SharedContext* sharedContext,\
         , fResourceCache(ResourceCache::Make(singleOwner, recorderID, resourceBudget)) {}
 
 ResourceProvider::~ResourceProvider() {
+    // The PipelineManager's Tasks could hold pointers to this object
+    fSharedContext->pipelineManager()->shutDown();
+
     fResourceCache->shutdown();
 }
 
