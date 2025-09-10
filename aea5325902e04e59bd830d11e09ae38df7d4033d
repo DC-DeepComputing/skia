@@ -33,6 +33,24 @@
       "message": "This previously read `{2.4f, 0.f, ...}`.",
       "revId": "aea5325902e04e59bd830d11e09ae38df7d4033d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1126d676_25a34d53",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T21:18:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a48e9083_540cc021",
+      "revId": "aea5325902e04e59bd830d11e09ae38df7d4033d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
