@@ -54,22 +54,22 @@ protected:
             canvas->restore();
 
             switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
+                case 0:
+                    xOffset += 10;
+                    if (xOffset >= 700) {
+                        direction = 1;
+                    }
+                    break;
+                case 1:
+                    xOffset -= 10;
+                    yOffset += 10;
+                    if (xOffset < 50) {
+                        direction = 2;
+                    }
+                    break;
+                case 2:
+                    xOffset += 10;
+                    break;
             }
         }
 
