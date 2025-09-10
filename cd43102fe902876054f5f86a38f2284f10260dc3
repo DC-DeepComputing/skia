@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657b8058_663ef347",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-10T17:19:32Z",
+      "side": 1,
+      "message": "My goal here is to get viewer running working without Ganesh. I have this working locally. This lets me locally hack on shared Ganesh/Graphite code while exploring changes to Graphite and not worry about keeping Ganesh buildable.\n\ndm and other tools would be easy to follow up with. This could allow the Graphite bots (or at least some of them) to not have to build Ganesh either.",
+      "revId": "cd43102fe902876054f5f86a38f2284f10260dc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
