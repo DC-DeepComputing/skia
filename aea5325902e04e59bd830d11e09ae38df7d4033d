@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "172255fe_462ddfc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-10T20:22:34Z",
+      "side": 1,
+      "message": "oops...",
+      "revId": "aea5325902e04e59bd830d11e09ae38df7d4033d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48e9083_540cc021",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-10T20:22:34Z",
+      "side": 1,
+      "message": "This previously read `{2.4f, 0.f, ...}`.",
+      "revId": "aea5325902e04e59bd830d11e09ae38df7d4033d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
