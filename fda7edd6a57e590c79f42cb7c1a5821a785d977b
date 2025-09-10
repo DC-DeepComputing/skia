@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d92155_dda7d1a9",
+        "filename": "src/core/SkBitmapProcState_matrixProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T15:04:50Z",
+      "side": 1,
+      "message": "suggestion: `SkIntToFixed3232` here and below",
+      "range": {
+        "startLine": 192,
+        "startChar": 34,
+        "endLine": 192,
+        "endChar": 60
+      },
+      "revId": "fda7edd6a57e590c79f42cb7c1a5821a785d977b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "468720de_c636663d",
+        "filename": "src/core/SkBitmapProcState_matrixProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T15:04:50Z",
+      "side": 1,
+      "message": "nit: `SkFixed3232`",
+      "range": {
+        "startLine": 192,
+        "startChar": 17,
+        "endLine": 192,
+        "endChar": 24
+      },
+      "revId": "fda7edd6a57e590c79f42cb7c1a5821a785d977b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28290d8_01df8121",
+        "filename": "src/core/SkBitmapProcState_matrixProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T15:04:50Z",
+      "side": 1,
+      "message": "nit: `SkFixed3232`",
+      "range": {
+        "startLine": 195,
+        "startChar": 54,
+        "endLine": 195,
+        "endChar": 61
+      },
+      "revId": "fda7edd6a57e590c79f42cb7c1a5821a785d977b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ffb2294_b731a07d",
+        "filename": "src/core/SkBitmapProcState_matrixProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T15:04:50Z",
+      "side": 1,
+      "message": "nit: `SkFixed`",
+      "range": {
+        "startLine": 195,
+        "startChar": 17,
+        "endLine": 195,
+        "endChar": 24
+      },
+      "revId": "fda7edd6a57e590c79f42cb7c1a5821a785d977b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76009c9f_4d23906f",
+        "filename": "src/core/SkBitmapProcState_matrixProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-10T15:04:50Z",
+      "side": 1,
+      "message": "Driveby comment: I was wondering why we had both SkFractionalInt and SkFixed3232 and apparently the former used to have a different implementation. I\u0027m going to send you a CL that deletes the former so we only have the one thing.\n\nhttps://github.com/google/skia/commit/179465150939c2f2420bfc15dc33825b1130e7f7",
+      "revId": "fda7edd6a57e590c79f42cb7c1a5821a785d977b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
