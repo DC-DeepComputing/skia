@@ -954,7 +954,7 @@ void Draw::drawDevPath(const SkPath& devPath,
 void Draw::drawPath(const SkPath& origSrcPath,
                     const SkPaint& origPaint,
                     const SkMatrix* prePathMatrix,
-                    bool pathIsMutable,
+                    bool /*pathIsMutable*/,
                     SkDrawCoverage drawCoverage,
                     SkBlitter* customBlitter) const {
     SkDEBUGCODE(this->validate();)
@@ -964,23 +964,15 @@ void Draw::drawPath(const SkPath& origSrcPath,
         return;
     }
 
-    SkPath* pathPtr = const_cast<SkPath*>(&origSrcPath);
+    const SkPath* pathPtr = &origSrcPath;
     bool doFill = true;
     SkPath tmpPathStorage;
-    SkPath* tmpPath = &tmpPathStorage;
     SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
-    tmpPath->setIsVolatile(true);
 
     if (prePathMatrix) {
         if (origPaint.getPathEffect() || origPaint.getStyle() != SkPaint::kFill_Style) {
-            SkPath* result = pathPtr;
-
-            if (!pathIsMutable) {
-                result = tmpPath;
-                pathIsMutable = true;
-            }
-            pathPtr->transform(*prePathMatrix, result);
-            pathPtr = result;
+            tmpPathStorage = pathPtr->makeTransform(*prePathMatrix);
+            pathPtr = &tmpPathStorage;
         } else {
             matrix.writable()->preConcat(*prePathMatrix);
         }
@@ -1020,26 +1012,25 @@ void Draw::drawPath(const SkPath& origSrcPath,
         }
         SkPathBuilder builder;
         doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
-        *tmpPath = builder.detach();
-        pathPtr = tmpPath;
+        tmpPathStorage = builder.detach();
+        pathPtr = &tmpPathStorage;
     }
 
-    // avoid possibly allocating a new path in transform if we can
-    SkPath* devPathPtr = pathIsMutable ? pathPtr : tmpPath;
-
-    // transform the path into device space
-    pathPtr->transform(*matrix, devPathPtr);
-    if (!devPathPtr->isFinite()) {
+    if (!matrix->isIdentity()) {
+        tmpPathStorage = pathPtr->makeTransform(*matrix);
+        pathPtr = &tmpPathStorage;
+    }
+    if (!pathPtr->isFinite()) {
         return;
     }
 
 #if defined(SK_BUILD_FOR_FUZZER)
-    if (devPathPtr->countPoints() > 1000) {
+    if (pathPtr->countPoints() > 1000) {
         return;
     }
 #endif
 
-    this->drawDevPath(*devPathPtr, *paint, drawCoverage, customBlitter, doFill);
+    this->drawDevPath(*pathPtr, *paint, drawCoverage, customBlitter, doFill);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
