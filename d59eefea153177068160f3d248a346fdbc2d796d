@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f828859_08e4fe10",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:13:37Z",
+      "side": 1,
+      "message": "This CL doesn\u0027t add a use for this yet, right? As in, it\u0027s intentional we don\u0027t set this for any task for now?",
+      "range": {
+        "startLine": 321,
+        "startChar": 1,
+        "endLine": 321,
+        "endChar": 16
+      },
+      "revId": "d59eefea153177068160f3d248a346fdbc2d796d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c73455f_a0c1d038",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:13:37Z",
+      "side": 1,
+      "message": "I remember we used this a lot years ago. I guess we never quite deleted it?",
+      "range": {
+        "startLine": 292,
+        "startChar": 19,
+        "endLine": 292,
+        "endChar": 42
+      },
+      "revId": "d59eefea153177068160f3d248a346fdbc2d796d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
