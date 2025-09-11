@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2004a0de_449fc0a2",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-11T12:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6083d932_9c3727c6",
+      "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2d513f88_23f337ee",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 5
