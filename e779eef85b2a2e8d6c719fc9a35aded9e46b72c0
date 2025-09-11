@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d513f88_23f337ee",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3208,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-11T07:20:06Z",
+      "side": 1,
+      "message": "I don\u0027t recall what the long term plan to setConvexity was - I guess it makes sense to add a forced/known convexity option to PathBuilder at some point (for tricky clients like this, that know what they\u0027re doing)?",
+      "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc6192f_4fba7590",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-11T07:20:06Z",
+      "side": 1,
+      "message": "SkPath::conicTo has a couple of extra special cases ( \u003c\u003d 0, nan) - should we add those too for consistency? (can be a separate change since it\u0027s incidental)",
+      "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
