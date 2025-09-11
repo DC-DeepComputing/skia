@@ -108,6 +108,99 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2ed27b5_55008ee3",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "If it\u0027s Chromium only, we tend to put that in https://github.com/google/skia/tree/main/include/private/chromium\n\nIf Chromium and Android, I suppose this is fine.\n\nI\u0027m not too worried about SkCodec::getHdrStuff() returning a private type as long as we can forward declare it.",
+      "parentUuid": "416b2637_b80a31be",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc06620a_2d46809d",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "ubernit: Google is an LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6127a5bf_464bde74",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "nit: We put skia headers first, then system includes, then forward declares.",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc446450_ec2001c9",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Not sure if https://www.w3.org/TR/png-3/#cLLI-chunk would be helpful to link or just redundant. (It\u0027s how I verified we are supposed to have 2 floats of data here).",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e77fd30b_b1c88418",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -179,6 +272,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14a57c23_c4f89e7b",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Same comment above as https://www.w3.org/TR/png-3/#mDCV-chunk",
+      "range": {
+        "startLine": 77,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "613941ae_62b95d04",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Just to make sure I\u0027m reading the png spec right, they only list 12 bytes for RGB and then 4 bytes for white. So, we\u0027ll be reading 2 bytes for each of those X and Y components? And we store them as floats after we convert them from PNG\u0027s integers + divsiors?",
+      "range": {
+        "startLine": 80,
+        "startChar": 26,
+        "endLine": 80,
+        "endChar": 43
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f038dd4d_22ab659b",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -243,6 +382,115 @@
         "startChar": 0,
         "endLine": 97,
         "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c0cb37_a22a855c",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Yep: spec says two 4 byte fields",
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22aa2a9f_4fdf4cc0",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "nit: make this a named constexpr to make it clear it comes from the spec (I like your _times_10000 variable names) The spec I says divisor of 0.0001 but I presume they mean \"we multiply by 0.0001\" aka \"we divide by 10^4\"?",
+      "range": {
+        "startLine": 61,
+        "startChar": 36,
+        "endLine": 61,
+        "endChar": 41
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46ee0e92_06423b34",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Yep, spec says 12, 4, 4, 4 byte fields",
+      "range": {
+        "startLine": 90,
+        "startChar": 24,
+        "endLine": 90,
+        "endChar": 26
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8d2c88d_0e214757",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "Same comment above about named constant (and I see from the spec there are 2 different \"divisors\")",
+      "range": {
+        "startLine": 111,
+        "startChar": 40,
+        "endLine": 111,
+        "endChar": 45
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3dc794_526f9786",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-11T17:10:41Z",
+      "side": 1,
+      "message": "It is curious SkColorSpacePrimaries doesn\u0027t have operator\u003d\u003d defined. Maybe we do that instead of putting it here?",
+      "range": {
+        "startLine": 141,
+        "startChar": 11,
+        "endLine": 141,
+        "endChar": 28
       },
       "revId": "f5d471106806bb8132348ee4e72824677b20d822",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
