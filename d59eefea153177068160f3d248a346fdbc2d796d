@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0b60abad_9f170336",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-09-11T17:16:43Z",
+      "side": 1,
+      "message": "The Config struct is used by client repos, you\u0027ll see a subsequent CL in another repo which sets this.",
+      "parentUuid": "6f828859_08e4fe10",
+      "range": {
+        "startLine": 321,
+        "startChar": 1,
+        "endLine": 321,
+        "endChar": 16
+      },
+      "revId": "d59eefea153177068160f3d248a346fdbc2d796d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6c73455f_a0c1d038",
         "filename": "infra/bots/recipe_modules/flavor/android.py",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-11T17:13:37Z",
       "side": 1,
       "message": "I remember we used this a lot years ago. I guess we never quite deleted it?",
+      "range": {
+        "startLine": 292,
+        "startChar": 19,
+        "endLine": 292,
+        "endChar": 42
+      },
+      "revId": "d59eefea153177068160f3d248a346fdbc2d796d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d56bdd35_1d22ac80",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-09-11T17:16:43Z",
+      "side": 1,
+      "message": "Yep, the intent was always to have support waiting for internal devices so that we didn\u0027t have to do a bunch of work to spin them up if we received them.",
+      "parentUuid": "6c73455f_a0c1d038",
       "range": {
         "startLine": 292,
         "startChar": 19,
