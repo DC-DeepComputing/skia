@@ -817,6 +817,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     settings.fSharpenTextures = true;
     settings.fForceNoRTFlip = true;
 
+    settings.fForceHighPrecision = true;
+    settings.fOptimize = false;
+
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
@@ -895,6 +898,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 renderPassDesc.fSampleCount > 1 &&
                 shaderInfo->dstReadStrategy() == DstReadStrategy::kReadFromInput;
         if (options.fMultisampleInputLoad) {
+            SKGPU_LOG_W(
+                    "nikipre: Transforming SPIR-V to account for multisample input load dst read");
             fsSPIRV = TransformSPIRV(fsSPIRV, options);
         }
 

@@ -577,12 +577,17 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
                                 out float4 yRadii,
                                 out float2 strokeParams,
                                 out float2 perPixelControl,
+                                out float4 testValue,
                                 // Render Step
                                 out float2 stepLocalCoords) {
     const float kMiterScale = 1.0;
     const float kBevelScale = 0.0;
     const float kRoundScale = 0.41421356237; // sqrt(2)-1
     const float kEpsilon = 0.00024; // SK_ScalarNearlyZero
+
+    // if (centerWeight != 0.0) {
+    //     normalScale = 0.0;
+    // }
 
     // Default to miter'ed vertex positioning. Corners with sufficiently large corner radii, or
     // bevel'ed strokes will adjust vertex placement on a per corner basis. This will not affect
@@ -595,6 +600,7 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
     float4 xs, ys; // ordered TL, TR, BR, BL
     float4 edgeAA = float4(1.0); // ordered L,T,R,B. 1 = AA, 0 = no AA
     bool strokedLine = false;
+
     if (xRadiiOrFlags.x < -1.0) {
         // Stroked [round] rect or line
         // If y > 0, unpack the line end points, otherwise unpack the rect edges
@@ -669,72 +675,85 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
     // This is a specialized application of `robust_normalized_diff` for a quad, with an extra
     // max against 1.0 to not scale small edges. This is to avoid overflows for extremely large
     // coordinates when squaring dx or dy.
-    float4 invMag = 1.0 / max(abs(dx), max(abs(dy), float4(1.0)));
-    dx *= invMag;
-    dy *= invMag;
+    // float4 invMag = 1.0 / max(abs(dx), max(abs(dy), float4(1.0)));
+    // dx *= invMag;
+    // dy *= invMag;
     float4 edgeSquaredLen = dx*dx + dy*dy;
 
     float4 edgeMask = sign(edgeSquaredLen); // 0 for zero-length edge, 1 for non-zero edge.
     float4 edgeBias = float4(0.0); // adjustment to edge distance for butt cap correction
     float2 strokeRadius = float2(strokeParams.x);
-    if (any(equal(edgeMask, float4(0.0)))) {
-        // Must clean up (dx,dy) depending on the empty edge configuration
-        if (all(equal(edgeMask, float4(0.0)))) {
-            // A point so use the canonical basis
-            dx = float4( 0.0, 1.0, 0.0, -1.0);
-            dy = float4(-1.0, 0.0, 1.0,  0.0);
-            edgeSquaredLen = float4(1.0);
-        } else {
-            // Triangles (3 non-zero edges) copy the adjacent edge. Otherwise it's a line so
-            // replace empty edges with the left-hand normal vector of the adjacent edge.
-            bool triangle = (edgeMask[0] + edgeMask[1] + edgeMask[2] + edgeMask[3]) > 2.5;
-            float4 edgeX = triangle ? dx.yzwx :  dy.yzwx;
-            float4 edgeY = triangle ? dy.yzwx : -dx.yzwx;
+    // if (any(equal(edgeMask, float4(0.0)))) {
+    //     // Must clean up (dx,dy) depending on the empty edge configuration
+    //     if (all(equal(edgeMask, float4(0.0)))) {
+    //         // A point so use the canonical basis
+    //         dx = float4( 0.0, 1.0, 0.0, -1.0);
+    //         dy = float4(-1.0, 0.0, 1.0,  0.0);
+    //         edgeSquaredLen = float4(1.0);
+    //     } else {
+    //         // Triangles (3 non-zero edges) copy the adjacent edge. Otherwise it's a line so
+    //         // replace empty edges with the left-hand normal vector of the adjacent edge.
+    //         bool triangle = (edgeMask[0] + edgeMask[1] + edgeMask[2] + edgeMask[3]) > 2.5;
+    //         float4 edgeX = triangle ? dx.yzwx :  dy.yzwx;
+    //         float4 edgeY = triangle ? dy.yzwx : -dx.yzwx;
 
-            dx = mix(edgeX, dx, edgeMask);
-            dy = mix(edgeY, dy, edgeMask);
-            edgeSquaredLen = mix(edgeSquaredLen.yzwx, edgeSquaredLen, edgeMask);
-            edgeAA = mix(edgeAA.yzwx, edgeAA, edgeMask);
+    //         dx = mix(edgeX, dx, edgeMask);
+    //         dy = mix(edgeY, dy, edgeMask);
+    //         edgeSquaredLen = mix(edgeSquaredLen.yzwx, edgeSquaredLen, edgeMask);
+    //         edgeAA = mix(edgeAA.yzwx, edgeAA, edgeMask);
 
-            if (!triangle && joinScale == kBevelScale) {
-                // Don't outset by stroke radius for butt caps on the zero-length edge, but
-                // adjust edgeBias and strokeParams to calculate an AA miter'ed shape with the
-                // non-uniform stroke outset.
-                strokeRadius *= float2(edgeMask[cornerID], edgeMask.yzwx[cornerID]);
-                edgeBias = (edgeMask - 1.0) * strokeParams.x;
-                strokeParams.y = 1.0;
-                joinScale = kMiterScale;
-            }
-        }
-    }
+    //         if (!triangle && joinScale == kBevelScale) {
+    //             // Don't outset by stroke radius for butt caps on the zero-length edge, but
+    //             // adjust edgeBias and strokeParams to calculate an AA miter'ed shape with the
+    //             // non-uniform stroke outset.
+    //             strokeRadius *= float2(edgeMask[cornerID], edgeMask.yzwx[cornerID]);
+    //             edgeBias = (edgeMask - 1.0) * strokeParams.x;
+    //             strokeParams.y = 1.0;
+    //             joinScale = kMiterScale;
+    //         }
+    //     }
+    // }
 
     float4 inverseEdgeLen = inversesqrt(edgeSquaredLen);
     dx *= inverseEdgeLen;
     dy *= inverseEdgeLen;
 
     // Calculate local coordinate for the vertex (relative to xAxis and yAxis at first).
-    float2 xAxis = -float2(dx.yzwx[cornerID], dy.yzwx[cornerID]);
-    float2 yAxis =  float2(dx.xyzw[cornerID], dy.xyzw[cornerID]);
+    // float4 dx2 = dx.yzwx;
+    // float4 dy2 = dy.yzwx;
+
+    // cornerID [0,1,2,3] int
+    float4 channel = float4(cornerID == 0 ? 1.0 : 0.0,
+                            cornerID == 1 ? 1.0 : 0.0,
+                            cornerID == 2 ? 1.0 : 0.0,
+                            cornerID == 3 ? 1.0 : 0.0);
+
+    float2 xAxis = -float2(dot(dx.yzwx, channel), dot(dy.yzwx, channel));
+    float2 yAxis =  float2(dot(dx, channel), dot(dy, channel));
+
+    // float2 xAxis = -float2(dx2[cornerID], dy2[cornerID]);
+    // float2 yAxis =  float2(dx[cornerID], dy[cornerID]);
     float2 localPos;
     bool snapToCenter = false;
     if (normalScale < 0.0) {
-        // Vertex is inset from the base shape, so we scale by (cornerRadii - strokeRadius)
-        // and have to check for the possibility of an inner miter. It is always inset by an
-        // additional conservative AA amount.
-        if (center.w < 0.0 || centerWeight * center.z != 0.0) {
-            snapToCenter = true;
-        } else {
-            float localAARadius = center.w;
-            float2 insetRadii =
-                    cornerRadii + (bidirectionalCoverage ? -strokeRadius : strokeRadius);
-            if (joinScale == kMiterScale ||
-                any(lessThanEqual(insetRadii, float2(localAARadius)))) {
-                // Miter the inset position
-                localPos = (insetRadii - localAARadius);
-            } else {
-                localPos = insetRadii*position - localAARadius*normal;
-            }
-        }
+        // // Vertex is inset from the base shape, so we scale by (cornerRadii - strokeRadius)
+        // // and have to check for the possibility of an inner miter. It is always inset by an
+        // // additional conservative AA amount.
+        // if (center.w < 0.0 || centerWeight * center.z != 0.0) {
+        //     snapToCenter = true;
+        // } else {
+        //     float localAARadius = center.w;
+        //     float2 insetRadii =
+        //             cornerRadii + (bidirectionalCoverage ? -strokeRadius : strokeRadius);
+        //     if (joinScale == kMiterScale ||
+        //         any(lessThanEqual(insetRadii, float2(localAARadius)))) {
+        //         // Miter the inset position
+        //         localPos = (insetRadii - localAARadius);
+        //     } else {
+        //         localPos = insetRadii*position - localAARadius*normal;
+        //     }
+        // }
+        snapToCenter = true;
     } else {
         // Vertex is outset from the base shape (and possibly with an additional AA outset later
         // in device space).
@@ -747,6 +766,7 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
     } else {
         // Transform from corner basis to true local coords.
         localPos -= cornerRadii;
+        // Initial value of localPos OR xAxis, yAxis
         localPos = float2(xs[cornerID], ys[cornerID]) + xAxis*localPos.x + yAxis*localPos.y;
     }
 

@@ -231,8 +231,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fIsInputAttachmentReadCoherent = fSupportsRasterizationOrderColorAttachmentAccess ||
                                      vendorID == kARM_VkVendor || vendorID == kImagination_VkVendor;
 
-    // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V generation
-    // cannot handle mixed array strides being passed into functions.
+    // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V
+    // generation cannot handle mixed array strides being passed into functions.
     fShaderCaps->fForceStd430ArrayLayout =
             fStorageBufferSupport && fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
 
@@ -242,15 +242,48 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     fShaderCaps->fDualSourceBlendingSupport = enabledFeatures.fDualSrcBlend;
 
+    // Adreno GPUs
+    // I suspect this isn't it - sampling in frag shader shouldn't impact.
+    fShaderCaps->fRewriteMatrixVectorMultiply = true;
+    fShaderCaps->fRewriteMatrixComparisons = true;
+    fShaderCaps->fMustDeclareFragmentFrontFacing = true;
+    fShaderCaps->fUsesPrecisionModifiers = true;
+    fShaderCaps->fFlatInterpolationSupport = true;
+    // fShaderCaps->fPreferFlatInterpolation = skgpu::kQualcomm_VkVendor != properties.vendorID;
+    fShaderCaps->fSampleMaskSupport = true;
+    fShaderCaps->fShaderDerivativeSupport = true;
+    fShaderCaps->fExplicitTextureLodSupport = true;
+    fShaderCaps->fIntegerSupport = true;
+    fShaderCaps->fNonsquareMatrixSupport = true;
+    fShaderCaps->fInverseHyperbolicSupport = true;
+    fShaderCaps->fInfinitySupport = true;
+    // Assume the minimum precisions mandated by the SPIR-V spec.
+    fShaderCaps->fFloatIs32Bits = true;
+
+    fShaderCaps->fRemoveConstFromFunctionParameters = true;
+
+    // Qualcomm-specific:
+    // fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments in ganesh for qualcomm
+    // fPreferFlatInterpolation = false, but only performance change / concern not functionality
+    // Only seem relevant cuz possibly false in GL and can likely ignore:
+    // * fShaderCaps->fNonconstantArrayIndexSupport = true;
+    // * fShaderCaps->fBitManipulationSupport = true;
+    // * fShaderCaps->fHalfIs32Bits = false;
+    // * fShaderCaps->fVertexIDSupport = true;
+
     // Vulkan 1.0 dynamic state is always supported.  Dynamic state based on features of
     // VK_EXT_extended_dynamic_state and VK_EXT_extended_dynamic_state2 are also considered basic
     // given the extensions' age and the fact that they are core since Vulkan 1.3.
-    fUseBasicDynamicState =
-            enabledFeatures.fExtendedDynamicState && enabledFeatures.fExtendedDynamicState2;
+    // Adreno - less performant?
+    fUseBasicDynamicState = vendorID != skgpu::kQualcomm_VkVendor &&
+                            enabledFeatures.fExtendedDynamicState &&
+                            enabledFeatures.fExtendedDynamicState2;
 
     // Vertex input dynamic state depends on the main feature of
     // VK_EXT_vertex_input_dynamic_state.
-    fUseVertexInputDynamicState = enabledFeatures.fVertexInputDynamicState;
+    // Less performant on Adreno GPUs?
+    fUseVertexInputDynamicState =
+            vendorID != skgpu::kQualcomm_VkVendor && enabledFeatures.fVertexInputDynamicState;
 
     // Graphics pipeline library usage depends on the main feature of
     // VK_EXT_graphics_pipeline_library.  The graphicsPipelineLibraryFastLinking property indicates

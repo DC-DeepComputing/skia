@@ -511,6 +511,7 @@ void VulkanCommandBuffer::performOncePerRPUpdates(SkIRect viewport, bool bindDst
     this->pushConstants(pushConstantInfo, fResourceProvider->mockPipelineLayout());
 
     if (bindDstAsInputAttachment) {
+        SKGPU_LOG_W("nikipre: Binding dst as input attachment upon RP start.");
         this->updateAndBindInputAttachment(*fTargetTexture,
                                             VulkanGraphicsPipeline::kDstAsInputDescSetIndex,
                                             fResourceProvider->mockPipelineLayout());
@@ -979,6 +980,7 @@ bool VulkanCommandBuffer::addDrawPass(DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindAppendDataBuffer: {
                 auto bdb = static_cast<DrawPassCommands::BindAppendDataBuffer*>(cmdPtr);
+                // Make mappable?
                 this->bindInputBuffer(bdb->fAppendData.fBuffer, bdb->fAppendData.fOffset,
                                       VulkanGraphicsPipeline::kAppendDataBufferIndex);
                 break;
