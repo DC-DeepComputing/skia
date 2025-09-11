@@ -17,8 +17,9 @@ class SkString;
 class SK_API SkParsePath {
 public:
     static std::optional<SkPath> FromSVGString(const char str[]);
+
     // Deprecated
-    static bool FromSVGString(const char str[], SkPath* outPath) {
+    static bool FromSVGStringx(const char str[], SkPath* outPath) {
         if (auto result = FromSVGString(str)) {
             *outPath = *result;
             return true;
