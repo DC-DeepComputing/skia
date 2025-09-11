@@ -68,6 +68,24 @@
       "parentUuid": "9fc6192f_4fba7590",
       "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8b55142_d214fa75",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-11T12:41:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "73d12b2b_71fad6e2",
+      "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
