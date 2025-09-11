@@ -5,13 +5,6 @@ load(
 )
 
 skia_filegroup(
-    name = "hdrs",
-    srcs = [
-        "SkPngRustDecoder.h",
-    ],
-)
-
-skia_filegroup(
     name = "srcs",
     srcs = [
         "SkPngRustDecoder.cpp",
@@ -23,7 +16,7 @@ skia_filegroup(
 skia_cc_library(
     name = "decoder",
     srcs = [":srcs"],
-    hdrs = [":hdrs"],
+    hdrs = ["//include/encode:rust_png_public_hdrs"],
     defines = ["SK_CODEC_DECODES_PNG_WITH_RUST"],
     features = ["layering_check"],
     deps = [
