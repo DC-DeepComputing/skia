@@ -88,6 +88,24 @@
       "parentUuid": "c28f1717_50296091",
       "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0190e624_07df7d0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-11T08:14:12Z",
+      "side": 1,
+      "message": "\u003e Hm yeah I updated this to use the bounds of the actual geometry and it\u0027s definitely more convoluted. This does help gm\u0027s where we were doing highp after checking the whole dst rect when we could\u0027ve been using lowp because we only need a subset which is the geometry.\n\nIt gets even trickier: we can\u0027t just look at geometry bounds, we need to make sure the paint effects (stroke, mask filters, path effects) are accounted for.  Something more in line with SkCanvas::quickReject (i.e. using SkPaint::computeFastBounds to adjust the bounds for a given paint), except some of the effects may be already applied at blitter choose time, depending on the actual draw (path effects, stroke for drawDevPath but not mask filter?).\n\n\u003e \n\u003e I\u0027m skeptical of updating stages to use saturating arithmetic because I\u0027m weary of adding too much latency for the lowp functions as well as correctness\n\nThere are saturating simd intrinsics we could use to implement something like `sat_add`, `sat_sub`, and where available (most platforms? not sure) I think the perf impact would be negligible.",
+      "parentUuid": "dc71ac38_46297dda",
+      "revId": "2734a9fb7cc62bcc25cfdea4139f7a7a949ab5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
