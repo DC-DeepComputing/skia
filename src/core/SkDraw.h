@@ -128,9 +128,8 @@ public:
      */
     void drawPath(const SkPath& path,
                   const SkPaint& paint,
-                  const SkMatrix* prePathMatrix,
-                  bool pathIsMutable) const {
-        this->drawPath(path, paint, prePathMatrix, pathIsMutable, SkDrawCoverage::kNo);
+                  const SkMatrix* prePathMatrix) const {
+        this->drawPath(path, paint, prePathMatrix, SkDrawCoverage::kNo, nullptr);
     }
 
     /**
@@ -146,7 +145,6 @@ public:
         this->drawPath(src,
                        paint,
                        nullptr,
-                       false,
                        isHairline ? SkDrawCoverage::kNo : SkDrawCoverage::kYes,
                        customBlitter);
     }
@@ -213,9 +211,8 @@ private:
     void drawPath(const SkPath&,
                   const SkPaint&,
                   const SkMatrix* preMatrix,
-                  bool pathIsMutable,
                   SkDrawCoverage drawCoverage,
-                  SkBlitter* customBlitter = nullptr) const;
+                  SkBlitter* customBlitter) const;
 
     void drawLine(const SkPoint[2], const SkPaint&) const;
 

@@ -378,17 +378,14 @@ void SkBitmapDevice::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
 
 void SkBitmapDevice::drawPath(const SkPath& path,
                               const SkPaint& paint,
-                              bool pathIsMutable) {
+                              bool /*pathIsMutable*/) {
     const SkRect* bounds = nullptr;
     if (SkDrawTiler::NeedsTiling(this) && !path.isInverseFillType()) {
         bounds = &path.getBounds();
     }
     SkDrawTiler tiler(this, bounds ? Bounder(*bounds, paint).bounds() : nullptr);
-    if (tiler.needsTiling()) {
-        pathIsMutable = false;
-    }
     while (const skcpu::Draw* draw = tiler.next()) {
-        draw->drawPath(path, paint, nullptr, pathIsMutable);
+        draw->drawPath(path, paint, nullptr);
     }
 }
 
