@@ -3,6 +3,129 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d7e7d52_f60ea25d",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-11T20:20:40Z",
+      "side": 1,
+      "message": "nit: Is it possible for this test to be not SK_GRAPHITE or SK_GANESH, if so this changes the behavior?",
+      "range": {
+        "startLine": 338,
+        "startChar": 8,
+        "endLine": 338,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "071bcce1_35c64d5f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/asyncrescaleandread.cpp",
+              "range": {
+                "startLine": 338,
+                "startChar": 0,
+                "endLine": 338,
+                "endChar": 0
+              },
+              "replacement": "        // YUV[A] async read is only supported on GPU backends (Ganesh and Graphite).\n        // If we reach here, it means no GPU context was available.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d975048b_58211cd0",
+        "filename": "gm/bitmaptiled.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-11T20:20:40Z",
+      "side": 1,
+      "message": "nit: SK_GANESH ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 19
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "735eba95_b26f7e30",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/bitmaptiled.cpp",
+              "range": {
+                "startLine": 75,
+                "startChar": 0,
+                "endLine": 76,
+                "endChar": 0
+              },
+              "replacement": "#if defined(SK_GANESH)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc2e9ad_86115385",
+        "filename": "gm/image.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-11T20:20:40Z",
+      "side": 1,
+      "message": "On `SK_GANESH` defined, `SK_GRAPHITE` undefined, this becomes `if(dContext) else if(texImage)`, instead of `if(dContext) else {} if(texImage)`.",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 459,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bff8d6fc_33a6131f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/image.cpp",
+              "range": {
+                "startLine": 453,
+                "startChar": 0,
+                "endLine": 454,
+                "endChar": 0
+              },
+              "replacement": "                }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98fb9405_e90bf45c",
         "filename": "gm/surface.cpp",
         "patchSetId": 6
