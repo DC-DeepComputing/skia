@@ -33,6 +33,24 @@
       "message": "SkPath::conicTo has a couple of extra special cases ( \u003c\u003d 0, nan) - should we add those too for consistency? (can be a separate change since it\u0027s incidental)",
       "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73d12b2b_71fad6e2",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-11T11:31:18Z",
+      "side": 1,
+      "message": "I vote no -- \u0027cause I think they\u0027re all just a tax.\n\nI added this one check specifically because it allowed a gm to have no diffs -- but in this case the gm was already wrong (I filed a bug).\n\nOnce we have \"only\" the builder, I would remove this check.\n\n... unless we think there is real-world examples where this check actually makes something faster.",
+      "parentUuid": "9fc6192f_4fba7590",
+      "revId": "e779eef85b2a2e8d6c719fc9a35aded9e46b72c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
