@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fb9405_e90bf45c",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-11T19:32:17Z",
+      "side": 1,
+      "message": "duplicate line here",
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
