@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43b7f03e_e3fe48f8",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-11T13:32:07Z",
+      "side": 1,
+      "message": "I put things in \"private\" they\u0027re interfaces that I only want Chrome (and Android) to use, for the time being.\n\nEventually I think we should move all of this stuff (and gainmaps too) to the public APIs, but only once they\u0027re no longer going to be in flux.",
+      "parentUuid": "fc79e757_75e98f1c",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e77fd30b_b1c88418",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c382e0d_59d518c6",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-11T13:32:07Z",
+      "side": 1,
+      "message": "The non-Rust PNG interface doesn\u0027t parse the CLLI/MDCV chunks, so we need to parse them ourselves. Simiarly, `serializePngChunk` for non-Rust PNG encoding.\n\nThe other `serialize` and `parse` functions are intended to replace the many parsing functions sprinkled throughout Chrome (e.g, [here](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/hdr_metadata_mac.mm;l\u003d16;drc\u003dacf33dd703904a799feffd313152337c95e113bf), [here](https://source.chromium.org/chromium/chromium/src/+/main:media/parsers/h264_parser.cc;l\u003d1571;drc\u003d48d6f7175422b2c969c14258f9f8d5b196c28d18), etc).",
+      "parentUuid": "e77fd30b_b1c88418",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f038dd4d_22ab659b",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -94,6 +142,30 @@
       "writtenOn": "2025-09-10T21:23:15Z",
       "side": 1,
       "message": "Same question as above - this LGTM, but why do we need `parse` and `serialize` methods?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42543903_ce7d2337",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-11T13:32:07Z",
+      "side": 1,
+      "message": "Same reason (to have an authoritative place for serialization, in this case, that same example is [here](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/hdr_metadata_mac.mm;l\u003d21;drc\u003dacf33dd703904a799feffd313152337c95e113bf)).",
+      "parentUuid": "f038dd4d_22ab659b",
       "range": {
         "startLine": 97,
         "startChar": 0,
