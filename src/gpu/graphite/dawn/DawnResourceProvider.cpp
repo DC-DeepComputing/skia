@@ -558,6 +558,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }
 
+#if 0
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -574,6 +575,7 @@ sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
                                       pipelineCreationFlags,
                                       compilationID);
 }
+#endif
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
         const ComputePipelineDesc& desc) {

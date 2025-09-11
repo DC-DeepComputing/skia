@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -84,6 +85,23 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       singleOwner,
                                                                       recorderID,
                                                                       resourceBudget));
+}
+
+sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return DawnGraphicsPipeline::Make(this,
+                                      nullptr,
+                                      runtimeDict,
+                                      pipelineKey,
+                                      pipelineDesc,
+                                      renderPassDesc,
+                                      pipelineCreationFlags,
+                                      compilationID);
 }
 
 void DawnSharedContext::deviceTick(Context* context) {

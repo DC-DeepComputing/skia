@@ -28,6 +28,13 @@ public:
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
 
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                   const UniqueKey&,
+                                                   const GraphicsPipelineDesc&,
+                                                   const RenderPassDesc&,
+                                                   SkEnumBitMask<PipelineCreationFlags>,
+                                                   uint32_t compilationID) override;
+
     const DawnCaps* dawnCaps() const { return static_cast<const DawnCaps*>(this->caps()); }
     const wgpu::Device& device() const { return fDevice; }
     const wgpu::Queue& queue() const { return fQueue; }

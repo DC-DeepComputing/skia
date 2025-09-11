@@ -9,6 +9,7 @@
 #define SkSemaphore_DEFINED
 
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkThreadAnnotations.h"
 

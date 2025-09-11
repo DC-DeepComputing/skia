@@ -82,6 +82,8 @@ public:
     InsertStatus insertRecording(const InsertRecordingInfo&);
     bool submit(SyncToCpu = SyncToCpu::kNo);
 
+    void wait();
+
     /** Returns true if there is work that was submitted to the GPU that has not finished. */
     bool hasUnfinishedGpuWork() const;
 

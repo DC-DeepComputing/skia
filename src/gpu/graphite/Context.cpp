@@ -76,6 +76,7 @@
 #include "src/gpu/graphite/task/Task.h"
 #include "src/image/SkSurface_Base.h"
 #include "src/sksl/SkSLGraphiteModules.h"
+//#include "src/gpu/graphite/RecordingPriv.h"
 
 #include <algorithm>
 #include <array>
@@ -148,6 +149,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    fSharedContext->pipelineManager()->shutDown();
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
     for (auto& recorder : fTrackedRecorders) {
@@ -235,6 +237,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+//    bool arePipelinesReady = info.fRecording->priv().arePipelinesReady();
+//    SkDebugf("Context::insertRecording arePipelinesReady: %s\n", arePipelinesReady ? "true"
+//                                                                                   : "false");
+
     return fQueueManager->addRecording(info, this);
 }
 
@@ -250,6 +256,11 @@ bool Context::submit(SyncToCpu syncToCpu) {
     this->checkForFinishedWork(syncToCpu);
     return success;
 }
+
+void Context::wait() {
+    fSharedContext->pipelineManager()->wait();
+}
+
 
 bool Context::hasUnfinishedGpuWork() const { return fQueueManager->hasUnfinishedGpuWork(); }
 
