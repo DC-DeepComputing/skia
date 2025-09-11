@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "416b2637_b80a31be",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-11T15:40:27Z",
+      "side": 1,
+      "message": "Ack.  I assume (?) it will be okay if a (public) `SkCodec::getHdrStuff()` returns a (private) `SkHdrMetadata`?  (If not, then can you sketch out how `blink::SkiaImageDecoderBase` would get the HDR metadata?)",
+      "parentUuid": "43b7f03e_e3fe48f8",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e77fd30b_b1c88418",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -131,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "daab4d22_ca7fd27c",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-11T15:40:27Z",
+      "side": 1,
+      "message": "\u003e The non-Rust PNG interface doesn\u0027t parse the CLLI/MDCV chunks, so we need to parse them ourselves. Simiarly, `serializePngChunk` for non-Rust PNG encoding.\n\nI see.  This may be okay, but I want to point out that `serializePngChunk` doesn\u0027t seem **immediately** necessary:\n\n* IIUC the legacy `blink::PNGImageDecoder` would only **deserialize** the CLLI/MCDV chunks.  From that perspective, preserving the legacy functionality doesn\u0027t really need `serializePngChunk`.\n* Additionally both `SkPngEncoder` and `SkPngRustEncoder` discover the color profile (of the image being serialized) using `SkPixmap::colorSpace` / `SkColorSpace`.  Does that API provide a way to read the HDR metadata for CLLI/MCDV chunks?\n\n\u003e The other `serialize` and `parse` functions are intended to replace the many parsing functions sprinkled throughout Chrome (e.g, [here](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/hdr_metadata_mac.mm;l\u003d16;drc\u003dacf33dd703904a799feffd313152337c95e113bf), [here](https://source.chromium.org/chromium/chromium/src/+/main:media/parsers/h264_parser.cc;l\u003d1571;drc\u003d48d6f7175422b2c969c14258f9f8d5b196c28d18), etc).\n\nAck.  I agree that such deduplication is desirable.",
+      "parentUuid": "2c382e0d_59d518c6",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f038dd4d_22ab659b",
         "filename": "include/private/SkHdrMetadata.h",
         "patchSetId": 5
@@ -166,6 +214,30 @@
       "side": 1,
       "message": "Same reason (to have an authoritative place for serialization, in this case, that same example is [here](https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/hdr_metadata_mac.mm;l\u003d21;drc\u003dacf33dd703904a799feffd313152337c95e113bf)).",
       "parentUuid": "f038dd4d_22ab659b",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66319797_aa76ff79",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-11T15:40:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "42543903_ce7d2337",
       "range": {
         "startLine": 97,
         "startChar": 0,
