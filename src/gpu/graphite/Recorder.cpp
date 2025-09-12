@@ -27,6 +27,7 @@
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/Token.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
@@ -222,6 +223,15 @@ std::unique_ptr<Recording> Recorder::snap() {
     }
     recording->priv().taskList()->add(std::move(*fRootTaskList));
     SkASSERT(!fRootTaskList->hasTasks());
+
+#if defined(SK_DUMP_TASKS)
+    int taskIndex = 0;
+    printf("\n=========== RECORDING %u ===========\n", fUniqueID);
+    recording->priv().taskList()->visit([&](const Task* task) {
+        task->dump(taskIndex++);
+    });
+    printf("--------------- END ---------------\n");
+#endif
 
     // In both the "task failed" case and the "everything is discarded" case, there's no work that
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so

@@ -74,6 +74,12 @@ private:
 
     sk_sp<TextureProxy> fDstCopy;
     SkIRect fDstReadBounds;
+
+#if defined(SK_DUMP_TASKS)
+    void dump(int index) const override{
+        printf("%d: Render Pass Task \n", index);
+    }
+#endif
 };
 
 } // namespace skgpu::graphite

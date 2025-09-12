@@ -49,8 +49,12 @@ public:
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor);
 
+#if defined(SK_DUMP_TASKS)
+    void visit(const std::function<void(const Task*)>& visitor) const;
+#endif
+
 private:
-    template <typename Fn> // (Task*)->Status
+    template <typename Fn>
     Task::Status visitTasks(Fn);
 
     skia_private::TArray<sk_sp<Task>> fTasks;
