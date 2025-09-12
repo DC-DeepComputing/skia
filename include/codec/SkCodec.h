@@ -18,6 +18,7 @@
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/SkHdrMetadata.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "modules/skcms/skcms.h"
 
@@ -238,6 +239,11 @@ public:
     const skcms_ICCProfile* getICCProfile() const {
         return this->getEncodedInfo().profile();
     }
+
+    /**
+     * Return the HDR metadata in the encoded data.
+     */
+    const SkHdrMetadata::Bundle getHdrMetadata() const { return fEncodedInfo.getHdrMetadata(); }
 
     /**
      * Whether the encoded input uses 16 or more bits per component.
