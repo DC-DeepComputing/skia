@@ -2610,3 +2610,23 @@ DEF_TEST(HdrMetadata_ParseSerialize_MasteringDisplayColorVolume, r) {
     REPORTER_ASSERT(r, skData->equals(mdcv.serialize().get()));
 }
 
+DEF_TEST(PngHdrMetadataRoundTrip, r) {
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeN32Premul(10, 10));
+
+    SkPngEncoder::Options options;
+    options.fHdrMetadata.setMasteringDisplayColorVolume(
+        SkHdrMetadata::MasteringDisplayColorVolume({
+            SkNamedPrimaries::kRec2020, 500.f, 0.0005f}));
+    options.fHdrMetadata.setContentLightLevelInformation(
+        SkHdrMetadata::ContentLightLevelInformation({
+            100.f, 0.f}));
+
+    SkDynamicMemoryWStream wstream;
+    SkPngEncoder::Encode(&wstream, bm.pixmap(), options);
+
+    auto codec(SkCodec::MakeFromData(wstream.detachAsData()));
+
+    REPORTER_ASSERT(r, options.fHdrMetadata == codec->getHdrMetadata());
+}
+

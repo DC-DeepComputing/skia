@@ -31,7 +31,18 @@ bool SkPngCompositeChunkReader::readChunk(const char tag[], const void* data, si
         }
     } else if (strcmp("gdAT", tag) == 0) {
         fGainmapStream = SkMemoryStream::MakeCopy(data, length);
+    } else if (strcmp("cLLI", tag) == 0) {
+        auto sk_data = SkData::MakeWithoutCopy(data, length);
+        SkHdrMetadata::ContentLightLevelInformation clli;
+        if (clli.parsePngChunk(sk_data.get())) {
+          fHdrMetadata.setContentLightLevelInformation(clli);
+        }
+    } else if (strcmp("mDCV", tag) == 0) {
+        auto sk_data = SkData::MakeWithoutCopy(data, length);
+        SkHdrMetadata::MasteringDisplayColorVolume mdcv;
+        if (mdcv.parse(sk_data.get())) {
+          fHdrMetadata.setMasteringDisplayColorVolume(mdcv);
+        }
     }
-
     return true;
 }
