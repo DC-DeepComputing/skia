@@ -130,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3d2b3f_a624054d",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "I think there\u0027s also an open question of \"where should gainmap and HDR metadata shaders and metadata go in the long term\". I think codecs may not be the best place ... \"core\" may be too general (it\u0027s not as \"core\" as SkColorSpace) ... there\u0027s a reasonably strong case for \"effects\".\n\nOr maybe it gets its own \"hdr\" path.\n\nIt also may be that we eventually move `SkGainmapInfo` to `SkHdrMetadata::GainmapInfo`.\n\nFor now, I\u0027d want to keep it in \"private\" until the right solution reveals itself.",
+      "parentUuid": "e2ed27b5_55008ee3",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc06620a_2d46809d",
@@ -143,6 +167,30 @@
       "writtenOn": "2025-09-11T17:10:41Z",
       "side": 1,
       "message": "ubernit: Google is an LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68bbfbe6_026a5ea0",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc06620a_2d46809d",
       "range": {
         "startLine": 2,
         "startChar": 25,
@@ -176,6 +224,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "302e9e04_069130b6",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Done (surprised that this didn\u0027t blow up on presubmit).",
+      "parentUuid": "6127a5bf_464bde74",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc446450_ec2001c9",
@@ -189,6 +261,30 @@
       "writtenOn": "2025-09-11T17:10:41Z",
       "side": 1,
       "message": "Not sure if https://www.w3.org/TR/png-3/#cLLI-chunk would be helpful to link or just redundant. (It\u0027s how I verified we are supposed to have 2 floats of data here).",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "353c3b22_05c58bfd",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Oh no ... the PNG version isn\u0027t the same as the CTA 861-H version. PNG claims these values are nits whereas 861-H says they\u0027re maximum color component.\n\nFor greyscale images, these are the same, but for blue images, nits are way lower than maximum color component.\n\nAnd PNG references various outlier filtering techniques that 861-H doesn\u0027t...\n\nI added some notes to the header and a warning to only use the metadata in ways that are compatible with both definitions.\n\n(It\u0027s stuff like this that motives ST 2094-50).",
+      "parentUuid": "cc446450_ec2001c9",
       "range": {
         "startLine": 25,
         "startChar": 3,
@@ -293,6 +389,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94bf9037_05ee5ebf",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "The PNG one references ST 2086, so I won\u0027t include the reference there.",
+      "parentUuid": "14a57c23_c4f89e7b",
+      "range": {
+        "startLine": 77,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "613941ae_62b95d04",
@@ -306,6 +426,30 @@
       "writtenOn": "2025-09-11T17:10:41Z",
       "side": 1,
       "message": "Just to make sure I\u0027m reading the png spec right, they only list 12 bytes for RGB and then 4 bytes for white. So, we\u0027ll be reading 2 bytes for each of those X and Y components? And we store them as floats after we convert them from PNG\u0027s integers + divsiors?",
+      "range": {
+        "startLine": 80,
+        "startChar": 26,
+        "endLine": 80,
+        "endChar": 43
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f3279bc_d3afbed4",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Yes.\n\nIn the \"here\u0027s your HDR metadata bundle\" structure that I add next, I may keep that data in its original encoded form (I\u0027m definitely going to be doing that for ST 2094-50, cause it\u0027s much more involved), and only turn it into floats when they\u0027ll be needed by the tone mapping shader.",
+      "parentUuid": "613941ae_62b95d04",
       "range": {
         "startLine": 80,
         "startChar": 26,
@@ -429,6 +573,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "37df73c9_329fff96",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Added this value (and added a comment explaining it). I kept it as the \"divisor\".",
+      "parentUuid": "22aa2a9f_4fdf4cc0",
+      "range": {
+        "startLine": 61,
+        "startChar": 36,
+        "endLine": 61,
+        "endChar": 41
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "46ee0e92_06423b34",
         "filename": "src/codec/SkHdrMetadata.cpp",
         "patchSetId": 5
@@ -473,6 +641,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf6b727_dce67779",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8d2c88d_0e214757",
+      "range": {
+        "startLine": 111,
+        "startChar": 40,
+        "endLine": 111,
+        "endChar": 45
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e3dc794_526f9786",
@@ -486,6 +678,30 @@
       "writtenOn": "2025-09-11T17:10:41Z",
       "side": 1,
       "message": "It is curious SkColorSpacePrimaries doesn\u0027t have operator\u003d\u003d defined. Maybe we do that instead of putting it here?",
+      "range": {
+        "startLine": 141,
+        "startChar": 11,
+        "endLine": 141,
+        "endChar": 28
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbf65657_765cc651",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-12T09:58:21Z",
+      "side": 1,
+      "message": "I\u0027ve rebased this on top of a patch that adds these here:\nhttps://skia-review.googlesource.com/c/skia/+/1053419\n\nIt will need this Chromium patch to not break the Skia roll:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6941903",
+      "parentUuid": "1e3dc794_526f9786",
       "range": {
         "startLine": 141,
         "startChar": 11,
