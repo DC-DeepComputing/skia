@@ -231,6 +231,12 @@ private:
     UploadTask(UploadInstance);
 
     skia_private::STArray<1, UploadInstance> fInstances;
+
+#if defined(SK_DUMP_TASKS)
+    void dump(int index) const override{
+        printf("%d: Upload Task \n", index);
+    }
+#endif
 };
 
 } // namespace skgpu::graphite

@@ -23,7 +23,6 @@ class Context;
 class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class TextureProxy;
 
 /**
  * DrawTask is a collection of subtasks that are executed in order to produce some intended
@@ -68,6 +67,12 @@ private:
     // produce several DrawTasks (in which case they will see an instantiated proxy so should still
     // prepare their own resources instead of discarding themselves).
     bool fPrepared = false;
+
+#if defined(SK_DUMP_TASKS)
+    void dump(int index) const override{
+        printf("%d: Draw Task\n", index);
+    }
+#endif
 };
 
 } // namespace skgpu::graphite

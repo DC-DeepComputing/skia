@@ -76,4 +76,14 @@ bool TaskList::visitProxies(const std::function<bool(const TextureProxy*)>& visi
     return status != Status::kFail;
 }
 
+#if defined(SK_DUMP_TASKS)
+void TaskList::visit(const std::function<void(const Task*)>& visitor) const {
+    for (const sk_sp<Task>& task : fTasks) {
+        if (task) {
+            visitor(task.get());
+        }
+    }
+}
+#endif
+
 } // namespace skgpu::graphite
