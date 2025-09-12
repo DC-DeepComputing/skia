@@ -172,6 +172,16 @@ private:
     // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
     // chunk.
     bool fCanParseAdditionalFrameInfos = true;
+
+    // When decoding interlaced subsets, decode the full image into a buffer and
+    // extract a rect subset for the final dst using this function.
+    void getSubsetFromFullImage(SkSpan<uint8_t> fullImageBuffer,
+                                SkSpan<uint8_t> dst,
+                                size_t dstRowStride);
+
+    int fFirstRow = 0;
+    size_t fXByteOffset = 0;
+    size_t fYByteOffset = 0;
 };
 
 #endif  // SkPngRustCodec_DEFINED
