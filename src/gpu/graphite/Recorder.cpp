@@ -27,6 +27,7 @@
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/Token.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
@@ -217,11 +218,35 @@ std::unique_ptr<Recording> Recorder::snap() {
     fUploadBufferManager->transferToRecording(recording.get());
     // Add one task for all root uploads before the rest of the rendering tasks might depend on them
     if (fRootUploads->size() > 0) {
-        recording->priv().taskList()->add(UploadTask::Make(fRootUploads.get()));
+        sk_sp<Task> uploadTask = UploadTask::Make(fRootUploads.get());
+
+#if defined(SK_DUMP_TASKS)
+        uploadTask->fFlushToken = this->priv().tokenTracker()->nextFlushToken();
+#endif
+
+        recording->priv().taskList()->add(std::move(uploadTask));
         SkASSERT(fRootUploads->size() == 0); // Drained by the newly added task
     }
     recording->priv().taskList()->add(std::move(*fRootTaskList));
     SkASSERT(!fRootTaskList->hasTasks());
+
+#if defined(SK_DUMP_TASKS)
+    printf("\n=========== RECORDING %u ===========\n", fUniqueID);
+    int taskIndex = 0;
+    uint64_t currentFlushToken = skgpu::Token::InvalidToken().value();
+    recording->priv().taskList()->visit([&](const Task* task) {
+        if (!task) {
+            return; // Task was discarded
+        }
+        uint64_t taskToken = task->fFlushToken.value();
+        if (taskToken != currentFlushToken) {
+            printf("**** FLUSH TOKEN %llu ****\n", taskToken);
+            currentFlushToken = taskToken;
+        }
+        task->dump(taskIndex++);
+    });
+    printf("--------------- END ---------------\n");
+#endif
 
     // In both the "task failed" case and the "everything is discarded" case, there's no work that
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so
@@ -557,6 +582,9 @@ void RecorderPriv::addPendingRead(const TextureProxy* proxy) {
 
 void RecorderPriv::add(sk_sp<Task> task) {
     ASSERT_SINGLE_OWNER_PRIV
+#if defined(SK_DUMP_TASKS)
+    task->fFlushToken = fRecorder->fTokenTracker->nextFlushToken();
+#endif
     fRecorder->fRootTaskList->add(std::move(task));
 }
 

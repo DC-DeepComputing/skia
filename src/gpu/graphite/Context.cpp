@@ -643,6 +643,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
     // accumulated work (which includes any copies). Otherwise, for pure copy readbacks,
     // transferPixels() already added the tasks directly to the QueueManager.
     if (recorder) {
+        // Anchor
         std::unique_ptr<Recording> recording = recorder->snap();
         if (!recording) {
             callback(callbackContext, nullptr);
