@@ -44,6 +44,12 @@ private:
     explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}
 
     sk_sp<Buffer> fBuffer;
+
+#if defined(SK_DUMP_TASKS)
+    void dump(int index) const override{
+        printf("%d: Synchronize to CPU Task \n", index);
+    }
+#endif
 };
 
 }  // namespace skgpu::graphite

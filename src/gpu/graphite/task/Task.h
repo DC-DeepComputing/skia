@@ -74,6 +74,12 @@ public:
     virtual bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) {
         return true;
     }
+
+ #if defined(SK_DUMP_TASKS)
+    virtual void dump(int index) const {
+        printf("%d: Base Task (unknown type)\n", index);
+    }
+#endif
 };
 
 } // namespace skgpu::graphite
