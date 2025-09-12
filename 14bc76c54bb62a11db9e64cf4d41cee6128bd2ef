@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd333df9_8d7e7f37",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-12T00:34:31Z",
+      "side": 1,
+      "message": "Hm, I had assumed that LazyYUVImage wouldn\u0027t have returned an image if the context was null but that isn\u0027t actually true.\n\nThere could be a separate task to try removing that functionality. It may have a fallback just so that non-GPU configs would produce something similar to GPU configs in an unimportant way. It\u0027s worth a separate investigation.\n\nI also moved this file out of the GPU-only set of GM sources.",
+      "parentUuid": "1d7e7d52_f60ea25d",
+      "range": {
+        "startLine": 338,
+        "startChar": 8,
+        "endLine": 338,
+        "endChar": 23
+      },
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d975048b_58211cd0",
@@ -79,6 +103,30 @@
           ]
         }
       ],
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccd92632_94dc4742",
+        "filename": "gm/bitmaptiled.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-12T00:34:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d975048b_58211cd0",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 19
+      },
       "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -124,6 +172,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c553a8_d5c8ebc2",
+        "filename": "gm/image.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-12T00:34:31Z",
+      "side": 1,
+      "message": "nice catch! I took out the else in the Ganesh block. We can\u0027t have both dContext and recorder be true.",
+      "parentUuid": "adc2e9ad_86115385",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 459,
+        "endChar": 6
+      },
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98fb9405_e90bf45c",
@@ -137,6 +209,24 @@
       "writtenOn": "2025-09-11T19:32:17Z",
       "side": 1,
       "message": "duplicate line here",
+      "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "770f4532_274a93ce",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-12T00:34:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98fb9405_e90bf45c",
       "revId": "14bc76c54bb62a11db9e64cf4d41cee6128bd2ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
