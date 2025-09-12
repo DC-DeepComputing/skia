@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9da76c0_2788abc1",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-12T14:27:38Z",
+      "side": 1,
+      "message": "suggestion mirrored from email thread:\n\n`namespace skhdr`",
+      "range": {
+        "startLine": 21,
+        "startChar": 10,
+        "endLine": 21,
+        "endChar": 23
+      },
+      "revId": "39cf71b98bbd02464fa826197192eb73b8f220bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
