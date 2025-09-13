@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02cce855_8f202bbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-13T00:02:37Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?",
+      "revId": "45f41bb0423dde0c2417ed62d6ebf3d880c8365a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4579e241_3463d603",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-13T00:02:37Z",
+      "side": 1,
+      "message": "Ooops... I accidentally flipped `codec` and `encode` in the earlier CL, in the 2 places touched here.  This didn\u0027t have any negative impact because Chromium always uses both codec+encode hdrs together.",
+      "range": {
+        "startLine": 65,
+        "startChar": 15,
+        "endLine": 65,
+        "endChar": 20
+      },
+      "revId": "45f41bb0423dde0c2417ed62d6ebf3d880c8365a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
