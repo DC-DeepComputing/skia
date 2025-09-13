@@ -22,6 +22,30 @@
       },
       "revId": "39cf71b98bbd02464fa826197192eb73b8f220bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5b5c26_59961e76",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-13T18:45:02Z",
+      "side": 1,
+      "message": "Yeah, I like this direction better.\n\nAnd in the next patch I\u0027ll go with `skhdr::EncodedMetadata`.",
+      "parentUuid": "e9da76c0_2788abc1",
+      "range": {
+        "startLine": 21,
+        "startChar": 10,
+        "endLine": 21,
+        "endChar": 23
+      },
+      "revId": "39cf71b98bbd02464fa826197192eb73b8f220bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
