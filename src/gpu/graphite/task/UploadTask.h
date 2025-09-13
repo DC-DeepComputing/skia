@@ -231,6 +231,8 @@ private:
     UploadTask(UploadInstance);
 
     skia_private::STArray<1, UploadInstance> fInstances;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Upload Task"; })
 };
 
 } // namespace skgpu::graphite

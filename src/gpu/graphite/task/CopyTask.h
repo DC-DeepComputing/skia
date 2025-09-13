@@ -57,6 +57,8 @@ private:
     sk_sp<Buffer> fDstBuffer;
     size_t        fDstOffset;
     size_t        fSize;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Copy BtoB Task"; })
 };
 
 class CopyTextureToBufferTask final : public Task {
@@ -91,6 +93,8 @@ private:
     sk_sp<Buffer> fBuffer;
     size_t fBufferOffset;
     size_t fBufferRowBytes;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Copy TtoB Task"; })
 };
 
 class CopyTextureToTextureTask final : public Task {
@@ -125,6 +129,8 @@ private:
     sk_sp<TextureProxy> fDstProxy;
     SkIPoint fDstPoint;
     int fDstLevel;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Copy TtoT Task"; })
 };
 
 } // namespace skgpu::graphite

@@ -27,6 +27,7 @@
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/Token.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
@@ -197,7 +198,7 @@ std::unique_ptr<Recording> Recorder::snap() {
         fTargetProxyCanvas.reset();
     }
     // Collect all pending tasks on the deferred recording canvas and any other tracked device.
-    this->priv().flushTrackedDevices();
+    this->priv().flushTrackedDevices(SK_DUMP_TASKS_CODE("Snap"));
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
@@ -217,11 +218,34 @@ std::unique_ptr<Recording> Recorder::snap() {
     fUploadBufferManager->transferToRecording(recording.get());
     // Add one task for all root uploads before the rest of the rendering tasks might depend on them
     if (fRootUploads->size() > 0) {
-        recording->priv().taskList()->add(UploadTask::Make(fRootUploads.get()));
+        sk_sp<Task> uploadTask = UploadTask::Make(fRootUploads.get());
+
+        SK_DUMP_TASKS_CODE(uploadTask->fFlushToken =
+                this->priv().tokenTracker()->currentFlushToken();)
+
+        recording->priv().taskList()->add(std::move(uploadTask));
         SkASSERT(fRootUploads->size() == 0); // Drained by the newly added task
     }
     recording->priv().taskList()->add(std::move(*fRootTaskList));
     SkASSERT(!fRootTaskList->hasTasks());
+
+#if defined(SK_DUMP_TASKS)
+    printf("\n=========== RECORDING %u ===========\n", fUniqueID);
+    int taskIndex = 0;
+    uint64_t lastToken = skgpu::Token::InvalidToken().value();
+    recording->priv().taskList()->visit([&](const Task* task, bool isLast) {
+        if (!task) {
+            return;
+        }
+        uint64_t currToken = task->fFlushToken.value();
+        if (currToken != lastToken) {
+            printf("**** FLUSH TOKEN %llu %s ****\n", currToken, fFlushSources[currToken - 1]);
+            lastToken = currToken;
+        }
+        task->dump(taskIndex++, "");
+    });
+    printf("--------------- END ---------------\n");
+#endif
 
     // In both the "task failed" case and the "everything is discarded" case, there's no work that
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so
@@ -416,7 +440,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     sk_sp<Task> uploadTask = UploadTask::Make(std::move(upload));
 
     // Need to flush any pending work in case it depends on this texture
-    this->priv().flushTrackedDevices();
+    this->priv().flushTrackedDevices(SK_DUMP_TASKS_CODE("Update Backend Texture"));
 
     this->priv().add(std::move(uploadTask));
 
@@ -470,7 +494,7 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
     sk_sp<Task> uploadTask = UploadTask::Make(std::move(upload));
 
     // Need to flush any pending work in case it depends on this texture
-    this->priv().flushTrackedDevices();
+    this->priv().flushTrackedDevices(SK_DUMP_TASKS_CODE("Update Compressed Backend Texture"));
 
     this->priv().add(std::move(uploadTask));
 
@@ -557,10 +581,11 @@ void RecorderPriv::addPendingRead(const TextureProxy* proxy) {
 
 void RecorderPriv::add(sk_sp<Task> task) {
     ASSERT_SINGLE_OWNER_PRIV
+    SK_DUMP_TASKS_CODE(task->fFlushToken = fRecorder->fTokenTracker->nextFlushToken();)
     fRecorder->fRootTaskList->add(std::move(task));
 }
 
-void RecorderPriv::flushTrackedDevices() {
+void RecorderPriv::flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSource)) {
     ASSERT_SINGLE_OWNER_PRIV
 
     // If this is the initial flushTrackedDevices() call, fFlushingTrackedDevicesIndex will be -1
@@ -592,6 +617,11 @@ void RecorderPriv::flushTrackedDevices() {
     // always uses this method. Calling in Device::flushPendingWorkToRecorder may
     // miss parent device flushes, increment too often, and lead to atlas corruption.
     this->tokenTracker()->issueFlushToken();
+#if defined(SK_DUMP_TASKS)
+    fRecorder->fFlushSources.push_back(flushSource);
+    SkASSERT(this->tokenTracker()->currentFlushToken().value() ==
+            static_cast<uint64_t>(fRecorder->fFlushSources.size()));
+#endif
 
     if (startingIndex < 0) {
         // Initial call to flushTrackedDevices() so cleanup null/immutable devices and reset the

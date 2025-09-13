@@ -74,6 +74,8 @@ private:
 
     sk_sp<TextureProxy> fDstCopy;
     SkIRect fDstReadBounds;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "RenderPass Task"; })
 };
 
 } // namespace skgpu::graphite
