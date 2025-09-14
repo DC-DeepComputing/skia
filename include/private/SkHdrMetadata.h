@@ -121,6 +121,43 @@ struct MasteringDisplayColorVolume {
     }
 };
 
+/**
+ * Structure containing all HDR metadata that can be attached to an image or video frame.
+ */
+class SK_API Metadata {
+  public:
+    /**
+     * If there does not exists Content Light Level Information metadata, then return false.
+     * Otherwise return true and if `clli` is non-nullptr then write the metadata to `clli`.
+     */
+    bool getContentLightLevelInformation(ContentLightLevelInformation* clli) const;
+
+    /**
+     * Set the Content Light Level Information metadata.
+     */
+    void setContentLightLevelInformation(const ContentLightLevelInformation& clli);
+
+    /**
+     * If there does not exists Mastering Display Color Volume metadata, then return false.
+     * Otherwise return true and if `mdcv` is non-nullptr then write the metadata to `mdcv`.
+     */
+    bool getMasteringDisplayColorVolume(MasteringDisplayColorVolume* mdcv) const;
+
+    /**
+     * Set the Mastering Display Color Volume metadata.
+     */
+    void setMasteringDisplayColorVolume(const MasteringDisplayColorVolume& mdcv);
+
+    bool operator==(const Metadata& other) const;
+    bool operator!=(const Metadata& other) const {
+      return !(*this == other);
+    }
+
+  private:
+    std::optional<ContentLightLevelInformation> fContentLightLevelInformation;
+    std::optional<MasteringDisplayColorVolume> fMasteringDisplayColorVolume;
+};
+
 }  // namespace skhdr
 
 #endif

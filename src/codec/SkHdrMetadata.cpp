@@ -154,5 +154,38 @@ bool MasteringDisplayColorVolume::operator==(const MasteringDisplayColorVolume& 
            fMinimumDisplayMasteringLuminance == other.fMinimumDisplayMasteringLuminance;
 }
 
+bool Metadata::getContentLightLevelInformation(ContentLightLevelInformation* clli) const {
+    if (!fContentLightLevelInformation.has_value()) {
+        return false;
+    }
+    if (clli) {
+        *clli = fContentLightLevelInformation.value();
+    }
+    return true;
+}
+
+bool Metadata::getMasteringDisplayColorVolume(MasteringDisplayColorVolume* mdcv) const {
+    if (!fMasteringDisplayColorVolume.has_value()) {
+        return false;
+    }
+    if (mdcv) {
+        *mdcv = fMasteringDisplayColorVolume.value();
+    }
+    return true;
+}
+
+void Metadata::setMasteringDisplayColorVolume(const MasteringDisplayColorVolume& mdcv) {
+    fMasteringDisplayColorVolume = mdcv;
+}
+
+void Metadata::setContentLightLevelInformation(const ContentLightLevelInformation& clli) {
+    fContentLightLevelInformation = clli;
+}
+
+bool Metadata::operator==(const Metadata& other) const {
+    return fContentLightLevelInformation == other.fContentLightLevelInformation &&
+           fMasteringDisplayColorVolume == other.fMasteringDisplayColorVolume;
+}
+
 }  // namespace skhdr
 
