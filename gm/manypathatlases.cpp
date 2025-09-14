@@ -8,6 +8,7 @@
 #include "gm/gm.h"
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -57,9 +58,10 @@ private:
             dContext->flush();
         }
 
-        SkPath clip = SkPath().moveTo(-50, 20)
-                              .cubicTo(-50, -20, 50, -20, 50, 40)
-                              .cubicTo(20, 0, -20, 0, -50, 20);
+        SkPath clip = SkPathBuilder().moveTo(-50, 20)
+                                     .cubicTo(-50, -20, 50, -20, 50, 40)
+                                     .cubicTo(20, 0, -20, 0, -50, 20)
+                                     .detach();
         clip.transform(SkMatrix::Translate(64, 70));
         for (int i = 0; i < 4; ++i) {
             SkPath rotatedClip = clip;
@@ -67,11 +69,12 @@ private:
             rotatedClip.setIsVolatile(true);
             canvas->clipPath(rotatedClip, SkClipOp::kDifference, true);
         }
-        SkPath path = SkPath().moveTo(20, 0)
-                              .lineTo(108, 0).cubicTo(108, 20, 108, 20, 128, 20)
-                              .lineTo(128, 108).cubicTo(108, 108, 108, 108, 108, 128)
-                              .lineTo(20, 128).cubicTo(20, 108, 20, 108, 0, 108)
-                              .lineTo(0, 20).cubicTo(20, 20, 20, 20, 20, 0);
+        SkPath path = SkPathBuilder().moveTo(20, 0)
+                                     .lineTo(108, 0).cubicTo(108, 20, 108, 20, 128, 20)
+                                     .lineTo(128, 108).cubicTo(108, 108, 108, 108, 108, 128)
+                                     .lineTo(20, 128).cubicTo(20, 108, 20, 108, 0, 108)
+                                     .lineTo(0, 20).cubicTo(20, 20, 20, 20, 20, 0)
+                                     .detach();
         path.setIsVolatile(true);
         SkPaint teal;
         teal.setColor4f({.03f, .91f, .87f, 1});
