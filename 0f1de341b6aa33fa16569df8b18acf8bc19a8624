@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1701663_9a9d4518",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:09:04Z",
+      "side": 1,
+      "message": "suggestion: \"If this image is SDR...\"",
+      "range": {
+        "startLine": 244,
+        "startChar": 46,
+        "endLine": 244,
+        "endChar": 50
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "146f28ba_a79163d9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 5
