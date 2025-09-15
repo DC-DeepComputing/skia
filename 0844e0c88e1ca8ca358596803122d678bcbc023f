@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f4cf2ec_f8ed5e2b",
+        "filename": "src/codec/SkHdrMetadata.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-15T18:41:07Z",
+      "side": 1,
+      "message": ".... decided against trying to fix the `operator\u003d\u003d` situation here ...",
+      "revId": "0844e0c88e1ca8ca358596803122d678bcbc023f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

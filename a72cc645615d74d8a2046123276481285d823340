@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4e1528e_66649ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-15T18:41:07Z",
+      "side": 1,
+      "message": "Same as before, but giving up on `operator\u003d\u003d` being fixed...",
+      "revId": "a72cc645615d74d8a2046123276481285d823340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
