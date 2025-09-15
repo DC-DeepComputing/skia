@@ -22,6 +22,30 @@
       },
       "revId": "2ece284fea5a91e958c8bcb0cb481132cd8094b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a402be55_d3e0d5c8",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-15T11:41:23Z",
+      "side": 1,
+      "message": "Oops, yes.",
+      "parentUuid": "c0bbb54f_aa5f7402",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 6
+      },
+      "revId": "2ece284fea5a91e958c8bcb0cb481132cd8094b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
