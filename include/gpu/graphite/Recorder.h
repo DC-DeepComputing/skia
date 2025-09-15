@@ -17,6 +17,11 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkTArray.h"
 
+#if defined(SK_DUMP_TASKS)
+#include "include/private/base/SkTDArray.h"
+#include "include/private/gpu/graphite/DebugUtilsGraphite.h"
+#endif
+
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
@@ -321,6 +326,12 @@ private:
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
     Context* fContext = nullptr;
+#endif
+
+#if defined(SK_DUMP_TASKS)
+    void dumpTasks(TaskList*) const;
+
+    SkTDArray<const char*> fFlushSources;
 #endif
 };
 

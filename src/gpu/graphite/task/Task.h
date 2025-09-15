@@ -15,6 +15,10 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 
+#if defined(SK_DUMP_TASKS)
+#include "include/private/gpu/graphite/DebugUtilsGraphite.h"
+#endif
+
 #include <functional>
 
 namespace skgpu::graphite {
@@ -75,6 +79,21 @@ public:
     virtual bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) {
         return true;
     }
+
+#if defined(SK_DUMP_TASKS)
+    virtual void dump(int index, const char* prefix = "") const {
+        const char* taskName = this->getTaskName();
+        if (index >= 0) {
+            printf("%s%d: %s\n", prefix, index, taskName);
+        } else {
+            printf("%s%s\n", prefix, taskName);
+        }
+    }
+
+    skgpu::Token fFlushToken = skgpu::Token::InvalidToken();
+
+    virtual const char* getTaskName() const { return "Base Task (unknown type)"; }
+#endif
 };
 
 } // namespace skgpu::graphite
