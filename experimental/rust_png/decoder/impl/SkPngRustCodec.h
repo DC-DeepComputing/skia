@@ -57,6 +57,9 @@ private:
         // uses `SkCodecAnimation::Blend::kSrcOver`.  For interlaced images this
         // buffer holds the whole frame; otherwise it holds only a single row.
         std::vector<uint8_t> fPreblendBuffer;
+
+        // Bytes per pixel of fDst.
+        uint8_t fDstBytesPerPixel = 0;
     };
 
     // Helper for validating parameters of `onGetPixels` and/or
@@ -73,14 +76,14 @@ private:
     void expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
                                     SkSpan<const uint8_t> srcRow,
                                     const DecodingState& decodingState,
-                                    bool colorXFormNeeded);
+                                    bool xFormNeeded);
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
     Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
-    // The same as incrementalDecode but uses a color transformation. Should only
+    // The same as incrementalDecode but uses `applyXFormRow()`. Should only
     // be used if this->canReadRows() is false.
-    Result incrementalDecodeColorXForm(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& decodingState, int* rowsDecoded);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
@@ -172,6 +175,20 @@ private:
     // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
     // chunk.
     bool fCanParseAdditionalFrameInfos = true;
+
+    // When decoding interlaced subsets, decode the full image into a buffer in
+    // the encoded colortype and extract a rect subset for the final dst using
+    // this function. This function will use applyXFormRow() for each row.
+    void getSubsetFromFullImage(SkSpan<const uint8_t> fullImageBuffer,
+                                SkSpan<uint8_t> dst,
+                                size_t dstRowStride);
+
+    int fFirstRow = 0;
+    int fLastRow = 0;
+    // The offsets for a subset in the encoded color type, not the dst color type.
+    // Only used for interlaced images.
+    size_t fXByteOffset = 0;
+    size_t fYByteOffset = 0;
 };
 
 #endif  // SkPngRustCodec_DEFINED
