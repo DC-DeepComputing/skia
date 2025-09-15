@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72a62984_99ef69ab",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-15T19:18:57Z",
+      "side": 1,
+      "message": "This could use a brief comment about the multi worklist concept, and that add(int worklist) uses 0 for highest priority and runs high priority work first, but does not cancel active low priority work, or something along that line?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 95
+      },
+      "revId": "7d58888cd300a6fa93b710fceac7f92a749e336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0a9ed8f_400c0f24",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-15T19:18:57Z",
+      "side": 1,
+      "message": "Should we just have the second version be virtual and have add(f) -\u003e add(f, 0) no matter what?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "7d58888cd300a6fa93b710fceac7f92a749e336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
