@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b7508a7_3cd085c2",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-15T20:11:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72a62984_99ef69ab",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 95
+      },
+      "revId": "7d58888cd300a6fa93b710fceac7f92a749e336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0a9ed8f_400c0f24",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-15T19:18:57Z",
       "side": 1,
       "message": "Should we just have the second version be virtual and have add(f) -\u003e add(f, 0) no matter what?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 66
+      },
+      "revId": "7d58888cd300a6fa93b710fceac7f92a749e336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8b4a36e_8ddd06ea",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-15T20:11:14Z",
+      "side": 1,
+      "message": "Yeah - that\u0027s cleaner - done.",
+      "parentUuid": "d0a9ed8f_400c0f24",
       "range": {
         "startLine": 37,
         "startChar": 0,
