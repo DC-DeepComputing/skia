@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "382dce2a_363f79d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-15T19:24:08Z",
+      "side": 1,
+      "message": "Ganesh has some path strategies that it only takes if the path is not volatile, so we probably skipped something that like SW or small path renderer and then fell into the triangulating path renderer, and this particular case trips it up somehow.",
+      "revId": "58636d041d7c8df1cbdcd1495ec1979e0767b139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
