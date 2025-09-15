@@ -73,7 +73,8 @@ private:
     void expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
                                     SkSpan<const uint8_t> srcRow,
                                     const DecodingState& decodingState,
-                                    bool colorXFormNeeded);
+                                    bool xFormNeeded,
+                                    bool isSubset);
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
@@ -172,6 +173,20 @@ private:
     // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
     // chunk.
     bool fCanParseAdditionalFrameInfos = true;
+
+    // When decoding interlaced subsets, decode the full image into a buffer in
+    // the encoded colortype and extract a rect subset for the final dst using
+    // this function. This function will use applyXFormRow() for each row.
+    void getSubsetFromFullImage(SkSpan<uint8_t> fullImageBuffer,
+                                SkSpan<uint8_t> dst,
+                                size_t dstRowStride);
+
+    int fFirstRow = 0;
+    int fLastRow = 0;
+    // The offsets for a subset in the encoded color type, not the dst color type.
+    // Only used for interlaced images.
+    size_t fXByteOffset = 0;
+    size_t fYByteOffset = 0;
 };
 
 #endif  // SkPngRustCodec_DEFINED
