@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.h"
+#include "src/encode/SkPngRustEncoderImpl.h"
 
 #include <limits>
 #include <memory>
@@ -13,8 +13,8 @@
 #include <utility>
 
 #include "include/encode/SkPngRustEncoder.h"
-#include "experimental/rust_png/ffi/FFI.rs.h"
-#include "experimental/rust_png/ffi/UtilsForFFI.h"
+#include "rust/png/FFI.rs.h"
+#include "rust/png/UtilsForFFI.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
