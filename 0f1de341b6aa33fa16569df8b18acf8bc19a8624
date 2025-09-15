@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68865984_3a3f16fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-15T11:04:25Z",
+      "side": 1,
+      "message": "ptal -- this is the non-Rust version",
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
