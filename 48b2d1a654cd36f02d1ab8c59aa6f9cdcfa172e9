@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe17324f_847955f3",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T22:48:22Z",
+      "side": 1,
+      "message": "Would it be possible to use [aggregate initialization syntax](https://en.cppreference.com/w/cpp/language/aggregate_initialization.html) to ensure that if fields are reordered/renamed/etc then we will remember to fix this up?  For example: `DecodingState fullImageDecodingState \u003d { .fDst \u003d decodingState.fPreblendBuffer, ... }`.\n\nI am also open to other alternatives where fields are named.  (I wondered about `DecodingState fullImageDecodingState \u003d *decodingState; fullImageDecodingState.fDst \u003d ...`, but the copy assignment would unnecessarily copy `fPreblendBuffer`.\n\nI also note that after my suggestions to fold/hoist `fFirstRow`, `fLastRow`, etc into `DecodingState` the struct will get quite big.  So maybe now would be a good time to extract a smaller `DecodingDst` struct with just the things you have here (`fDst`, `fDstRowStride`, `fDstRowSize`, `fDstBytesPerPixel`)?  That way here the smaller `fullImageDecodingDst` could be used instead of the bigger `fullImageDecodingState`.\n\nWDYT?",
+      "range": {
+        "startLine": 924,
+        "startChar": 59,
+        "endLine": 924,
+        "endChar": 60
+      },
+      "revId": "48b2d1a654cd36f02d1ab8c59aa6f9cdcfa172e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcfbd1f7_7482eec3",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T22:48:22Z",
+      "side": 1,
+      "message": "Would it make sense to move these fields into `struct DecodingState` defined above?  Everything else that gets initialized in `startDecoding` is put into the `DecodingState`.  This is probably not terribly important, but it seems nice to be consistent here.  And this also means that after decoding a full frame the decoding state is [reset](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/experimental/rust_png/decoder/impl/SkPngRustCodec.cpp;l\u003d1000;drc\u003d2cad1f845f3c0a3f205b6b2d870b99fd657c710b) so we should never encounter stale data",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 28
+      },
+      "revId": "48b2d1a654cd36f02d1ab8c59aa6f9cdcfa172e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
