@@ -16,6 +16,24 @@
       "message": "Ping me after the merge issues are resolved and I\u0027ll find a second reviewer too",
       "revId": "603dd711b31f6d52d4ae753ede9faa8f5ad1add1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "707ff0f2_5f858613",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-15T16:07:07Z",
+      "side": 1,
+      "message": "thanks",
+      "parentUuid": "886746b9_cf5cf9bb",
+      "revId": "603dd711b31f6d52d4ae753ede9faa8f5ad1add1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
