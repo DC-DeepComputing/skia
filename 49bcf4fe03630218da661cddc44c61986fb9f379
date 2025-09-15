@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb932dd_f934bf0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T16:16:29Z",
+      "side": 1,
+      "message": "Hi, pls consider these changes that aim to improve traceability of Skia applications using common tracing tools on Android. Changes were inspired by similar code available in Ganesh, pls let me know if these are specifically to be avoided",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
