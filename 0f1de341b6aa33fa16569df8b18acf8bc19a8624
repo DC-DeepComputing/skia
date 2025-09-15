@@ -16,6 +16,144 @@
       "message": "ptal -- this is the non-Rust version",
       "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "146f28ba_a79163d9",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "suggestion: Maybe add a reminder comment about how if the image is SDR, all the optional fields in Metadata will be empty? The other similar fields use null/non-null for that signal, so it might be less obvious at first in this case.",
+      "range": {
+        "startLine": 87,
+        "startChar": 46,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25a48d7_5cbc7b97",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "SkEncodedInfos are effectively immutable at the moment. Do we need a setter on this?\n\nRelated question/tangent: profileData returns a pointer to non-const SkData. Could it be const?",
+      "range": {
+        "startLine": 269,
+        "startChar": 9,
+        "endLine": 269,
+        "endChar": 23
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbdcacd_87cf934d",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "idea: Add a `skhdr::SDR()` static function that returns an empty metadata so it\u0027s a bit more clear from callsites that something doesn\u0027t have HDR.",
+      "range": {
+        "startLine": 901,
+        "startChar": 60,
+        "endLine": 901,
+        "endChar": 77
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f052638_fe4163a0",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "nit: make this a named constant. Maybe formatted like:\n```\nstatic constexpr char* hdrChunks \u003d \"gmAP\\0\"\n                                   \"gdAT\\0\"\n                                   \"mDCV\\0\"\n                                   \"cLLI\\0\";\n```\nIt took my brain a minute to parse that as 4 things instead of \"gibberish\"",
+      "range": {
+        "startLine": 321,
+        "startChar": 50,
+        "endLine": 321,
+        "endChar": 54
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6c9f063_8094b954",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "libpng won\u0027t actually be writing into this data, right? Can we make this use data() or bytes() to make that intent clear?",
+      "range": {
+        "startLine": 328,
+        "startChar": 54,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e45068_4c24616b",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:07:11Z",
+      "side": 1,
+      "message": "Just to check, libpng copies the data during this call, right? Otherwise, the data object goes out of scope",
+      "range": {
+        "startLine": 332,
+        "startChar": 8,
+        "endLine": 332,
+        "endChar": 30
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
