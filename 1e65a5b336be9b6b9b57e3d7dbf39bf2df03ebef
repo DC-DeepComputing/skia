@@ -22,6 +22,30 @@
       },
       "revId": "1e65a5b336be9b6b9b57e3d7dbf39bf2df03ebef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52223c28_e20513fe",
+        "filename": "gm/mandoline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-15T19:59:25Z",
+      "side": 1,
+      "message": "It only needs to be set once per lifetime, but it may be snapshotted multiple times.",
+      "parentUuid": "0278bee8_a721110e",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 16
+      },
+      "revId": "1e65a5b336be9b6b9b57e3d7dbf39bf2df03ebef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
