@@ -148,6 +148,36 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
         }
     }
 
+    std::array<float, 10> mdcvArray;
+    rust::Slice<const float> mdcvSlice;
+    {
+        skhdr::MasteringDisplayColorVolume mdcv;
+        if (options.fHdrMetadata.getMasteringDisplayColorVolume(&mdcv)) {
+            mdcvArray[0] = mdcv.fDisplayPrimaries.fRX;
+            mdcvArray[1] = mdcv.fDisplayPrimaries.fRY;
+            mdcvArray[2] = mdcv.fDisplayPrimaries.fGX;
+            mdcvArray[3] = mdcv.fDisplayPrimaries.fGY;
+            mdcvArray[4] = mdcv.fDisplayPrimaries.fBX;
+            mdcvArray[5] = mdcv.fDisplayPrimaries.fBY;
+            mdcvArray[6] = mdcv.fDisplayPrimaries.fWX;
+            mdcvArray[7] = mdcv.fDisplayPrimaries.fWY;
+            mdcvArray[8] = mdcv.fMaximumDisplayMasteringLuminance;
+            mdcvArray[9] = mdcv.fMinimumDisplayMasteringLuminance;
+            mdcvSlice = rust::Slice<const float>(mdcvArray.data(), mdcvArray.size());
+        }
+    }
+
+    std::array<float, 2> clliArray;
+    rust::Slice<const float> clliSlice;
+    {
+        skhdr::ContentLightLevelInformation clli;
+        if (options.fHdrMetadata.getContentLightLevelInformation(&clli)) {
+            clliArray[0] = clli.fMaxCLL;
+            clliArray[1] = clli.fMaxFALL;
+            clliSlice = rust::Slice<const float>(clliArray.data(), clliArray.size());
+        }
+    }
+
     rust_png::ColorType rustEncoderColorType;
     ExtraRowTransform extraRowTransform = kNone_ExtraRowTransform;
     switch (dstInfo.color()) {
@@ -188,7 +218,9 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
                                  rustEncoderColorType,
                                  dstInfo.bitsPerComponent(),
                                  ToCompression(options.fCompressionLevel),
-                                 encodedProfileSlice);
+                                 encodedProfileSlice,
+                                 mdcvSlice,
+                                 clliSlice);
     if (resultOfWriter->err() != rust_png::EncodingResult::Success) {
         return nullptr;
     }
