@@ -33,6 +33,23 @@
       "message": "(Removing myself, as I\u0027m not the right person to review this)",
       "revId": "4c421c24013e037e42cc7189693f07b808cf21e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72851b6e_68b0ae01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T19:12:42Z",
+      "side": 1,
+      "message": "I took this over in https://skia-review.googlesource.com/c/skia/+/1055656 because I think this is a good solution, but I wanted to be more precise (and add some docs that had been missing).",
+      "revId": "4c421c24013e037e42cc7189693f07b808cf21e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
