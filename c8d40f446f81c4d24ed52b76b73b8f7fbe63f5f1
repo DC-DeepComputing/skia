@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63188980_a87a1141",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2183,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-15T20:06:55Z",
+      "side": 1,
+      "message": "Nope, stale idea. Done.",
+      "parentUuid": "d574716e_ebff1aef",
+      "range": {
+        "startLine": 2183,
+        "startChar": 0,
+        "endLine": 2183,
+        "endChar": 31
+      },
+      "revId": "c8d40f446f81c4d24ed52b76b73b8f7fbe63f5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10940d76_e0cbe1b3",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "747a0fd4_262f4da3",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2262,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-15T20:06:55Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "10940d76_e0cbe1b3",
+      "range": {
+        "startLine": 2262,
+        "startChar": 0,
+        "endLine": 2262,
+        "endChar": 44
+      },
+      "revId": "c8d40f446f81c4d24ed52b76b73b8f7fbe63f5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a4808a3_d4e7cb57",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-15T19:27:14Z",
       "side": 1,
       "message": "nit: spaces",
+      "range": {
+        "startLine": 51,
+        "startChar": 59,
+        "endLine": 51,
+        "endChar": 60
+      },
+      "revId": "c8d40f446f81c4d24ed52b76b73b8f7fbe63f5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc77c63e_8f77e15d",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-15T20:06:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a4808a3_d4e7cb57",
       "range": {
         "startLine": 51,
         "startChar": 59,
