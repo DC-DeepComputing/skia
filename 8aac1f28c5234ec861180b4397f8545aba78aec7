@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29ac22f9_3de0b2f6",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T18:17:30Z",
+      "side": 1,
+      "message": "Can we make this a span of const bytes? I think we are only reading from this buffer, yeah?",
+      "range": {
+        "startLine": 634,
+        "startChar": 51,
+        "endLine": 634,
+        "endChar": 58
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34937aac_7ffceaa2",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T18:17:30Z",
+      "side": 1,
+      "message": "Same question about const",
+      "range": {
+        "startLine": 647,
+        "startChar": 15,
+        "endLine": 647,
+        "endChar": 22
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "838c7222_c891d6cc",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T18:17:30Z",
+      "side": 1,
+      "message": "Should we do some check here to make sure we don\u0027t walk off the edge of the src buffer? I see line 641, but do we know dstRowStride is also \u003e\u003d getEncodedRowBytes?\n\nMaybe using Span\u0027s `subspan` method (which has some assertions around size) will help?",
+      "range": {
+        "startLine": 648,
+        "startChar": 37,
+        "endLine": 648,
+        "endChar": 53
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a458da65_db67b4ad",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T18:17:30Z",
+      "side": 1,
+      "message": "nit: `const` for here (and driveby on interlaced) since they don\u0027t seem to be written to in the while loop",
+      "range": {
+        "startLine": 866,
+        "startChar": 4,
+        "endLine": 866,
+        "endChar": 8
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f9e540_a7381ad0",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T18:17:30Z",
+      "side": 1,
+      "message": "nit: driveby const here too",
+      "range": {
+        "startLine": 946,
+        "startChar": 9,
+        "endLine": 946,
+        "endChar": 19
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
