@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cce2885_f1b76a98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "@kjlubick@google.com In addition to comments, I also added a member to `DecodingState` so that `expandDecodedInterlacedRow` doesn\u0027t have to know about subset or not and we can just change the passed in `decodedState`, as well as name changed `incrementalDecodeColorXForm()` -\u003e `incrementalDecodeXForm()` because it doesn\u0027t necessarily have to be because of color.",
+      "revId": "ae95a46eb232467fca6608d73e9887156577cbe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

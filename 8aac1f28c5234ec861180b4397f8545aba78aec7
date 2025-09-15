@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c635bbf_a213cc00",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29ac22f9_3de0b2f6",
+      "range": {
+        "startLine": 634,
+        "startChar": 51,
+        "endLine": 634,
+        "endChar": 58
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34937aac_7ffceaa2",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-15T18:17:30Z",
       "side": 1,
       "message": "Same question about const",
+      "range": {
+        "startLine": 647,
+        "startChar": 15,
+        "endLine": 647,
+        "endChar": 22
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a0de4e_7abb6dd4",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34937aac_7ffceaa2",
       "range": {
         "startLine": 647,
         "startChar": 15,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71f24e08_773614b3",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "Good idea, done.",
+      "parentUuid": "838c7222_c891d6cc",
+      "range": {
+        "startLine": 648,
+        "startChar": 37,
+        "endLine": 648,
+        "endChar": 53
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a458da65_db67b4ad",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54383fe0_0dbe46b4",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a458da65_db67b4ad",
+      "range": {
+        "startLine": 866,
+        "startChar": 4,
+        "endLine": 866,
+        "endChar": 8
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25f9e540_a7381ad0",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-09-15T18:17:30Z",
       "side": 1,
       "message": "nit: driveby const here too",
+      "range": {
+        "startLine": 946,
+        "startChar": 9,
+        "endLine": 946,
+        "endChar": 19
+      },
+      "revId": "8aac1f28c5234ec861180b4397f8545aba78aec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8efe3e6b_ee217392",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-15T19:38:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25f9e540_a7381ad0",
       "range": {
         "startLine": 946,
         "startChar": 9,
