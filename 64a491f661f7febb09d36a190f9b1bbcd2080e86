@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66506fbe_36cb5998",
+        "filename": "src/gpu/graphite/mtl/MtlSharedContext.mm",
+        "patchSetId": 16
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-15T19:13:19Z",
+      "side": 1,
+      "message": "Can we add a comment here that we explicitly initialized it with the common depth stencil settings since there are so few configurations and it means we don\u0027t have to worry about acquiring a lock to modify the map to lazily create them?\n\nIf a new DSS is used, we either need to update what is premade, or revisit the decision to premake them.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "64a491f661f7febb09d36a190f9b1bbcd2080e86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
