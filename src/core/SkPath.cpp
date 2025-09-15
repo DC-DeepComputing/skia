@@ -2168,45 +2168,41 @@ private:
     bool                 fIsFinite { true };
 };
 
-SkPathConvexity SkPath::computeConvexity() const {
-    if (auto c = this->getConvexityOrUnknown(); c != SkPathConvexity::kUnknown) {
-        return c;
+static void trim_trailing_moves(SkSpan<const SkPoint>& pts, SkSpan<const SkPathVerb>& vbs) {
+    size_t vbCount = vbs.size();
+    while (vbCount > 0 && vbs[vbCount - 1] == SkPathVerb::kMove) {
+        vbCount -= 1;
+    }
+    if (size_t delta = vbs.size() - vbCount) {
+        SkASSERT(pts.size() >= delta);
+        pts = {pts.data(), pts.size() - delta};
+        vbs = {vbs.data(), vbs.size() - delta};
+    }
+}
+
+std::optional<SkPathConvexity> SkPathPriv::ComputeConvexity(SkSpan<const SkPoint> points,
+                                                            SkSpan<const SkPathVerb> vbs,
+                                                            SkSpan<const float> conicWeights) {
+#ifdef SK_DEBUG
+    // call needs to give us finite values
+    SkASSERT(SkRect::Bounds(points).has_value());
+#endif
+
+    trim_trailing_moves(points, vbs);
+
+    if (vbs.empty()) {
+        return SkPathConvexity::kConvex_Degenerate;
     }
 
-    auto setComputedConvexity = [&](SkPathConvexity convexity) {
-        SkASSERT(SkPathConvexity::kUnknown != convexity);
-        this->setConvexity(convexity);
+    auto setComputedConvexity = [](SkPathConvexity convexity) {
+        SkASSERT(convexity != SkPathConvexity::kUnknown);
         return convexity;
     };
 
     auto setFail = [&]() { return setComputedConvexity(SkPathConvexity::kConcave); };
 
-    if (!this->isFinite()) {
-        return setFail();
-    }
-
-    // pointCount potentially includes trailing moveTos. Convexity
-    // only cares about the verbs before the final moveTo.
-    int pointCount = this->countPoints();
-
-    if (fLastMoveToIndex >= 0) {
-        if (fLastMoveToIndex == pointCount - 1) {
-            // Find the last real verb that affects convexity
-            auto verbs = fPathRef->verbsEnd() - 1;
-            while(verbs > fPathRef->verbsBegin() && *verbs == SkPathVerb::kMove) {
-                verbs--;
-                pointCount--;
-            }
-        } else if (fLastMoveToIndex != 0) {
-            // There's an additional moveTo between two blocks of other verbs, so the path must have
-            // more than one contour and cannot be convex.
-            return setComputedConvexity(SkPathConvexity::kConcave);
-        } // else no trailing or intermediate moveTos to worry about
-    }
-    const SkPoint* points = fPathRef->points();
-
     // Check to see if path changes direction more than three times as quick concave test
-    if (Convexicator::IsConcaveBySign(points, pointCount)) {
+    if (Convexicator::IsConcaveBySign(points.data(), points.size())) {
         return setComputedConvexity(SkPathConvexity::kConcave);
     }
 
@@ -2214,7 +2210,11 @@ SkPathConvexity SkPath::computeConvexity() const {
     bool needsClose = false;
     Convexicator state;
 
-    for (auto [verb, pts, wt] : SkPathPriv::Iterate(*this)) {
+    auto iter = SkPathIter(points, vbs, conicWeights);
+    while (auto rec = iter.next()) {
+        auto verb = rec->fVerb;
+        auto pts = rec->fPoints;
+
         // Looking for the last moveTo before non-move verbs start
         if (contourCount == 0) {
             if (verb == SkPathVerb::kMove) {
@@ -2259,12 +2259,34 @@ SkPathConvexity SkPath::computeConvexity() const {
 
     const auto firstDir = state.getFirstDirection();
     if (firstDir == SkPathFirstDirection::kUnknown &&
-        !this->getBounds().isEmpty() &&
+/*        !this->getBounds().isEmpty() && */
         state.reversals() >= 3)
     {
         return setComputedConvexity(SkPathConvexity::kConcave);
     }
     return setComputedConvexity(SkPathFirstDirection_ToConvexity(firstDir));
+}
+
+
+SkPathConvexity SkPath::computeConvexity() const {
+    if (auto c = this->getConvexityOrUnknown(); c != SkPathConvexity::kUnknown) {
+        return c;
+    }
+
+    // historically we returned this on failure. New pattern is to return optional{}
+    SkPathConvexity convexity = SkPathConvexity::kConcave;
+
+    if (this->isFinite()) {
+        if (auto cnv = SkPathPriv::ComputeConvexity(fPathRef->pointSpan(),
+                                                    fPathRef->verbs(),
+                                                    fPathRef->conicSpan())) {
+            convexity = cnv.value();
+        }
+    }
+
+    SkASSERT(convexity != SkPathConvexity::kUnknown);
+    this->setConvexity(convexity);
+    return convexity;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
