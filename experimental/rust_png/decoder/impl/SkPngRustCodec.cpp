@@ -15,6 +15,7 @@
 #include "experimental/rust_png/ffi/UtilsForFFI.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkString.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkSafe32.h"
@@ -225,6 +226,24 @@ std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
         profile = nullptr;
     }
 
+    skhdr::Metadata hdrMetadata;
+    {
+        skhdr::MasteringDisplayColorVolume mdcv;
+        if (reader.try_get_mdcv_chunk(
+                mdcv.fDisplayPrimaries.fRX, mdcv.fDisplayPrimaries.fRY,
+                mdcv.fDisplayPrimaries.fGX, mdcv.fDisplayPrimaries.fGY,
+                mdcv.fDisplayPrimaries.fBX, mdcv.fDisplayPrimaries.fBY,
+                mdcv.fDisplayPrimaries.fWX, mdcv.fDisplayPrimaries.fWY,
+                mdcv.fMaximumDisplayMasteringLuminance,
+                mdcv.fMinimumDisplayMasteringLuminance)) {
+            hdrMetadata.setMasteringDisplayColorVolume(mdcv);
+        }
+        skhdr::ContentLightLevelInformation clli;
+        if (reader.try_get_clli_chunk(clli.fMaxCLL, clli.fMaxFALL)) {
+            hdrMetadata.setContentLightLevelInformation(clli);
+        }
+    }
+
     // Protect against large PNGs. See http://bugzil.la/251381 for more details.
     constexpr uint32_t kMaxPNGSize = 1000000;
     if ((reader.width() > kMaxPNGSize) || (reader.height() > kMaxPNGSize)) {
@@ -246,7 +265,9 @@ std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
                                skColor,
                                ToAlpha(rustColor, reader),
                                reader.output_bits_per_component(),
-                               std::move(profile));
+                               reader.output_bits_per_component(),
+                               std::move(profile),
+                               hdrMetadata);
 }
 
 SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
