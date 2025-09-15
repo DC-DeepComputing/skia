@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99407467_633d976e",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-15T11:05:29Z",
+      "side": 1,
+      "message": "Given that the chromaticity values are already converted to float, should we consider making the `min_luminance` and `max_luminance` be as well? That way people using the Rust API don\u0027t need to know how the resulting float values were encoded.",
+      "revId": "8e1192696a6604af9940261875990c37021b4d6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
