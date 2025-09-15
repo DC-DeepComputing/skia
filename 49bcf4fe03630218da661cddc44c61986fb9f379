@@ -16,6 +16,114 @@
       "message": "Hi, pls consider these changes that aim to improve traceability of Skia applications using common tracing tools on Android. Changes were inspired by similar code available in Ganesh, pls let me know if these are specifically to be avoided",
       "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76816530_36baad40",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "It\u0027s not my call, but if this was my project, I\u0027d have suggested removing the old overload and let the users port to the new struct.",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b32b4557_70d659b3",
+        "filename": "relnotes/graphite_submitinfo.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "Sentence seems cut off?",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28d313ab_d0479d40",
+        "filename": "relnotes/graphite_submitinfo.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "```suggestion\nUse struct `skgpu::graphite::SubmitInfo` in `skgpu::graphite::QueueManager::submitToGpu`, `skgpu::graphite::QueueManager::onSubmitToGpu` and all derived classes.\n```",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4453097b_a63fcae3",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "nit: Since `submitToGpu` does need to worry about `fSync`, it could be a good idea to use an internal struct that\u0027s the same as `SubmitInfo` minus `fSync`; perhaps just directly call it `FrameBoundary`, and pass that to the backends instead.",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26076192_233633ac",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "Fiddling with the pnext chain is error prone, so there\u0027s a helper for it:\n\n\n\n```suggestion\n    VkSubmitInfo submitInfo \u003d {};\n    submitInfo.sType \u003d VK_STRUCTURE_TYPE_SUBMIT_INFO;\n    submitInfo.pNext \u003d pNext;\n    submitInfo.waitSemaphoreCount \u003d waitCount;\n    submitInfo.pWaitSemaphores \u003d waitSemaphores;\n    submitInfo.pWaitDstStageMask \u003d waitStages;\n    submitInfo.commandBufferCount \u003d commandBufferCount;\n    submitInfo.pCommandBuffers \u003d commandBuffers;\n    submitInfo.signalSemaphoreCount \u003d signalCount;\n    submitInfo.pSignalSemaphores \u003d signalSemaphores;\n\n    VkProtectedSubmitInfo protectedSubmitInfo \u003d {};\n    if (protectedContext \u003d\u003d Protected::kYes) {\n        protectedSubmitInfo.sType \u003d VK_STRUCTURE_TYPE_PROTECTED_SUBMIT_INFO;\n        protectedSubmitInfo.protectedSubmit \u003d VK_TRUE;\n\n        AddToPNextChain(\u0026submitInfo, \u0026protectedSubmitInfo);\n    }\n\n    VkFrameBoundaryEXT frameBoundary;\n    if (markFrameBoundary \u003d\u003d MarkFrameBoundary::kYes \u0026\u0026\n        sharedContext-\u003evulkanCaps().supportsFrameBoundary()) {\n        memset(\u0026frameBoundary, 0, sizeof(VkFrameBoundaryEXT));\n        frameBoundary.sType \u003d VK_STRUCTURE_TYPE_FRAME_BOUNDARY_EXT;\n        frameBoundary.pNext \u003d pNext;\n        frameBoundary.flags \u003d VK_FRAME_BOUNDARY_FRAME_END_BIT_EXT;\n        frameBoundary.frameID \u003d frameID;\n\n        AddToPNextChain(\u0026submitInfo, \u0026frameBoundary);\n    }\n```",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 52
+      },
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a094e199_8139d38d",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T16:26:31Z",
+      "side": 1,
+      "message": "To make sure the implementation is correct here, please augment the tests in VkPreferredFeaturesTest.cpp.",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
