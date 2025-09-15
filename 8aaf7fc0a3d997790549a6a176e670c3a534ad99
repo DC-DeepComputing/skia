@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26f424ee_de16780f",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-15T15:39:20Z",
+      "side": 1,
+      "message": "The cited go link also states that if the relevant libraries are unavailable the restrictions don\u0027t apply.",
+      "revId": "8aaf7fc0a3d997790549a6a176e670c3a534ad99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
