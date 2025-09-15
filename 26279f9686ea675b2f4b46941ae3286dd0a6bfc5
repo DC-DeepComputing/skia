@@ -16,6 +16,23 @@
       "message": "... and the Rust version. This is my first attempt at writing Rust code, so be sure *not* to assume competence.",
       "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c563992c_ef470642",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-15T15:12:41Z",
+      "side": 1,
+      "message": "C++ stuff LGTM. Daniel and Lukasz are more familiar with the Rust bindings",
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
