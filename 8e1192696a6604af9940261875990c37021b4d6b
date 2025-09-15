@@ -16,6 +16,24 @@
       "message": "Given that the chromaticity values are already converted to float, should we consider making the `min_luminance` and `max_luminance` be as well? That way people using the Rust API don\u0027t need to know how the resulting float values were encoded.",
       "revId": "8e1192696a6604af9940261875990c37021b4d6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09130e63_fd6592b0",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "\u003e Given that the chromaticity values are already converted to float, should we consider making the `min_luminance` and `max_luminance` be as well?\n\nYou mean in the upstream crate\u0027s API itself?  Yes, that may be worth considering.  The only downside I can think about is that the `u32`/10000th \u003d\u003e `f32` conversion may loose some bits of precision.  So if we wanted to tweak the upstream crate, then maybe we would keep exposing the original `u32`, and provide helper method for getting those values as floats?\n\nAlternatively, maybe the `ScaledFloat` struct from the `png` crate\u0027s API should support not only the PNG-typical `100_000.0` denominator, but also the `10_000.0` used here?  This should be doable via `const`-generics in Rust, but would be a breaking API changes, so meh?\n\n\u003e That way people using the Rust API don\u0027t need to know how the resulting float values were encoded.\n\nAck.  Converting this here (in the FFI glue) works for me.",
+      "parentUuid": "99407467_633d976e",
+      "revId": "8e1192696a6604af9940261875990c37021b4d6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

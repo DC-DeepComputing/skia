@@ -33,6 +33,121 @@
       "message": "C++ stuff LGTM. Daniel and Lukasz are more familiar with the Rust bindings",
       "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6764bf_797d641e",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "Would automatic conversion via [this constructor](https://source.chromium.org/chromium/chromium/src/+/main:third_party/rust/chromium_crates_io/vendor/cxx-v1/include/cxx.h;l\u003d195;drc\u003da699f046f0af36aaab02a0ed104f919331563874) also work?  (Motivation: Spanification \u003d desire to avoid passing separate pointer+size and prefer working with containers/spans as much as possible.)\n\n\n\n```suggestion\n            mdcvSlice \u003d rust::Slice\u003cconst float\u003e(mdcvArray);\n```",
+      "range": {
+        "startLine": 166,
+        "startChar": 49,
+        "endLine": 166,
+        "endChar": 83
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1df2ca7_e7794d6c",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "Would that work?:\n\n```suggestion\n            clliSlice \u003d rust::Slice\u003cconst float\u003e(clliArray);\n```",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 83
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "118bb18b_1321b399",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "Perceived minor problem: can that be more strongly typed?\n\n* One option: `assert!(mcdv.is_empty() || mcdv.len() \u003d\u003d 10)`\n* One option: `Option\u003c\u0026[f32; 10]\u003e`\n* Another option (verbose, but maybe most principled?):\n    - declare `MasteringDisplayColorVolume` (and/or also `SkColorSpacePrimaries`) in `extern \"C++\"` above\n    - provide accessors for each of the floats",
+      "range": {
+        "startLine": 824,
+        "startChar": 15,
+        "endLine": 824,
+        "endChar": 20
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dfc0bd2_114fddd1",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "Same question / perceived problem here.",
+      "range": {
+        "startLine": 825,
+        "startChar": 14,
+        "endLine": 825,
+        "endChar": 20
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f7b8efb_ce471a68",
+        "filename": "relnotes/sk_png_hdr.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-15T17:52:39Z",
+      "side": 1,
+      "message": "Should this say `SkPngDecoder` and `SkPngRustDecoder` (since `SkPngCodec` and `SkPngRustCodec` are private APIs / implementation details)?",
+      "range": {
+        "startLine": 1,
+        "startChar": 28,
+        "endLine": 1,
+        "endChar": 75
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
