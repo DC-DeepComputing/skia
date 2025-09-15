@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0e1ecd_439f87c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14479
+      },
+      "writtenOn": "2025-09-15T16:04:22Z",
+      "side": 1,
+      "message": "This breaks Android builds:\n\n\nhttps://android-build.corp.google.com/build_explorer/artifact_viewer/14102670/brya-desktop_next-userdebug/logs/build_error.log?from\u003dbranchRoute\n\nvendor/google/desktop/video/chromium-codec2/ui/gfx/hdr_metadata.h:68:22: error: use of overloaded operator \u0027!\u003d\u0027 is ambiguous (with operand types \u0027const SkColorSpacePrimaries\u0027 and \u0027const SkColorSpacePrimaries\u0027)\n\nRevert here: ag/35708205",
+      "revId": "d84a369255c4fe3c9c9d932f1113b94f0e43fa07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
