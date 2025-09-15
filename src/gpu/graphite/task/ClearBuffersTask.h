@@ -44,6 +44,8 @@ private:
             : fClearList(std::move(clearList)) {}
 
     skia_private::TArray<BindBufferInfo> fClearList;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Clear Buffers Task"; })
 };
 
 }  // namespace skgpu::graphite

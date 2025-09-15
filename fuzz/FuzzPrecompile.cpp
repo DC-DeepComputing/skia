@@ -328,7 +328,8 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     fuzz->next(&temp);
     Coverage coverage = coverageOptions[temp % 3];
 
-    PaintParams paintParams = PaintParams(paint,
+    PaintParams paintParams = PaintParams(recorder->priv().caps(),
+                                          paint,
                                           /* primitiveBlender= */ nullptr,
                                           /* nonMSAAClip= */ {},
                                           /* clipShader= */ nullptr,
@@ -338,6 +339,7 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     SkDEBUGCODE(builder.checkReset());
     SkDEBUGCODE(gatherer.checkReset());
     KeyContext keyContext(recorder.get(),
+                          nullptr, // TODO find drawContext
                           &floatStorageManager,
                           &builder,
                           &gatherer,

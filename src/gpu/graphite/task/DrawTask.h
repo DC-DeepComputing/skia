@@ -23,7 +23,6 @@ class Context;
 class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class TextureProxy;
 
 /**
  * DrawTask is a collection of subtasks that are executed in order to produce some intended
@@ -68,6 +67,37 @@ private:
     // produce several DrawTasks (in which case they will see an instantiated proxy so should still
     // prepare their own resources instead of discarding themselves).
     bool fPrepared = false;
+
+#if defined(SK_DUMP_TASKS)
+    void dump(int index, const char* prefix) const override {
+        const char* taskName = this->getTaskName();
+        if (index >= 0) {
+            printf("%s%d: %s (target=%p)\n", prefix, index, taskName, fTarget.get());
+        } else {
+            printf("%s%s (target=%p)\n", prefix, taskName, fTarget.get());
+        }
+
+        std::string childPrefix = prefix;
+        if (strlen(prefix) >= 4) {
+            const char* lastBranch = prefix + strlen(prefix) - 4;
+            if (strcmp(lastBranch, "│   ") == 0) {
+                childPrefix.replace(strlen(prefix) - 4, 4, "│   ");
+            } else if (strcmp(lastBranch, "└── ") == 0) {
+                childPrefix.replace(strlen(prefix) - 4, 4, "    ");
+            }
+        }
+
+        std::string teePrefix = childPrefix + "│   ";
+        std::string cornerPrefix = childPrefix + "└── ";
+
+        fChildTasks.visit([&](const Task* task, bool isLast) {
+            task->dump(-1, isLast ? cornerPrefix.c_str() : teePrefix.c_str());
+        });
+    }
+#endif
+
+protected:
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Draw Task"; })
 };
 
 } // namespace skgpu::graphite

@@ -50,6 +50,8 @@ private:
     // same array index. Child tasks are allowed to be a nullptr to represent NOP (i.e. the
     // corresponding DispatchGroup doesn't have any pre-tasks).
     skia_private::TArray<sk_sp<Task>> fChildTasks;
+
+    SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Compute Task"; })
 };
 
 }  // namespace skgpu::graphite

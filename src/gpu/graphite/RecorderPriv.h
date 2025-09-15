@@ -53,7 +53,7 @@ class UploadList;
 class RecorderPriv {
 public:
     void add(sk_sp<Task>);
-    void flushTrackedDevices();
+    void flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSource));
 
     const Caps* caps() const { return fRecorder->fSharedContext->caps(); }
 

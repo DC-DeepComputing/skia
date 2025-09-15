@@ -24,4 +24,10 @@
     #define SkDEBUGF(...)
 #endif
 
+#if defined(SK_DUMP_TASKS)
+    #define SK_DUMP_TASKS_CODE(...)  __VA_ARGS__
+#else
+    #define SK_DUMP_TASKS_CODE(...)
+#endif
+
 #endif
