@@ -29,7 +29,7 @@ public:
 
     MandolineSlicer(SkPoint anchorPt) {
         fPath.setFillType(SkPathFillType::kEvenOdd);
-        fPath.setIsVolatile(true);
+//        fPath.setIsVolatile(true);
         this->reset(anchorPt);
     }
 
