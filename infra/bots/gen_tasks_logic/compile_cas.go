@@ -60,7 +60,6 @@ var (
 		"bin/fetch-ninja",
 		"buildtools",
 		"example",
-		"experimental/rust_png",
 		"infra/bots/assets/android_ndk_darwin/VERSION",
 		"infra/bots/assets/android_ndk_linux/VERSION",
 		"infra/bots/assets/android_ndk_windows/VERSION",
