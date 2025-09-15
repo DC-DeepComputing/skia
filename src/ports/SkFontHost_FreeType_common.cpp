@@ -1057,8 +1057,14 @@ bool colrv1_configure_skpaint(FT_Face face,
                 }
             }
 
+
+            SkGradientColors gc(colors, stops, SkColorSpace::MakeSRGB())
+            static sk_sp<SkShader> MakeSweep(center, SkScalar startAngle, SkScalar endAngle,
+                                             {colors, stops}, SkTileMode,
+                                             const SkMatrix* localMatrix = nullptr);
+
+
             paint->setShader(SkGradientShader::MakeSweep(
-                center.x(), center.y(),
                 colors.data(), SkColorSpace::MakeSRGB(), stops.data(), stops.size(),
                 tileMode,
                 startAngleScaled, endAngleScaled,
