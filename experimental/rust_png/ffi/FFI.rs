@@ -152,6 +152,24 @@ mod ffi {
             matrix_id: &mut u8,
             is_full_range: &mut bool,
         ) -> bool;
+        fn try_get_mdcv_chunk(
+            self: &Reader,
+            rx: &mut f32,
+            ry: &mut f32,
+            gx: &mut f32,
+            gy: &mut f32,
+            bx: &mut f32,
+            by: &mut f32,
+            wx: &mut f32,
+            wy: &mut f32,
+            max_luminance: &mut f32,
+            min_luminance: &mut f32,
+        ) -> bool;
+        fn try_get_clli_chunk(
+            self: &Reader,
+            max_content_light_level: &mut f32,
+            max_frame_average_light_level: &mut f32,
+        ) -> bool;
         fn try_get_gama(self: &Reader, gamma: &mut f32) -> bool;
         fn has_exif_chunk(self: &Reader) -> bool;
         fn get_exif_chunk(self: &Reader) -> &[u8];
@@ -201,6 +219,8 @@ mod ffi {
             bits_per_component: u8,
             compression: Compression,
             icc_profile: &[u8],
+            mdcv: &[f32],
+            clli: &[f32],
         ) -> Box<ResultOfWriter>;
 
         type ResultOfWriter;
@@ -521,6 +541,61 @@ impl Reader {
         }
     }
 
+    /// If the decoded PNG image contained a `mDCV` chunk then
+    /// `try_get_mdcv_chunk` returns `true` and populates the out parameters
+    /// as values that are CIE 1931 xy coordinates or values in cd/m^2.
+    /// Otherwise, returns `false`.
+    fn try_get_mdcv_chunk(
+        self: &Reader,
+        rx: &mut f32,
+        ry: &mut f32,
+        gx: &mut f32,
+        gy: &mut f32,
+        bx: &mut f32,
+        by: &mut f32,
+        wx: &mut f32,
+        wy: &mut f32,
+        max_luminance: &mut f32,
+        min_luminance: &mut f32,
+    ) -> bool {
+        match self.reader.info().mastering_display_color_volume.as_ref() {
+            None => false,
+            Some(mdcv) => {
+                *rx = mdcv.chromaticities.red.0.into_value();
+                *ry = mdcv.chromaticities.red.1.into_value();
+                *gx = mdcv.chromaticities.green.0.into_value();
+                *gy = mdcv.chromaticities.green.1.into_value();
+                *bx = mdcv.chromaticities.blue.0.into_value();
+                *by = mdcv.chromaticities.blue.1.into_value();
+                *wx = mdcv.chromaticities.white.0.into_value();
+                *wy = mdcv.chromaticities.white.1.into_value();
+                *max_luminance = mdcv.max_luminance as f32 / 10_000.0;
+                *min_luminance = mdcv.min_luminance as f32 / 10_000.0;
+                true
+            }
+        }
+    }
+
+    /// If the decoded PNG image contained a `cLLI` chunk then
+    /// `try_get_clli_chunk` returns `true` and populates the out
+    /// parameters as values in cd/m^2.  Otherwise, returns `false`.
+    fn try_get_clli_chunk(
+        &self,
+        max_content_light_level : &mut f32,
+        max_frame_average_light_level : &mut f32,
+    ) -> bool {
+        match self.reader.info().content_light_level.as_ref() {
+            None => false,
+            Some(clli) => {
+                *max_content_light_level =
+                    clli.max_content_light_level as f32 / 10_000.0;
+                *max_frame_average_light_level =
+                    clli.max_frame_average_light_level as f32 / 10_000.0;
+                true
+            }
+        }
+    }
+
     /// If the decoded PNG image contained a `gAMA` chunk then `try_get_gama`
     /// returns `true` and populates the `gamma` out parameter.  Otherwise,
     /// returns `false`.
@@ -746,6 +821,8 @@ impl Writer {
         bits_per_component: u8,
         compression: ffi::Compression,
         icc_profile: &[u8],
+        mdcv: &[f32],
+        clli: &[f32],
     ) -> Result<Self, png::EncodingError> {
         let mut info = png::Info::with_size(width, height);
         info.color_type = color.into();
@@ -758,6 +835,37 @@ impl Writer {
         };
         if !icc_profile.is_empty() {
             info.icc_profile = Some(Cow::Owned(icc_profile.to_owned()));
+        }
+        if mdcv.len() == 10 {
+            let chromaticities = png::SourceChromaticities {
+                white: (
+                    png::ScaledFloat::new(mdcv[6]),
+                    png::ScaledFloat::new(mdcv[7]),
+                ),
+                red: (
+                    png::ScaledFloat::new(mdcv[0]),
+                    png::ScaledFloat::new(mdcv[1]),
+                ),
+                green: (
+                    png::ScaledFloat::new(mdcv[2]),
+                    png::ScaledFloat::new(mdcv[3]),
+                ),
+                blue: (
+                    png::ScaledFloat::new(mdcv[4]),
+                    png::ScaledFloat::new(mdcv[5]),
+                ),
+            };
+            info.mastering_display_color_volume = Some(png::MasteringDisplayColorVolume {
+                chromaticities : chromaticities,
+                max_luminance : (mdcv[8] * 10_000.0).round() as u32,
+                min_luminance : (mdcv[9] * 10_000.0).round() as u32,
+            });
+        }
+        if clli.len() == 2 {
+            info.content_light_level = Some(png::ContentLightLevelInfo {
+                max_content_light_level : (clli[0] * 10_000.0).round() as u32,
+                max_frame_average_light_level : (clli[1] * 10_000.0).round() as u32,
+            });
         }
         let mut encoder = png::Encoder::with_info(output, info)?;
         compression.apply(&mut encoder);
@@ -853,6 +961,8 @@ impl StreamWriter {
 /// This provides a public C++ API for encoding a PNG image.
 ///
 /// `icc_profile` set to an empty slice acts as null / `None`.
+/// `mdcv` set to an empty slice acts as null / `None`.
+/// `clli` set to an empty slice acts as null / `None`.
 fn new_writer(
     output: cxx::UniquePtr<ffi::WriteTrait>,
     width: u32,
@@ -861,6 +971,8 @@ fn new_writer(
     bits_per_component: u8,
     compression: ffi::Compression,
     icc_profile: &[u8],
+    mdcv: &[f32],
+    clli: &[f32],
 ) -> Box<ResultOfWriter> {
     Box::new(ResultOfWriter(Writer::new(
         output,
@@ -870,6 +982,8 @@ fn new_writer(
         bits_per_component,
         compression,
         icc_profile,
+        mdcv,
+        clli,
     )))
 }
 
