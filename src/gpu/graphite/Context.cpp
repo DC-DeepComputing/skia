@@ -181,7 +181,7 @@ bool Context::finishInitialization() {
         return false;
     }
     if (result == StaticBufferManager::FinishResult::kSuccess &&
-        !fQueueManager->submitToGpu()) {
+        !fQueueManager->submitToGpu(graphite::SubmitInfo())) {
         SKGPU_LOG_W("Failed to submit initial command buffer for Context creation.\n");
         return false;
     } // else result was kNoWork so skip submitting to the GPU
@@ -238,17 +238,28 @@ InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     return fQueueManager->addRecording(info, this);
 }
 
+bool Context::submit(const SubmitInfo &submitInfo) {
+    ASSERT_SINGLE_OWNER
+
+    SubmitInfo usedSubmitInfo = submitInfo;
+    if (usedSubmitInfo.fSync == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
+        SKGPU_LOG_E("SyncToCpu::kYes not supported with ContextOptions::fNeverYieldToWebGPU. "
+                    "The parameter is ignored and no synchronization will occur.");
+        usedSubmitInfo.fSync = SyncToCpu::kNo;
+    }
+    bool success = fQueueManager->submitToGpu(usedSubmitInfo);
+    this->checkForFinishedWork(usedSubmitInfo.fSync);
+    return success;
+}
+
 bool Context::submit(SyncToCpu syncToCpu) {
     ASSERT_SINGLE_OWNER
 
-    if (syncToCpu == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
-        SKGPU_LOG_E("SyncToCpu::kYes not supported with ContextOptions::fNeverYieldToWebGPU. "
-                    "The parameter is ignored and no synchronization will occur.");
-        syncToCpu = SyncToCpu::kNo;
-    }
-    bool success = fQueueManager->submitToGpu();
-    this->checkForFinishedWork(syncToCpu);
-    return success;
+    SubmitInfo submitInfo;
+    submitInfo.fSync = syncToCpu;
+    submitInfo.fMarkBoundary = MarkFrameBoundary::kNo;
+    submitInfo.fFrameID = 0;
+    return submit(submitInfo);
 }
 
 bool Context::hasUnfinishedGpuWork() const { return fQueueManager->hasUnfinishedGpuWork(); }
