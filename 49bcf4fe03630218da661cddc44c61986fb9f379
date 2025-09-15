@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99221de9_d2c5588c",
+        "filename": "relnotes/graphite_submitinfo.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T18:50:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b32b4557_70d659b3",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28d313ab_d0479d40",
@@ -69,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02f5e090_2d743188",
+        "filename": "relnotes/graphite_submitinfo.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T18:50:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28d313ab_d0479d40",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4453097b_a63fcae3",
@@ -82,6 +118,24 @@
       "writtenOn": "2025-09-15T16:26:31Z",
       "side": 1,
       "message": "nit: Since `submitToGpu` does need to worry about `fSync`, it could be a good idea to use an internal struct that\u0027s the same as `SubmitInfo` minus `fSync`; perhaps just directly call it `FrameBoundary`, and pass that to the backends instead.",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99fa6b96_d01555d4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T18:50:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4453097b_a63fcae3",
       "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +163,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "558f5078_9213435a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T18:50:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26076192_233633ac",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 52
+      },
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a094e199_8139d38d",
@@ -122,6 +200,24 @@
       "writtenOn": "2025-09-15T16:26:31Z",
       "side": 1,
       "message": "To make sure the implementation is correct here, please augment the tests in VkPreferredFeaturesTest.cpp.",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cfa6d13_c8b06458",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-15T18:50:59Z",
+      "side": 1,
+      "message": "i believe i\u0027ve addressed this but pls checked if coverage is good enough",
+      "parentUuid": "a094e199_8139d38d",
       "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
