@@ -220,6 +220,24 @@
       "parentUuid": "a094e199_8139d38d",
       "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb5dc1e_87bd6a74",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-15T18:57:44Z",
+      "side": 1,
+      "message": "Looks good, thanks!",
+      "parentUuid": "2cfa6d13_c8b06458",
+      "revId": "49bcf4fe03630218da661cddc44c61986fb9f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
