@@ -366,6 +366,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41adb3e6_a7ba9f30",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-15T11:42:08Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "daab4d22_ca7fd27c",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 35
+      },
+      "revId": "f5d471106806bb8132348ee4e72824677b20d822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14a57c23_c4f89e7b",
