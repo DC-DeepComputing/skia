@@ -50,10 +50,15 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+    sk_sp<GraphicsPipeline> findGraphicsPipeline1(
         const UniqueKey&,
         SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone,
         uint32_t* compilationID = nullptr) SK_EXCLUDES(fSpinLock);
+
+    sk_sp<GraphicsPipeline> findGraphicsPipeline2(
+            const UniqueKey&,
+            SkEnumBitMask<PipelineCreationFlags>,
+            uint32_t *compilationID = nullptr);
 
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
