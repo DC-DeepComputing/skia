@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7682b519_8cc82427",
+        "filename": "tests/ExecutorTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-16T14:17:17Z",
+      "side": 1,
+      "message": "super nit: Could this be done with `atomicAdd` and `atomicLoad` instead? The spinlock here seems wasteful?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 6
+      },
+      "revId": "633580f61fd4067db0d870b3d3bd308ff2f64266",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
