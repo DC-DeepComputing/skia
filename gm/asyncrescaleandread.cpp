@@ -170,7 +170,7 @@ protected:
                                                        rescaleMode,
                                                        AsyncCallback,
                                                        asyncContext);
-            graphiteContext->submit();
+            graphiteContext->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary:kNo, 0u});
             while (!asyncContext->fCalled) {
                 graphiteContext->checkAsyncWorkCompletion();
                 if (this->graphiteTestContext()) {
@@ -263,7 +263,7 @@ protected:
                                                                  AsyncCallback,
                                                                  &asyncContext);
             }
-            graphiteContext->submit();
+            graphiteContext->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary:kNo, 0u});
             while (!asyncContext.fCalled) {
                 graphiteContext->checkAsyncWorkCompletion();
                 if (this->graphiteTestContext()) {
