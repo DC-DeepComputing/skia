@@ -50,6 +50,24 @@
       "message": "I took this over in https://skia-review.googlesource.com/c/skia/+/1055656 because I think this is a good solution, but I wanted to be more precise (and add some docs that had been missing).",
       "revId": "4c421c24013e037e42cc7189693f07b808cf21e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22470149_d82c8672",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4323879
+      },
+      "writtenOn": "2025-09-16T14:13:06Z",
+      "side": 1,
+      "message": "Thank you. This performance issue has been bothering us for a long time. After we raised an issue at https://partnerissuetracker.corp.google.com/issues/444322854, this problem can be resolved once the code is merged.",
+      "parentUuid": "72851b6e_68b0ae01",
+      "revId": "4c421c24013e037e42cc7189693f07b808cf21e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
