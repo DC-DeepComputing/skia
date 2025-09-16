@@ -1101,7 +1101,8 @@ static bool direct_filter_mask(GrRecordingContext* context,
     if (!viewMatrix.rectStaysRect()) {
         return false;
     }
-    if (!devRRect.has_value() || !SkRRectPriv::AllCornersCircular(*devRRect)) {
+    if (!devRRect.has_value() || !SkRRectPriv::AllCornersCircular(*devRRect) ||
+        (*devRRect).isRect()) {
         return false;
     }
 
