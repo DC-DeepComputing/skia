@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c0e0ce_25674a59",
+        "filename": "src/base/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 0,
+      "message": "It seems the ffi depends on core, not base. That\u0027s why this visibility isn\u0027t needed anymore.",
+      "range": {
+        "startLine": 110,
+        "startChar": 24,
+        "endLine": 110,
+        "endChar": 32
+      },
+      "revId": "01b0ede33ae9fb451a3995be554630ddaab28da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

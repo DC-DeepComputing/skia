@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c967d747_d9521dcc",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2992,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee74f056_5bb943bb",
+      "range": {
+        "startLine": 2991,
+        "startChar": 0,
+        "endLine": 2992,
+        "endChar": 23
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66381fef_a0106600",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-09-16T15:48:46Z",
       "side": 1,
       "message": "Not sure why this change is here.  AFAICT this change appeared after I\u0027ve run `go run infra/bots/gen_tasks.go` (and I get the same results if I revert the changes to `infra/bots/tasks.json` and rerun  `go run infra/bots/gen_tasks.go`).",
+      "range": {
+        "startLine": 86741,
+        "startChar": 57,
+        "endLine": 86741,
+        "endChar": 58
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22e98d23_a411f2dd",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 86741,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "Ok, this is fine. https://github.com/google/skia/blob/main/infra/bots/gen_tasks_logic/compile_cas.go scans for all .cpp files to go into this \"compile\" CAS spec. When folders get too bug, it abbreviates them instead of listing them explicitly.\nhttps://github.com/google/skia/blob/283a8ff3bca560b68b5fa5b9444c9484436c261e/infra/bots/gen_tasks_logic/compile_cas.go#L20-L25",
+      "parentUuid": "66381fef_a0106600",
       "range": {
         "startLine": 86741,
         "startChar": 57,
@@ -82,6 +130,122 @@
         "startChar": 19,
         "endLine": 13,
         "endChar": 20
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d8808b8_c326ff31",
+        "filename": "rust/png/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "Yes. We hadn\u0027t synced the rust code into G3 before, but now it *will* be synced there. And we need this in those files that get synced.",
+      "parentUuid": "ad732396_681353f7",
+      "range": {
+        "startLine": 13,
+        "startChar": 19,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42dc5dd7_34390bc7",
+        "filename": "rust/png/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "nit: just `__pkg__` here and below.",
+      "range": {
+        "startLine": 34,
+        "startChar": 21,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e82618_9d747b61",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "I\u0027m surprised our presubmits didn\u0027t re-sort these headers. Maybe run\n`git clang-format origin/main` to see if that resorts them?",
+      "range": {
+        "startLine": 14,
+        "startChar": 10,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07fbd0a8_59854489",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "I think we can remove this entire visibility list.",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c4da465_875f8b12",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T17:17:40Z",
+      "side": 1,
+      "message": "Make this visible to `//:__pkg__` and add an alias to this package so folks can use this (it\u0027s part of our public API now)",
+      "range": {
+        "startLine": 179,
+        "startChar": 4,
+        "endLine": 179,
+        "endChar": 12
       },
       "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
