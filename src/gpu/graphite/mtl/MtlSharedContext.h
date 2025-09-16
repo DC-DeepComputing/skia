@@ -38,10 +38,10 @@ public:
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
+    sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
-
 
 private:
 
