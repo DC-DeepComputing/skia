@@ -939,6 +939,10 @@ public:
 
     SkPathIter iter() const;
 
+    SkPathBuilder& pathops_reversePathTo(const SkPath& path) {
+        return this->privateReversePathTo(path);
+    }
+
 private:
     SkPathRef::PointsArray fPts;
     SkPathRef::VerbsArray fVerbs;
