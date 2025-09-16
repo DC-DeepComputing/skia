@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 namespace skgpu::graphite {
 
@@ -36,11 +37,11 @@ uint32_t PipelineManager::Traits::Hash(const UniqueKey& pipelineKey) {
 }
 
 GraphicsPipelineHandle PipelineManager::createHandle(
-        ResourceProvider* resourceProvider,
+        SharedContext* sharedContext,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
-    const Caps* caps = resourceProvider->caps();
+    const Caps* caps = sharedContext->caps();
 
     UniqueKey pipelineKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
 
@@ -50,7 +51,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(task));
     }
 
-    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findGraphicsPipeline(
+    sk_sp<GraphicsPipeline> pipeline = sharedContext->findGraphicsPipeline(
             pipelineKey,
             pipelineCreationFlags);
     if (pipeline) {
