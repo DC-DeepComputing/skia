@@ -16,6 +16,29 @@
       "message": "I\u0027ve confirmed that empty-bounds paths are already detected as convex, so no need for the extra check on (old) 2262.\n\nPTAL",
       "revId": "b7c0153ddc4f3ceeb8d6452f8925f6c6d7e77fce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10ac48d_de57d5c3",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2186,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:56:24Z",
+      "side": 1,
+      "message": "Aren\u0027t SkASSERT calls already guarded with #ifdef SK_DEBUG? Do we need this also?",
+      "range": {
+        "startLine": 2186,
+        "startChar": 7,
+        "endLine": 2186,
+        "endChar": 15
+      },
+      "revId": "b7c0153ddc4f3ceeb8d6452f8925f6c6d7e77fce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
