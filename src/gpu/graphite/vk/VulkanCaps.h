@@ -120,6 +120,9 @@ public:
     bool mustLoadFullImageForMSAA() const { return fMustLoadFullImageForMSAA; }
     bool avoidMSAA() const { return fAvoidMSAA; }
 
+    bool supportsFrameBoundary() const { return fSupportsFrameBoundary; }
+
+
 private:
     void init(const ContextOptions&,
               const skgpu::VulkanInterface*,
@@ -153,6 +156,8 @@ private:
         bool fMultisampledRenderToSingleSampled = false;
         // From VkPhysicalDeviceHostImageCopyFeatures:
         bool fHostImageCopy = false;
+        // From VkPhysicalDeviceFrameBoundaryFeaturesEXT:
+        bool fFrameBoundary = false;
     };
     EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2* features,
                                        uint32_t physicalDeviceVersion);
@@ -321,6 +326,7 @@ private:
     bool fSupportsDeviceFaultInfo = false;
     bool fSupportsRasterizationOrderColorAttachmentAccess = false;
     bool fIsInputAttachmentReadCoherent = false;
+    bool fSupportsFrameBoundary = false;
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;

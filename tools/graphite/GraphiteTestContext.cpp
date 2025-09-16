@@ -43,7 +43,7 @@ void GraphiteTestContext::submitRecordingAndWaitOnSync(skgpu::graphite::Context*
     info.fFinishedProc = sk_gpu_test::FlushFinishTracker::FlushFinishedResult;
     context->insertRecording(info);
 
-    context->submit(skgpu::graphite::SyncToCpu::kNo);
+    context->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
 
     fCurrentFlushIdx = (fCurrentFlushIdx + 1) % std::size(fFinishTrackers);
 }
@@ -52,7 +52,7 @@ void GraphiteTestContext::syncedSubmit(skgpu::graphite::Context* context) {
     skgpu::graphite::SyncToCpu sync = context->priv().caps()->allowCpuSync()
                                               ? skgpu::graphite::SyncToCpu::kYes
                                               : skgpu::graphite::SyncToCpu::kNo;
-    context->submit(sync);
+    context->submit({sync, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
     if (sync == skgpu::graphite::SyncToCpu::kNo) {
         while (context->hasUnfinishedGpuWork()) {
             this->tick();
