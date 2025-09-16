@@ -182,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bd1081f_2e3cf566",
+        "filename": "rust/png/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T19:35:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42dc5dd7_34390bc7",
+      "range": {
+        "startLine": 34,
+        "startChar": 21,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05e82618_9d747b61",
@@ -195,6 +219,30 @@
       "writtenOn": "2025-09-16T17:17:40Z",
       "side": 1,
       "message": "I\u0027m surprised our presubmits didn\u0027t re-sort these headers. Maybe run\n`git clang-format origin/main` to see if that resorts them?",
+      "range": {
+        "startLine": 14,
+        "startChar": 10,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda97622_419d0cbe",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T19:35:12Z",
+      "side": 1,
+      "message": "I am not sure how this got ignored by the tools.  I think one reason may be because `git diff origin/main` (with `--stat`, or `--name-only`) doesn\u0027t list the renamed files.  But then I\u0027ve explicitly run `clang-format src/codec/SkPngRustCodec.cpp` and it also didn\u0027t do anything.\n\nFWIW I\u0027ve reordered these headers manually (also in `src/encode/SkPngRustEncoderImpl.cpp).  Is that good enough?  (There seems to be a remaining issue in clang-format or presubmits, but I have trouble figuring out what it is...)\n\nI also tried to repro in a small CL but couldn\u0027t so far.\n\n* In CHromium, `git mv some/dir/foo.cc some/dir/foo2.cc` (+ rename in `BUILD.gn`), edit `foo2.cc` to mis-order `#include`s, `git commit -a -m .`, `git cl format` works fine\n* But in Skia this fails to reformat:\n    - `git checkout origin/main`\n    - `git checkout -b git-mv-then-git-cl-format-test`\n    - `git branch --set-upstream-to\u003dorigin/main`\n    - `git mv src/codec/SkPngCodec.cpp src/codec/SkPngCodec2.cpp`\n    - `vim src/codec/SkPngCodec2.cpp` (mess up the order of `#include`s)\n    - `git commit -a -m .`\n    - `git cl format` (nothing happens)\n    - `clang-format src/codec/SkPngCodec2.cpp` (nothing happens)\n\n¯\\\\_(ツ)_/¯",
+      "parentUuid": "05e82618_9d747b61",
       "range": {
         "startLine": 14,
         "startChar": 10,
@@ -228,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1dfa470_3a3d7cb4",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T19:35:12Z",
+      "side": 1,
+      "message": "Good catch.  Done.",
+      "parentUuid": "07fbd0a8_59854489",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c4da465_875f8b12",
@@ -241,6 +313,30 @@
       "writtenOn": "2025-09-16T17:17:40Z",
       "side": 1,
       "message": "Make this visible to `//:__pkg__` and add an alias to this package so folks can use this (it\u0027s part of our public API now)",
+      "range": {
+        "startLine": 179,
+        "startChar": 4,
+        "endLine": 179,
+        "endChar": 12
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a53035b_efdae310",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T19:35:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c4da465_875f8b12",
       "range": {
         "startLine": 179,
         "startChar": 4,
