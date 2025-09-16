@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ac313e_533a3d6e",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T14:19:27Z",
+      "side": 1,
+      "message": "Can\u0027t this go before/outside the loop?",
+      "range": {
+        "startLine": 647,
+        "startChar": 21,
+        "endLine": 647,
+        "endChar": 36
+      },
+      "revId": "c362e0c63ece933439d80eedcc218071b0f50f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
