@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "267b55ee_14ab9d6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-09-16T17:27:15Z",
+      "side": 1,
+      "message": "Thanks!\n\n\u003e or can be there quickly\n\nI don\u0027t have cycles to dive into this, but I\u0027m slightly cautious about whether this could potentially cause tearing issues from synchronization issues between HWUI\u0027s UI vs. rendering threads? I have a vague recollection of concerns about that w.r.t. BitmapShaders. Looping in @jreck@google.com to hopefully assuage that fear.",
+      "revId": "24de00436cf931ab476f940d86a5a129059ea2ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
