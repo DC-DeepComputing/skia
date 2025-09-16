@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189931bb_c86ddffe",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:42:59Z",
+      "side": 1,
+      "message": "nit: if this doesn\u0027t change as the loop runs, pull it out before the loop as a const (although compilers might be smart enough to figure that out).",
+      "range": {
+        "startLine": 647,
+        "startChar": 61,
+        "endLine": 647,
+        "endChar": 87
+      },
+      "revId": "bcf1941168ac4d7b83693270d13a000cd88513ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf53e99e_b64587a8",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:42:59Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 770,
+        "startChar": 4,
+        "endLine": 770,
+        "endChar": 10
+      },
+      "revId": "bcf1941168ac4d7b83693270d13a000cd88513ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a9224a_6d705260",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:42:59Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 785,
+        "startChar": 4,
+        "endLine": 785,
+        "endChar": 11
+      },
+      "revId": "bcf1941168ac4d7b83693270d13a000cd88513ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb09eaa6_7d75a192",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:42:59Z",
+      "side": 1,
+      "message": "suggestion: add a `skiatest::ReporterContext rc(r, resource);` here so if the test fails, we know which file it failed on from the output logs",
+      "revId": "bcf1941168ac4d7b83693270d13a000cd88513ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
