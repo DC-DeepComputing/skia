@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f0692b4_7d4f82f6",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-16T19:42:09Z",
+      "side": 1,
+      "message": "This must remain virtual to allow existing clients (e.g., Android) to override it.",
+      "revId": "31cc811ad92b6207edb914cb5228d8e41048f63e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
