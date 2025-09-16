@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -69,7 +70,10 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
         , fDevice(backendContext.fDevice)
         , fQueue(backendContext.fQueue)
         , fTick(backendContext.fTick)
-        , fNoopFragment(std::move(noopFragment)) {}
+        , fNoopFragment(std::move(noopFragment)) {
+    this->getOrCreateUniformBuffersBindGroupLayout();
+    this->getOrCreateSingleTextureSamplerBindGroupLayout();
+}
 
 DawnSharedContext::~DawnSharedContext() {
     // need to clear out resources before any allocator is removed
@@ -86,11 +90,110 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       resourceBudget));
 }
 
+sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
+        ResourceProvider* resourceProvider,
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return DawnGraphicsPipeline::Make(this,
+                                      resourceProvider,
+                                      runtimeDict,
+                                      pipelineKey,
+                                      pipelineDesc,
+                                      renderPassDesc,
+                                      pipelineCreationFlags,
+                                      compilationID);
+}
+
 void DawnSharedContext::deviceTick(Context* context) {
 #if !defined(__EMSCRIPTEN__)
     this->device().Tick();
 #endif
     context->checkAsyncWorkCompletion();
 };
+
+const wgpu::BindGroupLayout& DawnSharedContext::getOrCreateUniformBuffersBindGroupLayout() const {
+    if (fUniformBuffersBindGroupLayout) {
+        return fUniformBuffersBindGroupLayout;
+    }
+
+    std::array<wgpu::BindGroupLayoutEntry, 4> entries;
+    entries[0].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    entries[0].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
+    entries[0].buffer.type = wgpu::BufferBindingType::Uniform;
+    entries[0].buffer.hasDynamicOffset = true;
+    entries[0].buffer.minBindingSize = 0;
+
+    entries[1].binding = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+    entries[1].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
+    entries[1].buffer.type = this->caps()->storageBufferSupport()
+                                     ? wgpu::BufferBindingType::ReadOnlyStorage
+                                     : wgpu::BufferBindingType::Uniform;
+    entries[1].buffer.hasDynamicOffset = true;
+    entries[1].buffer.minBindingSize = 0;
+
+    entries[2].binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+    entries[2].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
+    entries[2].buffer.type = this->caps()->storageBufferSupport()
+                                     ? wgpu::BufferBindingType::ReadOnlyStorage
+                                     : wgpu::BufferBindingType::Uniform;
+    entries[2].buffer.hasDynamicOffset = true;
+    entries[2].buffer.minBindingSize = 0;
+
+    // Gradient buffer will only be used when storage buffers are preferred, else large
+    // gradients use a texture fallback, set binding type as a uniform when not in use to
+    // satisfy any binding type restricions for non-supported ssbo devices.
+    entries[3].binding = DawnGraphicsPipeline::kGradientBufferIndex;
+    entries[3].visibility = wgpu::ShaderStage::Fragment;
+    entries[3].buffer.type = this->caps()->storageBufferSupport()
+                                     ? wgpu::BufferBindingType::ReadOnlyStorage
+                                     : wgpu::BufferBindingType::Uniform;
+    entries[3].buffer.hasDynamicOffset = true;
+    entries[3].buffer.minBindingSize = 0;
+
+    wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
+    if (this->caps()->setBackendLabels()) {
+        groupLayoutDesc.label = "Uniform buffers bind group layout";
+    }
+
+    groupLayoutDesc.entryCount = entries.size();
+    groupLayoutDesc.entries = entries.data();
+    fUniformBuffersBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
+
+    return fUniformBuffersBindGroupLayout;
+}
+
+const wgpu::BindGroupLayout& DawnSharedContext::getOrCreateSingleTextureSamplerBindGroupLayout() const {
+    if (fSingleTextureSamplerBindGroupLayout) {
+        return fSingleTextureSamplerBindGroupLayout;
+    }
+
+    std::array<wgpu::BindGroupLayoutEntry, 2> entries;
+
+    entries[0].binding = 0;
+    entries[0].visibility = wgpu::ShaderStage::Fragment;
+    entries[0].sampler.type = wgpu::SamplerBindingType::Filtering;
+
+    entries[1].binding = 1;
+    entries[1].visibility = wgpu::ShaderStage::Fragment;
+    entries[1].texture.sampleType = wgpu::TextureSampleType::Float;
+    entries[1].texture.viewDimension = wgpu::TextureViewDimension::e2D;
+    entries[1].texture.multisampled = false;
+
+    wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
+    if (this->caps()->setBackendLabels()) {
+        groupLayoutDesc.label = "Single texture + sampler bind group layout";
+    }
+
+    groupLayoutDesc.entryCount = entries.size();
+    groupLayoutDesc.entries = entries.data();
+    fSingleTextureSamplerBindGroupLayout =
+            this->device().CreateBindGroupLayout(&groupLayoutDesc);
+
+    return fSingleTextureSamplerBindGroupLayout;
+}
 
 } // namespace skgpu::graphite

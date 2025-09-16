@@ -70,7 +70,7 @@ protected:
             case 2:
                 xOffset += 10;
                 break;
-            }
+        }
         }
 
     }

@@ -92,6 +92,10 @@ public:
     }
 
     ~SkThreadPool() override {
+        SkDebugf("~SkThreadPool: TaskList counts: %d %d\n",
+            (int) fWorkLists[0].size(),
+            fNumWorkLists == 2 ? (int) fWorkLists[1].size() : -1);
+
         // Signal each thread that it's time to shut down.
         for (int i = 0; i < fThreads.size(); i++) {
             // Add the notification to the highest priority list
@@ -101,6 +105,10 @@ public:
         for (int i = 0; i < fThreads.size(); i++) {
             fThreads[i].join();
         }
+
+        SkDebugf("~SkThreadPool: TaskList counts: %d %d\n",
+            (int) fWorkLists[0].size(),
+            fNumWorkLists == 2 ? (int) fWorkLists[1].size() : -1);
     }
 
     void add(std::function<void(void)> work, int workList) override {
@@ -139,10 +147,14 @@ private:
         {
             SkAutoMutexExclusive lock(fWorkLock);
 
+            SkDebugf("TaskList counts: %d %d\n",
+                (int) fWorkLists[0].size(),
+                fNumWorkLists == 2 ? (int) fWorkLists[1].size() : -1);
             for (int i = 0; i < fNumWorkLists; ++i) {
                 if (!fWorkLists[i].empty()) {
                     workAvailable = true;
                     work = pop(&fWorkLists[i]);
+//                    fFoo[i]++;
                     break;
                 }
             }
@@ -175,6 +187,7 @@ private:
     TArray<std::thread>         fThreads;
     const int                   fNumWorkLists; // guaranteed >= 1
     std::unique_ptr<WorkList[]> fWorkLists SK_GUARDED_BY(fWorkLock);
+//    int                         fFoo[2] SK_GUARDED_BY(fWorkLock) = { 0, 0 };
     Lock                        fWorkLock;
     SkSemaphore                 fWorkAvailable;
     const bool                  fAllowBorrowing;
