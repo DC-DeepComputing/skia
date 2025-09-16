@@ -56,8 +56,8 @@ public:
     const RendererProvider* rendererProvider() const {
         return fContext->fSharedContext->rendererProvider();
     }
-    ResourceProvider* resourceProvider() const {
-        return fContext->fResourceProvider.get();
+    ResourceProvider* resourceProvider1() const {
+        return fContext->fResourceProvider1.get();
     }
     SharedContext* sharedContext() {
         return fContext->fSharedContext.get();
@@ -113,7 +113,7 @@ class ContextCtorAccessor {
 public:
     static std::unique_ptr<Context> MakeContext(sk_sp<SharedContext>,
                                                 std::unique_ptr<QueueManager>,
-                                                const ContextOptions&);
+                                                const ContextOptions&, bool);
 };
 
 } // namespace skgpu::graphite

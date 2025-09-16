@@ -223,7 +223,7 @@ public:
     // buffer.
     BindBufferInfo add(DawnCommandBuffer* cb, UniformDataBlock intrinsicValues);
 
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    void purgeResourcesNotUsedSince7(StdSteadyClock::time_point purgeTime) {
         auto bufferNotUsedSince = [purgeTime, this](IntrinsicBuffer* buffer) {
             // We always keep the current buffer as it is likely to be used again soon.
             return buffer != fCurrentBuffer && buffer->lastAccessTime() < purgeTime;
@@ -231,7 +231,7 @@ public:
         this->purgeBuffersIf(bufferNotUsedSince);
     }
 
-    void freeGpuResources() { this->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now()); }
+    void freeGpuResources() { this->purgeResourcesNotUsedSince7(skgpu::StdSteadyClock::now()); }
 
 private:
     // The max number of intrinsic buffers to keep around in the cache.
@@ -241,7 +241,7 @@ private:
     template<typename T> void purgeBuffersIf(T pred);
 
     DawnResourceProvider* const fResourceProvider;
-    // The current buffer being filled up, as well as the how much of it has been written to.
+    // The current buffer being filled up, as well as how much of it has been written to.
     IntrinsicBuffer* fCurrentBuffer = nullptr;
 
     // All cached intrinsic buffers, in LRU order.
@@ -558,6 +558,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }
 
+#if 0
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -574,6 +575,7 @@ sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
                                       pipelineCreationFlags,
                                       compilationID);
 }
+#endif
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
         const ComputePipelineDesc& desc) {
@@ -636,6 +638,7 @@ sk_sp<DawnBuffer> DawnResourceProvider::findOrCreateDawnBuffer(size_t size,
     return sk_sp<DawnBuffer>(ptr);
 }
 
+#if 0
 const wgpu::BindGroupLayout& DawnResourceProvider::getOrCreateUniformBuffersBindGroupLayout() {
     SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
@@ -722,6 +725,7 @@ DawnResourceProvider::getOrCreateSingleTextureSamplerBindGroupLayout() {
 
     return fSingleTextureSamplerBindGroupLayout;
 }
+#endif
 
 const wgpu::Buffer& DawnResourceProvider::getOrCreateNullBuffer() {
     if (!fNullBuffer) {
@@ -779,7 +783,7 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateUniformBuffersBindGroup
     }
 
     wgpu::BindGroupDescriptor desc;
-    desc.layout = this->getOrCreateUniformBuffersBindGroupLayout();
+    desc.layout = this->dawnSharedContext()->getOrCreateUniformBuffersBindGroupLayout();
     desc.entryCount = entries.size();
     desc.entries = entries.data();
 
@@ -808,7 +812,7 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBin
     entries[1].textureView = texture->sampleTextureView();
 
     wgpu::BindGroupDescriptor desc;
-    desc.layout = getOrCreateSingleTextureSamplerBindGroupLayout();
+    desc.layout = this->dawnSharedContext()->getOrCreateSingleTextureSamplerBindGroupLayout();
     desc.entryCount = entries.size();
     desc.entries = entries.data();
 
@@ -830,7 +834,7 @@ void DawnResourceProvider::onFreeGpuResources() {
 }
 
 void DawnResourceProvider::onPurgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
-    fIntrinsicConstantsManager->purgeResourcesNotUsedSince(purgeTime);
+    fIntrinsicConstantsManager->purgeResourcesNotUsedSince7(purgeTime);
 }
 
 BindBufferInfo DawnResourceProvider::findOrCreateIntrinsicBindBufferInfo(

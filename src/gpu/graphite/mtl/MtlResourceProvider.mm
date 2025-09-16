@@ -27,6 +27,8 @@
 #include "src/gpu/graphite/mtl/MtlTexture.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
+#include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
+
 #import <Metal/Metal.h>
 
 namespace skgpu::graphite {
@@ -57,6 +59,7 @@ sk_sp<MtlGraphicsPipeline> MtlResourceProvider::findOrCreateLoadMSAAPipeline(
     return pipeline;
 }
 
+#if 0
 sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -68,6 +71,7 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
                                      runtimeDict, pipelineKey, pipelineDesc, renderPassDesc,
                                      pipelineCreationFlags, compilationID);
 }
+#endif
 
 sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(
         const ComputePipelineDesc& pipelineDesc) {
