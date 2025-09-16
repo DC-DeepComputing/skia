@@ -95,13 +95,6 @@ sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
     return MtlBuffer::Make(this->mtlSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> MtlResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
-    return MtlSampler::Make(this->mtlSharedContext(),
-                            samplerDesc.samplingOptions(),
-                            samplerDesc.tileModeX(),
-                            samplerDesc.tileModeY());
-}
-
 BackendTexture MtlResourceProvider::onCreateBackendTexture(SkISize dimensions,
                                                            const TextureInfo& info) {
     sk_cfp<id<MTLTexture>> texture = MtlTexture::MakeMtlTexture(this->mtlSharedContext(),

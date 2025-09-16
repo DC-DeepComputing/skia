@@ -60,6 +60,7 @@ public:
     virtual std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
+    virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
     // Called by Context::isContextLost(). Returns true if the backend-specific SharedContext has
     // gotten into an unrecoverable, lost state.
@@ -91,6 +92,11 @@ private:
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+
+    mutable SkSpinlock fSpinLock;
+    // This is a thread-safe cache that is used for the backend-specific resources needed for
+    // Pipeline creation. As such, it is expected to be low contention and small.
+    sk_sp<ResourceCache> fResourceCache SK_GUARDED_BY(fSpinLock);
 };
 
 } // namespace skgpu::graphite

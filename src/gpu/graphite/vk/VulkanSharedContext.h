@@ -43,6 +43,7 @@ public:
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
+    sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
     bool checkVkResult(VkResult result) const;
 
@@ -58,6 +59,9 @@ private:
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
+
+    sk_sp<VulkanYcbcrConversion> findOrCreateCompatibleYcbcrConversion(
+            const VulkanYcbcrConversionInfo& ycbcrInfo) const;
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;

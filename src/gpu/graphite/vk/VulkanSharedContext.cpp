@@ -138,6 +138,58 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
                                        resourceBudget));
 }
 
+sk_sp<Sampler> VulkanSharedContext::createSampler(const SamplerDesc& samplerDesc) {
+    sk_sp<VulkanYcbcrConversion> ycbcrConversion = nullptr;
+
+    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
+    const bool usesYcbcrConversion = samplerDesc.isImmutable();
+    if (usesYcbcrConversion) {
+        VulkanYcbcrConversionInfo ycbcrInfo = VulkanYcbcrConversion::FromImmutableSamplerInfo(
+                samplerDesc.immutableSamplerInfo());
+        ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(ycbcrInfo);
+        if (!ycbcrConversion) {
+            return nullptr;
+        }
+    }
+
+    return VulkanSampler::Make(this,
+                               samplerDesc,
+                               std::move(ycbcrConversion));
+}
+
+sk_sp<VulkanYcbcrConversion> VulkanSharedContext::findOrCreateCompatibleYcbcrConversion(
+        const VulkanYcbcrConversionInfo& ycbcrInfo) const {
+    static constexpr Budgeted kBudgeted = Budgeted::kYes;
+    static constexpr Shareable kShareable = Shareable::kYes;
+    if (!ycbcrInfo.isValid()) {
+        return nullptr;
+    }
+
+    GraphiteResourceKey key;
+    {
+        static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+        static constexpr int kKeySize = 3;
+
+        GraphiteResourceKey::Builder builder(&key, kType, kKeySize);
+        ImmutableSamplerInfo packedInfo = VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrInfo);
+        builder[0] = packedInfo.fNonFormatYcbcrConversionInfo;
+        builder[1] = (uint32_t) packedInfo.fFormat;
+        builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
+    }
+
+    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+        return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
+    }
+
+    auto ycbcrConversion = VulkanYcbcrConversion::Make(this, ycbcrInfo);
+    if (!ycbcrConversion) {
+        return nullptr;
+    }
+
+    fResourceCache->insertResource(ycbcrConversion.get(), key, kBudgeted, kShareable);
+    return ycbcrConversion;
+}
+
 bool VulkanSharedContext::checkVkResult(VkResult result) const {
     switch (result) {
     case VK_SUCCESS:

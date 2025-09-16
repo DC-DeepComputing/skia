@@ -12,6 +12,7 @@
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
@@ -84,6 +85,10 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       singleOwner,
                                                                       recorderID,
                                                                       resourceBudget));
+}
+
+sk_sp<Sampler> DawnSharedContext::createSampler(const SamplerDesc& samplerDesc) {
+    return DawnSampler::Make(this, samplerDesc);
 }
 
 void DawnSharedContext::deviceTick(Context* context) {
