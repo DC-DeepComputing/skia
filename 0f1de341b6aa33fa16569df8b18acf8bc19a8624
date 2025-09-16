@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d675e0e_3d6c9635",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Added a note indicating that even SDR images can include HDR metadata (e.g, indicating how to \"inverse tone map\" when displayed on an HDR display).",
+      "parentUuid": "e1701663_9a9d4518",
+      "range": {
+        "startLine": 244,
+        "startChar": 46,
+        "endLine": 244,
+        "endChar": 50
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "146f28ba_a79163d9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2025-09-15T15:07:11Z",
       "side": 1,
       "message": "suggestion: Maybe add a reminder comment about how if the image is SDR, all the optional fields in Metadata will be empty? The other similar fields use null/non-null for that signal, so it might be less obvious at first in this case.",
+      "range": {
+        "startLine": 87,
+        "startChar": 46,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14db7e5c_de5996fc",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Updated the comment to be more clear that \"this is a container that may contain nothing\".\n\nOver in the `gfx::HDRMetadata` world, I passed around a bunch of `std::optional\u003cgfx::HDRMetadata\u003e`s at first, but that proved really cumbersome. That\u0027s what ended up informing this scheme.\n\n(And why in `skhdr::Metadata`, I don\u0027t expose what\u0027s actually stored, so I can maybe-in-the-future make it more lightweight by storing an `sk_sp\u003cSkData\u003e`).",
+      "parentUuid": "146f28ba_a79163d9",
       "range": {
         "startLine": 87,
         "startChar": 46,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bec7f99d_92bb8313",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Removed. (This was part of an earlier implementation that had setters, then I noticed nothing else had them).\n\nFor the ICC profile, I\u0027m not sure why it\u0027s not const (but I remember there being some issues with const `SkData`s somewhere). I also think that the `skcms_ICCProfile` interface (with tons of raw pointers, etc) is a bit dangerous and could use some updating.",
+      "parentUuid": "f25a48d7_5cbc7b97",
+      "range": {
+        "startLine": 269,
+        "startChar": 9,
+        "endLine": 269,
+        "endChar": 23
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdbdcacd_87cf934d",
         "filename": "src/codec/SkPngCodec.cpp",
         "patchSetId": 5
@@ -100,6 +172,30 @@
       "writtenOn": "2025-09-15T15:07:11Z",
       "side": 1,
       "message": "idea: Add a `skhdr::SDR()` static function that returns an empty metadata so it\u0027s a bit more clear from callsites that something doesn\u0027t have HDR.",
+      "range": {
+        "startLine": 901,
+        "startChar": 60,
+        "endLine": 901,
+        "endChar": 77
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25084aa6_05ed388c",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Added `skhdr::Metadata::MakeEmpty()` for this.",
+      "parentUuid": "cdbdcacd_87cf934d",
       "range": {
         "startLine": 901,
         "startChar": 60,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9968089a_1ff818d4",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3f052638_fe4163a0",
+      "range": {
+        "startLine": 321,
+        "startChar": 50,
+        "endLine": 321,
+        "endChar": 54
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6c9f063_8094b954",
         "filename": "src/encode/SkPngEncoderImpl.cpp",
         "patchSetId": 5
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a4bc6d9_f24d1534",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "It\u0027s a quirk of the `libpng` API that this is a non-const pointer, but it isn\u0027t written to. I added a note above about that.",
+      "parentUuid": "f6c9f063_8094b954",
+      "range": {
+        "startLine": 328,
+        "startChar": 54,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7e45068_4c24616b",
         "filename": "src/encode/SkPngEncoderImpl.cpp",
         "patchSetId": 5
@@ -169,6 +313,30 @@
       "writtenOn": "2025-09-15T15:07:11Z",
       "side": 1,
       "message": "Just to check, libpng copies the data during this call, right? Otherwise, the data object goes out of scope",
+      "range": {
+        "startLine": 332,
+        "startChar": 8,
+        "endLine": 332,
+        "endChar": 30
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da199d23_ddda0671",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Yes, I added a note about that (along with the strange non-const-ness). In particular:\n* libpng appends the chunks to its internal list of unknown chunks [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/libpng/pngset.c;l\u003d1232;drc\u003debf6d473ea1ee1963abd3afa4e18719b66be0719)\n* and then copies the `data` member [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/libpng/pngset.c;l\u003d1278;drc\u003debf6d473ea1ee1963abd3afa4e18719b66be0719)\n\nThe actual libpng documentation is very unclear on all of this. I carefully verified this behavior on libpng 1.6.22, which we switched to in 2016. Looking at the code before this upgrade ([here](https://codereview.chromium.org/2021403002/diff/230001/third_party/libpng/pngset.c)), it appears this was the behavior before that revision as well.",
+      "parentUuid": "f7e45068_4c24616b",
       "range": {
         "startLine": 332,
         "startChar": 8,

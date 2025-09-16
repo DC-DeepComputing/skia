@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0c05698_ea081d81",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2612,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T08:25:23Z",
+      "side": 1,
+      "message": "Added this test with Rust versions disabled (rather than wait for Rust to land then add the test).",
+      "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
