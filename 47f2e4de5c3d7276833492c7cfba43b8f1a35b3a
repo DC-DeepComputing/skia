@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd9421f_7994811f",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-16T18:00:45Z",
+      "side": 1,
+      "message": "Can we add a TODO here to add some tracking that links this picture to `surface`?",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 52
+      },
+      "revId": "47f2e4de5c3d7276833492c7cfba43b8f1a35b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc6a540_58d0cf18",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-16T18:00:45Z",
+      "side": 1,
+      "message": "There is logic inside `refCachedImage` that checks whether or not it needs to create a new one and calls `onNewImageSnapshot` if it does. I think we would only want to create the capture breakpoint if we were about to call onNewImageSnapshot.",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 42
+      },
+      "revId": "47f2e4de5c3d7276833492c7cfba43b8f1a35b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
