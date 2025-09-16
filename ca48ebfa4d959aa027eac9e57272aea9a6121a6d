@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb91bc5e_edf0f09a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-16T21:34:40Z",
+      "side": 1,
+      "message": "That one failing ASAN job is perma-failing on the tree",
+      "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
