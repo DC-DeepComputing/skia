@@ -118,7 +118,7 @@ public:
 
         if (fContext) {
             fContext->insertRecording({ recording.get() });
-            fContext->submit(skgpu::graphite::SyncToCpu::kYes);
+            fContext->submit({skgpu::graphite::SyncToCpu::kYes, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         }
 
         recording.reset();
@@ -136,7 +136,7 @@ public:
     }
 
     void submitAndWaitForCompletion(bool* completionMarker) override {
-        fContext->submit();
+        fContext->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         while (!*completionMarker) {
             fContext->checkAsyncWorkCompletion();
         }
