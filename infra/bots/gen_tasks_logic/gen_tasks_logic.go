@@ -471,9 +471,9 @@ func GenTasks(cfg *Config) {
 		Paths: []string{
 			// Source code.
 			"skia/example",
-			"skia/experimental/rust_png",
 			"skia/include",
 			"skia/modules",
+			"skia/rust",
 			"skia/src",
 			"skia/tests",
 			"skia/third_party",
@@ -1088,10 +1088,10 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			} else if b.IsLinux() {
 				gpu, ok := map[string]string{
 					// Intel drivers come from CIPD, so no need to specify the version here.
-					"IntelHD405":   "8086:22b1",
-					"QuadroP400":   "10de:1cb3-510.60.02",
-					"IntelIrisXe":  "8086:9a49",
-					"RadeonVega8":  "1002:1638-23.2.1",
+					"IntelHD405":  "8086:22b1",
+					"QuadroP400":  "10de:1cb3-510.60.02",
+					"IntelIrisXe": "8086:9a49",
+					"RadeonVega8": "1002:1638-23.2.1",
 				}[b.Parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Linux GPU mapping.", b.Parts["cpu_or_gpu_value"])
