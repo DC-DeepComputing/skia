@@ -81,6 +81,30 @@
       },
       "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bb3a912_131406df",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2629,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T18:53:59Z",
+      "side": 1,
+      "message": "We can only have one of them registered at a time, but both can be compiled in. When both (or even just one) is present, we can explicitly use `SkPngDecoder::Decode` or `SkPngRustDecoder::Decode` (from the public API) and I prefer this way in tests so we know *what* we are testing.",
+      "parentUuid": "236da201_02b98da5",
+      "range": {
+        "startLine": 2629,
+        "startChar": 24,
+        "endLine": 2629,
+        "endChar": 36
+      },
+      "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
