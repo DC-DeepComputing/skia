@@ -365,7 +365,7 @@ void run_test(Context* context,
         }
     }
 
-    context->submit(SyncToCpu::kYes);
+    context->submit({SyncToCpu::kYes, MarkFrameBoundary::kNo, 0u});
 }
 
 [[maybe_unused]] void dump_stats(skgpu::BackendApi api, const GlobalCache::PipelineStats& stats) {

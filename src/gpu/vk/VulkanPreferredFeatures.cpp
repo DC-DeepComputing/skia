@@ -159,6 +159,7 @@ struct DeviceExtensions {
     //    VK_EXT_sampler_filter_minmax          samplerFilterMinmax
     //    VK_EXT_shader_viewport_index_layer    shaderOutputViewportIndex, shaderOutputLayer
     //    VK_KHR_push_descriptor                pushDescriptor
+    //    VK_EXT_frame_boundary                 frameBoundaryEXT
     bool fShaderDrawParametersKHR = false;
     bool fDrawIndirectCountKHR = false;
     bool fSamplerMirrorClampToEdgeKHR = false;
@@ -166,6 +167,7 @@ struct DeviceExtensions {
     bool fSamplerFilterMinmaxEXT = false;
     bool fShaderViewportIndexLayerEXT = false;
     bool fPushDescriptorKHR = false;
+    bool fFrameBoundaryEXT = false;
 };
 
 void mark_device_extensions(DeviceExtensions& exts, const char* name) {
@@ -231,6 +233,8 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
         exts.fShaderViewportIndexLayerEXT = true;
     } else if (strcmp(name, VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME) == 0) {
         exts.fPushDescriptorKHR = true;
+    } else if (strcmp(name, VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME) == 0) {
+        exts.fFrameBoundaryEXT = true;
     }
 }
 
@@ -264,6 +268,7 @@ struct FeaturesToAdd {
     bool fMultisampledRenderToSingleSampled = true;
     bool fHostImageCopy = true;
     bool fPipelineCreationCacheControl = true;
+    bool fFrameBoundary = true;
 };
 
 FeaturesToAdd get_features_to_add(uint32_t apiVersion,
@@ -331,6 +336,7 @@ FeaturesToAdd get_features_to_add(uint32_t apiVersion,
     toAdd.fGraphicsPipelineLibrary = exts.fGraphicsPipelineLibraryEXT;
     toAdd.fRGBA10x6Formats = exts.fRGBA10x6FormatsEXT;
     toAdd.fMultisampledRenderToSingleSampled = exts.fMultisampledRenderToSingleSampledEXT;
+    toAdd.fFrameBoundary = exts.fFrameBoundaryEXT;
 
     // Then, go over appFeatures::pNext and exclude features that are already being queried by the
     // app.
@@ -390,6 +396,9 @@ FeaturesToAdd get_features_to_add(uint32_t apiVersion,
                 break;
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES:
                 toAdd.fPipelineCreationCacheControl = false;
+                break;
+            case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT:
+                toAdd.fFrameBoundary = false;
                 break;
             default:
                 break;
@@ -462,6 +471,7 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     exts.fSamplerFilterMinmaxEXT = false;
     exts.fShaderViewportIndexLayerEXT = false;
     exts.fPushDescriptorKHR = false;
+    exts.fFrameBoundaryEXT = false;
 
     // Set the sType and extensions to enable. Later in addFeaturesToEnable, the availability of
     // device extensions is inferred from this. This is done irrespective of FeaturesToAdd
@@ -569,6 +579,9 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     if (exts.fConservativeRasterizationEXT) {
         fConservativeRasterizationExtension = VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME;
     }
+    if (exts.fFrameBoundaryEXT) {
+        fFrameBoundary.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT;
+    }
 
     // Inspect the list of features the app has already included and decide on which features to
     // add.
@@ -647,6 +660,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         SkASSERT(fPipelineCreationCacheControl.sType != 0);
         AddToPNextChain(&appFeatures, &fPipelineCreationCacheControl);
     }
+    if (toAdd.fFrameBoundary) {
+        SkASSERT(fFrameBoundary.sType != 0);
+        AddToPNextChain(&appFeatures, &fFrameBoundary);
+    }
 
     fHasAddedFeaturesToQuery = true;
 }
@@ -679,6 +696,7 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     toAdd.fMultisampledRenderToSingleSampled = fMultisampledRenderToSingleSampled.sType != 0;
     toAdd.fHostImageCopy = fHostImageCopy.sType != 0;
     toAdd.fPipelineCreationCacheControl = fPipelineCreationCacheControl.sType != 0;
+    toAdd.fFrameBoundary = fFrameBoundary.sType != 0;
 
     // Check which extensions are already enabled by the application.
     DeviceExtensions exts;
@@ -1763,6 +1781,11 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
                 }
                 break;
             }
+            case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT: {
+                chain(newChainEnd, pNext);
+                toAdd.fFrameBoundary = false;
+                break;
+            }
 
             default:
                 // Retain everything else that's chained.
@@ -1828,6 +1851,9 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     }
     if (toAdd.fPipelineCreationCacheControl) {
         chain(newChainEnd, &fPipelineCreationCacheControl);
+    }
+    if (toAdd.fFrameBoundary) {
+        chain(newChainEnd, &fFrameBoundary);
     }
 
     // Replace appFeatures' pNext with the new chain.

@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 
     printf("Submitting work to GPU and waiting for it to be done\n");
     // Note this doesn't work on all backend types, e.g. Dawn.
-    context->submit(skgpu::graphite::SyncToCpu::kYes);
+    context->submit({skgpu::graphite::SyncToCpu::kYes, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
     if (context->hasUnfinishedGpuWork()) {
         printf("Sync with GPU completion failed\n");
         return 1;

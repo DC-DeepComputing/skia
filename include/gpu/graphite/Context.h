@@ -80,7 +80,7 @@ public:
     std::unique_ptr<PrecompileContext> makePrecompileContext();
 
     InsertStatus insertRecording(const InsertRecordingInfo&);
-    bool submit(SyncToCpu = SyncToCpu::kNo);
+    bool submit(const SubmitInfo &info);
 
     /** Returns true if there is work that was submitted to the GPU that has not finished. */
     bool hasUnfinishedGpuWork() const;
@@ -97,7 +97,7 @@ public:
         AsyncReadResult containing pixel data in the requested color type, alpha type, and color
         space. The AsyncReadResult will have count() == 1. Upon failure the callback is called with
         nullptr for AsyncReadResult. The callback can be triggered, for example, with a call to
-        Context::submit(SyncToCpu::kYes).
+        Context::submit({SyncToCpu::kYes, ...}).
 
         The data is valid for the lifetime of AsyncReadResult with the exception that the data is
         immediately invalidated if the Graphite context is abandoned or destroyed.
@@ -137,7 +137,7 @@ public:
         When the pixel data is ready the caller's ReadPixelsCallback is called with a
         AsyncReadResult containing the planar data. The AsyncReadResult will have count() == 3.
         Upon failure the callback is called with nullptr for AsyncReadResult. The callback can
-        be triggered, for example, with a call to Context::submit(SyncToCpu::kYes).
+        be triggered, for example, with a call to Context::submit({SyncToCpu::kYes, ... }).
 
         The data is valid for the lifetime of AsyncReadResult with the exception that the data
         is immediately invalidated if the context is abandoned or destroyed.
