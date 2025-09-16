@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be9f0ae_0dbf7ac2",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-16T18:04:30Z",
+      "side": 1,
+      "message": "Maybe remove this and add `(see similar note in analytic_rrect_vertex_fn)`?",
+      "range": {
+        "startLine": 895,
+        "startChar": 32,
+        "endLine": 900,
+        "endChar": 75
+      },
+      "revId": "ce043d4eb8a27d5b1fd08c735822a73ca4d23a71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
