@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d0fe7ca_419b43fc",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-16T12:32:02Z",
+      "side": 1,
+      "message": "May make it slightly more complex on a first read, but I agree the extra fields should be in the decoding state for resets and it seems natural to split the data up this way. Done.",
+      "parentUuid": "fe17324f_847955f3",
+      "range": {
+        "startLine": 924,
+        "startChar": 59,
+        "endLine": 924,
+        "endChar": 60
+      },
+      "revId": "48b2d1a654cd36f02d1ab8c59aa6f9cdcfa172e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcfbd1f7_7482eec3",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-15T22:48:22Z",
       "side": 1,
       "message": "Would it make sense to move these fields into `struct DecodingState` defined above?  Everything else that gets initialized in `startDecoding` is put into the `DecodingState`.  This is probably not terribly important, but it seems nice to be consistent here.  And this also means that after decoding a full frame the decoding state is [reset](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/experimental/rust_png/decoder/impl/SkPngRustCodec.cpp;l\u003d1000;drc\u003d2cad1f845f3c0a3f205b6b2d870b99fd657c710b) so we should never encounter stale data",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 28
+      },
+      "revId": "48b2d1a654cd36f02d1ab8c59aa6f9cdcfa172e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e18491_f56f2cf6",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-16T12:32:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcfbd1f7_7482eec3",
       "range": {
         "startLine": 186,
         "startChar": 0,
