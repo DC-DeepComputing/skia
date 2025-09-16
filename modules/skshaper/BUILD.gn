@@ -58,7 +58,8 @@ if (skia_enable_skshaper) {
     configs = [ "../../:skia_private" ]
   }
 
-  if (defined(is_skia_standalone) && skia_enable_tools) {
+  # TODO: Remove dependency on Ganesh in tests code
+  if (defined(is_skia_standalone) && skia_enable_tools && skia_enable_ganesh) {
     skia_source_set("tests") {
       if (skia_enable_skshaper_tests) {
         testonly = true

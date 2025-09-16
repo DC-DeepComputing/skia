@@ -7,8 +7,11 @@
 
 #include "tools/gpu/FlushFinishTracker.h"
 
-#include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/core/SkTraceEvent.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
@@ -26,16 +29,17 @@ void FlushFinishTracker::waitTillFinished(std::function<void()> tick) {
         if (tick) {
             tick();
         }
+#if defined(SK_GANESH)
         if (fContext) {
             fContext->checkAsyncWorkCompletion();
-        } else {
+        }
+#endif
 #if defined(SK_GRAPHITE)
+        if (fGraphiteContext) {
             SkASSERT(fGraphiteContext);
             fGraphiteContext->checkAsyncWorkCompletion();
-#else
-            SkDEBUGFAIL("No valid context");
-#endif
         }
+#endif
         end = std::chrono::steady_clock::now();
     }
     if (!fIsFinished) {
