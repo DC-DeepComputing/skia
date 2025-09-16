@@ -20,7 +20,8 @@ if (skia_enable_bentleyottmann) {
     deps = [ "../..:skia" ]
   }
 
-  if (skia_enable_tools) {
+  # TODO: Remove dependency on Ganesh in tests code
+  if (skia_enable_tools && skia_enable_ganesh) {
     skia_source_set("tests") {
       testonly = true
       sources = bentleyottmann_tests

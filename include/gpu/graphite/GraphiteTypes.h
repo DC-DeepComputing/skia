@@ -13,6 +13,10 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 
+#if !defined(SK_GRAPHITE)
+static_assert(false);
+#endif
+
 #include <memory>
 
 class SkSurface;

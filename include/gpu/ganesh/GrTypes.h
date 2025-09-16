@@ -12,6 +12,10 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkTo.h" // IWYU pragma: keep
 
+#if !defined(SK_GANESH)
+static_assert(false);
+#endif
+
 #include <cstddef>
 #include <cstdint>
 class GrBackendSemaphore;
