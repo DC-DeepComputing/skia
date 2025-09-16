@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f52d601d_b45ab36f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-16T18:06:43Z",
+      "side": 1,
+      "message": "There is a build failure that needs to be addressed:\n```\n../../../../../../skia/gm/asyncrescaleandread.cpp:173:37: error: too few arguments to function call, single argument \u0027info\u0027 was not specified\n  173 |             graphiteContext-\u003esubmit();\n      |             ~~~~~~~~~~~~~~~~~~~~~~~ ^\n../../../../../../skia/include/gpu/graphite/Context.h:83:10: note: \u0027submit\u0027 declared here\n   83 |     bool submit(const SubmitInfo \u0026info);\n      |          ^      ~~~~~~~~~~~~~~~~~~~~~~\n../../../../../../skia/gm/asyncrescaleandread.cpp:266:37: error: too few arguments to function call, single argument \u0027info\u0027 was not specified\n  266 |             graphiteContext-\u003esubmit();\n      |             ~~~~~~~~~~~~~~~~~~~~~~~ ^\n../../../../../../skia/include/gpu/graphite/Context.h:83:10: note: \u0027submit\u0027 declared here\n   83 |     bool submit(const SubmitInfo \u0026info);\n      |          ^      ~~~~~~~~~~~~~~~~~~~~~~\n```\n\nAlso the regular chrome bots are not really going to execute successfully, you can run the Canary-Android and Canary-Chrome jobs instead",
+      "revId": "23a9c16266311bb71649f8f2dcdfcc1d11692c40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
