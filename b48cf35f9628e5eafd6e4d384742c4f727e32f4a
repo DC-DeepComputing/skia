@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b96cc23_330573b3",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2612,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T18:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0c05698_ea081d81",
+      "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb3bf6e6_2e2e441f",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-09-16T12:50:15Z",
       "side": 1,
       "message": "This version of the API uses the registered codecs rather than an explicit implementation. I\u0027d prefer we target SkPngDecoder::Decode (the libpng version) and then, when implemented, add a version for the SkPngRustDecoder::Decode implementation.",
+      "range": {
+        "startLine": 2629,
+        "startChar": 24,
+        "endLine": 2629,
+        "endChar": 36
+      },
+      "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "236da201_02b98da5",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2629,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-16T18:50:07Z",
+      "side": 1,
+      "message": "IIUC we can only have 1 of those two present at a time.\n\nThe examples that I saw of using SkPngDecoder were like [this](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/EncodeTest.cpp;l\u003d762;drc\u003d4a50bc3386e511462806d01f8e6f8be1aa0c1cb7) or [this](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.gn;l\u003d1293;drc\u003df950263bb3d4b311e2cc12f0dceea24dcb9c2373) (in the build system).\n\nThe Rust version is coming ASAP after this (I just didn\u0027t want to entangle the two patches cause they didn\u0027t overlap), whereupon the `#define` parts can go away.",
+      "parentUuid": "cb3bf6e6_2e2e441f",
       "range": {
         "startLine": 2629,
         "startChar": 24,
