@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c1b615_57cace59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T15:48:46Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\n/cc @danieldilan - I think I\u0027ll wait until your https://review.skia.org/1054479 lands and then I\u0027ll rebase on top of it.",
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee74f056_5bb943bb",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2992,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T15:48:46Z",
+      "side": 1,
+      "message": "IIUC this is just a result of `git cl format` / `gn format`.",
+      "range": {
+        "startLine": 2991,
+        "startChar": 0,
+        "endLine": 2992,
+        "endChar": 23
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66381fef_a0106600",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 86741,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T15:48:46Z",
+      "side": 1,
+      "message": "Not sure why this change is here.  AFAICT this change appeared after I\u0027ve run `go run infra/bots/gen_tasks.go` (and I get the same results if I revert the changes to `infra/bots/tasks.json` and rerun  `go run infra/bots/gen_tasks.go`).",
+      "range": {
+        "startLine": 86741,
+        "startChar": 57,
+        "endLine": 86741,
+        "endChar": 58
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad732396_681353f7",
+        "filename": "rust/png/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-16T15:48:46Z",
+      "side": 1,
+      "message": "Presubmits asked me to add this...",
+      "range": {
+        "startLine": 13,
+        "startChar": 19,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
