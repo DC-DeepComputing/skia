@@ -60,6 +60,7 @@ public:
     virtual std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
+    virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
     // Called by Context::isContextLost(). Returns true if the backend-specific SharedContext has
     // gotten into an unrecoverable, lost state.

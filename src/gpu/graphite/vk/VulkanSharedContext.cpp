@@ -138,6 +138,25 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
                                        resourceBudget));
 }
 
+sk_sp<Sampler> VulkanSharedContext::createSampler(const SamplerDesc& samplerDesc) {
+    sk_sp<VulkanYcbcrConversion> ycbcrConversion = nullptr;
+
+    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
+    const bool usesYcbcrConversion = samplerDesc.isImmutable();
+    if (usesYcbcrConversion) {
+        VulkanYcbcrConversionInfo ycbcrInfo = VulkanYcbcrConversion::FromImmutableSamplerInfo(
+                samplerDesc.immutableSamplerInfo());
+        ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(ycbcrInfo);
+        if (!ycbcrConversion) {
+            return nullptr;
+        }
+    }
+
+    return VulkanSampler::Make(this,
+                               samplerDesc,
+                               std::move(ycbcrConversion));
+}
+
 bool VulkanSharedContext::checkVkResult(VkResult result) const {
     switch (result) {
     case VK_SUCCESS:
