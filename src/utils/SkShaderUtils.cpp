@@ -249,6 +249,7 @@ std::string PrettyPrint(const std::string& string) {
 void VisitLineByLine(const std::string& text,
                      const std::function<void(int lineNumber, const char* lineText)>& visitFn) {
     TArray<SkString> lines;
+    static constexpr bool useLineNumbers = false;
     SkStrSplit(text.c_str(), "\n", kStrict_SkStrSplitMode, &lines);
     for (int i = 0; i < lines.size(); ++i) {
         visitFn(i + 1, lines[i].c_str());

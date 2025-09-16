@@ -277,6 +277,7 @@ struct Vertex {
     uint32_t fCornerID;
     SkV2 fPosition;
     SkV2 fNormal;
+    // Ensure that 4-byte float data begins on a 4-byte boundary?
     float fNormalScale;
     float fCenterWeight;
 };
@@ -444,6 +445,8 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
                              //    reduction in coverage due to a device-space outset. It is clamped
                              //    below 0 to avoid adding coverage from extrapolation.
                              {"perPixelControl", SkSLType::kFloat2},
+                             // Add for testing and debugging in RenderDoc.
+                             {"testValue", SkSLType::kFloat4},
                      }) {
     // Initialize the static buffers we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only
@@ -466,7 +469,7 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
                    "xRadiiOrFlags, radiiOrQuadXs, ltrbOrQuadYs, center, depth, "
                    "float3x3(mat0, mat1, mat2), "
                    // Varyings
-                   "jacobian, edgeDistances, xRadii, yRadii, strokeParams, perPixelControl, "
+                   "jacobian, edgeDistances, xRadii, yRadii, strokeParams, perPixelControl, testValue, "
                    // Render Step
                    "stepLocalCoords);\n";
 }

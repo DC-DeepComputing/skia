@@ -18,6 +18,9 @@
 #define H   800
 
 DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
+
+    static bool minCase = true;
+
     SkPaint p;
     p.setColor(SK_ColorRED);
     p.setAntiAlias(true);
@@ -28,20 +31,26 @@ DEF_SIMPLE_GM(analytic_antialias_convex, canvas, W, H) {
 
     SkScalar y = 0;
 
-    canvas->translate(0, y);
-    canvas->rotate(1);
-    canvas->drawRect({ 20, 20, 200, 200 }, p);
-    canvas->restore();
+    if (!minCase) {
+        canvas->translate(0, y);
+        canvas->rotate(1);
+        canvas->drawRect({ 20, 20, 200, 200 }, p);
+        canvas->restore();
+        canvas->save();
+    }
 
     y += 200;
 
-    canvas->save();
     canvas->translate(0, y);
     canvas->rotate(1);
-    canvas->drawRect({ 20, 20, 20.2f, 200 }, p);
-    canvas->drawRect({ 20, 200, 200, 200.1f }, p);
+    // canvas->drawRect({ 20, 20, 20.2f, 200 }, p);
+    // canvas->drawRect({ 20, 200, 200, 200.1f }, p);
     canvas->drawCircle(100, 100, 30, p);
     canvas->restore();
+
+    if (minCase) {
+        return;
+    }
 
     // The following path is empty but it'll reveal bug chrome:662914
     SkPathBuilder pb;

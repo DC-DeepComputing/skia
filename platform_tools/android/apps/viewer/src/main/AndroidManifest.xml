@@ -5,11 +5,14 @@
           android:versionCode="1"
           android:versionName="1.0">
 
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <application
       android:allowBackup="false"
       android:theme="@android:style/Theme.Holo.Light"
       android:name=".ViewerApplication"
-      android:label="Viewer">
+      android:label="Viewer"
+      android:debuggable="true">
 
     <activity
       android:name=".ViewerActivity"

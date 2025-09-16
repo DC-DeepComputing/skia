@@ -26,9 +26,17 @@ void VisitLineByLine(const std::string& text,
 
 // Prints shaders one line at the time. This ensures they don't get truncated by the adb log.
 inline void PrintLineByLine(const std::string& text) {
-    VisitLineByLine(text, [](int lineNumber, const char* lineText) {
-        SkDebugf("%4i\t%s\n", lineNumber, lineText);
-    });
+    static bool useLineNumbers = false;
+
+    if (useLineNumbers) {
+        VisitLineByLine(text, [](int lineNumber, const char* lineText) {
+            SkDebugf("%4i\t%s\n", lineNumber, lineText);
+        });
+    } else {
+        VisitLineByLine(text, [](int lineNumber, const char* lineText) {
+            SkDebugf("%s\n", lineText);
+        });
+    }
 }
 
 // Prints binary shaders one line at the time. This ensures they don't get truncated by the adb log.
