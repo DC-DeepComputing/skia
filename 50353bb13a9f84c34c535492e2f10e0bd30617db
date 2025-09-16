@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dda94aea_588edab8",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-16T19:29:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "004b2447_ef040de4",
+      "range": {
+        "startLine": 22,
+        "startChar": 17,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "50353bb13a9f84c34c535492e2f10e0bd30617db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db9c975b_65194938",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-16T14:35:16Z",
       "side": 1,
       "message": "I don\u0027t think this needs to be in include/\n\nThe use in Recorder.h doesn\u0027t need to #include this",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 34
+      },
+      "revId": "50353bb13a9f84c34c535492e2f10e0bd30617db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a7cf94_e1b6960a",
+        "filename": "include/private/gpu/graphite/DebugUtilsGraphite.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-16T19:29:58Z",
+      "side": 1,
+      "message": "I did remove DebugUtilsGraphite from Recorder.h (a prior code change made it obsolete), but I do think DebugUtilsGraphite should stay in the include because in the future we might have something that *does* want to be there?\n\nWDYT?",
+      "parentUuid": "db9c975b_65194938",
       "range": {
         "startLine": 8,
         "startChar": 8,
