@@ -190,6 +190,7 @@ skia_cc_library(
         ":_graphite_hdrs",
         "//include/gpu:shared_gpu_hdrs",
         "//include/gpu/graphite:public_hdrs",
+        "//include/gpu/graphite:private_hdrs",
         "//src/gpu/graphite/compute:compute_hdrs",
         "//src/gpu/graphite/geom:geom_hdrs",
         "//src/gpu/graphite/render:render_hdrs",
