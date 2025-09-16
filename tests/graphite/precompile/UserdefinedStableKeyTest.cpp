@@ -85,7 +85,7 @@ bool draw_with_normal_api(skgpu::graphite::Context* context,
         return false;
     }
 
-    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+    if (!context->submit({skgpu::graphite::SyncToCpu::kYes, skgpu::graphite::MarkFrameBoundary::kNo, 0u})) {
         return false;
     }
 
