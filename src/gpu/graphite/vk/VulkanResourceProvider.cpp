@@ -117,7 +117,8 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(texture.info());
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
-        ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(vkInfo.fYcbcrConversionInfo);
+        ycbcrConversion = fSharedContext->findOrCreateCompatibleYcbcrConversion(
+            vkInfo.fYcbcrConversionInfo);
         if (!ycbcrConversion) {
             return nullptr;
         }
@@ -158,7 +159,8 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
-        ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(vkInfo.fYcbcrConversionInfo);
+        ycbcrConversion = fSharedContext->findOrCreateCompatibleYcbcrConversion(
+            vkInfo.fYcbcrConversionInfo);
         if (!ycbcrConversion) {
             return nullptr;
         }
@@ -174,25 +176,6 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
                                                    BufferType type,
                                                    AccessPattern accessPattern) {
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
-}
-
-sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
-    sk_sp<VulkanYcbcrConversion> ycbcrConversion = nullptr;
-
-    // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
-    const bool usesYcbcrConversion = samplerDesc.isImmutable();
-    if (usesYcbcrConversion) {
-        VulkanYcbcrConversionInfo ycbcrInfo = VulkanYcbcrConversion::FromImmutableSamplerInfo(
-                samplerDesc.immutableSamplerInfo());
-        ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(ycbcrInfo);
-        if (!ycbcrConversion) {
-            return nullptr;
-        }
-    }
-
-    return VulkanSampler::Make(this->vulkanSharedContext(),
-                               samplerDesc,
-                               std::move(ycbcrConversion));
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -574,39 +557,6 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
         VULKAN_CALL(this->vulkanSharedContext()->interface(),
                     FreeMemory(this->vulkanSharedContext()->device(), alloc.fMemory, nullptr));
     }
-}
-
-sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcrConversion(
-        const VulkanYcbcrConversionInfo& ycbcrInfo) const {
-    static constexpr Budgeted kBudgeted = Budgeted::kYes;
-    static constexpr Shareable kShareable = Shareable::kYes;
-    if (!ycbcrInfo.isValid()) {
-        return nullptr;
-    }
-
-    GraphiteResourceKey key;
-    {
-        static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-        static constexpr int kKeySize = 3;
-
-        GraphiteResourceKey::Builder builder(&key, kType, kKeySize);
-        ImmutableSamplerInfo packedInfo = VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrInfo);
-        builder[0] = packedInfo.fNonFormatYcbcrConversionInfo;
-        builder[1] = (uint32_t) packedInfo.fFormat;
-        builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
-    }
-
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
-        return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
-    }
-
-    auto ycbcrConversion = VulkanYcbcrConversion::Make(this->vulkanSharedContext(), ycbcrInfo);
-    if (!ycbcrConversion) {
-        return nullptr;
-    }
-
-    fResourceCache->insertResource(ycbcrConversion.get(), key, kBudgeted, kShareable);
-    return ycbcrConversion;
 }
 
 sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(

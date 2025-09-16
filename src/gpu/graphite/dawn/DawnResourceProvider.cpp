@@ -590,10 +590,6 @@ sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
     return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
-    return DawnSampler::Make(this->dawnSharedContext(), samplerDesc);
-}
-
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
                                                             const TextureInfo& info) {
     wgpu::Texture texture = DawnTexture::MakeDawnTexture(this->dawnSharedContext(),

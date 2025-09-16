@@ -27,16 +27,53 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
                              BackendApi backend,
                              SkExecutor* executor,
                              SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
-    : fCaps(std::move(caps))
+    : fResourceCache(ResourceCache::Make(&fSingleOwner, SK_InvalidGenID, 10000))
+    , fCaps(std::move(caps))
     , fBackend(backend)
     , fGlobalCache()
     , fPipelineManager() // TODO(robertphillips): pass in executor here
     , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
 
 SharedContext::~SharedContext() {
+    fResourceCache->shutdown();
+
     // TODO: add disconnect?
 
     // TODO: destroyResources instead?
+}
+
+void SharedContext::setResourceCacheLimit(size_t bytes) {
+    SkAutoSpinlock lock{fSpinLock};
+    return fResourceCache->setMaxBudget(bytes);
+}
+size_t SharedContext::getResourceCacheLimit() const {
+    SkAutoSpinlock lock{fSpinLock};
+    return fResourceCache->getMaxBudget();
+}
+size_t SharedContext::getResourceCacheCurrentBudgetedBytes() const {
+    SkAutoSpinlock lock{fSpinLock};
+    return fResourceCache->currentBudgetedBytes();
+}
+size_t SharedContext::getResourceCacheCurrentPurgeableBytes() const {
+    SkAutoSpinlock lock{fSpinLock};
+    return fResourceCache->currentPurgeableBytes();
+}
+void SharedContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
+    SkAutoSpinlock lock{fSpinLock};
+    fResourceCache->dumpMemoryStatistics(traceMemoryDump);
+}
+
+void SharedContext::freeGpuResources() {
+    SkAutoSpinlock lock{fSpinLock};
+    fResourceCache->purgeResources();
+}
+void SharedContext::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    SkAutoSpinlock lock{fSpinLock};
+    fResourceCache->purgeResourcesNotUsedSince(purgeTime);
+}
+void SharedContext::forceProcessReturnedResources() {
+    SkAutoSpinlock lock{fSpinLock};
+    fResourceCache->forceProcessReturnedResources();
 }
 
 Protected SharedContext::isProtected() const { return Protected(fCaps->protectedSupport()); }

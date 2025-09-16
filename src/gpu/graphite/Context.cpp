@@ -833,6 +833,7 @@ void Context::checkForFinishedWork(SyncToCpu syncToCpu) {
     fMappedBufferManager->process();
     // Process the return queue periodically to make sure it doesn't get too big
     fResourceProvider->forceProcessReturnedResources();
+    fSharedContext->forceProcessReturnedResources();
 }
 
 void Context::checkAsyncWorkCompletion() {
@@ -854,6 +855,7 @@ void Context::freeGpuResources() {
     this->checkAsyncWorkCompletion();
 
     fResourceProvider->freeGpuResources();
+    fSharedContext->freeGpuResources();
 }
 
 void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
@@ -863,31 +865,38 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
     fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+    fSharedContext->purgeResourcesNotUsedSince(purgeTime);
 }
 
 size_t Context::currentBudgetedBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheCurrentBudgetedBytes();
+    return fResourceProvider->getResourceCacheCurrentBudgetedBytes() +
+           fSharedContext->getResourceCacheCurrentBudgetedBytes();
 }
 
 size_t Context::currentPurgeableBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheCurrentPurgeableBytes();
+    return fResourceProvider->getResourceCacheCurrentPurgeableBytes() +
+           fSharedContext->getResourceCacheCurrentPurgeableBytes();
 }
 
 size_t Context::maxBudgetedBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheLimit();
+    return fResourceProvider->getResourceCacheLimit() +
+           fSharedContext->getResourceCacheLimit();
 }
 
 void Context::setMaxBudgetedBytes(size_t bytes) {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->setResourceCacheLimit(bytes);
+    fResourceProvider->setResourceCacheLimit(bytes);
+    fSharedContext->setResourceCacheLimit(bytes);
 }
 
 void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     ASSERT_SINGLE_OWNER
     fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
+    fSharedContext->dumpMemoryStatistics(traceMemoryDump);
+
     // TODO: What is the graphite equivalent for the text blob cache and how do we print out its
     // used bytes here (see Ganesh implementation).
 }

@@ -11,11 +11,12 @@
 #include <memory>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
-
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/base/SingleOwner.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/PipelineManager.h"
+#include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 class SkCaptureManager;
@@ -60,6 +61,7 @@ public:
     virtual std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
+    virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
     // Called by Context::isContextLost(). Returns true if the backend-specific SharedContext has
     // gotten into an unrecoverable, lost state.
@@ -69,11 +71,27 @@ public:
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 
+    void setResourceCacheLimit(size_t bytes) SK_EXCLUDES(fSpinLock);
+    size_t getResourceCacheLimit() const SK_EXCLUDES(fSpinLock);
+    size_t getResourceCacheCurrentBudgetedBytes() const SK_EXCLUDES(fSpinLock);
+    size_t getResourceCacheCurrentPurgeableBytes() const SK_EXCLUDES(fSpinLock);
+    void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const SK_EXCLUDES(fSpinLock);
+
+    void freeGpuResources() SK_EXCLUDES(fSpinLock);
+    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) SK_EXCLUDES(fSpinLock);
+    void forceProcessReturnedResources() SK_EXCLUDES(fSpinLock);
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
                   SkExecutor* executor,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
+
+    mutable SkSpinlock fSpinLock;
+
+    // This is a thread-safe cache that is used for the backend-specific resources needed for
+    // Pipeline creation. As such, it is expected to be low contention and small.
+    sk_sp<ResourceCache> fResourceCache SK_GUARDED_BY(fSpinLock);
 
 private:
     friend class Context; // for setRendererProvider() and setCaptureManager()
@@ -91,6 +109,10 @@ private:
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+
+    // In debug builds we guard against improper thread handling. This guard is passed to the
+    // ResourceCache for the Context.
+    mutable SingleOwner fSingleOwner;
 };
 
 } // namespace skgpu::graphite

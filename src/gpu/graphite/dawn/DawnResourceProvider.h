@@ -99,8 +99,6 @@ private:
 
     sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&) override;
 
-    sk_sp<Sampler> createSampler(const SamplerDesc&) override;
-
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
 
