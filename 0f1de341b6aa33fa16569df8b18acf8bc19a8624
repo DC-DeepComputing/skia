@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0d6347a_a3754445",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "I don\u0027t see this note in this header file.",
+      "parentUuid": "1d675e0e_3d6c9635",
+      "range": {
+        "startLine": 244,
+        "startChar": 46,
+        "endLine": 244,
+        "endChar": 50
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "146f28ba_a79163d9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 5
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Updated the comment to be more clear that \"this is a container that may contain nothing\".\n\nOver in the `gfx::HDRMetadata` world, I passed around a bunch of `std::optional\u003cgfx::HDRMetadata\u003e`s at first, but that proved really cumbersome. That\u0027s what ended up informing this scheme.\n\n(And why in `skhdr::Metadata`, I don\u0027t expose what\u0027s actually stored, so I can maybe-in-the-future make it more lightweight by storing an `sk_sp\u003cSkData\u003e`).",
       "parentUuid": "146f28ba_a79163d9",
+      "range": {
+        "startLine": 87,
+        "startChar": 46,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "429cbb6e_5639e814",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "14db7e5c_de5996fc",
       "range": {
         "startLine": 87,
         "startChar": 46,
@@ -159,6 +207,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bac24742_f1213a9c",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bec7f99d_92bb8313",
+      "range": {
+        "startLine": 269,
+        "startChar": 9,
+        "endLine": 269,
+        "endChar": 23
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdbdcacd_87cf934d",
@@ -196,6 +268,30 @@
       "side": 1,
       "message": "Added `skhdr::Metadata::MakeEmpty()` for this.",
       "parentUuid": "cdbdcacd_87cf934d",
+      "range": {
+        "startLine": 901,
+        "startChar": 60,
+        "endLine": 901,
+        "endChar": 77
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bab0041e_9647353d",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "25084aa6_05ed388c",
       "range": {
         "startLine": 901,
         "startChar": 60,
@@ -253,6 +349,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73a3e66_14fc8bd6",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9968089a_1ff818d4",
+      "range": {
+        "startLine": 321,
+        "startChar": 50,
+        "endLine": 321,
+        "endChar": 54
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6c9f063_8094b954",
@@ -300,6 +420,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c134ec25_da99e288",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7a4bc6d9_f24d1534",
+      "range": {
+        "startLine": 328,
+        "startChar": 54,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7e45068_4c24616b",
@@ -337,6 +481,30 @@
       "side": 1,
       "message": "Yes, I added a note about that (along with the strange non-const-ness). In particular:\n* libpng appends the chunks to its internal list of unknown chunks [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/libpng/pngset.c;l\u003d1232;drc\u003debf6d473ea1ee1963abd3afa4e18719b66be0719)\n* and then copies the `data` member [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/libpng/pngset.c;l\u003d1278;drc\u003debf6d473ea1ee1963abd3afa4e18719b66be0719)\n\nThe actual libpng documentation is very unclear on all of this. I carefully verified this behavior on libpng 1.6.22, which we switched to in 2016. Looking at the code before this upgrade ([here](https://codereview.chromium.org/2021403002/diff/230001/third_party/libpng/pngset.c)), it appears this was the behavior before that revision as well.",
       "parentUuid": "f7e45068_4c24616b",
+      "range": {
+        "startLine": 332,
+        "startChar": 8,
+        "endLine": 332,
+        "endChar": 30
+      },
+      "revId": "0f1de341b6aa33fa16569df8b18acf8bc19a8624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcfeb9d5_ba1aaf1f",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-16T12:50:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "da199d23_ddda0671",
       "range": {
         "startLine": 332,
         "startChar": 8,
