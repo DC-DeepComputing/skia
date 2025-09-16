@@ -25,6 +25,8 @@
 
 #include <utility>
 
+#if 0
+
 static bool findChaseOp(SkTDArray<SkOpSpanBase*>& chase, SkOpSpanBase** startPtr,
         SkOpSpanBase** endPtr, SkOpSegment** result) {
     while (!chase.empty()) {
@@ -393,3 +395,4 @@ bool Op(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result) {
 #endif
     return OpDebug(one, two, op, result  SkDEBUGPARAMS(true) SkDEBUGPARAMS(nullptr));
 }
+#endif

@@ -21,6 +21,7 @@
 #include "src/pathops/SkPathOpsTypes.h"
 #include "src/pathops/SkPathWriter.h"
 
+#if 0
 static bool bridgeWinding(SkOpContourHead* contourList, SkPathWriter* writer) {
     bool unsortable = false;
     do {
@@ -290,3 +291,4 @@ bool Simplify(const SkPath& path, SkPath* result) {
 #endif
     return SimplifyDebug(path, result  SkDEBUGPARAMS(true) SkDEBUGPARAMS(nullptr));
 }
+#endif
