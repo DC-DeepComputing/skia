@@ -76,6 +76,7 @@
 #include "src/gpu/graphite/task/Task.h"
 #include "src/image/SkSurface_Base.h"
 #include "src/sksl/SkSLGraphiteModules.h"
+//#include "src/gpu/graphite/RecordingPriv.h"
 
 #include <algorithm>
 #include <array>
@@ -116,7 +117,8 @@ Context::ContextID Context::ContextID::Next() {
 //--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<SharedContext> sharedContext,
                  std::unique_ptr<QueueManager> queueManager,
-                 const ContextOptions& options)
+                 const ContextOptions& options,
+                 bool)
         : fSharedContext(std::move(sharedContext))
         , fQueueManager(std::move(queueManager))
         , fContextID(ContextID::Next()) {
@@ -128,7 +130,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 
     // We have to create this outside the initializer list because we need to pass in the Context's
     // SingleOwner object and it is declared last
-    fResourceProvider = fSharedContext->makeResourceProvider(&fSingleOwner,
+    fResourceProvider1 = fSharedContext->makeResourceProvider(&fSingleOwner,
                                                              SK_InvalidGenID,
                                                              options.fGpuBudgetInBytes);
     fMappedBufferManager = std::make_unique<ClientMappedBufferManager>(this->contextID());
@@ -148,6 +150,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    fSharedContext->pipelineManager()->shutDown();
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
     for (auto& recorder : fTrackedRecorders) {
@@ -165,12 +168,12 @@ Context::PixelTransferResult::~PixelTransferResult() = default;
 bool Context::finishInitialization() {
     SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
 
-    if (!fSharedContext->globalCache()->initializeDynamicSamplers(fResourceProvider.get(),
+    if (!fSharedContext->globalCache()->initializeDynamicSamplers(fResourceProvider1.get(),
                                                                   fSharedContext->caps())) {
         return false;
     }
 
-    StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
+    StaticBufferManager bufferManager{fResourceProvider1.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
 
@@ -195,7 +198,7 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     ASSERT_SINGLE_OWNER
 
     // This is a client-owned Recorder so pass a null context so it creates its own ResourceProvider
-    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, nullptr));
+    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, nullptr, false));
 #if defined(GPU_TEST_UTILS)
     if (fStoreContextRefInRecorder) {
         recorder->priv().setContext(this);
@@ -229,11 +232,15 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
     // there's no need to require subsequent recordings be ordered.
     RecorderOptions options = {};
     options.fRequireOrderedRecordings = false;
-    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, this));
+    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, this, true)); //$$
 }
 
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
+
+//    bool arePipelinesReady = info.fRecording->priv().arePipelinesReady();
+//    SkDebugf("Context::insertRecording arePipelinesReady: %s\n", arePipelinesReady ? "true"
+//                                                                                   : "false");
 
     return fQueueManager->addRecording(info, this);
 }
@@ -709,7 +716,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
     // If addFinishInfo() fails, it invokes the finish callback automatically, which handles all the
     // required clean up for us, just log an error message. The buffers will never be mapped and
     // thus don't need an unmap.
-    if (!fQueueManager->addFinishInfo(info, fResourceProvider.get(), buffersToAsyncMap)) {
+    if (!fQueueManager->addFinishInfo(info, fResourceProvider1.get(), buffersToAsyncMap)) {
         SKGPU_LOG_E("Failed to register finish callbacks for asyncReadPixels.");
         return;
     }
@@ -751,7 +758,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     int bpp = isRGB888Format ? 3 : SkColorTypeBytesPerPixel(supportedColorType);
     size_t rowBytes = caps->getAlignedTextureDataRowBytes(bpp * srcRect.width());
     size_t size = SkAlignTo(rowBytes * srcRect.height(), caps->requiredTransferBufferAlignment());
-    sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(
+    sk_sp<Buffer> buffer = fResourceProvider1->findOrCreateBuffer(
             size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible, "TransferToCpu");
     if (!buffer) {
         return {};
@@ -832,7 +839,7 @@ void Context::checkForFinishedWork(SyncToCpu syncToCpu) {
     fQueueManager->checkForFinishedWork(syncToCpu);
     fMappedBufferManager->process();
     // Process the return queue periodically to make sure it doesn't get too big
-    fResourceProvider->forceProcessReturnedResources();
+    fResourceProvider1->forceProcessReturnedResources();
 }
 
 void Context::checkAsyncWorkCompletion() {
@@ -845,7 +852,7 @@ void Context::deleteBackendTexture(const BackendTexture& texture) {
     if (!texture.isValid() || texture.backend() != this->backend()) {
         return;
     }
-    fResourceProvider->deleteBackendTexture(texture);
+    fResourceProvider1->deleteBackendTexture(texture);
 }
 
 void Context::freeGpuResources() {
@@ -853,7 +860,7 @@ void Context::freeGpuResources() {
 
     this->checkAsyncWorkCompletion();
 
-    fResourceProvider->freeGpuResources();
+    fResourceProvider1->freeGpuResources1();
 }
 
 void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
@@ -862,32 +869,32 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
     this->checkAsyncWorkCompletion();
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
-    fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+    fResourceProvider1->purgeResourcesNotUsedSince1(purgeTime);
 }
 
 size_t Context::currentBudgetedBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheCurrentBudgetedBytes();
+    return fResourceProvider1->getResourceCacheCurrentBudgetedBytes();
 }
 
 size_t Context::currentPurgeableBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheCurrentPurgeableBytes();
+    return fResourceProvider1->getResourceCacheCurrentPurgeableBytes();
 }
 
 size_t Context::maxBudgetedBytes() const {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->getResourceCacheLimit();
+    return fResourceProvider1->getResourceCacheLimit();
 }
 
 void Context::setMaxBudgetedBytes(size_t bytes) {
     ASSERT_SINGLE_OWNER
-    return fResourceProvider->setResourceCacheLimit(bytes);
+    return fResourceProvider1->setResourceCacheLimit(bytes);
 }
 
 void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     ASSERT_SINGLE_OWNER
-    fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
+    fResourceProvider1->dumpMemoryStatistics(traceMemoryDump);
     // TODO: What is the graphite equivalent for the text blob cache and how do we print out its
     // used bytes here (see Ganesh implementation).
 }
@@ -1024,10 +1031,11 @@ bool ContextPriv::supportsPathRendererStrategy(PathRendererStrategy strategy) {
 std::unique_ptr<Context> ContextCtorAccessor::MakeContext(
         sk_sp<SharedContext> sharedContext,
         std::unique_ptr<QueueManager> queueManager,
-        const ContextOptions& options) {
+        const ContextOptions& options,
+        bool foo) {
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
-                                                        options));
+                                                        options, foo));
     if (context && context->finishInitialization()) {
         return context;
     } else {

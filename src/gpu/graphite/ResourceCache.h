@@ -59,11 +59,11 @@ public:
     // TODO: Should we add an optional flag to also allow purging of zero sized resources? Would we
     // want to be able to differentiate between things like Pipelines (probably never want to purge)
     // and things like descriptor sets.
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
+    void purgeResourcesNotUsedSince1(StdSteadyClock::time_point purgeTime);
 
     // Purge any unlocked resources. Resources that have a gpu memory size of zero will not be
     // purged.
-    void purgeResources();
+    void purgeResources1();
 
     // Called by the ResourceProvider when it is dropping its ref to the ResourceCache. After this
     // is called no more Resources can be returned to the ResourceCache (besides those already in
@@ -136,7 +136,7 @@ private:
     void purgeAsNeeded();
     void purgeResource(Resource*);
     // Passing in a nullptr for purgeTime will trigger us to try and free all unlocked resources.
-    void purgeResources(const StdSteadyClock::time_point* purgeTime);
+    void purgeResources1(const StdSteadyClock::time_point* purgeTime);
 
     bool inPurgeableQueue(const Resource*) const;
 

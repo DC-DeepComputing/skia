@@ -314,7 +314,7 @@ public:
     ContextID contextID() const { return fContextID; }
 
 protected:
-    Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>, const ContextOptions&);
+    Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>, const ContextOptions&, bool);
 
 private:
     friend class ContextPriv;
@@ -390,7 +390,7 @@ private:
                                  SkImage::ReadPixelsContext callbackContext);
 
     sk_sp<SharedContext> fSharedContext;
-    std::unique_ptr<ResourceProvider> fResourceProvider;
+    std::unique_ptr<ResourceProvider> fResourceProvider1;
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;

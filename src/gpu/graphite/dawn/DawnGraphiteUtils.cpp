@@ -33,7 +33,7 @@ std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
 
     auto context = ContextCtorAccessor::MakeContext(std::move(sharedContext),
                                                     std::move(queueManager),
-                                                    options);
+                                                    options, true); //$$
     SkASSERT(context);
     return context;
 }

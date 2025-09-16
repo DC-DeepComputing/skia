@@ -531,7 +531,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteZeroSizedResourcesTest, reporter, con
     REPORTER_ASSERT(reporter, resourceCache->topOfPurgeableQueue()->gpuMemorySize() == 0);
 
     // However, purging all resources should clear the zero-sized resources.
-    resourceCache->purgeResources();
+    resourceCache->purgeResources1();
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 0);
 }
@@ -572,12 +572,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
     auto afterTime = force_newer_timepoint(skgpu::StdSteadyClock::now());
 
     // purging beforeTime should not get rid of the resource
-    resourceCache->purgeResourcesNotUsedSince(beforeTime);
+    resourceCache->purgeResourcesNotUsedSince1(beforeTime);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
     // purging at afterTime which is after resource became purgeable should purge it.
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince1(afterTime);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
@@ -600,12 +600,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr1));
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr2));
 
-    resourceCache->purgeResourcesNotUsedSince(betweenTime);
+    resourceCache->purgeResourcesNotUsedSince1(betweenTime);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr2));
 
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince1(afterTime);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
     // purgeResourcesNotUsedSince should have no impact on non-purgeable resources
@@ -621,19 +621,19 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
     afterTime = force_newer_timepoint(skgpu::StdSteadyClock::now());
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince1(afterTime);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, !resourceCache->testingInPurgeableQueue(resourcePtr));
 
     resource.reset();
     // purgeResourcesNotUsedSince should check the mailbox for the returned resource. Though the
     // time is set before that happens so nothing should purge.
-    resourceCache->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+    resourceCache->purgeResourcesNotUsedSince1(skgpu::StdSteadyClock::now());
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr));
 
     // Now it should be purged since it is already purgeable
-    resourceCache->purgeResourcesNotUsedSince(force_newer_timepoint(skgpu::StdSteadyClock::now()));
+    resourceCache->purgeResourcesNotUsedSince1(force_newer_timepoint(skgpu::StdSteadyClock::now()));
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 }
 
@@ -715,7 +715,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedOverBudgetTest, reporter,
     // newer than this time so they won't be purged by the time on this call. However, since we are
     // overbudget it should trigger us to purge two of them. Since each independently fits within
     // the budget, one (unspecified) will remain the purgeable queue.
-    resourceCache->purgeResourcesNotUsedSince(timeBeforeReturningToCache);
+    resourceCache->purgeResourcesNotUsedSince1(timeBeforeReturningToCache);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1,
         "count = %d", resourceCache->getResourceCount());
     if (resourceCache->currentBudgetedBytes() == kBudget - 1) {
@@ -752,7 +752,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeResourcesTest, reporter, context
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
     // purging should purge the one unlocked resource.
-    resourceCache->purgeResources();
+    resourceCache->purgeResources1();
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
     // Test making 2 purgeable resources
@@ -773,7 +773,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeResourcesTest, reporter, context
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr1));
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr2));
 
-    resourceCache->purgeResources();
+    resourceCache->purgeResources1();
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
     // purgeResources should have no impact on non-purgeable resources
@@ -788,12 +788,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeResourcesTest, reporter, context
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
-    resourceCache->purgeResources();
+    resourceCache->purgeResources1();
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, !resourceCache->testingInPurgeableQueue(resourcePtr));
 
     resource.reset();
-    resourceCache->purgeResources();
+    resourceCache->purgeResources1();
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 }
 

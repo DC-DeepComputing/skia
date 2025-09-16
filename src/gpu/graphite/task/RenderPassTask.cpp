@@ -189,7 +189,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
 
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
     // the discardable attachments from the Context.
-    ResourceProvider* resourceProvider = context->priv().resourceProvider();
+    ResourceProvider* resourceProvider = context->priv().resourceProvider1();
     sk_sp<Texture> colorAttachment;
     sk_sp<Texture> resolveAttachment;
     SkIPoint resolveOffset = SkIPoint::Make(0, 0);

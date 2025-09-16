@@ -247,7 +247,7 @@ private:
 
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
-    Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*);
+    Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*, bool);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 

@@ -39,7 +39,7 @@ std::unique_ptr<Context> MakeMetal(const MtlBackendContext& backendContext,
 
     return ContextCtorAccessor::MakeContext(std::move(sharedContext),
                                             std::move(queueManager),
-                                            options);
+                                            options, true); //$$
 }
 
 } // namespace ContextFactory

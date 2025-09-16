@@ -19,7 +19,7 @@ using namespace skgpu::graphite;
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     const Caps* caps = context->priv().caps();
-    ResourceProvider* resourceProvider = context->priv().resourceProvider();
+    ResourceProvider* resourceProvider = context->priv().resourceProvider1();
 
     // Setup caches
     UniformDataCache uCache;

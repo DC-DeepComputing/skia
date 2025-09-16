@@ -324,7 +324,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 // static
 sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const DawnSharedContext* sharedContext,
-        DawnResourceProvider* resourceProvider,
+        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -491,8 +491,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     // layout and passed in to the pipline constructor for lifetime management.
     skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers;
     {
-        SkASSERT(resourceProvider);
-        groupLayouts[0] = resourceProvider->getOrCreateUniformBuffersBindGroupLayout();
+        groupLayouts[0] = sharedContext->getOrCreateUniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
             return {};
         }
@@ -503,7 +502,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             if (numTexturesAndSamplers == 2 &&
                 !(samplerDescArrPtr && samplerDescArrPtr->at(0).isImmutable())) {
                 groupLayouts[1] =
-                        resourceProvider->getOrCreateSingleTextureSamplerBindGroupLayout();
+                        sharedContext->getOrCreateSingleTextureSamplerBindGroupLayout();
             } else {
                 std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers);
 #if !defined(__EMSCRIPTEN__)
@@ -787,6 +786,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
     return fAsyncPipelineCreation &&
            fAsyncPipelineCreation->fFinished &&
            !fAsyncPipelineCreation->fRenderPipeline;
+}
+
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {

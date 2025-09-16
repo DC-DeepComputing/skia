@@ -135,7 +135,7 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
 
     SIMULATE_FAIL(InsertStatus::kInvalidRecording);
 
-    auto resourceProvider = context->priv().resourceProvider();
+    auto resourceProvider = context->priv().resourceProvider1();
     // Technically no commands have been added yet, but if this fails, things are in a bad state
     // so signal the unrecoverable status.
     RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, fSharedContext->isProtected()),
@@ -237,7 +237,7 @@ bool QueueManager::addTask(Task* task,
         return false;
     }
 
-    if (!this->setupCommandBuffer(context->priv().resourceProvider(), isProtected)) {
+    if (!this->setupCommandBuffer(context->priv().resourceProvider1(), isProtected)) {
         SKGPU_LOG_E("CommandBuffer creation failed");
         return false;
     }

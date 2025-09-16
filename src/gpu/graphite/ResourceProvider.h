@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -60,11 +61,12 @@ public:
                                    const GraphicsPipelineHandle&);
     sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
 
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(
-            const UniqueKey& pipelineKey,
-            SkEnumBitMask<PipelineCreationFlags>,
-            uint32_t *compilationID = nullptr);
+//    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+//            const UniqueKey& pipelineKey,
+//            SkEnumBitMask<PipelineCreationFlags>,
+//            uint32_t *compilationID = nullptr);
 
+#if 0
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
@@ -73,6 +75,7 @@ public:
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>);
+#endif
 
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);
 
@@ -116,8 +119,8 @@ public:
         fResourceCache->dumpMemoryStatistics(traceMemoryDump);
     }
 
-    void freeGpuResources();
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
+    void freeGpuResources1();
+    void purgeResourcesNotUsedSince1(StdSteadyClock::time_point purgeTime);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
 
 #if defined(GPU_TEST_UTILS)
@@ -125,6 +128,7 @@ public:
     const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
+    GlobalCache* globalCache() { return fSharedContext->globalCache(); }
     const Caps* caps() const;
 
 #ifdef SK_BUILD_FOR_ANDROID
@@ -147,6 +151,7 @@ protected:
     sk_sp<ResourceCache> fResourceCache;
 
 private:
+#if 0
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
             const RuntimeEffectDictionary*,
             const UniqueKey&,
@@ -154,6 +159,7 @@ private:
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>,
             uint32_t compilationID) = 0;
+#endif
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t size, BufferType type, AccessPattern) = 0;

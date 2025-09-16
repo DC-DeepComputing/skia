@@ -9,6 +9,7 @@
 #include "include/core/SkTypes.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/PipelineCreationTask.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
 
@@ -49,7 +50,7 @@ void PrecompileContext::purgePipelinesNotUsedInMs(std::chrono::milliseconds msNo
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
 
-    fSharedContext->globalCache()->purgePipelinesNotUsedSince(purgeTime);
+    fSharedContext->globalCache()->purgePipelinesNotUsedSince7(purgeTime);
 }
 
 void PrecompileContext::reportPipelineStats(StatOptions option) {
@@ -83,6 +84,9 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
             renderPassDesc,
             PipelineCreationFlags::kForPrecompilation);
     fResourceProvider->startPipelineCreationTask(rtEffectDict, handle);
+
+    // Precompiling a serialized pipeline key shouldn't ever add a new runtime effect
+    SkASSERT(rtEffectDict->empty());
 
     return true;
 #else

@@ -111,7 +111,7 @@ static uint32_t next_id() {
 
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
-                   const Context* context)
+                   const Context* context, bool)
         : fSharedContext(std::move(sharedContext))
         , fRuntimeEffectDict(sk_make_sp<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
@@ -133,7 +133,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
 
     if (context) {
         fOwnedResourceProvider = nullptr;
-        fResourceProvider = context->priv().resourceProvider();
+        fResourceProvider = context->priv().resourceProvider1();
     } else {
         fOwnedResourceProvider = fSharedContext->makeResourceProvider(
                 this->singleOwner(),
@@ -506,7 +506,7 @@ void Recorder::freeGpuResources() {
     // resources that are locked due to pending work).
     fAtlasProvider->freeGpuResources();
 
-    fResourceProvider->freeGpuResources();
+    fResourceProvider->freeGpuResources1();
 
     // This is technically not GPU memory, but there's no other place for the client to tell us to
     // clean this up, and without any cleanup it can grow unbounded.
@@ -517,7 +517,7 @@ void Recorder::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
     ASSERT_SINGLE_OWNER
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
-    fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+    fResourceProvider->purgeResourcesNotUsedSince1(purgeTime);
 }
 
 size_t Recorder::currentBudgetedBytes() const {
