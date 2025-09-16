@@ -164,9 +164,14 @@ declare_args() {
 
 assert(!skia_use_dawn || skia_enable_graphite)  # Dawn is Graphite-only
 
-# Our tools require static linking (they use non-exported symbols), and the Ganesh backend.
-skia_enable_tools =
-    skia_enable_tools && !is_component_build && skia_enable_ganesh
+#  We only have a GL backend for Ganesh and so we assume that if skia_use_gl is true then skia_enable_ganesh is true.
+skia_use_gl = skia_use_gl && skia_enable_ganesh
+
+# Ditto for D3D
+skia_use_direct3d = skia_use_direct3d && skia_enable_ganesh
+
+# Our tools require static linking (they use non-exported symbols)
+skia_enable_tools = skia_enable_tools && !is_component_build
 
 if (skia_enable_optimize_size) {
   assert(
