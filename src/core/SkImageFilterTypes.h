@@ -940,7 +940,17 @@ private:
     FilterResult rescale(const Context& ctx,
                          const LayerSpace<SkSize>& scale,
                          bool enforceDecal,
-                         bool allowOverscaling) const;
+                         bool allowOverscaling) const {
+        return this->rescale(ctx, scale, enforceDecal, allowOverscaling,
+                             LayerSpace<SkSize>({0, 0}));
+    }
+
+    FilterResult rescale(const Context& ctx,
+                         const LayerSpace<SkSize>& scale,
+                         bool enforceDecal,
+                         bool allowOverscaling,
+                         LayerSpace<SkSize> sampleRadius) const;
+
     // Draw directly to the device, which draws the same image as produced by resolve() but can be
     // useful if multiple operations need to be performed on the canvas.
     //

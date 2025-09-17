@@ -35,6 +35,7 @@
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRectPriv.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 
@@ -1506,6 +1507,123 @@ PixelSpace<SkRect> scale_about_center(const PixelSpace<SkRect> src, float sx, fl
                                (src.right() - cx) * sx, (src.bottom() - cy) * sy});
 }
 
+SkRuntimeEffect* make_manual_mipmap_shader() {
+    return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+            SkStringPrintf(
+                    "uniform shader child;"
+                    "uniform half2 weight;"
+
+                    "uniform float4 domain;"
+
+                    "half4 main(float2 coord) {"
+                        // `coord` is assumed to be in child's coordinate space, so evaluating it
+                        // directly produces the base hi-res sample being downscaled to the current
+                        // fragment (which we don't need to explicitly consider).
+                        "float4 clamper = domain;"
+                        "float2 coordRB = min(coord, clamper.RB);"
+                        "float2 coordTLRB = max(coordRB, clamper.LT);"
+                        "float2 coordB = max(domain.LT, min(coord, domain.RB));"
+                        "half4 color0 = child.eval(coordB);"
+                        // Evaluate at four 1/2px offsets to calculate what would be evaluated if
+                        // `child` were rescaled by exactly 1/2 and then sampled.
+                        // "coord = floor(coord);"
+                        "float2 coordE0 = max(domain.LT, min(coord + sign(weight)*float2( 0.5,  0.5), domain.RB));"
+                        "float2 coordE1 = max(domain.LT, min(coord + sign(weight)*float2(-0.5,  0.5), domain.RB));"
+
+                        "float2 offset = weight;"
+                        "offset = sign(weight) * float2(0.5, -0.5);"
+                        "float2 coordE2 = coord + offset;"
+                        "coordE2 = max(clamper.LT, coordE2);"
+                        "coordE2 = min(coordE2, clamper.RB);"
+                        "float2 coordE3 = max(domain.LT, min(coord + sign(weight)*float2(-0.5, -0.5), domain.RB));"
+
+                        "half4 color1 = 0.25 * (child.eval(coordE0) +"
+                                               "child.eval(coordE1) +"
+                                               "child.eval(coordE2) +"
+                                               "child.eval(coordE3));"
+                        // Simulated linear mipmap filtering, assuming rendered downscale factor
+                        // between 1 (weight = 0) and 1/2 (weight = 1), the weight uniform should
+                        // be assigned 2*(1 - scaleFactor).
+                        "return mix(color0, color1, max(weight.x, weight.y));"
+                    "}").c_str());
+}
+
+sk_sp<SkShader> create_rescale_shader(sk_sp<SkShader> imageShader,
+                                      const SkMatrix& srcToDst,
+                                      const SkRect& srcDomain,
+                                      const SkRect& dstRect) {
+    SkASSERT(dstRect == SkRect::Make(dstRect.round())); // integer-valued floats
+
+    static const SkRuntimeEffect* const kRTE = make_manual_mipmap_shader();
+
+    // Since we assume srcToDst is an affine transform, just inverse map one dst pixel to look at
+    // how the src pixel grid is aligned and scaled.
+    SkRect dstTL = SkRect::MakeXYWH(dstRect.left(), dstRect.top(), 1.f, 1.f);
+    SkRect srcTL;
+    SkAssertResult(SkMatrixPriv::InverseMapRect(srcToDst, &srcTL, dstTL));
+
+    const bool identityX = dstTL.width() == srcTL.width() && SkScalarFraction(dstTL.left()) == SkScalarFraction(srcTL.left());
+    const bool identityY = dstTL.height() == srcTL.height() && SkScalarFraction(dstTL.top()) == SkScalarFraction(srcTL.top());
+
+    const float sx = dstTL.width() / srcTL.width();
+    const float sy = dstTL.height() / srcTL.height();
+
+    // The fragment shader will be invoked on the center of dstTL, so its interpolated src coord is
+    // the center of srcTL. If this value is an integer and the scale factor on that axis is 1/2,
+    // then HW linear filtering will automatically compute the average of the 4 source pixels that
+    // share that corner.
+    //
+    // When the axis transformation is the identity, it's also trivial to rely on HW sampling,
+    // except in this case sampling produces the original source value.
+    // if ((identityX || (srcTL.center().x() == std::floor(srcTL.center().x()) && sx == 0.5f)) &&
+    //     (identityY || (srcTL.center().y() == std::floor(srcTL.center().y()) && sy == 0.5f))) {
+    //     return imageShader;
+    // }
+
+    // Otherwise use the linear mipmap emulating runtime effect for a more stable calculation.
+    // FIXME if we are scalign by 1/4x then we want weight to be 2 so that when multiplied by 1/2
+    // we are actually doing averages of 4 neighboring pixels.
+    // But this equation is 2 * (1 - 0.25) = 2*.75 = 1.5 -> 0.75
+    const float weightX = SkTPin(2.f * (1.f - sx), 0.f, 1.f);
+    const float weightY = SkTPin(2.f * (1.f - sy), 0.f, 1.f);
+
+    SkDebugf("draw rescale %f %f -> %f %f\n", sx, sy, weightX, weightY);
+
+    SkRuntimeEffectBuilder builder(sk_ref_sp(kRTE));
+    builder.child("child") = std::move(imageShader);
+    builder.uniform("weight") = SkV2{weightX, weightY};
+    builder.uniform("domain") = srcDomain.makeInset(0.5f, 0.5f);
+
+    SkDebugf("src comain = %f %f %f %f\n", srcDomain.left(), srcDomain.top(), srcDomain.right(), srcDomain.bottom());
+
+    return builder.makeShader();
+}
+
+void draw_rescale_shader(SkCanvas* canvas,
+                         sk_sp<SkShader> imageShader,
+                         const SkMatrix& srcToDst,
+                         const SkRect& srcDomain,
+                         const SkRect& dstRect, bool edge=false) {
+    SkPaint paint;
+    // if (edge) {
+    //     paint.setShader(std::move(imageShader));
+    // } else
+    {
+        paint.setShader(create_rescale_shader(std::move(imageShader), srcToDst, srcDomain, dstRect));
+    }
+#if !defined(SK_USE_SRCOVER_FOR_FILTERS)
+    paint.setBlendMode(SkBlendMode::kSrc);
+#endif
+
+    SkRect srcRect;
+    SkAssertResult(SkMatrixPriv::InverseMapRect(srcToDst, &srcRect, dstRect));
+
+    canvas->save();
+    canvas->concat(srcToDst);
+    canvas->drawRect(srcRect, paint);
+    canvas->restore();
+}
+
 void draw_color_filtered_border(SkCanvas* canvas,
                                 PixelSpace<SkIRect> border,
                                 sk_sp<SkColorFilter> colorFilter) {
@@ -1532,20 +1650,29 @@ void draw_color_filtered_border(SkCanvas* canvas,
 
 void draw_tiled_border(SkCanvas* canvas,
                        SkTileMode tileMode,
-                       const SkPaint& paint,
+                    //    const SkPaint& paint,
+                       sk_sp<SkShader> imageShader,
                        const PixelSpace<SkMatrix>& srcToDst,
-                       PixelSpace<SkRect> srcBorder,
-                       PixelSpace<SkRect> dstBorder) {
+                       PixelSpace<SkRect> srcBorder, // in pixels (including 1px outset for prior border)
+                       PixelSpace<SkRect> srcRect, // original fractional src bounds
+                       PixelSpace<SkRect> dstBorder, // in pixels (including 1px outset for border)
+                       PixelSpace<SkRect> dstRect) { // original fractional dst bounds
     SkASSERT(tileMode != SkTileMode::kDecal); // There are faster ways for just transparent black
+
+    SkDebugf("src border = %f %f %f %f\n", srcBorder.left(), srcBorder.top(), srcBorder.right(), srcBorder.bottom());
+
+    const auto srcDomain = SkRect(srcBorder);
 
     // Sample the border pixels directly, scaling only on an axis at a time for
     // edges, and with no scaling for corners. Since only the CTM is adjusted, these
     // 8 draws should be batchable with the primary fill that had used `paint`.
     auto drawEdge = [&](const SkRect& src, const SkRect& dst) {
-        canvas->save();
-        canvas->concat(SkMatrix::RectToRectOrIdentity(src, dst));
-        canvas->drawRect(src, paint);
-        canvas->restore();
+        SkMatrix srcToDst = SkMatrix::RectToRectOrIdentity(src, dst);
+        // FIXME the edge filling isn't working reliably when combined with the rescale shader
+        // do we force it to just be an image shader? Or coerce it into 2 separate axis weight
+        // configurations, e.g. {0,1} and {1,0} _> and are we not calculating that correctly
+        // given the way create_rescale_shader is implemented?
+        draw_rescale_shader(canvas, imageShader, srcToDst, srcDomain, dst, true);
     };
     auto drawCorner = [&](const SkPoint& src, const SkPoint& dst) {
         drawEdge(SkRect::MakeXYWH(src.fX, src.fY, 1.f, 1.f),
@@ -1556,9 +1683,10 @@ void draw_tiled_border(SkCanvas* canvas,
     // original sampled dst.
     PixelSpace<SkRect> dstSampleBounds{dstBorder};
     dstSampleBounds.inset(PixelSpace<SkSize>({1.f, 1.f}));
+    // PixelSpace<SkRect> dstSampleBounds = dstRect;
 
     // Reconstruct the original source coordinate bounds
-    PixelSpace<SkRect> srcSampleBounds;
+    PixelSpace<SkRect> srcSampleBounds; // ?? = srcRect;
     SkAssertResult(srcToDst.inverseMapRect(dstSampleBounds, &srcSampleBounds));
 
     if (tileMode == SkTileMode::kMirror || tileMode == SkTileMode::kRepeat) {
@@ -1566,10 +1694,40 @@ void draw_tiled_border(SkCanvas* canvas,
         // in order to calculate the average of the two outermost sampled pixels.
         // Inset by an extra 1/2 so that the eventual sample coordinates average the outermost two
         // rows/columns of src pixels.
-        srcBorder = dstSampleBounds;
+        // srcBorder = dstSampleBounds;
+        srcBorder = PixelSpace<SkRect>(dstBorder);
         srcBorder.inset(PixelSpace<SkSize>({0.5f, 0.5f}));
+        SkDebugf("target dst sample coords for mirror/repeat: %f %f %f %f\n",
+                 srcBorder.left(), srcBorder.top(), srcBorder.right(), srcBorder.bottom());
+
+        // Assuming scaling about the center, the amount of reflection for the two X axis edges
+        // should be the same (and similar for Y), so we can use inset() to store the inward
+        // reflected coordinates.
+        float leftDelta = dstRect.left() - srcBorder.left();
+        float rightDelta = srcBorder.right() - dstRect.right();
+        float topDelta = dstRect.top() - srcBorder.top();
+        float botDelta = srcBorder.bottom() - dstRect.bottom();
+        SkDebugf("deltas: %f (%f) and %f (%f)\n", leftDelta, rightDelta, topDelta, botDelta);
+        srcBorder = dstRect;
+        srcBorder.inset(LayerSpace<SkSize>({leftDelta, rightDelta}));
+        SkDebugf("target reflected sample coords for mirror/repeat: %f %f %f %f\n",
+                 srcBorder.left(), srcBorder.top(), srcBorder.right(), srcBorder.bottom());
+
         SkAssertResult(srcToDst.inverseMapRect(srcBorder, &srcBorder));
         srcBorder.outset(PixelSpace<SkSize>({0.5f, 0.5f}));
+
+
+
+
+        SkDebugf("target src sample coords for mirror/repeat: %f %f %f %f\n",
+                 srcBorder.left(), srcBorder.top(), srcBorder.right(), srcBorder.bottom());
+
+        // We want to reflect the pixel center of the dst border pixel around `dstRect` and then
+        // map to the src coordinate space to determine the src border coordinates to use.
+
+
+
+
     }
 
     // Invert the dst coordinates for repeat so that the left edge is mapped to the
@@ -1617,7 +1775,8 @@ void draw_tiled_border(SkCanvas* canvas,
 FilterResult FilterResult::rescale(const Context& ctx,
                                    const LayerSpace<SkSize>& scale,
                                    bool enforceDecal,
-                                   bool allowOverscaling) const {
+                                   bool allowOverscaling,
+                                   LayerSpace<SkSize> sampleRadius) const {
     LayerSpace<SkIRect> visibleLayerBounds = fLayerBounds;
     if (!fImage || !visibleLayerBounds.intersect(ctx.desiredOutput()) ||
         scale.width() <= 0.f || scale.height() <= 0.f) {
@@ -1736,6 +1895,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
         }
     }
 
+    allowOverscaling = false;
     if (deferPeriodicTiling) {
         // The periodic tiling effect will be manually rendered into the lower resolution image so
         // that clamp tiling can be used at each decimation.
@@ -1767,7 +1927,11 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                                        : scale.height())
                                    : 1.f;
 
+    SkDebugf("starting rescale %f %f w/ %d %d\n", finalScaleX, finalScaleY, xSteps, ySteps);
+    float fracX = 0.f;
+    float fracY = 0.f;
     do {
+        SkDebugf("step %d %d -> ", xSteps, ySteps);
         float sx = 1.f;
         if (xSteps > 0) {
             sx = xSteps > 1 ? 0.5f : srcRect.width()*finalScaleX / stepBoundsF.width();
@@ -1779,20 +1943,75 @@ FilterResult FilterResult::rescale(const Context& ctx,
             sy = ySteps > 1 ? 0.5f : srcRect.height()*finalScaleY / stepBoundsF.height();
             ySteps--;
         }
-
+        SkDebugf("%f %f\n", sx, sy);
         // Downscale relative to the center of the image, which better distributes any sort of
         // sampling errors across the image (vs. emphasizing the bottom right edges).
         PixelSpace<SkRect> dstBoundsF = scale_about_center(stepBoundsF, sx, sy);
         const bool finalXStep = xSteps == 0 && sx != 1.f;
         const bool finalYStep = ySteps == 0 && sy != 1.f;
-        if (deferPeriodicTiling && (finalXStep || finalYStep)) {
+        if ((false) && deferPeriodicTiling && (finalXStep || finalYStep)) {
             PixelSpace<SkIRect> dstPixels = dstBoundsF.roundOut();
-            dstBoundsF = PixelSpace<SkRect>({
-                finalXStep ? (float) dstPixels.left()   : dstBoundsF.left(),
-                finalYStep ? (float) dstPixels.top()    : dstBoundsF.top(),
-                finalXStep ? (float) dstPixels.right()  : dstBoundsF.right(),
-                finalYStep ? (float) dstPixels.bottom() : dstBoundsF.bottom()});
+            // maybe always round-in and do the fractional alignment?
+
+            float l,t,r,b;
+            if (!finalXStep) {
+                // No snapping for an axis that is still being scaled
+                l = dstBoundsF.left();
+                r = dstBoundsF.right();
+            } else if  (dstBoundsF.width() <= 1.5f) {
+                // Re-center a single pixel over the content instead of a 2x2 grid
+                fracX = 0.5f * dstBoundsF.left() + 0.5f * dstBoundsF.right() - 0.5f;
+                l = 0.f;
+                r = 1.f;
+            } else {
+                // Use the pixel values as the "float" coordinates
+                l = dstPixels.left();
+                r = dstPixels.right();
+            }
+            if (!finalYStep) {
+                // No snapping for an axis that is still being scaled
+                t = dstBoundsF.top();
+                b = dstBoundsF.bottom();
+            } else if  (dstBoundsF.height() <= 1.5f) {
+                // Re-center a single pixel over the content instead of a 2x2 grid
+                fracY = 0.5f * dstBoundsF.top() + 0.5f * dstBoundsF.bottom() - 0.5f;
+                t = 0.f;
+                b = 1.f;
+            } else {
+                // Use the pixel values as the "float" coordinates
+                t = dstPixels.top();
+                b = dstPixels.bottom();
+            }
+            dstBoundsF = PixelSpace<SkRect>({l,t,r,b});
+            // PixelSpace<SkIRect> dstPixels = dstBoundsF.roundOut();
+            // dstBoundsF = PixelSpace<SkRect>({
+            //     finalXStep ? (float) dstPixels.left()   : dstBoundsF.left(),
+            //     finalYStep ? (float) dstPixels.top()    : dstBoundsF.top(),
+            //     finalXStep ? (float) dstPixels.right()  : dstBoundsF.right(),
+            //     finalYStep ? (float) dstPixels.bottom() : dstBoundsF.bottom()});
         }
+
+        // This gives stable sigma scaling for decal blurs on thin geometry, but
+        // it has visible popping on sigma scaling of a decal-tiled image.
+        // Using overscaling + src offset adjustment works best although has subtle
+        // popping due to overscaling that the blur sigma can't compensate for....
+        // Trying to do dst offsetting doesn't create a stable animation, but maybe there's just
+        //   a bug to continue exploring.
+        // auto scaleXform = PixelSpace<SkMatrix>::RectToRect(
+        //     stepBoundsF, dstBoundsF);
+        //     // PixelSpace<SkRect>(stepBoundsF.roundOut()),
+        //     // PixelSpace<SkRect>(dstBoundsF.roundOut()));
+
+        // PixelSpace<SkRect> srcSampled;
+        // SkAssertResult(scaleXform.inverseMapRect(PixelSpace<SkRect>(dstBoundsF.roundOut()),
+        //                                             &srcSampled));
+        // float tx =  deferPeriodicTiling ? 0.f : srcSampled.left() - std::floor(srcSampled.left());
+        // float ty = deferPeriodicTiling ? 0.f : srcSampled.top() - std::floor(srcSampled.top());
+        // srcSampled.offset(PixelSpace<Vector>({-tx, -ty}));
+        // scaleXform.preConcat(PixelSpace<SkMatrix>(SkMatrix::Translate(tx, ty)));
+
+        // dstBoundsF = scaleXform.mapRect(srcSampled);
+
 
         // NOTE: Rounding out is overly conservative when dstBoundsF has an odd integer width/height
         // but with coordinates at 1/2. In this case, we could create a pixel grid that has a
@@ -1810,9 +2029,29 @@ FilterResult FilterResult::rescale(const Context& ctx,
             dstPixelBounds.outset(LayerSpace<SkISize>({1,1}));
         }
 
+        if (deferPeriodicTiling && finalXStep) {
+            dstPixelBounds.outset(LayerSpace<SkSize>({3.f * finalScaleX * sampleRadius.width(), 0.f}).ceil());
+        }
+        if (deferPeriodicTiling && finalYStep) {
+            dstPixelBounds.outset(LayerSpace<SkSize>({0.f, 3.f * finalScaleY * sampleRadius.height()}).ceil());
+        }
+
         AutoSurface surface{ctx, dstPixelBounds, boundary, /*renderInParameterSpace=*/false};
         if (surface) {
-            const auto scaleXform = PixelSpace<SkMatrix>::RectToRect(stepBoundsF, dstBoundsF);
+            auto scaleXform = PixelSpace<SkMatrix>::RectToRect(stepBoundsF, dstBoundsF);
+            // If we have more scaling steps for one axis after applying the frac offset for the other
+            // axis, we don't want to keep re-applying the offset to that axis. But we don't just
+            // set the offset to 0 because we need to remember it for when we calculate the final
+            // transform back to srcRect.
+            scaleXform.postConcat(PixelSpace<SkMatrix>(SkMatrix::Translate(finalXStep ? -fracX : 0.f, finalYStep ? -fracY : 0.f)));
+
+            // PixelSpace<SkRect> srcSampled;
+            // SkAssertResult(scaleXform.inverseMapRect(PixelSpace<SkRect>(sampleBounds),
+            //                                          &srcSampled));
+            // float tx =  deferPeriodicTiling ? 0.f : srcSampled.left() - std::floor(srcSampled.left());
+            // float ty = deferPeriodicTiling ? 0.f : srcSampled.top() - std::floor(srcSampled.top());
+            // srcSampled.offset(PixelSpace<Vector>({-tx, -ty}));
+            // scaleXform.preConcat(PixelSpace<SkMatrix>(SkMatrix::Translate(tx, ty)));
 
             // Redo analysis with the actual scale transform and padded low res bounds.
             // With the padding added to dstPixelBounds, intermediate steps should not require
@@ -1821,25 +2060,100 @@ FilterResult FilterResult::rescale(const Context& ctx,
             // TODO: Given that the final step may often require shader-based tiling, it may make
             // sense to tile into a large enough texture that the subsequent blurs will not require
             // any shader-based tiling.
+            // FIXME analysis needs to know about any mipmap level sampling...
             analysis = image.analyzeBounds(SkMatrix(scaleXform),
                                            SkIRect(sampleBounds),
                                            BoundsScope::kRescale);
 
             // Primary fill that will cover all of 'sampleBounds'
-            SkPaint paint;
-            paint.setShader(image.getAnalyzedShaderView(ctx, image.sampling(), analysis));
-#if !defined(SK_USE_SRCOVER_FOR_FILTERS)
-            paint.setBlendMode(SkBlendMode::kSrc);
-#endif
+            // SkPaint paint;
+            auto imageShader = image.getAnalyzedShaderView(ctx, image.sampling(), analysis);
+            // paint.setShader(
+            //         create_rescale_shader(imageShader,
+            //                               scaleXform,
+            //                               srcSampled));
+// #if !defined(SK_USE_SRCOVER_FOR_FILTERS)
+//             paint.setBlendMode(SkBlendMode::kSrc);
+// #endif
+            // FIXME decal doesn't want the + 1 here, unless we switch to all going through non-border
 
-            PixelSpace<SkRect> srcSampled;
-            SkAssertResult(scaleXform.inverseMapRect(PixelSpace<SkRect>(sampleBounds),
-                                                     &srcSampled));
 
-            surface->save();
-                surface->concat(SkMatrix(scaleXform));
-                surface->drawRect(SkRect(srcSampled), paint);
-            surface->restore();
+
+
+
+
+            // surface->save();
+                // surface->concat(SkMatrix(scaleXform));
+                // surface->drawRect(SkRect(srcSampled), paint);
+                SkRect srcDomain = SkRect(stepPixelBounds);
+                // FIXME fold decal handling into cfBorder color rendering?
+                if (tileMode == SkTileMode::kDecal) {
+                    srcDomain.outset(1.f, 1.f);
+                }
+
+                int dx = sampleBounds.left();
+                int fx = 1;
+                while (dx > dstPixelBounds.left() + 1) {
+                    dx -= sampleBounds.width();
+                    fx *= -1;
+                }
+                int dy = sampleBounds.top();
+                int fy = 1;
+                while (dy > dstPixelBounds.top() + 1) {
+                    dy -= sampleBounds.height();
+                    fy *= -1;
+                }
+
+                SkRect dstSampleBounds; // = SkRect::Make(SkIRect(sampleBounds));
+                for (/*dy*/; dy < dstPixelBounds.bottom() - 1; dy += sampleBounds.height()) {
+                    int fxp = fx;
+                    int dxp = dx;
+                    for (/*dx*/; dxp < dstPixelBounds.right() - 1; dxp += sampleBounds.width()) {
+                        SkMatrix periodXform{scaleXform};
+
+                        // if (tileMode == SkTileMode::kMirror) {
+                        //     periodXform.postScale(fxp, fy);
+                        //     periodXform.postTranslate(-std::min(fxp, 0) * sampleBounds.width(), -std::min(fy, 0) * sampleBounds.height());
+                        // }
+                        periodXform.postTranslate(dxp - sampleBounds.left(), dy - sampleBounds.top());
+
+                        dstSampleBounds = SkRect::Make(SkIRect(sampleBounds));
+                        dstSampleBounds.offset(dxp - sampleBounds.left(), dy - sampleBounds.top());
+
+                        // FIXME this produces similar results to resolving the deferred periodic tiling
+                        // approach, I believe because both end up using integer translations for the
+                        // periodic tiling. What we need to do is actually tile dstRect over the surface
+                        // and resolve the fractional periods.
+                        //
+                        // This is annoying to do via drawing because then you need to blend partial
+                        // pixel coverage together, and there are asserts. Also from perf POV, this
+                        // can produce a lot of very tiny rect draws: 4 = low res sigma -> 12 low res outset,
+                        // so we are doing a 25px image tiled by likely 2x2 shapes -> a lot.
+
+                        // Would be better to figure out how to actually just calculate the periodic
+                        // tiling effect in the shader and do a single draw.
+                        // -> would this let us drop the edge scaling draws? perhaps, but don't try it righ
+                        // away. And ideally this would all be fractional strict constraint business
+                        // that could correctly integrate with sampling gradients, but since these images
+                        // won't have mipmaps, then it doesn't matter.
+                        draw_rescale_shader(surface.canvas(), imageShader, periodXform, srcDomain,
+                                            dstSampleBounds);
+
+                        fxp *= -1;
+                    }
+                    fy *= -1;
+                }
+
+                SkDebugf("src %f %f %f %f -> dst %f %f %f %f\n",
+                        stepBoundsF.left(), stepBoundsF.top(), stepBoundsF.right(), stepBoundsF.bottom(),
+                        dstBoundsF.left(), dstBoundsF.top(), dstBoundsF.right(), dstBoundsF.bottom());
+                SkDebugf("src %d %d %d %d -> dst %d %d %d %d\n",
+                         (int) srcDomain.left(), (int) srcDomain.top(), (int) srcDomain.right(), (int) srcDomain.bottom(),
+                         dstPixelBounds.left(), dstPixelBounds.top(), dstPixelBounds.right(), dstPixelBounds.bottom());
+
+                // draw_rescale_shader(surface.canvas(), imageShader, SkMatrix(scaleXform),
+                //                     srcDomain, SkRect::Make(SkIRect(sampleBounds)));
+            // surface->restore();
 
             if (cfBorder) {
                 // Fill in the border with the transparency-affecting color filter, which is
@@ -1853,8 +2167,9 @@ FilterResult FilterResult::rescale(const Context& ctx,
                 cfBorder = false;
             } else if (tileMode != SkTileMode::kDecal) {
                 // Draw the edges of the shader into the padded border, respecting the tile mode
-                draw_tiled_border(surface.canvas(), tileMode, paint, scaleXform,
-                                  stepPixelBounds, PixelSpace<SkRect>(dstPixelBounds));
+                // paint.setShader(imageShader); // FIXME force weight = 0 to preserve pipeline?
+                draw_tiled_border(surface.canvas(), tileMode, imageShader, scaleXform,
+                                  stepPixelBounds, stepBoundsF, PixelSpace<SkRect>(dstPixelBounds), dstBoundsF);
             }
         } else {
             // Rescaling can't complete, no sense in downscaling non-existent data
@@ -1865,6 +2180,17 @@ FilterResult FilterResult::rescale(const Context& ctx,
         // If we are deferring periodic tiling, use kClamp on subsequent steps to preserve the
         // border pixels. The original tile mode will be restored at the end.
         image.fTileMode = deferPeriodicTiling ? SkTileMode::kClamp : tileMode;
+
+        // const bool finalXStep = xSteps == 0 && sx != 1.f;
+        // const bool finalYStep = ySteps == 0 && sy != 1.f;
+        // if (deferPeriodicTiling && (finalXStep || finalYStep)) {
+        //     PixelSpace<SkIRect> dstPixels = dstBoundsF.roundOut();
+        //     dstBoundsF = PixelSpace<SkRect>({
+        //         finalXStep ? (float) dstPixels.left()   : dstBoundsF.left(),
+        //         finalYStep ? (float) dstPixels.top()    : dstBoundsF.top(),
+        //         finalXStep ? (float) dstPixels.right()  : dstBoundsF.right(),
+        //         finalYStep ? (float) dstPixels.bottom() : dstBoundsF.bottom()});
+        // }
 
         stepBoundsF = dstBoundsF;
         stepPixelBounds = PixelSpace<SkRect>(dstPixelBounds);
@@ -1885,6 +2211,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
         // periodic tiles would effectively clamp to the interior of the image.
     }
     image.fTileMode = tileMode;
+    image.fTransform.postConcat(LayerSpace<SkMatrix>(SkMatrix::Translate(fracX, fracY)));
     image.fTransform.postConcat(
             LayerSpace<SkMatrix>::RectToRect(stepBoundsF, LayerSpace<SkRect>{srcRect}));
     image.fLayerBounds = visibleLayerBounds;
@@ -2146,12 +2473,18 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
             fContext.withNewDesiredOutput(sampleBounds),
             LayerSpace<SkSize>({sx, sy}),
             algorithm->supportsOnlyDecalTiling(),
-            /*allowOverscaling=*/true);
+            /*allowOverscaling=*/true,
+            sigma);
     if (!lowResImage) {
         return {};
     }
     SkASSERT(lowResImage.tileMode() == SkTileMode::kDecal ||
              !algorithm->supportsOnlyDecalTiling());
+
+    if ((false)) {
+        lowResImage.fSamplingOptions = SkFilterMode::kNearest;
+        return lowResImage;
+    }
 
     // Map 'sigma' into the low-res image's pixel space to determine the low-res blur params to pass
     // into the blur engine. This relies on rescale() producing an image with a scale+translate
@@ -2164,12 +2497,21 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     PixelSpace<SkIRect> lowResMaxOutput{SkISize{lowResImage.fImage->width(),
                                                 lowResImage.fImage->height()}};
 
+    SkTileMode tileMode = lowResImage.tileMode();
     PixelSpace<SkIRect> srcRelativeOutput;
     if (lowResImage.tileMode() == SkTileMode::kRepeat ||
         lowResImage.tileMode() == SkTileMode::kMirror) {
         // The periodic tiling was deferred when down-sampling; we can further defer it to after the
         // blur. The low-res output is 1-to-1 with the low res image.
         srcRelativeOutput = lowResMaxOutput;
+
+        // lowResMaxOutput.outset(PixelSpace<SkSize>({3.f * lowResSigma.width() + 1.f,
+        //                                            3.f * lowResSigma.height() + 1.f}).ceil());
+        //                                            auto t = lowResImage.fTransform;
+        //                                            lowResImage.fTransform = PixelSpace<SkMatrix>(SkMatrix::I());
+        // lowResImage = lowResImage.resolve(fContext, lowResMaxOutput);
+        // lowResImage.fTransform = t;
+        // lowResImage.fTileMode = tileMode;
     } else {
         // For decal and clamp tiling, the blurred image stops being interesting outside the radii
         // outset, so redo the max output analysis with the 'outputBounds' mapped into pixel space.
@@ -2198,7 +2540,6 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
 
     sk_sp<SkSpecialImage> lowResBlur = lowResImage.refImage();
     SkIRect blurOutputBounds = SkIRect(srcRelativeOutput);
-    SkTileMode tileMode = lowResImage.tileMode();
     if (!algorithm->supportsOnlyDecalTiling() &&
         lowResImage.canClampToTransparentBoundary(BoundsAnalysis::kSimple)) {
         // Have to manage this manually since the BlurEngine isn't aware of the known pixel padding.

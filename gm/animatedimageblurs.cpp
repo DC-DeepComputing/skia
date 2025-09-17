@@ -261,8 +261,99 @@ private:
     float                  fVOffset = 0;
 };
 
+class AnimatedStrokeBlur : public skiagm::GM {
+static constexpr float kMaxBlurSigma = 250.f;
+static constexpr float kAnimationDuration = 12.f; // seconds
+public:
+    AnimatedStrokeBlur() : fBlurSigma(0.3f * kMaxBlurSigma) {
+        this->setBGColor(0xFFCCCCCC);
+    }
+
+protected:
+    bool runAsBench() const override { return true; }
+
+    SkString getName() const override { return SkString("animated-stroke-blur"); }
+
+    SkISize getISize() override { return SkISize::Make(530, 530); }
+
+    void onDraw(SkCanvas* canvas) override {
+        auto drawBlurredStroke = [&](float tx, float ty, float blurX, float blurY,
+                                     bool circle, SkTileMode tileMode) {
+            SkPaint paint;
+            paint.setStroke(true);
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(2.f);
+
+            SkRect rect = SkRect::MakeIWH(50, 50);
+            canvas->save();
+            canvas->translate(tx, ty);
+            paint.setImageFilter(SkImageFilters::Blur(blurX, blurY, tileMode,
+                                                      nullptr, rect));
+
+            // Draw the shape so that it just touches the inside of the crop rect
+            float inset = paint.getStrokeWidth() / 2.f;
+            rect.inset(inset, inset);
+            if (circle) {
+                canvas->drawOval(rect, paint);
+            } else {
+                canvas->drawRect(rect, paint);
+            }
+            canvas->restore();
+
+            canvas->save();
+            SkPaint layerPaint;
+            layerPaint.setImageFilter(SkImageFilters::Blur(blurX, blurY, nullptr));
+            paint.setImageFilter(nullptr);
+
+            canvas->save();
+            canvas->translate(tx, ty + 60.f);
+            canvas->clipRect(rect);
+            canvas->saveLayer(nullptr, &layerPaint);
+
+            for (int sx = -16; sx <= 16; sx++) {
+                for (int sy = -16; sy <= 16; sy++) {
+                    SkRect r = rect.makeOffset(sx * (rect.width() + paint.getStrokeWidth()), sy * (rect.height() + paint.getStrokeWidth()));
+                    canvas->drawRect(r, paint);
+                }
+            }
+
+            canvas->restore();
+            canvas->restore();
+        };
+
+        auto drawBlurredRow = [&](float ty, SkTileMode tileMode) {
+            float tx = 10.f;
+            for (bool circle : {false}) {//}, true}) {
+                for (SkV2 blur : {SkV2{fBlurSigma, fBlurSigma}}) {
+                                //   SkV2{fBlurSigma, 1.f},
+                                //   SkV2{1.f, fBlurSigma}}) {
+                    drawBlurredStroke(tx, ty, blur.x, blur.y, circle, tileMode);
+                    tx += 60.f;
+                }
+            }
+            return ty + 60.f;
+        };
+
+        float ty = 10.f;
+        // ty = drawBlurredRow(ty, SkTileMode::kDecal);
+        // ty = drawBlurredRow(ty, SkTileMode::kClamp);
+        ty = drawBlurredRow(ty, SkTileMode::kMirror);
+        // ty = drawBlurredRow(ty, SkTileMode::kRepeat);
+    }
+
+    bool onAnimate(double nanos) override {
+        fBlurSigma = TimeUtils::PingPong(1e-9 * nanos, kAnimationDuration,
+                                         0.f, 0.0f, kMaxBlurSigma);
+        return true;
+    }
+
+private:
+    SkScalar fBlurSigma;
+};
+
 //////////////////////////////////////////////////////////////////////////////
 
 DEF_GM(return new AnimatedImageBlurs;)
 DEF_GM(return new AnimatedTiledImageBlur;)
 DEF_GM(return new AnimatedBackdropBlur;)
+DEF_GM(return new AnimatedStrokeBlur;)
