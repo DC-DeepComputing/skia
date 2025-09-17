@@ -144,7 +144,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageWrapTextureMipmapsTest,
                                            SkImage::RescaleMode::kNearest,
                                            readPixelsCallback,
                                            &readContext);
-        context->submit();
+        context->submit({SyncToCpu::kNo, MarkFrameBoundary::kNo, 0u});
         while (!readContext.called) {
             testContext->tick();
             context->checkAsyncWorkCompletion();

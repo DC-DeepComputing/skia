@@ -84,7 +84,7 @@ bool run_test(skiatest::Reporter* reporter,
     context->insertRecording(info);
     info.fRecording = text1Recording.get();
     context->insertRecording(info);
-    context->submit();
+    context->submit({SyncToCpu::kNo, MarkFrameBoundary::kNo, 0u});
 
     if (!surface->readPixels(pm0, 0, 0)) {
         ERRORF(reporter, "readPixels failed");
@@ -98,7 +98,7 @@ bool run_test(skiatest::Reporter* reporter,
     context->insertRecording(info);
     info.fRecording = text0Recording.get();
     context->insertRecording(info);
-    context->submit();
+    context->submit({SyncToCpu::kNo, MarkFrameBoundary::kNo, 0u});
 
     if (!surface->readPixels(pm1, 0, 0)) {
         ERRORF(reporter, "readPixels failed");

@@ -129,7 +129,7 @@ ProxyCacheSetup setup_test(Context* context,
         // Ensure proxy1's Texture is created (and timestamped) at this time
         auto recording = recorder->snap();
         context->insertRecording({ recording.get() });
-        context->submit(SyncToCpu::kYes);
+        context->submit({SyncToCpu::kYes, MarkFrameBoundary::kNo, 0u});
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2));

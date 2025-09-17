@@ -555,7 +555,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphit
                                            async_callback,
                                            &asyncContext);
         if (!asyncContext.fCalled) {
-            context->submit();
+            context->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         }
         while (!asyncContext.fCalled) {
             testContext->tick();
@@ -598,7 +598,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphit
 
     // It's possible that we've created an Image using the factory, but then don't try to do
     // readPixels on it, leaving a hanging command buffer. So we submit here to clean up.
-    context->submit();
+    context->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
 }
 
 DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
@@ -624,7 +624,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraph
                                            async_callback,
                                            &asyncContext);
         if (!asyncContext.fCalled) {
-            context->submit();
+            context->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         }
         while (!asyncContext.fCalled) {
             testContext->tick();
@@ -664,5 +664,5 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraph
 
     // It's possible that we've created an Image using the factory, but then don't try to do
     // readPixels on it, leaving a hanging command buffer. So we submit here to clean up.
-    context->submit();
+    context->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
 }

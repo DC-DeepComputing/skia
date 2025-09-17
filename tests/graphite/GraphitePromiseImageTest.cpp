@@ -265,7 +265,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseI
                                      /* expectedFulfillCnt= */ 1); // NVPIs fulfilled at insert
     }
 
-    context->submit(SyncToCpu::kNo);
+    context->submit({SyncToCpu::kNo, MarkFrameBoundary::kNo, 0u});
     // testContext.fImg still has a ref so we should not have called TextureRelease.
     check_fulfilled_ahead_by_one(reporter, testContext.fPromiseChecker,
                                  /* expectedFulfillCnt= */ 1);

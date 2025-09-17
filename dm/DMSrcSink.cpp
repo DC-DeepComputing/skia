@@ -2272,7 +2272,7 @@ Result GraphitePrecompileTestingSink::drawSrc(
     if (!context->insertRecording(info)) {
         return Result::Fatal("Context::insertRecording failed.");
     }
-    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+    if (!context->submit({skgpu::graphite::SyncToCpu::kYes, skgpu::graphite::MarkFrameBoundary::kNo, 0u})) {
         return Result::Fatal("Context::submit failed.");
     }
 
