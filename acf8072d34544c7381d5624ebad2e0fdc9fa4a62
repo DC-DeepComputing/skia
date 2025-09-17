@@ -16,6 +16,75 @@
       "message": "@kjlubick, can you PTAL?",
       "revId": "acf8072d34544c7381d5624ebad2e0fdc9fa4a62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7edf5c6e_a1dff730",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-17T22:18:49Z",
+      "side": 1,
+      "message": "No need to use `std::min` here - `xByteOffset` is derived from `frame-\u003exOffset` which is already validated in the `png` crate ([here](https://github.com/image-rs/image-png/blob/f33b850377113a5885ee308262694052f2b6d083/src/decoder/stream.rs#L1883-L1886)).  So it should be fine to crash if somehow/unexpectedly the validation doesn\u0027t happen.  Same for `yByteOffset`.",
+      "range": {
+        "startLine": 701,
+        "startChar": 0,
+        "endLine": 702,
+        "endChar": 59
+      },
+      "revId": "acf8072d34544c7381d5624ebad2e0fdc9fa4a62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c4bd15_33513565",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-17T22:18:49Z",
+      "side": 1,
+      "message": "Already using `std::min` here.",
+      "range": {
+        "startLine": 863,
+        "startChar": 20,
+        "endLine": 863,
+        "endChar": 28
+      },
+      "revId": "acf8072d34544c7381d5624ebad2e0fdc9fa4a62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2792a29e_1b426e27",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-17T22:18:49Z",
+      "side": 1,
+      "message": "Already using `std::min` here.",
+      "range": {
+        "startLine": 943,
+        "startChar": 16,
+        "endLine": 943,
+        "endChar": 24
+      },
+      "revId": "acf8072d34544c7381d5624ebad2e0fdc9fa4a62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
