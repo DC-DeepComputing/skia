@@ -91,6 +91,30 @@
       },
       "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3daf60e2_152b5aa1",
+        "filename": "src/core/SkTaskGroup.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T12:33:46Z",
+      "side": 1,
+      "message": "Right - this was also how it worked in the single task list case. The discard call does add an additional wrinkle but I believe it all works out.",
+      "parentUuid": "f4525b64_7015ad2a",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 45
+      },
+      "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
