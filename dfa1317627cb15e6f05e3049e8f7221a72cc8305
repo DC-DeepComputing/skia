@@ -22,6 +22,30 @@
       },
       "revId": "dfa1317627cb15e6f05e3049e8f7221a72cc8305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47f6fd02_45b2c1ea",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-17T12:08:18Z",
+      "side": 1,
+      "message": "I treat the comment as a TODO, since it has a bug number. Since I don\u0027t understand the specifics (haven\u0027t read the bug yet), I\u0027d like to defer that change to a separate CL.",
+      "parentUuid": "97be3906_fdcee01f",
+      "range": {
+        "startLine": 758,
+        "startChar": 10,
+        "endLine": 758,
+        "endChar": 21
+      },
+      "revId": "dfa1317627cb15e6f05e3049e8f7221a72cc8305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
