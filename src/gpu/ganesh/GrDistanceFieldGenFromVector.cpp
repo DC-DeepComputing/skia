@@ -752,12 +752,13 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
              expectPathBounds.contains(pathBounds));
 
 // TODO: restore when Simplify() is working correctly
-//       see https://bugs.chromium.org/p/skia/issues/detail?id=9732
+//    see https://bugs.chromium.org/p/skia/issues/detail?id=9732
 //    SkPath simplifiedPath;
 //    if (Simplify(path, &simplifiedPath)) {
 //        workingPath = simplifiedPath;
 //    } else {
 //    }
+
     // only even-odd and inverse even-odd supported
     if (!IsDistanceFieldSupportedFillType(path.getFillType())) {
         return false;
