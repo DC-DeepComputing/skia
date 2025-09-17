@@ -93,6 +93,30 @@
       },
       "revId": "50353bb13a9f84c34c535492e2f10e0bd30617db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15661a6e_b4da13ca",
+        "filename": "include/private/gpu/graphite/DebugUtilsGraphite.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T12:10:31Z",
+      "side": 1,
+      "message": "Nah, if we do need it in the public headers (which I doubt, we can probably just move those inline functions to an implementation if we *really* need to dump stuff from them), we\u0027ll move it. For now, let\u0027s go with the minimum scope.",
+      "parentUuid": "e8a7cf94_e1b6960a",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 34
+      },
+      "revId": "50353bb13a9f84c34c535492e2f10e0bd30617db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
