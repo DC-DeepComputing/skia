@@ -520,15 +520,24 @@ public:
         fMiterStroke = isMiter;
         RectInfo& info = fRects.push_back(infoExceptColor);
         info.fColor = color;
-        if (isMiter) {
-            this->setBounds(info.fDevOutside, HasAABloat::kYes, IsHairline::kNo);
-        } else {
+
+        SkRect bounds = info.fDevOutside;
+        if (!isMiter) {
             // The outer polygon of the bevel stroke is an octagon specified by the points of a
             // pair of overlapping rectangles where one is wide and the other is narrow.
-            SkRect bounds = info.fDevOutside;
             bounds.joinPossiblyEmptyRect(info.fDevOutsideAssist);
-            this->setBounds(bounds, HasAABloat::kYes, IsHairline::kNo);
         }
+
+        // Ganesh's bounds tracking for coverage AA assumes an implicit 1/2px outset. However, if
+        // the stroke radius is <1px we always render a 1px wide pixel ramp and adjust the coverage
+        // by alpha. In this case, we need to report a bounds larger than info.fDevOutside because
+        // the geometry generated in generateAAStrokeRectGeometry() is anchored to the AA inset edge
+        IsHairline subpixel = IsHairline::kNo;
+        if (info.fDevHalfStrokeSize.fX < 0.5f || info.fDevHalfStrokeSize.fY < 0.5f) {
+            subpixel = IsHairline::kYes;
+        }
+
+        this->setBounds(info.fDevOutside, HasAABloat::kYes, subpixel);
     }
 
     const char* name() const override { return "AAStrokeRect"; }
