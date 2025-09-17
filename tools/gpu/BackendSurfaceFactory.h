@@ -34,7 +34,8 @@ namespace skgpu::graphite {
 #endif
 
 namespace sk_gpu_test {
-#if defined(SK_GANESH)
+
+#if defined (SK_GANESH)
 sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            const SkImageInfo&,
                                            GrSurfaceOrigin,
