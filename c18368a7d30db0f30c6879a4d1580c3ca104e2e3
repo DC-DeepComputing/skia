@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de9527d7_9223fd41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-17T17:44:16Z",
+      "side": 1,
+      "message": "some nits, otherwise LGTM",
+      "revId": "c18368a7d30db0f30c6879a4d1580c3ca104e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc8d7f9f_48cf0595",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-17T17:44:16Z",
+      "side": 1,
+      "message": "nit: typically we use `const SubmitInfo\u0026 info` style",
+      "range": {
+        "startLine": 84,
+        "startChar": 32,
+        "endLine": 84,
+        "endChar": 34
+      },
+      "revId": "c18368a7d30db0f30c6879a4d1580c3ca104e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "909dbb96_fc174f1f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-17T17:44:16Z",
+      "side": 1,
+      "message": "same nit here",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 43
+      },
+      "revId": "c18368a7d30db0f30c6879a4d1580c3ca104e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
