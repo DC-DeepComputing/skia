@@ -67,6 +67,30 @@
       ],
       "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4525b64_7015ad2a",
+        "filename": "src/core/SkTaskGroup.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-17T03:19:43Z",
+      "side": 1,
+      "message": "does not create an ***invalid*** state.",
+      "parentUuid": "5758985c_f58d7b4a",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 45
+      },
+      "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
