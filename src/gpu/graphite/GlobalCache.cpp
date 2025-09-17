@@ -270,6 +270,23 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
     }
 }
 
+sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline2(
+        const UniqueKey& pipelineKey,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t *compilationID) {
+
+    sk_sp<GraphicsPipeline> pipeline = this->findGraphicsPipeline(pipelineKey,
+                                                                  pipelineCreationFlags,
+                                                                  compilationID);
+    if (pipeline && pipeline->didAsyncCompilationFail()) SK_UNLIKELY {
+        // If the pipeline failed, remove it from the cache and fall through to retry
+        this->removeGraphicsPipeline(pipeline.get());
+        pipeline.reset();
+    }
+
+    return pipeline;
+}
+
 #if SK_HISTOGRAMS_ENABLED
 // These values are persisted to logs. Entries should not be renumbered and
 // numeric values should never be reused.
@@ -383,7 +400,7 @@ void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
     }
 }
 
-void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+void GlobalCache::purgePipelinesNotUsedSince7(StdSteadyClock::time_point purgeTime) {
     SkAutoSpinlock lock{fSpinLock};
 
     skia_private::TArray<skgpu::UniqueKey> toRemove;

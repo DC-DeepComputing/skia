@@ -9,6 +9,7 @@
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkSemaphore.h"
 #include "include/private/base/SkTArray.h"
+#include "include/private/base/SkTPin.h"
 #include "src/base/SkNoDestructor.h"
 
 #include <deque>
@@ -81,6 +82,10 @@ public:
     }
 
     ~SkThreadPool() override {
+        SkDebugf("~SkThreadPool: TaskList counts: %d %d\n",
+            (int) fWorkLists[0].size(),
+            fNumWorkLists == 2 ? (int) fWorkLists[1].size() : -1);
+
         // Signal each thread that it's time to shut down.
         for (int i = 0; i < fThreads.size(); i++) {
             this->add(nullptr);
@@ -89,13 +94,20 @@ public:
         for (int i = 0; i < fThreads.size(); i++) {
             fThreads[i].join();
         }
+
+        SkDebugf("~SkThreadPool: TaskList counts: %d %d\n",
+            (int) fWorkLists[0].size(),
+            fNumWorkLists == 2 ? (int) fWorkLists[1].size() : -1);
     }
 
-    void add(std::function<void(void)> work) override {
+    void add(std::function<void(void)> work, int workList) override {
+        workList = SkTPin(workList, 0, fNumWorkLists-1);
+
         // Add some work to our pile of work to do.
         {
             SkAutoMutexExclusive lock(fWorkLock);
-            fWork.emplace_back(std::move(work));
+
+            fWorkLists[workList].emplace_back(std::move(work));
         }
         // Tell the Loop() threads to pick it up.
         fWorkAvailable.signal(1);
@@ -112,10 +124,22 @@ private:
     // This method should be called only when fWorkAvailable indicates there's work to do.
     bool do_work() {
         std::function<void(void)> work;
+        bool workAvailable = false;
         {
             SkAutoMutexExclusive lock(fWorkLock);
-            SkASSERT(!fWork.empty());        // TODO: if (fWork.empty()) { return true; } ?
-            work = pop(&fWork);
+            for (int i = 0; i < fNumWorkLists; ++i) {
+                if (!fWorkLists[i].empty()) {
+                    workAvailable = true;
+                    work = pop(&fWorkLists[i]);
+                    break;
+                }
+            }
+        }
+
+        if (!workAvailable) {
+            // Because we can discard work asynchronous to Loop() we can sometimes get in this
+            // method with no work to do
+            return true;
         }
 
         if (!work) {
@@ -136,11 +160,12 @@ private:
     // Both SkMutex and SkSpinlock can work here.
     using Lock = SkMutex;
 
-    TArray<std::thread> fThreads;
-    WorkList              fWork;
-    Lock                  fWorkLock;
-    SkSemaphore           fWorkAvailable;
-    bool                  fAllowBorrowing;
+    TArray<std::thread>         fThreads;
+    const int                   fNumWorkLists; // guaranteed >= 1
+    std::unique_ptr<WorkList[]> fWorkLists SK_GUARDED_BY(fWorkLock);
+    Lock                        fWorkLock;
+    SkSemaphore                 fWorkAvailable;
+    const bool                  fAllowBorrowing;
 };
 
 std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {

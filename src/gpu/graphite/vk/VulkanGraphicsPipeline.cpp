@@ -804,7 +804,7 @@ VulkanProgramInfo::~VulkanProgramInfo() {
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
+        VulkanResourceProvider* /* rsrcProvider */,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -986,7 +986,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
 VkPipeline VulkanGraphicsPipeline::MakePipeline(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
+        VulkanResourceProvider* /* rsrcProvider */,
         const VulkanProgramInfo& program,
         int subpassIndex,
         PrimitiveType primitiveType,
@@ -1228,7 +1228,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
+        VulkanResourceProvider* /* rsrcProvider */,
         const VulkanProgramInfo& loadMSAAProgram,
         const RenderPassDesc& renderPassDesc) {
     // The load MSAA pipeline does not have any vertex or instance attributes, does not use the

@@ -324,7 +324,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 // static
 sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const DawnSharedContext* sharedContext,
-        DawnResourceProvider* resourceProvider,
+        ResourceProvider* /* resourceProvider */,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -491,7 +491,6 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     // layout and passed in to the pipline constructor for lifetime management.
     skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers;
     {
-        SkASSERT(resourceProvider);
         groupLayouts[0] = sharedContext->getUniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
             return {};
@@ -531,7 +530,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     const SamplerDesc& samplerDesc = samplerDescArr.at(i/2);
                     if (samplerDesc.isImmutable()) {
                         sk_sp<Sampler> immutableSampler =
-                                resourceProvider->findOrCreateCompatibleSampler(samplerDesc);
+                                sharedContext->findOrCreateCompatibleSampler(samplerDesc);
                         if (!immutableSampler) {
                             SKGPU_LOG_E("Failed to find/create immutable sampler for pipeline");
                             return {};
@@ -786,6 +785,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
     return fAsyncPipelineCreation &&
            fAsyncPipelineCreation->fFinished &&
            !fAsyncPipelineCreation->fRenderPipeline;
+}
+
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
