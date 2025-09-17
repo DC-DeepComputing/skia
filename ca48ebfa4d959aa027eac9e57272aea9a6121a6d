@@ -16,6 +16,57 @@
       "message": "That one failing ASAN job is perma-failing on the tree",
       "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5758985c_f58d7b4a",
+        "filename": "src/core/SkTaskGroup.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-17T03:18:55Z",
+      "side": 1,
+      "message": "There is potentially a race here, i.e. `fPending` and `fExecutor` operations are not atomic w/ respect to each other, and potentially a separate thread can all `discardAllPendingWork` in between the two operations. \n\nHowever, I think this does not create a valid state, and should be fine?",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 45
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a4abbd15_5a6cb64b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkTaskGroup.cpp",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkTaskGroup.cpp",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 27,
+                "endChar": 0
+              },
+              "replacement": "    fPending.fetch_add(+1, std::memory_order_relaxed);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ca48ebfa4d959aa027eac9e57272aea9a6121a6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
