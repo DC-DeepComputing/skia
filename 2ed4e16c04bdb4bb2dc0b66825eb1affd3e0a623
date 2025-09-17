@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "497f3af0_c6d7df08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T12:13:00Z",
+      "side": 1,
+      "message": "ubernit: `rect\u0027s` -\u003e `rects`",
+      "range": {
+        "startLine": 12,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "2ed4e16c04bdb4bb2dc0b66825eb1affd3e0a623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e8cfe70_b8412c57",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
