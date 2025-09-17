@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35041eca_995b4cba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-17T15:38:03Z",
+      "side": 1,
+      "message": "@syoussefi@google.com @michaelludwig@google.com I think the lack of default constructor in SubmitInfo lead to way more changes across the codebase that make this patch unnecessarily big, wdyt? Shall i add a default constructor to revert most of them?",
+      "revId": "4db97a52348114ce5c9557ce10389852274e7eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
