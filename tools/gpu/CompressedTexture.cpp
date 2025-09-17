@@ -7,11 +7,14 @@
 
 #include "tools/gpu/CompressedTexture.h"
 
+
 // The following four helpers are copied from src/gpu/DataUtils.cpp to support the test only
 // GrTwoColorBC1Compress function. Ideally we would copy the test function into DataUtils.cpp
 // instead, but we're currently trying to avoid using the GPU_TEST_UTILS define in src/gpu.
 
-static int num_4x4_blocks(int size) { return ((size + 3) & ~3) >> 2; }
+static int num_4x4_blocks(int size) {
+    return ((size + 3) & ~3) >> 2;
+}
 
 struct BC1Block {
     uint16_t fColor0;
@@ -31,7 +34,7 @@ static uint16_t to565(SkColor col) {
 static void create_BC1_block(SkColor col0, SkColor col1, BC1Block* block) {
     block->fColor0 = to565(col0);
     block->fColor1 = to565(col1);
-    SkASSERT(block->fColor0 <= block->fColor1);  // we always assume transparent blocks
+    SkASSERT(block->fColor0 <= block->fColor1); // we always assume transparent blocks
 
     if (col0 == SK_ColorTRANSPARENT) {
         // This sets all 16 pixels to just use color3 (under the assumption
@@ -76,12 +79,12 @@ void TwoColorBC1Compress(const SkPixmap& pixmap, SkColor otherColor, char* dstPi
                         // For RGBA BC1 images color3 is set to transparent black
                         block.fIndices |= 3 << shift;
                     } else if (tmp != SK_ColorBLACK) {
-                        block.fIndices |= 1 << shift;  // color1
+                        block.fIndices |= 1 << shift; // color1
                     }
                 }
             }
 
-            dstBlocks[y * numXBlocks + x] = block;
+            dstBlocks[y*numXBlocks + x] = block;
         }
     }
 }
