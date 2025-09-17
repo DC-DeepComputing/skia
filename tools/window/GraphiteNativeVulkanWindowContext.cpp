@@ -609,7 +609,7 @@ void GraphiteVulkanWindowContext::onSwapBuffers() {
         info.fFinishedProc = finishCallback;
 
         fGraphiteContext->insertRecording(info);
-        fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kNo);
+        fGraphiteContext->submit({skgpu::graphite::SyncToCpu::kNo, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         fWaitSemaphore = VK_NULL_HANDLE;  // FinishCallback will destroy this
     }
 

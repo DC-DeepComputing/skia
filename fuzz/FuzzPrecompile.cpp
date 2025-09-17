@@ -290,7 +290,7 @@ void check_draw(Context* context,
 
         std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
         context->insertRecording({ recording.get() });
-        context->submit(SyncToCpu::kYes);
+        context->submit({SyncToCpu::kYes, MarkFrameBoundary::kNo, 0u});
     }
 
     int after = context->priv().globalCache()->numGraphicsPipelines();

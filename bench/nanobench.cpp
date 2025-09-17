@@ -349,7 +349,7 @@ struct GraphiteTarget : public Target {
                 info.fRecording = recording.get();
                 this->context->insertRecording(info);
             }
-            this->context->submit(skgpu::graphite::SyncToCpu::kYes);
+            this->context->submit({skgpu::graphite::SyncToCpu::kYes, skgpu::graphite::MarkFrameBoundary::kNo, 0u});
         }
     }
 
