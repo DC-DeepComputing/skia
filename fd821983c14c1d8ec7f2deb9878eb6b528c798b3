@@ -39,6 +39,30 @@
       },
       "revId": "fd821983c14c1d8ec7f2deb9878eb6b528c798b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5932600_16462a03",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-17T17:12:12Z",
+      "side": 1,
+      "message": "Done.  In a follow-up CL I\u0027ll add a deprecation note (via https://bazel.build/reference/be/common-definitions#common.deprecation).  (I think doing this in a follow-up CL should be safer in case this will block Skia rolls into some Bazel clients or something like this.)",
+      "parentUuid": "099b2760_9397ed1d",
+      "range": {
+        "startLine": 151,
+        "startChar": 31,
+        "endLine": 151,
+        "endChar": 39
+      },
+      "revId": "fd821983c14c1d8ec7f2deb9878eb6b528c798b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
