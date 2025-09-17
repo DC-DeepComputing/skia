@@ -16,6 +16,24 @@
       "message": "@syoussefi@google.com @michaelludwig@google.com I think the lack of default constructor in SubmitInfo lead to way more changes across the codebase that make this patch unnecessarily big, wdyt? Shall i add a default constructor to revert most of them?",
       "revId": "4db97a52348114ce5c9557ce10389852274e7eb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b95af1d5_490eb8dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-09-17T16:09:36Z",
+      "side": 1,
+      "message": "`SubmitInfo` could probably have two constructors, one with `SyncToCpu` only (the common case), and one that also gets frameID (in which case, `fMarkBoundary` is automatically kYes)",
+      "parentUuid": "35041eca_995b4cba",
+      "revId": "4db97a52348114ce5c9557ce10389852274e7eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
