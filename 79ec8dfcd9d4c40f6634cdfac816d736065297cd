@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9af32d9f_423f57c4",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T15:18:26Z",
+      "side": 0,
+      "message": "It seems like we would just add these all the time now rather than delete them.",
+      "revId": "79ec8dfcd9d4c40f6634cdfac816d736065297cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
