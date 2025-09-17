@@ -16,6 +16,29 @@
       "message": "@kjlubick, can you PTAL again?\n\nIt\u0027s probably easiest to look at the delta here: https://review.skia.org/c/skia/+/1055756/3..5 (I initially wanted patchset #5 to be a \"pure\" rebasing but I messed up by accidentally dropping some new/moved files in patchset #4.  So it\u0027s probably best to consider patchsets 4 and 5 as being atomically together.  Kind of.)\n\nI rebased on top of @danieldilan\u0027s CL so all their changes should be preserved in `SkPngRustCodec.cpp`.",
       "revId": "fd821983c14c1d8ec7f2deb9878eb6b528c798b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "099b2760_9397ed1d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T11:59:44Z",
+      "side": 1,
+      "message": "How about you just add that alias now (it\u0027s ok to have multiple aliases to the same thing) and then a note how the png_decode_codec is deprecated)",
+      "range": {
+        "startLine": 151,
+        "startChar": 31,
+        "endLine": 151,
+        "endChar": 39
+      },
+      "revId": "fd821983c14c1d8ec7f2deb9878eb6b528c798b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

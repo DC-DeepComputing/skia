@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df5e20b8_320f6a92",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T11:59:44Z",
+      "side": 1,
+      "message": "In Skia, the incantation I use is `git clang-format origin/main` or `git clang-format [file]` (not `git cl format`). LGTM",
+      "parentUuid": "cda97622_419d0cbe",
+      "range": {
+        "startLine": 14,
+        "startChar": 10,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "71f7ac4f3d87567e409806bf0f3d5e9b014237ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07fbd0a8_59854489",
