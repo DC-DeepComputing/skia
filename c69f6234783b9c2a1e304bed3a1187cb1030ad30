@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d69c3b4c_f4bd587b",
+        "filename": "src/pathops/SkPathOpsSimplify.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-17T14:25:55Z",
+      "side": 0,
+      "message": "Old version resets the result on failure, but I\u0027m guessing that\u0027s not intentional.",
+      "revId": "c69f6234783b9c2a1e304bed3a1187cb1030ad30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

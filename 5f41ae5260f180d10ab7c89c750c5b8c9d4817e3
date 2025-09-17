@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0fad296_f597db31",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-17T14:25:55Z",
+      "side": 1,
+      "message": "Can we add `SkPathPriv::ReversePathTo` instead?",
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834714c3_e33d5bdc",
+        "filename": "src/pathops/SkOpEdgeBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-17T14:25:55Z",
+      "side": 1,
+      "message": "Can we delete?",
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36382a4a_a4be91b8",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-17T14:25:55Z",
+      "side": 1,
+      "message": "Comment looks out of date.",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 12
+      },
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
