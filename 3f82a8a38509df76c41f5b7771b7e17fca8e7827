@@ -16,6 +16,92 @@
       "message": "PTAL",
       "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9334da5f_4065439a",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T16:02:07Z",
+      "side": 1,
+      "message": "Recorder::snap ?",
+      "range": {
+        "startLine": 201,
+        "startChar": 57,
+        "endLine": 201,
+        "endChar": 61
+      },
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcf2f84b_6f855911",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T16:02:07Z",
+      "side": 1,
+      "message": "// comment about why this is being done here ?",
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db15a4af_a1fb38b2",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T16:02:07Z",
+      "side": 1,
+      "message": "Recorder::updateBackendTexture ?",
+      "range": {
+        "startLine": 427,
+        "startChar": 57,
+        "endLine": 427,
+        "endChar": 79
+      },
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a938a822_c6cce946",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-17T16:02:07Z",
+      "side": 1,
+      "message": "Recorder::updateCompressedBackendTexture ?",
+      "range": {
+        "startLine": 481,
+        "startChar": 57,
+        "endLine": 481,
+        "endChar": 90
+      },
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
