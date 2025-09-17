@@ -12,7 +12,6 @@
 
 #include "include/core/SkDataTable.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkHdrMetadata.h"
 #include "include/private/base/SkAPI.h"
 
 class SkEncoder;
@@ -61,11 +60,6 @@ struct Options {
      *  79 characters and it can't contain a non-breaking space character.
      */
     sk_sp<SkDataTable> fComments;
-
-    /**
-     * HDR metadata to include in the encoded image.
-     */
-    skhdr::Metadata fHdrMetadata;
 };
 
 /**

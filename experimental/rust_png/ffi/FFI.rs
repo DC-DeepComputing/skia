@@ -91,25 +91,27 @@ mod ffi {
         LimitsExceededError,
     }
 
-    struct ColorSpacePrimaries {
-        fRX: f32,
-        fRY: f32,
-        fGX: f32,
-        fGY: f32,
-        fBX: f32,
-        fBY: f32,
-        fWX: f32,
-        fWY: f32,
-    }
-
-    struct MasteringDisplayColorVolume {
-        fDisplayPrimaries: ColorSpacePrimaries,
-        fMaximumDisplayMasteringLuminance: f32,
-        fMinimumDisplayMasteringLuminance: f32,
-    }
-
     unsafe extern "C++" {
         include!("experimental/rust_png/ffi/FFI.h");
+
+        type ColorSpacePrimaries;
+        fn set_rgbw(
+            self: Pin<&mut ColorSpacePrimaries>,
+            rx: f32, ry: f32,
+            gx: f32, gy: f32,
+            bx: f32, by: f32,
+            wx: f32, wy: f32);
+
+        type MasteringDisplayColorVolume;
+        fn primaries(
+            self: Pin<&mut MasteringDisplayColorVolume>
+        ) -> Pin<&mut ColorSpacePrimaries>;
+        fn set_max_luminance(
+            self: Pin<&mut MasteringDisplayColorVolume>,
+            max_luminance: f32);
+        fn set_min_luminance(
+            self: Pin<&mut MasteringDisplayColorVolume>,
+            min_luminance: f32);
 
         type ReadAndSeekTraits;
         fn read(self: Pin<&mut ReadAndSeekTraits>, buffer: &mut [u8]) -> usize;
@@ -153,7 +155,7 @@ mod ffi {
         fn is_srgb(self: &Reader) -> bool;
         fn try_get_chrm(
             self: &Reader,
-            chrm: &mut ColorSpacePrimaries,
+            chrm: Pin<&mut ColorSpacePrimaries>,
         ) -> bool;
         fn try_get_cicp_chunk(
             self: &Reader,
@@ -164,7 +166,7 @@ mod ffi {
         ) -> bool;
         fn try_get_mdcv_chunk(
             self: &Reader,
-            mdcv: &mut MasteringDisplayColorVolume,
+            mdcv: Pin<&mut MasteringDisplayColorVolume>,
         ) -> bool;
         fn try_get_clli_chunk(
             self: &Reader,
@@ -492,20 +494,19 @@ impl Reader {
     /// etc.).  Otherwise, returns `false`.
     fn try_get_chrm(
         &self,
-        chrm: &mut ffi::ColorSpacePrimaries,
+        chrm: Pin<&mut ffi::ColorSpacePrimaries>,
     ) -> bool {
-        fn copy_channel(channel: &(png::ScaledFloat, png::ScaledFloat), x: &mut f32, y: &mut f32) {
-            *x = png_u32_into_f32(channel.0);
-            *y = png_u32_into_f32(channel.1);
-        }
-
         match self.reader.info().chrm_chunk.as_ref() {
             None => false,
             Some(png_chrm) => {
-                copy_channel(&png_chrm.white, &mut chrm.fWX, &mut chrm.fWY);
-                copy_channel(&png_chrm.red, &mut chrm.fRX, &mut chrm.fRY);
-                copy_channel(&png_chrm.green, &mut chrm.fGX, &mut chrm.fGY);
-                copy_channel(&png_chrm.blue, &mut chrm.fBX, &mut chrm.fBY);
+                chrm.set_rgbw(png_u32_into_f32(png_chrm.red.0), 
+                              png_u32_into_f32(png_chrm.red.1),
+                              png_u32_into_f32(png_chrm.green.0),
+                              png_u32_into_f32(png_chrm.green.1),
+                              png_u32_into_f32(png_chrm.blue.0),
+                              png_u32_into_f32(png_chrm.blue.1),
+                              png_u32_into_f32(png_chrm.white.0),
+                              png_u32_into_f32(png_chrm.white.1));
                 true
             }
         }
@@ -539,27 +540,24 @@ impl Reader {
     /// Otherwise, returns `false`.
     fn try_get_mdcv_chunk(
         self: &Reader,
-        mdcv: &mut ffi::MasteringDisplayColorVolume,
+        mut mdcv: Pin<&mut ffi::MasteringDisplayColorVolume>,
     ) -> bool {
         match self.reader.info().mastering_display_color_volume.as_ref() {
             None => false,
             Some(png_mdcv) => {
-                *mdcv = ffi::MasteringDisplayColorVolume {
-                    fDisplayPrimaries: ffi::ColorSpacePrimaries {
-                        fRX: png_mdcv.chromaticities.red.0.into_value(),
-                        fRY: png_mdcv.chromaticities.red.1.into_value(),
-                        fGX: png_mdcv.chromaticities.green.0.into_value(),
-                        fGY: png_mdcv.chromaticities.green.1.into_value(),
-                        fBX: png_mdcv.chromaticities.blue.0.into_value(),
-                        fBY: png_mdcv.chromaticities.blue.1.into_value(),
-                        fWX: png_mdcv.chromaticities.white.0.into_value(),
-                        fWY: png_mdcv.chromaticities.white.1.into_value(),
-                    },
-                    fMaximumDisplayMasteringLuminance:
-                        png_mdcv.max_luminance as f32 / 10_000.0,
-                    fMinimumDisplayMasteringLuminance:
-                        png_mdcv.min_luminance as f32 / 10_000.0,
-                };
+                mdcv.as_mut().primaries().set_rgbw(
+                    png_mdcv.chromaticities.red.0.into_value(),
+                    png_mdcv.chromaticities.red.1.into_value(),
+                    png_mdcv.chromaticities.green.0.into_value(),
+                    png_mdcv.chromaticities.green.1.into_value(),
+                    png_mdcv.chromaticities.blue.0.into_value(),
+                    png_mdcv.chromaticities.blue.1.into_value(),
+                    png_mdcv.chromaticities.white.0.into_value(),
+                    png_mdcv.chromaticities.white.1.into_value());
+                mdcv.as_mut().set_max_luminance(
+                    png_mdcv.max_luminance as f32 / 10_000.0);
+                mdcv.as_mut().set_min_luminance(
+                    png_mdcv.min_luminance as f32 / 10_000.0);
                 true
             }
         }

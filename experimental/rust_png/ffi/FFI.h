@@ -11,6 +11,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+struct SkColorSpacePrimaries;
+
+namespace skhdr {
+struct MasteringDisplayColorVolume;
+}  // namespace skhdr
+
 // TODO(https://crbug.com/356698922): Use a real `#include` if possible.
 namespace rust {
 inline namespace cxxbridge1 {
@@ -107,6 +113,36 @@ public:
 
 protected:
     WriteTrait() = default;
+};
+
+/**
+ * C++ class that provides a wrapper through which Rust code may write (and theoretically read
+ * the SkColorSpacePrimaries struct.
+ */
+class ColorSpacePrimaries {
+public:
+    ColorSpacePrimaries(SkColorSpacePrimaries& p);
+    void set_rgbw(float rx, float ry, float gx, float gy,
+                  float bx, float by, float wx, float wy);
+private:
+    SkColorSpacePrimaries& primaries;
+};
+
+/**
+ * C++ class that provides a wrapper through which Rust code may write (and theoretically read
+ * the skhdr::MasteringDisplayColorVolume struct.
+ */
+class MasteringDisplayColorVolume {
+public:
+    MasteringDisplayColorVolume(skhdr::MasteringDisplayColorVolume& m);
+
+    ColorSpacePrimaries& primaries();
+    void set_max_luminance(float v);
+    void set_min_luminance(float v);
+
+private:
+    skhdr::MasteringDisplayColorVolume& mdcv;
+    ColorSpacePrimaries primaries_bridge;
 };
 
 }  // namespace rust_png
