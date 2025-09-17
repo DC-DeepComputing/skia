@@ -16,6 +16,24 @@
       "message": "It seems like we would just add these all the time now rather than delete them.",
       "revId": "79ec8dfcd9d4c40f6634cdfac816d736065297cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae01b55f_1f21da08",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T15:23:40Z",
+      "side": 0,
+      "message": "Good catch! Fixed.",
+      "parentUuid": "9af32d9f_423f57c4",
+      "revId": "79ec8dfcd9d4c40f6634cdfac816d736065297cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
