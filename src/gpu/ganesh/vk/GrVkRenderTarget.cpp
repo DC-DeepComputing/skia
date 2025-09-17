@@ -495,6 +495,11 @@ GrVkRenderTarget::~GrVkRenderTarget() {
 }
 
 void GrVkRenderTarget::releaseInternalObjects() {
+
+    if (GrVkGpu* gpu = this->getVkGpu()) {
+        gpu->finishOutstandingGpuWork();
+    }
+
     fColorAttachment.reset();
     fResolveAttachment.reset();
     fDynamicMSAAAttachment.reset();
