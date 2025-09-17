@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea4ac7ab_a2673c6b",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T17:17:38Z",
+      "side": 1,
+      "message": "Could this stay inlined and be used on line 789 and 794?",
+      "range": {
+        "startLine": 771,
+        "startChar": 17,
+        "endLine": 771,
+        "endChar": 29
+      },
+      "revId": "f821228bebfa3e9792170ef7184512fa229542b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
