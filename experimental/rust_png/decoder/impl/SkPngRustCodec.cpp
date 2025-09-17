@@ -16,6 +16,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/SkHdrMetadata.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkSafe32.h"
 #include "include/private/base/SkTemplates.h"
@@ -95,6 +96,10 @@ SkCodecAnimation::Blend ToBlend(rust_png::BlendOp op) {
     SK_ABORT("Unexpected `rust_png::BlendOp`: %d", static_cast<int>(op));
 }
 
+SkColorSpacePrimaries ToSkColorSpacePrimaries(const rust_png::ColorSpacePrimaries& p) {
+    return SkColorSpacePrimaries({p.fRX, p.fRY, p.fGX, p.fGY, p.fBX, p.fBY, p.fWX, p.fWY});
+}
+
 std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Reader& reader) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
@@ -160,15 +165,8 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
         // so we match the behavior of Safari and Firefox instead (compat).
         return nullptr;
     }
-    float rx = 0.0;
-    float ry = 0.0;
-    float gx = 0.0;
-    float gy = 0.0;
-    float bx = 0.0;
-    float by = 0.0;
-    float wx = 0.0;
-    float wy = 0.0;
-    const bool got_chrm = reader.try_get_chrm(wx, wy, rx, ry, gx, gy, bx, by);
+    rust_png::ColorSpacePrimaries chrm;
+    const bool got_chrm = reader.try_get_chrm(chrm);
     if (!got_chrm) {
         // If there is no `cHRM` chunk then check if `gamma` is neutral (in PNG
         // / `SkNamedTransferFn::k2Dot2` sense).  `kPngGammaThreshold` mimics
@@ -191,7 +189,7 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     // Construct a color profile based on `cHRM` and `gAMA` chunks.
     skcms_Matrix3x3 toXYZD50;
     if (got_chrm) {
-        if (!skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, &toXYZD50)) {
+        if (!ToSkColorSpacePrimaries(chrm).toXYZD50(&toXYZD50)) {
             return nullptr;
         }
     } else {
@@ -225,6 +223,23 @@ std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
         profile = nullptr;
     }
 
+    skhdr::Metadata hdrMetadata;
+    {
+        rust_png::MasteringDisplayColorVolume rust_mdcv;
+        if (reader.try_get_mdcv_chunk(rust_mdcv)) {
+            skhdr::MasteringDisplayColorVolume mdcv({
+                ToSkColorSpacePrimaries(rust_mdcv.fDisplayPrimaries),
+                rust_mdcv.fMaximumDisplayMasteringLuminance,
+                rust_mdcv.fMinimumDisplayMasteringLuminance,
+            });
+            hdrMetadata.setMasteringDisplayColorVolume(mdcv);
+        }
+        skhdr::ContentLightLevelInformation clli;
+        if (reader.try_get_clli_chunk(clli.fMaxCLL, clli.fMaxFALL)) {
+            hdrMetadata.setContentLightLevelInformation(clli);
+        }
+    }
+
     // Protect against large PNGs. See http://bugzil.la/251381 for more details.
     constexpr uint32_t kMaxPNGSize = 1000000;
     if ((reader.width() > kMaxPNGSize) || (reader.height() > kMaxPNGSize)) {
@@ -246,7 +261,9 @@ std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
                                skColor,
                                ToAlpha(rustColor, reader),
                                reader.output_bits_per_component(),
-                               std::move(profile));
+                               reader.output_bits_per_component(),
+                               std::move(profile),
+                               hdrMetadata);
 }
 
 SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
