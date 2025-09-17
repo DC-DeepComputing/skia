@@ -148,14 +148,32 @@ alias(
 )
 
 alias(
+    # TODO(kjlubick, lukasza): Consider renaming to `png_decode_libpng` to
+    # match the target name in `//BUILD.gn` + for consistency with
+    # `png_decode_rust` target below.
     name = "png_decode_codec",
     actual = "//src/codec:png_decode",
     visibility = ["//visibility:public"],
 )
 
 alias(
+    name = "png_decode_rust",
+    actual = "//src/codec:rust_png_decoder",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    # TODO(kjlubick, lukasza): Consider renaming to `png_encode_libpng` to
+    # match the target name in `//BUILD.gn` + for consistency with
+    # `png_encode_rust` target below.
     name = "png_encode_codec",
     actual = "//src/encode:png_encode",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "png_encode_rust",
+    actual = "//src/encode:rust_png_encoder",
     visibility = ["//visibility:public"],
 )
 
