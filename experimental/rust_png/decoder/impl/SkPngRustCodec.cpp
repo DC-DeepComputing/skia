@@ -96,10 +96,6 @@ SkCodecAnimation::Blend ToBlend(rust_png::BlendOp op) {
     SK_ABORT("Unexpected `rust_png::BlendOp`: %d", static_cast<int>(op));
 }
 
-SkColorSpacePrimaries ToSkColorSpacePrimaries(const rust_png::ColorSpacePrimaries& p) {
-    return SkColorSpacePrimaries({p.fRX, p.fRY, p.fGX, p.fGY, p.fBX, p.fBY, p.fWX, p.fWY});
-}
-
 std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Reader& reader) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
@@ -165,8 +161,9 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
         // so we match the behavior of Safari and Firefox instead (compat).
         return nullptr;
     }
-    rust_png::ColorSpacePrimaries chrm;
-    const bool got_chrm = reader.try_get_chrm(chrm);
+    SkColorSpacePrimaries chrm;
+    rust_png::ColorSpacePrimaries chrm_rust_wrapper(chrm);
+    const bool got_chrm = reader.try_get_chrm(chrm_rust_wrapper);
     if (!got_chrm) {
         // If there is no `cHRM` chunk then check if `gamma` is neutral (in PNG
         // / `SkNamedTransferFn::k2Dot2` sense).  `kPngGammaThreshold` mimics
@@ -189,7 +186,7 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     // Construct a color profile based on `cHRM` and `gAMA` chunks.
     skcms_Matrix3x3 toXYZD50;
     if (got_chrm) {
-        if (!ToSkColorSpacePrimaries(chrm).toXYZD50(&toXYZD50)) {
+        if (!chrm.toXYZD50(&toXYZD50)) {
             return nullptr;
         }
     } else {
@@ -225,13 +222,9 @@ std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
 
     skhdr::Metadata hdrMetadata;
     {
-        rust_png::MasteringDisplayColorVolume rust_mdcv;
-        if (reader.try_get_mdcv_chunk(rust_mdcv)) {
-            skhdr::MasteringDisplayColorVolume mdcv({
-                ToSkColorSpacePrimaries(rust_mdcv.fDisplayPrimaries),
-                rust_mdcv.fMaximumDisplayMasteringLuminance,
-                rust_mdcv.fMinimumDisplayMasteringLuminance,
-            });
+        skhdr::MasteringDisplayColorVolume mdcv;
+        rust_png::MasteringDisplayColorVolume mdcv_rust_wrapper(mdcv);
+        if (reader.try_get_mdcv_chunk(mdcv_rust_wrapper)) {
             hdrMetadata.setMasteringDisplayColorVolume(mdcv);
         }
         skhdr::ContentLightLevelInformation clli;
@@ -504,6 +497,32 @@ bool IsValidFctlIfAny(const SkEncodedInfo& imageInfo,
 }
 
 }  // namespace
+
+namespace rust_png {
+
+ColorSpacePrimaries::ColorSpacePrimaries(SkColorSpacePrimaries& p) : primaries(p) {}
+
+void ColorSpacePrimaries::set_rgbw(float rx, float ry, float gx, float gy,
+                                   float bx, float by, float wx, float wy) {
+    primaries = SkColorSpacePrimaries({rx, ry, gx, gy, bx, by, wx, wy});
+}
+
+MasteringDisplayColorVolume::MasteringDisplayColorVolume(skhdr::MasteringDisplayColorVolume& m)
+    : mdcv(m), primaries_bridge(mdcv.fDisplayPrimaries) {}
+
+ColorSpacePrimaries& MasteringDisplayColorVolume::primaries() {
+    return primaries_bridge;
+}
+
+void MasteringDisplayColorVolume::set_max_luminance(float v) {
+    mdcv.fMaximumDisplayMasteringLuminance = v;
+}
+
+void MasteringDisplayColorVolume::set_min_luminance(float v) {
+    mdcv.fMinimumDisplayMasteringLuminance = v;
+}
+
+}  // namespace rust_png
 
 // static
 std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
