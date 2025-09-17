@@ -559,14 +559,14 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
 }
 
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
+        SharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
-    return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
-                                      this,
+    return DawnGraphicsPipeline::Make(static_cast<DawnSharedContext*>(sharedContext),
                                       runtimeDict,
                                       pipelineKey,
                                       pipelineDesc,
