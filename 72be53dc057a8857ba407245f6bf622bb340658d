@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73e43cb8_ca84ba0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-17T19:46:52Z",
+      "side": 1,
+      "message": "This CL probably has a merge conflict with https://review.skia.org/1055756.  Sorry about that.",
+      "revId": "72be53dc057a8857ba407245f6bf622bb340658d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
