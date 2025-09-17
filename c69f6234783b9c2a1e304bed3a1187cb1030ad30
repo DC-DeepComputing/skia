@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8106626_902d592c",
+        "filename": "src/gpu/ganesh/image/SkImage_RasterPinnable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-17T15:06:38Z",
+      "side": 1,
+      "message": "A repeat of the second comment in SkImage_LazyTexture could be helpful here for why pinning a lazy texture is a no-op.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "c69f6234783b9c2a1e304bed3a1187cb1030ad30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05bfd963_1d0b9ae6",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-17T15:06:38Z",
+      "side": 1,
+      "message": "nit: This is a ganesh-ism, Graphite doesn\u0027t have a lazy texture concept, so I think it\u0027d be good to have this be `kGaneshLazy[Texture?]`",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 126,
+        "endChar": 20
+      },
+      "revId": "c69f6234783b9c2a1e304bed3a1187cb1030ad30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
