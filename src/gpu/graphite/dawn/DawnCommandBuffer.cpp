@@ -243,9 +243,9 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const DrawPassList& drawPasses) {
     // `viewport` has already been translated by the replay translation by the base CommandBuffer
     if (!SkIRect::Intersects(viewport, fRenderPassBounds)) SK_UNLIKELY {
-            // The entire pass is offscreen
-            return true;
-        }
+        // The entire pass is offscreen
+        return true;
+    }
 
 
     UniformManager intrinsicValues{Layout::kStd140};

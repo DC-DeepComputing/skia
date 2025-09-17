@@ -383,7 +383,7 @@ void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
     }
 }
 
-void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+void GlobalCache::purgePipelinesNotUsedSince7(StdSteadyClock::time_point purgeTime) {
     SkAutoSpinlock lock{fSpinLock};
 
     skia_private::TArray<skgpu::UniqueKey> toRemove;

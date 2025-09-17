@@ -61,7 +61,7 @@ public:
     sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
                                                 sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
 
-    void purgePipelinesNotUsedSince(
+    void purgePipelinesNotUsedSince7(
             StdSteadyClock::time_point purgeTime) SK_EXCLUDES(fSpinLock);
 
     void reportPrecompileStats() SK_EXCLUDES(fSpinLock);
