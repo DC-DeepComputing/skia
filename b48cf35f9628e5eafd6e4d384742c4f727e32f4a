@@ -153,6 +153,30 @@
       },
       "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0437eede_766914ef",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2629,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-17T13:07:25Z",
+      "side": 1,
+      "message": "Fun fact: I had thought I was testing the Rust implementation in my other patch, but because of this bug, it turns out I wasn\u0027t!",
+      "parentUuid": "bf6fd322_22ddb89c",
+      "range": {
+        "startLine": 2629,
+        "startChar": 24,
+        "endLine": 2629,
+        "endChar": 36
+      },
+      "revId": "b48cf35f9628e5eafd6e4d384742c4f727e32f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
