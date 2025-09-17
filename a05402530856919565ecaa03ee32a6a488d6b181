@@ -16,6 +16,24 @@
       "message": "Appears to be some unrelated presubmit failure? I filed b/445497960",
       "revId": "a05402530856919565ecaa03ee32a6a488d6b181",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a053c615_dd299e21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-09-17T14:23:50Z",
+      "side": 1,
+      "message": "Resolved and passed on a re-run",
+      "parentUuid": "1687bf0b_e2905b9c",
+      "revId": "a05402530856919565ecaa03ee32a6a488d6b181",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
