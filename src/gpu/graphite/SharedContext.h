@@ -34,6 +34,7 @@ class Context;
 class RendererProvider;
 class ResourceProvider;
 class TextureInfo;
+class ThreadSafeResourceProvider;
 
 class SharedContext : public SkRefCnt {
 public:
@@ -64,7 +65,6 @@ public:
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
-            ResourceProvider*,
             const RuntimeEffectDictionary*,
             const UniqueKey& pipelineKey,
             const GraphicsPipelineDesc&,
@@ -78,6 +78,10 @@ public:
     virtual void deviceTick(Context*) {}
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
+
+    ThreadSafeResourceProvider* internalResourceProvider() const {
+        return fInternalResourceProvider.get();
+    }
 
 protected:
     SharedContext(std::unique_ptr<const Caps>,
@@ -101,6 +105,7 @@ private:
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+    std::unique_ptr<ThreadSafeResourceProvider> fInternalResourceProvider;
 };
 
 } // namespace skgpu::graphite

@@ -136,6 +136,7 @@ private:
     friend class SharedContext; // for createGraphicsPipeline
 
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
+            SharedContext*,
             const RuntimeEffectDictionary*,
             const UniqueKey&,
             const GraphicsPipelineDesc&,

@@ -58,13 +58,14 @@ sk_sp<MtlGraphicsPipeline> MtlResourceProvider::findOrCreateLoadMSAAPipeline(
 }
 
 sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
+        SharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
-    return MtlGraphicsPipeline::Make(this->mtlSharedContext(),
+    return MtlGraphicsPipeline::Make(static_cast<const MtlSharedContext*>(sharedContext),
                                      runtimeDict, pipelineKey, pipelineDesc, renderPassDesc,
                                      pipelineCreationFlags, compilationID);
 }

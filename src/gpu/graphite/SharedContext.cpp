@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 
 namespace skgpu::graphite {
 
@@ -66,7 +67,6 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
 }
 
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
-        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -102,6 +102,7 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                              "compilationID", compilationID);
 #endif
 
+        ThreadSafeResourceProvider* resourceProvider = this->internalResourceProvider();
         pipeline = resourceProvider->createGraphicsPipeline(runtimeDict, pipelineKey,
                                                             pipelineDesc, renderPassDesc,
                                                             pipelineCreationFlags,

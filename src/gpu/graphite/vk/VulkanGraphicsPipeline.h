@@ -112,7 +112,6 @@ public:
             PipelineStageFlags::kFragmentShader};
 
     static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*,
-                                              VulkanResourceProvider*,
                                               const RuntimeEffectDictionary*,
                                               const UniqueKey&,
                                               const GraphicsPipelineDesc&,

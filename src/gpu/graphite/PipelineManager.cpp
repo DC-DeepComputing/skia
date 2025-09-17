@@ -78,7 +78,6 @@ void PipelineManager::startPipelineCreationTask(SharedContext* sharedContext,
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
     sk_sp<GraphicsPipeline> pipeline = sharedContext->findOrCreateGraphicsPipeline(
-            resourceProvider,
             runtimeDict.get(),
             task->fPipelineKey,
             task->fGraphicsPipelineDesc,
