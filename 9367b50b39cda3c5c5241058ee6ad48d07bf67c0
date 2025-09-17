@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "690d07ab_9a560f8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-17T19:17:18Z",
+      "side": 1,
+      "message": "FYI, beware expanding all, the test png used crashes the page on some versions when rendering which was a bug that is fixed now https://g-issues.chromium.org/issues/443427198",
+      "revId": "9367b50b39cda3c5c5241058ee6ad48d07bf67c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
