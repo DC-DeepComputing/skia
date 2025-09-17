@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97be3906_fdcee01f",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-17T12:05:20Z",
+      "side": 1,
+      "message": "This code has now bitrotted, right? Can we just delete it at this point, or maybe just leave the TODO about calling simplify?",
+      "range": {
+        "startLine": 758,
+        "startChar": 10,
+        "endLine": 758,
+        "endChar": 21
+      },
+      "revId": "dfa1317627cb15e6f05e3049e8f7221a72cc8305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
