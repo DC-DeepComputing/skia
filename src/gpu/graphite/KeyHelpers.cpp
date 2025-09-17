@@ -2013,10 +2013,11 @@ static void add_to_key(const KeyContext& keyContext,
         // fully responsible for notifyInUse() calls and then we can simply always call this on
         // `imageToDraw`. The DrawContext that samples the image will also be available to AddToKey
         // so we won't have to pass in nullptr.
-        SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
-        static_cast<Image_Base*>(imageToDraw.get())->notifyInUse(keyContext.recorder(),
-                                                                 /*drawContext=*/nullptr);
     }
+    SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
+    SkASSERT(keyContext.drawContext());
+    static_cast<Image_Base*>(imageToDraw.get())->notifyInUse(keyContext.recorder(),
+                                                             keyContext.drawContext());
     if (as_IB(imageToDraw)->isYUVA()) {
         return add_yuv_image_to_key(keyContext,
                                     shader,
