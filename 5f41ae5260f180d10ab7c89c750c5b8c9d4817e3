@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "959f5d0a_c76e8d53",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-17T15:59:38Z",
+      "side": 1,
+      "message": "good idea, thanks.\ndone.",
+      "parentUuid": "f0fad296_f597db31",
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "834714c3_e33d5bdc",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f2169cc_3eb4be09",
+        "filename": "src/pathops/SkOpEdgeBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-17T15:59:38Z",
+      "side": 1,
+      "message": "doh! Done.",
+      "parentUuid": "834714c3_e33d5bdc",
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36382a4a_a4be91b8",
@@ -48,6 +84,30 @@
       "writtenOn": "2025-09-17T14:25:55Z",
       "side": 1,
       "message": "Comment looks out of date.",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 12
+      },
+      "revId": "5f41ae5260f180d10ab7c89c750c5b8c9d4817e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ae33293_0ffc6d7f",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-17T15:59:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36382a4a_a4be91b8",
       "range": {
         "startLine": 19,
         "startChar": 3,
