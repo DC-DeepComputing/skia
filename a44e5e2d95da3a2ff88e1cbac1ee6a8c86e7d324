@@ -22,6 +22,30 @@
       },
       "revId": "a44e5e2d95da3a2ff88e1cbac1ee6a8c86e7d324",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2c9edf8_3cb89887",
+        "filename": "src/gpu/graphite/task/TaskList.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T02:26:15Z",
+      "side": 0,
+      "message": "Ack, got hit by aoe from moving around macro defines",
+      "parentUuid": "b7e38271_fdeb0949",
+      "range": {
+        "startLine": 53,
+        "startChar": 27,
+        "endLine": 53,
+        "endChar": 45
+      },
+      "revId": "a44e5e2d95da3a2ff88e1cbac1ee6a8c86e7d324",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
