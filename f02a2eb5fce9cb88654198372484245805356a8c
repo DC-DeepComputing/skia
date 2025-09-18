@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc088e16_b3572635",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-18T13:10:05Z",
+      "side": 1,
+      "message": "// Log of all callers of RecorderPriv::flushTrackedDevices ?",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6de7b8b4_905af0fe",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-18T13:10:05Z",
+      "side": 1,
+      "message": "Add a \u0027 \u0027 ?",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43a303a_140016bb",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-18T13:10:05Z",
+      "side": 1,
+      "message": "wdyt about asserting strlen(prefix) is a multiple of kPrefixIncrement?",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
