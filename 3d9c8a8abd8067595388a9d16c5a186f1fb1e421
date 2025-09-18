@@ -1,0 +1,218 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccea8c0f_26d9d861",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T15:19:53Z",
+      "side": 1,
+      "message": "Nit: GrRecordingContext",
+      "range": {
+        "startLine": 335,
+        "startChar": 15,
+        "endLine": 335,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "919155eb_5c0a5cfa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/asyncrescaleandread.cpp",
+              "range": {
+                "startLine": 335,
+                "startChar": 0,
+                "endLine": 336,
+                "endChar": 0
+              },
+              "replacement": "            // GrRecordingContext.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "811963e5_25bf8066",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T15:19:53Z",
+      "side": 1,
+      "message": "SK_GANESH",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "768480cb_d8eca836",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 59,
+                "startChar": 0,
+                "endLine": 59,
+                "endChar": 0
+              },
+              "replacement": "#if defined(SK_GANESH)\n"
+            },
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 60,
+                "startChar": 0,
+                "endLine": 60,
+                "endChar": 0
+              },
+              "replacement": "#endif\n"
+            },
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 81,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "#if defined(SK_GANESH)\n"
+            },
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 82,
+                "startChar": 0,
+                "endLine": 82,
+                "endChar": 0
+              },
+              "replacement": "#endif\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0ba582f_a2508506",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T15:19:53Z",
+      "side": 1,
+      "message": "SK_GANESH",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f14e6870_b27e87ab",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 81,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "#if defined(SK_GANESH)\n"
+            },
+            {
+              "path": "tools/gpu/YUVUtils.h",
+              "range": {
+                "startLine": 82,
+                "startChar": 0,
+                "endLine": 82,
+                "endChar": 0
+              },
+              "replacement": "#endif\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e354bbf4_280dcc8b",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T15:19:53Z",
+      "side": 1,
+      "message": "SK_GANESH",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 43
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "565b9797_c7de556f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/gpu/vk/VkYcbcrSamplerHelper.h",
+              "range": {
+                "startLine": 50,
+                "startChar": 0,
+                "endLine": 50,
+                "endChar": 0
+              },
+              "replacement": "#if defined(SK_GANESH)\n"
+            },
+            {
+              "path": "tools/gpu/vk/VkYcbcrSamplerHelper.h",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 51,
+                "endChar": 0
+              },
+              "replacement": "#endif\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
