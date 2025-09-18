@@ -16,6 +16,29 @@
       "message": "thx for review!",
       "revId": "49707a23309824774cf57279469546fb0da6d2c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def88c6b_12848ae2",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-18T21:20:46Z",
+      "side": 1,
+      "message": "nit: Does this require a comment unlike the other features for a particular reason?",
+      "range": {
+        "startLine": 1789,
+        "startChar": 16,
+        "endLine": 1789,
+        "endChar": 42
+      },
+      "revId": "49707a23309824774cf57279469546fb0da6d2c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
