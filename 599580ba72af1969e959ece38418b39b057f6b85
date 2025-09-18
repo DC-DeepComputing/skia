@@ -46,6 +46,30 @@
       },
       "revId": "599580ba72af1969e959ece38418b39b057f6b85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53a95aa2_18eabb83",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T16:30:10Z",
+      "side": 1,
+      "message": "Ack.  At any rate - thanks for adding the other test to Skia.  Having coverage via Skia CQ/CI is probably somewhat important, although I have been usually focusing on Chromium-side coverage because this covers more code - e.g. it also exercises managing multiple-animation frames (Skia tests have to [partially] replicate this manually).",
+      "parentUuid": "2c704839_4350e4da",
+      "range": {
+        "startLine": 695,
+        "startChar": 54,
+        "endLine": 695,
+        "endChar": 68
+      },
+      "revId": "599580ba72af1969e959ece38418b39b057f6b85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
