@@ -43,6 +43,10 @@ void GrXferProcessor::addToKey(const GrShaderCaps& caps,
                                skgpu::KeyBuilder* b,
                                const GrSurfaceOrigin* originIfDstTexture,
                                bool usesInputAttachmentForDstRead) const {
+    if (usesInputAttachmentForDstRead) {
+        SkAssertResult(this->willReadDstColor());
+        SkAssertResult(originIfDstTexture);
+    }
     uint32_t key = this->willReadDstColor() ? 0x1 : 0x0;
     if (key) {
         if (originIfDstTexture) {
