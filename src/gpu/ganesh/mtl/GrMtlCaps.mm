@@ -547,6 +547,7 @@ void GrMtlCaps::initShaderCaps() {
     } else {
         shaderCaps->fDualSourceBlendingSupport = false;
     }
+    shaderCaps->fDualSourceBlendingSupport = true;
 
     if (this->isIntel()) {
         shaderCaps->fVectorClampMinMaxSupport = false;

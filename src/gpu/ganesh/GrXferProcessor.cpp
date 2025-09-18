@@ -40,21 +40,8 @@ bool GrXferProcessor::hasSecondaryOutput() const {
 }
 
 void GrXferProcessor::addToKey(const GrShaderCaps& caps,
-                               skgpu::KeyBuilder* b,
-                               const GrSurfaceOrigin* originIfDstTexture,
-                               bool usesInputAttachmentForDstRead) const {
+                               skgpu::KeyBuilder* b) const {
     uint32_t key = this->willReadDstColor() ? 0x1 : 0x0;
-    if (key) {
-        if (originIfDstTexture) {
-            key |= 0x2;
-            if (kTopLeft_GrSurfaceOrigin == *originIfDstTexture) {
-                key |= 0x4;
-            }
-            if (usesInputAttachmentForDstRead) {
-                key |= 0x8;
-            }
-        }
-    }
     if (fIsLCD) {
         key |= 0x10;
     }

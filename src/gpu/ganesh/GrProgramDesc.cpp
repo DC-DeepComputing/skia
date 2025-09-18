@@ -98,25 +98,12 @@ static void gen_xp_key(const GrXferProcessor& xp,
                        const GrCaps& caps,
                        const GrPipeline& pipeline,
                        skgpu::KeyBuilder* b) {
+    SkDebugf("%s\n", xp.name());
+
     b->appendComment(xp.name());
     b->addBits(kClassIDBits, xp.classID(), "xpClassID");
 
-    const GrSurfaceOrigin* originIfDstTexture = nullptr;
-    GrSurfaceOrigin origin;
-    const GrSurfaceProxyView& dstView = pipeline.dstProxyView();
-    if (dstView.proxy()) {
-        origin = dstView.origin();
-        originIfDstTexture = &origin;
-
-        uint32_t samplerKey = sampler_key(dstView.proxy()->backendFormat().textureType(),
-                                          dstView.swizzle(), caps);
-        b->add32(samplerKey);
-    }
-
-    xp.addToKey(*caps.shaderCaps(),
-                b,
-                originIfDstTexture,
-                pipeline.dstSampleFlags() & GrDstSampleFlags::kAsInputAttachment);
+    xp.addToKey(*caps.shaderCaps(), b);
 }
 
 static void gen_fp_key(const GrFragmentProcessor& fp,
@@ -148,18 +135,45 @@ static void gen_fp_key(const GrFragmentProcessor& fp,
     }
 }
 
+static void foo(const GrCaps& caps,
+                const GrPipeline& pipeline,
+                skgpu::KeyBuilder* b) {
+
+    const GrSurfaceProxyView& dstView = pipeline.dstProxyView();
+    if (dstView.proxy()) {
+        SkDebugf("foo %d\n", pipeline.usesDstInputAttachment());
+
+        uint32_t samplerKey = sampler_key(dstView.proxy()->backendFormat().textureType(),
+                                          dstView.swizzle(), caps);
+        b->add32(samplerKey);
+
+        uint32_t key = 0x0;
+        if (kTopLeft_GrSurfaceOrigin == dstView.origin()) {
+            key |= 0x1;
+        }
+        if (pipeline.usesDstInputAttachment()) {
+            key |= 0x2;
+        }
+        b->add32(key);
+    }
+}
+
 static void gen_key(skgpu::KeyBuilder* b,
                     const GrProgramInfo& programInfo,
                     const GrCaps& caps) {
     gen_geomproc_key(programInfo.geomProc(), caps, b);
 
     const GrPipeline& pipeline = programInfo.pipeline();
+
+    foo(caps, pipeline, b);
+
     b->addBits(2, pipeline.numFragmentProcessors(),      "numFPs");
     b->addBits(1, pipeline.numColorFragmentProcessors(), "numColorFPs");
     for (int i = 0; i < pipeline.numFragmentProcessors(); ++i) {
         gen_fp_key(pipeline.getFragmentProcessor(i), caps, b);
     }
 
+    SkDebugf("%d %d\n", pipeline.usesDstTexture(), pipeline.usesDstInputAttachment());
     gen_xp_key(pipeline.getXferProcessor(), caps, pipeline, b);
 
     b->addBits(16, pipeline.writeSwizzle().asKey(), "writeSwizzle");
