@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a5a113_4b4ce19f",
+        "filename": "gm/wacky_yuv_formats.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T14:55:55Z",
+      "side": 0,
+      "message": "Super nit: Does this CL change any behavior? If `dContext` was null, I imagine we would hit an assert somewheere.",
+      "range": {
+        "startLine": 894,
+        "startChar": 0,
+        "endLine": 899,
+        "endChar": 10
+      },
+      "revId": "760a2a4b9de17c1d790416984adbd825992d8fd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
