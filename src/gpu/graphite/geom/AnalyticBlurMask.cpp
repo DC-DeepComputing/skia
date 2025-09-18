@@ -139,16 +139,6 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRect(Recorder* recorder,
                    srcRect.bottom() * scale.height()};
     }
 
-    if (!recorder->priv().caps()->shaderCaps()->fFloatIs32Bits) {
-        // We promote the math that gets us into the Gaussian space to full float when the rect
-        // coords are large. If we don't have full float then fail. We could probably clip the rect
-        // to an outset device bounds instead.
-        if (std::fabs(devRect.left()) > 16000.0f || std::fabs(devRect.top()) > 16000.0f ||
-            std::fabs(devRect.right()) > 16000.0f || std::fabs(devRect.bottom()) > 16000.0f) {
-            return std::nullopt;
-        }
-    }
-
     const float sixSigma = 6.0f * devSigma;
     const int tableWidth = ComputeIntegralTableWidth(sixSigma);
     UniqueKey key;
