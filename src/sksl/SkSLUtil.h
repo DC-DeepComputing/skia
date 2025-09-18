@@ -94,7 +94,6 @@ struct ShaderCaps {
      * TODO: Modify SkSLGLSLCodeGenerator to use GrShaderCaps rather than this struct since it
      * should only be used by Ganesh.
      */
-    bool fUsesPrecisionModifiers = true;
     SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;
 
     bool fDualSourceBlendingSupport = false;

@@ -31,7 +31,8 @@ struct GrShaderCaps : SkSL::ShaderCaps {
 
     void applyOptionsOverrides(const GrContextOptions& options);
 
-    bool fFlatInterpolationSupport = true;
+    bool fFlatInterpolationSupport = true; // Supported by most backends
+    bool fUsesPrecisionModifiers = true; // Supported by most backends
     bool fPreferFlatInterpolation = false;
     bool fDstReadInShaderSupport = false;
     bool fVertexIDSupport = false;
