@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e7abd31_09a8eb0f",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T02:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9334da5f_4065439a",
+      "range": {
+        "startLine": 201,
+        "startChar": 57,
+        "endLine": 201,
+        "endChar": 61
+      },
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcf2f84b_6f855911",
@@ -200,6 +224,30 @@
       "writtenOn": "2025-09-17T16:05:24Z",
       "side": 1,
       "message": "Can this be something like kPrefixIncrements ?",
+      "range": {
+        "startLine": 80,
+        "startChar": 30,
+        "endLine": 80,
+        "endChar": 31
+      },
+      "revId": "3f82a8a38509df76c41f5b7771b7e17fca8e7827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c617bf3e_d7e2ef09",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T02:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a21fbd_825b4ee4",
       "range": {
         "startLine": 80,
         "startChar": 30,
