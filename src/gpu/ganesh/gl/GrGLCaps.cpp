@@ -1009,7 +1009,6 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
             shaderCaps->fFBFetchExtensionString = "GL_ARM_shader_framebuffer_fetch";
             fFBFetchRequiresEnablePerSample = true;
         }
-        shaderCaps->fUsesPrecisionModifiers = true;
     } else if (GR_IS_GR_GL(standard)) {
         if (ctxInfo.hasExtension("GL_EXT_shader_framebuffer_fetch")) {
             shaderCaps->fFBFetchNeedsCustomOutput = (version >= GR_GL_VER(3, 0));
@@ -1018,8 +1017,9 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
             shaderCaps->fFBFetchExtensionString = "GL_EXT_shader_framebuffer_fetch";
             fFBFetchRequiresEnablePerSample = false;
         }
-    } else if (GR_IS_GR_WEBGL(standard)) {
-        shaderCaps->fUsesPrecisionModifiers = true;
+        shaderCaps->fUsesPrecisionModifiers = false;
+    } else {
+        shaderCaps->fUsesPrecisionModifiers = false;
     }
 
     if (GR_IS_GR_GL(standard)) {
@@ -1028,7 +1028,9 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
     } else if (GR_IS_GR_GL_ES(standard) || GR_IS_GR_WEBGL(standard)) {
         shaderCaps->fFlatInterpolationSupport =
                 ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k300es;
-    } // not sure for WebGL
+    } else { // not sure for WebGL
+        shaderCaps-> fFlatInterpolationSupport = false;
+    }
 
     // Flat interpolation appears to be slow on Qualcomm GPUs (tested Adreno 405 and 530).
     // Avoid on ANGLE too, it inserts a geometry shader into the pipeline to implement flat interp.
