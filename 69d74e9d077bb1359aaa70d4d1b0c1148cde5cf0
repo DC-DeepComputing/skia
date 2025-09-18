@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c393e9_2056fc30",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1283,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T16:51:34Z",
+      "side": 0,
+      "message": "Is this change intentional?",
+      "range": {
+        "startLine": 1283,
+        "startChar": 15,
+        "endLine": 1283,
+        "endChar": 16
+      },
+      "revId": "69d74e9d077bb1359aaa70d4d1b0c1148cde5cf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
