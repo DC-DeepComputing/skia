@@ -254,7 +254,6 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fRewriteMatrixComparisons = true;
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
@@ -297,7 +296,6 @@ public:
             caps->fVersionDeclString = "#version 400";
             caps->fShaderDerivativeSupport = true;
             caps->fShaderDerivativeExtensionString = "GL_OES_standard_derivatives";
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
@@ -317,7 +315,6 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
