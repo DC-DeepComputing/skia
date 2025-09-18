@@ -86,7 +86,8 @@ public:
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
 
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(SharedContext*,
+                                                   const RuntimeEffectDictionary*,
                                                    const UniqueKey&,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,
