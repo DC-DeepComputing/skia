@@ -16,6 +16,24 @@
       "message": "I\u0027ve added a comment in the (closed) bug to, basically, push this TODO over there. We can delete this code block here since I think the odds of Simplify getting spruced up are pretty thin.",
       "revId": "90fe679960e81b7e215e5abe26a01e7a277c30d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "add33d07_6c0d8e48",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-18T15:57:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90fdf287_7a19c39c",
+      "revId": "90fe679960e81b7e215e5abe26a01e7a277c30d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
