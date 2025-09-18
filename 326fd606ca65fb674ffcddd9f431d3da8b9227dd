@@ -22,6 +22,30 @@
       },
       "revId": "326fd606ca65fb674ffcddd9f431d3da8b9227dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ac40d5_fdd05821",
+        "filename": "tools/skslc/Main.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-18T18:30:32Z",
+      "side": 1,
+      "message": "Update: While technically fine, this did lead to changes to the generated SkSL for many test cases (see failing task from prior patchset; https://task-driver.skia.org/logs/bTSpzbeOusbbxRt6hBkr/0c495680-6d69-4cd4-b3ef-5257ce0099a5/81bbebdb-4225-4496-b98f-e07a90769889). The resulting SkSL with the precision modifiers seems messier/overkill, so I went ahead and explicitly set `fUsesPrecisionModifiers` to false in all other functions which previously relied upon that default value.\n\nExample:\n```\nout vec4 sk_FragColor;\nuniform vec4 src;\nuniform vec4 dst;\n```\nbecomes \n```\nprecision mediump float;\nprecision mediump sampler2D;\nout mediump vec4 sk_FragColor;\nuniform mediump vec4 src;\nuniform mediump vec4 dst;\n```\nwhich is significantly more cluttered and was not previously necessary.\n\nRunning a task to see if we get complaints about expected v. actual output from having the precision modifier default to true now in most Caps files but false to all of these skslc shadercaps.",
+      "parentUuid": "1bec944e_84a22419",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 5
+      },
+      "revId": "326fd606ca65fb674ffcddd9f431d3da8b9227dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
