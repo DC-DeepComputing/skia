@@ -15,6 +15,7 @@
 #include "src/base/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -94,7 +95,9 @@ public:
                       const Program* program,
                       OutputStream* out,
                       PrettyPrint pp)
-            : CodeGenerator(context, caps, program, out), fPrettyPrint(pp) {}
+            : CodeGenerator(context, caps, program, out)
+            , fPrettyPrint(pp)
+            , fGrShaderCaps(static_cast<const GrShaderCaps*>(caps)) {}
 
     bool generateCode() override;
 
@@ -238,6 +241,11 @@ protected:
     bool fWrittenDeterminant2 = false, fWrittenDeterminant3 = false, fWrittenDeterminant4 = false;
     bool fWrittenInverse2 = false, fWrittenInverse3 = false, fWrittenInverse4 = false;
     bool fWrittenTranspose[3][3] = {};
+
+    private:
+    // SkSL --> GLSL is only expected to be used within Ganesh, so determine + store GrShaderCaps.
+    // This enables attributes that only impact GL to be consolidated to Ganesh's ShaderCaps impl.
+    const GrShaderCaps* fGrShaderCaps;
 };
 
 void GLSLCodeGenerator::write(std::string_view s) {
@@ -272,7 +280,7 @@ void GLSLCodeGenerator::writeExtension(std::string_view name, bool require) {
 }
 
 bool GLSLCodeGenerator::usesPrecisionModifiers() const {
-    return fCaps.fUsesPrecisionModifiers;
+    return fGrShaderCaps->fUsesPrecisionModifiers;
 }
 
 static bool is_reserved_identifier(std::string_view identifier) {

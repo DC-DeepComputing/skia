@@ -41,7 +41,7 @@ struct ShaderCaps {
     }
 
     bool mustDeclareFragmentShaderOutput() const {
-        return fGLSLGeneration > SkSL::GLSLGeneration::k110;
+        return true;//fGLSLGeneration > SkSL::GLSLGeneration::k110;
     }
 
     /**
@@ -84,18 +84,17 @@ struct ShaderCaps {
     bool supportsDistanceFieldText() const { return fShaderDerivativeSupport; }
 
     /**
-     * TODO: Relocate these attributes to Ganesh's GrShaderCaps. They are only relevant for
-     * Ganesh/GL, but must stay here for now since some backend-agnostic SkSL utilities check for
-     * these values.
+     * The following attributes are only really relevant for GLSL. However, sometimes the GL
+     * capabilities inform not just the GLSL generated from SkSL but the source SkSL itself. Even
+     * though Graphite has no intention to natively support GL, Dawn plans to add support for GLES.
+     *
+     * Therefore, Graphite/Dawn may later need to utilize these attributes for its SkSL generation
+     * (even though they likely will not depend on our SkSL --> GLSL translation). So these
+     * attributes should stay in this struct rather than being demoted to Ganesh-specific
+     * GrShaderCaps until it is determined for certain that Dawn will not need them.
      */
-    bool fFloatIs32Bits = true; // Queried by SkSLSetting. Maybe needed later for Dawn/GL support.
-    /**
-     * The following attributes are required by the SkSLGLSLCodeGenerator.
-     * TODO: Modify SkSLGLSLCodeGenerator to use GrShaderCaps rather than this struct since it
-     * should only be used by Ganesh.
-     */
-    bool fUsesPrecisionModifiers = true;
-    SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;
+    bool fFloatIs32Bits = true; // Queried by SkSLSetting
+    SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330; // Helps inform SkSLVersion
 
     bool fDualSourceBlendingSupport = false;
     bool fShaderDerivativeSupport = false;
