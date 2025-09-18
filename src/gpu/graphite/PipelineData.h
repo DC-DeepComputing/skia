@@ -372,6 +372,8 @@ public:
 
     // Mark the end of extracting uniforms and textures from a RenderStep.
     std::pair<UniformDataBlock, TextureDataBlock> endRenderStepData(bool performsShading) {
+        fUniformManagerHighWatermark = std::max(fUniformManagerHighWatermark,
+                                                fUniformManager.size());
         SkSpan<const TextureDataBlock::SampledTexture> textures{fTextures};
         if (!performsShading) {
             textures = textures.subspan(fPaintTextureCount);
@@ -390,6 +392,18 @@ public:
     // Append a sampled texture.
     void add(sk_sp<TextureProxy> proxy, const SamplerDesc& samplerDesc) {
         fTextures.push_back({std::move(proxy), samplerDesc});
+    }
+
+    bool tryCompact() {
+        SkDEBUGCODE(this->checkReset());
+        size_t currentCapacity = fUniformManager.capacity();
+        if (fUniformManagerHighWatermark < (currentCapacity / 2)) {
+            fUniformManagerHighWatermark = 0;
+            fUniformManager.shrinkToFit();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Mimic the type-safe API available in UniformManager
@@ -413,6 +427,7 @@ private:
 
     int fPaintTextureCount = 0;
     size_t fPaintDataSize = 0;
+    size_t fUniformManagerHighWatermark = 0;
 };
 
 #ifdef SK_DEBUG

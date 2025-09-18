@@ -233,6 +233,8 @@ public:
     }
 
     size_t size() const { return fStorage.size(); }
+    size_t capacity() const { return fStorage.capacity(); }
+    void shrinkToFit() { fStorage.shrink_to_fit(); }
 
     void resetWithNewLayout(Layout layout);
     void reset() { this->resetWithNewLayout(fLayout); }

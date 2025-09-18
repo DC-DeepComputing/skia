@@ -35,6 +35,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
@@ -125,7 +126,8 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fAtlasProvider(std::make_unique<AtlasProvider>(this))
         , fTokenTracker(std::make_unique<TokenTracker>())
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
-        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fUniqueID)) {
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fUniqueID))
+        , fHelperSlot(RecorderOptions::kMaxKeyContextHelpers) {
     fClientImageProvider = options.fImageProvider;
     if (!fClientImageProvider) {
         fClientImageProvider = DefaultImageProvider::Make();
@@ -157,6 +159,16 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              dbmOpts);
 
     SkASSERT(fResourceProvider);
+    const bool useStorageBuffers = fSharedContext->caps()->storageBufferSupport();
+    const auto& bindingReq = fSharedContext->caps()->resourceBindingRequirements();
+    auto gathererLayout = useStorageBuffers ? bindingReq.fStorageBufferLayout
+                                            : bindingReq.fUniformBufferLayout;
+    for (auto& helperSlot : fKeyContextHelpers) {
+        helperSlot = std::make_unique<KeyContextHelpers>(
+                PipelineDataGatherer(gathererLayout),
+                std::make_unique<PaintParamsKeyBuilder>(this->priv().shaderCodeDictionary())
+        );
+    }
 }
 
 Recorder::~Recorder() {
@@ -256,6 +268,13 @@ std::unique_ptr<Recording> Recorder::snap() {
         fAtlasProvider->invalidateAtlases();
     }
 
+    for (int i = 0; i < fHelperSlot; ++i) {
+        SkASSERT(fKeyContextHelpers[i]);
+        if (fKeyContextHelpers[i]->first.tryCompact()) {
+            fKeyContextHelpers[i]->second =
+                    std::make_unique<PaintParamsKeyBuilder>(this->priv().shaderCodeDictionary());
+        }
+    }
     return recording;
 }
 
@@ -691,5 +710,44 @@ void RecorderPriv::issueFlushToken() {
     fRecorder->fTokenTracker->issueFlushToken();
 }
 #endif
+
+std::unique_ptr<KeyContextHelpers> Recorder::popOrCreateKeyContextHelpers() {
+    // Find the first available helper pair and "pop" it from our storage.
+    if (fHelperSlot > 0) {
+        --fHelperSlot;
+        SkASSERT(fKeyContextHelpers[fHelperSlot]);
+        return std::move(fKeyContextHelpers[fHelperSlot]);
+    }
+
+    // If the stack was empty, create a new helper pair instance.
+    const bool useStorageBuffers = fSharedContext->caps()->storageBufferSupport();
+    const auto& bindingReq = fSharedContext->caps()->resourceBindingRequirements();
+    auto gathererLayout = useStorageBuffers ? bindingReq.fStorageBufferLayout
+                                            : bindingReq.fUniformBufferLayout;
+
+    auto* dictionary = this->priv().shaderCodeDictionary();
+
+    return std::make_unique<KeyContextHelpers>(
+            PipelineDataGatherer(gathererLayout),
+            std::make_unique<PaintParamsKeyBuilder>(dictionary)
+    );
+}
+
+void Recorder::pushKeyContextHelpers(std::unique_ptr<KeyContextHelpers> helpers) {
+    if (!helpers) {
+        return;
+    }
+
+    // Find an empty slot to "push" the helper pair back into.
+    if (fHelperSlot < RecorderOptions::kMaxKeyContextHelpers) {
+        SkASSERT(!fKeyContextHelpers[fHelperSlot]);
+        fKeyContextHelpers[fHelperSlot] = std::move(helpers);
+        fHelperSlot++;
+        return;
+    }
+    // If no empty slot was found, the 'helpers' unique_ptr goes out of scope here.
+}
+
+
 
 } // namespace skgpu::graphite
