@@ -22,6 +22,30 @@
       },
       "revId": "760a2a4b9de17c1d790416984adbd825992d8fd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "036ec100_076293ab",
+        "filename": "gm/wacky_yuv_formats.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-18T16:33:31Z",
+      "side": 0,
+      "message": "This is restoring the behavior to before the cited CL. A null dContext is acceptable input to refImage.",
+      "parentUuid": "89a5a113_4b4ce19f",
+      "range": {
+        "startLine": 894,
+        "startChar": 0,
+        "endLine": 899,
+        "endChar": 10
+      },
+      "revId": "760a2a4b9de17c1d790416984adbd825992d8fd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
