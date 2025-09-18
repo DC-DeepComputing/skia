@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f50dbfd2_a241cbff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-18T10:29:18Z",
+      "side": 1,
+      "message": "Thanks for the feedback (here and offline). I\u0027ve updated this to create Primaries, MDCV, and CLLI structures. When adding encoder support, these structures will be used to pass the parameters.",
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
