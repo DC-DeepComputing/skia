@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f654e25_d46647df",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-18T17:19:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3ad220b_91ea784b",
+      "range": {
+        "startLine": 45,
+        "startChar": 50,
+        "endLine": 45,
+        "endChar": 51
+      },
+      "revId": "a9bfc6ed121e53559f35d3a45907b5297aa702a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4116c9ea_8c7421ed",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8b6182_63aaecf9",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-18T17:19:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4116c9ea_8c7421ed",
+      "range": {
+        "startLine": 54,
+        "startChar": 50,
+        "endLine": 54,
+        "endChar": 51
+      },
+      "revId": "a9bfc6ed121e53559f35d3a45907b5297aa702a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a4b5824_3678dcd5",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-09-18T16:51:34Z",
       "side": 1,
       "message": "Optional: Consider reusing the `kGraySigBit_GrayAlphaIsJustAlpha` constant here?  (Probably need to tweak `BUILD.bazel` if doing this, so that the build system knows about the dependency on `SkPngPriv.h`)\n\n(\"optional\", because I am not quite sure if having a constant really helps that much... but maybe we should be consistent wrt constant usage across `SkPngCodec.cpp` and `SkPngRustCodec.cpp`?  I dunno...)",
+      "range": {
+        "startLine": 55,
+        "startChar": 31,
+        "endLine": 55,
+        "endChar": 32
+      },
+      "revId": "a9bfc6ed121e53559f35d3a45907b5297aa702a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "608e593d_dc00d5b3",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-18T17:19:43Z",
+      "side": 1,
+      "message": "True, I don\u0027t see why not. Done.",
+      "parentUuid": "8a4b5824_3678dcd5",
       "range": {
         "startLine": 55,
         "startChar": 31,
