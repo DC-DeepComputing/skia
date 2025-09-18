@@ -2000,23 +2000,21 @@ static void add_to_key(const KeyContext& keyContext,
         keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kError);
         return;
     }
-    if (!as_IB(shader->image())->isGraphiteBacked()) {
-        // GetGraphiteBacked() created a new image (or fetched a cached image) from the client
-        // image provider. This image was not available when NotifyInUse() visited the shader tree,
-        // so call notify again. These images shouldn't really be producing new tasks since it's
-        // unlikely that a client will be fulfilling with a dynamic image that wraps a long-lived
-        // SkSurface. However, the images can be linked to a surface that rendered the initial
-        // content and not calling notifyInUse() prevents unlinking the image from the Device.
-        // If the client image provider then holds on to many of these images, the leaked Device and
-        // DrawContext memory can be surprisingly high. b/338453542.
-        // TODO (b/330864257): Once paint keys are extracted at draw time, AddToKey() will be
-        // fully responsible for notifyInUse() calls and then we can simply always call this on
-        // `imageToDraw`. The DrawContext that samples the image will also be available to AddToKey
-        // so we won't have to pass in nullptr.
-        SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
-        static_cast<Image_Base*>(imageToDraw.get())->notifyInUse(keyContext.recorder(),
-                                                                 /*drawContext=*/nullptr);
-    }
+
+    // We must call notifyInUse() here to link the final, Graphite-backed 'imageToDraw'
+    // to the DrawContext that will sample it.
+    //
+    // This is necessary for two primary cases:
+    // 1. The original image was not Graphite-backed. 'imageToDraw' is a new/cached image
+    //    that was not available during the initial NotifyInUse() tree visit.
+    // 2. The original image was already Graphite-backed. The initial visit could not
+    //    have known which downstream DrawContext would eventually sample it.
+    //
+    // Failing to call this can lead to leaked Device and DrawContext memory (b/338453542).
+    SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
+    SkASSERT(keyContext.drawContext());
+    static_cast<Image_Base*>(imageToDraw.get())->notifyInUse(keyContext.recorder(),
+                                                             keyContext.drawContext());
     if (as_IB(imageToDraw)->isYUVA()) {
         return add_yuv_image_to_key(keyContext,
                                     shader,
