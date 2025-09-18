@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d9e972_6a6c817f",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T14:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc088e16_b3572635",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6de7b8b4_905af0fe",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6010c82_10f68ec2",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T14:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6de7b8b4_905af0fe",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f43a303a_140016bb",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-09-18T13:10:05Z",
       "side": 1,
       "message": "wdyt about asserting strlen(prefix) is a multiple of kPrefixIncrement?",
+      "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9b9ed35_c1156437",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-18T14:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f43a303a_140016bb",
       "revId": "f02a2eb5fce9cb88654198372484245805356a8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
