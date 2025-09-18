@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78bb9769_624756f1",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c8d25810_dcbb76ca",
+      "range": {
+        "startLine": 166,
+        "startChar": 49,
+        "endLine": 166,
+        "endChar": 83
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1df2ca7_e7794d6c",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "(same, removed)",
       "parentUuid": "e1df2ca7_e7794d6c",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 83
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe652ffc_e4974560",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9d9b7f9e_2f604110",
       "range": {
         "startLine": 177,
         "startChar": 49,
@@ -176,6 +224,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30dd515e_2c1389ce",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "67a737b0_1654508d",
+      "range": {
+        "startLine": 824,
+        "startChar": 15,
+        "endLine": 824,
+        "endChar": 20
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dfc0bd2_114fddd1",
@@ -213,6 +285,30 @@
       "side": 1,
       "message": "(Removed b/c encoder doesn\u0027t work anyway)",
       "parentUuid": "0dfc0bd2_114fddd1",
+      "range": {
+        "startLine": 825,
+        "startChar": 14,
+        "endLine": 825,
+        "endChar": 20
+      },
+      "revId": "26279f9686ea675b2f4b46941ae3286dd0a6bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0247efc8_8f769103",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4fcc7481_f8cb9d19",
       "range": {
         "startLine": 825,
         "startChar": 14,

@@ -16,6 +16,138 @@
       "message": "Thanks for the feedback (here and offline). I\u0027ve updated this to create Primaries, MDCV, and CLLI structures. When adding encoder support, these structures will be used to pass the parameters.",
       "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c199213_14e8edcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Thanks! LGTM after the comments below are addressed.",
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30be9823_d3b8ac54",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Do we want to postpone adding this until the encoder actually writes these chunks?  (IIUC you are saying that the Rust `png` crate doesn\u0027t support these chunks when encoding + that because of that the Skia glue doesn\u0027t propagate these chunks into the encoder.)",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 33
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a9a6db_4da2bd38",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "```suggestion\n    /// FFI/layering-friendly equivalent of `SkColorSpacePrimaries from C/C++.\n    struct ColorSpacePrimaries {\n```",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 32
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb21c0c_ca6d7506",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "nitty nit: Let\u0027s add a comment to make it easier for future readers to discover the great C/C++-side doc comments that mention ANSI, PNG spec, and other details.\n\n```suggestion\n\n    /// FFI/layering-friendly equivalent of `skhdr::MasteringDisplayColorVolume` from C/C++.\n    struct MasteringDisplayColorVolume {\n```",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 40
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03533e5a_c4178b25",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "```suggestion\n\n    /// FFI/layering-friendly equivalent of `skhdr::ContentLightLevelInformation` from C/C++.\n    struct ContentLightLevelInfo {\n```",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2700390_6e142de0",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-18T17:05:10Z",
+      "side": 1,
+      "message": "Thanks for fixing this up!",
+      "range": {
+        "startLine": 499,
+        "startChar": 43,
+        "endLine": 499,
+        "endChar": 44
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
