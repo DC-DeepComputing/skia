@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "871cf019_3089c608",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-18T16:53:55Z",
+      "side": 1,
+      "message": "PTAL 😊",
+      "revId": "14da3b79490591a4955aeb937e1ae77f65814ae3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "508fa742_02fb591b",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-18T16:53:55Z",
+      "side": 1,
+      "message": "Note: We check this in some graphite RenderStep logic when compiling SkSL. I\u0027d remove that since this is always true for all graphite backends as of right now, but Dawn may still need that SkSL to be modified accordingly if it\u0027s supporting GL/GLES (even though we should not be responsible for SkSL--\u003eGLSL generation, the SkSL--\u003eWGSL generation may end up needing this information).",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 98
+      },
+      "revId": "14da3b79490591a4955aeb937e1ae77f65814ae3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

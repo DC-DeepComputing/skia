@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bec944e_84a22419",
+        "filename": "tools/skslc/Main.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-18T16:53:55Z",
+      "side": 1,
+      "message": "Note: It should be fine to have the other functions in this file use the new default value of true for `fUsesPrecisionModifiers`.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 5
+      },
+      "revId": "326fd606ca65fb674ffcddd9f431d3da8b9227dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
