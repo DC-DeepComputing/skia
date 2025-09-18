@@ -77,7 +77,7 @@ class DrawContext;
 class Geometry;
 class Image;
 class PaintParamsKeyBuilder;
-class PipelineDataGatherer;
+class PipelineDataGatherer; //TODO maybe remove me?
 class PathAtlas;
 class Renderer;
 class Shape;
@@ -343,8 +343,7 @@ private:
     // some other task chain that makes it to the root list.
     sk_sp<Task> fLastTask;
 
-    std::unique_ptr<PaintParamsKeyBuilder> fKeyBuilder;
-    std::unique_ptr<PipelineDataGatherer> fDataGatherer;
+    std::unique_ptr<KeyContextHelpers> fKeyContextHelpers;
 
     ClipStack fClip;
 
