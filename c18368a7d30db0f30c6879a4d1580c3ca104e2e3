@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9e61e31_f286432a",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-18T14:32:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc8d7f9f_48cf0595",
+      "range": {
+        "startLine": 84,
+        "startChar": 32,
+        "endLine": 84,
+        "endChar": 34
+      },
+      "revId": "c18368a7d30db0f30c6879a4d1580c3ca104e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "909dbb96_fc174f1f",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-09-17T17:44:16Z",
       "side": 1,
       "message": "same nit here",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 43
+      },
+      "revId": "c18368a7d30db0f30c6879a4d1580c3ca104e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d774e9_af663425",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-18T14:32:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "909dbb96_fc174f1f",
       "range": {
         "startLine": 35,
         "startChar": 25,

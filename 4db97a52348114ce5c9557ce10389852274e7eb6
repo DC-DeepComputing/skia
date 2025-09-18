@@ -34,6 +34,24 @@
       "parentUuid": "35041eca_995b4cba",
       "revId": "4db97a52348114ce5c9557ce10389852274e7eb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af3cd5ae_7812d7f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-18T14:32:57Z",
+      "side": 1,
+      "message": "thx, i did that, much nicer! I had to bring back the old Context::submit() with no args to default to just SyncToCpu::kNo, is that agreeable? without that skia roll into android will break",
+      "parentUuid": "b95af1d5_490eb8dd",
+      "revId": "4db97a52348114ce5c9557ce10389852274e7eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
