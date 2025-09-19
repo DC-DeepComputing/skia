@@ -1,9 +1,12 @@
-URL: https://android.googlesource.com/platform/frameworks/native/+/master/opengl/
+Name: Android Native 
+URL: https://android.git.corp.google.com/platform/frameworks/native/
 Revision: a17429660467548a1bc5f8d435a327500fbe972b
+Update Mechanism: Manual (https://crbug.com/422347347)
 License: Apache-2.0
 License File: LICENSE
 Description: PKM file format (ETC1 data) support
-Local Modifications: Created LICENSE file for compliance purposes. Not included in original
-                     distribution.
-                     Explicit masking in writeBigEndian to satisfy MSVC run time checks.
-                     Include path rewriting to build properly in the Skia tree.
+Local Modifications: 
+Created LICENSE file for compliance purposes. Not included
+in original distribution. Explicit masking in writeBigEndian
+to satisfy MSVC run time checks.
+Include path rewriting to build properly in the Skia tree.
