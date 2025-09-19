@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7555684b_1dd08f28",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-19T20:00:22Z",
+      "side": 0,
+      "message": "These functions in KeyHelpers.h should be removed now too.",
+      "range": {
+        "startLine": 405,
+        "startChar": 8,
+        "endLine": 405,
+        "endChar": 25
+      },
+      "revId": "e9393382b3a2c109168349cc9029896c7d7f029c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

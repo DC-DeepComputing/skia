@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e84f2b23_a3df5275",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-19T20:00:22Z",
+      "side": 1,
+      "message": "lgtm modulo some more code delection for the older NotifyInUse visitation that isn\u0027t needed anymore.",
+      "revId": "629aed5c936270da28f27015402c19b18265374b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "141f15a2_97b1b588",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-19T20:00:22Z",
+      "side": 1,
+      "message": "nit: There isn\u0027t an initial visit anymore after this change",
+      "range": {
+        "startLine": 2010,
+        "startChar": 58,
+        "endLine": 2011,
+        "endChar": 77
+      },
+      "revId": "629aed5c936270da28f27015402c19b18265374b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bdf2403_77e5ce77",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-19T20:00:22Z",
+      "side": 1,
+      "message": "We should be able to remove all of these functions now.",
+      "range": {
+        "startLine": 2103,
+        "startChar": 12,
+        "endLine": 2103,
+        "endChar": 25
+      },
+      "revId": "629aed5c936270da28f27015402c19b18265374b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
