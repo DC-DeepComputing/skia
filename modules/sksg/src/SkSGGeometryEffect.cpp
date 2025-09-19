@@ -183,16 +183,13 @@ SkPath OffsetEffect::onRevalidateEffect(const sk_sp<GeometryNode>& child, const 
         paint.setStrokeMiter(fMiterLimit);
         paint.setStrokeJoin(fJoin);
 
-        SkPath fill_path = skpathutils::FillPathWithPaint(path, paint);
-
-        if (fOffset > 0) {
-            Op(path, fill_path, kUnion_SkPathOp, &path);
-        } else {
-            Op(path, fill_path, kDifference_SkPathOp, &path);
-        }
-
+        // The following is the direction we intend to do, but it hasn't been finished yet
+        //
+        // SkPath fill_path = skpathutils::FillPathWithPaint(path, paint);
+        // SkPathOp op = fOffset > 0 ? kUnion_SkPathOp : kDifference_SkPathOp;
+        // auto result = Op(path, fill_path, kUnion_SkPathOp);
         // TODO: this seems to break path combining (winding mismatch?)
-        // Simplify(path, &path);
+        // Simplify(result, &path);
     }
 
     return path;
