@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e30c72_954dec77",
+        "filename": "fuzz/FuzzPathop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-19T14:17:43Z",
+      "side": 1,
+      "message": "New trick I learned: `std::ignore \u003d AsWinding(path);`",
+      "fixSuggestions": [
+        {
+          "fixId": "b3df50e7_d4b7032d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "fuzz/FuzzPathop.cpp",
+              "range": {
+                "startLine": 8,
+                "startChar": 0,
+                "endLine": 8,
+                "endChar": 0
+              },
+              "replacement": "#include \u003cutility\u003e\n\n"
+            },
+            {
+              "path": "fuzz/FuzzPathop.cpp",
+              "range": {
+                "startLine": 97,
+                "startChar": 0,
+                "endLine": 98,
+                "endChar": 0
+              },
+              "replacement": "            std::ignore \u003d AsWinding(path);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d316f1b284d963bf081062407ead2409cf022418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a2d2c3a_573ca715",
+        "filename": "src/pathops/SkOpBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-19T14:17:43Z",
+      "side": 1,
+      "message": "nit: remove",
+      "revId": "d316f1b284d963bf081062407ead2409cf022418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
