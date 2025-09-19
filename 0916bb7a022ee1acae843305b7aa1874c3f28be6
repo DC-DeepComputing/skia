@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc6faf4_f6ac47c6",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-19T06:33:44Z",
+      "side": 1,
+      "message": "Blink never encoded HDR metadata in PNG files. Eventually we will want to add that capability, but it\u0027s much less urgent. I was just opportunistically trying to add it now. And because I needed something to write test files for the decoders.\n\nThe main place things will go into the encoder is when an `\u003ccanvas\u003e` element has HDR metadata associated with it, and that gets fed into an encoder. The APIs to do that don\u0027t exist yet.",
+      "parentUuid": "30be9823_d3b8ac54",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 33
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60a9a6db_4da2bd38",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-09-18T17:05:10Z",
       "side": 1,
       "message": "```suggestion\n    /// FFI/layering-friendly equivalent of `SkColorSpacePrimaries from C/C++.\n    struct ColorSpacePrimaries {\n```",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 32
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c9d2678_1ede5c63",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-19T06:33:44Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "60a9a6db_4da2bd38",
       "range": {
         "startLine": 94,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f497543_482dec10",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-19T06:33:44Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "0cb21c0c_ca6d7506",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 40
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03533e5a_c4178b25",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-09-18T17:05:10Z",
       "side": 1,
       "message": "```suggestion\n\n    /// FFI/layering-friendly equivalent of `skhdr::ContentLightLevelInformation` from C/C++.\n    struct ContentLightLevelInfo {\n```",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "0916bb7a022ee1acae843305b7aa1874c3f28be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "858d817a_2842d061",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-09-19T06:33:44Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "03533e5a_c4178b25",
       "range": {
         "startLine": 110,
         "startChar": 0,
