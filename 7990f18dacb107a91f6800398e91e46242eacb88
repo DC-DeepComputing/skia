@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aadda6d_d5b05847",
+        "filename": "relnotes/sk_png_hdr.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-19T13:00:39Z",
+      "side": 1,
+      "message": "Sorry, I had forgotten to remove the fields from `SkPngRustEncoder::Options`. I\u0027ve removed it, to avoid confusion.",
+      "parentUuid": "f0edecb1_1f09626f",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9061160_7e30f633",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c578656_53a85908",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-19T13:00:39Z",
+      "side": 1,
+      "message": "Documented both\n\n(I did this cause that\u0027s what the other `Make` method did ... I\u0027m generally not a fan of \"bits per component\" existing (it\u0027s either bits/bytes per full pixel, or \"bits for each component\", at which point you\u0027re basically including a pixel format).",
+      "parentUuid": "b9061160_7e30f633",
+      "range": {
+        "startLine": 270,
+        "startChar": 38,
+        "endLine": 270,
+        "endChar": 63
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5557484_d4375f7d",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-09-19T12:23:52Z",
       "side": 1,
       "message": "Maybe add a note that the rust encoder doesn\u0027t yet support HDR, so we need the libpng version still. I could imagine me of the future forgetting that and trying to \"clean up\" this \"oversight\" :upsidedown_smile:",
+      "range": {
+        "startLine": 2655,
+        "startChar": 18,
+        "endLine": 2655,
+        "endChar": 24
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4daad02_f43916c9",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2655,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-09-19T13:00:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5557484_d4375f7d",
       "range": {
         "startLine": 2655,
         "startChar": 18,
