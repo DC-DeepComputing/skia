@@ -13,6 +13,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
@@ -78,8 +79,10 @@ protected:
         fRect.inset(5, 5);
         fRect.offset(25, 25);
 
-        fBasePath.addRoundRect(fBase, SkIntToScalar(5), SkIntToScalar(5));
-        fRectPath.addRoundRect(fRect, SkIntToScalar(5), SkIntToScalar(5));
+        fBasePath = SkPathBuilder()
+                    .addRRect(SkRRect::MakeRectXY(fBase, 5, 5))
+                    .addRRect(SkRRect::MakeRectXY(fRect, 5, 5))
+                    .detach();
         INHERITED::setBGColor(0xFFDDDDDD);
     }
 
