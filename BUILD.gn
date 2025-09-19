@@ -484,6 +484,14 @@ optional("fontmgr_win") {
       include_dirs = [ "${skia_dwritecore_sdk}/include" ]
     }
   }
+  deps = []
+  if (skia_use_rust_png_decode) {
+    deps += [ ":png_decode_rust" ]
+  } else if (skia_use_libpng_decode) {
+    deps += [ ":png_decode_libpng" ]
+  } else {
+    assert(!enabled, "`fontmgr_win` target requires a PNG decoder")
+  }
 }
 
 optional("fontmgr_win_gdi") {
