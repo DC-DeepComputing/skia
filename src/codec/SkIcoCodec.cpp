@@ -7,8 +7,9 @@
 
 #include "src/codec/SkIcoCodec.h"
 
+#include "include/codec/SkBmpDecoder.h"
+#include "include/codec/SkCodec.h"
 #include "include/codec/SkIcoDecoder.h"
-#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
@@ -176,13 +177,20 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
 
         // Check if the embedded codec is bmp or png and create the codec
         std::unique_ptr<SkCodec> codec;
-        Result ignoredResult;
-        if (SkPngDecoder::IsPng(embeddedData->bytes(), embeddedData->size())) {
-            codec = SkPngDecoder::Decode(std::move(embeddedStream), &ignoredResult);
-        } else {
+        if (SkBmpDecoder::IsBmp(embeddedData->bytes(), embeddedData->size())) {
+            // Need to call `MakeFromIco` (instead of the generic
+            // `SkCodec::MakeFromStream`), because we need to use ICO-specific
+            // mode when processing the BMP header.
+            Result ignoredResult;
             codec = SkBmpCodec::MakeFromIco(std::move(embeddedStream), &ignoredResult);
+        } else {
+#if defined(SK_DEBUG)
+          if (!SkCodecs::HasDecoder("png")) {
+              SkDebugf("No PNG decoder registered. A call to SkCodecs::Register is necessary.\n");
+          }
+#endif
+          codec = SkCodec::MakeFromStream(std::move(embeddedStream));
         }
-
         if (nullptr != codec) {
             codecs->push_back(std::move(codec));
         }

@@ -203,14 +203,12 @@ skia_cc_library(
     features = ["layering_check"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":any_decoder",
+        ":bmp_decode",
+        "//modules/skcms",
         "//src/base",
         "//src/core",
         "//src/core:core_priv",
-        "//modules/skcms",
-        ":any_decoder",
-        # icos can be either PNG or BMP
-        ":bmp_decode",
-        ":png_decode",
     ],
 )
 
