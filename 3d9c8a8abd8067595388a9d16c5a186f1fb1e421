@@ -161,6 +161,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17342dfd_d3fb2755",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-19T14:06:16Z",
+      "side": 1,
+      "message": "Oh I see, and the forward declaration for GrRecordingContext is always included. LGTM.",
+      "parentUuid": "550142c6_a33c5314",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 64
+      },
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0ba582f_a2508506",
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "see above",
       "parentUuid": "d0ba582f_a2508506",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "3d9c8a8abd8067595388a9d16c5a186f1fb1e421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4634f087_4a4949f4",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-19T14:06:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0849dc52_222172da",
       "range": {
         "startLine": 81,
         "startChar": 3,
