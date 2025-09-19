@@ -39,6 +39,30 @@
       },
       "revId": "49707a23309824774cf57279469546fb0da6d2c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2524634b_da50494c",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-19T10:54:24Z",
+      "side": 1,
+      "message": "happy for it to go, copy paste artifact really",
+      "parentUuid": "def88c6b_12848ae2",
+      "range": {
+        "startLine": 1789,
+        "startChar": 16,
+        "endLine": 1789,
+        "endChar": 42
+      },
+      "revId": "49707a23309824774cf57279469546fb0da6d2c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
