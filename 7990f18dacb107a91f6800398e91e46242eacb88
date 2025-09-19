@@ -16,6 +16,75 @@
       "message": "Thanks!\n\nOff to @kjlubick@google.com for OWNER review",
       "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0edecb1_1f09626f",
+        "filename": "relnotes/sk_png_hdr.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-19T12:23:52Z",
+      "side": 1,
+      "message": "Either here OR* in the commit message OR in the header, mention that the field has been added to SkPngRustEncoder, but the implementation is not there yet. Right now that info is buried in a Gerrit comment thread and I\u0027d like it to be slightly more visible.\n\n\nOR* \u003d Logical or",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9061160_7e30f633",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-19T12:23:52Z",
+      "side": 1,
+      "message": "Suggestion: add a // colorDepth comment here to make sure the duplication looks intentional.",
+      "range": {
+        "startLine": 270,
+        "startChar": 38,
+        "endLine": 270,
+        "endChar": 63
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5557484_d4375f7d",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2655,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-19T12:23:52Z",
+      "side": 1,
+      "message": "Maybe add a note that the rust encoder doesn\u0027t yet support HDR, so we need the libpng version still. I could imagine me of the future forgetting that and trying to \"clean up\" this \"oversight\" :upsidedown_smile:",
+      "range": {
+        "startLine": 2655,
+        "startChar": 18,
+        "endLine": 2655,
+        "endChar": 24
+      },
+      "revId": "7990f18dacb107a91f6800398e91e46242eacb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
