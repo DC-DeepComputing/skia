@@ -49,6 +49,8 @@ skia_codec_shared = [
   "$_src/codec/SkParseEncodedOrigin.h",
   "$_src/codec/SkPixmapUtils.cpp",
   "$_src/codec/SkPixmapUtilsPriv.h",
+  "$_src/codec/SkPngDetection.cpp",
+  "$_src/codec/SkPngDetection.h",
   "$_src/codec/SkSampler.cpp",
   "$_src/codec/SkSampler.h",
   "$_src/codec/SkScalingCodec.h",
