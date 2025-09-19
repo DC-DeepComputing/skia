@@ -94,7 +94,7 @@ DEF_FUZZ(Pathop, fuzz) {
             if (isSame) {
                 result = path;
             }
-            AsWinding(path, &result);
+            (void)AsWinding(path);
             break;
         }
         case 4: {
