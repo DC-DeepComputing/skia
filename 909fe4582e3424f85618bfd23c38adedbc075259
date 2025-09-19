@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10f2c896_a52917a1",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-19T16:03:52Z",
+      "side": 1,
+      "message": "I presume you\u0027ll tackle this one in a future CL?",
+      "range": {
+        "startLine": 61,
+        "startChar": 12,
+        "endLine": 61,
+        "endChar": 20
+      },
+      "revId": "909fe4582e3424f85618bfd23c38adedbc075259",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
