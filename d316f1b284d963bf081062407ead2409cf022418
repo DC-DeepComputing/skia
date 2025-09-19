@@ -46,6 +46,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51081881_eeda49c9",
+        "filename": "fuzz/FuzzPathop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-19T15:27:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53e30c72_954dec77",
+      "revId": "d316f1b284d963bf081062407ead2409cf022418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a2d2c3a_573ca715",
@@ -59,6 +77,24 @@
       "writtenOn": "2025-09-19T14:17:43Z",
       "side": 1,
       "message": "nit: remove",
+      "revId": "d316f1b284d963bf081062407ead2409cf022418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47072f6a_5f78dba4",
+        "filename": "src/pathops/SkOpBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-19T15:27:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a2d2c3a_573ca715",
       "revId": "d316f1b284d963bf081062407ead2409cf022418",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
