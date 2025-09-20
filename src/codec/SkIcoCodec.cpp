@@ -19,6 +19,7 @@
 #include "src/base/SkTSort.h"
 #include "src/codec/SkBmpCodec.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkPngDetection.h"
 #include "src/core/SkStreamPriv.h"
 
 #include "modules/skcms/skcms.h"
@@ -177,9 +178,14 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
         // Check if the embedded codec is bmp or png and create the codec
         std::unique_ptr<SkCodec> codec;
         Result ignoredResult;
-        if (SkPngDecoder::IsPng(embeddedData->bytes(), embeddedData->size())) {
+        if (SkPngDetection::IsPng(embeddedData->byteSpan())) {
+            // TODO(https://crbug.com/381900683): Avoid hardcoding a dependency
+            // on `SkPngDecoder`-vs-`SkPngRustDecoder`.
             codec = SkPngDecoder::Decode(std::move(embeddedStream), &ignoredResult);
         } else {
+            // Using `SkBmpCodec::MakeFromIco` below, because Bmp-in-Ico is
+            // almost but not quite entirely unlike regular Bmp, whic means that
+            // we can't use `SkBmpDecoder::IsBmp` nor `SkCodec::MakeFromStream`.
             codec = SkBmpCodec::MakeFromIco(std::move(embeddedStream), &ignoredResult);
         }
 

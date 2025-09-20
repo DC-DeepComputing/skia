@@ -159,6 +159,7 @@ extern "C" const SkEmbeddedResourceHeader SK_EMBEDDED_FONTS;
 #endif
 #if defined(SK_CODEC_DECODES_PNG)
 #include "include/codec/SkPngDecoder.h"
+#include "src/codec/SkPngDetection.h"
 #endif
 #if defined(SK_CODEC_DECODES_WBMP)
 #include "include/codec/SkWbmpDecoder.h"
@@ -194,7 +195,9 @@ std::unique_ptr<SkCodec> DecodeImageData(sk_sp<SkData> data) {
     }
 #endif
 #if defined(SK_CODEC_DECODES_PNG)
-    if (SkPngDecoder::IsPng(data->data(), data->size())) {
+    if (SkPngDetection::IsPng(data->byteSpan())) {
+        // TODO(https://crbug.com/381900683): Avoid hardcoding a dependency on
+        // `SkPngDecoder`-vs-`SkPngRustDecoder`.
         return SkPngDecoder::Decode(data, nullptr);
     }
 #endif

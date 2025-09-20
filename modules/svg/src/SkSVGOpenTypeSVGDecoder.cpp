@@ -25,6 +25,7 @@
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGTypes.h"
 #include "src/base/SkBase64.h"
+#include "src/codec/SkPngDetection.h"
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkTHash.h"
 
@@ -47,7 +48,7 @@ public:
                                                   const char rid[]) const override {
         if (auto data = decode_datauri("data:image/", rname)) {
             std::unique_ptr<SkCodec> codec = nullptr;
-            if (SkPngDecoder::IsPng(data->bytes(), data->size())) {
+            if (SkPngDetection::IsPng(data->byteSpan())) {
                 codec = SkPngDecoder::Decode(data, nullptr);
             } else if (SkJpegDecoder::IsJpeg(data->bytes(), data->size())) {
                 codec = SkJpegDecoder::Decode(data, nullptr);
