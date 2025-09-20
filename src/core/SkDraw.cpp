@@ -1097,32 +1097,33 @@ static bool compute_mask_bounds(const SkRect& devPathBounds,
 static void draw_into_mask(const SkMask& mask,
                            const SkPath& devPath,
                            SkStrokeRec::InitStyle style) {
+    SkRasterClip clip(SkIRect::MakeWH(mask.fBounds.width(), mask.fBounds.height()));
+    SkMatrix ctm = SkMatrix::Translate(-mask.fBounds.fLeft, -mask.fBounds.fTop);
+
     Draw draw;
+    draw.fRC = &clip;
+    draw.fCTM = &ctm;
     draw.fBlitterChooser = SkA8Blitter_Choose;
     if (!draw.fDst.reset(mask)) {
         return;
     }
 
-    SkRasterClip clip;
-    SkMatrix matrix;
     SkPaint paint;
-
-    clip.setRect(SkIRect::MakeWH(mask.fBounds.width(), mask.fBounds.height()));
-    matrix.setTranslate(-SkIntToScalar(mask.fBounds.fLeft), -SkIntToScalar(mask.fBounds.fTop));
-
-    draw.fRC = &clip;
-    draw.fCTM = &matrix;
     paint.setAntiAlias(true);
+
+    SkAutoBlitterChoose blitterChooser(draw, &ctm, paint, SkRect::Make(draw.fDst.bounds()));
+    SkBlitter* blitter = blitterChooser.get();
+
+    const SkPathRaw raw = SkPathPriv::Raw(devPath);
+
     switch (style) {
         case SkStrokeRec::kHairline_InitStyle:
-            SkASSERT(!paint.getStrokeWidth());
-            paint.setStyle(SkPaint::kStroke_Style);
+            SkScan::AntiHairPath(raw, clip, blitter);
             break;
         case SkStrokeRec::kFill_InitStyle:
-            SkASSERT(paint.getStyle() == SkPaint::kFill_Style);
+            SkScan::AntiFillPath(raw, clip, blitter);
             break;
     }
-    draw.drawPath(devPath, paint, nullptr, false);
 }
 
 bool DrawToMask(const SkPath& devPath,
