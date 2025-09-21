@@ -76,10 +76,11 @@ static void test_add_rrect(skiatest::Reporter* reporter, const SkRect& bounds,
 }
 
 static void test_skbug_3469(skiatest::Reporter* reporter) {
-    SkPath path;
-    path.moveTo(20, 20);
-    path.quadTo(20, 50, 80, 50);
-    path.quadTo(20, 50, 20, 80);
+    SkPath path = SkPathBuilder()
+                  .moveTo(20, 20)
+                  .quadTo(20, 50, 80, 50)
+                  .quadTo(20, 50, 20, 80)
+                  .detach();
     REPORTER_ASSERT(reporter, !path.isConvex());
 }
 
@@ -101,44 +102,47 @@ static void test_skbug_3239(skiatest::Reporter* reporter) {
     }
 }
 
-static void make_path_crbug364224(SkPath* path) {
-    path->reset();
-    path->moveTo(3.747501373f, 2.724499941f);
-    path->lineTo(3.747501373f, 3.75f);
-    path->cubicTo(3.747501373f, 3.88774991f, 3.635501385f, 4.0f, 3.497501373f, 4.0f);
-    path->lineTo(0.7475013733f, 4.0f);
-    path->cubicTo(0.6095013618f, 4.0f, 0.4975013733f, 3.88774991f, 0.4975013733f, 3.75f);
-    path->lineTo(0.4975013733f, 1.0f);
-    path->cubicTo(0.4975013733f, 0.8622499704f, 0.6095013618f, 0.75f, 0.7475013733f,0.75f);
-    path->lineTo(3.497501373f, 0.75f);
-    path->cubicTo(3.50275135f, 0.75f, 3.5070014f, 0.7527500391f, 3.513001442f, 0.753000021f);
-    path->lineTo(3.715001345f, 0.5512499809f);
-    path->cubicTo(3.648251295f, 0.5194999576f, 3.575501442f, 0.4999999702f, 3.497501373f, 0.4999999702f);
-    path->lineTo(0.7475013733f, 0.4999999702f);
-    path->cubicTo(0.4715013802f, 0.4999999702f, 0.2475013733f, 0.7239999771f, 0.2475013733f, 1.0f);
-    path->lineTo(0.2475013733f, 3.75f);
-    path->cubicTo(0.2475013733f, 4.026000023f, 0.4715013504f, 4.25f, 0.7475013733f, 4.25f);
-    path->lineTo(3.497501373f, 4.25f);
-    path->cubicTo(3.773501396f, 4.25f, 3.997501373f, 4.026000023f, 3.997501373f, 3.75f);
-    path->lineTo(3.997501373f, 2.474750042f);
-    path->lineTo(3.747501373f, 2.724499941f);
-    path->close();
+static SkPath make_path_crbug364224() {
+    return SkPathBuilder()
+           .moveTo(3.747501373f, 2.724499941f)
+           .lineTo(3.747501373f, 3.75f)
+           .cubicTo(3.747501373f, 3.88774991f, 3.635501385f, 4.0f, 3.497501373f, 4.0f)
+           .lineTo(0.7475013733f, 4.0f)
+           .cubicTo(0.6095013618f, 4.0f, 0.4975013733f, 3.88774991f, 0.4975013733f, 3.75f)
+           .lineTo(0.4975013733f, 1.0f)
+           .cubicTo(0.4975013733f, 0.8622499704f, 0.6095013618f, 0.75f, 0.7475013733f,0.75f)
+           .lineTo(3.497501373f, 0.75f)
+           .cubicTo(3.50275135f, 0.75f, 3.5070014f, 0.7527500391f, 3.513001442f, 0.753000021f)
+           .lineTo(3.715001345f, 0.5512499809f)
+           .cubicTo(3.648251295f, 0.5194999576f, 3.575501442f, 0.4999999702f, 3.497501373f, 0.4999999702f)
+           .lineTo(0.7475013733f, 0.4999999702f)
+           .cubicTo(0.4715013802f, 0.4999999702f, 0.2475013733f, 0.7239999771f, 0.2475013733f, 1.0f)
+           .lineTo(0.2475013733f, 3.75f)
+           .cubicTo(0.2475013733f, 4.026000023f, 0.4715013504f, 4.25f, 0.7475013733f, 4.25f)
+           .lineTo(3.497501373f, 4.25f)
+           .cubicTo(3.773501396f, 4.25f, 3.997501373f, 4.026000023f, 3.997501373f, 3.75f)
+           .lineTo(3.997501373f, 2.474750042f)
+           .lineTo(3.747501373f, 2.724499941f)
+           .close()
+           .detach();
 }
 
-static void make_path_crbug364224_simplified(SkPath* path) {
-    path->moveTo(3.747501373f, 2.724499941f);
-    path->cubicTo(3.648251295f, 0.5194999576f, 3.575501442f, 0.4999999702f, 3.497501373f, 0.4999999702f);
-    path->close();
+static SkPath make_path_crbug364224_simplified() {
+    return SkPathBuilder()
+           .moveTo(3.747501373f, 2.724499941f)
+           .cubicTo(3.648251295f, 0.5194999576f, 3.575501442f, 0.4999999702f, 3.497501373f, 0.4999999702f)
+           .close()
+           .detach();
 }
 
 static void test_sect_with_horizontal_needs_pinning() {
     // Test that sect_with_horizontal in SkLineClipper.cpp needs to pin after computing the
     // intersection.
-    SkPath path;
-    path.reset();
-    path.moveTo(-540000, -720000);
-    path.lineTo(-9.10000017e-05f, 9.99999996e-13f);
-    path.lineTo(1, 1);
+    SkPath path = SkPathBuilder()
+                  .moveTo(-540000, -720000)
+                  .lineTo(-9.10000017e-05f, 9.99999996e-13f)
+                  .lineTo(1, 1)
+                  .detach();
 
     // Without the pinning code in sect_with_horizontal(), this would assert in the lineclipper
     SkPaint paint;
@@ -152,11 +156,12 @@ static void test_iterative_intersect_line() {
     // endpoints. With that version, this draw would trigger an assert.
     // With the fix (iteratively clipping the intermediate results after the first operation),
     // this shouldn't assert:
-    SkPath path;
-    path.moveTo(-478.805145f, 153.862549f);
-    path.lineTo(6.27216804e+19f, 6.27216804e+19f);
-    path.lineTo(-666.754272f, 155.086304f);
-    path.close();
+    SkPath path = SkPathBuilder()
+                  .moveTo(-478.805145f, 153.862549f)
+                  .lineTo(6.27216804e+19f, 6.27216804e+19f)
+                  .lineTo(-666.754272f, 155.086304f)
+                  .close()
+                  .detach();
 
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
@@ -164,15 +169,14 @@ static void test_iterative_intersect_line() {
 }
 
 static void test_path_crbug364224() {
-    SkPath path;
     SkPaint paint;
     auto surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(84, 88)));
     SkCanvas* canvas = surface->getCanvas();
 
-    make_path_crbug364224_simplified(&path);
+    SkPath path = make_path_crbug364224_simplified();
     canvas->drawPath(path, paint);
 
-    make_path_crbug364224(&path);
+    path = make_path_crbug364224();
     canvas->drawPath(path, paint);
 }
 
@@ -186,35 +190,39 @@ static void test_draw_AA_path(int width, int height, const SkPath& path) {
 
 // this is a unit test instead of a GM because it doesn't draw anything
 static void test_fuzz_crbug_638223() {
-    SkPath path;
-    path.moveTo(SkBits2Float(0x47452a00), SkBits2Float(0x43211d01));  // 50474, 161.113f
-    path.conicTo(SkBits2Float(0x401c0000), SkBits2Float(0x40680000),
-        SkBits2Float(0x02c25a81), SkBits2Float(0x981a1fa0),
-        SkBits2Float(0x6bf9abea));  // 2.4375f, 3.625f, 2.85577e-37f, -1.992e-24f, 6.03669e+26f
+    SkPath path = SkPathBuilder()
+                  .moveTo(SkBits2Float(0x47452a00), SkBits2Float(0x43211d01))  // 50474, 161.113f
+                  .conicTo(SkBits2Float(0x401c0000), SkBits2Float(0x40680000),
+                           SkBits2Float(0x02c25a81), SkBits2Float(0x981a1fa0),
+                           SkBits2Float(0x6bf9abea))  // 2.4375f, 3.625f, 2.85577e-37f, -1.992e-24f, 6.03669e+26f
+                  .detach();
     test_draw_AA_path(250, 250, path);
 }
 
 static void test_fuzz_crbug_643933() {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.conicTo(SkBits2Float(0x002001f2), SkBits2Float(0x4161ffff),  // 2.93943e-39f, 14.125f
-            SkBits2Float(0x49f7224d), SkBits2Float(0x45eec8df), // 2.02452e+06f, 7641.11f
-            SkBits2Float(0x721aee0c));  // 3.0687e+30f
+    SkPath path = SkPathBuilder()
+                  .moveTo(0, 0)
+                  .conicTo(SkBits2Float(0x002001f2), SkBits2Float(0x4161ffff),  // 2.93943e-39f, 14.125f
+                           SkBits2Float(0x49f7224d), SkBits2Float(0x45eec8df), // 2.02452e+06f, 7641.11f
+                           SkBits2Float(0x721aee0c))  // 3.0687e+30f
+                  .detach();
     test_draw_AA_path(250, 250, path);
-    path.reset();
-    path.moveTo(0, 0);
-    path.conicTo(SkBits2Float(0x00007ff2), SkBits2Float(0x4169ffff),  // 4.58981e-41f, 14.625f
-        SkBits2Float(0x43ff2261), SkBits2Float(0x41eeea04),  // 510.269f, 29.8643f
-        SkBits2Float(0x5d06eff8));  // 6.07704e+17f
+    path = SkPathBuilder()
+           .moveTo(0, 0)
+           .conicTo(SkBits2Float(0x00007ff2), SkBits2Float(0x4169ffff),  // 4.58981e-41f, 14.625f
+                    SkBits2Float(0x43ff2261), SkBits2Float(0x41eeea04),  // 510.269f, 29.8643f
+                    SkBits2Float(0x5d06eff8))  // 6.07704e+17f
+           .detach();
     test_draw_AA_path(250, 250, path);
 }
 
 static void test_fuzz_crbug_647922() {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.conicTo(SkBits2Float(0x00003939), SkBits2Float(0x42487fff),  // 2.05276e-41f, 50.125f
-            SkBits2Float(0x48082361), SkBits2Float(0x4408e8e9),  // 139406, 547.639f
-            SkBits2Float(0x4d1ade0f));  // 1.6239e+08f
+    SkPath path = SkPathBuilder()
+                  .moveTo(0, 0)
+                  .conicTo(SkBits2Float(0x00003939), SkBits2Float(0x42487fff),  // 2.05276e-41f, 50.125f
+                           SkBits2Float(0x48082361), SkBits2Float(0x4408e8e9),  // 139406, 547.639f
+                           SkBits2Float(0x4d1ade0f))  // 1.6239e+08f
+                  .detach();
     test_draw_AA_path(250, 250, path);
 }
 
@@ -223,50 +231,53 @@ static void test_fuzz_crbug_662780() {
     SkCanvas* canvas = surface->getCanvas();
     SkPaint paint;
     paint.setAntiAlias(true);
-    SkPath path;
-    path.moveTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000));  // 8, 158
-    path.lineTo(SkBits2Float(0x41000000), SkBits2Float(0x42f00000));  // 8, 120
-    // 8, 8, 8.00002f, 8, 0.707107f
-    path.conicTo(SkBits2Float(0x41000000), SkBits2Float(0x41000000),
-            SkBits2Float(0x41000010), SkBits2Float(0x41000000), SkBits2Float(0x3f3504f3));
-    path.lineTo(SkBits2Float(0x439a0000), SkBits2Float(0x41000000));  // 308, 8
-    // 308, 8, 308, 8, 0.707107f
-    path.conicTo(SkBits2Float(0x439a0000), SkBits2Float(0x41000000),
-            SkBits2Float(0x439a0000), SkBits2Float(0x41000000), SkBits2Float(0x3f3504f3));
-    path.lineTo(SkBits2Float(0x439a0000), SkBits2Float(0x431e0000));  // 308, 158
-    // 308, 158, 308, 158, 0.707107f
-    path.conicTo(SkBits2Float(0x439a0000), SkBits2Float(0x431e0000),
-            SkBits2Float(0x439a0000), SkBits2Float(0x431e0000), SkBits2Float(0x3f3504f3));
-    path.lineTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000));  // 8, 158
-    // 8, 158, 8, 158, 0.707107f
-    path.conicTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000),
-            SkBits2Float(0x41000000), SkBits2Float(0x431e0000), SkBits2Float(0x3f3504f3));
-    path.close();
+    SkPath path = SkPathBuilder()
+                  .moveTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000))  // 8, 158
+                  .lineTo(SkBits2Float(0x41000000), SkBits2Float(0x42f00000))  // 8, 120
+                    // 8, 8, 8.00002f, 8, 0.707107f
+                  .conicTo(SkBits2Float(0x41000000), SkBits2Float(0x41000000),
+                           SkBits2Float(0x41000010), SkBits2Float(0x41000000), SkBits2Float(0x3f3504f3))
+                  .lineTo(SkBits2Float(0x439a0000), SkBits2Float(0x41000000))  // 308, 8
+                    // 308, 8, 308, 8, 0.707107f
+                  .conicTo(SkBits2Float(0x439a0000), SkBits2Float(0x41000000),
+                           SkBits2Float(0x439a0000), SkBits2Float(0x41000000), SkBits2Float(0x3f3504f3))
+                  .lineTo(SkBits2Float(0x439a0000), SkBits2Float(0x431e0000))  // 308, 158
+                    // 308, 158, 308, 158, 0.707107f
+                  .conicTo(SkBits2Float(0x439a0000), SkBits2Float(0x431e0000),
+                           SkBits2Float(0x439a0000), SkBits2Float(0x431e0000), SkBits2Float(0x3f3504f3))
+                  .lineTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000))  // 8, 158
+                    // 8, 158, 8, 158, 0.707107f
+                  .conicTo(SkBits2Float(0x41000000), SkBits2Float(0x431e0000),
+                           SkBits2Float(0x41000000), SkBits2Float(0x431e0000), SkBits2Float(0x3f3504f3))
+                  .close()
+                  .detach();
     canvas->clipPath(path, true);
     canvas->drawRect(SkRect::MakeWH(250, 250), paint);
 }
 
 static void test_mask_overflow() {
-    SkPath path;
-    path.moveTo(SkBits2Float(0x43e28000), SkBits2Float(0x43aa8000));  // 453, 341
-    path.lineTo(SkBits2Float(0x43de6000), SkBits2Float(0x43aa8000));  // 444.75f, 341
-    // 440.47f, 341, 437, 344.47f, 437, 348.75f
-    path.cubicTo(SkBits2Float(0x43dc3c29), SkBits2Float(0x43aa8000),
-            SkBits2Float(0x43da8000), SkBits2Float(0x43ac3c29),
-            SkBits2Float(0x43da8000), SkBits2Float(0x43ae6000));
-    path.lineTo(SkBits2Float(0x43da8000), SkBits2Float(0x43b18000));  // 437, 355
-    path.lineTo(SkBits2Float(0x43e28000), SkBits2Float(0x43b18000));  // 453, 355
-    path.lineTo(SkBits2Float(0x43e28000), SkBits2Float(0x43aa8000));  // 453, 341
+    SkPath path = SkPathBuilder()
+                  .moveTo(SkBits2Float(0x43e28000), SkBits2Float(0x43aa8000))  // 453, 341
+                  .lineTo(SkBits2Float(0x43de6000), SkBits2Float(0x43aa8000))  // 444.75f, 341
+                    // 440.47f, 341, 437, 344.47f, 437, 348.75f
+                  .cubicTo(SkBits2Float(0x43dc3c29), SkBits2Float(0x43aa8000),
+                           SkBits2Float(0x43da8000), SkBits2Float(0x43ac3c29),
+                           SkBits2Float(0x43da8000), SkBits2Float(0x43ae6000))
+                  .lineTo(SkBits2Float(0x43da8000), SkBits2Float(0x43b18000))  // 437, 355
+                  .lineTo(SkBits2Float(0x43e28000), SkBits2Float(0x43b18000))  // 453, 355
+                  .lineTo(SkBits2Float(0x43e28000), SkBits2Float(0x43aa8000))  // 453, 341
+                  .detach();
     test_draw_AA_path(500, 500, path);
 }
 
 static void test_fuzz_crbug_668907() {
-    SkPath path;
-    path.moveTo(SkBits2Float(0x46313741), SkBits2Float(0x3b00e540));  // 11341.8f, 0.00196679f
-    path.quadTo(SkBits2Float(0x41410041), SkBits2Float(0xc1414141), SkBits2Float(0x41414141),
-            SkBits2Float(0x414100ff));  // 12.0626f, -12.0784f, 12.0784f, 12.0627f
-    path.lineTo(SkBits2Float(0x46313741), SkBits2Float(0x3b00e540));  // 11341.8f, 0.00196679f
-    path.close();
+    SkPath path = SkPathBuilder()
+                  .moveTo(SkBits2Float(0x46313741), SkBits2Float(0x3b00e540))  // 11341.8f, 0.00196679f
+                  .quadTo(SkBits2Float(0x41410041), SkBits2Float(0xc1414141), SkBits2Float(0x41414141),
+                          SkBits2Float(0x414100ff))  // 12.0626f, -12.0784f, 12.0784f, 12.0627f
+                  .lineTo(SkBits2Float(0x46313741), SkBits2Float(0x3b00e540))  // 11341.8f, 0.00196679f
+                  .close()
+                  .detach();
     test_draw_AA_path(400, 500, path);
 }
 
@@ -274,22 +285,22 @@ static void test_fuzz_crbug_668907() {
  * In debug mode, this path was causing an assertion to fail in
  * SkPathStroker::preJoinTo() and, in Release, the use of an unitialized value.
  */
-static void make_path_crbugskia2820(SkPath* path, skiatest::Reporter* reporter) {
+static SkPath make_path_crbugskia2820() {
     SkPoint orig, p1, p2, p3;
     orig = SkPoint::Make(1.f, 1.f);
     p1 = SkPoint::Make(1.f - SK_ScalarNearlyZero, 1.f);
     p2 = SkPoint::Make(1.f, 1.f + SK_ScalarNearlyZero);
     p3 = SkPoint::Make(2.f, 2.f);
 
-    path->reset();
-    path->moveTo(orig);
-    path->cubicTo(p1, p2, p3);
-    path->close();
+    return SkPathBuilder()
+           .moveTo(orig)
+           .cubicTo(p1, p2, p3)
+           .close()
+           .detach();
 }
 
 static void test_path_crbugskia2820(skiatest::Reporter* reporter) {
-    SkPath path;
-    make_path_crbugskia2820(&path, reporter);
+    SkPath path = make_path_crbugskia2820();
 
     SkStrokeRec stroke(SkStrokeRec::kFill_InitStyle);
     stroke.setStrokeStyle(2 * SK_Scalar1);
@@ -299,30 +310,33 @@ static void test_path_crbugskia2820(skiatest::Reporter* reporter) {
 }
 
 static void test_path_crbugskia5995() {
-    SkPath path;
-    path.moveTo(SkBits2Float(0x40303030), SkBits2Float(0x3e303030));  // 2.75294f, 0.172059f
-    path.quadTo(SkBits2Float(0x41d63030), SkBits2Float(0x30303030), SkBits2Float(0x41013030),
-            SkBits2Float(0x00000000));  // 26.7735f, 6.40969e-10f, 8.07426f, 0
-    path.moveTo(SkBits2Float(0x00000000), SkBits2Float(0x00000000));  // 0, 0
+    SkPath path = SkPathBuilder()
+                  .moveTo(SkBits2Float(0x40303030), SkBits2Float(0x3e303030))  // 2.75294f, 0.172059f
+                  .quadTo(SkBits2Float(0x41d63030), SkBits2Float(0x30303030), SkBits2Float(0x41013030),
+                          SkBits2Float(0x00000000))  // 26.7735f, 6.40969e-10f, 8.07426f, 0
+                  .moveTo(SkBits2Float(0x00000000), SkBits2Float(0x00000000))  // 0, 0
+                  .detach();
     test_draw_AA_path(500, 500, path);
 }
 
-static void make_path0(SkPath* path) {
+static SkPath make_path0() {
     // from  *  https://code.google.com/p/skia/issues/detail?id=1706
 
-    path->moveTo(146.939f, 1012.84f);
-    path->lineTo(181.747f, 1009.18f);
-    path->lineTo(182.165f, 1013.16f);
-    path->lineTo(147.357f, 1016.82f);
-    path->lineTo(146.939f, 1012.84f);
-    path->close();
+    return SkPathBuilder()
+           .moveTo(146.939f, 1012.84f)
+           .lineTo(181.747f, 1009.18f)
+           .lineTo(182.165f, 1013.16f)
+           .lineTo(147.357f, 1016.82f)
+           .lineTo(146.939f, 1012.84f)
+           .close()
+           .detach();
 }
 
-static void make_path1(SkPath* path) {
-    path->addRect(SkRect::MakeXYWH(10, 10, 10, 1));
+static SkPath make_path1() {
+    return SkPath::Rect(SkRect::MakeXYWH(10, 10, 10, 1));
 }
 
-typedef void (*PathProc)(SkPath*);
+typedef SkPath (*PathProc)();
 
 /*
  *  Regression test: we used to crash (overwrite internal storage) during
@@ -341,8 +355,7 @@ static void test_path_to_region(skiatest::Reporter* reporter) {
     clip.setRect({0, 0, 1255, 1925});
 
     for (size_t i = 0; i < std::size(procs); ++i) {
-        SkPath path;
-        procs[i](&path);
+        SkPath path = procs[i]();
 
         SkRegion rgn;
         rgn.setPath(path, clip);
@@ -408,6 +421,7 @@ static void test_path_close_issue1474(skiatest::Reporter* reporter) {
 }
 
 static void test_gen_id(skiatest::Reporter* reporter) {
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     SkPath a, b;
     REPORTER_ASSERT(reporter, a.getGenerationID() == b.getGenerationID());
 
@@ -453,15 +467,17 @@ static void test_gen_id(skiatest::Reporter* reporter) {
 
     c.rewind();
     REPORTER_ASSERT(reporter, v != c.getGenerationID());
+#endif
 }
 
 // This used to assert in the debug build, as the edges did not all line-up.
 static void test_bad_cubic_crbug234190() {
-    SkPath path;
-    path.moveTo(13.8509f, 3.16858f);
-    path.cubicTo(-2.35893e+08f, -4.21044e+08f,
-                 -2.38991e+08f, -4.26573e+08f,
-                 -2.41016e+08f, -4.30188e+08f);
+    SkPath path = SkPathBuilder()
+                  .moveTo(13.8509f, 3.16858f)
+                  .cubicTo(-2.35893e+08f, -4.21044e+08f,
+                           -2.38991e+08f, -4.26573e+08f,
+                           -2.41016e+08f, -4.30188e+08f)
+                  .detach();
     test_draw_AA_path(84, 88, path);
 }
 
@@ -473,9 +489,10 @@ static void test_bad_cubic_crbug229478() {
         { 4599.83008f,    -11593.8496f },
     };
 
-    SkPath path;
-    path.moveTo(pts[0]);
-    path.cubicTo(pts[1], pts[2], pts[3]);
+    SkPath path = SkPathBuilder()
+                  .moveTo(pts[0])
+                  .cubicTo(pts[1], pts[2], pts[3])
+                  .detach();
 
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
@@ -486,100 +503,104 @@ static void test_bad_cubic_crbug229478() {
     (void)skpathutils::FillPathWithPaint(path, paint);
 }
 
-static void build_path_170666(SkPath& path) {
-    path.moveTo(17.9459f, 21.6344f);
-    path.lineTo(139.545f, -47.8105f);
-    path.lineTo(139.545f, -47.8105f);
-    path.lineTo(131.07f, -47.3888f);
-    path.lineTo(131.07f, -47.3888f);
-    path.lineTo(122.586f, -46.9532f);
-    path.lineTo(122.586f, -46.9532f);
-    path.lineTo(18076.6f, 31390.9f);
-    path.lineTo(18076.6f, 31390.9f);
-    path.lineTo(18085.1f, 31390.5f);
-    path.lineTo(18085.1f, 31390.5f);
-    path.lineTo(18076.6f, 31390.9f);
-    path.lineTo(18076.6f, 31390.9f);
-    path.lineTo(17955, 31460.3f);
-    path.lineTo(17955, 31460.3f);
-    path.lineTo(17963.5f, 31459.9f);
-    path.lineTo(17963.5f, 31459.9f);
-    path.lineTo(17971.9f, 31459.5f);
-    path.lineTo(17971.9f, 31459.5f);
-    path.lineTo(17.9551f, 21.6205f);
-    path.lineTo(17.9551f, 21.6205f);
-    path.lineTo(9.47091f, 22.0561f);
-    path.lineTo(9.47091f, 22.0561f);
-    path.lineTo(17.9459f, 21.6344f);
-    path.lineTo(17.9459f, 21.6344f);
-    path.close();path.moveTo(0.995934f, 22.4779f);
-    path.lineTo(0.986725f, 22.4918f);
-    path.lineTo(0.986725f, 22.4918f);
-    path.lineTo(17955, 31460.4f);
-    path.lineTo(17955, 31460.4f);
-    path.lineTo(17971.9f, 31459.5f);
-    path.lineTo(17971.9f, 31459.5f);
-    path.lineTo(18093.6f, 31390.1f);
-    path.lineTo(18093.6f, 31390.1f);
-    path.lineTo(18093.6f, 31390);
-    path.lineTo(18093.6f, 31390);
-    path.lineTo(139.555f, -47.8244f);
-    path.lineTo(139.555f, -47.8244f);
-    path.lineTo(122.595f, -46.9671f);
-    path.lineTo(122.595f, -46.9671f);
-    path.lineTo(0.995934f, 22.4779f);
-    path.lineTo(0.995934f, 22.4779f);
-    path.close();
-    path.moveTo(5.43941f, 25.5223f);
-    path.lineTo(798267, -28871.1f);
-    path.lineTo(798267, -28871.1f);
-    path.lineTo(3.12512e+06f, -113102);
-    path.lineTo(3.12512e+06f, -113102);
-    path.cubicTo(5.16324e+06f, -186882, 8.15247e+06f, -295092, 1.1957e+07f, -432813);
-    path.cubicTo(1.95659e+07f, -708257, 3.04359e+07f, -1.10175e+06f, 4.34798e+07f, -1.57394e+06f);
-    path.cubicTo(6.95677e+07f, -2.51831e+06f, 1.04352e+08f, -3.77748e+06f, 1.39135e+08f, -5.03666e+06f);
-    path.cubicTo(1.73919e+08f, -6.29583e+06f, 2.08703e+08f, -7.555e+06f, 2.34791e+08f, -8.49938e+06f);
-    path.cubicTo(2.47835e+08f, -8.97157e+06f, 2.58705e+08f, -9.36506e+06f, 2.66314e+08f, -9.6405e+06f);
-    path.cubicTo(2.70118e+08f, -9.77823e+06f, 2.73108e+08f, -9.88644e+06f, 2.75146e+08f, -9.96022e+06f);
-    path.cubicTo(2.76165e+08f, -9.99711e+06f, 2.76946e+08f, -1.00254e+07f, 2.77473e+08f, -1.00444e+07f);
-    path.lineTo(2.78271e+08f, -1.00733e+07f);
-    path.lineTo(2.78271e+08f, -1.00733e+07f);
-    path.cubicTo(2.78271e+08f, -1.00733e+07f, 2.08703e+08f, -7.555e+06f, 135.238f, 23.3517f);
-    path.cubicTo(131.191f, 23.4981f, 125.995f, 23.7976f, 123.631f, 24.0206f);
-    path.cubicTo(121.267f, 24.2436f, 122.631f, 24.3056f, 126.677f, 24.1591f);
-    path.cubicTo(2.08703e+08f, -7.555e+06f, 2.78271e+08f, -1.00733e+07f, 2.78271e+08f, -1.00733e+07f);
-    path.lineTo(2.77473e+08f, -1.00444e+07f);
-    path.lineTo(2.77473e+08f, -1.00444e+07f);
-    path.cubicTo(2.76946e+08f, -1.00254e+07f, 2.76165e+08f, -9.99711e+06f, 2.75146e+08f, -9.96022e+06f);
-    path.cubicTo(2.73108e+08f, -9.88644e+06f, 2.70118e+08f, -9.77823e+06f, 2.66314e+08f, -9.6405e+06f);
-    path.cubicTo(2.58705e+08f, -9.36506e+06f, 2.47835e+08f, -8.97157e+06f, 2.34791e+08f, -8.49938e+06f);
-    path.cubicTo(2.08703e+08f, -7.555e+06f, 1.73919e+08f, -6.29583e+06f, 1.39135e+08f, -5.03666e+06f);
-    path.cubicTo(1.04352e+08f, -3.77749e+06f, 6.95677e+07f, -2.51831e+06f, 4.34798e+07f, -1.57394e+06f);
-    path.cubicTo(3.04359e+07f, -1.10175e+06f, 1.95659e+07f, -708258, 1.1957e+07f, -432814);
-    path.cubicTo(8.15248e+06f, -295092, 5.16324e+06f, -186883, 3.12513e+06f, -113103);
-    path.lineTo(798284, -28872);
-    path.lineTo(798284, -28872);
-    path.lineTo(22.4044f, 24.6677f);
-    path.lineTo(22.4044f, 24.6677f);
-    path.cubicTo(22.5186f, 24.5432f, 18.8134f, 24.6337f, 14.1287f, 24.8697f);
-    path.cubicTo(9.4439f, 25.1057f, 5.55359f, 25.3978f, 5.43941f, 25.5223f);
-    path.close();
+static SkPath build_path_170666() {
+    return SkPathBuilder()
+           .moveTo(17.9459f, 21.6344f)
+           .lineTo(139.545f, -47.8105f)
+           .lineTo(139.545f, -47.8105f)
+           .lineTo(131.07f, -47.3888f)
+           .lineTo(131.07f, -47.3888f)
+           .lineTo(122.586f, -46.9532f)
+           .lineTo(122.586f, -46.9532f)
+           .lineTo(18076.6f, 31390.9f)
+           .lineTo(18076.6f, 31390.9f)
+           .lineTo(18085.1f, 31390.5f)
+           .lineTo(18085.1f, 31390.5f)
+           .lineTo(18076.6f, 31390.9f)
+           .lineTo(18076.6f, 31390.9f)
+           .lineTo(17955, 31460.3f)
+           .lineTo(17955, 31460.3f)
+           .lineTo(17963.5f, 31459.9f)
+           .lineTo(17963.5f, 31459.9f)
+           .lineTo(17971.9f, 31459.5f)
+           .lineTo(17971.9f, 31459.5f)
+           .lineTo(17.9551f, 21.6205f)
+           .lineTo(17.9551f, 21.6205f)
+           .lineTo(9.47091f, 22.0561f)
+           .lineTo(9.47091f, 22.0561f)
+           .lineTo(17.9459f, 21.6344f)
+           .lineTo(17.9459f, 21.6344f)
+           .close()
+           .moveTo(0.995934f, 22.4779f)
+           .lineTo(0.986725f, 22.4918f)
+           .lineTo(0.986725f, 22.4918f)
+           .lineTo(17955, 31460.4f)
+           .lineTo(17955, 31460.4f)
+           .lineTo(17971.9f, 31459.5f)
+           .lineTo(17971.9f, 31459.5f)
+           .lineTo(18093.6f, 31390.1f)
+           .lineTo(18093.6f, 31390.1f)
+           .lineTo(18093.6f, 31390)
+           .lineTo(18093.6f, 31390)
+           .lineTo(139.555f, -47.8244f)
+           .lineTo(139.555f, -47.8244f)
+           .lineTo(122.595f, -46.9671f)
+           .lineTo(122.595f, -46.9671f)
+           .lineTo(0.995934f, 22.4779f)
+           .lineTo(0.995934f, 22.4779f)
+           .close()
+           .moveTo(5.43941f, 25.5223f)
+           .lineTo(798267, -28871.1f)
+           .lineTo(798267, -28871.1f)
+           .lineTo(3.12512e+06f, -113102)
+           .lineTo(3.12512e+06f, -113102)
+           .cubicTo(5.16324e+06f, -186882, 8.15247e+06f, -295092, 1.1957e+07f, -432813)
+           .cubicTo(1.95659e+07f, -708257, 3.04359e+07f, -1.10175e+06f, 4.34798e+07f, -1.57394e+06f)
+           .cubicTo(6.95677e+07f, -2.51831e+06f, 1.04352e+08f, -3.77748e+06f, 1.39135e+08f, -5.03666e+06f)
+           .cubicTo(1.73919e+08f, -6.29583e+06f, 2.08703e+08f, -7.555e+06f, 2.34791e+08f, -8.49938e+06f)
+           .cubicTo(2.47835e+08f, -8.97157e+06f, 2.58705e+08f, -9.36506e+06f, 2.66314e+08f, -9.6405e+06f)
+           .cubicTo(2.70118e+08f, -9.77823e+06f, 2.73108e+08f, -9.88644e+06f, 2.75146e+08f, -9.96022e+06f)
+           .cubicTo(2.76165e+08f, -9.99711e+06f, 2.76946e+08f, -1.00254e+07f, 2.77473e+08f, -1.00444e+07f)
+           .lineTo(2.78271e+08f, -1.00733e+07f)
+           .lineTo(2.78271e+08f, -1.00733e+07f)
+           .cubicTo(2.78271e+08f, -1.00733e+07f, 2.08703e+08f, -7.555e+06f, 135.238f, 23.3517f)
+           .cubicTo(131.191f, 23.4981f, 125.995f, 23.7976f, 123.631f, 24.0206f)
+           .cubicTo(121.267f, 24.2436f, 122.631f, 24.3056f, 126.677f, 24.1591f)
+           .cubicTo(2.08703e+08f, -7.555e+06f, 2.78271e+08f, -1.00733e+07f, 2.78271e+08f, -1.00733e+07f)
+           .lineTo(2.77473e+08f, -1.00444e+07f)
+           .lineTo(2.77473e+08f, -1.00444e+07f)
+           .cubicTo(2.76946e+08f, -1.00254e+07f, 2.76165e+08f, -9.99711e+06f, 2.75146e+08f, -9.96022e+06f)
+           .cubicTo(2.73108e+08f, -9.88644e+06f, 2.70118e+08f, -9.77823e+06f, 2.66314e+08f, -9.6405e+06f)
+           .cubicTo(2.58705e+08f, -9.36506e+06f, 2.47835e+08f, -8.97157e+06f, 2.34791e+08f, -8.49938e+06f)
+           .cubicTo(2.08703e+08f, -7.555e+06f, 1.73919e+08f, -6.29583e+06f, 1.39135e+08f, -5.03666e+06f)
+           .cubicTo(1.04352e+08f, -3.77749e+06f, 6.95677e+07f, -2.51831e+06f, 4.34798e+07f, -1.57394e+06f)
+           .cubicTo(3.04359e+07f, -1.10175e+06f, 1.95659e+07f, -708258, 1.1957e+07f, -432814)
+           .cubicTo(8.15248e+06f, -295092, 5.16324e+06f, -186883, 3.12513e+06f, -113103)
+           .lineTo(798284, -28872)
+           .lineTo(798284, -28872)
+           .lineTo(22.4044f, 24.6677f)
+           .lineTo(22.4044f, 24.6677f)
+           .cubicTo(22.5186f, 24.5432f, 18.8134f, 24.6337f, 14.1287f, 24.8697f)
+           .cubicTo(9.4439f, 25.1057f, 5.55359f, 25.3978f, 5.43941f, 25.5223f)
+           .close()
+           .detach();
 }
 
-static void build_path_simple_170666(SkPath& path) {
-    path.moveTo(126.677f, 24.1591f);
-    path.cubicTo(2.08703e+08f, -7.555e+06f, 2.78271e+08f, -1.00733e+07f, 2.78271e+08f, -1.00733e+07f);
+static SkPath build_path_simple_170666() {
+    return SkPathBuilder()
+           .moveTo(126.677f, 24.1591f)
+           .cubicTo(2.08703e+08f, -7.555e+06f, 2.78271e+08f, -1.00733e+07f, 2.78271e+08f, -1.00733e+07f)
+           .detach();
 }
 
 // This used to assert in the SK_DEBUG build, as the clip step would fail with
 // too-few interations in our cubic-line intersection code. That code now runs
 // 24 interations (instead of 16).
 static void test_crbug_170666() {
-    SkPath path;
-    build_path_simple_170666(path);
+    SkPath path = build_path_simple_170666();
     test_draw_AA_path(1000, 1000, path);
 
-    build_path_170666(path);
+    path = build_path_170666();
     test_draw_AA_path(1000, 1000, path);
 }
 
@@ -685,44 +706,51 @@ static void test_addrect(skiatest::Reporter* reporter) {
 
 // Make sure we stay non-finite once we get there (unless we reset or rewind).
 static void test_addrect_isfinite(skiatest::Reporter* reporter) {
-    SkPath path;
+    SkPathBuilder builder;
+    builder.addRect(SkRect::MakeWH(50, 100));
 
-    path.addRect(SkRect::MakeWH(50, 100));
+    SkPath path = builder.snapshot();
     REPORTER_ASSERT(reporter, path.isFinite());
 
-    path.moveTo(0, 0);
-    path.lineTo(SK_ScalarInfinity, 42);
+    builder.moveTo(0, 0);
+    builder.lineTo(SK_ScalarInfinity, 42);
+    path = builder.snapshot();
     REPORTER_ASSERT(reporter, !path.isFinite());
 
-    path.addRect(SkRect::MakeWH(50, 100));
+    builder.addRect(SkRect::MakeWH(50, 100));
+    path = builder.snapshot();
     REPORTER_ASSERT(reporter, !path.isFinite());
 
-    path.reset();
+    builder.reset();
+    path = builder.snapshot();
     REPORTER_ASSERT(reporter, path.isFinite());
 
-    path.addRect(SkRect::MakeWH(50, 100));
+    builder.addRect(SkRect::MakeWH(50, 100));
+    path = builder.snapshot();
     REPORTER_ASSERT(reporter, path.isFinite());
 }
 
-static void build_big_path(SkPath* path, bool reducedCase) {
+static SkPath build_big_path(bool reducedCase) {
+    SkPathBuilder builder;
     if (reducedCase) {
-        path->moveTo(577330, 1971.72f);
-        path->cubicTo(10.7082f, -116.596f, 262.057f, 45.6468f, 294.694f, 1.96237f);
+        builder.moveTo(577330, 1971.72f);
+        builder.cubicTo(10.7082f, -116.596f, 262.057f, 45.6468f, 294.694f, 1.96237f);
     } else {
-        path->moveTo(60.1631f, 7.70567f);
-        path->quadTo(60.1631f, 7.70567f, 0.99474f, 0.901199f);
-        path->lineTo(577379, 1977.77f);
-        path->quadTo(577364, 1979.57f, 577325, 1980.26f);
-        path->quadTo(577286, 1980.95f, 577245, 1980.13f);
-        path->quadTo(577205, 1979.3f, 577187, 1977.45f);
-        path->quadTo(577168, 1975.6f, 577183, 1973.8f);
-        path->quadTo(577198, 1972, 577238, 1971.31f);
-        path->quadTo(577277, 1970.62f, 577317, 1971.45f);
-        path->quadTo(577330, 1971.72f, 577341, 1972.11f);
-        path->cubicTo(10.7082f, -116.596f, 262.057f, 45.6468f, 294.694f, 1.96237f);
-        path->moveTo(306.718f, -32.912f);
-        path->cubicTo(30.531f, 10.0005f, 1502.47f, 13.2804f, 84.3088f, 9.99601f);
+        builder.moveTo(60.1631f, 7.70567f);
+        builder.quadTo(60.1631f, 7.70567f, 0.99474f, 0.901199f);
+        builder.lineTo(577379, 1977.77f);
+        builder.quadTo(577364, 1979.57f, 577325, 1980.26f);
+        builder.quadTo(577286, 1980.95f, 577245, 1980.13f);
+        builder.quadTo(577205, 1979.3f, 577187, 1977.45f);
+        builder.quadTo(577168, 1975.6f, 577183, 1973.8f);
+        builder.quadTo(577198, 1972, 577238, 1971.31f);
+        builder.quadTo(577277, 1970.62f, 577317, 1971.45f);
+        builder.quadTo(577330, 1971.72f, 577341, 1972.11f);
+        builder.cubicTo(10.7082f, -116.596f, 262.057f, 45.6468f, 294.694f, 1.96237f);
+        builder.moveTo(306.718f, -32.912f);
+        builder.cubicTo(30.531f, 10.0005f, 1502.47f, 13.2804f, 84.3088f, 9.99601f);
     }
+    return builder.detach();
 }
 
 static void test_clipped_cubic() {
@@ -731,9 +759,9 @@ static void test_clipped_cubic() {
     // This path used to assert, because our cubic-chopping code incorrectly
     // moved control points after the chop. This test should be run in SK_DEBUG
     // mode to ensure that we no long assert.
-    SkPath path;
+
     for (int doReducedCase = 0; doReducedCase <= 1; ++doReducedCase) {
-        build_big_path(&path, SkToBool(doReducedCase));
+        SkPath path = build_big_path(SkToBool(doReducedCase));
 
         SkPaint paint;
         for (int doAA = 0; doAA <= 1; ++doAA) {
@@ -753,37 +781,27 @@ static void dump_if_ne(skiatest::Reporter* reporter, const SkRect& expected, con
 
 static void test_bounds_crbug_513799(skiatest::Reporter* reporter) {
     SkPath path;
-#if 0
-    // As written these tests were failing on LLVM 4.2 MacMini Release mysteriously, so we've
-    // rewritten them to avoid this (compiler-bug?).
-    REPORTER_ASSERT(reporter, SkRect::MakeLTRB(0, 0, 0, 0) == path.getBounds());
-
-    path.moveTo(-5, -8);
-    REPORTER_ASSERT(reporter, SkRect::MakeLTRB(-5, -8, -5, -8) == path.getBounds());
-
-    path.addRect(SkRect::MakeLTRB(1, 2, 3, 4));
-    REPORTER_ASSERT(reporter, SkRect::MakeLTRB(-5, -8, 3, 4) == path.getBounds());
-
-    path.moveTo(1, 2);
-    REPORTER_ASSERT(reporter, SkRect::MakeLTRB(-5, -8, 3, 4) == path.getBounds());
-#else
     dump_if_ne(reporter, SkRect::MakeLTRB(0, 0, 0, 0), path.getBounds());
 
-    path.moveTo(-5, -8);    // should set the bounds
+    SkPathBuilder builder;
+    builder.moveTo(-5, -8);    // should generate bounds
+    path = builder.snapshot();
     dump_if_ne(reporter, SkRect::MakeLTRB(-5, -8, -5, -8), path.getBounds());
 
-    path.addRect(SkRect::MakeLTRB(1, 2, 3, 4)); // should extend the bounds
+    builder.addRect(SkRect::MakeLTRB(1, 2, 3, 4)); // should extend the bounds
+    path = builder.snapshot();
     dump_if_ne(reporter, SkRect::MakeLTRB(1, 2, 3, 4), path.getBounds());
 
-    path.moveTo(2, 3);  // don't expect this to have changed the bounds
+    builder.moveTo(2, 3);  // don't expect this to have changed the bounds
+    path = builder.snapshot();
     dump_if_ne(reporter, SkRect::MakeLTRB(1, 2, 3, 4), path.getBounds());
-#endif
 }
 
 static void test_fuzz_crbug_627414(skiatest::Reporter* reporter) {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.conicTo(3.58732e-43f, 2.72084f, 3.00392f, 3.00392f, 8.46e+37f);
+    SkPath path = SkPathBuilder()
+                  .moveTo(0, 0)
+                  .conicTo(3.58732e-43f, 2.72084f, 3.00392f, 3.00392f, 8.46e+37f)
+                  .detach();
     test_draw_AA_path(100, 100, path);
 }
 
@@ -799,9 +817,10 @@ static void test_tricky_cubic() {
         { SkDoubleToScalar(18.5030727),    SkDoubleToScalar(129.13121)  },
     };
 
-    SkPath path;
-    path.moveTo(pts[0]);
-    path.cubicTo(pts[1], pts[2], pts[3]);
+    SkPath path = SkPathBuilder()
+                  .moveTo(pts[0])
+                  .cubicTo(pts[1], pts[2], pts[3])
+                  .detach();
     test_draw_AA_path(19, 130, path);
 }
 
@@ -971,19 +990,13 @@ static void test_path_isfinite(skiatest::Reporter* reporter) {
     SkPath path;
     REPORTER_ASSERT(reporter, path.isFinite());
 
-    path.reset();
+    path = SkPathBuilder().moveTo(1, 0).detach();
     REPORTER_ASSERT(reporter, path.isFinite());
 
-    path.reset();
-    path.moveTo(SK_Scalar1, 0);
-    REPORTER_ASSERT(reporter, path.isFinite());
-
-    path.reset();
-    path.moveTo(inf, negInf);
+    path = SkPathBuilder().moveTo(inf, negInf).detach();
     REPORTER_ASSERT(reporter, !path.isFinite());
 
-    path.reset();
-    path.moveTo(nan, 0);
+    path = SkPathBuilder().moveTo(nan, 0).detach();
     REPORTER_ASSERT(reporter, !path.isFinite());
 }
 
@@ -993,6 +1006,7 @@ static void test_isfinite(skiatest::Reporter* reporter) {
 }
 
 static void test_islastcontourclosed(skiatest::Reporter* reporter) {
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     SkPath path;
     REPORTER_ASSERT(reporter, !path.isLastContourClosed());
     path.moveTo(0, 0);
@@ -1007,6 +1021,7 @@ static void test_islastcontourclosed(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, path.isLastContourClosed());
     path.moveTo(0, 0);
     REPORTER_ASSERT(reporter, !path.isLastContourClosed());
+#endif
 }
 
 // assert that we always
