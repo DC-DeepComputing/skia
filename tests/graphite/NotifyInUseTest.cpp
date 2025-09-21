@@ -15,14 +15,28 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
-#include "tests/Test.h"
-
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "tests/Test.h"
 
 using namespace skgpu::graphite;
 
+namespace {
+
+} // namespace anonymous
+
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(NotifyInUseTestSnapshot, /*filter=*/nullptr, reporter, context,
                                testContext, CtsEnforcement::kApiLevel_202404) {
+    // This test relies on reading from the drawn image, so exit out early if we can't
+    TextureInfo texInfo = context->priv().caps()->getDefaultSampledTextureInfo(
+            kRGBA_8888_SkColorType,
+            skgpu::Mipmapped::kNo,
+            skgpu::Protected::kNo,
+            skgpu::Renderable::kYes);
+    if (!context->priv().caps()->isRenderable(texInfo)) {
+        return;
+    }
+
     auto recorder = context->makeRecorder();
     SkImageInfo info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
@@ -90,6 +104,16 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(NotifyInUseTestSnapshot, /*filter=*/nullptr, repo
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(NotifyInUseTestBlend, /*filter=*/nullptr, reporter, context,
                                testContext, CtsEnforcement::kApiLevel_202404) {
+    // This test relies on reading from the drawn image, so exit out early if we can't
+    TextureInfo texInfo = context->priv().caps()->getDefaultSampledTextureInfo(
+            kRGBA_8888_SkColorType,
+            skgpu::Mipmapped::kNo,
+            skgpu::Protected::kNo,
+            skgpu::Renderable::kYes);
+    if (!context->priv().caps()->isRenderable(texInfo)) {
+        return;
+    }
+
     auto recorder = context->makeRecorder();
     SkImageInfo info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
