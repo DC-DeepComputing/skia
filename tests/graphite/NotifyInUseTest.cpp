@@ -15,9 +15,10 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
-#include "tests/Test.h"
-
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/TextureUtils.h"
+#include "tests/Test.h"
 
 using namespace skgpu::graphite;
 
@@ -77,8 +78,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(NotifyInUseTestSnapshot, /*filter=*/nullptr, repo
         -------------- END --------------
     */
 
-    finalCanvas->drawImage(mainSurface->makeImageSnapshot(), 0, 0);
-
+    sk_sp<SkImage> snapshot = mainSurface->makeImageSnapshot();
+    // If we're on a context that doesn't supportReadPixels, i.e. vulkan protected, exit early.
+    TextureProxyView view = AsView(snapshot);
+    if (!context->priv().caps()->supportsReadPixels(view.proxy()->textureInfo())) {
+        return;
+    }
+    finalCanvas->drawImage(snapshot, 0, 0);
     SkBitmap bitmap;
     bitmap.allocPixels(info);
     REPORTER_ASSERT(reporter, finalSurface->readPixels(bitmap, 0, 0));
@@ -134,7 +140,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(NotifyInUseTestBlend, /*filter=*/nullptr, reporte
     SkCanvas* finalCanvas = finalSurface->getCanvas();
     finalCanvas->clear(SK_ColorBLACK);
 
-    finalCanvas->drawImage(SkSurfaces::AsImage(mainSurface), 0, 0);
+    sk_sp<SkImage> refImage = SkSurfaces::AsImage(mainSurface);
+    // If we're on a context that doesn't supportReadPixels, i.e. vulkan protected, exit early.
+    TextureProxyView view = AsView(refImage);
+    if (!context->priv().caps()->supportsReadPixels(view.proxy()->textureInfo())) {
+        return;
+    }
+    finalCanvas->drawImage(refImage, 0, 0);
 
     SkBitmap bitmap;
     bitmap.allocPixels(info);
