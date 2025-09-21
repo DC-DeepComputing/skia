@@ -779,10 +779,16 @@ private:
      *
      *  Thus, each contour can only have 1 move verb in it (the last one specified).
      */
+     private:
     SkPath& moveTo(SkPoint p) {
         return this->moveTo(p.fX, p.fY);
     }
     SkPath& moveTo(SkScalar x, SkScalar y);
+    public:
+    SkPath& moveTox(SkPoint p) {
+        return this->moveTo(p.fX, p.fY);
+    }
+    SkPath& moveTox(SkScalar x, SkScalar y);
 
     /** Adds beginning of contour relative to last point.
         If SkPath is empty, starts contour at (dx, dy).
