@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1bfd4a1_b07633ff",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-22T07:41:10Z",
+      "side": 1,
+      "message": "If we\u0027re translating the points upfront, shouldn\u0027t this be identity?\n\n(not sure if it makes a difference in practice)\n\nIt reads a bit odd to set up a draw just for blitterchooser and then ignore it, maybe we could add another SkAutoBlitterChooser constructor that takes explicit params.",
+      "revId": "4ef7abcc9192fa78c361070e6f7d5d6289889f53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0b2f82a_232b13b6",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-22T07:41:10Z",
+      "side": 0,
+      "message": "Can we get rid of this version of TooBigForMath?",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 42
+      },
+      "revId": "a38a531dec1de335b5ffdf174e2a97b2d450c8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
