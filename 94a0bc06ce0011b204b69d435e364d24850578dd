@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56e78f1_c8e308b0",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-22T10:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eadbae34_8dec6b71",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 62
+      },
+      "revId": "94a0bc06ce0011b204b69d435e364d24850578dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e194d37_ce890207",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Ah, good catch. I misread the old code and assumed path always went in empty, but clearly that is not the case. Will fix.",
       "parentUuid": "5e194d37_ce890207",
+      "range": {
+        "startLine": 40,
+        "startChar": 61,
+        "endLine": 40,
+        "endChar": 69
+      },
+      "revId": "94a0bc06ce0011b204b69d435e364d24850578dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ea08fdc_d707184a",
+        "filename": "modules/svg/src/SkSVGContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-22T10:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4012565_fd372073",
       "range": {
         "startLine": 40,
         "startChar": 61,
