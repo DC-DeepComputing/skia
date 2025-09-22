@@ -25,6 +25,7 @@
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkFloatBits.h"
 #include "src/core/SkPathPriv.h"
+#include "src/pathops/SkPathOpsCommon.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "tests/PathOpsDebug.h"
 #include "tests/PathOpsExtendedTest.h"
@@ -55,10 +56,6 @@ std::string std_to_string(T value)
     os << value ;
     return os.str() ;
 }
-
-bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
-             SkDEBUGPARAMS(bool skipAssert)
-             SkDEBUGPARAMS(const char* testName));
 
 bool SimplifyDebug(const SkPath& one, SkPath* result
                    SkDEBUGPARAMS(bool skipAssert)
@@ -560,9 +557,10 @@ static bool innerPathOp(skiatest::Reporter* reporter, const SkPath& a, const SkP
         json_path_out(b, "p2", "2", false);
         fprintf(PathOpsDebug::gOut, "  \"op\": \"%s\",\n", opStrs[shapeOp]);
     }
-    SkPath out;
-    if (!OpDebug(a, b, shapeOp, &out  SkDEBUGPARAMS(SkipAssert::kYes == skipAssert)
-            SkDEBUGPARAMS(testName))) {
+
+    auto out = OpDebug(a, b, shapeOp  SkDEBUGPARAMS(SkipAssert::kYes == skipAssert)
+                       SkDEBUGPARAMS(testName));
+    if (!out.has_value()) {
         if (ExpectSuccess::kYes == expectSuccess) {
             SkDebugf("%s %s did not expect failure\n", __FUNCTION__, testName);
             REPORTER_ASSERT(reporter, 0);
@@ -579,7 +577,7 @@ static bool innerPathOp(skiatest::Reporter* reporter, const SkPath& a, const SkP
         }
         if (PathOpsDebug::gJson) {
             json_status(expectSuccess, expectMatch, true);
-            json_path_out(out, "out", "Out", true);
+            json_path_out(*out, "out", "Out", true);
         }
     }
     if (!reporter->verbose()) {
@@ -606,9 +604,9 @@ static bool innerPathOp(skiatest::Reporter* reporter, const SkPath& a, const SkP
     SkPath scaledPathOut = scaledRgnOut.getBoundaryPath();
     SkBitmap bitmap;
     SkPath scaledOut;
-    scaledOut.addPath(out, scale);
-    scaledOut.setFillType(out.getFillType());
-    int result = comparePaths(reporter, testName, pathOut, scaledPathOut, out, scaledOut, bitmap,
+    scaledOut.addPath(*out, scale);
+    scaledOut.setFillType(out->getFillType());
+    int result = comparePaths(reporter, testName, pathOut, scaledPathOut, *out, scaledOut, bitmap,
             a, b, shapeOp, scale, expectMatch);
     reporter->bumpTestCount();
     return result == 0;
