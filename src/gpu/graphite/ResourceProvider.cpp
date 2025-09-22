@@ -72,7 +72,7 @@ void ResourceProvider::startPipelineCreationTask(sk_sp<const RuntimeEffectDictio
                                                  const GraphicsPipelineHandle& handle) {
     PipelineManager* pipelineManager = fSharedContext->pipelineManager();
 
-    pipelineManager->startPipelineCreationTask(this, std::move(runtimeDict), handle);
+    pipelineManager->startPipelineCreationTask(fSharedContext, nullptr, std::move(runtimeDict), handle);
 }
 
 sk_sp<GraphicsPipeline> ResourceProvider::resolveHandle(const GraphicsPipelineHandle& handle) {
@@ -81,6 +81,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::resolveHandle(const GraphicsPipelineHa
     return pipelineManager->resolveHandle(handle);
 }
 
+#if 0
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -88,6 +89,8 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
     auto globalCache = fSharedContext->globalCache();
+
+    GlobalCache* globalCache = fSharedContext->globalCache();
 
     uint32_t compilationID = 0;
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
@@ -117,10 +120,10 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                              "compilationID", compilationID);
 #endif
 
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
-                                                pipelineDesc, renderPassDesc,
-                                                pipelineCreationFlags,
-                                                compilationID);
+        pipeline = fSharedContext->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                          pipelineDesc, renderPassDesc,
+                                                          pipelineCreationFlags,
+                                                          compilationID);
         if (pipeline) {
             globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
@@ -130,6 +133,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
     }
     return pipeline;
 }
+#endif
 
 sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
         const ComputePipelineDesc& pipelineDesc) {
