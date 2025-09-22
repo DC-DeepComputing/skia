@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3208300a_e3ae37fa",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-22T23:48:41Z",
+      "side": 1,
+      "message": "I gave this a yucky name so that it\u0027d stand out as something to be investigated and improved.",
+      "revId": "912868e0584e65938c0fea9630e8c91d45ddeb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
