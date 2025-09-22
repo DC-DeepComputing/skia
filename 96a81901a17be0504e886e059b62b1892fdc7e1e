@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50773d94_db7c3649",
+        "filename": "fuzz/FuzzPathop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-22T19:14:33Z",
+      "side": 1,
+      "message": "We can delete this. Yes, it will invalidate old fuzz coverage things, but that\u0027s not a big deal.",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 52,
+        "endChar": 32
+      },
+      "revId": "96a81901a17be0504e886e059b62b1892fdc7e1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
