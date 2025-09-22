@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "fcd4e0fcf939c3c5fd9db1d84b240e50ae08e8f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3580a9ee_43b5803c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T16:25:16Z",
+      "side": 1,
+      "message": "We shouldn\u0027t need to be using size_t, none of the sizes of buffers we\u0027re dealing with will get to be that large. Can you adjust the CL to keep things as ints?",
+      "range": {
+        "startLine": 403,
+        "startChar": 4,
+        "endLine": 403,
+        "endChar": 10
+      },
+      "revId": "fcd4e0fcf939c3c5fd9db1d84b240e50ae08e8f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
