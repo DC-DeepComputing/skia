@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e439b495_b207091f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:33:28Z",
+      "side": 1,
+      "message": "Adding Kaylee and Noelle as they have more context on third_party/ and on what this dependency is used for I believe.",
+      "revId": "117a90408c314a9076ffd31b184cd623e830185f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5edb6e25_17f60e92",
+        "filename": "third_party/etc1/README.google",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:33:28Z",
+      "side": 1,
+      "message": "Can this name be more specific to the package, this was specifically a fork of just PKM/ETC1 and not all of frameworks/native.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 20
+      },
+      "revId": "117a90408c314a9076ffd31b184cd623e830185f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316768e3_afc1e300",
+        "filename": "third_party/etc1/README.google",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:33:28Z",
+      "side": 1,
+      "message": "Is there a reason we aren\u0027t using the full path to the equivalent subdirectory: https://android.git.corp.google.com/platform/frameworks/native/+/refs/heads/main/opengl/?\n\nAlso should this be a publicly accessible URL?",
+      "range": {
+        "startLine": 2,
+        "startChar": 5,
+        "endLine": 2,
+        "endChar": 68
+      },
+      "revId": "117a90408c314a9076ffd31b184cd623e830185f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
