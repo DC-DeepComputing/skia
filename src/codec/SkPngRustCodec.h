@@ -57,6 +57,12 @@ private:
         // uses `SkCodecAnimation::Blend::kSrcOver`.  For interlaced images this
         // buffer holds the whole frame; otherwise it holds only a single row.
         std::vector<uint8_t> fPreblendBuffer;
+
+        // Number of decoded rows.
+        int fDecodedRowsCount = 0;
+
+        // Number of rows written to `fDst`.
+        int fRowsWrittenToOutput = 0;
     };
 
     // Helper for validating parameters of `onGetPixels` and/or
@@ -100,6 +106,9 @@ private:
     // chunks.
     Result parseAdditionalFrameInfos();
 
+    // Determines whether or not we can read from the rust decoder directly into dst.
+    bool canReadRow();
+
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
                        void* pixels,
@@ -117,8 +126,7 @@ private:
     IsAnimated onIsAnimated() override;
     const SkFrameHolder* getFrameHolder() const override;
     std::unique_ptr<SkStream> getEncodedData() const override;
-    // Determines whether or not we can read from the rust decoder directly into dst.
-    bool canReadRow();
+    SkSampler* getSampler(bool createIfNecessary) override;
 
     // SkPngCodecBase overrides:
     std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() override;

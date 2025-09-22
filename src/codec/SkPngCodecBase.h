@@ -45,9 +45,13 @@ protected:
     // depend on earlier frames).
     Result initializeXforms(const SkImageInfo& dstInfo, const Options& options, int frameWidth);
 
-    // Initialize other fields needed by `applyXformRow`.
+    // Initialize other fields needed by `applyXformRow`
+    // (ones that depend on the final width of destination).
     //
     // Needs to be called *after* (i.e. outside of) `onStartIncrementalDecode`.
+    // (Because we create `fSwizzler` in `initializeXforms` with one
+    // `fXformWidth`, but later `SkSampledCodec::sampledDecode` calls
+    // `fSwizzler->setSampleX/Y` which changes the effective width.)
     void initializeXformParams();
 
     // Transforms a decoded row into the `dstInfo` format that was earlier
@@ -72,10 +76,13 @@ protected:
     virtual std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() = 0;
     virtual std::optional<SkSpan<const uint8_t>> onTryGetTrnsChunk() = 0;
 
+protected:
+    // SkCodec overrides:
+    SkSampler* getSampler(bool createIfNecessary) override;
+
 private:
     // SkCodec overrides:
     SkEncodedImageFormat onGetEncodedFormat() const final;
-    SkSampler* getSampler(bool createIfNecessary) final;
 
     void allocateStorage(const SkImageInfo& dstInfo);
     Result initializeSwizzler(const SkImageInfo& dstInfo,
