@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86dc3fef_91a0bba4",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "Let\u0027s just have this be `bool submit(SubmitInfo info \u003d {})`.  This will remove the second `submit` definition and simplify the rewriting of its values if sync is not supported.",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 35
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75e0f8c8_e796d43b",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "Does the frameID have to be 64 bits?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 26
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f1817d1_fe23c4fa",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "Lets have these be marked constexpr and add a `constexpr SubmitInfo() \u003d default;` as well.",
+      "range": {
+        "startLine": 183,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 14
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c5a0cb_fc11899f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "nit: stylistically I prefer `/*submitInfo\u003d*/{}` when we we\u0027re passing in default values but the function doesn\u0027t provide an override that takes it away.",
+      "range": {
+        "startLine": 184,
+        "startChar": 36,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1606aec9_a0212f7e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "Once we pass in by value, this can just modify `submitInfo` directly.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 46
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb98ea21_d25a5e2b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "Can go away",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 1
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4536c439_bda83076",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T14:43:09Z",
+      "side": 1,
+      "message": "nit: remove extra line",
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
