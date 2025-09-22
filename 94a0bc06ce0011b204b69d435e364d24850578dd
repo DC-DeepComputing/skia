@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fcbf1c7_eb847f5c",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-22T09:44:14Z",
+      "side": 1,
+      "message": "None of the old code really does anything, even the code onlines 176 and 181, since we just throw away the results.\n\nWhat do you want to do with this? When I left more of it uncommented, I got warnings/errors about unused variables.",
+      "parentUuid": "09ac3b16_c3d31383",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 62
+      },
+      "revId": "94a0bc06ce0011b204b69d435e364d24850578dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e194d37_ce890207",
         "filename": "modules/svg/src/SkSVGContainer.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-22T07:54:39Z",
       "side": 1,
       "message": "This could be `path` to preserve the \"best effort\" spirit (or assign conditionally).",
+      "range": {
+        "startLine": 40,
+        "startChar": 61,
+        "endLine": 40,
+        "endChar": 69
+      },
+      "revId": "94a0bc06ce0011b204b69d435e364d24850578dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4012565_fd372073",
+        "filename": "modules/svg/src/SkSVGContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-22T09:44:14Z",
+      "side": 1,
+      "message": "Ah, good catch. I misread the old code and assumed path always went in empty, but clearly that is not the case. Will fix.",
+      "parentUuid": "5e194d37_ce890207",
       "range": {
         "startLine": 40,
         "startChar": 61,
