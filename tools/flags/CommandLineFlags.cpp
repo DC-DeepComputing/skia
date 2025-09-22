@@ -6,9 +6,10 @@
  */
 
 #include "include/private/base/SkTDArray.h"
-#include "src/base/SkTSort.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#include <algorithm>
+#include <string>
 #include <stdlib.h>
 
 template <typename T> static void ignore_result(const T&) {}
@@ -249,7 +250,7 @@ void CommandLineFlags::Parse(int argc, const char* const* argv) {
                 for (SkFlagInfo* flag = CommandLineFlags::gHead; flag; flag = flag->next()) {
                     allFlags.push_back(flag);
                 }
-                SkTQSort(allFlags.begin(), allFlags.end(), CompareFlagsByName());
+                std::sort(allFlags.begin(), allFlags.end(), CompareFlagsByName());
                 for (SkFlagInfo* flag : allFlags) {
                     print_help_for_flag(flag);
                     if (flag->extendedHelp().size() > 0) {

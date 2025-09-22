@@ -191,7 +191,7 @@ void SkTIntroSort(int depth, T* left, int count, const C& lessThan) {
  *  @param lessThan a functor/lambda which returns true if a comes before b.
  */
 template <typename T, typename C>
-void SkTQSort(T* begin, T* end, const C& lessThan) {
+void SkTQSortx(T* begin, T* end, const C& lessThan) {
     int n = SkToInt(end - begin);
     if (n <= 1) {
         return;
@@ -202,13 +202,13 @@ void SkTQSort(T* begin, T* end, const C& lessThan) {
 }
 
 /** Sorts the region from left to right using comparator 'a < b' using Introsort. */
-template <typename T> void SkTQSort(T* begin, T* end) {
-    SkTQSort(begin, end, [](const T& a, const T& b) { return a < b; });
+template <typename T> void SkTQSortx(T* begin, T* end) {
+    SkTQSortx(begin, end, [](const T& a, const T& b) { return a < b; });
 }
 
 /** Sorts the region from left to right using comparator '*a < *b' using Introsort. */
-template <typename T> void SkTQSort(T** begin, T** end) {
-    SkTQSort(begin, end, [](const T* a, const T* b) { return *a < *b; });
+template <typename T> void SkTQSortx(T** begin, T** end) {
+    SkTQSortx(begin, end, [](const T* a, const T* b) { return *a < *b; });
 }
 
 #endif

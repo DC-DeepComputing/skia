@@ -12,8 +12,8 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkTSort.h"
 
+#include <algorithm>
 #include <utility>
 
 /**
@@ -114,7 +114,7 @@ public:
      */
     void sort() {
         if (fArray.size() > 1) {
-            SkTQSort<T>(fArray.begin(), fArray.end(), LESS);
+            std::sort(fArray.begin(), fArray.end(), LESS);
             for (int i = 0; i < fArray.size(); i++) {
                 this->setIndex(i);
             }

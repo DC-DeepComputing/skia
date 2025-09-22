@@ -21,7 +21,6 @@
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkSafeMath.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRegionPriv.h"
@@ -580,7 +579,7 @@ bool SkRegion::addBoundaryPath(SkPathBuilder* builder) const {
     int count = edges.size();
     Edge* start = edges.begin();
     Edge* stop = start + count;
-    SkTQSort<Edge>(start, stop, EdgeLT());
+    std::sort(start, stop, EdgeLT());
 
     Edge* e;
     for (e = start; e != stop; e++) {

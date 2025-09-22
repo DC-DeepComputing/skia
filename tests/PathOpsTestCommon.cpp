@@ -9,7 +9,6 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsBounds.h"
 #include "src/pathops/SkPathOpsConic.h"
@@ -22,6 +21,7 @@
 #include "src/pathops/SkReduceOrder.h"
 #include "tests/PathOpsTestCommon.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <utility>
@@ -88,7 +88,7 @@ static void toQuadraticTs(const SkDCubic* cubic, double precision, TArray<double
         inflections += cubic->findMaxCurvature(&inflectT[inflections]);
         SkASSERT(inflections <= 5);
     }
-    SkTQSort<double>(inflectT, inflectT + inflections);
+    std::sort(inflectT, inflectT + inflections);
     // OPTIMIZATION: is this filtering common enough that it needs to be pulled out into its
     // own subroutine?
     while (inflections && approximately_less_than_zero(inflectT[0])) {
