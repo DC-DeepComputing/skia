@@ -379,6 +379,13 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
         fFS.appendTextureLookup(fDstTextureSamplerHandle, "_dstTexCoord");
         fFS.codeAppend(";\n");
     } else if (this->pipeline().usesDstInputAttachment()) {
+        GrTextureProxy* dstTextureProxy = dstView.asTextureProxy();
+        SkAssertResult(dstTextureProxy);
+
+        //        SkDebugf("here %p %d %d\n", dstView.asTextureProxy(),
+        //            dstView.asTextureProxy()->width(),
+        //            dstView.asTextureProxy()->height());
+
         // Set up an input attachment for the destination texture.
         const skgpu::Swizzle& swizzle = dstView.swizzle();
         fDstTextureSamplerHandle = this->emitInputSampler(swizzle, "DstTextureInput");
