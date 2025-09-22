@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71d7cfcd_46990aae",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-22T10:16:18Z",
+      "side": 1,
+      "message": "`path` is the result, and we return it at the end.",
+      "parentUuid": "7fcbf1c7_eb847f5c",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 62
+      },
+      "revId": "94a0bc06ce0011b204b69d435e364d24850578dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e194d37_ce890207",
         "filename": "modules/svg/src/SkSVGContainer.cpp",
         "patchSetId": 4
