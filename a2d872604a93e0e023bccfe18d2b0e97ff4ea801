@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "568d76e2_bc1c9854",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "thx for review! Not sure exactly why this could cause Canary-Chromium failures with the reported stacktrace. Is there any known issue for these failures?",
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86dc3fef_91a0bba4",
@@ -14,6 +31,30 @@
       "writtenOn": "2025-09-22T14:43:09Z",
       "side": 1,
       "message": "Let\u0027s just have this be `bool submit(SubmitInfo info \u003d {})`.  This will remove the second `submit` definition and simplify the rewriting of its values if sync is not supported.",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 35
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e97d0046_afe2b767",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86dc3fef_91a0bba4",
       "range": {
         "startLine": 83,
         "startChar": 4,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74db2c32_f6215b64",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "yes as this goes directly into VkFrameBoundaryEXT::frameID https://registry.khronos.org/vulkan/specs/latest/man/html/VkFrameBoundaryEXT.html",
+      "parentUuid": "75e0f8c8_e796d43b",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 26
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f1817d1_fe23c4fa",
@@ -60,6 +125,30 @@
       "writtenOn": "2025-09-22T14:43:09Z",
       "side": 1,
       "message": "Lets have these be marked constexpr and add a `constexpr SubmitInfo() \u003d default;` as well.",
+      "range": {
+        "startLine": 183,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 14
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c14e1f_b610fb2b",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f1817d1_fe23c4fa",
       "range": {
         "startLine": 183,
         "startChar": 4,
@@ -93,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "902d3c71_028bfec4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c5a0cb_fc11899f",
+      "range": {
+        "startLine": 184,
+        "startChar": 36,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1606aec9_a0212f7e",
@@ -106,6 +219,30 @@
       "writtenOn": "2025-09-22T14:43:09Z",
       "side": 1,
       "message": "Once we pass in by value, this can just modify `submitInfo` directly.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 46
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d307b78_d57b571f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1606aec9_a0212f7e",
       "range": {
         "startLine": 248,
         "startChar": 0,
@@ -139,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d9fa52e_3dc75cc1",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb98ea21_d25a5e2b",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 1
+      },
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4536c439_bda83076",
@@ -152,6 +313,24 @@
       "writtenOn": "2025-09-22T14:43:09Z",
       "side": 1,
       "message": "nit: remove extra line",
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a57b65ce_02376861",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-22T14:56:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4536c439_bda83076",
       "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
