@@ -70,6 +70,30 @@
       },
       "revId": "a38a531dec1de335b5ffdf174e2a97b2d450c8d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c204d6da_6138ca57",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-22T10:35:43Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "ae1e358f_a59a037c",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 42
+      },
+      "revId": "a38a531dec1de335b5ffdf174e2a97b2d450c8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
