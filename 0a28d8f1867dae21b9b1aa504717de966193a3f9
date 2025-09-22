@@ -40,6 +40,30 @@
       ],
       "revId": "0a28d8f1867dae21b9b1aa504717de966193a3f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec9f636_e656d847",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-22T22:09:46Z",
+      "side": 1,
+      "message": "Thanks for the heads-up.  I\u0027ve put up https://review.skia.org/1059856 which should fix this forward.  I kicked off a CQ dry run, but let me quickly verify that I can repro the Chromium roll issue before asking for a review.",
+      "parentUuid": "af5f1207_3c0450be",
+      "range": {
+        "startLine": 135,
+        "startChar": 7,
+        "endLine": 135,
+        "endChar": 52
+      },
+      "revId": "0a28d8f1867dae21b9b1aa504717de966193a3f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
