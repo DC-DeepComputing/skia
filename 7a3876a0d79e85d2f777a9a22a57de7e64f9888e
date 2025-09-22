@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a685c5f_b0e0a86f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-22T13:58:05Z",
+      "side": 1,
+      "message": "PTAL (+1 was dropped)",
+      "revId": "7a3876a0d79e85d2f777a9a22a57de7e64f9888e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

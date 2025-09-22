@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea71532_28a14d3a",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-22T13:58:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "141f15a2_97b1b588",
+      "range": {
+        "startLine": 2010,
+        "startChar": 58,
+        "endLine": 2011,
+        "endChar": 77
+      },
+      "revId": "629aed5c936270da28f27015402c19b18265374b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bdf2403_77e5ce77",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-09-19T20:00:22Z",
       "side": 1,
       "message": "We should be able to remove all of these functions now.",
+      "range": {
+        "startLine": 2103,
+        "startChar": 12,
+        "endLine": 2103,
+        "endChar": 25
+      },
+      "revId": "629aed5c936270da28f27015402c19b18265374b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a65393_8c909080",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2103,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-22T13:58:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bdf2403_77e5ce77",
       "range": {
         "startLine": 2103,
         "startChar": 12,
