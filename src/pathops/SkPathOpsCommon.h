@@ -30,9 +30,12 @@ SkOpSpan* FindUndone(SkOpContourHead* );
 bool FixWinding(SkPath* path);
 bool SortContourList(SkOpContourHead** , bool evenOdd, bool oppEvenOdd);
 bool HandleCoincidence(SkOpContourHead* , SkOpCoincidence* );
-bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
+
+std::optional<SkPath> OpDebug(const SkPath& one, const SkPath& two, SkPathOp op
              SkDEBUGPARAMS(bool skipAssert)
              SkDEBUGPARAMS(const char* testName));
+bool SimplifyDebug(const SkPath& path, SkPath* result
+        SkDEBUGPARAMS(bool skipAssert) SkDEBUGPARAMS(const char* testName));
 
 bool ComputeTightBounds(const SkPath&, SkRect*);
 
