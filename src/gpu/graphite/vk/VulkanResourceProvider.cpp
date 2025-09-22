@@ -133,14 +133,14 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
 }
 
 sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
+        SharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
-    return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
-                                        this,
+    return VulkanGraphicsPipeline::Make(static_cast<VulkanSharedContext*>(sharedContext),
                                         runtimeDict,
                                         pipelineKey,
                                         pipelineDesc,
@@ -637,7 +637,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     sk_sp<VulkanGraphicsPipeline> pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
-            this->vulkanSharedContext(), this, *fLoadMSAAProgram, renderPassDesc);
+            this->vulkanSharedContext(), *fLoadMSAAProgram, renderPassDesc);
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
         return nullptr;

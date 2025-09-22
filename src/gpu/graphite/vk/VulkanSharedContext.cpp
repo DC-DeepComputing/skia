@@ -127,6 +127,10 @@ VulkanSharedContext::~VulkanSharedContext() {
     this->globalCache()->deleteResources();
 }
 
+VulkanThreadSafeResourceProvider* VulkanSharedContext::threadSafeResourceProvider() const {
+    return static_cast<VulkanThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
+}
+
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SingleOwner* singleOwner,
         uint32_t recorderID,
