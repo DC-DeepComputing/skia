@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a665545e_78c7dd01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-09-22T15:10:10Z",
+      "side": 1,
+      "message": "This dependency is used in one gm gm/compressed_textures.cpp to make a compressed texture and test that our backend can decompress it (since Skia only has ways to decompress textures, IIRC).\n\nUpdating the metadata to address the bug SGTM",
+      "revId": "117a90408c314a9076ffd31b184cd623e830185f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5edb6e25_17f60e92",
