@@ -8,6 +8,7 @@
 #include "include/core/SkStream.h"
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/mtl/MtlBackendContext.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -25,7 +26,7 @@ namespace ContextFactory {
 
 std::unique_ptr<Context> MakeMetal(const MtlBackendContext& backendContext,
                                    const ContextOptions& options) {
-    sk_sp<SharedContext> sharedContext = MtlSharedContext::Make(backendContext, options);
+    sk_sp<SharedContext> sharedContext = MtlSharedContext::Make(backendContext, options); //$$
     if (!sharedContext) {
         return nullptr;
     }

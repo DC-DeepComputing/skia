@@ -13,6 +13,7 @@
 #include "include/ports/SkCFObject.h"
 
 #include "include/gpu/graphite/mtl/MtlBackendContext.h"
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 #include "src/gpu/graphite/mtl/MtlCaps.h"
 
 #import <Metal/Metal.h>
@@ -23,6 +24,12 @@ class MtlMemoryAllocator;
 
 namespace skgpu::graphite {
 struct ContextOptions;
+class MtlGraphicsPipeline;
+
+class MtlThreadSafeResourceProvider final : public ThreadSafeResourceProvider {
+public:
+    sk_sp<MtlGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&) SK_EXCLUDES(fSpinLock);
+};
 
 class MtlSharedContext final : public SharedContext {
 public:
@@ -35,13 +42,14 @@ public:
 
     const MtlCaps& mtlCaps() const { return static_cast<const MtlCaps&>(*this->caps()); }
 
+    MtlThreadSafeResourceProvider* threadSafeResourceProvider() const;
+
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
 
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
-
 
 private:
 
@@ -52,6 +60,14 @@ private:
                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     void createCompatibleDepthStencilState(const DepthStencilSettings&);
+
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(
+            const RuntimeEffectDictionary*,
+            const UniqueKey&,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>,
+            uint32_t compilationID) override;
 
     sk_sp<skgpu::MtlMemoryAllocator> fMemoryAllocator;
 

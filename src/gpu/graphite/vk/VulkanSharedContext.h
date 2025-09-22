@@ -25,6 +25,11 @@ namespace skgpu::graphite {
 struct ContextOptions;
 class VulkanCaps;
 
+class VulkanThreadSafeResourceProvider final : public ThreadSafeResourceProvider {
+public:
+    sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
+};
+
 class VulkanSharedContext final : public SharedContext {
 public:
     static sk_sp<SharedContext> Make(const VulkanBackendContext&, const ContextOptions&);
@@ -39,6 +44,8 @@ public:
     VkPhysicalDevice physDevice() const { return fPhysDevice; }
     VkDevice device() const { return fDevice; }
     uint32_t  queueIndex() const { return fQueueIndex; }
+
+    VulkanThreadSafeResourceProvider* threadSafeResourceProvider() const;
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
@@ -58,6 +65,8 @@ private:
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
+
+    VulkanThreadSafeResourceProvider* threadSafeResourceProvider() const;
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;

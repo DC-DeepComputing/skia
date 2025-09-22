@@ -9,6 +9,7 @@
 
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/TextureFormat.h"
@@ -20,7 +21,7 @@ namespace skgpu::graphite {
 namespace ContextFactory {
 std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
                                   const ContextOptions& options) {
-    sk_sp<SharedContext> sharedContext = DawnSharedContext::Make(backendContext, options);
+    sk_sp<SharedContext> sharedContext = DawnSharedContext::Make(backendContext, options); //$$
     if (!sharedContext) {
         return nullptr;
     }

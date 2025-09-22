@@ -14,6 +14,8 @@
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
+
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skgpu::graphite {
@@ -71,6 +73,11 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
         , fQueue(backendContext.fQueue)
         , fTick(backendContext.fTick)
         , fNoopFragment(std::move(noopFragment)) {
+    fThreadSafeResourceProvider = std::make_unique<ThreadSafeResourceProvider>(
+        this->makeResourceProvider(&fSingleOwner,
+                                   SK_InvalidGenID,
+                                   kThreadedSafeResourceBudget));
+
     this->createUniformBuffersBindGroupLayout();
     this->createSingleTextureSamplerBindGroupLayout();
 }
@@ -78,6 +85,10 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
 DawnSharedContext::~DawnSharedContext() {
     // need to clear out resources before any allocator is removed
     this->globalCache()->deleteResources();
+}
+
+DawnThreadSafeResourceProvider* DawnSharedContext::threadSafeResourceProvider() const {
+    return static_cast<DawnThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
 }
 
 std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
@@ -167,6 +178,22 @@ void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
     fSingleTextureSamplerBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
+}
+
+sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return DawnGraphicsPipeline::Make(this,
+                                      runtimeDict,
+                                      pipelineKey,
+                                      pipelineDesc,
+                                      renderPassDesc,
+                                      pipelineCreationFlags,
+                                      compilationID);
 }
 
 } // namespace skgpu::graphite
