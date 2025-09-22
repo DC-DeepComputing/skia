@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af5f1207_3c0450be",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-22T22:02:33Z",
+      "side": 1,
+      "message": "breaking chrome roll https://chromium-review.googlesource.com/c/chromium/src/+/6974656?tab\u003dchecks",
+      "range": {
+        "startLine": 135,
+        "startChar": 7,
+        "endLine": 135,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "613e38f6_9193c18f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/private/SkEncodedInfo.h",
+              "range": {
+                "startLine": 135,
+                "startChar": 0,
+                "endLine": 136,
+                "endChar": 0
+              },
+              "replacement": "        // TODO(b/332911272): Re-enable after fixing chrome roll.\n        // VerifyColor(color, alpha, bitsPerComponent);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0a28d8f1867dae21b9b1aa504717de966193a3f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
