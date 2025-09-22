@@ -46,6 +46,30 @@
       },
       "revId": "a38a531dec1de335b5ffdf174e2a97b2d450c8d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1e358f_a59a037c",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-22T10:10:34Z",
+      "side": 0,
+      "message": "Oh, I meant just this particular helper signature, which takes an SkPath - I think this might be the only caller.  We get to keep the SkRect one.",
+      "parentUuid": "4e7c1714_a5e8d1a3",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 42
+      },
+      "revId": "a38a531dec1de335b5ffdf174e2a97b2d450c8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
