@@ -959,7 +959,8 @@ static bool compare_edges(const SkAnalyticEdge* a, const SkAnalyticEdge* b) {
 }
 
 static SkAnalyticEdge* sort_edges(SkAnalyticEdge* list[], int count, SkAnalyticEdge** last) {
-    SkTQSort(list, list + count, compare_edges);
+//    std::sort(list, list + count, compare_edges);
+    SkTQSortx(list, list + count, compare_edges);
 
     // now make the edges linked in sorted order
     for (int i = 1; i < count; ++i) {

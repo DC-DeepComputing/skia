@@ -121,7 +121,7 @@ bool GrGLExtensions::init(GrGLStandard standard,
         eat_space_sep_strings(&fStrings, extensions);
     }
     if (!fStrings.empty()) {
-        SkTQSort(fStrings.begin(), fStrings.end(), extension_compare);
+        SkTQSortx(fStrings.begin(), fStrings.end(), extension_compare);
     }
     fInitialized = true;
     return true;

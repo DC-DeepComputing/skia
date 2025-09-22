@@ -11,12 +11,13 @@
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTDArray.h"
-#include "src/base/SkTSort.h"
 #include "src/pathops/SkOpAngle.h"
 #include "src/pathops/SkOpCoincidence.h"
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
+
+#include <algorithm>
 
 const SkOpAngle* AngleWinding(SkOpSpanBase* start, SkOpSpanBase* end, int* windingPtr,
         bool* sortablePtr) {
@@ -170,7 +171,7 @@ bool SortContourList(SkOpContourHead** contourList, bool evenOdd, bool oppEvenOd
         return false;
     }
     if (count > 1) {
-        SkTQSort<SkOpContour>(list.begin(), list.end());
+        std::sort(list.begin(), list.end());
     }
     contour = list[0];
     SkOpContourHead* contourHead = static_cast<SkOpContourHead*>(contour);

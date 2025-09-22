@@ -31,7 +31,6 @@
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
-#include "src/base/SkTSort.h"
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
@@ -40,6 +39,7 @@
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsTypes.h"
 
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -282,9 +282,9 @@ bool SkOpSpan::sortableTop(SkOpContour* contourHead) {
         hit = hit->fNext;
     }
     int count = sorted.size();
-    SkTQSort(sorted.begin(), sorted.end(),
-             xy_index(dir) ? less_than(dir) ? hit_compare_y : reverse_hit_compare_y
-                           : less_than(dir) ? hit_compare_x : reverse_hit_compare_x);
+    std::sort(sorted.begin(), sorted.end(),
+              xy_index(dir) ? less_than(dir) ? hit_compare_y : reverse_hit_compare_y
+                            : less_than(dir) ? hit_compare_x : reverse_hit_compare_x);
     // verify windings
 #if DEBUG_WINDING
     SkDebugf("%s dir=%s seg=%d t=%1.9g pt=(%1.9g,%1.9g)\n", __FUNCTION__,

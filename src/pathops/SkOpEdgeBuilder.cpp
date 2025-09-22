@@ -10,7 +10,6 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -288,7 +287,7 @@ bool SkOpEdgeBuilder::walk() {
                         bool fCanAdd;
                     } splits[4];
                     SkASSERT(std::size(splits) == std::size(splitT) + 1);
-                    SkTQSort(splitT, splitT + breaks);
+                    std::sort(splitT, splitT + breaks);
                     for (int index = 0; index <= breaks; ++index) {
                         Splitsville* split = &splits[index];
                         split->fT[0] = index ? splitT[index - 1] : 0;
