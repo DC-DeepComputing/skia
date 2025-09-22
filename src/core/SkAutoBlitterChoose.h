@@ -19,6 +19,21 @@ class SkMatrix;
 class SkPaint;
 class SkPixmap;
 
+class SkBlitterSizedArena {
+public:
+    SkArenaAlloc* arena() { return &fAlloc; }
+
+private:
+    // This was determined experimentally by adding logging to SkSTArenaAlloc's destructor
+    // to see what the biggest size observed was while doing some browsing on Chromium.
+    // It's a bit tricky to determine this value statically, as the SkRasterPipelineBuilder
+    // uses the allocator for several things, as do the shaders which make use of the legacy
+    // shader context. In other cases it's easier because the allocator only has the blitter
+    // itself and one could do a static_assert using sizeof().
+    static constexpr size_t kStackMemory = 2736;
+    SkSTArenaAlloc<kStackMemory> fAlloc;
+};
+
 class SkAutoBlitterChoose : SkNoncopyable {
 public:
     SkAutoBlitterChoose() {}
@@ -42,7 +57,7 @@ public:
         fBlitter = draw.fBlitterChooser(draw.fDst,
                                         ctm ? *ctm : *draw.fCTM,
                                         paint,
-                                        &fAlloc,
+                                        fAlloc.arena(),
                                         drawCoverage,
                                         draw.fRC->clipShader(),
                                         SkSurfacePropsCopyOrDefault(draw.fProps),
@@ -54,14 +69,7 @@ private:
     // Owned by fAlloc, which will handle the delete.
     SkBlitter* fBlitter = nullptr;
 
-    // This was determined experimentally by adding logging to SkSTArenaAlloc's destructor
-    // to see what the biggest size observed was while doing some browsing on Chromium.
-    // It's a bit tricky to determine this value statically, as the SkRasterPipelineBuilder
-    // uses the allocator for several things, as do the shaders which make use of the legacy
-    // shader context. In other cases it's easier because the allocator only has the blitter
-    // itself and one could do a static_assert using sizeof().
-    static constexpr size_t kStackMemory = 2736;
-    SkSTArenaAlloc<kStackMemory> fAlloc;
+    SkBlitterSizedArena fAlloc;
 };
 
 #endif
