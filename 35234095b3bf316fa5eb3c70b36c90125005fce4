@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0168af58_0d20daf6",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-09-22T19:09:41Z",
+      "side": 1,
+      "message": "JFYI - the new `VerifyColor` method is private.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 8
+      },
+      "revId": "35234095b3bf316fa5eb3c70b36c90125005fce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
