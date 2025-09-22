@@ -9,7 +9,6 @@
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkGeometry.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkLineParameters.h"
@@ -354,7 +353,7 @@ int SkDCubic::searchRoots(double extremeTs[6], int extrema, double axisIntercept
     extremeTs[extrema++] = 0;
     extremeTs[extrema] = 1;
     SkASSERT(extrema < 6);
-    SkTQSort(extremeTs, extremeTs + extrema + 1);
+    std::sort(extremeTs, extremeTs + extrema + 1);
     int validCount = 0;
     for (int index = 0; index < extrema; ) {
         double min = extremeTs[index];

@@ -8,12 +8,13 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMath.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsTypes.h"
+
+#include <algorithm>
 
 using namespace skia_private;
 
@@ -293,7 +294,7 @@ void SkPathWriter::assemble() {
         rRow += endCount;
     }
     SkASSERT(dIndex == entries);
-    SkTQSort<int>(sortedDist.begin(), sortedDist.end(), DistanceLessThan(distances.begin()));
+    std::sort(sortedDist.begin(), sortedDist.end(), DistanceLessThan(distances.begin()));
     int remaining = linkCount;  // number of start/end pairs
     for (rIndex = 0; rIndex < entries; ++rIndex) {
         int pair = sortedDist[rIndex];

@@ -16,12 +16,13 @@
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
-#include "src/base/SkTSort.h"
 #include "src/codec/SkBmpCodec.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkStreamPriv.h"
 
 #include "modules/skcms/skcms.h"
+
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <memory>
@@ -141,7 +142,7 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
         }
     };
     EntryLessThan lessThan;
-    SkTQSort(directoryEntries, directoryEntries + numImages, lessThan);
+    std::sort(directoryEntries, directoryEntries + numImages, lessThan);
 
     // Now will construct a candidate codec for each of the embedded images
     uint32_t bytesRead = kIcoDirectoryBytes + numImages * kIcoDirEntryBytes;

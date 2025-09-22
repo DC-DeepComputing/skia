@@ -16,7 +16,6 @@
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkSafe32.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkAlphaRuns.h"
 #include "src/core/SkAnalyticEdge.h"
 #include "src/core/SkBlitter.h"
@@ -959,7 +958,7 @@ static bool compare_edges(const SkAnalyticEdge* a, const SkAnalyticEdge* b) {
 }
 
 static SkAnalyticEdge* sort_edges(SkAnalyticEdge* list[], int count, SkAnalyticEdge** last) {
-    SkTQSort(list, list + count, compare_edges);
+    std::sort(list, list + count, compare_edges);
 
     // now make the edges linked in sorted order
     for (int i = 1; i < count; ++i) {

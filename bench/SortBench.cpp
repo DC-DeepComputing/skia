@@ -69,7 +69,7 @@ static const struct {
 };
 
 static void skqsort_sort(int array[N]) {
-    SkTQSort<int>(array, array + N);
+    SkTQSortx<int>(array, array + N);
 }
 
 static void skheap_sort(int array[N]) {

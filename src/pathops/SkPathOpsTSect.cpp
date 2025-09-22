@@ -10,7 +10,6 @@
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkTArray.h"
-#include "src/base/SkTSort.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -1775,7 +1774,7 @@ struct SkClosestSect {
         for (int index = 0; index < fUsed; ++index) {
             closestPtrs.push_back(&fClosest[index]);
         }
-        SkTQSort<const SkClosestRecord>(closestPtrs.begin(), closestPtrs.end());
+        std::sort(closestPtrs.begin(), closestPtrs.end());
         for (int index = 0; index < fUsed; ++index) {
             const SkClosestRecord* test = closestPtrs[index];
             test->addIntersection(intersections);

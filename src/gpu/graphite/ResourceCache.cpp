@@ -20,6 +20,8 @@
 #include "src/gpu/graphite/Texture.h"
 #endif
 
+#include <algorithm>
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
@@ -660,7 +662,7 @@ uint32_t ResourceCache::getNextUseToken() {
                 fPurgeableQueue.pop();
             }
 
-            SkTQSort(fNonpurgeableResources.begin(), fNonpurgeableResources.end(), CompareUseToken);
+            std::sort(fNonpurgeableResources.begin(), fNonpurgeableResources.end(), CompareUseToken);
 
             // Pick resources out of the purgeable and non-purgeable arrays based on lowest
             // use token and assign new tokens.
