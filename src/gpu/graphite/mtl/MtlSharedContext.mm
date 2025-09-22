@@ -64,6 +64,11 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
                         userDefinedKnownRuntimeEffects)
         , fMemoryAllocator(std::move(memoryAllocator))
         , fDevice(std::move(device)) {
+    fThreadSafeResourceProvider = std::make_unique<ThreadSafeResourceProvider>(
+        this->makeResourceProvider(&fSingleOwner,
+                                   SK_InvalidGenID,
+                                   kThreadedSafeResourceBudget));
+
     static constexpr DepthStencilSettings kIgnoreDSS;
 
     for (const DepthStencilSettings& dss : { kDirectDepthLessPass,
@@ -75,11 +80,16 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
                                              kIgnoreDSS }) {
         this->createCompatibleDepthStencilState(dss);
     }
+
 }
 
 MtlSharedContext::~MtlSharedContext() {
     // need to clear out resources before the allocator (if any) is removed
     this->globalCache()->deleteResources();
+}
+
+MtlThreadSafeResourceProvider* MtlSharedContext::threadSafeResourceProvider() const {
+    return static_cast<MtlThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
 }
 
 std::unique_ptr<ResourceProvider> MtlSharedContext::makeResourceProvider(
@@ -182,6 +192,18 @@ void MtlSharedContext::createCompatibleDepthStencilState(
             [this->device() newDepthStencilStateWithDescriptor: desc]);
 
     fDepthStencilStates.set(depthStencilSettings, std::move(dss));
+}
+
+sk_sp<GraphicsPipeline> MtlSharedContext::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return MtlGraphicsPipeline::Make(this,
+                                     runtimeDict, pipelineKey, pipelineDesc, renderPassDesc,
+                                     pipelineCreationFlags, compilationID);
 }
 
 } // namespace skgpu::graphite

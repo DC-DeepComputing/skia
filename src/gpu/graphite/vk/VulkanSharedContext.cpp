@@ -127,6 +127,10 @@ VulkanSharedContext::~VulkanSharedContext() {
     this->globalCache()->deleteResources();
 }
 
+VulkanThreadSafeResourceProvider* VulkanSharedContext::threadSafeResourceProvider() const {
+    return static_cast<VulkanThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
+}
+
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SingleOwner* singleOwner,
         uint32_t recorderID,
@@ -136,6 +140,22 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
                                        singleOwner,
                                        recorderID,
                                        resourceBudget));
+}
+
+sk_sp<GraphicsPipeline> VulkanSharedContext::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return VulkanGraphicsPipeline::Make(this,
+                                        runtimeDict,
+                                        pipelineKey,
+                                        pipelineDesc,
+                                        renderPassDesc,
+                                        pipelineCreationFlags,
+                                        compilationID);
 }
 
 bool VulkanSharedContext::checkVkResult(VkResult result) const {
@@ -168,4 +188,5 @@ bool VulkanSharedContext::checkVkResult(VkResult result) const {
         return false;
     }
 }
+
 } // namespace skgpu::graphite

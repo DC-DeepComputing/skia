@@ -26,6 +26,8 @@
 #include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
+
 namespace skgpu::graphite {
 
 namespace {
@@ -556,23 +558,6 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
             "DiscardableLoadMSAATexture");
 
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
-}
-
-sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
-        const RuntimeEffectDictionary* runtimeDict,
-        const UniqueKey& pipelineKey,
-        const GraphicsPipelineDesc& pipelineDesc,
-        const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
-        uint32_t compilationID) {
-    return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
-                                      this,
-                                      runtimeDict,
-                                      pipelineKey,
-                                      pipelineDesc,
-                                      renderPassDesc,
-                                      pipelineCreationFlags,
-                                      compilationID);
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(

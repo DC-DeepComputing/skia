@@ -132,23 +132,6 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
                                       std::move(ycbcrConversion));
 }
 
-sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
-        const RuntimeEffectDictionary* runtimeDict,
-        const UniqueKey& pipelineKey,
-        const GraphicsPipelineDesc& pipelineDesc,
-        const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
-        uint32_t compilationID) {
-    return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
-                                        this,
-                                        runtimeDict,
-                                        pipelineKey,
-                                        pipelineDesc,
-                                        renderPassDesc,
-                                        pipelineCreationFlags,
-                                        compilationID);
-}
-
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
     return nullptr;
 }
@@ -637,7 +620,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     sk_sp<VulkanGraphicsPipeline> pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
-            this->vulkanSharedContext(), this, *fLoadMSAAProgram, renderPassDesc);
+            this->vulkanSharedContext(), *fLoadMSAAProgram, renderPassDesc);
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
         return nullptr;
@@ -645,6 +628,24 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
 
     fLoadMSAAPipelines.push_back(std::make_pair(compatibleRenderPassHash, pipeline));
     return pipeline;
+}
+
+VkPipelineCache VulkanThreadSafeResourceProvider::pipelineCache() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    VulkanResourceProvider* vkResourceProvider = static_cast<VulkanResourceProvider*>(fWrappedProvider.get());
+
+    return vkResourceProvider->pipelineCache();
+}
+
+sk_sp<VulkanRenderPass> VulkanThreadSafeResourceProvider::findOrCreateRenderPass(
+        const RenderPassDesc& renderPassDesc,
+        bool compatibleOnly) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    VulkanResourceProvider* vkResourceProvider = static_cast<VulkanResourceProvider*>(fWrappedProvider.get());
+
+    return vkResourceProvider->findOrCreateRenderPass(renderPassDesc, compatibleOnly);
 }
 
 #ifdef SK_BUILD_FOR_ANDROID
