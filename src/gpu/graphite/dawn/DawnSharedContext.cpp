@@ -90,6 +90,10 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       resourceBudget));
 }
 
+sk_sp<Sampler> DawnSharedContext::createSampler(const SamplerDesc& samplerDesc) {
+    return DawnSampler::Make(this, samplerDesc);
+}
+
 void DawnSharedContext::deviceTick(Context* context) {
 #if !defined(__EMSCRIPTEN__)
     this->device().Tick();
