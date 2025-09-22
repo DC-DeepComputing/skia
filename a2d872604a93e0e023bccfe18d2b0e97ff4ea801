@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf771376_5990f7ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-22T15:19:32Z",
+      "side": 1,
+      "message": "At the time your change was testing the canary, we had a merged change in Skia that was breaking the chrome roll so it affected all canary CLs based on it as well. It should be fine now",
+      "parentUuid": "568d76e2_bc1c9854",
+      "revId": "a2d872604a93e0e023bccfe18d2b0e97ff4ea801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86dc3fef_91a0bba4",
