@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
+#include "src/gpu/graphite/mtl/MtlSampler.h"
 #include "src/gpu/graphite/mtl/MtlTexture.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
 #include "src/gpu/mtl/MtlMemoryAllocatorImpl.h"
@@ -90,6 +91,13 @@ std::unique_ptr<ResourceProvider> MtlSharedContext::makeResourceProvider(
                                                                      singleOwner,
                                                                      recorderID,
                                                                      resourceBudget));
+}
+
+sk_sp<Sampler> MtlSharedContext::createSampler(const SamplerDesc& samplerDesc) {
+    return MtlSampler::Make(this,
+                            samplerDesc.samplingOptions(),
+                            samplerDesc.tileModeX(),
+                            samplerDesc.tileModeY());
 }
 
 namespace {

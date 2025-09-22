@@ -254,7 +254,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 
-    sk_sp<Sampler> sampler = this->createSampler(samplerDesc);
+    sk_sp<Sampler> sampler = fSharedContext->createSampler(samplerDesc);
     if (!sampler) {
         return nullptr;
     }

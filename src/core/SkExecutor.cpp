@@ -34,6 +34,10 @@ using namespace skia_private;
 
 SkExecutor::~SkExecutor() {}
 
+void SkExecutor::add(std::function<void(void)> work) {
+    this->add(std::move(work), /* workList= */ 0);
+}
+
 // The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
 class SkTrivialExecutor final : public SkExecutor {
 public:
