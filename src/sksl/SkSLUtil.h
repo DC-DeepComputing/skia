@@ -44,18 +44,22 @@ struct ShaderCaps {
         return fGLSLGeneration > SkSL::GLSLGeneration::k110;
     }
 
-    // Returns the string of an extension that must be enabled in the shader to support
-    // derivatives. If nullptr is returned then no extension needs to be enabled. Before calling
-    // this function, the caller should check that shaderDerivativeSupport exists.
+    /**
+     * Returns the string of an extension that must be enabled in the shader to support derivatives.
+     * If nullptr is returned then no extension needs to be enabled. Before calling this function,
+     * the caller should check that shaderDerivativeSupport exists.
+     */
     const char* shaderDerivativeExtensionString() const {
         SkASSERT(this->fShaderDerivativeSupport);
         return fShaderDerivativeExtensionString;
     }
 
-    // This returns the name of an extension that must be enabled in the shader to support external
-    // textures. In some cases, two extensions must be enabled - the second extension is returned
-    // by secondExternalTextureExtensionString(). If that function returns nullptr, then only one
-    // extension is required.
+    /**
+     * This returns the name of an extension that must be enabled in the shader to support external
+     * textures. In some cases, two extensions must be enabled - the second extension is returned
+     * by secondExternalTextureExtensionString(). If that function returns nullptr, then only one
+     * extension is required.
+     */
     const char* externalTextureExtensionString() const {
         SkASSERT(this->fExternalTextureSupport);
         return fExternalTextureExtensionString;
@@ -92,11 +96,15 @@ struct ShaderCaps {
     bool fInverseHyperbolicSupport = false;
     bool fFBFetchSupport = false;
     bool fFBFetchNeedsCustomOutput = false;
-    bool fUsesPrecisionModifiers = false;
-    bool fFlatInterpolationSupport = false;
     bool fNoPerspectiveInterpolationSupport = false;
     bool fSampleMaskSupport = false;
     bool fExternalTextureSupport = false;
+    /**
+     * The following are expected to be universally supported for all backends except for Ganesh's
+     * GL backend in which they are conditionally supported.
+     */
+    bool fFlatInterpolationSupport = true;
+    bool fUsesPrecisionModifiers = true;
     bool fFloatIs32Bits = true;
 
     // isinf() is defined, and floating point infinities are handled according to IEEE standards.
