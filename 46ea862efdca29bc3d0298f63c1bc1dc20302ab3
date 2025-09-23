@@ -16,6 +16,29 @@
       "message": "ptal",
       "revId": "46ea862efdca29bc3d0298f63c1bc1dc20302ab3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f568cc68_46b2cc1d",
+        "filename": "src/core/SkAutoBlitterChoose.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-23T13:54:05Z",
+      "side": 1,
+      "message": "This could just be `using SkBlitterSizedArena \u003d SkSTArenaAlloc\u003c2736\u003e;`",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 2
+      },
+      "revId": "46ea862efdca29bc3d0298f63c1bc1dc20302ab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
