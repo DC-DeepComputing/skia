@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ece1bbd_1e60f5cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-23T18:23:30Z",
+      "side": 1,
+      "message": "I tried building this CL locally with the following args.gn:\n\n```\nis_official_build \u003d false\nis_debug \u003d true\nskia_enable_ganesh \u003d false\nskia_enable_graphite \u003d true\nskia_use_metal \u003d true\ncc\u003d\"clang\"\ncxx\u003d\"clang++\"\nskia_use_cpp20\u003dtrue\n```\n\nBut it\u0027s breaking in YUVUtils.h and related areas:\n```\n../../gm/wacky_yuv_formats.cpp:895:64: error: no matching member function for call to \u0027refImage\u0027\n  895 |                         fImages[opaque][cs][format] \u003d lazyYUV-\u003erefImage(dContext, fImageType);\n      |                                                       ~~~~~~~~~^~~~~~~~\n../../tools/gpu/YUVUtils.h:59:20: note: candidate function not viable: cannot convert argument of incomplete type \u0027GrDirectContext *\u0027 to \u0027GrRecordingContext *\u0027 for 1st argument\n   59 |     sk_sp\u003cSkImage\u003e refImage(GrRecordingContext* rContext, Type);\n      |                    ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n../../tools/gpu/YUVUtils.h:62:20: note: candidate function not viable: cannot convert argument of incomplete type \u0027GrDirectContext *\u0027 to \u0027skgpu::graphite::Recorder *\u0027 for 1st argument\n   62 |     sk_sp\u003cSkImage\u003e refImage(skgpu::graphite::Recorder* recorder, Type);\n      |                    ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n../../gm/wacky_yuv_formats.cpp:1157:53: error: no matching member function for call to \u0027refImage\u0027\n 1157 |                     fImages[opaque][i++] \u003d lazyYUV-\u003erefImage(\n      |                                            ~~~~~~~~~^~~~~~~~\n../../tools/gpu/YUVUtils.h:59:20: note: candidate function not viable: cannot convert argument of incomplete type \u0027GrDirectContext *\u0027 to \u0027GrRecordingContext *\u0027 for 1st argument\n   59 |     sk_sp\u003cSkImage\u003e refImage(GrRecordingContext* rContext, Type);\n      |                    ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n../../tools/gpu/YUVUtils.h:62:20: note: candidate function not viable: cannot convert argument of incomplete type \u0027GrDirectContext *\u0027 to \u0027skgpu::graphite::Recorder *\u0027 for 1st argument\n   62 |     sk_sp\u003cSkImage\u003e refImage(skgpu::graphite::Recorder* recorder, Type);\n      |                    ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n2 errors generated.\n[63/142] compile ../../tools/viewer/ImGuiLayer.cpp\n```",
+      "revId": "a954525590041137231f5adcfb65eda9d2dd76bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
