@@ -65,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b8f7a2e_b3a87d8c",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-23T17:51:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3208300a_e3ae37fa",
+      "revId": "912868e0584e65938c0fea9630e8c91d45ddeb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "323b1504_95318a39",
