@@ -50,6 +50,8 @@ struct SkPathRaw {
     std::optional<SkRect> isRect() const;
 
     SkPathIter iter() const { return {fPoints, fVerbs, fConics}; }
+
+    void dump(bool dumpAsHex = false) const;
 };
 
 #endif
