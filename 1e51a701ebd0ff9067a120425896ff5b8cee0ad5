@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f5449e_026356fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-23T11:28:18Z",
+      "side": 1,
+      "message": "wasn\u0027t able to reproduce the test failure reported by CI\n```\n$ out/Clang_Debug/dm -v --match ycbcrimage                                                                               \nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.                                                                                                          \nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.                                                                                                          \n1 srcs * 2 sinks + 0 tests \u003d\u003d 2 tasks                                                                                                                                   \n1 srcs * 2 sinks + 0 tests \u003d\u003d 2 tasks                                                                                                                                   \n        start gl gm  ycbcrimage                                                                                                                                         \n        start 8888 gm  ycbcrimage                                                                                                                                       \n[1/2] 8888 gm  ycbcrimage done                                                                                                                                          \n[2/2] gl gm  ycbcrimage done                                                                                                                                            \n                                                                                                                                                                        \n[2/2] 142MB RAM, 142MB peak, 0 queued, 1 threads:                                                                                                                       \n        gl gm  ycbcrimage  done                                                                                                                                         \n\n[2/2] 142MB RAM, 142MB peak, 0 queued, 1 threads:\n        gl gm  ycbcrimage  done\nFinished!\nFinished!\n```\n\nwill try submitting again",
+      "revId": "1e51a701ebd0ff9067a120425896ff5b8cee0ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
