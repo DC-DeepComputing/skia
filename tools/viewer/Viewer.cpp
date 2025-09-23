@@ -37,7 +37,6 @@
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/base/SkBase64.h"
 #include "src/base/SkTLazy.h"
-#include "src/base/SkTSort.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorPriv.h"
@@ -1170,10 +1169,10 @@ void Viewer::initSlides() {
                     sortedFilenames.push_back(name);
                 }
                 if (sortedFilenames.size()) {
-                    SkTQSort(sortedFilenames.begin(), sortedFilenames.end(),
-                             [](const SkString& a, const SkString& b) {
-                                 return strcmp(a.c_str(), b.c_str()) < 0;
-                             });
+                    std::sort(sortedFilenames.begin(), sortedFilenames.end(),
+                              [](const SkString& a, const SkString& b) {
+                                  return strcmp(a.c_str(), b.c_str()) < 0;
+                              });
                 }
                 for (const SkString& filename : sortedFilenames) {
                     addSlide(filename, SkOSPath::Join(flag.c_str(), filename.c_str()),
