@@ -43,6 +43,14 @@ def main():
       "--target_os", default="", help="Target OS for host compilation.")
   parser.add_argument(
       "--target_cpu", default="", help="Target CPU for host compilation.")
+  parser.add_argument(
+      "--win_sdk", default="", help="Path to the Windows SDK.")
+  parser.add_argument(
+      "--win_sdk_version", default="", help="Version of the Windows SDK.")
+  parser.add_argument(
+      "--win_vc", default="", help="Path to Visual C++.")
+  parser.add_argument(
+      "--win_toolchain_version", default="", help="Version of the MSVC toolchain.")
   args = parser.parse_args()
 
   output_path = args.output_path
@@ -129,7 +137,23 @@ def main():
     os.remove(gen_library_path)
 
   assert len(object_files) > 0
-  combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
+  # Use ar/lib to join all the object files that comprise the necessary
+  # libraries and any transitive dependencies into one .a file.
+  if args.win_sdk:
+    # On Windows, we use lld-link.exe, which acts like lib.exe when passed
+    # the /LIB flag. It should be in the same directory as the C compiler.
+    # The command line can be too long, so we use a response file.
+    linker_exe = os.path.join(os.path.dirname(args.cc), "lld-link.exe")
+    response_file_name = "objects.rsp"
+    response_file_path = os.path.join(build_dir, response_file_name)
+    with open(response_file_path, "w") as f:
+      for obj in object_files:
+        f.write(f'"{obj}"\n')
+    combine_obj_cmd = [
+        linker_exe, "/LIB", f"/OUT:{lib_name}", f"@{response_file_name}"
+    ]
+  else:
+    combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
   subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
 
   # Copy the final archive to the location expected by GN.
