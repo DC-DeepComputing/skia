@@ -1,0 +1,43 @@
+// filled boxes are host toolchain
+
+digraph DawnDependencies {
+  rankdir="LR";
+  node [shape=box];
+
+  subgraph cluster_skia {
+    label = "//:BUILD.gn";
+    DM [label="dm"];
+    Skia [label="skia"];
+    GpuShared [label="gpu_shared"];
+    Skslc [label="skslc", style=filled, fillcolor=lightgray];
+    CompileAllTests [label="compile_all_sksl_tests", style=filled, fillcolor=lightgray];
+  }
+
+  subgraph cluster_dawn {
+    label = "//third_party/dawn:BUILD.gn";
+    Tint [label="tint_cmake", style=filled, fillcolor=lightgray];
+    Dawn [label="dawn_cmake"];
+  }
+
+  subgraph cluster_dawn_checkout {
+    label = "//third_party/externals/dawn";
+    TintSrcs [label="src/tint/*.cpp"];
+    DawnSrcs [label="src/dawn/*.cpp"];
+  }
+
+  UseDawn [label="skia_use_dawn=true", shape=ellipse];
+  CompileSkslTests [label="skia_compile_sksl_tests=true", shape=ellipse];
+
+  DM -> Skia;
+  Skia -> GpuShared;
+  GpuShared -> Dawn;
+  Dawn -> TintSrcs;
+  Dawn -> DawnSrcs;
+  Tint -> TintSrcs;
+  Skslc -> Tint;
+  DM -> CompileAllTests;
+  CompileAllTests -> Skslc
+
+  UseDawn -> GpuShared [style=dotted];
+  CompileSkslTests -> CompileAllTests [style=dotted];
+}
