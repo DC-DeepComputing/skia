@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f766ee6_59ce0805",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-23T16:56:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "497f3af0_c6d7df08",
+      "range": {
+        "startLine": 12,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "2ed4e16c04bdb4bb2dc0b66825eb1affd3e0a623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e8cfe70_b8412c57",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-09-17T12:12:22Z",
       "side": 1,
       "message": "Can you add a test (more likely a gm) for this case to demonstrate the good and bad behavior?",
+      "revId": "2ed4e16c04bdb4bb2dc0b66825eb1affd3e0a623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc3d8551_a62acfc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-09-23T16:56:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e8cfe70_b8412c57",
       "revId": "2ed4e16c04bdb4bb2dc0b66825eb1affd3e0a623",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
