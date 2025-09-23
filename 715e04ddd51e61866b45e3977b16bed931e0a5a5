@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "544a00fd_628937a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-23T16:05:11Z",
+      "side": 1,
+      "message": "I like making the defaults more reflective of the common execution environment that most GPUs have now. \n\nFor the follow-up CL, you should check with Kaylee to see what the build implications are. We may not be able to have SkSL depend on Ganesh. Even if ganesh is the only backend to use GLSL, the linker should get rid of the GLSL components automatically.",
+      "revId": "715e04ddd51e61866b45e3977b16bed931e0a5a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
