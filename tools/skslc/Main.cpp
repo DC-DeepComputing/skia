@@ -88,6 +88,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fAddAndTrueToLoopCondition = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -98,6 +99,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fCanUseFractForNegativeValues = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -108,6 +110,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fCanUseFragCoord = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -118,6 +121,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fCanUseMinAndAbsTogether = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -127,6 +131,7 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fCanUseVoidInSequenceExpressions = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -137,6 +142,7 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fDualSourceBlendingSupport = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -147,6 +153,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fEmulateAbsIntFunction = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -157,6 +164,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fFBFetchSupport = true;
             caps->fFBFetchColorName = "FramebufferFragColor";  // a nice, backend-neutral name
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -166,6 +174,7 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fMustDeclareFragmentFrontFacing = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -176,6 +185,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fMustForceNegatedAtanParamToFloat = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -186,6 +196,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fMustForceNegatedLdexpParamToMultiply = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -195,6 +206,7 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fMustGuardDivisionEvenAfterExplicitZeroCheck = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -205,6 +217,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fBuiltinDeterminantSupport = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -215,6 +228,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fBuiltinFMASupport = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -225,6 +239,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fExternalTextureSupport = false;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -235,6 +250,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fRemovePowWithConstantExponent = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -245,6 +261,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fRewriteDoWhileLoops = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -254,7 +271,6 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fRewriteMatrixComparisons = true;
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
@@ -265,6 +281,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fRewriteMatrixVectorMultiply = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -275,6 +292,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fRewriteSwitchStatements = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -286,6 +304,7 @@ public:
             caps->fVersionDeclString = "#version 400";
             caps->fShaderDerivativeSupport = true;
             caps->fSampleMaskSupport = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -297,7 +316,6 @@ public:
             caps->fVersionDeclString = "#version 400";
             caps->fShaderDerivativeSupport = true;
             caps->fShaderDerivativeExtensionString = "GL_OES_standard_derivatives";
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
@@ -308,6 +326,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
             caps->fUnfoldShortCircuitAsTernary = true;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -317,7 +336,6 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
-            caps->fUsesPrecisionModifiers = true;
             return caps.release();
         }();
         return sCaps;
@@ -328,6 +346,7 @@ public:
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 110";
             caps->fGLSLGeneration = SkSL::GLSLGeneration::k110;
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
@@ -337,6 +356,7 @@ public:
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 450 core";
+            caps->fUsesPrecisionModifiers = false;
             return caps.release();
         }();
         return sCaps;
