@@ -804,14 +804,13 @@ VulkanProgramInfo::~VulkanProgramInfo() {
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
-    SkASSERT(rsrcProvider);
+    VulkanThreadSafeResourceProvider* resourceProvider = sharedContext->threadSafeResourceProvider();
 
     SkSL::ProgramSettings settings;
     settings.fSharpenTextures = true;
@@ -858,7 +857,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         // immutableSamplers for inclusion in the pipeline layout.
         if (descContainer.at(i) != SamplerDesc()) {
             sk_sp<Sampler> immutableSampler =
-                    rsrcProvider->findOrCreateCompatibleSampler(descContainer.at(i));
+                    resourceProvider->findOrCreateCompatibleSampler(descContainer.at(i));
             sk_sp<VulkanSampler> vulkanSampler =
                     sk_ref_sp<VulkanSampler>(static_cast<VulkanSampler*>(immutableSampler.get()));
             SkASSERT(vulkanSampler);
@@ -943,7 +942,6 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkPipeline shadersPipeline = VK_NULL_HANDLE;
     VkPipeline vkPipeline = MakePipeline(
             sharedContext,
-            rsrcProvider,
             *program,
             subpassIndex,
             step->primitiveType(),
@@ -986,7 +984,6 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
 VkPipeline VulkanGraphicsPipeline::MakePipeline(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
         const VulkanProgramInfo& program,
         int subpassIndex,
         PrimitiveType primitiveType,
@@ -1000,6 +997,8 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         const RenderPassDesc& renderPassDesc,
         VkPipeline* shadersPipeline) {
     SkASSERT(program.layout() && program.vs()); // but a fragment shader isn't required
+
+    VulkanThreadSafeResourceProvider* resourceProvider = sharedContext->threadSafeResourceProvider();
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
     skia_private::STArray<2, VkVertexInputBindingDescription> bindingDescs;
@@ -1065,7 +1064,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
     setup_dynamic_state(*sharedContext->caps(), &dynamicInfo, &dynamicStates);
 
     sk_sp<VulkanRenderPass> compatibleRenderPass =
-            rsrcProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+            resourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
     if (!compatibleRenderPass) {
         SKGPU_LOG_E("Failed to create compatible renderpass for pipeline");
         return VK_NULL_HANDLE;
@@ -1099,6 +1098,9 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
     VkGraphicsPipelineLibraryCreateInfoEXT libraryInfo = {};
     libraryInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_LIBRARY_CREATE_INFO_EXT;
 
+    VulkanThreadSafeResourceProvider* threadSafeResourceProvider =
+        sharedContext->threadSafeResourceProvider();
+
     if (shadersPipeline && sharedContext->caps()->usePipelineLibraries()) {
         // When using VK_EXT_graphics_pipeline_library, create the "shaders" subset of the pipeline,
         // and then create the full pipeline (with the vertex input and fragment output state)
@@ -1107,8 +1109,9 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         //
         // This can be further optimized by the front-end creating fewer shaders pipelines, and only
         // create multiple full pipelines out of them as needed.
+
         VkResult result = create_shaders_pipeline(sharedContext,
-                                                  rsrcProvider->pipelineCache(),
+                                                  threadSafeResourceProvider->pipelineCache(),
                                                   pipelineCreateInfo,
                                                   shadersLibraryInfo,
                                                   libraryInfo,
@@ -1126,7 +1129,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         VULKAN_CALL_RESULT(sharedContext,
                            result,
                            CreateGraphicsPipelines(sharedContext->device(),
-                                                   rsrcProvider->pipelineCache(),
+                                                   threadSafeResourceProvider->pipelineCache(),
                                                    /*createInfoCount=*/1,
                                                    &pipelineCreateInfo,
                                                    /*pAllocator=*/nullptr,
@@ -1228,9 +1231,9 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
         const VulkanSharedContext* sharedContext,
-        VulkanResourceProvider* rsrcProvider,
         const VulkanProgramInfo& loadMSAAProgram,
         const RenderPassDesc& renderPassDesc) {
+
     // The load MSAA pipeline does not have any vertex or instance attributes, does not use the
     // depth or stencil attachments. Unlike the general Make factory, we do not destroy any of the
     // shader modules or layout. The pipeline layout will not be owned by the created
@@ -1239,7 +1242,6 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
     VertexInputBindingDescriptions vertexBindingDescriptions;
     VertexInputAttributeDescriptions vertexAttributeDescriptions;
     VkPipeline vkPipeline = MakePipeline(sharedContext,
-                                         rsrcProvider,
                                          loadMSAAProgram,
                                          /*subpassIndex=*/0,  // loading to MSAA is always first
                                          PrimitiveType::kTriangleStrip,
