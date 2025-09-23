@@ -133,8 +133,17 @@ std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPathRe
     return {pts, weights};
 }
 
-SkRect SkPathBuilder::computeBounds() const {
-    return SkRect::BoundsOrEmpty(fPts);
+SkPathConvexity SkPathBuilder::computeConvexity() const {
+    auto convexity = fConvexity;
+    if (convexity == SkPathConvexity::kUnknown) {
+        // this is only valid if we're finite
+        convexity = SkPathPriv::ComputeConvexity(fPts, fVerbs, fConicWeights);
+    }
+    return convexity;
+}
+
+bool SkPathBuilder::computeIsConvex() const {
+    return SkPathConvexity_IsConvex(this->computeConvexity());
 }
 
 /*
