@@ -90,7 +90,7 @@ void SkTHeapSort_SiftDown(T array[], size_t root, size_t bottom, const C& lessTh
  *  @param count the number of elements in the array.
  *  @param lessThan a functor with bool operator()(T a, T b) which returns true if a comes before b.
  */
-template <typename T, typename C> void SkTHeapSort(T array[], size_t count, const C& lessThan) {
+template <typename T, typename C> void SkTHeapSortx(T array[], size_t count, const C& lessThan) {
     for (size_t i = count >> 1; i > 0; --i) {
         SkTHeapSort_SiftDown(array, i, count, lessThan);
     }
@@ -103,8 +103,8 @@ template <typename T, typename C> void SkTHeapSort(T array[], size_t count, cons
 }
 
 /** Sorts the array of size count using comparator '<' using a Heap Sort algorithm. */
-template <typename T> void SkTHeapSort(T array[], size_t count) {
-    SkTHeapSort(array, count, [](const T& a, const T& b) { return a < b; });
+template <typename T> void SkTHeapSortx(T array[], size_t count) {
+    SkTHeapSortx(array, count, [](const T& a, const T& b) { return a < b; });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ void SkTIntroSort(int depth, T* left, int count, const C& lessThan) {
         }
 
         if (depth == 0) {
-            SkTHeapSort<T>(left, count, lessThan);
+            SkTHeapSortx<T>(left, count, lessThan);
             return;
         }
         --depth;
