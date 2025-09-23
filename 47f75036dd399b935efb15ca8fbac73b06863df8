@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fba6892_1b6d3b38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-23T13:44:03Z",
+      "side": 1,
+      "message": "Thanks! I just came to the same conclusion:\nhttps://skia-review.googlesource.com/c/skia/+/1060296 😊",
+      "revId": "47f75036dd399b935efb15ca8fbac73b06863df8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
