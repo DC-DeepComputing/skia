@@ -11,7 +11,6 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
-#include "src/base/SkTSort.h"
 #include "tests/Test.h"
 
 #include <algorithm>
@@ -151,8 +150,7 @@ public:
         // Sort the remaining dependencies into descending order based on their indices in the
         // sort. This means that we will be proceeding from right to left in the sort when
         // correcting the order.
-        // TODO: QSort is waaay overkill here!
-        SkTQSort<Node*>(dependedOn->begin(), dependedOn->end(), Node::CompareIndicesGT);
+        std::sort(dependedOn->begin(), dependedOn->end(), Node::CompareIndicesGT);
 
         // TODO: although this is the general algorithm, I think this can be simplified for our
         // use case (i.e., the same dependent for all the new edges).

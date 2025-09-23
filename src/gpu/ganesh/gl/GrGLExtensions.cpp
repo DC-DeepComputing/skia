@@ -9,10 +9,10 @@
 
 #include "include/private/base/SkAssert.h"
 #include "src/base/SkTSearch.h"
-#include "src/base/SkTSort.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 
+#include <algorithm>
 #include <cstring>
 
 using namespace skia_private;
@@ -121,7 +121,7 @@ bool GrGLExtensions::init(GrGLStandard standard,
         eat_space_sep_strings(&fStrings, extensions);
     }
     if (!fStrings.empty()) {
-        SkTQSort(fStrings.begin(), fStrings.end(), extension_compare);
+        std::sort(fStrings.begin(), fStrings.end(), extension_compare);
     }
     fInitialized = true;
     return true;
@@ -143,7 +143,7 @@ bool GrGLExtensions::remove(const char ext[]) {
     // most a handful of times when our test programs start.
     fStrings.removeShuffle(idx);
     if (idx != fStrings.size()) {
-        SkTInsertionSort(fStrings.begin() + idx, fStrings.size() - idx, extension_compare);
+        std::sort(fStrings.begin() + idx, fStrings.end(), extension_compare);
     }
     return true;
 }
@@ -154,7 +154,7 @@ void GrGLExtensions::add(const char ext[]) {
         // This is not the most effecient approach since we end up looking at all of the
         // extensions after the add
         fStrings.emplace_back(ext);
-        SkTInsertionSort(fStrings.begin(), fStrings.size(), extension_compare);
+        std::sort(fStrings.begin(), fStrings.end(), extension_compare);
     }
 }
 
