@@ -94,6 +94,7 @@ struct ShaderCaps {
      * TODO: Modify SkSLGLSLCodeGenerator to use GrShaderCaps rather than this struct since it
      * should only be used by Ganesh.
      */
+    bool fFlatInterpolationSupport = true;
     bool fUsesPrecisionModifiers = true;
     SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;
 
@@ -108,7 +109,6 @@ struct ShaderCaps {
     bool fInverseHyperbolicSupport = false;
     bool fFBFetchSupport = false;
     bool fFBFetchNeedsCustomOutput = false;
-    bool fFlatInterpolationSupport = false;
     bool fNoPerspectiveInterpolationSupport = false;
     bool fSampleMaskSupport = false;
     bool fExternalTextureSupport = false;

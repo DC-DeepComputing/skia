@@ -212,7 +212,6 @@ void MtlCaps::initShaderCaps() {
         shaderCaps->fDualSourceBlendingSupport = true;
     }
 
-    shaderCaps->fFlatInterpolationSupport = true;
     shaderCaps->fShaderDerivativeSupport = true;
     shaderCaps->fInfinitySupport = true;
 

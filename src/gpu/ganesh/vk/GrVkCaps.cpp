@@ -706,7 +706,6 @@ void GrVkCaps::initShaderCaps(const VkPhysicalDeviceProperties& properties,
     // Ganesh + Vulkan always emits `sk_Clockwise` to avoid some Adreno rendering errors.
     shaderCaps->fMustDeclareFragmentFrontFacing = true;
 
-    shaderCaps->fFlatInterpolationSupport = true; // Supported because Vulkan is based on ES 3.0
     // Flat interpolation appears to be slow on Qualcomm GPUs. This was tested in GL and is assumed
     // to be true with Vulkan as well.
     shaderCaps->fPreferFlatInterpolation = skgpu::kQualcomm_VkVendor != properties.vendorID;
