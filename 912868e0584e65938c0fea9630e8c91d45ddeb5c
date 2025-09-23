@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a104db1a_8f41e0a4",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-23T17:49:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cbc1ca2_4b12ed71",
+      "range": {
+        "startLine": 179,
+        "startChar": 79,
+        "endLine": 179,
+        "endChar": 83
+      },
+      "revId": "912868e0584e65938c0fea9630e8c91d45ddeb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3208300a_e3ae37fa",
@@ -54,6 +78,24 @@
       "writtenOn": "2025-09-23T16:36:36Z",
       "side": 1,
       "message": "This seems like it should be all the way to the left",
+      "revId": "912868e0584e65938c0fea9630e8c91d45ddeb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9a63c5_934b6acc",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2289,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-09-23T17:49:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "323b1504_95318a39",
       "revId": "912868e0584e65938c0fea9630e8c91d45ddeb5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
