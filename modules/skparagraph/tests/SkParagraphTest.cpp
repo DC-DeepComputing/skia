@@ -36,7 +36,6 @@
 #include "modules/skparagraph/tests/SkShaperJSONWriter.h"
 #include "modules/skparagraph/utils/TestFontCollection.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
@@ -135,10 +134,10 @@ class ResourceFontCollection : public FontCollection {
                     paths.emplace_back(fullPath);
                 }
                 if (paths.size()) {
-                    SkTQSort(paths.begin(), paths.end(),
-                             [](const SkString& a, const SkString& b) {
-                                 return strcmp(a.c_str(), b.c_str()) < 0;
-                             });
+                    std::sort(paths.begin(), paths.end(),
+                              [](const SkString& a, const SkString& b) {
+                                  return strcmp(a.c_str(), b.c_str()) < 0;
+                              });
                 }
             }
 
