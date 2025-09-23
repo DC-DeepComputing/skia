@@ -9,6 +9,7 @@
 #include "src/base/SkTSort.h"
 #include "tests/Test.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -54,8 +55,8 @@ DEF_TEST(Sort, reporter) {
         qsort(sortedArray, count, sizeof(sortedArray[0]), compare_int);
 
         memcpy(workingArray, randomArray, sizeof(randomArray));
-        SkTHeapSort<int>(workingArray, count);
-        check_sort(reporter, "Heap", workingArray, sortedArray, count);
+        std::sort(workingArray, workingArray + count);
+        check_sort(reporter, "std::sort", workingArray, sortedArray, count);
 
         memcpy(workingArray, randomArray, sizeof(randomArray));
         SkTQSort<int>(workingArray, workingArray + count);
