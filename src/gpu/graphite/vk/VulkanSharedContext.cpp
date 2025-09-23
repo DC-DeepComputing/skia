@@ -120,11 +120,22 @@ VulkanSharedContext::VulkanSharedContext(
         , fDevice(backendContext.fDevice)
         , fQueueIndex(backendContext.fGraphicsQueueIndex)
         , fDeviceLostContext(backendContext.fDeviceLostContext)
-        , fDeviceLostProc(backendContext.fDeviceLostProc) {}
+        , fDeviceLostProc(backendContext.fDeviceLostProc) {
+    fThreadSafeResourceProvider = std::make_unique<ThreadSafeResourceProvider>(
+        this->makeResourceProvider(&fSingleOwner,
+                                   SK_InvalidGenID,
+                                   kThreadedSafeResourceBudget));
+}
 
 VulkanSharedContext::~VulkanSharedContext() {
+    fThreadSafeResourceProvider.reset();
+
     // need to clear out resources before the allocator is removed
     this->globalCache()->deleteResources();
+}
+
+VulkanThreadSafeResourceProvider* VulkanSharedContext::threadSafeResourceProvider() const {
+    return static_cast<VulkanThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
 }
 
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
@@ -136,6 +147,22 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
                                        singleOwner,
                                        recorderID,
                                        resourceBudget));
+}
+
+sk_sp<GraphicsPipeline> VulkanSharedContext::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return VulkanGraphicsPipeline::Make(this,
+                                        runtimeDict,
+                                        pipelineKey,
+                                        pipelineDesc,
+                                        renderPassDesc,
+                                        pipelineCreationFlags,
+                                        compilationID);
 }
 
 bool VulkanSharedContext::checkVkResult(VkResult result) const {
@@ -168,4 +195,5 @@ bool VulkanSharedContext::checkVkResult(VkResult result) const {
         return false;
     }
 }
+
 } // namespace skgpu::graphite

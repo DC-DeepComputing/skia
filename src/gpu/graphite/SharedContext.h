@@ -11,6 +11,7 @@
 #include <memory>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/private/base/SingleOwner.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/capture/SkCaptureManager.h"
@@ -34,6 +35,7 @@ class Context;
 class RendererProvider;
 class ResourceProvider;
 class TextureInfo;
+class ThreadSafeResourceProvider;
 
 class SharedContext : public SkRefCnt {
 public:
@@ -61,6 +63,15 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
+    // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
+            const RuntimeEffectDictionary*,
+            const UniqueKey& pipelineKey,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>);
+
     // Called by Context::isContextLost(). Returns true if the backend-specific SharedContext has
     // gotten into an unrecoverable, lost state.
     virtual bool isDeviceLost() const { return false; }
@@ -75,8 +86,21 @@ protected:
                   SkExecutor* executor,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
+    static constexpr size_t kThreadedSafeResourceBudget = 256;
+
+    mutable SingleOwner fSingleOwner; // for fThreadSafeResourceProvider
+    std::unique_ptr<ThreadSafeResourceProvider> fThreadSafeResourceProvider;
+
 private:
     friend class Context; // for setRendererProvider() and setCaptureManager()
+
+    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
+            const RuntimeEffectDictionary*,
+            const UniqueKey&,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>,
+            uint32_t compilationID) = 0;
 
     // Must be created out-of-band to allow RenderSteps to use a QueueManager.
     void setRendererProvider(std::unique_ptr<RendererProvider> rendererProvider);
