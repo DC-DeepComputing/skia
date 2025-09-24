@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84983e0a_fb3b7d81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2025-09-24T13:37:57Z",
+      "side": 1,
+      "message": "Hi! This is a fix for undefined behaviour in Skia Graphite Vulkan backend that was suggest by ARM when investigating corruption in SurfaceFlinger",
+      "revId": "2ab9346cec4f9ab6ad8546c2477e72ba61c02b9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
