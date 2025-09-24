@@ -123,6 +123,12 @@ VulkanSharedContext::VulkanSharedContext(
         , fDeviceLostProc(backendContext.fDeviceLostProc) {}
 
 VulkanSharedContext::~VulkanSharedContext() {
+    if (fPipelineCache != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyPipelineCache(this->vulkanSharedContext()->device(),
+                                         fPipelineCache,
+                                         nullptr));
+    }
     // need to clear out resources before the allocator is removed
     this->globalCache()->deleteResources();
 }

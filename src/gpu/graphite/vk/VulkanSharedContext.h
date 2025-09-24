@@ -71,6 +71,8 @@ private:
     mutable bool fDeviceIsLost SK_GUARDED_BY(fDeviceIsLostMutex) = false;
     skgpu::VulkanDeviceLostContext fDeviceLostContext;
     skgpu::VulkanDeviceLostProc fDeviceLostProc;
+
+    VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
 };
 
 } // namespace skgpu::graphite

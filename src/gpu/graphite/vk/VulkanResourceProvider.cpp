@@ -95,12 +95,6 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
         , fUniformBufferDescSetCache(kMaxNumberOfCachedBufferDescSets) {}
 
 VulkanResourceProvider::~VulkanResourceProvider() {
-    if (fPipelineCache != VK_NULL_HANDLE) {
-        VULKAN_CALL(this->vulkanSharedContext()->interface(),
-                    DestroyPipelineCache(this->vulkanSharedContext()->device(),
-                                         fPipelineCache,
-                                         nullptr));
-    }
     if (fMockPipelineLayout) {
         VULKAN_CALL(this->vulkanSharedContext()->interface(),
                     DestroyPipelineLayout(this->vulkanSharedContext()->device(),
