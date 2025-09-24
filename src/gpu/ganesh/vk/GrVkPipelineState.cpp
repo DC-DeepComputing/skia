@@ -149,6 +149,11 @@ bool GrVkPipelineState::setAndBindTextures(GrVkGpu* gpu,
         SkASSERT(geomProcTextures[i]->asTextureProxy());
         const auto& sampler = geomProc.textureSampler(i);
         auto texture = static_cast<GrVkTexture*>(geomProcTextures[i]->peekTexture());
+        if (!texture) {
+            // This could mean we failed to fulfill a promise image. If so, we need to gracefully
+            // drop this draw.
+            return false;
+        }
         samplerBindings[currTextureBinding++] = {sampler.samplerState(), texture};
     }
 
@@ -175,6 +180,7 @@ bool GrVkPipelineState::setAndBindTextures(GrVkGpu* gpu,
         const GrVkDescriptorSet* descriptorSet = texture->cachedSingleDescSet(samplerState);
         if (descriptorSet) {
             commandBuffer->addGrSurface(sk_ref_sp<const GrSurface>(texture));
+            // Adds texture view reference here before adding the texture attachment itself...
             commandBuffer->addResource(texAttachment->textureView());
             commandBuffer->addResource(texAttachment->resource());
             commandBuffer->addRecycledResource(descriptorSet);

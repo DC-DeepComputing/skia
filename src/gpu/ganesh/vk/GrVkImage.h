@@ -271,7 +271,7 @@ private:
 
     GrVkImageInfo                        fInfo;
     uint32_t                             fInitialQueueFamily;
-    sk_sp<skgpu::MutableTextureState> fMutableState;
+    sk_sp<skgpu::MutableTextureState>    fMutableState;
 
     sk_sp<const GrVkImageView>           fFramebufferView;
     sk_sp<const GrVkImageView>           fTextureView;
