@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d581d5b1_54192252",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-24T16:05:43Z",
+      "side": 1,
+      "message": "The failing AlphaR2 jobs is also perma-failing on the water fall",
+      "revId": "0f74c5aa841ee0dc5e2914da4d6ad9f93a5d68de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
