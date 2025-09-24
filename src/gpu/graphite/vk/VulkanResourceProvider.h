@@ -70,7 +70,7 @@ public:
     // full (needed when beginning a render pass from the command buffer) RenderPass.
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
 
-    VkPipelineCache pipelineCache();
+    VkPipelineCache pipelineCache2();
 
     VkPipelineLayout mockPipelineLayout() const { return fMockPipelineLayout; }
 
@@ -86,12 +86,6 @@ public:
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
 
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
-                                                   const UniqueKey&,
-                                                   const GraphicsPipelineDesc&,
-                                                   const RenderPassDesc&,
-                                                   SkEnumBitMask<PipelineCreationFlags>,
-                                                   uint32_t compilationID) override;
     sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) override;
 
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&) override;
