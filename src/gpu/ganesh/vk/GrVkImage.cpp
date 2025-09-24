@@ -131,7 +131,8 @@ static bool make_views(GrVkGpu* gpu,
                                            viewType,
                                            info.fLevelCount,
                                            info.fYcbcrConversionInfo);
-        if (!*textureView) {
+        if (!*framebufferView) {
+            // Before returning false, clean up the frame buffer view if one was created.
             return false;
         }
     }

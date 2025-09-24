@@ -734,12 +734,15 @@ bool GrVkOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
 #endif
     if (!fCurrentPipelineState->setAndBindTextures(fGpu, geomProc, pipeline, geomProcTextures,
                                                    this->currentCommandBuffer())) {
+        // clean up image view?
         return false;
+
     }
     if (fSelfDependencyFlags == SelfDependencyFlags::kForInputAttachment) {
         // We bind the color attachment as an input attachment
         auto ds = fFramebuffer->colorAttachment()->inputDescSetForBlending(fGpu);
         if (!ds) {
+            // clean up image view?
             return false;
         }
         return fCurrentPipelineState->setAndBindInputAttachment(fGpu, std::move(ds),
