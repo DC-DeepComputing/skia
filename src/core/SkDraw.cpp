@@ -1019,7 +1019,7 @@ void Draw::drawPath(const SkPath& origSrcPath,
                 result = tmpPath;
                 pathIsMutable = true;
             }
-            pathPtr->transform(*prePathMatrix, result);
+       //     pathPtr->transform(*prePathMatrix, result);
             pathPtr = result;
         } else {
             matrix.writable()->preConcat(*prePathMatrix);
@@ -1046,7 +1046,7 @@ void Draw::drawPath(const SkPath& origSrcPath,
     SkPath* devPathPtr = pathIsMutable ? pathPtr : tmpPath;
 
     // transform the path into device space
-    pathPtr->transform(*matrix, devPathPtr);
+//    pathPtr->transform(*matrix, devPathPtr);
     if (!devPathPtr->isFinite()) {
         return;
     }

@@ -507,20 +507,14 @@ size_t SkPath::approximateBytesUsed() const {
     return size;
 }
 
-bool SkPath::getLastPt(SkPoint* lastPt) const {
+std::optional<SkPoint> SkPath::getLastPt() const {
     SkDEBUGCODE(this->validate();)
 
-    int count = fPathRef->countPoints();
+    const int count = fPathRef->countPoints();
     if (count > 0) {
-        if (lastPt) {
-            *lastPt = fPathRef->atPoint(count - 1);
-        }
-        return true;
+        return fPathRef->atPoint(count - 1);
     }
-    if (lastPt) {
-        lastPt->set(0, 0);
-    }
-    return false;
+    return {};
 }
 
 void SkPath::setPt(int index, SkScalar x, SkScalar y) {
