@@ -1140,6 +1140,9 @@ static void draw_into_mask(const SkMask& mask,
     if (!raw.fBounds.isFinite()) {
         return;
     }
+    if (!SkIsFinite(raw.fConics.data(), (int)raw.fConics.size())) {
+        return;
+    }
 
     const SkRasterClip clip(SkIRect::MakeWH(mask.fBounds.width(), mask.fBounds.height()));
 
