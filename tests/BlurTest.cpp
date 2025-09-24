@@ -15,6 +15,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
@@ -176,6 +177,31 @@ DEF_TEST(BlurDrawing, reporter) {
             }
         }
     }
+}
+
+DEF_TEST(BlurFromFuzzer, reporter) {
+    SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(5);
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(0);
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, true));
+
+    SkPath path = SkPathBuilder()
+                  .moveTo(9.22179222f, -9.84560131e-08f)
+                  .lineTo(-135747280, 1.44929934f)
+                  .conicTo(12.5465479f, -1.33952611e-07f, 12.44065f, -1.32821995e-07f, -SK_ScalarNaN)
+                  .lineTo(12.44065f, -1.32821995e-07f)
+                  .conicTo(12.4397478f, -1.3281236e-07f, 12.4397478f, -1.32812374e-07f, 1.00003612f)
+                  .conicTo(12.4397488f, -1.3281236e-07f, 12.4398584f, -1.3281354e-07f, 1.00000453f)
+                  .lineTo(12.4398584f, -1.3281354e-07f)
+                  .conicTo(12.4767818f, -1.33207763e-07f, 99, -1.21770707e+32f, 3.01859614e+19f)
+                  .detach();
+
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(100, 100));
+    auto canvas = surf->getCanvas();
+
+    canvas->drawPath(path, paint);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
