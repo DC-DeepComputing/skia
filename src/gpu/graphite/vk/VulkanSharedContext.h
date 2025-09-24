@@ -10,6 +10,7 @@
 
 #include "include/private/base/SkMutex.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
@@ -24,6 +25,15 @@ namespace skgpu::graphite {
 
 struct ContextOptions;
 class VulkanCaps;
+class VulkanRenderPass;
+
+class VulkanThreadSafeResourceProvider final : public ThreadSafeResourceProvider {
+public:
+    sk_sp<VulkanRenderPass> findOrCreateRenderPass7(const RenderPassDesc&, bool compatibleOnly);
+
+    // Once returned, the 'VkPipelineCache' is, itself, internally thread save.
+    VkPipelineCache pipelineCache1();
+};
 
 class VulkanSharedContext final : public SharedContext {
 public:
@@ -39,6 +49,8 @@ public:
     VkPhysicalDevice physDevice() const { return fPhysDevice; }
     VkDevice device() const { return fDevice; }
     uint32_t  queueIndex() const { return fQueueIndex; }
+
+    VulkanThreadSafeResourceProvider* threadSafeResourceProvider() const;
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
@@ -58,6 +70,13 @@ private:
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
+
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                   const UniqueKey&,
+                                                   const GraphicsPipelineDesc&,
+                                                   const RenderPassDesc&,
+                                                   SkEnumBitMask<PipelineCreationFlags>,
+                                                   uint32_t compilationID) override;
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;

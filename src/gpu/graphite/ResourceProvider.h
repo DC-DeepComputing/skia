@@ -60,15 +60,6 @@ public:
                                    const GraphicsPipelineHandle&);
     sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
 
-    // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
-    // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
-    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
-            const RuntimeEffectDictionary*,
-            const UniqueKey& pipelineKey,
-            const GraphicsPipelineDesc&,
-            const RenderPassDesc&,
-            SkEnumBitMask<PipelineCreationFlags>);
-
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);
 
     sk_sp<Texture> findOrCreateShareableTexture(SkISize,
@@ -98,22 +89,22 @@ public:
 
     ProxyCache* proxyCache() { return fResourceCache->proxyCache(); }
 
-    void setResourceCacheLimit(size_t bytes) { return fResourceCache->setMaxBudget(bytes); }
-    size_t getResourceCacheLimit() const { return fResourceCache->getMaxBudget(); }
-    size_t getResourceCacheCurrentBudgetedBytes() const {
+    void setResourceCacheLimit1(size_t bytes) { return fResourceCache->setMaxBudget(bytes); }
+    size_t getResourceCacheLimit1() const { return fResourceCache->getMaxBudget(); }
+    size_t getResourceCacheCurrentBudgetedBytes1() const {
         return fResourceCache->currentBudgetedBytes();
     }
-    size_t getResourceCacheCurrentPurgeableBytes() const {
+    size_t getResourceCacheCurrentPurgeableBytes1() const {
         return fResourceCache->currentPurgeableBytes();
     }
 
-    void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
+    void dumpMemoryStatistics1(SkTraceMemoryDump* traceMemoryDump) const {
         fResourceCache->dumpMemoryStatistics(traceMemoryDump);
     }
 
-    void freeGpuResources();
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
-    void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+    void freeGpuResources1();
+    void purgeResourcesNotUsedSince1(StdSteadyClock::time_point purgeTime);
+    void forceProcessReturnedResources1() { fResourceCache->forceProcessReturnedResources(); }
 
 #if defined(GPU_TEST_UTILS)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
@@ -142,13 +133,6 @@ protected:
     sk_sp<ResourceCache> fResourceCache;
 
 private:
-    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
-            const RuntimeEffectDictionary*,
-            const UniqueKey&,
-            const GraphicsPipelineDesc&,
-            const RenderPassDesc&,
-            SkEnumBitMask<PipelineCreationFlags>,
-            uint32_t compilationID) = 0;
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t size, BufferType type, AccessPattern) = 0;
