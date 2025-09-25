@@ -43,6 +43,16 @@ def main():
       "--target_os", default="", help="Target OS for host compilation.")
   parser.add_argument(
       "--target_cpu", default="", help="Target CPU for host compilation.")
+  parser.add_argument(
+      "--win_sdk", default="", help="Path to the Windows SDK.")
+  parser.add_argument(
+      "--win_sdk_version", default="", help="Version of the Windows SDK.")
+  parser.add_argument(
+      "--win_vc", default="", help="Path to Visual C++.")
+  parser.add_argument(
+      "--win_toolchain_version", default="", help="Version of the MSVC toolchain.")
+  parser.add_argument(
+      "--build_type", default="Release", help="CMake build type.")
   args = parser.parse_args()
 
   output_path = args.output_path
@@ -78,7 +88,7 @@ def main():
       # Fetch dependencies using DEPS, which is required for stand-alone builds.
       "-DDAWN_FETCH_DEPENDENCIES=ON",
       "-DDAWN_ENABLE_INSTALL=ON",
-      "-DCMAKE_BUILD_TYPE=Release",
+      f"-DCMAKE_BUILD_TYPE={args.build_type}",
       "-DDAWN_USE_X11=OFF",
       # Samples and tests are not needed and may have extra dependencies.
       "-DDAWN_BUILD_SAMPLES=OFF",
@@ -92,21 +102,65 @@ def main():
       "Ninja",
       f"-DCMAKE_MAKE_PROGRAM={ninja_exe}",
   ]
-  cxx_flags_to_add = []
-  if args.cxx_flags:
-    cxx_flags_to_add.extend(args.cxx_flags)
+  cxx_flags_to_add = args.cxx_flags or []
+
+  ld_flags = args.ld_flags or []
+  if args.win_sdk:
+    assert(args.win_vc)
+    assert(args.win_sdk_version)
+    # Explicitly tell CMake where to find the Windows Resource Compiler,
+    # Manifest Tool, and Archiver.
+    rc_exe_path = os.path.join(args.win_sdk, "bin", args.win_sdk_version,
+                               args.target_cpu, "rc.exe")
+    configure_cmd.append(f"-DCMAKE_RC_COMPILER={quote_if_needed(rc_exe_path.replace(os.sep, '/'))}")
+    mt_exe_path = os.path.join(args.win_sdk, "bin", args.win_sdk_version,
+                               args.target_cpu, "mt.exe")
+    configure_cmd.append(f"-DCMAKE_MT={quote_if_needed(mt_exe_path.replace(os.sep, '/'))}")
+
+    # On Windows, we need to explicitly tell clang where to find the toolchain
+    # headers and libraries.
+    um_lib_path = os.path.join(args.win_sdk, "Lib", args.win_sdk_version, "um", args.target_cpu)
+    ucrt_lib_path = os.path.join(args.win_sdk, "Lib", args.win_sdk_version, "ucrt", args.target_cpu)
+    msvc_lib_path = os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "lib", args.target_cpu)
+
+    ld_flags += [
+      f"/LIBPATH:{quote_if_needed(um_lib_path.replace(os.sep, '/'))}",
+      f"/LIBPATH:{quote_if_needed(ucrt_lib_path.replace(os.sep, '/'))}",
+      f"/LIBPATH:{quote_if_needed(msvc_lib_path.replace(os.sep, '/'))}",
+    ]
+
+    cxx_flags_to_add += [
+        # Skia uses a hermetic toolchain, so we need to tell clang where to
+        # find the MSVC headers and libraries.
+        "-imsvc",
+        os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "include"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "ucrt"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "shared"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "um"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "winrt"),
+    ]
+
+    # We want to build Dawn (and its dependencies) with /MT so we can statically
+    # link it into Skia.
+    configure_cmd.append("-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded")
+    configure_cmd.append("-DABSL_MSVC_STATIC_RUNTIME=ON")
 
   if cxx_flags_to_add:
-    cxx_flags = " ".join(cxx_flags_to_add)
-    configure_cmd.append(f"-DCMAKE_CXX_FLAGS={cxx_flags}")
-
-  ld_flags = args.ld_flags
+    c_cxx_flags_str = " ".join(cxx_flags_to_add)
+    #configure_cmd.append(f"-DCMAKE_C_FLAGS={c_cxx_flags_str}")
+    configure_cmd.append(f"-DCMAKE_CXX_FLAGS={c_cxx_flags_str}")
 
   if ld_flags:
     ld_flags_str = " ".join(ld_flags)
     configure_cmd.append(f"-DCMAKE_EXE_LINKER_FLAGS={ld_flags_str}")
     configure_cmd.append(f"-DCMAKE_SHARED_LINKER_FLAGS={ld_flags_str}")
     configure_cmd.append(f"-DCMAKE_MODULE_LINKER_FLAGS={ld_flags_str}")
+    # if not args.win_sdk:
+    #     configure_cmd.append(f"-DCMAKE_STATIC_LINKER_FLAGS={ld_flags_str}")
   subprocess.run(configure_cmd, check=True)
 
   # These tint targets (and their deps) are what Skia needs to build
@@ -129,7 +183,23 @@ def main():
     os.remove(gen_library_path)
 
   assert len(object_files) > 0
-  combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
+  # Use ar/lib to join all the object files that comprise the necessary
+  # libraries and any transitive dependencies into one .a file.
+  if args.win_sdk:
+    # On Windows, we use lld-link.exe, which acts like lib.exe when passed
+    # the /LIB flag. It should be in the same directory as the C compiler.
+    # The command line can be too long, so we use a response file.
+    linker_exe = os.path.join(os.path.dirname(args.cc), "lld-link.exe")
+    response_file_name = "objects.rsp"
+    response_file_path = os.path.join(build_dir, response_file_name)
+    with open(response_file_path, "w") as f:
+      for obj in object_files:
+        f.write(f'"{obj}"\n')
+    combine_obj_cmd = [
+        linker_exe, "/LIB", f"/OUT:{lib_name}", f"@{response_file_name}"
+    ]
+  else:
+    combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
   subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
 
   # Copy the final archive to the location expected by GN.
