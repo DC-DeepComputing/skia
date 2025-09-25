@@ -266,6 +266,17 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
 
 } // anonymous namespace
 
+bool MtlGraphicsPipeline::isReady() const {
+    if (!fAsync) {
+        return true;
+    }
+    if (fAsyncFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
         const MtlSharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,

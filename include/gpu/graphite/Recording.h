@@ -45,6 +45,9 @@ private:
     friend class Recorder;  // for ctor and LazyProxyData
     friend class RecordingPriv;
 
+    // Are all the Pipelines needed by this Recording already compiled?
+    bool arePipelinesReady() const;
+
     // LazyProxyData is used if this recording should be replayed to a target that is provided on
     // replay, and it handles the target proxy's instantiation with the provided target.
     class LazyProxyData {
