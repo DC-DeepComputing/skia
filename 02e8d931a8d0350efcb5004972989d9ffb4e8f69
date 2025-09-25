@@ -46,6 +46,30 @@
       },
       "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919b2057_92f55141",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-09-25T17:46:25Z",
+      "side": 1,
+      "message": "Just curious where you saw reports for scuba diffs, as the g3 roller seems okay?",
+      "parentUuid": "9380eb77_2550cbf5",
+      "range": {
+        "startLine": 104,
+        "startChar": 24,
+        "endLine": 104,
+        "endChar": 31
+      },
+      "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
