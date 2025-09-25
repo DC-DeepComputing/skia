@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06250ebb_ed6642bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-25T12:33:51Z",
+      "side": 1,
+      "message": "Thoughts?\n\n- fewer bespoke utilities is a natural good\n- and our benches certainly show std::sort to be faster (e.g. 2x+)\n- but also w/ a code size increase. do we care?",
+      "revId": "289501e2aa4cbdcf1bdb633e8dbf501e2fbf3c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
