@@ -33,6 +33,23 @@
       "message": "... if the gold diffs show tiny changes, its due to unstable sorting. BOTH our SkQSort and std::sort are unstable -- just differently unstable.",
       "revId": "289501e2aa4cbdcf1bdb633e8dbf501e2fbf3c72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27d5106d_79e345b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-25T13:12:55Z",
+      "side": 1,
+      "message": "I think I am opening to removing our custom sorts given that `std::sort` outperforms our variants. `std::sort` also has specialized block quick sort implementations for 32-bit and 64-bit integer types that it will use automatically, which are particularly fast.\n\nThe +10kb code size is unfortunate, but it looks like some of it is still referencing various SkT[x]Sort functions so perhaps just removing SkTSort.h entirely would be the way to go.",
+      "revId": "289501e2aa4cbdcf1bdb633e8dbf501e2fbf3c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
