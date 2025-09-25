@@ -70,6 +70,30 @@
       },
       "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe150b5_af258f2f",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-25T17:58:37Z",
+      "side": 1,
+      "message": "They assigned me a bug: https://buganizer.corp.google.com/issues/447239464\n\nPer https://docs.google.com/document/d/1x-cYtwCU59iOsl6QWBPQrPWAXvqkoxAgMyCu5Bx8Luw/edit?resourcekey\u003d0-9cFuBDmK7Y9Qj5a4IPCiTA\u0026tab\u003dt.0#heading\u003dh.mpm9eevkf0pi our g3 roller isn\u0027t blocked on scuba diffs because it\u0027s too much work for us to keep triaging them, we wait for them to come back with suspicious vs. benign diffs.",
+      "parentUuid": "919b2057_92f55141",
+      "range": {
+        "startLine": 104,
+        "startChar": 24,
+        "endLine": 104,
+        "endChar": 31
+      },
+      "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
