@@ -59,9 +59,10 @@ private:
                         sk_sp<skgpu::VulkanMemoryAllocator>,
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
+                        ContextOptions::PersistentCache*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
-    VkPipelineCache createPipelineCache();
+    VkPipelineCache createPipelineCache(ContextOptions::PersistentCache*);
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;
