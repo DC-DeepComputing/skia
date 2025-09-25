@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9656dc1a_08958822",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-25T17:06:45Z",
+      "side": 1,
+      "message": "We are getting reports of google3 diffs, e.g. https://scuba.corp.google.com/report/6281b3e6-cf30-4c8e-88c3-539846df6e19?groupBy\u003dGolden+Location\u0026pageSize\u003d25\u0026pageIndex\u003d0\u0026selected_node\u003d6281b3e6-cf30-4c8e-88c3-539846df6e19\u0026status\u003d2, caused by the Skia roll that had this change and https://skia-review.googlesource.com/c/skia/+/1061316 in it.\n\nShould this reference have been `merger`?",
+      "range": {
+        "startLine": 104,
+        "startChar": 24,
+        "endLine": 104,
+        "endChar": 31
+      },
+      "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
