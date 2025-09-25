@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 
 namespace skgpu::graphite {
 
@@ -66,7 +67,6 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
 }
 
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
-        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -102,10 +102,10 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                              "compilationID", compilationID);
 #endif
 
-        pipeline = resourceProvider->createGraphicsPipeline(runtimeDict, pipelineKey,
-                                                            pipelineDesc, renderPassDesc,
-                                                            pipelineCreationFlags,
-                                                            compilationID);
+        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                pipelineDesc, renderPassDesc,
+                                                pipelineCreationFlags,
+                                                compilationID);
         if (pipeline) {
             globalCache->invokePipelineCallback(this, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
@@ -114,6 +114,31 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
         }
     }
     return pipeline;
+}
+
+#if defined(SK_DEBUG)
+size_t SharedContext::getResourceCacheLimit() const {
+    return fThreadSafeResourceProvider->getResourceCacheLimit();
+}
+size_t SharedContext::getResourceCacheCurrentBudgetedBytes() const {
+    return fThreadSafeResourceProvider->getResourceCacheCurrentBudgetedBytes();
+}
+size_t SharedContext::getResourceCacheCurrentPurgeableBytes() const {
+    return fThreadSafeResourceProvider->getResourceCacheCurrentPurgeableBytes();
+}
+#endif
+
+void SharedContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
+    fThreadSafeResourceProvider->dumpMemoryStatistics(traceMemoryDump);
+}
+void SharedContext::freeGpuResources() {
+    fThreadSafeResourceProvider->freeGpuResources();
+}
+void SharedContext::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    fThreadSafeResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+}
+void SharedContext::forceProcessReturnedResources() {
+    fThreadSafeResourceProvider->forceProcessReturnedResources();
 }
 
 } // namespace skgpu::graphite
