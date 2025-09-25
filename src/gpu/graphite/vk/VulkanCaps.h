@@ -160,6 +160,7 @@ private:
     EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2*,
                                        uint32_t physicalDeviceVersion);
 
+public:
     struct PhysicalDeviceProperties {
         VkPhysicalDeviceProperties2 fBase;
         VkPhysicalDeviceDriverProperties fDriver;
@@ -167,13 +168,14 @@ private:
         VkPhysicalDeviceHostImageCopyPropertiesEXT fHic;
         bool fHicHasShaderReadOnlyDstLayout = false;
     };
-    void getProperties(const skgpu::VulkanInterface*,
-                       VkPhysicalDevice,
-                       uint32_t physicalDeviceVersion,
-                       const skgpu::VulkanExtensions*,
-                       const EnabledFeatures&,
-                       PhysicalDeviceProperties*);
+    static void GetProperties(const skgpu::VulkanInterface*,
+                              VkPhysicalDevice,
+                              uint32_t physicalDeviceVersion,
+                              const skgpu::VulkanExtensions*,
+                              const EnabledFeatures&,
+                              PhysicalDeviceProperties*);
 
+private:
     void applyDriverCorrectnessWorkarounds(const PhysicalDeviceProperties&);
 
     void initShaderCaps(const EnabledFeatures, const uint32_t vendorID);

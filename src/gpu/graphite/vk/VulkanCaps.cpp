@@ -104,7 +104,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
             this->getEnabledFeatures(features, physicalDeviceVersion);
 
     PhysicalDeviceProperties deviceProperties;
-    this->getProperties(vkInterface,
+    this->GetProperties(vkInterface,
                         physDev,
                         physicalDeviceVersion,
                         extensions,
@@ -408,7 +408,7 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
 }
 
 // Query the physical device properties that Graphite cares about.
-void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
+void VulkanCaps::GetProperties(const skgpu::VulkanInterface* vkInterface,
                                VkPhysicalDevice physDev,
                                uint32_t physicalDeviceVersion,
                                const skgpu::VulkanExtensions* extensions,

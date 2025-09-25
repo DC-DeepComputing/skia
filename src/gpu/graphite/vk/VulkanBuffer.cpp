@@ -161,8 +161,8 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     if (result != VK_SUCCESS) {
         skgpu::VulkanMemory::FreeBufferMemory(allocator, alloc);
         VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
-                buffer,
-                /*const VkAllocationCallbacks*=*/nullptr));
+                    buffer,
+                    /*const VkAllocationCallbacks*=*/nullptr));
         return nullptr;
     }
 
