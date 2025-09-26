@@ -19,6 +19,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2f2de2_3fd6e66b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-26T14:02:56Z",
+      "side": 1,
+      "message": "I believe it was using skottie, the issues were text that had a lot of \"path effects\" applied to it seemed to be clipped arbitrarily against a slanted line. But from their tests, it\u0027s hard for me to know exactly how they would have been constructing these paths from the original text path outline.\n\nMy suspicion was that they were merging things together and the `fMerged` vs. `merger` reference in this CL meant that some of the builder\u0027s verbs were getting inadvertantly discarded.",
+      "parentUuid": "8c077239_8f2fdfc0",
+      "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9656dc1a_08958822",
