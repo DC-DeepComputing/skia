@@ -972,3 +972,42 @@ DEF_TEST(GeometryChopMonoCubicAtX_OutOfRangeReturnFalse, reporter) {
     // Too high
     REPORTER_ASSERT(reporter, !SkChopMonoCubicAtX(inputs, 20, outputs));
 }
+
+DEF_TEST(ConicsWithCrazyW, reporter) {
+    constexpr float max = std::numeric_limits<float>::max();
+    constexpr float inf = std::numeric_limits<float>::infinity();
+    constexpr float nanq = std::numeric_limits<float>::quiet_NaN();
+    constexpr float nans = std::numeric_limits<float>::signaling_NaN();
+
+    constexpr float weights[] = {
+        0, 1, 16383, 65535, max/4, max/2, max, inf, nanq, nans,
+    };
+
+    constexpr float length = 100;
+    SkConic conic = {{0, 0}, {length, 0}, {0, length}, 1};
+
+    // any points on the conic must lie within the convex-hull of the conic's control-points
+    auto is_in_convex_hull = [](SkPoint p) {
+        return p.fX >= 0 && p.fY >= 0 && (p.fX + p.fY) <= length;
+    };
+
+    constexpr float tol = 0;
+    for (float sign : {+1, -1}) {
+        for (auto w : weights) {
+            conic.fW = w * sign;
+
+            constexpr int kExtremePOW2 = 30;    // any larger, and 1 << that would overflow
+            const int n = conic.computeQuadPOW2(tol);
+            REPORTER_ASSERT(reporter, n >= 0 && n <= kExtremePOW2);
+
+            const int count = 1 << n;
+            std::vector<SkPoint> pts(count);
+            int count2 = conic.chopIntoQuadsPOW2(pts.data(), n);
+            REPORTER_ASSERT(reporter, count2 <= count);
+
+            for (auto p : pts) {
+                REPORTER_ASSERT(reporter, is_in_convex_hull(p));
+            }
+        }
+    }
+}
