@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c077239_8f2fdfc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-26T13:47:50Z",
+      "side": 1,
+      "message": "I cannot see any of the images. Do they appear to be in SVG or Skottie content?\n\nOn Thu, Sep 25, 2025 at 1:58 PM Michael Ludwig (Gerrit) \u003cnoreply-gerritcodereview+yWaukldOn4sKP5WvmRDTiw\u003d\u003d@\u003e wrote: chromium.org\n\n\"It ain\u0027t what you don\u0027t know that gets you into trouble. It\u0027s what you know for sure that just ain\u0027t so.\" -- Mark Twain\n\n\"I am pleased to see that we have differences\" -- Surak",
+      "tag": "mailMessageId\u003d\u003cCAHuMaiwx5SSuxCGaMuXDBmnGg1SOZ4V6qm\u003dVow2KM5hyZ+MUVg@mail.gmail.com\u003e",
+      "revId": "02e8d931a8d0350efcb5004972989d9ffb4e8f69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9656dc1a_08958822",
