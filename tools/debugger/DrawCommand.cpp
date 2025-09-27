@@ -652,7 +652,7 @@ void DrawCommand::WritePNG(const SkBitmap& bitmap, SkWStream& out) {
     SkPngEncoder::Options options;
     options.fZLibLevel   = 1;
     options.fFilterFlags = SkPngEncoder::FilterFlag::kNone;
-    SkPngEncoder::Encode(&out, pm, options);
+    SkPngEncoder::Encodex(&out, pm, options);
 }
 
 // flattens an image to a Json stream, also called from shader flatten

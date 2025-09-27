@@ -63,7 +63,7 @@ static bool encode(SkEncodedImageFormat format, SkWStream* dst, const SkPixmap& 
         case SkEncodedImageFormat::kJPEG:
             return SkJpegEncoder::Encode(dst, src, SkJpegEncoder::Options());
         case SkEncodedImageFormat::kPNG:
-            return SkPngEncoder::Encode(dst, src, SkPngEncoder::Options());
+            return SkPngEncoder::Encodex(dst, src, SkPngEncoder::Options());
         default:
             return false;
     }
@@ -234,7 +234,7 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
 #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
         success = SkPngRustEncoder::Encode(&buf, src, SkPngRustEncoder::Options());
 #else
-        success = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
+        success = SkPngEncoder::Encodex(&buf, src, SkPngEncoder::Options());
 #endif
         REPORTER_ASSERT(r, success);
         if (!success) {
@@ -433,12 +433,9 @@ static void testPngComments(const SkPixmap& src, SkPngEncoder::Options& options,
             commentSizes.data(), commentStrings.size());
 
 
-    SkDynamicMemoryWStream dst;
-    bool success = SkPngEncoder::Encode(&dst, src, options);
-    REPORTER_ASSERT(r, success);
-
-    std::vector<char> output(dst.bytesWritten());
-    dst.copyTo(output.data());
+    sk_sp<SkData> dst = SkPngEncoder::Encode(src, options);
+    REPORTER_ASSERT(r, dst != nullptr);
+    auto output = dst->byteSpan();
 
     // Each chunk is of the form length (4 bytes), chunk type (tEXt), data,
     // checksum (4 bytes).  Make sure we find all of them in the encoded
@@ -485,24 +482,20 @@ DEF_TEST(Encode_PngOptions, r) {
         return;
     }
 
-    SkDynamicMemoryWStream dst0, dst1, dst2;
     SkPngEncoder::Options options;
-    success = SkPngEncoder::Encode(&dst0, src, options);
-    REPORTER_ASSERT(r, success);
+    sk_sp<SkData> data0 = SkPngEncoder::Encode(src, options);
+    REPORTER_ASSERT(r, data0);
 
     options.fFilterFlags = SkPngEncoder::FilterFlag::kUp;
-    success = SkPngEncoder::Encode(&dst1, src, options);
-    REPORTER_ASSERT(r, success);
+    sk_sp<SkData> data1 = SkPngEncoder::Encode(src, options);
+    REPORTER_ASSERT(r, data1);
 
     options.fZLibLevel = 3;
-    success = SkPngEncoder::Encode(&dst2, src, options);
-    REPORTER_ASSERT(r, success);
+    sk_sp<SkData> data2 = SkPngEncoder::Encode(src, options);
+    REPORTER_ASSERT(r, data2);
 
     testPngComments(src, options, r);
 
-    sk_sp<SkData> data0 = dst0.detachAsData();
-    sk_sp<SkData> data1 = dst1.detachAsData();
-    sk_sp<SkData> data2 = dst2.detachAsData();
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
@@ -714,7 +707,7 @@ DEF_TEST(Encode_Alpha, r) {
             if (format == SkEncodedImageFormat::kJPEG) {
                 success = SkJpegEncoder::Encode(&stream, bm.pixmap(), {});
             } else if (format == SkEncodedImageFormat::kPNG) {
-                success = SkPngEncoder::Encode(&stream, bm.pixmap(), {});
+                success = SkPngEncoder::Encodex(&stream, bm.pixmap(), {});
             } else {
                 success = SkWebpEncoder::Encode(&stream, bm.pixmap(), {});
             }

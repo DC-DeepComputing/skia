@@ -67,7 +67,7 @@ static bool save_pixels(GrDirectContext* dContext,
         return false;
     }
 
-    if (!SkPngEncoder::Encode(&file, bm.pixmap(), {})) {
+    if (!SkPngEncoder::Encodex(&file, bm.pixmap(), {})) {
         SkDebugf("------ failed to encode %s\n", filename);
         remove(filename);  // remove any partial file
         return false;

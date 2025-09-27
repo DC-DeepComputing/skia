@@ -175,7 +175,7 @@ void potentially_write_to_png(const char* directory,
         SkFILEWStream file(filename.c_str());
         SkAssertResult(file.isValid());
 
-        SkAssertResult(SkPngEncoder::Encode(&file, bm.pixmap(), {}));
+        SkAssertResult(SkPngEncoder::Encodex(&file, bm.pixmap(), {}));
     }
 }
 

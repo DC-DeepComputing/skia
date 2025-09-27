@@ -84,7 +84,7 @@ static bool encode_png(SkWStream* dst,
     SkPngEncoder::Options opts;
     opts.fFilterFlags = filters;
     opts.fZLibLevel = zlibLevel;
-    return SkPngEncoder::Encode(dst, src, opts);
+    return SkPngEncoder::Encodex(dst, src, opts);
 }
 
 #define PNG(FLAG, ZLIBLEVEL) [](SkWStream* d, const SkPixmap& s) { \

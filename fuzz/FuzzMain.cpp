@@ -458,7 +458,7 @@ static void fuzz_api(const sk_sp<SkData>& data, const SkString& name) {
 static void dump_png(const SkBitmap& bitmap) {
     if (!FLAGS_dump.isEmpty()) {
         SkFILEWStream file(FLAGS_dump[0]);
-        SkPngEncoder::Encode(&file, bitmap.pixmap(), {});
+        SkPngEncoder::Encodex(&file, bitmap.pixmap(), {});
         SkDebugf("Dumped to %s\n", FLAGS_dump[0]);
     }
 }

@@ -38,7 +38,7 @@ inline void write_bm(const char* name, const SkBitmap& bm) {
     SkString filename = SkOSPath::Join(FLAGS_codecWritePath[0], name);
     filename.appendf(".png");
     SkFILEWStream file(filename.c_str());
-    if (!SkPngEncoder::Encode(&file, bm.pixmap(), {})) {
+    if (!SkPngEncoder::Encodex(&file, bm.pixmap(), {})) {
         SkDebugf("failed to write '%s'\n", filename.c_str());
     }
 }

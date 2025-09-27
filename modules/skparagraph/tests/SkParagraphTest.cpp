@@ -221,7 +221,7 @@ public:
         if (!tmpDir.isEmpty()) {
             SkString path = SkOSPath::Join(tmpDir.c_str(), name);
             SkFILEWStream file(path.c_str());
-            if (!SkPngEncoder::Encode(&file, bits.pixmap(), {})) {
+            if (!SkPngEncoder::Encodex(&file, bits.pixmap(), {})) {
                 SkDebugf("Cannot write a picture %s\n", name);
             }
         }

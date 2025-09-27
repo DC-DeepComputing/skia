@@ -49,7 +49,7 @@ static sk_sp<SkData> encode_data(SkEncodedImageFormat type, const SkBitmap& bitm
     SkDynamicMemoryWStream buf;
     switch (type) {
         case SkEncodedImageFormat::kPNG: {
-            bool success = SkPngEncoder::Encode(&buf, src, {});
+            bool success = SkPngEncoder::Encodex(&buf, src, {});
             return success ? buf.detachAsData() : nullptr;
         }
         case SkEncodedImageFormat::kJPEG: {

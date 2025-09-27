@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
     // Use default encoding options.
     SkPngEncoder::Options png_options;
 
-    if (!SkPngEncoder::Encode(&out, pixmap, png_options)) {
+    if (!SkPngEncoder::Encodex(&out, pixmap, png_options)) {
         std::cerr << "PNG encoding failed.\n";
         return 1;
     }

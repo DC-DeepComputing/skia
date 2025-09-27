@@ -320,7 +320,7 @@ static const bool kDumpPngs = true;
 
 void write_png(const std::string& filename, const SkBitmap& bitmap) {
     SkFILEWStream w{filename.c_str()};
-    SkASSERT_RELEASE(SkPngEncoder::Encode(&w, bitmap.pixmap(), {}));
+    SkASSERT_RELEASE(SkPngEncoder::Encodex(&w, bitmap.pixmap(), {}));
     w.fsync();
 }
 

@@ -71,7 +71,7 @@ static sk_sp<SkData> encode_data(const SkBitmap& bitmap, SkEncodedImageFormat fo
 
     switch (format) {
         case SkEncodedImageFormat::kPNG:
-            SkAssertResult(SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options()));
+            SkAssertResult(SkPngEncoder::Encodex(&buf, src, SkPngEncoder::Options()));
             break;
         case SkEncodedImageFormat::kWEBP:
             SkAssertResult(SkWebpEncoder::Encode(&buf, src, SkWebpEncoder::Options()));

@@ -109,7 +109,7 @@ bool write_bitmap(const SkString& path, const SkBitmap& bitmap) {
         return false;
     }
 
-    return SkPngEncoder::Encode(&file, copy.pixmap(), {});
+    return SkPngEncoder::Encodex(&file, copy.pixmap(), {});
 }
 
 /// Return a copy of the "input" string, within which we have replaced all instances

@@ -162,7 +162,7 @@ public:
         SkPixmap pixmap;
         SkAssertResult(frame->peekPixels(&pixmap));
 
-        SkPngEncoder::Encode(stream.get(), pixmap, options);
+        SkPngEncoder::Encodex(stream.get(), pixmap, options);
     }
 };
 

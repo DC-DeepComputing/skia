@@ -98,7 +98,15 @@ struct Options {
  *
  *  Returns true on success.  Returns false on an invalid or unsupported |src|.
  */
-SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+SK_API bool Encodex(SkWStream* dst, const SkPixmap& src, const Options& options);
+
+/**
+ *  Encode the |src| pixels as a data, or nullptr on failure.
+ *  |options| may be used to control the encoding behavior.
+ *
+ *  Returns encoded data, or nullptr on failure.
+ */
+SK_API sk_sp<SkData> Encode(const SkPixmap& src, const Options& options);
 
 /**
 *  Encode the provided image and return the resulting bytes. If the image was created as

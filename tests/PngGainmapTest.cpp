@@ -225,7 +225,7 @@ DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
         SkPngEncoder::Options options;
         options.fGainmap = &(sourceGainmap.pixmap());
         options.fGainmapInfo = &sourceGainmapInfo;
-        REPORTER_ASSERT(r, SkPngEncoder::Encode(&stream, sourceBase.pixmap(), options));
+        REPORTER_ASSERT(r, SkPngEncoder::Encodex(&stream, sourceBase.pixmap(), options));
 
         SkBitmap baseBitmap;
         SkBitmap gainmapBitmap;
