@@ -187,6 +187,11 @@ bool Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
     return true;
 }
 
+sk_sp<SkData> Encode(const SkPixmap& pixmap, const Options& opts) {
+    SkDynamicMemoryWStream stream;
+    return Encode(&stream, pixmap, opts) ? stream.detachAsData() : nullptr;
+}
+
 bool EncodeAnimated(SkWStream* stream, SkSpan<const SkEncoder::Frame> frames, const Options& opts) {
     if (!stream || frames.empty()) {
         return false;
