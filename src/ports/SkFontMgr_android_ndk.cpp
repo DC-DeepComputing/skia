@@ -18,7 +18,6 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkSharedMutex.h"
-#include "src/base/SkTSort.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkFontDescriptor.h"
@@ -27,6 +26,7 @@
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+#include <algorithm>
 #include <unicode/uchar.h>
 #include <unicode/ustring.h>
 
@@ -131,7 +131,7 @@ static SkSpan<Coordinate> Normalize(SkSpan<Coordinate> variation) {
 }
 
 static SkSpan<Coordinate> Sort(SkSpan<Coordinate> variation) {
-    SkTQSort(variation.begin(), variation.end(), variation::coordinateLess);
+    std::sort(variation.begin(), variation.end(), variation::coordinateLess);
     return variation;
 }
 

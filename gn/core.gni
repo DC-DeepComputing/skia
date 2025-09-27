@@ -243,7 +243,6 @@ skia_core_sources = [
   "$_src/base/SkTLazy.h",
   "$_src/base/SkTSearch.cpp",
   "$_src/base/SkTSearch.h",
-  "$_src/base/SkTSort.h",
   "$_src/base/SkThreadID.cpp",
   "$_src/base/SkTime.cpp",
   "$_src/base/SkTime.h",
