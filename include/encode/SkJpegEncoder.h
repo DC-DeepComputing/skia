@@ -93,6 +93,7 @@ SK_API bool Encode(SkWStream* dst,
                    const SkYUVAPixmaps& src,
                    const SkColorSpace* srcColorSpace,
                    const Options& options);
+SK_API sk_sp<SkData> Encode(const SkPixmap& src, const Options& options);
 
 /**
 *  Encode the provided image and return the resulting bytes. If the image was created as
