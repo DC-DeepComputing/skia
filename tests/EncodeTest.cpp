@@ -433,12 +433,9 @@ static void testPngComments(const SkPixmap& src, SkPngEncoder::Options& options,
             commentSizes.data(), commentStrings.size());
 
 
-    SkDynamicMemoryWStream dst;
-    bool success = SkPngEncoder::Encode(&dst, src, options);
-    REPORTER_ASSERT(r, success);
-
-    std::vector<char> output(dst.bytesWritten());
-    dst.copyTo(output.data());
+    sk_sp<SkData> dst = SkPngEncoder::Encode(src, options);
+    REPORTER_ASSERT(r, dst);
+    SkSpan<const char> output{ (const char*)dst->data(), dst->size() };
 
     // Each chunk is of the form length (4 bytes), chunk type (tEXt), data,
     // checksum (4 bytes).  Make sure we find all of them in the encoded

@@ -43,8 +43,7 @@ DEF_FUZZ(PNGEncoder, fuzz) {
     auto opts = SkPngEncoder::Options{};
     fuzz->nextRange(&opts.fZLibLevel, 0, 9);
 
-    SkDynamicMemoryWStream dest;
-    SkPngEncoder::Encode(&dest, bm.pixmap(), opts);
+    std::ignore = SkPngEncoder::Encode(bm.pixmap(), opts);
 }
 
 DEF_FUZZ(JPEGEncoder, fuzz) {
