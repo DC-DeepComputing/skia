@@ -13,7 +13,8 @@
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkTSearch.h"
-#include "src/base/SkTSort.h"
+
+#include <algorithm>
 
 bool SkWGLExtensions::hasExtension(HDC dc, const char* ext) const {
     if (nullptr == this->fGetExtensionsString) {
@@ -148,7 +149,7 @@ int SkWGLExtensions::selectFormat(const int formats[],
         rankedFormats[i].fSampleCnt = std::max(1, numSamples);
         rankedFormats[i].fChoosePixelFormatRank = i;
     }
-    SkTQSort(rankedFormats.begin(), rankedFormats.end(), pf_less);
+    std::sort(rankedFormats.begin(), rankedFormats.end(), pf_less);
     int idx = SkTSearch<PixelFormat, pf_less>(rankedFormats.begin(),
                                               rankedFormats.size(),
                                               desiredFormat,

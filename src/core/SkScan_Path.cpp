@@ -19,7 +19,6 @@
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkSafe32.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkEdge.h"
 #include "src/core/SkEdgeBuilder.h"
@@ -377,7 +376,7 @@ static bool compare_edges(const SkEdge* a, const SkEdge* b) {
 }
 
 static SkEdge* sort_edges(SkEdge* list[], int count, SkEdge** last) {
-    SkTQSort(list, list + count, compare_edges);
+    std::sort(list, list + count, compare_edges);
 
     // now make the edges linked in sorted order
     for (int i = 1; i < count; i++) {

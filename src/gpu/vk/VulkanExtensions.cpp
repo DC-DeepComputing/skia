@@ -9,7 +9,6 @@
 
 #include "include/private/base/SkAssert.h"
 #include "src/base/SkTSearch.h"
-#include "src/base/SkTSort.h"
 
 #include <utility>
 
@@ -48,7 +47,7 @@ void VulkanExtensions::init(VulkanGetProc getProc,
         // if not already in the list, add it
         if (find_info(fExtensions, extension) < 0) {
             fExtensions.push_back() = Info(extension);
-            SkTQSort(fExtensions.begin(), fExtensions.end(), extension_compare);
+            std::sort(fExtensions.begin(), fExtensions.end(), extension_compare);
         }
     }
     for (uint32_t i = 0; i < deviceExtensionCount; ++i) {
@@ -56,7 +55,7 @@ void VulkanExtensions::init(VulkanGetProc getProc,
         // if not already in the list, add it
         if (find_info(fExtensions, extension) < 0) {
             fExtensions.push_back() = Info(extension);
-            SkTQSort(fExtensions.begin(), fExtensions.end(), extension_compare);
+            std::sort(fExtensions.begin(), fExtensions.end(), extension_compare);
         }
     }
     this->getSpecVersions(std::move(getProc), instance, physDev);

@@ -43,7 +43,6 @@ PRIVATE_HEADERS = [
     "SkTInternalLList.h",
     "SkTLazy.h",
     "SkTSearch.h",
-    "SkTSort.h",
     "SkTime.h",
     "SkUTF.h",
     "SkUtils.h",

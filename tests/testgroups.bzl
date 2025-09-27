@@ -137,7 +137,6 @@ CORE_TESTS = [
     "SkUTFTest.cpp",
     "SkVxTest.cpp",
     "SkXmpTest.cpp",
-    "SortTest.cpp",
     "SrcOverTest.cpp",
     "StreamTest.cpp",
     "StringTest.cpp",
