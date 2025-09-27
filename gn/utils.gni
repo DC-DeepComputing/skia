@@ -63,6 +63,8 @@ skia_utils_private = [
   "$_src/utils/SkCharToGlyphCache.h",
   "$_src/utils/SkClipStackUtils.cpp",
   "$_src/utils/SkClipStackUtils.h",
+  "$_src/utils/SkCompareUtils.cpp",
+  "$_src/utils/SkCompareUtils.h",
   "$_src/utils/SkCustomTypeface.cpp",
   "$_src/utils/SkDashPath.cpp",
   "$_src/utils/SkDashPathPriv.h",

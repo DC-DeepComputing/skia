@@ -35,6 +35,7 @@
 #include "src/gpu/ganesh/GrStyle.h"
 #include "src/gpu/ganesh/geometry/GrShape.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
+#include "src/utils/SkCompareUtils.h"
 #include "tests/Test.h"
 
 #include <cstdint>
@@ -77,8 +78,15 @@ static bool make_key(Key* key, const GrStyledShape& shape) {
 }
 
 static bool paths_fill_same(const SkPath& a, const SkPath& b) {
+#if 0
     auto pathXor = Op(a, b, SkPathOp::kXOR_SkPathOp);
     return !pathXor.has_value() || pathXor->isEmpty();
+#else
+    return skia_compare::A8ComparePaths(a, b, [](int x, int y, uint8_t pa, uint8_t pb) {
+        SkDebugf("[%d %d] %x %x\n", x, y, pa, pb);
+        return false;   // zero tolerance
+    });
+#endif
 }
 
 static bool test_bounds_by_rasterizing(const SkPath& path, const SkRect& bounds) {

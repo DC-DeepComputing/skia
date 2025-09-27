@@ -26,6 +26,7 @@ skia_filegroup(
         "SkBitSet.h",
         "SkCallableTraits.h",
         "SkCanvasStack.h",
+        "SkCompareUtils.h",
         "SkDashPathPriv.h",
         "SkJSONWriter.h",
         "SkMatrix22.h",
@@ -41,6 +42,7 @@ skia_filegroup(
     srcs = [
         "SkCamera.cpp",
         "SkCanvasStack.cpp",
+        "SkCompareUtils.cpp",
         "SkCustomTypeface.cpp",
         "SkDashPath.cpp",
         "SkEventTracer.cpp",
