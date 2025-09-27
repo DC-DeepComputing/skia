@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdab8e2c_c8d8dd2e",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-27T19:56:47Z",
+      "side": 1,
+      "message": "Removed -- not needed.",
+      "parentUuid": "dfb1b461_8f3f8cbd",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 33
+      },
+      "revId": "e3b3defe2211dc1c7c3b9d9765889c0bbcccad7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c694b8_787f20f9",
