@@ -16,7 +16,6 @@
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
-#include "src/base/SkTSort.h"
 #include "src/codec/SkBmpCodec.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkStreamPriv.h"
@@ -135,13 +134,9 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
     // increasing offset.  However, the specification does not indicate that
     // they must be stored in this order, so we will not trust that this is the
     // case.  Here we sort the embedded images by increasing offset.
-    struct EntryLessThan {
-        bool operator() (Entry a, Entry b) const {
-            return a.offset < b.offset;
-        }
-    };
-    EntryLessThan lessThan;
-    SkTQSort(directoryEntries, directoryEntries + numImages, lessThan);
+    std::sort(directoryEntries, directoryEntries + numImages, [](Entry a, Entry b) {
+        return a.offset < b.offset;
+    });
 
     // Now will construct a candidate codec for each of the embedded images
     uint32_t bytesRead = kIcoDirectoryBytes + numImages * kIcoDirEntryBytes;

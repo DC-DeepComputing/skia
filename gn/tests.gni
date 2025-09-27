@@ -290,7 +290,6 @@ tests_sources = [
   "$_tests/Skbug6389.cpp",
   "$_tests/Skbug6653.cpp",
   "$_tests/SlugTest.cpp",
-  "$_tests/SortTest.cpp",
   "$_tests/SpecialImageTest.cpp",
   "$_tests/SrcOverTest.cpp",
   "$_tests/SrcSrcOverBatchTest.cpp",

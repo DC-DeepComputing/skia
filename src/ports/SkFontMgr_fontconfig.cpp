@@ -24,7 +24,6 @@
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkThreadAnnotations.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkOSFile.h"
@@ -35,6 +34,7 @@
 #include <fontconfig/fontconfig.h>
 
 #include <string.h>
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -755,8 +755,8 @@ protected:
         getStrings(font, object, fontStrings);
         getStrings(pattern, object, patternStrings);
 
-        SkTQSort(fontStrings.begin(), fontStrings.end(), compareStrings);
-        SkTQSort(patternStrings.begin(), patternStrings.end(), compareStrings);
+        std::sort(fontStrings.begin(), fontStrings.end(), compareStrings);
+        std::sort(patternStrings.begin(), patternStrings.end(), compareStrings);
 
         FcChar8** fontString = fontStrings.begin();
         FcChar8** patternString = patternStrings.begin();

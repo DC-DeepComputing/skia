@@ -15,7 +15,6 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkMathPriv.h"
 #include "src/base/SkRandom.h"
-#include "src/base/SkTSort.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -656,8 +655,8 @@ uint32_t GrResourceCache::getNextTimestamp() {
                 fPurgeableQueue.pop();
             }
 
-            SkTQSort(fNonpurgeableResources.begin(), fNonpurgeableResources.end(),
-                     CompareTimestamp);
+            std::sort(fNonpurgeableResources.begin(), fNonpurgeableResources.end(),
+                      CompareTimestamp);
 
             // Pick resources out of the purgeable and non-purgeable arrays based on lowest
             // timestamp and assign new timestamps.
