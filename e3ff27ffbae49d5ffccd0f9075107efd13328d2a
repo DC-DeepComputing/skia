@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a67726a4_5077ea8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-27T17:50:16Z",
+      "side": 1,
+      "message": "Testing the change in sort routines, I was hitting false-negatives, as Gr wanted to know if two paths would draw the same. Using pathops proved to be ... fragile (after the sorting impl change) -- so I\u0027m suggesting we just use drawing to compare paths.\n\nThis change *does* allow the Gr tests to pass with the sorting CL",
+      "revId": "e3ff27ffbae49d5ffccd0f9075107efd13328d2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
