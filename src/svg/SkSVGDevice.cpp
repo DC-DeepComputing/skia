@@ -926,12 +926,12 @@ void SkSVGDevice::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> pts
             break;
     }
 
-    this->drawPath(path.detach(), paint, true);
+    this->drawPath(path.detach(), paint);
 }
 
 void SkSVGDevice::drawRect(const SkRect& r, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::Rect(r), paint, true);
+        this->drawPath(SkPath::Rect(r), paint);
         return;
     }
 
@@ -955,7 +955,7 @@ void SkSVGDevice::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void SkSVGDevice::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::Oval(oval), paint, true);
+        this->drawPath(SkPath::Oval(oval), paint);
         return;
     }
 
@@ -968,7 +968,7 @@ void SkSVGDevice::drawOval(const SkRect& oval, const SkPaint& paint) {
 
 void SkSVGDevice::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::RRect(rr), paint, true);
+        this->drawPath(SkPath::RRect(rr), paint);
         return;
     }
 
@@ -976,7 +976,7 @@ void SkSVGDevice::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     elem.addPathAttributes(SkPath::RRect(rr), this->pathEncoding());
 }
 
-void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint) {
     if (path.isInverseFillType()) {
       SkDebugf("Inverse path fill type not yet implemented.");
       return;
