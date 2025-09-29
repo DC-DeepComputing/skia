@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3728cfec_6938feb4",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-29T15:28:24Z",
+      "side": 1,
+      "message": "It is a good suggestion -- less to think about in this CL if that change has already landed.",
+      "parentUuid": "36b80963_269e10e1",
+      "range": {
+        "startLine": 1007,
+        "startChar": 74,
+        "endLine": 1007,
+        "endChar": 78
+      },
+      "revId": "7ef725fa1c754098fb59a049191c04e327f515f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed4df27e_15b68954",
