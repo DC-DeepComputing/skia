@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b88591_a2d82f05",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-29T18:26:29Z",
+      "side": 1,
+      "message": "nit: `canvas`",
+      "range": {
+        "startLine": 793,
+        "startChar": 8,
+        "endLine": 793,
+        "endChar": 25
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e0476f84_690e1a04",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/ToolUtils.cpp",
+              "range": {
+                "startLine": 793,
+                "startChar": 0,
+                "endLine": 794,
+                "endChar": 0
+              },
+              "replacement": "        canvas-\u003edrawPath(a, paint);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8573689fac74ddc5981e765bd0fef0080fa0f1f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
