@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "include/private/base/SingleOwner.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/gpu/graphite/GlobalCache.h"
@@ -78,6 +79,10 @@ public:
     virtual bool isDeviceLost() const { return false; }
 
     virtual void deviceTick(Context*) {}
+
+    virtual bool canDetectNewVkPipelineCacheData() const { return false; }
+    virtual bool hasNewVkPipelineCacheData() const { return true; }
+    virtual void storeVkPipelineCacheData2(ContextOptions::PersistentCache*, size_t maxSize) {}
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 
