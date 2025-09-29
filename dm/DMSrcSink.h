@@ -13,9 +13,13 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
-#include "include/gpu/graphite/PrecompileContext.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/ganesh/MemoryCache.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "tools/graphite/GraphiteMemoryCache.h"
+#endif
 
 #include <functional>
 
@@ -414,7 +418,7 @@ private:
     SkAlphaType                                       fAlphaType;
     sk_sp<SkColorSpace>                               fColorSpace;
     GrContextOptions                                  fBaseContextOptions;
-    sk_gpu_test::MemoryCache                          fMemoryCache;
+    sk_gpu_test::MemoryCache                          fMemoryCache1;
 };
 
 // Wrap a gpu canvas in one that routes all text draws through Slugs.
@@ -593,6 +597,23 @@ protected:
     SkColorType fColorType;
     SkAlphaType fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
+    sk_gpu_test::GraphiteMemoryCache fMemoryCache2;
+};
+
+class GraphitePersistentCacheTestingSink : public GraphiteSink {
+public:
+    GraphitePersistentCacheTestingSink(const SkCommandLineConfigGraphite*,
+                                       const skiatest::graphite::TestOptions&);
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to do our matching test
+        return nullptr;
+    }
+
+private:
+    int fCacheType;
 };
 
 #if defined(SK_ENABLE_PRECOMPILE)

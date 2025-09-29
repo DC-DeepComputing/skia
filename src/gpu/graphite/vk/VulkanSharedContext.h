@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_VulkanSharedContext_DEFINED
 #define skgpu_graphite_VulkanSharedContext_DEFINED
 
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/private/base/SkMutex.h"
 #include "src/gpu/graphite/SharedContext.h"
 
@@ -40,6 +41,8 @@ public:
     VkDevice device() const { return fDevice; }
     uint32_t  queueIndex() const { return fQueueIndex; }
 
+    void storePipelineCacheData(ContextOptions::PersistentCache*, size_t maxSize);
+
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                            uint32_t recorderID,
                                                            size_t resourceBudget) override;
@@ -53,15 +56,25 @@ public:
 
     VkPipelineCache getPipelineCache() const { return fPipelineCache; }
 
+    void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
+    bool canDetectNewVkPipelineCacheData() const override;
+    bool hasNewVkPipelineCacheData() const override { return fHasNewVkPipelineCacheData; }
+    void storeVkPipelineCacheData2(ContextOptions::PersistentCache*, size_t maxSize) override;
+
 private:
     VulkanSharedContext(const VulkanBackendContext&,
                         sk_sp<const skgpu::VulkanInterface>,
                         sk_sp<skgpu::VulkanMemoryAllocator>,
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
+                        ContextOptions::PersistentCache*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
-    VkPipelineCache createPipelineCache();
+    enum class PersistentCacheKeyType : uint32_t {
+        kPipelineCache = 1,
+    };
+
+    VkPipelineCache createPipelineCache(VkPhysicalDevice, ContextOptions::PersistentCache*);
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;
@@ -77,6 +90,7 @@ private:
     skgpu::VulkanDeviceLostProc fDeviceLostProc;
 
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
+    bool fHasNewVkPipelineCacheData = false;
 };
 
 } // namespace skgpu::graphite

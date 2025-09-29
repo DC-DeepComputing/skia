@@ -148,7 +148,7 @@ public:
     bool compile(const GrProgramDesc&, const GrProgramInfo&);
 
     GrContextOptions::PersistentCache* getPersistentCache() {
-        return this->context()->fPersistentCache;
+        return this->context()->fPersistentCache1;
     }
 
     GrClientMappedBufferManager* clientMappedBufferManager() {

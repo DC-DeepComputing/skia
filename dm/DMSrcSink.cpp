@@ -1543,7 +1543,7 @@ GPUSink::GPUSink(const SkCommandLineConfigGpu* config,
         , fAlphaType(config->getAlphaType())
         , fBaseContextOptions(grCtxOptions) {
     if (FLAGS_programBinaryCache) {
-        fBaseContextOptions.fPersistentCache = &fMemoryCache;
+        fBaseContextOptions.fPersistentCache = &fMemoryCache1;
     }
 }
 
@@ -2158,7 +2158,11 @@ GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config,
         : fOptions(options)
         , fContextType(config->getContextType())
         , fColorType(config->getColorType())
-        , fAlphaType(config->getAlphaType()) {}
+        , fAlphaType(config->getAlphaType()) {
+    if (FLAGS_programBinaryCache) {
+        fOptions.fContextOptions.fPersistentCache7 = &fMemoryCache2;
+    }
+}
 
 Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
@@ -2171,7 +2175,12 @@ Result GraphiteSink::draw(const Src& src,
     skgpu::graphite::ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
+    // We don't expect the src to mess with the persistent cache or the executor.
+    SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentCache7);
+    SkDEBUGCODE(auto exec = options.fContextOptions.fExecutor);
     src.modifyGraphiteContextOptions(&options.fContextOptions);
+    SkASSERT(cache == options.fContextOptions.fPersistentCache7);
+    SkASSERT(exec == options.fContextOptions.fExecutor);
 
     skiatest::graphite::ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
@@ -2216,6 +2225,10 @@ Result GraphiteSink::draw(const Src& src,
     }
     ctxInfo.fTestContext->syncedSubmit(context);
 
+    if (options.fContextOptions.fPersistentCache7) {
+        context->storeVkPipelineCacheData();
+    }
+
     return Result::Ok();
 }
 
@@ -2237,10 +2250,44 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     return SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, &props);
 }
 
+
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+GraphitePersistentCacheTestingSink::GraphitePersistentCacheTestingSink(
+        const SkCommandLineConfigGraphite* config,
+        const skiatest::graphite::TestOptions& options)
+    : GraphiteSink(config, options)
+    , fCacheType(config->getTestPersistentCache()) {}
 
+Result GraphitePersistentCacheTestingSink::draw(const Src& src,
+                                                SkBitmap* dst,
+                                                SkWStream* wStream,
+                                                SkString* log) const {
+    // Draw twice, once with a cold cache, and again with a warm cache. Verify that we get the same
+    // result.
+    sk_gpu_test::MemoryCache memoryCache;
+    fOptions.fContextOptions.fPersistentCache7 = &memoryCache;
+
+    Result result = this->GraphiteSink::draw(src, dst, wStream, log); //, contextOptions);
+    if (!result.isOk() || !dst) {
+        return result;
+    }
+
+    SkBitmap reference;
+    SkString refLog;
+    SkDynamicMemoryWStream refStream;
+    memoryCache.resetCacheStats();
+    Result refResult = this->GraphiteSink::draw(src, &reference, &refStream, &refLog); //, contextOptions);
+    if (!refResult.isOk()) {
+        return refResult;
+    }
+    SkASSERT(!memoryCache.numCacheMisses());
+    SkASSERT(!memoryCache.numCacheStores());
+
+    return compare_bitmaps(reference, *dst);
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 #if defined(SK_ENABLE_PRECOMPILE)
-
 GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
         const SkCommandLineConfigGraphite* config,
         const skiatest::graphite::TestOptions& options) : GraphiteSink(config, options) {}
