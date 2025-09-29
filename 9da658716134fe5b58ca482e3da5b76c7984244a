@@ -22,6 +22,30 @@
       },
       "revId": "9da658716134fe5b58ca482e3da5b76c7984244a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13b44592_f972e293",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-29T14:42:36Z",
+      "side": 1,
+      "message": "Great catch - done.",
+      "parentUuid": "608a20d7_3ac4cdaf",
+      "range": {
+        "startLine": 74,
+        "startChar": 51,
+        "endLine": 74,
+        "endChar": 77
+      },
+      "revId": "9da658716134fe5b58ca482e3da5b76c7984244a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
