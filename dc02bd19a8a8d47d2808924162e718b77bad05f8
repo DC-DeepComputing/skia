@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecbab945_00dab16d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-29T19:11:27Z",
+      "side": 1,
+      "message": "LGTM, a few nits and a couple more places where trackResource can be switched to trackCommandBufferResource:\n\n - UploadBufferManager::transferToCommandBuffer()\n - RecordingPriv::addCommands adding of fExtraResourceRefs\n \nfExtraResourceRefs is only actually storing buffers right now, so we can update it now. We could choose to hold off on that update until all Resource types have their policy updated. Then CommandBuffer::trackResource() can just be deleted entirely and everything uses trackCommandBufferResource.",
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25348830_26ac9259",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-29T19:11:27Z",
+      "side": 1,
+      "message": "I think this can be `trackCommandBufferResource` too.",
+      "range": {
+        "startLine": 279,
+        "startChar": 14,
+        "endLine": 279,
+        "endChar": 27
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c84bb35_ac834de8",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-29T19:11:27Z",
+      "side": 1,
+      "message": "nit: add `/*reusableRequiresPurgeable\u003d*/`",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 64
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba5210c_275da5a6",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-09-29T19:11:27Z",
+      "side": 1,
+      "message": "nit: line length, so this should be formatted similar to MtlBuffer and DawnBuffer now.\n\nHopefully the last parameter also still fits when adding `/*reusableRequiresPurgeable\u003d*/` 😊",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 101
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
