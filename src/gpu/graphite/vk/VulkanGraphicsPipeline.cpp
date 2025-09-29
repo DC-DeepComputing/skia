@@ -655,6 +655,29 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
 }
 
+static VkPipeline shaflooble(const VulkanSharedContext* sharedContext,
+                             const VkGraphicsPipelineCreateInfo& pipelineCreateInfo) {
+    VkPipeline vkPipeline;
+    VkResult result;
+    {
+        TRACE_EVENT0_ALWAYS("skia.shaders", "VkCreateGraphicsPipeline - shaders");
+        VULKAN_CALL_RESULT(sharedContext,
+                           result,
+                           CreateGraphicsPipelines(sharedContext->device(),
+                                                   sharedContext->getPipelineCache(),
+                                                   /*createInfoCount=*/1,
+                                                   &pipelineCreateInfo,
+                                                   /*pAllocator=*/nullptr,
+                                                   &vkPipeline));
+    }
+    if (result != VK_SUCCESS) {
+        SKGPU_LOG_E("Failed to create pipeline. Error: %d\n", result);
+        return VK_NULL_HANDLE;
+    }
+
+    return vkPipeline;
+}
+
 static VkResult create_shaders_pipeline(const VulkanSharedContext* sharedContext,
                                         VkGraphicsPipelineCreateInfo& completePipelineInfo,
                                         VkPipelineLibraryCreateInfoKHR& shadersLibraryInfo,
@@ -682,20 +705,9 @@ static VkResult create_shaders_pipeline(const VulkanSharedContext* sharedContext
     skgpu::AddToPNextChain(&shadersPipelineCreateInfo, &libraryInfo);
 
     // Create the library.
-    VkResult result;
-    {
-        TRACE_EVENT0_ALWAYS("skia.shaders", "VkCreateGraphicsPipeline - shaders");
-        VULKAN_CALL_RESULT(sharedContext,
-                           result,
-                           CreateGraphicsPipelines(sharedContext->device(),
-                                                   sharedContext->getPipelineCache(),
-                                                   /*createInfoCount=*/1,
-                                                   &shadersPipelineCreateInfo,
-                                                   /*pAllocator=*/nullptr,
-                                                   shadersPipeline));
-    }
-    if (result != VK_SUCCESS) {
-        return result;
+    *shadersPipeline = shaflooble(sharedContext, shadersPipelineCreateInfo);
+    if (*shadersPipeline == VK_NULL_HANDLE) {
+        return VK_ERROR_UNKNOWN;
     }
 
     // The complete pipeline doesn't need all the state anymore, it inherits them from the
@@ -1117,6 +1129,8 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         }
     }
 
+    return shaflooble(sharedContext, pipelineCreateInfo);
+#if 0
     VkPipeline vkPipeline;
     VkResult result;
     {
@@ -1136,6 +1150,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
     }
 
     return vkPipeline;
+#endif
 }
 
 std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram(
