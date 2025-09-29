@@ -46,6 +46,30 @@
       },
       "revId": "6c48843ebbb055be9d6aa879360911946bdde758",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee41e33_f1420805",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-29T17:40:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8465bc24_dbfcfb26",
+      "range": {
+        "startLine": 773,
+        "startChar": 0,
+        "endLine": 774,
+        "endChar": 28
+      },
+      "revId": "6c48843ebbb055be9d6aa879360911946bdde758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
