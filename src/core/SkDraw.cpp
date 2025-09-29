@@ -1026,7 +1026,7 @@ void Draw::drawPath(const SkPath& origSrcPath,
         }
     }
 
-    std::optional<SkPaint> newPaint = modifyPaintForHairlines(origPaint, *matrix);
+    std::optional<SkPaint> newPaint = modifyPaintForHairlines(origPaint, *fCTM);
     const SkPaint* paint = newPaint.has_value() ? &newPaint.value()
                                                 : &origPaint;
 
