@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "099b3877_167ffa23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-09-29T14:00:18Z",
+      "side": 1,
+      "message": "Some of the diffs are significant, but I can\u0027t immediately tell whether they are regressions of improvements.",
+      "revId": "8b18b3ec8c0dd5ebff1f187fe72727e49a08d733",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
