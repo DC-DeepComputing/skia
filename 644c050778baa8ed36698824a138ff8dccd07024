@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6423fcb_359ae7e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-29T21:16:40Z",
+      "side": 1,
+      "message": "I suggest we land this, even though it is not formally connected to SkPath yet. Landing would allow us to experiment with it in select places (e.g. SkDraw::drawPath).",
+      "revId": "644c050778baa8ed36698824a138ff8dccd07024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
