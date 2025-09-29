@@ -187,11 +187,6 @@ bool Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
     return true;
 }
 
-sk_sp<SkData> Encode(const SkPixmap& pixmap, const Options& opts) {
-    SkDynamicMemoryWStream stream;
-    return Encode(&stream, pixmap, opts) ? stream.detachAsData() : nullptr;
-}
-
 bool EncodeAnimated(SkWStream* stream, SkSpan<const SkEncoder::Frame> frames, const Options& opts) {
     if (!stream || frames.empty()) {
         return false;
@@ -264,7 +259,11 @@ sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& op
     if (!as_IB(img)->getROPixels(ctx, &bm)) {
         return nullptr;
     }
-    return Encode(bm.pixmap(), options);
+    SkDynamicMemoryWStream stream;
+    if (Encode(&stream, bm.pixmap(), options)) {
+        return stream.detachAsData();
+    }
+    return nullptr;
 }
 
 }  // namespace SkWebpEncoder

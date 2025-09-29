@@ -37,11 +37,13 @@ protected:
     void onDraw(SkCanvas* canvas) override {
         SkBitmap orig;
         ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &orig);
-        sk_sp<SkData> pngData = SkPngEncoder::Encode(orig.pixmap(), {});
-        SkASSERT_RELEASE(pngData);
+        SkDynamicMemoryWStream stream;
+        SkASSERT_RELEASE(SkPngEncoder::Encode(&stream, orig.pixmap(), {}));
+        sk_sp<SkData> pngData = stream.detachAsData();
+        stream.reset();
 
-        sk_sp<SkData> jpgData = SkJpegEncoder::Encode(orig.pixmap(), {});
-        SkASSERT_RELEASE(jpgData);
+        SkASSERT_RELEASE(SkJpegEncoder::Encode(&stream, orig.pixmap(), {}));
+        sk_sp<SkData> jpgData = stream.detachAsData();
 
         sk_sp<SkImage> pngImage = SkImages::DeferredFromEncodedData(pngData);
         sk_sp<SkImage> jpgImage = SkImages::DeferredFromEncodedData(jpgData);

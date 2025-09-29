@@ -52,9 +52,9 @@ protected:
                 bY += 64;
             }
         }
-        sk_sp<SkData> data = SkJpegEncoder::Encode(bmp.pixmap(), {});
-        SkASSERT_RELEASE(data);
-        fImage = SkImages::DeferredFromEncodedData(data);
+        SkDynamicMemoryWStream stream;
+        SkASSERT_RELEASE(SkJpegEncoder::Encode(&stream, bmp.pixmap(), {}));
+        fImage = SkImages::DeferredFromEncodedData(stream.detachAsData());
     }
 
     void onDraw(SkCanvas* canvas) override {

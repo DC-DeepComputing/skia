@@ -17,6 +17,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkJpegEncoder.h"
@@ -66,24 +67,23 @@ static sk_sp<SkData> encode_data(const SkBitmap& bitmap, SkEncodedImageFormat fo
     if (!bitmap.peekPixels(&src)) {
         return nullptr;
     }
-    sk_sp<SkData> data;
+    SkDynamicMemoryWStream buf;
 
     switch (format) {
         case SkEncodedImageFormat::kPNG:
-            data = SkPngEncoder::Encode(src, SkPngEncoder::Options());
+            SkAssertResult(SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options()));
             break;
         case SkEncodedImageFormat::kWEBP:
-            data = SkWebpEncoder::Encode(src, SkWebpEncoder::Options());
+            SkAssertResult(SkWebpEncoder::Encode(&buf, src, SkWebpEncoder::Options()));
             break;
         case SkEncodedImageFormat::kJPEG:
-            data = SkJpegEncoder::Encode(src, SkJpegEncoder::Options());
+            SkAssertResult(SkJpegEncoder::Encode(&buf, src, SkJpegEncoder::Options()));
             break;
         default:
             SK_ABORT("Unsupported format %d", (int)format);
             break;
     }
-    SkAssertResult(data);
-    return data;
+    return buf.detachAsData();
 }
 
 class EncodeSRGBGM : public GM {

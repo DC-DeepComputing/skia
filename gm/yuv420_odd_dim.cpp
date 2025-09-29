@@ -45,14 +45,14 @@ static sk_sp<SkImage> make_image(GrRecordingContext* rContext,
         }
     }
     bmp.notifyPixelsChanged();
+    SkDynamicMemoryWStream stream;
     SkJpegEncoder::Options options;
     options.fDownsample = SkJpegEncoder::Downsample::k420;
     options.fQuality = 100;
-    sk_sp<SkData> data = SkJpegEncoder::Encode(bmp.pixmap(), options);
-    if (!data) {
+    if (!SkJpegEncoder::Encode(&stream, bmp.pixmap(), options)) {
         return nullptr;
     }
-    auto imageHelper = sk_gpu_test::LazyYUVImage::Make(data);
+    auto imageHelper = sk_gpu_test::LazyYUVImage::Make(stream.detachAsData());
     if (!imageHelper) {
         return nullptr;
     }
