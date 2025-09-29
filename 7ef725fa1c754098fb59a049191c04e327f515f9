@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28d9420a_5920ae6c",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-29T15:16:14Z",
+      "side": 1,
+      "message": "I can, but I don\u0027t see a real reason too. This change is about reorganizing the code flow to be more streamline, so I didn\u0027t see a need to pull out the various steps separately.",
+      "parentUuid": "75ed485b_c300978e",
+      "range": {
+        "startLine": 1007,
+        "startChar": 74,
+        "endLine": 1007,
+        "endChar": 78
+      },
+      "revId": "7ef725fa1c754098fb59a049191c04e327f515f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed4df27e_15b68954",
         "filename": "src/core/SkDraw.cpp",
         "patchSetId": 7
@@ -37,6 +61,24 @@
       "writtenOn": "2025-09-29T13:52:21Z",
       "side": 1,
       "message": "nit: `SkASSERT(origSrcPath.isFinite() \u003d\u003d raw.bounds().isFinite());`?",
+      "revId": "7ef725fa1c754098fb59a049191c04e327f515f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa5a475_6a3c21e5",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-09-29T15:16:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed4df27e_15b68954",
       "revId": "7ef725fa1c754098fb59a049191c04e327f515f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
