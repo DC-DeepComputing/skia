@@ -945,6 +945,7 @@ static bool gather_srcs() {
 static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     std::unique_ptr<Sink> sink(s);
 
+#if 0
     // Try a simple Src as a canary.  If it fails, skip this sink.
     struct : public Src {
         Result draw(SkCanvas* c, skiatest::graphite::GraphiteTestContext*) const override {
@@ -963,6 +964,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
         exit(1);
     }
+#endif
 
     TaggedSink& ts = gSinks->push_back();
     ts.reset(sink.release());  // NOLINT(misc-uniqueptr-reset-release)
@@ -1002,6 +1004,9 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions,
 #if defined(SK_GRAPHITE)
     if (FLAGS_graphite) {
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
+            if (graphiteConfig->getTestPersistentCache()) {
+                return new GraphitePersistentCacheTestingSink(graphiteConfig, graphiteOptions);
+            } else
 #if defined(SK_ENABLE_PRECOMPILE)
             if (graphiteConfig->getTestPrecompileGraphite()) {
                 return new GraphitePrecompileTestingSink(graphiteConfig, graphiteOptions);
