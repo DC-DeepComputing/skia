@@ -58,14 +58,14 @@
 #include <string>
 #include <vector>
 
-static sk_sp<SkData> encode(SkEncodedImageFormat format, const SkPixmap& src) {
+static bool encode(SkEncodedImageFormat format, SkWStream* dst, const SkPixmap& src) {
     switch (format) {
         case SkEncodedImageFormat::kJPEG:
-            return SkJpegEncoder::Encode(src, SkJpegEncoder::Options());
+            return SkJpegEncoder::Encode(dst, src, SkJpegEncoder::Options());
         case SkEncodedImageFormat::kPNG:
-            return SkPngEncoder::Encode(src, SkPngEncoder::Options());
+            return SkPngEncoder::Encode(dst, src, SkPngEncoder::Options());
         default:
-            return nullptr;
+            return false;
     }
 }
 
@@ -95,10 +95,10 @@ static void test_encode(skiatest::Reporter* r, SkEncodedImageFormat format) {
         return;
     }
 
-    sk_sp<SkData> data0 = encode(format, src);
+    SkDynamicMemoryWStream dst0, dst1, dst2, dst3;
+    success = encode(format, &dst0, src);
     REPORTER_ASSERT(r, success);
 
-    SkDynamicMemoryWStream dst1, dst2, dst3;
     auto encoder1 = make(format, &dst1, src);
     for (int i = 0; i < src.height(); i++) {
         success = encoder1->encodeRows(1);
@@ -115,6 +115,7 @@ static void test_encode(skiatest::Reporter* r, SkEncodedImageFormat format) {
     success = encoder3->encodeRows(200);
     REPORTER_ASSERT(r, success);
 
+    sk_sp<SkData> data0 = dst0.detachAsData();
     sk_sp<SkData> data1 = dst1.detachAsData();
     sk_sp<SkData> data2 = dst2.detachAsData();
     sk_sp<SkData> data3 = dst3.detachAsData();
@@ -348,7 +349,8 @@ DEF_TEST(Encode_JPG, r) {
                                       SkJpegEncoder::AlphaOption::kBlendOnBlack }) {
                 SkJpegEncoder::Options opts;
                 opts.fAlphaOption = alphaOption;
-                if (!SkJpegEncoder::Encode(bm.pixmap(), opts)) {
+                SkNullWStream ignored;
+                if (!SkJpegEncoder::Encode(&ignored, bm.pixmap(), opts)) {
                     REPORTER_ASSERT(r, ct == kARGB_4444_SkColorType
                                     && alphaOption == SkJpegEncoder::AlphaOption::kBlendOnBlack);
                 }
@@ -371,18 +373,22 @@ DEF_TEST(Encode_JpegDownsample, r) {
         return;
     }
 
+    SkDynamicMemoryWStream dst0, dst1, dst2;
     SkJpegEncoder::Options options;
-    sk_sp<SkData> data0 = SkJpegEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data0);
+    success = SkJpegEncoder::Encode(&dst0, src, options);
+    REPORTER_ASSERT(r, success);
 
     options.fDownsample = SkJpegEncoder::Downsample::k422;
-    sk_sp<SkData> data1 = SkJpegEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data1);
+    success = SkJpegEncoder::Encode(&dst1, src, options);
+    REPORTER_ASSERT(r, success);
 
     options.fDownsample = SkJpegEncoder::Downsample::k444;
-    sk_sp<SkData> data2 = SkJpegEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data2);
+    success = SkJpegEncoder::Encode(&dst2, src, options);
+    REPORTER_ASSERT(r, success);
 
+    sk_sp<SkData> data0 = dst0.detachAsData();
+    sk_sp<SkData> data1 = dst1.detachAsData();
+    sk_sp<SkData> data2 = dst2.detachAsData();
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
@@ -427,9 +433,12 @@ static void testPngComments(const SkPixmap& src, SkPngEncoder::Options& options,
             commentSizes.data(), commentStrings.size());
 
 
-    sk_sp<SkData> dst = SkPngEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, dst);
-    SkSpan<const char> output{ (const char*)dst->data(), dst->size() };
+    SkDynamicMemoryWStream dst;
+    bool success = SkPngEncoder::Encode(&dst, src, options);
+    REPORTER_ASSERT(r, success);
+
+    std::vector<char> output(dst.bytesWritten());
+    dst.copyTo(output.data());
 
     // Each chunk is of the form length (4 bytes), chunk type (tEXt), data,
     // checksum (4 bytes).  Make sure we find all of them in the encoded
@@ -513,13 +522,15 @@ DEF_TEST(Encode_WebpQuality, r) {
 
     SkWebpEncoder::Options opts;
     opts.fCompression = SkWebpEncoder::Compression::kLossless;
-    sk_sp<SkData> dataLossLess = SkWebpEncoder::Encode(bm.pixmap(), opts);
-    SkASSERT_RELEASE(dataLossLess);
+    SkDynamicMemoryWStream stream;
+    SkASSERT_RELEASE(SkWebpEncoder::Encode(&stream, bm.pixmap(), opts));
+    auto dataLossLess = stream.detachAsData();
 
     opts.fCompression = SkWebpEncoder::Compression::kLossy;
     opts.fQuality = 99;
-    sk_sp<SkData> dataLossy = SkWebpEncoder::Encode(bm.pixmap(), opts);
-    SkASSERT_RELEASE(dataLossy);
+    stream.reset();
+    SkASSERT_RELEASE(SkWebpEncoder::Encode(&stream, bm.pixmap(), opts));
+    auto dataLossy = stream.detachAsData();
 
     enum Format {
         kMixed    = 0,
@@ -574,26 +585,31 @@ DEF_TEST(Encode_WebpOptions, r) {
         return;
     }
 
+    SkDynamicMemoryWStream dst0, dst1, dst2, dst3;
     SkWebpEncoder::Options options;
     options.fCompression = SkWebpEncoder::Compression::kLossless;
     options.fQuality = 0.0f;
-    sk_sp<SkData> data0 = SkWebpEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data0);
+    success = SkWebpEncoder::Encode(&dst0, src, options);
+    REPORTER_ASSERT(r, success);
 
     options.fQuality = 100.0f;
-    sk_sp<SkData> data1 = SkWebpEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data1);
+    success = SkWebpEncoder::Encode(&dst1, src, options);
+    REPORTER_ASSERT(r, success);
 
     options.fCompression = SkWebpEncoder::Compression::kLossy;
     options.fQuality = 100.0f;
-    sk_sp<SkData> data2 = SkWebpEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data2);
+    success = SkWebpEncoder::Encode(&dst2, src, options);
+    REPORTER_ASSERT(r, success);
 
     options.fCompression = SkWebpEncoder::Compression::kLossy;
     options.fQuality = 50.0f;
-    sk_sp<SkData> data3 = SkWebpEncoder::Encode(src, options);
-    REPORTER_ASSERT(r, data3);
+    success = SkWebpEncoder::Encode(&dst3, src, options);
+    REPORTER_ASSERT(r, success);
 
+    sk_sp<SkData> data0 = dst0.detachAsData();
+    sk_sp<SkData> data1 = dst1.detachAsData();
+    sk_sp<SkData> data2 = dst2.detachAsData();
+    sk_sp<SkData> data3 = dst3.detachAsData();
     REPORTER_ASSERT(r, data0->size() > data1->size());
     REPORTER_ASSERT(r, data1->size() > data2->size());
     REPORTER_ASSERT(r, data2->size() > data3->size());
@@ -693,22 +709,24 @@ DEF_TEST(Encode_Alpha, r) {
             SkBitmap bm;
             bm.allocPixels(SkImageInfo::Make(10, 10, ct, kPremul_SkAlphaType));
             sk_bzero(bm.getPixels(), bm.computeByteSize());
-            sk_sp<SkData> encoded;
+            SkDynamicMemoryWStream stream;
+            bool success = false;
             if (format == SkEncodedImageFormat::kJPEG) {
-                encoded = SkJpegEncoder::Encode(bm.pixmap(), {});
+                success = SkJpegEncoder::Encode(&stream, bm.pixmap(), {});
             } else if (format == SkEncodedImageFormat::kPNG) {
-                encoded = SkPngEncoder::Encode(bm.pixmap(), {});
+                success = SkPngEncoder::Encode(&stream, bm.pixmap(), {});
             } else {
-                encoded = SkWebpEncoder::Encode(bm.pixmap(), {});
+                success = SkWebpEncoder::Encode(&stream, bm.pixmap(), {});
             }
 
             if ((format == SkEncodedImageFormat::kJPEG || format == SkEncodedImageFormat::kPNG) &&
                 ct == kAlpha_8_SkColorType) {
                 // We support encoding alpha8 to png and jpeg with our own private meaning.
-                REPORTER_ASSERT(r, encoded);
-                REPORTER_ASSERT(r, encoded->size() > 0);
+                REPORTER_ASSERT(r, success);
+                REPORTER_ASSERT(r, stream.bytesWritten() > 0);
             } else {
-                REPORTER_ASSERT(r, !encoded);
+                REPORTER_ASSERT(r, !success);
+                REPORTER_ASSERT(r, stream.bytesWritten() == 0);
             }
         }
     }
@@ -801,12 +819,14 @@ DEF_TEST(Encode_jpeg_blend_to_black, r) {
                 REPORTER_ASSERT(r, success);
                 if (!success) { continue; }
 
+                SkDynamicMemoryWStream buf;
                 SkJpegEncoder::Options options;
                 options.fAlphaOption = blendOnBlack ? SkJpegEncoder::AlphaOption::kBlendOnBlack
                                                     : SkJpegEncoder::AlphaOption::kIgnore;
-                sk_sp<SkData> roundtripData = SkJpegEncoder::Encode(src, options);
-                REPORTER_ASSERT(r, roundtripData);
-                if (!roundtripData) { continue; }
+                success = SkJpegEncoder::Encode(&buf, src, options);
+                REPORTER_ASSERT(r, success);
+                if (!success) { continue; }
+                sk_sp<SkData> roundtripData = buf.detachAsData();
                 sk_sp<SkImage> image = SkImages::DeferredFromEncodedData(roundtripData);
 
                 SkBitmap roundtripBitmap;

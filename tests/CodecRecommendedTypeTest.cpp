@@ -14,6 +14,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkStream.h"
 #include "include/encode/SkPngEncoder.h"
 #include "tests/Test.h"
 
@@ -30,8 +31,9 @@ DEF_TEST(Codec_recommendedF16, r) {
     // What is drawn is not important.
     bm.eraseColor(SK_ColorBLUE);
 
-    auto data = SkPngEncoder::Encode(bm.pixmap(), {});
-    REPORTER_ASSERT(r, data != nullptr);
+    SkDynamicMemoryWStream wstream;
+    REPORTER_ASSERT(r, SkPngEncoder::Encode(&wstream, bm.pixmap(), {}));
+    auto data = wstream.detachAsData();
     auto androidCodec = SkAndroidCodec::MakeFromData(std::move(data));
     if (!androidCodec) {
         ERRORF(r, "Failed to create SkAndroidCodec");
