@@ -10,7 +10,6 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h" // IWYU pragma: keep
-#include "include/encode/SkEncoder.h"
 #include "include/private/base/SkAPI.h"
 
 class SkPixmap;
@@ -67,21 +66,6 @@ SK_API sk_sp<SkData> Encode(const SkPixmap& src, const Options& options);
 */
 SK_API sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& options);
 
-/**
- *  Encode the |src| frames to the |dst| stream.
- *  |options| may be used to control the encoding behavior.
- *
- *  The size of the first frame will be used as the canvas size. If any other frame does
- *  not match the canvas size, this is an error.
- *
- *  Returns true on success.  Returns false on an invalid or unsupported |src|.
- *
- *  Note: libwebp API also supports set background color, loop limit and customize
- *  lossy/lossless for each frame. These could be added later as needed.
- */
-SK_API bool EncodeAnimated(SkWStream* dst,
-                           SkSpan<const SkEncoder::Frame> src,
-                           const Options& options);
 } // namespace SkWebpEncoder
 
 #endif

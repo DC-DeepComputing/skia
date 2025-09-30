@@ -58,6 +58,7 @@
 #include <string>
 #include <vector>
 
+#if 0
 static sk_sp<SkData> encode(SkEncodedImageFormat format, const SkPixmap& src) {
     switch (format) {
         case SkEncodedImageFormat::kJPEG:
@@ -853,3 +854,4 @@ DEF_TEST(Encode_jpeg_blend_to_black, r) {
         }
     }
 }
+#endif

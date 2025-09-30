@@ -13,9 +13,6 @@
 #include "include/private/SkHdrMetadata.h"
 #include "include/private/base/SkAPI.h"
 
-// TODO(kjlubick) update clients to directly include this
-#include "include/encode/SkEncoder.h"  // IWYU pragma: keep
-
 #include <memory>
 
 class GrDirectContext;
@@ -125,7 +122,7 @@ SK_API sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Opti
  *
  *  This returns nullptr on an invalid or unsupported |src|.
  */
-SK_API std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Options& options);
+//SK_API std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Options& options);
 
 }  // namespace SkPngEncoder
 
