@@ -95,10 +95,28 @@ struct ShaderCaps {
      * should only be used by Ganesh.
      */
     SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;
+    bool fUsesPrecisionModifiers = false; /* GLSL is the only shading language that benefits */
+    bool fFlatInterpolationSupport = true; /* All backends support with exception of specific GL */
+
     /**
-     * Precision modifiers are only relevant for GLSL compilation, so set this to false by default.
+     * The following group of attributes are only needed for Ganesh/GL. However, we keep there here
+     * as opposed to being demoting them to being defined in Ganesh's GrShaderCaps for 2 reasons.
+     *
+     * 1) Some backend-agnostic SkSL utilies reference these capabilities.
+     *
+     * 2) Even though we do not anticipate Dawn relying upon Skia's GLSL generation for GL support,
+     *    sometimes SkSL compilation itself can be impacted by some of these capabilities. Such
+     *    attributes will be kept here in case Dawn/GL eventually needs to leverage them.
      */
-    bool fUsesPrecisionModifiers = false;
+    bool fFloatIs32Bits = true; /* Queried by SkSLSetting + impacts SkSL generation */
+    /**
+     * TODO: Modify SkSLGLSLCodeGenerator to use GrShaderCaps rather than this struct since GL
+     * should only be used with Ganesh. Once that is complete, the following attributes could be
+     * downgraded to GrShaderCaps.
+     */
+    bool fFlatInterpolationSupport = true; /* Supported by all backends except for some GL impls */
+    bool fUsesPrecisionModifiers = false; /* GLSL is the only shading language that uses these */
+
 
     bool fDualSourceBlendingSupport = false;
     bool fShaderDerivativeSupport = false;
@@ -111,7 +129,6 @@ struct ShaderCaps {
     bool fInverseHyperbolicSupport = false;
     bool fFBFetchSupport = false;
     bool fFBFetchNeedsCustomOutput = false;
-    bool fFlatInterpolationSupport = false;
     bool fNoPerspectiveInterpolationSupport = false;
     bool fSampleMaskSupport = false;
     bool fExternalTextureSupport = false;

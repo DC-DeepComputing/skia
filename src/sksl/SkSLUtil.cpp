@@ -26,7 +26,6 @@ std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
     std::unique_ptr<ShaderCaps> standalone = std::make_unique<ShaderCaps>();
     standalone->fShaderDerivativeSupport = true;
     standalone->fExplicitTextureLodSupport = true;
-    standalone->fFlatInterpolationSupport = true;
     standalone->fNoPerspectiveInterpolationSupport = true;
     standalone->fSampleMaskSupport = true;
     standalone->fExternalTextureSupport = true;

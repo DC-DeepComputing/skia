@@ -532,7 +532,6 @@ int GrMtlCaps::getRenderTargetSampleCount(int requestedCount, MTLPixelFormat for
 void GrMtlCaps::initShaderCaps() {
     GrShaderCaps* shaderCaps = fShaderCaps.get();
 
-    shaderCaps->fFlatInterpolationSupport = true;
     // We haven't yet tested that using flat attributes perform well.
     shaderCaps->fPreferFlatInterpolation = true;
 
