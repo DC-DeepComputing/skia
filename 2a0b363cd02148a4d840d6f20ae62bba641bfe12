@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90370950_f7f5e102",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-09-30T17:53:49Z",
+      "side": 1,
+      "message": "rm",
+      "range": {
+        "startLine": 88,
+        "startChar": 21,
+        "endLine": 88,
+        "endChar": 26
+      },
+      "revId": "2a0b363cd02148a4d840d6f20ae62bba641bfe12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
