@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b881a744_bb08baf9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-09-30T18:11:56Z",
+      "side": 1,
+      "message": "nit: rm new line insertion (1 should be fine)",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 55
+      },
+      "revId": "f92ceef463b804a4858f861df3542ea655db2786",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
