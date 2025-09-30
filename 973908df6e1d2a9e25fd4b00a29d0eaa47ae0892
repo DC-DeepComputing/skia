@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48dedd83_0fef8cf2",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2611,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-09-30T15:41:02Z",
+      "side": 0,
+      "message": "If we don\u0027t clear or recreate the builder, won\u0027t this result in path1 being different than expected?",
+      "range": {
+        "startLine": 2611,
+        "startChar": 0,
+        "endLine": 2611,
+        "endChar": 22
+      },
+      "revId": "973908df6e1d2a9e25fd4b00a29d0eaa47ae0892",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
