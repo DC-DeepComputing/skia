@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4aa3f3a_16453ae7",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2025-09-30T17:25:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25348830_26ac9259",
+      "range": {
+        "startLine": 279,
+        "startChar": 14,
+        "endLine": 279,
+        "endChar": 27
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c84bb35_ac834de8",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "068ffb17_6189b7a2",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2025-09-30T17:25:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c84bb35_ac834de8",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 64
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ba5210c_275da5a6",
@@ -94,6 +142,30 @@
       "writtenOn": "2025-09-29T19:11:27Z",
       "side": 1,
       "message": "nit: line length, so this should be formatted similar to MtlBuffer and DawnBuffer now.\n\nHopefully the last parameter also still fits when adding `/*reusableRequiresPurgeable\u003d*/` 😊",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 101
+      },
+      "revId": "dc02bd19a8a8d47d2808924162e718b77bad05f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d20341e_06bb7bf6",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2025-09-30T17:25:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ba5210c_275da5a6",
       "range": {
         "startLine": 182,
         "startChar": 0,
