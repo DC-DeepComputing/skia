@@ -83,6 +83,7 @@ public:
 
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
+    VulkanSharedContext* nonConstVulkanSharedContext();
 
     sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) override;
 
