@@ -210,6 +210,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsFrameBoundary = enabledFeatures.fFrameBoundary;
 
     fSupportsPipelineCreationCacheControl = enabledFeatures.fPipelineCreationCacheControl;
+    SkDebugf("fSupportsPipelineCreationCacheControl %d\n", fSupportsPipelineCreationCacheControl);
 
     if (enabledFeatures.fAdvancedBlendModes) {
         fBlendEqSupport = enabledFeatures.fCoherentAdvancedBlendModes

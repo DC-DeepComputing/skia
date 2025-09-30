@@ -677,6 +677,10 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
                                             /*pAllocator=*/nullptr,
                                             &vkPipeline));
             sharedContext->checkVkResult(result);
+            SkDebugf("Probe: %d (%d/%d)      - did we get the VK_PIPELINE_COMPILE_REQUIRED flag\n",
+                     result == VK_PIPELINE_COMPILE_REQUIRED,
+                     result,
+                     VK_PIPELINE_COMPILE_REQUIRED);
         }
 
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
