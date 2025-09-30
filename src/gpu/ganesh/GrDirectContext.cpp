@@ -278,7 +278,7 @@ bool GrDirectContext::init() {
         fTaskGroup = std::make_unique<SkTaskGroup>(*this->options().fExecutor);
     }
 
-    fPersistentCache = this->options().fPersistentCache;
+    fPersistentCache1 = this->options().fPersistentCache;
 
     GrDrawOpAtlas::AllowMultitexturing allowMultitexturing;
     if (GrContextOptions::Enable::kNo == this->options().fAllowMultipleGlyphCacheTextures ||
