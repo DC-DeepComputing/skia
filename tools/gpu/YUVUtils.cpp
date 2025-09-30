@@ -240,7 +240,7 @@ sk_sp<SkImage> LazyYUVImage::refImage(GrDirectContext* dContext, Type type) {
     return this->refImage(static_cast<GrRecordingContext *>(dContext), type);
 #else
     SkASSERT(!dContext);
-    return this->refImage(static_cast<GrRecordingContext *>(nullptr), type);
+    return this->refImage(static_cast<GrRecordingContext *>(nullptr), type);i
 #endif
 }
 
