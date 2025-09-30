@@ -677,6 +677,10 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
                                             /*pAllocator=*/nullptr,
                                             &vkPipeline));
             sharedContext->checkVkResult(result);
+            SkDebugf("Probe: %d (%d/%d)      - did we get the VK_PIPELINE_COMPILE_REQUIRED flag\n",
+                     result == VK_PIPELINE_COMPILE_REQUIRED,
+                     result,
+                     VK_PIPELINE_COMPILE_REQUIRED);
         }
 
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
@@ -735,6 +739,7 @@ static bool create_shaders_pipeline(VulkanSharedContext* sharedContext,
     shadersPipelineCreateInfo.flags |= VK_PIPELINE_CREATE_LIBRARY_BIT_KHR;
     skgpu::AddToPNextChain(&shadersPipelineCreateInfo, &libraryInfo);
 
+    // Create the library.
     *shadersPipeline = create_graphics_pipeline(sharedContext, &shadersPipelineCreateInfo);
     if (*shadersPipeline == VK_NULL_HANDLE) {
         return false;
