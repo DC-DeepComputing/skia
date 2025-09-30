@@ -229,9 +229,9 @@ public:
         kPipelineCache_PersistentCacheKeyType = 1,
     };
 
-    void pipelineCompileWasRequired();
+    void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
     bool canDetectNewVkPipelineCacheData() const override;
-    bool hasNewVkPipelineCacheData() const override;
+    bool hasNewVkPipelineCacheData() const override { return fHasNewVkPipelineCacheData; }
     void storeVkPipelineCacheData(size_t maxSize) override;
 
     bool beginRenderPass(const GrVkRenderPass*,
@@ -479,7 +479,7 @@ private:
     // vulkan context.
     bool                                                  fDisconnected;
 
-    bool                                                  fHasNewVkPipelineCacheData;
+    bool                                                  fHasNewVkPipelineCacheData = false;
 
     skgpu::Protected                                      fProtectedContext;
 

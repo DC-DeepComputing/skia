@@ -205,7 +205,6 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fResourceProvider(this)
         , fStagingBufferManager(this)
         , fDisconnected(false)
-        , fHasNewVkPipelineCacheData(false)
         , fProtectedContext(backendContext.fProtectedContext)
         , fDeviceLostContext(backendContext.fDeviceLostContext)
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
@@ -2735,16 +2734,8 @@ void GrVkGpu::addDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable) 
     fDrawables.emplace_back(std::move(drawable));
 }
 
-void GrVkGpu::pipelineCompileWasRequired() {
-    fHasNewVkPipelineCacheData = true;
-}
-
 bool GrVkGpu::canDetectNewVkPipelineCacheData() const {
     return this->vkCaps().supportsPipelineCreationCacheControl();
-}
-
-bool GrVkGpu::hasNewVkPipelineCacheData() const {
-    return fHasNewVkPipelineCacheData;
 }
 
 void GrVkGpu::storeVkPipelineCacheData(size_t maxSize) {
