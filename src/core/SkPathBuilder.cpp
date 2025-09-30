@@ -712,8 +712,17 @@ SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, u
     return *this;
 }
 
+static bool hasOnlyMoveTos(const SkPathBuilder& bu) {
+    for (auto v : bu.verbs()) {
+        if (v != SkPathVerb::kMove) {
+            return false;
+        }
+    }
+    return true;
+}
+
 SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, unsigned index) {
-    const bool wasEmpty = this->isEmpty();
+    const bool wasEmpty = hasOnlyMoveTos(*this);
 
     this->addRaw(SkPathRawShapes::Oval(oval, dir, index));
 
@@ -976,6 +985,7 @@ void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
         this->moveTo(x, y);
     } else {
         fPts.at(count-1).set(x, y);
+        fType = SkPathIsAType::kGeneral;
     }
 }
 
