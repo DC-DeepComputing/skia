@@ -1020,7 +1020,7 @@ private:
     // true if the PM/UPM conversion succeeded; false otherwise
     bool                                    fPMUPMConversionsRoundTrip;
 
-    GrContextOptions::PersistentCache*      fPersistentCache;
+    GrContextOptions::PersistentCache*      fPersistentCache1;
 
     std::unique_ptr<GrClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<GrAtlasManager> fAtlasManager;

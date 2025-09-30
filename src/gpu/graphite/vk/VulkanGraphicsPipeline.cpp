@@ -655,7 +655,64 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
 }
 
-static VkResult create_shaders_pipeline(const VulkanSharedContext* sharedContext,
+// shaflooble
+static VkPipeline CreateGraphicsPipeline(VulkanSharedContext* sharedContext,
+                                         VkGraphicsPipelineCreateInfo* pipelineCreateInfo) {
+    VkPipeline vkPipeline = VK_NULL_HANDLE;
+    VkResult result = VK_PIPELINE_COMPILE_REQUIRED;
+    {
+        TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+
+        if (sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()) {
+            TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline-CacheLookup");
+
+            pipelineCreateInfo->flags |=
+                    VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
+            VULKAN_CALL_RESULT_NOCHECK(
+                    sharedContext->interface(),
+                    result,
+                    CreateGraphicsPipelines(sharedContext->device(),
+                                            sharedContext->getPipelineCache(),
+                                            /*createInfoCount=*/ 1,
+                                            pipelineCreateInfo,
+                                            /*pAllocator=*/nullptr,
+                                            &vkPipeline));
+            sharedContext->checkVkResult(result);
+            SkDebugf("Probe: %d       - did we get the VK_PIPELINE_COMPILE_REQUIRED flag\n",
+                     result == VK_PIPELINE_COMPILE_REQUIRED);
+        }
+
+        if (result == VK_PIPELINE_COMPILE_REQUIRED) {
+            TRACE_EVENT0_ALWAYS(
+                    "skia.shaders",
+                    TRACE_STR_STATIC(sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()
+                                             ? "CreateGraphicsPipeline-CompileAfterCacheMiss"
+                                             : "CreateGraphicsPipeline-CacheLookupOrCompile"));
+
+            pipelineCreateInfo->flags &=
+                    ~VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
+            VULKAN_CALL_RESULT(sharedContext,
+                               result,
+                               CreateGraphicsPipelines(sharedContext->device(),
+                                                       sharedContext->getPipelineCache(),
+                                                       /*createInfoCount=*/1,
+                                                       pipelineCreateInfo,
+                                                       /*pAllocator=*/nullptr,
+                                                       &vkPipeline));
+            if (result == VK_SUCCESS) {
+                sharedContext->pipelineCompileWasRequired();
+            }
+        }
+    }
+    if (result != VK_SUCCESS) {
+        SKGPU_LOG_E("Failed to create pipeline. Error: %d\n", result);
+        return VK_NULL_HANDLE;
+    }
+
+    return vkPipeline;
+}
+
+static VkResult create_shaders_pipeline(VulkanSharedContext* sharedContext,
                                         VkGraphicsPipelineCreateInfo& completePipelineInfo,
                                         VkPipelineLibraryCreateInfoKHR& shadersLibraryInfo,
                                         VkGraphicsPipelineLibraryCreateInfoEXT& libraryInfo,
@@ -682,20 +739,9 @@ static VkResult create_shaders_pipeline(const VulkanSharedContext* sharedContext
     skgpu::AddToPNextChain(&shadersPipelineCreateInfo, &libraryInfo);
 
     // Create the library.
-    VkResult result;
-    {
-        TRACE_EVENT0_ALWAYS("skia.shaders", "VkCreateGraphicsPipeline - shaders");
-        VULKAN_CALL_RESULT(sharedContext,
-                           result,
-                           CreateGraphicsPipelines(sharedContext->device(),
-                                                   sharedContext->getPipelineCache(),
-                                                   /*createInfoCount=*/1,
-                                                   &shadersPipelineCreateInfo,
-                                                   /*pAllocator=*/nullptr,
-                                                   shadersPipeline));
-    }
-    if (result != VK_SUCCESS) {
-        return result;
+    *shadersPipeline = CreateGraphicsPipeline(sharedContext, &shadersPipelineCreateInfo);
+    if (*shadersPipeline == VK_NULL_HANDLE) {
+        return VK_ERROR_UNKNOWN;
     }
 
     // The complete pipeline doesn't need all the state anymore, it inherits them from the
@@ -802,7 +848,7 @@ VulkanProgramInfo::~VulkanProgramInfo() {
 }
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
-        const VulkanSharedContext* sharedContext,
+        VulkanSharedContext* sharedContext,
         VulkanResourceProvider* rsrcProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -984,7 +1030,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 }
 
 VkPipeline VulkanGraphicsPipeline::MakePipeline(
-        const VulkanSharedContext* sharedContext,
+        VulkanSharedContext* sharedContext,
         VulkanResourceProvider* rsrcProvider,
         const VulkanProgramInfo& program,
         int subpassIndex,
@@ -1117,25 +1163,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         }
     }
 
-    VkPipeline vkPipeline;
-    VkResult result;
-    {
-        TRACE_EVENT0_ALWAYS("skia.shaders", "VkCreateGraphicsPipeline");
-        VULKAN_CALL_RESULT(sharedContext,
-                           result,
-                           CreateGraphicsPipelines(sharedContext->device(),
-                                                   sharedContext->getPipelineCache(),
-                                                   /*createInfoCount=*/1,
-                                                   &pipelineCreateInfo,
-                                                   /*pAllocator=*/nullptr,
-                                                   &vkPipeline));
-    }
-    if (result != VK_SUCCESS) {
-        SKGPU_LOG_E("Failed to create pipeline. Error: %d\n", result);
-        return VK_NULL_HANDLE;
-    }
-
-    return vkPipeline;
+    return CreateGraphicsPipeline(sharedContext, &pipelineCreateInfo);
 }
 
 std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram(
@@ -1225,7 +1253,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
 }
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
-        const VulkanSharedContext* sharedContext,
+        VulkanSharedContext* sharedContext,
         VulkanResourceProvider* rsrcProvider,
         const VulkanProgramInfo& loadMSAAProgram,
         const RenderPassDesc& renderPassDesc) {
