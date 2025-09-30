@@ -209,6 +209,17 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsDeviceFaultInfo = enabledFeatures.fDeviceFault;
     fSupportsFrameBoundary = enabledFeatures.fFrameBoundary;
 
+    const auto cacheControlFeatures =
+            skgpu::GetExtensionFeatureStruct<VkPhysicalDevicePipelineCreationCacheControlFeatures>(
+                    *features,
+                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES);
+    const auto vk13Features = skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceVulkan13Features>(
+            *features, VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES);
+
+    fSupportsPipelineCreationCacheControl =
+            (cacheControlFeatures && cacheControlFeatures->pipelineCreationCacheControl) ||
+            (vk13Features && vk13Features->pipelineCreationCacheControl);
+
     if (enabledFeatures.fAdvancedBlendModes) {
         fBlendEqSupport = enabledFeatures.fCoherentAdvancedBlendModes
                 ? BlendEquationSupport::kAdvancedCoherent

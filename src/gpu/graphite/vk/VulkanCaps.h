@@ -121,6 +121,10 @@ public:
 
     bool supportsFrameBoundary() const { return fSupportsFrameBoundary; }
 
+    bool supportsPipelineCreationCacheControl() const {
+        return fSupportsPipelineCreationCacheControl;
+    }
+
 private:
     void init(const ContextOptions&,
               const skgpu::VulkanInterface*,
@@ -327,6 +331,8 @@ private:
     bool fSupportsRasterizationOrderColorAttachmentAccess = false;
     bool fIsInputAttachmentReadCoherent = false;
     bool fSupportsFrameBoundary = false;
+    bool fSupportsPipelineCreationCacheControl = false;
+
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;
