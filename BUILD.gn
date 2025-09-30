@@ -2197,7 +2197,6 @@ if (skia_enable_tools) {
         sources += [ "tools/gpu/vk/VkYcbcrSamplerHelper.cpp" ]
         all_dependent_configs += [ ":vulkan_memory_allocator" ]
       }
-
       if (skia_use_dawn) {
         public_deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
         if (is_clang) {
@@ -2261,6 +2260,8 @@ if (skia_enable_tools) {
         sources += [
           "tools/graphite/ContextFactory.cpp",
           "tools/graphite/ContextFactory.h",
+          "tools/graphite/GraphiteMemoryCache.cpp",
+          "tools/graphite/GraphiteMemoryCache.h",
           "tools/graphite/GraphiteTestContext.cpp",
           "tools/graphite/GraphiteTestContext.h",
           "tools/graphite/GraphiteToolUtils.cpp",

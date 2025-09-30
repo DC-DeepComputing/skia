@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"  // IWYU pragma: keep
 #include "include/private/base/SingleOwner.h"
@@ -277,6 +278,31 @@ public:
      */
     GpuStatsFlags supportedGpuStats() const;
 
+    /**
+     * Returns true if the underlying Vulkan implementation can accurately detect when the data in
+     * the pipeline cache changes. Returns false on non-Vulkan implementations.
+     *
+     * When this is false, the return value of `hasNewVkPipelineCacheData` will occasionally issue a
+     * false positive.
+     */
+    bool canDetectNewVkPipelineCacheData() const;
+    /**
+     * For Vulkan implementations, returns true if the data in the pipeline cache could have changed
+     * since the last call to `storeVkPipelineCacheData`. Always returns true on non-Vulkan
+     * implementations.
+     *
+     * Pipeline cache changes are detected when creating new pipelines, however this will
+     * occasionally result in a false positive. When VK_EXT_pipeline_creation_cache_control is
+     * enabled, we additionally know when a pipeline creation does not change the cache, thus
+     * eliminating false-positives.
+     *
+     * Check `canDetectNewVkPipelineCacheData` to see whether VK_EXT_pipeline_creation_cache_control
+     * is available and enabled.
+     */
+    bool hasNewVkPipelineCacheData() const;
+    void storeVkPipelineCacheData();
+    void storeVkPipelineCacheData(size_t maxSize);
+
     /*
      * TODO (b/412351769): Do not use startCapture() or endCapture() as the feature is still under
      * development.
@@ -394,6 +420,8 @@ private:
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
+
+    ContextOptions::PersistentCache*      fPersistentCache2;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
