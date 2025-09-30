@@ -100,6 +100,7 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
                                                         std::move(memoryAllocator),
                                                         std::move(caps),
                                                         options.fExecutor,
+                                                        options.fPersistentCache,
                                                         options.fUserDefinedKnownRuntimeEffects));
 }
 
@@ -109,6 +110,7 @@ VulkanSharedContext::VulkanSharedContext(
                 sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator,
                 std::unique_ptr<const VulkanCaps> caps,
                 SkExecutor* executor,
+                ContextOptions::PersistentCache* persistentCache,
                 SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
                         BackendApi::kVulkan,
@@ -121,7 +123,8 @@ VulkanSharedContext::VulkanSharedContext(
         , fQueueIndex(backendContext.fGraphicsQueueIndex)
         , fDeviceLostContext(backendContext.fDeviceLostContext)
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
-    fPipelineCache = this->createPipelineCache();
+    fPipelineCache = this->createPipelineCache(backendContext.fPhysicalDevice,
+                                               persistentCache);
     fThreadSafeResourceProvider = std::make_unique<VulkanThreadSafeResourceProvider>(
         this->makeResourceProvider(&fSingleOwner,
                                    SK_InvalidGenID,
@@ -142,11 +145,47 @@ VulkanSharedContext::~VulkanSharedContext() {
     this->globalCache()->deleteResources();
 }
 
-VkPipelineCache VulkanSharedContext::createPipelineCache() {
+VkPipelineCache VulkanSharedContext::createPipelineCache(
+        VkPhysicalDevice physDev,
+        ContextOptions::PersistentCache* persistentCache) {
     VkPipelineCacheCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
     createInfo.initialDataSize = 0;
     createInfo.pInitialData = nullptr;
+
+    if (persistentCache) {
+        uint32_t key = static_cast<uint32_t>(PersistentCacheKeyType::kPipelineCache);
+        sk_sp<SkData> keyData = SkData::MakeWithoutCopy(&key, sizeof(uint32_t));
+        sk_sp<SkData> cachedData = persistentCache->load(*keyData);
+
+        // For version one of the header, the total header size is 16 bytes plus
+        // VK_UUID_SIZE bytes. See Section 9.6 (Pipeline Cache) in the vulkan spec to see
+        // the breakdown of these bytes.
+        static const int kV1HeaderSize = 4*sizeof(uint32_t) + VK_UUID_SIZE;
+        if (cachedData && cachedData->size() >= kV1HeaderSize) {
+            const uint32_t* cacheHeader = (const uint32_t*)cachedData->data();
+            if (cacheHeader[1] == VK_PIPELINE_CACHE_HEADER_VERSION_ONE) {
+                SkASSERT(cacheHeader[0] == kV1HeaderSize);
+
+                VkPhysicalDeviceProperties2 props;
+                props.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+                props.pNext = nullptr;
+
+                VULKAN_CALL(fInterface.get(), GetPhysicalDeviceProperties2(physDev, &props));
+
+                const VkPhysicalDeviceProperties& physDevProps = props.properties;
+
+                const uint8_t* supportedPipelineCacheUUID = physDevProps.pipelineCacheUUID;
+                if (cacheHeader[2] == physDevProps.vendorID &&
+                    cacheHeader[3] == physDevProps.deviceID &&
+                    !memcmp(&cacheHeader[4], supportedPipelineCacheUUID, VK_UUID_SIZE)) {
+                        createInfo.initialDataSize = cachedData->size();
+                        createInfo.pInitialData = cachedData->data();
+                }
+            }
+        }
+    }
+
     VkResult result;
     VkPipelineCache pipelineCache = VK_NULL_HANDLE;
     VULKAN_CALL_RESULT(this,
@@ -164,6 +203,52 @@ VkPipelineCache VulkanSharedContext::createPipelineCache() {
 
 VulkanThreadSafeResourceProvider* VulkanSharedContext::threadSafeResourceProvider() const {
     return static_cast<VulkanThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
+}
+
+void VulkanSharedContext::storeVkPipelineCacheData(ContextOptions::PersistentCache* persistentCache,
+                                                   size_t maxSize) {
+    if (!persistentCache) {
+        return;
+    }
+
+    if (fPipelineCache == VK_NULL_HANDLE) {
+        return;
+    }
+    size_t dataSize = 0;
+    VkResult result;
+    VULKAN_CALL_RESULT(this,
+                       result,
+                       GetPipelineCacheData(this->device(), fPipelineCache,
+                                            &dataSize, nullptr));
+    if (result != VK_SUCCESS) {
+        return;
+    }
+
+    dataSize = std::min(dataSize, maxSize);
+
+    std::unique_ptr<uint8_t[]> data(new uint8_t[dataSize]);
+
+    VULKAN_CALL_RESULT_NOCHECK(
+            this->interface(),
+            result,
+            GetPipelineCacheData(this->device(), fPipelineCache,
+                                 &dataSize, (void*)data.get()));
+    this->checkVkResult(result);
+    if ((result != VK_SUCCESS) && (result != VK_INCOMPLETE)) {
+        return;
+    }
+
+    uint32_t key = static_cast<uint32_t>(PersistentCacheKeyType::kPipelineCache);
+    sk_sp<SkData> keyData = SkData::MakeWithoutCopy(&key, sizeof(uint32_t));
+
+    persistentCache->store(
+            *keyData,
+            *SkData::MakeWithoutCopy(data.get(), dataSize), SkString("VkPipelineCache"));
+    fHasNewVkPipelineCacheData = false;
+}
+
+bool VulkanSharedContext::canDetectNewVkPipelineCacheData() const {
+    return this->vulkanCaps().supportsPipelineCreationCacheControl();
 }
 
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(

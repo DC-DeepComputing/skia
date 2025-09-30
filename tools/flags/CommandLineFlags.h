@@ -182,7 +182,7 @@ public:
             return SkStringPrintf("Unknown value for flag %s: %s.", name, operator[](0));
         }
 
-    private:
+    public:
         void reset() { fStrings.clear(); }
 
         void append(const char* string) { fStrings.push_back().set(string); }
