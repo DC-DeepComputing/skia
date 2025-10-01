@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a90df766_2f6b50a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-01T15:19:13Z",
+      "side": 1,
+      "message": "ptal",
+      "revId": "c086d6eb82531bc81da923a1cd3542cb7f458635",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08a97453_1a773ed1",
@@ -32,6 +49,24 @@
           ]
         }
       ],
+      "revId": "c086d6eb82531bc81da923a1cd3542cb7f458635",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a8aa8c6_40834e99",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-01T15:19:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08a97453_1a773ed1",
       "revId": "c086d6eb82531bc81da923a1cd3542cb7f458635",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
