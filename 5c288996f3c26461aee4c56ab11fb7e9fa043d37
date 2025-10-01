@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e98b72f_c375513e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T18:13:50Z",
+      "side": 1,
+      "message": "Maybe add a comment above this method outlining that we use this for VkPipelineCache updates when creating new pipelines?",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 55
+      },
+      "revId": "5c288996f3c26461aee4c56ab11fb7e9fa043d37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
