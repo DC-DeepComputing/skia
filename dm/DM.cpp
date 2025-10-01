@@ -1002,6 +1002,9 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions,
 #if defined(SK_GRAPHITE)
     if (FLAGS_graphite) {
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
+            if (graphiteConfig->getTestPersistentCache()) {
+                return new GraphitePersistentCacheTestingSink(graphiteConfig, graphiteOptions);
+            } else
 #if defined(SK_ENABLE_PRECOMPILE)
             if (graphiteConfig->getTestPrecompileGraphite()) {
                 return new GraphitePrecompileTestingSink(graphiteConfig, graphiteOptions);
@@ -1088,7 +1091,9 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions,
     }
 
     SkCommandLineConfigArray configs;
-    ParseConfigs(FLAGS_config, &configs);
+    CommandLineFlags::StringArray configList;
+    configList.append("grvktestpersistentcache");
+    ParseConfigs(configList, &configs);
     AutoreleasePool pool;
     for (int i = 0; i < configs.size(); i++) {
         const SkCommandLineConfig& config = *configs[i];
