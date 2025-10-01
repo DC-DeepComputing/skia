@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061bccfb_21d49ee6",
+        "filename": "src/encode/SkPngRustEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-01T23:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b406d69a_300d318f",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "611008c7e957ca655fe4cd36b4d75900e5c78f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "495dc66f_7bd384f8",
@@ -72,6 +96,30 @@
       "writtenOn": "2025-10-01T21:08:54Z",
       "side": 1,
       "message": "A slightly more efficient version using non-public APIs relies on `SkImage_Base::getROPixels()` to avoid allocating a new SkImage:\n\n```\n    SkBitmap bm;\n    if (!as_IB(img)-\u003egetROPixels(ctx, \u0026bm)) {\n        return nullptr;\n    }\n    return Encode(bm.pixmap(), options);\n```\n\nThis is the pattern used in pretty much all other encoders, e.g. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkWebpEncoderImpl.cpp;drc\u003d746b6b8836d1f832ade517ba09d5149cbb58ec3f;l\u003d263",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 30
+      },
+      "revId": "611008c7e957ca655fe4cd36b4d75900e5c78f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6453f16a_fc618616",
+        "filename": "src/encode/SkPngRustEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-01T23:40:31Z",
+      "side": 1,
+      "message": "Thanks for catching this.  I saw this pattern some time ago, but didn\u0027t recall it when copying the code from Chromium :-(\n\nDone.",
+      "parentUuid": "495dc66f_7bd384f8",
       "range": {
         "startLine": 38,
         "startChar": 0,
