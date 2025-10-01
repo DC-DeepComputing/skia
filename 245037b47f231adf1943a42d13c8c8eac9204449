@@ -1,0 +1,120 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9df8a38_eac72952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T20:54:27Z",
+      "side": 1,
+      "message": "I think preserving !finite bounds knowledge makes sense, but I\u0027m surprised that the mask code goes off rails if that\u0027s inaccurate.  Especially for empty bounds, it seems we\u0027d just bail.  We should look into hardening that part too (not necessarily in this CL).",
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2473d42_278b67c6",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T20:54:27Z",
+      "side": 1,
+      "message": "nit: I would consolidate the two branches and use a single return point.\n\n```\n  // When not finite, getBounds() returns empty - which is not accurate.\n  const SkRect bounds \u003d ref-\u003eisFinite() ? ref-\u003egetBounds() : SkRect{nan...};\n  return {\n      ...,\n      bounds,\n      ...\n  };\n```",
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb57fd7_c1c05473",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T20:54:27Z",
+      "side": 1,
+      "message": "`SkRect::setBoundsNoCheck` uses `SK_FloatNaN`s in this case - that seems like a better choice than one particular infinity value.  Presumably we\u0027d still reject NaNs bounds for masks.",
+      "range": {
+        "startLine": 460,
+        "startChar": 17,
+        "endLine": 460,
+        "endChar": 91
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "60617fef_4d381856",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathPriv.h",
+              "range": {
+                "startLine": 460,
+                "startChar": 0,
+                "endLine": 461,
+                "endChar": 0
+              },
+              "replacement": "                {SK_FloatNaN, SK_FloatNaN, SK_FloatNaN, SK_FloatNaN},\n"
+            }
+          ]
+        }
+      ],
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a95c1be_a198e994",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T20:54:27Z",
+      "side": 1,
+      "message": "It should be fine to use path.isConvex() here too (should be false when !isFinite).",
+      "range": {
+        "startLine": 462,
+        "startChar": 16,
+        "endLine": 462,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "41de3f41_f78dd6d7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathPriv.h",
+              "range": {
+                "startLine": 462,
+                "startChar": 0,
+                "endLine": 463,
+                "endChar": 0
+              },
+              "replacement": "                path.isConvex(),\n"
+            }
+          ]
+        }
+      ],
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
