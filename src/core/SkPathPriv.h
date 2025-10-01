@@ -441,15 +441,28 @@ public:
 
     static SkPathRaw Raw(const SkPath& path) {
         const SkPathRef* ref = path.fPathRef.get();
-        return {
-            ref->pointSpan(),
-            ref->verbs(),
-            ref->conicSpan(),
-            ref->getBounds(),
-            path.getFillType(),
-            path.isConvex(),
-            SkTo<uint8_t>(ref->getSegmentMasks()),
-        };
+        SkASSERT(ref);
+        if (ref->isFinite()) {
+            return {
+                ref->pointSpan(),
+                ref->verbs(),
+                ref->conicSpan(),
+                ref->getBounds(),
+                path.getFillType(),
+                path.isConvex(),
+                SkTo<uint8_t>(ref->getSegmentMasks()),
+            };
+        } else {
+            return {
+                ref->pointSpan(),
+                ref->verbs(),
+                ref->conicSpan(),
+                {SK_ScalarInfinity, SK_ScalarInfinity, SK_ScalarInfinity, SK_ScalarInfinity},
+                path.getFillType(),
+                false,
+                SkTo<uint8_t>(ref->getSegmentMasks()),
+            };
+        }
     }
 
     static SkPathRaw Raw(const SkPathBuilder& builder) {
