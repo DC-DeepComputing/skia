@@ -216,7 +216,7 @@ struct SK_API ContextOptions {
     SkExecutor* fExecutor = nullptr;
 
     /**
-     * Cache in which to store compiled shader binaries between runs.
+     * Cache in which to store backend-specific data between runs.
      */
     PersistentCache* fPersistentCache = nullptr;
 

@@ -282,7 +282,7 @@ public:
      * Returns true if the underlying implementation can accurately detect when the data in
      * the pipeline cache changes.
      *
-     * When this is false, the return value of `hasNewVkPipelineCacheData` is untrustworthy.
+     * When this is false, the return value of `hasNewPipelineCacheData` is untrustworthy.
      *
      * For the Vulkan backend, this maps directly to the availability of
      * VK_EXT_pipeline_creation_cache_control.
@@ -290,9 +290,9 @@ public:
     bool canDetectNewPipelineCacheData() const;
     /**
      * Returns true if the data in the pipeline cache could have changed since the last call
-     * to `storeVkPipelineCacheData`.
+     * to `storePipelineCacheData`.
      *
-     * When `canDetectNewVkPipelineCacheData` returns true, false positives from this method are
+     * When `canDetectNewPipelineCacheData` returns true, false positives from this method are
      * greatly reduced.
      */
     bool hasNewPipelineCacheData() const;
