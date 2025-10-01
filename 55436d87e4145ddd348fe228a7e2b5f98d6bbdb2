@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a6b4323_53c9e373",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:17:07Z",
+      "side": 1,
+      "message": "FYI: I believe this change may be the cause of a newly-introduced Vulkan Validation Layer error in our Viewer application.\n\n```\nVulkan error \u003cvalidation\u003e [VUID-vkQueueSubmit-pSignalSemaphores-00067]: vkQueueSubmit(): pSubmits[0].pSignalSemaphores[0] (VkSemaphore 0x780000000078) is being signaled by VkQueue 0x5555588d6cd0, but it may still be in use by VkSwapchainKHR 0x710000000071.\nHere are the most recently acquired image indices: 4, [2], 1, 0, 3, 4, 3, 4.\n(brackets mark the last use of VkSemaphore 0x780000000078 in a presentation operation)\nSwapchain image 2 was presented but was not re-acquired, so VkSemaphore 0x780000000078 may still be in use and cannot be safely reused with image index 4.\nVulkan insight: One solution is to assign each image its own semaphore. Here are some common methods to ensure that a semaphore passed to vkQueuePresentKHR is not in use and can be safely reused:\n        a) Use a separate semaphore per swapchain image. Index these semaphores using the index of the acquired image.\n        b) Consider the VK_EXT_swapchain_maintenance1 extension. It allows using a VkFence with the presentation operation.\nThe Vulkan spec states: Each binary semaphore element of the pSignalSemaphores member of any element of pSubmits must be unsignaled when the semaphore signal operation it defines is executed on the device (https://vulkan.lunarg.com/doc/view/1.4.313.0/linux/antora/spec/latest/chapters/cmdbuffers.html#VUID-vkQueueSubmit-pSignalSemaphores-00067)\n\n```",
+      "revId": "55436d87e4145ddd348fe228a7e2b5f98d6bbdb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
