@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c9fc6d3_94e88990",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-01T21:22:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2473d42_278b67c6",
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feb57fd7_c1c05473",
@@ -72,6 +90,30 @@
           ]
         }
       ],
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02262d70_28e3a287",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-01T21:22:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feb57fd7_c1c05473",
+      "range": {
+        "startLine": 460,
+        "startChar": 17,
+        "endLine": 460,
+        "endChar": 91
+      },
       "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
