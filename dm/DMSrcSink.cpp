@@ -53,6 +53,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/image/SkImage_Base.h"
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
@@ -2171,7 +2172,12 @@ Result GraphiteSink::draw(const Src& src,
     skgpu::graphite::ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
+    // We don't expect the src to mess with the persistent cache or the executor.
+    SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentCache);
+    SkDEBUGCODE(auto exec = options.fContextOptions.fExecutor);
     src.modifyGraphiteContextOptions(&options.fContextOptions);
+    SkASSERT(cache == options.fContextOptions.fPersistentCache);
+    SkASSERT(exec == options.fContextOptions.fExecutor);
 
     skiatest::graphite::ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
@@ -2216,6 +2222,12 @@ Result GraphiteSink::draw(const Src& src,
     }
     ctxInfo.fTestContext->syncedSubmit(context);
 
+    if (options.fContextOptions.fPersistentCache) {
+        if (context->hasNewPipelineCacheData()) {
+            context->storePipelineCacheData();
+        }
+    }
+
     return Result::Ok();
 }
 
@@ -2238,9 +2250,63 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+GraphitePersistentCacheTestingSink::GraphitePersistentCacheTestingSink(
+            const SkCommandLineConfigGraphite* config,
+            const skiatest::graphite::TestOptions& options)
+        : GraphiteSink(config, options)
+        , fCacheType(config->getTestPersistentCache()) {
+    fOptions.fContextOptions.fPersistentCache = &fMemoryCache;
+}
 
+Result GraphitePersistentCacheTestingSink::draw(const Src& src,
+                                                SkBitmap* dst,
+                                                SkWStream* wStream,
+                                                SkString* log) const {
+
+    static bool canDetectNewPipelineCacheData = false;
+    static SkOnce once;
+    once([&] {
+        // This is expensive (i.e., creating a new Context) but is the most proper way to
+        // determine this.
+        skiatest::graphite::ContextFactory factory(fOptions);
+        skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+        skgpu::graphite::Context* context = ctxInfo.fContext;
+        canDetectNewPipelineCacheData = context->canDetectNewPipelineCacheData();
+    });
+
+    if (!canDetectNewPipelineCacheData) {
+        return Result::Fatal("PersistentCacheTesting relies on canDetectNewVkPipelineCacheData.");
+    }
+
+    SkASSERT(fCacheType == 1); // VulkanSharedContext::PersistentCacheKeyType::kPipelineCache
+
+    // Draw twice, once with a cold cache, and again with a warm cache. Verify that the
+    // pipelines from the warmed cache are found and used - so no new pipelines
+    // are created.
+    fMemoryCache.reset();
+
+    Result result = this->GraphiteSink::draw(src, dst, wStream, log);
+    if (!result.isOk() || !dst) {
+        return result;
+    }
+
+    SkBitmap reference;
+    SkString refLog;
+    SkDynamicMemoryWStream refStream;
+    fMemoryCache.resetCacheStats();
+    Result refResult = this->GraphiteSink::draw(src, &reference, &refStream, &refLog);
+    if (!refResult.isOk()) {
+        return refResult;
+    }
+
+    SkAssertResult(!fMemoryCache.numCacheMisses());
+    SkAssertResult(!fMemoryCache.numCacheStores());
+
+    return compare_bitmaps(reference, *dst);
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 #if defined(SK_ENABLE_PRECOMPILE)
-
 GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
         const SkCommandLineConfigGraphite* config,
         const skiatest::graphite::TestOptions& options) : GraphiteSink(config, options) {}
