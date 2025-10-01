@@ -16,6 +16,23 @@
       "message": "Refactoring to just compute a new (crazy) bounds will make the Path code look like the Builder equivalent.",
       "revId": "4f338ff11d7ae2770133d1689b634d73dcee8d74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3081c433_6dadecef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-01T21:39:08Z",
+      "side": 1,
+      "message": "+1 lgtm",
+      "revId": "4f338ff11d7ae2770133d1689b634d73dcee8d74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
