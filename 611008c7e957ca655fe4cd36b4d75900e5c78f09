@@ -16,6 +16,70 @@
       "message": "@fmalita, can you PTAL?\n\nThis mostly just copies the code from Chromium repo from here: https://source.chromium.org/chromium/chromium/src/+/main:skia/ext/codec_utils.cc;l\u003d22-53;drc\u003d7b92da2a8249215e88d60501a13539db94f28bb0\n\nOnce this new Skia API rolls into Chromium, I plan to remove/replace the corresponding Chromium code.\n\nI copied the doc comments from `SkPngEncoder` which already offers similar APIs: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/encode/SkPngEncoder.h;l\u003d103-116;drc\u003d4c7ae6ee94f021c5e44f110a1f423566c5f36da7",
       "revId": "611008c7e957ca655fe4cd36b4d75900e5c78f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b406d69a_300d318f",
+        "filename": "src/encode/SkPngRustEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:08:54Z",
+      "side": 1,
+      "message": "nit: we can skip the namespace prefix.",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d861b38b_6fdaa5f8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkPngRustEncoder.cpp",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "    if (!Encode(\u0026stream, src, options)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "611008c7e957ca655fe4cd36b4d75900e5c78f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "495dc66f_7bd384f8",
+        "filename": "src/encode/SkPngRustEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:08:54Z",
+      "side": 1,
+      "message": "A slightly more efficient version using non-public APIs relies on `SkImage_Base::getROPixels()` to avoid allocating a new SkImage:\n\n```\n    SkBitmap bm;\n    if (!as_IB(img)-\u003egetROPixels(ctx, \u0026bm)) {\n        return nullptr;\n    }\n    return Encode(bm.pixmap(), options);\n```\n\nThis is the pattern used in pretty much all other encoders, e.g. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkWebpEncoderImpl.cpp;drc\u003d746b6b8836d1f832ade517ba09d5149cbb58ec3f;l\u003d263",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 30
+      },
+      "revId": "611008c7e957ca655fe4cd36b4d75900e5c78f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
