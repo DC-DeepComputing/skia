@@ -120,6 +120,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "16b2cfc4_688b23fc",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:41:57Z",
+      "side": 1,
+      "message": "Oh, I see this mirrors the builder version, I was going to say we can look at switching separately, but since you\u0027ve already updated - ty!",
+      "parentUuid": "feb57fd7_c1c05473",
+      "range": {
+        "startLine": 460,
+        "startChar": 17,
+        "endLine": 460,
+        "endChar": 91
+      },
+      "revId": "245037b47f231adf1943a42d13c8c8eac9204449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1a95c1be_a198e994",
         "filename": "src/core/SkPathPriv.h",
         "patchSetId": 1
