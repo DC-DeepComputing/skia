@@ -9,12 +9,17 @@
 
 #if !defined(SK_BUILD_FOR_GOOGLE3)
 
+#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
+#include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTo.h"
 #include "modules/sksg/include/SkSGDraw.h"
 #include "modules/sksg/include/SkSGGroup.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
+#include "modules/sksg/include/SkSGMerge.h"
 #include "modules/sksg/include/SkSGPaint.h"
+#include "modules/sksg/include/SkSGPath.h"
 #include "modules/sksg/include/SkSGRect.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
 #include "modules/sksg/include/SkSGTransform.h"
@@ -354,5 +359,103 @@ DEF_TEST(SGInvalidation, reporter) {
     inval_test3(reporter);
     inval_group_remove(reporter);
 }
+
+DEF_TEST(SGMerge, reporter) {
+    const auto square = sksg::Rect::Make(SkRect::MakeXYWH(0, 0, 100, 100));
+    const auto rect = sksg::Path::Make(SkPath::Rect(SkRect::MakeXYWH(50, 50, 100, 150)));
+    const auto circle = sksg::Path::Make(SkPath::Circle(150, 150, 50));
+
+    sksg::InvalidationController ic;
+
+    {
+        skiatest::ReporterContext rc(reporter, "Merge combines contours");
+        auto merge = sksg::Merge::Make({
+            { square, sksg::Merge::Mode::kMerge },
+            { rect, sksg::Merge::Mode::kMerge },
+        });
+
+        merge->revalidate(&ic, SkMatrix::I());
+        const auto merged_path = merge->asPath();
+
+        SkPathBuilder expected;
+        expected.moveTo(0, 0).lineTo(100, 0).lineTo(100, 100).lineTo(0, 100).lineTo(0, 0);
+        expected.close();
+        expected.moveTo(50, 50).lineTo(150, 50).lineTo(150, 200).lineTo(50, 200).lineTo(50, 50);
+        expected.close();
+
+        SkDebugf("merged\n");
+        merged_path.dump();
+
+        SkDebugf("merged\n");
+        auto e = expected.detach();
+        e.dump();
+
+        REPORTER_ASSERT(reporter, merged_path == e);
+    }
+
+    {
+        skiatest::ReporterContext rc(reporter, "Union uses pathops");
+        auto merge = sksg::Merge::Make(std::vector<sksg::Merge::Rec>{
+            { square, sksg::Merge::Mode::kUnion },
+            { rect, sksg::Merge::Mode::kUnion },
+        });
+
+        merge->revalidate(&ic, SkMatrix::I());
+        const auto merged_path = merge->asPath();
+
+        SkPath path1, path2, expected;
+        path1.addRect(SkRect::MakeWH(100, 100));
+        path2.addRect(SkRect::MakeXYWH(50, 50, 100, 150));
+        Op(path1, path2, kUnion_SkPathOp, &expected);
+
+        SkDebugf("union\n");
+        merged_path.dump();
+
+        REPORTER_ASSERT(reporter, merged_path == expected);
+    }
+
+    {
+        skiatest::ReporterContext rc(reporter, "Intersect uses pathops");
+        auto merge = sksg::Merge::Make(std::vector<sksg::Merge::Rec>{
+            { square, sksg::Merge::Mode::kUnion }, // first op is ignored, becomes union
+            { rect, sksg::Merge::Mode::kIntersect },
+        });
+
+        merge->revalidate(&ic, SkMatrix::I());
+        const auto merged_path = merge->asPath();
+
+        SkPath path1, path2, expected;
+        path1.addRect(SkRect::MakeWH(100, 100));
+        path2.addRect(SkRect::MakeXYWH(50, 50, 100, 100));
+        Op(path1, path2, kIntersect_SkPathOp, &expected);
+
+        SkDebugf("Intersect\n");
+        merged_path.dump();
+
+        REPORTER_ASSERT(reporter, merged_path == expected);
+    }
+
+    {
+        skiatest::ReporterContext rc(reporter, "Difference uses pathops");
+        auto merge = sksg::Merge::Make(std::vector<sksg::Merge::Rec>{
+            { square, sksg::Merge::Mode::kUnion }, // first op is ignored
+            { circle, sksg::Merge::Mode::kDifference },
+        });
+
+        merge->revalidate(&ic, SkMatrix::I());
+        const auto merged_path = merge->asPath();
+
+        SkPath path1, path2, expected;
+        path1.addRect(SkRect::MakeWH(100, 100));
+        path2.addCircle(150, 150, 50);
+        Op(path1, path2, kDifference_SkPathOp, &expected);
+
+        SkDebugf("difference\n");
+        merged_path.dump();
+
+        REPORTER_ASSERT(reporter, merged_path == expected);
+    }
+}
+
 
 #endif // !defined(SK_BUILD_FOR_GOOGLE3)
