@@ -441,18 +441,60 @@ public:
 
     static SkPathRaw Raw(const SkPath& path) {
         const SkPathRef* ref = path.fPathRef.get();
+        SkASSERT(ref);
+        const SkRect bounds = ref->isFinite()
+                                      ? ref->getBounds()
+                                      : SkRect{SK_FloatNaN, SK_FloatNaN, SK_FloatNaN, SK_FloatNaN};
         return {
-            ref->pointSpan(),
-            ref->verbs(),
-            ref->conicSpan(),
-            ref->getBounds(),
-            path.getFillType(),
-            path.isConvex(),
-            SkTo<uint8_t>(ref->getSegmentMasks()),
+                ref->pointSpan(),
+                ref->verbs(),
+                ref->conicSpan(),
+                bounds,
+                path.getFillType(),
+                path.isConvex(),
+                SkTo<uint8_t>(ref->getSegmentMasks()),
         };
     }
 
     static SkPathRaw Raw(const SkPathBuilder& builder) {
+<<<<<<< HEAD   (a619f1696d836d9cbfeeef5177dba48d28619d8a Merge 6 release notes into RELEASE_NOTES.md)
+||||||| BASE   (5868d0cc08c518054bd8608a3d2824e72905c77d Reapply "Reapply "Use pathbuilder or factories to keep path )
+        SkRect bounds;
+        bool isConvex;
+        if (auto r = builder.computeFiniteBounds()) {
+            bounds = *r;
+
+            SkPathConvexity convexity = builder.fConvexity;
+            if (convexity == SkPathConvexity::kUnknown) {
+                convexity = SkPathPriv::ComputeConvexity(builder.fPts,
+                                                         builder.fVerbs,
+                                                         builder.fConicWeights);
+            }
+            isConvex = SkPathConvexity_IsConvex(convexity);
+        } else {
+            bounds = {SK_ScalarInfinity, SK_ScalarInfinity, SK_ScalarInfinity, SK_ScalarInfinity};
+            isConvex = false;
+        }
+
+=======
+        SkRect bounds;
+        bool isConvex;
+        if (auto r = builder.computeFiniteBounds()) {
+            bounds = *r;
+
+            SkPathConvexity convexity = builder.fConvexity;
+            if (convexity == SkPathConvexity::kUnknown) {
+                convexity = SkPathPriv::ComputeConvexity(builder.fPts,
+                                                         builder.fVerbs,
+                                                         builder.fConicWeights);
+            }
+            isConvex = SkPathConvexity_IsConvex(convexity);
+        } else {
+            bounds = {SK_FloatNaN, SK_FloatNaN, SK_FloatNaN, SK_FloatNaN};
+            isConvex = false;
+        }
+
+>>>>>>> CHANGE (c4d8b104a19dc977a32119b71d7a58098c429db6 Make SkPathPriv::Raw handle SkPaths with infinite bounds cor)
         return {
             builder.points(),
             builder.verbs(),
