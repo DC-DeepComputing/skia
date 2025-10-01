@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"  // IWYU pragma: keep
 #include "include/private/base/SingleOwner.h"
@@ -277,6 +278,31 @@ public:
      */
     GpuStatsFlags supportedGpuStats() const;
 
+    /**
+     * Returns true if the underlying implementation can accurately detect when the data in
+     * the pipeline cache changes.
+     *
+     * When this is false, the return value of `hasNewVkPipelineCacheData` is untrustworthy.
+     *
+     * For the Vulkan backend, this maps directly to the availability of
+     * VK_EXT_pipeline_creation_cache_control.
+     */
+    bool canDetectNewPipelineCacheData() const;
+    /**
+     * Returns true if the data in the pipeline cache could have changed since the last call
+     * to `storeVkPipelineCacheData`.
+     *
+     * When `canDetectNewVkPipelineCacheData` returns true, false positives from this method are
+     * greatly reduced.
+     */
+    bool hasNewPipelineCacheData() const;
+    /**
+     * Stores the current pipeline cache data into the PersistentCache-derived object passed into
+     * Graphite via ContextOptions::fPersistentCache.
+     */
+    void storePipelineCacheData();
+    void storePipelineCacheData(size_t maxSize);
+
     /*
      * TODO (b/412351769): Do not use startCapture() or endCapture() as the feature is still under
      * development.
@@ -394,6 +420,8 @@ private:
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
+
+    ContextOptions::PersistentCache* fPersistentCache;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
