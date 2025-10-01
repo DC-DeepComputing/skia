@@ -33,6 +33,41 @@
       "message": "+1 -- certainly only Merge was a problem on the 8888 side",
       "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bd93c83_c86fb04a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:59:43Z",
+      "side": 1,
+      "message": "I just verified locally, it it merge.",
+      "parentUuid": "6ab1531f_c2fa2490",
+      "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e0e758_8c5076b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:59:43Z",
+      "side": 1,
+      "message": "nar",
+      "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
