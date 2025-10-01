@@ -16,6 +16,24 @@
       "message": "I\u0027ve narrowed down the issue to this method.",
       "revId": "e873ed478d9dcb32fe3f3286cb9327d7b926ba6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a04681_33a0bb33",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-01T18:01:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1c1d7a6_34d3f1c5",
+      "revId": "e873ed478d9dcb32fe3f3286cb9327d7b926ba6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
