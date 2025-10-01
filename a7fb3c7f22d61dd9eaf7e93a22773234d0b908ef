@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31271ad0_01a494f3",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "Are there known bugs or documentation we could point to for this issue? I\u0027m sure this impacts other people also...",
+      "range": {
+        "startLine": 282,
+        "startChar": 60,
+        "endLine": 282,
+        "endChar": 81
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774f1fd9_345a4951",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "Perhaps relocate this comment to the impl. of `canDetectNewVkPipelineCacheData()`, and below, change to\n```\nThis method may return false positives. It guaranteed not to iff `canDetectNewVkPipelineCacheData` is true.\n```",
+      "range": {
+        "startLine": 293,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 35
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb461ca_6360e2d0",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "If the goal is to eventually have a pipeline cache impl. for other backends, should we make these names not Vk-specific (but still keep the comments explaining that it\u0027s only implemented for Vulkan?). LMKWYT",
+      "range": {
+        "startLine": 288,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 50
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae362830_8195930d",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "nit: This can fit on 1 line",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 60
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942eb687_3db2b9de",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "nit: this can fit on 1 line",
+      "range": {
+        "startLine": 126,
+        "startChar": 34,
+        "endLine": 127,
+        "endChar": 64
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95a1763_1c839982",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "Perhaps combine this into:\n```\n    if (!persistentCache || fPipelineCache \u003d\u003d VK_NULL_HANDLE) {\n        // Maybe add an SKGPU_LOG message here?\n        return;\n    }\n```",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 5
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f3f248_69591e92",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "nit: line length - perhaps:\n\n```\n    VULKAN_CALL_RESULT(this, result, CreatePipelineCache(this-\u003edevice(),\n                                                         \u0026createInfo,\n                                                         nullptr,\n                                                         \u0026pipelineCache));\n```\n\nor\n\n```\n    VULKAN_CALL_RESULT(this, \n                       result, \n                       CreatePipelineCache(this-\u003edevice(), \u0026createInfo,  nullptr, \u0026pipelineCache));\n```",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 65
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c846a5_4271dee7",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "same nit here (sorry 😄)",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 64
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01befdbb_648879fa",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "these can fit on the same line\n\n```\n    persistentCache-\u003estore(\n            *keyData, *SkData::MakeWithoutCopy(data.get(), dataSize), SkString(\"VkPipelineCache\"));\n\n```",
+      "range": {
+        "startLine": 245,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 87
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd6134e8_bafc93a8",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-01T15:01:27Z",
+      "side": 1,
+      "message": "Maybe add a comment explaining why we have this enum? (we will have different types of persistent caches, I presume?)",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 0
+      },
+      "revId": "a7fb3c7f22d61dd9eaf7e93a22773234d0b908ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
