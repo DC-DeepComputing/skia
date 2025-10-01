@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2c0ff17_405118ab",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T12:10:57Z",
+      "side": 1,
+      "message": "`fSegmentMask \u003d\u003d 0`?\n\nAlso, should we update all other shapes to match?",
+      "range": {
+        "startLine": 721,
+        "startChar": 26,
+        "endLine": 721,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "54adc61f_a1499c9f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathBuilder.cpp",
+              "range": {
+                "startLine": 721,
+                "startChar": 0,
+                "endLine": 722,
+                "endChar": 0
+              },
+              "replacement": "    const bool wasEmpty \u003d fSegmentMask \u003d\u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "462119141d1482fb2e0ef3be3fd6e87c9f2a5353",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
