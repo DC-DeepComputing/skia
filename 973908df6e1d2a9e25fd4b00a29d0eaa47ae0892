@@ -70,6 +70,30 @@
       },
       "revId": "973908df6e1d2a9e25fd4b00a29d0eaa47ae0892",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14d5a976_117dd2f8",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2611,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-01T15:23:11Z",
+      "side": 0,
+      "message": "Sorry, I had actually forgotten that builder.detach() resets the builder.",
+      "parentUuid": "a3df8325_7bcd2c25",
+      "range": {
+        "startLine": 2611,
+        "startChar": 0,
+        "endLine": 2611,
+        "endChar": 22
+      },
+      "revId": "973908df6e1d2a9e25fd4b00a29d0eaa47ae0892",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
