@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a97453_1a773ed1",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T12:41:59Z",
+      "side": 1,
+      "message": "missed one",
+      "fixSuggestions": [
+        {
+          "fixId": "c3286d4d_465a763d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathBuilder.cpp",
+              "range": {
+                "startLine": 700,
+                "startChar": 0,
+                "endLine": 701,
+                "endChar": 0
+              },
+              "replacement": "    const bool wasEmpty \u003d (fSegmentMask \u003d\u003d 0);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c086d6eb82531bc81da923a1cd3542cb7f458635",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
