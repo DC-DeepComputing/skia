@@ -8,13 +8,20 @@
 #include "src/gpu/graphite/task/DrawTask.h"
 
 #include "include/private/base/SkAssert.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
 
+#if defined(SK_DUMP_TASKS)
+DrawTask::DrawTask(sk_sp<TextureProxy> target, DrawContext* recordingDC)
+    : fTarget(std::move(target))
+    , fRecordingDC(recordingDC) {}
+#else
 DrawTask::DrawTask(sk_sp<TextureProxy> target) : fTarget(std::move(target)) {}
+#endif
 
 DrawTask::~DrawTask() = default;
 

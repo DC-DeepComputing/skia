@@ -86,7 +86,11 @@ DrawContext::DrawContext(const Caps* caps,
         , fImageInfo(ii)
         , fSurfaceProps(props)
         , fDstReadStrategy(caps->getDstReadStrategy())
+#if defined(SK_DUMP_TASKS)
+        , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget, this))
+#else
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
+#endif
         , fPendingDraws(std::make_unique<DrawList>())
         , fPendingUploads(std::make_unique<UploadList>()) {
     // Must determine a valid strategy to use should a dst texture read be required.
@@ -318,7 +322,11 @@ sk_sp<Task> DrawContext::snapDrawTask(Recorder* recorder) {
     }
 
     sk_sp<Task> snappedTask = std::move(fCurrentDrawTask);
+#if defined(SK_DUMP_TASKS)
+    fCurrentDrawTask = sk_make_sp<DrawTask>(fTarget, this);
+#else
     fCurrentDrawTask = sk_make_sp<DrawTask>(fTarget);
+#endif
     return snappedTask;
 }
 
