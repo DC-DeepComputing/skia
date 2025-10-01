@@ -9,6 +9,9 @@
 
 #include <memory>
 
+#include "include/core/SkImage.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkStream.h"
 #include "include/encode/SkEncoder.h"
 #include "src/encode/SkPngRustEncoderImpl.h"
 
@@ -19,9 +22,34 @@ bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
     return encoder && encoder->encodeRows(src.height());
 }
 
-SK_API std::unique_ptr<SkEncoder> Make(SkWStream* dst,
-                                       const SkPixmap& src,
-                                       const Options& options) {
+sk_sp<SkData> Encode(const SkPixmap& src, const Options& options) {
+    SkDynamicMemoryWStream stream;
+    if (!SkPngRustEncoder::Encode(&stream, src, options)) {
+        return nullptr;
+    }
+    return stream.detachAsData();
+}
+
+sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& options) {
+    if (!img) {
+        return nullptr;
+    }
+
+    sk_sp<SkImage> raster_image = img->makeRasterImage(ctx);
+    if (!raster_image) {
+        return nullptr;
+    }
+
+    SkPixmap pixmap;
+    bool success = raster_image->peekPixels(&pixmap);
+
+    // `peekPixels` should always succeed for raster images.
+    SkASSERT_RELEASE(success);
+
+    return Encode(pixmap, options);
+}
+
+std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Options& options) {
     return SkPngRustEncoderImpl::Make(dst, src, options);
 }
 
