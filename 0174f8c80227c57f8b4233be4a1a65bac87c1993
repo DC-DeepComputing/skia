@@ -16,6 +16,23 @@
       "message": "Do we know for sure that SkSGMerge is the g3 bug?  Triggering a canary.",
       "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "825d8435_c3df7f5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-01T21:59:13Z",
+      "side": 1,
+      "message": "+1 -- certainly only Merge was a problem on the 8888 side",
+      "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
