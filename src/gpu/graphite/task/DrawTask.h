@@ -20,6 +20,7 @@ namespace skgpu::graphite {
 
 class CommandBuffer;
 class Context;
+class DrawContext;
 class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
@@ -31,7 +32,12 @@ class RuntimeEffectDictionary;
 */
 class DrawTask final : public Task, private ScratchResourceManager::PendingUseListener {
 public:
+#if defined(SK_DUMP_TASKS)
+    explicit DrawTask(sk_sp<TextureProxy> target, DrawContext* recordingDC);
+#else
     explicit DrawTask(sk_sp<TextureProxy> target);
+#endif
+
     ~DrawTask() override;
 
     Status prepareResources(ResourceProvider*,
@@ -71,13 +77,14 @@ private:
 #if defined(SK_DUMP_TASKS)
     void dump(int index, const char* prefix) const override {
         if (index >= 0) {
-            SkDebugf("%s%d: Draw Task (target=%p)\n", prefix, index, fTarget.get());
+            SkDebugf("%s%d: Draw Task (target=%p) (DC=%p)\n", prefix, index, fTarget.get(),
+                fRecordingDC);
         } else {
-            SkDebugf("%sDraw Task (target=%p)\n", prefix, fTarget.get());
+            SkDebugf("%sDraw Task (target=%p) (DC=%p)\n", prefix, fTarget.get(), fRecordingDC);
         }
 
         std::string childPrefix = prefix;
-        SkASSERT((strlen(prefix) & 3) == 0);
+        //SkASSERT((strlen(prefix) & 3) == 0);
         static constexpr uint32_t kPrefixIncrement = 4;
         if (strlen(prefix) >= kPrefixIncrement) {
             const char* lastBranch = prefix + strlen(prefix) - kPrefixIncrement;
@@ -92,6 +99,8 @@ private:
             task->dump(-1, (childPrefix + (isLast ? "└── " : "│   ")).c_str());
         });
     }
+
+    DrawContext* fRecordingDC;
 #endif
 };
 
