@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab1531f_c2fa2490",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-01T21:46:32Z",
+      "side": 1,
+      "message": "Do we know for sure that SkSGMerge is the g3 bug?  Triggering a canary.",
+      "revId": "0174f8c80227c57f8b4233be4a1a65bac87c1993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
