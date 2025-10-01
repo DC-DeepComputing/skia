@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_VulkanSharedContext_DEFINED
 #define skgpu_graphite_VulkanSharedContext_DEFINED
 
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/private/base/SkMutex.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
@@ -64,6 +65,9 @@ public:
     VkPipelineCache getPipelineCache() const { return fPipelineCache; }
 
     void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
+    bool canDetectNewPipelineCacheData() const override;
+    bool hasNewPipelineCacheData() const override { return fHasNewVkPipelineCacheData; }
+    void storePipelineCacheData(ContextOptions::PersistentCache*, size_t maxSize) override;
 
 private:
     VulkanSharedContext(const VulkanBackendContext&,
@@ -71,9 +75,16 @@ private:
                         sk_sp<skgpu::VulkanMemoryAllocator>,
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
+                        ContextOptions::PersistentCache*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
-    VkPipelineCache createPipelineCache();
+    // This enum is used to key Graphite's uses of the persistent cache. Currently, Graphite only
+    // supports a persistent Pipeline cache but other caches are possible.
+    enum class PersistentCacheKeyType : uint32_t {
+        kPipelineCache = 1,
+    };
+
+    VkPipelineCache createPipelineCache(VkPhysicalDevice, ContextOptions::PersistentCache*);
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const UniqueKey&,
