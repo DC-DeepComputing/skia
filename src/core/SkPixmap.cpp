@@ -29,6 +29,14 @@
 #include <iterator>
 #include <utility>
 
+SkPixmap::SkPixmap(const SkImageInfo& info, const void* addr, size_t rowBytes)
+        : fPixels(addr), fRowBytes(rowBytes), fInfo(info) {
+    if (addr) {
+        SkASSERT(info.validRowBytes(rowBytes));
+        SkDEBUGCODE(info.validate());
+    }
+}
+
 void SkPixmap::reset() {
     fPixels = nullptr;
     fRowBytes = 0;
@@ -38,6 +46,7 @@ void SkPixmap::reset() {
 void SkPixmap::reset(const SkImageInfo& info, const void* addr, size_t rowBytes) {
     if (addr) {
         SkASSERT(info.validRowBytes(rowBytes));
+        SkDEBUGCODE(info.validate());
     }
     fPixels = addr;
     fRowBytes = rowBytes;
