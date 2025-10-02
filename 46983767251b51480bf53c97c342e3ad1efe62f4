@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "447865ca_c661fd1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-02T14:04:55Z",
+      "side": 1,
+      "message": "We don\u0027t have any bots that run `platform_tools/android/bin/android_build_app` or otherwise invoke gradle, so it looks like this one just needs to be manually tested.",
+      "revId": "46983767251b51480bf53c97c342e3ad1efe62f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
