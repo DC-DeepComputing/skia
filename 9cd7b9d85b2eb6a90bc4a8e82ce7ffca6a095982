@@ -16,6 +16,29 @@
       "message": "line up after the \u0027(\u0027 ?",
       "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "538b1aef_6a0eaa36",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:03:12Z",
+      "side": 1,
+      "message": "I think the DrawContext pointer is redundant with the target pointer. I would recommend adding instead, the target\u0027s label if it has one, and the pointer of the DrawTask itself (the address of the Tasks could be added to every override since it will be useful to identify tasks referenced multiple times, which is not necessarily limited to DrawTask).",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 9
+      },
+      "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
