@@ -24,6 +24,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/vk/VulkanInterface.h"
@@ -400,11 +401,11 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
     }
 
     // set up the backbuffers
-    VkSemaphoreCreateInfo semaphoreInfo;
-    memset(&semaphoreInfo, 0, sizeof(VkSemaphoreCreateInfo));
-    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    semaphoreInfo.pNext = nullptr;
-    semaphoreInfo.flags = 0;
+    VkSemaphoreCreateInfo submitSemaphoreInfo;
+    memset(&submitSemaphoreInfo, 0, sizeof(VkSemaphoreCreateInfo));
+    submitSemaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    submitSemaphoreInfo.pNext = nullptr;
+    submitSemaphoreInfo.flags = 0;
 
     // we create one additional backbuffer structure here, because we want to
     // give the command buffers they contain a chance to finish before we cycle back
@@ -412,11 +413,12 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
     for (uint32_t i = 0; i < fImageCount + 1; ++i) {
         fBackbuffers[i].fImageIndex = -1;
         VkResult result;
-        VULKAN_CALL_RESULT_NOCHECK(
-                fInterface,
-                result,
-                CreateSemaphore(
-                        fDevice, &semaphoreInfo, nullptr, &fBackbuffers[i].fRenderSemaphore));
+        VULKAN_CALL_RESULT_NOCHECK(fInterface,
+                                   result,
+                                   CreateSemaphore(fDevice,
+                                                   &submitSemaphoreInfo,
+                                                   nullptr, // VkAllocationCallbacks
+                                                   &fBackbuffers[i].fRenderSemaphore));
     }
     fCurrentBackbufferIndex = fImageCount;
 
@@ -512,22 +514,22 @@ sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
     BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
     SkASSERT(backbuffer);
 
-    // semaphores should be in unsignaled state
-    VkSemaphoreCreateInfo semaphoreInfo;
-    memset(&semaphoreInfo, 0, sizeof(VkSemaphoreCreateInfo));
-    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    semaphoreInfo.pNext = nullptr;
-    semaphoreInfo.flags = 0;
+    // Semaphores should be in unsignaled state
+    VkSemaphoreCreateInfo acquireSemaphoreInfo;
+    memset(&acquireSemaphoreInfo, 0, sizeof(VkSemaphoreCreateInfo));
+    acquireSemaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    acquireSemaphoreInfo.pNext = nullptr;
+    acquireSemaphoreInfo.flags = 0;
     VkResult result;
     VULKAN_CALL_RESULT_NOCHECK(
-            fInterface, result, CreateSemaphore(fDevice, &semaphoreInfo, nullptr, &fWaitSemaphore));
+            fInterface, result, CreateSemaphore(fDevice, &acquireSemaphoreInfo, nullptr, &fWaitSemaphore));
 
-    // acquire the image
+    // Acquire the image
     VkResult res = fAcquireNextImageKHR(fDevice,
                                         fSwapchain,
                                         UINT64_MAX,
                                         fWaitSemaphore,
-                                        VK_NULL_HANDLE,
+                                        /*VkFence=*/VK_NULL_HANDLE,
                                         &backbuffer->fImageIndex);
     if (VK_ERROR_SURFACE_LOST_KHR == res) {
         // TODO: Recreate fSurface using fCreateVkSurfaceFn, and then rebuild the swapchain
@@ -535,19 +537,20 @@ sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
         return nullptr;
     }
     if (VK_ERROR_OUT_OF_DATE_KHR == res) {
-        // tear swapchain down and try again
+        SKGPU_LOG_W("Failed to acquire next image for swapchain. Tearing down and trying again.");
+        // Tear swapchain down and try again
         if (!this->createSwapchain(-1, -1)) {
             VULKAN_CALL(fInterface, DestroySemaphore(fDevice, fWaitSemaphore, nullptr));
             return nullptr;
         }
         backbuffer = this->getAvailableBackbuffer();
 
-        // acquire the image
+         // Acquire the image
         res = fAcquireNextImageKHR(fDevice,
                                    fSwapchain,
                                    UINT64_MAX,
                                    fWaitSemaphore,
-                                   VK_NULL_HANDLE,
+                                   /*VkFence=*/VK_NULL_HANDLE,
                                    &backbuffer->fImageIndex);
 
         if (VK_SUCCESS != res) {
@@ -569,14 +572,14 @@ void GraphiteVulkanWindowContext::onSwapBuffers() {
 
     BackbufferInfo* backbuffer = fBackbuffers + fCurrentBackbufferIndex;
 
-    // Rather than using submitToGpu we explicitly do that work here
-    // so we can set up the swapchain semaphores.
+    // Rather than using submitToGpu we explicitly, we do that work here so we can set up the
+    // swapchain semaphores.
     std::unique_ptr<skgpu::graphite::Recording> recording = fGraphiteRecorder->snap();
     if (recording) {
         skgpu::graphite::InsertRecordingInfo info;
         info.fRecording = recording.get();
 
-        // set up surface for layout transition
+        // Set up surface for layout transition
         info.fTargetSurface = fSurfaces[backbuffer->fImageIndex].get();
         skgpu::MutableTextureState presentState = skgpu::MutableTextureStates::MakeVulkan(
                 VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, fPresentQueueIndex);
@@ -609,7 +612,7 @@ void GraphiteVulkanWindowContext::onSwapBuffers() {
         info.fFinishedProc = finishCallback;
 
         fGraphiteContext->insertRecording(info);
-        fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kNo);
+        fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kYes);
         fWaitSemaphore = VK_NULL_HANDLE;  // FinishCallback will destroy this
     }
 

@@ -14,6 +14,8 @@
 #include "tools/gpu/vk/VkTestUtils.h"
 #include "tools/window/WindowContext.h"
 
+#include <atomic>
+
 class GrRenderTarget;
 
 namespace skgpu {
@@ -53,7 +55,8 @@ private:
     void destroyContext();
 
     struct BackbufferInfo {
-        uint32_t fImageIndex;          // image this is associated with
+        // Does image index need to be atomic?
+        std::atomic<uint32_t> fImageIndex;          // image this is associated with
         VkSemaphore fRenderSemaphore;  // we wait on this for rendering to be done
     };
 
