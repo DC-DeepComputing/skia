@@ -812,6 +812,9 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
         return *this;
     }
 
+    // We're about to append - clear convexity.
+    fConvexity = SkPathConvexity::kUnknown;
+
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
         if (src.fLastMoveToIndex >= 0) {
             fLastMoveIndex = src.fLastMoveToIndex + this->countPoints();
