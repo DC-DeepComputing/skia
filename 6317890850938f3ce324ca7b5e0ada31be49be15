@@ -16,6 +16,276 @@
       "message": "ptal",
       "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24979853_a6ca2250",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d0e103a_3db61620",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "nit: Put these in one block",
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6993fde_32218185",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "I prefer the more explicit `v \u003e\u003d 0 \u0026\u0026 v \u003c sizeof(...)` than the cast trick. Since this is handling potentially untrusted data, let\u0027s make this a release assert instead of a debug only assert. Then, drop the signed-\u003eunsigned cast below.",
+      "range": {
+        "startLine": 43,
+        "startChar": 17,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c1376e4_b0ff4491",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "nit: Just `//` for this one line comment (and most of the other comments seem to use french fries `//`)",
+      "range": {
+        "startLine": 72,
+        "startChar": 5,
+        "endLine": 72,
+        "endChar": 6
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e404d78d_f706b6b7",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "So, if we draw a closed shape and then want to \"keep the pen where it\u0027s at\", that\u0027s not allowed?",
+      "range": {
+        "startLine": 85,
+        "startChar": 37,
+        "endLine": 85,
+        "endChar": 41
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dfd3634_cd72bddd",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "Do we still need this? Maybe guard it behind an #idef?",
+      "range": {
+        "startLine": 111,
+        "startChar": 12,
+        "endLine": 111,
+        "endChar": 40
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e8c9f14_a11140fc",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "nit: no trailing // here (or in other places)",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 2
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29779bae_9b37114e",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "These should be empty because we are in the constructor, right? Are the asserts necessary?",
+      "range": {
+        "startLine": 122,
+        "startChar": 17,
+        "endLine": 122,
+        "endChar": 24
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "155ccf10_dce484d0",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "I don\u0027t understand this. Adding 1 to this puts the data ... where? This mentions allocated data, but I\u0027m not seeing that allocation.\n\nedit: I see SkPathData::Alloc does the new. Is the +1 right? AFAIK, the SkRefCnt part adds 4 bytes for the fRefCnt field. Are we properly aligned by adding 1? I also have some vague questions about if this should be `std::launder` (or a related function), similar to how we do `SkAnySubclass`",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 126,
+        "endChar": 12
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85fdf65c_339c16e2",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 47,
+        "startChar": 17,
+        "endLine": 47,
+        "endChar": 24
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74272ec4_4d899c48",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "What is this referring to? I guess in general, what is a start index in this context?",
+      "range": {
+        "startLine": 93,
+        "startChar": 77,
+        "endLine": 93,
+        "endChar": 87
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd1f893_28806af0",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T19:11:21Z",
+      "side": 1,
+      "message": "necessary?",
+      "range": {
+        "startLine": 103,
+        "startChar": 11,
+        "endLine": 103,
+        "endChar": 17
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
