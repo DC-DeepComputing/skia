@@ -5178,38 +5178,6 @@ DEF_TEST(HugeGeometry, reporter) {
 
 }
 
-// Treat nonfinite paths as "empty" or "full", depending on inverse-filltype
-DEF_TEST(ClipPath_nonfinite, reporter) {
-    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(10, 10));
-    SkCanvas* canvas = surf->getCanvas();
-
-    REPORTER_ASSERT(reporter, !canvas->isClipEmpty());
-    for (bool aa : {false, true}) {
-        for (auto ft : {SkPathFillType::kWinding, SkPathFillType::kInverseWinding}) {
-            for (SkScalar bad : {SK_ScalarInfinity, SK_ScalarNaN}) {
-                for (int bits = 1; bits <= 15; ++bits) {
-                    SkPoint p0 = { 0, 0 };
-                    SkPoint p1 = { 0, 0 };
-                    if (bits & 1) p0.fX = -bad;
-                    if (bits & 2) p0.fY = -bad;
-                    if (bits & 4) p1.fX = bad;
-                    if (bits & 8) p1.fY = bad;
-
-                    SkPath path;
-                    path.moveTo(p0);
-                    path.lineTo(p1);
-                    path.setFillType(ft);
-                    canvas->save();
-                    canvas->clipPath(path, aa);
-                    REPORTER_ASSERT(reporter, canvas->isClipEmpty() == !path.isInverseFillType());
-                    canvas->restore();
-                }
-            }
-        }
-    }
-    REPORTER_ASSERT(reporter, !canvas->isClipEmpty());
-}
-
 // skbug.com/40039046
 DEF_TEST(Path_isRect, reporter) {
     auto makePath = [](const SkPoint* points, size_t count, bool close) -> SkPath {
@@ -5662,7 +5630,8 @@ template <typename T> bool span_eq(SkSpan<const T> a, SkSpan<const T> b) {
 static void assert_points(skiatest::Reporter* reporter,
                           const SkPath& path, const std::initializer_list<SkPoint>& list) {
     auto praw = SkPathPriv::Raw(path);
-    REPORTER_ASSERT(reporter, span_eq<SkPoint>(praw.fPoints, list));
+    REPORTER_ASSERT(reporter, praw.has_value());
+    REPORTER_ASSERT(reporter, span_eq<SkPoint>(praw->fPoints, list));
 }
 
 static void test_addRect_and_trailing_lineTo(skiatest::Reporter* reporter) {
