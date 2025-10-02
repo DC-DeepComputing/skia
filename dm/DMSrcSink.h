@@ -13,9 +13,13 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
-#include "include/gpu/graphite/PrecompileContext.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/ganesh/MemoryCache.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "tools/graphite/GraphiteMemoryCache.h"
+#endif
 
 #include <functional>
 
@@ -593,6 +597,26 @@ protected:
     SkColorType fColorType;
     SkAlphaType fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
+};
+
+class GraphitePersistentCacheTestingSink : public GraphiteSink {
+public:
+    GraphitePersistentCacheTestingSink(const SkCommandLineConfigGraphite*,
+                                       const skiatest::graphite::TestOptions&);
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to do our matching test
+        return nullptr;
+    }
+
+private:
+    // This gets set to whatever the 'testPersistentCache' value was. It can be used to switch
+    // between caching options if/when Graphite adds them. Currently, it should map directly to
+    // VulkanSharedContext::PersistentCacheKeyType values (i.e., 1 --> kPipelineCache)
+    int fCacheType;
+    mutable sk_gpu_test::GraphiteMemoryCache fMemoryCache;
 };
 
 #if defined(SK_ENABLE_PRECOMPILE)
