@@ -39,6 +39,30 @@
       },
       "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8446e924_6da4520c",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T14:29:34Z",
+      "side": 1,
+      "message": "Yea, in hindsight adding the DC doesn\u0027t provide very much signal because presumably a DC will only have a single target texture?\n\nHowever, I found that label didn\u0027t provide signal either so I left it out?\n```\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d RECORDING 1 \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n**** FLUSH TOKEN 154 Recorder::Snap ****\n0: Draw Task (target\u003d0x17252f6c0) (DC\u003d0x17253b7d0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734_ChildDevice)\n└── RenderPass Task\n1: Draw Task (target\u003d0x172544bf0) (DC\u003d0x1725290d0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734)\n│   Draw Task (target\u003d0x17252f6c0) (DC\u003d0x17253b7d0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734_ChildDevice)\n│   └── RenderPass Task\n└── RenderPass Task\n2: Draw Task (target\u003d0x17254c3d0) (DC\u003d0x172530cc0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734_ChildDevice)\n└── RenderPass Task\n3: Draw Task (target\u003d0x172544bf0) (DC\u003d0x1725290d0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734)\n│   Draw Task (target\u003d0x17254c3d0) (DC\u003d0x172530cc0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734_ChildDevice)\n│   └── RenderPass Task\n│   Copy TtoT Task: Src\u003d0x172544bf0 Dst\u003d0x172547880\n└── RenderPass Task\n4: Draw Task (target\u003d0x172544bf0) (DC\u003d0x1725290d0) (Label\u003dIOSurface_CanvasResourceRaster_Pid:35734)\n│   Copy TtoT Task: Src\u003d0x172544bf0 Dst\u003d0x17254c130\n└── RenderPass Task\n--------------- END ---------------\n```",
+      "parentUuid": "538b1aef_6a0eaa36",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 9
+      },
+      "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
