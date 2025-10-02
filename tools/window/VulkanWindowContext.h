@@ -50,8 +50,8 @@ private:
     void destroyContext();
 
     struct BackbufferInfo {
-        uint32_t        fImageIndex;          // image this is associated with
-        VkSemaphore     fRenderSemaphore;     // we wait on this for rendering to be done
+        uint32_t        fImageIndex;          // Image this is associated with
+        VkSemaphore     fRenderSemaphore;     // We wait on this for rendering to be done
     };
 
     BackbufferInfo* getAvailableBackbuffer();
