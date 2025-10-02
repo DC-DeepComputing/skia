@@ -16,6 +16,24 @@
       "message": "Hmm, aren\u0027t these supposed to catch negative values already?\n\n(unsigned)negative -\u003e very large positive -\u003e trigger assert\n\nUnless fInfo is also borked...\n\nDoesn\u0027t hurt to be more explicit, but I\u0027m surprised we didn\u0027t hit the asserts with that bug.",
       "revId": "b51232c41671325619d5d01daaa6820a26d4235f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d039c66_0969c6cc",
+        "filename": "include/core/SkPixmap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T17:28:53Z",
+      "side": 0,
+      "message": "In the debug fuzzers, this did assert and it was somewhat helpful, but it wasn\u0027t obvious to me at first that negative numbers are not allowed. I want this to be more clear *and* to be more verbose with the problematic values so I don\u0027t have to get out `gdb` if I don\u0027t have to 😊",
+      "parentUuid": "5f1eb8a9_e822b63e",
+      "revId": "b51232c41671325619d5d01daaa6820a26d4235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
