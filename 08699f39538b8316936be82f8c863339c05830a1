@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86be92e0_2858e58a",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-02T13:53:41Z",
+      "side": 1,
+      "message": "Unrelated cleanup.",
+      "revId": "08699f39538b8316936be82f8c863339c05830a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
