@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1eb8a9_e822b63e",
+        "filename": "include/core/SkPixmap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-02T16:24:09Z",
+      "side": 0,
+      "message": "Hmm, aren\u0027t these supposed to catch negative values already?\n\n(unsigned)negative -\u003e very large positive -\u003e trigger assert\n\nUnless fInfo is also borked...\n\nDoesn\u0027t hurt to be more explicit, but I\u0027m surprised we didn\u0027t hit the asserts with that bug.",
+      "revId": "b51232c41671325619d5d01daaa6820a26d4235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
