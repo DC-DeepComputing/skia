@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6663c3c_4a2330d6",
+        "filename": "modules/sksg/tests/SGTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-02T16:14:22Z",
+      "side": 1,
+      "message": "There\u0027s `SkPathPriv::PtsInIter`.",
+      "fixSuggestions": [
+        {
+          "fixId": "dd50c49d_50327e57",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/sksg/tests/SGTest.cpp",
+              "range": {
+                "startLine": 384,
+                "startChar": 0,
+                "endLine": 404,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "modules/sksg/tests/SGTest.cpp",
+              "range": {
+                "startLine": 448,
+                "startChar": 0,
+                "endLine": 449,
+                "endChar": 0
+              },
+              "replacement": "        const int numPts \u003d SkPathPriv::PtsInIter(verbA);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a1670e55e4ca0503677802bd45fa8e0d90fa4dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fb4f2dc_f2d2e3e0",
+        "filename": "modules/sksg/tests/SGTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-02T16:14:22Z",
+      "side": 1,
+      "message": "nit: pathbuilder sports a fluent API, we could do something like\n\n```\n  const SkPath expected \u003d SkPathBuilder()\n      .moveTo(0, 0)\n      .lineTo(100, 0)\n      ...\n      .detach()\n```",
+      "range": {
+        "startLine": 505,
+        "startChar": 8,
+        "endLine": 505,
+        "endChar": 16
+      },
+      "revId": "a1670e55e4ca0503677802bd45fa8e0d90fa4dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
