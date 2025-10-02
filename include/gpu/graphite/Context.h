@@ -13,7 +13,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"  // IWYU pragma: keep
 #include "include/private/base/SingleOwner.h"
@@ -57,6 +56,7 @@ class ContextPriv;
 struct ContextOptions;
 class PrecompileContext;
 class QueueManager;
+class PersistentCache;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;

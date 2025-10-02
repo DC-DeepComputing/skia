@@ -19,7 +19,6 @@
 class SkData;
 class SkExecutor;
 class SkRuntimeEffect;
-
 namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
