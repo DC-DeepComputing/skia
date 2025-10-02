@@ -40,6 +40,30 @@
       ],
       "revId": "8812b56158bebad24ab8dc4c5f2de2f1c090e972",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c50178f2_009fe7b4",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T15:35:35Z",
+      "side": 1,
+      "message": "good catch - that was just a hack on my part -- fixed.",
+      "parentUuid": "4b63fadf_a0002e09",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 5
+      },
+      "revId": "8812b56158bebad24ab8dc4c5f2de2f1c090e972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
