@@ -71,7 +71,7 @@ SkRect Merge::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {
     SkASSERT(this->hasInval());
 
     SkOpBuilder builder;
-
+#if 0
     fMerged.reset();
     bool in_builder = false;
 
@@ -117,6 +117,9 @@ SkRect Merge::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {
     SkPathPriv::ShrinkToFit(&fMerged);
 
     return fMerged.computeTightBounds();
+#else
+    return SkRect::MakeEmpty();
+#endif
 }
 
 } // namespace sksg
