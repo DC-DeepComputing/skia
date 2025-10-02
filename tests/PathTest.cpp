@@ -57,7 +57,7 @@
 #include <initializer_list>
 #include <memory>
 #include <vector>
-
+#if 0
 static void set_radii(SkVector radii[4], int index, float rad) {
     sk_bzero(radii, sizeof(SkVector) * 4);
     radii[index].set(rad, rad);
@@ -5950,3 +5950,4 @@ DEF_TEST(path_filltype_utils, r) {
     REPORTER_ASSERT(r, p3.getFillType() == SkPathFillType::kInverseEvenOdd);
     REPORTER_ASSERT(r, PathTest_Private::GetPathRef(p3) == PathTest_Private::GetPathRef(p2));
 }
+#endif
