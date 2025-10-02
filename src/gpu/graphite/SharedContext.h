@@ -81,7 +81,7 @@ public:
 
     virtual bool canDetectNewPipelineCacheData() const { return false; }
     virtual bool hasNewPipelineCacheData() const { return true; }
-    virtual void storePipelineCacheData(ContextOptions::PersistentCache*, size_t maxSize) {}
+    virtual void storePipelineCacheData(PersistentCache*, size_t maxSize) {}
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 

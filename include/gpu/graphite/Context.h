@@ -298,10 +298,9 @@ public:
     bool hasNewPipelineCacheData() const;
     /**
      * Stores the current pipeline cache data into the PersistentCache-derived object passed into
-     * Graphite via ContextOptions::fPersistentCache.
+     * Graphite via ContextOptions::fPersistentCache. The amount stored is limited to 'maxSize'.
      */
-    void storePipelineCacheData();
-    void storePipelineCacheData(size_t maxSize);
+    void storePipelineCacheData(size_t maxSize = SIZE_MAX);
 
     /*
      * TODO (b/412351769): Do not use startCapture() or endCapture() as the feature is still under
@@ -421,7 +420,7 @@ private:
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
 
-    ContextOptions::PersistentCache* fPersistentCache;
+    PersistentCache* fPersistentCache;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.

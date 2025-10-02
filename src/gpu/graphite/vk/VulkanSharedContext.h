@@ -67,7 +67,7 @@ public:
     void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
     bool canDetectNewPipelineCacheData() const override;
     bool hasNewPipelineCacheData() const override { return fHasNewVkPipelineCacheData; }
-    void storePipelineCacheData(ContextOptions::PersistentCache*, size_t maxSize) override;
+    void storePipelineCacheData(PersistentCache*, size_t maxSize) override;
 
 private:
     VulkanSharedContext(const VulkanBackendContext&,
@@ -75,7 +75,7 @@ private:
                         sk_sp<skgpu::VulkanMemoryAllocator>,
                         std::unique_ptr<const VulkanCaps>,
                         SkExecutor*,
-                        ContextOptions::PersistentCache*,
+                        PersistentCache*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     // This enum is used to key Graphite's uses of the persistent cache. Currently, Graphite only
@@ -84,7 +84,7 @@ private:
         kPipelineCache = 1,
     };
 
-    VkPipelineCache createPipelineCache(VkPhysicalDevice, ContextOptions::PersistentCache*);
+    VkPipelineCache createPipelineCache(VkPhysicalDevice, PersistentCache*);
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const UniqueKey&,

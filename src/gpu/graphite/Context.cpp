@@ -925,10 +925,6 @@ bool Context::hasNewPipelineCacheData() const {
     return fSharedContext->hasNewPipelineCacheData();
 }
 
-void Context::storePipelineCacheData() {
-    this->storePipelineCacheData(SIZE_MAX);
-}
-
 void Context::storePipelineCacheData(size_t maxSize) {
     if (fPersistentCache) {
         fSharedContext->storePipelineCacheData(fPersistentCache, maxSize);

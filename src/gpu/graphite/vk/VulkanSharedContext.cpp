@@ -9,6 +9,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/ContextOptions.h"
+#include "include/gpu/graphite/PersistentCache.h"
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/private/base/SkMutex.h"
@@ -110,7 +111,7 @@ VulkanSharedContext::VulkanSharedContext(
                 sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator,
                 std::unique_ptr<const VulkanCaps> caps,
                 SkExecutor* executor,
-                ContextOptions::PersistentCache* persistentCache,
+                PersistentCache* persistentCache,
                 SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
                         BackendApi::kVulkan,
@@ -146,7 +147,7 @@ VulkanSharedContext::~VulkanSharedContext() {
 
 VkPipelineCache VulkanSharedContext::createPipelineCache(
         VkPhysicalDevice physDev,
-        ContextOptions::PersistentCache* persistentCache) {
+        PersistentCache* persistentCache) {
     VkPipelineCacheCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
     createInfo.initialDataSize = 0;
@@ -205,7 +206,7 @@ VulkanThreadSafeResourceProvider* VulkanSharedContext::threadSafeResourceProvide
     return static_cast<VulkanThreadSafeResourceProvider*>(fThreadSafeResourceProvider.get());
 }
 
-void VulkanSharedContext::storePipelineCacheData(ContextOptions::PersistentCache* persistentCache,
+void VulkanSharedContext::storePipelineCacheData(PersistentCache* persistentCache,
                                                  size_t maxSize) {
     SkASSERT(persistentCache);
 
