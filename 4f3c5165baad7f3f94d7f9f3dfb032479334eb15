@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "693a3300_3cb8c8c1",
+        "filename": "tests/graphite/NotifyInUseTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T20:38:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22a3cae4_182f85da",
+      "revId": "4f3c5165baad7f3f94d7f9f3dfb032479334eb15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2f2491a_07adb5f7",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8bdc86_d9e0318f",
+        "filename": "tests/graphite/NotifyInUseTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T20:38:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2f2491a_07adb5f7",
+      "range": {
+        "startLine": 47,
+        "startChar": 25,
+        "endLine": 47,
+        "endChar": 36
+      },
+      "revId": "4f3c5165baad7f3f94d7f9f3dfb032479334eb15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51a27ce7_929560da",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-10-02T14:05:51Z",
       "side": 1,
       "message": "Which GM?",
+      "range": {
+        "startLine": 106,
+        "startChar": 20,
+        "endLine": 106,
+        "endChar": 22
+      },
+      "revId": "4f3c5165baad7f3f94d7f9f3dfb032479334eb15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "994e2e56_334acd30",
+        "filename": "tests/graphite/NotifyInUseTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T20:38:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51a27ce7_929560da",
       "range": {
         "startLine": 106,
         "startChar": 20,
