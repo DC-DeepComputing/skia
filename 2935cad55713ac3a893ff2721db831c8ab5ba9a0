@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8355baf1_e439352e",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T18:14:54Z",
+      "side": 0,
+      "message": "Why was this overload necessary? And is it ok to remove this?",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 1
+      },
+      "revId": "2935cad55713ac3a893ff2721db831c8ab5ba9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
