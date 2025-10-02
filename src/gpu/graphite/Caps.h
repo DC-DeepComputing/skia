@@ -414,6 +414,8 @@ public:
 
     bool supportsHostImageCopy() const { return fSupportsHostImageCopy; }
 
+    bool canDetectNewPipelineCacheData() const { return fCanDetectNewPipelineCacheData; }
+
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
     /**
@@ -587,6 +589,10 @@ protected:
     // Under certain circumstances, it's more efficient to upload data in this way instead of
     // through a staging buffer.
     bool fSupportsHostImageCopy = false;
+
+    // Can the backend accurately determine when a new Pipeline has been created vs having
+    // been retrieved from the cache.
+    bool fCanDetectNewPipelineCacheData = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;

@@ -662,7 +662,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
     {
         TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
 
-        if (sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()) {
+        if (sharedContext->caps()->canDetectNewPipelineCacheData()) {
             TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline-CacheLookup");
 
             pipelineCreateInfo->flags |=
@@ -682,7 +682,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
             TRACE_EVENT0_ALWAYS(
                 "skia.shaders",
-                TRACE_STR_STATIC(sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()
+                TRACE_STR_STATIC(sharedContext->caps()->canDetectNewPipelineCacheData()
                                          ? "CreateGraphicsPipeline-CompileAfterCacheMiss"
                                          : "CreateGraphicsPipeline-CacheLookupOrCompile"));
 
