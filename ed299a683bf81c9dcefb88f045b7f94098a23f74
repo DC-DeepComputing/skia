@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95fbdec_21a6934c",
+        "filename": "tests/RRectInPathTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:51:15Z",
+      "side": 1,
+      "message": "Can we delete this too?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 1
+      },
+      "revId": "ed299a683bf81c9dcefb88f045b7f94098a23f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
