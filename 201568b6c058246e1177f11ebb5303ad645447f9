@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "befbf878_f4c2bdc6",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:41:01Z",
+      "side": 1,
+      "message": "ubernit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "201568b6c058246e1177f11ebb5303ad645447f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8bd62ed_bc396707",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:41:01Z",
+      "side": 1,
+      "message": "You mean SkPathData?",
+      "range": {
+        "startLine": 34,
+        "startChar": 10,
+        "endLine": 34,
+        "endChar": 16
+      },
+      "revId": "201568b6c058246e1177f11ebb5303ad645447f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c510a795_335b849c",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:41:01Z",
+      "side": 1,
+      "message": "Is this meant to be public eventually? SkPathRef is currently private, so this would be a bit of a change by exposing this, yeah?",
+      "range": {
+        "startLine": 76,
+        "startChar": 6,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "201568b6c058246e1177f11ebb5303ad645447f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9166c627_f1c2a1cb",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:41:01Z",
+      "side": 1,
+      "message": "isFinite() is probably useful here too.",
+      "range": {
+        "startLine": 121,
+        "startChar": 9,
+        "endLine": 121,
+        "endChar": 17
+      },
+      "revId": "201568b6c058246e1177f11ebb5303ad645447f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d81fd4_37563c26",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-02T13:41:01Z",
+      "side": 1,
+      "message": "SkSpan\u003cconst SkPoint\u003e ? Maybe `const SkSpan\u003cconst SkPoint\u003e` to show we are serious about constiness?",
+      "range": {
+        "startLine": 161,
+        "startChar": 3,
+        "endLine": 161,
+        "endChar": 19
+      },
+      "revId": "201568b6c058246e1177f11ebb5303ad645447f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
