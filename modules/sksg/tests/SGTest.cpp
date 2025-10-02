@@ -9,15 +9,21 @@
 
 #if !defined(SK_BUILD_FOR_GOOGLE3)
 
+#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
+#include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTo.h"
 #include "modules/sksg/include/SkSGDraw.h"
 #include "modules/sksg/include/SkSGGroup.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
+#include "modules/sksg/include/SkSGMerge.h"
 #include "modules/sksg/include/SkSGPaint.h"
+#include "modules/sksg/include/SkSGPath.h"
 #include "modules/sksg/include/SkSGRect.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
 #include "modules/sksg/include/SkSGTransform.h"
+#include "src/core/SkPathPriv.h"
 #include "src/core/SkRectPriv.h"
 
 #include "tests/Test.h"
@@ -353,6 +359,214 @@ DEF_TEST(SGInvalidation, reporter) {
     inval_test2(reporter);
     inval_test3(reporter);
     inval_group_remove(reporter);
+}
+
+// Helper to stringify a verb.
+static const char* verb_to_string(SkPath::Verb verb) {
+    switch (verb) {
+        case SkPath::kMove_Verb:
+            return "Move";
+        case SkPath::kLine_Verb:
+            return "Line";
+        case SkPath::kQuad_Verb:
+            return "Quad";
+        case SkPath::kConic_Verb:
+            return "Conic";
+        case SkPath::kCubic_Verb:
+            return "Cubic";
+        case SkPath::kClose_Verb:
+            return "Close";
+        case SkPath::kDone_Verb:
+            return "Done";
+    }
+    SkUNREACHABLE;
+}
+
+static int verb_to_points(SkPath::Verb verb) {
+    switch (verb) {
+        case SkPath::kMove_Verb:
+            return 1;
+        case SkPath::kLine_Verb:
+            return 2;
+        case SkPath::kQuad_Verb:
+            return 3;
+        case SkPath::kConic_Verb:
+            return 3;
+        case SkPath::kCubic_Verb:
+            return 4;
+        case SkPath::kClose_Verb:
+            return 0;
+        case SkPath::kDone_Verb:
+            return 0;
+    }
+    SkUNREACHABLE;
+}
+
+static void assert_paths_equal(skiatest::Reporter* reporter, const SkPath& a, const SkPath& b) {
+    if (a.getFillType() != b.getFillType()) {
+        ERRORF(reporter,
+               "Paths differ in FillType. Expected %d, got %d.",
+               (int)a.getFillType(),
+               (int)b.getFillType());
+        a.dump();
+        b.dump();
+        return;
+    }
+    if (SkPathPriv::GetConvexity(a) != SkPathPriv::GetConvexity(b)) {
+        ERRORF(reporter,
+               "Paths differ in Convexity. Expected %d, got %d.",
+               (int)SkPathPriv::GetConvexity(a),
+               (int)SkPathPriv::GetConvexity(b));
+        return;
+    }
+
+    SkPath::RawIter iterA(a);
+    SkPath::RawIter iterB(b);
+
+    SkPoint ptsA[4], ptsB[4];
+    int verbIndex = 0;
+
+    for (;;) {
+        SkPath::Verb verbA = iterA.next(ptsA);
+        SkPath::Verb verbB = iterB.next(ptsB);
+
+        if (verbA != verbB) {
+            ERRORF(reporter,
+                   "Paths differ at verb index %d. Expected %s, got %s.",
+                   verbIndex,
+                   verb_to_string(verbA),
+                   verb_to_string(verbB));
+            a.dump();
+            b.dump();
+            return;
+        }
+
+        if (verbA == SkPath::kDone_Verb) {
+            break;
+        }
+
+        const int numPts = verb_to_points(verbA);
+        for (int i = 0; i < numPts; ++i) {
+            if (ptsA[i] != ptsB[i]) {
+                ERRORF(reporter,
+                       "Paths differ at verb index %d (%s), point %d. "
+                       "Expected (%f, %f), got (%f, %f).",
+                       verbIndex,
+                       verb_to_string(verbA),
+                       i,
+                       ptsA[i].fX,
+                       ptsA[i].fY,
+                       ptsB[i].fX,
+                       ptsB[i].fY);
+                a.dump();
+                b.dump();
+                return;
+            }
+        }
+
+        if (verbA == SkPath::kConic_Verb) {
+            const float weightA = iterA.conicWeight();
+            const float weightB = iterB.conicWeight();
+            if (weightA != weightB) {
+                ERRORF(reporter,
+                       "Paths differ at verb index %d (Conic), weight. "
+                       "Expected %f, got %f.",
+                       verbIndex,
+                       weightA,
+                       weightB);
+                a.dump();
+                b.dump();
+                return;
+            }
+        }
+
+        verbIndex++;
+    }
+}
+
+static void test_merge(skiatest::Reporter* reporter,
+                       const char* name,
+                       std::vector<sksg::Merge::Rec>&& recs,
+                       const SkPath& expected) {
+    skiatest::ReporterContext rc(reporter, name);
+    auto merge = sksg::Merge::Make(std::move(recs));
+    sksg::InvalidationController ic;
+    merge->revalidate(&ic, SkMatrix::I());
+    assert_paths_equal(reporter, merge->asPath(), expected);
+}
+
+DEF_TEST(SGMerge, reporter) {
+    const auto square = sksg::Rect::Make(SkRect::MakeXYWH(0, 0, 100, 100));
+    const auto rect = sksg::Path::Make(SkPath::Rect(SkRect::MakeXYWH(50, 50, 100, 150)));
+    const auto window = sksg::Path::Make(SkPath::Rect(SkRect::MakeXYWH(20, 30, 5, 60)));
+
+    {
+        SkPathBuilder expected;
+        expected.moveTo(0, 0).lineTo(100, 0).lineTo(100, 100).lineTo(0, 100);
+        expected.close();
+        expected.moveTo(50, 50).lineTo(150, 50).lineTo(150, 200).lineTo(50, 200);
+        expected.close();
+        test_merge(reporter,
+                   "Merge combines contours",
+                   {{square, sksg::Merge::Mode::kMerge}, {rect, sksg::Merge::Mode::kMerge}},
+                   expected.detach());
+    }
+
+    {
+        SkPathBuilder expected;
+        expected.setFillType(SkPathFillType::kEvenOdd);
+        expected.moveTo(100, 0);
+        expected.lineTo(0, 0);
+        expected.lineTo(0, 100);
+        expected.lineTo(50, 100);
+        expected.lineTo(50, 200);
+        expected.lineTo(150, 200);
+        expected.lineTo(150, 50);
+        expected.lineTo(100, 50);
+        expected.lineTo(100, 0);
+        expected.close();
+        test_merge(reporter,
+                   "Union uses pathops",
+                   {{square, sksg::Merge::Mode::kUnion}, {rect, sksg::Merge::Mode::kUnion}},
+                   expected.detach());
+    }
+
+    {
+        SkPathBuilder expected;
+        expected.setFillType(SkPathFillType::kEvenOdd);
+        expected.moveTo(50, 50);
+        expected.lineTo(100, 50);
+        expected.lineTo(100, 100);
+        expected.lineTo(50, 100);
+        expected.close();
+        test_merge(reporter,
+                   "Intersect uses pathops",
+                   {{square, sksg::Merge::Mode::kUnion},  // first op is ignored
+                    {rect, sksg::Merge::Mode::kIntersect}},
+                   expected.detach());
+    }
+
+    {
+        SkPathBuilder expected;
+        expected.setFillType(SkPathFillType::kEvenOdd);
+        expected.moveTo(100, 0);
+        expected.lineTo(0, 0);
+        expected.lineTo(0, 100);
+        expected.lineTo(100, 100);
+        expected.lineTo(100, 0);
+        expected.close();
+        expected.moveTo(25, 30);
+        expected.lineTo(20, 30);
+        expected.lineTo(20, 90);
+        expected.lineTo(25, 90);
+        expected.lineTo(25, 30);
+        expected.close();
+        test_merge(reporter,
+                   "Difference uses pathops",
+                   {{square, sksg::Merge::Mode::kUnion},  // first op is ignored
+                    {window, sksg::Merge::Mode::kDifference}},
+                   expected.detach());
+    }
 }
 
 #endif // !defined(SK_BUILD_FOR_GOOGLE3)
