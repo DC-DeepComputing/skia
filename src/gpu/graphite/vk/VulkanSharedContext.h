@@ -64,7 +64,10 @@ public:
 
     VkPipelineCache getPipelineCache() const { return fPipelineCache; }
 
-    void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
+    void pipelineCompileWasRequired() {
+        SkDebugf("pipelineCompileWasRequired\n");
+        fHasNewVkPipelineCacheData = true;
+    }
     bool canDetectNewPipelineCacheData() const override;
     bool hasNewPipelineCacheData() const override { return fHasNewVkPipelineCacheData; }
     void storePipelineCacheData(ContextOptions::PersistentCache*, size_t maxSize) override;

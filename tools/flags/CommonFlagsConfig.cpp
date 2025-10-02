@@ -163,6 +163,7 @@ static const struct {
 #if defined(SK_ENABLE_PRECOMPILE)
     { "grvktestprecompile",       "graphite", "api=vulkan,testPrecompileGraphite=true" },
 #endif
+    { "grvktestpersistentcache",  "graphite", "api=vulkan,testPersistentCache=1" },
 #endif
 #endif
 
@@ -705,6 +706,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
     ContextType contextType            = skgpu::ContextType::kMetal;
     SkColorType colorType              = kRGBA_8888_SkColorType;
     SkAlphaType alphaType              = kPremul_SkAlphaType;
+    int         testPersistentCache    = 0;
     bool        testPrecompileGraphite = false;
 
     bool parseSucceeded = false;
@@ -713,10 +715,11 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
         return nullptr;
     }
 
-    bool validOptions = extendedOptions.get_option_graphite_api("api", &contextType) &&
-                        extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
-                        extendedOptions.get_option_bool("testPrecompileGraphite",
-                                                        &testPrecompileGraphite);
+    bool validOptions =
+        extendedOptions.get_option_graphite_api("api", &contextType) &&
+        extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
+        extendedOptions.get_option_int("testPersistentCache", &testPersistentCache) &&
+        extendedOptions.get_option_bool("testPrecompileGraphite", &testPrecompileGraphite);
     if (!validOptions) {
         return nullptr;
     }
@@ -726,6 +729,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
                                            contextType,
                                            colorType,
                                            alphaType,
+                                           testPersistentCache,
                                            testPrecompileGraphite);
 }
 
