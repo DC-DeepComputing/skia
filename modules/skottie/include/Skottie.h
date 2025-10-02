@@ -45,6 +45,13 @@ namespace internal { class Animator; }
 using ImageAsset = skresources::ImageAsset;
 using ResourceProvider = skresources::ResourceProvider;
 
+struct LayerInfo {
+    SkSize      fSize;
+    const float fInPoint,
+                fOutPoint;
+    SkString    fName;
+};
+
 /**
  * A Logger subclass can be used to receive Animation::Builder parsing errors and warnings.
  */
@@ -181,6 +188,8 @@ public:
          */
         const sk_sp<SlotManager>& getSlotManager() const {return fSlotManager;}
 
+        std::vector<LayerInfo> getLayerInfo() const {return fLayerInfo;}
+
     private:
         const uint32_t          fFlags;
 
@@ -194,6 +203,7 @@ public:
         sk_sp<SkShapers::Factory> fShapingFactory;
         sk_sp<SlotManager>        fSlotManager;
         Stats                     fStats;
+        std::vector<LayerInfo>    fLayerInfo;
     };
 
     /**

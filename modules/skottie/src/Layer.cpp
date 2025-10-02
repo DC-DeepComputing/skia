@@ -13,6 +13,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTArray.h"
@@ -38,6 +39,7 @@
 #include "modules/sksg/include/SkSGRenderNode.h"
 #include "modules/sksg/include/SkSGTransform.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -326,7 +328,8 @@ LayerBuilder::LayerBuilder(const skjson::ObjectValue& jlayer, const SkSize& comp
     , fAutoOrient (ParseDefault<int>(jlayer["ao"    ],  0))
     , fInfo{comp_size,
             ParseDefault<float>(jlayer["ip"], 0.0f),
-            ParseDefault<float>(jlayer["op"], 0.0f)}
+            ParseDefault<float>(jlayer["op"], 0.0f),
+            ParseDefault<SkString>(jlayer["nm"], SkString())}
 {
     static constexpr struct BuilderInfo gLayerBuildInfo[] = {
         { &AnimationBuilder::attachPrecompLayer, kTransformEffects },  // 'ty':  0 -> precomp
@@ -513,6 +516,7 @@ sk_sp<sksg::RenderNode> LayerBuilder::buildContentTree(const AnimationBuilder& a
     // Stash the layer animator scope, to be picked up later in buildRenderTree().
     fLayerScope = ascope.release();
 
+    abuilder.trackLayerInfo(fInfo);
     return layer;
 }
 

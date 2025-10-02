@@ -25,6 +25,7 @@
 
 #include "modules/skshaper/include/SkShaper_factory.h"
 
+#include <string>
 #include <vector>
 
 namespace skjson {
@@ -75,6 +76,7 @@ public:
         sk_sp<sksg::RenderNode> fSceneRoot;
         AnimatorScope           fAnimators;
         sk_sp<SlotManager>      fSlotManager;
+        std::vector<LayerInfo>  fLayerInfo;
     };
 
     AnimationInfo parse(const skjson::ObjectValue&);
@@ -210,7 +212,6 @@ private:
     struct AttachLayerContext;
     struct AttachShapeContext;
     struct FootageAssetInfo;
-    struct LayerInfo;
 
     void parseAssets(const skjson::ArrayValue*);
 
@@ -239,6 +240,8 @@ private:
     sk_sp<sksg::RenderNode> attachTextLayer   (const skjson::ObjectValue&, LayerInfo*) const;
     sk_sp<sksg::RenderNode> attachAudioLayer  (const skjson::ObjectValue&, LayerInfo*) const;
 
+    void trackLayerInfo(LayerInfo info) const;
+
     sk_sp<ResourceProvider>      fResourceProvider;
     sk_sp<SkFontMgr>             fFontMgr;
     sk_sp<PropertyObserver>      fPropertyObserver;
@@ -250,6 +253,7 @@ private:
     sk_sp<SceneGraphRevalidator> fRevalidator;
     sk_sp<SlotManager>           fSlotManager;
     Animation::Builder::Stats*   fStats;
+    mutable std::vector<LayerInfo>       fLayerInfo;
     const SkSize                 fCompSize;
     const float                  fDuration,
                                  fFrameRate;
@@ -257,12 +261,6 @@ private:
     mutable AnimatorScope*       fCurrentAnimatorScope;
     mutable const char*          fPropertyObserverContext = nullptr;
     mutable bool                 fHasNontrivialBlending : 1;
-
-    struct LayerInfo {
-        SkSize      fSize;
-        const float fInPoint,
-                    fOutPoint;
-    };
 
     struct AssetInfo {
         const skjson::ObjectValue* fAsset;

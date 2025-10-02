@@ -181,7 +181,7 @@ AnimationBuilder::AnimationInfo AnimationBuilder::parse(const skjson::ObjectValu
     fRevalidator->setRoot(root);
     fRevalidator->revalidate();
 
-    return { std::move(root), std::move(animators), std::move(fSlotManager)};
+    return { std::move(root), std::move(animators), std::move(fSlotManager), std::move(fLayerInfo)};
 }
 
 void AnimationBuilder::parseAssets(const skjson::ArrayValue* jassets) {
@@ -194,6 +194,10 @@ void AnimationBuilder::parseAssets(const skjson::ArrayValue* jassets) {
             fAssets.set(ParseDefault<SkString>((*asset)["id"], SkString()), { asset, false });
         }
     }
+}
+
+void AnimationBuilder::trackLayerInfo(LayerInfo info) const {
+    fLayerInfo.emplace_back(info);
 }
 
 void AnimationBuilder::dispatchMarkers(const skjson::ArrayValue* jmarkers) const {
@@ -431,6 +435,7 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
     auto ainfo = builder.parse(json);
 
     fSlotManager = ainfo.fSlotManager;
+    fLayerInfo = std::move(ainfo.fLayerInfo);
 
     const auto t2 = std::chrono::steady_clock::now();
     fStats.fSceneParseTimeMS = std::chrono::duration<float, std::milli>{t2-t1}.count();
