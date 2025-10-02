@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b63fadf_a0002e09",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-02T15:05:31Z",
+      "side": 1,
+      "message": "Should we make this `#ifndef SK_HIDE_PATH_EDIT_METHODS` instead?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0e9a5812_b955a334",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/PathTest.cpp",
+              "range": {
+                "startLine": 60,
+                "startChar": 0,
+                "endLine": 61,
+                "endChar": 0
+              },
+              "replacement": "#ifndef SK_HIDE_PATH_EDIT_METHODS\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8812b56158bebad24ab8dc4c5f2de2f1c090e972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
