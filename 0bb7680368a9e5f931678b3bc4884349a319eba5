@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c74937f7_4554d78e",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "I\u0027ve moved it into its own header and made it a top-level object. We should probably discuss its generality.",
+      "parentUuid": "c8c8fb34_2e422877",
+      "range": {
+        "startLine": 34,
+        "startChar": 18,
+        "endLine": 34,
+        "endChar": 33
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4911f51_5bf37500",
         "filename": "include/gpu/graphite/ContextOptions.h",
         "patchSetId": 11
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-02T14:35:18Z",
       "side": 1,
       "message": "\"across Context lifetimes\"?  Also we should repeat the lifetime note for this object, similar to fExecutor above.",
+      "range": {
+        "startLine": 219,
+        "startChar": 53,
+        "endLine": 219,
+        "endChar": 66
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cf56550_d82c3128",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4911f51_5bf37500",
       "range": {
         "startLine": 219,
         "startChar": 53,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a887d582_70d96ab0",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "I think, practically, if \u0027canDetectNewPipelineCacheData\u0027 returned false then a client should not use \u0027hasNewPipelineCacheDAta\u0027 at all and find other criteria to call \u0027storePipelineCacheData\u0027. Probably either a timer or some internal boundary (e.g., on app exit).",
+      "parentUuid": "e90347cc_8accf762",
+      "range": {
+        "startLine": 920,
+        "startChar": 0,
+        "endLine": 926,
+        "endChar": 1
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc258757_acd34c06",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 11
@@ -100,6 +172,30 @@
       "writtenOn": "2025-10-02T14:35:18Z",
       "side": 1,
       "message": "This could just be a default parameter on the other storePipelineCacheData function in the header.",
+      "range": {
+        "startLine": 928,
+        "startChar": 0,
+        "endLine": 930,
+        "endChar": 1
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529b1733_624a4d6e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 930,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc258757_acd34c06",
       "range": {
         "startLine": 928,
         "startChar": 0,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcb7b4b7_06e0372a",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "I\u0027ll make a prequel CL to do this. It is already on the VulkanCaps from:\n   https://skia-review.googlesource.com/c/skia/+/1064296\nbut needs to be pushed up to the base class.",
+      "parentUuid": "f59b0946_18174336",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0bfa1fc9_bf4197cc",
         "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
         "patchSetId": 11
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a07ad3f7_607180a5",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "Yep - I was going to leave that as a follow up when I started testing this out with theaded compilation.",
+      "parentUuid": "0bfa1fc9_bf4197cc",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 76
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77d4bebe_4f848616",
         "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
         "patchSetId": 11
@@ -169,6 +313,30 @@
       "writtenOn": "2025-10-02T14:35:18Z",
       "side": 1,
       "message": "Does Ganesh support other types of caches? If not, I\u0027d be comfortable restricting us to just pipelines.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 6
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be8b13d_67b3eba4",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T15:31:51Z",
+      "side": 1,
+      "message": "Yeah - Ganesh also supports persisting the fragment and vertex shaders as either SPIR-V or SkSL. I don\u0027t know any clients who actually use that capability though.\n\nI think Ganesh\u0027s PersistentCache was designed to be as generic as possible so anything could be cached there.",
+      "parentUuid": "77d4bebe_4f848616",
       "range": {
         "startLine": 81,
         "startChar": 0,
