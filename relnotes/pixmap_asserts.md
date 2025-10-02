@@ -1,0 +1,1 @@
+`SkPixmap::addrN` will now assert for negative values of x and y in debug mode.
