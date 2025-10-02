@@ -344,6 +344,8 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
     auto device = fSharedContext->device();
     VkResult err;
 
+    // Consider the VK_EXT_swapchain_maintenance1 extension. It allows using a VkFence with the
+    // presentation operation.
     if (fSubmitFence == VK_NULL_HANDLE) {
         VkFenceCreateInfo fenceInfo = {};
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
@@ -354,6 +356,9 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
             return false;
         }
     } else {
+        if (submitInfo.fSync == SyncToCpu::kYes) {
+            this->waitUntilFinished();
+        }
         // This cannot return DEVICE_LOST so we assert we succeeded.
         VULKAN_CALL_RESULT(fSharedContext, err, ResetFences(device, 1, &fSubmitFence));
         SkASSERT(err == VK_SUCCESS);
@@ -367,6 +372,8 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
                                VK_PIPELINE_STAGE_TRANSFER_BIT);
     }
 
+    // Before submitting, we need to re-acquire semaphores that may have been used when presenting
+    // on the swapchain.
     VkResult submitResult = submit_to_queue(fSharedContext,
                                             queue,
                                             fSubmitFence,

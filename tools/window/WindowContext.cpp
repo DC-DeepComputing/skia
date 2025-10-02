@@ -67,7 +67,7 @@ void WindowContext::submitToGpu(GpuTimerCallback statsCallback) {
             }
             info.fRecording = recording.get();
             fGraphiteContext->insertRecording(info);
-            fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kNo);
+            fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kYes);
         }
         return;
     }
