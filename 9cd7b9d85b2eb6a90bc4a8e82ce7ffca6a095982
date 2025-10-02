@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91235ba9_e2cc91a8",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T15:21:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9346df65_c5c4c48f",
+      "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "538b1aef_6a0eaa36",
@@ -79,6 +97,30 @@
       "side": 1,
       "message": "I think those labels are helpful. The `IOSurface_CanvasResourceRaster_Pid:35734` are labels that come from Chrome so we know that the target is created by a client-held SkSurface.  The `_ChildDevice` suffix is one that Graphite appends when it\u0027s creating a saveLayer\u0027s Device.  There are other labels for image filter and blur evaluations that can be very useful in a complex task graph. Because we don\u0027t see those labels here, then we know they aren\u0027t using an image filter for the drop shadow, which had been ambiguous for us when trying to figure out the repro earlier.\n\nBut to your earlier question, a DC will only have a single target TextureProxy.",
       "parentUuid": "8446e924_6da4520c",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 9
+      },
+      "revId": "9cd7b9d85b2eb6a90bc4a8e82ce7ffca6a095982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d849af3d_a6c6b5b5",
+        "filename": "src/gpu/graphite/task/DrawTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T15:21:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d9c7d50_8e9e7bf2",
       "range": {
         "startLine": 79,
         "startChar": 0,
