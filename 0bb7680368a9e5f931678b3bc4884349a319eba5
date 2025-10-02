@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "724829b0_8e8f706b",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T17:58:00Z",
+      "side": 1,
+      "message": "Addressed in https://skia-review.googlesource.com/c/skia/+/1066057",
+      "parentUuid": "fcb7b4b7_06e0372a",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bfa1fc9_bf4197cc",
@@ -290,6 +314,30 @@
       "side": 1,
       "message": "Yep - I was going to leave that as a follow up when I started testing this out with theaded compilation.",
       "parentUuid": "0bfa1fc9_bf4197cc",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 76
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad59798a_49f01b8a",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-02T17:58:00Z",
+      "side": 1,
+      "message": "For now, I\u0027ve made \u0027fHasNewVkPipelineCacheData\u0027 atomic but will just live with the default memory_order. I\u0027ll loop back around and refine it in a follow up.",
+      "parentUuid": "a07ad3f7_607180a5",
       "range": {
         "startLine": 67,
         "startChar": 0,
