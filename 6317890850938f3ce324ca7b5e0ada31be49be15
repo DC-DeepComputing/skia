@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "696249c9_6606fcac",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24979853_a6ca2250",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d0e103a_3db61620",
@@ -54,6 +78,24 @@
       "writtenOn": "2025-10-02T19:11:21Z",
       "side": 1,
       "message": "nit: Put these in one block",
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6667e230_433b55b4",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d0e103a_3db61620",
       "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -95,6 +137,30 @@
       "side": 1,
       "message": "This helper is only called after we\u0027ve already paid the cost of (in runtime) checking that all of the verbs are valid. The assert is really just an acknowledgement that I\u0027m going to index into an array, and needn\u0027t be a runtime check (again).\n\nRelying on unsigned to skip the \u003e\u003d 0 is canonical skia coding practice. Since I *have* to case v to unsigned to compare against sizeof(), it would perhaps be more confusing to also have the \u003e\u003d 0 in this context.",
       "parentUuid": "c6993fde_32218185",
+      "range": {
+        "startLine": 43,
+        "startChar": 17,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9161b34c_80086b1b",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b42d31b_68136b40",
       "range": {
         "startLine": 43,
         "startChar": 17,
@@ -199,6 +265,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8016dd27_87713f27",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca6e2caa_925bb7a2",
+      "range": {
+        "startLine": 85,
+        "startChar": 37,
+        "endLine": 85,
+        "endChar": 41
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dfd3634_cd72bddd",
@@ -236,6 +326,30 @@
       "side": 1,
       "message": "It exists for devs who want to diagnose failures, since they can uncomment line 112 and set a breakpoint. No need for an ifdef, as it will compiled to nothing when its empty (i.e. no code size increase).",
       "parentUuid": "8dfd3634_cd72bddd",
+      "range": {
+        "startLine": 111,
+        "startChar": 12,
+        "endLine": 111,
+        "endChar": 40
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee901ca6_cd53cb81",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbd0ee10_a3da4fcf",
       "range": {
         "startLine": 111,
         "startChar": 12,
@@ -293,6 +407,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8092d338_3b5b1577",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56b35732_9a1b5692",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 2
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29779bae_9b37114e",
@@ -340,6 +478,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe206cd_10fb0dc7",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c87fe928_790ef7eb",
+      "range": {
+        "startLine": 122,
+        "startChar": 17,
+        "endLine": 122,
+        "endChar": 24
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "155ccf10_dce484d0",
@@ -377,6 +539,30 @@
       "side": 1,
       "message": "This is a standard technique; we use it in SkData and SkTextBlob. The +1 is completely well defined, since it adds sizeof(*this) to the pointer. This also gives us well defined alignment -- the same alignment as the this itself. In the case of SkPataData, we\u0027ll be aligned the same as a pointer, since SkPathData contains spans (which have pointers).",
       "parentUuid": "155ccf10_dce484d0",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 126,
+        "endChar": 12
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12b90006_4d3c5d88",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe6b4997_10dc2b68",
       "range": {
         "startLine": 126,
         "startChar": 8,
@@ -471,6 +657,30 @@
       "side": 1,
       "message": "Good catch. Will doucment it, pointing the existing conventions in SkPath and SkPathBuilder.",
       "parentUuid": "74272ec4_4d899c48",
+      "range": {
+        "startLine": 93,
+        "startChar": 77,
+        "endLine": 93,
+        "endChar": 87
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f550c19_b4d5c8da",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-02T20:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8656cc11_4579ffbb",
       "range": {
         "startLine": 93,
         "startChar": 77,
