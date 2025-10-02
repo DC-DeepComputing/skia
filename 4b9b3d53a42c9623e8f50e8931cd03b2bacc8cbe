@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6233b26e_a1d18978",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T20:09:31Z",
+      "side": 1,
+      "message": "PTAL, Passing both Android + Chromium",
+      "revId": "4b9b3d53a42c9623e8f50e8931cd03b2bacc8cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
