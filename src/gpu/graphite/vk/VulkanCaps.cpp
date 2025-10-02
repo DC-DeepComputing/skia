@@ -209,8 +209,6 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsDeviceFaultInfo = enabledFeatures.fDeviceFault;
     fSupportsFrameBoundary = enabledFeatures.fFrameBoundary;
 
-    fSupportsPipelineCreationCacheControl = enabledFeatures.fPipelineCreationCacheControl;
-
     if (enabledFeatures.fAdvancedBlendModes) {
         fBlendEqSupport = enabledFeatures.fCoherentAdvancedBlendModes
                 ? BlendEquationSupport::kAdvancedCoherent
@@ -279,6 +277,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsHostImageCopy = enabledFeatures.fHostImageCopy &&
                              deviceProperties.fHic.identicalMemoryTypeRequirements &&
                              deviceProperties.fHicHasShaderReadOnlyDstLayout;
+
+    fCanDetectNewPipelineCacheData = enabledFeatures.fPipelineCreationCacheControl;
 
     // Note: Do not add extension/feature checks after this; driver workarounds should be done last.
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
