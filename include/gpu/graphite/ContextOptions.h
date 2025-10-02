@@ -19,6 +19,8 @@
 class SkData;
 class SkExecutor;
 class SkRuntimeEffect;
+class SkString;
+
 namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
@@ -26,6 +28,30 @@ namespace skgpu::graphite {
 struct ContextOptionsPriv;
 
 struct SK_API ContextOptions {
+    /**
+     * Abstract class which stores Skia data in a cache that persists between sessions.
+     */
+    class SK_API  PersistentCache {
+    public:
+        virtual ~PersistentCache() = default;
+
+        /**
+         * Returns the data for the key if it exists in the cache, otherwise returns null.
+         */
+        virtual sk_sp<SkData> load(const SkData& key) = 0;
+
+        /**
+         * Stores data in the cache, indexed by key. description provides a human-readable
+         * version of the key.
+         */
+        virtual void store(const SkData& key, const SkData& data, const SkString& description) = 0;
+
+    protected:
+        PersistentCache() = default;
+        PersistentCache(const PersistentCache&) = delete;
+        PersistentCache& operator=(const PersistentCache&) = delete;
+    };
+
     ContextOptions() {}
 
     /**
@@ -188,6 +214,11 @@ struct SK_API ContextOptions {
      * the lifetime of the Context.
      */
     SkExecutor* fExecutor = nullptr;
+
+    /**
+     * Cache in which to store backend-specific data between runs.
+     */
+    PersistentCache* fPersistentCache = nullptr;
 
     /**
      * An experimental flag in development. Behavior and performance is subject to change.
