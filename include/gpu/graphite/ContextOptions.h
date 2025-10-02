@@ -24,6 +24,7 @@ namespace skgpu { class ShaderErrorHandler; }
 namespace skgpu::graphite {
 
 struct ContextOptionsPriv;
+class PersistentCache;
 
 struct SK_API ContextOptions {
     ContextOptions() {}
@@ -188,6 +189,12 @@ struct SK_API ContextOptions {
      * the lifetime of the Context.
      */
     SkExecutor* fExecutor = nullptr;
+
+    /**
+     * Cache in which to store backend-specific data across Context lifetimes. It is up to the
+     * client to ensure the PersistentCache remains valid throughout the lifetime of the Context.
+     */
+    PersistentCache* fPersistentCache = nullptr;
 
     /**
      * An experimental flag in development. Behavior and performance is subject to change.
