@@ -15,6 +15,7 @@ PUBLIC_HEADERS = [
     "Image.h",
     "ImageProvider.h",
     "LogPriority.h",
+    "PersistentCache.h",
     "PrecompileContext.h",
     "Recorder.h",
     "Recording.h",
