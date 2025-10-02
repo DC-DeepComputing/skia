@@ -16,6 +16,167 @@
       "message": "Michael - this is going to need an API review too",
       "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c8fb34_2e422877",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "Since this is a virtual class that is intended to be extended, I think it should be in the top-level, and probably in its own header.\n\nI also think we should name it to reflect that it\u0027s for pipeline caches, right now the API is generic enough that anything could be cached even though we won\u0027t use it that way.",
+      "range": {
+        "startLine": 34,
+        "startChar": 18,
+        "endLine": 34,
+        "endChar": 33
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4911f51_5bf37500",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "\"across Context lifetimes\"?  Also we should repeat the lifetime note for this object, similar to fExecutor above.",
+      "range": {
+        "startLine": 219,
+        "startChar": 53,
+        "endLine": 219,
+        "endChar": 66
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e90347cc_8accf762",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "Do we need to expose these functions to clients? Could we just have the behavior of storePipelineCacheData() be that it only sends to the persistent cache *if* there\u0027s new data?\n\nWhat type of behavior change is expected for clients if `canDetectNewPipelineCacheData` returns false? Would they be calling store less often?",
+      "range": {
+        "startLine": 920,
+        "startChar": 0,
+        "endLine": 926,
+        "endChar": 1
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc258757_acd34c06",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 930,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "This could just be a default parameter on the other storePipelineCacheData function in the header.",
+      "range": {
+        "startLine": 928,
+        "startChar": 0,
+        "endLine": 930,
+        "endChar": 1
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f59b0946_18174336",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "This should be on Caps I think?",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfa1fc9_bf4197cc",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "I think this needs to be an atomic if it\u0027s being set by background pipeline compiling threads and being read/reset on the Context thread.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 76
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d4bebe_4f848616",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:35:18Z",
+      "side": 1,
+      "message": "Does Ganesh support other types of caches? If not, I\u0027d be comfortable restricting us to just pipelines.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 6
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
