@@ -16,6 +16,24 @@
       "message": "Oh, I guess this is the first time we\u0027ve tried this Louhi flow... What do you want to do about the AUTHORS?",
       "revId": "00d2d85c55d9851f77715c2f7509e7f995451205",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "910f2b84_09724dc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-02T15:08:47Z",
+      "side": 1,
+      "message": "Looks like it\u0027s been uploading CLs but failing to land them for a long time.  Uploaded https://skia-review.googlesource.com/c/skia/+/1066156 Add Louhi service account to AUTHORS",
+      "parentUuid": "463817f2_951eb384",
+      "revId": "00d2d85c55d9851f77715c2f7509e7f995451205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
