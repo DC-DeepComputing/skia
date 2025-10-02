@@ -13,7 +13,6 @@
 #include "include/core/SkSize.h"
 #include "include/private/base/SingleOwner.h"
 
-#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/gpu/graphite/GlobalCache.h"
@@ -33,6 +32,7 @@ class BackendTexture;
 class Caps;
 class CommandBuffer;
 class Context;
+class PersistentCache;
 class RendererProvider;
 class ResourceProvider;
 class TextureInfo;
