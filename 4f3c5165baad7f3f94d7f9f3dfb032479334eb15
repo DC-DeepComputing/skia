@@ -85,6 +85,30 @@
       },
       "revId": "4f3c5165baad7f3f94d7f9f3dfb032479334eb15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4472ad99_0d555514",
+        "filename": "tests/graphite/NotifyInUseTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-02T20:38:11Z",
+      "side": 1,
+      "message": "Yes I think a simple rect is also sufficient.",
+      "parentUuid": "ea6c31cd_69edc903",
+      "range": {
+        "startLine": 229,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 98
+      },
+      "revId": "4f3c5165baad7f3f94d7f9f3dfb032479334eb15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
