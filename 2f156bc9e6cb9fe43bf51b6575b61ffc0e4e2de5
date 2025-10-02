@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dba18c36_f82654c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-02T14:46:02Z",
+      "side": 1,
+      "message": "I am leaning towards keeping this behavior. It is a pretty consistent policy with how we handle non-finite values for draws and for the CTM: if something is non-finite, it has no valid coverage -\u003e so drawing does nothing; for clipping that same policy is equivalent to clipping to an empty path (which either forces the clip to empty for kIntersect or gets ignored for kDifference).",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 62
+      },
+      "revId": "2f156bc9e6cb9fe43bf51b6575b61ffc0e4e2de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
