@@ -57,6 +57,7 @@ struct ContextOptions;
 class PersistentCache;
 class PrecompileContext;
 class QueueManager;
+class PersistentCache;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;
