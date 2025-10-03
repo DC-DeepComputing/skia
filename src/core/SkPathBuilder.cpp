@@ -697,7 +697,7 @@ SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw) {
 }
 
 SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, unsigned index) {
-    const bool wasEmpty = this->isEmpty();
+    const bool wasEmpty = (fSegmentMask == 0);
 
     this->addRaw(SkPathRawShapes::Rect(rect, dir, index));
 
@@ -709,7 +709,7 @@ SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, u
 }
 
 SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, unsigned index) {
-    const bool wasEmpty = this->isEmpty();
+    const bool wasEmpty = (fSegmentMask == 0);
 
     this->addRaw(SkPathRawShapes::Oval(oval, dir, index));
 
@@ -735,7 +735,7 @@ SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir
         return this->addOval(bounds, dir, index / 2);
     }
 
-    const bool wasEmpty = this->isEmpty();
+    const bool wasEmpty = (fSegmentMask == 0);
 
     this->addRaw(SkPathRawShapes::RRect(rrect, dir, index));
 
@@ -812,6 +812,9 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
         return *this;
     }
 
+    // We're about to append - clear convexity.
+    fConvexity = SkPathConvexity::kUnknown;
+
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
         if (src.fLastMoveToIndex >= 0) {
             fLastMoveIndex = src.fLastMoveToIndex + this->countPoints();
@@ -828,7 +831,7 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
             memcpy(newWeights, src.fPathRef->conicWeights(), numWeights * sizeof(newWeights[0]));
         }
         fLastMovePoint = fPts.at(fLastMoveIndex);
-        return *this;  // TODO(borenet): dirtyAfterEdit sets convexity and firstDirection.
+        return *this;
     }
 
     SkMatrixPriv::MapPtsProc mapPtsProc = SkMatrixPriv::GetMapPtsProc(matrix);
@@ -972,6 +975,7 @@ void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
         this->moveTo(x, y);
     } else {
         fPts.at(count-1).set(x, y);
+        fType = SkPathIsAType::kGeneral;
     }
 }
 
