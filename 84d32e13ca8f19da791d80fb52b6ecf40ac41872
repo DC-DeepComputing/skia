@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6363c7aa_fb77f0fa",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-03T13:21:48Z",
+      "side": 1,
+      "message": "https://chromium.googlesource.com/chromium/src/+/lkgr/docs/static_initializers.md is fine with static intializing in a function that then returns it.\n\nYou don\u0027t need the SkOnce. We\u0027ve been doing patterns like the one I suggested in src/core/SkCPURecorder.cpp in more modern code. Please use that approach.",
+      "parentUuid": "032ed96f_5bcbfac7",
+      "range": {
+        "startLine": 275,
+        "startChar": 29,
+        "endLine": 279,
+        "endChar": 0
+      },
+      "revId": "84d32e13ca8f19da791d80fb52b6ecf40ac41872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ae2eea4c_e3b7c43c",
         "filename": "src/core/SkPathData.h",
         "patchSetId": 43
