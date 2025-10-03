@@ -171,6 +171,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c558d74_a6681ca8",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-03T12:53:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9161b34c_80086b1b",
+      "range": {
+        "startLine": 43,
+        "startChar": 17,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c1376e4_b0ff4491",
@@ -563,6 +587,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "fe6b4997_10dc2b68",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 126,
+        "endChar": 12
+      },
+      "revId": "6317890850938f3ce324ca7b5e0ada31be49be15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ceac4ca_5b4e3004",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-03T12:53:31Z",
+      "side": 1,
+      "message": "Thanks for the pointers. The comment below was also helpful.",
+      "parentUuid": "12b90006_4d3c5d88",
       "range": {
         "startLine": 126,
         "startChar": 8,
