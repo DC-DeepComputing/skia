@@ -22,6 +22,30 @@
       },
       "revId": "2935cad55713ac3a893ff2721db831c8ab5ba9a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72d70ff2_40664d37",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-03T13:41:03Z",
+      "side": 0,
+      "message": "I don\u0027t remember the history of the overload, but I suspect it was so that the actual writing operation could call `skvx::float4.store` instead of using the default `memcpy`. But when I looked at the `store` implementation, it\u0027s just calling `memcpy` so I opted to remove this one as it should be equivalent.",
+      "parentUuid": "8355baf1_e439352e",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 1
+      },
+      "revId": "2935cad55713ac3a893ff2721db831c8ab5ba9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
