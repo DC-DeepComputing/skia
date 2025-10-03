@@ -14,7 +14,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkOnce.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 
@@ -75,9 +74,7 @@ private:
     template <>                                                                        \
     SkMessageBus<Message, IDType, AllowCopyableMessage>*                               \
     SkMessageBus<Message, IDType, AllowCopyableMessage>::Get() {                       \
-        static SkOnce once;                                                            \
-        static SkMessageBus<Message, IDType, AllowCopyableMessage>* bus;               \
-        once([] { bus = new SkMessageBus<Message, IDType, AllowCopyableMessage>(); }); \
+        static auto* bus = new SkMessageBus<Message, IDType, AllowCopyableMessage>();  \
         return bus;                                                                    \
     }
 
