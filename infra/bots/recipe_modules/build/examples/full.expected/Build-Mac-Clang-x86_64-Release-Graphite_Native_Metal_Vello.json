@@ -206,7 +206,8 @@
     "cmd": [
       "[START_DIR]/cache/work/skia/third_party/ninja/ninja",
       "-C",
-      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-x86_64-Release-Graphite_Native_Metal_Vello/Release"
+      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-x86_64-Release-Graphite_Native_Metal_Vello/Release",
+      "-v"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {

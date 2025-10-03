@@ -7,15 +7,10 @@ if (is_wasm) {
   import("../toolchain/wasm.gni")
 }
 
+import("../extra_flags.gni")
 import("../skia.gni")
 
 declare_args() {
-  extra_asmflags = []
-  extra_cflags = []
-  extra_cflags_c = []
-  extra_cflags_cc = []
-  extra_ldflags = []
-
   malloc = ""
   werror = false
   xcode_sysroot = ""
