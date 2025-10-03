@@ -50,11 +50,25 @@ void DrawWriter::setTemplate(BindBufferInfo staticData, BindBufferInfo indices,
     }
 }
 
-void DrawWriter::flushInternal() {
+void DrawWriter::flush() {
     // Skip flush if no items appended, or dynamic instances resolved to zero count.
     if (fPendingCount == 0 ||
         ((fRenderState & RenderStateFlags::kAppendDynamicInstances) && fTemplateCount == 0)) {
         return;
+    }
+
+    // ARM hardware b/399631317: Unreferenced vertices in sequential indexes of 4 will be
+    // speculatively executed. To work around this, we pad the buffer by requesting additional
+    // space, and then ensure valid, minimally deleterious data by memsetting the padding to zero.
+    if (fRenderState & RenderStateFlags::kAppendVertices) {
+        const uint32_t alignedCount = SkAlign4(fPendingCount);
+        if (alignedCount > fPendingCount) {
+            const uint32_t byteDiff = (alignedCount - fPendingCount) * fAppendStride;
+            auto [memory, _] = fCurrentBuffer.getMappedSubrange(byteDiff, 1);
+            SkASSERT(memory); // The buffer should have been sized to hold an aligned total
+            memory.zeroBytes(byteDiff);
+            // SkDebugf("zeroing %u bytes from %u to %u\n", byteDiff, _.fOffset, _.fOffset + _.fSize);
+        }
     }
 
     // Calculate base offsets from buffer info for the draw commands.

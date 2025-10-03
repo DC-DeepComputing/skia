@@ -297,6 +297,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(DynamicVerticesPaddingTest,
     if (checkAndAdvance(vertAppend(3), false)) { return; }
     if (checkAndAdvance(vertAppend(2), true))  { return; }
     dw->flush();
+    dw.reset(); // Let its tracked sub allocator go out of scope
 
     constexpr uint32_t P = 0;
     constexpr uint32_t kExpectedBufferCount = 4;
@@ -336,7 +337,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(DynamicVerticesPaddingTest,
             if (readbackData[j] != expected[i][j]){
                 ERRORF(reporter, "Error expected %u: Got: %u At ExpectedIndex: %u \n",
                     expected[i][j], readbackData[j], i * kExpectedBufferCount + j);
-                return;
+                // return;
             }
         }
     }

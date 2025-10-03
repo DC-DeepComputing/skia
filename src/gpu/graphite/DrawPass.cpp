@@ -128,12 +128,15 @@ public:
             (fUseStorageBuffers && uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer)) {
             BufferWriter writer;
             std::tie(writer, uniformData.fBufferBinding) =
-                    fUseStorageBuffers ? bufferMgr->getAlignedSsboWriter(1, uniformDataSize)
-                                       : bufferMgr->getUniformWriter(1, uniformDataSize);
-
-            // Early out if buffer mapping failed.
+                    fCurrentBuffer.getMappedSubrange(1, uniformDataSize);
             if (!writer) {
-                return {};
+                // Allocate a new buffer
+                std::tie(writer, uniformData.fBufferBinding, fCurrentBuffer) =
+                        fUseStorageBuffers ? bufferMgr->getMappedStorageBuffer(1, uniformDataSize)
+                                           : bufferMgr->getMappedUniformBuffer(1, uniformDataSize);
+                if (!writer) {
+                    return {}; // Allocation failed so early out
+                }
             }
 
             writer.write(uniformData.fCpuData.data(), uniformDataSize);
@@ -144,6 +147,9 @@ public:
                 SkASSERT(uniformData.fBufferBinding.fOffset % uniformDataSize == 0);
                 uniformData.fBufferBinding.fOffset /= uniformDataSize;
                 uniformData.fBufferBinding.fSize = uniformData.fBufferBinding.fBuffer->size();
+            } else {
+                // Every new set of uniform data has to be bound, this ensures its aligned correctly
+                fCurrentBuffer.resetForNewBinding();
             }
         }
 
@@ -171,6 +177,8 @@ public:
     }
 
 private:
+    BufferSubAllocator fCurrentBuffer;
+
     // Internally track the last binding returned, so that we know whether new uploads or rebindings
     // are necessary. If we're using SSBOs, this is treated specially -- the fOffset field holds the
     // index in the storage buffer of the last-written uniforms, and the offsets used for actual

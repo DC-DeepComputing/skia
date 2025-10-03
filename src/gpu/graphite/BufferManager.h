@@ -9,6 +9,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkTArray.h"
+#include "include/private/base/SkTemplates.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/Buffer.h"
@@ -194,51 +195,47 @@ public:
     // work that will be wasted because the next Recording snap will fail.
     bool hasMappingFailed() const { return fMappingFailed; }
 
-    // Return true if the next call to getVertexWriter() with the same values would require a new
-    // buffer. This is only called by render steps that are appending verts.
-    bool willVertexOverflow(size_t count, size_t dataStride, size_t alignStride) const;
-
-    // These writers automatically calculate the required bytes based on count and stride. If a
-    // valid writer is returned, the byte count will fit in a uint32_t.
-    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t dataStride,
-                                                            size_t alignStride) {
-        auto [writer, binding] =
-                this->getWriter(kVertexBufferIndex, count, dataStride, alignStride);
-        return {VertexWriter(std::move(writer)), binding};
-    }
-    std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride) {
-        auto [writer, binding] = this->getWriter(kIndexBufferIndex, count, stride, /*alignment=*/1);
-        return {IndexWriter(std::move(writer)), binding};
-    }
-    std::pair<BufferWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride) {
-        return this->getWriter(kUniformBufferIndex, count, stride, /*alignment=*/1);
+    // These allocator factories automatically calculate the required bytes based on count and
+    // stride. If a valid writer is returned, the byte count will fit in a uint32_t.
+    std::tuple<BufferWriter, BindBufferInfo, BufferSubAllocator> getMappedVertexBuffer(
+            size_t count, size_t dataStride, size_t reservedCount=0, size_t alignment=1) {
+        return this->getMappedBuffer(kVertexBufferIndex, count, dataStride, reservedCount, alignment);
     }
 
-    // Return an SSBO writer that is aligned for binding, per the requirements in fCurrentBuffers.
-    std::pair<BufferWriter, BindBufferInfo> getSsboWriter(size_t count, size_t stride) {
-        return this->getWriter(kStorageBufferIndex, count, stride, /*alignment=*/1);
-    }
-    // Return an SSBO writer that is aligned for indexing from the shader, per the provided stride.
-    std::pair<BufferWriter, BindBufferInfo> getAlignedSsboWriter(size_t count, size_t stride) {
-        return this->getWriter(kStorageBufferIndex, count, stride, /*alignment=*/stride);
+    std::tuple<BufferWriter, BindBufferInfo, BufferSubAllocator> getMappedIndexBuffer(
+            size_t count, size_t reservedCount=0) {
+        return this->getMappedBuffer(kVertexBufferIndex, count, sizeof(uint16_t), reservedCount);
     }
 
-    // The remaining writers and buffer allocator functions assume that byte counts are safely
-    // calculated by the caller (e.g. Vello).
+    std::tuple<BufferWriter, BindBufferInfo, BufferSubAllocator> getMappedUniformBuffer(
+            size_t count, size_t dataStride) {
+        return this->getMappedBuffer(kUniformBufferIndex, count, dataStride);
+    }
+
+    std::tuple<BufferWriter, BindBufferInfo, BufferSubAllocator> getMappedStorageBuffer(
+            size_t count, size_t dataStride) {
+        return this->getMappedBuffer(kStorageBufferIndex, count, dataStride);
+    }
 
     // Utilities that return an unmapped buffer suballocation for a particular usage. These buffers
     // are intended to be only accessed by the GPU and are not intended for CPU data uploads.
+    // These buffer allocator functions assume that byte counts are safely calculated by the caller
+    // (e.g. Vello or unit tests).
     BindBufferInfo getStorage(size_t requiredBytes, ClearBuffer cleared = ClearBuffer::kNo) {
-        return this->getBinding(kGpuOnlyStorageBufferIndex, requiredBytes, cleared);
+        auto alloc = this->getBuffer(kGpuOnlyStorageBufferIndex, requiredBytes, 1, 1, cleared, Shareable::kNo);
+        return alloc.getSubrange(requiredBytes, /*stride=*/1);
     }
     BindBufferInfo getVertexStorage(size_t requiredBytes) {
-        return this->getBinding(kVertexStorageBufferIndex, requiredBytes, ClearBuffer::kNo);
+        auto alloc = this->getBuffer(kVertexStorageBufferIndex, requiredBytes, 1, 1, ClearBuffer::kNo, Shareable::kNo);
+        return alloc.getSubrange(requiredBytes, /*stride=*/1);
     }
     BindBufferInfo getIndexStorage(size_t requiredBytes) {
-        return this->getBinding(kIndexStorageBufferIndex, requiredBytes, ClearBuffer::kNo);
+        auto alloc = this->getBuffer(kIndexStorageBufferIndex, requiredBytes, 1, 1, ClearBuffer::kNo, Shareable::kNo);
+        return alloc.getSubrange(requiredBytes, /*stride=*/1);
     }
-    BindBufferInfo getIndirectStorage(size_t requiredBytes, ClearBuffer cleared=ClearBuffer::kNo) {
-        return this->getBinding(kIndirectStorageBufferIndex, requiredBytes, cleared);
+    BindBufferInfo getIndirectStorage(size_t requiredBytes, ClearBuffer cleared = ClearBuffer::kNo) {
+        auto alloc = this->getBuffer(kIndirectStorageBufferIndex, requiredBytes, 1, 1, cleared, Shareable::kNo);
+        return alloc.getSubrange(requiredBytes, /*stride=*/1);
     }
 
     // Returns an entire storage buffer object that is large enough to fit `requiredBytes`. The
@@ -260,10 +257,6 @@ public:
                                /*stride=*/1, /*xtraAlignment=*/1,
                                ClearBuffer::kNo, Shareable::kScratch);
     }
-
-    // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
-    // 'unusedBytes' is less than the 'count*stride' to the original allocation.
-    void returnVertexBytes(size_t unusedBytes);
 
     // Finalizes all buffers and transfers ownership of them to a Recording. Returns true on success
     // and false if a mapping had previously failed.
@@ -309,13 +302,32 @@ private:
                                  ClearBuffer cleared,
                                  Shareable shareable);
 
-    // Helper method for public get[X]Writer methods.
-    std::pair<BufferWriter, BindBufferInfo> getWriter(int stateIndex,
-                                                      size_t count,
-                                                      size_t stride,
-                                                      size_t alignment);
-    // Helper method for the public GPU-only BufferBindInfo methods
-    BindBufferInfo getBinding(int stateIndex, size_t requiredBytes, ClearBuffer);
+    std::tuple<BufferWriter, BindBufferInfo, BufferSubAllocator> getMappedBuffer(
+            int stateIndex, size_t count, size_t stride,
+            size_t reservedCount=0, size_t xtraAlignment=1) {
+        BufferSubAllocator buffer = this->getBuffer(stateIndex,
+                                                    std::max(count, reservedCount),
+                                                    stride,
+                                                    xtraAlignment,
+                                                    ClearBuffer::kNo,
+                                                    Shareable::kNo);
+        if (buffer) {
+            // This is a shortcut since we know that buffer has enough space for `count*stride`
+            // bytes at the right alignment if getBuffer() succeeded.
+            const uint32_t byteCount = SkTo<uint32_t>(count * stride);
+
+            SkASSERT(buffer.fOffset % xtraAlignment == 0);
+            SkASSERT(buffer.fOffset + byteCount <= buffer.fBuffer->size());
+
+            BindBufferInfo binding = buffer.binding(buffer.fOffset, byteCount);
+            buffer.fOffset += byteCount;
+            buffer.fAlignment = 1;
+            return {buffer.getWriter(binding), binding, std::move(buffer)};
+        } else {
+            // Failed to allocate a new buffer
+            return {BufferWriter(), BindBufferInfo(), std::move(buffer)};
+        }
+    }
 
     // Marks manager in a failed state, unmaps any previously collected buffers.
     void onFailedBuffer();
