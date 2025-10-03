@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb83066_e94245b7",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-03T13:57:53Z",
+      "side": 1,
+      "message": "Would it make sense to statically define a variable for the padding size?",
+      "range": {
+        "startLine": 342,
+        "startChar": 52,
+        "endLine": 342,
+        "endChar": 59
+      },
+      "revId": "f9a140896a84f5ca6411fe9a0f2a7f6cadd3dae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
