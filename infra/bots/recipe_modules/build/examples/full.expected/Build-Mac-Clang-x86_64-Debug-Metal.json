@@ -206,7 +206,8 @@
     "cmd": [
       "[START_DIR]/cache/work/skia/third_party/ninja/ninja",
       "-C",
-      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-x86_64-Debug-Metal/Debug"
+      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-x86_64-Debug-Metal/Debug",
+      "-v"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {
