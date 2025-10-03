@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b428e0fd_c879ef49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "LGTM, just minor tweaks.\n\nIt would be nice to also add some tests under `modules/skottie/tests/`, maybe a followup.",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0da4aed1_cf96fb91",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "nit: let\u0027s make this the first member (largest field with the strictest alignment, to minimize padding, although in this case I think it happens to not matter since we have 4 floats before).",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f392035_d7a646ac",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "Let\u0027s return an `SkSpan\u003cconst LayerInfo\u003e` instead:\n\n  1) avoids copying the data\n  2) decouples the public API from the internal data structure",
+      "range": {
+        "startLine": 191,
+        "startChar": 8,
+        "endLine": 191,
+        "endChar": 30
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39ecc3c0_f0d3e33b",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "Pretty cool that this is in Builder, and we don\u0027t have to store the info in the Animation itself!",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc6c747b_40e40886",
+        "filename": "modules/skottie/src/Layer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "FYI this was the other option I had in mind: we could add another callback to `PropertyObserver` (`onLayer`?) and then dispatch using `AutoPropertyTracker` from somewhere around here.\n\nLess plumbing, but I\u0027m not crazy abound doubling down on the callback pattern.",
+      "range": {
+        "startLine": 455,
+        "startChar": 28,
+        "endLine": 455,
+        "endChar": 47
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "278c6a11_b3a7d92a",
+        "filename": "modules/skottie/src/Layer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "uber-nit: match indentation with the other fields.",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 14
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f7236ac7_96662134",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/src/Layer.h",
+              "range": {
+                "startLine": 98,
+                "startChar": 0,
+                "endLine": 99,
+                "endChar": 0
+              },
+              "replacement": "    LayerInfo                  fInfo;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "003e168d_0800285f",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "`const LayerInfo\u0026`\n\nWe could also inline this in the header, since it\u0027s trivial.",
+      "range": {
+        "startLine": 199,
+        "startChar": 38,
+        "endLine": 199,
+        "endChar": 47
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "250f53d4_dc1f3c42",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "nit: let\u0027s move this after `fFlags`, next to the other mutable fields.",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8284c42c_11ed5d5e",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-03T14:26:37Z",
+      "side": 1,
+      "message": "nit: indent",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
