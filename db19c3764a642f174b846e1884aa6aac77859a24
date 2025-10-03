@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22d0097_082224ab",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 45
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-03T13:43:13Z",
+      "side": 1,
+      "message": "Enums as bitfields are awkward, and in this case it\u0027s valuable to know that we\u0027re a byte for packing.",
+      "parentUuid": "1fdcd363_9f54a370",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 11
+      },
+      "revId": "db19c3764a642f174b846e1884aa6aac77859a24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a4513da_5545cd7e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-03T13:21:48Z",
       "side": 1,
       "message": "It\u0027s not clear to me why this needs to be mutable atomic. As written, we only write to it in the constructor and `setupIsA` which is called via the Make* helpers, so I don\u0027t think we have any threading issues and MakeNoCheck returns a non-const pointer. You have a commit message about lazy convexity - is that still in the plan?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 164,
+        "endChar": 11
+      },
+      "revId": "db19c3764a642f174b846e1884aa6aac77859a24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009ade74_5f687cc1",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 45
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-03T13:43:13Z",
+      "side": 1,
+      "message": "Correct, this is not yet completed, as we never (yet) compute convexity for non-IsA shapes. This is a TODO for future CLs.",
+      "parentUuid": "2a4513da_5545cd7e",
       "range": {
         "startLine": 164,
         "startChar": 4,

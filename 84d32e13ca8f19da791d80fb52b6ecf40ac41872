@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e5781b2_269ce258",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-03T13:43:13Z",
+      "side": 1,
+      "message": "Wow, glad chrome has make things simpler for us.",
+      "parentUuid": "6363c7aa_fb77f0fa",
+      "range": {
+        "startLine": 275,
+        "startChar": 29,
+        "endLine": 279,
+        "endChar": 0
+      },
+      "revId": "84d32e13ca8f19da791d80fb52b6ecf40ac41872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae2eea4c_e3b7c43c",
