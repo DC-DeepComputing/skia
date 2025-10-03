@@ -104,6 +104,78 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97a6cf5_2e25cc40",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1496,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-03T14:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bee3cde5_20f8f542",
+      "range": {
+        "startLine": 1496,
+        "startChar": 15,
+        "endLine": 1496,
+        "endChar": 16
+      },
+      "revId": "4b9b3d53a42c9623e8f50e8931cd03b2bacc8cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0e669a_50382979",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1496,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-03T14:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b09adf7_10bd3d41",
+      "range": {
+        "startLine": 1496,
+        "startChar": 62,
+        "endLine": 1496,
+        "endChar": 67
+      },
+      "revId": "4b9b3d53a42c9623e8f50e8931cd03b2bacc8cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2302f5_b0ff1a3a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1496,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-03T14:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d105e47_7888741a",
+      "range": {
+        "startLine": 1496,
+        "startChar": 72,
+        "endLine": 1496,
+        "endChar": 99
+      },
+      "revId": "4b9b3d53a42c9623e8f50e8931cd03b2bacc8cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4d7680e_cdb9a0d8",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-10-03T13:33:23Z",
       "side": 1,
       "message": "We should also add that we want to flush before we call `toKey()` so that any child tasks required for this draw are associated with the DrawContext after any flush, not with the tasks that got flushed.",
+      "range": {
+        "startLine": 1512,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 58
+      },
+      "revId": "4b9b3d53a42c9623e8f50e8931cd03b2bacc8cbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eb92aa6_2f501cd0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-03T14:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4d7680e_cdb9a0d8",
       "range": {
         "startLine": 1512,
         "startChar": 0,
