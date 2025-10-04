@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a50d156_fa2d8f4a",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1814,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-04T03:38:51Z",
+      "side": 1,
+      "message": "Remove debug print?",
+      "range": {
+        "startLine": 1814,
+        "startChar": 16,
+        "endLine": 1814,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6f2d43a1_da39a55e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipStack.cpp",
+              "range": {
+                "startLine": 1814,
+                "startChar": 0,
+                "endLine": 1815,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "fa265295268c408587ae447c4f86084a55fc5a06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
