@@ -16,6 +16,23 @@
       "message": "hello respected team members , i had fixed some small mistakes , wating to aprove the pr .",
       "revId": "70b883260feaa9fd6f155dd15e4d93834cdac21a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b84c04a_9a000c92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4384279
+      },
+      "writtenOn": "2025-10-05T18:33:08Z",
+      "side": 1,
+      "message": "accept the pr",
+      "revId": "70b883260feaa9fd6f155dd15e4d93834cdac21a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
