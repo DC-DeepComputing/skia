@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "678e684c_e1cea78d",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T18:31:35Z",
+      "side": 1,
+      "message": "I\u0027ve narrowed the focus of the object so it only loads and stores Pipeline data.",
+      "parentUuid": "c74937f7_4554d78e",
+      "range": {
+        "startLine": 34,
+        "startChar": 18,
+        "endLine": 34,
+        "endChar": 33
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4911f51_5bf37500",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "I think, practically, if \u0027canDetectNewPipelineCacheData\u0027 returned false then a client should not use \u0027hasNewPipelineCacheDAta\u0027 at all and find other criteria to call \u0027storePipelineCacheData\u0027. Probably either a timer or some internal boundary (e.g., on app exit).",
       "parentUuid": "e90347cc_8accf762",
+      "range": {
+        "startLine": 920,
+        "startChar": 0,
+        "endLine": 926,
+        "endChar": 1
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e6bdf6_8816682b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T18:31:35Z",
+      "side": 1,
+      "message": "I have move the Android behavior (i.e., checking the data size) internal to the VulkanSharedContext.",
+      "parentUuid": "a887d582_70d96ab0",
       "range": {
         "startLine": 920,
         "startChar": 0,
@@ -385,6 +433,30 @@
       "side": 1,
       "message": "Yeah - Ganesh also supports persisting the fragment and vertex shaders as either SPIR-V or SkSL. I don\u0027t know any clients who actually use that capability though.\n\nI think Ganesh\u0027s PersistentCache was designed to be as generic as possible so anything could be cached there.",
       "parentUuid": "77d4bebe_4f848616",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 6
+      },
+      "revId": "0bb7680368a9e5f931678b3bc4884349a319eba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97410478_e24f07b7",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T18:31:35Z",
+      "side": 1,
+      "message": "I\u0027ve limited the storage to just Pipeline data.",
+      "parentUuid": "4be8b13d_67b3eba4",
       "range": {
         "startLine": 81,
         "startChar": 0,
