@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6159e32f_24a076e0",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-06T15:57:28Z",
+      "side": 1,
+      "message": "Fill type also.\n\nNot sure about all the other fields... convexity/volatility/isA?",
+      "revId": "c23362a68e1114854a65878308c2991ffc74985d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
