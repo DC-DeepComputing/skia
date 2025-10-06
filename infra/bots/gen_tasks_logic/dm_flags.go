@@ -1385,6 +1385,8 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 			skip(ALL, "tests", ALL, "FilterResult_ganesh_IntersectingCrops")
 			skip(ALL, "tests", ALL, "FilterResult_ganesh_CropDisjointFromSourceAndOutput")
 			skip(ALL, "tests", ALL, "FilterResult_ganesh_Crop")
+			skip(ALL, "tests", ALL, "NotifyInUseTestLayerDarken")  // b/449171614
+			skip(ALL, "tests", ALL, "NotifyInUseLayerTestLighten") // b/449171614
 		} else {
 			// These two are also broken for OpenGL configs b/405918638
 			skip(ALL, "tests", ALL, "TransferPixelsFromTextureTest")
