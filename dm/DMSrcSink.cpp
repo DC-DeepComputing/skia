@@ -2171,7 +2171,12 @@ Result GraphiteSink::draw(const Src& src,
     skgpu::graphite::ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
+    // We don't expect the src to mess with the persistent cache or the executor.
+    SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentPipelineCache);
+    SkDEBUGCODE(auto exec = options.fContextOptions.fExecutor);
     src.modifyGraphiteContextOptions(&options.fContextOptions);
+    SkASSERT(cache == options.fContextOptions.fPersistentPipelineCache);
+    SkASSERT(exec == options.fContextOptions.fExecutor);
 
     skiatest::graphite::ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
@@ -2216,6 +2221,13 @@ Result GraphiteSink::draw(const Src& src,
     }
     ctxInfo.fTestContext->syncedSubmit(context);
 
+    if (options.fContextOptions.fPersistentPipelineCache) {
+        context->syncPipelineCacheData();
+//        if (context->hasNewPipelineCacheData()) {
+//            context->storePipelineCacheData();
+//        }
+    }
+
     return Result::Ok();
 }
 
@@ -2238,9 +2250,47 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+GraphitePersistentCacheTestingSink::GraphitePersistentCacheTestingSink(
+            const SkCommandLineConfigGraphite* config,
+            const skiatest::graphite::TestOptions& options)
+        : GraphiteSink(config, options)
+        , fCacheType(config->getTestPersistentCache()) {
+    fOptions.fContextOptions.fPersistentPipelineCache = &fMemoryPipelineCache;
+}
 
+Result GraphitePersistentCacheTestingSink::draw(const Src& src,
+                                                SkBitmap* dst,
+                                                SkWStream* wStream,
+                                                SkString* log) const {
+    SkASSERT(fCacheType == 1); // VulkanSharedContext::PersistentCacheKeyType::kPipelineCache
+
+    // Draw twice, once with a cold cache, and again with a warm cache. Verify that the
+    // pipelines from the warmed cache are found and used - so no new pipelines
+    // are created.
+    fMemoryPipelineCache.reset();
+
+    Result result = this->GraphiteSink::draw(src, dst, wStream, log);
+    if (!result.isOk() || !dst) {
+        return result;
+    }
+
+    SkBitmap reference;
+    SkString refLog;
+    SkDynamicMemoryWStream refStream;
+    fMemoryPipelineCache.resetCacheStats();
+    Result refResult = this->GraphiteSink::draw(src, &reference, &refStream, &refLog);
+    if (!refResult.isOk()) {
+        return refResult;
+    }
+
+    SkAssertResult(!fMemoryPipelineCache.numCacheMisses());
+    SkAssertResult(!fMemoryPipelineCache.numCacheStores());
+
+    return compare_bitmaps(reference, *dst);
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 #if defined(SK_ENABLE_PRECOMPILE)
-
 GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
         const SkCommandLineConfigGraphite* config,
         const skiatest::graphite::TestOptions& options) : GraphiteSink(config, options) {}
