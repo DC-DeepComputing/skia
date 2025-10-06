@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "880c5a5c_eef40591",
+        "filename": "include/gpu/graphite/PersistentPipelineStorage.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T21:08:53Z",
+      "side": 1,
+      "message": "Done in Context.h",
+      "parentUuid": "66d7a4c2_47a33dd8",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 49
+      },
+      "revId": "0a66257646fbb79ce492372188466825a31b2a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8100e01f_b2e2698f",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-06T19:26:44Z",
       "side": 1,
       "message": "Add `ASSERT_SINGLE_OWNER`?",
+      "range": {
+        "startLine": 921,
+        "startChar": 0,
+        "endLine": 921,
+        "endChar": 37
+      },
+      "revId": "0a66257646fbb79ce492372188466825a31b2a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d42bf6b_3b805a60",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T21:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8100e01f_b2e2698f",
       "range": {
         "startLine": 921,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3224e0b0_c131b63a",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T21:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37c284dc_67194df3",
+      "range": {
+        "startLine": 180,
+        "startChar": 20,
+        "endLine": 180,
+        "endChar": 27
+      },
+      "revId": "0a66257646fbb79ce492372188466825a31b2a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "202f2130_39af65b5",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-10-06T19:26:44Z",
       "side": 1,
       "message": "nit: group with the write to `fLastKnownPersistentPipelineStorageSize`",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 39
+      },
+      "revId": "0a66257646fbb79ce492372188466825a31b2a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c94c88_6aa7e6ba",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-06T21:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "202f2130_39af65b5",
       "range": {
         "startLine": 251,
         "startChar": 0,
