@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96d7040c_1a745805",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-06T18:02:08Z",
+      "side": 1,
+      "message": "Maybe just add a simple comment or TODO to remove these guards, even though it should just be shortly in a follow-up.",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 5
+      },
+      "revId": "be49ee46d233a8170cd3ace9dae354f55141352e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
