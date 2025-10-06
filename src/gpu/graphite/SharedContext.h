@@ -32,6 +32,7 @@ class BackendTexture;
 class Caps;
 class CommandBuffer;
 class Context;
+class PersistentPipelineCache;
 class RendererProvider;
 class ResourceProvider;
 class TextureInfo;
@@ -77,6 +78,9 @@ public:
     virtual bool isDeviceLost() const { return false; }
 
     virtual void deviceTick(Context*) {}
+
+    virtual bool hasNewPipelineCacheData() const { return true; }
+    virtual void syncPipelineCacheData(PersistentPipelineCache*, size_t maxSize) {}
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 
