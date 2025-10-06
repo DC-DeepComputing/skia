@@ -34,6 +34,24 @@
       "parentUuid": "6159e32f_24a076e0",
       "revId": "c23362a68e1114854a65878308c2991ffc74985d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "169ea3d0_f75a3dac",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-06T16:51:11Z",
+      "side": 1,
+      "message": "Ahh, it\u0027s right above, I missed it :)",
+      "parentUuid": "86ec5c7a_c2a1ec79",
+      "revId": "c23362a68e1114854a65878308c2991ffc74985d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
