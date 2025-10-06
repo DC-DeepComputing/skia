@@ -36,12 +36,11 @@ static void testOvalSet(const OvalSet& set, const SkPath& oval, SkOpBuilder* bui
     for (int x = 0; x < set.fColumns; ++x) {
         for (int y = 0; y < set.fRows; ++y) {
             for (SkScalar r = 0; r < 360; r += 360.f / set.fRotations) {
-                SkPath rotated;
                 SkMatrix matrix;
                 matrix.reset();
                 matrix.postRotate(r, 0, 0);
                 matrix.postTranslate(x * set.fXSpacing, y * set.fYSpacing);
-                oval.transform(matrix, &rotated);
+                SkPath rotated = oval.makeTransform(matrix);
                 if (builder) {
                     builder->add(rotated, kUnion_SkPathOp);
                 } else if (!region) {
@@ -67,9 +66,8 @@ static void testOvalSet(const OvalSet& set, const SkPath& oval, SkOpBuilder* bui
 }
 
 static void testOne(skiatest::Reporter* reporter, const OvalSet& set) {
-    SkPath oval, regionResult, builderResult, opResult;
-    oval.setFillType(SkPathFillType::kWinding);
-    oval.addOval(set.fBounds);
+    SkPath regionResult, builderResult, opResult;
+    SkPath oval = SkPath::Oval(set.fBounds);
     SkOpBuilder builder;
     SkRegion region;
     testOvalSet(set, oval, nullptr, &region, &regionResult);
