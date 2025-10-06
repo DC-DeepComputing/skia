@@ -54,6 +54,7 @@ class Buffer;
 class ClientMappedBufferManager;
 class ContextPriv;
 struct ContextOptions;
+class PersistentPipelineStorage;
 class PrecompileContext;
 class QueueManager;
 class ResourceProvider;
@@ -277,6 +278,39 @@ public:
      */
     GpuStatsFlags supportedGpuStats() const;
 
+#if 0
+    /**
+     * Returns true if the underlying implementation can accurately detect when the data in
+     * the pipeline cache changes.
+     *
+     * When this is false, the return value of `hasNewPipelineCacheData` is untrustworthy.
+     *
+     * For the Vulkan backend, this maps directly to the availability of
+     * VK_EXT_pipeline_creation_cache_control.
+     */
+    bool canDetectNewPipelineCacheData() const;
+    /**
+     * Returns true if the data in the pipeline cache could have changed since the last call
+     * to `storePipelineCacheData`.
+     *
+     * When `canDetectNewPipelineCacheData` returns true, false positives from this method are
+     * greatly reduced.
+     */
+    bool hasNewPipelineCacheData() const;
+    /**
+     * If Graphite can determine that the set of Pipelines has changed, stores the current pipeline
+     * cache data into the PersistentPipelineCache-derived object passed into Graphite via
+     * ContextOptions::fPersistentPipelineCache. The amount stored is limited to 'maxSize'.
+     */
+#endif
+
+    /**
+     * If supported by the backend, stores the current pipeline cache data into the
+     * PersistentPipelineStorage-derived object passed into Graphite via
+     * ContextOptions::fPersistentPipelineStorage. The amount stored is limited to 'maxSize'.
+     */
+    void syncPipelineData(size_t maxSize = SIZE_MAX);
+
     /*
      * TODO (b/412351769): Do not use startCapture() or endCapture() as the feature is still under
      * development.
@@ -394,6 +428,8 @@ private:
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
+
+    PersistentPipelineStorage* fPersistentPipelineStorage;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
