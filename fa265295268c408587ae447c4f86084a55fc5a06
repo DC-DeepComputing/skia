@@ -40,6 +40,30 @@
       ],
       "revId": "fa265295268c408587ae447c4f86084a55fc5a06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5d69746_7b296c52",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1814,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-06T13:38:52Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "7a50d156_fa2d8f4a",
+      "range": {
+        "startLine": 1814,
+        "startChar": 16,
+        "endLine": 1814,
+        "endChar": 55
+      },
+      "revId": "fa265295268c408587ae447c4f86084a55fc5a06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
