@@ -145,6 +145,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
     if (options.fEnableCapture) {
         fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
     }
+
+    fPersistentPipelineCache = options.fPersistentPipelineCache;
 }
 
 Context::~Context() {
@@ -913,6 +915,22 @@ bool Context::supportsProtectedContent() const {
 
 GpuStatsFlags Context::supportedGpuStats() const {
     return fSharedContext->caps()->supportedGpuStats();
+}
+
+#if 0
+bool Context::canDetectNewPipelineCacheData() const {
+    return fSharedContext->caps()->canDetectNewPipelineCacheData();
+}
+
+bool Context::hasNewPipelineCacheData() const {
+    return fSharedContext->hasNewPipelineCacheData();
+}
+#endif
+
+void Context::syncPipelineCacheData(size_t maxSize) {
+    if (fPersistentPipelineCache) {
+        fSharedContext->syncPipelineCacheData(fPersistentPipelineCache, maxSize);
+    }
 }
 
 void Context::startCapture() {
