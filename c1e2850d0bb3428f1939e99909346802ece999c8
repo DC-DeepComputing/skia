@@ -22,6 +22,48 @@
       },
       "revId": "c1e2850d0bb3428f1939e99909346802ece999c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7abad8_efde480b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1647,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-06T13:54:23Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "bd61e863_b64f6726",
+      "range": {
+        "startLine": 1647,
+        "startChar": 7,
+        "endLine": 1647,
+        "endChar": 10
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7f87917e_02f16bdc",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipStack.cpp",
+              "range": {
+                "startLine": 1647,
+                "startChar": 0,
+                "endLine": 1648,
+                "endChar": 0
+              },
+              "replacement": "    // into an explicit Rect shape (already handled above). That leaves 9-patch and complex,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c1e2850d0bb3428f1939e99909346802ece999c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
