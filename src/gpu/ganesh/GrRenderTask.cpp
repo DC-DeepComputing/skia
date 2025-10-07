@@ -322,7 +322,7 @@ void GrRenderTask::addTarget(GrDrawingManager* drawingMgr, sk_sp<GrSurfaceProxy>
 }
 
 #if defined(GPU_TEST_UTILS)
-void GrRenderTask::dump(const SkString& label,
+void GrRenderTask::dumpp(const SkString& label,
                         SkString indent,
                         bool printDependencies,
                         bool close) const {

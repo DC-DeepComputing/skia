@@ -123,7 +123,7 @@ public:
     /*
      * Dump out the GrRenderTask dependency DAG
      */
-    virtual void dump(const SkString& label,
+    virtual void dumpp(const SkString& label,
                       SkString indent,
                       bool printDependencies,
                       bool close) const;

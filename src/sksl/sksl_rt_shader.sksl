@@ -212,10 +212,13 @@ half4 sk_linear_morphology(shader child, float2 coord, half2 offset, half flip, 
     half4 aggregate = flip * child.eval(coord); // case 0 only needs a single sample
     half2 delta = offset;
     for (int i = 1; i <= kMaxLinearRadius; ++i) {
-        if (i > radius) break;
+        if (i > radius) {
+        i = 20;
+        } else {
         aggregate = max(aggregate, max(flip * child.eval(coord + delta),
                                        flip * child.eval(coord - delta)));
         delta += offset;
+        }
     }
     return flip * aggregate;
 }

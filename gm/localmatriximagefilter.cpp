@@ -38,7 +38,7 @@ static void show_image(SkCanvas* canvas, SkImage* image, sk_sp<SkImageFilter> fi
     paint.setStyle(SkPaint::kStroke_Style);
     SkRect r = SkRect::MakeIWH(image->width(), image->height()).makeOutset(SK_ScalarHalf,
                                                                            SK_ScalarHalf);
-    canvas->drawRect(r, paint);
+  //  canvas->drawRect(r, paint);
 
     paint.setStyle(SkPaint::kFill_Style);
     paint.setImageFilter(filter);
@@ -52,10 +52,10 @@ DEF_SIMPLE_GM(localmatriximagefilter, canvas, 640, 640) {
     sk_sp<SkImage> image0(make_image(canvas));
 
     const ImageFilterFactory factories[] = {
-        []{ return SkImageFilters::Blur(8, 8, nullptr); },
-        []{ return SkImageFilters::Dilate(8, 8, nullptr); },
+     //   []{ return SkImageFilters::Blur(8, 8, nullptr); },
+      //  []{ return SkImageFilters::Dilate(8, 8, nullptr); },
         []{ return SkImageFilters::Erode(8, 8, nullptr); },
-        []{ return SkImageFilters::Offset(8, 8, nullptr); },
+    //    []{ return SkImageFilters::Offset(8, 8, nullptr); },
     };
 
     const SkMatrix matrices[] = {
@@ -72,11 +72,13 @@ DEF_SIMPLE_GM(localmatriximagefilter, canvas, 640, 640) {
 
         canvas->save();
         show_image(canvas, image0.get(), filter);
+#if 0
         for (const auto& matrix : matrices) {
             sk_sp<SkImageFilter> localFilter(filter->makeWithLocalMatrix(matrix));
             canvas->translate(spacer, 0);
             show_image(canvas, image0.get(), std::move(localFilter));
         }
+#endif
         canvas->restore();
         canvas->translate(0, spacer);
     }

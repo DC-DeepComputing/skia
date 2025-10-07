@@ -801,11 +801,11 @@ void OpsTask::discard() {
 ////////////////////////////////////////////////////////////////////////////////
 
 #if defined(GPU_TEST_UTILS)
-void OpsTask::dump(const SkString& label,
+void OpsTask::dumpp(const SkString& label,
                    SkString indent,
                    bool printDependencies,
                    bool close) const {
-    GrRenderTask::dump(label, indent, printDependencies, false);
+    GrRenderTask::dumpp(label, indent, printDependencies, false);
 
     SkDebugf("%sfColorLoadOp: ", indent.c_str());
     switch (fColorLoadOp) {

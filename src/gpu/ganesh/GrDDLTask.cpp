@@ -107,11 +107,11 @@ bool GrDDLTask::onExecute(GrOpFlushState* flushState) {
 }
 
 #if defined(GPU_TEST_UTILS)
-void GrDDLTask::dump(const SkString& label,
+void GrDDLTask::dumpp(const SkString& label,
                      SkString indent,
                      bool printDependencies,
                      bool close) const {
-    INHERITED::dump(label, indent, printDependencies, false);
+    INHERITED::dumpp(label, indent, printDependencies, false);
 
     SkDebugf("%sDDL Target: ", indent.c_str());
     if (fDDLTarget) {
@@ -129,7 +129,7 @@ void GrDDLTask::dump(const SkString& label,
     for (auto& task : fDDL->priv().renderTasks()) {
         SkString subLabel;
         subLabel.printf("sub-task %d/%d", index++, fDDL->priv().numRenderTasks());
-        task->dump(subLabel, subIndent, printDependencies, true);
+        task->dumpp(subLabel, subIndent, printDependencies, true);
     }
 
     if (close) {

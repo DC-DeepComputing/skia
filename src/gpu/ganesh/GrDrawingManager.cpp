@@ -188,9 +188,9 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
 
 #if 0
         // Enable this to print out verbose GrOp information
-        SkDEBUGCODE(SkDebugf("RenderTasks (%d):\n", fDAG.count()));
+        SkDEBUGCODE(SkDebugf("RenderTasks (%d):\n", fDAG.size()));
         for (const auto& task : fDAG) {
-            SkDEBUGCODE(task->dump(/* printDependencies */ true);)
+            SkDEBUGCODE(task->dumpp(/* printDependencies */ true);)
         }
 #endif
 
@@ -249,7 +249,7 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
         if (fDAG[i]) {
             SkString label;
             label.printf("task %d/%d", i, fDAG.size());
-            fDAG[i]->dump(label, {}, true, true);
+            fDAG[i]->dumpp(label, {}, true, true);
         }
     }
 #endif
