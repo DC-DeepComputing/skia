@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "526a1afe_4d351847",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0da4aed1_cf96fb91",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f392035_d7a646ac",
@@ -48,6 +66,54 @@
       "writtenOn": "2025-10-03T14:26:37Z",
       "side": 1,
       "message": "Let\u0027s return an `SkSpan\u003cconst LayerInfo\u003e` instead:\n\n  1) avoids copying the data\n  2) decouples the public API from the internal data structure",
+      "range": {
+        "startLine": 191,
+        "startChar": 8,
+        "endLine": 191,
+        "endChar": 30
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a89d981c_5ed4327a",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f392035_d7a646ac",
+      "range": {
+        "startLine": 191,
+        "startChar": 8,
+        "endLine": 191,
+        "endChar": 30
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f06add2_17e19841",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f392035_d7a646ac",
       "range": {
         "startLine": 191,
         "startChar": 8,
@@ -139,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b6c8c5b_fbfa2d41",
+        "filename": "modules/skottie/src/Layer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "278c6a11_b3a7d92a",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 14
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "003e168d_0800285f",
@@ -152,6 +242,30 @@
       "writtenOn": "2025-10-03T14:26:37Z",
       "side": 1,
       "message": "`const LayerInfo\u0026`\n\nWe could also inline this in the header, since it\u0027s trivial.",
+      "range": {
+        "startLine": 199,
+        "startChar": 38,
+        "endLine": 199,
+        "endChar": 47
+      },
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a83a0d46_a928229a",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "003e168d_0800285f",
       "range": {
         "startLine": 199,
         "startChar": 38,
@@ -179,6 +293,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e1ceb3_1b06c5c1",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "250f53d4_dc1f3c42",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8284c42c_11ed5d5e",
@@ -192,6 +324,24 @@
       "writtenOn": "2025-10-03T14:26:37Z",
       "side": 1,
       "message": "nit: indent",
+      "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86712f66_df6a95c9",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-07T16:57:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8284c42c_11ed5d5e",
       "revId": "694bec9c85b2ed268b9196ab7a244092d995c912",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
