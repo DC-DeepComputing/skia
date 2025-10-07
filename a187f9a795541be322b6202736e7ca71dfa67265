@@ -51,6 +51,24 @@
       "parentUuid": "b457f9b1_f205f3f5",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce64e048_281c5887",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-07T19:17:46Z",
+      "side": 1,
+      "message": "Tentatively the chrome canary looks like a flake related to pixel6 and chromeOS, but the gold diffs for `discard` and `xfermodes3` are suspicious. I\u0027ll try and repro to see what\u0027s happening.",
+      "parentUuid": "3c4144af_18baae7f",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
