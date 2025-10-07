@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0912d49e_1a57254e",
+        "filename": "src/core/SkPathDump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-07T14:28:07Z",
+      "side": 1,
+      "message": "Is there a helper we could extract to serve both SkPathBuilder and SkPath dump?  Maybe something that takes a SkPathRaw?",
+      "revId": "3c1702b23bcbdc476f316c59c1a40df815054630",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
