@@ -16,6 +16,24 @@
       "message": "Is there a helper we could extract to serve both SkPathBuilder and SkPath dump?  Maybe something that takes a SkPathRaw?",
       "revId": "3c1702b23bcbdc476f316c59c1a40df815054630",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6d16a57_837faeda",
+        "filename": "src/core/SkPathDump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-07T14:35:02Z",
+      "side": 1,
+      "message": "I share the formatter, but not the iterator yet, as it in-turn is passing diff values to the formatter. I can look at also sharing the iterator (with some sort of parameter)",
+      "parentUuid": "0912d49e_1a57254e",
+      "revId": "3c1702b23bcbdc476f316c59c1a40df815054630",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
