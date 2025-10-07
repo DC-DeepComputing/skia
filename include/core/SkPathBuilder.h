@@ -27,6 +27,7 @@
 
 class SkRRect;
 struct SkPathRaw;
+class SkString;
 
 class SK_API SkPathBuilder {
 public:
@@ -952,6 +953,13 @@ public:
     SkPathBuilder& addRaw(const SkPathRaw&);
 
     SkPathIter iter() const;
+
+    enum class DumpFormat {
+        kDecimal,
+        kHex,
+    };
+    SkString dumpToString(DumpFormat = DumpFormat::kDecimal) const;
+    void dump(DumpFormat = DumpFormat::kDecimal) const;
 
 private:
     SkPathRef::PointsArray fPts;
