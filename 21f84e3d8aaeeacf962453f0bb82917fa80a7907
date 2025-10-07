@@ -16,6 +16,23 @@
       "message": "See https://skia-review.googlesource.com/c/skia/+/1069176 for a particular motivation.",
       "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac28b253_e0a88a79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-07T21:04:38Z",
+      "side": 1,
+      "message": "Why do we still need to rely on path.dump()? Will this test work if we change dump to be more \"precise\"?",
+      "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
