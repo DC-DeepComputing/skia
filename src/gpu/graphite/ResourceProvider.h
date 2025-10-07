@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -59,6 +60,17 @@ public:
     void startPipelineCreationTask(sk_sp<const RuntimeEffectDictionary>,
                                    const GraphicsPipelineHandle&);
     sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
+
+#if 0
+    // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
+    // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
+            const RuntimeEffectDictionary*,
+            const UniqueKey& pipelineKey,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>);
+#endif
 
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);
 
@@ -117,6 +129,7 @@ public:
     const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
+    GlobalCache* globalCache() { return fSharedContext->globalCache(); }
     const Caps* caps() const;
 
 #ifdef SK_BUILD_FOR_ANDROID

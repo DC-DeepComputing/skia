@@ -32,6 +32,8 @@ class TextureProxy;
 
 class RecordingPriv {
 public:
+    bool arePipelinesReady() const;
+
     TextureProxy* deferredTargetProxy();
     const Texture* setupDeferredTarget(ResourceProvider*,
                                        Surface* targetSurface,
