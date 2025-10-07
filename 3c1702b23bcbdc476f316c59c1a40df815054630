@@ -34,6 +34,24 @@
       "parentUuid": "0912d49e_1a57254e",
       "revId": "3c1702b23bcbdc476f316c59c1a40df815054630",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "261a9f77_c18df492",
+        "filename": "src/core/SkPathDump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-07T15:20:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6d16a57_837faeda",
+      "revId": "3c1702b23bcbdc476f316c59c1a40df815054630",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
