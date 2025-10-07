@@ -204,6 +204,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27502770_7d4e84ff",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-07T20:33:04Z",
+      "side": 1,
+      "message": "Perhaps make this `remainingBytes()`; perhaps adding a new method or modifying this one to actually return the remaining chunks given the actual `fAlignment`?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 98
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb3bcd1a_e871fc5b",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 11
@@ -220,6 +243,29 @@
         "startChar": 80,
         "endLine": 74,
         "endChar": 81
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45761bd6_9991cd23",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-07T20:33:04Z",
+      "side": 1,
+      "message": "Nit: By \"reuse mode\", you just mean whether or not it\u0027s scratch, right? \nPerhaps `Depending on the reuse mode (determined by whether or not the buffer is scratch):`, or something to that effect (unless other factors would go into this determination in the future?)",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 34
       },
       "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
