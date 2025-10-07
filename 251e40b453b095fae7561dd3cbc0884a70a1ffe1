@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f50929c9_c8f20314",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-07T17:24:41Z",
+      "side": 1,
+      "message": "nit: \"include/core/SkSpan.h\" for the public header.",
+      "revId": "251e40b453b095fae7561dd3cbc0884a70a1ffe1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
