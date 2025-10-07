@@ -22,6 +22,30 @@
       },
       "revId": "cbe61fe2d4bdf352b6bd95423a954567ca68dc6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e465fcdd_c4531bff",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 4106,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-07T16:43:59Z",
+      "side": 1,
+      "message": "Nope -- this one has no meaningful builder variant -- so I can either delete it, or just keep it around (so we don\u0027t regress) until mutable paths are gone.",
+      "parentUuid": "6fe3bc00_e28cdd2c",
+      "range": {
+        "startLine": 4106,
+        "startChar": 8,
+        "endLine": 4106,
+        "endChar": 33
+      },
+      "revId": "cbe61fe2d4bdf352b6bd95423a954567ca68dc6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
