@@ -69,6 +69,24 @@
       "parentUuid": "3c4144af_18baae7f",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09e12ca9_b538ce36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-07T19:56:16Z",
+      "side": 1,
+      "message": "This change seems reasonable - LMK if you want assistance looking into xfermodes3.",
+      "parentUuid": "ce64e048_281c5887",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
