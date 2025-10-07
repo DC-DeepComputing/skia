@@ -21,6 +21,7 @@ pub struct VerbsPointsPen<'a> {
     points: &'a mut Vec<FfiPoint>,
     started: bool,
     current: FfiPoint,
+    contour_start: FfiPoint,
 }
 
 impl FfiPoint {
@@ -50,6 +51,7 @@ impl<'a> VerbsPointsPen<'a> {
             points,
             started: false,
             current: FfiPoint::default(),
+            contour_start: FfiPoint::default(),
         }
     }
 
@@ -75,6 +77,7 @@ impl<'a> OutlinePen for VerbsPointsPen<'a> {
             self.started = false;
         }
         self.current = pt0;
+        self.contour_start = pt0;
     }
 
     fn line_to(&mut self, x: f32, y: f32) {
@@ -117,6 +120,8 @@ impl<'a> OutlinePen for VerbsPointsPen<'a> {
                 || verb == PathVerb::LineTo as u8
                 || verb == PathVerb::MoveTo as u8
             {
+                // Append a line before close if needed to match FreeType.
+                self.line_to(self.contour_start.x, -self.contour_start.y);
                 self.verbs.push(PathVerb::Close as u8);
             }
         }
