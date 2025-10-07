@@ -205,7 +205,9 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
-            resource->setShareable(shareable);
+            if (resource->shareable() != shareable) {
+                resource->setShareable(shareable);
+            }
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
