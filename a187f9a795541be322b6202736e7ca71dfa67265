@@ -87,6 +87,23 @@
       "parentUuid": "ce64e048_281c5887",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "803ce1a7_d047270c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-07T20:48:47Z",
+      "side": 1,
+      "message": "This change uncovered a bug in Graphite\u0027s client-owned SkSurface dependency tracking. The xfermodes3 GM is creating a \"temporary\" surface that it is reusing for each blending block, drawing into that surface before using SkSurface::draw() to render the temp surface into the main canvas.\n\nGraphite is correctly flushing the work done on the temporary surface each time it\u0027s drawn into the main canvas, but it is not flushing the main canvas\u0027s rendering tasks that depend on the previously flushed tasks of the temp surface before appending more tasks of the temp surface.  What ends up happening is the task list renders into the temp surface with many render passes (one per blend block of the GM), and then follows it up with one main render pass that reads from the tmp surface\u0027s texture (once per blend block). Unfortunately, the texture now just holds the state of the final offscreen render pass.\n\nIn addition to flushing the client-owned surface when its temporary image is drawn, we also have to flush any surface that has pending work that depends on the previous state of the surface.",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
