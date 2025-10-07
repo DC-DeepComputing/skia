@@ -36,16 +36,12 @@ bool textBlobsAllPathsEqual(sk_sp<const SkTextBlob> blobA,
         for (int i = 0; i < runAInfo.count; ++i) {
             runAInfo.font.getPath(runAInfo.glyphs[i], &pathA);
             runBInfo.font.getPath(runBInfo.glyphs[i], &pathB);
-            SkDynamicMemoryWStream streamA, streamB;
-            // Re-use the logic in Path::dump() to canonicalize the output and account for
-            // differences between FreeType (inserting a lineTo() to original moveTo() coordinate)
-            // or Fontations (which saves the extra lineTo() before close()).
-            pathA.dump(&streamA, false);
-            pathB.dump(&streamB, false);
-            sk_sp<SkData> dataA = streamA.detachAsData();
-            sk_sp<SkData> dataB = streamB.detachAsData();
-            if (dataA->size() != dataB->size() ||
-                memcmp(dataA->data(), dataB->data(), dataA->size() - 1)) {
+            if (pathA != pathB) {
+                SkDynamicMemoryWStream streamA, streamB;
+                pathA.dump(&streamA, false);
+                pathB.dump(&streamB, false);
+                sk_sp<SkData> dataA = streamA.detachAsData();
+                sk_sp<SkData> dataB = streamB.detachAsData();
                 // See https://issues.skia.org/345178242 for details.
                 // If there are path differences between FreeType and Fontations,
                 // it might be needed to test for path equality after PathOps::Simplify()
