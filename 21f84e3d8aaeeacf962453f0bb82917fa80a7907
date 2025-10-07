@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c175e81_762180ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-07T20:24:32Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/1069176 for a particular motivation.",
+      "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
