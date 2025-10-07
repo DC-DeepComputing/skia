@@ -16,6 +16,24 @@
       "message": "It seems like if the Fontations typeface really wants to always behave like FreeType then `VerbsPointsPen` needs to keep track of the last \"move to\" point and then call `line_to` with the last \"move to\" point in `close` before pushing the Close verb.",
       "revId": "ce96742cdd8d892c2743c16076ba9bc6cb628498",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dc74e4b_9e0e7228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-07T20:23:44Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1069256",
+      "parentUuid": "a85a3701_c1d928f7",
+      "revId": "ce96742cdd8d892c2743c16076ba9bc6cb628498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
