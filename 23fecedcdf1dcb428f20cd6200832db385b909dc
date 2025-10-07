@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe634109_63759475",
+        "filename": "tests/PathOpsAsWindingTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-07T15:34:07Z",
+      "side": 1,
+      "message": "`.makeFillType(kEvenOdd)`, to preserve the fill type set above.",
+      "revId": "23fecedcdf1dcb428f20cd6200832db385b909dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
