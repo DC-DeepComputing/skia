@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "928e07ef_aacfc61b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-07T17:45:12Z",
+      "side": 1,
+      "message": "This lgtm but I would like to take another pass.\nThere does seem to be a lot of moving parts here - is there some reasonable way to unit test it?",
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e695eb6a_9fc9614b",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 11
@@ -94,6 +111,47 @@
       "writtenOn": "2025-10-07T15:20:16Z",
       "side": 1,
       "message": "up to here",
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08545069_41e9ad6d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-07T17:45:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4609453f_9280512b",
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18087d5d_ffa945d9",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-07T17:45:12Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 549,
+        "startChar": 0,
+        "endLine": 549,
+        "endChar": 39
+      },
       "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
