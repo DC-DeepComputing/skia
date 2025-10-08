@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa7881b_aacf1dd9",
+        "filename": "MODULE.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 4381686
+      },
+      "writtenOn": "2025-10-08T01:12:48Z",
+      "side": 0,
+      "message": "Marked as resolved.go inside with password logins",
+      "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
