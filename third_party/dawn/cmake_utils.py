@@ -117,3 +117,163 @@ def copy_if_changed(src, dest):
   # Either the destination does not exist or it is different.
   shutil.copyfile(src, dest)
   os.chmod(dest, 0o755)
+
+
+def get_cmake_os_cpu(os, cpu):
+  # https://stackoverflow.com/a/70498851
+  os = os.lower().strip()
+  cpu = cpu.lower().strip()
+  if os == "android":
+    target_cpu_map = {
+      "arm": "armeabi-v7a",
+      "arm64": "arm64-v8a",
+      "x64": "x86_64",
+      "x86": "x86",
+    }
+    return "Android", target_cpu_map[cpu]
+
+  if os == "linux":
+    target_cpu_map = {
+      "arm": "arm",
+      "arm64": "aarch64",
+      "x64": "x86_64",
+      "x86": "i686",
+    }
+    return "Linux", target_cpu_map[cpu]
+
+  if os == "mac":
+    target_cpu_map = {
+      "arm64": "arm64",
+      "x64": "x86_64",
+    }
+    return "Darwin", target_cpu_map[cpu]
+
+  if os == "win":
+    target_cpu_map = {
+      "arm64": "ARM64",
+      "x64": "AMD64",
+    }
+    return "Windows", target_cpu_map[cpu]
+
+  print("Unsupported OS")
+  sys.exit(1)
+
+
+def get_windows_settings(args):
+  """The Windows toolchain requires a lot of setup for cmake to use it.
+     This encapsulates all that setup.
+  """
+
+  assert(args.win_vc)
+  assert(args.win_sdk)
+  assert(args.win_sdk_version)
+
+  win_cfgs, win_cxx, win_ld  = [], [], []
+
+  # Set the Windows SDK version for CMake.
+  win_cfgs.append(
+      f"-DCMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION={args.win_sdk_version}")
+
+  # Explicitly tell CMake where to find the Resource Compiler, Manifest Tool, and Archiver.
+  rc_exe_path = os.path.join(args.win_sdk, "bin", args.win_sdk_version,
+                             args.target_cpu, "rc.exe")
+  win_cfgs.append(f"-DCMAKE_RC_COMPILER={quote_if_needed(rc_exe_path.replace(os.sep, '/'))}")
+  mt_exe_path = os.path.join(args.win_sdk, "bin", args.win_sdk_version,
+                             args.target_cpu, "mt.exe")
+  win_cfgs.append(f"-DCMAKE_MT={quote_if_needed(mt_exe_path.replace(os.sep, '/'))}")
+
+  ar_exe_path = os.path.join(args.win_vc, "Tools", "MSVC",
+                             args.win_toolchain_version, "bin", "Hostx64",
+                             args.target_cpu, "lib.exe")
+  win_cfgs.append(f"-DCMAKE_AR={quote_if_needed(ar_exe_path.replace(os.sep, '/'))}")
+
+  # On Windows, we need to explicitly tell clang where to find the toolchain
+  # headers and libraries.
+  um_lib_path = os.path.join(args.win_sdk, "Lib", args.win_sdk_version, "um", args.target_cpu)
+  ucrt_lib_path = os.path.join(args.win_sdk, "Lib", args.win_sdk_version, "ucrt", args.target_cpu)
+  msvc_lib_path = os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "lib", args.target_cpu)
+
+  win_ld += [
+    f"/LIBPATH:{quote_if_needed(um_lib_path.replace(os.sep, '/'))}",
+    f"/LIBPATH:{quote_if_needed(ucrt_lib_path.replace(os.sep, '/'))}",
+    f"/LIBPATH:{quote_if_needed(msvc_lib_path.replace(os.sep, '/'))}",
+  ]
+
+  # Skia builds with exceptions and RTTI disabled so we must also build Dawn that way.
+  win_cxx += [
+      "-D_HAS_EXCEPTIONS=0",
+      "/GR-",
+      "/w",  # Dawn's warnings are noisy
+  ]
+
+  # Skia uses a hermetic toolchain, so we need to tell clang where to
+  # find the MSVC headers and libraries. If we pass the MSVC style flags (/I)
+  # to clang, then abseil fails to compile with errors about using a
+  # reinterpret_cast in a static_assert.
+  if args.is_clang:
+    win_cxx += [
+        "-imsvc",
+        os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "include"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "ucrt"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "shared"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "um"),
+        "-imsvc",
+        os.path.join(args.win_sdk, "Include", args.win_sdk_version, "winrt"),
+    ]
+  else:
+    win_cxx += [
+        "/I" + os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "include"),
+        "/I" + os.path.join(args.win_sdk, "Include", args.win_sdk_version, "ucrt"),
+        "/I" + os.path.join(args.win_sdk, "Include", args.win_sdk_version, "shared"),
+        "/I" + os.path.join(args.win_sdk, "Include", args.win_sdk_version, "um"),
+        "/I" + os.path.join(args.win_sdk, "Include", args.win_sdk_version, "winrt"),
+    ]
+
+  # We want to build Dawn (and its dependencies) with /MT so we can statically
+  # link it into Skia.
+  win_cfgs.append("-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded")
+  win_cfgs.append("-DABSL_MSVC_STATIC_RUNTIME=ON")
+
+  return win_cfgs, win_cxx, win_ld
+
+
+def combine_into_library(args, output_path, build_dir, target_os, object_files):
+  """Combine all the object files into a single .a/.lib file so it's easier to
+     give this to GN."""
+
+  # Delete generated library if it exists already (otherwise ar sometimes chokes)
+  lib_name = os.path.basename(output_path)
+  gen_library_path = os.path.join(build_dir, lib_name)
+  if os.path.exists(gen_library_path):
+    os.remove(gen_library_path)
+
+  assert len(object_files) > 0
+  # Use ar/lib to join all the object files that comprise the necessary
+  # libraries and any transitive dependencies into one .a file.
+  if target_os == "Windows":
+    # On Windows, we use lld-link.exe for clang, and lib.exe for MSVC.
+    if args.is_clang:
+        linker_exe = os.path.join(os.path.dirname(args.cc), "lld-link.exe")
+    else:
+        # We can't just use ar.exe because it is not shipped with MSVC.
+        # We must use lib.exe, which has a different command line.
+        linker_exe = os.path.join(args.win_vc, "Tools", "MSVC",
+                               args.win_toolchain_version, "bin", "Hostx64",
+                               args.target_cpu, "lib.exe")
+    # The command line can be too long, so we use a response file.
+    response_file_name = "objects.rsp"
+    response_file_path = os.path.join(build_dir, response_file_name)
+    with open(response_file_path, "w") as f:
+      for obj in object_files:
+        f.write(f'"{obj}"\n')
+    combine_obj_cmd = [
+        linker_exe, "/LIB", f"/OUT:{lib_name}", f"@{response_file_name}"
+    ]
+  else:
+    combine_obj_cmd = ["ar", "rcs", lib_name] + object_files
+  subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
+
+  copy_if_changed(gen_library_path, os.path.join(os.getcwd(), output_path))
