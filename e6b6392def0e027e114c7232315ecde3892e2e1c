@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6233a2af_c419851b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-08T18:40:02Z",
+      "side": 1,
+      "message": "I presume the read thinks the two builds are identical *except* for the lineTo .... can there be some shared helper that builds the first (large) part, so we don\u0027t have to manually be sure both are the same?\n\nBut ugh -- if these draw differently, sounds like a wacky bug ... wonder if its specific to our AAA code, and that a super-sampler wouldn\u0027t see it...",
+      "revId": "e6b6392def0e027e114c7232315ecde3892e2e1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
