@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49e8f0e7_61d86691",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-08T21:41:32Z",
+      "side": 1,
+      "message": "Using https://skia-review.googlesource.com/c/skia/+/1070057 as a simpler reproduction of the failures seen on this change, it turns out the issues are due to [the use of the number of points in the path in the calulation of skipIntersect](https://skia.googlesource.com/skia.git/+/cfa716191521dc88a105dc1cf200e8853f0cbd73/src/core/SkScan_AAAPath.cpp#1689). This should instead use the number of edges.\n\nThe issue in the reproducer is that adding the extra line increases the number of points from 12 to 13 when the height of the bound of the path is 6. The number (and content) of the edges stayed the same and the number of points in the original path should be irrelevant here.",
+      "revId": "719460eb86e3a4bab85f98a59410e7294454d328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
