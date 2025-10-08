@@ -57,8 +57,11 @@ int main(int argc, char** argv) {
     SkFont font(face, 14);
     SkPaint paint;
     paint.setColor(SK_ColorGREEN);
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setAntiAlias(true);
+    paint.setStrokeWidth(0);
     canvas->clear(SK_ColorYELLOW);
-    canvas->drawString("Hello world!", 10, 25, font, paint);
+    canvas->drawLine(10.5, 10.7, 90, 40, paint);
     SkPixmap pixmap;
     if (surface->peekPixels(&pixmap)) {
         if (!SkPngEncoder::Encode(&output, pixmap, {})) {
