@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1413204_6e306db3",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-08T18:46:33Z",
+      "side": 1,
+      "message": "nit: stale comment",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 35
+      },
+      "revId": "3ac07173bc0302d3aebacae77aa6381448ff12fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5967e218_ca4babf4",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-08T18:46:33Z",
+      "side": 1,
+      "message": "nit: explicit",
+      "fixSuggestions": [
+        {
+          "fixId": "a901f67e_c16e5f37",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 125,
+                "startChar": 0,
+                "endLine": 126,
+                "endChar": 0
+              },
+              "replacement": "    explicit SkPath(SkPathFillType \u003d SkPathFillType::kDefault);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3ac07173bc0302d3aebacae77aa6381448ff12fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
