@@ -456,3 +456,80 @@ DEF_TEST(DrawPath, reporter) {
     test_halfway();
     test_big_hairpath(reporter);
 }
+
+
+static int bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    int count = 0;
+    for (int y = 0; y < test.height(); ++y) {
+        for (int x = 0; x < test.width(); ++x) {
+            SkColor testColor = test.getColor(x, y);
+            SkColor refColor = ref.getColor(x, y);
+            if (refColor != testColor) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
+DEF_TEST(DrawPath_ImplicitClose, reporter) {
+    SkPathBuilder builder;
+    builder.setFillType(SkPathFillType::kWinding);
+    builder.moveTo(475, -525);
+    builder.lineTo(475, -750);
+    builder.lineTo(525, -750);
+    builder.lineTo(525, -525);
+    builder.lineTo(750, -525);
+    builder.lineTo(750, -475);
+    builder.lineTo(525, -475);
+    builder.lineTo(525, -250);
+    builder.lineTo(475, -250);
+    builder.lineTo(475, -475);
+    builder.lineTo(250, -475);
+    builder.lineTo(250, -525);
+    builder.lineTo(475, -525);
+    builder.close();
+    SkPath withClosingLine = builder.detach();
+
+    builder.setFillType(SkPathFillType::kWinding);
+    builder.moveTo(475, -525);
+    builder.lineTo(475, -750);
+    builder.lineTo(525, -750);
+    builder.lineTo(525, -525);
+    builder.lineTo(750, -525);
+    builder.lineTo(750, -475);
+    builder.lineTo(525, -475);
+    builder.lineTo(525, -250);
+    builder.lineTo(475, -250);
+    builder.lineTo(475, -475);
+    builder.lineTo(250, -475);
+    builder.lineTo(250, -525);
+    //builder.lineTo(475, -525);
+    builder.close();
+    SkPath withoutClosingLine = builder.detach();
+
+    SkM44 m{ 0.0108752614 , 0.00507234596, 0,  0.0985422134,
+            -0.00507234596, 0.0108752614 , 0, 10.9738035   ,
+             0            , 0            , 1,  0           ,
+             0            , 0            , 0,  1           };
+    SkPaint p;
+    p.setColor4f(SkColor4f{1, 0.647058845, 0, 0.700012207});
+    p.setAntiAlias(true);
+
+    SkBitmap bitmapWithClosingLine;
+    bitmapWithClosingLine.allocN32Pixels(6, 6);
+    SkCanvas canvasWithClosingLine(bitmapWithClosingLine);
+    canvasWithClosingLine.drawColor(SK_ColorWHITE);
+    canvasWithClosingLine.setMatrix(m);
+    canvasWithClosingLine.drawPath(withClosingLine, p);
+
+    SkBitmap bitmapWithoutClosingLine;
+    bitmapWithoutClosingLine.allocN32Pixels(6, 6);
+    SkCanvas canvasWithoutClosingLine(bitmapWithoutClosingLine);
+    canvasWithoutClosingLine.drawColor(SK_ColorWHITE);
+    canvasWithoutClosingLine.setMatrix(m);
+    canvasWithoutClosingLine.drawPath(withoutClosingLine, p);
+
+    auto count = bitmap_compare(bitmapWithClosingLine, bitmapWithoutClosingLine);
+    REPORTER_ASSERT(reporter, count == 0);
+}
