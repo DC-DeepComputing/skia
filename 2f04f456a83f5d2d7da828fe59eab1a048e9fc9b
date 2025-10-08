@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76b26e1_3108da40",
+        "filename": "README.chromium",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-08T13:04:21Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure what this field here is for, but Skia uses an autoroller to merge into chrome (same with skcms as its part of the same roll). So is manual the right thing here?",
+      "range": {
+        "startLine": 5,
+        "startChar": 18,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "2f04f456a83f5d2d7da828fe59eab1a048e9fc9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
