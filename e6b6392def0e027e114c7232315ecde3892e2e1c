@@ -68,6 +68,24 @@
       "message": "Adding a degenerate line here by adding\n\n`builder.lineTo(250, -525);`\n\nright here makes the test pass.",
       "revId": "e6b6392def0e027e114c7232315ecde3892e2e1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be4a675_3f148f06",
+        "filename": "tests/DrawPathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-08T21:50:19Z",
+      "side": 1,
+      "message": "It turns out this was because it lifted the number of points from 11 to 12 and 12 is twice 6, which is the number of pixels tall the path is.",
+      "parentUuid": "1a3f135f_bdef6d40",
+      "revId": "e6b6392def0e027e114c7232315ecde3892e2e1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
