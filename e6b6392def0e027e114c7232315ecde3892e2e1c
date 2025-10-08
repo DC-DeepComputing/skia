@@ -33,6 +33,23 @@
       "message": "Can this test use ToolUtils::A8ComparePaths()",
       "revId": "e6b6392def0e027e114c7232315ecde3892e2e1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a3f135f_bdef6d40",
+        "filename": "tests/DrawPathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-08T18:49:54Z",
+      "side": 1,
+      "message": "Adding a degenerate line here by adding\n\n`builder.lineTo(250, -525);`\n\nright here makes the test pass.",
+      "revId": "e6b6392def0e027e114c7232315ecde3892e2e1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
