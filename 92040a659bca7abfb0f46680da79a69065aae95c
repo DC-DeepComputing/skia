@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25cfaab_5fc6b0b9",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-08T19:48:46Z",
+      "side": 1,
+      "message": "I think I follow what\u0027s going on and here\u0027s my understanding of the space:\n\nThere are two writes to setShareable. This site, and one in `processReturnedResource` that sets Shareable::kNo when a previously shareable/scratch resource is considered reusable.\n\nMost reads of shareable() are guarded by the single-owner so happen synchronously with the two writes (which are only done on the cache\u0027s thread). The exception is the read of shareable() \u003d\u003d kNo inside returnResource() that is deciding whether or not to call `prepareForReturnToCache`.\n\nFor shareable/scratch resources that also have reusability not requiring purgeability (e.g. textures fall into this category), there is a race in `processReturnedResource`\u0027s `setShareable(kNo)` when the usage ref first reached 0 (becoming reusable) but then the CB ref count reaches 0 and `returnResource()` is triggered on the Context\u0027s thread.  In this case it might see the resource as non-shareable and call `prepareForReturnToCache` even though it was really a shareable resource when the refs were first held.\n\nIn practice, this race shouldn\u0027t matter because the only resources that are allowed to do anything in `prepareForReturnToCache` have to have reusability require purgeability. In that case, while we might incorrectly call into `prepareForReturnToCache` on these shareable resources on occasion, they will just return and do nothing.  In the case where we do need to do something in `prepareForReturnToCache`, the isReusable bool in `processReturnedResource` will not be true if there is any other thread that might be triggering another return queue event so there wouldn\u0027t be a racing decision.\n\nThat leaves the write to setShareable(shareable) in `findAndRefResource` racing with `returnResource`\u0027s read. Here we could still have outstanding command buffer refs that would trigger a return. There won\u0027t ever be a race that would cause `returnResource` to incorrectly see non-shareable when it was shareable because a shareable resource won\u0027t satisfy the predicate for a non-shareable find request.\n\nWe could have a resource that is marked non-shareable transition to shareable as part of `findAndRefResource`. If that resource\u0027s reusability did not require purgeability, we could encounter a returnResource call where the refs being dropped were \"non-shareable\" CB refs but we then see shareable() !\u003d kNo in the if condition and never call `prepareForReturnToCache`. Since we only hit this with reusability does not require purgeability, we know `prepareForReturnToCache` wouldn\u0027t have done anything anyways.\n\nThe find predicate does not allow shareability to change between scratch and shareable or change to non-shareable (it can only be none-\u003escratch or none-\u003eshareable).  So the other race is that we write the same value that would be read by `returnResource` (and since we only write shareable when it\u0027s scratch/shareable for findAndRefResource, then we know `returnResource` would never be taking the branch anyways).\n\nGiven all of this, I don\u0027t think the above fix is sufficient. It just significantly reduces the probability because a non-shareable -\u003e shareable transition is rare (and really only for textures being reused for scratch and non-scratch purposes). If a race can lead to undefined behavior and seeing a value that\u0027s neither the past value or the new value, then the \"it\u0027s all fine\" cases don\u0027t really apply anymore.\n\nI am leaning towards making shareable on resource be atomic with very loose read/write orderings. WDYT?",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 13
+      },
+      "revId": "92040a659bca7abfb0f46680da79a69065aae95c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
