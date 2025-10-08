@@ -22,6 +22,30 @@
       },
       "revId": "9edea563aedd336ae628fdaa2cf2f1fdc49f64f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397e1011_4d773052",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-08T13:37:23Z",
+      "side": 1,
+      "message": "kWinding happens to be the default.",
+      "parentUuid": "46db9d8e_304ac013",
+      "range": {
+        "startLine": 1172,
+        "startChar": 31,
+        "endLine": 1172,
+        "endChar": 35
+      },
+      "revId": "9edea563aedd336ae628fdaa2cf2f1fdc49f64f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
