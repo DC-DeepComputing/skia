@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22f1ebe5_c09119c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-08T15:22:37Z",
+      "side": 1,
+      "message": "Tiny thing I noticed.\n\nSee here:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/AtlasTypes.h;l\u003d163;drc\u003da44e5e2d95da3a2ff88e1cbac1ee6a8c86e7d324",
+      "revId": "01bbba4a943536d6ece60b4832d1d9f6ce3155fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
