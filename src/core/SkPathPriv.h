@@ -533,6 +533,9 @@ public:
     };
 
     Result next() {
+        auto needsCloseLine = [&]() -> bool {
+            return fNeedsCloseLine && fPts[-1] != *fMoveToPtr;
+        };
         auto closeline = [&]() {
             fScratch[0] = fPts[-1];
             fScratch[1] = *fMoveToPtr;
@@ -544,7 +547,7 @@ public:
         for (;;) {
             SkASSERT(fVerbs <= fVerbsStop);
             if (fVerbs == fVerbsStop) {
-                return fNeedsCloseLine ? closeline() : Result{nullptr, Edge::kInvalid, false};
+                return needsCloseLine() ? closeline() : Result{nullptr, Edge::kInvalid, false};
             }
 
             SkDEBUGCODE(fIsConic = false;)
@@ -552,7 +555,7 @@ public:
             const auto verb = *fVerbs++;
             switch (verb) {
                 case SkPathVerb::kMove: {
-                    if (fNeedsCloseLine) {
+                    if (needsCloseLine()) {
                         auto res = closeline();
                         fMoveToPtr = fPts++;
                         return res;
@@ -561,7 +564,7 @@ public:
                     fNextIsNewContour = true;
                 } break;
                 case SkPathVerb::kClose:
-                    if (fNeedsCloseLine) return closeline();
+                    if (needsCloseLine()) return closeline();
                     break;
                 default: {
                     unsigned v = static_cast<unsigned>(verb);
