@@ -16,6 +16,52 @@
       "message": "nit: \"include/core/SkSpan.h\" for the public header.",
       "revId": "251e40b453b095fae7561dd3cbc0884a70a1ffe1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ad28f94_b93a3687",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-08T14:21:30Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "f50929c9_c8f20314",
+      "fixSuggestions": [
+        {
+          "fixId": "ca6fa443_91e14f79",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skottie/include/Skottie.h",
+              "range": {
+                "startLine": 13,
+                "startChar": 0,
+                "endLine": 13,
+                "endChar": 0
+              },
+              "replacement": "#include \"include/core/SkSpan.h\"\n"
+            },
+            {
+              "path": "modules/skottie/include/Skottie.h",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 17,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "251e40b453b095fae7561dd3cbc0884a70a1ffe1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
