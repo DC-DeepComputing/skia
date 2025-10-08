@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46db9d8e_304ac013",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-08T13:35:20Z",
+      "side": 1,
+      "message": "The pathtype doesn\u0027t matter here?",
+      "range": {
+        "startLine": 1172,
+        "startChar": 31,
+        "endLine": 1172,
+        "endChar": 35
+      },
+      "revId": "9edea563aedd336ae628fdaa2cf2f1fdc49f64f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
