@@ -205,7 +205,11 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
-            resource->setShareable(shareable);
+            if (resource->shareable() != shareable) {
+                // Only update the shareability when necessary. This removes TSAN complaints for
+                // Resource types that are always Shareable (e.g., Samplers) - c.f. b/448374340.
+                resource->setShareable(shareable);
+            }
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
