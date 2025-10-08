@@ -1,5 +1,6 @@
 Name: skcms
 URL: https://skia.org/
 Version: unknown
+Update Mechanism: Manual
 Security Critical: yes
-License: BSD
+License: BSD-3-Clause
