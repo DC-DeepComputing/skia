@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f037050_14914180",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-08T18:57:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1413204_6e306db3",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 35
+      },
+      "revId": "3ac07173bc0302d3aebacae77aa6381448ff12fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5967e218_ca4babf4",
@@ -55,6 +79,24 @@
           ]
         }
       ],
+      "revId": "3ac07173bc0302d3aebacae77aa6381448ff12fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdcc081a_ee8ae572",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-08T18:57:55Z",
+      "side": 1,
+      "message": "oooh, yes, very important.",
+      "parentUuid": "5967e218_ca4babf4",
       "revId": "3ac07173bc0302d3aebacae77aa6381448ff12fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
