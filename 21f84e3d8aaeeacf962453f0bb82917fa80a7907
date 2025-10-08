@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e4605e3_cf2001df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-10-08T08:15:01Z",
+      "side": 1,
+      "message": "Suggest to add Fontations bots in `cq-include-trybot` as required for landing.",
+      "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4c175e81_762180ba",
@@ -31,6 +48,23 @@
       "writtenOn": "2025-10-07T21:04:38Z",
       "side": 1,
       "message": "Why do we still need to rely on path.dump()? Will this test work if we change dump to be more \"precise\"?",
+      "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dce92ab_2cf3fab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-10-08T08:15:01Z",
+      "side": 1,
+      "message": "Works for me, thank you. LGTM.",
       "revId": "21f84e3d8aaeeacf962453f0bb82917fa80a7907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
