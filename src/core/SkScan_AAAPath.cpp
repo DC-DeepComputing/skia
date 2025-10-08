@@ -959,13 +959,16 @@ static bool compare_edges(const SkAnalyticEdge* a, const SkAnalyticEdge* b) {
 }
 
 static SkAnalyticEdge* sort_edges(SkAnalyticEdge* list[], int count, SkAnalyticEdge** last) {
+    SkASSERT(count > 0);
     SkTQSort(list, list + count, compare_edges);
 
     // now make the edges linked in sorted order
+    list[0]->fPrev = nullptr;
     for (int i = 1; i < count; ++i) {
         list[i - 1]->fNext = list[i];
         list[i]->fPrev     = list[i - 1];
     }
+    list[count - 1]->fNext = nullptr;
 
     *last = list[count - 1];
     return list[0];
@@ -1686,7 +1689,7 @@ static void aaa_fill_path(const SkPathRaw& path,
     } else {
         // We skip intersection computation if there are many points which probably already
         // give us enough fractional scan lines.
-        bool skipIntersect = path.points().size() > SkToSizeT((stop_y - start_y) * 2);
+        bool skipIntersect = count > (stop_y - start_y) * 2;
 
         aaa_walk_edges(&headEdge,
                        &tailEdge,
