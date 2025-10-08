@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "befd5d67_82fcda90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-08T12:43:13Z",
+      "side": 1,
+      "message": "It is going to take a bit of time to fix this properly (i.e., disabling pipeline cache control for a SwiftShader-backed Vulkan) so disabling for now.",
+      "revId": "1144fe923d9f3cacde3f6da020d017c9c0925484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
