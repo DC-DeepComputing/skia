@@ -22,6 +22,30 @@
       },
       "revId": "8ac597839c1839555da8c7a1f4e173271b2392cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "577e9a2b_58841b72",
+        "filename": "fuzz/FuzzCommon.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-09T13:40:23Z",
+      "side": 1,
+      "message": "SkSGMerge.cpp calls it -- perhaps a separate CL can decide if it can be removed entirely (including from SkPath.h)",
+      "parentUuid": "c4a02d20_d6fe1e5e",
+      "range": {
+        "startLine": 227,
+        "startChar": 28,
+        "endLine": 227,
+        "endChar": 39
+      },
+      "revId": "8ac597839c1839555da8c7a1f4e173271b2392cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
