@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a02d20_d6fe1e5e",
+        "filename": "fuzz/FuzzCommon.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-09T11:46:34Z",
+      "side": 1,
+      "message": "If this is the only caller, we can probably get rid of this operation.",
+      "range": {
+        "startLine": 227,
+        "startChar": 28,
+        "endLine": 227,
+        "endChar": 39
+      },
+      "revId": "8ac597839c1839555da8c7a1f4e173271b2392cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
