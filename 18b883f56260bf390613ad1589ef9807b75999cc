@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "824c87e9_dcc09f15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T18:41:08Z",
+      "side": 1,
+      "message": "This will wait until https://skia-review.googlesource.com/c/skia/+/1071116 to ensure the tree gets green first w/o having to revert the parent of this CL, but this should otherwise be good to go.",
+      "revId": "18b883f56260bf390613ad1589ef9807b75999cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
