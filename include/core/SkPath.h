@@ -36,7 +36,7 @@ struct SkPathRaw;
 struct SkPathVerbAnalysis;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
