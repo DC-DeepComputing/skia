@@ -499,8 +499,8 @@ public:
     bool finalize(DrawBufferManager* bufferMgr) {
         SkASSERT(!this->isFinalized());
         if (!fGradientStorage.empty()) {
-            auto [writer, bufferInfo] = bufferMgr->getSsboWriter(fGradientStorage.size(),
-                                                                 sizeof(float));
+            auto [writer, bufferInfo, _] =
+                    bufferMgr->getMappedStorageBuffer(fGradientStorage.size(), sizeof(float));
             if (writer) {
                 writer.write(fGradientStorage.data(), fGradientStorage.size_bytes());
                 fBufferInfo = bufferInfo;
