@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "806dd61e_55c9a0f5",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2350,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-09T18:47:35Z",
+      "side": 0,
+      "message": "The idea here is to make the bit that gets the metrics match this bit that gets the image.",
+      "revId": "ce96742cdd8d892c2743c16076ba9bc6cb628498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
