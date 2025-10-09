@@ -56,6 +56,10 @@ config("default") {
   cflags_objcc = []
   defines = []
   ldflags = []
+  if (skia_use_rust_png_decode && skia_use_rust_bmp_decode) {
+    # Allow multiple definition of Rust symbols when both PNG and BMP decoders are enabled
+    ldflags += [ "-Wl,--allow-multiple-definition" ]
+  }
   libs = []
 
   # Disable warnings about unknown attributes.

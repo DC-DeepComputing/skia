@@ -8,6 +8,7 @@ CODEC_TESTS = [
     "BadIcoTest.cpp",
     "SerialProcsTest.cpp",
     "CanvasStateTest.cpp",
+    "SkBmpRustDecoderTest.cpp",
 ]
 
 CORE_TESTS = [

@@ -1297,6 +1297,14 @@ optional("png_decode_common") {
   sources = skia_codec_png_base
 }
 
+optional("bmp_decode_common") {
+  enabled = skia_use_rust_bmp_decode
+  sources = [
+    # Add any common BMP sources here if needed
+    # For now, this is just a placeholder for consistency
+  ]
+}
+
 optional("png_decode_libpng") {
   enabled = skia_use_libpng_decode
   public_defines = [
@@ -1542,6 +1550,63 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   }
 }
 
+if (skia_use_rust_bmp_decode) {
+  # We only use Bazel to get the generated `.cc` and `.h` file and then compile
+  # them on GN/ninja side using `skia_source_set` below.  This ensures that the
+  # same C++ stdlib and compiler is used throughout the build (in some scenarios
+  # Bazel may end up using different ones).
+  action("rust_bmp_ffi_bazel_build") {
+    script = "gn/bazel_build.py"
+    sources = [
+      "experimental/rust_bmp/ffi/BUILD.bazel",
+      "experimental/rust_bmp/ffi/FFI.h",
+      "experimental/rust_bmp/ffi/FFI.rs",
+    ]
+    outputs = [
+      "$root_out_dir/librust_bmp_ffi_rs.a",
+      "$root_out_dir/experimental/rust_bmp/ffi/FFI.rs.h",
+      "$root_out_dir/experimental/rust_bmp/ffi/FFI.rs.cc",
+    ]
+    args =
+        [
+          "//experimental/rust_bmp/ffi:*",
+
+          rebase_path("//bazel-bin/experimental/rust_bmp/ffi/libffi_rs.a",
+                      root_build_dir) + "=librust_bmp_ffi_rs.a",
+
+          # we want the `cxx`-generated headers to not simply be copied into
+          # the output directory, but in the same path as the Bazel build
+          # uses.
+          rebase_path("//bazel-bin/experimental/rust_bmp/ffi/FFI.rs.h",
+                      root_build_dir) + "=experimental/rust_bmp/ffi/FFI.rs.h",
+          rebase_path("//bazel-bin/experimental/rust_bmp/ffi/FFI.rs.cc",
+                      root_build_dir) + "=experimental/rust_bmp/ffi/FFI.rs.cc",
+        ] + bazel_args
+  }
+  config("rust_bmp_cxx_bridge_public_config") {
+    include_dirs = [
+      # This is where `experimental/rust_bmp/ffi/FFI.rs.h` and
+      # `third_party/rust/cxx/v1/cxx.h` were put by Bazel
+      "$root_out_dir",
+    ]
+  }
+  config("rust_bmp_cxx_bridge_private_config") {
+    include_dirs = [
+      # This entry is needed so that `FFI.rs.cc` can resolve
+      # `#include "experimental/rust_bmp/ffi/FFI.h"`
+      ".",
+    ]
+  }
+  skia_source_set("rust_bmp_cxx_bridge") {
+    deps = [ ":rust_bmp_ffi_bazel_build" ]
+    public = [ "${root_out_dir}/experimental/rust_bmp/ffi/FFI.rs.h" ]
+    sources = [ "${root_out_dir}/experimental/rust_bmp/ffi/FFI.rs.cc" ]
+    libs = [ "$root_out_dir/librust_bmp_ffi_rs.a" ]
+    public_configs = [ ":rust_bmp_cxx_bridge_public_config" ]
+    configs = [ ":rust_bmp_cxx_bridge_private_config" ]
+  }
+}
+
 optional("png_decode_rust") {
   public_defines = [ "SK_CODEC_DECODES_PNG_WITH_RUST" ]
   enabled = skia_use_rust_png_decode
@@ -1570,6 +1635,29 @@ optional("png_encode_rust") {
     ":png_encode_common",
     ":rust_png_cxx_bridge",
     ":rust_png_cxx_core_bazel_build",
+  ]
+  libs = [
+    "$root_out_dir/libcxx_cc.a",
+    "c++",
+  ]
+}
+
+optional("bmp_decode_rust") {
+  public_defines = [
+    "SK_CODEC_DECODES_BMP_WITH_RUST",
+    "SK_USE_RUST_BMP_DECODE",
+  ]
+  enabled = skia_use_rust_bmp_decode
+  public = skia_codec_rust_bmp_public
+  sources = skia_codec_rust_bmp
+  sources_for_tests = [ "tests/SkBmpRustDecoderTest.cpp" ]
+
+  deps = [
+    ":bmp_decode_common",
+    ":rust_bmp_cxx_bridge",
+
+    # Temporarily removed PNG dependency to test BMP changes
+    # ":rust_png_cxx_core_bazel_build",
   ]
   libs = [
     "$root_out_dir/libcxx_cc.a",
@@ -1685,6 +1773,7 @@ skia_component("skia") {
   deps = [
     ":android_utils",
     ":avif",
+    ":bmp_decode_rust",
     ":crabbyavif",
     ":hsw",
     ":jpeg_decode",
