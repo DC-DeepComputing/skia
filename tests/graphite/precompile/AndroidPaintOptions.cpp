@@ -47,6 +47,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
                                                   VkSamplerYcbcrModelConversion model,
                                                   VkSamplerYcbcrRange range,
                                                   VkChromaLocation location,
+                                                  VkFilter filter,
                                                   bool pqCS = false) {
     SkColorInfo ci { kRGBA_8888_SkColorType,
                      kPremul_SkAlphaType,
@@ -61,7 +62,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
     info.fYcbcrRange     = range;
     info.fXChromaOffset  = location;
     info.fYChromaOffset  = location;
-    info.fChromaFilter   = VK_FILTER_LINEAR;
+    info.fChromaFilter   = filter; // VK_FILTER_LINEAR;
 
     return PrecompileShaders::VulkanYCbCrImage(info,
                                                PrecompileShaders::ImageShaderFlags::kExcludeCubic,
@@ -104,6 +105,7 @@ sk_sp<PrecompileShader> create_child_shader(ChildType childType) {
                                              VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
                                              VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
                                              VK_CHROMA_LOCATION_COSITED_EVEN,
+                                             VK_FILTER_LINEAR,
                                              /* pqCS= */ true);
 #endif
     }
@@ -310,7 +312,8 @@ PaintOptions ImagePremulYCbCr238Srcover(bool narrow) {
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         narrow ? VK_SAMPLER_YCBCR_RANGE_ITU_NARROW
                                                                : VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -322,7 +325,8 @@ PaintOptions TransparentPaintImagePremulYCbCr238Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(238,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -335,7 +339,8 @@ PaintOptions ImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -347,7 +352,8 @@ PaintOptions TransparentPaintImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -363,6 +369,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr247(
             VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
             VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
             VK_CHROMA_LOCATION_COSITED_EVEN,
+            VK_FILTER_LINEAR,
             /*pqCS=*/true);
 
     sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
@@ -1113,6 +1120,80 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_4_DS_SRGB },
 #endif
+    };
+
+    for (size_t i = 0; i < std::size(precompileCases); ++i) {
+        func(precompileContext, precompileCases[i], i);
+    }
+}
+
+void VisitPrecompileSettings2(skgpu::graphite::PrecompileContext* precompileContext,
+                             RuntimeEffectManager& effectManager,
+                             const std::function<void(skgpu::graphite::PrecompileContext*,
+                                                      const PrecompileSettings&,
+                                                      int index)>& func) {
+    const PrecompileSettings precompileCases[] = {
+        // 0: 100% (1/1) handles: 0 (63*) - might need synthetic label
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 1: 100% (1/1) handles: 1 (61*) - might need synthetic label
+        { Builder().transparent().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 2: 100% (1/1) handles: 2 (46)
+        { ImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        // skipping 3 - it isn't in the old set
+
+        // 3: 100% (1/1) handles: 4 (71*) - might need synthetic label
+        { Builder().hwImg(kPremul).src(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 4: 100% (1/1) handles: 5 (86)
+        { Builder().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 5: something odd is going on here. There should be some other matching
+        // pipelines for the non-simple-shape draw but they are missing!
+        // Should be: handles: 6 (83) + others
+#if 0
+        { Builder().srcOver(),
+          DrawTypeFlags::kNonSimpleShape,
+          kRGBA_4_DS },
+#else
+        { Builder().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+#endif
+        // 6: 100% (1/1) handles: 7 (67*) - might need synthetic label
+        { TransparentPaintImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // skipping 8 - it isn't in the old set
+        // skipping 9 (127) -- this isn't actually covered by the prior set - may not be Protected
+
+        // 7: 50% (1/2) handles: 10 (82) -- only need the VerticesRenderStep[TrisColor] version!
+        { {}, // ignored
+          DrawTypeFlags::kDropShadows,
+          kRGBA_4_DS },
+
+        // skipping 11 - it isn't in the old set
+
+        // 12 (148)
+        // 15 (91)
+        // 22 (87)
+        // 28 (146)
+        // 33 (133)
+        // 34 (151)
+        // 35 (89)
+        // 42 (111)
+        // 46 (166 - 69*)
+        // 49 (71)
+
+
     };
 
     for (size_t i = 0; i < std::size(precompileCases); ++i) {
