@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0ecef42_f3b429fb",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc16d474_84e55ead",
+      "range": {
+        "startLine": 253,
+        "startChar": 1,
+        "endLine": 255,
+        "endChar": 0
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea29c683_59d466b6",
@@ -88,6 +112,30 @@
       "writtenOn": "2025-10-07T15:20:16Z",
       "side": 1,
       "message": "Missing space",
+      "range": {
+        "startLine": 263,
+        "startChar": 8,
+        "endLine": 263,
+        "endChar": 15
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a28ef48_aafcc049",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea29c683_59d466b6",
       "range": {
         "startLine": 263,
         "startChar": 8,
@@ -156,6 +204,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e718f40_9ae5435f",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18087d5d_ffa945d9",
+      "range": {
+        "startLine": 549,
+        "startChar": 0,
+        "endLine": 549,
+        "endChar": 39
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4ffc122_c98caef6",
@@ -169,6 +241,30 @@
       "writtenOn": "2025-10-07T13:25:08Z",
       "side": 1,
       "message": "accessed ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 30,
+        "endLine": 40,
+        "endChar": 36
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11cac61e_87527830",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4ffc122_c98caef6",
       "range": {
         "startLine": 40,
         "startChar": 30,
@@ -202,6 +298,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a13abdf_53b5ef9e",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70366ece_7f94d5cf",
+      "range": {
+        "startLine": 67,
+        "startChar": 34,
+        "endLine": 67,
+        "endChar": 51
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27502770_7d4e84ff",
@@ -215,6 +335,30 @@
       "writtenOn": "2025-10-07T20:33:04Z",
       "side": 1,
       "message": "Perhaps make this `remainingBytes()`; perhaps adding a new method or modifying this one to actually return the remaining chunks given the actual `fAlignment`?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 98
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "644de5eb_d02a545f",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "I renamed it to `remainingBytes()` but the none of the current usages of it would need to know remaining given a specific alignment, so I\u0027ll save adding that until a user comes up for it.",
+      "parentUuid": "27502770_7d4e84ff",
       "range": {
         "startLine": 70,
         "startChar": 0,
@@ -248,6 +392,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce9936a8_068cc0d3",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb3bcd1a_e871fc5b",
+      "range": {
+        "startLine": 74,
+        "startChar": 80,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45761bd6_9991cd23",
@@ -271,6 +439,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a14141_315d6d0c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Yes, I updated the comment to be specifically in terms of Shareable now (and either kNo or kScratch).",
+      "parentUuid": "45761bd6_9991cd23",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 34
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0da750ba_3268f62b",
@@ -284,6 +476,30 @@
       "writtenOn": "2025-10-07T13:25:08Z",
       "side": 1,
       "message": "of ?",
+      "range": {
+        "startLine": 156,
+        "startChar": 55,
+        "endLine": 156,
+        "endChar": 57
+      },
+      "revId": "fa6faf74c593c6da2eca27dba42379cf426d3661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9bd354f_70cc1841",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T13:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0da750ba_3268f62b",
       "range": {
         "startLine": 156,
         "startChar": 55,
