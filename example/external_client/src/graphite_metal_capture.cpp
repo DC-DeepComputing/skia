@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <cstdio>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -24,6 +25,7 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
 
 #include "graphite_metal_context_helper.h"
+#include "src/capture/SkCapture.h"
 
 #define WIDTH 200
 #define HEIGHT 400
@@ -136,8 +138,15 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // TODO (b/412351769): inspect CaptureManager / output capture
-    context->endCapture();
+    auto captureData = context->endCapture();
+
+    /* DESERIALIZE CAPTURE AND INSPECT CONTENTS */
+    if (captureData) {
+        auto capture = SkCapture::MakeFromData(captureData);
+    } else {
+        printf("No capture to inspect.");
+        return 1;
+    }
 
     printf("done\n");
     return 0;

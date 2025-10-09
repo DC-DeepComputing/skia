@@ -8,6 +8,7 @@
 #ifndef SkCaptureManager_DEFINED
 #define SkCaptureManager_DEFINED
 
+#include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkTArray.h"
@@ -25,7 +26,12 @@ public:
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
     void snapPicture(SkSurface*);
-    void serializeCapture();
+    //TODO: move serialize capture to SkCapture
+    sk_sp<SkData> serializeCapture();
+    // naive proc for serializing images
+    // TODO: add more awareness of the image meta data to a SkCaptureContext object
+    static sk_sp<SkData> serializeImageProc(SkImage* img, void* ctx);
+    static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>, std::optional<SkAlphaType>, void* ctx);
 
     void toggleCapture(bool capturing) {
         if (capturing != fIsCurrentlyCapturing && !capturing) {
