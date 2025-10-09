@@ -16,6 +16,23 @@
       "message": "So you approved this CL 6 months ago. I\u0027m sure it must be fine to land now",
       "revId": "34136a35121d308372e689266d14a09d10c312ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47c44efd_ca25dbbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-09T18:38:39Z",
+      "side": 1,
+      "message": "sending another ping",
+      "revId": "34136a35121d308372e689266d14a09d10c312ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
