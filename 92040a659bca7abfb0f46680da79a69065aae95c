@@ -22,6 +22,30 @@
       },
       "revId": "92040a659bca7abfb0f46680da79a69065aae95c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ea81a4_c9750376",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-09T00:42:02Z",
+      "side": 1,
+      "message": "I realized while driving home that all of this complexity goes away if we can just remove the racing read of shareable() during returnResource(). It was checking shareable::kNo as a proxy for the DawnBuffer case when mapping has to be async.  But a Resource instance should know at creation time that prepareForReturnToCache needs to be called, and it\u0027ll never change.\n\nIf we just save that explicitly on Resource then we can get rid of checking shareable::kNo in favor of the constant.",
+      "parentUuid": "f25cfaab_5fc6b0b9",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 13
+      },
+      "revId": "92040a659bca7abfb0f46680da79a69065aae95c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
