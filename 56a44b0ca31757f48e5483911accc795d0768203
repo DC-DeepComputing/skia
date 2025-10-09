@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "992c6e72_c74e3e79",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-09T15:51:47Z",
+      "side": 1,
+      "message": "Should remove this one as well.",
+      "revId": "56a44b0ca31757f48e5483911accc795d0768203",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
