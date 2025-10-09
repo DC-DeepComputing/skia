@@ -297,15 +297,20 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
     DrawBufferManager* bufMgr = recorder->priv().drawBufferManager();
 
     size_t uboSize = config->config_uniform_buffer_size();
-    auto [uboWriter, configBuf] = bufMgr->getUniformWriter(uboSize, /*stride=*/1);
-    if (!uboWriter || !config->write_config_uniform_buffer(to_slice(uboWriter.slice(uboSize)))) {
-        return nullptr;
+    {
+        auto [uboWriter, configBuf, _] = bufMgr->getMappedUniformBuffer(uboSize, /*stride=*/1);
+        if (!uboWriter ||
+            !config->write_config_uniform_buffer(to_slice(uboWriter.slice(uboSize)))) {
+            return nullptr;
+        }
     }
 
     size_t sceneSize = config->scene_buffer_size();
-    auto [sceneWriter, sceneBuf] = bufMgr->getSsboWriter(sceneSize, /*stride=*/1);
-    if (!sceneWriter || !config->write_scene_buffer(to_slice(sceneWriter.slice(sceneSize)))) {
-        return nullptr;
+    {
+        auto [sceneWriter, sceneBuf, _] = bufMgr->getMappedStorageBuffer(sceneSize, /*stride=*/1);
+        if (!sceneWriter || !config->write_scene_buffer(to_slice(sceneWriter.slice(sceneSize)))) {
+            return nullptr;
+        }
     }
 
     // TODO(b/285189802): The default sizes for the bump buffers (~97MB) exceed Graphite's resource
