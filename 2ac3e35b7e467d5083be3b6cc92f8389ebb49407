@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ca84d4_9e8e657d",
+        "filename": "modules/skcms/README.chromium",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-09T13:12:29Z",
+      "side": 1,
+      "message": "This would also be Autoroll since it rolls into Chrome inside of the Skia roll.",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "2ac3e35b7e467d5083be3b6cc92f8389ebb49407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
