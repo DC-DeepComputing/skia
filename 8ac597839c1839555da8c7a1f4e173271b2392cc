@@ -70,6 +70,30 @@
       },
       "revId": "8ac597839c1839555da8c7a1f4e173271b2392cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "308d5748_2644e0d9",
+        "filename": "fuzz/FuzzCommon.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-09T13:42:39Z",
+      "side": 1,
+      "message": "Ah, you were thinking of the pathbuilder version. good call.\n\nmy comment is about SkPath\u0027s shrinkToFit, which likely we\u0027ll need to remove when paths are really immutable ...",
+      "parentUuid": "577e9a2b_58841b72",
+      "range": {
+        "startLine": 227,
+        "startChar": 28,
+        "endLine": 227,
+        "endChar": 39
+      },
+      "revId": "8ac597839c1839555da8c7a1f4e173271b2392cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
