@@ -190,7 +190,6 @@ void DrawList::recordDraw(const Renderer* renderer,
 
     fRenderStepCount += renderer->numRenderSteps();
 
-    gatherer->setRenderStepManagerActive();
     for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
         gatherer->rewindForRenderStep();
 

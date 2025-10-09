@@ -71,12 +71,32 @@ int UniformOffsetCalculator::advanceStruct(const UniformOffsetCalculator& substr
 void UniformManager::resetWithNewLayout(Layout layout) {
     fStorage.clear();
     fLayout = layout;
+    fStartingOffset = 0;
     fReqAlignment = 0;
     fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
 #ifdef SK_DEBUG
     fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(layout);
+    fSubstructCalculator = {};
+    fExpectedUniforms = {};
+    fExpectedUniformIndex = 0;
+#endif
+}
+
+void UniformManager::rewindTo(size_t size) {
+    SkASSERT(size <= (size_t)fStorage.size());
+    fStorage.resize(size);
+    fStartingOffset = size;
+
+    // Reset tracking state for the 'new' block being built after the rewind point.
+    // The overall layout and whether a paint color was written (in the preserved part)
+    // should remain unchanged.
+    fReqAlignment = 0;
+    fStructBaseAlignment = 0;
+
+#ifdef SK_DEBUG
+    fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(fLayout, size);
     fSubstructCalculator = {};
     fExpectedUniforms = {};
     fExpectedUniformIndex = 0;
