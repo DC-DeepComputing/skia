@@ -16,6 +16,29 @@
       "message": "This will wait until https://skia-review.googlesource.com/c/skia/+/1071116 to ensure the tree gets green first w/o having to revert the parent of this CL, but this should otherwise be good to go.",
       "revId": "18b883f56260bf390613ad1589ef9807b75999cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "823dc242_95464b1b",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-09T18:49:31Z",
+      "side": 1,
+      "message": "We choose to *not* do this ?",
+      "range": {
+        "startLine": 448,
+        "startChar": 26,
+        "endLine": 448,
+        "endChar": 55
+      },
+      "revId": "18b883f56260bf390613ad1589ef9807b75999cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
