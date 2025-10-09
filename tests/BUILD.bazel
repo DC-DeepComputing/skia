@@ -3,6 +3,7 @@ load("//tools/testrunners/unit:android_unit_test.bzl", "android_unit_test")
 load("//tools/testrunners/unit:unit_tests.bzl", "unit_tests")
 load(
     ":testgroups.bzl",
+    "CODEC_TESTS",
     "CORE_TESTS",
     "RECORD_TESTS",
 )
@@ -111,12 +112,27 @@ unit_tests(
     ],
 )
 
+unit_tests(
+    name = "codec_tests",
+    resources = [
+        "//resources:core_test_resources",
+    ],
+    tests = CODEC_TESTS,
+    deps = [
+        ":tests_base",
+        "//:core",
+        "//experimental/rust_bmp/decoder/impl:skbmprustcodec",
+        "//experimental/rust_bmp/ffi:utils",
+    ],
+)
+
 # The set of all tests that can be compiled on Linux RBE
 test_suite(
     name = "linux_rbe_tests",
     tests = [
         ":core_tests",
         ":record_tests",
+        ":codec_tests",
     ],
 )
 

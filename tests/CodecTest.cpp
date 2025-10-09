@@ -119,6 +119,7 @@ static void test_info(skiatest::Reporter* r, Codec* codec, const SkImageInfo& in
     bm.allocPixels(info);
 
     SkCodec::Result result = codec->getPixels(info, bm.getPixels(), bm.rowBytes());
+    // Debug output removed
     REPORTER_ASSERT(r, result == expectedResult);
 
     if (goodDigest) {

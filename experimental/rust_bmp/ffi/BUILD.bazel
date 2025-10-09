@@ -1,0 +1,78 @@
+load("@rules_rust//rust:defs.bzl", "rust_static_library")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_cc_library",
+    "skia_filegroup",
+)
+
+skia_filegroup(
+    name = "rs_srcs",
+    srcs = [
+        "FFI.rs",
+        "lib.rs",
+        "decoder.rs",
+        "header.rs",
+        "error.rs", 
+        "compression.rs",
+        "optimization.rs",
+        "ico.rs",
+        "types.rs",
+    ],
+)
+
+skia_filegroup(
+    name = "cxx_bridge_srcs",
+    srcs = ["FFI.rs"],
+)
+
+# Note: the `hdrs` of the `utils` target are included in *two* `.gni` lists
+# (`skia_codec_rust_bmp` and potentially future encoder lists) - this works only
+# because this is a header-only library.  If `utils` needs `srcs` in the
+# future, then a separate `.gni` list may be required.
+skia_cc_library(
+    name = "utils",
+    hdrs = ["UtilsForFFI.h"],
+    features = ["layering_check"],
+    visibility = ["//experimental/rust_bmp:__subpackages__"],
+    deps = ["//:core"],
+)
+
+skia_cc_library(
+    name = "ffi_cpp",
+    hdrs = ["FFI.h"],
+    features = ["layering_check"],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+)
+
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "FFI.rs",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [":ffi_cpp", ":utils"],
+)
+
+rust_static_library(
+    name = "ffi_rs",
+    srcs = [":rs_srcs"],
+    rustc_flags = ["-Dwarnings"],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge",
+        ":ffi_cpp",
+        "@crates//:cxx",
+    ] + select({
+        "//bazel/common_config_settings:use_image_crate": ["@crates//:image"],
+        "//conditions:default": [],
+    }),
+    features = select({
+        "//bazel/common_config_settings:use_image_crate": ["use_image_crate"],
+        "//conditions:default": [],
+    }),
+)

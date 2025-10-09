@@ -123,3 +123,12 @@ selects.config_setting_group(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Rust BMP decoder configuration
+config_setting(
+    name = "use_image_crate",
+    define_values = {
+        "rust_bmp_use_image_crate": "true",
+    },
+    visibility = ["//:__subpackages__"],
+)
