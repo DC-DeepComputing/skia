@@ -7,12 +7,23 @@
 
 #include "src/capture/SkCaptureManager.h"
 
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSerialProcs.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/private/base/SkDebug.h"
+#include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureCanvas.h"
 
 #include <memory>
+#include <optional>
 
 SkCaptureManager::SkCaptureManager() {}
 
@@ -50,8 +61,54 @@ void SkCaptureManager::snapPicture(SkSurface* surface) {
     }
 }
 
-void SkCaptureManager::serializeCapture() {
-    // TODO (412351769): return a serialized file via SkData, for now this will print the contents
-    // of the capture for inspection.
-    SkDebugf("Tracked canvases: %d. SkPictures: %d\n", fTrackedCanvases.size(), fPictures.size());
+// TODO(b/412351769): When serializing our SkPictures, the images that are drawn through drawImage
+// and similar functions will also need to be serialized. Instead of naively encoding all images as
+// PNGs, we want the images that refer to content created from an SkSurface to point to its
+// corresponding SkPicture. This means that we need to create a context for the proc to track these
+// contentIDs.
+sk_sp<SkData> SkCaptureManager::serializeImageProc(SkImage* img, void* ctx) {
+    const int contentID = -1; // TODO: replace with real content ID.
+    sk_sp<SkData> data = SkData::MakeWithCopy(&contentID, sizeof(int));
+    return data;
+}
+
+sk_sp<SkImage> SkCaptureManager::deserializeImageProc(sk_sp<SkData> data, std::optional<SkAlphaType> a, void* ctx) {
+    // TODO: set up the SkCapture context and inspect it to grab SkPictures and pass them as images.
+    SkBitmap b;
+    b.allocN32Pixels(5, 5);
+    SkCanvas canvas(b);
+    canvas.drawColor(SK_ColorMAGENTA);
+    return b.asImage();
+}
+
+
+sk_sp<SkData> SkCaptureManager::serializeCapture() {
+    SkDynamicMemoryWStream stream;
+
+    stream.write(SkCapture::kMagic, sizeof(SkCapture::kMagicSize));
+    stream.write32(SkCapture::kVersion);
+
+    // Number of pictures
+    stream.write32(fPictures.size());
+
+    // TODO (b/412351769): Write metadata on each picture and assosiated canvas. This will be needed
+    // when we have multiple SkPictures per canvas and we want to track which ones are drawn into
+    // each other.
+
+    for (const auto& picture : fPictures) {
+        SkDynamicMemoryWStream pictureStream;
+        SkSerialProcs procs;
+        procs.fImageProc = SkCaptureManager::serializeImageProc;
+        picture->serialize(&pictureStream, &procs);
+        sk_sp<SkData> pictureData = pictureStream.detachAsData();
+
+        // Write size and then data
+        stream.write64(pictureData->size());
+        stream.write(pictureData->data(), pictureData->size());
+    }
+
+    auto data = stream.detachAsData();
+    SkDebugf("Wrote %d pictures from %d canvases to sk_capture.skcp\n", fPictures.size(),
+        fTrackedCanvases.size());
+    return data;
 }
