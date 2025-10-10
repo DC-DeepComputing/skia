@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca86dd65_01d39975",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-10T21:15:45Z",
+      "side": 1,
+      "message": "wow, super clever! And I of all people missed a chance to show-off Raws 😊",
+      "parentUuid": "f8c38538_e932cd05",
+      "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00bd9b07_216bceb6",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e981d1c2_fa55a1d7",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-10T21:15:45Z",
+      "side": 1,
+      "message": "good catch.\n\nI had added the snapshot() ... and *then* changed fPartials to also be a builder.\n\nMaybe SkPathBuilder(SkPath) should be explicit ...",
+      "parentUuid": "00bd9b07_216bceb6",
+      "range": {
+        "startLine": 105,
+        "startChar": 28,
+        "endLine": 105,
+        "endChar": 47
+      },
       "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
