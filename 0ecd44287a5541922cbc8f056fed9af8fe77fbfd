@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c38538_e932cd05",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-10T20:38:49Z",
+      "side": 1,
+      "message": "`addRaw` to avoid allocating an SkPath?",
+      "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00bd9b07_216bceb6",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-10T20:38:49Z",
+      "side": 1,
+      "message": "SkPathBuilder has a copy constructor, right?  I think we could `push_back(fCurrent)` directly.",
+      "range": {
+        "startLine": 105,
+        "startChar": 28,
+        "endLine": 105,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a3e2e45f_9c1062a5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pathops/SkPathWriter.cpp",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 106,
+                "endChar": 0
+              },
+              "replacement": "        fPartials.push_back(fCurrent);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31c466f_555777af",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-10T20:38:49Z",
+      "side": 1,
+      "message": "Looks like this could almost be a raw, modulo missing AddPathMode arg to addRaw.  I can take a stab in a followup.",
+      "range": {
+        "startLine": 353,
+        "startChar": 19,
+        "endLine": 353,
+        "endChar": 26
+      },
+      "revId": "0ecd44287a5541922cbc8f056fed9af8fe77fbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
