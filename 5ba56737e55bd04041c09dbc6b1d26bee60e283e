@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c1ec3b_1e152ccb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3495638
+      },
+      "writtenOn": "2025-10-10T02:56:35Z",
+      "side": 1,
+      "message": "I also fixed some of the other fields. The magic string \u0027This is the canonical public repository\u0027 is used to identify libraries like this that aren\u0027t pulled in from external.",
+      "revId": "5ba56737e55bd04041c09dbc6b1d26bee60e283e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
