@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7943585a_e0c3354b",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-10T15:28:26Z",
+      "side": 1,
+      "message": "nit: maybe comment for const cast",
+      "range": {
+        "startLine": 325,
+        "startChar": 4,
+        "endLine": 329,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "03db07ab_bccc2a50",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PipelineData.h",
+              "range": {
+                "startLine": 326,
+                "startChar": 0,
+                "endLine": 326,
+                "endChar": 0
+              },
+              "replacement": "        // The DenseBiMap key is TextureProxy*, so we need to const_cast. It\u0027s safe because\n        // contains() does not modify the key.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "532654573ad09daa9d3cec336b7a55adfbbda423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
