@@ -593,6 +593,7 @@ private:
     using INHERITED = RandomPathBench;
 };
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 class SkBench_AddPathTest : public RandomPathBench {
 public:
     enum AddType {
@@ -690,7 +691,7 @@ private:
     SkMatrix         fMatrix;
     using INHERITED = RandomPathBench;
 };
-
+#endif
 
 class CirclesBench : public Benchmark {
 protected:
@@ -1253,11 +1254,13 @@ DEF_BENCH( return new PathEqualityBench(); )
 DEF_BENCH( return new PathTransformPerspectiveBench(true); )
 DEF_BENCH( return new PathTransformPerspectiveBench(false); )
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAdd_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddTrans_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddMatrix_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kReverseAdd_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kReversePathTo_AddType); )
+#endif
 
 DEF_BENCH( return new CirclesBench(FLAGS00); )
 DEF_BENCH( return new CirclesBench(FLAGS01); )
