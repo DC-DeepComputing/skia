@@ -291,6 +291,8 @@ bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
     }
 #endif
 
+    // Before submitting, make sure that the signal semphores used for submission are no longer
+    // being signaled by vkQueuePresentKHR.
     auto submission = this->onSubmitToGpu(submitInfo);
     if (!submission) {
         return false;

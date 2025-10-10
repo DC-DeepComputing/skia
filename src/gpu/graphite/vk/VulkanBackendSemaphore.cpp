@@ -22,6 +22,7 @@ public:
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kVulkan; }
 #endif
 
+    // Track whether the semaphore is being used to present or not?
     VkSemaphore semaphore() const { return fVkSemaphore; }
 
 private:
