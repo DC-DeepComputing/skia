@@ -230,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d416c475_b939ffc8",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-10T23:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d0d7d1b_fa298cf2",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 0
+      },
+      "revId": "ee199f118527c8d9a27ab5d9fc3ec99e5a44328d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5b5c7f5_a6049618",

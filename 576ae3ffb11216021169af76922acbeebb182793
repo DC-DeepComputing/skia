@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e2607e2_c743ccaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-10T23:11:45Z",
+      "side": 1,
+      "message": "PTAL. \n\nNote I had to make it so that `endPaint()` always gets the subspan from 0 to the marked size, otherwise once `fStartingOffset` has been advanced to the marked size, succeeding calls to `endPaint()` will return no data. I.e. a `drawGeometry` which contains multiple `recordDraw()`.",
+      "revId": "576ae3ffb11216021169af76922acbeebb182793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
