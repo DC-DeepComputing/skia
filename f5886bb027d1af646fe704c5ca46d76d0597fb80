@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27704de8_4f3ab7e2",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-10T13:50:23Z",
+      "side": 1,
+      "message": "AFAIK this is still not an allowable combination of property flags for a memory type. The only valid set of flags for VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT is\nVK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |\nVK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT.\n\nLet\u0027s add a comment similar to what we have for the equivalent code in Graphite, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/vk/VulkanCaps.cpp;l\u003d163.",
+      "range": {
+        "startLine": 400,
+        "startChar": 33,
+        "endLine": 400,
+        "endChar": 65
+      },
+      "revId": "f5886bb027d1af646fe704c5ca46d76d0597fb80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
