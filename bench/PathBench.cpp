@@ -593,6 +593,7 @@ private:
     using INHERITED = RandomPathBench;
 };
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 class SkBench_AddPathTest : public RandomPathBench {
 public:
     enum AddType {
@@ -600,7 +601,6 @@ public:
         kAddTrans_AddType,
         kAddMatrix_AddType,
         kReverseAdd_AddType,
-        kReversePathTo_AddType,
     };
 
     SkBench_AddPathTest(AddType type) : fType(type) {
@@ -618,8 +618,6 @@ protected:
                 return "path_add_path_matrix";
             case kReverseAdd_AddType:
                 return "path_reverse_add_path";
-            case kReversePathTo_AddType:
-                return "path_reverse_path_to";
             default:
                 SkDEBUGFAIL("Bad add type");
                 return "";
@@ -627,9 +625,7 @@ protected:
     }
 
     void onDelayedSetup() override {
-        // reversePathTo assumes a single contour path.
-        bool allowMoves = kReversePathTo_AddType != fType;
-        this->createData(10, 100, allowMoves);
+        this->createData(10, 100, true);
         fPaths0.reset(kPathCnt);
         fPaths1.reset(kPathCnt);
         for (int i = 0; i < kPathCnt; ++i) {
@@ -669,13 +665,6 @@ protected:
                     result.reverseAddPath(fPaths1[idx]);
                 }
                 break;
-            case kReversePathTo_AddType:
-                for (int i = 0; i < loops; ++i) {
-                    int idx = i & (kPathCnt - 1);
-                    SkPath result = fPaths0[idx];
-                    result.reversePathTo(fPaths1[idx]);
-                }
-                break;
         }
     }
 
@@ -690,7 +679,7 @@ private:
     SkMatrix         fMatrix;
     using INHERITED = RandomPathBench;
 };
-
+#endif
 
 class CirclesBench : public Benchmark {
 protected:
@@ -1253,11 +1242,12 @@ DEF_BENCH( return new PathEqualityBench(); )
 DEF_BENCH( return new PathTransformPerspectiveBench(true); )
 DEF_BENCH( return new PathTransformPerspectiveBench(false); )
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAdd_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddTrans_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddMatrix_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kReverseAdd_AddType); )
-DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kReversePathTo_AddType); )
+#endif
 
 DEF_BENCH( return new CirclesBench(FLAGS00); )
 DEF_BENCH( return new CirclesBench(FLAGS01); )
