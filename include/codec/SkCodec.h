@@ -438,12 +438,21 @@ public:
     }
 
     /**
-     *  Return an image containing the pixels. If the codec's origin is not "upper left",
-     *  This will rotate the output image accordingly.
+     *  Return a raster-backed image containing the pixels. If the codec's origin is not
+     *  "upper left", this will rotate the output image accordingly.
      */
     std::tuple<sk_sp<SkImage>, SkCodec::Result> getImage(const SkImageInfo& info,
                                                          const Options* opts = nullptr);
     std::tuple<sk_sp<SkImage>, SkCodec::Result> getImage();
+
+    /**
+     *  Return a bitmap containing the pixels. If the codec's origin is not "upper left",
+     *  This will rotate the output image accordingly.
+     */
+    std::unique_ptr<SkBitmap> getBitmap(const SkImageInfo& info,
+                                        const Options* opts = nullptr,
+                                        SkCodec::Result outResult = nullptr);
+    std::unique_ptr<SkBitmap> getBitmap();
 
     /**
      *  If decoding to YUV is supported, this returns true. Otherwise, this
