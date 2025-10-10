@@ -39,6 +39,48 @@
       },
       "revId": "18b883f56260bf390613ad1589ef9807b75999cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7732e30a_fb0ecb82",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-10T14:01:56Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "823dc242_95464b1b",
+      "range": {
+        "startLine": 448,
+        "startChar": 26,
+        "endLine": 448,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cf62a76d_4b03dd1c",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/BufferManager.cpp",
+              "range": {
+                "startLine": 448,
+                "startChar": 0,
+                "endLine": 449,
+                "endChar": 0
+              },
+              "replacement": "        // fewer buffers. We choose *not* to do this because:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "18b883f56260bf390613ad1589ef9807b75999cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
