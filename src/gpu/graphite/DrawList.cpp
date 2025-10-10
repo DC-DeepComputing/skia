@@ -175,6 +175,7 @@ void DrawList::recordDraw(const Renderer* renderer,
     UniformDataCache::Index shadingUniformIndex = UniformDataCache::kInvalidIndex;
     if (paintID.isValid()) {
         UniformDataBlock paintUniforms = gatherer->endPaintData();
+        gatherer->rewindForRenderStep();
         if (paintUniforms) {
             shadingUniformIndex = fShadingUniformDataCache.insert(paintUniforms);
         }
@@ -190,10 +191,7 @@ void DrawList::recordDraw(const Renderer* renderer,
 
     fRenderStepCount += renderer->numRenderSteps();
 
-    gatherer->setRenderStepManagerActive();
     for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
-        gatherer->rewindForRenderStep();
-
         const RenderStep* const step = draw.renderer()->steps()[stepIndex];
         const bool performsShading = step->performsShading();
 
@@ -215,6 +213,7 @@ void DrawList::recordDraw(const Renderer* renderer,
                              geomUniformIndex,
                              performsShading ? shadingUniformIndex : UniformDataCache::kInvalidIndex,
                              textureBindingIndex});
+        gatherer->rewindForRenderStep();
     }
 
     fPassBounds.join(clip.drawBounds());
