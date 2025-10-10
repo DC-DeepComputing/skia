@@ -71,12 +71,32 @@ int UniformOffsetCalculator::advanceStruct(const UniformOffsetCalculator& substr
 void UniformManager::resetWithNewLayout(Layout layout) {
     fStorage.clear();
     fLayout = layout;
+    fStartingOffset = 0;
     fReqAlignment = 0;
     fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
 #ifdef SK_DEBUG
     fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(layout);
+    fSubstructCalculator = {};
+    fExpectedUniforms = {};
+    fExpectedUniformIndex = 0;
+#endif
+}
+
+void UniformManager::rewindTo(size_t size) {
+    SkASSERT(size <= (size_t)fStorage.size());
+    fStorage.resize(size);
+    fStartingOffset = size;
+
+    // Reset tracking state for the 'new' block being built after the rewind point.
+    // The overall layout and whether a paint color was written (in the preserved part)
+    // should remain unchanged.
+    fReqAlignment = 0;
+    fStructBaseAlignment = 0;
+
+#ifdef SK_DEBUG
+    fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(fLayout);
     fSubstructCalculator = {};
     fExpectedUniforms = {};
     fExpectedUniformIndex = 0;
@@ -232,7 +252,8 @@ bool UniformManager::checkExpected(const void* dst, SkSLType type, int count) {
         // If we have 'dst', it's the aligned starting offset of the uniform being checked, so
         // subtracting the address of the first byte in fStorage gives us the offset.
         int offset = static_cast<int>(reinterpret_cast<intptr_t>(dst) -
-                                      reinterpret_cast<intptr_t>(fStorage.data()));
+                                      reinterpret_cast<intptr_t>(fStorage.data())
+                                      - fStartingOffset);
 
         if (fSubstructCalculator.layout() == Layout::kInvalid) {
             // Pass original expected type and count to the offset calculator for validation.
