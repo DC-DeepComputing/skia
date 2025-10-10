@@ -158,6 +158,23 @@
       "parentUuid": "87cf15b6_2adeec8c",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61e8a01e_b34aba33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-10T14:44:34Z",
+      "side": 1,
+      "message": "Can you add b/450860941 to the CL description?\n\nOnce https://skia-review.googlesource.com/c/skia/+/1071446 lands, this should be good to go.",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
