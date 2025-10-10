@@ -16,6 +16,68 @@
       "message": "WDYT -- can we remove this?",
       "revId": "df753c509480435cf32e75580445312b1097235e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e146ebf9_2e016b8a",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-10T20:28:07Z",
+      "side": 1,
+      "message": "Leftover, remove.",
+      "revId": "df753c509480435cf32e75580445312b1097235e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e64776_928fc10e",
+        "filename": "tests/PathMeasureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-10T20:28:07Z",
+      "side": 1,
+      "message": "If we move this before `incReserve`, we\u0027d be exercising more of the test\u0027s intent (path realloc after measure initialization) - wdyt?",
+      "fixSuggestions": [
+        {
+          "fixId": "955afcd9_31376d31",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/PathMeasureTest.cpp",
+              "range": {
+                "startLine": 308,
+                "startChar": 0,
+                "endLine": 309,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "tests/PathMeasureTest.cpp",
+              "range": {
+                "startLine": 312,
+                "startChar": 0,
+                "endLine": 312,
+                "endChar": 0
+              },
+              "replacement": "    path.incReserve(100);\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "df753c509480435cf32e75580445312b1097235e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
