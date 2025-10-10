@@ -22,6 +22,30 @@
       },
       "revId": "f5886bb027d1af646fe704c5ca46d76d0597fb80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef024cc2_2367cb38",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 19654
+      },
+      "writtenOn": "2025-10-10T17:12:46Z",
+      "side": 1,
+      "message": "Correct. I\u0027ve copied over the comment.",
+      "parentUuid": "27704de8_4f3ab7e2",
+      "range": {
+        "startLine": 400,
+        "startChar": 33,
+        "endLine": 400,
+        "endChar": 65
+      },
+      "revId": "f5886bb027d1af646fe704c5ca46d76d0597fb80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
