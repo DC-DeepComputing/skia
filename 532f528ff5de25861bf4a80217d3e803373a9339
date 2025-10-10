@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6357c608_45642f88",
+        "filename": "tools/window/GraphiteNativeVulkanWindowContext.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-10T16:57:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8710c2b_caf118c1",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 88
+      },
+      "revId": "532f528ff5de25861bf4a80217d3e803373a9339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f51928b_72e3c4cd",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4018b02f_a18aada0",
+        "filename": "tools/window/GraphiteNativeVulkanWindowContext.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-10T16:57:31Z",
+      "side": 1,
+      "message": "I was wanting to avoid having to populate an array, but you\u0027re right, it\u0027s no big deal to. Moved into the struct!",
+      "parentUuid": "1f51928b_72e3c4cd",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 24
+      },
+      "revId": "532f528ff5de25861bf4a80217d3e803373a9339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0a9887d_dc44808c",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-10-08T18:52:16Z",
       "side": 1,
       "message": "Instead of a raw pointer you should use something like AutoTArary. Shouldn\u0027t need to then also store fSwapchainImgCount.",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "532f528ff5de25861bf4a80217d3e803373a9339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0574021_c2108d5f",
+        "filename": "tools/window/GraphiteNativeVulkanWindowContext.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-10T16:57:31Z",
+      "side": 1,
+      "message": "Yeah, might as well while we are changing things. Done!",
+      "parentUuid": "f0a9887d_dc44808c",
       "range": {
         "startLine": 105,
         "startChar": 4,
