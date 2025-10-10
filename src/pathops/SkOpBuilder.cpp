@@ -186,7 +186,7 @@ std::optional<SkPath> SkOpBuilder::resolve() {
         reset();
         return result;
     }
-    SkPath sum;
+    SkPathBuilder sum;
     for (int index = 0; index < count; ++index) {
         auto result = Simplify(fPathRefs[index]);
         if (!result.has_value()) {
@@ -204,5 +204,5 @@ std::optional<SkPath> SkOpBuilder::resolve() {
     }
     reset();
 
-    return Simplify(sum);
+    return Simplify(sum.detach());
 }
