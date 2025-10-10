@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6543d01e_083e1b29",
+        "filename": "modules/sksg/src/SkSGMerge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-10T21:28:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e146ebf9_2e016b8a",
+      "revId": "df753c509480435cf32e75580445312b1097235e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5e64776_928fc10e",
@@ -76,6 +94,24 @@
           ]
         }
       ],
+      "revId": "df753c509480435cf32e75580445312b1097235e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fcad9be_e3b9a474",
+        "filename": "tests/PathMeasureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-10T21:28:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5e64776_928fc10e",
       "revId": "df753c509480435cf32e75580445312b1097235e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
