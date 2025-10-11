@@ -28,9 +28,9 @@ struct SkSize;
 // Remove when clients are updated to live without this
 #define SK_SUPPORT_LEGACY_MATRIX_RECTTORECT
 
-#ifndef SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
-    #define SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
-#endif
+//#ifndef SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
+//    #define SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
+//#endif
 
 #ifdef SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
 enum class SkApplyPerspectiveClip {
