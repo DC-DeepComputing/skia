@@ -25,9 +25,6 @@
 struct SkRSXform;
 struct SkSize;
 
-// Remove when clients are updated to live without this
-#define SK_SUPPORT_LEGACY_MATRIX_RECTTORECT
-
 #ifndef SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
     #define SK_SUPPORT_LEGACY_APPLYPERSPECTIVECLIP
 #endif
@@ -1132,29 +1129,6 @@ public:
                                          ScaleToFit stf = kFill_ScaleToFit) {
         return Rect2Rect(src, dst, stf).value_or(SkMatrix::I());
     }
-
-#ifdef SK_SUPPORT_LEGACY_MATRIX_RECTTORECT
-    bool setRectToRect(const SkRect& src, const SkRect& dst, ScaleToFit stf) {
-        if (auto mx = Rect2Rect(src, dst, stf)) {
-            *this = *mx;
-            return true;
-        }
-        this->reset();
-        return false;
-    }
-
-    static SkMatrix MakeRectToRect(const SkRect& src, const SkRect& dst, ScaleToFit stf) {
-        if (auto mx = Rect2Rect(src, dst, stf)) {
-            return *mx;
-        }
-        return SkMatrix::I();
-    }
-
-    [[nodiscard]] static SkMatrix RectToRect(const SkRect& src, const SkRect& dst,
-                                             ScaleToFit mode = kFill_ScaleToFit) {
-        return MakeRectToRect(src, dst, mode);
-    }
-#endif
 
     /** Compute a matrix from two polygons, such that if the matrix was applied
      *  to the src polygon, it would produce the dst polygon.
