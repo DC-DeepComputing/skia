@@ -1951,9 +1951,11 @@ private:
     //  SkPath path; path.lineTo(...);   <--- need a leading moveTo(0, 0)
     // SkPath path; ... path.close(); path.lineTo(...) <-- need a moveTo(previous moveTo)
     //
-    inline void injectMoveToIfNeeded();
+    void injectMoveToIfNeeded();
 
-    inline bool hasOnlyMoveTos() const;
+    bool hasOnlyMoveTos() const {
+        return this->getSegmentMasks() == 0;
+    }
 
     SkPathConvexity computeConvexity() const;
 
