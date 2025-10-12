@@ -334,6 +334,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a9a0f2_838c584e",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-12T22:44:25Z",
+      "side": 1,
+      "message": "Let\u0027s tag it \"final\" also, to make sure someone doesn\u0027t accidentally subclass/add a vtable.",
+      "parentUuid": "79310519_1cb726b3",
+      "range": {
+        "startLine": 62,
+        "startChar": 17,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54ca24f9_5635e43e",
