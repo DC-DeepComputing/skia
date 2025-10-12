@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c51a1546_9b761be9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-12T22:28:39Z",
+      "side": 1,
+      "message": "These are still used in Chromium, G3, Android (and possibly Flutter too).",
+      "revId": "7e577a033672c1aa8782654770854bd03be69223",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
