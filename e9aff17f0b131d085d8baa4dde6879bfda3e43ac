@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ab7313f_c3e2f402",
+        "filename": "bench/PathBench.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 1279,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64fa39c7_6e6d2b4c",
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "439b8881_7f023823",
@@ -69,6 +87,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "823f13ad_38418e31",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "PtsInIter() is off by 1 for most of these: it returns the total number of pts, the list here is the number of new pts.",
+      "parentUuid": "439b8881_7f023823",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 2
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19599cdd_b5dc2467",
@@ -82,6 +124,30 @@
       "writtenOn": "2025-10-03T15:49:30Z",
       "side": 1,
       "message": "Can these be member initializers (in the header), or constructor initializer list?",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 84
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f1b728_cc7be8a3",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19599cdd_b5dc2467",
       "range": {
         "startLine": 134,
         "startChar": 0,
@@ -109,6 +175,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6697b97c_1cd66168",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Good idea -- using safemath",
+      "parentUuid": "b66b600c_868a7344",
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29f953cf_a4b4b436",
@@ -122,6 +206,30 @@
       "writtenOn": "2025-10-03T15:49:30Z",
       "side": 1,
       "message": "We either return `nullptr` or `sk_ref_sp(this)`.  The caller already has a ref to this, so it looks like we could avoid some ref churn if we just return a bool here?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 18
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77ee0291_33651e75",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29f953cf_a4b4b436",
       "range": {
         "startLine": 156,
         "startChar": 0,
@@ -155,6 +263,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9539eefc_9b442857",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "abb36dc3_4a5b3a5c",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 5
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff64de5e_62f418df",
@@ -168,6 +300,30 @@
       "writtenOn": "2025-10-03T15:49:30Z",
       "side": 1,
       "message": "`final : public SkNVRefCnt\u003cSkPathData\u003e`?",
+      "range": {
+        "startLine": 62,
+        "startChar": 17,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79310519_1cb726b3",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "good thought.",
+      "parentUuid": "ff64de5e_62f418df",
       "range": {
         "startLine": 62,
         "startChar": 17,
@@ -201,6 +357,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f8d1ce3_4d004a66",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54ca24f9_5635e43e",
+      "range": {
+        "startLine": 106,
+        "startChar": 12,
+        "endLine": 106,
+        "endChar": 26
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "221d9bd3_d8fd4b44",
@@ -214,6 +394,30 @@
       "writtenOn": "2025-10-03T15:49:30Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 132,
+        "startChar": 22,
+        "endLine": 132,
+        "endChar": 32
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d1dd1e_a8ee1269",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "221d9bd3_d8fd4b44",
       "range": {
         "startLine": 132,
         "startChar": 22,
@@ -247,6 +451,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "172e24a3_7540d48b",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a42e876_70a43d74",
+      "range": {
+        "startLine": 137,
+        "startChar": 22,
+        "endLine": 137,
+        "endChar": 32
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43ff57d8_75ebf0b8",
@@ -260,6 +488,30 @@
       "writtenOn": "2025-10-03T15:49:30Z",
       "side": 1,
       "message": "Are we planning to support transforming in-place in the future?\n\nIt may help prefixing these with `make` to clarify that we\u0027re not mutating the original object (yes yes, const already does that, but only if one looks at the declaration :).\n\nActually it\u0027s prolly a good idea to tag them with `nodiscard` too.",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 45
+      },
+      "revId": "e9aff17f0b131d085d8baa4dde6879bfda3e43ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d574da7e_37a9f23d",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 47
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-12T20:43:28Z",
+      "side": 1,
+      "message": "I think we will never want to transform in place -- that sort of defeats the distinction between this and pathref, however, I agree that given lots of other Skia APIs, calling it makeFoo() will seem consistent.",
+      "parentUuid": "43ff57d8_75ebf0b8",
       "range": {
         "startLine": 152,
         "startChar": 0,
