@@ -187,6 +187,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62df2d18_3c99090b",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T18:14:44Z",
+      "side": 1,
+      "message": "I think that makes sense to me; `finish()` should return what was just collected, it wasn\u0027t meant to be a getter that returned the same UniformDataBlock multiple times. Places that are calling `finish()` and expecting something in particular should pass in the explicit offset or they are missing a reset or rewindTo call.\n\nIf this is all stemming from the multiple recordDraw calls that need to reuse the same paint data, it\u0027ll be less awkward when the Graphite generated sksl only declares a single binding. Then `PipelineDataGatherer` won\u0027t be returning a UniformDataBlock for just the paint data, `finish()` will be called only after renderstep uniforms are added and we\u0027ll always rewind to where endPaintData() was called in `drawGeometry()`. If `recordDraw` is called a second time inside `drawGeometry()` it should see the `PipelineDataGatherer` in exactly the same state as right after `PaintParams::toKey()` then.",
+      "parentUuid": "aff6d41c_83151fb5",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
