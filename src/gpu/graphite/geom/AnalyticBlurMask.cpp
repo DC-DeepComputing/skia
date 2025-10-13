@@ -76,15 +76,11 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
     // TODO: Implement SkMatrix functionality used below for Transform.
     SkMatrix localToDevice = localToDeviceTransform;
 
+    // Analytic rect blurs are rendered locally, all we have to do is map the device sigma
+    // correctly into local space (requires preservesRightAngles)
     if (srcRRect.isRect() && localToDevice.preservesRightAngles()) {
         return MakeRect(recorder, localToDevice, deviceSigma, srcRRect.rect());
     }
-
-    const auto devRRect = srcRRect.transform(localToDevice);
-    if (devRRect.has_value() && SkRRectPriv::IsCircle(*devRRect)) {
-        return MakeCircle(recorder, localToDevice, deviceSigma, srcRRect.rect(), devRRect->rect());
-    }
-
     // A local-space circle transformed by a rotation matrix will fail SkRRect::transform since it
     // only supports scale + translate matrices, but is still a valid circle that can be blurred.
     if (SkRRectPriv::IsCircle(srcRRect) && localToDevice.isSimilarity()) {
@@ -98,8 +94,9 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
         return MakeCircle(recorder, localToDevice, deviceSigma, srcRect, devRect);
     }
 
-    if (devRRect.has_value() && SkRRectPriv::IsSimpleCircular(*devRRect) &&
-        localToDevice.isScaleTranslate()) {
+    const auto devRRect = srcRRect.transform(localToDevice);
+    if (devRRect.has_value()) {
+        SkASSERT(localToDevice.preservesAxisAlignment()); // otherwise devRRect doesn't make sense
         return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
     }
 
@@ -137,16 +134,6 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRect(Recorder* recorder,
                    srcRect.top() * scale.height(),
                    srcRect.right() * scale.width(),
                    srcRect.bottom() * scale.height()};
-    }
-
-    if (!recorder->priv().caps()->shaderCaps()->fFloatIs32Bits) {
-        // We promote the math that gets us into the Gaussian space to full float when the rect
-        // coords are large. If we don't have full float then fail. We could probably clip the rect
-        // to an outset device bounds instead.
-        if (std::fabs(devRect.left()) > 16000.0f || std::fabs(devRect.top()) > 16000.0f ||
-            std::fabs(devRect.right()) > 16000.0f || std::fabs(devRect.bottom()) > 16000.0f) {
-            return std::nullopt;
-        }
     }
 
     const float sixSigma = 6.0f * devSigma;
@@ -378,7 +365,7 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRRect(Recorder* recorder,
         static constexpr int kKeySize = sizeof(DerivedParams) / sizeof(uint32_t);
         static_assert(SkIsAlign4(sizeof(DerivedParams)));
         // TODO: We should discretize the sigma to perceptibly meaningful changes to the table,
-        // as well as the underlying the round rect geometry.
+        // as well as the underlying round rect geometry.
         UniqueKey::Builder builder(&key, kRRectBlurDomain, kKeySize, "BlurredRRectNinePatch");
         memcpy(&builder[0], &params, sizeof(DerivedParams));
     }
@@ -410,9 +397,14 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRRect(Recorder* recorder,
         return std::nullopt;
     }
 
-    const float blurRadius = 3.0f * SkScalarCeilToScalar(devSigma - 1.0f / 6.0f);
-    const float edgeSize = 2.0f * blurRadius + SkRRectPriv::GetSimpleRadii(devRRect).fX + 0.5f;
-    const Rect shapeData = devRRect.rect().makeOutset(blurRadius, blurRadius);
+    // const float blurRadius = 3.0f * SkScalarCeilToScalar(devSigma - 1.0f / 6.0f);
+    // const float maxRadius = std::max(std::max(devRadiiUL.fX, devRadiiUL.fY),
+    //                         std::max(std::max(devRadiiUR.fX, devRadiiUR.fY),
+    //                         std::max(std::max(devRadiiLR.fX, devRadiiLR.fY),
+    //                                  std::max(devRadiiLL.fX, devRadiiLL.fY))));
+
+    // const float edgeSize = 2.0f * blurRadius + maxRadius + 0.5f;
+    // const Rect shapeData = devRRect.rect().makeOutset(blurRadius, blurRadius);
 
     // Determine how much to outset the draw bounds to ensure we hit pixels within 3*sigma.
     std::optional<Rect> drawBounds = outset_bounds(localToDevice, devSigma, srcRRect.rect());
@@ -420,12 +412,108 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeRRect(Recorder* recorder,
         return std::nullopt;
     }
 
-    constexpr float kUnusedBlurData = 0.0f;
+    // We are stretching a 9 patch across `drawBounds`, to reconstruct this, we need the distance
+    // to inset along the 4 edges that will sample the 1-to-1 portions of the blur mask.
+    const Rect insets = Rect::LTRB(skvx::float4(devLeft + 2*devBlurRadius, devTop + 2*devBlurRadius,
+            devRRect.width() - devRight - 0*devBlurRadius,
+                devRRect.height() - devBot - 0*devBlurRadius));
+
+    // Upload normalization scale factors for texture coordinates sampling the 9 patch.
+    SkV2 invTexDims = {1.f / params.fDimensions.width(), 1.f / params.fDimensions.height()};
+
+
+    /*
+
+    Do we really want to upload insets?
+
+    We are interpolating a value across drawBounds -> x,y
+
+    if x > drawBounds.R - inset.R
+        -> possible right corner
+        X coord is (x - (drawBounds.R - inset.R)) + inset.L + 1
+    else if x < drawBounds.L + inset.L
+        -> possible left corner
+        X coord is (x - drawBounds.L)
+    else
+        -> possible top/bot edge blur
+        X coord is inset.L + 1
+
+    if y > drawBounds.B - inset.B
+        -> possible bot corner
+    else if y < drawBounds.T + inset.T
+        -> possible top corner
+    else
+        -> possible left/right edge blur
+
+
+    // So if we have x,y go from (0,0) to (drawBounds.R-drawBounds.L, drawBounds.B-drawBounds.T)
+    // and B stores (inset.L, inset.T, drawBounds.R - drawBounds.L - inset.R, drawBounds.B - drawBounds.T - inset.B)
+    // and D stores (1/(inset.L+inset.R+1), 1/(inset.T+inset.B=1))
+    // then we can compute the 9-patch from the 6 uniform values:
+
+    if x > B.R
+        u = (x - B.R) + B.L + 1
+    else
+        u = min(x, B.L)
+
+    if x > B.R, then (x - B.R) > 0 so (x - B.R) + B.L + 1 > B.L > x
+    //    so min(x, max(B.L, (x - B.R + B.L + 1))) should be the coordinate
+
+    if y > B.B
+        v = (y - B.B) + B.T + 1
+    else
+        v = min(y, B.T)
+
+    sample(uv*D)
+
+
+    if possible right corner:
+        if possible top corner:
+            // actual top-right corner
+            X coord in 9-patch is (x - (drawBounds.R - inset.R)) + inset.L + 1
+            Y coord in 9-patch is (y - drawBounds.T)
+        else if possible bot corner:
+            // actual bot-right corner
+            X coord in 9-patch is (x - (drawBounds.R - inset.R)) + inset.L + 1
+            Y coord in 9-patch is (y - (drawBounds.B - inset.B)) + inset.T + 1
+        else // possible left/right edge blur
+            // actual right edge blur
+            X coord in 9-patch is (x - (drawBounds.R - inset.R)) + inset.L + 1
+            Y coord in 9-patch is inset.T + 1
+    else if possible left corner:
+        if possible top corner:
+            // actual top-left corner
+            X coord in 9-patch is (x - drawBounds.L)
+            Y coord in 9-patch is (y - drawBounds.T)
+        else if possible bot corner:
+            // actual bot-left corner
+            X coord in 9-patch is (x - drawBounds.L)
+            Y coord in 9-patch is (y - (drawBounds.B - inset.B)) + inset.T + 1
+        else // possible left/right edge blur
+            // actual left edge blur
+            X coord in 9-patch is (x - drawBounds.L)
+            Y coord in 9-patch is inset.T + 1
+    else // possible top/bot edge blur
+        if possible top corner:
+            // actual top edge blur
+            X coord in 9-patch is inset.L + 1
+            Y coord in 9-patch is (y - drawBounds.T)
+        else if possible bot corner:
+            // actual bot edge blur
+            X coord in 9-patch is inset.L + 1
+            Y coord in 9-patch is (y - (drawBounds.B - inset.B)) + inset.T + 1;
+        else
+            // no edge blurring, sample inside of 9 patch
+            X coord in 9-patch is inset.L + 1
+            Y coord in 9-patch is inset.T + 1
+    */
+
+    // constexpr float kUnusedBlurData = 0.0f;
     return AnalyticBlurMask(*drawBounds,
                             SkM44(),
                             ShapeType::kRRect,
-                            shapeData,
-                            {edgeSize, kUnusedBlurData},
+                            insets,
+                            invTexDims,
                             ninePatch);
 }
 

@@ -1790,9 +1790,10 @@ $pure half4 $circle_blur_coverage_fn(float2 coords, float4 circle, sampler2D blu
 }
 
 $pure half4 $rrect_blur_coverage_fn(float2 coords,
-                                    float4 proxyRect,
-                                    half edgeSize,
+                                    float4 insets,
+                                    half2 maskInvDim,
                                     sampler2D ninePatch) {
+    /*
     // Warp the fragment position to the appropriate part of the 9-patch blur texture by
     // snipping out the middle section of the proxy rect.
     float2 translatedFragPosFloat = coords - proxyRect.LT;
@@ -1829,6 +1830,11 @@ $pure half4 $rrect_blur_coverage_fn(float2 coords,
     half2 texCoord = translatedFragPosHalf / proxyDims;
 
     return sample(ninePatch, texCoord).rrrr;
+    */
+
+    // FIXME sort out texel center + 0.5?
+    float2 uv = min(coords, max(insets.LT, coords - insets.RB + insets.LT + 1));
+    return sample(ninePatch, uv*maskInvDim).rrrr;
 }
 
 $pure half4 blur_coverage_fn(float2 coords,
@@ -1844,7 +1850,7 @@ $pure half4 blur_coverage_fn(float2 coords,
             return $circle_blur_coverage_fn(coords, shapeData, s);
         }
         case $kShapeTypeRRect: {
-            return $rrect_blur_coverage_fn(coords, shapeData, blurData.x, s);
+            return $rrect_blur_coverage_fn(coords, shapeData, blurData, s);
         }
     }
     return half4(0);

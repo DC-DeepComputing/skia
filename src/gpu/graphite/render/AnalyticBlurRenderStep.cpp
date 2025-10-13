@@ -35,8 +35,9 @@ AnalyticBlurRenderStep::AnalyticBlurRenderStep()
                      Flags::kAppendVertices,
                      /*uniforms=*/
                      {{"localToDevice", SkSLType::kFloat4x4},
-                      {"deviceToScaledShape", SkSLType::kFloat3x3},
+                    //   {"deviceToScaledShape", SkSLType::kFloat3x3},
                       {"shapeData", SkSLType::kFloat4},
+                      {"blurTL", SkSLType::kHalf2},
                       {"blurData", SkSLType::kHalf2},
                       {"shapeType", SkSLType::kInt},
                       {"depth", SkSLType::kFloat}},
@@ -53,9 +54,12 @@ AnalyticBlurRenderStep::AnalyticBlurRenderStep()
 
 std::string AnalyticBlurRenderStep::vertexSkSL() const {
     return
-        "float4 devPosition = localToDevice * float4(position, depth, 1.0);\n"
-        "stepLocalCoords = position;\n"
-        "scaledShapeCoords = (deviceToScaledShape * devPosition.xy1).xy;\n";
+        "float4 d = localToDevice * position.xy01;"
+        "float4 devPosition = float4(d.xy, depth, d.w);"
+        "stepLocalCoords = position;"
+        // "scaledShapeCoords = (deviceToScaledShape * devPosition.xy1).xy;\n"
+        "scaledShapeCoords = d.xy - (localToDevice*blurTL.xy01).xy;"
+        ;
 }
 
 std::string AnalyticBlurRenderStep::texturesAndSamplersSkSL(
@@ -92,8 +96,9 @@ void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gatherer->write(params.transform().matrix());
 
     const AnalyticBlurMask& blur = params.geometry().analyticBlurMask();
-    gatherer->write(blur.deviceToScaledShape().asM33());
+    // gatherer->write(blur.deviceToScaledShape().asM33());
     gatherer->write(blur.shapeData().asSkRect());
+    gatherer->writeHalf(SkV2{blur.drawBounds().left(), blur.drawBounds().top()});
     gatherer->writeHalf(blur.blurData());
     gatherer->write(static_cast<int>(blur.shapeType()));
     gatherer->write(params.order().depthAsFloat());
