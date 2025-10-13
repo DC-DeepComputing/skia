@@ -16,6 +16,23 @@
       "message": "Probably should also have Viewer use this as an initial override of the default value derived from the initial canvas / display setting.",
       "revId": "88590050bd5352e26fbfae5cd096c0e7168fcc21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44742643_ccb3d152",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-13T19:30:41Z",
+      "side": 1,
+      "message": "This also allows more flexibility in the future. If dm provides a means to override the pixel geometry it sets as the default-default (currently always RGB_H) that can be used to override any default values the gm sets (which should only override the default-default).",
+      "revId": "88590050bd5352e26fbfae5cd096c0e7168fcc21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
