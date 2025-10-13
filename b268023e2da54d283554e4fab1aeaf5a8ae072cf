@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6825e7e9_18188ee1",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-13T20:31:00Z",
+      "side": 0,
+      "message": "The initial motivation for this change is to remove this `kFail` which causes drawing to fail on most GPU devices.",
+      "range": {
+        "startLine": 180,
+        "startChar": 27,
+        "endLine": 180,
+        "endChar": 44
+      },
+      "revId": "b268023e2da54d283554e4fab1aeaf5a8ae072cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
