@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "217784b2_04b5e639",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-13T23:27:09Z",
+      "side": 1,
+      "message": "@bungeman, can you PTAL?\n\n/cc @fmalita and @danieldilan for Rust PNG\n/cc @kjlubick for Skia build configuration\n\nCan we land this CL to unblock making progress with removing PDFium \u003d\u003e libpng dependency (as described in the CL description)?\n\nI understand that choosing `libpng`-vs-Rust-PNG can be done in multiple ways.  One alternative for using macro definitions is introducing some kind of dependency injection.  But macro-definitions work today and I note that the status quo today is that Chromium (even before this CL) already depends on:\n\n1. Legacy behavior of having a set of default-registered decoders (see the commented out `SK_DISABLE_LEGACY_INIT_DECODERS` in Chromium\u0027s [`skia/BUILD.gn`](https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d180-181;drc\u003dfdf57158bbb3afb17ab22231db492d4e4df556b3))\n\n2. Using macrodefinitions for controlling whether the default-registered decoders use `libpng`-vs-Rust-PNG - see [`SkCodec.cpp`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d89-93;drc\u003d4a50bc3386e511462806d01f8e6f8be1aa0c1cb7).\n\nWDYT?\n\n----------------------\n\n3-4 weeks ago I was also looking at how to remove `SkIcoCodec` \u003d\u003e `libpng` dependency and I appreciate the feedback I got in an email thread titled \"How Chromium can ask internal Skia code to use Rust PNG instead of libpng\".  My apologies for not following up on that, but let me mention this here for full transparency.  \n\nFor now I treat `SkIcoCodec` direction as an open question.  I hope to come back to it and have a GVC and a few slides to discuss possible approaches and benefits/downsides of which.  But I hope that we can still make progress here, on the CL under review (which seems like the last blocker for removing `libpng` dependency from PDFium).",
+      "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
