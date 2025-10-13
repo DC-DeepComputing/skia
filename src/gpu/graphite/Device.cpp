@@ -498,11 +498,7 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         }
     }
 
-    const bool useStorageBuffers = fRecorder->priv().caps()->storageBufferSupport();
-    const auto& bindingReq = fRecorder->priv().caps()->resourceBindingRequirements();
-    fDataGatherer = std::make_unique<PipelineDataGatherer>(
-            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout);
-    fKeyBuilder = std::make_unique<PaintParamsKeyBuilder>(fRecorder->priv().shaderCodeDictionary());
+    fKeyContextHelpers = fRecorder->priv().popOrCreateKeyContextHelpers();
 }
 
 Device::~Device() {
@@ -529,6 +525,7 @@ void Device::setImmutable() {
         // which might be called from another thread if it was linked to an Image used in multiple
         // recorders.
         this->flushPendingWork(/*drawContext=*/nullptr);
+        fRecorder->priv().pushKeyContextHelpers(std::move(fKeyContextHelpers));
         fRecorder->deregisterDevice(this);
         // Abandoning the recorder ensures that there are no further operations that can be recorded
         // and is relied on by Image::notifyInUse() to detect when it can unlink from a Device.
@@ -1372,7 +1369,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                           sk_sp<SkBlender> primitiveBlender,
                           bool skipColorXform) {
     ASSERT_SINGLE_OWNER
-    AutoResetForDraw autoReset(fDataGatherer.get());
+    AutoResetForDraw autoReset(&fKeyContextHelpers->first);
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -1539,16 +1536,16 @@ void Device::drawGeometry(const Transform& localToDevice,
     KeyContext keyContext{fRecorder,
                           fDC.get(),
                           fRecorder->priv().refFloatStorageManager().get(),
-                          fKeyBuilder.get(),
-                          fDataGatherer.get(),
+                          &fKeyContextHelpers->second,
+                          &fKeyContextHelpers->first,
                           localToDevice.matrix(),
                           fDC->colorInfo(),
                           geometry.isShape() || geometry.isEdgeAAQuad()
                                 ? KeyGenFlags::kDefault
                                 : KeyGenFlags::kDisableSamplingOptimization,
                           paint.getColor4f()};
-    SkDEBUGCODE(fDataGatherer->checkReset());
-    SkDEBUGCODE(fKeyBuilder->checkReset());
+    SkDEBUGCODE(fKeyContextHelpers->first.checkReset());
+    SkDEBUGCODE(fKeyContextHelpers->second.checkReset());
 
     auto keyResult = shading.toKey(keyContext);
     if (!keyResult) {
@@ -1695,7 +1692,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         SkASSERT(atlasMask.has_value());
         auto [mask, origin] = *atlasMask;
         fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
-                        order, paintID, dstUsage, fDataGatherer.get(), nullptr);
+                        order, paintID, dstUsage, &fKeyContextHelpers->first, nullptr);
     } else {
         if (styleType == SkStrokeRec::kStroke_Style ||
             styleType == SkStrokeRec::kHairline_Style ||
@@ -1707,7 +1704,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                    : renderer,
                             localToDevice, geometry, clip, order, paintID, dstUsage,
-                            fDataGatherer.get(), &stroke);
+                            &fKeyContextHelpers->first, &stroke);
         }
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
@@ -1726,13 +1723,13 @@ void Device::drawGeometry(const Transform& localToDevice,
                 orderWithoutCoverage.reverseDepthAsStencil();
                 fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                                 Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                paintID, dstUsage, fDataGatherer.get(), nullptr);
+                                paintID, dstUsage, &fKeyContextHelpers->first, nullptr);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
             }
             fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                            fDataGatherer.get(), nullptr);
+                            &fKeyContextHelpers->first, nullptr);
         }
     }
 
@@ -1750,7 +1747,7 @@ void Device::drawClipShape(const Transform& localToDevice,
                            const Shape& shape,
                            const Clip& clip,
                            DrawOrder order) {
-    AutoResetForDraw autoReset(fDataGatherer.get());
+    AutoResetForDraw autoReset(&fKeyContextHelpers->first);
 
     // A clip draw's state is almost fully defined by the ClipStack. The only thing we need
     // to account for is selecting a Renderer and tracking the stencil buffer usage.
@@ -1783,12 +1780,12 @@ void Device::drawClipShape(const Transform& localToDevice,
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = geometry.shape().asPath().makeTransform(localToDevice.matrix().asM33());
         fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
-                        UniquePaintParamsID::Invalid(), DstUsage::kNone, fDataGatherer.get(),
-                        /*stroke=*/nullptr);
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        &fKeyContextHelpers->first, /*stroke=*/nullptr);
     } else {
         fDC->recordDraw(renderer, localToDevice, geometry, clip, order,
-                        UniquePaintParamsID::Invalid(), DstUsage::kNone, fDataGatherer.get(),
-                        /*stroke=*/nullptr);
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        &fKeyContextHelpers->first, /*stroke=*/nullptr);
     }
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.

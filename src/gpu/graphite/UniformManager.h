@@ -229,6 +229,7 @@ public:
             // paint data exists, storage will still be non-empty, so we guard against alignTo(0).
             this->alignTo(fReqAlignment);
         }
+        fStorageHighWaterMark = std::max(fStorageHighWaterMark, fStorage.size_bytes());
         return SkSpan(fStorage).subspan(subspanStart);
     }
 
@@ -237,6 +238,14 @@ public:
     }
 
     size_t size() const { return fStorage.size(); }
+    void tryShrinkCapacity() {
+        uint32_t halfCapacity = fStorage.capacity() >> 1;
+        if (fStorageHighWaterMark < halfCapacity) {
+            fStorageHighWaterMark = 0;
+            fStorage.reset();
+            fStorage.reserve(halfCapacity);
+        }
+    }
 
     void resetWithNewLayout(Layout layout);
     void reset() { this->resetWithNewLayout(fLayout); }
@@ -402,6 +411,7 @@ private:
     inline void alignTo(int alignment);
 
     SkTDArray<char> fStorage;
+    size_t fStorageHighWaterMark = 0;
 
     Layout fLayout;
     int fStartingOffset = 0;

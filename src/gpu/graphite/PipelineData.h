@@ -406,6 +406,11 @@ public:
         fTextures.push_back({std::move(proxy), samplerDesc});
     }
 
+    void tryShrinkCapacity() {
+        SkDEBUGCODE(this->checkReset());
+        fUniformManager.tryShrinkCapacity();
+    }
+
     // Mimic the type-safe API available in UniformManager
     template <typename T> void write(const T& t) { fUniformManager.write(t); }
     template <typename T> void writeHalf(const T& t) { fUniformManager.writeHalf(t); }
