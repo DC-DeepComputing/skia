@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aaf2a9fc_f9a7b11e",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T17:58:37Z",
+      "side": 1,
+      "message": "What does having `finish` record its `fStartingOffset` interfere with in other users of UniformManager?",
+      "parentUuid": "b4741bd4_ed22a113",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
