@@ -1294,6 +1294,26 @@ DEF_BENCH( return new MAKEFROM(path_from_rect) )
 
 #undef MAKEFROM
 
+DEF_BENCH( return new PathTransformBench(BenchPathType::kData,    false); )
+DEF_BENCH( return new PathTransformBench(BenchPathType::kBuilder, false); )
+DEF_BENCH( return new PathTransformBench(BenchPathType::kPath,    false); )
+
+#define MAKEFROM(name)  PathMakeFromBench(#name, name);
+
+DEF_BENCH( return new MAKEFROM(pdata_from_rrect) )
+DEF_BENCH( return new MAKEFROM(builder_from_rrect) )
+DEF_BENCH( return new MAKEFROM(path_from_rrect) )
+
+DEF_BENCH( return new MAKEFROM(pdata_from_oval) )
+DEF_BENCH( return new MAKEFROM(builder_from_oval) )
+DEF_BENCH( return new MAKEFROM(path_from_oval) )
+
+DEF_BENCH( return new MAKEFROM(pdata_from_rect) )
+DEF_BENCH( return new MAKEFROM(builder_from_rect) )
+DEF_BENCH( return new MAKEFROM(path_from_rect) )
+
+#undef MAKEFROM
+
 #ifndef SK_HIDE_PATH_EDIT_METHODS
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAdd_AddType); )
 DEF_BENCH( return new SkBench_AddPathTest(SkBench_AddPathTest::kAddTrans_AddType); )
