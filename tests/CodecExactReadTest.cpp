@@ -42,6 +42,18 @@ public:
     bool isAtEnd() const override {
         return fStream->isAtEnd();
     }
+
+    SkSpan<const uint8_t> getBytes() override {
+        return fStream->getBytes();
+    }
+
+    bool move(long amount) override {
+        return fStream->move(amount);
+    }
+
+    bool canGetBytes() override {
+        return true;
+    }
 private:
     SkStream* fStream; // Unowned.
 };

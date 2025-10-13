@@ -21,11 +21,8 @@ template <typename T> class Slice;
 namespace rust_png {
 
 // Implementing the abstract C++ class below gives a rough equivalent of
-// `dyn std::io::Read + std::io::Seek` from Rust.
-//
-// TODO(https://crbug.com/399894620): Implement `BufRead` trait once/if this is
-// supported by the `SkStream` API.
-class ReadAndSeekTraits {
+// `dyn std::io::BufRead + std::io::Seek` from Rust.
+class FFIStream {
 public:
     // The `virtual` method below is a rough equivalent of the
     // `std::io::Read::read` method in Rust. See
@@ -56,19 +53,33 @@ public:
     virtual bool seek_from_end(int64_t requested_offset, uint64_t& final_pos) = 0;
     virtual bool seek_relative(int64_t requested_offset, uint64_t& final_pos) = 0;
 
+    // The 2 `virtual` methods below are roughly equivalent to the
+    // `std::io::BufRead` method in Rust. See
+    // https://doc.rust-lang.org/std/io/trait.BufRead
+    // for guidance on the desired implementation and behavior of this method.
+    //
+    //
+    virtual rust::Slice<const uint8_t> fill_buf() = 0;
+    virtual void consume(size_t amount) = 0;
+
+    // Indicates if we should use the implemented BufRead or wrap in a BufReader
+    // object.
+    virtual bool supports_zero_copy() const = 0;
+
+
     // `drop` is not part of the `std::io::Read` nor `std::io::Seek` trait, but
     // we expose the destructor through public API to make it possible to pass
-    // `std::unique_ptr<ReadAndSeekTraits>` over the FFI boundary.
-    virtual ~ReadAndSeekTraits() = default;
+    // `std::unique_ptr<FFIStream>` over the FFI boundary.
+    virtual ~FFIStream() = default;
 
     // This type is non-copyable and non-movable.
-    ReadAndSeekTraits(const ReadAndSeekTraits&) = delete;
-    ReadAndSeekTraits(ReadAndSeekTraits&&) = delete;
-    ReadAndSeekTraits& operator=(const ReadAndSeekTraits&) = delete;
-    ReadAndSeekTraits& operator=(ReadAndSeekTraits&&) = delete;
+    FFIStream(const FFIStream&) = delete;
+    FFIStream(FFIStream&&) = delete;
+    FFIStream& operator=(const FFIStream&) = delete;
+    FFIStream& operator=(FFIStream&&) = delete;
 
 protected:
-    ReadAndSeekTraits() = default;
+    FFIStream() = default;
 };
 
 // Implementing the abstract C++ class below gives a rough equivalent of
