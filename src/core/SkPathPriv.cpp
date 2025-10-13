@@ -5,8 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkPathTypes.h"
 #include "include/private/SkPathRef.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkPoint_impl.h"
 #include "src/core/SkPathPriv.h"
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <iterator>
+#include <optional>
 
 /*
  Determines if path is a rect by keeping track of changes in direction
@@ -58,11 +66,68 @@ static int rect_make_dir(SkScalar dx, SkScalar dy) {
     return ((0 != dx) << 0) | ((dx > 0 || dy > 0) << 1);
 }
 
+// Quick check for a "trivial" rect, i.e. a rect created via SkPath::Rect(),
+// SkPathBuilder::addRect(), etc.
+static std::optional<SkPathPriv::RectContour> trivial_rect(SkSpan<const SkPoint> pts,
+                                                           SkSpan<const SkPathVerb> vbs) {
+    static constexpr std::array<SkPathVerb, 5> gTrivialVerbs = {
+        SkPathVerb::kMove,
+        SkPathVerb::kLine,
+        SkPathVerb::kLine,
+        SkPathVerb::kLine,
+        SkPathVerb::kClose,
+    };
+    if (pts.size() != 4 ||
+        vbs.size() != std::size(gTrivialVerbs) ||
+        !std::equal(vbs.begin(), vbs.end(), std::begin(gTrivialVerbs))) {
+        return std::nullopt;
+    }
+
+    // True if the vectors are axis-aligned and perpendicular.
+    const auto right_angle_corner = [](const SkVector& a, const SkVector& b) {
+        return a.fX == 0 ^ b.fX == 0 &&
+               a.fY == 0 ^ b.fY == 0;
+    };
+
+    const SkVector v0 = pts[1] - pts[0],
+                   v1 = pts[2] - pts[1],
+                   v2 = pts[3] - pts[2],
+                   v3 = pts[0] - pts[3];
+    if (!right_angle_corner(v0, v1) ||
+        !right_angle_corner(v1, v2) ||
+        !right_angle_corner(v2, v3)) {
+        return std::nullopt;
+    }
+
+    // Right angles + right verbs => trivial rect
+    const SkRect rect = SkRect::MakeLTRB(pts[0].fX, pts[0].fY, pts[2].fX, pts[2].fY).makeSorted();
+    const SkPathDirection dir = SkPoint::CrossProduct(v0, v1) > 0
+        ? SkPathDirection::kCW
+        : SkPathDirection::kCCW;
+
+    return {{
+        rect,
+        true,
+        dir,
+        pts.size(),
+        vbs.size(),
+    }};
+}
+
 std::optional<SkPathPriv::RectContour> SkPathPriv::IsRectContour(SkSpan<const SkPoint> ptSpan,
                                                                  SkSpan<const SkPathVerb> vbSpan,
+                                                                 uint32_t segmentMask,
                                                                  bool allowPartial) {
-    if (ptSpan.size() < 4) {
+    if (segmentMask != kLine_SkPathSegmentMask ||
+        ptSpan.size() < 4 ||
+        vbSpan.size() < 4) {
         return {};
+    }
+
+    if (!allowPartial) {
+        if (auto rc = trivial_rect(ptSpan, vbSpan)) {
+            return rc;
+        }
     }
 
     size_t currVerb = 0;
@@ -212,7 +277,7 @@ bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPath
     SkSpan<const SkPoint> pts = raw.points();
     SkSpan<const SkPathVerb> vbs = raw.verbs();
 
-    auto rc = IsRectContour(pts, vbs, true);
+    auto rc = IsRectContour(pts, vbs, raw.fSegmentMask, true);
     if (!rc) {
         return false;
     }
@@ -222,7 +287,7 @@ bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPath
     pts = pts.subspan(rc->fPointsConsumed);
     vbs = vbs.subspan(rc->fVerbsConsumed);
 
-    rc = IsRectContour(pts, vbs, false);
+    rc = IsRectContour(pts, vbs, raw.fSegmentMask, false);
     if (rc) {
         testDirs[1] = rc->fDirection;
         testRects[1] = rc->fRect;
