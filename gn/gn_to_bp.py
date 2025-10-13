@@ -108,6 +108,9 @@ cc_defaults {
           "src/gpu/vk/vulkanmemoryallocator",
           "vma_android/include",
         ],
+        sanitize: {
+          blocklist: "libskia_blocklist.txt",
+        },
       },
     },
 }
