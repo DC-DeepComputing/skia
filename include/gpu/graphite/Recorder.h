@@ -55,6 +55,8 @@ class Device;
 class DrawBufferManager;
 class FloatStorageManager;
 class ImageProvider;
+class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 class ProxyReadCountMap;
 class RecorderPriv;
 class ResourceProvider;
@@ -67,12 +69,16 @@ class UploadList;
 
 struct RecorderOptionsPriv;
 
+using KeyContextHelpers = std::pair<PipelineDataGatherer, PaintParamsKeyBuilder>;
+
 struct SK_API RecorderOptions final {
     RecorderOptions();
     RecorderOptions(const RecorderOptions&);
     ~RecorderOptions();
 
     sk_sp<ImageProvider> fImageProvider;
+
+    static constexpr int kMaxKeyContextHelpers = 2;
 
     static constexpr size_t kDefaultRecorderBudget = 256 * (1 << 20);
     // What is the budget for GPU resources allocated and held by this Recorder.
@@ -251,6 +257,9 @@ private:
     // instead of creating its own.
     Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*);
 
+    std::unique_ptr<KeyContextHelpers>popOrCreateKeyContextHelpers();
+    void pushKeyContextHelpers(std::unique_ptr<KeyContextHelpers>);
+
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
     // We keep track of all Devices that are connected to a Recorder. This allows the client to
@@ -293,6 +302,9 @@ private:
     sk_sp<FloatStorageManager> fFloatStorageManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
 
+    std::array<std::unique_ptr<KeyContextHelpers>,RecorderOptions::kMaxKeyContextHelpers>
+            fKeyContextHelpers;
+
     // Iterating over tracked devices in flushTrackedDevices() needs to be re-entrant and support
     // additions to fTrackedDevices if registerDevice() is triggered by a temporary device during
     // flushing. Removals are handled by setting elements to null; final clean up is handled at the
@@ -320,6 +332,9 @@ private:
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+
+    // Used for the internals of the pseudo stack
+    int fHelperSlot;
 
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
