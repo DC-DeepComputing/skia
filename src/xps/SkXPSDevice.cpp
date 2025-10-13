@@ -33,7 +33,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkVertices.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTo.h"
@@ -59,6 +58,12 @@
 #include "src/utils/win/SkIStream.h"
 #include "src/utils/win/SkTScopedComPtr.h"
 #include "src/xps/SkXPSDevice.h"
+
+#ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 using namespace skia_private;
 
@@ -631,7 +636,12 @@ HRESULT SkXPSDevice::createXpsImageBrush(
         const SkAlpha alpha,
         IXpsOMTileBrush** xpsBrush) {
     SkDynamicMemoryWStream write;
-    if (!SkPngEncoder::Encode(&write, bitmap, {})) {
+#ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
+    bool success = SkPngRustEncoder::Encode(&write, bitmap, {});
+#else
+    bool success = SkPngEncoder::Encode(&write, bitmap, {});
+#endif
+    if (!success) {
         HRM(E_FAIL, "Unable to encode bitmap as png.");
     }
     SkTScopedComPtr<IStream> read;
