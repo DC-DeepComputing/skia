@@ -52,6 +52,16 @@ public:
         return this->read(nullptr, size);
     }
 
+    /** Exposes pointer to underlying bytes of the the stream.
+     * @return a span of the available bytes.
+     */
+    virtual SkSpan<const uint8_t> getBytes() { return {}; }
+
+    /**
+     *  Returns whether this stream can call getBytes().
+     */
+    virtual bool canGetBytes() { return false; }
+
     /**
      *  Attempt to peek at size bytes.
      *  If this stream supports peeking, copy min(size, peekable bytes) into
@@ -406,6 +416,8 @@ public:
     bool isAtEnd() const override;
 
     size_t peek(void* buffer, size_t size) const override;
+    SkSpan<const uint8_t> getBytes() override;
+    bool canGetBytes() override { return true; }
 
     bool rewind() override;
 
