@@ -12,6 +12,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
 #include "tools/Registry.h"
@@ -176,6 +177,7 @@ namespace skiagm {
         bool getControls(SkMetaData* controls) { return this->onGetControls(controls); }
         void setControls(const SkMetaData& controls) { this->onSetControls(controls); }
 
+        virtual SkSurfaceProps modifySurfaceProps(const SkSurfaceProps& props) const {return props;}
         virtual void modifyGrContextOptions(GrContextOptions*) {}
         virtual void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions*) const {}
 
