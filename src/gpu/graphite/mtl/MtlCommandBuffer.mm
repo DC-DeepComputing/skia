@@ -634,7 +634,7 @@ void MtlCommandBuffer::setViewport(float x, float y, float width, float height,
 void MtlCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
     UniformManager intrinsicValues{Layout::kMetal};
     CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstReadBounds, &intrinsicValues);
-    SkSpan<const char> bytes = intrinsicValues.finish();
+    SkSpan<const char> bytes = intrinsicValues.finish(/*subspanStart=*/0);
     fActiveRenderCommandEncoder->setVertexBytes(
             bytes.data(), bytes.size_bytes(), MtlGraphicsPipeline::kIntrinsicUniformBufferIndex);
     fActiveRenderCommandEncoder->setFragmentBytes(

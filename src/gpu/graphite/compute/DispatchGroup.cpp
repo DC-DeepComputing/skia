@@ -365,7 +365,7 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             UniformManager uboMgr(resourceReqs.fUniformBufferLayout);
             step->prepareUniformBuffer(resourceIdx, resource, &uboMgr);
 
-            auto dataBlock = uboMgr.finish();
+            auto dataBlock = uboMgr.finish(/*subspanStart=*/0);
             SkASSERT(!dataBlock.empty());
 
             auto [writer, bufInfo] = bufferMgr->getUniformWriter(/*count=*/1, dataBlock.size());
