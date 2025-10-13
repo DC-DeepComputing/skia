@@ -197,7 +197,7 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                 break;
             default:
                 SkDEBUGFAIL("Unknown id used by a font descriptor");
-                return false;
+//                return false;
         }
     }
 
@@ -216,7 +216,7 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
         sk_sp<SkData> data(SkData::MakeUninitialized(length));
         if (stream->read(data->writable_data(), length) != length) {
             SkDEBUGFAIL("Could not read font data");
-            return false;
+//            return false;
         }
         result->fStream = SkMemoryStream::Make(std::move(data));
     }

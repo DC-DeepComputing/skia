@@ -178,7 +178,7 @@ static std::unique_ptr<Module> compile_and_shrink(SkSL::Compiler* compiler,
                                               default:
                                                   SkDEBUGFAILF("Unsupported element: %s\n",
                                                                element->description().c_str());
-                                                  return false;
+//                                                  return false;
                                           }
                                       }),
                        m->fElements.end());

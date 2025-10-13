@@ -28,7 +28,7 @@ Pool::Pool() = default;
 Pool::~Pool() {
     if (get_thread_local_memory_pool() == fMemPool.get()) {
         SkDEBUGFAIL("SkSL pool is being destroyed while it is still attached to the thread");
-        set_thread_local_memory_pool(nullptr);
+//        set_thread_local_memory_pool(nullptr);
     }
 
     SkVLOG("DELETE Pool:0x%016llX\n", (uint64_t)fMemPool.get());

@@ -443,7 +443,7 @@ bool GrAAConvexTessellator::extractFromPath(const SkMatrix& m, const SkPath& pat
                 break;
             default:
                 SkDEBUGFAIL("Unknown edge type");
-                break;
+//                break;
         }
     }
 

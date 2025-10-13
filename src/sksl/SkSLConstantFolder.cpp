@@ -273,7 +273,7 @@ static std::unique_ptr<Expression> splat_scalar(const Context& context,
         return ConstructorCompound::Make(context, scalar.fPosition, type, std::move(splatMatrix));
     }
     SkDEBUGFAILF("unsupported type %s", type.description().c_str());
-    return nullptr;
+//    return nullptr;
 }
 
 static std::unique_ptr<Expression> cast_expression(const Context& context,
@@ -310,7 +310,7 @@ static std::unique_ptr<Expression> zero_expression(const Context& context,
         return ConstructorDiagonalMatrix::Make(context, pos, type, std::move(zero));
     }
     SkDEBUGFAILF("unsupported type %s", type.description().c_str());
-    return nullptr;
+//    return nullptr;
 }
 
 static std::unique_ptr<Expression> negate_expression(const Context& context,
