@@ -89,10 +89,10 @@ uint32_t GrPathUtils::generateQuadraticPoints(const SkPoint& p0,
     }
 
     SkPoint q[] = {
-        { SkScalarAve(p0.fX, p1.fX), SkScalarAve(p0.fY, p1.fY) },
-        { SkScalarAve(p1.fX, p2.fX), SkScalarAve(p1.fY, p2.fY) },
+        { SkScalarSafeAve(p0.fX, p1.fX), SkScalarSafeAve(p0.fY, p1.fY) },
+        { SkScalarSafeAve(p1.fX, p2.fX), SkScalarSafeAve(p1.fY, p2.fY) },
     };
-    SkPoint r = { SkScalarAve(q[0].fX, q[1].fX), SkScalarAve(q[0].fY, q[1].fY) };
+    SkPoint r = { SkScalarSafeAve(q[0].fX, q[1].fX), SkScalarSafeAve(q[0].fY, q[1].fY) };
 
     pointsLeft >>= 1;
     uint32_t a = generateQuadraticPoints(p0, q[0], r, tolSqd, points, pointsLeft);
@@ -120,15 +120,15 @@ uint32_t GrPathUtils::generateCubicPoints(const SkPoint& p0,
         return 1;
     }
     SkPoint q[] = {
-        { SkScalarAve(p0.fX, p1.fX), SkScalarAve(p0.fY, p1.fY) },
-        { SkScalarAve(p1.fX, p2.fX), SkScalarAve(p1.fY, p2.fY) },
-        { SkScalarAve(p2.fX, p3.fX), SkScalarAve(p2.fY, p3.fY) }
+        { SkScalarSafeAve(p0.fX, p1.fX), SkScalarSafeAve(p0.fY, p1.fY) },
+        { SkScalarSafeAve(p1.fX, p2.fX), SkScalarSafeAve(p1.fY, p2.fY) },
+        { SkScalarSafeAve(p2.fX, p3.fX), SkScalarSafeAve(p2.fY, p3.fY) }
     };
     SkPoint r[] = {
-        { SkScalarAve(q[0].fX, q[1].fX), SkScalarAve(q[0].fY, q[1].fY) },
-        { SkScalarAve(q[1].fX, q[2].fX), SkScalarAve(q[1].fY, q[2].fY) }
+        { SkScalarSafeAve(q[0].fX, q[1].fX), SkScalarSafeAve(q[0].fY, q[1].fY) },
+        { SkScalarSafeAve(q[1].fX, q[2].fX), SkScalarSafeAve(q[1].fY, q[2].fY) }
     };
-    SkPoint s = { SkScalarAve(r[0].fX, r[1].fX), SkScalarAve(r[0].fY, r[1].fY) };
+    SkPoint s = { SkScalarSafeAve(r[0].fX, r[1].fX), SkScalarSafeAve(r[0].fY, r[1].fY) };
     pointsLeft >>= 1;
     uint32_t a = generateCubicPoints(p0, q[0], r[0], s, tolSqd, points, pointsLeft);
     uint32_t b = generateCubicPoints(s, r[1], q[2], p3, tolSqd, points, pointsLeft);
