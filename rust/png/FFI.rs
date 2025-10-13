@@ -8,7 +8,7 @@
 //! macro below and exposed through the auto-generated `FFI.rs.h` header.
 
 use std::borrow::Cow;
-use std::io::{BufReader, ErrorKind, Read, Seek, SeekFrom, Write};
+use std::io::{BufRead, BufReader, ErrorKind, Read, Seek, SeekFrom, Write};
 use std::pin::Pin;
 
 // No `use png::...` nor `use ffi::...` because we want the code to explicitly
@@ -119,23 +119,26 @@ mod ffi {
     unsafe extern "C++" {
         include!("rust/png/FFI.h");
 
-        type ReadAndSeekTraits;
-        fn read(self: Pin<&mut ReadAndSeekTraits>, buffer: &mut [u8]) -> usize;
+        type FFIStream;
+        fn read(self: Pin<&mut FFIStream>, buffer: &mut [u8]) -> usize;
         fn seek_from_start(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut FFIStream>,
             requested_pos: u64,
             final_pos: &mut u64,
         ) -> bool;
         fn seek_from_end(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut FFIStream>,
             requested_offset: i64,
             final_pos: &mut u64,
         ) -> bool;
         fn seek_relative(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut FFIStream>,
             requested_offset: i64,
             final_pos: &mut u64,
         ) -> bool;
+        fn fill_buf<'a>(self: Pin<&'a mut FFIStream>) -> &'a [u8];
+        fn consume(self: Pin<&mut FFIStream>, amount: usize);
+        fn supports_zero_copy(self: &FFIStream) -> bool;
 
         type WriteTrait;
         fn write(self: Pin<&mut WriteTrait>, buffer: &[u8]) -> bool;
@@ -148,7 +151,7 @@ mod ffi {
     // section. The doc comments of these items can instead be found in the
     // actual Rust code, outside of the `#[cxx::bridge]` manifest.
     extern "Rust" {
-        fn new_reader(input: UniquePtr<ReadAndSeekTraits>) -> Box<ResultOfReader>;
+        fn new_reader(input: UniquePtr<FFIStream>) -> Box<ResultOfReader>;
 
         type ResultOfReader;
         fn err(self: &ResultOfReader) -> DecodingResult;
@@ -220,6 +223,7 @@ mod ffi {
         unsafe fn read_row(
             self: &mut Reader,
             output_buffer: &mut [u8]) -> DecodingResult;
+        unsafe fn finish_decoding(self: &mut Reader) -> DecodingResult;
 
         fn new_writer(
             output: UniquePtr<WriteTrait>,
@@ -344,28 +348,6 @@ impl From<Option<&png::EncodingError>> for ffi::EncodingResult {
     }
 }
 
-impl<'a> Read for Pin<&'a mut ffi::ReadAndSeekTraits> {
-    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
-        Ok(self.as_mut().read(buf))
-    }
-}
-
-impl<'a> Seek for Pin<&'a mut ffi::ReadAndSeekTraits> {
-    fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
-        let mut new_pos = 0;
-        let success = match pos {
-            SeekFrom::Start(pos) => self.as_mut().seek_from_start(pos, &mut new_pos),
-            SeekFrom::End(offset) => self.as_mut().seek_from_end(offset, &mut new_pos),
-            SeekFrom::Current(offset) => self.as_mut().seek_relative(offset, &mut new_pos),
-        };
-        if success {
-            Ok(new_pos)
-        } else {
-            Err(ErrorKind::Other.into())
-        }
-    }
-}
-
 impl<'a> Write for Pin<&'a mut ffi::WriteTrait> {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         if self.as_mut().write(buf) {
@@ -441,25 +423,81 @@ fn compute_transformations(info: &png::Info) -> png::Transformations {
     result
 }
 
+// A helper trait to combine BufRead and Seek capabilities.
+//
+// Rust's trait objects (`dyn Trait`) do not allow combining multiple "major"
+// traits directly (e.g., `dyn BufRead + Seek`). This "super-trait" serves as a
+// workaround by creating a single trait that guarantees both capabilities,
+// allowing it to be used in a trait object.
+trait BufReadAndSeek: BufRead + Seek {}
+
+// This struct holds the C++ stream pointer and implements standard Rust traits
+// like `Read`, `Seek`, and `BufRead` by forwarding calls to the C++ virtual
+// methods.
+struct SkStreamAdapter(cxx::UniquePtr<ffi::FFIStream>);
+
+impl Read for SkStreamAdapter {
+    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+        Ok(self.0.pin_mut().read(buf))
+    }
+}
+
+impl Seek for SkStreamAdapter {
+    fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
+        let mut new_pos = 0;
+        let success = match pos {
+            SeekFrom::Start(pos) => self.0.pin_mut().seek_from_start(pos, &mut new_pos),
+            SeekFrom::End(offset) => self.0.pin_mut().seek_from_end(offset, &mut new_pos),
+            SeekFrom::Current(offset) => self.0.pin_mut().seek_relative(offset, &mut new_pos),
+        };
+        if success {
+            Ok(new_pos)
+        } else {
+            Err(ErrorKind::Other.into())
+        }
+    }
+}
+
+impl BufRead for SkStreamAdapter {
+    fn fill_buf(&mut self) -> std::io::Result<&[u8]> {
+        Ok(self.0.pin_mut().fill_buf())
+    }
+
+    fn consume(&mut self, amt: usize) {
+        self.0.pin_mut().consume(amt);
+    }
+}
+
+impl BufReadAndSeek for SkStreamAdapter {}
+
+impl<R: Read + Seek> BufReadAndSeek for BufReader<R> {}
+
 /// FFI-friendly wrapper around `png::Reader<R>` (`cxx` can't handle arbitrary
 /// generics, so we manually monomorphize here, but still expose a minimal,
 /// somewhat tweaked API of the original type).
 struct Reader {
-    reader: png::Reader<BufReader<cxx::UniquePtr<ffi::ReadAndSeekTraits>>>,
+    reader: png::Reader<Box<dyn BufReadAndSeek>>,
     last_interlace_info: Option<png::InterlaceInfo>,
 }
 
 impl Reader {
-    fn new(input: cxx::UniquePtr<ffi::ReadAndSeekTraits>) -> Result<Self, png::DecodingError> {
+    fn new(input: cxx::UniquePtr<ffi::FFIStream>) -> Result<Self, png::DecodingError> {
         // The magic value of `BUF_CAPACITY` is based on `CHUNK_BUFFER_SIZE` which was
         // used in `BufReader::with_capacity` calls by `png` crate up to version
         // 0.17.16 - see: https://github.com/image-rs/image-png/pull/558/files#diff-c28833b65510e37441203b4256b74068f191d29ea34b6e753442e644d3a316b8L28
         // and
         // https://github.com/image-rs/image-png/blob/eb9b5d7f371b88f15aaca6a8d21c58b86c400d76/src/decoder/stream.rs#L21
-        const BUF_CAPACITY: usize = 32 * 1024;
-        // TODO(https://crbug.com/399894620): Consider instead implementing `BufRead` on top of
-        // `SkStream` API when/if possible in the future.
-        let input = BufReader::with_capacity(BUF_CAPACITY, input);
+
+        // Dynamically choose reader implementation at runtime if we have direct access to bytes.
+        let stream_wrapper: Box<dyn BufReadAndSeek> = if input.supports_zero_copy() {
+            Box::new(SkStreamAdapter(input))
+        } else {
+            const BUF_CAPACITY: usize = 32 * 1024;
+            Box::new(BufReader::with_capacity(
+                BUF_CAPACITY,
+                SkStreamAdapter(input),
+            ))
+        };
 
         let mut decoder = {
             // By default, `DecodeOptions` cap the memory usage at using 64 Mib.
@@ -468,7 +506,7 @@ impl Reader {
                 options.set_ignore_checksums(true);
             }
             options.set_ignore_text_chunk(true);
-            png::Decoder::new_with_options(input, options)
+            png::Decoder::new_with_options(stream_wrapper, options)
         };
 
         let info = decoder.read_header_info()?;
@@ -784,6 +822,13 @@ impl Reader {
             Err(e) => ffi::DecodingResult::from(Some(&e)),
         }
     }
+
+    fn finish_decoding(&mut self) -> ffi::DecodingResult {
+        match self.reader.finish() {
+            Ok(()) => ffi::DecodingResult::Success,
+            Err(e) => ffi::DecodingResult::from(Some(&e)),
+        }
+    }
 }
 
 fn png_u32_into_f32(v: png::ScaledFloat) -> f32 {
@@ -795,7 +840,7 @@ fn png_u32_into_f32(v: png::ScaledFloat) -> f32 {
 }
 
 /// This provides a public C++ API for decoding a PNG image.
-fn new_reader(input: cxx::UniquePtr<ffi::ReadAndSeekTraits>) -> Box<ResultOfReader> {
+fn new_reader(input: cxx::UniquePtr<ffi::FFIStream>) -> Box<ResultOfReader> {
     Box::new(ResultOfReader(Reader::new(input)))
 }
 
