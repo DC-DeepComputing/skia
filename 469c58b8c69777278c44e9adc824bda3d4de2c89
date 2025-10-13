@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cf6758e_4676da2d",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T17:38:47Z",
+      "side": 1,
+      "message": "Or do you mean UniformManager\u0027s fStartingOffset isn\u0027t being set until `rewindTo`?\n\nIn that case, that detail shouldn\u0027t leak up to users of PipelineDataGatherer. `endPaintData()` should mark the UniformManager\u0027s starting offset some how as well (I think it\u0027d be fine to happen in finish as well).",
+      "parentUuid": "6d833dfd_ee3479e9",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
