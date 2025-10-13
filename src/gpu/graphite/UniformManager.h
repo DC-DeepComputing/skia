@@ -186,9 +186,9 @@ public:
 
     Layout layout() const { return fLayout; }
 
-    // NOTE: The returned size represents the last consumed byte (if the recorded
+    // NOTE: The returned size represents the last consumed byte, if the recorded
     // uniforms are embedded within a struct, this will need to be rounded up to a multiple of
-    // requiredAlignment()).
+    // requiredAlignment().
     int size() const { return fOffset; }
     int requiredAlignment() const { return fReqAlignment; }
 
@@ -221,19 +221,26 @@ class UniformManager {
 public:
     UniformManager(Layout layout) { this->resetWithNewLayout(layout); }
 
-    SkSpan<const char> finish() {
+    SkSpan<const char> finish(size_t subspanStart) {
         if (fStorage.empty()) {
             return SkSpan<const char>();
-        } else {
+        } else if (fReqAlignment) {
+            // A render step may have no uniforms, leaving fReqAlignment as 0 after a rewind. If
+            // paint data exists, storage will still be non-empty, so we guard against alignTo(0).
             this->alignTo(fReqAlignment);
-            return SkSpan(fStorage);
         }
+        return SkSpan(fStorage).subspan(subspanStart);
+    }
+
+    SkSpan<const char> finish() {
+        return this->finish(fStartingOffset);
     }
 
     size_t size() const { return fStorage.size(); }
 
     void resetWithNewLayout(Layout layout);
     void reset() { this->resetWithNewLayout(fLayout); }
+    void rewindTo(size_t size);
 
     // scalars
     void write(float f)     { this->write<SkSLType::kFloat>(&f); }
@@ -397,6 +404,7 @@ private:
     SkTDArray<char> fStorage;
 
     Layout fLayout;
+    int fStartingOffset = 0;
     int fReqAlignment = 0;
     int fStructBaseAlignment = 0;
     // The paint color is treated special and we only add its uniform once.
@@ -532,7 +540,9 @@ void UniformManager::writeArray(const void* src, int count, SkSLType type) {
 
 void UniformManager::alignTo(int alignment) {
     SkASSERT(alignment >= 1 && SkIsPow2(alignment));
-    if ((fStorage.size() & (alignment - 1)) != 0) {
+    SkASSERT(fStorage.size() >= fStartingOffset);
+    const int relativeOffset = fStorage.size() - fStartingOffset;
+    if ((relativeOffset & (alignment - 1)) != 0) {
         this->append(alignment, /*size=*/0);
     }
 }
@@ -543,12 +553,12 @@ char* UniformManager::append(int alignment, int size) {
     // less than or equal to that base alignment.
     SkASSERT(fStructBaseAlignment <= 0 || alignment <= fStructBaseAlignment);
 
-    const int offset = fStorage.size();
-    const int padding = SkAlignTo(offset, alignment) - offset;
+    const int relativeOffset = fStorage.size() - fStartingOffset;
+    const int padding = SkAlignTo(relativeOffset, alignment) - relativeOffset;
 
     // These are just asserts not aborts because SkSL compilation imposes limits on the size of
     // runtime effect arrays, and internal shaders should not be using excessive lengths.
-    SkASSERT(std::numeric_limits<int>::max() - alignment >= offset);
+    SkASSERT(std::numeric_limits<int>::max() - alignment >= relativeOffset);
     SkASSERT(std::numeric_limits<int>::max() - size >= padding);
 
     char* dst = fStorage.append(size + padding);
