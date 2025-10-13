@@ -8,7 +8,7 @@
 #include "tools/graphite/GraphiteMemoryPipelineStorage.h"
 
 // Define this to log data loads and stores using SkDebugf.
-// #define LOG_MEMORY_CACHE
+#define LOG_MEMORY_CACHE
 
 #if defined(LOG_MEMORY_CACHE)
 #include "include/core/SkString.h"
