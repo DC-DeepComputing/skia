@@ -406,6 +406,22 @@ public:
         return true;
     }
 
+    rust::Slice<const uint8_t> fill_buf() override {
+        SkASSERT_RELEASE(fStream->canGetBytes());
+        SkSpan<const uint8_t> buffer = fStream->getBytes();
+        return rust::Slice<const uint8_t>(buffer);
+    }
+
+    void consume(size_t amount) override {
+        SkASSERT_RELEASE(fStream->canGetBytes());
+        fStream->move((long)amount);
+
+    }
+
+    bool supports_buf_read() const override {
+        return fStream->canGetBytes();
+    }
+
 private:
     SkStream* fStream = nullptr;  // Non-owning pointer.
 };
@@ -929,6 +945,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
 
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
+            if (this->options().fFrameIndex == this->getRawFrameCount() - 1) {
+                // Finish reading any non-image data.
+                return ToSkCodecResult(fReader->finish_decoding());
+            }
             return kSuccess;
         }
 
@@ -1032,6 +1052,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
             }
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
+            if (this->options().fFrameIndex == this->getRawFrameCount() - 1) {
+                // Finish reading any non-image data.
+                return ToSkCodecResult(fReader->finish_decoding());
+            }
             return kSuccess;
         }
 

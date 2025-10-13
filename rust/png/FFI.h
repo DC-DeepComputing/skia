@@ -56,6 +56,11 @@ public:
     virtual bool seek_from_end(int64_t requested_offset, uint64_t& final_pos) = 0;
     virtual bool seek_relative(int64_t requested_offset, uint64_t& final_pos) = 0;
 
+    virtual rust::Slice<const uint8_t> fill_buf() = 0;
+    virtual void consume(size_t amount) = 0;
+    virtual bool supports_buf_read() const = 0;
+
+
     // `drop` is not part of the `std::io::Read` nor `std::io::Seek` trait, but
     // we expose the destructor through public API to make it possible to pass
     // `std::unique_ptr<ReadAndSeekTraits>` over the FFI boundary.
