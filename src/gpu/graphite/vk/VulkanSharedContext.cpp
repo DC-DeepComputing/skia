@@ -126,6 +126,7 @@ VulkanSharedContext::VulkanSharedContext(
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
     fPipelineCache = this->createPipelineCache(backendContext.fPhysicalDevice,
                                                persistentPipelineStorage);
+    SkDebugf("cache %p\n", fPipelineCache);
     fThreadSafeResourceProvider = std::make_unique<VulkanThreadSafeResourceProvider>(
         this->makeResourceProvider(&fSingleOwner,
                                    SK_InvalidGenID,
@@ -195,8 +196,11 @@ VkPipelineCache VulkanSharedContext::createPipelineCache(
                                            nullptr,
                                            &pipelineCache));
     if (VK_SUCCESS != result) {
+        SkDebugf("------------------ CreatePipelineCache failed\n");
         SKGPU_LOG_W("CreatePipelineCache failed");
         return VK_NULL_HANDLE;
+    } else {
+        SkDebugf("CreatePipelineCache succeeded\n");
     }
 
     return pipelineCache;
