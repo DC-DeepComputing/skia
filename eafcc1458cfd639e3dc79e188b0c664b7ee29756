@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f05bbd1c_8692a506",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-13T20:19:35Z",
+      "side": 1,
+      "message": "This is an idea to adopt the functionality that is required for the Codec_end test. Let me know if you have thoughts about changing the SkStream API like this or if it introduces any issues. I am not 100% confident on the Rust code, so would have Lukasz or someone review that if this is something we wanted to do.",
+      "revId": "eafcc1458cfd639e3dc79e188b0c664b7ee29756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
