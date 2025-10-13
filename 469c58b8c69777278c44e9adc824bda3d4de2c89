@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9a1af43_0688d14c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "Functionally all lgtm, just some cleanup I think.",
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a49ee07_e589ad30",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this call here; the state of the PipelineDataGatherer after endPaintData() is identical to what rewindForRenderStep() leaves it in. We can just keep the `rewindForRenderStep()` call that\u0027s the last action of the for loop below.",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab2332f6_276e44fb",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "nit: since you\u0027re here, can you fit this line to 100 chars?",
+      "range": {
+        "startLine": 214,
+        "startChar": 29,
+        "endLine": 214,
+        "endChar": 101
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f60b1196_6c37b394",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "This should be `SkTo\u003cint\u003e(size)`, or we can update `rewindTo()` and `UniformManager::size()` to return `int` to match what SkTDArray operates on.  `PipelineDataGatherer`\u0027s fPaintDataSize can be an `int` then too.\n\nThe only API that still operates on `size_t` then is the SkSpan template, but that is so it is compatible with std::span.",
+      "range": {
+        "startLine": 90,
+        "startChar": 22,
+        "endLine": 90,
+        "endChar": 26
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "986019db_a02cc3e2",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "Do we need these `rewindRenderStep()` calls?  There\u0027s no render step data being added after `endPaintData()` or reuse of the gatherer after this point.\n\nSame for the other blocks.",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b001a1d_39ff0eac",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-13T14:19:39Z",
+      "side": 1,
+      "message": "Even here, I don\u0027t think we need to explicitly rewind for render step data after `endPaintData()`. Now that we have a single UniformManager, there\u0027s no more need to switch modes for PipelineDataGatherer, right?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
