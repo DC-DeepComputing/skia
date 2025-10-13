@@ -32,7 +32,7 @@ static const char* verb_type_name(VerbType verbType) {
         case VerbType::kConics: return "kConics";
     }
     SkUNREACHABLE;
-};
+}
 
 /**
  * This sample visualizes simple strokes.
