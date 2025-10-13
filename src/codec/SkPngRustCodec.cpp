@@ -304,25 +304,25 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
 }
 
 // This helper class adapts `SkStream` to expose the API required by Rust FFI
-// (i.e. the `ReadAndSeekTraits` API).
-class ReadAndSeekTraitsAdapterForSkStream final : public rust_png::ReadAndSeekTraits {
+// (i.e. the `FFIStream` API).
+class FFIStreamAdapterForSkStream final : public rust_png::FFIStream {
 public:
     // SAFETY: The caller needs to guarantee that `stream` will be alive for
-    // as long as `ReadAndSeekTraitsAdapterForSkStream`.
-    explicit ReadAndSeekTraitsAdapterForSkStream(SkStream* stream) : fStream(stream) {
+    // as long as `FFIStreamAdapterForSkStream`.
+    explicit FFIStreamAdapterForSkStream(SkStream* stream) : fStream(stream) {
         SkASSERT_RELEASE(fStream);
     }
 
-    ~ReadAndSeekTraitsAdapterForSkStream() override = default;
+    ~FFIStreamAdapterForSkStream() override = default;
 
     // Non-copyable and non-movable (we want a stable `this` pointer, because we
-    // will be passing a `ReadAndSeekTraits*` pointer over the FFI boundary and
+    // will be passing a `FFIStream*` pointer over the FFI boundary and
     // retaining it inside `png::Reader`).
-    ReadAndSeekTraitsAdapterForSkStream(const ReadAndSeekTraitsAdapterForSkStream&) = delete;
-    ReadAndSeekTraitsAdapterForSkStream& operator=(const ReadAndSeekTraitsAdapterForSkStream&) =
+    FFIStreamAdapterForSkStream(const FFIStreamAdapterForSkStream&) = delete;
+    FFIStreamAdapterForSkStream& operator=(const FFIStreamAdapterForSkStream&) =
             delete;
-    ReadAndSeekTraitsAdapterForSkStream(ReadAndSeekTraitsAdapterForSkStream&&) = delete;
-    ReadAndSeekTraitsAdapterForSkStream& operator=(ReadAndSeekTraitsAdapterForSkStream&&) = delete;
+    FFIStreamAdapterForSkStream(FFIStreamAdapterForSkStream&&) = delete;
+    FFIStreamAdapterForSkStream& operator=(FFIStreamAdapterForSkStream&&) = delete;
 
     // Implementation of the `std::io::Read::read` method.  See Rust trait's
     // doc comments at
@@ -404,6 +404,22 @@ public:
             return false;
         }
         return true;
+    }
+
+    rust::Slice<const uint8_t> fill_buf() override {
+        SkASSERT_RELEASE(fStream->canGetBytes());
+        SkSpan<const uint8_t> buffer = fStream->getBytes();
+        return rust::Slice<const uint8_t>(buffer);
+    }
+
+    void consume(size_t amount) override {
+        SkASSERT_RELEASE(fStream->canGetBytes());
+        fStream->move((long)amount);
+
+    }
+
+    bool supports_zero_copy() const override {
+        return fStream->canGetBytes();
     }
 
 private:
@@ -530,7 +546,7 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     SkASSERT_RELEASE(stream);
     SkASSERT_RELEASE(result);
 
-    auto inputAdapter = std::make_unique<ReadAndSeekTraitsAdapterForSkStream>(stream.get());
+    auto inputAdapter = std::make_unique<FFIStreamAdapterForSkStream>(stream.get());
     rust::Box<rust_png::ResultOfReader> resultOfReader =
             rust_png::new_reader(std::move(inputAdapter));
     *result = ToSkCodecResult(resultOfReader->err());
@@ -620,7 +636,7 @@ SkCodec::Result SkPngRustCodec::seekToStartOfFrame(int index) {
         }
 
         auto inputAdapter =
-                std::make_unique<ReadAndSeekTraitsAdapterForSkStream>(fPrivStream.get());
+                std::make_unique<FFIStreamAdapterForSkStream>(fPrivStream.get());
         rust::Box<rust_png::ResultOfReader> resultOfReader =
                 rust_png::new_reader(std::move(inputAdapter));
 
@@ -929,6 +945,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
 
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
+            if (this->options().fFrameIndex == this->getRawFrameCount() - 1) {
+                // Finish reading any non-image data.
+                return ToSkCodecResult(fReader->finish_decoding());
+            }
             return kSuccess;
         }
 
@@ -1032,6 +1052,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
             }
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
+            if (this->options().fFrameIndex == this->getRawFrameCount() - 1) {
+                // Finish reading any non-image data.
+                return ToSkCodecResult(fReader->finish_decoding());
+            }
             return kSuccess;
         }
 

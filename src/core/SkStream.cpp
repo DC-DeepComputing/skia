@@ -362,6 +362,14 @@ size_t SkMemoryStream::peek(void* buffer, size_t size) const {
     return bytesRead;
 }
 
+SkSpan<const uint8_t> SkMemoryStream::getBytes() {
+    if (fData) {
+        // fOffset is the current position in the stream
+        return fData->byteSpan().subspan(fOffset);
+    }
+    return {};
+}
+
 bool SkMemoryStream::isAtEnd() const {
     return fOffset == fData->size();
 }
