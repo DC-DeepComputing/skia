@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40f7fe39_6c3fbdf3",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-13T17:16:39Z",
+      "side": 1,
+      "message": "This one is necessary because it records the marked size of the paintData in the cache. \n\nWDYT about making a separate method `markPaintDataSize() or something?",
+      "parentUuid": "9a49ee07_e589ad30",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
@@ -112,6 +136,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "383421b8_c1e67e4f",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-13T17:16:39Z",
+      "side": 1,
+      "message": "See the comment for `drawList`",
+      "parentUuid": "986019db_a02cc3e2",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b001a1d_39ff0eac",
         "filename": "tests/graphite/PipelineDataCacheTest.cpp",
         "patchSetId": 16
@@ -123,6 +171,30 @@
       "writtenOn": "2025-10-13T14:19:39Z",
       "side": 1,
       "message": "Even here, I don\u0027t think we need to explicitly rewind for render step data after `endPaintData()`. Now that we have a single UniformManager, there\u0027s no more need to switch modes for PipelineDataGatherer, right?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ed84081_dc215530",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-13T17:16:39Z",
+      "side": 1,
+      "message": "See the comment for \u0027drawList\u0027",
+      "parentUuid": "6b001a1d_39ff0eac",
       "range": {
         "startLine": 181,
         "startChar": 0,
