@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aa00eca_6b92fecf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-13T18:52:23Z",
+      "side": 1,
+      "message": "Probably should also have Viewer use this as an initial override of the default value derived from the initial canvas / display setting.",
+      "revId": "88590050bd5352e26fbfae5cd096c0e7168fcc21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
