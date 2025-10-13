@@ -265,7 +265,9 @@ DEF_TEST(Codec_frames, r) {
             continue;
         }
 
-        {
+        // For non animated pngs, we are able to get the frame info before reading the
+        // frame data.
+        if (codec->getEncodedFormat() != SkEncodedImageFormat::kPNG) {
             SkCodec::FrameInfo frameInfo;
             REPORTER_ASSERT(r, !codec->getFrameInfo(0, &frameInfo));
         }
