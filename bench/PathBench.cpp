@@ -1204,10 +1204,10 @@ DEF_BENCH( return new RectPathBench(FLAGS01); )
 DEF_BENCH( return new RectPathBench(FLAGS10); )
 DEF_BENCH( return new RectPathBench(FLAGS11); )
 
-DEF_BENCH( return new RotatedRectBench(FLAGS00, false, 45));
-DEF_BENCH( return new RotatedRectBench(FLAGS10, false, 45));
-DEF_BENCH( return new RotatedRectBench(FLAGS00, true, 45));
-DEF_BENCH( return new RotatedRectBench(FLAGS10, true, 45));
+DEF_BENCH( return new RotatedRectBench(FLAGS00, false, 45))
+DEF_BENCH( return new RotatedRectBench(FLAGS10, false, 45))
+DEF_BENCH( return new RotatedRectBench(FLAGS00, true, 45))
+DEF_BENCH( return new RotatedRectBench(FLAGS10, true, 45))
 
 DEF_BENCH( return new OvalPathBench(FLAGS00); )
 DEF_BENCH( return new OvalPathBench(FLAGS01); )
@@ -1358,10 +1358,10 @@ private:
 
 DEF_BENCH( return new PathBuildBench("addRect", [](SkPath* path, const SkRect& r) {
     path->addRect(r);
-}));
+}))
 DEF_BENCH( return new PathBuildBench("addOval", [](SkPath* path, const SkRect& r) {
     path->addOval(r);
-}));
+}))
 DEF_BENCH( return new PathBuildBench("addRRect", [](SkPath* path, const SkRect& r) {
     path->addRRect(SkRRect::MakeRectXY(r, 0.1f, 0.1f));
-}));
+}))
