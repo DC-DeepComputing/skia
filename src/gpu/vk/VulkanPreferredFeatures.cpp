@@ -200,6 +200,7 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
     } else if (strcmp(name, VK_EXT_HOST_IMAGE_COPY_EXTENSION_NAME) == 0) {
         exts.fHostImageCopyEXT = true;
     } else if (strcmp(name, VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME) == 0) {
+        SkDebugf("Has VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME\n");
         exts.fPipelineCreationCacheControlEXT = true;
     } else if (strcmp(name, VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME) == 0) {
         exts.fDriverPropertiesKHR = true;
@@ -276,6 +277,11 @@ FeaturesToAdd get_features_to_add(uint32_t apiVersion,
                                   const VkPhysicalDeviceFeatures2& appFeatures) {
     FeaturesToAdd toAdd;
 
+    SkDebugf("version %d %d %d %d\n",
+        (apiVersion >> 29U) & 0x3,
+        (apiVersion >> 22U) & 0x7,
+        (apiVersion >> 12U) & 0xB, // 10
+        apiVersion & 0xD); // 12
     // First, exclude feature structs that are not available / are unnecessary based on apiVersion
     // and available extensions.
     if (apiVersion >= VK_API_VERSION_1_4) {
