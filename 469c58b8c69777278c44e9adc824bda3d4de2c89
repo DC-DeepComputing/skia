@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4741bd4_ed22a113",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-13T17:49:04Z",
+      "side": 1,
+      "message": "`endPaintData` records the size of the paint data, but that size is passed back into `fUniformManager` in `rewindTo` to set `fUniformManager`\u0027s `fStartingOffset`.\n\nAlthough we could make `PipelineDataGatherer` solely responsible for tracking the `paintDataSize` and pass it into `Wrap` and `finish`, and this would produce the correct behavior, the `fUniformManager` needs its own copy of the starting offset for validation. \n\nIt\u0027s definitely a little awkward. I thought about making the entire marking behavior encapsulated inside uniform manager, i.e. it always marks the paint size in `finish`, but this would interfere with behavior in other users of the class.",
+      "parentUuid": "6d833dfd_ee3479e9",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
