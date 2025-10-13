@@ -54,5 +54,5 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
     }
 
     SkDEBUGFAIL("onFilterColor4f unimplemented for this filter");
-    return SkPMColor4f{0,0,0,0};
+//    return SkPMColor4f{0,0,0,0};
 }

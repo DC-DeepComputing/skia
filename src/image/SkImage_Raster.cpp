@@ -105,7 +105,7 @@ static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) 
     void* src = orig.getAddr(subset.x(), subset.y());
     if (!dst || !src) {
         SkDEBUGFAIL("SkImage_Raster::onMakeSubset with nullptr src or dst");
-        return {};
+//        return {};
     }
 
     SkRectMemcpy(dst, bitmap.rowBytes(), src, orig.rowBytes(), bitmap.rowBytes(),

@@ -46,7 +46,7 @@ static std::unique_ptr<Expression> convert_compound_constructor(const Context& c
             switch (type.slotCount()) {
                 case 2:  swizzleHint = "; use '.xy' instead"; break;
                 case 3:  swizzleHint = "; use '.xyz' instead"; break;
-                default: swizzleHint = ""; SkDEBUGFAIL("unexpected slicing cast"); break;
+                default: swizzleHint = ""; SkDEBUGFAIL("unexpected slicing cast"); // break;
             }
 
             context.fErrors->error(pos, "'" + argument->type().displayName() +
@@ -186,7 +186,7 @@ std::optional<double> AnyConstructor::getConstantValue(int n) const {
     }
 
     SkDEBUGFAIL("argument-list slot count doesn't match constructor-type slot count");
-    return std::nullopt;
+//    return std::nullopt;
 }
 
 Expression::ComparisonResult AnyConstructor::compareConstant(const Expression& other) const {

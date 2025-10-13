@@ -151,7 +151,7 @@ bool SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip) 
 
 bool SkEdge::nextSegment() {
     SkDEBUGFAILF("Shouldn't be asking a linear edge to go to the next curve.");
-    return false;
+    //return false;
 }
 
 // Draws a line between the provided points and then calculates the slope and starting

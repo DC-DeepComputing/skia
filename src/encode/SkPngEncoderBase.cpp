@@ -109,7 +109,7 @@ switch(numChannels) {
       SkASSERT(srcInfo.isOpaque());
       if (srcAT == kUnknown_SkAlphaType) {
           SkDEBUGFAIL("unknown alpha type");
-          return std::nullopt;
+//          return std::nullopt;
       }
       int maxBitsPerChannel = SkColorTypeMaxBitsPerChannel(srcCT);
       if (maxBitsPerChannel <= 8) {
@@ -128,7 +128,7 @@ switch(numChannels) {
   case 4: {
       if (srcAT == kUnknown_SkAlphaType) {
           SkDEBUGFAIL("unknown alpha type");
-          return std::nullopt;
+//          return std::nullopt;
       }
       int maxBitsPerChannel = SkColorTypeMaxBitsPerChannel(srcCT);
       if (maxBitsPerChannel <= 8) {

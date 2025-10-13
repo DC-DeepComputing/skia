@@ -42,7 +42,7 @@ GrBackendSemaphore& GrBackendSemaphore::operator=(const GrBackendSemaphore& that
     switch (that.fBackend) {
         case GrBackendApi::kOpenGL:
             SK_ABORT("Unsupported");
-            break;
+//            break;
         case GrBackendApi::kVulkan:
         case GrBackendApi::kMetal:
             that.fSemaphoreData->copyTo(fSemaphoreData);

@@ -522,7 +522,7 @@ std::optional<SkPathVerb> SkEdgeClipper::next(SkPoint pts[]) {
             break;
         default:
             SkDEBUGFAIL("unexpected verb in quadclippper2 iter");
-            break;
+//            break;
     }
     return verb;
 }
@@ -596,7 +596,7 @@ void SkEdgeClipper::ClipPath(const SkPathRaw& raw, const SkRect& clip, bool canC
                 break;
             default:
                 SkDEBUGFAIL("Unknown edge type");
-                break;
+//                break;
         }
     }
 }

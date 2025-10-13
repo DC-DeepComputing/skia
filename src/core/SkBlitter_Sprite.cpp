@@ -51,7 +51,7 @@ void SkSpriteBlitter::blitH(int x, int y, int width) {
     SkDEBUGFAIL("how did we get here?");
 
     // Fallback to blitRect.
-    this->blitRect(x, y, width, 1);
+//    this->blitRect(x, y, width, 1);
 }
 
 void SkSpriteBlitter::blitAntiH(int x, int y, const SkAlpha antialias[], const int16_t runs[]) {
@@ -64,14 +64,14 @@ void SkSpriteBlitter::blitV(int x, int y, int height, SkAlpha alpha) {
     SkDEBUGFAIL("how did we get here?");
 
     // Fall back to superclass if the code gets here in release mode.
-    INHERITED::blitV(x, y, height, alpha);
+//    INHERITED::blitV(x, y, height, alpha);
 }
 
 void SkSpriteBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
     SkDEBUGFAIL("how did we get here?");
 
     // Fall back to superclass if the code gets here in release mode.
-    INHERITED::blitMask(mask, clip);
+//    INHERITED::blitMask(mask, clip);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -76,7 +76,7 @@ bool SkClipStack::Element::operator== (const Element& element) const {
             return true;
         default:
             SkDEBUGFAIL("Unexpected type.");
-            return false;
+//            return false;
     }
 }
 
@@ -98,7 +98,7 @@ const SkRect& SkClipStack::Element::getBounds() const {
             return kEmpty;
         default:
             SkDEBUGFAIL("Unexpected type.");
-            return kEmpty;
+//            return kEmpty;
     }
 }
 
@@ -115,7 +115,7 @@ bool SkClipStack::Element::contains(const SkRect& rect) const {
             return false;
         default:
             SkDEBUGFAIL("Unexpected type.");
-            return false;
+//            return false;
     }
 }
 
@@ -133,7 +133,7 @@ bool SkClipStack::Element::contains(const SkRRect& rrect) const {
             return false;
         default:
             SkDEBUGFAIL("Unexpected type.");
-            return false;
+//            return false;
     }
 }
 
@@ -343,7 +343,7 @@ void SkClipStack::Element::combineBoundsDiff(FillCombo combination, const SkRect
             break;
         default:
             SkDEBUGFAIL("SkClipStack::Element::combineBoundsDiff Invalid fill combination");
-            break;
+//            break;
     }
 }
 
@@ -374,7 +374,7 @@ void SkClipStack::Element::combineBoundsIntersection(int combination, const SkRe
             break;
         default:
             SkDEBUGFAIL("SkClipStack::Element::combineBoundsIntersection Invalid fill combination");
-            break;
+//            break;
     }
 }
 
@@ -421,7 +421,7 @@ void SkClipStack::Element::updateBoundAndGenID(const Element* prior) {
             break;
         case DeviceSpaceType::kEmpty:
             SkDEBUGFAIL("We shouldn't get here with an empty element.");
-            break;
+//            break;
     }
 
     // Now determine the previous Element's bound information taking into

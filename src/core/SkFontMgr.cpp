@@ -25,7 +25,7 @@ public:
     }
     sk_sp<SkTypeface> createTypeface(int index) override {
         SkDEBUGFAIL("SkFontStyleSet::createTypeface called on empty set");
-        return nullptr;
+//        return nullptr;
     }
     sk_sp<SkTypeface> matchStyle(const SkFontStyle&) override {
         return nullptr;
@@ -48,7 +48,7 @@ protected:
     }
     sk_sp<SkFontStyleSet> onCreateStyleSet(int index) const override {
         SkDEBUGFAIL("onCreateStyleSet called with bad index");
-        return nullptr;
+//        return nullptr;
     }
     sk_sp<SkFontStyleSet> onMatchFamily(const char[]) const override {
         return SkFontStyleSet::CreateEmpty();

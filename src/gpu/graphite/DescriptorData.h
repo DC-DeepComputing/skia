@@ -57,6 +57,6 @@ struct DescriptorData {
     const Sampler* fImmutableSampler;
 };
 
-};  // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_DescriptorTypes_DEFINED
