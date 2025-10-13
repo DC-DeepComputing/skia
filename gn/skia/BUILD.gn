@@ -572,7 +572,7 @@ config("warnings") {
       "-Wno-range-loop-analysis",
     ]
     cflags_cc += [
-      "-Wno-c++98-compat",
+#      "-Wno-c++98-compat",
       "-Wno-c++98-compat-pedantic",
       "-Wno-undefined-func-template",
     ]
@@ -613,6 +613,7 @@ config("warnings") {
       "-Wdeprecated-volatile",
       "-Wdeprecated-writable-str",
       "-Wextra-semi",
+      "-Wc++98-compat-extra-semi",
     ]
   }
 
