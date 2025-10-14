@@ -69,6 +69,24 @@
       "parentUuid": "0f5b7ff6_2183db03",
       "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7e941f_9857e289",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-14T21:17:21Z",
+      "side": 1,
+      "message": "I was trying to explain what I wanted, but then figured it\u0027d be easier to just sketch up a CL to do it. https://skia-review.googlesource.com/c/skia/+/1074277\n\nIt\u0027s not quite finished, but I think it will allow us to decouple clients in a easy-to-rollout package.",
+      "parentUuid": "77b60ac6_107f81e0",
+      "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
