@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caa6c7c2_af9f6a67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-14T12:35:09Z",
+      "side": 1,
+      "message": "We should probably have a unit test that would\u0027ve failed w/ the old math",
+      "revId": "994ac1427b7184b760dc753b4fe9617f011e1ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e034ab_b788e4f3",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-14T12:35:09Z",
+      "side": 1,
+      "message": "Can we delete this one ?",
+      "revId": "994ac1427b7184b760dc753b4fe9617f011e1ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
