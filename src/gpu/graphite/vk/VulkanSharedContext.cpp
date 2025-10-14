@@ -126,6 +126,7 @@ VulkanSharedContext::VulkanSharedContext(
         , fDeviceLostProc(backendContext.fDeviceLostProc) {
     fPipelineCache = this->createPipelineCache(backendContext.fPhysicalDevice,
                                                persistentPipelineStorage);
+    SkDebugf("cache %p\n", fPipelineCache);
     fThreadSafeResourceProvider = std::make_unique<VulkanThreadSafeResourceProvider>(
         this->makeResourceProvider(&fSingleOwner,
                                    SK_InvalidGenID,
@@ -195,8 +196,11 @@ VkPipelineCache VulkanSharedContext::createPipelineCache(
                                            nullptr,
                                            &pipelineCache));
     if (VK_SUCCESS != result) {
+        SkDebugf("------------------ CreatePipelineCache failed\n");
         SKGPU_LOG_W("CreatePipelineCache failed");
         return VK_NULL_HANDLE;
+    } else {
+        SkDebugf("CreatePipelineCache succeeded %p\n", pipelineCache);
     }
 
     return pipelineCache;
@@ -210,6 +214,7 @@ void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistent
                                            size_t maxSize) {
     SkASSERT(persistentPipelineStorage);
 
+    SkDebugf("has new data: %d\n", fHasNewVkPipelineCacheData.load());
     if (fPipelineCache == VK_NULL_HANDLE || !fHasNewVkPipelineCacheData) {
         return; // ill-formed SharedContext or no new pipelines
     }
@@ -221,6 +226,7 @@ void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistent
         result,
         GetPipelineCacheData(this->device(), fPipelineCache, &origDataSize, nullptr));
     if (result != VK_SUCCESS) {
+        SkDebugf("------ failure\n");
         return;
     }
 
@@ -228,6 +234,7 @@ void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistent
         // Since we don't have cache control 'fHasNewVkPipelineCacheData' can be wildly
         // inaccurate. Attempt to compensate by comparing the uncapped data sizes.
         if (fLastKnownPersistentPipelineStorageSize == origDataSize) {
+            SkDebugf("------ same size %zu\n", origDataSize);
             return;
         }
     }
@@ -242,6 +249,7 @@ void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistent
         GetPipelineCacheData(this->device(), fPipelineCache, &cappedDataSize, (void*)data.get()));
     this->checkVkResult(result);
     if ((result != VK_SUCCESS) && (result != VK_INCOMPLETE)) {
+        SkDebugf("----- failed to get data\n");
         return;
     }
 
