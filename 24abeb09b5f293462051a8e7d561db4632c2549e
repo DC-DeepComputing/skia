@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e18fd4_e129fb68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-14T13:05:36Z",
+      "side": 1,
+      "message": "PTAL - I do not believe any of the red bots are due to this CL.",
+      "revId": "24abeb09b5f293462051a8e7d561db4632c2549e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
