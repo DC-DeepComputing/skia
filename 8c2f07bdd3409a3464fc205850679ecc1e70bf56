@@ -33,6 +33,24 @@
       "message": "This should be done like [`SkPDF::Metadata::jpegEncoder`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/docs/SkPDFDocument.h;l\u003d211;drc\u003d5cdf9db498107fcaa195a81f99937622c5009d13). `SkXPS::MakeDocument` should have the `dpi` replaced with an argument object like `SkPDF::Metadata` which can start off with `dpi` and `pngEncoder`.",
       "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f5b7ff6_2183db03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-14T13:20:24Z",
+      "side": 1,
+      "message": "I agree with Ben. We don\u0027t want to have the #ifdef choose this in the medium to long term.",
+      "parentUuid": "d2330ec9_9c225af8",
+      "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
