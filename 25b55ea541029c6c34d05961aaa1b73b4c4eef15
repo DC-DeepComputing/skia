@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e3ff204_73cbfa6c",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:04:51Z",
+      "side": 0,
+      "message": "Here these two calls to `build` were fine as each is a different unique copy.",
+      "revId": "25b55ea541029c6c34d05961aaa1b73b4c4eef15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7759901_a996182d",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:04:51Z",
+      "side": 0,
+      "message": "Before this change a new copy of the current `DisplayParams` is returned each time this is called.",
+      "revId": "25b55ea541029c6c34d05961aaa1b73b4c4eef15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

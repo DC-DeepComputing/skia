@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0abbae94_5ce53de3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:04:51Z",
+      "side": 1,
+      "message": "The commented on issues have proposed fix in https://skia-review.googlesource.com/c/skia/+/1074376",
+      "revId": "10670fef5b2226131c79bb1f5b568a598f136226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fd8f6c_7cde6bbc",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:04:51Z",
+      "side": 1,
+      "message": "Here the second call to `build` always returns a nullptr unique_ptr.\n\nIn general `fWindow` is the current params of the window/surface being drawn to (which can and does change), where `fDisplay` is the params of the actual display (which is expected to remain constant).",
+      "revId": "10670fef5b2226131c79bb1f5b568a598f136226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f553714_fdb2902d",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:04:51Z",
+      "side": 1,
+      "message": "The behavior of `build` is changed so that it can only ever be called once, and in fact calling any other method later becomes undefined behavior. There should really be `SkASSERT(fDisplayParams)` in every method that uses it, and this should be renamed `detach`.",
+      "revId": "10670fef5b2226131c79bb1f5b568a598f136226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
