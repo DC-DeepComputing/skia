@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f65b8f_97902d0b",
+        "filename": "tools/window/GraphiteNativeVulkanWindowContext.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-14T14:52:39Z",
+      "side": 1,
+      "message": "I don\u0027t think you need this. AutoTArray has a default ctor",
+      "range": {
+        "startLine": 84,
+        "startChar": 52,
+        "endLine": 84,
+        "endChar": 57
+      },
+      "revId": "dc6ee18ed7a2719a0fcb1da94201c94312272d3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
