@@ -453,7 +453,7 @@ void ApplyRArcToArcSize(SkPath& orig, SkScalar rx, SkScalar ry, SkScalar xAxisRo
                         bool useSmallArc, bool ccw, SkScalar dx, SkScalar dy) {
     auto arcSize = useSmallArc ? SkPath::ArcSize::kSmall_ArcSize : SkPath::ArcSize::kLarge_ArcSize;
     auto sweep = ccw ? SkPathDirection::kCCW : SkPathDirection::kCW;
-    orig.rArcTo(rx, ry, xAxisRotate, arcSize, sweep, dx, dy);
+    orig.rArcTo({rx, ry}, xAxisRotate, arcSize, sweep, {dx, dy});
 }
 
 void ApplyClose(SkPath& p) {
