@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fec45cca_048971f7",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T20:48:08Z",
+      "side": 1,
+      "message": "I will do that as a follow up.",
+      "parentUuid": "b9ff2387_6770698f",
+      "range": {
+        "startLine": 220,
+        "startChar": 4,
+        "endLine": 220,
+        "endChar": 64
+      },
+      "revId": "69cfffeb9de78db56babf3395909da70f97b2494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fbc48d3_9f9ce28a",
@@ -61,6 +85,54 @@
           ]
         }
       ],
+      "revId": "69cfffeb9de78db56babf3395909da70f97b2494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0988b6dd_500c8409",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T20:48:08Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "7fbc48d3_9f9ce28a",
+      "range": {
+        "startLine": 222,
+        "startChar": 8,
+        "endLine": 222,
+        "endChar": 82
+      },
+      "revId": "69cfffeb9de78db56babf3395909da70f97b2494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "278c8d4b_f11332bb",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T20:48:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fbc48d3_9f9ce28a",
+      "range": {
+        "startLine": 222,
+        "startChar": 8,
+        "endLine": 222,
+        "endChar": 82
+      },
       "revId": "69cfffeb9de78db56babf3395909da70f97b2494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
