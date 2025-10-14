@@ -33,6 +33,24 @@
       "message": "This also allows more flexibility in the future. If dm provides a means to override the pixel geometry it sets as the default-default (currently always RGB_H) that can be used to override any default values the gm sets (which should only override the default-default).",
       "revId": "88590050bd5352e26fbfae5cd096c0e7168fcc21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f0e09c_0b9b17eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T18:16:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aa00eca_6b92fecf",
+      "revId": "88590050bd5352e26fbfae5cd096c0e7168fcc21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
