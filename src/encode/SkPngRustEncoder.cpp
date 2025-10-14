@@ -23,6 +23,8 @@ bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
     return encoder && encoder->encodeRows(src.height());
 }
 
+bool EncodeWithDefaultOptions(SkWStream* dst, const SkPixmap& src) { return Encode(dst, src, {}); }
+
 sk_sp<SkData> Encode(const SkPixmap& src, const Options& options) {
     SkDynamicMemoryWStream stream;
     if (!Encode(&stream, src, options)) {
