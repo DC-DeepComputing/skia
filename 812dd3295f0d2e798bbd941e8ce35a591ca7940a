@@ -16,6 +16,24 @@
       "message": "Would there be any benefit to changing the count based on the GPU?",
       "revId": "812dd3295f0d2e798bbd941e8ce35a591ca7940a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1318593c_4f0a0c02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T13:33:00Z",
+      "side": 1,
+      "message": "I am hoping that this kMaxSmallPathAtlasCount will go away soon in favor of just configuring the RasterPathAtlas to different sizes based on use case. In that mode, I do think we could choose an atlas size based on the GPU pretty easily, but I don\u0027t think it\u0027s worth tuning in the current form.",
+      "parentUuid": "0f08da38_c9d79717",
+      "revId": "812dd3295f0d2e798bbd941e8ce35a591ca7940a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
