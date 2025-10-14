@@ -915,6 +915,8 @@ public:
     */
     void setLastPt(SkScalar x, SkScalar y);
 
+    void setPoint(size_t index, SkPoint p);
+
     /** Returns the number of points in SkPathBuilder.
         SkPoint count is initially zero.
 
