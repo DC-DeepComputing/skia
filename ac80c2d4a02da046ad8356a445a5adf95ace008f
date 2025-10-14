@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d19fc8b0_f25d8b2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-14T15:50:17Z",
+      "side": 1,
+      "message": "PTAL. CanvasKit change can\u0027t be landed until CK updated to use PathBuilder.",
+      "revId": "ac80c2d4a02da046ad8356a445a5adf95ace008f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
