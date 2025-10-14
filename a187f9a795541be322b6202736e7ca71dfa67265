@@ -193,6 +193,24 @@
       "parentUuid": "09e12ca9_b538ce36",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "306fe9e3_32258804",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T13:29:18Z",
+      "side": 1,
+      "message": "Did you rebase on https://skia-review.googlesource.com/c/skia/+/1071446? That I just submitted before you ran PS2 I believe.",
+      "parentUuid": "d04460b7_214e7d0c",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
