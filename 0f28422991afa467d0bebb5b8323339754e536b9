@@ -22,6 +22,48 @@
       },
       "revId": "0f28422991afa467d0bebb5b8323339754e536b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a8d9c3_a0333bac",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T13:31:31Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "543c1308_1c56185a",
+      "range": {
+        "startLine": 364,
+        "startChar": 7,
+        "endLine": 364,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "62073dd7_78bbffb8",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkRRect.cpp",
+              "range": {
+                "startLine": 363,
+                "startChar": 0,
+                "endLine": 366,
+                "endChar": 0
+              },
+              "replacement": "    // The ellipse is considered relatively circular if either `rx/ry` or `ry/rx` is within tolerance\n    // of one, but this is equivalent to comparing the absolute difference between rx and ry to\n    // tolerance multiplied by the largest radii.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0f28422991afa467d0bebb5b8323339754e536b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
