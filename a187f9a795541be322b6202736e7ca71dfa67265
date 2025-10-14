@@ -211,6 +211,24 @@
       "parentUuid": "d04460b7_214e7d0c",
       "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c615caea_e22962a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-14T15:37:49Z",
+      "side": 1,
+      "message": "I think the CI is trying to be too clever here; even after the rebase (PS8) the try jobs are running PS7 and thinking they don\u0027t need to do anything, so I\u0027m guessing they aren\u0027t picking up the dependency.\n\nI had tested your change locally on xfermodes3 but hadn\u0027t checked discard. I am okay landing this change and seeing what happens.",
+      "parentUuid": "306fe9e3_32258804",
+      "revId": "a187f9a795541be322b6202736e7ca71dfa67265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
