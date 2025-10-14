@@ -12,6 +12,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -931,12 +932,13 @@ void Context::startCapture() {
     }
 }
 
-void Context::endCapture() {
+sk_sp<SkCapture> Context::endCapture() {
     // TODO (b/412351769): Return an SkData block of serialized SKPs and other capture data
     if (fSharedContext->captureManager()) {
         fSharedContext->captureManager()->toggleCapture(false);
-        fSharedContext->captureManager()->serializeCapture();
+        return fSharedContext->captureManager()->getCapture();
     }
+    return nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

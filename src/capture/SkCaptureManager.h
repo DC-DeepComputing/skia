@@ -8,9 +8,11 @@
 #ifndef SkCaptureManager_DEFINED
 #define SkCaptureManager_DEFINED
 
+#include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkTArray.h"
+#include "src/capture/SkCapture.h"
 
 #include <atomic>
 
@@ -25,7 +27,6 @@ public:
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
     void snapPicture(SkSurface*);
-    void serializeCapture();
 
     void toggleCapture(bool capturing) {
         if (capturing != fIsCurrentlyCapturing && !capturing) {
@@ -37,6 +38,8 @@ public:
     bool isCurrentlyCapturing() const {
         return fIsCurrentlyCapturing;
     }
+
+    sk_sp<SkCapture> getCapture() const;
 
 private:
     std::atomic<bool> fIsCurrentlyCapturing = false;

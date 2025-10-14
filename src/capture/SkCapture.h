@@ -1,0 +1,51 @@
+/*
+ * Copyright 2025 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef SkCapture_DEFINED
+#define SkCapture_DEFINED
+
+#include "include/core/SkData.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/base/SkTArray.h"
+
+#include <vector>
+
+struct SkCaptureMetadata {
+    uint32_t version;
+    uint32_t numPictures;
+};
+
+class SkCanvas;
+class SkCaptureCanvas;
+
+class SkCapture : public SkRefCnt {
+public:
+    // Centralized serialization constants
+    static const char kMagic[];
+    static const size_t kMagicSize = 8;
+    static const uint32_t kVersion = 0; // Until this version is 1 or greater, active development
+                                        // will make this unstable.
+
+    static sk_sp<SkCapture> MakeFromData(sk_sp<SkData>);
+    // TODO: instead of a make from pictures factory, the CaptureManager might just need hooks into
+    // the to build it over time. Move the SkPictures (fPictures) here and just maintain that in one
+    // place.
+    static sk_sp<SkCapture> MakeFromPictures(skia_private::TArray<sk_sp<SkPicture>>);
+    sk_sp<SkData> serializeCapture();
+
+private:
+    // TODO: add more awareness of the image meta data to a SkCaptureContext object
+    static sk_sp<SkData> serializeImageProc(SkImage* img, void* ctx);
+    static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
+                                               std::optional<SkAlphaType>, void* ctx);
+
+    SkCaptureMetadata fMetadata;
+    skia_private::TArray<sk_sp<SkPicture>> fPictures; //TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include picture metadata
+};
+
+#endif //SkCapture_DEFINED
