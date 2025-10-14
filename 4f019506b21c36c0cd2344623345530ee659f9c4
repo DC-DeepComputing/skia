@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b1d5d2c_5814a8b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-14T22:46:02Z",
+      "side": 1,
+      "message": "@bungeman and/or @kjlubick - can you PTAL again?",
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884141e4_e2ce30a3",
+        "filename": "src/xps/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-14T22:46:02Z",
+      "side": 1,
+      "message": "Interestingly `SkXPSDevice` is not exposed as a separate Bazel target and therefore the dependency on `SkPngEncoder` and `libpng` is not explicitly declared.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d33b1f9_08674b66",
+        "filename": "src/xps/SkXPSDocument.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-14T22:46:02Z",
+      "side": 1,
+      "message": "We need to handle all of the cases below:\n\n1. `SK_CODEC_ENCODES_PNG_WITH_RUST` - we need to handle this to avoid breaking Chromium which sets ``SK_CODEC_ENCODES_PNG_WITH_RUST` and doesn\u0027t set `SK_CODEC_ENCODES_PNG_WITH_LIBPNG` (see Chrmium\u0027s [`//skia/BUILD.gn`](https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d174-178;drc\u003dfdf57158bbb3afb17ab22231db492d4e4df556b3)\n2. `SK_CODEC_ENCODES_PNG_WITH_LIBPNG` - in case some Skia clients are like Chromium before https://crrev.com/c/7032719\n3. No `SK_CODEC_ENCODES_PNG...` - in case some Skia clients use configuration predating https://review.skia.org/926096\n\nI think that to minimize risk we need to assume that Android and/or Flutter may be in the 2nd or 3rd category.",
+      "range": {
+        "startLine": 61,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 37
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

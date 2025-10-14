@@ -87,6 +87,24 @@
       "parentUuid": "77b60ac6_107f81e0",
       "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7676e62d_9b5119b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-14T22:46:02Z",
+      "side": 1,
+      "message": "Thanks!  I\u0027ve made changes to my CL based on your example.  Note that AFAIU we still need to introduce `#ifdef SK_CODEC_ENCODES_PNG_WITH_RUST` to avoid breaking Chromium (see my other CR comment).\n\nI think it\u0027s okay to mark this comment thread as resolved.  Please open new comments for any remaining issues.",
+      "parentUuid": "5e7e941f_9857e289",
+      "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
