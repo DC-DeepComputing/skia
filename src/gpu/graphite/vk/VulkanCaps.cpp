@@ -480,6 +480,14 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
                           VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
     }
 
+    SkDebugf("name %s info %s conf %d %d %d %d\n",
+             props->fDriver.driverName,
+             props->fDriver.driverInfo,
+             props->fDriver.conformanceVersion.major,
+             props->fDriver.conformanceVersion.minor,
+             props->fDriver.conformanceVersion.subminor,
+             props->fDriver.conformanceVersion.patch);
+
     // If this field is not filled, driver bug workarounds won't work correctly. It should always
     // be filled, unless filling it itself is a driver bug, or the Vulkan driver is too old. In
     // that case, make a guess of what the driver ID is, but the driver is likely to be too buggy to
@@ -539,6 +547,12 @@ void VulkanCaps::applyDriverCorrectnessWorkarounds(const PhysicalDevicePropertie
     // just default to it being less.
     androidAPIVersion = (strLength == 0) ? 0 : atoi(androidAPIVersionStr);
 #endif
+
+
+    SkDebugf("%d %d %s\n",
+             properties.fBase.properties.apiVersion,
+             properties.fBase.properties.driverVersion,
+             properties.fBase.properties.deviceName);
 
     const uint32_t vendorID = properties.fBase.properties.vendorID;
     const VkDriverId driverID = properties.fDriver.driverID;

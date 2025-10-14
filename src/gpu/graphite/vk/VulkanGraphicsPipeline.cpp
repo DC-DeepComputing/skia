@@ -665,6 +665,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
         if (sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()) {
             TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline-CacheLookup");
 
+            SkDebugf("in here a\n");
             pipelineCreateInfo->flags |=
                     VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
             VULKAN_CALL_RESULT_NOCHECK(
@@ -676,10 +677,13 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
                                             pipelineCreateInfo,
                                             /*pAllocator=*/nullptr,
                                             &vkPipeline));
+            SkDebugf("CreateGraphitePipelines %d %p (%d)\n",
+                    result, vkPipeline, VK_PIPELINE_COMPILE_REQUIRED);
             sharedContext->checkVkResult(result);
         }
 
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
+            SkDebugf("in here b\n");
             TRACE_EVENT0_ALWAYS(
                 "skia.shaders",
                 TRACE_STR_STATIC(sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()
@@ -697,8 +701,12 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
                                                        /*pAllocator=*/nullptr,
                                                        &vkPipeline));
             if (result == VK_SUCCESS) {
+                SkDebugf("marking %p\n", vkPipeline);
                 sharedContext->pipelineCompileWasRequired();
+            } else {
+                SkDebugf("not marking %d\n", result);
             }
+
         }
     }
     if (result != VK_SUCCESS) {
