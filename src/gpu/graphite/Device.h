@@ -367,9 +367,6 @@ private:
     // per Device flush.
     int fAtlasedPathCount = 0;
 
-    // TODO(b/330864257): Clean up once flushPendingWorkToRecorder() doesn't have to be re-entrant
-    bool fIsFlushing = false;
-
     const sktext::gpu::SubRunControl fSubRunControl;
 
 #if defined(SK_DEBUG)
