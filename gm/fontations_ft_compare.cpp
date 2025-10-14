@@ -177,7 +177,7 @@ protected:
             sk_sp<SkSurface> surface = nullptr;
             if (fSimulatePixelGeometry) {
                 if (!wrapCanvasUnknownGeometry(canvas, surface)) {
-                    return DrawResult::kFail;
+                    return DrawResult::kSkip;
                 }
                 drawCanvas = surface->getCanvas();
             }
