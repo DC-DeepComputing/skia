@@ -1506,35 +1506,6 @@ private:
 #ifdef SK_HIDE_PATH_EDIT_METHODS
 public:
 #endif
-#ifdef SK_SUPPORT_UNSPANNED_APIS
-    static SkPath Make(const SkPoint points[], int pointCount,
-                       const uint8_t verbs[], int verbCount,
-                       const SkScalar conics[], int conicWeightCount,
-                       SkPathFillType fillType, bool isVolatile = false) {
-        return Make({points, pointCount},
-                    {verbs, verbCount},
-                    {conics, conicWeightCount},
-                    fillType, isVolatile);
-    }
-    static SkPath Polygon(const SkPoint pts[], int count, bool isClosed,
-                          SkPathFillType fillType = SkPathFillType::kWinding,
-                          bool isVolatile = false) {
-        return Polygon({pts, count}, isClosed, fillType, isVolatile);
-    }
-    int getPoints(SkPoint points[], int max) const {
-        return (int)this->getPoints({points, max});
-    }
-    int getVerbs(uint8_t verbs[], int max) const {
-        return (int)this->getVerbs({verbs, max});
-    }
-    SkPath& addRoundRect(const SkRect& rect, const SkScalar radii[],
-                         SkPathDirection dir = SkPathDirection::kCW) {
-        return this->addRoundRect(rect, {radii, radii ? 8 : 0}, dir);
-    }
-    SkPath& addPoly(const SkPoint pts[], int count, bool close) {
-        return this->addPoly({pts, count}, close);
-    }
-#endif
 
     SkPathIter iter() const;
 
