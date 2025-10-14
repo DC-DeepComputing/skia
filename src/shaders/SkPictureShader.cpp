@@ -246,10 +246,12 @@ sk_sp<SkImage> SkPictureShader::CachedImageInfo::makeImage(sk_sp<SkSurface> surf
     if (!surf) {
         return nullptr;
     }
+
     auto canvas = surf->getCanvas();
     canvas->concat(matrixForDraw);
     canvas->drawPicture(pict);
-    return surf->makeImageSnapshot();
+
+    return surf->makeTemporaryImage();
 }
 
 // Returns a cached image shader, which wraps a single picture tile at the given
