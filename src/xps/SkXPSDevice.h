@@ -24,6 +24,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypeface.h"
+#include "include/docs/SkXPSDocument.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkBitmapDevice.h"
 #include "src/core/SkClipStackDevice.h"
@@ -42,9 +43,16 @@ class GlyphRunList;
 */
 class SkXPSDevice final : public SkClipStackDevice {
 public:
-    SK_SPI SkXPSDevice(SkISize);
+    SK_SPI explicit SkXPSDevice(SkISize, SkXPS::Options fOpts);
     SK_SPI ~SkXPSDevice() override;
 
+    // We don't want to copy or move this
+    SkXPSDevice(const SkXPSDevice&) = delete;
+    void operator=(const SkXPSDevice&) = delete;
+
+    void setOpts(SkXPS::Options opts) {
+        fOpts = opts;
+    }
     bool beginPortfolio(SkWStream* outputStream, IXpsOMObjectFactory*);
     /**
       @param unitsPerMeter converts geometry units into physical units.
@@ -135,6 +143,8 @@ private:
 
     skia_private::TArray<TypefaceUse, true> fTypefaces;
     skia_private::TArray<TypefaceUse, true>* fTopTypefaces;
+
+    SkXPS::Options fOpts;
 
     /** Creates a GUID based id and places it into buffer.
         buffer should have space for at least GUID_ID_LEN wide characters.
@@ -275,10 +285,6 @@ private:
         const SkMask& mask,
         const SkVector& ppuScale,
         IXpsOMPath* shadedPath);
-
-    // Disable the default copy and assign implementation.
-    SkXPSDevice(const SkXPSDevice&);
-    void operator=(const SkXPSDevice&);
 };
 
 #endif  // SK_BUILD_FOR_WIN
