@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ff2387_6770698f",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-14T14:30:52Z",
+      "side": 1,
+      "message": "nit: I know this wasn\u0027t in your change really, but WDYT about defining a name for this data type? Like \n`using BufferAllocationInfo \u003d std::tuple\u003cBufferWriter, BindBufferInfo, BufferSubAllocator\u003e;` or something like that?",
+      "range": {
+        "startLine": 220,
+        "startChar": 4,
+        "endLine": 220,
+        "endChar": 64
+      },
+      "revId": "69cfffeb9de78db56babf3395909da70f97b2494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
