@@ -211,6 +211,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc44fa71_50c617eb",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-14T13:57:35Z",
+      "side": 1,
+      "message": "It\u0027s slightly awkward but explicitly marking is the only way to set `fStartingOffset`, without breaking the validator.\n\nIf `fStartingOffset` is updated inside every `wrap` + `finish` call, then `endRenderStepData` also increments the offset. `PipelineDataGatherer` functionality-wise, this is fine. However, this messes up the validation, which is calculating the validation offset using `fStartingOffset`.i.e. Validation fails, because we\u0027re validating the current alignment, using the *next* starting offset.\n\nInstead, we make it so that `endPaint` calls the explicit marking function",
+      "parentUuid": "62df2d18_3c99090b",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2332f6_276e44fb",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 16
@@ -222,6 +246,30 @@
       "writtenOn": "2025-10-13T14:19:39Z",
       "side": 1,
       "message": "nit: since you\u0027re here, can you fit this line to 100 chars?",
+      "range": {
+        "startLine": 214,
+        "startChar": 29,
+        "endLine": 214,
+        "endChar": 101
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecd401a2_1d94e3fe",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-14T13:57:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab2332f6_276e44fb",
       "range": {
         "startLine": 214,
         "startChar": 29,
@@ -245,6 +293,30 @@
       "writtenOn": "2025-10-13T14:19:39Z",
       "side": 1,
       "message": "This should be `SkTo\u003cint\u003e(size)`, or we can update `rewindTo()` and `UniformManager::size()` to return `int` to match what SkTDArray operates on.  `PipelineDataGatherer`\u0027s fPaintDataSize can be an `int` then too.\n\nThe only API that still operates on `size_t` then is the SkSpan template, but that is so it is compatible with std::span.",
+      "range": {
+        "startLine": 90,
+        "startChar": 22,
+        "endLine": 90,
+        "endChar": 26
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "592e319d_5a956425",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-14T13:57:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f60b1196_6c37b394",
       "range": {
         "startLine": 90,
         "startChar": 22,
@@ -302,6 +374,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8576769e_89c476a2",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-14T13:57:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "383421b8_c1e67e4f",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b001a1d_39ff0eac",
@@ -339,6 +435,30 @@
       "side": 1,
       "message": "See the comment for \u0027drawList\u0027",
       "parentUuid": "6b001a1d_39ff0eac",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "469c58b8c69777278c44e9adc824bda3d4de2c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "811c2f0e_649d11e3",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-14T13:57:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ed84081_dc215530",
       "range": {
         "startLine": 181,
         "startChar": 0,
