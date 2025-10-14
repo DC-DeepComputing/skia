@@ -52,9 +52,10 @@
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
+#include "tests/ComparePixels.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tests/TestUtils.h"
+#include "tests/ganesh/GaneshTestUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/BackendTextureImageFactory.h"
@@ -1433,7 +1434,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
                                            GrColorTypeToStr(info.colorType()), i, unowned, x, y,
                                            diffs[0], diffs[1], diffs[2], diffs[3]);
                                 });
-                        ComparePixels(a, b, tol, error);
+                        CompareGaneshPixels(a, b, tol, error);
                     }
                 }
             }
