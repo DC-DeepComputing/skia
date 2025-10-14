@@ -22,6 +22,30 @@
       },
       "revId": "b268023e2da54d283554e4fab1aeaf5a8ae072cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc4ed59b_20121e48",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-14T21:06:54Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "6825e7e9_18188ee1",
+      "range": {
+        "startLine": 180,
+        "startChar": 27,
+        "endLine": 180,
+        "endChar": 44
+      },
+      "revId": "b268023e2da54d283554e4fab1aeaf5a8ae072cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
