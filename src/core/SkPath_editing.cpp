@@ -998,19 +998,6 @@ void SkPath::offset(SkScalar dx, SkScalar dy, SkPath* dst) const {
     this->transform(matrix, dst);
 }
 
-static void subdivide_cubic_to(SkPathBuilder* builder, const SkPoint pts[4],
-                               int level = 2) {
-    if (--level >= 0) {
-        SkPoint tmp[7];
-
-        SkChopCubicAtHalf(pts, tmp);
-        subdivide_cubic_to(builder, &tmp[0], level);
-        subdivide_cubic_to(builder, &tmp[3], level);
-    } else {
-        builder->cubicTo(pts[1], pts[2], pts[3]);
-    }
-}
-
 void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
     if (matrix.isIdentity()) {
         if (dst != nullptr && dst != this) {
@@ -1025,78 +1012,50 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
     }
 
     if (matrix.hasPerspective()) {
-
-        SkPath clipped;
-        const SkPath* src = this;
-        if (SkPathPriv::PerspectiveClip(*this, matrix, &clipped)) {
-            src = &clipped;
-        }
-
-        SkPathBuilder tmp(this->getFillType());
-        SkPath::Iter iter(*src, false);
-        while (auto rec = iter.next()) {
-            const SkSpan<const SkPoint> pts = rec->fPoints;
-            switch (rec->fVerb) {
-                case SkPathVerb::kMove:
-                    tmp.moveTo(pts[0]);
-                    break;
-                case SkPathVerb::kLine:
-                    tmp.lineTo(pts[1]);
-                    break;
-                case SkPathVerb::kQuad:
-                    // promote the quad to a conic
-                    tmp.conicTo(pts[1], pts[2],
-                                SkConic::TransformW(pts.data(), SK_Scalar1, matrix));
-                    break;
-                case SkPathVerb::kConic:
-                    tmp.conicTo(pts[1], pts[2],
-                                SkConic::TransformW(pts.data(), rec->conicWeight(), matrix));
-                    break;
-                case SkPathVerb::kCubic:
-                    subdivide_cubic_to(&tmp, pts.data());
-                    break;
-                case SkPathVerb::kClose:
-                    tmp.close();
-                    break;
+        if (auto raw = SkPathPriv::Raw(*this)) {
+            if (auto result = SkPathPriv::TransformToBuilder(*raw, matrix)) {
+                *dst = result->detach();
+                return;
             }
         }
-        *dst = tmp.detach(&matrix);
-    } else {
-        SkPathConvexity convexity = this->getConvexityOrUnknown();
-
-        SkPathRef::CreateTransformedCopy(&dst->fPathRef, *fPathRef, matrix);
-
-        if (this != dst) {
-            dst->fLastMoveToIndex = fLastMoveToIndex;
-            dst->fFillType = fFillType;
-            dst->fIsVolatile = fIsVolatile;
-        }
-
-        // Due to finite/fragile float numerics, we can't assume that a convex path remains
-        // convex after a transformation, so mark it as unknown here.
-        // However, some transformations are thought to be safe:
-        //    axis-aligned values under scale/translate.
-        //
-        if (SkPathConvexity_IsConvex(convexity)) {
-            if (!matrix.isScaleTranslate() || !SkPathPriv::IsAxisAligned(*this)) {
-                // Not safe to still assume we're convex...
-                convexity = SkPathConvexity::kUnknown;
-            } else {
-                SkScalar det2x2 =
-                    matrix.get(SkMatrix::kMScaleX) * matrix.get(SkMatrix::kMScaleY) -
-                    matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
-                if (det2x2 < 0) {
-                    convexity = SkPathConvexity_OppositeConvexDirection(convexity);
-                } else if (det2x2 > 0) {
-                    // we keep our direction
-                } else /* det2x == 0 */ {
-                    convexity = SkPathConvexity::kConvex_Degenerate;
-                }
-            }
-        }
-        dst->setConvexity(convexity);
-
-        SkDEBUGCODE(dst->validate();)
+        // failed to clip or transform, so ... set to empty?
+        *dst = SkPath(this->getFillType());
+        return;
     }
+
+    SkPathConvexity convexity = this->getConvexityOrUnknown();
+    SkPathRef::CreateTransformedCopy(&dst->fPathRef, *fPathRef, matrix);
+
+    if (this != dst) {
+        dst->fLastMoveToIndex = fLastMoveToIndex;
+        dst->fFillType = fFillType;
+        dst->fIsVolatile = fIsVolatile;
+    }
+
+    // Due to finite/fragile float numerics, we can't assume that a convex path remains
+    // convex after a transformation, so mark it as unknown here.
+    // However, some transformations are thought to be safe:
+    //    axis-aligned values under scale/translate.
+    //
+    if (SkPathConvexity_IsConvex(convexity)) {
+        if (!matrix.isScaleTranslate() || !SkPathPriv::IsAxisAligned(*this)) {
+            // Not safe to still assume we're convex...
+            convexity = SkPathConvexity::kUnknown;
+        } else {
+            SkScalar det2x2 =
+                matrix.get(SkMatrix::kMScaleX) * matrix.get(SkMatrix::kMScaleY) -
+                matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
+            if (det2x2 < 0) {
+                convexity = SkPathConvexity_OppositeConvexDirection(convexity);
+            } else if (det2x2 > 0) {
+                // we keep our direction
+            } else /* det2x == 0 */ {
+                convexity = SkPathConvexity::kConvex_Degenerate;
+            }
+        }
+    }
+    dst->setConvexity(convexity);
+
+    SkDEBUGCODE(dst->validate();)
 }
 

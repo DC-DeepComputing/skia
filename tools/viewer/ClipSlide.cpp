@@ -532,18 +532,21 @@ public:
 
 
         SkColor planeColor = SK_ColorBLUE;
-        SkPath clippedPath, *path = &fPath;
-        if (SkPathPriv::PerspectiveClip(fPath, mx.asM33(), &clippedPath)) {
-            path = &clippedPath;
-            planeColor = SK_ColorRED;
-        }
-        canvas->save();
-        canvas->concat(mx);
-        canvas->drawPath(*path, paint);
-        canvas->restore();
+        const SkPath *path = &fPath;
+        if (auto raw = SkPathPriv::Raw(fPath)) {
+            auto clippedPath = SkPathPriv::PerspectiveClip(*raw, mx.asM33());
+            if (clippedPath) {
+                path = &clippedPath.value();
+                planeColor = SK_ColorRED;
+            }
+            canvas->save();
+            canvas->concat(mx);
+            canvas->drawPath(*path, paint);
+            canvas->restore();
 
-        SkHalfPlane hpw = half_plane_w0(mx.asM33());
-        draw_halfplane(canvas, hpw, planeColor);
+            SkHalfPlane hpw = half_plane_w0(mx.asM33());
+            draw_halfplane(canvas, hpw, planeColor);
+        }
     }
 
 protected:

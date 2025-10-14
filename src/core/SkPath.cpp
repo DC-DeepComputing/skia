@@ -24,6 +24,7 @@
 #include "src/core/SkEdgeClipper.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkPathData.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPathRawShapes.h"
@@ -1575,7 +1576,8 @@ struct SkHalfPlane {
 };
 
 // assumes plane is pre-normalized
-static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) {
+// Returns {} on failure
+static std::optional<SkPath> clip(const SkPathRaw& src, const SkHalfPlane& plane) {
     SkMatrix mx;
     SkPoint p0 = { -plane.fA*plane.fC, -plane.fB*plane.fC };
     mx.setAll( plane.fB, plane.fA, p0.fX,
@@ -1586,11 +1588,12 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
         return {};
     }
 
-    SkPath rotated = path.makeTransform(*inv);
-    auto raw = SkPathPriv::Raw(rotated);
-    if (!raw) {
+    SkASSERT(!inv->hasPerspective());
+    auto rotated = SkPathData::MakeTransform(src, *inv);
+    if (!rotated) {
         return {};
     }
+    auto raw = rotated->raw(src.fillType());
 
     SkScalar big = SK_ScalarMax;
     SkRect clip = {-big, 0, big, big };
@@ -1600,7 +1603,7 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
         SkPoint       fPrev = {0,0};
     } rec;
 
-    SkEdgeClipper::ClipPath(*raw, clip, false,
+    SkEdgeClipper::ClipPath(raw, clip, false,
                             [](SkEdgeClipper* clipper, bool newCtr, void* ctx) {
         Rec* rec = (Rec*)ctx;
 
@@ -1636,7 +1639,8 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
         }
     }, &rec);
 
-    rec.fResult.setFillType(path.getFillType());
+    rec.fResult.setFillType(src.fillType());
+    SkASSERT(!inv->hasPerspective());
     SkPath result = rec.fResult.detach(&mx);
     if (!result.isFinite()) {
         return {};
@@ -1645,9 +1649,9 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
 }
 
 // true means we have written to clippedPath
-bool SkPathPriv::PerspectiveClip(const SkPath& path, const SkMatrix& matrix, SkPath* clippedPath) {
+std::optional<SkPath> SkPathPriv::PerspectiveClip(const SkPathRaw& src, const SkMatrix& matrix) {
     if (!matrix.hasPerspective()) {
-        return false;
+        return {};
     }
 
     SkHalfPlane plane {
@@ -1656,23 +1660,21 @@ bool SkPathPriv::PerspectiveClip(const SkPath& path, const SkMatrix& matrix, SkP
         matrix[SkMatrix::kMPersp2] - kW0PlaneDistance
     };
     if (plane.normalize()) {
-        switch (plane.test(path.getBounds())) {
+        switch (plane.test(src.bounds())) {
             case SkHalfPlane::kAllPositive:
-                return false;
+                return {};
             case SkHalfPlane::kMixed: {
-                if (auto result = clip(path, plane)) {
-                    *clippedPath = *result;
+                if (auto result = clip(src, plane)) {
+                    return *result;
                 } else {
-                    *clippedPath = SkPath(); // clipped out (or failed)
+                    return SkPath(); // clipped out (or failed)
                 }
-                return true;
             }
             default: break; // handled outside of the switch
         }
     }
     // clipped out (or failed)
-    *clippedPath = SkPath();
-    return true;
+    return SkPath();
 }
 
 int SkPathPriv::GenIDChangeListenersCount(const SkPath& path) {

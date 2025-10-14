@@ -362,14 +362,17 @@ public:
     }
 
     /**
-     *  If needed (to not blow-up under a perspective matrix), clip the path, returning the
-     *  answer in "result", and return true.
+     *  If needed (to not blow-up under a perspective matrix), clip the path,
+     *  returning the result.
      *
      *  Note result might be empty (if the path was completely clipped out).
      *
-     *  If no clipping is needed, returns false and "result" is left unchanged.
+     *  If no clipping is needed, returns {}.
      */
-    static bool PerspectiveClip(const SkPath& src, const SkMatrix&, SkPath* result);
+    static std::optional<SkPath> PerspectiveClip(const SkPathRaw& src, const SkMatrix&);
+
+    // Specialied for perspective, where the #verbs may differ from the src
+    static std::optional<SkPathBuilder> TransformToBuilder(const SkPathRaw&, const SkMatrix&);
 
     /**
      * Gets the number of GenIDChangeListeners. If another thread has access to this path then
