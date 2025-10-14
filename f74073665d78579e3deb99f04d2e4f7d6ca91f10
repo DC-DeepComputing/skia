@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade7e63f_a12d2168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-14T17:42:34Z",
+      "side": 1,
+      "message": "I\u0027m still refactoring a couple things (thinking of moving more into the SkCapture object to make the SkCaptureManager more isolated from the data it is storing), but I wanted some eyes on this before the CL got too big. Maybe it\u0027s worth reviewing as is and moving more into a followup CL where appropriate.",
+      "revId": "f74073665d78579e3deb99f04d2e4f7d6ca91f10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
