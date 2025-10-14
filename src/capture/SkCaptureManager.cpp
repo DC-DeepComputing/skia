@@ -9,7 +9,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
-#include "include/private/base/SkDebug.h"
+#include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureCanvas.h"
 
 #include <memory>
@@ -50,8 +50,6 @@ void SkCaptureManager::snapPicture(SkSurface* surface) {
     }
 }
 
-void SkCaptureManager::serializeCapture() {
-    // TODO (412351769): return a serialized file via SkData, for now this will print the contents
-    // of the capture for inspection.
-    SkDebugf("Tracked canvases: %d. SkPictures: %d\n", fTrackedCanvases.size(), fPictures.size());
+sk_sp<SkCapture> SkCaptureManager::getCapture() const {
+   return SkCapture::MakeFromPictures(fPictures);
 }
