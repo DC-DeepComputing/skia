@@ -51,6 +51,24 @@
       "parentUuid": "d2330ec9_9c225af8",
       "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b60ac6_107f81e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-14T19:30:01Z",
+      "side": 1,
+      "message": "IIUC you are proposing to\n\n* Avoid breaking the existing Skia clients (ones using the old/existing `SkXPS::MakeDocument` overload) by continuing to implement the old overload on top of `SkPngEncoder` (and obviously continuing to require such clients to link against `libpng`).\n* Allow some Skia clients to remove the `libpng` dependency, by\n    * Introducing a new macro-definition (say `SK_XPS_NO_LEGACY_MAKE_DOCUMENT_OVERLOAD`) that the new clients can set to delete the old/existing implementation of `SkXPS::MakeDocument`\n    * Allow continued use of `SkXPS::MakeDocument` by introducing a new `SkXPS::MakeDocument` overload that takes a parameter that allows injecting/choosing a different PNG encoder.\n\nDid I get that right?\n\nIf so, then in the end, Skia clients would still depend on macro definitions for controlling the implementation details of Skia, right?  We would just introduce `SK_XPS_NO_LEGACY_MAKE_DOCUMENT_OVERLOAD` instead of using the existing `SK_CODEC_ENCODES_PNG_WITH_RUST` (as in the initial patchset proposed by the CL under review).\n\nMaybe introducing `SK_XPS_NO_LEGACY_MAKE_DOCUMENT_OVERLOAD` is okay, because you think/hope that in the long-term it will get defined by all clients, and therefore we will be able to remove it at that point (from Skia + from all the clients)?  FWIW fixing all clients seems unlikely IMO, but maybe this theoretical possibility is an advantage over `SK_CODEC_ENCODES_PNG_WITH_RUST` which would be \"forever\".\n\nPS. I guess there are some parallels with `SK_DISABLE_LEGACY_INIT_DECODERS` that Skia clients can define if they want to avoid one specific place where Skia has a hardcoded dependency on `SkPngDecoder`.  In this case, we could also avoid introducing `SK_DISABLE_LEGACY_INIT_DECODERS` and depend on `SK_CODEC_DECODES_PNG_WITH_RUST` instead.\n\nPPS. Is there a middle-ground here, where we introduce `SK_XPS_NO_LEGACY_MAKE_DOCUMENT_OVERLOAD`, but in absence of that macrodefinition, the old overload can be still controlled by `SK_CODEC_ENCODES_PNG_WITH_RUST` (as proposed in the initial patchset of the CL under review)?  The old overload needs to stay here for a long time, so it seems that the harm is limited.  And this would make it much easier to produce with removing the `libpng` dependency from PDFium.",
+      "parentUuid": "0f5b7ff6_2183db03",
+      "revId": "8c2f07bdd3409a3464fc205850679ecc1e70bf56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
