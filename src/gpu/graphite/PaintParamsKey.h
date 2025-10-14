@@ -154,6 +154,12 @@ private:
 // into the dictionary to be prohibitive since that should be infrequent.
 class PaintParamsKeyBuilder {
 public:
+    PaintParamsKeyBuilder(const PaintParamsKeyBuilder&) = delete;
+    PaintParamsKeyBuilder& operator=(const PaintParamsKeyBuilder&) = delete;
+
+    PaintParamsKeyBuilder(PaintParamsKeyBuilder&&) = default;
+    PaintParamsKeyBuilder& operator=(PaintParamsKeyBuilder&&) = default;
+
     PaintParamsKeyBuilder(const ShaderCodeDictionary* dict) {
         SkDEBUGCODE(fDict = dict;)
     }
@@ -189,6 +195,15 @@ public:
         SkDEBUGCODE(this->validateData(data.size()));
         fData.push_back(data.size());
         fData.push_back_n(data.size(), data.begin());
+        fDataHighWaterMark = std::max(fDataHighWaterMark, static_cast<int>(fData.size_bytes()));
+    }
+
+    void tryShrinkCapacty() {
+        int halfCapacity = fData.capacity() / 2;
+        if (fDataHighWaterMark < halfCapacity) {
+            fDataHighWaterMark = 0;
+            fData.shrink_and_clear(halfCapacity);
+        }
     }
 
 private:
@@ -217,6 +232,7 @@ private:
     // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
+    int fDataHighWaterMark;
 
 #ifdef SK_DEBUG
     void pushStack(int32_t codeSnippetID);

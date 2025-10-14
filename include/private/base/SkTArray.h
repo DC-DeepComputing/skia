@@ -427,6 +427,15 @@ public:
         this->changeSize(0);
     }
 
+    // This function:
+    // 1) Resizes the memory allocation to count.
+    // 2) Resizes fSize to 0.
+    void shrink_and_clear(int count) {
+        this->changeSize(count);
+        this->shrink_to_fit();
+        this->changeSize(0);
+    }
+
     void shrink_to_fit() {
         if (!fOwnMemory || fSize == fCapacity) {
             return;
