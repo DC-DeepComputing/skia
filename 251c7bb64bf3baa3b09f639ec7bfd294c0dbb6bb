@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42847b03_bbe54ea8",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-15T16:55:11Z",
+      "side": 1,
+      "message": "Would we want this to precede the other ColorTypeInfo that requires a swizzle? I imagine this color type used as a surface is less common.\n\nAlso, `SkYUVAPixmapInfo::DefaultColorTypeForDataType` still defaults to `kA16_unorm_SkColorType` when we are using a single channel `kUnorm16` data type - not sure if we would want that to change either.",
+      "range": {
+        "startLine": 709,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 13
+      },
+      "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
