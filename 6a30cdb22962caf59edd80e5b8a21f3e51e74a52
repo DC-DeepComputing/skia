@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def60e9f_7705075f",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T18:31:36Z",
+      "side": 1,
+      "message": "I\u0027m slightly puzzled because this is a different bug than the one linked in the commit message.",
+      "range": {
+        "startLine": 236,
+        "startChar": 65,
+        "endLine": 236,
+        "endChar": 74
+      },
+      "revId": "6a30cdb22962caf59edd80e5b8a21f3e51e74a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
