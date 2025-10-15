@@ -45,7 +45,6 @@ void Texture::invokeReleaseProc() {
 
 bool Texture::uploadDataOnHost(const UploadSource& source, const SkIRect& dstRect) {
     SkUNREACHABLE;
-    return false;
 }
 
 MutableTextureState* Texture::mutableState() const { return fMutableState.get(); }

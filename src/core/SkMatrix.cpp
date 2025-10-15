@@ -1332,7 +1332,7 @@ std::optional<SkMatrix> SkMatrix::PolyToPoly(SkSpan<const SkPoint> src, SkSpan<c
                 return {};
             }
             return tempMap * inverse.value();
-        } break;
+        } // will always have returned at this point
         default:
             break;
     }
