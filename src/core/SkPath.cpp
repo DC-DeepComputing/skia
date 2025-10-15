@@ -782,6 +782,243 @@ bool SkPath::isValidImpl() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+static int sign(SkScalar x) { return x < 0; }
+#define kValueNeverReturnedBySign   2
+
+enum DirChange {
+    kUnknown_DirChange,
+    kLeft_DirChange,
+    kRight_DirChange,
+    kStraight_DirChange,
+    kBackwards_DirChange, // if double back, allow simple lines to be convex
+    kInvalid_DirChange
+};
+
+// only valid for a single contour
+struct Convexicator {
+
+    /** The direction returned is only valid if the path is determined convex */
+    SkPathFirstDirection getFirstDirection() const { return fFirstDirection; }
+
+    void setMovePt(const SkPoint& pt) {
+        fFirstPt = fLastPt = pt;
+        fExpectedDir = kInvalid_DirChange;
+    }
+
+    bool addPt(const SkPoint& pt) {
+        if (fLastPt == pt) {
+            return true;
+        }
+        // should only be true for first non-zero vector after setMovePt was called. It is possible
+        // we doubled backed at the start so need to check if fLastVec is zero or not.
+        if (fFirstPt == fLastPt && fExpectedDir == kInvalid_DirChange && fLastVec.equals(0,0)) {
+            fLastVec = pt - fLastPt;
+            fFirstVec = fLastVec;
+        } else if (!this->addVec(pt - fLastPt)) {
+            return false;
+        }
+        fLastPt = pt;
+        return true;
+    }
+
+    static bool IsConcaveBySign(const SkPoint points[], int count) {
+        if (count <= 3) {
+            // point, line, or triangle are always convex
+            return false;
+        }
+
+        const SkPoint* last = points + count;
+        SkPoint currPt = *points++;
+        SkPoint firstPt = currPt;
+        int dxes = 0;
+        int dyes = 0;
+        int lastSx = kValueNeverReturnedBySign;
+        int lastSy = kValueNeverReturnedBySign;
+        for (int outerLoop = 0; outerLoop < 2; ++outerLoop ) {
+            while (points != last) {
+                SkVector vec = *points - currPt;
+                if (!vec.isZero()) {
+                    // give up if vector construction failed
+                    if (!vec.isFinite()) {
+                        return true;    // treat as concave
+                    }
+                    int sx = sign(vec.fX);
+                    int sy = sign(vec.fY);
+                    dxes += (sx != lastSx);
+                    dyes += (sy != lastSy);
+                    if (dxes > 3 || dyes > 3) {
+                        return true;
+                    }
+                    lastSx = sx;
+                    lastSy = sy;
+                }
+                currPt = *points++;
+                if (outerLoop) {
+                    break;
+                }
+            }
+            points = &firstPt;
+        }
+        return false;  // that is, it may be convex, don't know yet
+    }
+
+    bool close() {
+        // If this was an explicit close, there was already a lineTo to fFirstPoint, so this
+        // addPt() is a no-op. Otherwise, the addPt implicitly closes the contour. In either case,
+        // we have to check the direction change along the first vector in case it is concave.
+        return this->addPt(fFirstPt) && this->addVec(fFirstVec);
+    }
+
+    bool isFinite() const {
+        return fIsFinite;
+    }
+
+    int reversals() const {
+        return fReversals;
+    }
+
+private:
+    DirChange directionChange(const SkVector& curVec) {
+        SkScalar cross = SkPoint::CrossProduct(fLastVec, curVec);
+        if (!SkIsFinite(cross)) {
+            return kUnknown_DirChange;
+        }
+        if (cross == 0) {
+            return fLastVec.dot(curVec) < 0 ? kBackwards_DirChange : kStraight_DirChange;
+        }
+        return 1 == SkScalarSignAsInt(cross) ? kRight_DirChange : kLeft_DirChange;
+    }
+
+    bool addVec(const SkVector& curVec) {
+        DirChange dir = this->directionChange(curVec);
+        switch (dir) {
+            case kLeft_DirChange:       // fall through
+            case kRight_DirChange:
+                if (kInvalid_DirChange == fExpectedDir) {
+                    fExpectedDir = dir;
+                    fFirstDirection = (kRight_DirChange == dir) ? SkPathFirstDirection::kCW
+                                                                : SkPathFirstDirection::kCCW;
+                } else if (dir != fExpectedDir) {
+                    fFirstDirection = SkPathFirstDirection::kUnknown;
+                    return false;
+                }
+                fLastVec = curVec;
+                break;
+            case kStraight_DirChange:
+                break;
+            case kBackwards_DirChange:
+                //  allow path to reverse direction twice
+                //    Given path.moveTo(0, 0); path.lineTo(1, 1);
+                //    - 1st reversal: direction change formed by line (0,0 1,1), line (1,1 0,0)
+                //    - 2nd reversal: direction change formed by line (1,1 0,0), line (0,0 1,1)
+                fLastVec = curVec;
+                return ++fReversals < 3;
+            case kUnknown_DirChange:
+                return (fIsFinite = false);
+            case kInvalid_DirChange:
+                SK_ABORT("Use of invalid direction change flag");
+        }
+        return true;
+    }
+
+    SkPoint              fFirstPt {0, 0};  // The first point of the contour, e.g. moveTo(x,y)
+    SkVector             fFirstVec {0, 0}; // The direction leaving fFirstPt to the next vertex
+
+    SkPoint              fLastPt {0, 0};   // The last point passed to addPt()
+    SkVector             fLastVec {0, 0};  // The direction that brought the path to fLastPt
+
+    DirChange            fExpectedDir { kInvalid_DirChange };
+    SkPathFirstDirection fFirstDirection { SkPathFirstDirection::kUnknown };
+    int                  fReversals { 0 };
+    bool                 fIsFinite { true };
+};
+
+static void trim_trailing_moves(SkSpan<const SkPoint>& pts, SkSpan<const SkPathVerb>& vbs) {
+    size_t vbCount = vbs.size();
+    while (vbCount > 0 && vbs[vbCount - 1] == SkPathVerb::kMove) {
+        vbCount -= 1;
+    }
+    if (size_t delta = vbs.size() - vbCount) {
+        SkASSERT(pts.size() >= delta);
+        pts = {pts.data(), pts.size() - delta};
+        vbs = {vbs.data(), vbs.size() - delta};
+    }
+}
+
+SkPathConvexity SkPathPriv::ComputeConvexity(SkSpan<const SkPoint> points,
+                                             SkSpan<const SkPathVerb> vbs,
+                                             SkSpan<const float> conicWeights) {
+    // callers need to give us finite values
+    SkASSERT(SkRect::Bounds(points).has_value());
+
+    trim_trailing_moves(points, vbs);
+
+    if (vbs.empty()) {
+        return SkPathConvexity::kConvex_Degenerate;
+    }
+
+    // Check to see if path changes direction more than three times as quick concave test
+    if (Convexicator::IsConcaveBySign(points.data(), points.size())) {
+        return SkPathConvexity::kConcave;
+    }
+
+    int contourCount = 0;
+    bool needsClose = false;
+    Convexicator state;
+
+    auto iter = SkPathIter(points, vbs, conicWeights);
+    while (auto rec = iter.next()) {
+        auto verb = rec->fVerb;
+        auto pts = rec->fPoints;
+
+        // Looking for the last moveTo before non-move verbs start
+        if (contourCount == 0) {
+            if (verb == SkPathVerb::kMove) {
+                state.setMovePt(pts[0]);
+            } else {
+                // Starting the actual contour, fall through to c=1 to add the points
+                contourCount++;
+                needsClose = true;
+            }
+        }
+        // Accumulating points into the Convexicator until we hit a close or another move
+        if (contourCount == 1) {
+            if (verb == SkPathVerb::kClose || verb == SkPathVerb::kMove) {
+                if (!state.close()) {
+                    return SkPathConvexity::kConcave;
+                }
+                needsClose = false;
+                contourCount++;
+            } else {
+                // lines add 1 point, cubics add 3, conics and quads add 2
+                int count = SkPathPriv::PtsInVerb((unsigned) verb);
+                SkASSERT(count > 0);
+                for (int i = 1; i <= count; ++i) {
+                    if (!state.addPt(pts[i])) {
+                        return SkPathConvexity::kConcave;
+                    }
+                }
+            }
+        } else {
+            // The first contour has closed and anything other than spurious trailing moves means
+            // there's multiple contours and the path can't be convex
+            if (verb != SkPathVerb::kMove) {
+                return SkPathConvexity::kConcave;
+            }
+        }
+    }
+
+    // If the path isn't explicitly closed do so implicitly
+    if (needsClose && !state.close()) {
+        return SkPathConvexity::kConcave;
+    }
+
+    const auto firstDir = state.getFirstDirection();
+    if (firstDir == SkPathFirstDirection::kUnknown && state.reversals() >= 3) {
+        return SkPathConvexity::kConcave;
+    }
+    return SkPathFirstDirection_ToConvexity(firstDir);
+}
 
 SkPathConvexity SkPath::computeConvexity() const {
     if (auto c = this->getConvexityOrUnknown(); c != SkPathConvexity::kUnknown) {
