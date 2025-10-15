@@ -75,6 +75,15 @@ struct Options {
 SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
 
 /**
+ *  Encode the |src| pixels to the |dst| stream using default options.
+ *
+ *  Returns true on success.  Returns false on an invalid or unsupported |src|.
+ */
+SK_API inline bool EncodeWithDefaultOptions(SkWStream* dst, const SkPixmap& src) {
+    return Encode(dst, src, Options{});
+}
+
+/**
  *  Returns the encoded data for the pixmap, or nullptr on failure.
  */
 SK_API sk_sp<SkData> Encode(const SkPixmap& src, const Options& options);
