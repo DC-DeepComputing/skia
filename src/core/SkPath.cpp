@@ -1981,7 +1981,7 @@ private:
                 return (fIsFinite = false);
             case kInvalid_DirChange:
                 SK_ABORT("Use of invalid direction change flag");
-                break;
+//                break;
         }
         return true;
     }

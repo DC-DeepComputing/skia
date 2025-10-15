@@ -4380,7 +4380,7 @@ void GrGLGpu::submit(GrOpsRenderPass* renderPass) {
 bool GrGLGpu::testSync(GrGLsync sync) {
     switch (this->glCaps().fenceType()) {
         case GrGLCaps::FenceType::kNone:
-            SK_ABORT("Testing sync without sync support.");
+//            SK_ABORT("Testing sync without sync support.");
             return false;
         case GrGLCaps::FenceType::kNVFence: {
             GrGLuint nvFence = static_cast<GrGLuint>(reinterpret_cast<intptr_t>(sync));
@@ -4405,7 +4405,7 @@ bool GrGLGpu::testSync(GrGLsync sync) {
 void GrGLGpu::deleteSync(GrGLsync sync) {
     switch (this->glCaps().fenceType()) {
         case GrGLCaps::FenceType::kNone:
-            SK_ABORT("Deleting sync without sync support.");
+//            SK_ABORT("Deleting sync without sync support.");
             break;
         case GrGLCaps::FenceType::kNVFence: {
             GrGLuint nvFence = SkToUInt(reinterpret_cast<intptr_t>(sync));

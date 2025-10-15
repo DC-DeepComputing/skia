@@ -97,7 +97,7 @@ static void append_color_output(const PorterDuffXferProcessor& xp,
             break;
         default:
             SK_ABORT("Unsupported output type.");
-            break;
+//            break;
     }
 }
 

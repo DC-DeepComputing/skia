@@ -218,7 +218,7 @@ bool GrBackendFormat::operator==(const GrBackendFormat& that) const {
         default:
             SK_ABORT("Unknown GrBackend");
     }
-    return false;
+//    return false;
 }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)

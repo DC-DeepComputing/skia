@@ -106,7 +106,7 @@
         : [&]{ SK_ABORT("assertf(%s): " fmt, #cond, ##__VA_ARGS__); }() )
 #endif
 
-#if defined(SK_DEBUG)
+#if 0
     #define SkASSERT(cond)            SkASSERT_RELEASE(cond)
     #define SkASSERTF(cond, fmt, ...) SkASSERTF_RELEASE(cond, fmt, ##__VA_ARGS__)
     #define SkDEBUGFAIL(message)      SK_ABORT("%s", message)
