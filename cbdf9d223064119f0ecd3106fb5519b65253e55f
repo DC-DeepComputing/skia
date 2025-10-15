@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed4bc2b4_e431c057",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-15T20:52:32Z",
+      "side": 1,
+      "message": "Not sure about the full implications, but logically we could have a path that is convex (just not resolved yet), and we don\u0027t include a right edge for a segment that is completely to the right of the clip, which goes against what the comment on line 348 suggests. \nLet me know there is reason that we don\u0027t need to worry about this case, and if so sgtm.",
+      "parentUuid": "8f27a64e_95effb27",
+      "range": {
+        "startLine": 367,
+        "startChar": 41,
+        "endLine": 367,
+        "endChar": 64
+      },
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17d8b5c1_677e5c97",
         "filename": "src/core/SkPathData.cpp",
         "patchSetId": 7
