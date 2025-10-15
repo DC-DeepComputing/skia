@@ -22,6 +22,30 @@
       },
       "revId": "92ceb7a0776e171be70ed0feb86bf986961e2940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ae6c142_b17b51d7",
+        "filename": "modules/canvaskit/WasmCommon.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T18:06:29Z",
+      "side": 1,
+      "message": "I think it\u0027s worth making this explicit because we don\u0027t really want to do this on the C++ side if we can help it (since \"shelling out\" to the JS side to get length, byteOffset etc is pretty expensive).",
+      "parentUuid": "5bdb827f_b19f3d04",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 34
+      },
+      "revId": "92ceb7a0776e171be70ed0feb86bf986961e2940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
