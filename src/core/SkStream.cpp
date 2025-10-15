@@ -739,6 +739,21 @@ void SkDynamicMemoryWStream::validate() const {
 }
 #endif
 
+////////////////////////////////////////////////////////////////////////
+
+SkVectorWStream::SkVectorWStream() = default;
+SkVectorWStream::~SkVectorWStream() = default;
+
+bool SkVectorWStream::write(const void* buffer, size_t size) {
+    const uint8_t* bytes = reinterpret_cast<const uint8_t*>(buffer);
+    fVector.insert(fVector.end(), bytes, bytes + size);
+    return true;
+}
+
+size_t SkVectorWStream::bytesWritten() const {
+    return fVector.size();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 class SkBlockMemoryRefCnt : public SkRefCnt {
