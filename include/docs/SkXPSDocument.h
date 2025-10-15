@@ -15,12 +15,22 @@
 #include "include/core/SkDocument.h"
 
 struct IXpsOMObjectFactory;
+class SkWStream;
 
 namespace SkXPS {
 
+struct Options {
+    float dpi;
+}
+
 SK_API sk_sp<SkDocument> MakeDocument(SkWStream* stream,
+                                      IXpsOMObjectFactory* xpsFactory);
+
+inline sk_sp<SkDocument> MakeDocument(SkWStream* stream,
                                       IXpsOMObjectFactory* xpsFactory,
-                                      SkScalar dpi = SK_ScalarDefaultRasterDPI);
+                                      float dpi) {
+
+}
 
 }  // namespace SkXPS
 #endif  // SK_BUILD_FOR_WIN
