@@ -36,6 +36,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
@@ -101,14 +102,30 @@ RecorderOptions::RecorderOptions(const RecorderOptions&) = default;
 RecorderOptions::~RecorderOptions() = default;
 
 /**************************************************************************************************/
-static uint32_t next_id() {
-    static std::atomic<uint32_t> nextID{1};
+
+namespace {
+
+std::unique_ptr<KeyAndDataBuilder> make_key_and_data_builder(const SharedContext* sharedContext) {
+    const bool useStorageBuffers = sharedContext->caps()->storageBufferSupport();
+    const auto& bindingReq = sharedContext->caps()->resourceBindingRequirements();
+    auto gathererLayout = useStorageBuffers ? bindingReq.fStorageBufferLayout
+                                            : bindingReq.fUniformBufferLayout;
+
+    return std::make_unique<KeyAndDataBuilder>(
+            PipelineDataGatherer(gathererLayout),
+            PaintParamsKeyBuilder(sharedContext->shaderCodeDictionary()));
+}
+
+uint32_t next_id() {
+    static std::atomic<uint32_t> nextID{SK_InvalidGenID + 1};
     uint32_t id;
     do {
         id = nextID.fetch_add(1, std::memory_order_relaxed);
     } while (id == SK_InvalidGenID);
     return id;
 }
+
+} // anonymous namespace
 
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
@@ -257,6 +274,13 @@ std::unique_ptr<Recording> Recorder::snap() {
         fAtlasProvider->invalidateAtlases();
     }
 
+    // For each KeyAndDataBuilder owned by the Recorder, check if the high watermark of data usage
+    // over the lifetime snap is less than half of allocated capacity. If so, shrink the capacity.
+    for (const std::unique_ptr<KeyAndDataBuilder>& keyDB : fKeyAndDataBuilders) {
+        SkASSERT(keyDB);
+        keyDB->first.tryShrinkCapacity();
+        keyDB->second.tryShrinkCapacty();
+    }
     return recording;
 }
 
@@ -724,5 +748,25 @@ void RecorderPriv::issueFlushToken() {
     fRecorder->fTokenTracker->issueFlushToken();
 }
 #endif
+
+std::unique_ptr<KeyAndDataBuilder> Recorder::popOrCreateKeyAndDataBuilder() {
+    if (!fKeyAndDataBuilders.empty()) {
+        std::unique_ptr<KeyAndDataBuilder> keyDB = std::move(fKeyAndDataBuilders.back());
+        fKeyAndDataBuilders.pop_back();
+        return keyDB;
+    }
+
+    return make_key_and_data_builder(fSharedContext.get());
+}
+
+void Recorder::pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB) {
+    SkASSERT(keyDB);
+
+    if (fKeyAndDataBuilders.size() < kMaxKeyAndDataBuilders) {
+        fKeyAndDataBuilders.push_back(std::move(keyDB));
+        return;
+    }
+    // If no empty slot was found, the "keyDB" unique_ptr goes out of scope here.
+}
 
 } // namespace skgpu::graphite

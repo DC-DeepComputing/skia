@@ -55,6 +55,8 @@ class Device;
 class DrawBufferManager;
 class FloatStorageManager;
 class ImageProvider;
+class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 class ProxyReadCountMap;
 class RecorderPriv;
 class ResourceProvider;
@@ -66,6 +68,8 @@ class UploadBufferManager;
 class UploadList;
 
 struct RecorderOptionsPriv;
+
+using KeyAndDataBuilder = std::pair<PipelineDataGatherer, PaintParamsKeyBuilder>;
 
 struct SK_API RecorderOptions final {
     RecorderOptions();
@@ -243,6 +247,8 @@ public:
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
 
 private:
+    static constexpr int kMaxKeyAndDataBuilders = 2;
+
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
     friend class RecorderPriv; // for ctor and hidden methods
@@ -250,6 +256,9 @@ private:
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
     Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*);
+
+    std::unique_ptr<KeyAndDataBuilder>popOrCreateKeyAndDataBuilder();
+    void pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder>);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
@@ -292,6 +301,9 @@ private:
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
     sk_sp<FloatStorageManager> fFloatStorageManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    skia_private::STArray<kMaxKeyAndDataBuilders, std::unique_ptr<KeyAndDataBuilder>>
+        fKeyAndDataBuilders;
 
     // Iterating over tracked devices in flushTrackedDevices() needs to be re-entrant and support
     // additions to fTrackedDevices if registerDevice() is triggered by a temporary device during

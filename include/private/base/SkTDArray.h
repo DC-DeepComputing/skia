@@ -176,10 +176,10 @@ public:
         fStorage.clear();
     }
 
-     // Sets the number of elements in the array.
-     // If the array does not have space for count elements, it will increase
-     // the storage allocated to some amount greater than that required.
-     // It will never shrink the storage.
+    // Sets the number of elements in the array.
+    // If the array does not have space for count elements, it will increase
+    // the storage allocated to some amount greater than that required.
+    // It will never shrink the storage.
     void resize(int count) {
         fStorage.resize(count);
     }
@@ -221,6 +221,12 @@ public:
         this->back() = v;
     }
     void pop_back() { fStorage.pop_back(); }
+
+    void shrinkAndClear(int count) {
+        this->resize(count);
+        this->shrink_to_fit();
+        this->clear();
+    }
 
     void shrink_to_fit() {
         fStorage.shrink_to_fit();

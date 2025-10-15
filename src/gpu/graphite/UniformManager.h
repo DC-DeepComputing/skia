@@ -227,6 +227,8 @@ public:
             // paint data exists, storage will still be non-empty, so we guard against alignTo(0).
             this->alignTo(fReqAlignment);
         }
+        fStorageHighWaterMark = std::max(fStorageHighWaterMark,
+                                         static_cast<int>(fStorage.size_bytes()));
 
         // Reset tracking state for any 'new' block of data after finishing this one. The overall
         // layout and whether a paint color was written (in the preserved part) should remain
@@ -254,6 +256,14 @@ public:
     void rewindToOffset();
 
     int size() const { return fStorage.size(); }
+
+    void tryShrinkCapacity() {
+        int halfCapacity = fStorage.capacity() / 2;
+        if (fStorageHighWaterMark < halfCapacity) {
+            fStorageHighWaterMark = 0;
+            fStorage.shrinkAndClear(halfCapacity);
+        }
+    }
 
     // scalars
     void write(float f)     { this->write<SkSLType::kFloat>(&f); }
@@ -415,6 +425,7 @@ private:
     inline void alignTo(int alignment);
 
     SkTDArray<char> fStorage;
+    int fStorageHighWaterMark = 0;
 
     Layout fLayout;
     int fStartingOffset = 0;

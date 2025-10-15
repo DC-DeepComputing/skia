@@ -84,6 +84,12 @@ public:
     DrawBufferManager* drawBufferManager() { return fRecorder->fDrawBufferManager.get(); }
     UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
     sk_sp<FloatStorageManager> refFloatStorageManager() { return fRecorder->fFloatStorageManager; }
+    std::unique_ptr<KeyAndDataBuilder> popOrCreateKeyAndDataBuilder() {
+        return fRecorder->popOrCreateKeyAndDataBuilder();
+    }
+    void pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB) {
+        return fRecorder->pushKeyAndDataBuilder(std::move(keyDB));
+    }
 
     AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
     TokenTracker* tokenTracker() { return fRecorder->fTokenTracker.get(); }
