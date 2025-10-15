@@ -20,6 +20,8 @@
 #include <cstring>
 #include <memory>
 #include <utility>
+#include <vector>
+
 class SkStreamAsset;
 
 /**
@@ -512,6 +514,29 @@ private:
     friend class SkBlockMemoryRefCnt;
 
     using INHERITED = SkWStream;
+};
+
+class SK_API SkVectorWStream : public SkWStream {
+public:
+    SkVectorWStream();
+    ~SkVectorWStream() override;
+
+    SkVectorWStream(const SkVectorWStream&) = delete;
+    SkVectorWStream& operator=(const SkVectorWStream&) = delete;
+
+    bool write(const void* buffer, size_t size) override;
+    size_t bytesWritten() const override;
+
+    /** Efficiently returns the strem contents as `std::vector`,
+        and then resets the stream to an empty state. */
+    inline std::vector<uint8_t> detachAsVector() {
+        // Can't just use `std::move` because it would leave `fVector` in
+        // a "valid but unspecified" state.
+        return std::exchange(fVector, {});
+    }
+
+private:
+    std::vector<uint8_t> fVector;
 };
 
 #endif

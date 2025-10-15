@@ -155,6 +155,55 @@ static void TestWStream(skiatest::Reporter* reporter) {
     }
 }
 
+static void TestVectorWStream(skiatest::Reporter* reporter) {
+    SkDynamicMemoryWStream ds;
+    SkVectorWStream        vs;
+
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 0u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+
+    bool dsResult = ds.writeText("blah");
+    bool vsResult = vs.writeText("blah");
+    REPORTER_ASSERT(reporter, dsResult);
+    REPORTER_ASSERT(reporter, dsResult == vsResult);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 4u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+
+    dsResult = ds.writeDecAsText(123);
+    vsResult = vs.writeDecAsText(123);
+    REPORTER_ASSERT(reporter, dsResult);
+    REPORTER_ASSERT(reporter, dsResult == vsResult);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 7u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+
+    sk_sp<SkData> dsData = ds.detachAsData();
+    std::vector<uint8_t> vsData = vs.detachAsVector();
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 0u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+    REPORTER_ASSERT(reporter, dsData->size() == 7u);
+    REPORTER_ASSERT(reporter, dsData->size() == vsData.size());
+    REPORTER_ASSERT(reporter, 0 == memcmp(dsData->data(), "blah123", dsData->size()));
+    REPORTER_ASSERT(reporter, 0 == memcmp(dsData->data(), vsData.data(), dsData->size()));
+
+    // Now test that the streams remain usable after `detach...`.
+
+    dsResult = ds.writeText("foobar");
+    vsResult = vs.writeText("foobar");
+    REPORTER_ASSERT(reporter, dsResult);
+    REPORTER_ASSERT(reporter, dsResult == vsResult);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 6u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+
+    dsData = ds.detachAsData();
+    vsData = vs.detachAsVector();
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == 0u);
+    REPORTER_ASSERT(reporter, ds.bytesWritten() == vs.bytesWritten());
+    REPORTER_ASSERT(reporter, dsData->size() == 6u);
+    REPORTER_ASSERT(reporter, dsData->size() == vsData.size());
+    REPORTER_ASSERT(reporter, 0 == memcmp(dsData->data(), "foobar", dsData->size()));
+    REPORTER_ASSERT(reporter, 0 == memcmp(dsData->data(), vsData.data(), dsData->size()));
+}
+
 static void TestPackedUInt(skiatest::Reporter* reporter) {
     // we know that packeduint tries to write 1, 2 or 4 bytes for the length,
     // so we test values around each of those transitions (and a few others)
@@ -208,6 +257,7 @@ static void TestNullData(skiatest::Reporter* reporter) {
 
 DEF_TEST(Stream, reporter) {
     TestWStream(reporter);
+    TestVectorWStream(reporter);
     TestPackedUInt(reporter);
     TestNullData(reporter);
 }
