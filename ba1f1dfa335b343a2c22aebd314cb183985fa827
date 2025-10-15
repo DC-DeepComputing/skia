@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "300915ac_35206d39",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-15T19:16:19Z",
+      "side": 1,
+      "message": "These really should be out of line, like\n\n```\noptional(\"xps_libpng_helpers\") {\n  enabled \u003d skia_use_libpng_encode\n  deps \u003d [\n    \":png_encode_libpng\",\n    \":xps\",\n  ]\n  public \u003d skia_xps_libpng_public\n}\n\noptional(\"xps_rustpng_helpers\") {\n  enabled \u003d skia_use_rust_png_encode\n  deps \u003d [\n    \":png_encode_rust\",\n    \":xps\",\n  ]\n  public \u003d skia_xps_rust_png_public\n}\n```",
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa235726_8a06ee8d",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1688,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-15T19:16:19Z",
+      "side": 1,
+      "message": "Then add\n\n```\n    \":xps_libpng_helpers\",\n    \":xps_rustpng_helpers\",\n```\n\nthese \"optional\" will be empty when not \"enabled\".",
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20861da7_65c784f3",
         "filename": "dm/DMSrcSink.cpp",
         "patchSetId": 8
