@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bdb827f_b19f3d04",
+        "filename": "modules/canvaskit/WasmCommon.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-15T17:59:00Z",
+      "side": 1,
+      "message": "Spans are usually one of the things we want to have be implicitly convertible however.\n\nNot sure if that is relevant given this is specific to the wasm bridge?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 34
+      },
+      "revId": "92ceb7a0776e171be70ed0feb86bf986961e2940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
