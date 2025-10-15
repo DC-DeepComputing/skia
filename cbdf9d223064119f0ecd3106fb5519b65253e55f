@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09b064c4_db4246ee",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-15T19:23:20Z",
+      "side": 1,
+      "message": "Would we care about convexity here to have accurate an canCullToTheRight above?",
+      "range": {
+        "startLine": 367,
+        "startChar": 41,
+        "endLine": 367,
+        "endChar": 64
+      },
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17d8b5c1_677e5c97",
         "filename": "src/core/SkPathData.cpp",
         "patchSetId": 7
