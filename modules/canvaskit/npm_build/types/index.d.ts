@@ -2462,7 +2462,7 @@ export interface Path extends EmbindObject<"Path"> {
      * @param points
      * @param close - if true, will add a line connecting last point to the first point.
      */
-    addPoly(points: InputFlattenedPointArray, close: boolean): Path;
+    addPolygon(points: InputFlattenedPointArray, close: boolean): Path;
 
     /**
      * Adds Rect to Path, appending kMove_Verb, three kLine_Verb, and kClose_Verb,
@@ -3926,6 +3926,8 @@ export interface PathConstructorAndFactory extends DefaultConstructor<Path> {
      * FlattenedPointArray (e.g. 2 points for moveTo, 4 points for quadTo, etc). If the verb is
      * a conic, a weight will be read from the WeightList.
      * If the data is malformed (e.g. not enough points), the resulting path will be incomplete.
+     * If memory is passed in with Malloced TypedArrays, modifying the data after
+     * creating the path will result in undefined behavior.
      * @param verbs - the verbs that create this path, in the order of being drawn.
      * @param points - represents n points with 2n floats.
      * @param weights - used if any of the verbs are conics, can be omitted otherwise.
