@@ -1289,6 +1289,12 @@ optional("xps") {
     ":pathops",
   ]
   public = skia_xps_public
+  if (skia_use_libpng_encode) {
+    public += skia_xps_libpng_public
+  }
+  if (skia_use_rust_png_encode) {
+    public += skia_xps_rust_png_public
+  }
   sources = skia_xps_sources
 }
 
