@@ -22,6 +22,30 @@
       },
       "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe9e4831_2f877d7c",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-10-15T18:53:16Z",
+      "side": 1,
+      "message": "Indeed surface use is less frequent, but it will be used to do accelerated RGB (e.g, canvas) to YUV (e.g, video for encoding) conversion. We currently do this for 8-bit video, but not yet 16-bit video.",
+      "parentUuid": "42847b03_bbe54ea8",
+      "range": {
+        "startLine": 709,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 13
+      },
+      "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
