@@ -214,7 +214,7 @@ std::unique_ptr<SkCodec> DecodeImageData(sk_sp<SkData> data) {
 struct OptionalMatrix : SkMatrix {
     OptionalMatrix(WASMPointerF32 mPtr) {
         if (mPtr) {
-            const SkScalar* nineMatrixValues = reinterpret_cast<const SkScalar*>(mPtr);
+            const float* nineMatrixValues = reinterpret_cast<const float*>(mPtr);
             this->set9(nineMatrixValues);
         }
     }
@@ -231,7 +231,7 @@ SkRRect ptrToSkRRect(WASMPointerF32 fPtr) {
     // In order, these floats should be 4 floats for the rectangle
     // (left, top, right, bottom) and then 8 floats for the radii
     // (upper left, upper right, lower right, lower left).
-    const SkScalar* twelveFloats = reinterpret_cast<const SkScalar*>(fPtr);
+    const float* twelveFloats = reinterpret_cast<const float*>(fPtr);
     const SkRect rect = reinterpret_cast<const SkRect*>(twelveFloats)[0];
     const SkVector* radiiValues = reinterpret_cast<const SkVector*>(twelveFloats + 4);
 
@@ -425,124 +425,119 @@ bool ReplaceBackendTexture(SkSurface& surface, uint32_t textureHandle, uint32_t 
 // isn't assigned to a JS variable and has delete() called on it.
 // These Apply methods, combined with the smarter binding code allow for chainable
 // commands that don't leak if the return value is ignored (i.e. when used intuitively).
-void ApplyAddPath(SkPath& orig, const SkPath& newPath,
-                   SkScalar scaleX, SkScalar skewX,  SkScalar transX,
-                   SkScalar skewY,  SkScalar scaleY, SkScalar transY,
-                   SkScalar pers0, SkScalar pers1, SkScalar pers2,
+void ApplyAddPath(SkPathBuilder& p, const SkPath& newPath,
+                   float scaleX, float skewX,  float transX,
+                   float skewY,  float scaleY, float transY,
+                   float pers0, float pers1, float pers2,
                    bool extendPath) {
     SkMatrix m = SkMatrix::MakeAll(scaleX, skewX , transX,
                                    skewY , scaleY, transY,
                                    pers0 , pers1 , pers2);
-    orig.addPath(newPath, m, extendPath ? SkPath::kExtend_AddPathMode :
-                                          SkPath::kAppend_AddPathMode);
+    p.addPath(newPath, m, extendPath ? SkPath::kExtend_AddPathMode : SkPath::kAppend_AddPathMode);
 }
 
-void ApplyArcToTangent(SkPath& p, SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2,
-                SkScalar radius) {
-    p.arcTo(x1, y1, x2, y2, radius);
+void ApplyArcToTangent(SkPathBuilder& p, float x1, float y1, float x2, float y2,
+                float radius) {
+    p.arcTo({x1, y1}, {x2, y2}, radius);
 }
 
-void ApplyArcToArcSize(SkPath& orig, SkScalar rx, SkScalar ry, SkScalar xAxisRotate,
-                       bool useSmallArc, bool ccw, SkScalar x, SkScalar y) {
-    auto arcSize = useSmallArc ? SkPath::ArcSize::kSmall_ArcSize : SkPath::ArcSize::kLarge_ArcSize;
+void ApplyArcToArcSize(SkPathBuilder& p, float rx, float ry, float xAxisRotate,
+                       bool useSmallArc, bool ccw, float x, float y) {
+    auto arcSize = useSmallArc ? SkPathBuilder::ArcSize::kSmall_ArcSize : SkPathBuilder::kLarge_ArcSize;
     auto sweep = ccw ? SkPathDirection::kCCW : SkPathDirection::kCW;
-    orig.arcTo(rx, ry, xAxisRotate, arcSize, sweep, x, y);
+    p.arcTo({rx, ry}, xAxisRotate, arcSize, sweep, {x, y});
 }
 
-void ApplyRArcToArcSize(SkPath& orig, SkScalar rx, SkScalar ry, SkScalar xAxisRotate,
-                        bool useSmallArc, bool ccw, SkScalar dx, SkScalar dy) {
-    auto arcSize = useSmallArc ? SkPath::ArcSize::kSmall_ArcSize : SkPath::ArcSize::kLarge_ArcSize;
+void ApplyRArcToArcSize(SkPathBuilder& p, float rx, float ry, float xAxisRotate,
+                        bool useSmallArc, bool ccw, float dx, float dy) {
+    auto arcSize = useSmallArc ? SkPathBuilder::ArcSize::kSmall_ArcSize : SkPathBuilder::ArcSize::kLarge_ArcSize;
     auto sweep = ccw ? SkPathDirection::kCCW : SkPathDirection::kCW;
-    orig.rArcTo(rx, ry, xAxisRotate, arcSize, sweep, dx, dy);
+    p.rArcTo(rx, ry, xAxisRotate, arcSize, sweep, dx, dy);
 }
 
-void ApplyClose(SkPath& p) {
+void ApplyClose(SkPathBuilder& p) {
     p.close();
 }
 
-void ApplyConicTo(SkPath& p, SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2,
-                  SkScalar w) {
-    p.conicTo(x1, y1, x2, y2, w);
+void ApplyConicTo(SkPathBuilder& p, float x1, float y1, float x2, float y2,
+                  float w) {
+    p.conicTo({x1, y1}, {x2, y2}, w);
 }
 
-void ApplyRConicTo(SkPath& p, SkScalar dx1, SkScalar dy1, SkScalar dx2, SkScalar dy2,
-                  SkScalar w) {
-    p.rConicTo(dx1, dy1, dx2, dy2, w);
+void ApplyRConicTo(SkPathBuilder& p, float dx1, float dy1, float dx2, float dy2,
+                  float w) {
+    p.rConicTo({dx1, dy1}, {dx2, dy2}, w);
 }
 
-void ApplyCubicTo(SkPath& p, SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2,
-                  SkScalar x3, SkScalar y3) {
-    p.cubicTo(x1, y1, x2, y2, x3, y3);
+void ApplyCubicTo(SkPathBuilder& p, float x1, float y1, float x2, float y2,
+                  float x3, float y3) {
+    p.cubicTo({x1, y1}, {x2, y2}, {x3, y3});
 }
 
-void ApplyRCubicTo(SkPath& p, SkScalar dx1, SkScalar dy1, SkScalar dx2, SkScalar dy2,
-                  SkScalar dx3, SkScalar dy3) {
-    p.rCubicTo(dx1, dy1, dx2, dy2, dx3, dy3);
+void ApplyRCubicTo(SkPathBuilder& p, float dx1, float dy1, float dx2, float dy2,
+                  float dx3, float dy3) {
+    p.rCubicTo({dx1, dy1}, {dx2, dy2}, {dx3, dy3});
 }
 
-void ApplyLineTo(SkPath& p, SkScalar x, SkScalar y) {
-    p.lineTo(x, y);
+void ApplyLineTo(SkPathBuilder& p, float x, float y) {
+    p.lineTo({x, y});
 }
 
-void ApplyRLineTo(SkPath& p, SkScalar dx, SkScalar dy) {
-    p.rLineTo(dx, dy);
+void ApplyRLineTo(SkPathBuilder& p, float dx, float dy) {
+    p.rLineTo({dx, dy});
 }
 
-void ApplyMoveTo(SkPath& p, SkScalar x, SkScalar y) {
-    p.moveTo(x, y);
+void ApplyMoveTo(SkPathBuilder& p, float x, float y) {
+    p.moveTo({x, y});
 }
 
-void ApplyRMoveTo(SkPath& p, SkScalar dx, SkScalar dy) {
-    p.rMoveTo(dx, dy);
+void ApplyRMoveTo(SkPathBuilder& p, float dx, float dy) {
+    p.rMoveTo({dx, dy});
 }
 
-void ApplyReset(SkPath& p) {
+void ApplyReset(SkPathBuilder& p) {
     p.reset();
 }
 
-void ApplyRewind(SkPath& p) {
-    p.rewind();
+void ApplyQuadTo(SkPathBuilder& p, float x1, float y1, float x2, float y2) {
+    p.quadTo({x1, y1}, {x2, y2});
 }
 
-void ApplyQuadTo(SkPath& p, SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2) {
-    p.quadTo(x1, y1, x2, y2);
+void ApplyRQuadTo(SkPathBuilder& p, float dx1, float dy1, float dx2, float dy2) {
+    p.rQuadTo({dx1, dy1}, {dx2, dy2});
 }
 
-void ApplyRQuadTo(SkPath& p, SkScalar dx1, SkScalar dy1, SkScalar dx2, SkScalar dy2) {
-    p.rQuadTo(dx1, dy1, dx2, dy2);
-}
-
-void ApplyTransform(SkPath& orig,
-                    SkScalar scaleX, SkScalar skewX,  SkScalar transX,
-                    SkScalar skewY,  SkScalar scaleY, SkScalar transY,
-                    SkScalar pers0, SkScalar pers1, SkScalar pers2) {
+void ApplyTransform(SkPathBuilder& p,
+                    float scaleX, float skewX,  float transX,
+                    float skewY,  float scaleY, float transY,
+                    float pers0, float pers1, float pers2) {
     SkMatrix m = SkMatrix::MakeAll(scaleX, skewX , transX,
                                    skewY , scaleY, transY,
                                    pers0 , pers1 , pers2);
-    orig.transform(m);
+    p.transform(m);
 }
 
 #ifdef CK_INCLUDE_PATHOPS
-bool ApplySimplify(SkPath& path) {
-    return Simplify(path, &path);
-}
-
-bool ApplyPathOp(SkPath& pathOne, const SkPath& pathTwo, SkPathOp op) {
-    return Op(pathOne, pathTwo, op, &pathOne);
+SkPathOrNull MakeSimplified(const SkPath& path) {
+    auto result = Simplify(path);
+    if (result.has_value()) {
+        return emscripten::val(result.value());
+    }
+    return emscripten::val::null();
 }
 
 SkPathOrNull MakePathFromOp(const SkPath& pathOne, const SkPath& pathTwo, SkPathOp op) {
-    SkPath out;
-    if (Op(pathOne, pathTwo, op, &out)) {
-        return emscripten::val(out);
+    auto result = Op(pathOne, pathTwo, op);
+    if (result.has_value()) {
+        return emscripten::val(result.value());
     }
     return emscripten::val::null();
 }
 
 SkPathOrNull MakeAsWinding(const SkPath& self) {
-    SkPath out;
-    if (AsWinding(self, &out)) {
-        return emscripten::val(out);
+    auto result = AsWinding(self);
+    if (result.has_value()) {
+        return emscripten::val(result.value());
     }
     return emscripten::val::null();
 }
@@ -563,7 +558,7 @@ bool CanInterpolate(const SkPath& path1, const SkPath& path2) {
     return path1.isInterpolatable(path2);
 }
 
-SkPathOrNull MakePathFromInterpolation(const SkPath& path1, const SkPath& path2, SkScalar weight) {
+SkPathOrNull MakePathFromInterpolation(const SkPath& path1, const SkPath& path2, float weight) {
     SkPath out;
     bool succeed = path1.interpolate(path2, weight, &out);
     if (succeed) {
@@ -573,8 +568,7 @@ SkPathOrNull MakePathFromInterpolation(const SkPath& path1, const SkPath& path2,
 }
 
 SkPath CopyPath(const SkPath& a) {
-    SkPath copy(a);
-    return copy;
+    return a.snapshot();
 }
 
 bool Equals(const SkPath& a, const SkPath& b) {
@@ -593,7 +587,7 @@ static const int CUBIC = 4;
 static const int CLOSE = 5;
 
 Float32Array ToCmds(const SkPath& path) {
-    std::vector<SkScalar> cmds;
+    std::vector<float> cmds;
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
         switch (verb) {
         case SkPathVerb::kMove:
@@ -626,7 +620,7 @@ Float32Array ToCmds(const SkPath& path) {
 
 SkPathOrNull MakePathFromCmds(WASMPointerF32 cptr, int numCmds) {
     const auto* cmds = reinterpret_cast<const float*>(cptr);
-    SkPath path;
+    SkPathBuilder path;
     float x1, y1, x2, y2, x3, y3;
 
     // if there are not enough arguments, bail with the path we've constructed so far.
@@ -679,125 +673,78 @@ SkPathOrNull MakePathFromCmds(WASMPointerF32 cptr, int numCmds) {
 
     #undef CHECK_NUM_ARGS
 
-    return emscripten::val(path);
-}
-
-void PathAddVerbsPointsWeights(SkPath& path, WASMPointerU8 verbsPtr, int numVerbs,
-                                             WASMPointerF32 ptsPtr, int numPts,
-                                             WASMPointerF32 wtsPtr, int numWts) {
-    const uint8_t* verbs = reinterpret_cast<const uint8_t*>(verbsPtr);
-    const float* pts = reinterpret_cast<const float*>(ptsPtr);
-    const float* weights = reinterpret_cast<const float*>(wtsPtr);
-
-    #define CHECK_NUM_POINTS(n) \
-        if ((ptIdx + n) > numPts) { \
-            SkDebugf("Not enough points to match the verbs. Saw %d points\n", numPts); \
-            return; \
-        }
-    #define CHECK_NUM_WEIGHTS(n) \
-        if ((wtIdx + n) > numWts) { \
-            SkDebugf("Not enough weights to match the verbs. Saw %d weights\n", numWts); \
-            return; \
-        }
-
-    path.incReserve(numPts);
-    int ptIdx = 0;
-    int wtIdx = 0;
-    for (int v = 0; v < numVerbs; ++v) {
-         switch (verbs[v]) {
-              case MOVE:
-                  CHECK_NUM_POINTS(2)
-                  path.moveTo(pts[ptIdx], pts[ptIdx+1]);
-                  ptIdx += 2;
-                  break;
-              case LINE:
-                  CHECK_NUM_POINTS(2)
-                  path.lineTo(pts[ptIdx], pts[ptIdx+1]);
-                  ptIdx += 2;
-                  break;
-              case QUAD:
-                  CHECK_NUM_POINTS(4)
-                  path.quadTo(pts[ptIdx], pts[ptIdx+1], pts[ptIdx+2], pts[ptIdx+3]);
-                  ptIdx += 4;
-                  break;
-              case CONIC:
-                  CHECK_NUM_POINTS(4)
-                  CHECK_NUM_WEIGHTS(1)
-                  path.conicTo(pts[ptIdx], pts[ptIdx+1], pts[ptIdx+2], pts[ptIdx+3],
-                               weights[wtIdx]);
-                  ptIdx += 4;
-                  wtIdx++;
-                  break;
-              case CUBIC:
-                  CHECK_NUM_POINTS(6)
-                  path.cubicTo(pts[ptIdx  ], pts[ptIdx+1],
-                               pts[ptIdx+2], pts[ptIdx+3],
-                               pts[ptIdx+4], pts[ptIdx+5]);
-                  ptIdx += 6;
-                  break;
-              case CLOSE:
-                  path.close();
-                  break;
-        }
-    }
-    #undef CHECK_NUM_POINTS
-    #undef CHECK_NUM_WEIGHTS
+    return emscripten::val(path.detach());
 }
 
 SkPath MakePathFromVerbsPointsWeights(WASMPointerU8 verbsPtr, int numVerbs,
                                       WASMPointerF32 ptsPtr, int numPts,
                                       WASMPointerF32 wtsPtr, int numWts) {
-    SkPath path;
-    PathAddVerbsPointsWeights(path, verbsPtr, numVerbs, ptsPtr, numPts, wtsPtr, numWts);
-    return path;
+    const SkPathVerb* verbs = reinterpret_cast<const SkPathVerb*>(verbsPtr);
+    const SkPoint* pts = reinterpret_cast<const SkPoint*>(ptsPtr);
+    const float* weights = reinterpret_cast<const float*>(wtsPtr);
+
+    return SkPath::Raw(SkSpan<const SkPoint>(pts, numPts),
+                       SkSpan<const SkPathVerb>(verbs, numVerbs),
+                       SkSpan<const float>(weights, numWts),
+                       SkPathFillType::kWinding
+    );
+}
+
+void PathAddVerbsPointsWeights(SkPathBuilder& self, WASMPointerU8 verbsPtr, int numVerbs,
+                                 WASMPointerF32 ptsPtr, int numPts,
+                                 WASMPointerF32 wtsPtr, int numWts) {
+    SkPath path = MakePathFromVerbsPointsWeights(verbsPtr, numVerbs, ptsPtr, numPts, wtsPtr, numWts);
+    self.addPath(path, SkPath::kAppend_AddPathMode);
 }
 
 //========================================================================================
 // Path Effects
 //========================================================================================
 
-bool ApplyDash(SkPath& path, SkScalar on, SkScalar off, SkScalar phase) {
-    SkScalar intervals[] = { on, off };
+SkPathOrNull MakeDashed(const SkPath& self, float on, float off, float phase) {
+    float intervals[] = { on, off };
     auto pe = SkDashPathEffect::Make(intervals, phase);
     if (!pe) {
         SkDebugf("Invalid args to dash()\n");
-        return false;
+        return emscripten::val::null();
     }
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
-        return true;
+    SkPathBuilder pb;
+    if (pe->filterPath(&pb, self, &rec)) {
+        return emscripten::val(pb.detach());
     }
     SkDebugf("Could not make dashed path\n");
-    return false;
+    return emscripten::val::null();
 }
 
-bool ApplyTrim(SkPath& path, SkScalar startT, SkScalar stopT, bool isComplement) {
+SkPathOrNull MakeTrimmed(const SkPath& self, float startT, float stopT, bool isComplement) {
     auto mode = isComplement ? SkTrimPathEffect::Mode::kInverted : SkTrimPathEffect::Mode::kNormal;
     auto pe = SkTrimPathEffect::Make(startT, stopT, mode);
     if (!pe) {
         SkDebugf("Invalid args to trim(): startT and stopT must be in [0,1]\n");
-        return false;
+        return emscripten::val::null();
     }
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
-        return true;
+    SkPathBuilder pb;
+    if (pe->filterPath(&pb, self, &rec)) {
+        return emscripten::val(pb.detach());
     }
     SkDebugf("Could not trim path\n");
-    return false;
+    return emscripten::val::null();
 }
 
 struct StrokeOpts {
     // Default values are set in interface.js which allows clients
     // to set any number of them. Otherwise, the binding code complains if
     // any are omitted.
-    SkScalar width;
-    SkScalar miter_limit;
+    float width;
+    float miter_limit;
     SkPaint::Join join;
     SkPaint::Cap cap;
     float precision;
 };
 
-bool ApplyStroke(SkPath& path, StrokeOpts opts) {
+SkPathOrNull MakeStroked(const SkPath& self, StrokeOpts opts) {
     SkPaint p;
     p.setStyle(SkPaint::kStroke_Style);
     p.setStrokeCap(opts.cap);
@@ -805,7 +752,13 @@ bool ApplyStroke(SkPath& path, StrokeOpts opts) {
     p.setStrokeWidth(opts.width);
     p.setStrokeMiter(opts.miter_limit);
 
-    return skpathutils::FillPathWithPaint(path, p, &path, nullptr, opts.precision);
+    SkMatrix scale = SkMatrix::Scale(opts.precision, opts.precision);
+
+    SkPathBuilder pb;
+    if (skpathutils::FillPathWithPaint(self, p, &pb, nullptr, scale)) {
+        return emscripten::val(pb.detach());
+    }
+    return emscripten::val::null();
 }
 
 // This function is private, we call it in interface.js
@@ -827,8 +780,8 @@ void computeTonalColors(WASMPointerF32 cPtrAmbi, WASMPointerF32 cPtrSpot) {
     const SkColor4f spot4f = SkColor4f::FromColor(resultSpot);
 
     // Re-use the caller's allocated memory to hold the result.
-    memcpy(ambiFloats, ambi4f.vec(), 4 * sizeof(SkScalar));
-    memcpy(spotFloats, spot4f.vec(), 4 * sizeof(SkScalar));
+    memcpy(ambiFloats, ambi4f.vec(), 4 * sizeof(float));
+    memcpy(spotFloats, spot4f.vec(), 4 * sizeof(float));
 }
 
 #ifdef CK_INCLUDE_RUNTIME_EFFECT
@@ -1110,9 +1063,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
     function("_getShadowLocalBounds", optional_override([](
             WASMPointerF32 ctmPtr, const SkPath& path,
             WASMPointerF32  zPlaneParamPtr, WASMPointerF32 lightPosPtr,
-            SkScalar lightRadius, uint32_t flags, WASMPointerF32 outPtr) -> bool {
+            float lightRadius, uint32_t flags, WASMPointerF32 outPtr) -> bool {
         SkMatrix ctm;
-        const SkScalar* nineMatrixValues = reinterpret_cast<const SkScalar*>(ctmPtr);
+        const float* nineMatrixValues = reinterpret_cast<const float*>(ctmPtr);
         ctm.set9(nineMatrixValues);
         const SkVector3* zPlaneParams = reinterpret_cast<const SkVector3*>(zPlaneParamPtr);
         const SkVector3* lightPos = reinterpret_cast<const SkVector3*>(lightPosPtr);
@@ -1213,7 +1166,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkCanvas>("Canvas")
         .constructor<>()
-        .constructor<SkScalar,SkScalar>()
+        .constructor<float,float>()
         .function("_clear", optional_override([](SkCanvas& self, WASMPointerF32 cPtr) {
             self.clear(ptrToSkColor4f(cPtr));
         }))
@@ -1227,12 +1180,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         .function("_concat", optional_override([](SkCanvas& self, WASMPointerF32 mPtr) {
             //TODO(skbug.com/40041444): make the JS side be column major.
-            const SkScalar* sixteenMatrixValues = reinterpret_cast<const SkScalar*>(mPtr);
+            const float* sixteenMatrixValues = reinterpret_cast<const float*>(mPtr);
             SkM44 m = SkM44::RowMajor(sixteenMatrixValues);
             self.concat(m);
         }))
         .function("_drawArc", optional_override([](SkCanvas& self, WASMPointerF32 fPtr,
-                                                  SkScalar startAngle, SkScalar sweepAngle,
+                                                  float startAngle, float sweepAngle,
                                                   bool useCenter, const SkPaint& paint) {
             const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
             self.drawArc(*oval, startAngle, sweepAngle, useCenter, paint);
@@ -1268,7 +1221,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                            {colors, colors ? count : 0}, mode, sampling,
                            nullptr, paint);
         }), allow_raw_pointers())
-        .function("_drawCircle", select_overload<void (SkScalar, SkScalar, SkScalar, const SkPaint& paint)>(&SkCanvas::drawCircle))
+        .function("_drawCircle", select_overload<void (float, float, float, const SkPaint& paint)>(&SkCanvas::drawCircle))
         .function("_drawColor", optional_override([](SkCanvas& self, WASMPointerF32 cPtr) {
             self.drawColor(ptrToSkColor4f(cPtr));
         }))
@@ -1295,17 +1248,17 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         // TODO: deprecate this version, and require sampling
         .function("_drawImage", optional_override([](SkCanvas& self, const sk_sp<SkImage>& image,
-                                                    SkScalar x, SkScalar y, const SkPaint* paint) {
+                                                    float x, float y, const SkPaint* paint) {
             self.drawImage(image.get(), x, y, SkSamplingOptions(), paint);
         }), allow_raw_pointers())
         .function("_drawImageCubic",  optional_override([](SkCanvas& self, const sk_sp<SkImage>& img,
-                                                          SkScalar left, SkScalar top,
+                                                          float left, float top,
                                                           float B, float C, // See SkSamplingOptions.h for docs.
                                                           const SkPaint* paint)->void {
             self.drawImage(img.get(), left, top, SkSamplingOptions({B, C}), paint);
         }), allow_raw_pointers())
         .function("_drawImageOptions",  optional_override([](SkCanvas& self, const sk_sp<SkImage>& img,
-                                                          SkScalar left, SkScalar top,
+                                                          float left, float top,
                                                           SkFilterMode filter, SkMipmapMode mipmap,
                                                           const SkPaint* paint)->void {
             self.drawImage(img.get(), left, top, {filter, mipmap}, paint);
@@ -1347,7 +1300,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             auto constraint = SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
             self.drawImageRect(image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
         }), allow_raw_pointers())
-        .function("_drawLine", select_overload<void (SkScalar, SkScalar, SkScalar, SkScalar, const SkPaint&)>(&SkCanvas::drawLine))
+        .function("_drawLine", select_overload<void (float, float, float, float, const SkPaint&)>(&SkCanvas::drawLine))
         .function("_drawOval", optional_override([](SkCanvas& self, WASMPointerF32 fPtr,
                                                     const SkPaint& paint)->void {
             const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
@@ -1356,7 +1309,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("_drawPaint", &SkCanvas::drawPaint)
 #ifdef CK_INCLUDE_PARAGRAPH
         .function("_drawParagraph", optional_override([](SkCanvas& self, skia::textlayout::Paragraph* p,
-                                                        SkScalar x, SkScalar y) {
+                                                        float x, float y) {
             p->paint(&self, x, y);
         }), allow_raw_pointers())
 #endif
@@ -1389,8 +1342,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
             const SkRect* rect = reinterpret_cast<const SkRect*>(fPtr);
             self.drawRect(*rect, paint);
         }))
-        .function("_drawRect4f", optional_override([](SkCanvas& self, SkScalar left, SkScalar top,
-                                                     SkScalar right, SkScalar bottom,
+        .function("_drawRect4f", optional_override([](SkCanvas& self, float left, float top,
+                                                     float right, float bottom,
                                                      const SkPaint& paint)->void {
             const SkRect rect = SkRect::MakeLTRB(left, top, right, bottom);
             self.drawRect(rect, paint);
@@ -1398,7 +1351,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("_drawShadow", optional_override([](SkCanvas& self, const SkPath& path,
                                                      WASMPointerF32 zPlaneParamPtr,
                                                      WASMPointerF32 lightPosPtr,
-                                                     SkScalar lightRadius,
+                                                     float lightRadius,
                                                      WASMPointerF32 ambientColorPtr,
                                                      WASMPointerF32 spotColorPtr,
                                                      uint32_t flags) {
@@ -1412,13 +1365,13 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
 #ifndef CK_NO_FONTS
         .function("_drawSimpleText", optional_override([](SkCanvas& self, WASMPointerU8 sptr,
-                                                          size_t len, SkScalar x, SkScalar y, const SkFont& font,
+                                                          size_t len, float x, float y, const SkFont& font,
                                                           const SkPaint& paint) {
             const char* str = reinterpret_cast<const char*>(sptr);
 
             self.drawSimpleText(str, len, SkTextEncoding::kUTF8, x, y, font, paint);
         }))
-        .function("_drawTextBlob", select_overload<void (const sk_sp<SkTextBlob>&, SkScalar, SkScalar, const SkPaint&)>(&SkCanvas::drawTextBlob))
+        .function("_drawTextBlob", select_overload<void (const sk_sp<SkTextBlob>&, float, float, const SkPaint&)>(&SkCanvas::drawTextBlob))
 #endif
         .function("_drawVertices", select_overload<void (const sk_sp<SkVertices>&, SkBlendMode, const SkPaint&)>(&SkCanvas::drawVertices))
 
@@ -1439,7 +1392,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         // Just like with getTotalMatrix, we allocate the buffer for the 16 floats to go in from
         // interface.js, so it can also free them when its done.
         .function("_getLocalToDevice", optional_override([](const SkCanvas& self, WASMPointerF32 mPtr) {
-            SkScalar* sixteenMatrixValues = reinterpret_cast<SkScalar*>(mPtr);
+            float* sixteenMatrixValues = reinterpret_cast<float*>(mPtr);
             if (!sixteenMatrixValues) {
                 return; // matrix cannot be null
             }
@@ -1451,7 +1404,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         // an awkward moment where we malloc something here and "just know" to free it on the
         // JS side.
         .function("_getTotalMatrix", optional_override([](const SkCanvas& self, WASMPointerU8 mPtr) {
-            SkScalar* nineMatrixValues = reinterpret_cast<SkScalar*>(mPtr);
+            float* nineMatrixValues = reinterpret_cast<float*>(mPtr);
             if (!nineMatrixValues) {
                 return; // matrix cannot be null
             }
@@ -1472,7 +1425,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }), allow_raw_pointers())
         .function("restore", &SkCanvas::restore)
         .function("restoreToCount", &SkCanvas::restoreToCount)
-        .function("rotate", select_overload<void (SkScalar, SkScalar, SkScalar)>(&SkCanvas::rotate))
+        .function("rotate", select_overload<void (float, float, float)>(&SkCanvas::rotate))
         .function("save", &SkCanvas::save)
         .function("_saveLayer", optional_override([](SkCanvas& self, const SkPaint* p, WASMPointerF32 fPtr,
                                                      const SkImageFilter* backdrop, SkCanvas::SaveLayerFlags flags,
@@ -1512,21 +1465,21 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("MakeLuma", &SkLumaColorFilter::Make);
 
     class_<SkContourMeasureIter>("ContourMeasureIter")
-        .constructor<const SkPath&, bool, SkScalar>()
+        .constructor<const SkPath&, bool, float>()
         .function("next", &SkContourMeasureIter::next);
 
     class_<SkContourMeasure>("ContourMeasure")
         .smart_ptr<sk_sp<SkContourMeasure>>("sk_sp<ContourMeasure>>")
         .function("_getPosTan", optional_override([](SkContourMeasure& self,
-                                                     SkScalar distance,
+                                                     float distance,
                                                      WASMPointerF32 oPtr) -> void {
             SkPoint* pointAndVector = reinterpret_cast<SkPoint*>(oPtr);
             if (!self.getPosTan(distance, pointAndVector, pointAndVector + 1)) {
                 SkDebugf("zero-length path in getPosTan\n");
             }
         }))
-        .function("getSegment", optional_override([](SkContourMeasure& self, SkScalar startD,
-                                                     SkScalar stopD, bool startWithMoveTo) -> SkPath {
+        .function("getSegment", optional_override([](SkContourMeasure& self, float startD,
+                                                     float stopD, bool startWithMoveTo) -> SkPath {
             SkPath p;
             bool ok = self.getSegment(startD, stopD, &p, startWithMoveTo);
             if (ok) {
@@ -1541,8 +1494,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
     class_<SkFont>("Font")
         .constructor<>()
         .constructor<sk_sp<SkTypeface>>()
-        .constructor<sk_sp<SkTypeface>, SkScalar>()
-        .constructor<sk_sp<SkTypeface>, SkScalar, SkScalar, SkScalar>()
+        .constructor<sk_sp<SkTypeface>, float>()
+        .constructor<sk_sp<SkTypeface>, float, float, float>()
         .function("_getGlyphWidthBounds", optional_override([](SkFont& self, WASMPointerU16 gPtr,
                                                           int numGlyphs, WASMPointerF32 wPtr,
                                                           WASMPointerF32 rPtr,
@@ -1550,7 +1503,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             const SkGlyphID* glyphs = reinterpret_cast<const SkGlyphID*>(gPtr);
             // On the JS side only one of these is set at a time for easier ergonomics.
             SkRect* outputRects = reinterpret_cast<SkRect*>(rPtr);
-            SkScalar* outputWidths = reinterpret_cast<SkScalar*>(wPtr);
+            float* outputWidths = reinterpret_cast<float*>(wPtr);
             self.getWidthsBounds({glyphs, numGlyphs},
                                  {outputWidths, outputWidths ? numGlyphs : 0},
                                  {outputRects, outputRects ? numGlyphs : 0}, paint);
@@ -1746,7 +1699,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                           sk_sp<SkImageFilter> foreground)->sk_sp<SkImageFilter> {
             return SkImageFilters::Blend(mode, background, foreground);
         }))
-        .class_function("MakeBlur", optional_override([](SkScalar sigmaX, SkScalar sigmaY,
+        .class_function("MakeBlur", optional_override([](float sigmaX, float sigmaY,
                                                          SkTileMode tileMode, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             return SkImageFilters::Blur(sigmaX, sigmaY, tileMode, input);
         }))
@@ -1755,13 +1708,13 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return SkImageFilters::ColorFilter(cf, input);
         }))
         .class_function("MakeCompose", &SkImageFilters::Compose)
-        .class_function("MakeDilate", optional_override([](SkScalar radiusX, SkScalar radiusY,
+        .class_function("MakeDilate", optional_override([](float radiusX, float radiusY,
                                                            sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             return SkImageFilters::Dilate(radiusX, radiusY, input);
         }))
         .class_function("MakeDisplacementMap", optional_override([](SkColorChannel xChannelSelector,
                                                                     SkColorChannel yChannelSelector,
-                                                                    SkScalar scale, sk_sp<SkImageFilter> displacement,
+                                                                    float scale, sk_sp<SkImageFilter> displacement,
                                                                     sk_sp<SkImageFilter> color)->sk_sp<SkImageFilter> {
             return SkImageFilters::DisplacementMap(xChannelSelector, yChannelSelector,
                                                    scale, displacement, color);
@@ -1769,19 +1722,19 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("MakeShader", optional_override([](sk_sp<SkShader> shader)->sk_sp<SkImageFilter> {
             return SkImageFilters::Shader(shader);
         }))
-        .class_function("_MakeDropShadow", optional_override([](SkScalar dx, SkScalar dy,
-                                                               SkScalar sigmaX, SkScalar sigmaY,
+        .class_function("_MakeDropShadow", optional_override([](float dx, float dy,
+                                                               float sigmaX, float sigmaY,
                                                                WASMPointerF32 cPtr, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             SkColor4f c = ptrToSkColor4f(cPtr);
             return SkImageFilters::DropShadow(dx, dy, sigmaX, sigmaY, c.toSkColor(), input);
         }))
-        .class_function("_MakeDropShadowOnly", optional_override([](SkScalar dx, SkScalar dy,
-                                                                   SkScalar sigmaX, SkScalar sigmaY,
+        .class_function("_MakeDropShadowOnly", optional_override([](float dx, float dy,
+                                                                   float sigmaX, float sigmaY,
                                                                    WASMPointerF32 cPtr, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             SkColor4f c = ptrToSkColor4f(cPtr);
             return SkImageFilters::DropShadowOnly(dx, dy, sigmaX, sigmaY, c.toSkColor(), input);
         }))
-        .class_function("MakeErode", optional_override([](SkScalar radiusX, SkScalar radiusY,
+        .class_function("MakeErode", optional_override([](float radiusX, float radiusY,
                                                            sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             return SkImageFilters::Erode(radiusX, radiusY, input);
         }))
@@ -1822,14 +1775,14 @@ EMSCRIPTEN_BINDINGS(Skia) {
             OptionalMatrix matr(mPtr);
             return SkImageFilters::MatrixTransform(matr, SkSamplingOptions(fm, mm), input);
         }))
-        .class_function("MakeOffset", optional_override([](SkScalar dx, SkScalar dy,
+        .class_function("MakeOffset", optional_override([](float dx, float dy,
                                                            sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             return SkImageFilters::Offset(dx, dy, input);
         }));
 
     class_<SkMaskFilter>("MaskFilter")
         .smart_ptr<sk_sp<SkMaskFilter>>("sk_sp<MaskFilter>")
-        .class_function("MakeBlur", optional_override([](SkBlurStyle style, SkScalar sigma, bool respectCTM)->sk_sp<SkMaskFilter> {
+        .class_function("MakeBlur", optional_override([](SkBlurStyle style, float sigma, bool respectCTM)->sk_sp<SkMaskFilter> {
         // Adds a little helper because emscripten doesn't expose default params.
         return SkMaskFilter::MakeBlur(style, sigma, respectCTM);
     }), allow_raw_pointers());
@@ -1844,7 +1797,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("_getColor", optional_override([](SkPaint& self, WASMPointerF32 cPtr)->void {
             const SkColor4f& c = self.getColor4f();
             float* fourFloats = reinterpret_cast<float*>(cPtr);
-            memcpy(fourFloats, c.vec(), 4 * sizeof(SkScalar));
+            memcpy(fourFloats, c.vec(), 4 * sizeof(float));
         }))
         .function("getStrokeCap", &SkPaint::getStrokeCap)
         .function("getStrokeJoin", &SkPaint::getStrokeJoin)
@@ -1896,15 +1849,15 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .smart_ptr<sk_sp<SkPathEffect>>("sk_sp<PathEffect>")
         .class_function("MakeCorner", &SkCornerPathEffect::Make)
         .class_function("_MakeDash", optional_override([](WASMPointerF32 cptr, int count,
-                                                          SkScalar phase)->sk_sp<SkPathEffect> {
+                                                          float phase)->sk_sp<SkPathEffect> {
             const float* intervals = reinterpret_cast<const float*>(cptr);
             return SkDashPathEffect::Make({intervals, count}, phase);
         }), allow_raw_pointers())
         .class_function("MakeDiscrete", &SkDiscretePathEffect::Make)
-        .class_function("_MakeLine2D", optional_override([](SkScalar width,
+        .class_function("_MakeLine2D", optional_override([](float width,
                                                             WASMPointerF32 mPtr)->sk_sp<SkPathEffect> {
             SkMatrix matrix;
-            const SkScalar* nineMatrixValues = reinterpret_cast<const SkScalar*>(mPtr);
+            const float* nineMatrixValues = reinterpret_cast<const float*>(mPtr);
             matrix.set9(nineMatrixValues);
             return SkLine2DPathEffect::Make(width, matrix);
         }), allow_raw_pointers())
@@ -1912,12 +1865,11 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("_MakePath2D", optional_override([](WASMPointerF32 mPtr,
                                                           SkPath path)->sk_sp<SkPathEffect> {
             SkMatrix matrix;
-            const SkScalar* nineMatrixValues = reinterpret_cast<const SkScalar*>(mPtr);
+            const float* nineMatrixValues = reinterpret_cast<const float*>(mPtr);
             matrix.set9(nineMatrixValues);
             return SkPath2DPathEffect::Make(matrix, path);
         }), allow_raw_pointers());
 
-    // TODO(kjlubick, reed) Make SkPath immutable and only creatable via a factory/builder.
     class_<SkPath>("Path")
         .constructor<>()
 #ifdef CK_INCLUDE_PATHOPS
@@ -1928,102 +1880,33 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("CanInterpolate", &CanInterpolate)
         .class_function("_MakeFromCmds", &MakePathFromCmds)
         .class_function("_MakeFromVerbsPointsWeights", &MakePathFromVerbsPointsWeights)
-        .function("_addArc", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr,
-                                                   SkScalar startAngle, SkScalar sweepAngle)->void {
-            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
-            self.addArc(*oval, startAngle, sweepAngle);
-        }))
-        .function("_addOval", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr,
-                                                   bool ccw, unsigned start)->void {
-            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
-            self.addOval(*oval, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW, start);
-        }))
-        .function("_addCircle", optional_override([](SkPath& self,
-                                                   SkScalar x,
-                                                   SkScalar y,
-                                                   SkScalar r,
-                                                   bool ccw)->void {
-            self.addCircle(x, y, r, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
-        }))
-        // interface.js has 3 overloads of addPath
-        .function("_addPath", &ApplyAddPath)
-        .function("_addPoly", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr,
-                                                   int count, bool close)->void {
-            const SkPoint* pts = reinterpret_cast<const SkPoint*>(fPtr);
-            self.addPoly({pts, count}, close);
-        }))
-        .function("_addRect", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr,
-                                                   bool ccw)->void {
-            const SkRect* rect = reinterpret_cast<const SkRect*>(fPtr);
-            self.addRect(*rect, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
-        }))
-        .function("_addRRect", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr,
-                                                   bool ccw)->void {
-            self.addRRect(ptrToSkRRect(fPtr), ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
-        }))
-        .function("_addVerbsPointsWeights", &PathAddVerbsPointsWeights)
-        .function("_arcToOval", optional_override([](SkPath& self,
-                                                   WASMPointerF32 fPtr, SkScalar startAngle,
-                                                   SkScalar sweepAngle, bool forceMoveTo)->void {
-            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
-            self.arcTo(*oval, startAngle, sweepAngle, forceMoveTo);
-        }))
-        .function("_arcToRotated", &ApplyArcToArcSize)
-        .function("_arcToTangent", ApplyArcToTangent)
-        .function("_close", &ApplyClose)
-        .function("_conicTo", &ApplyConicTo)
         .function("countPoints", &SkPath::countPoints)
         .function("contains", &SkPath::contains)
-        .function("_cubicTo", &ApplyCubicTo)
-        .function("_getPoint", optional_override([](SkPath& self, int index,
+        .function("_getPoint", optional_override([](const SkPath& self, int index,
                                                     WASMPointerF32 oPtr)->void {
             SkPoint* output = reinterpret_cast<SkPoint*>(oPtr);
             *output = self.getPoint(index);
         }))
         .function("isEmpty",  &SkPath::isEmpty)
         .function("isVolatile", &SkPath::isVolatile)
-        .function("_lineTo", &ApplyLineTo)
-        .function("_moveTo", &ApplyMoveTo)
-        .function("_quadTo", &ApplyQuadTo)
-        .function("_rArcTo", &ApplyRArcToArcSize)
-        .function("_rConicTo", &ApplyRConicTo)
-        .function("_rCubicTo", &ApplyRCubicTo)
-        .function("_rLineTo", &ApplyRLineTo)
-        .function("_rMoveTo", &ApplyRMoveTo)
-        .function("_rQuadTo", &ApplyRQuadTo)
-        .function("reset", &ApplyReset)
-        .function("rewind", &ApplyRewind)
         .function("setIsVolatile", &SkPath::setIsVolatile)
-        .function("_transform", select_overload<void(SkPath&, SkScalar, SkScalar, SkScalar, SkScalar, SkScalar, SkScalar, SkScalar, SkScalar, SkScalar)>(&ApplyTransform))
 
-        // PathEffects
-        .function("_dash", &ApplyDash)
-        .function("_trim", &ApplyTrim)
-        .function("_stroke", &ApplyStroke)
+        .function("makeDashed", &MakeDashed)
+        .function("_makeTrimmed", &MakeTrimmed)
+        .function("_makeStroked", &MakeStroked)
 
-#ifdef CK_INCLUDE_PATHOPS
-        // PathOps
-        .function("_simplify", &ApplySimplify)
-        .function("_op", &ApplyPathOp)
-        .function("makeAsWinding", &MakeAsWinding)
-#endif
         // Exporting
         .function("toSVGString", &ToSVGString)
         .function("toCmds", &ToCmds)
 
-        .function("setFillType", select_overload<void(SkPathFillType)>(&SkPath::setFillType))
+        .function("setFillType", &SkPath::setFillType)
         .function("getFillType", &SkPath::getFillType)
-        .function("_getBounds", optional_override([](SkPath& self,
+        .function("_getBounds", optional_override([](const SkPath& self,
                                                      WASMPointerF32 fPtr)->void {
             SkRect* output = reinterpret_cast<SkRect*>(fPtr);
             output[0] = self.getBounds();
         }))
-        .function("_computeTightBounds", optional_override([](SkPath& self,
+        .function("_computeTightBounds", optional_override([](const SkPath& self,
                                                               WASMPointerF32 fPtr)->void {
             SkRect* output = reinterpret_cast<SkRect*>(fPtr);
             output[0] = self.computeTightBounds();
@@ -2034,7 +1917,94 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("dump", select_overload<void() const>(&SkPath::dump))
         .function("dumpHex", select_overload<void() const>(&SkPath::dumpHex))
 #endif
+#ifdef CK_INCLUDE_PATHOPS
+        .function("_makeSimplified", &MakeSimplified)
+        .function("_makeCombined", optional_override([](const SkPath& self,
+                                                        const SkPath& other,
+                                                        SkPathOp op)->SkPathOrNull {
+            return MakePathFromOp(self, other, op);
+        }))
+        .function("makeAsWinding", &MakeAsWinding)
+#endif
         ;
+
+    class_<SkPathBuilder>("PathBuilder")
+        .constructor<>()
+        .constructor<SkPath>()
+        // These methods all return void and we handle the "chaining" logic in the JS.
+        // If we returned PathBuilder here, emsdk would allocate new pathbuilder objects
+        // causing memory leaks.
+        .function("_addArc", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr,
+                                                   float startAngle, float sweepAngle)->void {
+            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
+            self.addArc(*oval, startAngle, sweepAngle);
+        }))
+        .function("_addOval", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr,
+                                                   bool ccw, unsigned start)->void {
+            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
+            self.addOval(*oval, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW, start);
+        }))
+        .function("_addCircle", optional_override([](SkPathBuilder& self,
+                                                   float x,
+                                                   float y,
+                                                   float r,
+                                                   bool ccw)->void {
+            self.addCircle(x, y, r, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
+        }))
+        // interface.js has 3 overloads of addPath
+        .function("_addPath", &ApplyAddPath)
+        .function("_addPolygon", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr,
+                                                   int count, bool close)->void {
+            const SkPoint* pts = reinterpret_cast<const SkPoint*>(fPtr);
+            self.addPolygon({pts, count}, close);
+        }))
+        .function("_addRect", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr,
+                                                   bool ccw)->void {
+            const SkRect* rect = reinterpret_cast<const SkRect*>(fPtr);
+            self.addRect(*rect, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
+        }))
+        .function("_addRRect", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr,
+                                                   bool ccw)->void {
+            self.addRRect(ptrToSkRRect(fPtr), ccw ? SkPathDirection::kCCW : SkPathDirection::kCW);
+        }))
+        .function("_addVerbsPointsWeights", &PathAddVerbsPointsWeights)
+        .function("_arcToOval", optional_override([](SkPathBuilder& self,
+                                                   WASMPointerF32 fPtr, float startAngle,
+                                                   float sweepAngle, bool forceMoveTo)->void {
+            const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
+            self.arcTo(*oval, startAngle, sweepAngle, forceMoveTo);
+        }))
+        .function("_arcToRotated", &ApplyArcToArcSize)
+        .function("_arcToTangent", &ApplyArcToTangent)
+        .function("_close", &ApplyClose)
+        .function("_conicTo", &ApplyConicTo)
+        .function("countPoints", &SkPathBuilder::countPoints)
+        .function("_cubicTo", &ApplyCubicTo)
+        .function("detach", optional_override([](SkPathBuilder& self)->SkPath {
+            return self.detach();
+        }))
+        .function("isEmpty",  &SkPathBuilder::isEmpty)
+        .function("_lineTo", &ApplyLineTo)
+        .function("_moveTo", &ApplyMoveTo)
+        .function("_quadTo", &ApplyQuadTo)
+        .function("_rArcTo", &ApplyRArcToArcSize)
+        .function("_rConicTo", &ApplyRConicTo)
+        .function("_rCubicTo", &ApplyRCubicTo)
+        .function("_rLineTo", &ApplyRLineTo)
+        .function("_rMoveTo", &ApplyRMoveTo)
+        .function("_rQuadTo", &ApplyRQuadTo)
+        .function("reset", &ApplyReset)
+        .function("setFillType", &SkPathBuilder::setFillType)
+        .function("snapshot", optional_override([](SkPathBuilder& self)->SkPath {
+            return self.snapshot();
+        }))
+        .function("_transform", select_overload<void(SkPathBuilder&, float, float, float, float, float, float, float, float, float)>(&ApplyTransform));
+
 
     static SkRTreeFactory bbhFactory;
     class_<SkPictureRecorder>("PictureRecorder")
@@ -2099,8 +2069,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
             })
         )
         .class_function("MakeFractalNoise", optional_override([](
-                                                SkScalar baseFreqX, SkScalar baseFreqY,
-                                                int numOctaves, SkScalar seed,
+                                                float baseFreqX, float baseFreqY,
+                                                int numOctaves, float seed,
                                                 int tileW, int tileH)->sk_sp<SkShader> {
             // if tileSize is empty (e.g. tileW <= 0 or tileH <= 0, it will be ignored.
             SkISize tileSize = SkISize::Make(tileW, tileH);
@@ -2117,7 +2087,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          WASMPointerF32 mPtr,
                                          sk_sp<SkColorSpace> colorSpace)->sk_sp<SkShader> {
              const SkPoint* points = reinterpret_cast<const SkPoint*>(fourFloatsPtr);
-             const SkScalar* positions = reinterpret_cast<const SkScalar*>(pPtr);
+             const float* positions = reinterpret_cast<const float*>(pPtr);
              OptionalMatrix localMatrix(mPtr);
 
              if (colorType == SkColorType::kRGBA_F32_SkColorType) {
@@ -2135,13 +2105,13 @@ EMSCRIPTEN_BINDINGS(Skia) {
              return nullptr;
          }), allow_raw_pointers())
         .class_function("_MakeRadialGradient", optional_override([](
-                                         SkScalar cx, SkScalar cy, SkScalar radius,
+                                         float cx, float cy, float radius,
                                          WASMPointerF32 cPtr, SkColorType colorType,
                                          WASMPointerF32 pPtr,
                                          int count, SkTileMode mode, uint32_t flags,
                                          WASMPointerF32 mPtr,
                                          sk_sp<SkColorSpace> colorSpace)->sk_sp<SkShader> {
-            const SkScalar* positions = reinterpret_cast<const SkScalar*>(pPtr);
+            const float* positions = reinterpret_cast<const float*>(pPtr);
             OptionalMatrix localMatrix(mPtr);
             if (colorType == SkColorType::kRGBA_F32_SkColorType) {
                const SkColor4f* colors  = reinterpret_cast<const SkColor4f*>(cPtr);
@@ -2157,15 +2127,15 @@ EMSCRIPTEN_BINDINGS(Skia) {
             SkDebugf("%d is not an accepted colorType\n", colorType);
             return nullptr;
         }), allow_raw_pointers())
-        .class_function("_MakeSweepGradient", optional_override([](SkScalar cx, SkScalar cy,
+        .class_function("_MakeSweepGradient", optional_override([](float cx, float cy,
                                          WASMPointerF32 cPtr, SkColorType colorType,
                                          WASMPointerF32 pPtr,
                                          int count, SkTileMode mode,
-                                         SkScalar startAngle, SkScalar endAngle,
+                                         float startAngle, float endAngle,
                                          uint32_t flags,
                                          WASMPointerF32 mPtr,
                                          sk_sp<SkColorSpace> colorSpace)->sk_sp<SkShader> {
-            const SkScalar* positions = reinterpret_cast<const SkScalar*>(pPtr);
+            const float* positions = reinterpret_cast<const float*>(pPtr);
             OptionalMatrix localMatrix(mPtr);
             if (colorType == SkColorType::kRGBA_F32_SkColorType) {
                const SkColor4f* colors  = reinterpret_cast<const SkColor4f*>(cPtr);
@@ -2182,8 +2152,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return nullptr;
         }), allow_raw_pointers())
         .class_function("MakeTurbulence", optional_override([](
-                                                SkScalar baseFreqX, SkScalar baseFreqY,
-                                                int numOctaves, SkScalar seed,
+                                                float baseFreqX, float baseFreqY,
+                                                int numOctaves, float seed,
                                                 int tileW, int tileH)->sk_sp<SkShader> {
             // if tileSize is empty (e.g. tileW <= 0 or tileH <= 0, it will be ignored.
             SkISize tileSize = SkISize::Make(tileW, tileH);
@@ -2191,14 +2161,14 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         .class_function("_MakeTwoPointConicalGradient", optional_override([](
                                          WASMPointerF32 fourFloatsPtr,
-                                         SkScalar startRadius, SkScalar endRadius,
+                                         float startRadius, float endRadius,
                                          WASMPointerF32 cPtr, SkColorType colorType,
                                          WASMPointerF32 pPtr,
                                          int count, SkTileMode mode, uint32_t flags,
                                          WASMPointerF32 mPtr,
                                          sk_sp<SkColorSpace> colorSpace)->sk_sp<SkShader> {
             const SkPoint* startAndEnd = reinterpret_cast<const SkPoint*>(fourFloatsPtr);
-            const SkScalar* positions = reinterpret_cast<const SkScalar*>(pPtr);
+            const float* positions = reinterpret_cast<const float*>(pPtr);
             OptionalMatrix localMatrix(mPtr);
 
             if (colorType == SkColorType::kRGBA_F32_SkColorType) {
