@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7afde0c6_e39eb765",
+        "filename": "src/gpu/ganesh/GrBackendSurface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-15T18:07:25Z",
+      "side": 1,
+      "message": "Do we need this given the default case uses SK_ABORT?",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 18
+      },
+      "revId": "09b44e499d71c95381932bb66a13fdfc3a76b494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08015a8c_77db1e83",
+        "filename": "src/gpu/graphite/Texture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-15T18:07:25Z",
+      "side": 1,
+      "message": "Can we change this to SK_ABORT(\"Not implemented\")?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 18
+      },
+      "revId": "09b44e499d71c95381932bb66a13fdfc3a76b494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
