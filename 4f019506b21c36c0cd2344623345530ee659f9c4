@@ -211,6 +211,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a65f149_af49d5c3",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-15T18:19:43Z",
+      "side": 1,
+      "message": "\u003e Eventually (very soon) all the users will need to be updated and `SkXPSDocument.cpp` will not depend on either. Even as things are the Bazel build could work by just always setting `SK_DISABLE_LEGACY_XPS_FACTORIES`.\n\u003e \n\u003e Also, need to add these (in their own targets) in `include/docs/BUILD.bazel` and `bazel/exporter_tool/main.go` updated to export them into `gn/xps.gni` (run `make -C bazel generate_gni` or equivalent as described in `bazel/exporter_tool/README.md`.\n\nOoops... I was working on the CL on Windows, but then switched to Linux to work on the Bazel/gni stuff.  It turned out that I uploaded a separate CL from Linux, rather than uploading a new patchset (I\u0027ve incorrectly thought that I don\u0027t need to to `git cl issue \u003cnumber\u003e` after a direct `git checkout` of the commits from Gerrit).\n\nDone.\n\n\u003e Should also update `XPSSink::draw` in `DMSrcSkink.cpp` to call the new `SkXPS::MakeDocument`. See `PDFSink::draw` for the equivalent there. May need to update the build of the `skia` target in `BUILD.gn` to depend on one of the new `xps_libpng_helpers` or `xps_rustpng_helpers` like the existing dependency on `pdf_jpeg_helpers`.\n\nAck.  I\u0027ll work on that on the Windows machine (where I can more easily confirm that everything still builds).\n\nLeaving this comment unresolved - I am still working on that part.",
+      "parentUuid": "a967d5c8_07a09221",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 36
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "884141e4_e2ce30a3",
         "filename": "src/xps/BUILD.bazel",
         "patchSetId": 2
