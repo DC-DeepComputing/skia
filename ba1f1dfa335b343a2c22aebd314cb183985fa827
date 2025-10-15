@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20861da7_65c784f3",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2081,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T19:06:22Z",
+      "side": 1,
+      "message": "To avoid gm differences, let\u0027s have the libpng one be used by default.\n\nAlso, minor nit: I like `#if defined(...)` instead of `#ifdef` just because it\u0027s easier to add on `\u0026\u0026 whatever` later (and looks better, IMO)",
+      "range": {
+        "startLine": 2081,
+        "startChar": 7,
+        "endLine": 2081,
+        "endChar": 37
+      },
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f46d04_b6ce6d45",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T19:06:22Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "972d09cf_875096ce",
+        "filename": "include/docs/SkXPSRustPngHelpers.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T19:06:22Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
