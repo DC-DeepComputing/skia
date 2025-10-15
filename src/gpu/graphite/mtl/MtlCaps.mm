@@ -607,6 +607,13 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
             ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
             ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
         }
+        // Format: R16Unorm, Surface: kR16_unorm
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kR16_unorm_SkColorType;
+            ctInfo.fTransferColorType = kR16_unorm_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
     }
 
     // Format: RG16Unorm
