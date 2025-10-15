@@ -782,7 +782,6 @@ bool SkPath::isValidImpl() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
 SkPathConvexity SkPath::computeConvexity() const {
     if (auto c = this->getConvexityOrUnknown(); c != SkPathConvexity::kUnknown) {
         return c;
