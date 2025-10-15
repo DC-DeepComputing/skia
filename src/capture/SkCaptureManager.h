@@ -15,6 +15,7 @@
 #include <atomic>
 
 class SkCanvas;
+class SkCapture;
 class SkCaptureCanvas;
 class SkSurface;
 
@@ -25,7 +26,6 @@ public:
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
     void snapPicture(SkSurface*);
-    void serializeCapture();
 
     void toggleCapture(bool capturing) {
         if (capturing != fIsCurrentlyCapturing && !capturing) {
@@ -37,6 +37,8 @@ public:
     bool isCurrentlyCapturing() const {
         return fIsCurrentlyCapturing;
     }
+
+    sk_sp<SkCapture> getCapture() const;
 
 private:
     std::atomic<bool> fIsCurrentlyCapturing = false;
