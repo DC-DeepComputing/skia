@@ -16,6 +16,24 @@
       "message": "Drive by comment, in C++20 there is `std::midpoint` which is the slow and correct way. One implementation (for floats) does something like\n\n```\nconstexpr T lo \u003d numeric_limits\u003cT\u003e::min() * 2;\nconstexpr T hi \u003d numeric_limits\u003cT\u003e::max() / 2;\nconst T abs_a \u003d a \u003c 0 ? -a : a;\nconst T abs_b \u003d b \u003c 0 ? -b : b;\nif (abs_a \u003c\u003d hi \u0026\u0026 abs_b \u003c\u003d hi) [[likely]]\n  return (a + b) / 2; // always correctly rounded\nif (abs_a \u003c lo) // not safe to halve __a\n  return a + b/2;\nif (abs_b \u003c lo) // not safe to halve __b\n  return a/2 + b;\nreturn a/2 + b/2; // otherwise correctly rounded\n```\n\nNote that there is a completely separate strategy for integers which properly handles the minimum negative value and other such things.\n\nSee [CppCon 2019: Marshall Clow “std::midpoint? How Hard Could it Be?](https://www.youtube.com/watch?v\u003dsBtAGxBh-XI) for what all the cases are for and which problems matter. Floating point discussion starts at the 48 minute mark.\n\nThe new implementation does avoid overflow for large values, however the trade off appears to be possible rounding issues. This may be the right trade off here since most uses in Skia are going to throw away the low bits anyway in the end.",
       "revId": "32a67f2783a77be449d0d21b6c1353cae1254841",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0888616c_c695a7c3",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-15T18:41:39Z",
+      "side": 1,
+      "message": "Thanks for the references, I was expecting some trivial pixel diffs from this change but I guess we got lucky.\n\nIt\u0027d be nice to switch to `std::midpoint` when it becomes available (and prolly time to get rid of most SkScalar helpers).",
+      "parentUuid": "08346a42_df9b7a9d",
+      "revId": "32a67f2783a77be449d0d21b6c1353cae1254841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
