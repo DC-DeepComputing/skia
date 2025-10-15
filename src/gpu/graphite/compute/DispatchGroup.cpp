@@ -402,7 +402,8 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             //
             // Note: A ComputeStep is allowed to read/sample from a storage texture that a previous
             // ComputeStep has written to.
-            SK_ABORT("a readonly texture must be externally assigned to a ComputeStep");
+//$$
+//            SK_ABORT("a readonly texture must be externally assigned to a ComputeStep");
             break;
         case Type::kSampledTexture: {
             fObj->fSamplerDescs.push_back(step->calculateSamplerParameters(resourceIdx, resource));

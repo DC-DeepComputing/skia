@@ -79,26 +79,24 @@ static void append_color_output(const PorterDuffXferProcessor& xp,
     switch (outputType) {
         case BlendFormula::kNone_OutputType:
             fragBuilder->codeAppendf("%s = half4(0.0);", output);
-            break;
+            return;
         case BlendFormula::kCoverage_OutputType:
             fragBuilder->codeAppendf("%s = %s;", output, inCoverage);
-            break;
+            return;
         case BlendFormula::kModulate_OutputType:
             fragBuilder->codeAppendf("%s = %s * %s;", output, inColor, inCoverage);
-            break;
+            return;
         case BlendFormula::kSAModulate_OutputType:
             fragBuilder->codeAppendf("%s = %s.a * %s;", output, inColor, inCoverage);
-            break;
+            return;
         case BlendFormula::kISAModulate_OutputType:
             fragBuilder->codeAppendf("%s = (1.0 - %s.a) * %s;", output, inColor, inCoverage);
-            break;
+            return;
         case BlendFormula::kISCModulate_OutputType:
             fragBuilder->codeAppendf("%s = (half4(1.0) - %s) * %s;", output, inColor, inCoverage);
-            break;
-        default:
-            SK_ABORT("Unsupported output type.");
-            break;
+            return;
     }
+    SkUNREACHABLE;
 }
 
 void PorterDuffXferProcessor::onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const {
