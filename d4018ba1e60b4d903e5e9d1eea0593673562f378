@@ -22,6 +22,30 @@
       },
       "revId": "d4018ba1e60b4d903e5e9d1eea0593673562f378",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f3bc1b3_3f975599",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-15T18:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c3570ed_4d589b68",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 437,
+        "endChar": 101
+      },
+      "revId": "d4018ba1e60b4d903e5e9d1eea0593673562f378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
