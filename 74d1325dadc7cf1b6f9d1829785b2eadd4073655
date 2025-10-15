@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1ba256d_f90de8b3",
+        "filename": "tests/ganesh/GaneshTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-15T15:33:31Z",
+      "side": 1,
+      "message": "Since this one takes an SkPixmap already, do we need it over the new `ConvertSolidPixels`? I see this one uses GrPixmap for the internal `colorPixmap` conversion, but if the math/tests work out fine we can at least cut out some duplication",
+      "range": {
+        "startLine": 189,
+        "startChar": 5,
+        "endLine": 189,
+        "endChar": 27
+      },
+      "revId": "74d1325dadc7cf1b6f9d1829785b2eadd4073655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
