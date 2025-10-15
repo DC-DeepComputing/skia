@@ -182,8 +182,14 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
-                 /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite)
+                 /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
+#if defined(__EMSCRIPTEN__)
+                 /* requiresPrepareForReturnToCache= */ true)
+#else
+                 /* requiresPrepareForReturnToCache= */ false)
+#endif
         , fBuffer(std::move(buffer)) {
+
     fMapPtr = mappedAtCreationPtr;
 }
 
