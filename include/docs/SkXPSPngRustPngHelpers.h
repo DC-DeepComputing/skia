@@ -1,0 +1,28 @@
+/*
+ * Copyright 2025 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef SkXPSPngRustPngHelpers_DEFINED
+#define SkXPSPngRustPngHelpers_DEFINED
+
+#include "include/encode/SkPngRustEncoder.h"
+#include "include/private/base/SkAPI.h"
+
+class SkWStream;
+class SkPixmap;
+
+namespace SkXPS {
+
+/**
+ *  Implementation of `SkXPS::EncodePngCallback` based on Rust PNG.
+ */
+SK_API inline bool EncodePngUsingRust(SkWStream* dst, const SkPixmap& src) {
+    return SkPngRustEncoder::Encode(dst, src, {});
+}
+
+}  // namespace SkXPS
+
+#endif  // SkXPSPngRustPngHelpers_DEFINED
