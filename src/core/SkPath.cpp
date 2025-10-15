@@ -2352,7 +2352,7 @@ SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPath& path) {
     }
 
     // Note, this can compute a 'first' direction, even for non-convex shapes.
-    if (auto raw = SkPathPriv::Raw(path)) {
+    if (auto raw = SkPathPriv::Raw(path, SkResolveConvexity::kNo)) {
         return ComputeFirstDirection(*raw);
     } else {
         return SkPathFirstDirection::kUnknown;
@@ -3346,7 +3346,7 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
     }
 
     SkPath rotated = path.makeTransform(*inv);
-    auto raw = SkPathPriv::Raw(rotated);
+    auto raw = SkPathPriv::Raw(rotated, SkResolveConvexity::kNo);
     if (!raw) {
         return {};
     }
@@ -3472,5 +3472,5 @@ SkPathEdgeIter::SkPathEdgeIter(const SkPathRaw& raw) {
 }
 
 SkPathEdgeIter::SkPathEdgeIter(const SkPath& path)
-    : SkPathEdgeIter(SkPathPriv::Raw(path).value_or(SkPathRaw::Empty()))
+    : SkPathEdgeIter(SkPathPriv::Raw(path, SkResolveConvexity::kNo).value_or(SkPathRaw::Empty()))
 {}
