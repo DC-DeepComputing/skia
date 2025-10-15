@@ -94,6 +94,30 @@
       },
       "revId": "6a30cdb22962caf59edd80e5b8a21f3e51e74a52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71261cdb_135f9a82",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-15T18:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fbd13b5_6fd6e2ee",
+      "range": {
+        "startLine": 236,
+        "startChar": 65,
+        "endLine": 236,
+        "endChar": 74
+      },
+      "revId": "6a30cdb22962caf59edd80e5b8a21f3e51e74a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
