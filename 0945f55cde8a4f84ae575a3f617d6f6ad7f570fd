@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c63bcd_7a85c39a",
+        "filename": "tests/ComparePixels.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-15T14:10:47Z",
+      "side": 1,
+      "message": "Everything in here is a fork of the old Gr-based equivalents. While it is kind of a shame to have two copies I think it makes sense to have a version of this liberated from Ganesh and it seems that Ganesh version will never need to evolve until it can be deleted. It\u0027s only used in a few tests that are unlikely to change.",
+      "revId": "0945f55cde8a4f84ae575a3f617d6f6ad7f570fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
