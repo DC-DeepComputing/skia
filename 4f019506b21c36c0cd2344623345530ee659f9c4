@@ -233,6 +233,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "959dbb0f_51c4cf18",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-15T18:54:18Z",
+      "side": 1,
+      "message": "\u003e \u003e Should also update `XPSSink::draw` in `DMSrcSink.cpp` to call the new `SkXPS::MakeDocument`. See `PDFSink::draw` for the equivalent there.\n\nIt seems that `DMSrcSink.cpp` is only mentioned in `third_party/Skia/BUILD.gn` (in a `test_app` target) - it doesn\u0027t seem used in Chromium nor PDFium.  And it\u0027s also mentioned in `skia/dm/BUILD.bazel` (as a `testonly` `skia_cc_binary`).  So I assume that it is okay if for now we continue hardcoding a dependency on `SkPngEncoder` or `SkPngRustEncoder`.\n\nOtherwise, we would potentially need to plumb dependency injection through:\n\n* [`XPSSink::draw`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/dm/DMSrcSink.cpp;l\u003d2058;drc\u003dcd94333faad862be41ca2810a35060e66d677b2d)\n* [`XPSSink`\u0027s constructor](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/dm/DMSrcSink.h;l\u003d525;drc\u003dcd94333faad862be41ca2810a35060e66d677b2d)\n* [`create_sink`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/dm/DM.cpp;l\u003d1025-1053;drc\u003d02ea58d1f5eb1690a02c9ec9c5a2f4a2395b609d).\n* [`gather_sinks`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/dm/DM.cpp;l\u003d1099;drc\u003d02ea58d1f5eb1690a02c9ec9c5a2f4a2395b609d)\n\n\u003e May need to update the build of the `skia` target in `BUILD.gn` to depend on one of the new `xps_libpng_helpers` or `xps_rustpng_helpers` like the existing dependency on `pdf_jpeg_helpers`.\n\nDone.\n\n\u003e `optional(\"xps_rust_png_helpers\")`\n\nDoes this really need to be a separate target?  Can we just do this within the existing XPS target as in the latest patchset?",
+      "parentUuid": "0a65f149_af49d5c3",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 36
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "884141e4_e2ce30a3",
