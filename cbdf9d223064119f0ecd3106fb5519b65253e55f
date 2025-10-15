@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17d8b5c1_677e5c97",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-15T18:14:31Z",
+      "side": 1,
+      "message": "Looks like we only call this once, when caching in `getResolvedConvexity`.  Let\u0027s inline the store instead, seeing a setter makes me think there are other code paths manipulating convexity (which would be worrisome).",
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
