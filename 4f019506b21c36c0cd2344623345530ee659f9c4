@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dbeb13f7_a9206f5b",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-15T16:03:00Z",
+      "side": 1,
+      "message": "Sure, it would make sense to have both `include/docs/SkXPSPngRustHelpers.h` and `include/docs/SkXPSPngLibpngHelpers.h`. These would need to be handled like `include/docs/SkPDFJpegHelpers.h`, in the Bazel build specified in `include/docs/BUILD.bazel` and then generated into the gn build at `gn/xps.gni` via `bazel/exporter_tool/main.go` the same way the `pdf_jpeg_hdrs` Bazel target is.",
+      "parentUuid": "a1eb86e6_060ac3a5",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 36
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "884141e4_e2ce30a3",
         "filename": "src/xps/BUILD.bazel",
         "patchSetId": 2
