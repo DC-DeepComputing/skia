@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a8a9cfd_ede8ff1d",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-15T20:54:20Z",
+      "side": 1,
+      "message": "I should be more direct, we really don\u0027t want these deps. The entire point of this is to not have these deps. The user should be depending on whatever they want to bring in (they can turn use both of these encoders but then use something different to pass in to the xps code, like their own wrapper or something). In this case it\u0027s the `skia` target (which is really a test target, it is Skia\u0027s build of Skia).",
+      "parentUuid": "300915ac_35206d39",
+      "revId": "ba1f1dfa335b343a2c22aebd314cb183985fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa235726_8a06ee8d",
         "filename": "BUILD.gn",
         "patchSetId": 8
