@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e1a1643_5dcaf632",
+        "filename": "include/encode/SkPngRustEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-15T16:50:55Z",
+      "side": 1,
+      "message": "Done.\n\nPS. Just a heads-up I guess / for now this is not a problem (because there is no Bazel coverage for these files).  Eventually Bazel will require declaring whether the library with `SkXPSDocument.cpp` depends on `SkXPSPngRustHelpers.h` VS on `SkXPSPngLibPngHelpers.h`.  (I guess the same problem would happen if those headers were part of `include/encode/BUILD.bazel`.)",
+      "parentUuid": "dbeb13f7_a9206f5b",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 36
+      },
+      "revId": "4f019506b21c36c0cd2344623345530ee659f9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "884141e4_e2ce30a3",
