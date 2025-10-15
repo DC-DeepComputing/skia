@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f27a64e_95effb27",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-15T20:02:43Z",
+      "side": 1,
+      "message": "My read of buildEdges is that we don\u0027t -- they just look at the segments. Do you think its otherwise?",
+      "parentUuid": "09b064c4_db4246ee",
+      "range": {
+        "startLine": 367,
+        "startChar": 41,
+        "endLine": 367,
+        "endChar": 64
+      },
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17d8b5c1_677e5c97",
         "filename": "src/core/SkPathData.cpp",
         "patchSetId": 7
@@ -37,6 +61,24 @@
       "writtenOn": "2025-10-15T18:14:31Z",
       "side": 1,
       "message": "Looks like we only call this once, when caching in `getResolvedConvexity`.  Let\u0027s inline the store instead, seeing a setter makes me think there are other code paths manipulating convexity (which would be worrisome).",
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c08a3df_0aeb3732",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-15T20:02:43Z",
+      "side": 1,
+      "message": "Actually, we (now) call it twice.\n\nIts private, but I like that it hides (like the helper that reads the value) the trickiness of the atomic.",
+      "parentUuid": "17d8b5c1_677e5c97",
       "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
