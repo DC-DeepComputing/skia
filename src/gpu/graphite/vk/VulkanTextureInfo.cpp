@@ -70,7 +70,7 @@ bool VulkanTextureInfo::serialize(SkWStream* stream) const {
 }
 
 // TODO(robertphillips): add validity checks to deserialized values
-bool VulkanTextureInfo::deserialize(SkStream* stream) {
+bool VulkanTextureInfo::deserialize1(SkStream* stream) {
     uint64_t tmp64;
 
     if (!stream->readU64(&tmp64)) { return false; }

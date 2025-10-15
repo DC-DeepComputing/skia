@@ -128,7 +128,7 @@ skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) con
 }
 
 skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const TextureInfo& info) const {
-    auto colorTypeInfo = this->getColorTypeInfo(ct, info);
+    const ColorTypeInfo* colorTypeInfo = this->getColorTypeInfo(ct, info);
     if (!colorTypeInfo) {
         SkDEBUGFAILF("Illegal color type (%d) and format combination.", static_cast<int>(ct));
         return {};

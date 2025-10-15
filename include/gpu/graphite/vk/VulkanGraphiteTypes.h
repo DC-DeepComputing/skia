@@ -71,7 +71,7 @@ private:
     TextureFormat viewFormat() const;
 
     bool serialize(SkWStream*) const;
-    bool deserialize(SkStream*);
+    bool deserialize1(SkStream*);
 
     // Virtual API when the specific backend type is not available.
     SkString toBackendString() const override;
