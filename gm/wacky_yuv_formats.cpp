@@ -628,6 +628,12 @@ static int create_YUV(const PlaneData& planes,
                                                  dstPixel[0] = tenBitsPP ? (val16 & 0xFFC0)
                                                                          : val16;
                                               });
+            resultBMs[nextLayer++] = make_16(planes.fQuarter, kR16_unorm_SkColorType,
+                                             [tenBitsPP = (yuvFormat == kP010_YUVFormat)]
+                                             (uint16_t* dstPixel, const float* srcPixel) {
+                                                 uint16_t val16 = flt_2_uint16(srcPixel[1]);
+                                                 dstPixel[0] = tenBitsPP ? (val16 & 0xFFC0) : val16;
+                                             });
             resultBMs[nextLayer++] = make_16(planes.fQuarter, kR16G16_unorm_SkColorType,
                                              [tenBitsPP = (yuvFormat == kP010_YUVFormat)]
                                              (uint16_t* dstPixel, const float* srcPixel) {
