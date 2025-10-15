@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d888d1c4_4382a318",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-15T15:39:03Z",
+      "side": 1,
+      "message": "Can you add a comment to `makeImage` in the header to explain that the returned SkImage is a temporary image created from `surf`? All current call sites this is valid for, but it\u0027ll be helpful if a new one comes up that to make it clear this is intentional.",
+      "range": {
+        "startLine": 244,
+        "startChar": 49,
+        "endLine": 244,
+        "endChar": 58
+      },
+      "revId": "b8af560d887da01ba8a8d2eee2159e5a4cd00265",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
