@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ba4462_ab432353",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-15T18:00:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3dedbf7_e528808b",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 76
+      },
+      "revId": "4f9b9ee781088c83ca7302c7f7a78f3f90af950a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ed019e5_9027b27e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-15T15:29:21Z",
       "side": 1,
       "message": "Does this struct need to be public?\n\nIf so, it could be declared inside SkCapture as `SkCapture::Metadata`.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 2
+      },
+      "revId": "4f9b9ee781088c83ca7302c7f7a78f3f90af950a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47c6cbb1_773eeb36",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-15T18:00:55Z",
+      "side": 1,
+      "message": "I can see value in clients inspecting the the capture metadata to inform how to consume the data. Done.",
+      "parentUuid": "1ed019e5_9027b27e",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a56fa8c9_219c5b8c",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-15T18:00:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad154809_47978017",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "4f9b9ee781088c83ca7302c7f7a78f3f90af950a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9cf612a_8d1e1907",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2b0357_c9496028",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-15T18:00:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9cf612a_8d1e1907",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 67
+      },
+      "revId": "4f9b9ee781088c83ca7302c7f7a78f3f90af950a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33f0f91c_6141a0b3",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-10-15T15:29:21Z",
       "side": 1,
       "message": "What is the intended plan for the capture manager state when getCapture() is called? Do we want this to be more like a \"snap\" where the returned capture represents everything collected up to this point and then the manager is reset?\n\nOr should it just return a capture holding everything since capture was toggled on.  If capturing remains enabled, new data gets appended a future call to getCapture() returns a new object that contains the same initial picture data and anything added later.  We would reset only when capturing was toggled off?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 40
+      },
+      "revId": "4f9b9ee781088c83ca7302c7f7a78f3f90af950a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9270c02c_ff6751ed",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-15T18:00:55Z",
+      "side": 1,
+      "message": "Done. To recap offline chat: toggling the CaptureManager off will snap all canvases, make an SkCapture and store it, then will clear all the saved SkPictures. getCapture() has been renamed to getLastCapture() to clearly indicate the new behavior.",
+      "parentUuid": "33f0f91c_6141a0b3",
       "range": {
         "startLine": 41,
         "startChar": 0,
