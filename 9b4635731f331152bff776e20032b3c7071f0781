@@ -16,6 +16,24 @@
       "message": "Introduced with the new `SwapchainImage`.",
       "revId": "9b4635731f331152bff776e20032b3c7071f0781",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d37346d_ab8037ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-15T18:51:58Z",
+      "side": 1,
+      "message": "Ah, thank you!",
+      "parentUuid": "4dbc5e0b_68c98e01",
+      "revId": "9b4635731f331152bff776e20032b3c7071f0781",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
