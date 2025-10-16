@@ -23,6 +23,10 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #endif
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#endif
+
 static sk_sp<SkSurface> make_surface(SkCanvas* root, int N) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(N, N);
     return ToolUtils::makeSurface(root, info);
@@ -72,7 +76,14 @@ protected:
     void onDraw(SkCanvas* canvas) override {
         bool makeImage = !fImage;
 #if defined(SK_GANESH)
-        if (fImage && !fImage->isValid(canvas->recordingContext()->asRecorder())) {
+        auto recordingContext = canvas->recordingContext();
+        if (fImage && recordingContext && !fImage->isValid(recordingContext->asRecorder())) {
+            makeImage = true;
+        }
+#endif
+#if defined(SK_GRAPHITE)
+        auto recorder = canvas->recorder();
+        if (fImage && recorder && !fImage->isValid(recorder)) {
             makeImage = true;
         }
 #endif
