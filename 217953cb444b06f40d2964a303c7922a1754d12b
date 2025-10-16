@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6435139b_c5d99295",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T19:53:42Z",
+      "side": 1,
+      "message": "I might keep this definition inside a CPP file, which VulkanUtilsPriv.cpp is a reasonable location for things in the public VulkanTypes.h header.",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 5
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c43cb35_523a3fa9",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T19:53:42Z",
+      "side": 1,
+      "message": "Same for this ctor being in the cpp file if possible.",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 92
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59585d96_50944c39",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T19:53:42Z",
+      "side": 1,
+      "message": "We could rewrite this to:\n```\nfSamplerFilterMustMatchChromaFilter \u003d !(formatFeatures \u0026 ...);\nfSupportsLinearFilter \u003d SkToBool(formatFeatures \u0026 ...);\nif (fSamplerFilterMustMatchChromaFilter \u0026\u0026 !fSupportsLinearFilter) {\n    // big comment\n    fChromeFilter \u003d VK_FILTER_NEAREST;\n}\n```",
+      "range": {
+        "startLine": 260,
+        "startChar": 8,
+        "endLine": 261,
+        "endChar": 92
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
