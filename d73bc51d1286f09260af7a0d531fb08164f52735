@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c6f5725_9adfe4a4",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T17:11:28Z",
+      "side": 1,
+      "message": "Can we move this up with the other `const` fields? If we put it right after `fOwnership` we shouldn\u0027t increase the size of Resource due to packing/alignment of UniqueID vs the uint8_t of Ownership.\n\nSemantically, I also think ordering it as `fUniqueID, fOwnership, fRequiresPrepareForReturnToCache` maybe also is better ordering? `fOwnership, fRequires, fUniqueID` should be the same size, I guess it depends on whether or not the unique ID or the ownership+return-strategy are the more fundamental parts of the Resource.",
+      "range": {
+        "startLine": 670,
+        "startChar": 0,
+        "endLine": 670,
+        "endChar": 56
+      },
+      "revId": "d73bc51d1286f09260af7a0d531fb08164f52735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8cd8f77_e3e7951f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T17:11:28Z",
+      "side": 1,
+      "message": "We could push this into the initialization of `requiresPrepareForReturnToCache` in the emscripten case.",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 5
+      },
+      "revId": "d73bc51d1286f09260af7a0d531fb08164f52735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
