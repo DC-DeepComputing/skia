@@ -666,7 +666,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           kRGBA_4_DS },
 
         // 100% (1/1) handles: 1
-        { Builder().hwImg(kSRGB).srcOver(),
+   /*3*/     { Builder().hwImg(kSRGB).srcOver(),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_SRGB },
 
@@ -688,7 +688,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           kRGBA_4_DS },
 
         // 100% (2/2) handles 10 29
-        { Builder().transparent().hwImg(kSRGB).srcOver(),
+ /*7*/       { Builder().transparent().hwImg(kSRGB).srcOver(),
           kRRectAndNonAARect,
           kRGBA_1_D_SRGB },
 
@@ -704,7 +704,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           kRGBA_4_DS },
 
         // 10: 75% (3/4) handles 19 38 128
-        { Builder().hwImg(kPremul).matrixCF().srcOver(),
+ /*10*/       { Builder().hwImg(kPremul).matrixCF().srcOver(),
           kRRectAndNonAARect,
           kRGBA_1_D,
           kWithAnalyticClip },
@@ -748,7 +748,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           kWithAnalyticClip },
 
         // 50% (1/2) handles 77 - due to the w/o msaa load variants not being used
-        { Builder().hwImg(kSRGB).matrixCF().dither().srcOver(),
+   /*18*/     { Builder().hwImg(kSRGB).matrixCF().dither().srcOver(),
           DrawTypeFlags::kAnalyticRRect,
           kRGBA_4_DS_SRGB },
 

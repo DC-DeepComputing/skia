@@ -570,6 +570,12 @@ static const PipelineLabel kCases[] = {
 /* 74* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "SolidColor SrcOver" },
+/* 77* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "AnalyticRRectRenderStep + "
+                "Compose [ Compose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] MatrixColorFilter ] Dither ] SrcOver" },
+/* 79* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "Compose [ RE_LinearEffect_BT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kEwAAPcAAAAAAAAA) ] ColorSpaceTransform ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] Dither ] SrcOver" },
 };
 
 bool skip(const char* str) {
