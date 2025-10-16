@@ -86,6 +86,24 @@
       "parentUuid": "b5a6490f_7546d2e1",
       "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6a1895_feed4a62",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-16T14:41:20Z",
+      "side": 1,
+      "message": "Also if streams are wrapped and buffered like we have in some of our tests.",
+      "parentUuid": "2fa4c00c_cd93a0bf",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
