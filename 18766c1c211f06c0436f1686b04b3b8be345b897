@@ -18,6 +18,132 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "947f3b64_354f4e35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "Most everything lgtm, other than consolidating the push/pop function declarations into just RecorderPriv, and then a deep dive into the shrinkAndClear functions.",
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "376fe2d1_72dfaa3a",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "nit: space",
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd6de8f_94c483fd",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "We can delete these declarations since Device just calls the `recorder-\u003epriv().push/pop()` functions.  In Recorder.cpp, the definitions can just be in `RecorderPriv::` and use `fRecorder` instead of `this`, which matches how `flushTrackedDevices` is implemented.\n\nThis just keeps the public header a little leaner.",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 67
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d61b9123_2979dbbd",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "For TArray, this impl is brittle because changeSize() only modifies fSize, it doesn\u0027t actually handle running destructors.  The `move()` call inside shrink_to_fit() will think it has to actually move the potentially unitialized values of the original array into the shrunk array (because here `count` doesn\u0027t necessarily reflect the actual initialized size that shrink_to_fit currently assumes).\n\nGiven that, and for the use case here, where we know the TArray is always empty before we shrink and clear it, we can just remove this and use reserve_exact in the PaintParamsKeyBuilder class.",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 32
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5732257_cbaf1e44",
+        "filename": "include/private/base/SkTDArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "I think we can just change UniformManager\u0027s fStorage to be a TArray\u003cchar\u003e instead of TDArray\u003cchar\u003e.  The append() call for TDArray should be identical to TArray\u0027s push_back_n() given that `new char` default initialization should be a no-op so the compiler can remove the entire loop.\n\nWhile TDArray\u0027s shrinkAndClear doesn\u0027t have the same issues with object lifetime as TArray since nothing is ever explicitly initialized/destroyed, shrinkAndClear() is  a pretty unique operation for these builders so if we can generalize part of it (e.g. add a reserve_exact to TDArray so UniformManager uses that and asserts its already cleared), that seems better.  Or we switch UniformManager to consolidate on TArray over TDArray and reuse its reserve_exact impl in both UniformManager and PaintParamsKeyBuilder.",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 5
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74fc12b7_e7a9a5bf",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "wdyt about having this be in the ctor for `ScopedDrawBuilder` since it pairs with the reset in its destructor?",
+      "range": {
+        "startLine": 1631,
+        "startChar": 0,
+        "endLine": 1632,
+        "endChar": 59
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "402280b1_bcad4c95",
@@ -55,6 +181,52 @@
           ]
         }
       ],
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a231a5c0_e247f212",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "Since we should only be doing this when `fStorage` is empty (asserted in PipelineDataGatherer for UniformManager, but implicit given how things are currently reset on return, so we could also assert here), we don\u0027t need to add a new `shrinkAndClear()` function to SkTArray.  `reserve_exact(halfCapacity)` should do what we want.",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 49
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "876cce1a_634043b4",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-16T16:57:29Z",
+      "side": 1,
+      "message": "Can we move these up by the `flushTrackedDevices` calls, since that is where we have the RecorderPriv functions that represent private APIs on Recorder (vs. just accessors)",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 0
+      },
       "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
