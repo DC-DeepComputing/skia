@@ -51,6 +51,24 @@
       "parentUuid": "c2b464bc_a6998ccf",
       "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa710af9_3592d124",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T21:22:01Z",
+      "side": 1,
+      "message": "\u003e \u003e I think there\u0027s some trick to coerce `resize` to not value-initialize the new elements, since we\u0027re about to overwrite them, but I don\u0027t recall the details.\n\u003e \n\u003e Gemini told me that there is no supported way to do it - it told me that I could in theory:\n\u003e \n\u003e 1. Use std::vector::reserve(new_size) to ensure capacity.\n\u003e \n\u003e 2. Use a function like [`std::uninitialized_fill_n`](https://en.cppreference.com/w/cpp/memory/uninitialized_fill_n.html) to manually fill the memory range.\n\u003e \n\u003e 3. Update the vector\u0027s size afterward, for example, by using the private members or a custom wrapper, which is generally not possible for standard std::vector or requires unsafe type punning.\n\u003e \n\u003e \u003e We could also unroll `copyTo` if you think avoiding that initialization is important - up to you:\n\u003e \u003e \n\u003e \u003e ```\n\u003e \u003e     result.reserve(size);\n\u003e \u003e     for (const auto* block \u003d fHead; block; block \u003d block-\u003efNext) {\n\u003e \u003e         result.insert(result.end(),\n\u003e \u003e                       block-\u003estart(),\n\u003e \u003e                       block-\u003estart() + block-\u003ewritten());\n\u003e \u003e     }\n\u003e \u003e ```\n\u003e \n\u003e I think it\u0027s fine.  Let\u0027s avoid microoptimizations for now / until somebody reports that this actually matters.  FWIW I [hear](https://github.com/rust-lang/rust/issues/54628#:~:text\u003dvec!%5B0%3B%20len%5D%3B%20requests%20zeroed%20memory%20from%20the%20OS%20at%20the%20allocation%20time) that `vec![0; N]` in Rust is special-cased to request zero-initialized memory from the allocator/OS.\n\nFWIW I\u0027ve also [found](https://stackoverflow.com/a/38151722/24042981) a trick to introduce an `UninitByte` class with a default constructor that doesn\u0027t initialize class members.  And then I guess we could reinterpret `std::vector\u003cUninitByte\u003e` into `std::vector\u003cuint8_t\u003e`.\n\nAnd another answer in the same Stack Overflow question uses a custom allocator + `emplace_back` calls.\n\nBut... as I say above I hope that the standard library specializes `resize` for a vector of `uint8_t` and plugs an efficient implementation for this case.  So I don\u0027t think we should do it (it may end up regressing rather than improving performance).",
+      "parentUuid": "d77712da_8df6a162",
+      "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
