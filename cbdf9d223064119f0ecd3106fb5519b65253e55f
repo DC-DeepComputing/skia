@@ -131,6 +131,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e42c918f_16818e8c",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T13:25:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4c08a3df_0aeb3732",
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d44d9ef7_5b8582d8",
