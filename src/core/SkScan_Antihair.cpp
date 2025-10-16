@@ -94,6 +94,8 @@ private:
 // if the line was exactly on a pixel row boundary.
 class HLine_SkAntiHairBlitter : public SkAntiHairBlitter {
 public:
+    HLine_SkAntiHairBlitter(SkBlitter* blitter): fBlitter(blitter) {}
+
     SkFixed drawCap(int x, SkFixed fy, SkFixed, SkFDot6 coverage) override {
         fy += SK_FixedHalf;
 
@@ -304,6 +306,46 @@ static SkFDot6 partial_pixel_coverage(SkFDot6 pos) {
     return result;
 }
 
+static void blit_horizontal(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1,
+                            const SkIRect* clip, SkBlitter* blitter) {
+    if (x0 > x1) {
+        using std::swap;
+        std::swap(x0, x1);
+    }
+
+    const int colStart = SkFDot6Floor(x0);
+    const int colStop = SkFDot6Ceil(x1);
+    const SkFixed fixedY = SkFDot6ToFixed(y0);
+
+    // The ends (caps) of our hairline might have only partial pixel coverage. We hold onto
+    // these from 0 (uncovered) to 64 (fully covered).
+    const SkFDot6 leftCoverage, rightCoverage;
+    SkASSERT(colStop > colStart);
+    if (colStop - colStart == 1) {
+        // we are within a single pixel
+        leftCoverage = x1 - x0;
+        SkASSERT(leftCoverage >= 0 && leftCoverage <= SK_FDot6One);
+        rightCoverage = 0;
+    } else {
+        leftCoverage = SK_FDot6One - fd6_frac(x0);
+        rightCoverage = fd6_frac(x1);
+    }
+
+    HLine_SkAntiHairBlitter hairBlitter(blitter);
+    hairBlitter.drawCap(colStart, fixedY, 0, leftCoverage);
+
+    int fullSpans = colStop - colStart - 1;
+    if (rightCoverage > 0) {
+        fullSpans--; // ???
+    }
+    if (fullSpans > 0) {
+        hairBlitter.drawLine(colStart + 1, colStart + 1 + fullSpans, fixedY, 0);
+    }
+    if (rightCoverage > 0) {
+        hairBlitter.drawCap(colStop - 1, fixedY, 0, rightCoverage);
+    }
+}
+
 static void do_anti_hairline(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
                              const SkIRect* clip, SkBlitter* blitter) {
     // check for integer NaN (0x80000000) which we can't handle (can't negate it)
@@ -332,6 +374,40 @@ static void do_anti_hairline(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
         do_anti_hairline(x0, y0, hx, hy, clip, blitter);
         do_anti_hairline(hx, hy, x1, y1, clip, blitter);
         return;
+    }
+
+    if (y0 == y1) {
+        if (clip) {
+            blit_horizontal_clipped(x0, y0, x1, /*y1,*/
+                                    clip, blitter);
+        } else {
+            blit_horizontal(x0, y0, x1, /*y1,*/
+                            blitter);
+        }
+    } else if (x0 == x1) {
+        if (clip) {
+            blit_vertical_clipped(x0, y0, /*x1,*/ y1,
+                                  clip, blitter);
+        } else {
+            blit_vertical(x0, y0, /*x1,*/ y1,
+                          blitter);
+        }
+    } else if (SkAbs32(x1 - x0) > SkAbs32(y1 - y0)) {
+        if (clip) {
+            blit_left_to_right_clipped(x0, y0, x1, y1,
+                                       clip, blitter);
+        } else {
+            blit_left_to_right(x0, y0, x1, y1,
+                               blitter);
+        }
+    } else {
+        if (clip) {
+            blit_up_and_down_clipped(x0, y0, x1, y1,
+                                     clip, blitter);
+        } else {
+            blit_up_and_down_clipped(x0, y0, x1, y1,
+                                     blitter);
+        }
     }
 
     int         startCoverage, stopCoverage;
