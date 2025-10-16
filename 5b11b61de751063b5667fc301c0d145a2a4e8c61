@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73501f8_9c3e4168",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c62e8d05_7b3f7c0d",
+      "range": {
+        "startLine": 549,
+        "startChar": 0,
+        "endLine": 552,
+        "endChar": 5
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45826e79_168df9a9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-16T15:48:27Z",
       "side": 1,
       "message": "`SkPath::snapshot` is kind of odd (and of questionable value, I\u0027m guessing it was only added for builder API parity for some reason), just `return a` should do it.",
+      "range": {
+        "startLine": 597,
+        "startChar": 44,
+        "endLine": 597,
+        "endChar": 52
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c567c70_45ccee98",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45826e79_168df9a9",
       "range": {
         "startLine": 597,
         "startChar": 44,
@@ -88,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e49f408_7aa817ad",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21f4b4ba_4aebfe12",
+      "range": {
+        "startLine": 727,
+        "startChar": 39,
+        "endLine": 727,
+        "endChar": 47
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "038dbd9f_edc93514",
@@ -105,6 +177,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb52a756_d9bb0378",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "038dbd9f_edc93514",
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf867e69_6908c875",
@@ -118,6 +208,24 @@
       "writtenOn": "2025-10-16T15:48:27Z",
       "side": 1,
       "message": "There\u0027s also a handy filltype constructor, can we expose that too?",
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b97a365_0dfdbfd7",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2306,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "We cannot have overloads with the same number of arguments\n```\nBindingError: Cannot register multiple constructors with identical number of parameters (1) for class \u0027PathBuilder\u0027\n```",
+      "parentUuid": "bf867e69_6908c875",
       "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -163,6 +271,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c6b56d_9492673e",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1628ce5c_b721809e",
+      "range": {
+        "startLine": 507,
+        "startChar": 8,
+        "endLine": 507,
+        "endChar": 13
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75ed7cc4_abf54e00",
@@ -176,6 +308,30 @@
       "writtenOn": "2025-10-16T15:48:27Z",
       "side": 1,
       "message": "Unrelated: is `fillRule` supposed to change the global path state?\n\nAlso it looks like we\u0027re ignoring it if we snapshot `_currentPath` above.  Maybe this should be moved below, to update the final `toDraw` instead?",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 5
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4da1e3c4_25d13add",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Yeah, I think there might have been a bug previously to update the global path state... I\u0027ve fixed it here as you pointed out.",
+      "parentUuid": "75ed7cc4_abf54e00",
       "range": {
         "startLine": 635,
         "startChar": 0,
@@ -223,6 +379,30 @@
           ]
         }
       ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3970f7e9_a1aa5cab",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a04d0b17_655f23df",
+      "range": {
+        "startLine": 642,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 13
+      },
       "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -285,6 +465,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e1609e8_24f45d01",
+        "filename": "modules/canvaskit/htmlcanvas/path2d.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f75ab9f2_9aa00559",
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "760911dd_3c3aec4d",
@@ -326,6 +524,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb0194fa_410ba28a",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "760911dd_3c3aec4d",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 30
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a066b06_fd7a863d",
@@ -339,6 +561,30 @@
       "writtenOn": "2025-10-16T15:48:27Z",
       "side": 1,
       "message": "`path` is not being updated, generally.  Is the intent to only test API calls, not the actual results?",
+      "range": {
+        "startLine": 499,
+        "startChar": 13,
+        "endLine": 499,
+        "endChar": 17
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b1aa243_f19e09ec",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 1,
+      "message": "Exactly. This is fake code that is never run. It\u0027s here to test our Typescript types reflect \"reality\"",
+      "parentUuid": "7a066b06_fd7a863d",
       "range": {
         "startLine": 499,
         "startChar": 13,

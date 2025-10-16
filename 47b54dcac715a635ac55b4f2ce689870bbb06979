@@ -22,6 +22,30 @@
       },
       "revId": "47b54dcac715a635ac55b4f2ce689870bbb06979",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e17edd_ff6edc60",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T18:44:28Z",
+      "side": 0,
+      "message": "Good catch. I hadn\u0027t traced far enough into PathRef to see the copy and assumed it took ownership of the span.",
+      "parentUuid": "5d70c676_e3d3548a",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 61
+      },
+      "revId": "47b54dcac715a635ac55b4f2ce689870bbb06979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
