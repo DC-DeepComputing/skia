@@ -16,6 +16,23 @@
       "message": "@fmalita, can you PTAL?",
       "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2b464bc_a6998ccf",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T20:45:24Z",
+      "side": 1,
+      "message": "I think there\u0027s some trick to coerce `resize` to not value-initialize the new elements, since we\u0027re about to overwrite them, but I don\u0027t recall the details.\n\nWe could also unroll `copyTo` if you think avoiding that initialization is important - up to you:\n\n```\n    result.reserve(size);\n    for (const auto* block \u003d fHead; block; block \u003d block-\u003efNext) {\n        result.insert(result.end(),\n                      block-\u003estart(),\n                      block-\u003estart() + block-\u003ewritten());\n    }\n```",
+      "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
