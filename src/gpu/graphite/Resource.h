@@ -195,6 +195,7 @@ public:
 
     Budgeted budgeted() const { return fBudgeted; }
     Shareable shareable() const { return fShareable; }
+    bool requiresPrepareForReturnToCache() const { return fRequiresPrepareForReturnToCache; }
     const GraphiteResourceKey& key() const { return fKey; }
 
     // Retrieves the amount of GPU memory used by this resource in bytes. It is approximate since we
@@ -265,7 +266,8 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
-             bool reusableRequiresPurgeable = false);
+             bool reusableRequiresPurgeable = false,
+             bool requiresPrepareForReturnToCache = false);
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }
@@ -664,6 +666,8 @@ private:
     // point the resource is upgraded to the more permissive mode (until all shared usages are
     // dropped at which point it can be used for any purpose again).
     Shareable fShareable = Shareable::kNo;
+
+    const bool fRequiresPrepareForReturnToCache = false;
 
     // This is only used by ProxyCache::purgeProxiesNotUsedSince which is called from
     // ResourceCache::purgeResourcesNotUsedSince. When kYes, this signals that the Resource
