@@ -86,6 +86,24 @@
       "parentUuid": "0c0b8fa6_19e7aa38",
       "revId": "fca2d733778517460ff796435cc6754be643120e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f48e826_4e85af7d",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T15:47:55Z",
+      "side": 1,
+      "message": "I put together a CL to add `SkDynamicMemoryWStream::detachAsVector` method - https://review.skia.org/1076796.  I think that I\u0027ll go ahead and abandon the CL under review.  Thanks again for the feedback!",
+      "parentUuid": "7fb27c47_d0ae5b19",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
