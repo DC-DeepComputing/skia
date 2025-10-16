@@ -82,14 +82,6 @@ bool CompareGaneshPixels(const GrCPixmap& a,
                          std::function<ComparePixmapsErrorReporter>& error);
 
 /**
- * Convenience version that checks that 'pixmap' is a solid field of 'col'
- */
-bool CheckGaneshSolidPixels(const SkColor4f& col,
-                            const SkPixmap& pixmap,
-                            const float tolRGBA[4],
-                            std::function<ComparePixmapsErrorReporter>& error);
-
-/**
  * Checks the ref cnt on a proxy and its backing store. This is only valid if the proxy and the
  * resource are both used on a single thread.
  */

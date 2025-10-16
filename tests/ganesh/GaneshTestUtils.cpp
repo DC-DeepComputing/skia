@@ -186,46 +186,6 @@ bool CompareGaneshPixels(const GrCPixmap& a,
     return true;
 }
 
-bool CheckGaneshSolidPixels(const SkColor4f& col,
-                            const SkPixmap& pixmap,
-                            const float tolRGBA[4],
-                            std::function<ComparePixmapsErrorReporter>& error) {
-    size_t floatBpp = GrColorTypeBytesPerPixel(GrColorType::kRGBA_F32);
-
-    // First convert 'col' to be compatible with 'pixmap'
-    GrPixmap colorPixmap;
-    {
-        sk_sp<SkColorSpace> srcCS = SkColorSpace::MakeSRGBLinear();
-        GrImageInfo srcInfo(GrColorType::kRGBA_F32,
-                            kUnpremul_SkAlphaType,
-                            std::move(srcCS),
-                            {1, 1});
-        GrCPixmap srcPixmap(srcInfo, col.vec(), floatBpp);
-        GrImageInfo dstInfo =
-                srcInfo.makeAlphaType(pixmap.alphaType()).makeColorSpace(pixmap.refColorSpace());
-        colorPixmap = GrPixmap::Allocate(dstInfo);
-        SkAssertResult(GrConvertPixels(colorPixmap, srcPixmap));
-    }
-
-    size_t floatRowBytes = floatBpp * pixmap.width();
-    std::unique_ptr<char[]> floatB(new char[floatRowBytes * pixmap.height()]);
-    // Then convert 'pixmap' to RGBA_F32
-    GrPixmap f32Pixmap = GrPixmap::Allocate(pixmap.info().makeColorType(kRGBA_F32_SkColorType));
-    SkAssertResult(GrConvertPixels(f32Pixmap, pixmap));
-
-    for (int y = 0; y < f32Pixmap.height(); ++y) {
-        for (int x = 0; x < f32Pixmap.width(); ++x) {
-            auto rgbaA = SkTAddOffset<const float>(f32Pixmap.addr(),
-                                                   f32Pixmap.rowBytes()*y + floatBpp*x);
-            auto rgbaB = static_cast<const float*>(colorPixmap.addr());
-            if (!compare_colors(x, y, rgbaA, rgbaB, tolRGBA, error)) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 void CheckSingleThreadedProxyRefs(skiatest::Reporter* reporter,
                                   GrSurfaceProxy* proxy,
                                   int32_t expectedProxyRefs,
