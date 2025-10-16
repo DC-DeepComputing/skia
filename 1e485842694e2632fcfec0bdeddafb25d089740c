@@ -33,6 +33,24 @@
       "message": "I think there\u0027s some trick to coerce `resize` to not value-initialize the new elements, since we\u0027re about to overwrite them, but I don\u0027t recall the details.\n\nWe could also unroll `copyTo` if you think avoiding that initialization is important - up to you:\n\n```\n    result.reserve(size);\n    for (const auto* block \u003d fHead; block; block \u003d block-\u003efNext) {\n        result.insert(result.end(),\n                      block-\u003estart(),\n                      block-\u003estart() + block-\u003ewritten());\n    }\n```",
       "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77712da_8df6a162",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T20:58:21Z",
+      "side": 1,
+      "message": "\u003e I think there\u0027s some trick to coerce `resize` to not value-initialize the new elements, since we\u0027re about to overwrite them, but I don\u0027t recall the details.\n\nGemini told me that there is no supported way to do it - it told me that I could in theory:\n\n1. Use std::vector::reserve(new_size) to ensure capacity.\n\n2. Use a function like [`std::uninitialized_fill_n`](https://en.cppreference.com/w/cpp/memory/uninitialized_fill_n.html) to manually fill the memory range.\n\n3. Update the vector\u0027s size afterward, for example, by using the private members or a custom wrapper, which is generally not possible for standard std::vector or requires unsafe type punning.\n\n\u003e We could also unroll `copyTo` if you think avoiding that initialization is important - up to you:\n\u003e \n\u003e ```\n\u003e     result.reserve(size);\n\u003e     for (const auto* block \u003d fHead; block; block \u003d block-\u003efNext) {\n\u003e         result.insert(result.end(),\n\u003e                       block-\u003estart(),\n\u003e                       block-\u003estart() + block-\u003ewritten());\n\u003e     }\n\u003e ```\n\nI think it\u0027s fine.  Let\u0027s avoid microoptimizations for now / until somebody reports that this actually matters.  FWIW I [hear](https://github.com/rust-lang/rust/issues/54628#:~:text\u003dvec!%5B0%3B%20len%5D%3B%20requests%20zeroed%20memory%20from%20the%20OS%20at%20the%20allocation%20time) that `vec![0; N]` in Rust is special-cased to request zero-initialized memory from the allocator/OS.",
+      "parentUuid": "c2b464bc_a6998ccf",
+      "revId": "1e485842694e2632fcfec0bdeddafb25d089740c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
