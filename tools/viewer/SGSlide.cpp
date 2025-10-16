@@ -31,6 +31,7 @@ class SGSlide : public ClickHandlerSlide {
     SkTDArray<PerNodeInfo> fSideCar;
     sk_sp<sksg::Group> fGroup;
     std::unique_ptr<sksg::Scene> fScene;
+    bool fNeedsRevalidate = true;
 
     PerNodeInfo* findInfo(sksg::Draw* key) {
         for (int i = 0; i < fSideCar.size(); ++i) {
@@ -68,6 +69,10 @@ public:
     }
 
     void draw(SkCanvas* canvas) override {
+        if (fNeedsRevalidate) {
+            fScene->revalidate();
+            fNeedsRevalidate = false;
+        }
         fScene->render(canvas);
     }
 
@@ -93,6 +98,7 @@ protected:
                 r->setR(r->getR() + dx);
                 r->setT(r->getT() + dy);
                 r->setB(r->getB() + dy);
+                fNeedsRevalidate = true;
             }
             return true;
         }
