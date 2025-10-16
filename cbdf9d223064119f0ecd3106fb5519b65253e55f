@@ -129,6 +129,29 @@
       "parentUuid": "17d8b5c1_677e5c97",
       "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d44d9ef7_5b8582d8",
+        "filename": "src/core/SkPathEnums.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T12:26:38Z",
+      "side": 1,
+      "message": "To mirror what we do other places:\n```\nenum class SkResolveConvexity : bool {\n    kNo \u003d false,\n    kYes \u003d true,\n};\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 2
+      },
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
