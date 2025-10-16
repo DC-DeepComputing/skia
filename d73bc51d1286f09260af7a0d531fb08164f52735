@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee19f7d_86856e2c",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-16T18:54:27Z",
+      "side": 1,
+      "message": "Done - I went with \"fUniqueID, fOwnership, fRequires\" order.",
+      "parentUuid": "1c6f5725_9adfe4a4",
+      "range": {
+        "startLine": 670,
+        "startChar": 0,
+        "endLine": 670,
+        "endChar": 56
+      },
+      "revId": "d73bc51d1286f09260af7a0d531fb08164f52735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8cd8f77_e3e7951f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-16T17:11:28Z",
       "side": 1,
       "message": "We could push this into the initialization of `requiresPrepareForReturnToCache` in the emscripten case.",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 5
+      },
+      "revId": "d73bc51d1286f09260af7a0d531fb08164f52735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a877f33b_3735e600",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-16T18:54:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8cd8f77_e3e7951f",
       "range": {
         "startLine": 205,
         "startChar": 0,
