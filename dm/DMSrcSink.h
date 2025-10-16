@@ -14,7 +14,10 @@
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
 #include "tools/flags/CommonFlagsConfig.h"
+
+#if defined(SK_GANESH)
 #include "tools/ganesh/MemoryCache.h"
+#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/PrecompileContext.h"
@@ -376,6 +379,7 @@ public:
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kNull, SinkFlags::kDirect }; }
 };
 
+#if defined(SK_GANESH)
 class GPUSink : public Sink {
 public:
     GPUSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
@@ -503,6 +507,7 @@ private:
 
     using INHERITED = GPUSink;
 };
+#endif
 
 class PDFSink : public Sink {
 public:
