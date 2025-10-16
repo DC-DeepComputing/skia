@@ -1,0 +1,352 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62e8d05_7b3f7c0d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "nit here and below: since result is only used within the conditional scope, we could declare it inline, and also lean into std::optional booliness instead of explicit `hasValue`\n\n```\n  if (auto result \u003d Simplify(path)) {\n      return ...\n  }\n```",
+      "range": {
+        "startLine": 549,
+        "startChar": 0,
+        "endLine": 552,
+        "endChar": 5
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45826e79_168df9a9",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "`SkPath::snapshot` is kind of odd (and of questionable value, I\u0027m guessing it was only added for builder API parity for some reason), just `return a` should do it.",
+      "range": {
+        "startLine": 597,
+        "startChar": 44,
+        "endLine": 597,
+        "endChar": 52
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f4b4ba_4aebfe12",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "nit: `kDefault`, in the unlikely event we decide to change the default fill.",
+      "range": {
+        "startLine": 727,
+        "startChar": 39,
+        "endLine": 727,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6f624b3e_f0645f6b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/canvaskit_bindings.cpp",
+              "range": {
+                "startLine": 727,
+                "startChar": 0,
+                "endLine": 728,
+                "endChar": 0
+              },
+              "replacement": "                       SkPathFillType::kDefault);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "038dbd9f_edc93514",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "We should be able to avoid allocating an `SkPath` with `SkPathRaw`:\n\n```\n  const SkPathRaw raw {\n      { reinterpret_cast\u003cconst SkPathVerb*\u003e(verbsPtr), SkToSizeT(numVerbs) },\n      ...\n      // bounds/filltype/convexity/segmask are ignored\n  };\n  self.addRaw(raw);\n```\n\n(kind of weird to have ignored raw props; TODO(fmalita): introduce an `add` version that only takes points/verbs/conics)",
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf867e69_6908c875",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2306,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "There\u0027s also a handy filltype constructor, can we expose that too?",
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1628ce5c_b721809e",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "`!clip`",
+      "range": {
+        "startLine": 507,
+        "startChar": 8,
+        "endLine": 507,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "73b08ede_9dbc316a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+              "range": {
+                "startLine": 507,
+                "startChar": 0,
+                "endLine": 508,
+                "endChar": 0
+              },
+              "replacement": "    if (!clip) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ed7cc4_abf54e00",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "Unrelated: is `fillRule` supposed to change the global path state?\n\nAlso it looks like we\u0027re ignoring it if we snapshot `_currentPath` above.  Maybe this should be moved below, to update the final `toDraw` instead?",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 5
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a04d0b17_655f23df",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "`!toDraw`",
+      "range": {
+        "startLine": 642,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "fe94dfe2_f859cd0d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+              "range": {
+                "startLine": 642,
+                "startChar": 0,
+                "endLine": 643,
+                "endChar": 0
+              },
+              "replacement": "    if (!toDraw) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d94a54f_cef45387",
+        "filename": "modules/canvaskit/htmlcanvas/canvas2dcontext.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "note to self: it\u0027d be nice to have `SkPathBuilder::contains`; the impl should be shareable.",
+      "range": {
+        "startLine": 726,
+        "startChar": 35,
+        "endLine": 726,
+        "endChar": 43
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f75ab9f2_9aa00559",
+        "filename": "modules/canvaskit/htmlcanvas/path2d.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "Not needed (already initialized).",
+      "fixSuggestions": [
+        {
+          "fixId": "aa110745_1441d92d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/htmlcanvas/path2d.js",
+              "range": {
+                "startLine": 153,
+                "startChar": 0,
+                "endLine": 155,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "760911dd_3c3aec4d",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "`path \u003d builder.snapshot();`?",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "02afbf49_71c117a8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+              "range": {
+                "startLine": 496,
+                "startChar": 0,
+                "endLine": 496,
+                "endChar": 0
+              },
+              "replacement": "    path \u003d builder.snapshot(); // $ExpectType Path\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a066b06_fd7a863d",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 1,
+      "message": "`path` is not being updated, generally.  Is the intent to only test API calls, not the actual results?",
+      "range": {
+        "startLine": 499,
+        "startChar": 13,
+        "endLine": 499,
+        "endChar": 17
+      },
+      "revId": "5b11b61de751063b5667fc301c0d145a2a4e8c61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

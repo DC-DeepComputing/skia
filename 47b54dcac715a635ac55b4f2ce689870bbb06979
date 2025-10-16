@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d70c676_e3d3548a",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T15:48:27Z",
+      "side": 0,
+      "message": "I don\u0027t follow this part of the change: we still make a copy of the verbs/points/conics, there is no change in ownership for these arrays AFAICT.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 61
+      },
+      "revId": "47b54dcac715a635ac55b4f2ce689870bbb06979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
