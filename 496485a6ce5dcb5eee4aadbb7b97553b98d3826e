@@ -22,6 +22,30 @@
       },
       "revId": "496485a6ce5dcb5eee4aadbb7b97553b98d3826e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d50f4c0b_5c6729f9",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-16T19:57:58Z",
+      "side": 1,
+      "message": "totally agree -- not neaded for IsA types -- will remove in next CL",
+      "parentUuid": "29e1bbed_e2e7e5f2",
+      "range": {
+        "startLine": 282,
+        "startChar": 34,
+        "endLine": 282,
+        "endChar": 59
+      },
+      "revId": "496485a6ce5dcb5eee4aadbb7b97553b98d3826e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
