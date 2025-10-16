@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e1bbed_e2e7e5f2",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T18:52:51Z",
+      "side": 1,
+      "message": "Not new to this CL, but is this check needed?  If we have an oval/rrect type, aren\u0027t the points always axis-aligned?",
+      "range": {
+        "startLine": 282,
+        "startChar": 34,
+        "endLine": 282,
+        "endChar": 59
+      },
+      "revId": "496485a6ce5dcb5eee4aadbb7b97553b98d3826e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
