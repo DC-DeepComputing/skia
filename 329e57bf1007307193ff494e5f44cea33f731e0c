@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934ed81c_5a81e372",
+        "filename": "gm/ninepatchstretch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-16T18:35:22Z",
+      "side": 0,
+      "message": "Maybe `baseRecorder()`?",
+      "range": {
+        "startLine": 75,
+        "startChar": 47,
+        "endLine": 75,
+        "endChar": 79
+      },
+      "revId": "329e57bf1007307193ff494e5f44cea33f731e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
