@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "138890de_eb529165",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-16T01:45:39Z",
+      "side": 1,
+      "message": "Doh! - you\u0027re complete right. I looked again, and see that canCullToTheRight explicitly depends on knowing we\u0027re convex. Good catch.",
+      "parentUuid": "ed4bc2b4_e431c057",
+      "range": {
+        "startLine": 367,
+        "startChar": 41,
+        "endLine": 367,
+        "endChar": 64
+      },
+      "revId": "cbdf9d223064119f0ecd3106fb5519b65253e55f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17d8b5c1_677e5c97",
