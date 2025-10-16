@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc98299e_1222fbbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T14:32:28Z",
+      "side": 1,
+      "message": "@fmalita - thanks for the feedback - I appreciate it!\n/cc @thestig - WDYT?  (you proposed `SkVectorWStream` in https://pdfium-review.googlesource.com/c/pdfium/+/136570/comment/dc50b41b_b5ec9e24/;  the linked bug points out the Chromium copy of that code).",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02de59fd_03e7aeb2",
@@ -31,6 +48,24 @@
       "writtenOn": "2025-10-16T13:52:45Z",
       "side": 1,
       "message": "The canonical in-memory Skia wstream is `SkDynamicMemoryWStream` - could clients use that instead?  It requires a copy to snap off data at the end, but OTOH it uses block allocation (so appending is more efficient than using a flat backing buffer).\n\nWe could add a `detachAsVector` helper if needed, or it can be trivially done with\n\n```\n   SkDynamicMemoryWStream str;\n   ...\n   std::vector\u003cuint8_t\u003e vec(str.bytesWritten());\n   str.copyToAndReset(vec.data());\n```",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c0b8fa6_19e7aa38",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T14:32:28Z",
+      "side": 1,
+      "message": "Yes, that works.  I mostly started doing this, because other engineers have raised concerns about the extra copying involved in this - see https://pdfium-review.googlesource.com/c/pdfium/+/136570/comment/dc50b41b_b5ec9e24/.  OTOH your point about block allocation makes me think that it probably all events out in the end:\n\n* `SkDynamicMemoryWStream` ends up making more allocations (O(N) IIUC) but every byte is only copied once (when copying into the vector)\n* `SkVectorWStream` would reallocate and copy bytes when growing the vector so it would end up making slightly fewer allocations (O(log N)) but also each byte may get copied many times (O(log N)).\n\nSo maybe this is indeed not worth it.  And maybe I should edit PDFium to go back to my initial implementation based on  `SkDynamicMemoryWStream`.",
+      "parentUuid": "02de59fd_03e7aeb2",
       "revId": "fca2d733778517460ff796435cc6754be643120e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
