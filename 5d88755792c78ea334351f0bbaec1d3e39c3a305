@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae091f8e_933afa0b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "835a0178_4e0ef5d1",
+      "range": {
+        "startLine": 72,
+        "startChar": 6,
+        "endLine": 72,
+        "endChar": 23
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "853da47b_5293fb79",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-14T17:47:51Z",
       "side": 1,
       "message": "This isn\u0027t really a RecorderOptions, I think it can just be a private static constexpr inside Recorder.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 51
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a883c659_c640a699",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "853da47b_5293fb79",
       "range": {
         "startLine": 81,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06fbbca9_6bec6f83",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b5a286c_2e069fea",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 31
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65ac041b_cf04c6e3",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-10-14T17:47:51Z",
       "side": 1,
       "message": "Device should get rid of its fields holding these gatherers. The push and pop should be part of `drawGeometry()`.  We could extend `AutoResetForDraw` to handle acquiring the gatherers with a pop, and then pushing them back when it goes out of scope.\n\nThat way, we only reach the 2nd level of the stack if we have to record draws for an SkPicture being used as a lazy image or picture shader. Most of the time we will always be pushing/popping the same helper pair for every draw across every device in the Recorder.\n\nIf we push/pop the helper pair when we create the Device, then some devices will hold on to the helpers for quite a long time (if they are part of a client held SkSurface).",
+      "range": {
+        "startLine": 501,
+        "startChar": 0,
+        "endLine": 501,
+        "endChar": 74
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fec7edb_17a29ae7",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65ac041b_cf04c6e3",
       "range": {
         "startLine": 501,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f08fb6c_9ad970b6",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Moved the max into `lockAsKey()`.",
+      "parentUuid": "dd1932c3_97155c65",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 60
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d961fa64_f3b9c28f",
@@ -146,6 +266,30 @@
       "writtenOn": "2025-10-14T17:47:51Z",
       "side": 1,
       "message": "WDYT about starting out empty and allowing the stack to automatically fill up? That way in the most common case where we are at a single level of recursion we don\u0027t allocate an extraneous set of gatherers?",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 5
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c854343_9f629a5f",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d961fa64_f3b9c28f",
       "range": {
         "startLine": 180,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4129baf0_5a34348a",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e63390fd_ded06004",
+      "range": {
+        "startLine": 734,
+        "startChar": 4,
+        "endLine": 740,
+        "endChar": 0
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f023bc37_d1c468dd",
@@ -202,6 +370,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98ba76e5_fdad6872",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f023bc37_d1c468dd",
+      "range": {
+        "startLine": 746,
+        "startChar": 4,
+        "endLine": 748,
+        "endChar": 5
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a1af065_af23fbd2",
@@ -215,6 +407,30 @@
       "writtenOn": "2025-10-14T17:47:51Z",
       "side": 1,
       "message": "And this would be `fKeyContextHelpers.push_back(std::move(helpers));`\n\nI don\u0027t think we need the explicit early return here.",
+      "range": {
+        "startLine": 752,
+        "startChar": 0,
+        "endLine": 755,
+        "endChar": 15
+      },
+      "revId": "5d88755792c78ea334351f0bbaec1d3e39c3a305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "876d3609_3fc138d5",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a1af065_af23fbd2",
       "range": {
         "startLine": 752,
         "startChar": 0,

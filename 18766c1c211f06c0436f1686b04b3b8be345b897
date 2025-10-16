@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d3a81af_26fd8741",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "PTAL. Will fix the typo on next patchset",
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "402280b1_bcad4c95",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-16T00:56:13Z",
+      "side": 1,
+      "message": "Will fix this in next patch",
+      "range": {
+        "startLine": 200,
+        "startChar": 4,
+        "endLine": 200,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0139631a_82c299fa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/PaintParamsKey.h",
+              "range": {
+                "startLine": 200,
+                "startChar": 0,
+                "endLine": 201,
+                "endChar": 0
+              },
+              "replacement": "    void tryShrinkCapacity() {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
