@@ -16,6 +16,24 @@
       "message": "Mike brought up the live CK demos we have: are those version-locked or in danger to break with this update?",
       "revId": "3caf07bfb1a14d4f674bd77b589e3aba020f7e5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17ae4aa0_c790af46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-16T23:02:14Z",
+      "side": 1,
+      "message": "They are locked to released versions in npm, which this is not (yet)",
+      "parentUuid": "d36b7835_209bb907",
+      "revId": "3caf07bfb1a14d4f674bd77b589e3aba020f7e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
