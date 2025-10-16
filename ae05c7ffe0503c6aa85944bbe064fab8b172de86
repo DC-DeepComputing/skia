@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b39aae_279a674e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-16T21:52:19Z",
+      "side": 1,
+      "message": "Fixes `SkASSERT(!this-\u003ehasInval());` in `RenderNode::render` when running in a debug build of Viewer.",
+      "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
