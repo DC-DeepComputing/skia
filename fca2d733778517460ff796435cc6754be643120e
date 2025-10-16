@@ -68,6 +68,24 @@
       "parentUuid": "02de59fd_03e7aeb2",
       "revId": "fca2d733778517460ff796435cc6754be643120e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb27c47_d0ae5b19",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T14:42:35Z",
+      "side": 1,
+      "message": "\u003e Yes, that works.  I mostly started doing this, because other engineers have raised concerns about the extra copying involved in this - see https://pdfium-review.googlesource.com/c/pdfium/+/136570/comment/dc50b41b_b5ec9e24/.  OTOH your point about block allocation makes me think that it probably all events out in the end:\n\u003e \n\u003e * `SkDynamicMemoryWStream` ends up making more allocations (O(N) IIUC) but every byte is only copied once (when copying into the vector)\n\u003e * `SkVectorWStream` would reallocate and copy bytes when growing the vector so it would end up making slightly fewer allocations (O(log N)) but also each byte may get copied many times (O(log N)).\n\nErrr... I am not sure if what I wrote above is accurate, because the copying is amortized to O(1) per final vector length.  So maybe both approaches copy each byte O(1) times, but `SkDynamicMemoryWStream` may use more heap allocations.  OTOH page-sized allocations are probably cheap, so meh?\n \n\u003e So maybe this is indeed not worth it.  And maybe I should edit PDFium to go back to my initial implementation based on  `SkDynamicMemoryWStream`.",
+      "parentUuid": "0c0b8fa6_19e7aa38",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
