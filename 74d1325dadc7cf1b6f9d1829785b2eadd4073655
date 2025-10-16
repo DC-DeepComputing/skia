@@ -22,6 +22,30 @@
       },
       "revId": "74d1325dadc7cf1b6f9d1829785b2eadd4073655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e551a5e6_527fc8e0",
+        "filename": "tests/ganesh/GaneshTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-16T14:37:19Z",
+      "side": 1,
+      "message": "Ah good catch. I carefully checked that every user of CompareGaneshPixels couldn\u0027t trivially be ComparePixels but I didn\u0027t check this one. It turns out it was already entirely unused.",
+      "parentUuid": "b1ba256d_f90de8b3",
+      "range": {
+        "startLine": 189,
+        "startChar": 5,
+        "endLine": 189,
+        "endChar": 27
+      },
+      "revId": "74d1325dadc7cf1b6f9d1829785b2eadd4073655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
