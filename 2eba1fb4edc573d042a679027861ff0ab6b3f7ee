@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ba5e3f0_e4824fab",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T19:49:25Z",
+      "side": 1,
+      "message": "Yeah, if the new behavior is needed for third-party streams, they\u0027d have to override this.\n\nIn practice I can\u0027t find any custom streams that hold all the data in a continuous memory block.  If that behavior is needed, we have `SkMemoryStream`, which is flexible enough to support most use cases (owned/non-owned data, pre/post allocated, etc) -- so I\u0027d argue clients should just use that instead of attempting to reinvent.",
+      "parentUuid": "368eba45_383afc62",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b2f140a_7ea94466",
         "filename": "include/core/SkStream.h",
         "patchSetId": 8
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Also if streams are wrapped and buffered like we have in some of our tests.",
       "parentUuid": "2fa4c00c_cd93a0bf",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "876cf830_0ec18cf8",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T19:49:25Z",
+      "side": 1,
+      "message": "Does that mean that the fix for reading past the png data only works for in-memory streams?\n\nI guess I don\u0027t fully understand how that happens: is it because RustyPng uses a buffered stream reader which buffers data in advance, or is the decoder actually attempting to read more data than needed to decode the current png (the latter would be surprising, arguably a bug).\n\nI wonder if we could address that differently, sticking to more general stream APIs:\n\n1) Track the amount of decoded bytes, and rewind the stream when done decoding.  Still needs a rewindable stream, but it\u0027s better than requiring an in-memory stream.  Maybe the API should take an explicit SkStreamRewindable?\n\n2) If related to buffering, implement a stream reader which only \"buffers\" (caches?) previous data to accelerate rewinds, and never reads ahead/more than requested.",
+      "parentUuid": "7e6a1895_feed4a62",
       "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
