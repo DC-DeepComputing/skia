@@ -134,10 +134,6 @@
     #include "client_utils/android/BitmapRegionDecoder.h"
 #endif
 
-#if !defined(SK_DISABLE_LEGACY_TESTS)
-    #include "tests/TestUtils.h"
-#endif
-
 #include <cmath>
 #include <functional>
 
