@@ -27,9 +27,6 @@
 #include <string>
 #include <type_traits>
 
-class SkStream;
-class SkWStream;
-
 namespace SkSL {
 
 struct NativeShader;
@@ -270,13 +267,6 @@ const T* GetExtensionFeatureStruct(const VkPhysicalDeviceFeatures2& features,
     return nullptr;
 }
 
-/**
- * Returns a populated VkSamplerYcbcrConversionCreateInfo object based on VulkanYcbcrConversionInfo
-*/
-void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo,
-                                     std::optional<VkFilter>* requiredSamplerFilter,
-                                     const VulkanYcbcrConversionInfo& conversionInfo);
-
 static constexpr const char* VkFormatToStr(VkFormat vkFormat) {
     switch (vkFormat) {
         case VK_FORMAT_R8G8B8A8_UNORM:           return "R8G8B8A8_UNORM";
@@ -310,9 +300,6 @@ static constexpr const char* VkFormatToStr(VkFormat vkFormat) {
         default:                                 return "Unknown";
     }
 }
-
-[[nodiscard]] bool SerializeVkYCbCrInfo(SkWStream*, const VulkanYcbcrConversionInfo&);
-[[nodiscard]] bool DeserializeVkYCbCrInfo(SkStream*, VulkanYcbcrConversionInfo* out);
 
 #ifdef SK_BUILD_FOR_ANDROID
 /**
