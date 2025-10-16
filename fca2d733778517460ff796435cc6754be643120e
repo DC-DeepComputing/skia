@@ -16,6 +16,23 @@
       "message": "@fmalita, can you PTAL?  Please see the linked bug for motivation and more details.",
       "revId": "fca2d733778517460ff796435cc6754be643120e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02de59fd_03e7aeb2",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T13:52:45Z",
+      "side": 1,
+      "message": "The canonical in-memory Skia wstream is `SkDynamicMemoryWStream` - could clients use that instead?  It requires a copy to snap off data at the end, but OTOH it uses block allocation (so appending is more efficient than using a flat backing buffer).\n\nWe could add a `detachAsVector` helper if needed, or it can be trivially done with\n\n```\n   SkDynamicMemoryWStream str;\n   ...\n   std::vector\u003cuint8_t\u003e vec(str.bytesWritten());\n   str.copyToAndReset(vec.data());\n```",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
