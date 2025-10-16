@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d36b7835_209bb907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-16T21:33:42Z",
+      "side": 1,
+      "message": "Mike brought up the live CK demos we have: are those version-locked or in danger to break with this update?",
+      "revId": "3caf07bfb1a14d4f674bd77b589e3aba020f7e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
