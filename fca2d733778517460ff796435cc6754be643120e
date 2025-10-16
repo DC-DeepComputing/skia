@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2049c531_3700efa9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-16T00:28:36Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  Please see the linked bug for motivation and more details.",
+      "revId": "fca2d733778517460ff796435cc6754be643120e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
