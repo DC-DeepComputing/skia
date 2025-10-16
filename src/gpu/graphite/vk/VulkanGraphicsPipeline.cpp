@@ -680,6 +680,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
         }
 
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
+            SK_ABORT("actually creating a pipeline\n");
             TRACE_EVENT0_ALWAYS(
                 "skia.shaders",
                 TRACE_STR_STATIC(sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()
