@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "368eba45_383afc62",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-16T14:37:14Z",
+      "side": 1,
+      "message": "Would we need to implement this for file streams or other types of streams that don\u0027t implement getData? This makes sense, i\u0027m just not entirely sure what streams look like in the wild.",
+      "parentUuid": "29d9a632_ed53c63d",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b2f140a_7ea94466",
         "filename": "include/core/SkStream.h",
         "patchSetId": 8
@@ -48,6 +66,24 @@
       "writtenOn": "2025-10-15T20:56:33Z",
       "side": 1,
       "message": "Is this just an optimization, functionally equivalent with the else branch?\n\nI like the (simpler?) stream wrapper approach, if an optimization maybe we should look at it separately.",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fa4c00c_cd93a0bf",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-16T14:37:14Z",
+      "side": 1,
+      "message": "SkStreams are meant to be derived, so this ensures that the decoder can still be created when other types of streams are used, by falling back on the old behavior.",
+      "parentUuid": "b5a6490f_7546d2e1",
       "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
