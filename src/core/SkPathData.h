@@ -62,6 +62,13 @@ struct SkPathRaw;
 class SkPathData : public SkNVRefCnt<SkPathData> {
 public:
     /*
+     *  Returns an empty pathdata.
+     *
+     *  Since this is immutable, it may return the same object each time it is called.
+     */
+    static sk_sp<SkPathData> Empty();
+
+    /*
      *  Return SkPathData with a copy of these buffers, or nullptr if they are illegal.
      *  Illegal = non-finite, or non-sensical verb sequences
      */
@@ -69,7 +76,11 @@ public:
                                   SkSpan<const SkPathVerb> verbs,
                                   SkSpan<const float> conics = {});
 
-    static sk_sp<SkPathData> Empty();
+    /*
+     *  Attempt to transform src by the matrix. On success, return a new SkPathData
+     *  with the result, else return {}.
+     */
+    static sk_sp<SkPathData> MakeTransform(const SkPathRaw& src, const SkMatrix&);
 
     /*
      *  When a factory takes a startIndex, this refers to the position of the first point
