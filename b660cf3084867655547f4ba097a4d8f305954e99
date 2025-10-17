@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3cce7bd_ba880b77",
+        "filename": "include/core/SkScalar.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T19:13:24Z",
+      "side": 0,
+      "message": "This is in public includes, do we think anyone is using this? Since this already pulls in SkFloatingPoint.h, should this be an alias?",
+      "revId": "b660cf3084867655547f4ba097a4d8f305954e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
