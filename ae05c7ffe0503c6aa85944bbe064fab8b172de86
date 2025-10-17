@@ -33,6 +33,23 @@
       "message": "Not sure if an InvalidationController should be used instead? Similar issues occur with SVGPongSlide?",
       "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c95fab_6f1daf50",
+        "filename": "tools/viewer/SGSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T15:05:15Z",
+      "side": 1,
+      "message": "Looking at the implementation, it looks like `revalidate` already knows if anything needs to be done and so isn\u0027t very expensive to call, so can just always be called before `render`",
+      "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
