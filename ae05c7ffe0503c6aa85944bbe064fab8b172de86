@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bea76da_3f43fa9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T15:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18bfab53_c7ac910d",
+      "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5c95fab_6f1daf50",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-10-17T15:05:15Z",
       "side": 1,
       "message": "Looking at the implementation, it looks like `revalidate` already knows if anything needs to be done and so isn\u0027t very expensive to call, so can just always be called before `render`",
+      "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f8e9d6_67687e49",
+        "filename": "tools/viewer/SGSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T15:42:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f5c95fab_6f1daf50",
       "revId": "ae05c7ffe0503c6aa85944bbe064fab8b172de86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
