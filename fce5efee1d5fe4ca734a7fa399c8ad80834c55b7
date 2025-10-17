@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7842c6ae_8bd2b710",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-17T17:56:59Z",
+      "side": 1,
+      "message": "Thanks for the CL!  LGTM.",
+      "revId": "fce5efee1d5fe4ca734a7fa399c8ad80834c55b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
