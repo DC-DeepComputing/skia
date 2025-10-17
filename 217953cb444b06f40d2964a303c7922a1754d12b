@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6264519b_adfd5406",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-17T14:25:12Z",
+      "side": 1,
+      "message": "nit: samplers",
+      "range": {
+        "startLine": 17,
+        "startChar": 58,
+        "endLine": 17,
+        "endChar": 66
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7934599_8c0c682f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-17T14:25:12Z",
+      "side": 1,
+      "message": "I agree with Michael\u0027s comment to move some definitions back into a .cpp file where it makes sense to",
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6435139b_c5d99295",
         "filename": "include/gpu/vk/VulkanTypes.h",
         "patchSetId": 4
@@ -19,6 +59,29 @@
         "startChar": 0,
         "endLine": 204,
         "endChar": 5
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc5aa5b8_bbf9c60f",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-17T14:25:12Z",
+      "side": 1,
+      "message": "Maybe this would fit with \n```\nSkASSERT(fForceExplicitReconstruction ||\n\t formatFeatures \u0026 \n\t\tVK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT)\n\n```\n?",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 13
       },
       "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
