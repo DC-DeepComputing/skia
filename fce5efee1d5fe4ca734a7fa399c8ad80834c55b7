@@ -16,6 +16,23 @@
       "message": "Thanks for the CL!  LGTM.",
       "revId": "fce5efee1d5fe4ca734a7fa399c8ad80834c55b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edf4e310_c0e64803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T17:59:06Z",
+      "side": 1,
+      "message": "Fixes the `Android_API30` builders.",
+      "revId": "fce5efee1d5fe4ca734a7fa399c8ad80834c55b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
