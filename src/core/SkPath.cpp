@@ -425,38 +425,43 @@ bool SkPath::isRRect(SkRRect* rrect) const {
     return false;
 }
 
-int SkPath::countPoints() const {
-    return fPathRef->countPoints();
+SkSpan<const SkPoint> SkPath::points() const {
+    return fPathRef->pointSpan();
+}
+SkSpan<const SkPathVerb> SkPath::verbs() const {
+    return fPathRef->verbs();
+}
+SkSpan<const float> SkPath::conicWeights() const {
+    return fPathRef->conicSpan();
 }
 
+#ifdef SK_LEGACY_PATH_ACCESSORS
 size_t SkPath::getPoints(SkSpan<SkPoint> dst) const {
     SkDEBUGCODE(this->validate();)
+    SkSpan<const SkPoint> src = this->points();
 
-    const size_t ptCount = fPathRef->countPoints();
-    const size_t n = std::min(dst.size(), ptCount);
-    sk_careful_memcpy(dst.data(), fPathRef->points(), n * sizeof(SkPoint));
-    return ptCount;
+    const size_t n = std::min(dst.size(), src.size());
+    sk_careful_memcpy(dst.data(), src.data(), n * sizeof(SkPoint));
+    return src.size();
 }
 
 SkPoint SkPath::getPoint(int index) const {
-    if ((unsigned)index < (unsigned)fPathRef->countPoints()) {
-        return fPathRef->atPoint(index);
+    SkSpan<const SkPoint> pts = this->points();
+    if ((unsigned)index < (unsigned)pts.size()) {
+        return pts[index];
     }
     return SkPoint::Make(0, 0);
 }
 
-int SkPath::countVerbs() const {
-    return fPathRef->countVerbs();
-}
-
 size_t SkPath::getVerbs(SkSpan<uint8_t> dst) const {
     SkDEBUGCODE(this->validate();)
+    SkSpan<const SkPathVerb> src = this->verbs();
 
-    const size_t vbCount = fPathRef->countVerbs();
-    const size_t n = std::min(dst.size(), vbCount);
-    sk_careful_memcpy(dst.data(), fPathRef->verbsBegin(), n);
-    return vbCount;
+    const size_t n = std::min(dst.size(), src.size());
+    sk_careful_memcpy(dst.data(), src.data(), n);
+    return src.size();
 }
+#endif
 
 size_t SkPath::approximateBytesUsed() const {
     size_t size = sizeof (SkPath);
@@ -468,9 +473,9 @@ size_t SkPath::approximateBytesUsed() const {
 
 std::optional<SkPoint> SkPath::getLastPt() const {
     SkDEBUGCODE(this->validate();)
-
-    if (const int count = fPathRef->countPoints()) {
-        return fPathRef->atPoint(count - 1);
+    SkSpan<const SkPoint> pts = this->points();
+    if (!pts.empty()) {
+        return pts.back();
     }
     return {};
 }
@@ -1343,9 +1348,10 @@ static int compute_cubic_extremas(const SkPoint src[4], SkPoint extremas[5]) {
 }
 
 SkRect SkPath::computeTightBounds() const {
-    if (0 == this->countVerbs()) {
+    if (this->verbs().empty()) {
         return SkRect::MakeEmpty();
     }
+    SkASSERT(!this->points().empty());
 
     if (this->getSegmentMasks() == SkPath::kLine_SegmentMask) {
         return this->getBounds();
@@ -1355,7 +1361,7 @@ SkRect SkPath::computeTightBounds() const {
 
     // initial with the first MoveTo, so we don't have to check inside the switch
     skvx::float2 min, max;
-    min = max = from_point(this->getPoint(0));
+    min = max = from_point(this->points()[0]);
     for (auto [verb, pts, w] : SkPathPriv::Iterate(*this)) {
         int count = 0;
         switch (verb) {
