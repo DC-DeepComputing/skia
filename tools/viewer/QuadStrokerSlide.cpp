@@ -505,7 +505,10 @@ private:
             SkPoint* ptPtr = pts.get();
             for (int i = 0; i < contourCounts.size(); ++i) {
                 int count = contourCounts[i];
-                path.getPoints({ptPtr, count});
+
+                const SkPoint* src = path.points().data();
+                std::copy(src, src + count, ptPtr);
+
                 canvas->drawPoints(SkCanvas::kPolygon_PointMode, {ptPtr, count}, paint);
                 ptPtr += count;
             }
