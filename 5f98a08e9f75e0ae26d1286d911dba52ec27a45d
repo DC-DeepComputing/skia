@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e809b125_d60a155a",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-17T13:44:10Z",
+      "side": 1,
+      "message": "nit: Since Metadata is scoped to SkCapture, we don\u0027t really need to repeat SkCapture in its name.",
+      "range": {
+        "startLine": 27,
+        "startChar": 11,
+        "endLine": 27,
+        "endChar": 20
+      },
+      "revId": "5f98a08e9f75e0ae26d1286d911dba52ec27a45d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe741e42_1725f944",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-17T13:44:10Z",
+      "side": 1,
+      "message": "This is fine for now, and matches the general plan we talked about, but we will need to adjust SkCaptureManager to be thread safe, which this is not. While fIsCurrentlyCapturing is atomic, now that we are doing work based on its state that is not atomic, we can\u0027t rely on just that.\n\nI think we should keep fIsCurrentlyCapturing atomic so that recorder threads can quickly check if things are capturing, and then have this use `fIsCurrentlyCapturing.exchange(capturing)` to see if the prior atomic value was `true` and `capturing` is false.  When we get into the if block, we should add a mutex that guards all the `fPictures` and `fLastCapture` state that could be mutated on recording threads on occasion (but relatively rarely as surfaces are destroyed/drawn into each other).",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 38
+      },
+      "revId": "5f98a08e9f75e0ae26d1286d911dba52ec27a45d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
