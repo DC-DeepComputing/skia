@@ -2088,12 +2088,10 @@ Result XPSSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
 static SkSerialProcs serial_procs_using_png() {
     static SkSerialProcs procs;
     procs.fImageProc = [](SkImage* img, void*) -> sk_sp<SkData> {
-#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
-        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
-#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
         return SkPngRustEncoder::Encode(as_IB(img)->directContext(), img, {});
 #else
-#error "PNG encoder is required"
+        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
 #endif
     };
     return procs;
