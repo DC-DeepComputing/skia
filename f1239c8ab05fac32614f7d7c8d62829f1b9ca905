@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02519bc_1f3da9d1",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 2073,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T17:42:56Z",
+      "side": 0,
+      "message": "So there was another implementation of `SkPngEncoder::Encode` in `src/ports/SkImageEncoder_NDK.cpp` which was the one being used by default on Skia\u0027s build of Skia for Android API 30 or later. The change here doesn\u0027t take that into account which is causing the `Android_API30` builders to fail. I think the short term fix is to use `SkPngRustEncoder` if `SK_CODEC_ENCODES_PNG_WITH_RUST` is defined, and use `SkPngEncoder::Encode` otherwise. Longer term we should probably add a define for the NDK decoder and put it in a different namespace.",
+      "revId": "f1239c8ab05fac32614f7d7c8d62829f1b9ca905",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
