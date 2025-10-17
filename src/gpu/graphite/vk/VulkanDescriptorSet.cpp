@@ -36,7 +36,8 @@ VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
                                          sk_sp<VulkanDescriptorPool> pool)
         : Resource(ctxt,
                    Ownership::kOwned,
-                   /*gpuMemorySize=*/0)
+                   /*gpuMemorySize=*/0,
+                   /*reusableRequiresPurgeable=*/false)
         , fDescSet(set)
         , fPool(pool) {
     fPool->ref();
