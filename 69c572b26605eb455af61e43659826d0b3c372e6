@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "348827e2_5ac099a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-17T15:43:38Z",
+      "side": 1,
+      "message": "Added `tools/viewer/SlideDir.cpp` because I hadn\u0027t gotten there yet, so need a new +1.",
+      "revId": "69c572b26605eb455af61e43659826d0b3c372e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
