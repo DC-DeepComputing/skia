@@ -244,7 +244,7 @@ public:
     Click(int ptIdx) : fPtIdx(ptIdx) {}
 
     void doClick(SkPath* path) {
-        SkPoint pt = path->getPoint(fPtIdx);
+        SkPoint pt = path->points()[fPtIdx];
         SkPathBuilder builder(*path);
         builder.setPoint(fPtIdx, pt + fCurr - fPrev);
         *path = builder.detach();
