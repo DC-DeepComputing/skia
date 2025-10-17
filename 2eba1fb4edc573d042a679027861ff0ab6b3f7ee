@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ddf8315f_12cb9a3d",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-17T18:13:01Z",
+      "side": 1,
+      "message": "It\u0027s okay if the data isn\u0027t in a continuous block of memory, as long as the `read()` function is able to get more data. So maybe this function should return something other than a Span, and the implementation of `fill_buf()` is changed. I have to do more research on this...",
+      "parentUuid": "7ba5e3f0_e4824fab",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b2f140a_7ea94466",
         "filename": "include/core/SkStream.h",
         "patchSetId": 8
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "Does that mean that the fix for reading past the png data only works for in-memory streams?\n\nI guess I don\u0027t fully understand how that happens: is it because RustyPng uses a buffered stream reader which buffers data in advance, or is the decoder actually attempting to read more data than needed to decode the current png (the latter would be surprising, arguably a bug).\n\nI wonder if we could address that differently, sticking to more general stream APIs:\n\n1) Track the amount of decoded bytes, and rewind the stream when done decoding.  Still needs a rewindable stream, but it\u0027s better than requiring an in-memory stream.  Maybe the API should take an explicit SkStreamRewindable?\n\n2) If related to buffering, implement a stream reader which only \"buffers\" (caches?) previous data to accelerate rewinds, and never reads ahead/more than requested.",
       "parentUuid": "7e6a1895_feed4a62",
+      "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6dfb7c_d6da274b",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-10-17T18:13:01Z",
+      "side": 1,
+      "message": "The Rust buffered stream doesn\u0027t have to read buffer data in advanced, but currently we do it when we wrap our stream in a `BufReader` [1]. To get around this, our stream must implement the `BufRead` rust trait instead [2].\n\nIn this CL yes it is only implemented for in-memory streams, this was just meant to be a proof of concept. Theoretically the overrides could be implemented so that our getBytes() could better fit other streams, and works in conjunction with that streams read() method in order to fulfill the requirements of `BufRead`. \n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/rust/png/FFI.rs;drc\u003d5e9223ed18eced8c4fe4d57d19e68b0ec615910e;l\u003d462\n\n[2] https://doc.rust-lang.org/std/io/trait.BufRead.html",
+      "parentUuid": "876cf830_0ec18cf8",
       "revId": "2eba1fb4edc573d042a679027861ff0ab6b3f7ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
