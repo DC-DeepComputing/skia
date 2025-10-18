@@ -35,15 +35,6 @@
 #include <limits.h>
 #include <utility>
 
-struct SkPath_Storage_Equivalent {
-    void*    fPtr;
-    int32_t  fIndex;
-    uint32_t fFlags;
-};
-
-static_assert(sizeof(SkPath) == sizeof(SkPath_Storage_Equivalent),
-              "Please keep an eye on SkPath packing.");
-
 static float poly_eval(float A, float B, float C, float t) {
     return (A * t + B) * t + C;
 }
@@ -63,7 +54,7 @@ SkPath::SkPath(sk_sp<SkPathRef> pr, SkPathFillType ft, bool isVolatile, SkPathCo
     : fPathRef(std::move(pr))
     , fLastMoveToIndex(INITIAL_LASTMOVETOINDEX_VALUE)
     , fConvexity((uint8_t)ct)
-    , fFillType((unsigned)ft)
+    , fFillType(ft)
     , fIsVolatile(isVolatile)
 {}
 
@@ -71,14 +62,14 @@ SkPath::SkPath(SkPathFillType ft)
     : fPathRef(SkPathRef::CreateEmpty())
     , fLastMoveToIndex(INITIAL_LASTMOVETOINDEX_VALUE)
     , fConvexity((uint8_t)SkPathConvexity::kUnknown)
-    , fFillType((unsigned)ft)
+    , fFillType(ft)
     , fIsVolatile(false)
 {}
 
 void SkPath::resetFields() {
     //fPathRef is assumed to have been emptied by the caller.
     fLastMoveToIndex = INITIAL_LASTMOVETOINDEX_VALUE;
-    fFillType = SkToU8(SkPathFillType::kDefault);
+    fFillType = SkPathFillType::kDefault;
     this->setConvexity(SkPathConvexity::kUnknown);
 }
 
@@ -124,14 +115,8 @@ void SkPath::swap(SkPath& that) {
     if (this != &that) {
         fPathRef.swap(that.fPathRef);
         std::swap(fLastMoveToIndex, that.fLastMoveToIndex);
-
-        const auto ft = fFillType;
-        fFillType = that.fFillType;
-        that.fFillType = ft;
-
-        const auto iv = fIsVolatile;
-        fIsVolatile = that.fIsVolatile;
-        that.fIsVolatile = iv;
+        std::swap(fFillType, that.fFillType);
+        std::swap(fIsVolatile, that.fIsVolatile);
 
         // Non-atomic swaps of atomic values.
         SkPathConvexity c = this->getConvexityOrUnknown();
@@ -364,14 +349,14 @@ SkPath SkPath::makeFillType(SkPathFillType ft) const {
 
 SkPath SkPath::makeToggleInverseFillType() const {
     return SkPath(fPathRef,
-                  static_cast<SkPathFillType>(fFillType ^ 2),
+                  SkPathFillType_ToggleInverse(fFillType),
                   fIsVolatile,
                   this->getConvexityOrUnknown());
 }
 
 SkPath SkPath::makeIsVolatile(bool v) const {
     return SkPath(fPathRef,
-                  static_cast<SkPathFillType>(fFillType),
+                  fFillType,
                   v,
                   this->getConvexityOrUnknown());
 }
@@ -473,18 +458,6 @@ std::optional<SkPoint> SkPath::getLastPt() const {
         return fPathRef->atPoint(count - 1);
     }
     return {};
-}
-
-bool SkPath::isConvexityAccurate() const {
-    SkPathConvexity convexity = this->getConvexityOrUnknown();
-    if (convexity != SkPathConvexity::kUnknown) {
-        auto conv = this->computeConvexity();
-        if (conv != convexity) {
-            SkASSERT(false);
-            return false;
-        }
-    }
-    return true;
 }
 
 SkPathConvexity SkPath::getConvexity() const {
@@ -741,7 +714,7 @@ std::optional<SkPath::IterRec> SkPath::RawIter::next() {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkPath::isValidImpl() const {
-    if ((fFillType & ~3) != 0) {
+    if ((static_cast<int>(fFillType) & ~3) != 0) {
         return false;
     }
 
