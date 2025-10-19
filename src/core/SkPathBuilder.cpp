@@ -1120,3 +1120,8 @@ bool SkPathBuilder::isZeroLengthSincePoint(int startPtIndex) const {
     }
     return true;
 }
+
+bool SkPathBuilder::contains(SkPoint p) const {
+    const auto raw = SkPathPriv::Raw(*this, SkResolveConvexity::kNo);
+    return raw.has_value() && SkPathPriv::Contains(*raw, p);
+}
