@@ -57,6 +57,8 @@ public:
 
     static uint8_t ComputeSegmentMask(SkSpan<const SkPathVerb>);
 
+    static bool Contains(const SkPathRaw&, SkPoint);
+
     static SkPathVerbAnalysis AnalyzeVerbs(SkSpan<const SkPathVerb> verbs);
 
     // skbug.com/40041027: Not a perfect solution for W plane clipping, but 1/16384 is a
@@ -511,7 +513,7 @@ public:
         kQuad = (int)SkPathVerb::kQuad,
         kConic = (int)SkPathVerb::kConic,
         kCubic = (int)SkPathVerb::kCubic,
-        kInvalid = 99,
+ //       kInvalid = 99,
     };
 
     static SkPathVerb EdgeToVerb(Edge e) {
@@ -540,7 +542,7 @@ public:
         for (;;) {
             SkASSERT(fVerbs <= fVerbsStop);
             if (fVerbs == fVerbsStop) {
-                return fNeedsCloseLine ? closeline() : Result{nullptr, Edge::kInvalid, false};
+                return fNeedsCloseLine ? closeline() : Result{nullptr, Edge::kLine, false};
             }
 
             SkDEBUGCODE(fIsConic = false;)
