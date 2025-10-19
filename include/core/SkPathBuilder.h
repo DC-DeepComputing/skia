@@ -968,6 +968,8 @@ public:
     // helper explicitly.
     void dump() const { this->dump(DumpFormat::kDecimal); }
 
+    bool contains(SkPoint) const;
+
 private:
     SkPathRef::PointsArray fPts;
     SkPathRef::VerbsArray fVerbs;
