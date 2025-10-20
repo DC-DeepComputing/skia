@@ -28478,7 +28478,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         }
       ],
       "command": [
@@ -33506,7 +33506,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -33599,7 +33599,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -33692,7 +33692,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -33785,7 +33785,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -33878,7 +33878,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -33971,7 +33971,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34064,7 +34064,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34157,7 +34157,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34250,7 +34250,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34343,7 +34343,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34436,7 +34436,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34529,7 +34529,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34622,7 +34622,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34715,7 +34715,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34808,7 +34808,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34901,7 +34901,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -34999,7 +34999,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35091,7 +35091,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35183,7 +35183,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35275,7 +35275,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35367,7 +35367,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35459,7 +35459,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35556,7 +35556,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35648,7 +35648,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35741,7 +35741,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35834,7 +35834,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -35932,7 +35932,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36034,7 +36034,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36136,7 +36136,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36233,7 +36233,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36340,7 +36340,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36442,7 +36442,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36534,7 +36534,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36626,7 +36626,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36718,7 +36718,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36810,7 +36810,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36902,7 +36902,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -36994,7 +36994,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37086,7 +37086,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37178,7 +37178,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37270,7 +37270,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37362,7 +37362,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37454,7 +37454,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37546,7 +37546,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37638,7 +37638,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37732,7 +37732,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37824,7 +37824,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -37916,7 +37916,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38008,7 +38008,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38100,7 +38100,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38192,7 +38192,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38284,7 +38284,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38376,7 +38376,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38468,7 +38468,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38560,7 +38560,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38652,7 +38652,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -38744,7 +38744,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -39380,7 +39380,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -39477,7 +39477,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -39574,7 +39574,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -39671,7 +39671,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -42672,7 +42672,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"gles\\\",\\\"glesdft\\\",\\\"glesmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"gles\\\",\\\"glesdft\\\",\\\"glesmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -42760,7 +42760,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android_Graphite_Native_Vulkan_Protected\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Native_Vulkan_Protected\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--createProtected\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"--skip\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"lottie\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"colorImage\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"skp\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ApplyGamma\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BlendRequiringDstReadWithLargeCoordinates\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BlurMaskBiggerThanDest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ClearOp\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ColorTypeBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ComposedImageFilterBounds_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CompressedBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CopySurface\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"crbug_1271431\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DashPathEffectTest_2PiInterval\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DeviceTestVertexTransparency\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DDLMultipleDDLs\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DefaultPathRendererTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_aa_dst_read_after_dmsaa\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dst_read\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dst_read_with_existing_barrier\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dual_source_blend_disable\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_preserve_contents\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"EGLImageTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ES2BlendWithNoTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ExtendedSkColorTypeTests_gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"F16DrawTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"FilterResult_ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"FullScreenClearWithLayers\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GLBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GLReadPixelsUnbindPBO\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrAHardwareBuffer_BasicDrawTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrGpuBufferTransferTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrGpuBufferUpdateDataTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrMeshTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrPipelineDynamicStateTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrTextBlobScaleAnimation\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"HalfFloatAlphaTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"HalfFloatRGBATextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageBackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageEncode_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterFailAffectsTransparentBlack_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterNegativeBlurSigma_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterZeroBlurSigma_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageLegacyBitmap_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageNewShader_GPU\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageOriginTest_drawImage_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageOriginTest_imageShader_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageProviderTest_Graphite_Default\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageProviderTest_Graphite_Testing\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageReadPixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageScalePixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageShaderTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageWrapTextureMipmapsTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MatrixColorFilter_TransparentBlack\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MorphologyFilterRadiusWithMirrorCTM_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MultisampleRetainTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MultisampleClearThenLoad\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MutableImagesTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestAsImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerClear\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColor\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColorBurn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColorDodge\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDarken\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDifference\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDst\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstATop\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstIn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstOut\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstOver\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerExclusion\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerHardLight\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerHue\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerLighten\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerLuminosity\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerModulate\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerMultiply\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerOverlay\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerPlus\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSaturation\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerScreen\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSoftLight\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrc\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcATop\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcIn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcOut\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcOver\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerXor\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestSnapshot\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"OpsTaskFlushCount\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"OverdrawSurface_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PinnedImageTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RecordingOrderTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RecordingSurfacesTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReimportImageTextureWithMipLevels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReplaceSurfaceBackendTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ResourceCacheCache\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SaveLayerOrigin\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ShaderTestNestedBlendsGanesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ShaderTestNestedBlendsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SimplifyPaintTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"skbug6653\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkImage_makeNonTextureImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkipCopyTaskTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkipOpsTaskTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkColorSpaceXform_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkColorSpaceXform_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeBlender_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeBlender_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeEffect\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShaderImageFilter_GPU\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShader_TransformedCoords_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShader_TransformedCoords_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLCross\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSL\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SpecialImage_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SRGBReadWritePixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceBackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceClear_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceContextReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceContextWritePixelsMipped\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceDrawContextTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceResolveTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceSemaphores\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TestSweepGradientZeroXGanesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TiledDrawCacheTest_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TiledDrawCacheTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"UnpremulTextureImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkDrawableTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkDrawableImportTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkYCbcrSampler_DrawImageWithYcbcrSampler\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixels_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsMSAA_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsNonTexture_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsNonTextureMSAA_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsPendingIO\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"XfermodeImageFilterCroppedInput_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrTextBlobMoveAround\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"Programs\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"Protected_SmokeTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReadOnlyTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RepeatedClippedBlurTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CharacterizationVkSCBnessTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ProcessorCloneTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ProcessorOptimizationValidationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TextBlobAbnormal\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TextBlobStressAbnormal\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"UserDefinedStableKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android_Graphite_Native_Vulkan_Protected\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android_Graphite_Native_Vulkan_Protected\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Native_Vulkan_Protected\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--createProtected\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"lottie\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"colorImage\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"skp\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ApplyGamma\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BlendRequiringDstReadWithLargeCoordinates\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BlurMaskBiggerThanDest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ClearOp\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ColorTypeBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ComposedImageFilterBounds_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CompressedBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CopySurface\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"crbug_1271431\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DashPathEffectTest_2PiInterval\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DeviceTestVertexTransparency\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DDLMultipleDDLs\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DefaultPathRendererTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_aa_dst_read_after_dmsaa\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dst_read\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dst_read_with_existing_barrier\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_dual_source_blend_disable\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"DMSAA_preserve_contents\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"EGLImageTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ES2BlendWithNoTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ExtendedSkColorTypeTests_gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"F16DrawTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"FilterResult_ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"FullScreenClearWithLayers\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GLBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GLReadPixelsUnbindPBO\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrAHardwareBuffer_BasicDrawTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrGpuBufferTransferTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrGpuBufferUpdateDataTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrMeshTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrPipelineDynamicStateTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrTextBlobScaleAnimation\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"HalfFloatAlphaTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"HalfFloatRGBATextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageBackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageEncode_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterFailAffectsTransparentBlack_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterNegativeBlurSigma_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageFilterZeroBlurSigma_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageLegacyBitmap_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageNewShader_GPU\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageOriginTest_drawImage_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageOriginTest_imageShader_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageProviderTest_Graphite_Default\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageProviderTest_Graphite_Testing\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageReadPixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageScalePixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageShaderTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageWrapTextureMipmapsTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MatrixColorFilter_TransparentBlack\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MorphologyFilterRadiusWithMirrorCTM_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MultisampleRetainTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MultisampleClearThenLoad\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"MutableImagesTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestAsImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerClear\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColor\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColorBurn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerColorDodge\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDarken\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDifference\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDst\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstATop\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstIn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstOut\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerDstOver\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerExclusion\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerHardLight\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerHue\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerLighten\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerLuminosity\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerModulate\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerMultiply\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerOverlay\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerPlus\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSaturation\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerScreen\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSoftLight\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrc\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcATop\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcIn\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcOut\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerSrcOver\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestLayerXor\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"NotifyInUseTestSnapshot\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"OpsTaskFlushCount\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"OverdrawSurface_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PinnedImageTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RecordingOrderTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RecordingSurfacesTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReimportImageTextureWithMipLevels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReplaceSurfaceBackendTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ResourceCacheCache\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SaveLayerOrigin\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ShaderTestNestedBlendsGanesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ShaderTestNestedBlendsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SimplifyPaintTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"skbug6653\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkImage_makeNonTextureImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkipCopyTaskTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkipOpsTaskTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkColorSpaceXform_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkColorSpaceXform_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeBlender_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeBlender_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeEffect\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShaderImageFilter_GPU\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShader_TransformedCoords_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkRuntimeShader_TransformedCoords_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLCross\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSL\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SpecialImage_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SRGBReadWritePixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceBackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceClear_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceContextReadPixels\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceContextWritePixelsMipped\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceDrawContextTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceResolveTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceSemaphores\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TestSweepGradientZeroXGanesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TiledDrawCacheTest_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TiledDrawCacheTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"UnpremulTextureImage\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkBackendAllocationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkDrawableTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkDrawableImportTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"VkYCbcrSampler_DrawImageWithYcbcrSampler\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixels_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixels_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsMSAA_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsNonTexture_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsNonTextureMSAA_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"WritePixelsPendingIO\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"XfermodeImageFilterCroppedInput_Gpu\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrTextBlobMoveAround\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"Programs\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"Protected_SmokeTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ReadOnlyTexture\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"RepeatedClippedBlurTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"CharacterizationVkSCBnessTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ProcessorCloneTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ProcessorOptimizationValidationTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TextBlobAbnormal\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"TextBlobStressAbnormal\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"UserDefinedStableKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Debug-All-Android_Graphite_Native_Vulkan_Protected\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -42848,7 +42848,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"gles\\\",\\\"glesdft\\\",\\\"glesmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"gles\\\",\\\"glesdft\\\",\\\"glesmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -42936,7 +42936,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Dawn_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Dawn_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grdawn_vk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"runtime_intrinsics_matrix\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Dawn_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Dawn_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Dawn_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grdawn_vk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"runtime_intrinsics_matrix\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BackendTextureTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Dawn_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -43024,7 +43024,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Native_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Native_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Native_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Native_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Graphite_Native_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ImageAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SurfaceAsyncReadPixelsGraphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Graphite_Native_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -43112,7 +43112,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"vk\\\",\\\"vkmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IMG_DXT_48_1536\\\",\\\"extra_config\\\",\\\"Android_Vulkan\\\",\\\"model\\\",\\\"Pixel10\\\",\\\"os\\\",\\\"Android\\\",\\\"style\\\",\\\"default\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"vk\\\",\\\"vkmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"SkSLIntrinsicModf_Ganesh\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"GrStyledShape\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Android-Clang-Pixel10-GPU-IMG_DXT_48_1536-arm64-Release-All-Android_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -48379,7 +48379,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48479,7 +48479,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48579,7 +48579,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48679,7 +48679,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48779,7 +48779,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48879,7 +48879,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -48979,7 +48979,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49079,7 +49079,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49179,7 +49179,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49279,7 +49279,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49379,7 +49379,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49484,7 +49484,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -49589,7 +49589,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49689,7 +49689,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49789,7 +49789,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49889,7 +49889,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -49989,7 +49989,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50089,7 +50089,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50189,7 +50189,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50289,7 +50289,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50389,7 +50389,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -50494,7 +50494,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -50599,7 +50599,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50694,7 +50694,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50787,7 +50787,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50880,7 +50880,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -50978,7 +50978,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51078,7 +51078,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51178,7 +51178,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51278,7 +51278,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51378,7 +51378,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51478,7 +51478,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -51583,7 +51583,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51683,7 +51683,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51783,7 +51783,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51883,7 +51883,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -51983,7 +51983,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52078,7 +52078,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52171,7 +52171,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52274,7 +52274,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -52379,7 +52379,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52479,7 +52479,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52579,7 +52579,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52679,7 +52679,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52779,7 +52779,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52879,7 +52879,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -52984,7 +52984,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53088,7 +53088,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53187,7 +53187,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53287,7 +53287,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53387,7 +53387,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53485,7 +53485,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53585,7 +53585,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53685,7 +53685,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53783,7 +53783,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -53881,7 +53881,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -53991,7 +53991,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -54101,7 +54101,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -54296,7 +54296,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54396,7 +54396,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54496,7 +54496,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54596,7 +54596,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54696,7 +54696,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54796,7 +54796,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54896,7 +54896,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -54996,7 +54996,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55096,7 +55096,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55196,7 +55196,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55294,7 +55294,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55394,7 +55394,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55494,7 +55494,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55594,7 +55594,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55694,7 +55694,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55793,7 +55793,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55892,7 +55892,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -55992,7 +55992,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56092,7 +56092,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56192,7 +56192,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56292,7 +56292,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56392,7 +56392,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56492,7 +56492,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -56596,7 +56596,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56695,7 +56695,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56794,7 +56794,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -56898,7 +56898,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57002,7 +57002,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57106,7 +57106,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57200,7 +57200,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57302,7 +57302,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57401,7 +57401,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57500,7 +57500,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57602,7 +57602,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57706,7 +57706,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57800,7 +57800,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -57897,7 +57897,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58001,7 +58001,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58100,7 +58100,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58205,7 +58205,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58314,7 +58314,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58421,7 +58421,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58528,7 +58528,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58637,7 +58637,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58744,7 +58744,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58851,7 +58851,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -58865,7 +58865,7 @@
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
         "test",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IntelIrisXe\\\",\\\"extra_config\\\",\\\"TSAN_Graphite_Native_Vulkan\\\",\\\"model\\\",\\\"NUC11TZi5\\\",\\\"os\\\",\\\"Ubuntu24.04\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~ReimportImageTextureWithMipLevels\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"false\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"IntelIrisXe\\\",\\\"extra_config\\\",\\\"TSAN_Graphite_Native_Vulkan\\\",\\\"model\\\",\\\"NUC11TZi5\\\",\\\"os\\\",\\\"Ubuntu24.04\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grvk\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTestReduced\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"aaxfermodes\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Graphite\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PaintParamsKeyTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompileTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompileCompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"ThreadedPipelinePrecompilePurgingTest\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"PersistentPipelineStorageTest\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"test\\\",\\\"_\\\",\\\"BigImageTest_Ganesh\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~^verylarge_picture_image$\\\",\\\"~^verylargebitmap$\\\",\\\"~^path_huge_aa$\\\",\\\"~^fast_constraint_red_is_allowed$\\\",\\\"~^strict_constraint_batch_no_red_allowed$\\\",\\\"~^strict_constraint_no_red_allowed$\\\",\\\"~ReimportImageTextureWithMipLevels\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"false\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -58958,7 +58958,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59060,7 +59060,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59164,7 +59164,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59266,7 +59266,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59375,7 +59375,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59479,7 +59479,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59583,7 +59583,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -59692,7 +59692,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60138,7 +60138,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60230,7 +60230,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60322,7 +60322,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60414,7 +60414,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60506,7 +60506,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60598,7 +60598,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60690,7 +60690,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60782,7 +60782,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60874,7 +60874,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -60966,7 +60966,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61058,7 +61058,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61150,7 +61150,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61242,7 +61242,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61334,7 +61334,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61426,7 +61426,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61518,7 +61518,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61610,7 +61610,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61702,7 +61702,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61794,7 +61794,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61886,7 +61886,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -61978,7 +61978,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62070,7 +62070,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62162,7 +62162,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62254,7 +62254,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62346,7 +62346,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62438,7 +62438,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62530,7 +62530,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62622,7 +62622,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62714,7 +62714,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62806,7 +62806,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62898,7 +62898,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -62990,7 +62990,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63082,7 +63082,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63174,7 +63174,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63266,7 +63266,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63358,7 +63358,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63450,7 +63450,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63542,7 +63542,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63636,7 +63636,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63730,7 +63730,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63824,7 +63824,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -63918,7 +63918,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -64022,7 +64022,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -64121,7 +64121,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64215,7 +64215,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64307,7 +64307,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64399,7 +64399,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64491,7 +64491,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64583,7 +64583,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64675,7 +64675,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64767,7 +64767,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64859,7 +64859,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -64951,7 +64951,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65043,7 +65043,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65135,7 +65135,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65227,7 +65227,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65319,7 +65319,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65411,7 +65411,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65503,7 +65503,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65595,7 +65595,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/skparagraph",
@@ -65692,7 +65692,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65784,7 +65784,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65876,7 +65876,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -65968,7 +65968,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66060,7 +66060,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66152,7 +66152,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66244,7 +66244,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66336,7 +66336,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66428,7 +66428,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66520,7 +66520,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66614,7 +66614,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66708,7 +66708,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -66802,7 +66802,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68057,7 +68057,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68160,7 +68160,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68263,7 +68263,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68366,7 +68366,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68469,7 +68469,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68572,7 +68572,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68675,7 +68675,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
@@ -68778,7 +68778,7 @@
         {
           "name": "skia/bots/skp",
           "path": "skp",
-          "version": "version:535"
+          "version": "version:536"
         },
         {
           "name": "skia/bots/svg",
