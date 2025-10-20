@@ -22,6 +22,30 @@
       },
       "revId": "cd61d17dfe10161b037822781e573589af1662a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536a45e3_a34737af",
+        "filename": "infra/bots/recipe_modules/flavor/resources/wait_for_device.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-20T14:17:30Z",
+      "side": 1,
+      "message": "Is it already? 😂",
+      "parentUuid": "d56d0f1c_5822aee7",
+      "range": {
+        "startLine": 1,
+        "startChar": 12,
+        "endLine": 1,
+        "endChar": 16
+      },
+      "revId": "cd61d17dfe10161b037822781e573589af1662a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
