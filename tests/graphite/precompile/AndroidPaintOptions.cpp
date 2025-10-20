@@ -47,6 +47,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
                                                   VkSamplerYcbcrModelConversion model,
                                                   VkSamplerYcbcrRange range,
                                                   VkChromaLocation location,
+                                                  VkFilter filter,
                                                   bool pqCS = false) {
     SkColorInfo ci { kRGBA_8888_SkColorType,
                      kPremul_SkAlphaType,
@@ -61,7 +62,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
     info.fYcbcrRange     = range;
     info.fXChromaOffset  = location;
     info.fYChromaOffset  = location;
-    info.fChromaFilter   = VK_FILTER_LINEAR;
+    info.fChromaFilter   = filter; // VK_FILTER_LINEAR;
 
     return PrecompileShaders::VulkanYCbCrImage(info,
                                                PrecompileShaders::ImageShaderFlags::kExcludeCubic,
@@ -104,6 +105,7 @@ sk_sp<PrecompileShader> create_child_shader(ChildType childType) {
                                              VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
                                              VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
                                              VK_CHROMA_LOCATION_COSITED_EVEN,
+                                             VK_FILTER_LINEAR,
                                              /* pqCS= */ true);
 #endif
     }
@@ -310,7 +312,8 @@ PaintOptions ImagePremulYCbCr238Srcover(bool narrow) {
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         narrow ? VK_SAMPLER_YCBCR_RANGE_ITU_NARROW
                                                                : VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -322,7 +325,8 @@ PaintOptions TransparentPaintImagePremulYCbCr238Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(238,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -335,7 +339,8 @@ PaintOptions ImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -347,7 +352,8 @@ PaintOptions TransparentPaintImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -363,6 +369,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr247(
             VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
             VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
             VK_CHROMA_LOCATION_COSITED_EVEN,
+            VK_FILTER_LINEAR,
             /*pqCS=*/true);
 
     sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
@@ -1116,6 +1123,132 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
     };
 
     for (size_t i = 0; i < std::size(precompileCases); ++i) {
+        func(precompileContext, precompileCases[i], i);
+    }
+}
+
+/*
+ * This set of PaintOptions was generating by finding all the labels that were already
+ * covered by the old set of PaintOptions and then copying over the generating
+ * PaintOptions. Since these PaintOptions were already in the old set it is assumed that the
+ * duplicate labels were from the Protected Context.
+ *
+ * On a Pixel9 this addresses 28 Pipelines while generating 36 (78%)
+ */
+void VisitPrecompileSettings2(skgpu::graphite::PrecompileContext* precompileContext,
+                             RuntimeEffectManager& effectManager,
+                             const std::function<void(skgpu::graphite::PrecompileContext*,
+                                                      const PrecompileSettings&,
+                                                      int index)>& func) {
+    // The number in parentheses after the "handles" keyword are the index of the label
+    // in the old set.
+    const PrecompileSettings precompileCases[] = {
+        // 0: 100% (1/1) handles: 0 (63*) and 105 (63)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 1: 100% (1/1) handles: 1 (61*)
+        { Builder().transparent().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 2: 100% (1/1) handles: 4 (71*) and 49 (71)
+        { Builder().hwImg(kPremul).src(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 3: 100% (1/1) handles: 5 (86)
+        { Builder().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 4: 50% (1/2) handles: 10 (82) -- only need the VerticesRenderStep[TrisColor] version!
+        { {}, // ignored
+          DrawTypeFlags::kDropShadows,
+          kRGBA_4_DS },
+        // 5: 100% (1/1) handles: 15 (91)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+        // 6: 100% (1/1) handles: 28 (146)
+        { Builder().blend().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 7: 50% (1/2) handles: 35 (89)
+        { Builder().src().srcOver(),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+        // 8: 100% (1/1) handles: 46 (166 - 69*)
+        { Builder().hwImg(kPremul).matrixCF().dither().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 9: 75% (3/4) handles: 74 (28) 144 (9) 246 (95)
+        { Builder().transparent().hwImg(kPremul).srcOver(),
+          kRRectAndNonAARect,
+          kRGBA_1_D,
+          kWithAnalyticClip },
+        // 10: 100% (2/2) handles: 85 (99) 192 (49)
+        { BlurFilterMix(effectManager),
+          kRRectAndNonAARect,
+          kRGBA_1_D },
+        // 11: 100% (2/2) handles: 97 (43) 114 (42)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D,
+          kWithAnalyticClip },
+        // 12: 50% (1/2) handles: 165 (57)
+        { Builder().src().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+        // 13: 50% (1/2) handles: 204 (35)
+        { Builder().hwImg(kSRGB).matrixCF().dither().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D_SRGB,
+          kWithAnalyticClip },
+        // 14: 50% (1/2) handles: 228 (60)
+        { {}, // ignored
+          DrawTypeFlags::kDropShadows,
+          kRGBA_1_D },
+
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+        // 15: 100% (1/1) handles: 2 (46)
+        { ImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+        // 16: 100% (1/1) handles: 7 (67*)
+        { TransparentPaintImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 17: 50% (1/2) handles: 12 (148)
+        { TransparentPaintImagePremulYCbCr238Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kCombo_RGBA_1D_4DS },
+        // 18: 100% (1/1) handles: 22 (87)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 19: 100% (1/1) handles: 34 (151)
+        { ImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 20: 100% (1/1) handles: 130 (90)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+        // 21: 50% (1/2) handles: 171 (93)
+        { TransparentPaintImagePremulYCbCr238Srcover(),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS },
+        // 22: 100% (1/1) handles: 179 (150)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ false),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS_SRGB },
+        // 23: 100% (1/1) handles: 217 (47)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+#endif
+    };
+
+    for (size_t i = 0; i < std::size(precompileCases); ++i) {
+        SkDebugf("---- %zu\n", i);
         func(precompileContext, precompileCases[i], i);
     }
 }
