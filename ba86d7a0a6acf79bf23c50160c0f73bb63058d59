@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5f19573_8dea5254",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-20T19:40:47Z",
+      "side": 1,
+      "message": "Just as a drive by, why not mark everything else explicit? I think https://quuxplusone.github.io/blog/2023/04/08/most-ctors-should-be-explicit/ is a better write up than I could put here.",
+      "revId": "ba86d7a0a6acf79bf23c50160c0f73bb63058d59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
