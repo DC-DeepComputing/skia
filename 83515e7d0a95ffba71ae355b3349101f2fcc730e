@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0634f89_a2bce42b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-20T16:49:06Z",
+      "side": 1,
+      "message": "Given the (soon?) switch to std::span, where SkSpan can go away, I advocate to defer the idea of public methods to a different CL.",
+      "revId": "83515e7d0a95ffba71ae355b3349101f2fcc730e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
