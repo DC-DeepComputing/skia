@@ -37,6 +37,7 @@ class DawnResourceProvider;
 class DawnSharedContext;
 struct DepthStencilSettings;
 struct RenderPassDesc;
+class ResourceProvider;
 class RuntimeEffectDictionary;
 
 class DawnGraphicsPipeline final : public GraphicsPipeline {
@@ -68,6 +69,8 @@ public:
     ~DawnGraphicsPipeline() override;
 
     bool didAsyncCompilationFail() const override;
+
+    bool isReady() const override;
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }

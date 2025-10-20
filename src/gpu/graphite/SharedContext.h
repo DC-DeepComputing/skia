@@ -64,6 +64,15 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
+            ResourceProvider* resourceProvider,
+            const RuntimeEffectDictionary*,
+            const UniqueKey&,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>,
+            uint32_t compilationID) = 0;
+
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
@@ -129,10 +138,11 @@ private:
 
     BackendApi fBackend;
     GlobalCache fGlobalCache;
-    PipelineManager fPipelineManager;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+    // Last bc we want the threads shutdown before the rest of the SharedContext gets shutdown
+    PipelineManager fPipelineManager;
 };
 
 } // namespace skgpu::graphite

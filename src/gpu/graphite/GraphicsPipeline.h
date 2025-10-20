@@ -96,6 +96,8 @@ public:
     // it from the GlobalCache.
     virtual bool didAsyncCompilationFail() const { return false; }
 
+    virtual bool isReady() const = 0;
+
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 

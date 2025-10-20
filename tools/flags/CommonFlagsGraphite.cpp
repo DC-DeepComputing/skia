@@ -26,9 +26,12 @@ static DEFINE_bool(useWGPUTextureView, false, "Run Graphite w/ a wrapped WGPU te
 DEFINE_int(internalMSAATileSize, 0, "Run Graphite w/ limited MSAA texture's size");
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
-    static std::unique_ptr<SkExecutor> gGpuExecutor =
-            (0 != FLAGS_gpuThreads) ? SkExecutor::MakeFIFOThreadPool(FLAGS_gpuThreads)
-                                    : nullptr;
+    static std::unique_ptr<SkExecutor> gGpuExecutor;
+    if (0 != FLAGS_gpuThreads) {
+        gGpuExecutor = SkExecutor::MakeMultiListFIFOThreadPool(/* numWorksLists= */ 2,
+                                                               FLAGS_gpuThreads,
+                                                               /* allowBorrowing= */ false);
+    }
 
     testOptions->fContextOptions.fExecutor = gGpuExecutor.get();
 
