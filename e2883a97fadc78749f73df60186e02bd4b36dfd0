@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5babfd3c_a2158999",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-20T20:49:44Z",
+      "side": 1,
+      "message": "Does Graphite use a different hook to create its protected contexts?",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 36
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc83c39b_a6bb943e",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1661,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-20T20:49:44Z",
+      "side": 1,
+      "message": "nit: space",
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c96df8_e96ca42c",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-20T20:49:44Z",
+      "side": 1,
+      "message": "minor nit, maybe move down to be in the same #ifdef as the using\u0027s for Ganesh?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
