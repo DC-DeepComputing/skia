@@ -166,6 +166,30 @@
       },
       "revId": "01d6f06a6b92065f0c0bea5e26efa3b9dbb57c9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6913f3a1_0615ab9d",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-20T16:49:34Z",
+      "side": 1,
+      "message": "Mike had a good point about C++20, this may create more friction for migration, maybe we should punt the public bits until we land on `std::span`.",
+      "parentUuid": "bd3ddec0_357d12f4",
+      "range": {
+        "startLine": 154,
+        "startChar": 27,
+        "endLine": 154,
+        "endChar": 33
+      },
+      "revId": "01d6f06a6b92065f0c0bea5e26efa3b9dbb57c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
