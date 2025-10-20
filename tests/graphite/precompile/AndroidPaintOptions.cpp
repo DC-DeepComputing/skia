@@ -47,6 +47,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
                                                   VkSamplerYcbcrModelConversion model,
                                                   VkSamplerYcbcrRange range,
                                                   VkChromaLocation location,
+                                                  VkFilter filter,
                                                   bool pqCS = false) {
     SkColorInfo ci { kRGBA_8888_SkColorType,
                      kPremul_SkAlphaType,
@@ -61,7 +62,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
     info.fYcbcrRange     = range;
     info.fXChromaOffset  = location;
     info.fYChromaOffset  = location;
-    info.fChromaFilter   = VK_FILTER_LINEAR;
+    info.fChromaFilter   = filter; // VK_FILTER_LINEAR;
 
     return PrecompileShaders::VulkanYCbCrImage(info,
                                                PrecompileShaders::ImageShaderFlags::kExcludeCubic,
@@ -104,6 +105,7 @@ sk_sp<PrecompileShader> create_child_shader(ChildType childType) {
                                              VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
                                              VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
                                              VK_CHROMA_LOCATION_COSITED_EVEN,
+                                             VK_FILTER_LINEAR,
                                              /* pqCS= */ true);
 #endif
     }
@@ -310,7 +312,8 @@ PaintOptions ImagePremulYCbCr238Srcover(bool narrow) {
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         narrow ? VK_SAMPLER_YCBCR_RANGE_ITU_NARROW
                                                                : VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -322,7 +325,8 @@ PaintOptions TransparentPaintImagePremulYCbCr238Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(238,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -335,7 +339,8 @@ PaintOptions ImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -347,7 +352,8 @@ PaintOptions TransparentPaintImagePremulYCbCr240Srcover() {
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(240,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                                         VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
-                                                        VK_CHROMA_LOCATION_MIDPOINT) });
+                                                        VK_CHROMA_LOCATION_MIDPOINT,
+                                                        VK_FILTER_LINEAR) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     paintOptions.setPaintColorIsOpaque(false);
     return paintOptions;
@@ -363,6 +369,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr247(
             VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
             VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
             VK_CHROMA_LOCATION_COSITED_EVEN,
+            VK_FILTER_LINEAR,
             /*pqCS=*/true);
 
     sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
@@ -1116,6 +1123,227 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
     };
 
     for (size_t i = 0; i < std::size(precompileCases); ++i) {
+        func(precompileContext, precompileCases[i], i);
+    }
+}
+
+void VisitPrecompileSettings2(skgpu::graphite::PrecompileContext* precompileContext,
+                             RuntimeEffectManager& effectManager,
+                             const std::function<void(skgpu::graphite::PrecompileContext*,
+                                                      const PrecompileSettings&,
+                                                      int index)>& func) {
+    /*
+     * What I'm doing here is churning through the new labels from top to bottom.
+     * Currently, I'm addressing ones in the old set that were found in the new set.
+     * Because the old set was already being Precompiled, the assumption is that these
+     * recurring labels are from the Protected context. We need to create a separate list
+     * of such PaintOptions so the Protected context can be warmed up separately.
+     */
+    const PrecompileSettings precompileCases[] = {
+        // 0: 100% (1/1) handles: 0 (63*) and 105 (63)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+        // 1: 100% (1/1) handles: 1 (61*) - might need synthetic label
+        { Builder().transparent().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+
+        // 2 is handled in the YCbCr section
+        // skipping 3 - it isn't in the old set
+
+        // 2: 100% (1/1) handles: 4 (71*) and 49 (71) <-- needs fixing up due to msaa
+        { Builder().hwImg(kPremul).src(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+        // 3: 100% (1/1) handles: 5 (86)
+        { Builder().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+
+#if 0
+        // X: something odd is going on here. There should be some other matching
+        // pipelines for the non-simple-shape draw but they are missing!
+        // Should be: handles: 6 (83) + others
+        { Builder().srcOver(),
+          DrawTypeFlags::kNonSimpleShape,
+          kRGBA_4_DS },
+#endif
+
+        // 7 is handled in the YCbCr section
+        // skipping 8 - it isn't in the old set
+        // skipping 9 (127) -- this isn't actually covered by the prior set - may not be Protected
+
+        // 4: 50% (1/2) handles: 10 (82) -- only need the VerticesRenderStep[TrisColor] version!
+        { {}, // ignored
+          DrawTypeFlags::kDropShadows,
+          kRGBA_4_DS },
+
+        // skipping 11 - it isn't in the old set
+        // 12 is handled in the YCbCr section
+        // 13-14 are not in the old set
+
+        // 5: 100% (1/1) handles: 15 (91)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+
+        // 16-21 do not appear in the old set
+        // 22 is handled in the YCbCr section
+        // 23-27 do not appear in the old set
+
+        // 6: 100% (1/1) handles: 28 (146)
+        { Builder().blend().srcOver(),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_4_DS },
+
+        // 29-32 are not in the old set
+        // 33 (133) - not actually handled by old set - may not be Protected
+        // 34 is handled in the YCbCr section
+
+        // 7: 50% (1/2) handles: 35 (89)
+        { Builder().src().srcOver(),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+
+        // 36-41 are not in the old set
+        // 42 (111) - not actually handled by old set - may not be Protected
+        // 43-45 are not in the old set
+
+        // 8: 100% (1/1) handles: 46 (166 - 69*)
+        { Builder().hwImg(kPremul).matrixCF().dither().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+
+        // 47-48 are not in the old set
+        // 49 (71) is handled by #2
+        // 50-67 are not in the old set
+        // 68 (147) - not actually handled by old set - may not be Protected
+        // 69-73 are not in the old set
+
+        //---------
+        // 9: 75% (3/4) handles: 74 (28) 144 (9) 246 (95)
+        { Builder().transparent().hwImg(kPremul).srcOver(),
+          kRRectAndNonAARect,
+          kRGBA_1_D,
+          kWithAnalyticClip },
+
+        // 75-84 are not in the old set
+
+        // 10: 100% (2/2) handles: 85 (99) 192 (49)
+        { BlurFilterMix(effectManager),
+          kRRectAndNonAARect,
+          kRGBA_1_D },
+
+        // 85-96 are not in the old set
+
+        // 11: 100% (2/2) handles: 97 (43) 114 (42)
+        { Builder().hwImg(kPremul).srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D,
+          kWithAnalyticClip },
+
+        // 98-104 are not in the old set
+        // X: 105 (63) -- prior one 0
+        // 106-113 are not in the old set
+        // X: 114 (42) -- prior one - 11
+        // 115-129 are not in the old set
+        // X: 130 (90) -- in YCbCr section
+        // 131-142 are not in the old set
+        // X: 144 (9)  -- prior one - 9
+        // 145-164 are not in the old set
+
+        // 12: 50% (1/2) handles: 165 (57)
+        { Builder().src().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        //---------------------------------------
+
+        // 166-170 are not in the old set
+        // 171 is handled in the YCbCr section
+        // 172-178 are not in the old set
+        // 179 is handled in the YCbCr section
+        // 180-191 are not in the old set
+        // X: 192 (49) -- prior one - 10
+        // 193-203 are not in the old set
+
+        // 13: 50% (1/2) handles: 204 (35)
+        { Builder().hwImg(kSRGB).matrixCF().dither().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D_SRGB,
+          kWithAnalyticClip },
+
+        // 205-216 are not in the old set
+        // 217 is handled in the YCbCr section
+        // 218-227 are not in the old set
+
+        // 14: 50% (1/2) handles: 228 (60)
+        { {}, // ignored
+          DrawTypeFlags::kDropShadows,
+          kRGBA_1_D },
+
+        // 229-245 are not in the old set
+        // X: 246 (95) -- prior one - 9
+
+
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+        // 15: 100% (1/1) handles: 2 (46)
+        { ImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        // 16: 100% (1/1) handles: 7 (67*) - might need synthetic label
+        { TransparentPaintImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+
+        // 17: 50% (1/2) handles: 12 (148)
+        { TransparentPaintImagePremulYCbCr238Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kCombo_RGBA_1D_4DS },
+
+        // 18: 100% (1/1) handles: 22 (87)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+
+        // 19: 100% (1/1) handles: 34 (151)
+        { ImagePremulYCbCr240Srcover(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_4_DS },
+
+        // 20: 100% (1/1) handles: 130 (90)
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+          kRGBA_4_DS },
+
+        // X: 171 (93)
+        // 75% (3/4) handles 93 119 148
+        { TransparentPaintImagePremulYCbCr238Srcover(),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS },
+
+        // X: 179 (150)
+        // (3/4) 134 135 150
+        { ImagePremulYCbCr238Srcover(/* narrow= */ false),
+          DrawTypeFlags::kNonAAFillRect,
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip },
+
+        // X: 217 (47)
+        // 75% (3/4) handles 25 47 48
+        { ImagePremulYCbCr238Srcover(/* narrow= */ true),
+          kRRectAndNonAARect,
+          kRGBA_1_D,
+          kWithAnalyticClip },
+
+#endif
+
+    };
+
+    for (size_t i = 0; i < std::size(precompileCases); ++i) {
+        SkDebugf("---- %zu\n", i);
         func(precompileContext, precompileCases[i], i);
     }
 }
