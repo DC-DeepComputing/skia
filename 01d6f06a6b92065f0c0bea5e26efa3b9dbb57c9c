@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e54e52_cdf2c369",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-20T13:50:24Z",
+      "side": 1,
+      "message": "I feel like this code exists in at least one other file. Is this something we want to move to a private SpanUtils.h or something?",
+      "range": {
+        "startLine": 154,
+        "startChar": 27,
+        "endLine": 154,
+        "endChar": 33
+      },
+      "revId": "01d6f06a6b92065f0c0bea5e26efa3b9dbb57c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
