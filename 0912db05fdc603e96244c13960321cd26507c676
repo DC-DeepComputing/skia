@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f745bf1_9fe06b7f",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-20T16:07:21Z",
+      "side": 1,
+      "message": "This seems unrelated - is it intentional?",
+      "revId": "0912db05fdc603e96244c13960321cd26507c676",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
