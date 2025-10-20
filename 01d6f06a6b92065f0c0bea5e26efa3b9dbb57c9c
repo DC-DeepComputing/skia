@@ -94,6 +94,30 @@
       },
       "revId": "01d6f06a6b92065f0c0bea5e26efa3b9dbb57c9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e70b8d9c_cc83715d",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-20T16:13:49Z",
+      "side": 1,
+      "message": "Public `equals` would be fine, but I\u0027m good either way.",
+      "parentUuid": "47ff0b7a_cc1e4cf8",
+      "range": {
+        "startLine": 154,
+        "startChar": 27,
+        "endLine": 154,
+        "endChar": 33
+      },
+      "revId": "01d6f06a6b92065f0c0bea5e26efa3b9dbb57c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
