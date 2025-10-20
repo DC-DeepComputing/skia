@@ -185,7 +185,10 @@ bool SkRasterClip::op(const SkRRect& rrect, const SkMatrix& matrix, SkClipOp op,
 bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, SkClipOp op, bool doAA) {
     AUTO_RASTERCLIP_VALIDATE(*this);
 
-    SkPath devPath = path.makeTransform(matrix);
+    auto devPath = path.tryMakeTransform(matrix);
+    if (!devPath) {
+        return false;
+    }
 
     // Since op is either intersect or difference, the clip is always shrinking; that means we can
     // always use our current bounds as the limiting factor for region/aaclip operations.
@@ -197,13 +200,13 @@ bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, SkClipOp op, b
             this->convertToAA();
         }
         if (fIsBW) {
-            fBW.setPath(devPath, SkRegion(this->getBounds()));
+            fBW.setPath(*devPath, SkRegion(this->getBounds()));
         } else {
-            fAA.setPath(devPath, this->getBounds(), doAA);
+            fAA.setPath(*devPath, this->getBounds(), doAA);
         }
         return this->updateCacheAndReturnNonEmpty();
     } else {
-        return this->op(SkRasterClip(devPath, this->getBounds(), doAA), op);
+        return this->op(SkRasterClip(*devPath, this->getBounds(), doAA), op);
     }
 }
 
