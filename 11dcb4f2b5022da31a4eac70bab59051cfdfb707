@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b1c6a7_08cb5525",
+        "filename": "tests/graphite/precompile/AndroidPaintOptions.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-20T19:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e35f1b57_2c3e1864",
+      "range": {
+        "startLine": 1125,
+        "startChar": 32,
+        "endLine": 1125,
+        "endChar": 42
+      },
+      "revId": "11dcb4f2b5022da31a4eac70bab59051cfdfb707",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "651806b3_dfb12d0d",
@@ -73,6 +97,24 @@
           ]
         }
       ],
+      "revId": "11dcb4f2b5022da31a4eac70bab59051cfdfb707",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ac7644_021d08b5",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1545,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-20T19:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "651806b3_dfb12d0d",
       "revId": "11dcb4f2b5022da31a4eac70bab59051cfdfb707",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
