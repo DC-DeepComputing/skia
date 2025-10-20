@@ -16,6 +16,24 @@
       "message": "This seems unrelated - is it intentional?",
       "revId": "0912db05fdc603e96244c13960321cd26507c676",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01aba182_80911aac",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-20T16:11:13Z",
+      "side": 1,
+      "message": "Very -- when I used this iter for contains -- I get a warning of \"not handling\" all enum cases.\n\nI think that bogus enum value is a foot-gun -- so I took it out.\nThe null-pts pointer is the signal for \u0027done\u0027",
+      "parentUuid": "7f745bf1_9fe06b7f",
+      "revId": "0912db05fdc603e96244c13960321cd26507c676",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
