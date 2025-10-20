@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e46959d_61113824",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-20T13:58:32Z",
+      "side": 1,
+      "message": "I think VulkanDescriptorSet needs to require purgeable for its reuse. VkDescriptorSets are created to match a given VkDescriptorSetLayout, and that initialization doesn\u0027t change during its lifetime. But the Vulkan API uses the VkUpdateDescriptorSet function to then set the specific buffers and textures that are bound via a descriptor set, and it (AFAICT) does not operate on the command buffer, it just modifies the descriptor set directly.\n\nVulkanResourceProvider (for uniforms) and VulkanTexture (for textures) maintain a cache of VulkanDescriptorSets that have both a specific layout and a specific binding state. These hold usage refs, so nothing can rewrite the descriptor set while those are held there, but if we cleaned up those caches we wouldn\u0027t want to reuse a descriptor set while the GPU was potentially going to process a VkBindDescriptorSet command for its old state in parallel.",
+      "range": {
+        "startLine": 40,
+        "startChar": 49,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
