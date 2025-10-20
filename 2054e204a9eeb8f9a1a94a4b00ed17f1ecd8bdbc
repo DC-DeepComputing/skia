@@ -33,6 +33,24 @@
       "message": "Not sure if it\u0027s worth it (`std::equal` may do the same internally), but we could quick-accept if they point to the same data:\n```\n    if (a.data() \u003d\u003d b.data()) {\n        return true;\n    }\n```",
       "revId": "2054e204a9eeb8f9a1a94a4b00ed17f1ecd8bdbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b110de1_afdf38d7",
+        "filename": "src/core/SkSpanPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-20T16:56:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73ea88de_16bd6191",
+      "revId": "2054e204a9eeb8f9a1a94a4b00ed17f1ecd8bdbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
