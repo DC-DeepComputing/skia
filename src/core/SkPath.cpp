@@ -892,6 +892,16 @@ SkPath SkPath::makeTransform(const SkMatrix& matrix) const {
     return dst;
 }
 
+// TODO: evolve this one to the source of truth (when we have SkPathData),
+//       and have makeTransform() call it and mark the non-finite flag if it fails.
+std::optional<SkPath> SkPath::tryMakeTransform(const SkMatrix& matrix) const {
+    auto path = this->makeTransform(matrix);
+    if (path.isFinite()) {
+        return path;
+    }
+    return {};
+}
+
 SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPath& path) {
     auto convexity = path.getConvexityOrUnknown();
     if (SkPathConvexity_IsConvex(convexity)) {
@@ -995,9 +1005,13 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
         return {};
     }
 
-    SkPath rotated = path.makeTransform(*inv);
-    auto raw = SkPathPriv::Raw(rotated, SkResolveConvexity::kNo);
+    auto rotated = path.tryMakeTransform(*inv);
+    if (!rotated) {
+        return {};
+    }
+    auto raw = SkPathPriv::Raw(*rotated, SkResolveConvexity::kNo);
     if (!raw) {
+        SkASSERT(false);    // if rotated was valid, so should the raw
         return {};
     }
 
