@@ -8,6 +8,7 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/encode/SkPngEncoder.h"
@@ -134,3 +135,32 @@ DEF_BENCH(return new EncodeBench(srcs[0], PNG(kAll, 6), "PNG", kRGB_565_SkColorT
 DEF_BENCH(return new EncodeBench(srcs[1], PNG(kAll, 6), "PNG", kRGB_565_SkColorType))
 
 #undef PNG
+
+class PathIsRectBench : public Benchmark {
+protected:
+    const char* onGetName() override {
+        return "path_isrect";
+    }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering;
+    }
+
+    void onDelayedSetup() override {
+        fPath = SkPath::Rect({0, 0, 100, 100});
+    }
+
+    void onDraw(int loops, SkCanvas*) override {
+        SkRect rect;
+        bool closed;
+        SkPathDirection dir;
+        for (int i = 0; i < loops; ++i) {
+            std::ignore = fPath.isRect(&rect, &closed, &dir);
+        }
+    }
+
+private:
+    SkPath fPath;
+};
+DEF_BENCH( return new PathIsRectBench(); )
+

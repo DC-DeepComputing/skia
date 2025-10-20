@@ -388,9 +388,10 @@ void SkPath::validateRef() const {
 #endif
 bool SkPath::isRect(SkRect* rect, bool* isClosed, SkPathDirection* direction) const {
     SkDEBUGCODE(this->validate();)
+
     SkSpan<const SkPoint> pts = {fPathRef->points(), fPathRef->countPoints()};
     SkSpan<const SkPathVerb> vbs = fPathRef->verbs();
-    if (auto rc = SkPathPriv::IsRectContour(pts, vbs, false)) {
+    if (auto rc = SkPathPriv::IsRectContour(pts, vbs, fPathRef->getSegmentMasks(), false)) {
         if (rect) {
             *rect = rc->fRect;
         }
