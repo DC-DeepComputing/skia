@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be57d6f6_751d534a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T19:13:10Z",
+      "side": 1,
+      "message": "This fixes build breakages when both SK_HIDE_PATH_EDIT_METHODS and SK_SUPPORT_UNSPANNED_APIS are defined.",
+      "revId": "cf4fb93ca004fa6d251e970643fba3a4a48ea25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
