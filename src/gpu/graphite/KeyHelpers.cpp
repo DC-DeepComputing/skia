@@ -2539,6 +2539,32 @@ void AddToKey(const KeyContext& keyContext, const SkShader* shader) {
     SkUNREACHABLE;
 }
 
+// An SkImageShader object on a paint is actually always an SkLocalMatrixShader composed with an
+// SkImageShader. This creates the same call sequence with the decomposed objects.
+void AddToKey(const KeyContext& keyContext, const PaintParams::SimpleImage& simpleImage) {
+    // The LMShaderData wants the inverse of Skia's local matrix (which goes from shading coords to
+    // local coords), so we can construct the inverse directly to go from dstRect (assumed to be
+    // the local coords) to srcRect, and then apply the additional imageMatrix
+    SkMatrix lm        = *SkMatrix::Rect2Rect(simpleImage.fSrcRect, simpleImage.fDstRect);
+    SkMatrix lmInverse = *SkMatrix::Rect2Rect(simpleImage.fDstRect, simpleImage.fSrcRect);
+    lmInverse.postConcat(get_xtra_image_local_matrix(simpleImage.fImage));
+
+    LocalMatrixShaderBlock::LMShaderData lmShaderData(lmInverse);
+    LocalMatrixShaderBlock::BeginBlock(keyContext, lmShaderData);
+
+        // We can't skip calculating this because the net local matrix determines the sampling
+        // transform, which is used to optimize the SkSamplingOptions.
+        add_image_to_key(KeyContextWithLocalMatrix(keyContext, lm),
+                         simpleImage.fImage,
+                         simpleImage.fSubset,
+                         simpleImage.fSamplingOptions,
+                         SkTileMode::kClamp,
+                         SkTileMode::kClamp,
+                         /*isRaw=*/false);
+
+    keyContext.paintParamsKeyBuilder()->endBlock();
+}
+
 void AddFixedBlendMode(const KeyContext& keyContext, SkBlendMode bm) {
     SkASSERT(bm <= SkBlendMode::kLastMode);
     BuiltInCodeSnippetID id = static_cast<BuiltInCodeSnippetID>(kFixedBlendIDOffset +
