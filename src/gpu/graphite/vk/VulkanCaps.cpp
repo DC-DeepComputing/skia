@@ -1280,7 +1280,7 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         auto& info = this->getFormatInfo(format);
         info.init(interface, *this, physDev, format);
         if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
-            info.fColorTypeInfoCount = 1;
+            info.fColorTypeInfoCount = 2;
             info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
             int ctIdx = 0;
             // Format: VK_FORMAT_R16_UNORM, Surface: kAlpha_16
@@ -1292,6 +1292,14 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
                 ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
                 ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
                 ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
+            }
+            // Format: VK_FORMAT_R16_UNORM, Surface: kR16_unorm
+            {
+                constexpr SkColorType ct = SkColorType::kA16_unorm_SkColorType;
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = ct;
+                ctInfo.fTransferColorType = ct;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
             }
         }
     }
