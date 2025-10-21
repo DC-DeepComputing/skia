@@ -2239,4 +2239,11 @@ ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& text
     return {};
 }
 
+std::string VulkanCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+    skgpu::VulkanYcbcrConversionInfo info =
+            VulkanYcbcrConversion::FromImmutableSamplerInfo(immutableSamplerInfo);
+    SkASSERT(info.isValid());
+    return "";
+}
+
 } // namespace skgpu::graphite

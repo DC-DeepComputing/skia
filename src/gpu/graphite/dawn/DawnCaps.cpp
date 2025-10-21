@@ -1163,6 +1163,36 @@ ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureInfo& textur
     return {};
 }
 
+SkString DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+#if defined(__EMSCRIPTEN__)
+    return "";
+#else
+    wgpu::YCbCrVkDescriptor ycbcrDescriptor =
+                DawnDescriptorFromImmutableSamplerInfo(immutableSamplerInfo);
+
+    SkString result;
+
+    if (fFormat == VK_FORMAT_UNDEFINED) {
+        result.appendf("x%llu", (unsigned long long) fExternalFormat);
+    } else {
+        result.appendf("%d", fFormat);
+    }
+
+    result.appendf(" %s+%s %s %s %s %c %c%c%c%c",
+                   model_str(fYcbcrModel),
+                   range_str(fYcbcrRange),
+                   fXChromaOffset ? "mid"  : "cos", // midpoint or cosited-even
+                   fYChromaOffset ? "mid"  : "cos", // midpoint or cosited-even
+                   fChromaFilter  ? "linear" : "nearest",
+                   fForceExplicitReconstruction ? 'T' : 'F',
+                   to_swizzle(fComponents.r, 'r'),
+                   to_swizzle(fComponents.g, 'g'),
+                   to_swizzle(fComponents.b, 'b'),
+                   to_swizzle(fComponents.a, 'a'));
+    return result;
+#endif
+}
+
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,

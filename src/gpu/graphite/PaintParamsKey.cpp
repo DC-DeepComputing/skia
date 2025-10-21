@@ -16,6 +16,11 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
+#endif
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -230,7 +235,8 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     return SkSpan(rootSpan, roots.size());
 }
 
-static int key_to_string(SkString* str,
+static int key_to_string(const Caps* caps,
+                         SkString* str,
                          const ShaderCodeDictionary* dict,
                          SkSpan<const uint32_t> keyData,
                          int currentIndex,
@@ -269,7 +275,25 @@ static int key_to_string(SkString* str,
         // We shorten the string for the common case of no extra data.
         if (dataIndexCount == 0) {
             str->append("(0)");
-        } else {
+        }
+#if defined(SK_VULKAN) // && defined(SK_BUILD_FOR_ANDROID)
+        else if (dataIndexCount == 3) {
+            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
+
+            SkASSERT(s.isImmutable());
+
+            if (s.isImmutable()) {
+                std::string tmp = caps->toString(s.immutableSamplerInfo());
+
+                str->append("(");
+                str->append(tmp);
+                str->append(")");
+            } else {
+                str->append("(invalid)");
+            }
+        }
+#endif
+        else {
             str->append("(");
             str->appendU32(dataIndexCount);
             str->append(": ");
@@ -281,6 +305,7 @@ static int key_to_string(SkString* str,
             str->append(dst, encodedLen);
             str->append(")");
         }
+
         // Increment current index past the indices which contain data
         currentIndex += dataIndexCount;
     }
@@ -294,7 +319,7 @@ static int key_to_string(SkString* str,
         }
 
         for (int i = 0; i < entry->fNumChildren; ++i) {
-            currentIndex = key_to_string(str, dict, keyData, currentIndex, indent);
+            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent);
         }
 
         if (!multiline) {
@@ -310,18 +335,21 @@ static int key_to_string(SkString* str,
     return currentIndex;
 }
 
-SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
+SkString PaintParamsKey::toString(const Caps* caps,
+                                  const ShaderCodeDictionary* dict) const {
     SkString str;
     const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
-        currentIndex = key_to_string(&str, dict, fData, currentIndex, /*indent=*/-1);
+        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1);
     }
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
 #ifdef SK_DEBUG
 
-void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID id) const {
+void PaintParamsKey::dump(const Caps* caps,
+                          const ShaderCodeDictionary* dict,
+                          UniquePaintParamsID id) const {
     const int keySize = SkTo<int>(fData.size());
 
     SkDebugf("--------------------------------------\n");
@@ -335,7 +363,7 @@ void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID 
     int currentIndex = 0;
     while (currentIndex < keySize) {
         SkString nodeStr;
-        currentIndex = key_to_string(&nodeStr, dict, fData, currentIndex, /*indent=*/1);
+        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1);
         SkDebugf("%s", nodeStr.c_str());
     }
 }
