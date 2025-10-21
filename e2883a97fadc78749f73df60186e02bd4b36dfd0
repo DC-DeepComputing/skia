@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f345befa_b6338b31",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-21T13:37:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4124243b_9a46cf64",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 36
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc83c39b_a6bb943e",
@@ -120,6 +144,30 @@
       "side": 1,
       "message": "It seems like most files keep includes strictly separated from forward-decls/using decls/etc. But I\u0027m happy to move it if you prefer.",
       "parentUuid": "97c96df8_e96ca42c",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "394c6b75_73966636",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-21T13:37:21Z",
+      "side": 1,
+      "message": "ok, let\u0027s keep it as-is then.",
+      "parentUuid": "b91ab852_3ab3697a",
       "range": {
         "startLine": 15,
         "startChar": 0,
