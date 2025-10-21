@@ -16,6 +16,23 @@
       "message": "Adding Skia gardener",
       "revId": "73f1c2d3a2dba78505cb3211ea21b7e3767d9c76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d055c5c1_58566580",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2025-10-21T14:18:32Z",
+      "side": 1,
+      "message": "For Dawn, we contributed Github Actions to make prebuilt binaries: https://github.com/google/dawn/actions/runs/18686795411\nWould you be open to contributions to add such actions to the Skia repo as well? This would allow to catch these issues upfront and have an easy way to discuss about them when they arise.",
+      "revId": "73f1c2d3a2dba78505cb3211ea21b7e3767d9c76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
