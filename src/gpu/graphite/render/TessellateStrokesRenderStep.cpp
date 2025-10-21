@@ -122,7 +122,7 @@ std::string TessellateStrokesRenderStep::vertexSkSL() const {
 
 void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                                                 const DrawParams& params,
-                                                skvx::uint2 ssboIndices) const {
+                                                uint32_t ssboIndices) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());

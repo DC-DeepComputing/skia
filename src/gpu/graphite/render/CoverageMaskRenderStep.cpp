@@ -122,7 +122,7 @@ bool CoverageMaskRenderStep::usesUniformsInFragmentSkSL() const { return false; 
 
 void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
                                            const DrawParams& params,
-                                           skvx::uint2 ssboIndices) const {
+                                           uint32_t ssboIndices) const {
     const CoverageMaskShape& coverageMask = params.geometry().coverageMaskShape();
     const TextureProxy* proxy = coverageMask.textureProxy();
     SkASSERT(proxy);

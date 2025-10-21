@@ -51,7 +51,7 @@ std::string MiddleOutFanRenderStep::vertexSkSL() const {
 
 void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
-                                           skvx::uint2 ssboIndices) const {
+                                           uint32_t ssboIndices) const {
     // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non
     // paths to SkPath just to iterate their pts/verbs
     SkPath path = params.geometry().shape().asPath();

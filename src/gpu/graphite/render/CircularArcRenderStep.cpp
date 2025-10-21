@@ -206,7 +206,7 @@ const char* CircularArcRenderStep::fragmentCoverageSkSL() const {
 
 void CircularArcRenderStep::writeVertices(DrawWriter* writer,
                                           const DrawParams& params,
-                                          skvx::uint2 ssboIndices) const {
+                                          uint32_t ssboIndices) const {
     SkASSERT(params.geometry().isShape() && params.geometry().shape().isArc());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, {}, kVertexCount};

@@ -73,7 +73,7 @@ const char* AnalyticBlurRenderStep::fragmentCoverageSkSL() const {
 
 void AnalyticBlurRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
-                                           skvx::uint2 ssboIndices) const {
+                                           uint32_t ssboIndices) const {
     const Rect& r = params.geometry().analyticBlurMask().drawBounds();
     DrawWriter::Vertices verts{*writer};
     verts.append(6) << skvx::float2(r.left(), r.top()) << ssboIndices

@@ -791,11 +791,8 @@ void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlo
 
     unsigned int bufferIndex;
     switch (slot) {
-        case UniformSlot::kRenderStep:
-            bufferIndex = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
-            break;
-        case UniformSlot::kPaint:
-            bufferIndex = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+        case UniformSlot::kCombinedUniforms:
+            bufferIndex = DawnGraphicsPipeline::kCombinedUniformIndex;
             break;
         case UniformSlot::kGradient:
             bufferIndex = DawnGraphicsPipeline::kGradientBufferIndex;

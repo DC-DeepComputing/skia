@@ -485,7 +485,7 @@ const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
 
 void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                                             const DrawParams& params,
-                                            skvx::uint2 ssboIndices) const {
+                                            uint32_t ssboIndices) const {
     SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};

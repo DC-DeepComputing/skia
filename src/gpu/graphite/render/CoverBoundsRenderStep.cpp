@@ -56,7 +56,7 @@ std::string CoverBoundsRenderStep::vertexSkSL() const {
 
 void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
                                           const DrawParams& params,
-                                          skvx::uint2 ssboIndices) const {
+                                          uint32_t ssboIndices) const {
     // Each instance is 4 vertices, forming 2 triangles from a single triangle strip, so no indices
     // are needed. sk_VertexID is used to place vertex positions, so no vertex buffer is needed.
     DrawWriter::Instances instances{*writer, {}, {}, 4};

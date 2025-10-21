@@ -128,7 +128,7 @@ const char* SDFTextRenderStep::fragmentCoverageSkSL() const {
 
 void SDFTextRenderStep::writeVertices(DrawWriter* dw,
                                       const DrawParams& params,
-                                      skvx::uint2 ssboIndices) const {
+                                      uint32_t ssboIndices) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     subRunData.subRun()->vertexFiller().fillInstanceData(dw,
                                                          subRunData.startGlyphIndex(),
