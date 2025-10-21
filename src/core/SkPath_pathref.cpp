@@ -244,9 +244,11 @@ SkSpan<const float> SkPath::conicWeights() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkPath::isValidImpl() const {
+#if 0   // re-enable after chrome fixes call-site passing bad enum
     if ((static_cast<int>(fFillType) & ~3) != 0) {
         return false;
     }
+#endif
 
 #ifdef SK_DEBUG_PATH
     if (!fBoundsIsDirty) {
