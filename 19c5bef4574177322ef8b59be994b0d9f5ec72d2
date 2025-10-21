@@ -22,6 +22,30 @@
       },
       "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7f1217c_cba1d175",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-21T14:36:15Z",
+      "side": 1,
+      "message": "Yes, the Vulkan update call itself does not operate on the command buffer and does operate on the set directly. I may have misled Nelson here - I saw we only call `UpdateDescriptorSet` (or AFAICT call the methods to do so) from within the `VulkanCommandBuffer` at the same time we perform the bind operation, but I suppose there is nothing preventing us from calling this whilst a prior command buffer is performing a bind call, so I think you\u0027re right.",
+      "parentUuid": "9e46959d_61113824",
+      "range": {
+        "startLine": 40,
+        "startChar": 49,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
