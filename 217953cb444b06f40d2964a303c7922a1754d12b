@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d444be1b_9e4add28",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-21T19:51:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6435139b_c5d99295",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 5
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc5aa5b8_bbf9c60f",
@@ -77,6 +101,30 @@
       "writtenOn": "2025-10-17T14:25:12Z",
       "side": 1,
       "message": "Maybe this would fit with \n```\nSkASSERT(fForceExplicitReconstruction ||\n\t formatFeatures \u0026 \n\t\tVK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT)\n\n```\n?",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 13
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af86970f_be03fc01",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-21T19:51:59Z",
+      "side": 1,
+      "message": "that still doesn\u0027t fit. So leaving as is since if we\u0027re going to go over might as well make it more readiable",
+      "parentUuid": "dc5aa5b8_bbf9c60f",
       "range": {
         "startLine": 241,
         "startChar": 0,
@@ -123,6 +171,54 @@
       "writtenOn": "2025-10-16T19:53:42Z",
       "side": 1,
       "message": "We could rewrite this to:\n```\nfSamplerFilterMustMatchChromaFilter \u003d !(formatFeatures \u0026 ...);\nfSupportsLinearFilter \u003d SkToBool(formatFeatures \u0026 ...);\nif (fSamplerFilterMustMatchChromaFilter \u0026\u0026 !fSupportsLinearFilter) {\n    // big comment\n    fChromeFilter \u003d VK_FILTER_NEAREST;\n}\n```",
+      "range": {
+        "startLine": 260,
+        "startChar": 8,
+        "endLine": 261,
+        "endChar": 92
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b519d06a_4dd88688",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-21T19:51:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c43cb35_523a3fa9",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 92
+      },
+      "revId": "217953cb444b06f40d2964a303c7922a1754d12b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41e14a17_70d80a76",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-21T19:51:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59585d96_50944c39",
       "range": {
         "startLine": 260,
         "startChar": 8,
