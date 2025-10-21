@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b5fad3_2ccf2ff7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-21T14:37:14Z",
+      "side": 1,
+      "message": "LGTM outside of the outstanding comments :)",
+      "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e46959d_61113824",
