@@ -53,6 +53,8 @@ public:
 
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
 
+    std::string toString(const ImmutableSamplerInfo&) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     bool extractGraphicsDescs(const UniqueKey&,
