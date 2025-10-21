@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d63c4ea8_f4b2b837",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "376fe2d1_72dfaa3a",
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fd6de8f_94c483fd",
@@ -65,6 +83,30 @@
       "writtenOn": "2025-10-16T16:57:29Z",
       "side": 1,
       "message": "We can delete these declarations since Device just calls the `recorder-\u003epriv().push/pop()` functions.  In Recorder.cpp, the definitions can just be in `RecorderPriv::` and use `fRecorder` instead of `this`, which matches how `flushTrackedDevices` is implemented.\n\nThis just keeps the public header a little leaner.",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 67
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a1caff_0e4d2e9b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fd6de8f_94c483fd",
       "range": {
         "startLine": 260,
         "startChar": 0,
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc4ee87_92bdb2e4",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d61b9123_2979dbbd",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 32
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5732257_cbaf1e44",
@@ -121,6 +187,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a5c33df_65d2fb72",
+        "filename": "include/private/base/SkTDArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5732257_cbaf1e44",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 5
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74fc12b7_e7a9a5bf",
@@ -134,6 +224,30 @@
       "writtenOn": "2025-10-16T16:57:29Z",
       "side": 1,
       "message": "wdyt about having this be in the ctor for `ScopedDrawBuilder` since it pairs with the reset in its destructor?",
+      "range": {
+        "startLine": 1631,
+        "startChar": 0,
+        "endLine": 1632,
+        "endChar": 59
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da348ec_b9b77cf6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1632,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74fc12b7_e7a9a5bf",
       "range": {
         "startLine": 1631,
         "startChar": 0,
@@ -185,6 +299,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a06c6262_55eebbf7",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "402280b1_bcad4c95",
+      "range": {
+        "startLine": 200,
+        "startChar": 4,
+        "endLine": 200,
+        "endChar": 29
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a231a5c0_e247f212",
@@ -208,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60ee7d20_23610ce3",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a231a5c0_e247f212",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 49
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "876cce1a_634043b4",
@@ -221,6 +383,30 @@
       "writtenOn": "2025-10-16T16:57:29Z",
       "side": 1,
       "message": "Can we move these up by the `flushTrackedDevices` calls, since that is where we have the RecorderPriv functions that represent private APIs on Recorder (vs. just accessors)",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 0
+      },
+      "revId": "18766c1c211f06c0436f1686b04b3b8be345b897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "979169ff_5b13bc87",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-21T21:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "876cce1a_634043b4",
       "range": {
         "startLine": 87,
         "startChar": 0,
