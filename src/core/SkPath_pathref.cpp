@@ -23,6 +23,8 @@
 #include <limits.h>
 #include <utility>
 
+#ifndef SK_PATH_USES_PATHDATA
+
 /*  Contains path methods that require the legacy fields:
  *  - fPathRef
  *  - fConvexity
@@ -345,3 +347,4 @@ int SkPathPriv::GenIDChangeListenersCount(const SkPath& path) {
     return path.fPathRef->genIDChangeListenerCount();
 }
 
+#endif
