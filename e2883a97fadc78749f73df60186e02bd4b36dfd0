@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4124243b_9a46cf64",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-21T13:17:08Z",
+      "side": 1,
+      "message": "No, but the bool is defined in an otherwise Ganesh-only file and then externed everywhere else.\n\nWith this change dm can\u0027t run protected contexts unless Ganesh is also built. This is the same as viewer.\n\nThere should probably be a change to either move the bool somewhere neutral to Ganesh vs Graphite or maybe move away from a global bool for this.",
+      "parentUuid": "5babfd3c_a2158999",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 36
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc83c39b_a6bb943e",
         "filename": "dm/DM.cpp",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2025-10-20T20:49:44Z",
       "side": 1,
       "message": "nit: space",
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2bae8f5_e0ed1bdf",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1661,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-21T13:17:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc83c39b_a6bb943e",
       "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +96,30 @@
       "writtenOn": "2025-10-20T20:49:44Z",
       "side": 1,
       "message": "minor nit, maybe move down to be in the same #ifdef as the using\u0027s for Ganesh?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "e2883a97fadc78749f73df60186e02bd4b36dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b91ab852_3ab3697a",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-21T13:17:08Z",
+      "side": 1,
+      "message": "It seems like most files keep includes strictly separated from forward-decls/using decls/etc. But I\u0027m happy to move it if you prefer.",
+      "parentUuid": "97c96df8_e96ca42c",
       "range": {
         "startLine": 15,
         "startChar": 0,
