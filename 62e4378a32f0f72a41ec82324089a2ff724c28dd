@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "236dac6f_613daf0d",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T16:04:50Z",
+      "side": 1,
+      "message": "Nice!",
+      "parentUuid": "b2f3da9e_125cb8be",
+      "revId": "62e4378a32f0f72a41ec82324089a2ff724c28dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "297264bd_648a9dfb",
@@ -66,6 +84,30 @@
       "writtenOn": "2025-10-21T14:47:03Z",
       "side": 1,
       "message": "You went with bitwise and instead of logical and to avoid branching, right? Maybe add a comment to explicitly call that out.",
+      "range": {
+        "startLine": 97,
+        "startChar": 38,
+        "endLine": 97,
+        "endChar": 39
+      },
+      "revId": "62e4378a32f0f72a41ec82324089a2ff724c28dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ede7edfb_8c7c1062",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T16:04:50Z",
+      "side": 1,
+      "message": "Yeah, there\u0027s a significant perf difference when using logical operators (at least on x86_64, something like 14ns vs 9.5ns).  I\u0027m also guessing it\u0027s due to branching from short-circuiting semantics.\n\nDone.",
+      "parentUuid": "297264bd_648a9dfb",
       "range": {
         "startLine": 97,
         "startChar": 38,
@@ -99,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31204e9d_77f8d131",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T16:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8d5396f_7d8a7a5e",
+      "range": {
+        "startLine": 100,
+        "startChar": 10,
+        "endLine": 100,
+        "endChar": 12
+      },
+      "revId": "62e4378a32f0f72a41ec82324089a2ff724c28dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9e2bce9_e247f49a",
@@ -112,6 +178,30 @@
       "writtenOn": "2025-10-21T14:47:03Z",
       "side": 1,
       "message": "WHy is the mod 4 necessary? We know all of arrays have 4 points, right?",
+      "range": {
+        "startLine": 6127,
+        "startChar": 40,
+        "endLine": 6127,
+        "endChar": 43
+      },
+      "revId": "62e4378a32f0f72a41ec82324089a2ff724c28dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de0f1ee6_b1973036",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 6127,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T16:04:50Z",
+      "side": 1,
+      "message": "We iterate the starting index (`i` loops [0..3]), to rotate the points: {p0, p1, p2, p3}, {p1, p2, p3, p0}, etc.",
+      "parentUuid": "a9e2bce9_e247f49a",
       "range": {
         "startLine": 6127,
         "startChar": 40,
