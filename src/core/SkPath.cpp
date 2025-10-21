@@ -708,6 +708,7 @@ std::optional<SkPath::IterRec> SkPath::RawIter::next() {
 
 bool SkPath::isValidImpl() const {
     if ((static_cast<int>(fFillType) & ~3) != 0) {
+        SkDebugf("isvalid 0\n");
         return false;
     }
 
@@ -717,6 +718,7 @@ bool SkPath::isValidImpl() const {
 
         bool isFinite = compute_pt_bounds(&bounds, *fPathRef.get());
         if (SkToBool(fIsFinite) != isFinite) {
+        SkDebugf("isvalid 1\n");
             return false;
         }
 
@@ -726,16 +728,19 @@ bool SkPath::isValidImpl() const {
             // try path.addOval(2, 2, 2, 2) which is empty, but the bounds will
             // be [2, 2, 2, 2]
             if (!bounds.isEmpty() || !fBounds.isEmpty()) {
+        SkDebugf("isvalid 2\n");
                 return false;
             }
         } else {
             if (bounds.isEmpty()) {
                 if (!fBounds.isEmpty()) {
+        SkDebugf("isvalid 3\n");
                     return false;
                 }
             } else {
                 if (!fBounds.isEmpty()) {
                     if (!fBounds.contains(bounds)) {
+        SkDebugf("isvalid 4\n");
                         return false;
                     }
                 }

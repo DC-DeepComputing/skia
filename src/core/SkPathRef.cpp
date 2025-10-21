@@ -532,11 +532,13 @@ bool SkPathRef::isValid() const {
             break;
         case SkPathIsAType::kOval:
             if (fIsA.fStartIndex >= 4) {
+        SkDebugf("isvalid 5\n");
                 return false;
             }
             break;
         case SkPathIsAType::kRRect:
             if (fIsA.fStartIndex >= 8) {
+        SkDebugf("isvalid 6\n");
                 return false;
             }
             break;
@@ -558,17 +560,21 @@ bool SkPathRef::isValid() const {
                     }
                     SkDebugf("%g %g\n", fPoints[j].fX, fPoints[j].fY);
                 }
+        SkDebugf("isvalid 7\n");
                 return false;
             }
 #endif
 
-            if (fPoints[i].isFinite() && any(point < leftTop) && !any(point > rightBot))
+            if (fPoints[i].isFinite() && any(point < leftTop) && !any(point > rightBot)) {
+        SkDebugf("isvalid 8\n");
                 return false;
+            }
             if (!fPoints[i].isFinite()) {
                 isFinite = false;
             }
         }
         if (SkToBool(fIsFinite) != isFinite) {
+        SkDebugf("isvalid 9\n");
             return false;
         }
     }
