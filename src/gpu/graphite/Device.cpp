@@ -1624,9 +1624,19 @@ void Device::drawGeometry(const Transform& localToDevice,
     // a flush of the Recorder.
     KeyContext keyContext{fRecorder,
                           fDC.get(),
+<<<<<<< PATCH SET (507a1ba38d8997e459aaa6a07b863d9db38f3f7f [graphite] Simplify KeyContext subclasses)
+                          fRecorder->priv().floatStorageManager(),
+                          fKeyBuilder.get(),
+                          fDataGatherer.get(),
+||||||| BASE      (5e61bf6f91aa44207a44876b1eaa18b86b859e24 [graphite] Split PaintParams into SkPaint-oriented struct an)
+                          fRecorder->priv().refFloatStorageManager().get(),
+                          fKeyBuilder.get(),
+                          fDataGatherer.get(),
+=======
                           fRecorder->priv().refFloatStorageManager().get(),
                           scopedDrawBuilder.builder(),
                           scopedDrawBuilder.gatherer(),
+>>>>>>> BASE      (71f1636d734a3e96ef3cc585274111cb44e56052 [graphite] Split PaintParams into SkPaint-oriented struct an)
                           localToDevice.matrix(),
                           fDC->colorInfo(),
                           geometry.isShape() || geometry.isEdgeAAQuad()
