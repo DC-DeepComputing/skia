@@ -360,8 +360,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest,
     std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCallbackContext1 = pipelineHandler.get();
+    newOptions.fContextOptions.fPipelineCallback1 = PipelineCallBackHandler::CallBack;
 
     // We're going to also use all these runtime effects via the normal API
     // (c.f. create_paint_and_options)
@@ -454,8 +454,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Duplicates,
     std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCallbackContext1 = pipelineHandler.get();
+    newOptions.fContextOptions.fPipelineCallback1 = PipelineCallBackHandler::CallBack;
 
     sk_sp<SkRuntimeEffect> userDefinedKnownRuntimeEffects[] = {
             sk_ref_sp(PrecompileFactories::GetAnnulusShaderEffect()),
@@ -493,8 +493,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Nullptrs,
     std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCallbackContext1 = pipelineHandler.get();
+    newOptions.fContextOptions.fPipelineCallback1 = PipelineCallBackHandler::CallBack;
 
     sk_sp<SkRuntimeEffect> userDefinedKnownRuntimeEffects[] = {
             sk_ref_sp(PrecompileFactories::GetAnnulusShaderEffect()),
@@ -534,8 +534,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Overflow,
     std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCallbackContext1 = pipelineHandler.get();
+    newOptions.fContextOptions.fPipelineCallback1 = PipelineCallBackHandler::CallBack;
 
     std::vector<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects;
 

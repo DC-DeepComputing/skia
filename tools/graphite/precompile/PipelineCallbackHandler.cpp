@@ -35,4 +35,27 @@ void PipelineCallBackHandler::reset() {
     fMap.reset();
 }
 
+void PipelineCallBackHandler::add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                                  const std::string& label,
+                                  uint32_t uniqueKeyHash,
+                                  uint32_t compilationID,
+                                  bool fromPrecompile,
+                                  bool wasUsed) {
+
+    foo** pF = fMap2.find({ label, uniqueKeyHash });
+    if (!pF) {
+        foo* tmp = new foo;
+        tmp->fKey.fLabel = label;
+        tmp->fKey.fUniqueKeyHash = uniqueKeyHash;
+
+        tmp->fCompilationID = compilationID;
+        tmp->fFromPrecompile = fromPrecompile;
+        tmp->fUses = fromPrecompile ? 0 : 1;
+
+        SkDebugf("adding %s\n", label.c_str());
+        fMap2.set(tmp);
+    }
+
+}
+
 }  // namespace skiatools::graphite
