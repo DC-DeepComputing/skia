@@ -99,6 +99,14 @@ sk_sp<SkCapture> SkCapture::MakeFromPictures(skia_private::TArray<sk_sp<SkPictur
     return capture;
 }
 
+sk_sp<SkPicture> SkCapture::getPicture(int i) {
+    return fPictures[i];
+}
+
+SkCapture::Metadata SkCapture::getMetadata() {
+    return fMetadata;
+}
+
 sk_sp<SkData> SkCapture::serializeCapture() {
     SkDynamicMemoryWStream stream;
 
