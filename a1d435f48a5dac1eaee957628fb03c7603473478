@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e07ce83a_3030c3eb",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-21T01:05:41Z",
+      "side": 1,
+      "message": "We could also relocate this one if we think it\u0027s important enough to give an exact answer.  It probably isn\u0027t.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 1
+      },
+      "revId": "a1d435f48a5dac1eaee957628fb03c7603473478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
