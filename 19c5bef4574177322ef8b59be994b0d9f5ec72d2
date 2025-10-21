@@ -86,6 +86,30 @@
       },
       "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d679dc_41016a0f",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-21T17:38:19Z",
+      "side": 1,
+      "message": "Yep, \"resources modified by a command buffer\" refers to commands being recorded into the command buffer to do the modification.  In that case, the modifications will happen at some later point in time, outside of the VulkanCommandBuffer.cpp code, whereas direct resource modification that we call with vulkan APIs inside VulkanCommandBuffer.cpp happens immediately and maybe in parallel with previous command buffers running concurrently on the GPU.",
+      "parentUuid": "f7f1217c_cba1d175",
+      "range": {
+        "startLine": 40,
+        "startChar": 49,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "19c5bef4574177322ef8b59be994b0d9f5ec72d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
