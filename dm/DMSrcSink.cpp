@@ -2489,10 +2489,13 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         ContextOptionsPriv optionsPriv;
         options.fContextOptions.fOptionsPriv = &optionsPriv;
 
-        SkASSERT(!options.fContextOptions.fPipelineCallbackContext);
-        SkASSERT(!options.fContextOptions.fPipelineCallback);
-        options.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-        options.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+        SkASSERT(!options.fContextOptions.fPipelineCallbackContext1);
+        SkASSERT(!options.fContextOptions.fPipelineCallback1);
+        options.fContextOptions.fPipelineCallbackContext1 = pipelineHandler.get();
+        options.fContextOptions.fPipelineCallback1 = PipelineCallBackHandler::CallBack;
+
+        options.fContextOptions.fPipelineCallbackContext2 = pipelineHandler.get();
+        options.fContextOptions.fPipelineCallback2 = PipelineCallBackHandler::CallBack2;
 
         src.modifyGraphiteContextOptions(&options.fContextOptions);
 

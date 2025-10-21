@@ -19,6 +19,8 @@
 
 #include <functional>
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 namespace skgpu::graphite {
 
 class Caps;
@@ -116,6 +118,13 @@ public:
                                 const GraphicsPipelineDesc&,
                                 const RenderPassDesc&);
 
+    using PipelineCallbackContext2 = ContextOptions::PipelineCallbackContext2;
+    using PipelineCallback2 = ContextOptions::PipelineCallback2;
+
+    void setPipelineCallback2(PipelineCallback2, PipelineCallbackContext2) SK_EXCLUDES(fSpinLock);
+    void invokePipelineCallback2(ContextOptions::PipelineCacheOp,
+                                 const GraphicsPipeline*) SK_REQUIRES(fSpinLock);
+
     // Returns a cached Sampler matching the sampler description, assuming that `desc` is a dynamic
     // sampler and does not have any immutable sampler information. The number of dynamic samplers
     // is small enough that they are created once during context initialization and then shared.
@@ -179,6 +188,9 @@ private:
 
     PipelineCallback fPipelineCallback SK_GUARDED_BY(fSpinLock) = nullptr;
     PipelineCallbackContext fPipelineCallbackContext SK_GUARDED_BY(fSpinLock) = nullptr;
+
+    PipelineCallback2 fPipelineCallback2 SK_GUARDED_BY(fSpinLock) = nullptr;
+    PipelineCallbackContext2 fPipelineCallbackContext2 SK_GUARDED_BY(fSpinLock) = nullptr;
 
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
 
