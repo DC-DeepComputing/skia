@@ -92,6 +92,8 @@ struct VulkanYcbcrConversionInfo {
                fExternalFormat != 0;
     }
 
+    std::string toString() const;
+
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
     // a valid image format otherwise.
     VkFormat fFormat = VK_FORMAT_UNDEFINED;

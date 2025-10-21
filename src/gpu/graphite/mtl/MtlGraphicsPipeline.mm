@@ -338,8 +338,9 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);
 #endif
 
-    std::string pipelineLabel =
-            GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
+    std::string pipelineLabel = GetPipelineLabel(sharedContext->caps(),
+                                                 sharedContext->shaderCodeDictionary(),
+                                                 renderPassDesc, step, paintID);
     return Make(sharedContext,
                 pipelineLabel,
                 pipelineInfo,
