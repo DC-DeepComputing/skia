@@ -148,7 +148,7 @@ SKIA_DEFINES="
 -DSK_TRIVIAL_ABI=[[clang::trivial_abi]]"
 
 GMS_TO_BUILD="gm/*.cpp"
-TESTS_TO_BUILD="tests/*.cpp"
+TESTS_TO_BUILD="tests/*.cpp tests/ganesh/*.cpp"
 
 # When developing locally, it can be faster to focus only on the gms or tests you care about
 # (since they all have to be recompiled/relinked) every time. To do so, mark the following as true
