@@ -155,7 +155,7 @@ std::optional<SkColor4f> extract_paint_color(const PaintParams& paint,
 
     // PaintParams has already consolidated constant shaders and applied color filters to constant
     // input colors. If the paint still has any of those fields, then we can't extract it.
-    if (paint.shader() || paint.colorFilter()) {
+    if (paint.shader() || paint.imageShader() || paint.colorFilter()) {
         return std::nullopt;
     }
 
@@ -1304,7 +1304,8 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                                 SkCanvas::SrcRectConstraint constraint) {
     SkASSERT(count > 0);
 
-    SkPaint paintWithShader(paint);
+    const Transform& localToDevice = this->localToDeviceTransform();
+    // SkPaint paintWithShader(paint);
     int dstClipIndex = 0;
     for (int i = 0; i < count; ++i) {
         // If the entry is clipped by 'dstClips', that must be provided
@@ -1312,49 +1313,50 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         // Similarly, if it has an extra transform, those must be provided
         SkASSERT(set[i].fMatrixIndex < 0 || preViewMatrices);
 
-        auto [ imageToDraw, newSampling ] =
-                skgpu::graphite::GetGraphiteBacked(this->recorder(), set[i].fImage.get(), sampling);
-        if (!imageToDraw) {
-            SKGPU_LOG_W("Device::drawImageRect: Creation of Graphite-backed image failed");
-            return;
+        // See SkModifyPaintAndDstForDrawImageRect, as this behavior is consistent but avoids
+        // allocating SkShader objects or having to modify the SkPaint.
+        // Adjust `dst` such that it only samples from the portion of fSrcRect that overlaps with
+        // the image bounds. This "decal" effect is applied geometrically to what is drawn so that
+        // actual texture tiling can be clamped to the src rect.
+        SkRect dstToDraw = set[i].fDstRect;
+        {
+            SkRect validSrc = SkRect::Make(set[i].fImage->bounds());
+            if (validSrc.intersect(set[i].fSrcRect)) {
+                // Update dst to match the smaller src
+                auto localMatrix = SkMatrix::Rect2Rect(set[i].fSrcRect, set[i].fDstRect);
+                dstToDraw = localMatrix->mapRect(validSrc);
+            } else {
+                dstToDraw.setEmpty();
+            }
+        }
+        if (dstToDraw.isEmpty()) {
+            continue; // Nothing to draw for this set entry
         }
 
-        // TODO: Produce an image shading paint key and data directly without having to reconstruct
-        // the equivalent SkPaint for each entry. Reuse the key and data between entries if possible
-        paintWithShader.setShader(paint.refShader());
-        paintWithShader.setAlphaf(paint.getAlphaf() * set[i].fAlpha);
-        SkRect dst = SkModifyPaintAndDstForDrawImageRect(
-                    imageToDraw.get(), newSampling, set[i].fSrcRect, set[i].fDstRect,
-                    constraint == SkCanvas::kStrict_SrcRectConstraint,
-                    &paintWithShader);
-        if (dst.isEmpty()) {
-            return;
-        }
+        SkRect subset = constraint == SkCanvas::kStrict_SrcRectConstraint ?
+                set[i].fSrcRect : SkRect::Make(set[i].fImage->bounds());
+        PaintParams::SimpleImage imageShader{set[i].fImage.get(),
+                                             set[i].fSrcRect,
+                                             set[i].fDstRect,
+                                             subset,
+                                             sampling};
 
         // NOTE: See drawEdgeAAQuad for details, we do not snap non-AA quads.
-        auto flags =
-                SkEnumBitMask<EdgeAAQuad::Flags>(static_cast<EdgeAAQuad::Flags>(set[i].fAAFlags));
+        SkEnumBitMask<EdgeAAQuad::Flags> flags = static_cast<EdgeAAQuad::Flags>(set[i].fAAFlags);
         EdgeAAQuad quad = set[i].fHasClip ? EdgeAAQuad(dstClips + dstClipIndex, flags)
-                                          : EdgeAAQuad(dst, flags);
+                                          : EdgeAAQuad(dstToDraw, flags);
 
         // TODO: Calling drawGeometry() for each entry re-evaluates the clip stack every time, which
         // is consistent with Ganesh's behavior. It also matches the behavior if edge-AA images were
         // submitted one at a time by SkiaRenderer (a nice client simplification). However, we
         // should explore the performance trade off with doing one bulk evaluation for the whole set
-        if (set[i].fMatrixIndex < 0) {
-            this->drawGeometry(this->localToDeviceTransform(),
-                               Geometry(quad),
-                               PaintParams(paintWithShader),
-                               DefaultFillStyle(),
-                               /*pathEffect=*/nullptr);
-        } else {
-            SkM44 xtraTransform(preViewMatrices[set[i].fMatrixIndex]);
-            this->drawGeometry(this->localToDeviceTransform().concat(xtraTransform),
-                               Geometry(quad),
-                               PaintParams(paintWithShader),
-                               DefaultFillStyle(),
-                               /*pathEffect=*/nullptr);
-        }
+        const SkMatrix* xtraXform = set[i].fMatrixIndex < 0 ? nullptr :
+                                                            &preViewMatrices[set[i].fMatrixIndex];
+        this->drawGeometry(xtraXform ?  localToDevice.concat(SkM44(*xtraXform)) : localToDevice,
+                           Geometry(quad),
+                           PaintParams(paint, imageShader, set[i].fAlpha),
+                           DefaultFillStyle(),
+                           /*pathEffect*/nullptr);
 
         dstClipIndex += 4 * set[i].fHasClip;
     }
@@ -2200,17 +2202,17 @@ void Device::drawSpecial(SkSpecialImage* special,
         return;
     }
 
-    SkPaint paintWithShader(paint);
-    SkRect dst = SkModifyPaintAndDstForDrawImageRect(
-            img.get(),
-            sampling,
-            /*src=*/SkRect::Make(special->subset()),
-            /*dst=*/SkRect::MakeIWH(special->width(), special->height()),
-            /*strictSrcSubset=*/constraint == SkCanvas::kStrict_SrcRectConstraint,
-            &paintWithShader);
-    if (dst.isEmpty()) {
-        return;
-    }
+    // drawSpecial could be the same as drawEdgeAAImageSet or drawImageRect except that it
+    // ignores the currently assigned local-to-device transform and uses the one provided.
+    // But because SkSpecialImage guarantees the subset is already contained in the image and it's
+    // not empty, we can skip the src/dst correction.
+    SkRect src = SkRect::Make(special->subset());
+    SkRect dst = SkRect::MakeIWH(special->width(), special->height());
+    SkASSERT(img->bounds().contains(src) && !dst.isEmpty());
+
+    SkRect subset = constraint == SkCanvas::kStrict_SrcRectConstraint ?
+            src : SkRect::Make(img->bounds());
+    PaintParams::SimpleImage imageShader{img.get(), src, dst, subset, sampling};
 
     // The image filtering and layer code paths often rely on the paint being non-AA to avoid
     // coverage operations. To stay consistent with the other backends, we use an edge AA "quad"
@@ -2219,7 +2221,7 @@ void Device::drawSpecial(SkSpecialImage* special,
                                                     : EdgeAAQuad::Flags::kNone;
     this->drawGeometry(Transform(SkM44(localToDevice)),
                        Geometry(EdgeAAQuad(dst, aaFlags)),
-                       PaintParams(paintWithShader),
+                       PaintParams(paint, imageShader),
                        DefaultFillStyle(),
                        /*pathEffect=*/nullptr);
 }
