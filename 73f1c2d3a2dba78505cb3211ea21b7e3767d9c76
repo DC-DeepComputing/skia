@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7333f9b7_85fddda4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2025-10-21T14:02:48Z",
+      "side": 1,
+      "message": "Adding Skia gardener",
+      "revId": "73f1c2d3a2dba78505cb3211ea21b7e3767d9c76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
