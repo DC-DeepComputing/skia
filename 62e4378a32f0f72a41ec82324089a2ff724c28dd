@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f3da9e_125cb8be",
+        "filename": "src/core/SkPathPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-21T14:48:30Z",
+      "side": 1,
+      "message": "Oh, also see http://gpaste/5818341130371072 for the source",
+      "parentUuid": "151ee13f_38dd1fa1",
+      "revId": "62e4378a32f0f72a41ec82324089a2ff724c28dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "297264bd_648a9dfb",
