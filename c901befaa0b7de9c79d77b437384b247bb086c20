@@ -22,6 +22,30 @@
       },
       "revId": "c901befaa0b7de9c79d77b437384b247bb086c20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f9c52c_fd74928b",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-21T22:27:34Z",
+      "side": 1,
+      "message": "Agreed, just a question of readability. I chose this one partly to parallel the following line, where we take the address of .value().\n\nIf you find has_value() hard to read, I will remove it.",
+      "parentUuid": "98ce52d7_104ac71e",
+      "range": {
+        "startLine": 1030,
+        "startChar": 32,
+        "endLine": 1030,
+        "endChar": 41
+      },
+      "revId": "c901befaa0b7de9c79d77b437384b247bb086c20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
