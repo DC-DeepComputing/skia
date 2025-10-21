@@ -166,6 +166,7 @@
     M(unpremul) M(unpremul_polar) M(dither)                                    \
     M(load_16161616) M(load_16161616_dst) M(store_16161616) M(gather_16161616) \
     M(load_a16)    M(load_a16_dst)  M(store_a16)   M(gather_a16)               \
+    M(load_r16) M(load_r16_dst) M(store_r16) M(gather_r16)                     \
     M(load_rg1616) M(load_rg1616_dst) M(store_rg1616) M(gather_rg1616)         \
     M(load_f16)    M(load_f16_dst)  M(store_f16)   M(gather_f16)               \
     M(load_af16)   M(load_af16_dst) M(store_af16)  M(gather_af16)              \
