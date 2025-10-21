@@ -988,15 +988,18 @@ private:
     unsigned    fSegmentMask;
     SkPoint     fLastMovePoint;
     int         fLastMoveIndex; // only needed until SkPath is immutable
-    bool        fNeedsMoveVerb;
 
     SkPathIsAType fType = SkPathIsAType::kGeneral;
     SkPathIsAData fIsA {};
 
+    bool needsMoveVerb() const {
+        return fVerbs.empty() || fVerbs.back() == SkPathVerb::kClose;
+    }
+
     // called right before we add a (non-move) verb
     void ensureMove() {
         fType = SkPathIsAType::kGeneral;
-        if (fNeedsMoveVerb) {
+        if (this->needsMoveVerb()) {
             this->moveTo(fLastMovePoint);
         }
     }

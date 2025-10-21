@@ -76,7 +76,6 @@ SkPathBuilder& SkPathBuilder::reset() {
     fSegmentMask = 0;
     fLastMovePoint = {0, 0};
     fLastMoveIndex = -1;        // illegal
-    fNeedsMoveVerb = true;
 
     fType      = SkPathIsAType::kGeneral;
     fConvexity = SkPathConvexity::kUnknown;
@@ -96,7 +95,6 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     fSegmentMask   = ref->fSegmentMask;
     fLastMoveIndex = src.fLastMoveToIndex < 0 ? ~src.fLastMoveToIndex : src.fLastMoveToIndex;
     fLastMovePoint = fPts.empty() ? SkPoint{0, 0} : fPts[fLastMoveIndex];
-    fNeedsMoveVerb = src.fLastMoveToIndex < 0;
 
     fType = ref->fType;
     fIsA  = ref->fIsA;
@@ -161,7 +159,6 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
         fPts.back() = pt;
 
         SkASSERT(fType != SkPathIsAType::kOval && fType != SkPathIsAType::kRRect);
-        SkASSERT(fNeedsMoveVerb == false);
         SkASSERT(fConvexity == SkPathConvexity::kUnknown);
         SkASSERT(fLastMoveIndex == SkToInt(fPts.size()) - 1);
     } else {
@@ -170,7 +167,6 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
         fPts.push_back(pt);
         fVerbs.push_back(SkPathVerb::kMove);
 
-        fNeedsMoveVerb = false;
         if (fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) {
             fType = SkPathIsAType::kGeneral;
         }
@@ -242,7 +238,6 @@ SkPathBuilder& SkPathBuilder::close() {
         fVerbs.push_back(SkPathVerb::kClose);
 
         // fLastMovePoint stays where it is -- the previous moveTo
-        fNeedsMoveVerb = true;
     }
     return *this;
 }
@@ -253,7 +248,7 @@ SkPathBuilder& SkPathBuilder::rMoveTo(SkPoint pt) {
     SkPoint lastPt = {0,0};
     int count = fPts.size();
     if (count > 0) {
-        if (!fNeedsMoveVerb) {
+        if (!this->needsMoveVerb()) {
             lastPt = fPts[count - 1];
         } else {
             lastPt = fPts[fLastMoveIndex];
@@ -864,10 +859,8 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
         if (src.fLastMoveToIndex >= 0) {
             fLastMoveIndex = src.fLastMoveToIndex + this->countPoints();
-            fNeedsMoveVerb = false;
         } else {
             fLastMoveIndex = ~src.fLastMoveToIndex + this->countPoints();
-            fNeedsMoveVerb = true;
         }
 
         auto [newPts, newWeights] = this->growForVerbsInPath(*src.fPathRef);
