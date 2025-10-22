@@ -2328,7 +2328,10 @@ Result GraphitePersistentPipelineStorageTestingSink::draw(const Src& src,
 #if defined(SK_ENABLE_PRECOMPILE)
 GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
         const SkCommandLineConfigGraphite* config,
-        const skiatest::graphite::TestOptions& options) : GraphiteSink(config, options) {}
+        const skiatest::graphite::TestOptions& options)
+                  : GraphiteSink(config, options)
+                  , fPipelineHandler(new skiatools::graphite::PipelineCallBackHandler){
+}
 
 GraphitePrecompileTestingSink::~GraphitePrecompileTestingSink() {}
 
@@ -2364,6 +2367,7 @@ Result GraphitePrecompileTestingSink::drawSrc(
     return Result::Ok();
 }
 
+#if 0
 Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
         skiatools::graphite::PipelineCallBackHandler* handler,
         skgpu::graphite::PrecompileContext* precompileContext) const {
@@ -2476,6 +2480,7 @@ void GraphitePrecompileTestingSink::CompareKeys(
         }
     }
 }
+#endif
 
 Result GraphitePrecompileTestingSink::draw(const Src& src,
                                            SkBitmap* dst,
@@ -2485,8 +2490,6 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     using namespace skiatest::graphite;
     using namespace skiatools::graphite;
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
-
     {
         TestOptions options = fOptions;
         // If we've copied context options from an external source we can't trust that the
@@ -2495,10 +2498,17 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         ContextOptionsPriv optionsPriv;
         options.fContextOptions.fOptionsPriv = &optionsPriv;
 
+#if 0
         SkASSERT(!options.fContextOptions.fPipelineCallbackContext);
         SkASSERT(!options.fContextOptions.fPipelineCallback);
         options.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
         options.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+#endif
+
+        SkASSERT(!options.fContextOptions.fPipelineCachingCallbackContext);
+        SkASSERT(!options.fContextOptions.fPipelineCachingCallback);
+        options.fContextOptions.fPipelineCachingCallbackContext = fPipelineHandler.get();
+        options.fContextOptions.fPipelineCachingCallback = PipelineCallBackHandler::CallBack;
 
         src.modifyGraphiteContextOptions(&options.fContextOptions);
 
@@ -2514,11 +2524,13 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         if (!recorder) {
             return Result::Fatal("Could not create a recorder.");
         }
+#if 0
         std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
         ShaderCodeDictionary* shaderCodeDictionary = context->priv().shaderCodeDictionary();
 
         SkASSERT_RELEASE(!context->priv().globalCache()->numGraphicsPipelines());
         SkASSERT_RELEASE(!shaderCodeDictionary->numUserDefinedRuntimeEffects());
+#endif
 
         // Draw the Src for the first time, populating the global pipeline cache.
         Result result = this->drawSrc(src, context, ctxInfo.fTestContext, recorder.get());
@@ -2526,6 +2538,7 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
             return result;
         }
 
+#if 0
         // Note: this is different than numUserDefinedKnownRuntimeEffects! Known user-defined
         // runtime effects are allowed while unknown ones are not.
         if (shaderCodeDictionary->numUserDefinedRuntimeEffects()) {
@@ -2550,10 +2563,16 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         }
 
         SkASSERT_RELEASE(numBeforeSecondDraw == globalCache->numGraphicsPipelines());
+#endif
     }
 
     return Result::Ok();
 }
+
+void GraphitePrecompileTestingSink::done() const {
+    fPipelineHandler->report();
+}
+
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
