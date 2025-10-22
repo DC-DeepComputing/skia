@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82297e01_90c1037f",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 2118,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T17:23:05Z",
+      "side": 1,
+      "message": "If neither is set, should there be an empty gpu_tool_utils (should this work like the template `optional`)? That would fix the `NoGPU` builds.",
+      "revId": "54f6a0b55a312ce77e90ff9e7e474398bf4272be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
