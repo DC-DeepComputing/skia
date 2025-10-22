@@ -159,6 +159,24 @@
       "parentUuid": "30ec6974_f1c6f375",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90335d6c_e14ea64d",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T20:32:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8bde6a61_7344dc59",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
