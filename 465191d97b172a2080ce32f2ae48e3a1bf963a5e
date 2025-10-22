@@ -33,6 +33,24 @@
       "message": "IIRC we\u0027ve discussed just always tracing this, instead of guarding it?",
       "revId": "465191d97b172a2080ce32f2ae48e3a1bf963a5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f10a5ba8_17487026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-22T14:31:44Z",
+      "side": 1,
+      "message": "That sounds familiar, and assuming my reasoning is the same as before, since we want Chrome to also use this flag for chrometto traces, then there aren\u0027t major clients left that would *not* want it.",
+      "parentUuid": "17f9e5c3_49ee259b",
+      "revId": "465191d97b172a2080ce32f2ae48e3a1bf963a5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
