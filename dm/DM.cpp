@@ -1701,6 +1701,10 @@ int main(int argc, char** argv) {
     parallel.wait();
     gDefinitelyThreadSafeWork->wait();
 
+    for (TaggedSink& sink : *gSinks) {
+        sink->done();
+    }
+
     // At this point we're back in single-threaded land.
 
     // We'd better have run everything.

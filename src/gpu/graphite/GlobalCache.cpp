@@ -122,6 +122,26 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
 #endif
 }
 
+void GlobalCache::setPipelineCallback2(PipelineCachingCallback2 callback,
+                                       PipelineCachingCallbackContext2 context) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    fPipelineCachingCallback = callback;
+    fPipelineCachingCallbackContext = context;
+}
+
+void GlobalCache::invokePipelineCallback2(ContextOptions::PipelineCacheOp op,
+                                          const GraphicsPipeline* pipeline) {
+    (*fPipelineCachingCallback)(
+                          fPipelineCachingCallbackContext,
+                          op,
+                          pipeline->getPipelineInfo().fLabel,
+                          pipeline->getPipelineInfo().fUniqueKeyHash,
+                          pipeline->getPipelineInfo().fCompilationID,
+                          pipeline->fromPrecompile(),
+                          pipeline->wasUsed());
+}
+
 void GlobalCache::deleteResources() {
     SkAutoSpinlock lock{fSpinLock};
 
@@ -223,6 +243,8 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsCacheHits;
 #endif
+        this->invokePipelineCallback2(ContextOptions::PipelineCacheOp::kPipelineFound,
+                                      entry->get());
 
         if ((*entry)->epoch() != fEpochCounter) {
             (*entry)->markEpoch(fEpochCounter);   // update epoch due to use in a new epoch
@@ -263,6 +285,8 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
                                  TRACE_EVENT_SCOPE_THREAD,
                                  "key", key.hash(),
                                  "compilationID", *compilationID);
+
+            // No pipeline to report on here
 #endif
         }
 
@@ -306,6 +330,9 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         ++fStats.fGraphicsCacheAdditions;
 #endif
 
+        this->invokePipelineCallback2(ContextOptions::PipelineCacheOp::kAddingPipeline,
+                                      entry->get());
+
         SkASSERT((*entry)->epoch() == 0);
         (*entry)->markEpoch(fEpochCounter);      // mark w/ epoch in which it was created
         ++fStats.fPipelineUsesInEpoch;
@@ -335,6 +362,9 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         // the winner
         ++fStats.fGraphicsRaces;
 #endif
+
+        this->invokePipelineCallback2(ContextOptions::PipelineCacheOp::kCreationRace,
+                                      pipeline.get());
 
         [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
 
