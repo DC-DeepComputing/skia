@@ -34,6 +34,23 @@
       "parentUuid": "b75be35d_814a861c",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d64d568_633f0765",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T19:18:41Z",
+      "side": 1,
+      "message": "I\u0027d rather remove the `inline` than the `SK_API` (indeed, it\u0027s a little iffy to even have the implementation here, though its fine for now).",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
