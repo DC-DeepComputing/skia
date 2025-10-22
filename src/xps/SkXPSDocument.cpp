@@ -18,11 +18,11 @@
 #include <XpsObjectModel.h>
 
 #if !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
-#ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
-#include "include/docs/SkXPSRustPngHelpers.h"
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
 #else
-#include "include/docs/SkXPSLibpngHelpers.h"
-#endif  // SK_CODEC_ENCODES_PNG_WITH_RUST
+#include "include/encode/SkPngEncoder.h"
+#endif  // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
 #endif  // !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
 
 namespace {
@@ -58,11 +58,11 @@ SkXPSDocument::SkXPSDocument(SkWStream* stream,
     // `XPSDevice::setOpts` method at that time).
 #if !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
     if (!opts.pngEncoder) {
-#ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
-        opts.pngEncoder = SkXPS::EncodePngUsingRust;
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        opts.pngEncoder = SkPngRustEncoder::EncodeUsingDefaultOptions;
 #else
-        opts.pngEncoder = SkXPS::EncodePngUsingLibpng;
-#endif  // SK_CODEC_ENCODES_PNG_WITH_RUST
+        opts.pngEncoder = SkPngEncoder::EncodeUsingDefaultOptions;
+#endif  // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
     }
 #else
     if (!opts.pngEncoder) {
