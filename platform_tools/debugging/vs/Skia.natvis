@@ -184,6 +184,9 @@
       <Synthetic Name="[type]" Condition="fPixmap.fInfo.fColorInfo.fColorType == kA16_unorm_SkColorType">
         <DisplayString>UINT16</DisplayString>
       </Synthetic>
+      <Synthetic Name="[type]" Condition="fPixmap.fInfo.fColorInfo.fColorType == kR16_unorm_SkColorType">
+        <DisplayString>UINT16</DisplayString>
+      </Synthetic>
       <Synthetic Name="[type]" Condition="fPixmap.fInfo.fColorInfo.fColorType == kR16G16_unorm_SkColorType">
         <DisplayString>UINT16</DisplayString>
       </Synthetic>
@@ -269,6 +272,9 @@
         <DisplayString>FLOAT16</DisplayString>
       </Synthetic>
       <Synthetic Name="[type]" Condition="fInfo.fColorInfo.fColorType == kA16_unorm_SkColorType">
+        <DisplayString>UINT16</DisplayString>
+      </Synthetic>
+      <Synthetic Name="[type]" Condition="fInfo.fColorInfo.fColorType == kR16_unorm_SkColorType">
         <DisplayString>UINT16</DisplayString>
       </Synthetic>
       <Synthetic Name="[type]" Condition="fInfo.fColorInfo.fColorType == kR16G16_unorm_SkColorType">
