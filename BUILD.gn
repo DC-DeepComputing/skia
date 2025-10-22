@@ -1724,6 +1724,7 @@ skia_component("skia") {
   sources += [
     "src/android/SkAndroidFrameworkUtils.cpp",
     "src/android/SkAnimatedImage.cpp",
+    "src/android/SkPathAndroid.cpp",
     "src/codec/SkAndroidCodec.cpp",
     "src/codec/SkAndroidCodecAdapter.cpp",
     "src/codec/SkSampledCodec.cpp",
@@ -3153,7 +3154,6 @@ if (skia_enable_tools) {
         "tools/viewer/PatchSlide.cpp",
         "tools/viewer/PathClipSlide.cpp",
         "tools/viewer/PathEffectsSlide.cpp",
-        "tools/viewer/PathLerpSlide.cpp",
         "tools/viewer/PathOverstrokeSlide.cpp",
         "tools/viewer/PathSlide.cpp",
         "tools/viewer/PathTessellatorsSlide.cpp",
