@@ -177,6 +177,24 @@
       "parentUuid": "8bde6a61_7344dc59",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b77279_b3a98471",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-22T20:40:11Z",
+      "side": 1,
+      "message": "\u003e Unfortunately, removing the `inline` does result in multiple definition errors.\n\nRight - even if it worked in some build configurations it would risk the kind of linking/runtime UB problems that we experienced in https://crbug.com/418073233 (totally unrelated bug, except that it shows that having 2 definitions in different `.so`s can lead to weird problems).\n\nAnd on Windows using `SK_API` without `inline` also results in:\n\n```\nIn file included from ../../testing/pdfium_test.cc:87:\n../..\\third_party/skia/include/docs/SkXPSLibpngHelpers.h(22,13): error: dllimport cannot be applied to non-inline function definition\n   22 | SK_API bool EncodePngUsingLibpng(SkWStream* dst, const SkPixmap\u0026 src) {\n      |             ^\n1 error generated.\n```",
+      "parentUuid": "30ec6974_f1c6f375",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
