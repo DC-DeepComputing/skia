@@ -127,7 +127,7 @@ void SkPath::swap(SkPath& that) {
     }
 }
 
-bool SkPath::interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const {
+bool SkPath::interpolatex(const SkPath& ending, SkScalar weight, SkPath* out) const {
     int pointCount = fPathRef->countPoints();
     if (pointCount != ending.fPathRef->countPoints()) {
         return false;

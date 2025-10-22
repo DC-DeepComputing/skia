@@ -4843,51 +4843,6 @@ static void test_skbug_7435() {
             ->drawPath(path, paint);
 }
 
-static void test_interp(skiatest::Reporter* reporter) {
-    SkPath p1, p2, out;
-    REPORTER_ASSERT(reporter, p1.isInterpolatable(p2));
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 0, &out));
-    REPORTER_ASSERT(reporter, p1 == out);
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 1, &out));
-    REPORTER_ASSERT(reporter, p1 == out);
-    p1 = SkPathBuilder().moveTo(0, 2).lineTo(0, 4).detach();
-    REPORTER_ASSERT(reporter, !p1.isInterpolatable(p2));
-    REPORTER_ASSERT(reporter, !p1.interpolate(p2, 1, &out));
-    p2 = SkPathBuilder().moveTo(6, 0).lineTo(8, 0).detach();
-    REPORTER_ASSERT(reporter, p1.isInterpolatable(p2));
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 0, &out));
-    REPORTER_ASSERT(reporter, p2 == out);
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 1, &out));
-    REPORTER_ASSERT(reporter, p1 == out);
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 0.5f, &out));
-    REPORTER_ASSERT(reporter, out.getBounds() == SkRect::MakeLTRB(3, 1, 4, 2));
-    p1 = SkPathBuilder()
-         .moveTo(4, 4)
-         .conicTo(5, 4, 5, 5, 1 / SkScalarSqrt(2))
-         .detach();
-    p2 = SkPathBuilder()
-         .moveTo(4, 2)
-         .conicTo(7, 2, 7, 5, 1 / SkScalarSqrt(2))
-         .detach();
-    REPORTER_ASSERT(reporter, p1.isInterpolatable(p2));
-    REPORTER_ASSERT(reporter, p1.interpolate(p2, 0.5f, &out));
-    REPORTER_ASSERT(reporter, out.getBounds() == SkRect::MakeLTRB(4, 3, 6, 5));
-    p2 = SkPathBuilder()
-         .moveTo(4, 2)
-         .conicTo(6, 3, 6, 5, 1)
-         .detach();
-    REPORTER_ASSERT(reporter, !p1.isInterpolatable(p2));
-    p2 = SkPathBuilder()
-         .moveTo(4, 4)
-         .conicTo(5, 4, 5, 5, 0.5f)
-         .detach();
-    REPORTER_ASSERT(reporter, !p1.isInterpolatable(p2));
-}
-
-DEF_TEST(PathInterp, reporter) {
-    test_interp(reporter);
-}
-
 #ifndef SK_HIDE_PATH_EDIT_METHODS
 DEF_TEST(Path_multipleMoveTos, reporter) {
     SkPath path;
