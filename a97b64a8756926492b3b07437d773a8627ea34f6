@@ -16,6 +16,24 @@
       "message": "@bungeman, can you PTAL?  (I assume that the Mac tryjobs will eventually pass... not sure why they are so slow compared to other tryjobs...)",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f38506_f2cf4f4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T19:16:23Z",
+      "side": 1,
+      "message": "They are slow due to builders being very old, not enough of them, and for some reason often taking 30 minutes to build.",
+      "parentUuid": "b75be35d_814a861c",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
