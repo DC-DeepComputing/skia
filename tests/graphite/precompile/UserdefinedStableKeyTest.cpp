@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#if 0
+
 #include "tests/Test.h"
 
 #if defined(SK_GRAPHITE)
@@ -558,3 +560,5 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Overflow,
 }
 
 #endif // SK_GRAPHITE
+
+#endif

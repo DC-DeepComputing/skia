@@ -14,9 +14,13 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
+#if 0
 #include <vector>
 
 class SkData;
+#endif
 
 namespace skiatools::graphite {
 
@@ -26,12 +30,27 @@ namespace skiatools::graphite {
 // them in resetAndRecreatePipelines to recreate the Pipelines.
 class PipelineCallBackHandler {
 public:
+#if 0
     static void CallBack(void* data, sk_sp<SkData> androidStyleKey) {
         PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(data);
 
         handler->add(std::move(androidStyleKey));
     }
+#endif
 
+    static void CallBack(void* data,
+                          skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                          const std::string& label,
+                          uint32_t uniqueKeyHash,
+                          uint32_t compilationID,
+                          bool fromPrecompile,
+                          bool wasUsed) {
+        PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(data);
+
+        handler->add(op, label, uniqueKeyHash, compilationID, fromPrecompile, wasUsed);
+    }
+
+#if 0
     // Add an Android-style key to the map
     void add(sk_sp<SkData> androidStyleKey) SK_EXCLUDES(fSpinLock);
 
@@ -44,10 +63,21 @@ public:
         SkAutoSpinlock lock{ fSpinLock };
         return fMap.count();
     }
+#endif
+
+    void add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+             const std::string& label,
+             uint32_t uniqueKeyHash,
+             uint32_t compilationID,
+             bool fromPrecompile,
+             bool wasUsed);
+
+    void report();
 
 private:
     mutable SkSpinlock fSpinLock;
 
+#if 0
     struct SkDataKey {
         static SkDataKey GetKey(sk_sp<SkData>& e) { return { e.get() }; }
         static uint32_t Hash(const SkDataKey& k) { return k.hash(); }
@@ -59,6 +89,31 @@ private:
     };
 
     skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap SK_GUARDED_BY(fSpinLock);
+#endif
+
+    struct PipelineKey {
+        std::string fLabel;
+        uint32_t fUniqueKeyHash;
+
+        bool operator==(const PipelineKey& other) const {
+            return fUniqueKeyHash == other.fUniqueKeyHash && fLabel == other.fLabel;
+        }
+    };
+
+    struct PipelineData {
+        PipelineKey fKey;
+        uint32_t fCompilationID;
+        bool fFromPrecompile;
+
+        uint32_t fUses = 0;
+    };
+
+    struct PipelineDataTraits {
+        static const PipelineKey& GetKey(PipelineData*& e) { return e->fKey; }
+        static uint32_t Hash(const PipelineKey& k) { return k.fUniqueKeyHash; }
+    };
+
+    skia_private::THashTable<PipelineData*, PipelineKey, PipelineDataTraits> fPipelineDataMap;
 };
 
 }  // namespace skiatools::graphite

@@ -122,6 +122,28 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
 #endif
 }
 
+void GlobalCache::setPipelineCachingCallback(PipelineCachingCallback callback,
+                                             PipelineCachingCallbackContext context) {
+    fPipelineCachingCallback = callback;
+    fPipelineCachingCallbackContext = context;
+}
+
+void GlobalCache::invokePipelineCachingCallback(ContextOptions::PipelineCacheOp op,
+                                                const GraphicsPipeline* pipeline) {
+    if (!fPipelineCachingCallback) {
+        return;
+    }
+
+    (*fPipelineCachingCallback)(
+                          fPipelineCachingCallbackContext,
+                          op,
+                          pipeline->getPipelineInfo().fLabel,
+                          pipeline->getPipelineInfo().fUniqueKeyHash,
+                          pipeline->getPipelineInfo().fCompilationID,
+                          pipeline->fromPrecompile(),
+                          pipeline->wasUsed());
+}
+
 void GlobalCache::deleteResources() {
     SkAutoSpinlock lock{fSpinLock};
 
@@ -211,63 +233,69 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
     [[maybe_unused]] bool forPrecompile =
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
-    SkAutoSpinlock lock{fSpinLock};
+    sk_sp<GraphicsPipeline>* entry = nullptr;
+    {
+        SkAutoSpinlock lock{fSpinLock};
 
-    sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
-    if (entry) {
-        if ((*entry)->didAsyncCompilationFail()) SK_UNLIKELY {
-            // If the pipeline failed, remove it from the cache and let it be regenerated.
-            this->removeGraphicsPipeline((*entry).get());
-            return nullptr;
-        }
+        entry = fGraphicsPipelineCache.find(key);
+        if (entry) {
+            if ((*entry)->didAsyncCompilationFail()) SK_UNLIKELY {
+                // If the pipeline failed, remove it from the cache and let it be regenerated.
+                this->removeGraphicsPipeline((*entry).get());
+                return nullptr;
+            }
 #if defined(GPU_TEST_UTILS)
-        ++fStats.fGraphicsCacheHits;
+            ++fStats.fGraphicsCacheHits;
 #endif
+            if ((*entry)->epoch() != fEpochCounter) {
+                (*entry)->markEpoch(fEpochCounter);   // update epoch due to use in a new epoch
+                ++fStats.fPipelineUsesInEpoch;
+            }
+            if (!forPrecompile && (*entry)->fromPrecompile() && !(*entry)->wasUsed()) {
+                ++fStats.fNormalPreemptedByPrecompile;
+            }
 
-        if ((*entry)->epoch() != fEpochCounter) {
-            (*entry)->markEpoch(fEpochCounter);   // update epoch due to use in a new epoch
-            ++fStats.fPipelineUsesInEpoch;
-        }
-        if (!forPrecompile && (*entry)->fromPrecompile() && !(*entry)->wasUsed()) {
-            ++fStats.fNormalPreemptedByPrecompile;
-        }
-
-        (*entry)->updateAccessTime();
-        (*entry)->markUsed();
+            (*entry)->updateAccessTime();
+            (*entry)->markUsed();
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-        static const char* kNames[2] = { "CacheHitForN", "CacheHitForP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[forPrecompile]),
-                             TRACE_EVENT_SCOPE_THREAD,
-                             "key", key.hash(),
-                             "compilationID", (*entry)->getPipelineInfo().fCompilationID);
-#endif
-
-        return *entry;
-    } else {
-#if defined(GPU_TEST_UTILS)
-        ++fStats.fGraphicsCacheMisses;
-#endif
-
-        if (compilationID) {
-            // This is a cache miss so we know the next step is going to be a Pipeline
-            // creation. Create the compilationID here so we can use it in the "CacheMissFor"
-            // trace event.
-            *compilationID = next_compilation_id();
-
-#if defined(SK_PIPELINE_LIFETIME_LOGGING)
-            static const char* kNames[2] = { "CacheMissForN", "CacheMissForP" };
+            static const char* kNames[2] = { "CacheHitForN", "CacheHitForP" };
             TRACE_EVENT_INSTANT2("skia.gpu",
                                  TRACE_STR_STATIC(kNames[forPrecompile]),
                                  TRACE_EVENT_SCOPE_THREAD,
                                  "key", key.hash(),
-                                 "compilationID", *compilationID);
+                                 "compilationID", (*entry)->getPipelineInfo().fCompilationID);
 #endif
-        }
+        } else {
+#if defined(GPU_TEST_UTILS)
+            ++fStats.fGraphicsCacheMisses;
+#endif
 
-        return nullptr;
+            if (compilationID) {
+                // This is a cache miss so we know the next step is going to be a Pipeline
+                // creation. Create the compilationID here so we can use it in the "CacheMissFor"
+                // trace event.
+                *compilationID = next_compilation_id();
+
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+                static const char* kNames[2] = { "CacheMissForN", "CacheMissForP" };
+                TRACE_EVENT_INSTANT2("skia.gpu",
+                                     TRACE_STR_STATIC(kNames[forPrecompile]),
+                                     TRACE_EVENT_SCOPE_THREAD,
+                                     "key", key.hash(),
+                                     "compilationID", *compilationID);
+#endif
+            }
+        }
     }
+
+    if (entry) {
+        this->invokePipelineCachingCallback(ContextOptions::PipelineCacheOp::kPipelineFound,
+                                            entry->get());
+        return *entry;
+    }
+
+    return nullptr;
 }
 
 #if SK_HISTOGRAMS_ENABLED
@@ -293,70 +321,83 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
-    SkAutoSpinlock lock{fSpinLock};
+    sk_sp<GraphicsPipeline>* entry = nullptr;
+    {
+        SkAutoSpinlock lock{fSpinLock};
 
-    sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
-    if (!entry) {
-        // No equivalent pipeline was stored in the cache between a previous call to
-        // findGraphicsPipeline() that returned null (triggering the pipeline creation) and this
-        // later adding to the cache.
-        entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+        entry = fGraphicsPipelineCache.find(key);
+        if (!entry) {
+            // No equivalent pipeline was stored in the cache between a previous call to
+            // findGraphicsPipeline() that returned null (triggering the pipeline creation) and this
+            // later adding to the cache.
+            entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+            pipeline = nullptr;
 
 #if defined(GPU_TEST_UTILS)
-        ++fStats.fGraphicsCacheAdditions;
+            ++fStats.fGraphicsCacheAdditions;
 #endif
 
-        SkASSERT((*entry)->epoch() == 0);
-        (*entry)->markEpoch(fEpochCounter);      // mark w/ epoch in which it was created
-        ++fStats.fPipelineUsesInEpoch;
+            SkASSERT((*entry)->epoch() == 0);
+            (*entry)->markEpoch(fEpochCounter);      // mark w/ epoch in which it was created
+            ++fStats.fPipelineUsesInEpoch;
 
-        if ((*entry)->fromPrecompile()) {
-            ++fStats.fUnpreemptedPrecompilePipelines;
-        }
+            if ((*entry)->fromPrecompile()) {
+                ++fStats.fUnpreemptedPrecompilePipelines;
+            }
 
-        // Precompile Pipelines are only marked as used when they get a cache hit in
-        // findGraphicsPipeline
-        if (!(*entry)->fromPrecompile()) {
-            (*entry)->updateAccessTime();
-            (*entry)->markUsed();
-        }
+            // Precompile Pipelines are only marked as used when they get a cache hit in
+            // findGraphicsPipeline
+            if (!(*entry)->fromPrecompile()) {
+                (*entry)->updateAccessTime();
+                (*entry)->markUsed();
+            }
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-        static const char* kNames[2] = { "AddedN", "AddedP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[(*entry)->fromPrecompile()]),
-                             TRACE_EVENT_SCOPE_THREAD,
-                             "key", key.hash(),
-                             "compilationID", (*entry)->getPipelineInfo().fCompilationID);
+            static const char* kNames[2] = { "AddedN", "AddedP" };
+            TRACE_EVENT_INSTANT2("skia.gpu",
+                                 TRACE_STR_STATIC(kNames[(*entry)->fromPrecompile()]),
+                                 TRACE_EVENT_SCOPE_THREAD,
+                                 "key", key.hash(),
+                                 "compilationID", (*entry)->getPipelineInfo().fCompilationID);
 #endif
-    } else {
+        } else {
 #if defined(GPU_TEST_UTILS)
-        // else there was a race creating the same pipeline and this thread lost, so return
-        // the winner
-        ++fStats.fGraphicsRaces;
+            // else there was a race creating the same pipeline and this thread lost, so return
+            // the winner
+            ++fStats.fGraphicsRaces;
 #endif
 
-        [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
+            [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-        static const char* kNames[4] = {
-                "NWonRaceOverN",
-                "NWonRaceOverP",
-                "PWonRaceOverN",
-                "PWonRaceOverP"
-        };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[race]),
-                             TRACE_EVENT_SCOPE_THREAD,
-                             "key", key.hash(),
-                             // The losing compilation
-                             "compilationID", pipeline->getPipelineInfo().fCompilationID);
+            static const char* kNames[4] = {
+                    "NWonRaceOverN",
+                    "NWonRaceOverP",
+                    "PWonRaceOverN",
+                    "PWonRaceOverP"
+            };
+            TRACE_EVENT_INSTANT2("skia.gpu",
+                                 TRACE_STR_STATIC(kNames[race]),
+                                 TRACE_EVENT_SCOPE_THREAD,
+                                 "key", key.hash(),
+                                 // The losing compilation
+                                 "compilationID", pipeline->getPipelineInfo().fCompilationID);
 #endif
 
-        SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace",
-                                 race,
-                                 kPipelineCreationRaceCount);
+            SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace",
+                                     race,
+                                     kPipelineCreationRaceCount);
+        }
     }
+
+    if (pipeline) {
+        this->invokePipelineCachingCallback(ContextOptions::PipelineCacheOp::kCreationRace,
+                                            pipeline.get());
+    } else {
+        this->invokePipelineCachingCallback(ContextOptions::PipelineCacheOp::kAddingPipeline,
+                                            entry->get());
+    }
+
     return *entry;
 }
 
