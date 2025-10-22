@@ -92,9 +92,11 @@ private:
 // This class is responsible for drawing perfectly horizontal hairlines.
 // Such hairlines will be over two rows. One row may be 100% coverage
 // if the line was exactly on a pixel row boundary.
-class HLine_SkAntiHairBlitter : public SkAntiHairBlitter {
+class HorizontalAntiHairBlitter {
 public:
-    SkFixed drawCap(int x, SkFixed fy, SkFixed, SkFDot6 coverage) override {
+    HorizontalAntiHairBlitter(SkBlitter* blitter): fBlitter(blitter) {}
+
+    SkFixed drawCap(int x, SkFixed fy, SkFixed, SkFDot6 coverage) {
         fy += SK_FixedHalf;
 
         int y = SkFixedFloorToInt(fy);
@@ -107,19 +109,19 @@ public:
         // lower line
         U8CPU ma = scale_alpha_by_coverage(a, coverage);
         if (ma) {
-            call_hline_blitter(this->getBlitter(), x, y, 1, ma);
+            call_hline_blitter(fBlitter, x, y, 1, ma);
         }
 
         // upper line
         ma = scale_alpha_by_coverage(255 - a, coverage);
         if (ma) {
-            call_hline_blitter(this->getBlitter(), x, y - 1, 1, ma);
+            call_hline_blitter(fBlitter, x, y - 1, 1, ma);
         }
 
         return fy - SK_FixedHalf;
     }
 
-    SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed) override {
+    SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed) {
         SkASSERT(x < stopx);
         int count = stopx - x;
         fy += SK_FixedHalf;
@@ -129,17 +131,20 @@ public:
 
         // lower line
         if (a) {
-            call_hline_blitter(this->getBlitter(), x, y, count, a);
+            call_hline_blitter(fBlitter, x, y, count, a);
         }
 
         // upper line
         a = 255 - a;
         if (a) {
-            call_hline_blitter(this->getBlitter(), x, y - 1, count, a);
+            call_hline_blitter(fBlitter, x, y - 1, count, a);
         }
 
         return fy - SK_FixedHalf;
     }
+
+private:
+    SkBlitter*  fBlitter;
 };
 
 // This class handles lines that are mostly horizontal (i.e., their slope is
@@ -304,6 +309,84 @@ static SkFDot6 partial_pixel_coverage(SkFDot6 pos) {
     return result;
 }
 
+static void blit_horizontal(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1,
+                            SkBlitter* blitter) {
+    if (x0 > x1) {
+        std::swap(x0, x1);
+    }
+
+    const int colStart = SkFDot6Floor(x0);
+    const int colStop = SkFDot6Ceil(x1);
+    const SkFixed fixedY = SkFDot6ToFixed(y0);
+
+    HorizontalAntiHairBlitter hairBlitter(blitter);
+
+    // The ends (caps) of our hairline might have only partial pixel coverage. We hold onto
+    // these from 0 (uncovered) to 64 (fully covered).
+    SkASSERT(colStop > colStart);
+    if (colStop - colStart == 1) {
+        // we are within a single pixel
+        SkFDot6 coverage = x1 - x0;
+        SkASSERT(coverage >= 0 && coverage <= SK_FDot6One);
+        hairBlitter.drawCap(colStart, fixedY, 0, coverage);
+        return;
+    }
+
+    SkFDot6 leftCoverage = SK_FDot6One - fd6_frac(x0);
+    SkFDot6 rightCoverage = fd6_frac(x1);
+
+    hairBlitter.drawCap(colStart, fixedY, 0, leftCoverage);
+
+    // Subtract off 2 because we (usually) have a cap pixel on the left and right
+    int fullSpans = colStop - colStart - 2;
+    if (rightCoverage == 0) {
+        // If we end on a pixel boundary, we can skip drawing a cap and cover
+        // it with the line draw.
+        fullSpans++;
+    }
+    if (fullSpans > 0) {
+        hairBlitter.drawLine(colStart + 1, colStart + 1 + fullSpans, fixedY, 0);
+    }
+    if (rightCoverage > 0) {
+        hairBlitter.drawCap(colStop - 1, fixedY, 0, rightCoverage);
+    }
+}
+
+static void blit_horizontal_clipped(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1,
+                                    const SkIRect* clip, SkBlitter* blitter) {
+
+}
+
+static void blit_left_to_right(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
+                               SkBlitter* blitter) {
+
+}
+
+static void blit_left_to_right_clipped(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
+                                       const SkIRect* clip, SkBlitter* blitter) {
+
+}
+
+static void blit_vertical(SkFDot6 x0, SkFDot6 y0, SkFDot6 y1,
+                          SkBlitter* blitter) {
+
+}
+
+static void blit_vertical_clipped(SkFDot6 x0, SkFDot6 y0, SkFDot6 y1,
+                                  const SkIRect* clip, SkBlitter* blitter) {
+
+}
+
+static void blit_up_and_down(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
+                             SkBlitter* blitter) {
+
+}
+
+static void blit_up_and_down_clipped(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
+                                     const SkIRect* clip, SkBlitter* blitter) {
+
+}
+
 static void do_anti_hairline(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
                              const SkIRect* clip, SkBlitter* blitter) {
     // check for integer NaN (0x80000000) which we can't handle (can't negate it)
@@ -334,200 +417,234 @@ static void do_anti_hairline(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
         return;
     }
 
-    int         startCoverage, stopCoverage;
-    int         istart, istop;
-    SkFixed     fstart, slope;
-
-    HLine_SkAntiHairBlitter     hline_blitter;
-    Horish_SkAntiHairBlitter    horish_blitter;
-    VLine_SkAntiHairBlitter     vline_blitter;
-    Vertish_SkAntiHairBlitter   vertish_blitter;
-    SkAntiHairBlitter*          hairBlitter = nullptr;
-
-    if (SkAbs32(x1 - x0) > SkAbs32(y1 - y0)) {   // mostly horizontal
-        if (x0 > x1) {    // we want to go left-to-right
-            using std::swap;
-            swap(x0, x1);
-            swap(y0, y1);
-        }
-
-        istart = SkFDot6Floor(x0);
-        istop = SkFDot6Ceil(x1);
-        if (y0 == y1) {   // completely horizontal, take fast case
-            slope = 0;
-            hairBlitter = &hline_blitter;
-            fstart = SkFDot6ToFixed(y0);
-        } else {
-            slope = fastfixdiv(y1 - y0, x1 - x0);
-            SkASSERTF(slope >= -SK_Fixed1 && slope <= SK_Fixed1,
-                      "should be vertical or mostly vertical");
-            // Adjust fstart to be the Y-intercept at the center of the first pixel.
-            SkFDot6 dx_to_center = SK_FDot6Half - fd6_frac(x0);
-            fstart = SkFDot6ToFixed(y0) + ((slope * dx_to_center + SK_FDot6Half) >> 6);
-            hairBlitter = &horish_blitter;
-        }
-
-        SkASSERT(istop > istart);
-        if (istop - istart == 1) {
-            // we are within a single pixel
-            startCoverage = x1 - x0;
-            SkASSERT(startCoverage >= 0 && startCoverage <= SK_FDot6One);
-            stopCoverage = 0;
-        } else {
-            startCoverage = SK_FDot6One - fd6_frac(x0);
-            stopCoverage = fd6_frac(x1);
-        }
-
-        if (clip){
-            if (istart >= clip->fRight || istop <= clip->fLeft) {
-                return;
-            }
-            if (istart < clip->fLeft) {
-                fstart += slope * (clip->fLeft - istart);
-                istart = clip->fLeft;
-                startCoverage = SK_FDot6One;
-                if (istop - istart == 1) {
-                    // we are within a single pixel
-                    startCoverage = partial_pixel_coverage(x1);
-                    stopCoverage = 0;
-                }
-            }
-            if (istop > clip->fRight) {
-                istop = clip->fRight;
-                stopCoverage = 0;  // so we don't draw this last column
-            }
-
-            SkASSERT(istart <= istop);
-            if (istart == istop) {
-                return;
-            }
-            // now test if our Y values are completely inside the clip
-            int top, bottom;
-            if (slope >= 0) { // T2B
-                top = SkFixedFloorToInt(fstart - SK_FixedHalf);
-                bottom = SkFixedCeilToInt(fstart + (istop - istart - 1) * slope + SK_FixedHalf);
-            } else {           // B2T
-                bottom = SkFixedCeilToInt(fstart + SK_FixedHalf);
-                top = SkFixedFloorToInt(fstart + (istop - istart - 1) * slope - SK_FixedHalf);
-            }
-            // Expand outset to work around possible numerical calculation bug that lead to overflow
-            top -= 1;
-            bottom += 1;
-
-            if (top >= clip->fBottom || bottom <= clip->fTop) {
-                return;
-            }
-            if (clip->fTop <= top && clip->fBottom >= bottom) {
-                clip = nullptr;
-            }
-        }
-    } else {   // mostly vertical
-        if (y0 > y1) {  // we want to go top-to-bottom
-            using std::swap;
-            swap(x0, x1);
-            swap(y0, y1);
-        }
-
-        istart = SkFDot6Floor(y0);
-        istop = SkFDot6Ceil(y1);
-        if (x0 == x1) {
-            if (y0 == y1) { // are we zero length?
-                return;     // nothing to do
-            }
-            slope = 0;
-            hairBlitter = &vline_blitter;
-            fstart = SkFDot6ToFixed(x0);
-        } else {
-            slope = fastfixdiv(x1 - x0, y1 - y0);
-            SkASSERTF(slope <= SK_Fixed1 && slope >= -SK_Fixed1,
-                      "should be horizontal or mostly horizontal");
-            // Adjust fstart to be the X-intercept at the center of the first pixel row.
-            SkFDot6 dy_to_center = SK_FDot6Half - fd6_frac(y0);
-            fstart = SkFDot6ToFixed(x0) + ((slope * dy_to_center + SK_FDot6Half) >> 6);
-            hairBlitter = &vertish_blitter;
-        }
-
-        SkASSERT(istop > istart);
-        if (istop - istart == 1) {
-            // we are within a single pixel
-            startCoverage = y1 - y0;
-            SkASSERT(startCoverage >= 0 && startCoverage <= SK_FDot6One);
-            stopCoverage = 0;
-        } else {
-            startCoverage = SK_FDot6One - fd6_frac(y0);
-            stopCoverage = fd6_frac(y1);
-        }
-
+    if (y0 == y1) {
         if (clip) {
-            if (istart >= clip->fBottom || istop <= clip->fTop) {
-                return;
-            }
-            if (istart < clip->fTop) {
-                fstart += slope * (clip->fTop - istart);
-                istart = clip->fTop;
-                startCoverage = SK_FDot6One;
-                if (istop - istart == 1) {
-                    // we are within a single pixel
-                    startCoverage = partial_pixel_coverage(y1);
-                    stopCoverage = 0;
-                }
-            }
-            if (istop > clip->fBottom) {
-                istop = clip->fBottom;
-                stopCoverage = 0;  // so we don't draw this last row
-            }
-
-            SkASSERT(istart <= istop);
-            if (istart == istop)
-                return;
-
-            // now test if our X values are completely inside the clip
-            int left, right;
-            if (slope >= 0) { // L2R
-                left = SkFixedFloorToInt(fstart - SK_FixedHalf);
-                right = SkFixedCeilToInt(fstart + (istop - istart - 1) * slope + SK_FixedHalf);
-            } else {           // R2L
-                right = SkFixedCeilToInt(fstart + SK_FixedHalf);
-                left = SkFixedFloorToInt(fstart + (istop - istart - 1) * slope - SK_FixedHalf);
-            }
-            // Expand outset to work around possible numerical calculation bug that lead to overflow
-            left -= 1;
-            right += 1;
-
-            if (left >= clip->fRight || right <= clip->fLeft) {
-                return;
-            }
-            if (clip->fLeft <= left && clip->fRight >= right) {
-                clip = nullptr;
-            }
+            blit_horizontal_clipped(x0, y0, x1, /*y1,*/
+                                    clip, blitter);
+        } else {
+            blit_horizontal(x0, y0, x1, /*y1,*/
+                            blitter);
+        }
+    } else if (x0 == x1) {
+        if (clip) {
+            blit_vertical_clipped(x0, y0, /*x1,*/ y1,
+                                  clip, blitter);
+        } else {
+            blit_vertical(x0, y0, /*x1,*/ y1,
+                          blitter);
+        }
+    } else if (SkAbs32(x1 - x0) > SkAbs32(y1 - y0)) {
+        if (clip) {
+            blit_left_to_right_clipped(x0, y0, x1, y1,
+                                       clip, blitter);
+        } else {
+            blit_left_to_right(x0, y0, x1, y1,
+                               blitter);
+        }
+    } else {
+        if (clip) {
+            blit_up_and_down_clipped(x0, y0, x1, y1,
+                                     clip, blitter);
+        } else {
+            blit_up_and_down(x0, y0, x1, y1,
+                             blitter);
         }
     }
 
-    SkRectClipBlitter   rectClipper;
-    if (clip) {
-        rectClipper.init(blitter, *clip);
-        blitter = &rectClipper;
-    }
+//     int         startCoverage, stopCoverage;
+//     int         istart, istop;
+//     SkFixed     fstart, slope;
 
-    SkASSERT(hairBlitter);
-    hairBlitter->setup(blitter);
+//     HorizontalAntiHairBlitter     hline_blitter;
+//     Horish_SkAntiHairBlitter    horish_blitter;
+//     VLine_SkAntiHairBlitter     vline_blitter;
+//     Vertish_SkAntiHairBlitter   vertish_blitter;
+//     SkAntiHairBlitter*          hairBlitter = nullptr;
 
-#ifdef SK_DEBUG
-    if (startCoverage > 0 && stopCoverage > 0) {
-        // be sure we don't draw twice in the same pixel
-        SkASSERT(istart < istop - 1);
-    }
-#endif
+//     if (SkAbs32(x1 - x0) > SkAbs32(y1 - y0)) {   // mostly horizontal
+//         if (x0 > x1) {    // we want to go left-to-right
+//             using std::swap;
+//             swap(x0, x1);
+//             swap(y0, y1);
+//         }
 
-    fstart = hairBlitter->drawCap(istart, fstart, slope, startCoverage);
-    istart += 1;
-    int fullSpans = istop - istart - (stopCoverage > 0);
-    if (fullSpans > 0) {
-        fstart = hairBlitter->drawLine(istart, istart + fullSpans, fstart, slope);
-    }
-    if (stopCoverage > 0) {
-        hairBlitter->drawCap(istop - 1, fstart, slope, stopCoverage);
-    }
+//         istart = SkFDot6Floor(x0);
+//         istop = SkFDot6Ceil(x1);
+//         if (y0 == y1) {   // completely horizontal, take fast case
+//             slope = 0;
+//             hairBlitter = &hline_blitter;
+//             fstart = SkFDot6ToFixed(y0);
+//         } else {
+//             slope = fastfixdiv(y1 - y0, x1 - x0);
+//             SkASSERTF(slope >= -SK_Fixed1 && slope <= SK_Fixed1,
+//                       "should be vertical or mostly vertical");
+//             // Adjust fstart to be the Y-intercept at the center of the first pixel.
+//             SkFDot6 dx_to_center = SK_FDot6Half - fd6_frac(x0);
+//             fstart = SkFDot6ToFixed(y0) + ((slope * dx_to_center + SK_FDot6Half) >> 6);
+//             hairBlitter = &horish_blitter;
+//         }
+
+//         SkASSERT(istop > istart);
+//         if (istop - istart == 1) {
+//             // we are within a single pixel
+//             startCoverage = x1 - x0;
+//             SkASSERT(startCoverage >= 0 && startCoverage <= SK_FDot6One);
+//             stopCoverage = 0;
+//         } else {
+//             startCoverage = SK_FDot6One - fd6_frac(x0);
+//             stopCoverage = fd6_frac(x1);
+//         }
+
+//         if (clip){
+//             if (istart >= clip->fRight || istop <= clip->fLeft) {
+//                 return;
+//             }
+//             if (istart < clip->fLeft) {
+//                 fstart += slope * (clip->fLeft - istart);
+//                 istart = clip->fLeft;
+//                 startCoverage = SK_FDot6One;
+//                 if (istop - istart == 1) {
+//                     // we are within a single pixel
+//                     startCoverage = partial_pixel_coverage(x1);
+//                     stopCoverage = 0;
+//                 }
+//             }
+//             if (istop > clip->fRight) {
+//                 istop = clip->fRight;
+//                 stopCoverage = 0;  // so we don't draw this last column
+//             }
+
+//             SkASSERT(istart <= istop);
+//             if (istart == istop) {
+//                 return;
+//             }
+//             // now test if our Y values are completely inside the clip
+//             int top, bottom;
+//             if (slope >= 0) { // T2B
+//                 top = SkFixedFloorToInt(fstart - SK_FixedHalf);
+//                 bottom = SkFixedCeilToInt(fstart + (istop - istart - 1) * slope + SK_FixedHalf);
+//             } else {           // B2T
+//                 bottom = SkFixedCeilToInt(fstart + SK_FixedHalf);
+//                 top = SkFixedFloorToInt(fstart + (istop - istart - 1) * slope - SK_FixedHalf);
+//             }
+//             // Expand outset to work around possible numerical calculation bug that lead to overflow
+//             top -= 1;
+//             bottom += 1;
+
+//             if (top >= clip->fBottom || bottom <= clip->fTop) {
+//                 return;
+//             }
+//             if (clip->fTop <= top && clip->fBottom >= bottom) {
+//                 clip = nullptr;
+//             }
+//         }
+//     } else {   // mostly vertical
+//         if (y0 > y1) {  // we want to go top-to-bottom
+//             using std::swap;
+//             swap(x0, x1);
+//             swap(y0, y1);
+//         }
+
+//         istart = SkFDot6Floor(y0);
+//         istop = SkFDot6Ceil(y1);
+//         if (x0 == x1) {
+//             if (y0 == y1) { // are we zero length?
+//                 return;     // nothing to do
+//             }
+//             slope = 0;
+//             hairBlitter = &vline_blitter;
+//             fstart = SkFDot6ToFixed(x0);
+//         } else {
+//             slope = fastfixdiv(x1 - x0, y1 - y0);
+//             SkASSERTF(slope <= SK_Fixed1 && slope >= -SK_Fixed1,
+//                       "should be horizontal or mostly horizontal");
+//             // Adjust fstart to be the X-intercept at the center of the first pixel row.
+//             SkFDot6 dy_to_center = SK_FDot6Half - fd6_frac(y0);
+//             fstart = SkFDot6ToFixed(x0) + ((slope * dy_to_center + SK_FDot6Half) >> 6);
+//             hairBlitter = &vertish_blitter;
+//         }
+
+//         SkASSERT(istop > istart);
+//         if (istop - istart == 1) {
+//             // we are within a single pixel
+//             startCoverage = y1 - y0;
+//             SkASSERT(startCoverage >= 0 && startCoverage <= SK_FDot6One);
+//             stopCoverage = 0;
+//         } else {
+//             startCoverage = SK_FDot6One - fd6_frac(y0);
+//             stopCoverage = fd6_frac(y1);
+//         }
+
+//         if (clip) {
+//             if (istart >= clip->fBottom || istop <= clip->fTop) {
+//                 return;
+//             }
+//             if (istart < clip->fTop) {
+//                 fstart += slope * (clip->fTop - istart);
+//                 istart = clip->fTop;
+//                 startCoverage = SK_FDot6One;
+//                 if (istop - istart == 1) {
+//                     // we are within a single pixel
+//                     startCoverage = partial_pixel_coverage(y1);
+//                     stopCoverage = 0;
+//                 }
+//             }
+//             if (istop > clip->fBottom) {
+//                 istop = clip->fBottom;
+//                 stopCoverage = 0;  // so we don't draw this last row
+//             }
+
+//             SkASSERT(istart <= istop);
+//             if (istart == istop)
+//                 return;
+
+//             // now test if our X values are completely inside the clip
+//             int left, right;
+//             if (slope >= 0) { // L2R
+//                 left = SkFixedFloorToInt(fstart - SK_FixedHalf);
+//                 right = SkFixedCeilToInt(fstart + (istop - istart - 1) * slope + SK_FixedHalf);
+//             } else {           // R2L
+//                 right = SkFixedCeilToInt(fstart + SK_FixedHalf);
+//                 left = SkFixedFloorToInt(fstart + (istop - istart - 1) * slope - SK_FixedHalf);
+//             }
+//             // Expand outset to work around possible numerical calculation bug that lead to overflow
+//             left -= 1;
+//             right += 1;
+
+//             if (left >= clip->fRight || right <= clip->fLeft) {
+//                 return;
+//             }
+//             if (clip->fLeft <= left && clip->fRight >= right) {
+//                 clip = nullptr;
+//             }
+//         }
+//     }
+
+//     SkRectClipBlitter   rectClipper;
+//     if (clip) {
+//         rectClipper.init(blitter, *clip);
+//         blitter = &rectClipper;
+//     }
+
+//     SkASSERT(hairBlitter);
+//     hairBlitter->setup(blitter);
+
+// #ifdef SK_DEBUG
+//     if (startCoverage > 0 && stopCoverage > 0) {
+//         // be sure we don't draw twice in the same pixel
+//         SkASSERT(istart < istop - 1);
+//     }
+// #endif
+
+//     fstart = hairBlitter->drawCap(istart, fstart, slope, startCoverage);
+//     istart += 1;
+//     int fullSpans = istop - istart - (stopCoverage > 0);
+//     if (fullSpans > 0) {
+//         fstart = hairBlitter->drawLine(istart, istart + fullSpans, fstart, slope);
+//     }
+//     if (stopCoverage > 0) {
+//         hairBlitter->drawCap(istop - 1, fstart, slope, stopCoverage);
+//     }
 }
 
 void SkScan::AntiHairLineRgn(const SkPoint array[], int arrayCount, const SkRegion* clip,
