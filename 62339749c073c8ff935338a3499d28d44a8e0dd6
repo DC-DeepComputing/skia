@@ -33,6 +33,24 @@
       "message": "We are waiting on hearing from some other clients about C++20 support",
       "revId": "62339749c073c8ff935338a3499d28d44a8e0dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5af42702_8f6fdbb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-22T12:53:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "162a2795_51420332",
+      "revId": "62339749c073c8ff935338a3499d28d44a8e0dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
