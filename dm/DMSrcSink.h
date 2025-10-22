@@ -136,6 +136,8 @@ struct Sink {
     // You may write to either the bitmap or stream.  If you write to log, we'll print that out.
     [[nodiscard]] virtual Result draw(const Src&, SkBitmap*, SkWStream*, SkString* log) const = 0;
 
+    virtual void done() const {}
+
     // Override the color space of this Sink, after creation
     virtual void setColorSpace(sk_sp<SkColorSpace>) {}
 
@@ -626,6 +628,22 @@ private:
     mutable sk_gpu_test::GraphiteMemoryPipelineStorage fMemoryPipelineStorage;
 };
 
+class GraphitePipelineTrackingSink : public GraphiteSink {
+public:
+    GraphitePipelineTrackingSink(const SkCommandLineConfigGraphite*,
+                                 const skiatest::graphite::TestOptions&);
+
+    void done() const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to do our matching test
+        return nullptr;
+    }
+
+private:
+    std::unique_ptr<skiatools::graphite::PipelineCallBackHandler> fPipelineHandler;
+};
+
 #if defined(SK_ENABLE_PRECOMPILE)
 // In general this sink:
 //   renders a gm, skp or svg (in drawSrc)
@@ -656,6 +674,8 @@ private:
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*,
                    skgpu::graphite::Recorder*) const;
+
+#if 0
     Result resetAndRecreatePipelines(skiatools::graphite::PipelineCallBackHandler*,
                                      skgpu::graphite::PrecompileContext*) const;
 
@@ -670,6 +690,9 @@ private:
     static void CompareKeys(skgpu::graphite::PrecompileContext*,
                             const std::vector<skgpu::UniqueKey>& vA, const char* aName,
                             const std::vector<skgpu::UniqueKey>& vB, const char* bName);
+#endif
+
+    std::unique_ptr<skiatools::graphite::PipelineCallBackHandler> fPipelineHandler;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE
