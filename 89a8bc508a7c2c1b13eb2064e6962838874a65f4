@@ -16,6 +16,24 @@
       "message": "I assume none of the changes to this file are intended for this change?",
       "revId": "89a8bc508a7c2c1b13eb2064e6962838874a65f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "254fcb10_d7ef51e2",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-22T19:17:32Z",
+      "side": 0,
+      "message": "Ugh... yes.  I\u0027ll remove.",
+      "parentUuid": "863a1ec4_1d58984d",
+      "revId": "89a8bc508a7c2c1b13eb2064e6962838874a65f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
