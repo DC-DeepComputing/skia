@@ -123,6 +123,24 @@
       "parentUuid": "f8ff1b84_87f78682",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30ec6974_f1c6f375",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T20:28:22Z",
+      "side": 1,
+      "message": "Unfortunately, removing the `inline` does result in multiple definition errors.",
+      "parentUuid": "3b3243f4_2566a211",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
