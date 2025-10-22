@@ -16,6 +16,24 @@
       "message": "Let\u0027s keep an equivalent assert.",
       "revId": "e935a7f7322a35af95bdc1d333054d9d36ab6451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e36430d0_efa5492b",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-22T15:37:44Z",
+      "side": 0,
+      "message": "The if on line 156 *is* the assert, isn\u0027t it?",
+      "parentUuid": "a023dd0d_7a4025ed",
+      "revId": "e935a7f7322a35af95bdc1d333054d9d36ab6451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
