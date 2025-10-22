@@ -19,9 +19,9 @@
 
 #if !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
 #ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
-#include "include/docs/SkXPSRustPngHelpers.h"
+#include "include/encode/SkPngRustEncoder.h"
 #else
-#include "include/docs/SkXPSLibpngHelpers.h"
+#include "include/encode/SkPngEncoder.h"
 #endif  // SK_CODEC_ENCODES_PNG_WITH_RUST
 #endif  // !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
 
@@ -59,9 +59,9 @@ SkXPSDocument::SkXPSDocument(SkWStream* stream,
 #if !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
     if (!opts.pngEncoder) {
 #ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
-        opts.pngEncoder = SkXPS::EncodePngUsingRust;
+        opts.pngEncoder = SkPngRustEncoder::EncodeUsingDefaultOptions;
 #else
-        opts.pngEncoder = SkXPS::EncodePngUsingLibpng;
+        opts.pngEncoder = SkPngEncoder::EncodeUsingDefaultOptions;
 #endif  // SK_CODEC_ENCODES_PNG_WITH_RUST
     }
 #else

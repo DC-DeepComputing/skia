@@ -106,6 +106,15 @@ SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
 SK_API sk_sp<SkData> Encode(const SkPixmap& src, const Options& options);
 
 /**
+ *  Encode the |src| pixels to the |dst| stream using default encoding options.
+ *
+ *  Returns true on success.  Returns false on an invalid or unsupported |src|.
+ */
+inline bool EncodeUsingDefaultOptions(SkWStream* dst, const SkPixmap& src) {
+    return Encode(dst, src, {});
+}
+
+/**
 *  Encode the provided image and return the resulting bytes. If the image was created as
 *  a texture-backed image on a GPU context, that |ctx| must be provided so the pixels
 *  can be read before being encoded. For raster-backed images, |ctx| can be nullptr.
