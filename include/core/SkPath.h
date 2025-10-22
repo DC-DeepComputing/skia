@@ -35,11 +35,15 @@ enum class SkPathConvexity;
 struct SkPathRaw;
 struct SkPathVerbAnalysis;
 
+// TODO: update Android/Chrome to use the impl in SkPath_interpolate.cpp
+//       so we can remove this flag and its methods
+//#define SK_LEGACY_PATH_INTERPOLATE
+
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
 //#define SK_HIDE_PATH_EDIT_METHODS
 
 // Migrate clients so this is unneeded
-#define SK_LEGACY_PATH_ACCESSORS
+//#define SK_LEGACY_PATH_ACCESSORS
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -191,6 +195,7 @@ public:
         return !(a == b);
     }
 
+#ifdef SK_LEGACY_PATH_INTERPOLATE
     /** Returns true if SkPath contain equal verbs and equal weights.
         If SkPath contain one or more conics, the weights must match.
 
@@ -226,6 +231,30 @@ public:
         example: https://fiddle.skia.org/c/@Path_interpolate
     */
     SkPath makeInterpolate(const SkPath& ending, SkScalar weight) const;
+
+    /** Interpolates between SkPath with SkPoint array of equal size.
+        Copy verb array and weights to out, and set out SkPoint array to a weighted
+        average of this SkPoint array and ending SkPoint array, using the formula:
+        (Path Point * weight) + ending Point * (1 - weight).
+
+        weight is most useful when between zero (ending SkPoint array) and
+        one (this Point_Array); will work with values outside of this
+        range.
+
+        interpolate() returns false and leaves out unchanged if SkPoint array is not
+        the same size as ending SkPoint array. Call isInterpolatable() to check SkPath
+        compatibility prior to calling interpolate().
+
+        @param ending  SkPoint array averaged with this SkPoint array
+        @param weight  contribution of this SkPoint array, and
+                       one minus contribution of ending SkPoint array
+        @param out     SkPath replaced by interpolated averages
+        @return        true if SkPath contain same number of SkPoint
+
+        example: https://fiddle.skia.org/c/@Path_interpolate
+    */
+    bool interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const;
+#endif
 
     /** Returns SkPathFillType, the rule used to fill SkPath.
 
@@ -713,29 +742,6 @@ public:
         example: https://fiddle.skia.org/c/@Path_swap
     */
     void swap(SkPath& other);
-
-    /** Interpolates between SkPath with SkPoint array of equal size.
-        Copy verb array and weights to out, and set out SkPoint array to a weighted
-        average of this SkPoint array and ending SkPoint array, using the formula:
-        (Path Point * weight) + ending Point * (1 - weight).
-
-        weight is most useful when between zero (ending SkPoint array) and
-        one (this Point_Array); will work with values outside of this
-        range.
-
-        interpolate() returns false and leaves out unchanged if SkPoint array is not
-        the same size as ending SkPoint array. Call isInterpolatable() to check SkPath
-        compatibility prior to calling interpolate().
-
-        @param ending  SkPoint array averaged with this SkPoint array
-        @param weight  contribution of this SkPoint array, and
-                       one minus contribution of ending SkPoint array
-        @param out     SkPath replaced by interpolated averages
-        @return        true if SkPath contain same number of SkPoint
-
-        example: https://fiddle.skia.org/c/@Path_interpolate
-    */
-    bool interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const;
 
     /** Sets SkPathFillType, the rule used to fill SkPath. While there is no
         check that ft is legal, values outside of SkPathFillType are not supported.
