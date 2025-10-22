@@ -4843,6 +4843,7 @@ static void test_skbug_7435() {
             ->drawPath(path, paint);
 }
 
+#ifdef SK_LEGACY_PATH_INTERPOLATE
 static void test_interp(skiatest::Reporter* reporter) {
     SkPath p1, p2, out;
     REPORTER_ASSERT(reporter, p1.isInterpolatable(p2));
@@ -4887,6 +4888,7 @@ static void test_interp(skiatest::Reporter* reporter) {
 DEF_TEST(PathInterp, reporter) {
     test_interp(reporter);
 }
+#endif
 
 #ifndef SK_HIDE_PATH_EDIT_METHODS
 DEF_TEST(Path_multipleMoveTos, reporter) {
