@@ -14,6 +14,8 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 #include <vector>
 
 class SkData;
@@ -32,6 +34,18 @@ public:
         handler->add(std::move(androidStyleKey));
     }
 
+    static void CallBack2(void* data,
+                          skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                          const std::string& label,
+                          uint32_t uniqueKeyHash,
+                          uint32_t compilationID,
+                          bool fromPrecompile,
+                          bool wasUsed) {
+        PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(data);
+
+        handler->add(op, label, uniqueKeyHash, compilationID, fromPrecompile, wasUsed);
+    }
+
     // Add an Android-style key to the map
     void add(sk_sp<SkData> androidStyleKey) SK_EXCLUDES(fSpinLock);
 
@@ -44,6 +58,15 @@ public:
         SkAutoSpinlock lock{ fSpinLock };
         return fMap.count();
     }
+
+    void add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+             const std::string& label,
+             uint32_t uniqueKeyHash,
+             uint32_t compilationID,
+             bool fromPrecompile,
+             bool wasUsed);
+
+    void report1();
 
 private:
     mutable SkSpinlock fSpinLock;
@@ -59,6 +82,33 @@ private:
     };
 
     skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap SK_GUARDED_BY(fSpinLock);
+
+    struct key2 {
+        std::string fLabel;
+        uint32_t fUniqueKeyHash;
+
+        bool operator==(const key2& other) const {
+            return fUniqueKeyHash == other.fUniqueKeyHash &&
+                   fLabel == other.fLabel;
+        }
+    };
+
+    struct foo {
+        key2 fKey;
+        uint32_t fCompilationID;
+        bool fFromPrecompile;
+
+        uint32_t fUses = 0;
+    };
+
+    struct Traits2 {
+        static const key2& GetKey(foo*& e) { return e->fKey; }
+        static uint32_t Hash(const key2& k) { return k.fUniqueKeyHash; }
+
+        const SkData* fData;
+    };
+
+    skia_private::THashTable<foo*, key2, Traits2> fMap2;
 };
 
 }  // namespace skiatools::graphite
