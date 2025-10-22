@@ -277,12 +277,6 @@ def _make_default_flags():
         ],
     )
 
-    # Declare a feature that can be true or false
-    cpp20 = feature(
-        name = "skia_uses_cpp20",
-        enabled = False,
-    )
-
     # A big fancy if/else branch depending on if the above feature is True or False
     cpp20_flags = feature(
         name = "cpp20_flags",
@@ -302,23 +296,6 @@ def _make_default_flags():
                         ],
                     ),
                 ],
-                with_features = [with_feature_set(features = ["skia_uses_cpp20"])],
-            ),
-            flag_set(
-                actions = [
-                    ACTION_NAMES.cpp_compile,
-                    ACTION_NAMES.cpp_link_executable,
-                    ACTION_NAMES.cpp_link_dynamic_library,
-                    ACTION_NAMES.cpp_link_nodeps_dynamic_library,
-                ],
-                flag_groups = [
-                    flag_group(
-                        flags = [
-                            "-std=c++17",
-                        ],
-                    ),
-                ],
-                with_features = [with_feature_set(not_features = ["skia_uses_cpp20"])],
             ),
         ],
     )
