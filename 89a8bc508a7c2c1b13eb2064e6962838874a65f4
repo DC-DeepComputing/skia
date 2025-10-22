@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "863a1ec4_1d58984d",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T19:14:36Z",
+      "side": 0,
+      "message": "I assume none of the changes to this file are intended for this change?",
+      "revId": "89a8bc508a7c2c1b13eb2064e6962838874a65f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
