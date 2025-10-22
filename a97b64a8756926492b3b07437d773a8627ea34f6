@@ -51,6 +51,24 @@
       "message": "I\u0027d rather remove the `inline` than the `SK_API` (indeed, it\u0027s a little iffy to even have the implementation here, though its fine for now).",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d770b08d_8d0fd32c",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T19:23:26Z",
+      "side": 1,
+      "message": "In particular, it is difficult at this time to move the implementations to a cpp file due to then needing to actually add and use new file lists, currently we\u0027re getting away with this being an include and the includes not being checked (this migration would need to be done differently if Bazel were building this and actually enforcing visibility rules). So no need to even try to move the implementations to their own files for now.",
+      "parentUuid": "6d64d568_633f0765",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
