@@ -135,12 +135,10 @@
 #endif
 
 #if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
-#include "include/docs/SkXPSLibpngHelpers.h"
 #include "include/encode/SkPngEncoder.h"
 #endif
 
 #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-#include "include/docs/SkXPSRustPngHelpers.h"
 #include "include/encode/SkPngRustEncoder.h"
 #endif
 
@@ -2069,9 +2067,9 @@ Result XPSSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
     }
     SkXPS::Options xpsOpts;
 #if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
-    xpsOpts.pngEncoder = SkXPS::EncodePngUsingLibpng;
+    xpsOpts.pngEncoder = SkPngEncoder::EncodeUsingDefaultOptions;
 #elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-    xpsOpts.pngEncoder = SkXPS::EncodePngUsingRust;
+    xpsOpts.pngEncoder = SkPngRustEncoder::EncodeUsingDefaultOptions;
 #else
 #error "PNG encoder is required"
 #endif
