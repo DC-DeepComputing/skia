@@ -203,7 +203,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Path_isInterpolatable
     */
-    bool isInterpolatable(const SkPath& compare) const;
+    bool isInterpolatablex(const SkPath& compare) const;
 
     /** Interpolates between SkPath with SkPoint array of equal size.
         Copy verb array and weights to out, and set out SkPoint array to a weighted
@@ -225,7 +225,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Path_interpolate
     */
-    SkPath makeInterpolate(const SkPath& ending, SkScalar weight) const;
+    SkPath makeInterpolatex(const SkPath& ending, SkScalar weight) const;
 
     /** Returns SkPathFillType, the rule used to fill SkPath.
 
@@ -735,7 +735,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Path_interpolate
     */
-    bool interpolate(const SkPath& ending, SkScalar weight, SkPath* out) const;
+    bool interpolatex(const SkPath& ending, SkScalar weight, SkPath* out) const;
 
     /** Sets SkPathFillType, the rule used to fill SkPath. While there is no
         check that ft is legal, values outside of SkPathFillType are not supported.

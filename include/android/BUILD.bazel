@@ -13,6 +13,7 @@ skia_filegroup(
         "GrAHardwareBufferUtils.h",
         "SkCanvasAndroid.h",
         "SkImageAndroid.h",
+        "SkPathAndroid.h",
         "SkSurfaceAndroid.h",
     ],
     visibility = [
