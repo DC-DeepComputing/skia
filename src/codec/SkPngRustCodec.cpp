@@ -1015,8 +1015,14 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
             return result;
         }
 
+        if (dstSlice.size() >= 4) {
+            fprintf(stderr, "SkPngRustCodec.cpp:%d: PIXEL(0,%d) = %02x %02x %02x %02x\n",
+                    __LINE__, rowsDecoded, dstSlice[0], dstSlice[1], dstSlice[2], dstSlice[3]);
+        }
+
         // No more rows.
         if (rustResult == rust_png::DecodingResult::EndOfFrame) {
+            fprintf(stderr, "SkPngRustCodec.cpp:%d: END OF FRAME\n", __LINE__);
             if (interlaced && !decodingState.fPreblendBuffer.empty()) {
                 blendAllRows(decodingDst.fDst,
                              decodingState.fPreblendBuffer,
@@ -1089,6 +1095,7 @@ SkCodec::Result SkPngRustCodec::onStartIncrementalDecode(const SkImageInfo& dstI
                                                          void* pixels,
                                                          size_t rowBytes,
                                                          const Options& options) {
+    fprintf(stderr, "SkPngRustCodec.cpp:%d: onStartIncrementalDecode\n", __LINE__);
     DecodingState decodingState;
     Result result = this->startDecoding(dstInfo, pixels, rowBytes, options, &decodingState);
     if (result != kSuccess) {
@@ -1102,6 +1109,7 @@ SkCodec::Result SkPngRustCodec::onStartIncrementalDecode(const SkImageInfo& dstI
 }
 
 SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
+    fprintf(stderr, "SkPngRustCodec.cpp:%d: onIncrementalDecode\n", __LINE__);
     if (!fIncrementalDecodingState.has_value()) {
         return kInvalidParameters;
     }
