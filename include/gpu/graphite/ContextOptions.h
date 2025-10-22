@@ -151,9 +151,9 @@ struct SK_API ContextOptions {
     std::optional<uint64_t> fVulkanVMALargeHeapBlockSize;
 
     /** Client-provided context that is passed to client-provided PipelineCallback. */
-    using PipelineCallbackContext = void*;
+    using PipelineCallbackContext1 = void*;
     /**  Client-provided callback that is called whenever Graphite encounters a new Pipeline. */
-    using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
+    using PipelineCallback1 = void (*)(PipelineCallbackContext1 context, sk_sp<SkData> pipelineData);
 
     /**
      *  These two members allow a client to register a callback that will be invoked
@@ -163,8 +163,28 @@ struct SK_API ContextOptions {
      *  a later date. The SkData is versioned however, so must be regenerated and
      *  re-serialized when it becomes out of date.
      */
-    PipelineCallbackContext fPipelineCallbackContext = nullptr;
-    PipelineCallback fPipelineCallback = nullptr;
+    PipelineCallbackContext1 fPipelineCallbackContext1 = nullptr;
+    PipelineCallback1 fPipelineCallback1 = nullptr;
+
+    enum class PipelineCacheOp {
+        kAddingPipeline,
+        kCreationRace,
+        kPipelineFound,
+    };
+
+    /** Client-provided context that is passed to client-provided PipelineCallback. */
+    using PipelineCallbackContext2 = void*;
+    /**  Client-provided callback that is called whenever Graphite encounters a new Pipeline. */
+    using PipelineCallback2 = void (*)(PipelineCallbackContext2 context,
+                                       PipelineCacheOp,
+                                       const std::string& label,
+                                       uint32_t uniqueKeyHash,
+                                       uint32_t compilationID,
+                                       bool fromPrecompile,
+                                       bool wasUsed);
+
+    PipelineCallbackContext2 fPipelineCallbackContext2 = nullptr;
+    PipelineCallback2 fPipelineCallback2 = nullptr;
 
     /**
      * The runtime effects provided here will be registered as user-defined *known* runtime

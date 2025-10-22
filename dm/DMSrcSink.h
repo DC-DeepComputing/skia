@@ -133,6 +133,8 @@ struct Sink {
     // You may write to either the bitmap or stream.  If you write to log, we'll print that out.
     [[nodiscard]] virtual Result draw(const Src&, SkBitmap*, SkWStream*, SkString* log) const = 0;
 
+    virtual void done() const {}
+
     // Override the color space of this Sink, after creation
     virtual void setColorSpace(sk_sp<SkColorSpace>) {}
 
@@ -637,6 +639,8 @@ public:
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
 
+    void done() const override;
+
     const char* fileExtension() const override {
         // Suppress writing out results from this config - we just want to check that
         // the precompilation API is expressive enough and prepopulates the cache.
@@ -644,6 +648,8 @@ public:
         // However; if all the keys match, as is expected, the images should always match.
         return nullptr;
     }
+
+    std::unique_ptr<skiatools::graphite::PipelineCallBackHandler> fPipelineHandler;
 
 private:
 
