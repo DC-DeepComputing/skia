@@ -1063,7 +1063,7 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
         *dst = tmp.detach(&matrix);
     } else {
         SkPathConvexity convexity = this->getConvexityOrUnknown();
-
+#if 0
         SkPathRef::CreateTransformedCopy(&dst->fPathRef, *fPathRef, matrix);
 
         if (this != dst) {
@@ -1073,7 +1073,7 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
         }
 
         dst->setConvexity(SkPathPriv::TransformConvexity(matrix, fPathRef->pointSpan(), convexity));
-
+#endif
         SkDEBUGCODE(dst->validate();)
     }
 }

@@ -171,6 +171,8 @@ public:
 private:
     friend class SkNVRefCnt<SkPathData>;
     friend class SkPathPriv;
+    friend class SkPath;
+    friend class SkPathBuilder;
 
     SkSpan<SkPoint>    fPoints;
     SkSpan<float>      fConics;
