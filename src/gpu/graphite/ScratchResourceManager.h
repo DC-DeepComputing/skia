@@ -80,6 +80,13 @@ public:
                            std::unique_ptr<ProxyReadCountMap>);
     ~ScratchResourceManager();
 
+    enum class ScratchResourceUsage : int {
+        kInvalid           =      0, // dst texture proxy for CopyTextureToTextureTask
+        kDstTextureForCopy = 1 << 1,
+        kRenderPassTarget  = 1 << 2,
+        kTextureUpload     = 1 << 3,
+    }
+
     // Get a scratch texture with the given size and texture info. The returned texture will
     // not be reusable until the caller invokes `returnResource()`. At that point, subsequent
     // compatible calls to getScratchTexture() may return the texture. If there is no compatible
@@ -190,6 +197,17 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    // A scratch resource's label will be modified on a recorder thread and will become immutable
+    // after snap() is called on the recorder, so the map is trivially threadsafe.
+    //
+    // Since scratch resources are only ever used for Graphite-internal rendering purposes, their
+    // associated TextureProxy labels are all constant strings. Represent scratch labels as a
+    // bitmask of possible usages.
+    //
+    // TODO: The scratch label map needs to move on to the snapped Recording so that it’s available
+    // in insertRecording to sync the dynamic labels with the Resource and backend resource.
+    skia_private::THashSet<std::string> fLabelMap;
 };
 
 } // namespace skgpu::graphite

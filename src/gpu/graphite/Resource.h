@@ -508,6 +508,7 @@ private:
     static inline constexpr uint64_t PurgeableMask() {
         return RefMask(RefType::kUsage) | RefMask(RefType::kCommandBuffer);
     }
+    // static inline constexpr uint64_t
 
     template <RefType kType, bool MustHaveUsageRefs=true>
     void addRef() const {
@@ -689,8 +690,54 @@ private:
     uint32_t fLastUseToken;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
+    // String used to describe the current use of this Resource. Note that the backend resource's
+    // label will only be synced at certain times depending upon its shareability.
     std::string fLabel;
+
+    // Thread-safe state to track when syncing to the backend must occur
+    bool fShouldUpdateBackendResourceLabel = false;
+
+    // TODO: For resource sharing types whose labels should never be changing, perform sync step
+    // explicitly outside of insertRecording since the backend APIs are thread-safe. A one-time
+    // label update for a very reusable resource shouldn’t contribute to contention.
+    bool fBackendLabelUpdateIsThreadsafe = false;
+
+
+
+    // When a Resource's label can be updated
+    enum class LabelUpdateFlag : int {
+        kNever                  =      0,
+        kUponRecordingInsertion = 1 << 1,
+        kWhenReusable           = 1 << 2,
+        kUponCreation           = 1 << 3,
+    }
+
+    // When the backend resource's label can be updated
+    enum class BackendLabelUpdateFlag : int {
+        kNever                  =      0,
+        kUponRecordingInsertion = 1 << 1,
+        kWhenReusable           = 1 << 2,
+        kUponCreation           = 1 << 3,
+    };
+
+    class ModifierFlags : public SkEnumBitMask<SkSL::ModifierFlag> {
+    public:
+        using SkEnumBitMask<SkSL::ModifierFlag>::SkEnumBitMask;
+        ModifierFlags(SkEnumBitMask<SkSL::ModifierFlag> that)
+                : SkEnumBitMask<SkSL::ModifierFlag>(that) {}
+
+        std::string description() const;
+        std::string paddedDescription() const;
+
+        /**
+         * Verifies that only permitted modifier flags are included. Reports errors and returns false in
+         * the event of a violation.
+         */
+        bool checkPermittedFlags(const Context& context,
+                                Position pos,
+                                ModifierFlags permittedModifierFlags) const;
+    };
+    const uint64_t fBackendResourceLabelUpdateMask;
 };
 
 } // namespace skgpu::graphite

@@ -159,6 +159,10 @@ Context::~Context() {
 #endif
 }
 
+Context::scynchronizeBackendResourceLabels() {
+
+}
+
 Context::PixelTransferResult::PixelTransferResult() = default;
 Context::PixelTransferResult::PixelTransferResult(const PixelTransferResult&) = default;
 Context::PixelTransferResult::PixelTransferResult(PixelTransferResult&&) = default;
@@ -869,6 +873,11 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
     fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
     fSharedContext->purgeResourcesNotUsedSince(purgeTime);
+}
+
+void Context::scynchronizeBackendResourceLabels() {
+    ASSERT_SINGLE_OWNER
+    fResourceProvider->synchronizeBackendResourceLabels();
 }
 
 size_t Context::currentBudgetedBytes() const {
