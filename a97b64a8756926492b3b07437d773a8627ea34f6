@@ -87,6 +87,24 @@
       "parentUuid": "d770b08d_8d0fd32c",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ff1b84_87f78682",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-22T20:04:08Z",
+      "side": 1,
+      "message": "Remove the `inline` and keep the `SK_API`. Nothing else.",
+      "parentUuid": "33f16f31_9506a2da",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
