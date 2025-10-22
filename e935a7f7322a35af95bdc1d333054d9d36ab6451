@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a023dd0d_7a4025ed",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-22T12:53:41Z",
+      "side": 0,
+      "message": "Let\u0027s keep an equivalent assert.",
+      "revId": "e935a7f7322a35af95bdc1d333054d9d36ab6451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

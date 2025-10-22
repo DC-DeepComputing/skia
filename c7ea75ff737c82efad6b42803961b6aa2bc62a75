@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "730f25b7_c7ccc2cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-22T12:53:41Z",
+      "side": 1,
+      "message": "Neat!",
+      "revId": "c7ea75ff737c82efad6b42803961b6aa2bc62a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "078b855d_022d94f4",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-22T12:53:41Z",
+      "side": 1,
+      "message": "Kinda bugs me that we have a smaller/signed range for this than fPts size.  Is the -1 sentinel value still important?\n\nMaybe something to look at separately.",
+      "range": {
+        "startLine": 989,
+        "startChar": 4,
+        "endLine": 989,
+        "endChar": 7
+      },
+      "revId": "c7ea75ff737c82efad6b42803961b6aa2bc62a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c959119_87380c1b",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-22T12:53:41Z",
+      "side": 1,
+      "message": "`// Tracks the last moveTo point index`",
+      "range": {
+        "startLine": 989,
+        "startChar": 32,
+        "endLine": 989,
+        "endChar": 72
+      },
+      "revId": "c7ea75ff737c82efad6b42803961b6aa2bc62a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
