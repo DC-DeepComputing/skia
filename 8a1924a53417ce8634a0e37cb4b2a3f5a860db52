@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "221ec7bb_5da024dd",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-22T14:30:26Z",
+      "side": 1,
+      "message": "nit: I find it kind of odd to have a `std::optional` param with `required...` name. Not positive about what could be better, perhaps `samplerFilterOverride`?",
+      "range": {
+        "startLine": 165,
+        "startChar": 71,
+        "endLine": 165,
+        "endChar": 92
+      },
+      "revId": "8a1924a53417ce8634a0e37cb4b2a3f5a860db52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
