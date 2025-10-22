@@ -28,7 +28,6 @@
 #include <tuple>
 
 class SkData;
-class SkPathRef;
 class SkRRect;
 class SkWStream;
 enum class SkPathConvexity;
@@ -36,10 +35,21 @@ struct SkPathRaw;
 struct SkPathVerbAnalysis;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 // Migrate clients so this is unneeded
 #define SK_LEGACY_PATH_ACCESSORS
+
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+    // enable this to try using SkPathData
+//    #define SK_PATH_USES_PATHDATA
+#endif
+
+#ifdef SK_PATH_USES_PATHDATA
+class SkPathData;
+#else
+class SkPathRef;
+#endif
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -1923,6 +1933,13 @@ public:
     using sk_is_trivially_relocatable = std::true_type;
 
 private:
+#ifdef SK_PATH_USES_PATHDATA
+    SkPath(sk_sp<SkPathData>, SkPathFillType, bool isVolatile);
+
+    sk_sp<SkPathData> fPathData;
+    SkPathFillType    fFillType;
+    bool              fIsVolatile;
+#else
     SkPath(sk_sp<SkPathRef>, SkPathFillType, bool isVolatile, SkPathConvexity);
 
     sk_sp<SkPathRef>             fPathRef;
@@ -1943,6 +1960,7 @@ private:
      *  Doesn't change fGenerationID or fSourcePath on Android.
      */
     void copyFields(const SkPath& that);
+#endif
 
     size_t writeToMemoryAsRRect(void* buffer) const;
     size_t readAsRRect(const void*, size_t);
