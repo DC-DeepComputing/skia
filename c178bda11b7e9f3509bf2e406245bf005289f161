@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4cd96dd_2f37c398",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-22T14:56:23Z",
+      "side": 1,
+      "message": "Thanks Jorge!, but https://skia-review.googlesource.com/c/skia/+/1081956 is about to land to fix this",
+      "revId": "c178bda11b7e9f3509bf2e406245bf005289f161",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
