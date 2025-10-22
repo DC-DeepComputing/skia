@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77b2ff9_5479bcc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-22T15:17:55Z",
+      "side": 1,
+      "message": "This file shouldn\u0027t actually have any impact as of https://skia-review.googlesource.com/c/skia/+/1037096",
+      "revId": "c442edd6c327295c9e063620e64c513596d33695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
