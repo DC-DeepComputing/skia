@@ -69,6 +69,24 @@
       "parentUuid": "6d64d568_633f0765",
       "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f16f31_9506a2da",
+        "filename": "include/docs/SkXPSLibpngHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-22T20:00:12Z",
+      "side": 1,
+      "message": "\u003e So no need to even try to move the implementations to their own files for now.\n\nI don\u0027t understand what you mean here.  Do you want to:\n\n1. Keep these APIs as `inline`?\n2. Make those APIs non-`inline` and `SK_API` + move implementation of those APIs into an existing `.cpp` file (it has to be a libpng-specific or RustPNG-specific `.cpp` file - so I guess `SkPngRustEncoder.cpp`?)?\n\nMaybe this is an opportunity to rethink the decision to have these as a separate Skia component.  In other words, maybe we want to go back to what I had in an earlier patchset in https://skia-review.googlesource.com/c/skia/+/1073497/3 (API-wise, for `BUILD.gn` we may also need to add a dependency from `:xps` to `:png_encode_rust` or `:png_encode_libpng`).  I still think it would be best to expose those APIs from `SkPngRustEncoder.h` and `SkPngEncoder.h` (rather than having a separate `include/docs-or-svg/...LibpngHelpers.h` and `...RustPngHelpers.`):\n\n* Pros:\n    * Avoids having to create 4 separate components (in `.gni` files, in `BUILD.bazel` files, in Skia\u0027s root `BUILD.gn`): `xps_libpng_helpers`, `xps_rust_png_helpers`, `svg_libpng_helpers`, `svg_rust_png_helpers` (and maybe one more for dependency injection for `SkWriteBuffer`).\n* Neutral:\n    * These 4 components are already tightly coupled with `SkPngEncoder` and/or `SkPngRustEncoder`.  So having those components doesn\u0027t really add flexibility to how Skia clients build things.\n* Cons:\n    * The default encoder settings can\u0027t independently evolve for XPS vs SVG vs other encoding scenarios.\n        - Counter-argument: I think encoding settings are going to be Rust/PNG-specific, rather than XPS-or-SVG-specific.  So if new helper will be needed, then it probably fits better in `SkPngRustEncoder.h` than in `SkXpsLibpngHelpers.h`.",
+      "parentUuid": "d770b08d_8d0fd32c",
+      "revId": "a97b64a8756926492b3b07437d773a8627ea34f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
