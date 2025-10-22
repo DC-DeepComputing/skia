@@ -33,10 +33,10 @@ struct LiftedExpression {
     bool fEmitVarying = true;
 };
 
-std::string get_uniform_header(int set, int bufferID, const char* name) {
+std::string get_uniform_header(int set, int bufferID) {
     std::string result;
     SkSL::String::appendf(
-            &result, "layout (set=%d, binding=%d) uniform %sUniforms {\n", set, bufferID, name);
+            &result, "layout (set=%d, binding=%d) uniform CombinedUniforms {\n", set, bufferID);
     return result;
 }
 
@@ -200,9 +200,12 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
                 "layout (%s, push_constant) uniform IntrinsicUniforms {\n",
                 bindingReqs.fBackendApi == BackendApi::kVulkan ? "vulkan" : "webgpu");
     } else {
-        result = get_uniform_header(bindingReqs.fUniformsSetIdx,
-                                    bindingReqs.fIntrinsicBufferBinding,
-                                    "Intrinsic");
+        std::string header;
+        SkSL::String::appendf(&header,
+                              "layout (set=%d, binding=%d) uniform IntrinsicUniforms {\n",
+                              bindingReqs.fUniformsSetIdx,
+                              bindingReqs.fIntrinsicBufferBinding);
+        result = std::move(header);
     }
     result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
@@ -212,23 +215,29 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
     return result;
 }
 
-std::string emit_paint_params_uniforms(int set,
-                                       int bufferID,
-                                       const Layout layout,
-                                       SkSpan<const ShaderNode*> nodes,
-                                       int* numUniforms,
-                                       int* numUnliftedUniforms,
-                                       bool* wrotePaintColor) {
+std::string emit_combined_uniforms(int set,
+                                   int bufferID,
+                                   const Layout layout,
+                                   SkSpan<const ShaderNode*> nodes,
+                                   SkSpan<const Uniform> stepUniforms,
+                                   int* numPaintUniforms,
+                                   int* numUnliftedPaintUniforms,
+                                   bool* wrotePaintColor) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
-    std::string result = get_uniform_header(set, bufferID, "FS");
+    std::string result = get_uniform_header(set, bufferID);
     for (const ShaderNode* n : nodes) {
         result +=
-                get_node_uniforms(&offsetter, n, numUniforms, numUnliftedUniforms, wrotePaintColor);
+                get_node_uniforms(&offsetter, n, numPaintUniforms, numUnliftedPaintUniforms, wrotePaintColor);
     }
+
+    if (!stepUniforms.empty()) {
+        result += get_uniforms(&offsetter, stepUniforms, -1, /* wrotePaintColor= */ nullptr);
+    }
+
     result.append("};\n\n");
 
-    if (*numUniforms == 0) {
+    if (*numPaintUniforms == 0 && stepUniforms.empty()) {
         // No uniforms were added
         return {};
     }
@@ -236,64 +245,43 @@ std::string emit_paint_params_uniforms(int set,
     return result;
 }
 
-std::string emit_render_step_uniforms(int set,
-                                      int bufferID,
-                                      const Layout layout,
-                                      SkSpan<const Uniform> uniforms) {
-    auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
-
-    std::string result = get_uniform_header(set, bufferID, "Step");
-    result += get_uniforms(&offsetter, uniforms, -1, /* wrotePaintColor= */ nullptr);
-    result.append("};\n\n");
-
-    return result;
-}
-
-std::string emit_paint_params_storage_buffer(int set,
-                                             int bufferID,
-                                             SkSpan<const ShaderNode*> nodes,
-                                             int* numUniforms,
-                                             int* numUnliftedUniforms,
-                                             bool* wrotePaintColor) {
+std::string emit_combined_storage_buffer(const char* bufferNamePrefix,
+                                         int set,
+                                         int bufferID,
+                                         SkSpan<const ShaderNode*> nodes,
+                                         SkSpan<const Uniform> stepUniforms,
+                                         int* numPaintUniforms,
+                                         int* numUnliftedPaintUniforms,
+                                         bool* wrotePaintColor) {
     std::string fields;
     for (const ShaderNode* n : nodes) {
-        fields += get_node_ssbo_fields(n, numUniforms, numUnliftedUniforms, wrotePaintColor);
+        fields += get_node_ssbo_fields(n, numPaintUniforms, numUnliftedPaintUniforms, wrotePaintColor);
     }
 
-    if (*numUniforms == 0) {
+    if (!stepUniforms.empty()) {
+        fields += get_ssbo_fields(stepUniforms, -1, /*wrotePaintColor=*/nullptr);
+    }
+
+    if (*numPaintUniforms == 0 && stepUniforms.empty()) {
         // No uniforms were added
         return {};
     }
 
     return SkSL::String::printf(
-            "struct FSUniformData {\n"
-                "%s\n"
+            "struct CombinedUniformData {\n"
+            "    %s\n"
             "};\n\n"
-            "layout (set=%d, binding=%d) readonly buffer FSUniforms {\n"
-                "FSUniformData fsUniformData[];\n"
+            "layout (set=%d, binding=%d) readonly buffer CombinedUniforms {\n"
+            "    CombinedUniformData %sCombinedUniformData[];\n"
             "};\n",
             fields.c_str(),
             set,
-            bufferID);
-}
-
-std::string emit_render_step_storage_buffer(int set, int bufferID, SkSpan<const Uniform> uniforms) {
-    SkASSERT(!uniforms.empty());
-    std::string fields = get_ssbo_fields(uniforms, -1, /*wrotePaintColor=*/nullptr);
-    return SkSL::String::printf(
-            "struct StepUniformData {\n"
-            "%s\n"
-            "};\n\n"
-            "layout (set=%d, binding=%d) readonly buffer StepUniforms {\n"
-            "    StepUniformData stepUniformData[];\n"
-            "};\n",
-            fields.c_str(),
-            set,
-            bufferID);
+            bufferID,
+            bufferNamePrefix);
 }
 
 std::string emit_uniforms_from_storage_buffer(const char* bufferNamePrefix,
-                                              const char* shadingSsboIndex,
+                                              const char* indexVariableName,
                                               SkSpan<const Uniform> uniforms) {
     std::string result;
 
@@ -303,9 +291,9 @@ std::string emit_uniforms_from_storage_buffer(const char* bufferNamePrefix,
             SkSL::String::appendf(&result, "[%d]", u.count());
         }
         SkSL::String::appendf(&result,
-                              " = %sUniformData[%s].%s;\n",
+                              " = %sCombinedUniformData[%s].%s;\n",
                               bufferNamePrefix,
-                              shadingSsboIndex,
+                              indexVariableName,
                               u.name());
     }
 
@@ -437,7 +425,7 @@ std::string emit_varyings(const RenderStep* step,
     };
 
     if (emitSsboIndicesVarying) {
-        appendVarying({RenderStep::ssboIndicesVarying(), SkSLType::kUInt2});
+        appendVarying({RenderStep::ssboIndicesVarying(), SkSLType::kUInt});
     }
 
     if (emitLocalCoordsVarying) {
@@ -759,8 +747,8 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                              skgpu::Swizzle writeSwizzle,
                                              DstReadStrategy dstReadStrategy,
                                              skia_private::TArray<SamplerDesc>* outDescs) {
-    const char* shadingSsboIndex =
-            useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
+    const char* uniformSsboIndex =
+            useStorageBuffers && step->performsShading() ? "uniformSsboIndex" : nullptr;
 
     // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
     const bool hasFragShader = paintID.isValid();
@@ -770,7 +758,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     // do not need to read the dst texture and can assign the DstReadStrategy to kNoneRequired.
     auto result = std::unique_ptr<ShaderInfo>(
             new ShaderInfo(dict, rteDict,
-                           shadingSsboIndex,
+                           uniformSsboIndex,
                            hasFragShader ? dstReadStrategy : DstReadStrategy::kNoneRequired));
 
     // De-compressed shader tree from a PaintParamsKey. There can be 1 or 2 root nodes, the first
@@ -805,11 +793,11 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
 
 ShaderInfo::ShaderInfo(const ShaderCodeDictionary* shaderCodeDictionary,
                        const RuntimeEffectDictionary* rteDict,
-                       const char* shadingSsboIndex,
+                       const char* uniformSsboIndex,
                        DstReadStrategy dstReadStrategy)
         : fShaderCodeDictionary(shaderCodeDictionary)
         , fRuntimeEffectDictionary(rteDict)
-        , fShadingSsboIndex(shadingSsboIndex)
+        , fUniformSsboIndex(uniformSsboIndex)
         , fDstReadStrategy(dstReadStrategy) {}
 
 namespace {
@@ -855,13 +843,14 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(key.isValid());  // invalid keys should have been caught by invalid paint ID earlier
 
     std::string label = key.toString(dict).c_str();
+    fSsboBufferPrefix = "fs";
 
     // Two varyings are reserved for 1) the SSBO indices and 2) local coordinates.
     constexpr int kFixedVaryings = 2;
     const int availableVaryings = caps->maxVaryings() - kFixedVaryings - step->varyings().size();
     *rootNodes = key.getRootNodes(caps, dict, &shaderNodeAlloc, availableVaryings);
     fNeedsLocalCoords = !rootNodes->empty() && SkToBool((*rootNodes)[0]->requiredFlags() &
-                                                        SnippetRequirementFlags::kLocalCoords);
+                                                       SnippetRequirementFlags::kLocalCoords);
 
     // TODO(b/366220690): aggregateSnippetData() goes away entirely once the VulkanGraphicsPipeline
     // is updated to use the extracted SamplerDescs directly.
@@ -935,8 +924,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     const bool hasStepUniforms = step->numUniforms() > 0 && step->usesUniformsInFragmentSkSL();
-    const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
-    const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
+    // Use a single storage buffer for both paint and step uniforms.
+    const bool useUniformStorageBuffer = useStorageBuffers && step->performsShading();
 
     auto allReqFlags = srcColorRoot->requiredFlags() | finalBlendRoot->requiredFlags();
     if (clipRoot) {
@@ -957,29 +946,39 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     int numPaintUniforms = 0;
     int numUnliftedPaintUniforms = 0;
     bool wrotePaintColor = false;
-    if (useShadingStorageBuffer) {
-        preamble = emit_paint_params_storage_buffer(bindingReqs.fUniformsSetIdx,
-                                                    bindingReqs.fPaintParamsBufferBinding,
-                                                    *rootNodes,
-                                                    &numPaintUniforms,
-                                                    &numUnliftedPaintUniforms,
-                                                    &wrotePaintColor);
-        SkSL::String::appendf(&preamble, "uint %s;\n", this->shadingSsboIndex());
+
+    // Emit a single combined UBO or SSBO for paint and step uniforms
+    if (useUniformStorageBuffer) {
+        preamble = emit_combined_storage_buffer("fs",
+                                                bindingReqs.fUniformsSetIdx,
+                                                bindingReqs.fCombinedUniformBufferBinding,
+                                                *rootNodes,
+                                                step->usesUniformsInFragmentSkSL()
+                                                        ? step->uniforms()
+                                                        : SkSpan<const Uniform>{},
+                                                &numPaintUniforms,
+                                                &numUnliftedPaintUniforms,
+                                                &wrotePaintColor);
+        SkSL::String::appendf(&preamble, "uint %s;\n", this->uniformSsboIndex());
     } else {
-        preamble = emit_paint_params_uniforms(bindingReqs.fUniformsSetIdx,
-                                              bindingReqs.fPaintParamsBufferBinding,
-                                              bindingReqs.fUniformBufferLayout,
-                                              *rootNodes,
-                                              &numPaintUniforms,
-                                              &numUnliftedPaintUniforms,
-                                              &wrotePaintColor);
+        preamble = emit_combined_uniforms(bindingReqs.fUniformsSetIdx,
+                                          bindingReqs.fCombinedUniformBufferBinding,
+                                          bindingReqs.fUniformBufferLayout,
+                                          *rootNodes,
+                                          step->usesUniformsInFragmentSkSL()
+                                                  ? step->uniforms()
+                                                  : SkSpan<const Uniform>{},
+                                          &numPaintUniforms,
+                                          &numUnliftedPaintUniforms,
+                                          &wrotePaintColor);
     }
     fHasPaintUniforms = numPaintUniforms > 0;
     fHasLiftedPaintUniforms = numPaintUniforms - numUnliftedPaintUniforms > 0;
     const bool hasUnliftedPaintUniforms = numUnliftedPaintUniforms > 0;
 
-    fHasSsboIndicesVarying = useShadingStorageBuffer &&
-                             (hasUnliftedPaintUniforms || hasStepUniforms);
+    fHasSsboIndicesVarying = useUniformStorageBuffer &&
+            (hasUnliftedPaintUniforms || hasStepUniforms);
+
     const bool defineLocalCoordsVarying = this->needsLocalCoords();
     preamble += emit_varyings(step,
                               /*direction=*/"in",
@@ -1003,19 +1002,6 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                 /*input attachment idx within set=*/0,
                 /*input attachment set idx=*/bindingReqs.fInputAttachmentSetIdx,
                 /*binding=*/0);
-    }
-
-    if (hasStepUniforms) {
-        if (useStepStorageBuffer) {
-            preamble += emit_render_step_storage_buffer(bindingReqs.fUniformsSetIdx,
-                                                        bindingReqs.fRenderStepBufferBinding,
-                                                        step->uniforms());
-        } else {
-            preamble += emit_render_step_uniforms(bindingReqs.fUniformsSetIdx,
-                                                  bindingReqs.fRenderStepBufferBinding,
-                                                  bindingReqs.fUniformBufferLayout,
-                                                  step->uniforms());
-        }
     }
 
     if (useGradientStorageBuffer) {
@@ -1070,8 +1056,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     if (fHasSsboIndicesVarying) {
         SkSL::String::appendf(&mainBody,
-                              "%s = %s.y;\n",
-                              this->shadingSsboIndex(),
+                              "%s = %s;\n",
+                              this->uniformSsboIndex(),
                               RenderStep::ssboIndicesVarying());
     }
 
@@ -1139,12 +1125,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         // Accumulate the output coverage. This will either modify the src color and secondary
         // outputs for dual-source blending, or be combined directly with the in-shader blended
         // final color if a dst-readback was required.
-        if (useStepStorageBuffer) {
-            SkSL::String::appendf(&mainBody,
-                                  "uint stepSsboIndex = %s.x;\n",
-                                  RenderStep::ssboIndicesVarying());
+
+        if (useUniformStorageBuffer && hasStepUniforms) {
             mainBody +=
-                    emit_uniforms_from_storage_buffer("step", "stepSsboIndex", step->uniforms());
+                    emit_uniforms_from_storage_buffer("fs", this->uniformSsboIndex(),
+                                                      step->uniforms());
         }
 
         mainBody += "half4 outputCoverage = half4(1);";
@@ -1255,14 +1240,14 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                     bool useStorageBuffers,
                                     SkSpan<const ShaderNode*> rootNodes) {
     const bool hasStepUniforms = step->numUniforms() > 0;
-    const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
-    const bool useShadingStorageBuffer = useStorageBuffers && step->performsShading();
     const bool defineLocalCoordsVarying = this->needsLocalCoords();
+    fSsboBufferPrefix = "vs";
 
     // Fixed program header (intrinsics are always declared as an uniform interface block)
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     std::string sksl = emit_intrinsic_constants(bindingReqs);
 
+    // Add vertex attributes
     if (step->numStaticAttributes() > 0 || step->numAppendAttributes() > 0) {
         int attr = 0;
         auto add_attrs = [&sksl, &attr](SkSpan<const Attribute> attrs) {
@@ -1286,46 +1271,50 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
         }
     }
 
-    // Uniforms needed by RenderStep
-    // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
-    if (hasStepUniforms) {
-        if (useStepStorageBuffer) {
-            sksl += emit_render_step_storage_buffer(bindingReqs.fUniformsSetIdx,
-                                                    bindingReqs.fRenderStepBufferBinding,
-                                                    step->uniforms());
-        } else {
-            sksl += emit_render_step_uniforms(bindingReqs.fUniformsSetIdx,
-                                              bindingReqs.fRenderStepBufferBinding,
-                                              bindingReqs.fUniformBufferLayout,
-                                              step->uniforms());
+    // Determine if any lifted expressions require paint uniforms
+    const std::vector<LiftedExpression> liftedExpr = collect_lifted_expressions(rootNodes);
+    fHasLiftedPaintUniforms = false;
+    if (step->performsShading()) { // Only check paint uniforms if the step actually shades
+        for (const auto& expr : liftedExpr) {
+            if (!expr.fNode->entry()->fUniforms.empty()) {
+                fHasLiftedPaintUniforms = true;
+                break;
+            }
         }
     }
 
-    const std::vector<LiftedExpression> liftedExpr = collect_lifted_expressions(rootNodes);
+    // Determine if we need the combined UBO/SSBO and the SSBO index varying
+    const bool needsCombinedBuffer = hasStepUniforms || fHasLiftedPaintUniforms;
+    const bool useUniformStorageBuffer = useStorageBuffers && needsCombinedBuffer;
+    fHasSsboIndicesVarying = useUniformStorageBuffer; // Need index if using SSBO at all
 
-    if (fHasLiftedPaintUniforms) {
+    // Emit combined UBO or SSBO if needed
+    if (needsCombinedBuffer) {
         int unusedNumPaintUniforms = 0;
         int unusedNumUnliftedPaintUniforms = 0;
         bool unusedWrotePaintColor = false;
-        if (useShadingStorageBuffer) {
-            sksl += emit_paint_params_storage_buffer(bindingReqs.fUniformsSetIdx,
-                                                     bindingReqs.fPaintParamsBufferBinding,
-                                                     rootNodes,
-                                                     &unusedNumPaintUniforms,
-                                                     &unusedNumUnliftedPaintUniforms,
-                                                     &unusedWrotePaintColor);
+        if (useUniformStorageBuffer) {
+            sksl += emit_combined_storage_buffer("vs",
+                                                 bindingReqs.fUniformsSetIdx,
+                                                 bindingReqs.fCombinedUniformBufferBinding,
+                                                 rootNodes,
+                                                 step->uniforms(),
+                                                 &unusedNumPaintUniforms,
+                                                 &unusedNumUnliftedPaintUniforms,
+                                                 &unusedWrotePaintColor);
         } else {
-            sksl += emit_paint_params_uniforms(bindingReqs.fUniformsSetIdx,
-                                               bindingReqs.fPaintParamsBufferBinding,
-                                               bindingReqs.fUniformBufferLayout,
-                                               rootNodes,
-                                               &unusedNumPaintUniforms,
-                                               &unusedNumUnliftedPaintUniforms,
-                                               &unusedWrotePaintColor);
+            sksl += emit_combined_uniforms(bindingReqs.fUniformsSetIdx,
+                                           bindingReqs.fCombinedUniformBufferBinding,
+                                           bindingReqs.fUniformBufferLayout,
+                                           rootNodes,
+                                           step->uniforms(),
+                                           &unusedNumPaintUniforms,
+                                           &unusedNumUnliftedPaintUniforms,
+                                           &unusedWrotePaintColor);
         }
     }
 
-    // Varyings needed by RenderStep
+    // Varyings needed by RenderStep and potentially lifted expressions
     sksl += emit_varyings(
             step, "out", liftedExpr, fHasSsboIndicesVarying, defineLocalCoordsVarying);
 
@@ -1333,70 +1322,75 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     sksl += "void main() {";
     // Create stepLocalCoords which render steps can write to.
     sksl += "float2 stepLocalCoords = float2(0);";
+
     // Vertex shader body
-    if (useStepStorageBuffer) {
-        // Extract out render step uniforms from SSBO, declaring local variables with the expected
-        // uniform names so that RenderStep SkSL is independent of storage choice.
-        SkSL::String::appendf(
-                &sksl, "uint stepSsboIndex = %s.x;\n", RenderStep::ssboIndicesAttribute());
-        sksl += emit_uniforms_from_storage_buffer("step", "stepSsboIndex", step->uniforms());
+    if (useUniformStorageBuffer && hasStepUniforms) {
+        // Define the SSBO index variable and extract uniforms if needed
+        SkSL::String::appendf(&sksl, "uint %s = %s;\n", this->uniformSsboIndex(),
+                              RenderStep::ssboIndicesAttribute());
+        sksl += emit_uniforms_from_storage_buffer("vs", this->uniformSsboIndex(), step->uniforms());
+        // Note: Lifted paint uniforms are extracted within the !liftedExpr.empty() block below
     }
 
+    // Inject RenderStep's main vertex logic
     sksl += step->vertexSkSL();
 
-    // We want to map the rectangle of logical device pixels from (0,0) to (viewWidth, viewHeight)
-    // to normalized device coordinates: (-1,-1) to (1,1) (actually -w to w since it's before
-    // homogenous division).
-    //
-    // For efficiency, this assumes viewport.zw holds the reciprocol of twice the viewport width and
-    // height. On some backends the NDC Y axis is flipped relative to the device and
-    // viewport coords (i.e. it points up instead of down). In those cases, it's also assumed that
-    // viewport.w holds a negative value. In that case the sign(viewport.zw) changes from
-    // subtracting w to adding w.
+    // Calculate sk_Position
     sksl += "sk_Position = float4(viewport.zw*devPosition.xy - sign(viewport.zw)*devPosition.ww,"
             "devPosition.zw);";
 
+    // Assign SSBO index to varying if needed
     if (fHasSsboIndicesVarying) {
-        // Assign SSBO index values to the SSBO index varying.
         SkSL::String::appendf(&sksl,
                               "%s = %s;",
                               RenderStep::ssboIndicesVarying(),
                               RenderStep::ssboIndicesAttribute());
     }
 
+    // Assign local coords to varying if needed
     if (defineLocalCoordsVarying) {
-        // Assign Render Step's stepLocalCoords to the localCoordsVar varying.
         sksl += "localCoordsVar = stepLocalCoords;";
     }
 
+    // Generate lifted expressions
     if (!liftedExpr.empty()) {
-        // If we're reading uniforms from a storage buffer, emit the SSBO index first.
-        if (this->shadingSsboIndex() && fHasLiftedPaintUniforms) {
-            SkSL::String::appendf(&sksl,
-                                  "uint %s = %s.y;\n",
-                                  this->shadingSsboIndex(),
-                                  RenderStep::ssboIndicesAttribute());
+        // If we're using SSBO for lifted paint uniforms but didn't define the index variable earlier
+        // (because hasStepUniforms was false), define it now.
+        if (useUniformStorageBuffer && fHasLiftedPaintUniforms && !hasStepUniforms) {
+             SkSL::String::appendf(
+                &sksl, "uint %s = %s;\n", this->uniformSsboIndex(), RenderStep::ssboIndicesAttribute());
         }
 
         for (const LiftedExpression& expr : liftedExpr) {
             const ShaderNode* node = expr.fNode;
-            const char* type = expr.fEmitVarying ? ""
-                                                 : SkSLTypeString(sksl_type_for_lifted_expression(
-                                                           node->entry()->fLiftableExpressionType));
+            // Determine the SkSL type string if not emitting directly to a varying
+            const char* typeStr = expr.fEmitVarying ? ""
+                                                    : SkSLTypeString(sksl_type_for_lifted_expression(
+                                                              node->entry()->fLiftableExpressionType));
             const std::string varName = node->getExpressionVaryingName();
-            const std::string expression =
-                    node->entry()->fLiftableExpressionGenerator(*this, node, expr.fArgs);
-            SkSL::String::appendf(&sksl, "%s %s = %s;", type, varName.c_str(), expression.c_str());
+
+            // Generate the expression code, potentially extracting uniforms from SSBO if needed
+            std::string expression;
+            // if (useUniformStorageBuffer && !node->entry()->fUniforms.empty()) {
+            //     // Temporarily extract uniforms needed by this lifted expression
+            //     sksl += emit_uniforms_from_storage_buffer("vs", this->uniformSsboIndex(),
+            //                                               node->entry()->fUniforms);
+            // }
+            expression = node->entry()->fLiftableExpressionGenerator(*this, node, expr.fArgs);
+
+            // Assign the expression result to the varying or a temporary variable
+            SkSL::String::appendf(&sksl, "%s %s = %s;", typeStr, varName.c_str(), expression.c_str());
         }
     }
 
-    sksl += "}";
+    sksl += "}"; // End main()
 
     fVertexSkSL = std::move(sksl);
     fVSLabel = step->name();
     if (defineLocalCoordsVarying) {
         fVSLabel += " (w/ local coords)";
     }
+    // Update fHasStepUniforms member (used elsewhere, but calculated locally above)
     fHasStepUniforms = hasStepUniforms;
 }
 
