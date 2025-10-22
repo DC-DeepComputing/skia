@@ -30,7 +30,7 @@ public:
     std::string vertexSkSL() const override;
     void writeVertices(DrawWriter* writer,
                        const DrawParams& params,
-                       skvx::uint2 ssboIndices) const override;
+                       uint32_t ssboIndices) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
     const char* fragmentColorSkSL() const override;
 

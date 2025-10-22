@@ -374,11 +374,10 @@ public:
 
     // Mark the end of extracting paint uniforms and textures. This finalizes the paint uniform
     // data, pads it correctly, and records its size.
-    UniformDataBlock endPaintData() {
+    void endPaintData() {
         fPaintTextureCount = fTextures.size();
-        auto paintData = UniformDataBlock::Wrap(&fUniformManager, /*subspanOffset=*/0);
-        fUniformManager.markNewOffset(); // No-op if already assigned
-        return paintData;
+        //TODO Does this need to align? I think no? Aligning should happen when we get rendersteps.
+        fUniformManager.markNewOffset(); // Mark the end of paint-time uniforms
     }
 
     // Mark the end of extracting uniforms and textures from a RenderStep.
@@ -387,9 +386,9 @@ public:
         if (!performsShading) {
             textures = textures.subspan(fPaintTextureCount);
         }
-        // By this point, the fStartingOffset of the uniform manager will have advanced to the end
-        // of the paint uniforms, so calling wrap now returns the renderstep uniforms.
-        return {UniformDataBlock::Wrap(&fUniformManager), TextureDataBlock(textures)};
+        // Return *all* uniform data (paint AND renderstep) written since the last resetForDraw().
+        return {UniformDataBlock::Wrap(&fUniformManager, /*subspanOffset=*/0),
+                TextureDataBlock(textures)};
     }
 
     // Rewind to collect data for another RenderStep using the same paint data.
