@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c5a8362_d3d9f58a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-22T13:54:26Z",
+      "side": 1,
+      "message": "Should help streamline some Chromium call sites (pathbuilder migration).",
+      "revId": "0ddc685549a3a2d7e41cf992161a52e5af9b59fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
