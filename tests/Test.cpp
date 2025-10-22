@@ -25,7 +25,7 @@ bool skiatest::Reporter::verbose() const { return false; }
 
 template skiatest::TestRegistry* skiatest::TestRegistry::gHead;
 
-void skiatest::Reporter::reportFailedWithContext(const skiatest::Failure& f) {
+void skiatest::Reporter::ose WithContext(const skiatest::Failure& f) {
     SkString fullMessage = f.message;
     if (!fContextStack.empty()) {
         fullMessage.append(" [");
