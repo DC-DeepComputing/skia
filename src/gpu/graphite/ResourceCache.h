@@ -109,6 +109,8 @@ public:
     // Registers the Resource with the cache; can only be called at the time of creation.
     void insertResource(Resource*, const GraphiteResourceKey&, Budgeted, Shareable);
 
+    void synchronizeBackendResourceLabels();
+
 private:
     ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);
 
@@ -190,6 +192,9 @@ private:
     // resources to process. A special sentinel address is used to encode when the cache is shut
     // down. Once set to that address, this will never change value.
     std::atomic<Resource*> fReturnQueue = nullptr;
+
+    // Mutex for managing Resource labeling thread safety
+    SkMutex fMutex;
 
     SingleOwner* fSingleOwner = nullptr;
     SkDEBUGCODE(int fCount = 0;)

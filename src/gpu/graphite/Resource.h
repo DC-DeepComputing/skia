@@ -10,6 +10,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkMutex.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -508,6 +509,7 @@ private:
     static inline constexpr uint64_t PurgeableMask() {
         return RefMask(RefType::kUsage) | RefMask(RefType::kCommandBuffer);
     }
+    // static inline constexpr uint64_t
 
     template <RefType kType, bool MustHaveUsageRefs=true>
     void addRef() const {
@@ -689,8 +691,28 @@ private:
     uint32_t fLastUseToken;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
+    // String used to describe the current use of this Resource. Note that the backend resource's
+    // label will only be synced at certain times depending upon its shareability.
     std::string fLabel;
+
+    // Thread-safe state to track when syncing to the backend must occur
+    bool fShouldUpdateBackendResourceLabel = false;
+
+    // TODO: For resource sharing types whose labels should never be changing, perform sync step
+    // explicitly outside of insertRecording since the backend APIs are thread-safe. A one-time
+    // label update for a very reusable resource shouldn’t contribute to contention.
+    // bool fBackendLabelUpdateIsThreadsafe = false;
+
+    enum class UpdateStageFlag : int {
+        kNever                  =      0,
+        kUponRecordingInsertion = 1 << 1,
+        kWhenReusable           = 1 << 2,
+        kUponCreation           = 1 << 3,
+    };
+    // When a Resource's label can be updated
+    SkEnumBitMask<UpdateStageFlag> fBaseResourceLabelUpdateStages;
+    // When the backend resource's label can be updated
+    SkEnumBitMask<UpdateStageFlag> fBackendResourceLabelUpdateStages;
 };
 
 } // namespace skgpu::graphite

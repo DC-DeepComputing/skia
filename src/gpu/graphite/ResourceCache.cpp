@@ -137,6 +137,8 @@ void ResourceCache::insertResource(Resource* resource,
         this->processReturnedResources();
     }
 
+    // Acquire mutex when inserting a resource into the cache
+    SkAutoMutexExclusive lock(fMutex);
     resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable);
 
     // We must set the use token before adding to the array in case the token wraps and we wind
@@ -160,6 +162,10 @@ void ResourceCache::insertResource(Resource* resource,
     this->purgeAsNeeded();
 }
 
+void ResourceCache::synchronizeBackendResourceLabels() {
+
+}
+
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
@@ -179,6 +185,8 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                (shareable != Shareable::kScratch || !unavailable->contains(r));
     };
 
+    // Acquire mutex for searching cache by key
+    SkAutoMutexExclusive lock(fMutex);
     Resource* resource = fResourceMap.find(key, shareablePredicate);
     if (!resource) {
         // The main reason to call processReturnedResources in this call is to see if there are any

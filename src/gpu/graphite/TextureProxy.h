@@ -103,7 +103,7 @@ public:
                                              Volatile,
                                              LazyInstantiateCallback&&);
 
-    static sk_sp<TextureProxy> Wrap(sk_sp<Texture>);
+    static sk_sp<TextureProxy> Wrap(sk_sp<Texture>, std::string_view label);
 
 private:
     TextureProxy(SkISize dimensions,

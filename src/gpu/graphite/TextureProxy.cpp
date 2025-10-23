@@ -215,7 +215,9 @@ sk_sp<TextureProxy> TextureProxy::MakeFullyLazy(const TextureInfo& textureInfo,
                                                 std::move(callback)));
 }
 
-sk_sp<TextureProxy> TextureProxy::Wrap(sk_sp<Texture> texture) {
+sk_sp<TextureProxy> TextureProxy::Wrap(sk_sp<Texture> texture, std::string_view label) {
+    // TODO: Use label passed in
+    // TODO: What about texture->getLabel() ?
     return sk_sp<TextureProxy>(new TextureProxy(std::move(texture)));
 }
 

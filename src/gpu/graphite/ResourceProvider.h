@@ -103,6 +103,9 @@ public:
     size_t getResourceCacheCurrentPurgeableBytes() const {
         return fResourceCache->currentPurgeableBytes();
     }
+    void synchronizeBackendResourceLabels() {
+        fResourceCache->synchronizeBackendResourceLabels();
+    }
 
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
         fResourceCache->dumpMemoryStatistics(traceMemoryDump);
