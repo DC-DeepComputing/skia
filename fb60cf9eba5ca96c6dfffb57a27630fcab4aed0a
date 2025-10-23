@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0abe084d_9c2fac3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-23T13:14:29Z",
+      "side": 1,
+      "message": "Const value params might make sense for the same reason const locals make sense -- mainly to help humans reason about state when looking at the implementation.  That said, all these seem trivial, so I agree there isn\u0027t much value.\n\n(see also https://abseil.io/tips/109)",
+      "revId": "fb60cf9eba5ca96c6dfffb57a27630fcab4aed0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
