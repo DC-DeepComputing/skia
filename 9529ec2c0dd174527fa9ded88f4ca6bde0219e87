@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0212f0aa_8adfe80b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T22:02:58Z",
+      "side": 1,
+      "message": "\u003e Assumption 1): yes. If someone does manage to make a custom SkCodec object (I\u0027ve never seen it done) then we\u0027ll break them and that\u0027s ok. \n\nYou don\u0027t need a custom `SkCodec` object to implement `SkXPS::EncodePngCallback` - this callback just takes a `SkWStream` and a `SkPixmap` and returns a `bool`.\n\n\u003e All our major clients will use one of the two \"pre-baked\" options.\n\nWhat prevents Chromium or google3 from providing a custom implementation of `SkXPS::EncodePngCallback`?  Maybe one that calls `SkPngEncoder` with custom compression level.  Or maybe one that writes a log entry for every PNG-in-XPS occurrence and then calls into the default encoding helper?\n\n\u003e Assumption 2): Yes, that might happen. Your suggestion sounds somewhat nice, but I\u0027d really rather not flood the `SkPngEncoder` namespace with helpers beyond what we have. We already have one there that has the option for different compressions, and more seems... superfluous.\n\nSure - we don\u0027t need those extra helpers, because Skia clients can already implement them themselves (as I describe above).",
+      "parentUuid": "b48cad56_e3bc12bd",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
