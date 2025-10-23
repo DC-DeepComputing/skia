@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "291e6e3a_d0988e2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T16:17:43Z",
+      "side": 1,
+      "message": "BTW, if (in step 7 of your 2nd timeline) we update `SkXPS::Options`, then I think it is unavoidable to update the clients (at least those clients who didn\u0027t use the default `SkXPS::Options` and actually set the 2-argument-encode-callback).",
+      "parentUuid": "f657c439_5bfd5f5a",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
