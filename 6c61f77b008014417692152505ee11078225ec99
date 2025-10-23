@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a6588e5_47561969",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-23T11:18:28Z",
+      "side": 0,
+      "message": "I would much prefer to just migrate clients who still need this. Then we can remove the dependency alltogether.",
+      "range": {
+        "startLine": 27,
+        "startChar": 13,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "6c61f77b008014417692152505ee11078225ec99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
