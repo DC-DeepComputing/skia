@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a55b345a_7b943995",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T17:23:57Z",
+      "side": 1,
+      "message": "I went for a walk with my dog, and now I think I understand better how you think the future scenario will look like:\n\n1. You assume that Skia clients will only set `SkXPS::Options::pngEncoder` to functions coming from `SkXPSLibpngHelpers.h` or `SkXPSRustPngHelpers.h`.\n\n    * If this assumption is true, then indeed simultaneously changing the signature of `SkXPS::EncodePngCallback` and the signature of functions in `SkXPS...Helpers.h`  should not break Skia clients.\n    * I note that this assumption is not enforced at this point - in theory a Skia clients could provide a custom, client-authored callback that matches the current `SkXPS::EncodePngCallback` signature (but not the hypothetical, new, 3-arg, future signature).  Such Skia clients would be broken even with the `PngHelpers.h` approach.\n        - Maybe we don\u0027t care about breaking such Skia clients?\n        - We can also add some enforcement.  Either:\n            - `#if defined(...LIBPNG...) \u0026\u0026 defined(...RUST_PNG...)` then check that the `SkXPS::Options::pngEncoder` is set to either one of the helpers.  If only one macrodefinition is present then it can only be set to one option.\n            - Or we can change `EncodePngCallback` to be a `class` with a Skia-private/internal constructor.\n                        \n2. You assume that in the future a **single** `SkXPSDocument` (created with a single `SkXPS::Options` / single `SkXPS::EncodePngCallback`) will support passing **different** encoding options for different pieces of the XPS document.\n\n    * If this assumption is true, then we indeed have to change `SkXPS::EncodePngCallback`\n    * OTOH, if the Skia clients wants to use different compression settings for **all** PNGs in a given `SkXPSDocument`, then the existing `SkXPS::EncodePngCallback` is sufficient (the client can just provide a custom function pointer, where different compression options are used;  for convenience Skia API can provide a different helper - `SkPngEncoder::EncodeWithMaxCompression`)",
+      "parentUuid": "291e6e3a_d0988e2a",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
