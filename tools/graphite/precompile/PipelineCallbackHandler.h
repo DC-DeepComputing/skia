@@ -14,20 +14,22 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 #include <vector>
 
 class SkData;
 
 namespace skiatools::graphite {
 
-
+#if 0
 // This is intended to be an example of a Precompilation Callback handler. For DM it collects
 // all the Android-style keys that are used by a given source (e.g., gm, or skp) and uses
 // them in resetAndRecreatePipelines to recreate the Pipelines.
-class PipelineCallBackHandler {
+class OldPipelineCallBackHandler {
 public:
     static void CallBack(void* data, sk_sp<SkData> androidStyleKey) {
-        PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(data);
+        OldPipelineCallBackHandler* handler = reinterpret_cast<OldPipelineCallBackHandler*>(data);
 
         handler->add(std::move(androidStyleKey));
     }
@@ -59,6 +61,91 @@ private:
     };
 
     skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap SK_GUARDED_BY(fSpinLock);
+};
+#endif
+
+// This is intended to be an example of a Precompilation Callback handler. For DM it collects
+// all the Android-style keys that are used by a given source (e.g., gm, or skp) and uses
+// them in resetAndRecreatePipelines to recreate the Pipelines.
+class NewPipelineCallBackHandler {
+public:
+    static void CallBack(void* context,
+                          skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                          const std::string& label,
+                          uint32_t uniqueKeyHash,
+                          bool fromPrecompile,
+                          sk_sp<SkData> androidStyleKey) {
+        NewPipelineCallBackHandler* handler = reinterpret_cast<NewPipelineCallBackHandler*>(context);
+
+        handler->add(op, label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));
+    }
+
+    void add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+             const std::string& label,
+             uint32_t uniqueKeyHash,
+             bool fromPrecompile,
+             sk_sp<SkData> androidStyleKey) SK_EXCLUDES(fSpinLock);
+
+    void retrieve(std::vector<sk_sp<SkData>>* result) SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{ fSpinLock };
+
+        result->reserve(fMap.count());
+
+        fMap.foreach([result](std::unique_ptr<PipelineData>* data) {
+            if ((*data)->fAndroidStyleKey) {
+                result->push_back((*data)->fAndroidStyleKey);
+            }
+        });
+    }
+
+    void reset() SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{ fSpinLock };
+
+        fMap.reset();
+    }
+
+    void report() SK_EXCLUDES(fSpinLock);
+
+private:
+    mutable SkSpinlock fSpinLock;
+
+    struct PipelineData {
+        PipelineData(const std::string& label,
+                     uint32_t uniqueKeyHash,
+                     bool fromPrecompile,
+                     sk_sp<SkData> androidStyleKey) :
+               fLabel(label),
+               fUniqueKeyHash(uniqueKeyHash),
+               fFromPrecompile(fromPrecompile),
+               fAndroidStyleKey(std::move(androidStyleKey)),
+               fUses(fromPrecompile ? 0 : 1) {
+            if (!fAndroidStyleKey) {
+                SkDebugf("Missing Serialized Key %s\n", label.c_str());
+            }
+        }
+
+        std::string   fLabel;
+        uint32_t      fUniqueKeyHash;
+        bool          fFromPrecompile;
+        sk_sp<SkData> fAndroidStyleKey;
+        uint32_t      fUses;
+    };
+
+    struct PipelineKey {
+        const std::string* fLabel;
+        uint32_t fUniqueKeyHash;
+
+        static PipelineKey GetKey(std::unique_ptr<PipelineData>& v) {
+            return { &v->fLabel, v->fUniqueKeyHash };
+        }
+        static uint32_t Hash(const PipelineKey& k) { return k.fUniqueKeyHash; }
+
+        bool operator==(const PipelineKey& other) const {
+            return fUniqueKeyHash == other.fUniqueKeyHash && *fLabel == *other.fLabel;
+        }
+    };
+
+    skia_private::THashTable<std::unique_ptr<PipelineData>, PipelineKey, PipelineKey> fMap SK_GUARDED_BY(fSpinLock);
 };
 
 }  // namespace skiatools::graphite

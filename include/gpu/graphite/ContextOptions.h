@@ -166,6 +166,22 @@ struct SK_API ContextOptions {
     PipelineCallbackContext fPipelineCallbackContext = nullptr;
     PipelineCallback fPipelineCallback = nullptr;
 
+    enum class PipelineCacheOp {
+        kAddingPipeline,
+        kPipelineFound,
+    };
+
+    // Note that, usually, kAddingPipeline ops will also have a 'pipelineData'. However,
+    // not all Pipelines are serializeable (e.g., those with arbitrary SkSL snippets).
+    using PipelineCachingCallback = void (*)(PipelineCallbackContext context,
+                                             PipelineCacheOp,
+                                             const std::string& label,
+                                             uint32_t uniqueKeyHash,
+                                             bool fromPrecompile,
+                                             sk_sp<SkData> pipelineData);
+
+    PipelineCachingCallback fPipelineCachingCallback = nullptr;
+
     /**
      * The runtime effects provided here will be registered as user-defined *known* runtime
      * effects and will be given a stable key. Such runtime effects can then be used in

@@ -9,30 +9,38 @@
 
 namespace skiatools::graphite {
 
-void PipelineCallBackHandler::add(sk_sp<SkData> payload) {
+void NewPipelineCallBackHandler::add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                                     const std::string& label,
+                                     uint32_t uniqueKeyHash,
+                                     bool fromPrecompile,
+                                     sk_sp<SkData> androidStyleKey) {
     SkAutoSpinlock lock{ fSpinLock };
 
-    const sk_sp<SkData>* data = fMap.find({ payload.get() });
-    if (!data) {
-        fMap.set(std::move(payload));
+    std::unique_ptr<PipelineData>* foundData = fMap.find({ &label, uniqueKeyHash });
+    if (foundData) {
+        if (op == skgpu::graphite::ContextOptions::PipelineCacheOp::kPipelineFound) {
+            (*foundData)->fUses++;
+        }
+    } else {
+        SkASSERT(op == skgpu::graphite::ContextOptions::PipelineCacheOp::kAddingPipeline);
+
+        std::unique_ptr<PipelineData> newData = std::make_unique<PipelineData>(
+            label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));
+
+        fMap.set(std::move(newData));
     }
 }
 
-void PipelineCallBackHandler::retrieve(
-        std::vector<sk_sp<SkData>>* result) {
+void NewPipelineCallBackHandler::report() {
     SkAutoSpinlock lock{ fSpinLock };
 
-    result->reserve(fMap.count());
-
-    fMap.foreach([result](sk_sp<SkData>* data) {
-        result->push_back(*data);
+    fMap.foreach([](std::unique_ptr<PipelineData>* data) -> void{
+        SkDebugf("%u %s\n", (*data)->fUses, (*data)->fLabel.c_str());
+        if ((*data)->fFromPrecompile && !(*data)->fUses) {
+            SkDebugf("!!!!!!!!!!!!!!!!!!!!! Needless precompile\n");
+        }
     });
-}
 
-void PipelineCallBackHandler::reset() {
-    SkAutoSpinlock lock{ fSpinLock };
-
-    fMap.reset();
 }
 
 }  // namespace skiatools::graphite

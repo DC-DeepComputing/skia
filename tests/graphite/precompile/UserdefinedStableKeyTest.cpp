@@ -93,7 +93,7 @@ bool draw_with_normal_api(skgpu::graphite::Context* context,
 }
 
 void fetch_keys_and_reset(skiatest::Reporter* reporter,
-                          PipelineCallBackHandler* handler,
+                          NewPipelineCallBackHandler* handler,
                           PrecompileContext* precompileContext,
                           std::vector<skgpu::UniqueKey>* uniqueKeys,
                           std::vector<sk_sp<SkData>>* serializedKeys,
@@ -107,7 +107,6 @@ void fetch_keys_and_reset(skiatest::Reporter* reporter,
         globalCache->resetGraphicsPipelines();
         REPORTER_ASSERT(reporter, globalCache->numGraphicsPipelines() == 0);
         handler->reset();
-        REPORTER_ASSERT(reporter, handler->numKeys() == 0);
     }
 }
 
@@ -117,7 +116,7 @@ void reset_and_recreate_pipelines_with_serialized_keys(
             Context* context,
             Recorder* recorder,
             PrecompileContext* precompileContext,
-            PipelineCallBackHandler* handler) {
+            NewPipelineCallBackHandler* handler) {
     GlobalCache* globalCache = precompileContext->priv().globalCache();
     ShaderCodeDictionary* shaderCodeDictionary = context->priv().shaderCodeDictionary();
 
@@ -177,7 +176,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
             Context* context,
             Recorder* recorder,
             PrecompileContext* precompileContext,
-            PipelineCallBackHandler* handler) {
+            NewPipelineCallBackHandler* handler) {
     // We don't attach runtime blenders to the SkPaint and PaintOptions in this case bc that will
     // force a dest read and complicate the normal-pipeline/Precompile-pipeline
     // comparison on Native Mac and Vulkan. This is bc, for those platforms, Precompile skips some
@@ -259,7 +258,7 @@ void test_sksl_reuse(skiatest::Reporter* reporter,
                      Context* context,
                      Recorder* recorder,
                      PrecompileContext* precompileContext,
-                     PipelineCallBackHandler* handler) {
+                     NewPipelineCallBackHandler* handler) {
     auto [blessedShader, cursedShader] = make_defective_annulus_shader_pair();
 
     SkASSERT(blessedShader != cursedShader);
@@ -307,7 +306,7 @@ void test_get_pipeline_label_api(skiatest::Reporter* reporter,
                                  Context* context,
                                  Recorder* recorder,
                                  PrecompileContext* precompileContext,
-                                 PipelineCallBackHandler* handler) {
+                                 NewPipelineCallBackHandler* handler) {
     auto [paint, paintOptions] = create_paint_and_options(/* addBlenders= */ true);
 
     draw_with_normal_api(context, recorder, paint);
@@ -357,11 +356,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest,
                                            /* condition= */ true,
                                            CtsEnforcement::kNever) {
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
+    std::unique_ptr<NewPipelineCallBackHandler> pipelineHandler(new NewPipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
     newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCachingCallback = NewPipelineCallBackHandler::CallBack;
 
     // We're going to also use all these runtime effects via the normal API
     // (c.f. create_paint_and_options)
@@ -451,11 +450,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Duplicates,
                                            /* condition= */ true,
                                            CtsEnforcement::kNever) {
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
+    std::unique_ptr<NewPipelineCallBackHandler> pipelineHandler(new NewPipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
     newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCachingCallback = NewPipelineCallBackHandler::CallBack;
 
     sk_sp<SkRuntimeEffect> userDefinedKnownRuntimeEffects[] = {
             sk_ref_sp(PrecompileFactories::GetAnnulusShaderEffect()),
@@ -490,11 +489,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Nullptrs,
                                            /* condition= */ true,
                                            CtsEnforcement::kNever) {
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
+    std::unique_ptr<NewPipelineCallBackHandler> pipelineHandler(new NewPipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
     newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCachingCallback = NewPipelineCallBackHandler::CallBack;
 
     sk_sp<SkRuntimeEffect> userDefinedKnownRuntimeEffects[] = {
             sk_ref_sp(PrecompileFactories::GetAnnulusShaderEffect()),
@@ -531,11 +530,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest_Overflow,
                                            /* condition= */ true,
                                            CtsEnforcement::kNever) {
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
+    std::unique_ptr<NewPipelineCallBackHandler> pipelineHandler(new NewPipelineCallBackHandler);
 
     TestOptions newOptions(origOptions);
     newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
-    newOptions.fContextOptions.fPipelineCallback = PipelineCallBackHandler::CallBack;
+    newOptions.fContextOptions.fPipelineCachingCallback = NewPipelineCallBackHandler::CallBack;
 
     std::vector<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects;
 
