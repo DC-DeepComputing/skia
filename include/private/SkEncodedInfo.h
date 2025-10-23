@@ -215,7 +215,7 @@ public:
     SkEncodedInfo copy() const {
         return SkEncodedInfo(
                 fWidth, fHeight, fColor, fAlpha, fBitsPerComponent, fColorDepth,
-                fProfile ? std::make_unique<ICCProfile>(*fProfile) : nullptr, fHdrMetadata);
+                fProfile ? std::make_unique<const ICCProfile>(*fProfile) : nullptr, fHdrMetadata);
     }
 
     // Return number of bits of R/G/B channel
@@ -231,7 +231,7 @@ public:
 
 private:
     SkEncodedInfo(int width, int height, Color color, Alpha alpha,
-            uint8_t bitsPerComponent, uint8_t colorDepth, std::unique_ptr<ICCProfile> profile,
+            uint8_t bitsPerComponent, uint8_t colorDepth, std::unique_ptr<const ICCProfile> profile,
             const skhdr::Metadata& hdrMetadata)
         : fWidth(width)
         , fHeight(height)
@@ -295,7 +295,7 @@ private:
     Alpha                       fAlpha;
     uint8_t                     fBitsPerComponent;
     uint8_t                     fColorDepth;
-    std::unique_ptr<ICCProfile> fProfile;
+    std::unique_ptr<const ICCProfile> fProfile;
     skhdr::Metadata             fHdrMetadata;
 };
 
