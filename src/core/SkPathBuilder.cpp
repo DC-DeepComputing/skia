@@ -82,26 +82,6 @@ SkPathBuilder& SkPathBuilder::reset() {
     return *this;
 }
 
-SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
-    this->reset().setFillType(src.getFillType());
-    this->setIsVolatile(src.isVolatile());
-
-    const sk_sp<SkPathRef>& ref = src.fPathRef;
-    fVerbs        = ref->fVerbs;
-    fPts          = ref->fPoints;
-    fConicWeights = ref->fConicWeights;
-
-    fSegmentMask   = ref->fSegmentMask;
-    fLastMoveIndex = src.fLastMoveToIndex < 0 ? ~src.fLastMoveToIndex : src.fLastMoveToIndex;
-
-    fType = ref->fType;
-    fIsA  = ref->fIsA;
-
-    fConvexity = src.getConvexityOrUnknown();
-
-    return *this;
-}
-
 bool SkPathBuilder::operator==(const SkPathBuilder& o) const {
     // quick-accept
     if (this == &o) {
@@ -121,14 +101,15 @@ void SkPathBuilder::incReserve(int extraPtCount, int extraVbCount, int extraCnCo
     fConicWeights.reserve_exact(Sk32_sat_add(fConicWeights.size(), extraCnCount));
 }
 
-std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPathRef& path) {
-    fSegmentMask |= path.fSegmentMask;
+std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPath& path) {
+    fSegmentMask |= path.getSegmentMasks();
 
-    if (int numVerbs = path.countVerbs()) {
+    SkSpan<const SkPathVerb> verbs = path.verbs();
+    if (!verbs.empty()) {
          // TODO(borenet): If the current builder is empty or JustMoves, we can use the type of the
          // path. If the path is empty, we can keep the current type.
         fType = SkPathIsAType::kGeneral;
-        memcpy(fVerbs.push_back_n(numVerbs), path.fVerbs.begin(), numVerbs * sizeof(fVerbs[0]));
+        memcpy(fVerbs.push_back_n(verbs.size()), verbs.begin(), verbs.size_bytes());
     }
 
     SkPoint* pts = nullptr;
@@ -137,7 +118,7 @@ std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPathRe
     }
 
     SkScalar* weights = nullptr;
-    if (int numConics = path.countWeights()) {
+    if (size_t numConics = path.conicWeights().size()) {
         weights = fConicWeights.push_back_n(numConics);
     }
 
@@ -275,53 +256,8 @@ SkPathBuilder& SkPathBuilder::rCubicTo(SkPoint p1, SkPoint p2, SkPoint p3) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
-    switch (fType) {
-        case SkPathIsAType::kGeneral:
-            break;
-        case SkPathIsAType::kOval:
-            pr->setIsOval(fIsA.fDirection, fIsA.fStartIndex);
-            SkASSERT(SkPathConvexity_IsConvex(fConvexity));
-            break;
-        case SkPathIsAType::kRRect:
-            pr->setIsRRect(fIsA.fDirection, fIsA.fStartIndex);
-            SkASSERT(SkPathConvexity_IsConvex(fConvexity));
-            break;
-    }
-
-    // Wonder if we can combine convexity and dir internally...
-    //  unknown, convex_cw, convex_ccw, concave
-    // Do we ever have direction w/o convexity, or viceversa (inside path)?
-    //
-    auto path = SkPath(std::move(pr), fFillType, fIsVolatile, fConvexity);
-
-    // This hopefully can go away in the future when Paths are immutable,
-    // but if while they are still editable, we need to correctly set this.
-    SkSpan<const SkPathVerb> verbs = path.fPathRef->verbs();
-    if (!verbs.empty()) {
-        SkASSERT(fLastMoveIndex >= 0);
-        // peek at the last verb, to know if our last contour is closed
-        const bool isClosed = (verbs.back() == SkPathVerb::kClose);
-        path.fLastMoveToIndex = isClosed ? ~fLastMoveIndex : fLastMoveIndex;
-    }
-
-    return path;
-}
-
-SkPath SkPathBuilder::snapshot(const SkMatrix* mx) const {
-    return this->make(sk_sp<SkPathRef>(new SkPathRef(fPts,
-                                                     fVerbs,
-                                                     fConicWeights,
-                                                     fSegmentMask,
-                                                     mx)));
-}
-
 SkPath SkPathBuilder::detach(const SkMatrix* mx) {
-    auto path = this->make(sk_sp<SkPathRef>(new SkPathRef(std::move(fPts),
-                                                          std::move(fVerbs),
-                                                          std::move(fConicWeights),
-                                                          fSegmentMask,
-                                                          mx)));
+    auto path = this->snapshot(mx);
     this->reset();
     return path;
 }
@@ -830,6 +766,35 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& path, SkScalar dx, SkScalar 
     return this->addPath(path, matrix, mode);
 }
 
+static int additionalPointsForVerb(SkPathVerb v) {
+    static const uint8_t ptsForVerb[] = {
+        1,  // move
+        1,  // line
+        2,  // quad
+        2,  // conic
+        3,  // cubic
+        0,  // close
+    };
+    const unsigned index = static_cast<unsigned>(v);
+    SkASSERT(index < std::size(ptsForVerb));
+    return ptsForVerb[index];
+}
+
+static int compute_lastMoveToIndex(SkSpan<const SkPathVerb> verbs, const size_t ptCount) {
+    SkASSERT(!verbs.empty());
+    SkASSERT(verbs[0] == SkPathVerb::kMove);
+    SkASSERT(ptCount > 0);
+    int ptIndex = SkToInt(ptCount) - 1;
+    for (size_t i = verbs.size(); i --> 0; ) {
+        if (verbs[i] == SkPathVerb::kMove) {
+            break;
+        }
+        ptIndex -= additionalPointsForVerb(verbs[i]);
+    }
+    SkASSERT(ptIndex >= 0);
+    return ptIndex;
+}
+
 SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
                                       SkPath::AddPathMode mode) {
     if (src.isEmpty()) {
@@ -850,17 +815,14 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
     fConvexity = SkPathConvexity::kUnknown;
 
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
-        if (src.fLastMoveToIndex >= 0) {
-            fLastMoveIndex = src.fLastMoveToIndex + this->countPoints();
-        } else {
-            fLastMoveIndex = ~src.fLastMoveToIndex + this->countPoints();
-        }
+        const int lastMoveToIndex = compute_lastMoveToIndex(src.verbs(), src.points().size());
+        fLastMoveIndex = lastMoveToIndex + this->countPoints();
 
-        auto [newPts, newWeights] = this->growForVerbsInPath(*src.fPathRef);
-        const auto count = src.countPoints();
-        matrix.mapPoints({newPts, count}, {src.fPathRef->points(), count});
-        if (int numWeights = src.fPathRef->countWeights()) {
-            memcpy(newWeights, src.fPathRef->conicWeights(), numWeights * sizeof(newWeights[0]));
+        auto [newPts, newWeights] = this->growForVerbsInPath(src);
+        const size_t count = src.countPoints();
+        matrix.mapPoints({newPts, count}, src.points());
+        if (auto conics = src.conicWeights(); !conics.empty()) {
+            memcpy(newWeights, conics.data(), conics.size_bytes());
         }
         return *this;
     }
