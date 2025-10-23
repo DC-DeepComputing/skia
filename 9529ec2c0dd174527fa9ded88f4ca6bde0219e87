@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b48cad56_e3bc12bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-23T18:48:54Z",
+      "side": 1,
+      "message": "Assumption 1): yes. If someone does manage to make a custom SkCodec object (I\u0027ve never seen it done), then we\u0027ll break them and that\u0027s ok. All our major clients will use one of the two \"pre-baked\" options.\n\nAssumption 2): Yes, that might happen. Your suggestion sounds somewhat nice, but I\u0027d really rather not flood the `SkPngEncoder` namespace with helpers beyond what we have. We already have one there that has the option for different compressions, and more seems... superfluous.",
+      "parentUuid": "a55b345a_7b943995",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
