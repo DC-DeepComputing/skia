@@ -1463,6 +1463,10 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
     sk_ignore_unused_variable(standard);
     GrGLVersion version = ctxInfo.version();
 
+    if (auto overrideVersion = ctxInfo.overrideFormatTableVersion()) {
+        version = *overrideVersion;
+    }
+
     uint32_t nonMSAARenderFlags = FormatInfo::kFBOColorAttachment_Flag;
     uint32_t msaaRenderFlags = nonMSAARenderFlags;
     if (kNone_MSFBOType != fMSFBOType) {
