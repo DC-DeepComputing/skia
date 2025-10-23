@@ -19,6 +19,10 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 
+#if defined(SK_ENABLE_PRECOMPILE)
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+#endif
+
 namespace skgpu::graphite {
 
 static Layout get_binding_layout(const Caps* caps) {
@@ -75,7 +79,7 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
     auto globalCache = this->globalCache();
 
     uint32_t compilationID = 0;
-    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline1(pipelineKey,
                                                                          pipelineCreationFlags,
                                                                          &compilationID);
     if (!pipeline) {
@@ -107,10 +111,22 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                                                 pipelineCreationFlags,
                                                 compilationID);
         if (pipeline) {
-            globalCache->invokePipelineCallback(this, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
-            pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+            bool addedToCache;
+            std::tie(pipeline, addedToCache) = globalCache->addGraphicsPipeline1(pipelineKey,
+                                                                                std::move(pipeline));
+
+            if (addedToCache && globalCache->hasCallback()) {
+                sk_sp<SkData> data = PipelineDescToData(this->caps(),
+                                                        this->shaderCodeDictionary(),
+                                                        pipelineDesc,
+                                                        renderPassDesc);
+                globalCache->invokePipelineCachingCallback(
+                    ContextOptions::PipelineCacheOp::kAddingPipeline,
+                    pipeline.get(),
+                    std::move(data));
+            }
         }
     }
     return pipeline;

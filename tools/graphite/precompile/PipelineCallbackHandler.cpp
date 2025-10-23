@@ -7,32 +7,56 @@
 
 #include "tools/graphite/precompile/PipelineCallbackHandler.h"
 
+#include <algorithm>
+
 namespace skiatools::graphite {
 
-void PipelineCallBackHandler::add(sk_sp<SkData> payload) {
+void PipelineCallBackHandler::add(skgpu::graphite::ContextOptions::PipelineCacheOp op,
+                                     const std::string& label,
+                                     uint32_t uniqueKeyHash,
+                                     bool fromPrecompile,
+                                     sk_sp<SkData> androidStyleKey) {
     SkAutoSpinlock lock{ fSpinLock };
 
-    const sk_sp<SkData>* data = fMap.find({ payload.get() });
-    if (!data) {
-        fMap.set(std::move(payload));
+    std::unique_ptr<PipelineData>* foundData = fMap.find({ &label, uniqueKeyHash });
+    if (foundData) {
+        if (op == skgpu::graphite::ContextOptions::PipelineCacheOp::kPipelineFound) {
+            (*foundData)->fUses++;
+        }
+    } else {
+        SkASSERT(op == skgpu::graphite::ContextOptions::PipelineCacheOp::kAddingPipeline);
+
+        std::unique_ptr<PipelineData> newData = std::make_unique<PipelineData>(
+            label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));
+
+        fMap.set(std::move(newData));
     }
 }
 
-void PipelineCallBackHandler::retrieve(
-        std::vector<sk_sp<SkData>>* result) {
-    SkAutoSpinlock lock{ fSpinLock };
+void PipelineCallBackHandler::report() {
+    std::vector<const PipelineData*> tmp;
 
-    result->reserve(fMap.count());
+    {
+        SkAutoSpinlock lock{ fSpinLock };
 
-    fMap.foreach([result](sk_sp<SkData>* data) {
-        result->push_back(*data);
-    });
-}
+        fMap.foreach([&tmp](std::unique_ptr<PipelineData>* data) -> void {
+            tmp.push_back((*data).get());
+        });
+    }
 
-void PipelineCallBackHandler::reset() {
-    SkAutoSpinlock lock{ fSpinLock };
+    std::sort(tmp.begin(), tmp.end(), [](const PipelineData* a, const PipelineData* b) {
+                                            if (a->fUses != b->fUses) {
+                                                return a->fUses > b->fUses;
+                                            }
+                                            return a->fLabel < b->fLabel;
+                                        });
 
-    fMap.reset();
+    for (const PipelineData* data : tmp) {
+        if (data->fFromPrecompile && !data->fUses) {
+            SkDebugf("!! ");
+        }
+        SkDebugf("%u %s\n", data->fUses, data->fLabel.c_str());
+    }
 }
 
 }  // namespace skiatools::graphite
