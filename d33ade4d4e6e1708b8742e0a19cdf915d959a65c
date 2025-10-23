@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf546563_09108f41",
+        "filename": "src/core/SkPath_interpolate.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-23T13:35:24Z",
+      "side": 1,
+      "message": "I do like the lerp(from, to) form better than this-\u003elerp(to), even for a public api :)\n\nClients can totally do their own thing, but this could end up in some utils package that is separate from core skia.",
+      "revId": "d33ade4d4e6e1708b8742e0a19cdf915d959a65c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
