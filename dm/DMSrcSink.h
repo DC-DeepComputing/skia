@@ -41,7 +41,8 @@ namespace skiagm::verifiers {
 class VerifierList;
 }
 namespace skiatools::graphite {
-    class PipelineCallBackHandler;
+    class NewPipelineCallBackHandler;
+    class OldPipelineCallBackHandler;
 }
 namespace DM {
 
@@ -135,6 +136,8 @@ struct Sink {
     virtual ~Sink() {}
     // You may write to either the bitmap or stream.  If you write to log, we'll print that out.
     [[nodiscard]] virtual Result draw(const Src&, SkBitmap*, SkWStream*, SkString* log) const = 0;
+
+    virtual void done() const {}
 
     // Override the color space of this Sink, after creation
     virtual void setColorSpace(sk_sp<SkColorSpace>) {}
@@ -626,6 +629,22 @@ private:
     mutable sk_gpu_test::GraphiteMemoryPipelineStorage fMemoryPipelineStorage;
 };
 
+class GraphitePipelineTrackingSink : public GraphiteSink {
+public:
+    GraphitePipelineTrackingSink(const SkCommandLineConfigGraphite*,
+                                 const skiatest::graphite::TestOptions&);
+
+    void done() const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to do our matching test
+        return nullptr;
+    }
+
+private:
+    std::unique_ptr<skiatools::graphite::NewPipelineCallBackHandler> fPipelineHandler;
+};
+
 #if defined(SK_ENABLE_PRECOMPILE)
 // In general this sink:
 //   renders a gm, skp or svg (in drawSrc)
@@ -656,7 +675,8 @@ private:
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*,
                    skgpu::graphite::Recorder*) const;
-    Result resetAndRecreatePipelines(skiatools::graphite::PipelineCallBackHandler*,
+
+    Result resetAndRecreatePipelines(skiatools::graphite::OldPipelineCallBackHandler*,
                                      skgpu::graphite::PrecompileContext*) const;
 
 #ifdef SK_DEBUG
@@ -670,6 +690,8 @@ private:
     static void CompareKeys(skgpu::graphite::PrecompileContext*,
                             const std::vector<skgpu::UniqueKey>& vA, const char* aName,
                             const std::vector<skgpu::UniqueKey>& vB, const char* bName);
+
+    std::unique_ptr<skiatools::graphite::OldPipelineCallBackHandler> fPipelineHandler;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE
