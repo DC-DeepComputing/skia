@@ -28,18 +28,30 @@
 #include <tuple>
 
 class SkData;
-class SkPathRef;
 class SkRRect;
 class SkWStream;
 enum class SkPathConvexity;
 struct SkPathRaw;
 struct SkPathVerbAnalysis;
+struct SkPathOvalInfo;
+struct SkPathRRectInfo;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 // Migrate clients so this is unneeded
 #define SK_LEGACY_PATH_ACCESSORS
+
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+    // enable this to try using SkPathData
+    //#define SK_PATH_USES_PATHDATA
+#endif
+
+#ifdef SK_PATH_USES_PATHDATA
+class SkPathData;
+#else
+class SkPathRef;
+#endif
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -1678,6 +1690,9 @@ public:
     };
 
 private:
+    std::optional<SkPathOvalInfo> getOvalInfo() const;
+    std::optional<SkPathRRectInfo> getRRectInfo() const;
+
     /** \class SkPath::RangeIter
         Iterates through a raw range of path verbs, points, and conics. All values are returned
         unaltered.
@@ -1929,6 +1944,14 @@ public:
     using sk_is_trivially_relocatable = std::true_type;
 
 private:
+#ifdef SK_PATH_USES_PATHDATA
+    SkPath(sk_sp<SkPathData>, SkPathFillType, bool isVolatile, bool isFinite);
+
+    sk_sp<SkPathData> fPathData;
+    SkPathFillType    fFillType;
+    bool              fIsVolatile;
+    bool              fIsFinite;
+#else
     SkPath(sk_sp<SkPathRef>, SkPathFillType, bool isVolatile, SkPathConvexity);
 
     sk_sp<SkPathRef>             fPathRef;
@@ -1949,6 +1972,16 @@ private:
      *  Doesn't change fGenerationID or fSourcePath on Android.
      */
     void copyFields(const SkPath& that);
+
+    // Creates a new Path after the supplied arguments have been validated by
+    // SkPathPriv::AnalyzeVerbs().
+    static SkPath MakeInternal(const SkPathVerbAnalysis& analsis,
+                               const SkPoint points[],
+                               SkSpan<const SkPathVerb> verbs,
+                               const SkScalar conics[],
+                               SkPathFillType fillType,
+                               bool isVolatile);
+#endif
 
     size_t writeToMemoryAsRRect(void* buffer) const;
     size_t readAsRRect(const void*, size_t);
@@ -2021,15 +2054,6 @@ private:
      *  example: https://fiddle.skia.org/c/@Path_setConvexity
      */
     void setConvexity(SkPathConvexity convexity);
-
-    // Creates a new Path after the supplied arguments have been validated by
-    // SkPathPriv::AnalyzeVerbs().
-    static SkPath MakeInternal(const SkPathVerbAnalysis& analsis,
-                               const SkPoint points[],
-                               SkSpan<const SkPathVerb> verbs,
-                               const SkScalar conics[],
-                               SkPathFillType fillType,
-                               bool isVolatile);
 
     friend class SkAutoAddSimpleShape;  // setConvexity
     friend class SkPathBuilder;
