@@ -51,7 +51,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(task));
     }
 
-    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline1(
             pipelineKey,
             pipelineCreationFlags);
     if (pipeline) {
