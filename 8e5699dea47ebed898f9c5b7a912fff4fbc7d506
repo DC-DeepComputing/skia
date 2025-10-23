@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72556f4_252a86c4",
+        "filename": "src/core/SkPath_interpolate.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-23T15:07:21Z",
+      "side": 1,
+      "message": "There\u0027s `SkPoint::operator*(float)`, we could do away with this if you commute the terms below.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "8e5699dea47ebed898f9c5b7a912fff4fbc7d506",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
