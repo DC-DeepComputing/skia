@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4261bdca_6cc41b10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-23T11:17:35Z",
+      "side": 1,
+      "message": "Why are we removing this from the API, if nothing else, a convenience? CanvasKit also exposes this, FWIW.",
+      "revId": "7ce32f53bfe6f9da0c56934f13e8cbc5f55d7905",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
