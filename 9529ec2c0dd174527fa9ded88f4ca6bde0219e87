@@ -56,6 +56,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91f72e8c_467794c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T14:51:03Z",
+      "side": 1,
+      "message": "Somewhat orthogonal question: I wonder if avoiding introducing a new callback type is also an option.  I guess that we can\u0027t easily reuse `SkSerialImageProc` because serializing `SkImage` (i.e. getting the `SkPixmap`) may require `Gr...Context` which is not handled by the callback today.\n\nBut maybe we should still introduce a new callback type in a XPS/SVG-agnostic way - e.g. introducing `SkSerialPixmapProc`.",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
