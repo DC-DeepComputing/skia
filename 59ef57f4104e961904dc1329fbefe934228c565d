@@ -16,6 +16,24 @@
       "message": "Any reason to delete this upfront?  It\u0027s a generalized interpolator demo that only marginally uses SkPath::interpolate, as an optimization.\n\n(I see the slide doesn\u0027t draw anything atm, it prolly broke at some point, I can look into that)",
       "revId": "59ef57f4104e961904dc1329fbefe934228c565d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0579fe99_97476f69",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-23T14:11:44Z",
+      "side": 0,
+      "message": "My pleasure",
+      "parentUuid": "e8a946e1_873b3f74",
+      "revId": "59ef57f4104e961904dc1329fbefe934228c565d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
