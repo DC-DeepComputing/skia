@@ -57,6 +57,30 @@
       },
       "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac7a628_302240a8",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-23T11:47:28Z",
+      "side": 1,
+      "message": "Yes, inline is fine.",
+      "parentUuid": "56cec014_8222e5a9",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 6
+      },
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
