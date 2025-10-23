@@ -142,6 +142,9 @@ Context::Context(sk_sp<SharedContext> sharedContext,
     fSharedContext->globalCache()->setPipelineCallback(options.fPipelineCallback,
                                                        options.fPipelineCallbackContext);
 
+    fSharedContext->globalCache()->setPipelineCachingCallback(
+        options.fPipelineCachingCallback, options.fPipelineCallbackContext);
+
     fCPUContext = std::make_unique<skcpu::ContextImpl>();
     if (options.fEnableCapture) {
         fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
