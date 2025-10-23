@@ -16,6 +16,24 @@
       "message": "Why are we removing this from the API, if nothing else, a convenience? CanvasKit also exposes this, FWIW.",
       "revId": "7ce32f53bfe6f9da0c56934f13e8cbc5f55d7905",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94bdac9e_93019119",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-23T12:30:57Z",
+      "side": 1,
+      "message": "- It is a convenience that clients can implement themselves, with no need for any private access.\n- It is not very interesting: doesn\u0027t try to interpolate conics (which is trivial), nor diff curves types (e.g. quads/lines --\u003e cubics)\n- We never exercise it, so very easy for us to accidentally break/change it.\n\nThe \u0027removal\u0027 is a suggestion, not critical to the movement of the implementation.",
+      "parentUuid": "4261bdca_6cc41b10",
+      "revId": "7ce32f53bfe6f9da0c56934f13e8cbc5f55d7905",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
