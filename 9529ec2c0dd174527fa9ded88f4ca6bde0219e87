@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f657c439_5bfd5f5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T14:45:08Z",
+      "side": 1,
+      "message": "I imagined that in the scenario above we would introduce `EncodeWithMaxCompression`.  But if there is a need for a codec/jpg/png-agnostic compression level (integer or enum), then it also seems expressible at the `include/encode` level - why would encoding compression level be something that needs to be defined in XPS or SVG API?",
+      "parentUuid": "2abcaa3c_87f849c8",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
