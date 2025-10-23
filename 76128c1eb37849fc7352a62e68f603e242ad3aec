@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b16a068f_69e1517e",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-23T14:10:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74ba5162_b56da281",
+      "range": {
+        "startLine": 219,
+        "startChar": 81,
+        "endLine": 219,
+        "endChar": 91
+      },
+      "revId": "76128c1eb37849fc7352a62e68f603e242ad3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d71ae0b_8078c810",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e6980e2_7e2e94a4",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-23T14:10:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d71ae0b_8078c810",
+      "range": {
+        "startLine": 706,
+        "startChar": 0,
+        "endLine": 706,
+        "endChar": 12
+      },
+      "revId": "76128c1eb37849fc7352a62e68f603e242ad3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77db521b_c7bf8bcc",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-10-22T14:28:57Z",
       "side": 1,
       "message": "nit: also should be size(), but since this one is T\u003dchar it doesn\u0027t actually have a functional difference.",
+      "range": {
+        "startLine": 231,
+        "startChar": 67,
+        "endLine": 231,
+        "endChar": 77
+      },
+      "revId": "76128c1eb37849fc7352a62e68f603e242ad3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "147ff909_64120f8b",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-10-23T14:10:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77db521b_c7bf8bcc",
       "range": {
         "startLine": 231,
         "startChar": 67,
