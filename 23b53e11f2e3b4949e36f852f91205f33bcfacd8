@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a9527e3_1719326e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-23T18:28:21Z",
+      "side": 1,
+      "message": "Can we not do things like this? Yes, the `const` on a parameter means nothing to the declaration (the user of the function). However, these are all definitions as well, and the `const` on the parameter is the same as putting a `const` on a local variable. As someone implementing / reading / maintaining this code the `const` signals intent that the implementation shouldn\u0027t be changing the values, thereby reducing the mental burden. It is unfortunate that the syntax doesn\u0027t allow for an inline definition to distinguish between these two kinds of `const` directly, though one could do so by writing a pure declaration first and a definition after it to be explicit.\n\nMost of the linked article doesn\u0027t really apply here, and the [bit that does apply](https://quuxplusone.github.io/blog/2019/01/03/const-is-a-contract/#i-looked-for-this-kind-of-typo-i) simply shows that one can write incorrect code.",
+      "revId": "23b53e11f2e3b4949e36f852f91205f33bcfacd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
