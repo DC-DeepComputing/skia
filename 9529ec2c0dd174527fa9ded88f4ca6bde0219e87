@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2abcaa3c_87f849c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-23T11:46:57Z",
+      "side": 1,
+      "message": "We *do* want the *Helpers.h model.\n\nHere\u0027s an outline of a timeline with the CL as is (EncodeWithDefaults)\n```\n1) Land EncodeWithDefaults\n2) Update all clients to use Options that contains EncodeWithDefaults\n3) Remove shim logic in XPSDocument.cpp, successfully decoupling XPS from *any* PNG library.\n4) Time passes\n5) We want to plumb quality options to the encoder (Just like our PDF backend with JPEG). We note the way to do this is different for the Rust and libPNG versions. We also *do not want* to add the png options files to XPSDevice, as that would re-couple XPS and png implementations.\n6) We add in SkXPSLibpngHelpers and SkXPSRustPngHelpers which translate from a quality knob (e.g. an integer 0-100) to the appropriate setting/enum. The helper has to include a 2-argument and a 3 argument version.\n7) We update all clients to use Options with those helpers (the 2 argument versions).\n8) We update XPS options to take a 3 argument version and clients, when they compile, will then start to use the new version. We delete the 2 argument version.\n```\n\nAnd here\u0027s a timeline if we stick with the PngHelpers.h approach\n```\n1) Land the helpers and the scaffolding\n2) Update all clients to use Options that contains the two argument version of EncodePngUsingLibpng or EncodePngUsingRust\n3) Remove shim logic in XPSDocument.cpp, successfully decoupling XPS from *any* PNG library.\n4) Time passes\n5) We want to plumb quality options to the encoder (Just like our PDF backend with JPEG). We note the way to do this is different for the Rust and libPNG versions. We also *do not want* to add the png options files to XPSDevice, as that would re-couple XPS and png implementations.\n6) We add a 3 argument version to Helpers.h to support taking in a quality knob (e.g. an integer 0-100) to the appropriate setting/enum.\n7) We update XPS options to take a 3 argument version and clients, when they compile, will then start to use the new version. We delete the 2 argument version.\n8) There\u0027s no more steps. We don\u0027t have to update clients a second time because things seamlessly switch from them using the 2 argument version to the 3 argument\n```\n\nBy doing the work now, we save toil in the future, primarily for SVG which is used in G3 and that\u0027s historically been a pain to update all callers, let alone update them multiple times.",
+      "parentUuid": "fb5c8adb_c1d033f6",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
