@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb5c8adb_c1d033f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T02:12:50Z",
+      "side": 1,
+      "message": "@bungeman and/or @kjlubick, can you PTAL?\n\nI want to revisit what we did in https://review.skia.org/1073497.  I think that we should have stayed with the shape of the API that we had in patchset #3 of that other CL.  My main objection to the status quo is that I don\u0027t want to duplicate/redp all of the scaffolding for `include/docs/SkXPSLibpngHelpers.h` and `include/docs/SkXPSRustPngHelpers.h` when tackling `SkSVGDevice.cpp` in https://review.skia.org/1082557.  The fact that the scaffolding is incomplete (no `.cpp` files yet + the new `.gni` entries are not yet used in Chromium nor PDFium) also seems like an argument to avoid this extra complexity.\n\nIf you strongly think that we need to have separate build components with `SkXPSLibpngHelpers.h` and `SkXPSRustPngHelpers.h` (and with `SkSVGLibpngHelpers.h` and `SkSVGRustPngHelpers.h`), then I would appreciate an explanation why the current CL under review wouldn\u0027t address your requirements.",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
