@@ -22,6 +22,30 @@
       },
       "revId": "6c61f77b008014417692152505ee11078225ec99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f97e8c3d_f1489f51",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-23T16:04:27Z",
+      "side": 0,
+      "message": "Ack.  Let me try this in https://crrev.com/c/7079866.  My concern is that even if the CQ dry run passes for the other CL, then we won\u0027t really know if 1) Chromium doesn\u0027t depend on encoding PNGs from within `SkWriteBuffer.cpp` VS 2) there is no test coverage for this code path in Chromium CQ.  I\u0027ve tried to describe my code search methodology in the CL description of the other CL - hopefully that will help us decide if we can land this or not.",
+      "parentUuid": "0a6588e5_47561969",
+      "range": {
+        "startLine": 27,
+        "startChar": 13,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "6c61f77b008014417692152505ee11078225ec99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
