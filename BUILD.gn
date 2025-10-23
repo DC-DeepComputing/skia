@@ -2507,9 +2507,11 @@ if (skia_enable_tools) {
       ":skia",
       ":tool_utils",
     ]
-    public_deps = [
-      ":gpu_tool_utils",  # Test.h #includes headers from this target.
-    ]
+    if (skia_enable_graphite || skia_enable_ganesh) {
+      public_deps = [
+        ":gpu_tool_utils",  # Test.h #includes headers from this target.
+      ]
+    }
     if (skia_enable_ganesh) {
       sources += [
         "tests/ganesh/GaneshTestUtils.cpp",
@@ -2518,71 +2520,73 @@ if (skia_enable_tools) {
     }
   }
 
-  import("gn/tests.gni")
-  test_lib("tests") {
-    sources = tests_sources + pathops_tests_sources
-    frameworks = []
-    if (skia_use_metal) {
-      cflags_objcc = [ "-fobjc-arc" ]
-      frameworks += [ "MetalKit.framework" ]
-    }
-    if (skia_use_jpeg_gainmaps) {
-      sources += jpeg_gainmap_tests_sources
-    }
-    if (skia_enable_graphite) {
-      sources += graphite_tests_sources
-      if (skia_use_dawn) {
-        sources += graphite_dawn_tests_sources
-      }
+  if (skia_enable_graphite || skia_enable_ganesh) {
+    import("gn/tests.gni")
+    test_lib("tests") {
+      sources = tests_sources + pathops_tests_sources
+      frameworks = []
       if (skia_use_metal) {
-        sources += graphite_metal_tests_sources
+        cflags_objcc = [ "-fobjc-arc" ]
+        frameworks += [ "MetalKit.framework" ]
       }
-      if (skia_use_vulkan) {
-        sources += graphite_vulkan_tests_sources
+      if (skia_use_jpeg_gainmaps) {
+        sources += jpeg_gainmap_tests_sources
       }
+      if (skia_enable_graphite) {
+        sources += graphite_tests_sources
+        if (skia_use_dawn) {
+          sources += graphite_dawn_tests_sources
+        }
+        if (skia_use_metal) {
+          sources += graphite_metal_tests_sources
+        }
+        if (skia_use_vulkan) {
+          sources += graphite_vulkan_tests_sources
+        }
+      }
+      if (skia_enable_ganesh) {
+        sources += ganesh_tests_sources
+        if (skia_use_metal) {
+          sources += ganesh_metal_tests_sources
+        }
+        if (skia_use_gl) {
+          sources += ganesh_gl_tests_sources
+        }
+        if (skia_use_vulkan) {
+          sources += skia_ganesh_vk_chromium_public
+          sources += skia_ganesh_vk_chromium_private
+        }
+      }
+      if (skia_enable_precompile) {
+        sources += precompile_tests_sources
+      }
+      deps = [
+        ":flags",
+        ":fontmgr_FontConfigInterface_tests",
+        ":fontmgr_android_tests",
+        ":fontmgr_fontconfig_tests",
+        ":fontmgr_mac_ct_tests",
+        ":fontscanner_tests",
+        ":png_decode_libpng_tests",
+        ":png_decode_rust_tests",
+        ":png_encode_rust_tests",
+        ":skia",
+        ":test",
+        ":tool_utils",
+        ":typeface_fontations_tests",
+        "modules/bentleyottmann:tests",
+        "modules/skottie:tests",
+        "modules/skparagraph:tests",
+        "modules/sksg:tests",
+        "modules/skshaper",
+        "modules/skshaper:tests",
+        "modules/skunicode:tests",
+        "modules/svg:tests",
+        "//third_party/libpng",
+        "//third_party/libwebp",
+        "//third_party/zlib",
+      ]
     }
-    if (skia_enable_ganesh) {
-      sources += ganesh_tests_sources
-      if (skia_use_metal) {
-        sources += ganesh_metal_tests_sources
-      }
-      if (skia_use_gl) {
-        sources += ganesh_gl_tests_sources
-      }
-      if (skia_use_vulkan) {
-        sources += skia_ganesh_vk_chromium_public
-        sources += skia_ganesh_vk_chromium_private
-      }
-    }
-    if (skia_enable_precompile) {
-      sources += precompile_tests_sources
-    }
-    deps = [
-      ":flags",
-      ":fontmgr_FontConfigInterface_tests",
-      ":fontmgr_android_tests",
-      ":fontmgr_fontconfig_tests",
-      ":fontmgr_mac_ct_tests",
-      ":fontscanner_tests",
-      ":png_decode_libpng_tests",
-      ":png_decode_rust_tests",
-      ":png_encode_rust_tests",
-      ":skia",
-      ":test",
-      ":tool_utils",
-      ":typeface_fontations_tests",
-      "modules/bentleyottmann:tests",
-      "modules/skottie:tests",
-      "modules/skparagraph:tests",
-      "modules/sksg:tests",
-      "modules/skshaper",
-      "modules/skshaper:tests",
-      "modules/skunicode:tests",
-      "modules/svg:tests",
-      "//third_party/libpng",
-      "//third_party/libwebp",
-      "//third_party/zlib",
-    ]
   }
 
   if (skia_enable_ganesh) {
@@ -2656,40 +2660,42 @@ if (skia_enable_tools) {
         ]
       }
     }
-    test_app("dm") {
-      sources = [
-        "dm/DM.cpp",
-        "dm/DMGpuTestProcs.cpp",
-        "dm/DMJsonWriter.cpp",
-        "dm/DMJsonWriter.h",
-        "dm/DMSrcSink.cpp",
-        "dm/DMSrcSink.h",
-      ]
-      deps = [
-        ":common_flags_config",
-        ":common_flags_images",
-        ":compile_all_sksl_tests",
-        ":flags",
-        ":gm",
-        ":gpu_tool_utils",
-        ":hash_and_encode",
-        ":skia",
-        ":tests",
-        ":tool_utils",
-        ":trace",
-        "modules/skottie",
-        "modules/skottie:utils",
-        "modules/skshaper",
-        "modules/skunicode",
-      ]
-      if (skia_use_libpng_decode) {
-        deps += [ "modules/svg" ]
-      }
-      if (skia_enable_graphite) {
-        deps += [ ":common_flags_graphite" ]
-      }
-      if (skia_enable_ganesh) {
-        deps += [ ":common_flags_ganesh" ]
+    if (skia_enable_graphite || skia_enable_ganesh) {
+      test_app("dm") {
+        sources = [
+          "dm/DM.cpp",
+          "dm/DMGpuTestProcs.cpp",
+          "dm/DMJsonWriter.cpp",
+          "dm/DMJsonWriter.h",
+          "dm/DMSrcSink.cpp",
+          "dm/DMSrcSink.h",
+        ]
+        deps = [
+          ":common_flags_config",
+          ":common_flags_images",
+          ":compile_all_sksl_tests",
+          ":flags",
+          ":gm",
+          ":gpu_tool_utils",
+          ":hash_and_encode",
+          ":skia",
+          ":tests",
+          ":tool_utils",
+          ":trace",
+          "modules/skottie",
+          "modules/skottie:utils",
+          "modules/skshaper",
+          "modules/skunicode",
+        ]
+        if (skia_use_libpng_decode) {
+          deps += [ "modules/svg" ]
+        }
+        if (skia_enable_graphite) {
+          deps += [ ":common_flags_graphite" ]
+        }
+        if (skia_enable_ganesh) {
+          deps += [ ":common_flags_ganesh" ]
+        }
       }
     }
     test_app("filterfuzz") {
