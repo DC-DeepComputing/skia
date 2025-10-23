@@ -16,6 +16,24 @@
       "message": "If neither is set, should there be an empty gpu_tool_utils (should this work like the template `optional`)? That would fix the `NoGPU` builds.",
       "revId": "54f6a0b55a312ce77e90ff9e7e474398bf4272be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cafe61a_a9ebe655",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 2118,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-23T13:29:14Z",
+      "side": 1,
+      "message": "Prior to dm wasn\u0027t building with NoGPU because it required Ganesh. Making it work with neither would take some unknown amount of code changes, not just making this optional.",
+      "parentUuid": "82297e01_90c1037f",
+      "revId": "54f6a0b55a312ce77e90ff9e7e474398bf4272be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
