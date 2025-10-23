@@ -167,7 +167,7 @@ class SkpDebugPlayer {
 
     // Gets the bounds for the given frame
     // (or layer update, assuming there is one at that frame for fInspectedLayer)
-    const SkIRect getBoundsForFrame(int32_t frame) {
+    SkIRect getBoundsForFrame(int32_t frame) {
       if (fInspectedLayer < 0) {
         return fBoundsArray[frame];
       }
