@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4731f78_8dad41ef",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 2512,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-23T13:56:03Z",
+      "side": 1,
+      "message": "@bungeman@google.com, I saw your comment about putting this in optional, but it\u0027s already using the test_lib template.",
+      "revId": "54c8732b59d5c974792616ef9a17350f275196bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
