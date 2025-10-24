@@ -26,7 +26,7 @@
 #include <cstring>
 #include <utility>
 
-class SkAutoPixmapStorage;
+class SkPixmap;
 namespace skgpu::graphite { class RecorderPriv; }
 
 /**
@@ -377,9 +377,10 @@ public:
     bool addRect(int width, int height, AtlasLocator* atlasLocator);
     void* dataAt(const AtlasLocator& atlasLocator);
     void copySubImage(const AtlasLocator& atlasLocator, const void* image);
-    // Reset Pixmap to point to backing data for this Plot,
-    // and return render location specified by AtlasLocator but relative to this Plot.
-    SkIPoint prepForRender(const AtlasLocator&, SkAutoPixmapStorage*);
+    // Returns a Pixmap pointing to the backing data for the locator. Optionally, the caller can
+    // provide an inset that is applied to all four sides. This is useful for use cases that need
+    // to leave space between items in the atlas.
+    SkPixmap prepForRender(const AtlasLocator&, int padding = 0);
     // TODO: Utility method for Ganesh, consider removing
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
 
@@ -430,6 +431,8 @@ public:
 
 private:
     ~Plot() override;
+    size_t rowBytes() const { return fWidth * fBytesPerPixel; }
+    void* dataAt(SkIPoint atlasPoint);
 
     skgpu::Token fLastUpload;
     skgpu::Token fLastUse;
@@ -442,7 +445,7 @@ private:
     AtlasGenerationCounter* const fGenerationCounter;
     uint64_t fGenID;
     PlotLocator fPlotLocator;
-    unsigned char* fData;
+    std::byte* fData;
     const int fWidth;
     const int fHeight;
     const int fX;
