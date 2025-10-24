@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2e55f36_55fc0c6d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-24T18:17:05Z",
+      "side": 1,
+      "message": "The default value for `reusableRequiresPurgeable` is `false`, right? So we would need to explicitly set it to `true` here.\n\nDoes the rationale as to why this should be true make sense? Because while *command buffer* driver update calls are guaranteed to be performed sequentially due to how we ensure command buffer sequential execution, the CPU could still call `updateDescriptorSet` (changing the set values) while GPU execution is not yet completed since it\u0027s not a command buffer driver call (even though it\u0027s a driver call we only invoke within our CommandBuffer impl., that doesn\u0027t provide us the same guarantee).",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "db046b6d18bc2d03a1c8daf5f29b6432de15e4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
