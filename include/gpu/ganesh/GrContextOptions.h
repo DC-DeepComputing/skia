@@ -17,6 +17,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 #include <optional>
+#include <unordered_set>
 #include <vector>
 
 class SkExecutor;
@@ -317,6 +318,16 @@ struct SK_API GrContextOptions {
 
     // Suppress prints for the GrContext.
     bool fSuppressPrints = false;
+
+    /**
+     * Compatibilty mode to prevent crashes on old version of the Andriod emulator
+     */
+    bool fAndroidEmulatorCompatibilityMode = false;
+
+    /**
+     * Using for debug testing to see what parts of Skia can be set to GLES3 without crashing
+     */
+    std::unordered_set<int> fAndroidEmulatorCompatibilityFeatures;
 
 #if defined(GPU_TEST_UTILS)
     /**

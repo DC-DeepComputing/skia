@@ -53,6 +53,12 @@ std::unique_ptr<GrGLContext> GrGLContext::Make(sk_sp<const GrGLInterface> interf
             args.fGLSLGeneration = SkSL::GLSLGeneration::k100es;
         }
     }
+    if (options.fAndroidEmulatorCompatibilityMode) {
+        args.fGLSLGeneration = SkSL::GLSLGeneration::k100es;
+        args.fDriverInfo.fVersion = GR_GL_VER(2, 0);
+        args.fAndroidEmulatorCompatibilityMode = true;
+        args.fAndroidEmulatorCompatibilityFeatures = args.fAndroidEmulatorCompatibilityFeatures;
+    }
 #endif
 
     // Many ES3 drivers only advertise the ES2 image_external extension, but support the _essl3
@@ -82,6 +88,8 @@ GrGLContextInfo::GrGLContextInfo(ConstructorArgs&& args) {
     fInterface = std::move(args.fInterface);
     fDriverInfo = args.fDriverInfo;
     fGLSLGeneration = args.fGLSLGeneration;
+    fAndroidEmulatorCompatibilityMode = args.fAndroidEmulatorCompatibilityMode;
+    fAndroidEmulatorCompatibilityFeatures = args.fAndroidEmulatorCompatibilityFeatures;
 
     fGLCaps = sk_make_sp<GrGLCaps>(*args.fContextOptions, *this, fInterface.get());
 }

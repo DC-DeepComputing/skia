@@ -16,6 +16,8 @@
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 
 #include <memory>
+#include <optional>
+#include <unordered_set>
 #include <utility>
 
 class GrGLExtensions;
@@ -39,6 +41,11 @@ public:
     GrGLStandard standard() const { return fInterface->fStandard; }
     GrGLVersion version() const { return fDriverInfo.fVersion; }
     SkSL::GLSLGeneration glslGeneration() const { return fGLSLGeneration; }
+    bool androidEmulatorCompatibilityMode() const { return fAndroidEmulatorCompatibilityMode; }
+    const std::unordered_set<int>& androidEmulatorCompatibilityFeatures() const {
+        return fAndroidEmulatorCompatibilityFeatures;
+    }
+
     /**
      * We've accumlated a lot of GL driver workarounds and performance preferences based on vendor
      * and renderer. When we have GL sitting on top of Angle it is not clear which of these are
@@ -93,7 +100,9 @@ protected:
         sk_sp<const GrGLInterface>          fInterface;
         GrGLDriverInfo                      fDriverInfo;
         SkSL::GLSLGeneration                fGLSLGeneration;
+        bool fAndroidEmulatorCompatibilityMode;
         const  GrContextOptions*            fContextOptions;
+        std::unordered_set<int> fAndroidEmulatorCompatibilityFeatures;
     };
 
     GrGLContextInfo(ConstructorArgs&&);
@@ -102,6 +111,8 @@ protected:
     GrGLDriverInfo             fDriverInfo;
     SkSL::GLSLGeneration       fGLSLGeneration;
     sk_sp<GrGLCaps>            fGLCaps;
+    bool fAndroidEmulatorCompatibilityMode;
+    std::unordered_set<int> fAndroidEmulatorCompatibilityFeatures;
 };
 
 /**
