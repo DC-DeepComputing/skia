@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccdc773e_702ca35d",
+        "filename": "bazel/buildrc",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4204770
+      },
+      "writtenOn": "2025-10-24T20:45:35Z",
+      "side": 1,
+      "message": "What about this one, does it need to keep compiling with such a low version of C++?\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/rbe/gce_linux/cc/BUILD;l\u003d115;drc\u003d17b801d27b40ed492cd5321c4ed43c80848b69e4",
+      "revId": "0a03fdfb78b8005fbf9ea2391bfd4df5584f0344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
