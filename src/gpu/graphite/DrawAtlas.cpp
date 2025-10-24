@@ -298,9 +298,9 @@ DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
     return ec;
 }
 
-SkIPoint DrawAtlas::prepForRender(const AtlasLocator& locator, SkAutoPixmapStorage* pixmap) {
+SkPixmap DrawAtlas::prepForRender(const AtlasLocator& locator, int padding) {
     Plot* plot = this->findPlot(locator);
-    return plot->prepForRender(locator, pixmap);
+    return plot->prepForRender(locator, padding);
 }
 
 void DrawAtlas::compact(Token startTokenForNextFlush) {
