@@ -198,6 +198,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6aa8869_446d830d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-24T21:09:01Z",
+      "side": 1,
+      "message": "Thanks.  I think I\u0027ll try to sit on this CL for a bit more and try to figure out if we can reuse/centralize things more - `SkSerialProcs` seem like they may also do the job of `SkXPS::EncodePngCallback` which in turn may mean that instead of `SkPngRustEncoder::EncodeWithDefaultOptions` we should have something like (hand-waving / name TBD) `SkPngRustEncoder::SerialProcImpl`.",
+      "parentUuid": "5fffca57_18929126",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
