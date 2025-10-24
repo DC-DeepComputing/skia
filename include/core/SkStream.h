@@ -143,7 +143,10 @@ public:
 //SkStreamMemory
     /** Returns the starting address for the data. If this cannot be done, returns NULL. */
     virtual const void* getMemoryBase() { return nullptr; }
+#if !defined(SK_DISABLE_LEGACY_STREAM_NONCONST_DATA)
     virtual sk_sp<SkData> getData() const { return nullptr; }
+#endif
+    virtual sk_sp<const SkData> getDataView() const { return nullptr; }
 
 private:
     virtual SkStream* onDuplicate() const { return nullptr; }
@@ -365,6 +368,7 @@ private:
     using INHERITED = SkStreamAsset;
 };
 
+// A read only view into a block of memory.
 class SK_API SkMemoryStream : public SkStreamMemory {
 public:
     SkMemoryStream();
@@ -376,7 +380,7 @@ public:
     SkMemoryStream(const void* data, size_t length, bool copyData = false);
 
     /** Creates the stream to read from the specified data */
-    explicit SkMemoryStream(sk_sp<SkData> data);
+    explicit SkMemoryStream(sk_sp<const SkData> data);
 
     /** Returns a stream with a copy of the input data. */
     static std::unique_ptr<SkMemoryStream> MakeCopy(const void* data, size_t length);
@@ -385,7 +389,7 @@ public:
     static std::unique_ptr<SkMemoryStream> MakeDirect(const void* data, size_t length);
 
     /** Returns a stream with a shared reference to the input data. */
-    static std::unique_ptr<SkMemoryStream> Make(sk_sp<SkData> data);
+    static std::unique_ptr<SkMemoryStream> Make(sk_sp<const SkData> data);
 
     /** Resets the stream to the specified data and length,
         just like the constructor.
@@ -399,8 +403,14 @@ public:
     */
     void setMemoryOwned(const void* data, size_t length);
 
-    sk_sp<SkData> getData() const override { return fData; }
-    void setData(sk_sp<SkData> data);
+#if !defined(SK_DISABLE_LEGACY_STREAM_NONCONST_DATA)
+    sk_sp<SkData> getData() const override {
+        return sk_sp<SkData>(const_cast<SkData*>(fData.get()));
+    }
+#endif
+    sk_sp<const SkData> getDataView() const override { return fData; }
+
+    void setData(sk_sp<const SkData> data);
 
     const void* getAtPos();
 
@@ -431,8 +441,8 @@ private:
     SkMemoryStream* onDuplicate() const override;
     SkMemoryStream* onFork() const override;
 
-    sk_sp<SkData>   fData;
-    size_t          fOffset;
+    sk_sp<const SkData> fData;
+    size_t fOffset;
 
     using INHERITED = SkStreamMemory;
 };
