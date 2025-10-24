@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ceb4a3a_fc48c6dd",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T19:05:29Z",
+      "side": 1,
+      "message": "Changing the name may cause extra churn - can we keep the same name and just update the signature depending on the flag?\n\n```\n#if defined(...)\n   virtual sk_sp\u003cconst SkData\u003e getData(...)\n#else\n   virtual sk_sp\u003cSkData\u003e getData(...)\n#endif\n```\n\nI\u0027m hoping most clients just assume constness and won\u0027t notice (unless they spell out the type).",
+      "range": {
+        "startLine": 149,
+        "startChar": 32,
+        "endLine": 149,
+        "endChar": 43
+      },
+      "revId": "61b3688a20e93b7b40824e70275d334bc118b789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
