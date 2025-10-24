@@ -138,28 +138,28 @@ static void bw_pt_hair_proc(const PtProcRec& rec, SkSpan<const SkPoint> devPts,
 
 static void bw_line_hair_proc(const PtProcRec& rec, SkSpan<const SkPoint> devPts,
                               SkBlitter* blitter) {
-    for (size_t i = 0; i < devPts.size(); i += 2) {
-        SkScan::HairLine(&devPts[i], 2, *rec.fRC, blitter);
+    for (size_t i = 0; i+1 < devPts.size(); i += 2) {
+        SkScan::HairLine({&devPts[i], 2}, *rec.fRC, blitter);
     }
 }
 
 static void bw_poly_hair_proc(const PtProcRec& rec, SkSpan<const SkPoint> devPts,
                               SkBlitter* blitter) {
-    SkScan::HairLine(devPts.data(), SkToInt(devPts.size()), *rec.fRC, blitter);
+    SkScan::HairLine(devPts, *rec.fRC, blitter);
 }
 
 // aa versions
 
 static void aa_line_hair_proc(const PtProcRec& rec, SkSpan<const SkPoint> devPts,
                               SkBlitter* blitter) {
-    for (size_t i = 0; i < devPts.size(); i += 2) {
-        SkScan::AntiHairLine(&devPts[i], 2, *rec.fRC, blitter);
+    for (size_t i = 0; i+1 < devPts.size(); i += 2) {
+        SkScan::AntiHairLine({&devPts[i], 2}, *rec.fRC, blitter);
     }
 }
 
 static void aa_poly_hair_proc(const PtProcRec& rec, SkSpan<const SkPoint> devPts,
                               SkBlitter* blitter) {
-    SkScan::AntiHairLine(devPts.data(), SkToInt(devPts.size()), *rec.fRC, blitter);
+    SkScan::AntiHairLine(devPts, *rec.fRC, blitter);
 }
 
 // square procs (strokeWidth > 0 but matrix is square-scale (sx == sy)
@@ -1023,11 +1023,14 @@ void Draw::drawPath(const SkPath& origSrcPath,
             cullRectPtr = &cullRect;
         }
 
-        SkPath prePathStorage;
+        std::optional<SkPath> prePathStorage;
         const SkPath* pathPtr = &origSrcPath;
         if (prePathMatrix) {
-            prePathStorage = pathPtr->makeTransform(*prePathMatrix);
-            pathPtr = &prePathStorage;
+            prePathStorage = pathPtr->tryMakeTransform(*prePathMatrix);
+            if (!prePathStorage.has_value()) {
+                return;
+            }
+            pathPtr = &prePathStorage.value();
         }
         doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
         builder.transform(*fCTM);
