@@ -1,0 +1,171 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3884eeff_0b1b9252",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "Since we never support editing with path data, do we want the converse also (or maybe exclusively)?\n\n```\n#if defined(SK_PATH_USES_PATHDATA) \u0026\u0026 !defined(SK_HIDE_PATH_EDIT_METHODS)\n    #define SK_HIDE_PATH_EDIT_METHODS\n#endif\n```",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 6
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc939e04_bdf6ec24",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "I\u0027m of two minds about the best place to store this.\n\nFiniteness is a property of the geometry/points, so it seems to naturally belong to `SkPathData`.  It takes work to track state in `SkPath` and to ensure we don\u0027t end up with different paths disagreeing about the same pathdata being finite.\n\nOTOH we have that friction where we want to communicate transform failure with a non-finite `Empty` path data, but that\u0027s normally a singleton.  Maybe it wouldn\u0027t be too bad to add another `EmptyNonFinite` factory backed by a separate singleton?",
+      "range": {
+        "startLine": 1953,
+        "startChar": 22,
+        "endLine": 1953,
+        "endChar": 31
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "031c3bca_b65c041b",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "Should we inline these?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 1
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b68bbf15_808e0b1c",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "Should we move some of these methods to SkPath_PathRef/SkPath_PathData (to declutter ifdefs)?",
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca00ba8c_7d170cbe",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "`fIsFinite` also.",
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95337599_6bb8dd70",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "These are the same for pathref, can we relocate to SkPath.cpp?",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 1
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f065d6b2_c0b21ca8",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T14:03:02Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 169,
+        "startChar": 11,
+        "endLine": 169,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "04b6b123_fad9a59a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath_pathdata.cpp",
+              "range": {
+                "startLine": 169,
+                "startChar": 0,
+                "endLine": 170,
+                "endChar": 0
+              },
+              "replacement": "    // non-finite\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
