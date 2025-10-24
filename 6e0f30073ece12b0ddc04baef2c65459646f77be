@@ -22,6 +22,30 @@
       },
       "revId": "6e0f30073ece12b0ddc04baef2c65459646f77be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c4d9b39_577b63de",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-24T18:54:03Z",
+      "side": 1,
+      "message": "You were one step ahead , LGTM!",
+      "parentUuid": "963215f9_d7df1312",
+      "range": {
+        "startLine": 41,
+        "startChar": 22,
+        "endLine": 41,
+        "endChar": 78
+      },
+      "revId": "6e0f30073ece12b0ddc04baef2c65459646f77be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
