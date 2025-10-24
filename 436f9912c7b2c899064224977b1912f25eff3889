@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be74fa93_fc97d63f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-24T15:41:30Z",
+      "side": 1,
+      "message": "See diff relative to PS1 (which is a pure revert revert)",
+      "revId": "436f9912c7b2c899064224977b1912f25eff3889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
