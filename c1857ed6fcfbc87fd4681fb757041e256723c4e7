@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac2d2ed5_9f7ff91d",
+        "filename": "src/core/SkStreamPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-24T20:13:56Z",
+      "side": 1,
+      "message": "`sk_ref_sp` uses `SkSafeRef`, should be fine to call unconditionally.\n\nOr, better, we could just transfer ownership, to avoid ref-churn:\n```\n    return sk_sp\u003cSkData\u003e(const_cast\u003cSkData*\u003e(stream-\u003egetData().release()));\n```",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 19
+      },
+      "revId": "c1857ed6fcfbc87fd4681fb757041e256723c4e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
