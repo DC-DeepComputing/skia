@@ -163,6 +163,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a2e10df_27063361",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-24T19:09:21Z",
+      "side": 1,
+      "message": "Would you agree that the same argument you are making could also be applied to `SkSerialPictureProc` - arguing that instead we should have:\n\n- Separate `SkTextBlob_SerialProc`, `SkFlattenable_SerialProc`, `SkMultiPictureDocument_SerialProc`, etc.\n- Separate `SkTextBlob_LibPngHelpers.h`, `SkTextBlob_RustPngHelpers.h`, `SkTextBlob_JpegHelpers.h`, `SkFlattenable_LibPngHelpers.h`, etc.",
+      "parentUuid": "65e509b1_dc47de7e",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56cec014_8222e5a9",
         "filename": "include/encode/SkPngEncoder.h",
         "patchSetId": 4
