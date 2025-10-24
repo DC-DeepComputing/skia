@@ -22,6 +22,7 @@ class RenderStep;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
+struct SharedGeneratorData;
 enum class TextureFormat : uint8_t;
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -62,7 +63,8 @@ public:
         return fRuntimeEffectDictionary;
     }
 
-    const char* shadingSsboIndex() const { return fShadingSsboIndex; }
+    const char* uniformSsboIndex() const { return fUniformSsboIndex; }
+    const char* ssboBufferPrefix() const { return fSsboBufferPrefix; }
 
     DstReadStrategy dstReadStrategy() const { return fDstReadStrategy; }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
@@ -77,6 +79,8 @@ public:
     int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
     bool hasPaintUniforms() const { return fHasPaintUniforms; }
+    // Indicates if any paint uniforms are needed by expressions evaluated in the vertex shader
+    bool hasLiftedPaintUniforms() const { return fHasLiftedPaintUniforms; }
     bool hasGradientBuffer() const { return fHasGradientBuffer; }
 
     // Name used in-shader for gradient buffer uniform.
@@ -85,13 +89,13 @@ public:
 private:
     ShaderInfo(const ShaderCodeDictionary*,
                const RuntimeEffectDictionary*,
-               const char* ssboIndex,
+               const char* uniformSsboIndex,
                DstReadStrategy);
 
     void generateVertexSkSL(const Caps*,
                             const RenderStep*,
-                            bool useStorageBuffers,
-                            SkSpan<const ShaderNode*> rootNodes);
+                            const SharedGeneratorData&,
+                            bool useUniformStorageBufferVS);
 
     // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasGradientBuffer,
     // fHasSsboIndicesVarying, and if a valid SamplerDesc ptr is passed in, any immutable
@@ -100,12 +104,11 @@ private:
                               const ShaderCodeDictionary*,
                               const RenderStep*,
                               UniquePaintParamsID,
-                              bool useStorageBuffers,
                               TextureFormat targetFormat,
                               skgpu::Swizzle writeSwizzle,
                               skia_private::TArray<SamplerDesc>* outDescs,
-                              SkArenaAlloc& shaderNodeAlloc,
-                              SkSpan<const ShaderNode*>* rootNodes);
+                              const SharedGeneratorData&,
+                              bool useUniformStorageBufferFS);
 
     bool needsLocalCoords() const { return fNeedsLocalCoords; }
 
@@ -117,7 +120,8 @@ private:
 
     const ShaderCodeDictionary* fShaderCodeDictionary;
     const RuntimeEffectDictionary* fRuntimeEffectDictionary;
-    const char* fShadingSsboIndex;
+    const char* fUniformSsboIndex;
+    const char* fSsboBufferPrefix;
 
     // The blendInfo represents the actual GPU blend operations, which may or may not completely
     // implement the paint and coverage blending defined by the root nodes.
@@ -135,12 +139,12 @@ private:
     std::string fFSLabel;
 
     int fNumFragmentTexturesAndSamplers = 0;
-    bool fHasStepUniforms = false;
-    bool fHasPaintUniforms = false;
-    bool fHasLiftedPaintUniforms = false;
-    bool fHasGradientBuffer = false;
-    bool fHasSsboIndicesVarying = false;
-    bool fNeedsLocalCoords = false;
+    bool fHasStepUniforms = false;        // True if the render step has uniforms
+    bool fHasPaintUniforms = false;       // True if the paint params tree has uniforms
+    bool fHasLiftedPaintUniforms = false; // True if VS needs paint uniforms for lifted exprs
+    bool fHasGradientBuffer = false;      // True if a gradient buffer is needed
+    bool fHasSsboIndicesVarying = false;  // True if VS->FS varying for SSBO index is needed
+    bool fNeedsLocalCoords = false;       // True if FS needs local coordinates
 };
 
 }  // namespace skgpu::graphite

@@ -151,7 +151,7 @@ CircularArcRenderStep::CircularArcRenderStep(StaticBufferManager* bufferManager)
                              {"inRoundCapPos", VertexAttribType::kFloat4, SkSLType::kFloat4},
                              {"inRoundCapRadius", VertexAttribType::kFloat, SkSLType::kFloat},
                              {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                             {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+                             {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt},
 
                              {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                              {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
@@ -206,7 +206,7 @@ const char* CircularArcRenderStep::fragmentCoverageSkSL() const {
 
 void CircularArcRenderStep::writeVertices(DrawWriter* writer,
                                           const DrawParams& params,
-                                          skvx::uint2 ssboIndices) const {
+                                          uint32_t ssboIndices) const {
     SkASSERT(params.geometry().isShape() && params.geometry().shape().isArc());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, {}, kVertexCount};
