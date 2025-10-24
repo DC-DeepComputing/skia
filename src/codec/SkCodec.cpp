@@ -39,7 +39,11 @@
 #endif
 
 #if defined(SK_CODEC_DECODES_BMP)
+#if defined(SK_USE_RUST_BMP_DECODE)
+#include "experimental/rust_bmp/decoder/SkBmpRustDecoder.h"
+#else
 #include "include/codec/SkBmpDecoder.h"
+#endif
 #endif
 
 #if defined(SK_CODEC_DECODES_GIF) || defined(SK_HAS_WUFFS_LIBRARY)
@@ -104,7 +108,11 @@ static std::vector<Decoder>* get_decoders_for_editing() {
             decoders->push_back(SkIcoDecoder::Decoder());
 #endif
 #if defined(SK_CODEC_DECODES_BMP)
+#if defined(SK_USE_RUST_BMP_DECODE)
+            decoders->push_back(SkBmpRustDecoder::Decoder());
+#else
             decoders->push_back(SkBmpDecoder::Decoder());
+#endif
 #endif
 #if defined(SK_CODEC_DECODES_WBMP)
             decoders->push_back(SkWbmpDecoder::Decoder());
