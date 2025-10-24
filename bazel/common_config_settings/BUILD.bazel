@@ -123,3 +123,5 @@ selects.config_setting_group(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Rust BMP decoder configuration removed - now uses native implementation only
