@@ -66,7 +66,7 @@ public:
      *
      *  Since this is immutable, it may return the same object each time it is called.
      */
-    static sk_sp<SkPathData> Empty();
+    static sk_sp<SkPathData> Empty(bool forceNewInstance = false);
 
     /*
      *  Return SkPathData with a copy of these buffers, or nullptr if they are illegal.
@@ -113,8 +113,11 @@ public:
     SkSpan<const SkPoint> points() const { return fPoints; }
     SkSpan<const SkPathVerb> verbs() const { return fVerbs; }
     SkSpan<const float> conics() const { return fConics; }
-    SkRect bounds() const { return fBounds; }
+    const SkRect& bounds() const { return fBounds; }
     uint8_t segmentMask() const { return fSegmentMask; }
+
+    // Will never be zero, has the low-2 bits always zero (to store filltype)
+    uint32_t uniqueID() const { return fUniqueID; }
 
     SkPathRaw raw(SkPathFillType, SkResolveConvexity) const;
 
@@ -171,11 +174,15 @@ public:
 private:
     friend class SkNVRefCnt<SkPathData>;
     friend class SkPathPriv;
+    friend class SkPath;
+    friend class SkPathBuilder;
 
     SkSpan<SkPoint>    fPoints;
     SkSpan<float>      fConics;
     SkSpan<SkPathVerb> fVerbs;
     SkRect             fBounds;
+
+    uint32_t           fUniqueID;   // never 0
 
     /*
      *  Convexity can be slow to compute, and (in theory) it can't always survive a matrix
