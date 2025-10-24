@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5653e4e0_266a854c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-24T18:52:45Z",
+      "side": 1,
+      "message": "LGTM outside of my nit suggestion!",
+      "revId": "e16948a9393d44fc9f4889bfa9dba5bc33f52667",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
