@@ -16,39 +16,43 @@
 
 namespace skgpu::graphite {
 
-bool RasterMaskHelper::init(SkISize pixmapSize, SkIVector transformedMaskOffset) {
-    if (!fPixels) {
-        return false;
-    }
+std::tuple<SkAutoPixmapStorage, RasterMaskHelper> RasterMaskHelper::Allocate(SkISize size,
+                                                                             int padding,
+                                                                             SkIVector translate) {
+    SkASSERT(padding >= 0);
+    SkASSERT(!size.isEmpty());
 
-    // Allocate pixmap if needed
-    if (!fPixels->addr()) {
-        const SkImageInfo bmImageInfo = SkImageInfo::MakeA8(pixmapSize);
-        if (!fPixels->tryAlloc(bmImageInfo)) {
-            return false;
-        }
-        fPixels->erase(0);
-    } else if (fPixels->dimensions() != pixmapSize) {
-        return false;
-    }
+    SkISize sz = {size.fHeight + 2 * padding, size.fWidth + 2 * padding};
+    SkAutoPixmapStorage pixmap;
+    SkASSERT_RELEASE(pixmap.tryAlloc(SkImageInfo::MakeA8(sz)));
+    // Should this only clear the padding, if any? Should it clear at all?
+    sk_bzero(pixmap.writable_addr(), pixmap.computeByteSize());
 
-    fDraw.fBlitterChooser = SkA8Blitter_Choose;
-    fDraw.fDst = *fPixels;
-    fDraw.fRC = &fRasterClip;
-    fTransformedMaskOffset = transformedMaskOffset;
-    return true;
+    SkPixmap innerPM;
+    SkAssertResult(pixmap.extractSubset(&innerPM, SkIRect::MakePtSize({padding, padding}, size)));
+
+    return std::make_tuple(std::move(pixmap), RasterMaskHelper{innerPM, translate});
 }
 
-void RasterMaskHelper::clear(uint8_t alpha, const SkIRect& drawBounds) {
-    fPixels->erase(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF), drawBounds);
+RasterMaskHelper::RasterMaskHelper(SkPixmap pixmap, SkIVector translate) : fPixels{pixmap} {
+    SkASSERT(fPixels.addr());
+    SkASSERT(!fPixels.info().dimensions().isEmpty());
+    SkASSERT(pixmap.colorType() == kAlpha_8_SkColorType);
+
+    fDraw.fBlitterChooser = SkA8Blitter_Choose;
+    fDraw.fDst = fPixels;
+    fDraw.fRC = &fRasterClip;
+    fTranslate.fX = translate.fX;
+    fTranslate.fY = translate.fY;
+}
+
+void RasterMaskHelper::clear(uint8_t alpha) {
+    fPixels.erase(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF));
 }
 
 void RasterMaskHelper::drawShape(const Shape& shape,
                                  const Transform& localToDevice,
-                                 const SkStrokeRec& strokeRec,
-                                 const SkIRect& drawBounds) {
-    fRasterClip.setRect(drawBounds);
-
+                                 const SkStrokeRec& strokeRec) {
     SkPaint paint;
     paint.setBlendMode(SkBlendMode::kSrc);  // "Replace" mode
     paint.setAntiAlias(true);
@@ -57,11 +61,7 @@ void RasterMaskHelper::drawShape(const Shape& shape,
     strokeRec.applyToPaint(&paint);
 
     SkMatrix translatedMatrix = SkMatrix(localToDevice);
-    // The atlas transform of the shape is `localToDevice` translated by the top-left offset of the
-    // drawBounds and the inverse of the base mask transform offset for the current set of shapes.
-    // We will need to translate draws so the bound's UL corner is at the origin
-    translatedMatrix.postTranslate(drawBounds.x() - fTransformedMaskOffset.x(),
-                                   drawBounds.y() - fTransformedMaskOffset.y());
+    translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
 
     fDraw.fCTM = &translatedMatrix;
     // TODO: use drawRect, drawRRect, drawArc
@@ -73,12 +73,7 @@ void RasterMaskHelper::drawShape(const Shape& shape,
     fDraw.drawPathCoverage(path, paint);
 }
 
-void RasterMaskHelper::drawClip(const Shape& shape,
-                                const Transform& localToDevice,
-                                uint8_t alpha,
-                                const SkIRect& drawBounds) {
-    fRasterClip.setRect(drawBounds);
-
+void RasterMaskHelper::drawClip(const Shape& shape, const Transform& localToDevice, uint8_t alpha) {
     SkPaint paint;
     paint.setBlendMode(SkBlendMode::kSrc);  // "Replace" mode
     paint.setAntiAlias(true);
@@ -86,11 +81,7 @@ void RasterMaskHelper::drawClip(const Shape& shape,
     paint.setColor(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF));
 
     SkMatrix translatedMatrix = SkMatrix(localToDevice);
-    // The atlas transform of the shape is `localToDevice` translated by the top-left offset of the
-    // drawBounds and the inverse of the base mask transform offset for the current set of shapes.
-    // We will need to translate draws so the bound's UL corner is at the origin
-    translatedMatrix.postTranslate(drawBounds.x() - fTransformedMaskOffset.x(),
-                                   drawBounds.y() - fTransformedMaskOffset.y());
+    translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
 
     fDraw.fCTM = &translatedMatrix;
     // TODO: use drawRect, drawRRect, drawArc

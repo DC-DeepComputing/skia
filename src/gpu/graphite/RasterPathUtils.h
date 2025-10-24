@@ -41,30 +41,32 @@ class Transform;
 
 class RasterMaskHelper : SkNoncopyable {
 public:
-    RasterMaskHelper(SkAutoPixmapStorage* pixels) : fPixels(pixels) {}
+    // Let RasterMaskHelper allocate the backing store (A8)
+    static std::tuple<SkAutoPixmapStorage, RasterMaskHelper> Allocate(SkISize size,
+                                                                      int padding = 0,
+                                                                      SkIVector translate = {0, 0});
 
-    bool init(SkISize pixmapSize, SkIVector transformedMaskOffset);
+    // Caller provides the storage (must be A8)
+    explicit RasterMaskHelper(SkPixmap pixmap, SkIVector translate = {0, 0});
 
-    void clear(uint8_t alpha, const SkIRect& drawBounds);
+    void clear(uint8_t alpha);
 
     // Draw a single shape into the bitmap (as a path) at location resultBounds.
     void drawShape(const Shape& shape,
                    const Transform& localToDevice,
-                   const SkStrokeRec& strokeRec,
-                   const SkIRect& drawBounds);
+                   const SkStrokeRec& strokeRec);
 
     // Draw a single shape into the bitmap (as a path) at location resultBounds.
     // Variant used for clipping.
-    void drawClip(const Shape& shape,
-                  const Transform& localToDevice,
-                  uint8_t alpha,
-                  const SkIRect& drawBounds);
+    void drawClip(const Shape& shape, const Transform& localToDevice, uint8_t alpha);
 
 private:
-    SkAutoPixmapStorage* fPixels;
-    skcpu::Draw          fDraw;
-    SkIVector            fTransformedMaskOffset = {0, 0};
-    SkRasterClip         fRasterClip;
+    void init();
+
+    SkPixmap     fPixels;
+    skcpu::Draw  fDraw;
+    SkRasterClip fRasterClip;
+    SkVector     fTranslate;
 };
 
 skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
