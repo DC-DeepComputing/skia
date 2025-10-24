@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0e5a194_ddfd05f9",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-24T15:06:25Z",
+      "side": 1,
+      "message": "We can shuffle this to whatever makes sense for a client to set -- in my mind, the only \"client\" decision is : am I using SkPath-editing APIs or not.\n\nOur internal choice is: given we\u0027re in a non-editing mode, which backend impl do we want to use/test.",
+      "parentUuid": "3884eeff_0b1b9252",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 6
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc939e04_bdf6ec24",
         "filename": "include/core/SkPath.h",
         "patchSetId": 11
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4711e60e_2476b3ce",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-24T15:06:25Z",
+      "side": 1,
+      "message": "Yea, I thought about that (a sentinel pathdata value), just not sure.\n\nWe could also just store nullptr in the SkPath -- that is the clearest (to me) signal of \u0027not having geometry) -- but that\u0027s inconvenient for our impl sites.",
+      "parentUuid": "dc939e04_bdf6ec24",
+      "range": {
+        "startLine": 1953,
+        "startChar": 22,
+        "endLine": 1953,
+        "endChar": 31
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "031c3bca_b65c041b",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 11
@@ -60,6 +108,30 @@
       "writtenOn": "2025-10-24T14:03:02Z",
       "side": 1,
       "message": "Should we inline these?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 1
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2248696a_8cc905c9",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-24T15:06:25Z",
+      "side": 1,
+      "message": "Sure -- the first and third will definitely make the caller\u0027s code bigger, but marginally faster.\n\nI suggest we defer all of those inlining decisions to when things are more stable (including inlining the span getters(), but I\u0027m fine if you want to inline these now.",
+      "parentUuid": "031c3bca_b65c041b",
       "range": {
         "startLine": 48,
         "startChar": 0,
@@ -106,6 +178,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2017beb5_8b9af0ba",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-24T15:06:25Z",
+      "side": 1,
+      "message": "Doh!!!!! good catch. Need to add a unittest for that case.",
+      "parentUuid": "ca00ba8c_7d170cbe",
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "95337599_6bb8dd70",
         "filename": "src/core/SkPath_pathdata.cpp",
         "patchSetId": 11
@@ -117,6 +207,30 @@
       "writtenOn": "2025-10-24T14:03:02Z",
       "side": 1,
       "message": "These are the same for pathref, can we relocate to SkPath.cpp?",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 1
+      },
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46324422_7be51f63",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-24T15:06:25Z",
+      "side": 1,
+      "message": "Eeeeeek! -- I had the optimized versions of these once, but I guess I lost that edit. So no, we should *not* share these, but use the factories on SkPathData (much more efficient). Will fix.",
+      "parentUuid": "95337599_6bb8dd70",
       "range": {
         "startLine": 138,
         "startChar": 0,
