@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c20709_22b1772c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-24T15:44:41Z",
+      "side": 1,
+      "message": "I had to modify some of this code when experimenting with atlases and found it difficult to follow because it wasn\u0027t clear to me how pixel ownership worked and how all the rects/offsets related to each other.",
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
