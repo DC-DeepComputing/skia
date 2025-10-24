@@ -22,6 +22,30 @@
       },
       "revId": "db046b6d18bc2d03a1c8daf5f29b6432de15e4ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b4ec1c1_79ef3b03",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2025-10-24T18:52:25Z",
+      "side": 1,
+      "message": "Good catch, I forgot the default is false. Added a comment about why the flag is set explicitly.",
+      "parentUuid": "a2e55f36_55fc0c6d",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "db046b6d18bc2d03a1c8daf5f29b6432de15e4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
