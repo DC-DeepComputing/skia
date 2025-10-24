@@ -256,12 +256,6 @@ SK_API void SetNodeId(SkCanvas* dst, int nodeID);
 */
 SK_API sk_sp<SkDocument> MakeDocument(SkWStream* stream, const Metadata& metadata);
 
-#if !defined(SK_DISABLE_LEGACY_PDF_JPEG)
-static inline sk_sp<SkDocument> MakeDocument(SkWStream* stream) {
-    return MakeDocument(stream, Metadata());
-}
-#endif
-
 }  // namespace SkPDF
 
 #undef SKPDF_STRING
