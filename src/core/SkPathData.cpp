@@ -21,6 +21,19 @@
 #include <optional>
 #include <type_traits>
 
+static uint32_t next_pathdata_unique_id() {
+    constexpr int kShiftToMakeRoomForFillType = 2;
+
+    static std::atomic<int32_t> nextID{1};
+
+    int32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+        id <<= kShiftToMakeRoomForFillType;
+    } while (id == 0);
+    return id;
+}
+
 class SkSafeAccumulator {
 public:
     SkSafeAccumulator(size_t n = 0) : fTotal(n) {}
@@ -130,7 +143,8 @@ static void report_pathdata_make_failure(const char reason[]) {
 // This just sets-up the spans to point inside our allocation
 //
 SkPathData::SkPathData(size_t npts, size_t nvbs, size_t ncns)
-    : fConvexity((uint8_t)SkPathConvexity::kUnknown)
+    : fUniqueID(next_pathdata_unique_id())
+    , fConvexity((uint8_t)SkPathConvexity::kUnknown)
     , fType(SkPathIsAType::kGeneral)
 {
     SkASSERT((npts == 0 && nvbs == 0 && ncns == 0) ||
@@ -315,8 +329,16 @@ sk_sp<SkPathData> SkPathData::MakeNoCheck(const SkPathRaw& raw) {
     return MakeNoCheck(raw.points(), raw.verbs(), raw.conics(), raw.fBounds, raw.fSegmentMask);
 }
 
-sk_sp<SkPathData> SkPathData::Empty() {
-    static SkPathData* gEmpty = MakeNoCheck({}, {}, {}, {}, {}).release();
+sk_sp<SkPathData> SkPathData::Empty(bool forceNewInstance) {
+    auto make_empty = []() {
+        return MakeNoCheck({}, {}, {}, {}, {});
+    };
+
+    if (forceNewInstance) {
+        return make_empty();
+    }
+
+    static SkPathData* gEmpty = make_empty().release();
     return sk_ref_sp(gEmpty);
 }
 
