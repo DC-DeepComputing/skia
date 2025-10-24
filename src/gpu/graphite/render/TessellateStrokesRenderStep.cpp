@@ -72,7 +72,7 @@ static constexpr Attribute kBaseAttributes[] = {
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}};
+        {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr Attribute kAttributesWithCurveType[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
@@ -81,7 +81,7 @@ static constexpr Attribute kAttributesWithCurveType[] = {
         {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
         {"curveType", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}};
+        {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveType,
                                                            kBaseAttributes};
@@ -122,7 +122,7 @@ std::string TessellateStrokesRenderStep::vertexSkSL() const {
 
 void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                                                 const DrawParams& params,
-                                                skvx::uint2 ssboIndices) const {
+                                                uint32_t ssboIndices) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());
