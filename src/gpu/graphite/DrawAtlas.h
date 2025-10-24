@@ -117,9 +117,8 @@ public:
 
     ErrorCode addToAtlas(Recorder*, int width, int height, const void* image, AtlasLocator*);
     ErrorCode addRect(Recorder*, int width, int height, AtlasLocator*);
-    // Reset Pixmap to point to backing data for the AtlasLocator's Plot.
-    // Return relative location within the Plot, as indicated by the AtlasLocator.
-    SkIPoint prepForRender(const AtlasLocator&, SkAutoPixmapStorage*);
+    // Returns a pixmap to pointing at the backing data for the AtlasLocator.
+    SkPixmap prepForRender(const AtlasLocator&);
     bool recordUploads(DrawContext*, Recorder*);
 
     const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
