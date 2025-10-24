@@ -318,6 +318,11 @@ struct SK_API GrContextOptions {
     // Suppress prints for the GrContext.
     bool fSuppressPrints = false;
 
+    /**
+     * Compatibility mode to prevent crashes on old version of the Android emulator
+     */
+    bool fAndroidEmulatorCompatibilityMode = false;
+
 #if defined(GPU_TEST_UTILS)
     /**
      * Private options that are only meant for testing within Skia's tools.
