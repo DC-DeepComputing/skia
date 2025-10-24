@@ -118,6 +118,14 @@ static bool angle_backend_is_metal(GrGLANGLEBackend backend) {
     return backend == GrGLANGLEBackend::kMetal;
 }
 
+static bool process_version(GrGLVersion version, const GrGLContextInfo& info, int feature_index) {
+    if (info.androidEmulatorCompatibilityMode()) {
+        return GR_GL_VER(3, 0);
+    }
+
+    return version;
+}
+
 void GrGLCaps::init(const GrContextOptions& contextOptions,
                     const GrGLContextInfo& ctxInfo,
                     const GrGLInterface* gli) {
@@ -125,6 +133,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     // standard can be unused (optimized away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
     GrGLVersion version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 0);
 
 #if defined(GPU_TEST_UTILS)
     const GrGLubyte* deviceName;
@@ -978,6 +987,7 @@ bool is_float_fp32(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli, GrG
 void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli) {
     GrGLStandard standard = ctxInfo.standard();
     GrGLVersion version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 1);
 
     /**************************************************************************
     * Caps specific to GrShaderCaps
@@ -1147,9 +1157,11 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
 
 void GrGLCaps::initFSAASupport(const GrContextOptions& contextOptions,
                                const GrGLContextInfo& ctxInfo, const GrGLInterface* gli) {
+    auto version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 2);
+
     if (GR_IS_GR_GL(ctxInfo.standard())) {
-        if (ctxInfo.version() >= GR_GL_VER(3,0) ||
-            ctxInfo.hasExtension("GL_ARB_framebuffer_object")) {
+        if (version >= GR_GL_VER(3, 0) || ctxInfo.hasExtension("GL_ARB_framebuffer_object")) {
             fMSFBOType = kStandard_MSFBOType;
         } else if (ctxInfo.hasExtension("GL_EXT_framebuffer_multisample") &&
                    ctxInfo.hasExtension("GL_EXT_framebuffer_blit")) {
@@ -1164,7 +1176,7 @@ void GrGLCaps::initFSAASupport(const GrContextOptions& contextOptions,
         } else if (ctxInfo.hasExtension("GL_IMG_multisampled_render_to_texture")) {
             fMSFBOType = kES_IMG_MsToTexture_MSFBOType;
             fMSAAResolvesAutomatically = true;
-        } else if (ctxInfo.version() >= GR_GL_VER(3,0)) {
+        } else if (version >= GR_GL_VER(3, 0)) {
             fMSFBOType = kStandard_MSFBOType;
         } else if (ctxInfo.hasExtension("GL_CHROMIUM_framebuffer_multisample")) {
             fMSFBOType = kStandard_MSFBOType;
@@ -1175,7 +1187,7 @@ void GrGLCaps::initFSAASupport(const GrContextOptions& contextOptions,
         }
     } else if (GR_IS_GR_WEBGL(ctxInfo.standard())) {
         // No support in WebGL 1, but there is for 2.0
-        if (ctxInfo.version() >= GR_GL_VER(2,0)) {
+        if (version >= GR_GL_VER(2, 0)) {
             fMSFBOType = kStandard_MSFBOType;
         } else {
             fMSFBOType = kNone_MSFBOType;
@@ -1218,12 +1230,13 @@ void GrGLCaps::initStencilSupport(const GrGLContextInfo& ctxInfo) {
 
     // We push back stencil formats onto the fStencilFormats array in order of most preferred to
     // least preferred.
+    auto version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 3);
 
     if (GR_IS_GR_GL(ctxInfo.standard())) {
-        bool supportsPackedDS =
-            ctxInfo.version() >= GR_GL_VER(3,0) ||
-            ctxInfo.hasExtension("GL_EXT_packed_depth_stencil") ||
-            ctxInfo.hasExtension("GL_ARB_framebuffer_object");
+        bool supportsPackedDS = version >= GR_GL_VER(3, 0) ||
+                                ctxInfo.hasExtension("GL_EXT_packed_depth_stencil") ||
+                                ctxInfo.hasExtension("GL_ARB_framebuffer_object");
 
         // S1 thru S16 formats are in GL 3.0+, EXT_FBO, and ARB_FBO since we
         // require FBO support we can expect these are legal formats and don't
@@ -1238,13 +1251,12 @@ void GrGLCaps::initStencilSupport(const GrGLContextInfo& ctxInfo) {
         // for other formats.
 
         fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX8;
-        if (ctxInfo.version() >= GR_GL_VER(3,0) ||
-            ctxInfo.hasExtension("GL_OES_packed_depth_stencil")) {
+        if (version >= GR_GL_VER(3, 0) || ctxInfo.hasExtension("GL_OES_packed_depth_stencil")) {
             fStencilFormats.push_back() = GrGLFormat::kDEPTH24_STENCIL8;
         }
     } else if (GR_IS_GR_WEBGL(ctxInfo.standard())) {
         fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX8;
-        if (ctxInfo.version() >= GR_GL_VER(2,0)) {
+        if (version >= GR_GL_VER(2, 0)) {
             fStencilFormats.push_back() = GrGLFormat::kDEPTH24_STENCIL8;
         }
     }
@@ -1462,6 +1474,9 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
     // standard can be unused (optimized away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
     GrGLVersion version = ctxInfo.version();
+    if (ctxInfo.androidEmulatorCompatibilityMode()) {
+        version = GR_GL_VER(3, 0);
+    }
 
     uint32_t nonMSAARenderFlags = FormatInfo::kFBOColorAttachment_Flag;
     uint32_t msaaRenderFlags = nonMSAARenderFlags;
@@ -1646,7 +1661,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         } else if (GR_IS_GR_GL_ES(standard)) {
             r8Support = version >= GR_GL_VER(3, 0) || ctxInfo.hasExtension("GL_EXT_texture_rg");
         } else if (GR_IS_GR_WEBGL(standard)) {
-            r8Support = ctxInfo.version() >= GR_GL_VER(2, 0);
+            r8Support = version >= GR_GL_VER(2, 0);
         }
         if (formatWorkarounds.fDisallowR8ForPowerVRSGX54x) {
             r8Support = false;
@@ -1795,8 +1810,8 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         if (alpha8IsValidForGL) {
             // Core profile removes ALPHA8 support.
             // OpenGL 3.0+ (and GL_ARB_framebuffer_object) supports ALPHA8 as renderable.
-            alpha8IsRenderable = ctxInfo.version() >= GR_GL_VER(3, 0) ||
-                                 ctxInfo.hasExtension("GL_ARB_framebuffer_object");
+            alpha8IsRenderable =
+                    version >= GR_GL_VER(3, 0) || ctxInfo.hasExtension("GL_ARB_framebuffer_object");
         }
         info.fInternalFormatForRenderbuffer = GR_GL_ALPHA8;
         info.fDefaultExternalFormat = GR_GL_ALPHA;
@@ -3564,6 +3579,7 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
     // standard can be unused (optimized away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
     GrGLVersion version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 4);
 
     int maxSampleCnt = 1;
     if (GrGLCaps::kES_IMG_MsToTexture_MSFBOType == fMSFBOType) {
@@ -3930,6 +3946,9 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
                                                  const GrGLInterface* glInterface,
                                                  GrShaderCaps* shaderCaps,
                                                  FormatWorkarounds* formatWorkarounds) {
+    GrGLVersion version = ctxInfo.version();
+    version = process_version(version, ctxInfo, 5);
+
     GrGLDriverVersion driverVersion =
         ctxInfo.angleBackend() == GrGLANGLEBackend::kUnknown ? ctxInfo.driverVersion()
                                                              : ctxInfo.angleDriverVersion();
@@ -3967,8 +3986,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fAllowBGRA8CopyTexSubImage = true;
     }
     // glCopyTexSubImage2D works for sRGB with GLES 3.0 and on some GPUs with GLES 2.0
-    if (ctxInfo.version() >= GR_GL_VER(3, 0) ||
-        ctxInfo.renderer() == GrGLRenderer::kMali4xx ||
+    if (version >= GR_GL_VER(3, 0) || ctxInfo.renderer() == GrGLRenderer::kMali4xx ||
         ctxInfo.renderer() == GrGLRenderer::kTegra_PreK1) {
         fAllowSRGBCopyTexSubImage = true;
     }
@@ -4061,7 +4079,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fShaderCaps->fNonsquareMatrixSupport = false;
     }
 
-    if (ctxInfo.isOverCommandBuffer() && ctxInfo.version() >= GR_GL_VER(3,0)) {
+    if (ctxInfo.isOverCommandBuffer() && version >= GR_GL_VER(3, 0)) {
         formatWorkarounds->fDisallowTextureUnorm16 = true;  // http://crbug.com/1224108
         formatWorkarounds->fDisallowETC2Compression = true;  // http://crbug.com/1224111
         fTransferFromSurfaceToBufferSupport = false;  // http://crbug.com/1224138
@@ -4582,7 +4600,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // Command buffer fails glTexSubImage2D with type == GL_HALF_FLOAT_OES if a GL_RGBA16F texture
     // is created with glTexStorage2D. See crbug.com/1008003.
     formatWorkarounds->fDisableRGBA16FTexStorageForCrBug1008003 =
-            ctxInfo.isOverCommandBuffer() && ctxInfo.version() < GR_GL_VER(3, 0);
+            ctxInfo.isOverCommandBuffer() && version < GR_GL_VER(3, 0);
 
 #if defined(SK_BUILD_FOR_WIN)
     // On Intel Windows ES contexts it seems that using texture storage with BGRA causes
