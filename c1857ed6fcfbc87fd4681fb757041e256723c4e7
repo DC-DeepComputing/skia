@@ -22,6 +22,30 @@
       },
       "revId": "c1857ed6fcfbc87fd4681fb757041e256723c4e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b74fcbe9_5ff5af62",
+        "filename": "src/core/SkStreamPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-24T21:23:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac2d2ed5_9f7ff91d",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 19
+      },
+      "revId": "c1857ed6fcfbc87fd4681fb757041e256723c4e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
