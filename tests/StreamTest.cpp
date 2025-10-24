@@ -194,7 +194,7 @@ static void TestDereferencingData(skiatest::Reporter* reporter, SkMemoryStream* 
     char buf[1];
     REPORTER_ASSERT(reporter, memStream->read(buf, sizeof(buf)) == 0);
     memStream->getMemoryBase();
-    (void)memStream->getData();
+    (void)memStream->getDataView();
 }
 
 static void TestNullData(skiatest::Reporter* reporter) {

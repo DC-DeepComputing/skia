@@ -519,7 +519,7 @@ sk_sp<SkData> AsDataUri(SkImage* image) {
     const char* selectedPrefix = pngDataPrefix;
     size_t selectedPrefixLength = sizeof(pngDataPrefix);
 
-    sk_sp<SkData> imageData = image->refEncodedData();
+    sk_sp<const SkData> imageData = image->refEncodedData();
     if (imageData) {  // Already encoded as something
         if (is_jpeg(imageData->data(), imageData->size())) {
             selectedPrefix = jpgDataPrefix;
