@@ -113,7 +113,7 @@ public:
     SkSpan<const SkPoint> points() const { return fPoints; }
     SkSpan<const SkPathVerb> verbs() const { return fVerbs; }
     SkSpan<const float> conics() const { return fConics; }
-    SkRect bounds() const { return fBounds; }
+    const SkRect& bounds() const { return fBounds; }
     uint8_t segmentMask() const { return fSegmentMask; }
 
     SkPathRaw raw(SkPathFillType, SkResolveConvexity) const;
@@ -171,6 +171,8 @@ public:
 private:
     friend class SkNVRefCnt<SkPathData>;
     friend class SkPathPriv;
+    friend class SkPath;
+    friend class SkPathBuilder;
 
     SkSpan<SkPoint>    fPoints;
     SkSpan<float>      fConics;
