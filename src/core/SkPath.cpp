@@ -45,19 +45,6 @@ SkPath::~SkPath() {
     SkDEBUGCODE(this->validate();)
 }
 
-bool SkPath::isInterpolatable(const SkPath& compare) const {
-    // need the same structure (verbs, conicweights) and same point-count
-    return this->points().size() == compare.points().size() &&
-           SkSpanPriv::EQ(this->verbs(), compare.verbs()) &&
-           SkSpanPriv::EQ(this->conicWeights(), compare.conicWeights());
-}
-
-SkPath SkPath::makeInterpolate(const SkPath& ending, SkScalar weight) const {
-    SkPath out;
-    this->interpolate(ending, weight, &out);
-    return out;
-}
-
 static inline bool check_edge_against_rect(const SkPoint& p0,
                                            const SkPoint& p1,
                                            const SkRect& rect,
@@ -585,6 +572,16 @@ SkPath SkPath::RRect(const SkRect& r, SkScalar rx, SkScalar ry, SkPathDirection 
     return RRect(SkRRect::MakeRectXY(r, rx, ry), dir);
 }
 
+// TODO: evolve this one to the source of truth (when we have SkPathData),
+//       and have makeTransform() call it and mark the non-finite flag if it fails.
+std::optional<SkPath> SkPath::tryMakeTransform(const SkMatrix& matrix) const {
+    auto path = this->makeTransform(matrix);
+    if (path.isFinite()) {
+        return path;
+    }
+    return {};
+}
+
 SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPath& path) {
     auto convexity = path.getConvexityOrUnknown();
     if (SkPathConvexity_IsConvex(convexity)) {
@@ -688,9 +685,13 @@ static std::optional<SkPath> clip(const SkPath& path, const SkHalfPlane& plane) 
         return {};
     }
 
-    SkPath rotated = path.makeTransform(*inv);
-    auto raw = SkPathPriv::Raw(rotated, SkResolveConvexity::kNo);
+    auto rotated = path.tryMakeTransform(*inv);
+    if (!rotated) {
+        return {};
+    }
+    auto raw = SkPathPriv::Raw(*rotated, SkResolveConvexity::kNo);
     if (!raw) {
+        SkASSERT(false);    // if rotated was valid, so should the raw
         return {};
     }
 

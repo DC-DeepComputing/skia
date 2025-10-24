@@ -53,10 +53,6 @@ public:
         return UniformDataBlock(uniforms->finish());
     }
 
-    static UniformDataBlock Wrap(UniformManager* uniforms, size_t subspanOffset) {
-        return UniformDataBlock(uniforms->finish(subspanOffset));
-    }
-
     constexpr UniformDataBlock& operator=(const UniformDataBlock&) = default;
 
     explicit operator bool() const { return !this->empty(); }
@@ -374,11 +370,9 @@ public:
 
     // Mark the end of extracting paint uniforms and textures. This finalizes the paint uniform
     // data, pads it correctly, and records its size.
-    UniformDataBlock endPaintData() {
+    void endPaintData() {
         fPaintTextureCount = fTextures.size();
-        auto paintData = UniformDataBlock::Wrap(&fUniformManager, /*subspanOffset=*/0);
-        fUniformManager.markNewOffset(); // No-op if already assigned
-        return paintData;
+        fUniformManager.markRewindOffset(); // Mark the end of paint-time uniforms
     }
 
     // Mark the end of extracting uniforms and textures from a RenderStep.
@@ -387,8 +381,7 @@ public:
         if (!performsShading) {
             textures = textures.subspan(fPaintTextureCount);
         }
-        // By this point, the fStartingOffset of the uniform manager will have advanced to the end
-        // of the paint uniforms, so calling wrap now returns the renderstep uniforms.
+        // Return *all* uniform data (paint AND renderstep) written since the last resetForDraw().
         return {UniformDataBlock::Wrap(&fUniformManager), TextureDataBlock(textures)};
     }
 
