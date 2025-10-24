@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff482fec_a08fb5a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-24T13:54:11Z",
+      "side": 1,
+      "message": "-1 for a quick check to make sure this isn\u0027t dependent on https://skia-review.googlesource.com/c/skia/+/1075538 since it\u0027s getting reverted for blocking the Chrome roller (see the block here https://chromium-review.googlesource.com/c/chromium/src/+/7082929)",
+      "revId": "54c8732b59d5c974792616ef9a17350f275196bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4731f78_8dad41ef",
