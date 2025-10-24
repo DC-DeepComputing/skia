@@ -16,6 +16,24 @@
       "message": "What about this one, does it need to keep compiling with such a low version of C++?\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/rbe/gce_linux/cc/BUILD;l\u003d115;drc\u003d17b801d27b40ed492cd5321c4ed43c80848b69e4",
       "revId": "0a03fdfb78b8005fbf9ea2391bfd4df5584f0344",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bba3e67a_3e450c67",
+        "filename": "bazel/buildrc",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-24T21:14:08Z",
+      "side": 1,
+      "message": "That\u0027s a generated file https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/rbe/README.md\n\nIt corresponds to the clang-11 that is installed on the Docker container that we use to run our remote Bazel Builds. \nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/rbe/gce_linux_container/Dockerfile\nNow, that version of clang is only used to compile some Bazel host tools - when we compile Skia, we use our hermetic toolchain which is controlled by toolchain/linux_amd64_toolchain_config.bzl, which you\u0027ve updated to always be C++20",
+      "parentUuid": "ccdc773e_702ca35d",
+      "revId": "0a03fdfb78b8005fbf9ea2391bfd4df5584f0344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
