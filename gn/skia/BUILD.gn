@@ -19,6 +19,8 @@ declare_args() {
   malloc = ""
   werror = false
   xcode_sysroot = ""
+
+  skia_use_cpp20 = false
 }
 
 if (is_ios && xcode_sysroot == "") {
@@ -54,6 +56,10 @@ config("default") {
   cflags_objcc = []
   defines = []
   ldflags = []
+  if (skia_use_rust_png_decode && skia_use_rust_bmp_decode) {
+    # Allow multiple definition of Rust symbols when both PNG and BMP decoders are enabled
+    ldflags += [ "-Wl,--allow-multiple-definition" ]
+  }
   libs = []
 
   # Disable warnings about unknown attributes.
@@ -565,7 +571,6 @@ config("warnings") {
       "-Wno-c++98-compat",
       "-Wno-c++98-compat-pedantic",
       "-Wno-undefined-func-template",
-      "-Wc++98-compat-extra-semi",
     ]
     cflags_objc += [
       "-Wno-direct-ivar-access",
@@ -669,9 +674,7 @@ config("debug_symbols") {
 }
 
 config("no_rtti") {
-  # -fsanitize=vptr requires RTTI which is enabled as a part of
-  # -fsanitize=undefined
-  if (sanitize != "ASAN") {
+  if (sanitize != "ASAN") {  # -fsanitize=vptr requires RTTI
     if (is_win) {
       cflags_cc = [ "/GR-" ]
     } else {
