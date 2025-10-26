@@ -21,6 +21,7 @@
 #include "src/core/SkBlitter.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkScan.h"
 
