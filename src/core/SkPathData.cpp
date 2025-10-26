@@ -21,6 +21,21 @@
 #include <optional>
 #include <type_traits>
 
+static uint32_t next_pathdata_unique_id() {
+    constexpr int kHighBitsToMakeRoomForFillType = 2;
+
+    static std::atomic<int32_t> nextID{1};
+
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+        // clear the high bits to make room for filltype
+        id <<= kHighBitsToMakeRoomForFillType;
+        id >>= kHighBitsToMakeRoomForFillType;
+    } while (id == 0);
+    return id;
+}
+
 class SkSafeAccumulator {
 public:
     SkSafeAccumulator(size_t n = 0) : fTotal(n) {}
@@ -130,7 +145,8 @@ static void report_pathdata_make_failure(const char reason[]) {
 // This just sets-up the spans to point inside our allocation
 //
 SkPathData::SkPathData(size_t npts, size_t nvbs, size_t ncns)
-    : fConvexity((uint8_t)SkPathConvexity::kUnknown)
+    : fUniqueID(next_pathdata_unique_id())
+    , fConvexity((uint8_t)SkPathConvexity::kUnknown)
     , fType(SkPathIsAType::kGeneral)
 {
     SkASSERT((npts == 0 && nvbs == 0 && ncns == 0) ||
