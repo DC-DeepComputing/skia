@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f58c854_c7aef15f",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "Can we spell out the path data constness? `const SkPathData`\n\n(will prolly need to update a bunch of factories too)",
+      "range": {
+        "startLine": 1950,
+        "startChar": 10,
+        "endLine": 1950,
+        "endChar": 20
+      },
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "614757ff_84bd8da3",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "SkPathRef genid reserves the high bits for fill type, we should match that to avoid client disruption.",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8980d39f_49590182",
+        "filename": "src/core/SkPathDump.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "Unused?",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a759a2_4d6093f9",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "We could also inline `MakeNoCheck({}, {}, {}, {}, {}).release();` and leave `Empty` unchanged, not sure it\u0027s worth complicating Empty just to DRY this one liner.\n\nYour call.",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cccc0955_82c0fb5e",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "Interesting, we don\u0027t have an SkPath move constructor?  I always assumed we do, maybe something to add (separately).",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e28bf4_d28c05ee",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "They\u0027re both private, with identical impl.  Do we need the non-const version at all?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f7cf3b37_29f772b1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath_pathdata.cpp",
+              "range": {
+                "startLine": 81,
+                "startChar": 0,
+                "endLine": 86,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e282dd3c_9981ce5d",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "These should only be called internally, mostly from pathref afaict.  Since convexity is no longer stored in SkPath, could we remove them at some point?  We can call fPathData-\u003esetConvexity when/if needed (maybe with a SkPathPriv helper), although I think the goal is to never do that either, and instead pass known convexity to the constructor.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 1
+      },
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8202f1_d46e6aa9",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "No ifdef needed.",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f75c3fc1_17d13b45",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40a728c1_fa68405d",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-26T15:29:30Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
