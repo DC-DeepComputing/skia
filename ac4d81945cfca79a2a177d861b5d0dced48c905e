@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfa14221_fb8474ec",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-27T17:11:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24673f96_6e6b9668",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 19
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "451ba543_569e8515",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83686809_c1a53ad5",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-27T17:11:30Z",
+      "side": 1,
+      "message": "Agree, definitely on the roadmap. I\u0027ll put a TODO to track it.",
+      "parentUuid": "451ba543_569e8515",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f46d24b5_d957332a",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-10-27T13:35:09Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 106
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcf2cbac_4a0cefb2",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-10-27T17:11:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f46d24b5_d957332a",
       "range": {
         "startLine": 65,
         "startChar": 0,
