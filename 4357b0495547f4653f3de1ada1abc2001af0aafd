@@ -16,6 +16,184 @@
       "message": "I had to modify some of this code when experimenting with atlases and found it difficult to follow because it wasn\u0027t clear to me how pixel ownership worked and how all the rects/offsets related to each other.",
       "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8ea2d58_3f4634d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "Largely agree that this makes things a lot simpler, but I think there\u0027s an issue with how the padding data gets initialized in the bitmap that would impact the clip atlas.",
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de0cb46d_973b3b35",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "Can we add a comment here (or perhaps in prepForRender\u0027s makeInset() call) that the use of calloc here is load bearing in order to ensure that both the main data to be modified starts at 0 (if it\u0027s going to be rendered into vs. overwritten), and that the padding is zeroed.",
+      "range": {
+        "startLine": 73,
+        "startChar": 45,
+        "endLine": 73,
+        "endChar": 60
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b590d52e_38323adc",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 90,
+        "startChar": 27,
+        "endLine": 90,
+        "endChar": 33
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3adbe531_91e3610c",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "Can we add a comment that the returned Pixmap does not expose the padding, but that the full data includes padding that is zero\u0027ed?",
+      "range": {
+        "startLine": 380,
+        "startChar": 4,
+        "endLine": 382,
+        "endChar": 49
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c044d1b_2b4f782b",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "I think that in the old code, this `clear()` would impact the entire pixmap storage, including the padding area whereas now I think it will just impact the inset?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ab0283_abc7e9da",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "If we can pass in the padding value here, we can still have RasterMaskHelper handle the clearing of the full data (and maybe remove clear() from its public API entirely?).",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 93
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceaee7e0_b31b8ce6",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "Yes this needs to clear the padding, and I think clear everything within the inset as well.\n\nWhen uploading the full pixmap to an atlas texture, we need the padding to have been initialized to zero so that texture filtering that\u0027s clamped to the padding is guaranteed to evaluate to the outer coverage (most of the time that should be 0, but for difference clips it should be 1).\n\nI think that when we call the drawShape() functions for regular raster atlas draws, it is implicitly assuming things started at 0. I didn\u0027t spot a call to RasterMaskHelper::clear.\n\nBut the clip atlas manager does use clear, in which case this sk_bzero is unnecessary. However, I think there is a separate issue with the clip atlas manager\u0027s changes because it would not always just clear to zero. When doing a single difference clip, I believe when it cleared to #FF, that would impact the padding pixels of the auto pixmap storage and so then clamped sampling would return full coverage like you\u0027d expect for an inverted fill.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 72
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b84a706_dc4e3625",
+        "filename": "src/gpu/graphite/RasterPathUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:31:35Z",
+      "side": 1,
+      "message": "Can this be private or removed now?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
