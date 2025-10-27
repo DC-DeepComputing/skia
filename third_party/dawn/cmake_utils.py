@@ -340,3 +340,43 @@ def combine_into_library(args, output_path, build_dir, target_os, object_files):
   subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
 
   copy_if_changed(gen_library_path, os.path.join(os.getcwd(), output_path))
+
+
+def get_python_executable():
+  """If VPython environment variables are set, find the python executable from
+  the vpython environment. This is needed because the calling script itself
+  may not be running under vpython."""
+  if "VPYTHON_DEFAULT_SPEC" not in os.environ or "VPYTHON_VIRTUALENV_ROOT" not in os.environ:
+    print("VPYTHON not configured")
+    return sys.executable
+
+  vpython_exe = shutil.which("vpython")
+  if not vpython_exe:
+    vpython_exe = shutil.which("vpython3")
+    if not vpython_exe:
+      print("Warning: VPYTHON environment variables set, but vpython not found in PATH.")
+      return sys.executable
+
+  spec = os.environ["VPYTHON_DEFAULT_SPEC"]
+  root = os.environ["VPYTHON_VIRTUALENV_ROOT"]
+  get_python_cmd = [
+      vpython_exe,
+      "-vpython-spec",
+      spec,
+      "-vpython-root",
+      root,
+      "-c",
+      "import sys; print(sys.executable)",
+  ]
+  try:
+    result = subprocess.run(
+        get_python_cmd,
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8")
+    return result.stdout.strip()
+  except subprocess.CalledProcessError as e:
+    print(f"Warning: Failed to get python executable from vpython: {e}")
+    print(f"Stderr: {e.stderr}")
+    return sys.executable

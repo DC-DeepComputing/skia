@@ -21,7 +21,8 @@ import sys
 
 from cmake_utils import (add_common_cmake_args, combine_into_library,
                          discover_dependencies, get_cmake_os_cpu,
-                         get_windows_settings, quote_if_needed, write_depfile)
+                         get_windows_settings, get_python_executable,
+                         quote_if_needed, write_depfile)
 
 
 def gn_bool_to_cmake(s):
@@ -174,6 +175,9 @@ def main():
     # Set the WINDOWSSDKDIR environment variable to ensure that Dawn's
     # DetectWindowsSDK function uses the correct, hermetic SDK path.
     env["WINDOWSSDKDIR"] = args.win_sdk
+
+  python_exe = get_python_executable()
+  configure_cmd.append(f"-DPython3_EXECUTABLE={python_exe}")
 
   print(" ".join(configure_cmd))
   print("with environment", env)
