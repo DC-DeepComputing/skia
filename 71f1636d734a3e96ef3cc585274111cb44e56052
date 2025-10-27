@@ -46,6 +46,30 @@
       },
       "revId": "71f1636d734a3e96ef3cc585274111cb44e56052",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df405f0e_1ddacc4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-27T14:08:25Z",
+      "side": 1,
+      "message": "How about an overloaded drawGeometry(...) and a separate drawGeometryWithPathEffect(...)? Otherwise, I think this wrapped approach is good with me. We could also modify drawGeometry to use logical smaller helpers to help make it more readable. Either way, I do think it\u0027s good idea to modify the structure in some way to make it less cumbersome.",
+      "parentUuid": "f53cfdc8_9b0105e5",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 69
+      },
+      "revId": "71f1636d734a3e96ef3cc585274111cb44e56052",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
