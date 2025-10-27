@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d55c173_43243920",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-27T15:30:17Z",
+      "side": 1,
+      "message": "This adds in shims for the old `skia_gpu_vk_chromium_p*` GNI paths so we can update Chromium after this lands.",
+      "revId": "09b6640bddd51e28453d7e2befff6d8fd5b700aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
