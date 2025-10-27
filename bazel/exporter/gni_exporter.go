@@ -64,12 +64,23 @@ type GNIExporter struct {
 	exportGNIDescs []GNIExportDesc       // The rules to export.
 }
 
-// The footer written to gn/codec.gni.
-const codecGNIFooter = `
+const codecFooter = `
 skia_codec_rust_png_ffi_crate_root = "$_rust/png/FFI.rs"
 `
 
-// The footer written to gn/sksl_tests.gni.
+const gpuFooter = `
+# TODO(kjlubick) remove this after updating Chromium
+skia_gpu_vk_chromium_private = skia_ganesh_vk_chromium_private
+`
+
+const portsFooter = `
+skia_fontations_path_bridge_sources = [
+  "$_src/ports/fontations/src/skpath_bridge.h"
+]
+
+skia_fontations_bridge_root = "$_src/ports/fontations/src/ffi.rs"
+`
+
 const skslTestsFooter = `sksl_glsl_tests_sources =
     sksl_error_tests + sksl_glsl_tests + sksl_inliner_tests +
     sksl_folding_tests + sksl_shared_tests
@@ -95,7 +106,6 @@ sksl_stage_tests_sources =
 
 sksl_minify_tests_sources = sksl_folding_tests + sksl_mesh_tests + sksl_rte_tests`
 
-// The footer written to modules/skshaper/skshaper.gni.
 const skshaperFooter = `
 declare_args() {
   skia_enable_skshaper = true
@@ -104,17 +114,10 @@ declare_args() {
   skia_enable_skshaper_tests = skia_enable_skshaper
 }`
 
-const portsFooter = `
-skia_fontations_path_bridge_sources = [
-  "$_src/ports/fontations/src/skpath_bridge.h"
-]
-
-skia_fontations_bridge_root = "$_src/ports/fontations/src/ffi.rs"
-`
-
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
-	"gn/codec.gni":                  codecGNIFooter,
+	"gn/codec.gni":                  codecFooter,
+	"gn/gpu.gni":                    gpuFooter,
 	"gn/ports.gni":                  portsFooter,
 	"gn/sksl_tests.gni":             skslTestsFooter,
 	"modules/skshaper/skshaper.gni": skshaperFooter,
