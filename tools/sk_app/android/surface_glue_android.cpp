@@ -309,4 +309,44 @@ extern "C" JNIEXPORT void JNICALL Java_org_skia_viewer_ViewerActivity_onUIStateC
     env->ReleaseStringUTFChars(stateValue, valueChars);
 }
 
+
+extern "C"  // extern "C" is needed for JNI (although the method itself is in C++)
+    JNIEXPORT jlong JNICALL
+    Java_org_skia_pblend_ProtectedBlendApplication_createNativeApp(JNIEnv* env,
+                                                           jobject application,
+                                                           jobject assetManager,
+                                                           jobjectArray args) {
+    config_resource_mgr(env, assetManager);
+    SkiaAndroidApp* skiaAndroidApp = new SkiaAndroidApp(env, application, args);
+    return (jlong)((size_t)skiaAndroidApp);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_org_skia_pblend_ProtectedBlendApplication_destroyNativeApp(
+    JNIEnv* env, jobject application, jlong handle) {
+    auto skiaAndroidApp = (SkiaAndroidApp*)handle;
+    skiaAndroidApp->postMessage(Message(kDestroyApp));
+}
+
+extern "C" JNIEXPORT void JNICALL Java_org_skia_pblend_ProtectedBlendActivity_onSurfaceCreated(
+    JNIEnv* env, jobject activity, jlong handle, jobject surface) {
+    auto skiaAndroidApp = (SkiaAndroidApp*)handle;
+    Message message(kSurfaceCreated);
+    message.fNativeWindow = ANativeWindow_fromSurface(env, surface);
+    skiaAndroidApp->postMessage(message);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_org_skia_pblend_ProtectedBlendActivity_onSurfaceChanged(
+    JNIEnv* env, jobject activity, jlong handle, jobject surface) {
+    auto skiaAndroidApp = (SkiaAndroidApp*)handle;
+    Message message(kSurfaceChanged);
+    message.fNativeWindow = ANativeWindow_fromSurface(env, surface);
+    skiaAndroidApp->postMessage(message);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_org_skia_pblend_ProtectedBlendActivity_onSurfaceDestroyed(
+    JNIEnv* env, jobject activity, jlong handle) {
+    auto skiaAndroidApp = (SkiaAndroidApp*)handle;
+    skiaAndroidApp->postMessage(Message(kSurfaceDestroyed));
+}
+
 }  // namespace sk_app
