@@ -2257,6 +2257,8 @@ if (skia_enable_tools) {
           "tools/graphite/GraphiteTestContext.h",
           "tools/graphite/GraphiteToolUtils.cpp",
           "tools/graphite/GraphiteToolUtils.h",
+          "tools/graphite/PipelineCallbackHandler.cpp",
+          "tools/graphite/PipelineCallbackHandler.h",
           "tools/graphite/ProtectedUtils_Graphite.cpp",
           "tools/graphite/UniqueKeyUtils.cpp",
           "tools/graphite/UniqueKeyUtils.h",
@@ -2281,8 +2283,6 @@ if (skia_enable_tools) {
         }
         if (skia_enable_precompile) {
           sources += [
-            "tools/graphite/precompile/PipelineCallbackHandler.cpp",
-            "tools/graphite/precompile/PipelineCallbackHandler.h",
             "tools/graphite/precompile/PrecompileEffectFactories.cpp",
             "tools/graphite/precompile/PrecompileEffectFactories.h",
           ]
