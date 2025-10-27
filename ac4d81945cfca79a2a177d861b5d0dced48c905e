@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24673f96_6e6b9668",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:35:09Z",
+      "side": 1,
+      "message": "TArray already does index validation, so unless we explicitly want to support indexing out of bounds w/o crashing, we can just have it be `return fPictures[i]`.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 19
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "451ba543_569e8515",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:35:09Z",
+      "side": 1,
+      "message": "As this gets more complex, it could be nice to draw a layer of metadata text on top of whatever is drawn for the capture so that you can keep track of what picture or frame you\u0027re on.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46d24b5_d957332a",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T13:35:09Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 106
+      },
+      "revId": "ac4d81945cfca79a2a177d861b5d0dced48c905e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
