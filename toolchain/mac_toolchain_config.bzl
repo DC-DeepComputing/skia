@@ -281,15 +281,13 @@ def _make_default_flags(ctx):
             flag_group(
                 flags = [
                     # THIS ORDER MATTERS GREATLY. If these are in the wrong order, the
-                    # #include_next directives will fail to find the files, causing a compilation
-                    # error (or, without -no-canonical-prefixes, a mysterious case where files
-                    # are included with an absolute path and fail the build).
-                    "-isystem",
+                    # #include_next directives will fail to find the files.
+                    "-isystem",  # C++ std library
                     EXTERNAL_TOOLCHAIN + "/include/c++/v1",
-                    "-isystem",
-                    XCODE_MACSDK_SYMLINK + "/usr/include",
-                    "-isystem",
+                    "-isystem",  # clang built ins
                     EXTERNAL_TOOLCHAIN + "/lib/clang/" + clang_ver + "/include",
+                    "-isystem",  # Mac SDK
+                    XCODE_MACSDK_SYMLINK + "/usr/include",
                     # Set the framework path to the Mac SDK framework directory. This has
                     # subfolders like OpenGL.framework
                     # We want -iframework so Clang hides diagnostic warnings from those header
@@ -425,10 +423,10 @@ def _make_diagnostic_flags():
         # link steps to be more verbose.
         feature(
             "diagnostic",
-            enabled = False,
+            enabled = true,
             flag_sets = [
                 cxx_diagnostic,
-                link_diagnostic,
+                #link_diagnostic,
             ],
         ),
         feature(
