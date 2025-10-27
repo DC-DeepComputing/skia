@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb196a99_488663fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T18:14:08Z",
+      "side": 1,
+      "message": "I believe the one red bot was an unrelated failure on ToT at the time the dry run ran",
+      "revId": "44c6edf45fcb171701b0f6601ebc1f236e5b4c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
