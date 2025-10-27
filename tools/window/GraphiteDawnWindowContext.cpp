@@ -106,7 +106,7 @@ sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
     SkASSERT(this->graphiteRecorder());
     auto surface = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                   backendTex,
-                                                  kBGRA_8888_SkColorType,
+                                                  fSurfaceFormat == wgpu::TextureFormat::RGBA8Unorm ? kRGBA_8888_SkColorType : kBGRA_8888_SkColorType,
                                                   fDisplayParams->colorSpace(),
                                                   &fDisplayParams->surfaceProps());
     SkASSERT(surface);
