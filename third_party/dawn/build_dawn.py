@@ -18,10 +18,12 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 
 from cmake_utils import (add_common_cmake_args, combine_into_library,
                          discover_dependencies, get_cmake_os_cpu,
-                         get_windows_settings, quote_if_needed, write_depfile)
+                         get_windows_settings, get_python_executable,
+                         quote_if_needed, write_depfile)
 
 
 def gn_bool_to_cmake(s):
@@ -175,9 +177,23 @@ def main():
     # DetectWindowsSDK function uses the correct, hermetic SDK path.
     env["WINDOWSSDKDIR"] = args.win_sdk
 
+  python_exe = get_python_executable()
+  configure_cmd.append(f"-DPython3_EXECUTABLE={python_exe}")
+
   print(" ".join(configure_cmd))
   print("with environment", env)
-  subprocess.run(configure_cmd, check=True, env=env)
+  # This sometimes fails on Windows with errors about not finding the right
+  # Python deps. I'm not sure why, so we just retry to see if that fixes things.
+  for i in range(3):
+    try:
+      subprocess.run(configure_cmd, check=True, env=env)
+      break
+    except subprocess.CalledProcessError as e:
+      print(f"Configure failed with error: {e}. Retrying...")
+      time.sleep(1)
+      if i == 2:
+        raise
+
 
   build_cmd = [ninja_exe, "-C", build_dir, "-dkeepdepfile"] + build_targets
   subprocess.run(build_cmd, check=True, env=env)

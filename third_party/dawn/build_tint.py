@@ -20,7 +20,7 @@ import sys
 
 from cmake_utils import (
     add_common_cmake_args, combine_into_library, discover_dependencies,
-    get_cmake_os_cpu, get_windows_settings, quote_if_needed, write_depfile)
+    get_cmake_os_cpu, get_windows_settings, get_python_executable, quote_if_needed, write_depfile)
 
 
 def main():
@@ -116,6 +116,8 @@ def main():
   # tint and dawn in parallel.
   env["PYTHONDONTWRITEBYTECODE"] = "1"
 
+  python_exe = get_python_executable()
+  configure_cmd.append(f"-DPython3_EXECUTABLE={python_exe}")
   subprocess.run(configure_cmd, check=True, env=env)
 
   # These tint targets (and their deps) are what Skia needs to build
