@@ -3200,6 +3200,7 @@ if (skia_enable_tools) {
         "tools/viewer/Viewer.cpp",
         "tools/viewer/Viewer.h",
         "tools/viewer/XferSlide.cpp",
+        "tools/viewer/ZoomInSlide.cpp",
       ]
       libs = []
 
