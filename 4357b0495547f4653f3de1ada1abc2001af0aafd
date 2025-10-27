@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ab49195_897b45c4",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de0cb46d_973b3b35",
+      "range": {
+        "startLine": 73,
+        "startChar": 45,
+        "endLine": 73,
+        "endChar": 60
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b590d52e_38323adc",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "671eb7d0_fd808146",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b590d52e_38323adc",
+      "range": {
+        "startLine": 90,
+        "startChar": 27,
+        "endLine": 90,
+        "endChar": 33
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3adbe531_91e3610c",
@@ -94,6 +142,30 @@
       "writtenOn": "2025-10-27T13:31:35Z",
       "side": 1,
       "message": "Can we add a comment that the returned Pixmap does not expose the padding, but that the full data includes padding that is zero\u0027ed?",
+      "range": {
+        "startLine": 380,
+        "startChar": 4,
+        "endLine": 382,
+        "endChar": 49
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07bc5264_e582d119",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3adbe531_91e3610c",
       "range": {
         "startLine": 380,
         "startChar": 4,
@@ -129,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ae767f5_6b8b4fc1",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Nice catch on the behavior difference. I updated Plot and RasterMaskHelper to support initialization of the padding to a caller-provided value. \n\nI know we need to (sometimes) clear the mask bounds to something other than zero but do we ever access sample the padding for clips? I wasn\u0027t sure why we used padding for clip masks. I had assumed they were always nearest sampled, but I didn\u0027t investigate that.\n\nAlso, I was curious about inverse fill for path-atlas when allowing bilinear interpolation (android). I guess we invert in the shader, so clearing to zero is always ok?",
+      "parentUuid": "5c044d1b_2b4f782b",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60ab0283_abc7e9da",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 4
@@ -140,6 +236,30 @@
       "writtenOn": "2025-10-27T13:31:35Z",
       "side": 1,
       "message": "If we can pass in the padding value here, we can still have RasterMaskHelper handle the clearing of the full data (and maybe remove clear() from its public API entirely?).",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 93
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df2ae1a_a2ded4d0",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60ab0283_abc7e9da",
       "range": {
         "startLine": 134,
         "startChar": 0,
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b272a735_6eaebd39",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceaee7e0_b31b8ce6",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 72
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b84a706_dc4e3625",
@@ -186,6 +330,30 @@
       "writtenOn": "2025-10-27T13:31:35Z",
       "side": 1,
       "message": "Can this be private or removed now?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf67a8d_6851ae13",
+        "filename": "src/gpu/graphite/RasterPathUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-27T14:31:13Z",
+      "side": 1,
+      "message": "No, we still use it when rendering into the pixmap returned by DrawAtlas::prepForRendering()",
+      "parentUuid": "6b84a706_dc4e3625",
       "range": {
         "startLine": 55,
         "startChar": 0,
