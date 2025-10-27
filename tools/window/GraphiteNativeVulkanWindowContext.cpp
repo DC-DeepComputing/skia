@@ -135,6 +135,7 @@ void GraphiteVulkanWindowContext::initializeContext() {
 
     fSurface = fCreateVkSurfaceFn(fInstance);
     if (VK_NULL_HANDLE == fSurface) {
+        backendContext.fMemoryAllocator.reset(nullptr);
         this->destroyContext();
         return;
     }
@@ -143,11 +144,13 @@ void GraphiteVulkanWindowContext::initializeContext() {
     VkResult res = fGetPhysicalDeviceSurfaceSupportKHR(
             fPhysicalDevice, fPresentQueueIndex, fSurface, &supported);
     if (VK_SUCCESS != res) {
+        backendContext.fMemoryAllocator.reset(nullptr);
         this->destroyContext();
         return;
     }
 
     if (!this->createSwapchain(-1, -1)) {
+        backendContext.fMemoryAllocator.reset(nullptr);
         this->destroyContext();
         return;
     }
@@ -450,6 +453,7 @@ void GraphiteVulkanWindowContext::destroyContext() {
     if (this->isValid()) {
         if (fPresentQueue != VK_NULL_HANDLE) {
             fQueueWaitIdle(fPresentQueue);
+            fPresentQueue = VK_NULL_HANDLE;
         }
         fDeviceWaitIdle(fDevice);
 
@@ -485,6 +489,7 @@ void GraphiteVulkanWindowContext::destroyContext() {
 #ifdef SK_ENABLE_VK_LAYERS
     if (fDebugMessenger != VK_NULL_HANDLE) {
         fDestroyDebugUtilsMessengerEXT(fInstance, fDebugMessenger, nullptr);
+        fDebugMessenger = VK_NULL_HANDLE;
     }
 #endif
 
@@ -532,12 +537,14 @@ sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
     if (VK_ERROR_SURFACE_LOST_KHR == res) {
         // TODO: Recreate fSurface using fCreateVkSurfaceFn, and then rebuild the swapchain
         VULKAN_CALL(fInterface, DestroySemaphore(fDevice, fWaitSemaphore, nullptr));
+        fWaitSemaphore = VK_NULL_HANDLE;
         return nullptr;
     }
     if (VK_ERROR_OUT_OF_DATE_KHR == res) {
         // tear swapchain down and try again
         if (!this->createSwapchain(-1, -1)) {
             VULKAN_CALL(fInterface, DestroySemaphore(fDevice, fWaitSemaphore, nullptr));
+            fWaitSemaphore = VK_NULL_HANDLE;
             return nullptr;
         }
         backbuffer = this->getAvailableBackbuffer();
@@ -552,6 +559,7 @@ sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
 
         if (VK_SUCCESS != res) {
             VULKAN_CALL(fInterface, DestroySemaphore(fDevice, fWaitSemaphore, nullptr));
+            fWaitSemaphore = VK_NULL_HANDLE;
             return nullptr;
         }
     }
