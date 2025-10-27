@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BEGIN_INCLUDE(manifest) -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="org.skia.pblend"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+  <application
+      android:allowBackup="false"
+      android:theme="@style/Theme.AppCompat"
+      android:name=".ProtectedBlendApplication">
+
+    <activity
+      android:name=".ProtectedBlendActivity"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+
+</manifest>
+<!-- END_INCLUDE(manifest) -->

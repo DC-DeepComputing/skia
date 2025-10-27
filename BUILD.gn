@@ -3240,6 +3240,35 @@ if (skia_enable_tools) {
         ":skia",
       ]
     }
+
+    test_app("protected_blend") {
+      # Bots and even devs may not have Vulkan headers, so put
+      # include/third_party/vulkan on our path so they're always available.
+      all_dependent_configs = [
+        ":use_skia_vulkan_headers",
+        ":vulkan_memory_allocator",
+      ]
+
+      is_shared_library = is_android
+
+      sources = [ "protected_blend_test/main.cpp" ]
+
+      deps = [
+        ":common_flags_config",
+        ":common_flags_gpu",
+        ":common_flags_graphite",
+        ":flags",
+        ":gm",
+        ":gpu_tool_utils",
+        ":load_dynamic_library",
+        ":sk_app",
+        ":skia",
+        ":tool_utils",
+        ":trace",
+        ":xml",
+        "//third_party/native_app_glue",
+      ]
+    }
   }
 
   if (is_ios && skia_use_metal && skia_enable_ganesh) {
