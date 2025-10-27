@@ -214,6 +214,60 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "942323c1_fdb985a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-27T18:06:26Z",
+      "side": 1,
+      "message": "Resolving - `SkSerial...Proc` considerations have been addressed in https://skia-review.googlesource.com/c/skia/+/1082338/4#message-2b79b12e3013d1585716f3b93af13c441c7e543b",
+      "parentUuid": "91f72e8c_467794c1",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d39ff57_1c11da3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-27T18:06:26Z",
+      "side": 1,
+      "message": "I think I\u0027d like to process with landing this CL as-is (i.e. without changing `SkXPS::EncodePngCallback` to become `SkSerialImageProc`).  Rationale:\n\n* Outputting into `SkWStream` (taken as `SkXPS::EncodePngCallback`) is more versatile than `SkData` (returned from `SkSerialImageProc`).  In particular, `SkXPSDevice::createXpsImageBrush` [calls](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/xps/SkXPSDevice.cpp;l\u003d641;drc\u003d2c5fe48ae601636c645b3e0e01bcbb8de11db266) `SkDynamicMemoryWStream::detachAsStream`\n* `SkXPS` (nor `SkSVG`) doesn\u0027t plumb a generic `void* ctx` at this point.  And it would feel a bit weird to 1) provide a `SkPng[Rust]Encoder` helper that just ignores one of its arguments and/or 2) ask people to provide `SkSerialImageProc` that ignores one of its arguments.\n* Encoding `SkImage` requires (in general) providing a `GrDirectContext*` (e.g. see the overloads of `SkPng[Rust]Encoder::Encode` [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/encode/SkPngEncoder.h;l\u003d116;drc\u003d4c7ae6ee94f021c5e44f110a1f423566c5f36da7) and [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/encode/SkPngRustEncoder.h;l\u003d90;drc\u003dc0bf040e6b77de82b9b26ab26d4fb4a121a244ee).\n    - This is more general than `SkXPS` and `SkSVG` need - they only work with rasterized/in-memory pixmaps\n    - There is no explicit room/way for passing `GrDirectContext*` into an `SkSerialImageProc`",
+      "parentUuid": "c6aa8869_446d830d",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7230f9d3_bfb4ec50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-27T18:06:26Z",
+      "side": 1,
+      "message": "Discussed this offline - resolving...\n\nQuick clarification, because it wasn\u0027t obvious in my previous comment.  I asked about `SkSerialPictureProc` to point out that: 1) it seems okay for `SkSerialProcs` (used from `SkTextBloc`, `SkFlattenable`, `SkMultiPictureDocument`, etc) to have a **centralized, non-component-specific** callback type definition and helpers (even though arguments against centralization may also apply to `SkSerialProcs`), 2) therefore it seems okay to have a centralized, non-SVG/XPS-specific encoding helpers.",
+      "parentUuid": "5a2e10df_27063361",
+      "revId": "9529ec2c0dd174527fa9ded88f4ca6bde0219e87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56cec014_8222e5a9",
