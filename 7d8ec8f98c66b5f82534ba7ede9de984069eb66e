@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5f796c9_22b4c7f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T19:03:59Z",
+      "side": 1,
+      "message": "lgtm, I\u0027m fine with this for handling the clip atlas, but left the question open for your response. I also added a mac intel graphite job, as that should trigger using the raster atlas path strategy, whereas the M1/M3 jobs wouldn\u0027t exercise this CL.",
+      "revId": "7d8ec8f98c66b5f82534ba7ede9de984069eb66e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

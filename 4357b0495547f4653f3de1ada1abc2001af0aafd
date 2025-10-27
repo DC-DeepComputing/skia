@@ -225,6 +225,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "170e969f_742d9e29",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-27T19:03:59Z",
+      "side": 1,
+      "message": "For drawing, inverse fills are handled in the shader, so the atlas content is always the regular fill with zero at the border. We can use bilinear filtering, but it is conditioned on how the CoverageMaskShape\u0027s total matrix is decomposed. I do think that for a SW atlas, it\u0027d only be pixel aligned but CoverageMaskShape supports applying arbitrary transforms to the mask (for mask filter rendering). However, it shouldn\u0027t really impact things because it clamps to a 1/2 texel inset of the padding, so bilinear filtering would be clamped to the padding\u0027s texel center anyways.  For a regular filled draw, the draw bounds is tight, so we aren\u0027t really clamping beyond the mask coords. For inverse fills, the draw bounds covers the entire inverse-filled area, so those samples get clamped to the padding (as 0) and then inverted by the shader.\n\nFor clips, we are storing a flattened device-space mask of the active clip elements. I believe its always going to be sampled based on sk_FragCoord + offset, so it should always be pixel aligned. Hypothetically (not sure if the right bounding boxes are used), a difference clip could have a small atlas bounds for its \"interesting\" portion but be sampled over many pixels from the draw bounds that should have full coverage.  In this case, we want the coordinates to be clamped to the border, but the border represents full coverage not no-coverage.\n\nI believe this situation is only relevant when the clip stack\u0027s state is only difference elements.  We could have the clip atlas shader snippet support inverting coverage in this case so that borders could always be zero.",
+      "parentUuid": "5ae767f5_6b8b4fc1",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60ab0283_abc7e9da",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 4
