@@ -16,6 +16,24 @@
       "message": "Did we update clients who use this?",
       "revId": "61f8a89c103bd00b0864a274bfd6636122d8d3db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15eb4af1_a3a4acf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-27T19:43:24Z",
+      "side": 1,
+      "message": "Yes, the only clients that we update are Chromium and Pdfium. Both have been updated and the Pdfium update has rolled into Chromium.",
+      "parentUuid": "966572e1_a7b6c4f6",
+      "revId": "61f8a89c103bd00b0864a274bfd6636122d8d3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
