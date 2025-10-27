@@ -161,6 +161,10 @@ public:
         this->copy(src.data());
     }
 
+    void reset(SkSpan<const T> src) {
+        this->reset(src.data(), SkToInt(src.size()));
+    }
+
     /**
      * Ensures there is enough reserved space for at least n elements. This is guaranteed at least
      * until the array size grows above n and subsequently shrinks below n, any version of reset()
