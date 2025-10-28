@@ -1267,12 +1267,16 @@ optional("xps") {
   sources = skia_xps_sources
 }
 
+# TODO(https://crbug.com/381900683): Remove this target after migrating
+# Chromium and PDFium to stop using the helpers and just use a lambda instead.
 optional("xps_libpng_helpers") {
   enabled = skia_use_libpng_encode
   deps = [ ":png_encode_libpng" ]
   public = skia_xps_libpng_public
 }
 
+# TODO(https://crbug.com/381900683): Remove this target after migrating
+# Chromium and PDFium to stop using the helpers and just use a lambda instead.
 optional("xps_rust_png_helpers") {
   enabled = skia_use_rust_png_encode
   deps = [ ":png_encode_rust" ]
@@ -1667,8 +1671,6 @@ skia_component("skia") {
     ":pdf_jpeg_helpers",
     ":webp_encode",
     ":xps",
-    ":xps_libpng_helpers",
-    ":xps_rust_png_helpers",
   ]
 
   deps = [
