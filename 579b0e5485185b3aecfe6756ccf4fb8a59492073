@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42866046_fc625379",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T13:35:35Z",
+      "side": 1,
+      "message": "Isn\u0027t this done above ?",
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e39c44f6_d99a2979",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T13:35:35Z",
+      "side": 1,
+      "message": "availableStrideBlocks, availableWithStride ?",
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9f6f70_3bea99e3",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T13:35:35Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 139,
+        "startChar": 45,
+        "endLine": 139,
+        "endChar": 47
+      },
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c48f0fd5_fb40d932",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T13:35:35Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 140,
+        "startChar": 10,
+        "endLine": 140,
+        "endChar": 20
+      },
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d94275b_11339dbe",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T13:35:35Z",
+      "side": 1,
+      "message": "appendMappedWithStride ?",
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
