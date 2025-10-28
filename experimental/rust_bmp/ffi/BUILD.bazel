@@ -1,0 +1,63 @@
+load("@rules_rust//rust:defs.bzl", "rust_static_library", "rust_binary")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_cc_library",
+    "skia_filegroup",
+)
+
+skia_filegroup(
+    name = "rs_srcs",
+    srcs = [
+        "FFI.rs",
+        "lib.rs",
+        "bmp_constants.rs",
+        "bmp_decoder.rs",
+        "bmp_header.rs",
+        "bmp_types.rs",
+        "bmp_jpeg_decoder.rs",
+        "bmp_png_decoder.rs",
+        "bmp_icc.rs",
+    ],
+)
+
+skia_filegroup(
+    name = "cxx_bridge_srcs",
+    srcs = ["FFI.rs"],
+)
+
+skia_cc_library(
+    name = "ffi_cpp",
+    hdrs = ["FFI.h"],
+    features = ["layering_check"],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [":cxx_bridge/include"],
+)
+
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "FFI.rs",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [":ffi_cpp"],
+)
+
+rust_static_library(
+    name = "ffi_rs",
+    srcs = [":rs_srcs"],
+    edition = "2021",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge",
+        "@crates//:cxx",
+        "@crates//:thiserror",
+        "@crates//:zune-jpeg",
+        "@crates//:png",
+        "@crates//:moxcms",
+    ],
+)

@@ -31,6 +31,7 @@ skia_cc_library(
     hdrs = ["UtilsForFFI.h"],
     features = ["layering_check"],
     visibility = [
+        "//experimental/rust_bmp/ffi:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
