@@ -57,11 +57,11 @@ public:
     inline static constexpr unsigned int kAppendDataBufferIndex = 1;
     inline static constexpr unsigned int kNumVertexBuffers = 2;
 
-    static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext* sharedContext,
-                                            const RuntimeEffectDictionary* runtimeDict,
-                                            const UniqueKey& pipelineKey,
-                                            const GraphicsPipelineDesc& pipelineDesc,
-                                            const RenderPassDesc& renderPassDesc,
+    static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext*,
+                                            const RuntimeEffectDictionary*,
+                                            const UniqueKey&,
+                                            const GraphicsPipelineDesc&,
+                                            const RenderPassDesc&,
                                             SkEnumBitMask<PipelineCreationFlags>,
                                             uint32_t compilationID);
 
@@ -86,6 +86,7 @@ private:
     struct AsyncPipelineCreation;
 
     DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                         std::string_view label,
                          const PipelineInfo& pipelineInfo,
                          std::unique_ptr<AsyncPipelineCreation> pipelineCreationInfo,
                          BindGroupLayouts groupLayouts,

@@ -19,11 +19,14 @@
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
-                                   const PipelineInfo& pipelineInfo)
+                                   const PipelineInfo& pipelineInfo,
+                                   std::string_view label)
         : Resource(sharedContext,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0)
-        , fPipelineInfo(pipelineInfo) {}
+        , fPipelineInfo(pipelineInfo) {
+    this->setLabel(std::move(label));
+}
 
 GraphicsPipeline::~GraphicsPipeline() {
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
@@ -54,7 +57,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
 #endif
 
-#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
     // For pipelines that shade, the FS label includes the same info as the VS label. But for
     // depth-only clip draws there is no FS label, so switch to the VS label.
     fLabel = shaderInfo.fsLabel().empty() ? shaderInfo.vsLabel() : shaderInfo.fsLabel();
