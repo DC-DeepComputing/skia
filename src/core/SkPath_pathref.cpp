@@ -14,6 +14,7 @@
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
+#include "src/core/SkGeometry.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
 
@@ -287,6 +288,103 @@ SkPath SkPath::makeTransform(const SkMatrix& matrix) const {
     SkPath dst;
     this->transform(matrix, &dst);
     return dst;
+}
+
+void SkPath::offset(SkScalar dx, SkScalar dy, SkPath* dst) const {
+    SkMatrix    matrix;
+
+    matrix.setTranslate(dx, dy);
+    this->transform(matrix, dst);
+}
+
+static void subdivide_cubic_to(SkPathBuilder* builder, const SkPoint pts[4],
+                               int level = 2) {
+    if (--level >= 0) {
+        SkPoint tmp[7];
+
+        SkChopCubicAtHalf(pts, tmp);
+        subdivide_cubic_to(builder, &tmp[0], level);
+        subdivide_cubic_to(builder, &tmp[3], level);
+    } else {
+        builder->cubicTo(pts[1], pts[2], pts[3]);
+    }
+}
+
+void SkPath::transform(const SkMatrix& matrix, SkPath* dst) const {
+    if (matrix.isIdentity()) {
+        if (dst != nullptr && dst != this) {
+            *dst = *this;
+        }
+        return;
+    }
+
+    SkDEBUGCODE(this->validate();)
+    if (dst == nullptr) {
+        dst = const_cast<SkPath*>(this);
+    }
+
+    if (matrix.hasPerspective()) {
+
+        SkPath clipped;
+        const SkPath* src = this;
+        if (SkPathPriv::PerspectiveClip(*this, matrix, &clipped)) {
+            src = &clipped;
+        }
+
+        SkPathBuilder tmp(this->getFillType());
+        SkPath::Iter iter(*src, false);
+        while (auto rec = iter.next()) {
+            const SkSpan<const SkPoint> pts = rec->fPoints;
+            switch (rec->fVerb) {
+                case SkPathVerb::kMove:
+                    tmp.moveTo(pts[0]);
+                    break;
+                case SkPathVerb::kLine:
+                    tmp.lineTo(pts[1]);
+                    break;
+                case SkPathVerb::kQuad:
+                    // promote the quad to a conic
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts.data(), SK_Scalar1, matrix));
+                    break;
+                case SkPathVerb::kConic:
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts.data(), rec->conicWeight(), matrix));
+                    break;
+                case SkPathVerb::kCubic:
+                    subdivide_cubic_to(&tmp, pts.data());
+                    break;
+                case SkPathVerb::kClose:
+                    tmp.close();
+                    break;
+            }
+        }
+        *dst = tmp.detach(&matrix);
+    } else {
+        SkPathConvexity convexity = this->getConvexityOrUnknown();
+
+        SkPathRef::CreateTransformedCopy(&dst->fPathRef, *fPathRef, matrix);
+
+        if (this != dst) {
+            dst->fLastMoveToIndex = fLastMoveToIndex;
+            dst->fFillType = fFillType;
+            dst->fIsVolatile = fIsVolatile;
+        }
+
+        dst->setConvexity(SkPathPriv::TransformConvexity(matrix, fPathRef->pointSpan(), convexity));
+
+        SkDEBUGCODE(dst->validate();)
+    }
+}
+
+// TODO: evolve this one to the source of truth (when we have SkPathData),
+//       and have makeTransform() call it and mark the non-finite flag if it fails.
+std::optional<SkPath> SkPath::tryMakeTransform(const SkMatrix& matrix) const {
+    auto path = this->makeTransform(matrix);
+    if (path.isFinite()) {
+        return path;
+    }
+    return {};
 }
 
 int SkPathPriv::GenIDChangeListenersCount(const SkPath& path) {
