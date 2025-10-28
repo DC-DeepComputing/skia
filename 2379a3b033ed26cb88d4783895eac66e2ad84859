@@ -34,6 +34,24 @@
       "parentUuid": "df979590_10d4135f",
       "revId": "2379a3b033ed26cb88d4783895eac66e2ad84859",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e794c9e9_9f30eea9",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-28T16:22:22Z",
+      "side": 1,
+      "message": "\u003e Yes, thank you for bringing this up.  I was wondering about this, but wanted to avoid deviating too much from the existing approach.  I think asking the clients to use a lambda is ok + it does indeed simplify Skia-side API/maintanance/etc.\n\u003e \n\u003e Done.\n\u003e \n\u003e PS. Actually if this is the approach we want to take (I like this approach even better), then maybe I can **first** transition Chromium and PDFium, and **then** land this CL (together with removing the helpers altogether).  OTOH, maybe we want to hurry up and fix the `relnotes/...md` before the next Skia version is published?  Please advise.\n\nOh, I see that `relnotes/png_encode_with_default_options.md` has been already deleted.  So yes, let me first land PDFium changes (https://pdfium-review.googlesource.com/c/pdfium/+/137410) and Chromium changes (TODO) and then come back to this CL.",
+      "parentUuid": "8c2a0d3d_585538a8",
+      "revId": "2379a3b033ed26cb88d4783895eac66e2ad84859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
