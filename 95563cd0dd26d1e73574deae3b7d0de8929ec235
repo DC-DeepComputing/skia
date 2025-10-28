@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c16415_3c391a5d",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-28T18:54:10Z",
+      "side": 1,
+      "message": "nit: `builder-\u003edetach()`",
+      "range": {
+        "startLine": 109,
+        "startChar": 15,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "64483030_5768b001",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/utils/SkParsePath.cpp",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "        return builder-\u003edetach();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "95563cd0dd26d1e73574deae3b7d0de8929ec235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
