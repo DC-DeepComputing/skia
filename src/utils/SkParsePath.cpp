@@ -105,6 +105,13 @@ static const char* find_flag(const char str[], bool* value) {
 }
 
 std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
+    if (std::optional<SkPathBuilder> builder = SkParsePath::BuilderFromSVGString(data)) {
+        return builder.value().detach();
+    }
+    return {};
+}
+
+std::optional<SkPathBuilder> SkParsePath::BuilderFromSVGString(const char data[]) {
     // We will write all data to this local path and only write it
     // to result if the whole parsing succeeds.
     SkPathBuilder builder;
@@ -237,7 +244,7 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
         previousOp = op;
     }
 
-    return builder.detach();
+    return builder;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
