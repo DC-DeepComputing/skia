@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df979590_10d4135f",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-28T15:42:46Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this extra public API is being added when this (very rare case) can just be handled by the user with\n\n`\u003d [](SkWStream* dst, const SkPixmap\u0026 src) { return SkPngEncoder::Encode(dst, src, {}); }`\n\nwhich is less fluff Skia side and makes it very obvious that the user should be setting up the options.\n\nI suppose the same could be said for the helper headers that have been added, but to be consistent those should be removed as well (after the current users are updated not to use them).",
+      "revId": "2379a3b033ed26cb88d4783895eac66e2ad84859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
