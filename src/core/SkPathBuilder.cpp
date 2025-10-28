@@ -101,14 +101,15 @@ void SkPathBuilder::incReserve(int extraPtCount, int extraVbCount, int extraCnCo
     fConicWeights.reserve_exact(Sk32_sat_add(fConicWeights.size(), extraCnCount));
 }
 
-std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPathRef& path) {
-    fSegmentMask |= path.fSegmentMask;
+std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPath& path) {
+    fSegmentMask |= path.getSegmentMasks();
 
-    if (int numVerbs = path.countVerbs()) {
+    SkSpan<const SkPathVerb> verbs = path.verbs();
+    if (!verbs.empty()) {
          // TODO(borenet): If the current builder is empty or JustMoves, we can use the type of the
          // path. If the path is empty, we can keep the current type.
         fType = SkPathIsAType::kGeneral;
-        memcpy(fVerbs.push_back_n(numVerbs), path.fVerbs.begin(), numVerbs * sizeof(fVerbs[0]));
+        memcpy(fVerbs.push_back_n(verbs.size()), verbs.begin(), verbs.size_bytes());
     }
 
     SkPoint* pts = nullptr;
@@ -117,7 +118,7 @@ std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPathRe
     }
 
     SkScalar* weights = nullptr;
-    if (int numConics = path.countWeights()) {
+    if (size_t numConics = path.conicWeights().size()) {
         weights = fConicWeights.push_back_n(numConics);
     }
 
@@ -256,11 +257,7 @@ SkPathBuilder& SkPathBuilder::rCubicTo(SkPoint p1, SkPoint p2, SkPoint p3) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 SkPath SkPathBuilder::detach(const SkMatrix* mx) {
-    auto path = this->make(sk_sp<SkPathRef>(new SkPathRef(std::move(fPts),
-                                                          std::move(fVerbs),
-                                                          std::move(fConicWeights),
-                                                          fSegmentMask,
-                                                          mx)));
+    auto path = this->snapshot(mx);
     this->reset();
     return path;
 }
@@ -699,13 +696,15 @@ SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, u
 SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir, unsigned index) {
     const SkRect& bounds = rrect.getBounds();
 
-    if (rrect.isRect() || rrect.isEmpty()) {
-        // degenerate(rect) => radii points are collapsing
-        return this->addRect(bounds, dir, (index + 1) / 2);
-    }
-    if (rrect.isOval()) {
-        // degenerate(oval) => line points are collapsing
-        return this->addOval(bounds, dir, index / 2);
+    auto [asType, newIndex] = SkPathPriv::SimplifyRRect(rrect, index);
+    switch (asType) {
+        case SkPathPriv::RRectAsEnum::kRect:
+            return this->addRect(bounds, dir, newIndex);
+        case SkPathPriv::RRectAsEnum::kOval:
+            return this->addOval(bounds, dir, newIndex);
+        case SkPathPriv::RRectAsEnum::kRRect:
+            // fall through ...
+            break;
     }
 
     const bool wasEmpty = (fSegmentMask == 0);
@@ -789,17 +788,14 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
     fConvexity = SkPathConvexity::kUnknown;
 
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
-        if (src.fLastMoveToIndex >= 0) {
-            fLastMoveIndex = src.fLastMoveToIndex + this->countPoints();
-        } else {
-            fLastMoveIndex = ~src.fLastMoveToIndex + this->countPoints();
-        }
+        int lastMoveToIndex = SkPathPriv::FindLastMoveToIndex(src.verbs(), src.points().size());
+        fLastMoveIndex = lastMoveToIndex + this->countPoints();
 
-        auto [newPts, newWeights] = this->growForVerbsInPath(*src.fPathRef);
-        const auto count = src.countPoints();
-        matrix.mapPoints({newPts, count}, {src.fPathRef->points(), count});
-        if (int numWeights = src.fPathRef->countWeights()) {
-            memcpy(newWeights, src.fPathRef->conicWeights(), numWeights * sizeof(newWeights[0]));
+        auto [newPts, newWeights] = this->growForVerbsInPath(src);
+        const size_t count = src.countPoints();
+        matrix.mapPoints({newPts, count}, src.points());
+        if (auto conics = src.conicWeights(); !conics.empty()) {
+            memcpy(newWeights, conics.data(), conics.size_bytes());
         }
         return *this;
     }
