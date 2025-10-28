@@ -71,13 +71,15 @@ int UniformOffsetCalculator::advanceStruct(const UniformOffsetCalculator& substr
 void UniformManager::resetWithNewLayout(Layout layout) {
     fStorage.clear();
     fLayout = layout;
-    fStartingOffset = 0;
+    fRewindOffset = 0;
     fReqAlignment = 0;
+    fMarkedAlignment = 0;
     fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
 #ifdef SK_DEBUG
     fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(layout);
+    fMarkedOffsetCalculator = fOffsetCalculator;
     fSubstructCalculator = {};
     fExpectedUniforms = {};
     fExpectedUniformIndex = 0;
@@ -85,7 +87,18 @@ void UniformManager::resetWithNewLayout(Layout layout) {
 }
 
 void UniformManager::rewindToOffset() {
-    fStorage.resize(fStartingOffset);
+    // Store the required alignment from the previous (Paint + RenderStep) combination.
+    // The renderstep alignment must always be LCM'ed (max, since all are powers of 2)
+    // against the paint's alignment.
+    fReqAlignment = fMarkedAlignment;
+    fStorage.resize(fRewindOffset);
+
+#ifdef SK_DEBUG
+    fOffsetCalculator = fMarkedOffsetCalculator;
+    fSubstructCalculator = {};
+    fSubstructStartingOffset = -1;
+    fStructBaseAlignment = 0;
+#endif
 }
 
 static std::pair<SkSLType, int> adjust_for_matrix_type(SkSLType type, int count) {
@@ -237,8 +250,7 @@ bool UniformManager::checkExpected(const void* dst, SkSLType type, int count) {
         // If we have 'dst', it's the aligned starting offset of the uniform being checked, so
         // subtracting the address of the first byte in fStorage gives us the offset.
         int offset = static_cast<int>(reinterpret_cast<intptr_t>(dst) -
-                                      reinterpret_cast<intptr_t>(fStorage.data())
-                                      - fStartingOffset);
+                                      reinterpret_cast<intptr_t>(fStorage.data()));
 
         if (fSubstructCalculator.layout() == Layout::kInvalid) {
             // Pass original expected type and count to the offset calculator for validation.
