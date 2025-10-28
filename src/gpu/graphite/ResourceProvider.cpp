@@ -147,7 +147,13 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
 
     if (Resource* resource =
                 fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
-        resource->setLabel(std::move(label));
+        // Shareable resource labels should only be set upon creation. Confirm that the returned
+        // resource's label matches the desired texture label. Otherwise, set the label as usual.
+        if (shareable == Shareable::kYes) {
+            SkASSERT(resource->getLabel().compare(label) == 0);
+        } else {
+            resource->setLabel(std::move(label));
+        }
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -261,7 +267,13 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
 
     if (Resource* resource =
             fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
-        resource->setLabel(std::move(label));
+        // Shareable resource labels should only be set upon creation. Confirm that the returned
+        // resource's label matches the desired texture label. Otherwise, set the label as usual.
+        if (shareable == Shareable::kYes) {
+            SkASSERT(resource->getLabel().compare(label) == 0);
+        } else {
+            resource->setLabel(std::move(label));
+        }
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
     auto buffer = this->createBuffer(size, type, accessPattern);
