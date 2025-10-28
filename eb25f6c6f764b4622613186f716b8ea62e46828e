@@ -16,6 +16,24 @@
       "message": "So you want to remove these, but not the headers themselves? But that leaves the headers untested by Skia. They would also need to be removed at the same time as these lines.",
       "revId": "eb25f6c6f764b4622613186f716b8ea62e46828e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "976af512_11eefaaf",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-28T16:11:54Z",
+      "side": 0,
+      "message": "I see.  Postponing this removal makes sense.  Done.",
+      "parentUuid": "5e4e462e_b121cdd4",
+      "revId": "eb25f6c6f764b4622613186f716b8ea62e46828e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
