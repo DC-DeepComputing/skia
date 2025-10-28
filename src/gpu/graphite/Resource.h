@@ -10,6 +10,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkMutex.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -234,9 +235,20 @@ public:
 
         if (!fLabel.empty()) {
             const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
+
+            // if ()
+
+            // TODO: Check whether the backend label can actually be updated now. If not, add the
+            // update to the queue of updates depending upon the resource's shareability.
+            // fNeedsBackendLabelUpdate = true;
+
+            this->queueBackendLabelUpdate(fullLabel.c_str());
+
+            // this->setBackendLabel(fullLabel.c_str());
         }
     }
+
+    bool needsBackendLabelUpdate() { return !fUpdatedLabel.empty(); }
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
@@ -308,10 +320,16 @@ private:
     }
     void setShareable(Shareable shareable) {
         SkASSERT(shareable == Shareable::kNo || fBudgeted == Budgeted::kYes);
+        // Whether or not a resource is shareable impacts when that resource's label can be updated
+        // TODO: Update label update policy
         fShareable = shareable;
     }
 
-    void setAvailableForReuse(bool avail) { fAvailableForReuse = avail; }
+    void setAvailableForReuse(bool avail) {
+        // For non-shareable resources, setting avail to true also means the label can be modified.
+        // TODO: Implement that
+        fAvailableForReuse = avail;
+    }
     bool isAvailableForReuse() const { return fAvailableForReuse; }
 
     uint32_t lastUseToken() const { return fLastUseToken; }
@@ -508,6 +526,7 @@ private:
     static inline constexpr uint64_t PurgeableMask() {
         return RefMask(RefType::kUsage) | RefMask(RefType::kCommandBuffer);
     }
+    // static inline constexpr uint64_t
 
     template <RefType kType, bool MustHaveUsageRefs=true>
     void addRef() const {
@@ -689,8 +708,54 @@ private:
     uint32_t fLastUseToken;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
+    // String used to describe the current use of this Resource. Note that the backend resource's
+    // label will only be synced at certain times depending upon its shareability.
     std::string fLabel;
+    // Once we call setLabel(...), we need to store the desired new label. We can't update the
+    // backend resource right away due to thread safety.
+    std::string fUpdatedLabel = "";
+
+    void queueBackendLabelUpdate(std::string_view newLabel) {
+        // At this point, we've already confirmed that the resource's new label differs from its
+        // existing label.
+        // fUpdatedLabel = newLabel;
+
+        // If a resource is registered with a ResourceCache, queue its backend label update to be
+        // performed at the appropriate stage in the resource's lifetime. Otherwise,
+        // update the backend label immediately since we do not guarantee the threadsafety of
+        // resources that are not registered with a cache.
+        if (fReturnCache) {
+            fReturnCache->
+        }
+        this->setBackendLabel(newLabel);
+    }
+
+    // bool fNeedsBackendLabelUpdate = false;
+
+    // TODO: For resource sharing types whose labels should never be changing, perform sync step
+    // explicitly outside of insertRecording since the backend APIs are thread-safe. A one-time
+    // label update for a very reusable resource shouldn’t contribute to contention.
+    // bool fBackendLabelUpdateIsThreadsafe = false;
+
+    // TODO: Make thread-safe state to track when syncing must occur.
+    // enum class UpdateStageFlag : int {
+    //     kNever                  =      0,
+    //     // Scratch resources have their label mapping moved on to the Recording upon snap(), at
+    //     // which point the texture's label becomes immutable.
+    //     // At recording insertion, only update the scratch texture's label if it differs from what
+    //     // it was before.
+    //     kUponRecordingInsertion = 1 << 1,
+    //     // non-shareable resources:
+    //     kWhenReusable           = 1 << 2,
+    //     // shareable resources. Labels should be set BEFORE insertResource is called on the cache.
+    //     kUponCreation           = 1 << 3,
+    // };
+
+    // When a Resource's label can be updated. This can happen on any thread and almost any time.
+    // SkEnumBitMask<UpdateStageFlag> fBaseResourceLabelUpdateStages;
+
+    // When the backend resource's label can be updated.
+    // SkEnumBitMask<UpdateStageFlag> fBackendResourceLabelUpdateStages;
 };
 
 } // namespace skgpu::graphite

@@ -145,9 +145,16 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
+    // if shareable ==
     if (Resource* resource =
                 fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
-        resource->setLabel(std::move(label));
+        // Shareable resource labels should only be set upon creation. Confirm that the returned
+        // resource's label matches the desired texture label. Otherwise, set the label as usual.
+        if (shareable == Shareable::kYes) {
+            SkASSERT(resource->getLabel().compare(label) == 0);
+        } else {
+            resource->setLabel(std::move(label));
+        }
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -156,7 +163,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         return nullptr;
     }
 
-    tex->setLabel(std::move(label));
+    tex->setLabel(std::move(label)); // if shareable?
     fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
 
     return tex;
@@ -192,6 +199,9 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
     }
 
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+        // TODO: Assign sampler labels. If a label is provided and a resource is returned from the
+        // cache, assert that the resource's label matches that of the provided label (this should
+        // be true for all shareable resouces, and samplers are always shareable).
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 
@@ -199,6 +209,8 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
     if (!sampler) {
         return nullptr;
     }
+
+    // TODO: Assign sampler label here before insertion to the cache.
 
     fResourceCache->insertResource(sampler.get(), key, kBudgeted, kShareable);
     return sampler;
@@ -261,15 +273,20 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
 
     if (Resource* resource =
             fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
-        resource->setLabel(std::move(label));
+        // Shareable resource labels should only be set upon creation. Confirm that the returned
+        // resource's label matches the desired texture label. Otherwise, set the label as usual.
+        if (shareable == Shareable::kYes) {
+            SkASSERT(resource->getLabel().compare(label) == 0);
+        } else {
+            resource->setLabel(std::move(label));
+        }
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
     auto buffer = this->createBuffer(size, type, accessPattern);
     if (!buffer) {
         return nullptr;
     }
-
-    buffer->setLabel(std::move(label));
+    buffer->setLabel(std::move(label)); // if shareable?
     fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable);
     return buffer;
 }

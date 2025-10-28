@@ -91,6 +91,10 @@ private:
     std::unique_ptr<LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+
+    // TODO: Add way to acquire scratch texture label mapping upon snap() from the
+    // ScratchResourceManager. Use it when returning string labels of scratch textures.
+
 };
 
 } // namespace skgpu::graphite

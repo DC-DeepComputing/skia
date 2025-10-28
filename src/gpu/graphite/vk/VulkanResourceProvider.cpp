@@ -236,6 +236,7 @@ sk_sp<VulkanDescriptorSet> add_new_desc_set_to_cache(const VulkanSharedContext* 
     if (!descSet) {
         return nullptr;
     }
+
     resourceCache->insertResource(descSet.get(), descSetKey, Budgeted::kYes, Shareable::kNo);
 
     return descSet;
@@ -252,6 +253,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
     if (auto descSet = fResourceCache->findAndRefResource(
                 key, skgpu::Budgeted::kYes, Shareable::kNo)) {
+        // TODO: Assign labels for descriptor sets.
         // A non-null resource pointer indicates we have found an available descriptor set.
         return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
     }
@@ -286,6 +288,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // Continue to allocate & cache the maximum number of sets so they can be easily accessed as
     // they're needed.
     for (int i = 1; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
+        // TODO: Assign labels to descriptor sets.
         auto descSet =
                 add_new_desc_set_to_cache(context, pool, key, fResourceCache.get());
         if (!descSet) {
@@ -422,6 +425,10 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
                                                         /*compatibleForPipelineKey=*/false);
     }
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+        // TODO: Allow renderpass label assignment. If a label is provided and a resource is
+        // returned from the cache, assert that the resource's label matches that of the provided
+        // label (this should be true for all shareable resouces, and renderpasses are always
+        // shareable).
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
@@ -430,6 +437,9 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
     if (!renderPass) {
         return nullptr;
     }
+
+    // TODO: Allow renderpass label assignment and assign the label here before the resource is
+    // inserted to the cache and subsequently exposed to other threads' cache queries.
 
     fResourceCache->insertResource(renderPass.get(), key, kBudgeted, kShareable);
 
@@ -558,6 +568,10 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
     }
 
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+        // TODO: Allow YCbCr conversion label assignment. If a label is provided and a resource is
+        // returned from the cache, assert that the resource's label matches that of the provided
+        // label (this should be true for all shareable resouces, and YCbCr conversions are always
+        // shareable).
         return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
     }
 
@@ -565,6 +579,9 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
     if (!ycbcrConversion) {
         return nullptr;
     }
+
+    // TODO: Assign labels for YCbCr conversions. Assign it here before the resource is inserted to
+    // the cache and subsequently exposed to other threads' cache queries.
 
     fResourceCache->insertResource(ycbcrConversion.get(), key, kBudgeted, kShareable);
     return ycbcrConversion;

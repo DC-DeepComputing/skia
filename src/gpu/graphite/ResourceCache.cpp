@@ -137,6 +137,8 @@ void ResourceCache::insertResource(Resource* resource,
         this->processReturnedResources();
     }
 
+    // Acquire mutex when inserting a resource into the cache
+    SkAutoMutexExclusive lock(fMutex);
     resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable);
 
     // We must set the use token before adding to the array in case the token wraps and we wind
@@ -160,6 +162,13 @@ void ResourceCache::insertResource(Resource* resource,
     this->purgeAsNeeded();
 }
 
+void ResourceCache::synchronizeBackendResourceLabels() {
+    // TODO: Implement updating each backend resource label depending upon when that resource
+    // is permitted to be updated.
+
+
+}
+
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
@@ -179,6 +188,9 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                (shareable != Shareable::kScratch || !unavailable->contains(r));
     };
 
+    // Acquire mutex for searching cache by key
+    SkAutoMutexExclusive lock(fMutex);
+    // If resource is Scratch...
     Resource* resource = fResourceMap.find(key, shareablePredicate);
     if (!resource) {
         // The main reason to call processReturnedResources in this call is to see if there are any
@@ -209,6 +221,10 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
+
+        // TODO: If we have a cache hit, assert that the cached resource's label matches that of the
+        // returned resource.
+
     }
 
     // processReturnedResources may have added resources back into our budget if they were being
@@ -223,6 +239,10 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
     // here.
     this->purgeAsNeeded();
 
+    // If we return a non-null object, this means the calling thread is now the sole holder of that
+    // object's newly-added usage ref. This means the backend resource label can be updated without
+    // worrying about conflicts.
+    // TODO: Track staleness to defer setting of the backend label.
     return resource;
 }
 
@@ -330,6 +350,10 @@ bool ResourceCache::returnResource(Resource* resource) {
     // another thread has added another resource or processed the return queue, but in either event,
     // `resource` will be visible to that thread.
     return true;
+}
+
+void ResourceCache::synchronizeBackendResourceLabels() {
+
 }
 
 bool ResourceCache::processReturnedResources(Resource* queueHead) {

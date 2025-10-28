@@ -67,6 +67,8 @@ void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
     this->addRef<RefType::kCache>();
 
     this->setBudgeted(initialBudgetedState);
+
+    // When setting shareability, update the resource's label updating policy.
     this->setShareable(initialShareableState);
 }
 

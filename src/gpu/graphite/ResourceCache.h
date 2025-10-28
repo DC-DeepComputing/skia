@@ -109,6 +109,13 @@ public:
     // Registers the Resource with the cache; can only be called at the time of creation.
     void insertResource(Resource*, const GraphiteResourceKey&, Budgeted, Shareable);
 
+    // Methods to synchronize a Resource's Label to the backend resource's label.
+
+    // Update shareable resource labels only when
+    void synchronizeShareableLabels();
+    void synchronizeNonshareableLabels();
+    void synchronizeScratchLabels();
+
 private:
     ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);
 
@@ -190,6 +197,21 @@ private:
     // resources to process. A special sentinel address is used to encode when the cache is shut
     // down. Once set to that address, this will never change value.
     std::atomic<Resource*> fReturnQueue = nullptr;
+
+    // Track which resources need to have their backend resource labels updated.
+    // The head of the queue if the pointer is non-null, or null if there are no resources whose
+    // labels need to be updated.
+    // TODO: Does this need to be atomic?
+    // Have one queue for shareable resources, another for non-shareable, and another for
+    // scratch?
+
+    // No queue needed for shareable resources - their label can only be changed upon creation.
+    // std::atomic<Resource*> fShareableLabelUpdateQueue = nullptr;
+    std::atomic<Resource*> fNonshareableLabelUpdateQueue = nullptr;
+    std::atomic<Resource*> fScratchLabelUpdateQueue = nullptr;
+
+    // Mutex for managing Resource labeling thread safety
+    SkMutex fMutex;
 
     SingleOwner* fSingleOwner = nullptr;
     SkDEBUGCODE(int fCount = 0;)

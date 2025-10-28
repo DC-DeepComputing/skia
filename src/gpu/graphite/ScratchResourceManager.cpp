@@ -39,9 +39,9 @@ ScratchResourceManager::~ScratchResourceManager() {
 
 sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
                                                          const TextureInfo& info,
-                                                         std::string_view label) {
+                                                         ScratchUsage usage) {
     sk_sp<Texture> scratchTexture = fResourceProvider->findOrCreateScratchTexture(
-            dimensions, info, label, fUnavailable);
+            dimensions, info, usage, fUnavailable);
     // Store the returned scratch texture into fUnavailable so that it is filtered from the
     // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
     // remain visible to other Recorders.

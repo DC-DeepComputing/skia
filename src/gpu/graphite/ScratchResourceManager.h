@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/base/SkTArray.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
 
 #include <string_view>
@@ -80,6 +81,34 @@ public:
                            std::unique_ptr<ProxyReadCountMap>);
     ~ScratchResourceManager();
 
+    enum class ScratchUsage {
+        kInvalid = 0,
+        kImageFilterResult,
+        kImageFilterCachedBitmap,
+        kEvalBlurTexture,
+        kGenerateMipmapsScratchTexture,
+        kRescaleImageTempTexture,
+        kRescaleLinearGammaTexture,
+        kRescaleDstTexture,
+        kDiscardableLoadMSAATexture,
+        kDispatchWriteOnlyStorageTexture,
+        kImageMakeCTandCSTexture, // _CTandCSConversion
+        kImageSubsetTexture, // _Subset
+        kAsyncReadPixelsFallbackTexture,
+        // kRecorderTestTexture,
+        // kSkSurfaceWrappedTexture,
+        kCopyDeviceTexture, // k_DeviceCopy
+        kDstCopy,
+        kImageSubsetTexture, //_Subset
+
+    //     kCompute, // DispatchGroup
+    //     kTextureCopyDst, // CopyTextureToTextureTask
+    //     kRenderTarget, // RenderPassTask
+    //     kUploadTarget, // UploadTask
+    };
+    // TODO: The scratch label map needs to move on to the snapped Recording so that it’s available
+    // in insertRecording to sync the dynamic labels with the Resource and backend resource.
+    //
     // Get a scratch texture with the given size and texture info. The returned texture will
     // not be reusable until the caller invokes `returnResource()`. At that point, subsequent
     // compatible calls to getScratchTexture() may return the texture. If there is no compatible
@@ -88,7 +117,7 @@ public:
     // It is the caller's responsibility to determine when it's acceptable to return a resource.
     // That said, it's not mandatory that the scratch resources be returned. In that case, they just
     // stop being available for reuse for later tasks in a Recording.
-    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, std::string_view label);
+    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, ScratchUsage);
 
     // TODO: Eventually update BufferSubAllocator and DrawBufferManager to leverage the
     // BufferSubAllocator. There are a few open issues to address first:
@@ -190,6 +219,22 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    // A scratch resource's label will be modified on a recorder thread and will become immutable
+    // after snap() is called on the recorder, so the map is trivially threadsafe.
+    //
+    // Since scratch resources are only ever used for Graphite-internal rendering purposes, their
+    // associated TextureProxy labels are all constant strings. Represent scratch labels as a
+    // bitmask of possible usages.
+    //
+    // TODO: The scratch label map needs to move on to the snapped Recording so that it’s available
+    // in insertRecording to sync the dynamic labels with the Resource and backend resource.
+    skia_private::THashSet<std::string> fLabelMap;
+
+    // A scratch texture could have multiple different usages across frames, so store a bitmask of
+    // all of its usages. This can later be used to map to string labels. TODO: Explain why we do it
+    // this way.
+    SkEnumBitMask<ScratchUsage> fScratchUsage;
 };
 
 } // namespace skgpu::graphite

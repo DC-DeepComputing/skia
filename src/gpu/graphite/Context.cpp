@@ -238,6 +238,9 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+    // TODO explain
+    this->scynchronizeBackendResourceLabels();
+
     return fQueueManager->addRecording(info, this);
 }
 
@@ -869,6 +872,11 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
     fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
     fSharedContext->purgeResourcesNotUsedSince(purgeTime);
+}
+
+void Context::scynchronizeBackendResourceLabels() {
+    ASSERT_SINGLE_OWNER
+    fResourceProvider->synchronizeBackendResourceLabels();
 }
 
 size_t Context::currentBudgetedBytes() const {
