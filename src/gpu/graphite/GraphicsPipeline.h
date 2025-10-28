@@ -60,7 +60,7 @@ public:
         bool fHasStepUniforms   = false;
         bool fHasGradientBuffer = false;
 
-#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
         std::string fLabel;
 #endif
 
@@ -97,7 +97,7 @@ public:
     virtual bool didAsyncCompilationFail() const { return false; }
 
 protected:
-    GraphicsPipeline(const SharedContext*, const PipelineInfo&);
+    GraphicsPipeline(const SharedContext*, const PipelineInfo&, std::string_view label);
 
 private:
     PipelineInfo fPipelineInfo;
