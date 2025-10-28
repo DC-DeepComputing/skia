@@ -1565,3 +1565,35 @@ SkRect SkPathPriv::ComputeTightBounds(SkSpan<const SkPoint> points,
     return {L, T, R, B};
 }
 
+static int additionalPointsForVerb(SkPathVerb v) {
+    static const uint8_t ptsForVerb[] = {
+        1,  // move
+        1,  // line
+        2,  // quad
+        2,  // conic
+        3,  // cubic
+        0,  // close
+    };
+    const unsigned index = static_cast<unsigned>(v);
+    SkASSERT(index < std::size(ptsForVerb));
+    return ptsForVerb[index];
+}
+
+int SkPathPriv::FindLastMoveToIndex(SkSpan<const SkPathVerb> verbs, const size_t ptCount) {
+    if (verbs.empty()) {
+        SkASSERT(ptCount == 0);
+        return -1;
+    }
+    SkASSERT(verbs[0] == SkPathVerb::kMove);
+    SkASSERT(ptCount > 0);
+
+    int ptIndex = SkToInt(ptCount) - 1;
+    for (size_t i = verbs.size(); i --> 0; ) {
+        if (verbs[i] == SkPathVerb::kMove) {
+            break;
+        }
+        ptIndex -= additionalPointsForVerb(verbs[i]);
+    }
+    SkASSERT(ptIndex >= 0);
+    return ptIndex;
+}
