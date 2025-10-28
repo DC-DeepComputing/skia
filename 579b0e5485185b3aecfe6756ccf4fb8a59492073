@@ -135,6 +135,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e33bb19_ea66ed9a",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T14:30:47Z",
+      "side": 1,
+      "message": "is there an extra word here ?",
+      "range": {
+        "startLine": 158,
+        "startChar": 32,
+        "endLine": 158,
+        "endChar": 46
+      },
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ee1814_9ead4b4e",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-28T14:30:47Z",
+      "side": 1,
+      "message": "wdyt about having the parameter names here ?",
+      "range": {
+        "startLine": 165,
+        "startChar": 60,
+        "endLine": 165,
+        "endChar": 78
+      },
+      "revId": "579b0e5485185b3aecfe6756ccf4fb8a59492073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27c0c806_0cfd2e1d",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 2
