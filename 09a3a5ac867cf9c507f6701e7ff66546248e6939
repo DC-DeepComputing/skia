@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5632c6c_14a21742",
+        "filename": "src/xps/SkXPSDocument.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-28T14:25:19Z",
+      "side": 0,
+      "message": "This has been removed.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "09a3a5ac867cf9c507f6701e7ff66546248e6939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
