@@ -1,0 +1,31 @@
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_cc_library(
+    name = "skbmprustcodec",
+    srcs = [
+        "SkBmpRustCodec.cpp",
+    ],
+    hdrs = [
+        "SkBmpRustCodec.h",
+    ],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+        "//tests:__subpackages__",
+    ],
+    deps = [
+        "//:core",
+        "//:bmp_decode_codec",
+        "//:jpeg_decode_codec",
+        "//:png_decode_codec",
+        "//experimental/rust_bmp/ffi:ffi_cpp",
+        "//experimental/rust_bmp/ffi:cxx_bridge",
+        "//experimental/rust_bmp/ffi:ffi_rs",
+        "@crates//:cxx_cc",
+    ],
+)
