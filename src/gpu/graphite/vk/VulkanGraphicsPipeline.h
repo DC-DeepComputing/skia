@@ -158,6 +158,7 @@ private:
             skia_private::STArray<16, VkVertexInputAttributeDescription2EXT>;
 
     VulkanGraphicsPipeline(const VulkanSharedContext* sharedContext,
+                           std::string_view label,
                            const PipelineInfo& pipelineInfo,
                            VkPipelineLayout,
                            VkPipeline,

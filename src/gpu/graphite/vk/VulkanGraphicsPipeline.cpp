@@ -1006,8 +1006,14 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary);
 #endif
 
+        std::string pipelineLabel = GetPipelineLabel(sharedContext->shaderCodeDictionary(),
+                                                     renderPassDesc,
+                                                     step,
+                                                     pipelineDesc.paintParamsID());
+
         pipeline = sk_sp<VulkanGraphicsPipeline>(
                 new VulkanGraphicsPipeline(sharedContext,
+                                           pipelineLabel,
                                            pipelineInfo,
                                            program->releaseLayout(),
                                            vkPipeline,
@@ -1276,10 +1282,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
         return nullptr;
     }
 
+
+    std::string label = renderPassDesc.toPipelineLabel().c_str(); // includes the write swizzle
+    label += " + LoadMSAAPipeline";
+
     SkASSERT(vertexBindingDescriptions.empty());
     SkASSERT(vertexAttributeDescriptions.empty());
     return sk_sp<VulkanGraphicsPipeline>(
             new VulkanGraphicsPipeline(sharedContext,
+                                       label,
                                        /*pipelineInfo=*/{},  // leave empty for an internal pipeline
                                        loadMSAAProgram.layout(),
                                        vkPipeline,
@@ -1295,6 +1306,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(
         const VulkanSharedContext* sharedContext,
+        std::string_view label,
         const PipelineInfo& pipelineInfo,
         VkPipelineLayout pipelineLayout,
         VkPipeline pipeline,
@@ -1306,7 +1318,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(
         const DepthStencilSettings& depthStencilSettings,
         VertexInputBindingDescriptions&& vertexBindingDescriptions,
         VertexInputAttributeDescriptions&& vertexAttributeDescriptions)
-    : GraphicsPipeline(sharedContext, pipelineInfo)
+    : GraphicsPipeline(sharedContext, pipelineInfo, std::move(label))
     , fPipelineLayout(pipelineLayout)
     , fPipeline(pipeline)
     , fShadersPipeline(shadersPipeline)
