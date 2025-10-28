@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f8aa142_16ced2d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2025-10-28T14:41:47Z",
+      "side": 1,
+      "message": "More split out from https://skia-review.googlesource.com/c/skia/+/1081036",
+      "revId": "082fcf8c33ebe7d39d8cc31a4cf8f51d3471fe0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
