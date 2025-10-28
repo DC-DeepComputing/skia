@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78bdc0e8_1d98fe07",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-28T19:40:37Z",
+      "side": 1,
+      "message": "nit: I think we have a `push_back_n` that copies an array, could use that instead\n\n```\n    fVerbs.push_back_n(verbs.size(), verbs.data());\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "885d8984_fc60cc39",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathBuilder.cpp",
+              "range": {
+                "startLine": 112,
+                "startChar": 0,
+                "endLine": 113,
+                "endChar": 0
+              },
+              "replacement": "        fVerbs.push_back_n(verbs.size(), verbs.data());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "02f2f9acef8b9a00bcfcd2368a8099fca51ae3e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
