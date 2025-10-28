@@ -40,6 +40,30 @@
       ],
       "revId": "95563cd0dd26d1e73574deae3b7d0de8929ec235",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f421396_6e80d956",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-28T19:03:43Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "e6c16415_3c391a5d",
+      "range": {
+        "startLine": 109,
+        "startChar": 15,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "revId": "95563cd0dd26d1e73574deae3b7d0de8929ec235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
