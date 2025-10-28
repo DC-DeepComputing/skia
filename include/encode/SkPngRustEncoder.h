@@ -70,9 +70,17 @@ struct Options {
  *  |options| may be used to control the encoding behavior.
  *
  *  Returns true on success.  Returns false on an invalid or unsupported |src|.
- *
  */
 SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+
+/**
+ *  Encode the |src| pixels to the |dst| stream using default encoding options.
+ *
+ *  Returns true on success.  Returns false on an invalid or unsupported |src|.
+ */
+inline bool EncodeUsingDefaultOptions(SkWStream* dst, const SkPixmap& src) {
+    return Encode(dst, src, {});
+}
 
 /**
  *  Returns the encoded data for the pixmap, or nullptr on failure.
