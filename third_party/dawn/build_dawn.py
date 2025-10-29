@@ -55,7 +55,8 @@ def main():
       "--dawn_enable_vulkan", default="false", help="Enable Vulkan backend.")
   args = parser.parse_args()
 
-  cmake_exe = shutil.which("cmake")
+#  cmake_exe = shutil.which("cmake")
+  cmake_exe = "C:\\Progra~1\\CMake\\bin\\cmake.exe"
   if not cmake_exe:
     print("Error: cmake not found in PATH.")
     sys.exit(1)

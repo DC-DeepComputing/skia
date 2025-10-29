@@ -75,7 +75,7 @@ def discover_dependencies(build_dir, targets):
     current_batch = list(worklist)[:BATCH_SIZE]
     worklist = worklist.difference(current_batch)
 
-    cmd = ["ninja", "-C", build_dir, "-tinputs"] + current_batch
+    cmd = ["C:\\Users\\Stephen\\src\\depot_tools\\ninja.bat", "-C", build_dir, "-tinputs"] + current_batch
     inputs = subprocess.check_output(cmd).decode("utf-8").splitlines()
     # inputs looks like:
     #   /home/user/skia/third_party/externals/dawn/src/tint/utils/text/styled_text_theme.cc
@@ -110,7 +110,7 @@ def discover_dependencies(build_dir, targets):
 
   for i in range(0, len(all_targets), BATCH_SIZE):
     chunk = all_targets[i:i + BATCH_SIZE]
-    cmd = ["ninja", "-C", build_dir, "-tdeps"] + chunk
+    cmd = ["C:\\Users\\Stephen\\src\\depot_tools\\ninja.bat", "-C", build_dir, "-tdeps"] + chunk
     output = subprocess.check_output(cmd).decode("utf-8").splitlines()
 
     # When a target has deps, which are read from the .d files generated from the "-dkeepdepfile
@@ -257,9 +257,9 @@ def get_windows_settings(args):
   msvc_lib_path = os.path.join(args.win_vc, "Tools", "MSVC", args.win_toolchain_version, "lib", args.target_cpu)
 
   win_ld += [
-    f"/LIBPATH:{quote_if_needed(um_lib_path.replace(os.sep, '/'))}",
-    f"/LIBPATH:{quote_if_needed(ucrt_lib_path.replace(os.sep, '/'))}",
-    f"/LIBPATH:{quote_if_needed(msvc_lib_path.replace(os.sep, '/'))}",
+    f"/LIBPATH:{quote_if_needed(um_lib_path)}",
+    f"/LIBPATH:{quote_if_needed(ucrt_lib_path)}",
+    f"/LIBPATH:{quote_if_needed(msvc_lib_path)}",
   ]
 
   # Skia builds with exceptions and RTTI disabled so we must also build Dawn that way.
