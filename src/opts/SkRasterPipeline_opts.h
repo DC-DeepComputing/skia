@@ -307,7 +307,7 @@ namespace SK_OPTS_NS {
         *g = rg.val[1];
     }
     SI void store2(uint16_t* ptr, U16 r, U16 g) {
-        vst2_u16(ptr, (uint16x4x2_t{{r,g}}));
+        vst2_u16(ptr, (uint16x4x2_t{{r, g}}));
     }
     SI void load4(const uint16_t* ptr, U16* r, U16* g, U16* b, U16* a) {
         uint16x4x4_t rgba = vld4_u16(ptr);
@@ -318,7 +318,7 @@ namespace SK_OPTS_NS {
     }
 
     SI void store4(uint16_t* ptr, U16 r, U16 g, U16 b, U16 a) {
-        vst4_u16(ptr, (uint16x4x4_t{{r,g,b,a}}));
+        vst4_u16(ptr, (uint16x4x4_t{{r, g,b,a}}));
     }
     SI void load4(const float* ptr, F* r, F* g, F* b, F* a) {
         float32x4x4_t rgba = vld4q_f32(ptr);
@@ -328,7 +328,7 @@ namespace SK_OPTS_NS {
         *a = rgba.val[3];
     }
     SI void store4(float* ptr, F r, F g, F b, F a) {
-        vst4q_f32(ptr, (float32x4x4_t{{r,g,b,a}}));
+        vst4q_f32(ptr, (float32x4x4_t{{r, g,b,a}}));
     }
 
 #elif defined(SKRP_CPU_SKX)
@@ -917,7 +917,7 @@ namespace SK_OPTS_NS {
     }
 
     SI void store4(float* ptr, F r, F g, F b, F a) {
-        _MM_TRANSPOSE4_PS(r,g,b,a);
+        _MM_TRANSPOSE4_PS(r, g,b,a);
         _mm_storeu_ps(ptr + 0, r);
         _mm_storeu_ps(ptr + 4, g);
         _mm_storeu_ps(ptr + 8, b);
@@ -1296,7 +1296,7 @@ namespace SK_OPTS_NS {
     }
 
     SI void store4(float* ptr, F r, F g, F b, F a) {
-        _LSX_TRANSPOSE4_S(r,g,b,a);
+        _LSX_TRANSPOSE4_S(r, g,b,a);
         __lsx_vst(r, ptr, 0);
         __lsx_vst(g, ptr, 16);
         __lsx_vst(b, ptr, 32);
@@ -1522,11 +1522,11 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
 // Also decide here whether to use narrow (compromise) or wide (ideal) stages.
 #if defined(SK_CPU_ARM32) && defined(SKRP_CPU_NEON)
     // This lets us pass vectors more efficiently on 32-bit ARM.
-    // We can still only pass 16 floats, so best as 4x {r,g,b,a}.
+    // We can still only pass 16 floats, so best as 4x {r, g,b,a}.
     #define ABI __attribute__((pcs("aapcs-vfp")))
     #define SKRP_NARROW_STAGES 1
 #elif defined(_MSC_VER)
-    // Even if not vectorized, this lets us pass {r,g,b,a} as registers,
+    // Even if not vectorized, this lets us pass {r, g,b,a} as registers,
     // instead of {b,a} on the stack.  Narrow stages work best for __vectorcall.
     #define ABI __vectorcall
     #define SKRP_NARROW_STAGES 1
@@ -1609,10 +1609,10 @@ static void start_pipeline(size_t dx, size_t dy,
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              F r, F g, F b, F a) {                                         \
             OFFSET name##_k(Ctx{program}, params->dx,params->dy,params->base,              \
-                            r,g,b,a, params->dr, params->dg, params->db, params->da);      \
+                            r, g,b,a, params->dr, params->dg, params->db, params->da);      \
             INC;                                                                           \
             auto fn = (Stage)program->fn;                                                  \
-            MUSTTAIL return fn(params, program, r,g,b,a);                                  \
+            MUSTTAIL return fn(params, program, r, g,b,a);                                  \
         }                                                                                  \
         SI STAGE_RET name##_k(ARG, const size_t dx, const size_t dy, std::byte*& base,     \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
@@ -1622,10 +1622,10 @@ static void start_pipeline(size_t dx, size_t dy,
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);               \
         static void ABI name(SkRasterPipelineStage* program, const size_t dx, const size_t dy,   \
                              std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {      \
-            OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
+            OFFSET name##_k(Ctx{program}, dx,dy,base, r, g,b,a, dr,dg,db,da);                     \
             INC;                                                                                 \
             auto fn = (Stage)program->fn;                                                        \
-            MUSTTAIL return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                       \
+            MUSTTAIL return fn(program, dx,dy,base, r, g,b,a, dr,dg,db,da);                       \
         }                                                                                        \
         SI STAGE_RET name##_k(ARG, const size_t dx, const size_t dy, std::byte*& base,           \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
@@ -2116,7 +2116,7 @@ HIGHP_STAGE(dither, const float* rate) {
     b = max(0.0f, min(b, a));
 }
 
-// load 4 floats from memory, and splat them into r,g,b,a
+// load 4 floats from memory, and splat them into r, g,b,a
 HIGHP_STAGE(uniform_color, const SkRasterPipelineContexts::UniformColorCtx* c) {
     r = F_(c->r);
     g = F_(c->g);
@@ -2137,7 +2137,7 @@ HIGHP_STAGE(uniform_color_dst, const SkRasterPipelineContexts::UniformColorCtx* 
     da = F_(c->a);
 }
 
-// splats opaque-black into r,g,b,a
+// splats opaque-black into r, g,b,a
 HIGHP_STAGE(black_color, NoCtx) {
     r = g = b = F0;
     a = F1;
@@ -2147,7 +2147,7 @@ HIGHP_STAGE(white_color, NoCtx) {
     r = g = b = a = F1;
 }
 
-// load registers r,g,b,a from context (mirrors store_src)
+// load registers r, g,b,a from context (mirrors store_src)
 HIGHP_STAGE(load_src, const float* ptr) {
     r = sk_unaligned_load<F>(ptr + 0*N);
     g = sk_unaligned_load<F>(ptr + 1*N);
@@ -2155,19 +2155,19 @@ HIGHP_STAGE(load_src, const float* ptr) {
     a = sk_unaligned_load<F>(ptr + 3*N);
 }
 
-// store registers r,g,b,a into context (mirrors load_src)
+// store registers r, g,b,a into context (mirrors load_src)
 HIGHP_STAGE(store_src, float* ptr) {
     sk_unaligned_store(ptr + 0*N, r);
     sk_unaligned_store(ptr + 1*N, g);
     sk_unaligned_store(ptr + 2*N, b);
     sk_unaligned_store(ptr + 3*N, a);
 }
-// store registers r,g into context
+// store registers r, g into context
 HIGHP_STAGE(store_src_rg, float* ptr) {
     sk_unaligned_store(ptr + 0*N, r);
     sk_unaligned_store(ptr + 1*N, g);
 }
-// load registers r,g from context
+// load registers r, g from context
 HIGHP_STAGE(load_src_rg, float* ptr) {
     r = sk_unaligned_load<F>(ptr + 0*N);
     g = sk_unaligned_load<F>(ptr + 1*N);
@@ -2370,7 +2370,7 @@ HIGHP_STAGE(luminosity, NoCtx) {
       G = dg*a,
       B = db*a;
 
-    set_lum(&R, &G, &B, lum(r,g,b)*da);
+    set_lum(&R, &G, &B, lum(r, g,b)*da);
     clip_color(&R,&G,&B, a*da);
 
     r = mad(r, inv(da), mad(dr, inv(a), R));
@@ -2871,7 +2871,7 @@ HIGHP_STAGE(load_a8_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_a8, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint8_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     r = g = b = F0;
     a = from_byte(gather(ptr, ix));
 }
@@ -2902,7 +2902,7 @@ HIGHP_STAGE(load_565_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_565, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint16_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     from_565(gather_unaligned(ptr, ix), &r,&g,&b);
     a = F1;
 }
@@ -2925,7 +2925,7 @@ HIGHP_STAGE(load_4444_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_4444, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint16_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     from_4444(gather_unaligned(ptr, ix), &r,&g,&b,&a);
 }
 HIGHP_STAGE(store_4444, const SkRasterPipelineContexts::MemoryCtx* ctx) {
@@ -2947,7 +2947,7 @@ HIGHP_STAGE(load_8888_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_8888, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint32_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     from_8888(gather_unaligned(ptr, ix), &r,&g,&b,&a);
 }
 HIGHP_STAGE(store_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
@@ -3005,6 +3005,32 @@ HIGHP_STAGE(store_a16, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     auto ptr = ptr_at_xy<uint16_t>(ctx, dx,dy);
 
     U16 px = pack(to_unorm(a, 65535));
+    store(ptr, px);
+}
+
+HIGHP_STAGE(load_r16, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint16_t>(ctx, dx, dy);
+    g = b = F0;
+    a = F1;
+    r = from_short(load<U16>(ptr));
+}
+HIGHP_STAGE(load_r16_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint16_t>(ctx, dx, dy);
+    dg = db = F0;
+    da = F1;
+    dr = from_short(load<U16>(ptr));
+}
+HIGHP_STAGE(gather_r16, const SkRasterPipelineContexts::GatherCtx* ctx) {
+    const uint16_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
+    g = b = F0;
+    a = F1;
+    r = from_short(gather_unaligned(ptr, ix));
+}
+HIGHP_STAGE(store_r16, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint16_t>(ctx, dx,dy);
+
+    U16 px = pack(to_unorm(r, 65535));
     store(ptr, px);
 }
 
@@ -3101,7 +3127,7 @@ HIGHP_STAGE(load_1010102_xr_dst, const SkRasterPipelineContexts::MemoryCtx* ctx)
 }
 HIGHP_STAGE(gather_1010102, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint32_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     from_1010102(gather_unaligned(ptr, ix), &r,&g,&b,&a);
 }
 HIGHP_STAGE(gather_1010102_xr, const SkRasterPipelineContexts::GatherCtx* ctx) {
@@ -3175,7 +3201,7 @@ HIGHP_STAGE(load_f16_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_f16, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint64_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     auto px = gather_unaligned(ptr, ix);
 
     U16 R,G,B,A;
@@ -3268,7 +3294,7 @@ HIGHP_STAGE(load_f32_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 }
 HIGHP_STAGE(gather_f32, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const float* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, r,g);
+    U32 ix = ix_and_ptr(&ptr, ctx, r, g);
     r = gather_unaligned(ptr, 4*ix + 0);
     g = gather_unaligned(ptr, 4*ix + 1);
     b = gather_unaligned(ptr, 4*ix + 2);
@@ -3276,7 +3302,7 @@ HIGHP_STAGE(gather_f32, const SkRasterPipelineContexts::GatherCtx* ctx) {
 }
 HIGHP_STAGE(store_f32, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     auto ptr = ptr_at_xy<float>(ctx, 4*dx,4*dy);
-    store4(ptr, r,g,b,a);
+    store4(ptr, r, g,b,a);
 }
 
 SI F exclusive_repeat(F v, const SkRasterPipelineContexts::TileCtx* ctx) {
@@ -3327,7 +3353,7 @@ HIGHP_STAGE(clamp_x_and_y, const SkRasterPipelineContexts::CoordClampCtx* ctx) {
 // Decal stores a 32bit mask after checking the coordinate (x and/or y) against its domain:
 //      mask == 0x00000000 if the coordinate(s) are out of bounds
 //      mask == 0xFFFFFFFF if the coordinate(s) are in bounds
-// After the gather stage, the r,g,b,a values are AND'd with this mask, setting them to 0
+// After the gather stage, the r, g,b,a values are AND'd with this mask, setting them to 0
 // if either of the coordinates were out of bounds.
 
 HIGHP_STAGE(decal_x, SkRasterPipelineContexts::DecalTileCtx* ctx) {
@@ -3901,7 +3927,7 @@ HIGHP_STAGE(mipmap_linear_finish, SkRasterPipelineContexts::MipmapCtx* ctx) {
 }
 
 HIGHP_STAGE(callback, SkRasterPipelineContexts::CallbackCtx* c) {
-    store4(c->rgba, r,g,b,a);
+    store4(c->rgba, r, g,b,a);
     c->fn(c, N);
     load4(c->read_from, &r,&g,&b,&a);
 }
@@ -3945,7 +3971,7 @@ HIGHP_TAIL_STAGE(store_device_xy01, F* dst) {
 }
 
 HIGHP_TAIL_STAGE(exchange_src, F* rgba) {
-    // Swaps r,g,b,a registers with the values at `rgba`.
+    // Swaps r, g,b,a registers with the values at `rgba`.
     F temp[4] = {r, g, b, a};
     r = rgba[0];
     rgba[0] = temp[0];
@@ -5057,7 +5083,7 @@ SI void bilerp_clamp_large(const SkRasterPipelineContexts::GatherCtx* ctx,
     F fx = fract(cx + 0.5f),
       fy = fract(cy + 0.5f);
 
-    // We'll accumulate the color of all four samples into {r,g,b,a} directly.
+    // We'll accumulate the color of all four samples into {r, g,b,a} directly.
     *r = *g = *b = *a = F0;
 
     for (float py = -0.5f; py <= +0.5f; py += 1.0f)
@@ -5110,7 +5136,7 @@ HIGHP_STAGE(bicubic_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx) 
     F fx = fract(cx + 0.5f),
       fy = fract(cy + 0.5f);
 
-    // We'll accumulate the color of all four samples into {r,g,b,a} directly.
+    // We'll accumulate the color of all four samples into {r, g,b,a} directly.
     r = g = b = a = F0;
 
     const float* w = ctx->weights;
@@ -5291,7 +5317,7 @@ static void start_pipeline(size_t x0,     size_t y0,
 // (Some stages ignore their inputs or produce no logical output.  That's perfectly fine.)
 //
 // These three LOWP_STAGE_ macros let you define each type of stage,
-// and will have (x,y) geometry and/or (r,g,b,a, dr,dg,db,da) pixel arguments as appropriate.
+// and will have (x,y) geometry and/or (r, g,b,a, dr,dg,db,da) pixel arguments as appropriate.
 //
 // Why does the LOWP version have 3 versions of a stage while HIGHP only has 1?
 // We don't want to lose precision on the x and y coordinates, so we fuse the rg and ba
@@ -5303,13 +5329,13 @@ static void start_pipeline(size_t x0,     size_t y0,
         SI void name##_k(ARG, const size_t dx, const size_t dy, F& x, F& y);                   \
         static void ABI name(Params* params, SkRasterPipelineStage* program,                   \
                              U16 r, U16 g, U16 b, U16 a) {                                     \
-            auto x = join<F>(r,g),                                                             \
+            auto x = join<F>(r, g),                                                             \
                  y = join<F>(b,a);                                                             \
             name##_k(Ctx{program}, params->dx,params->dy, x,y);                                \
             split(x, &r,&g);                                                                   \
             split(y, &b,&a);                                                                   \
             auto fn = (Stage)(++program)->fn;                                                  \
-            fn(params, program, r,g,b,a);                                                      \
+            fn(params, program, r, g,b,a);                                                      \
         }                                                                                      \
         SI void name##_k(ARG, const size_t dx, const size_t dy, F& x, F& y)
 
@@ -5318,11 +5344,11 @@ static void start_pipeline(size_t x0,     size_t y0,
                          U16& r, U16& g, U16& b, U16& a);                                  \
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              U16 r, U16 g, U16 b, U16 a) {                                 \
-            auto x = join<F>(r,g),                                                         \
+            auto x = join<F>(r, g),                                                         \
                  y = join<F>(b,a);                                                         \
-            name##_k(Ctx{program}, params->dx,params->dy, x,y, r,g,b,a);                   \
+            name##_k(Ctx{program}, params->dx,params->dy, x,y, r, g,b,a);                   \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(params, program, r,g,b,a);                                                  \
+            fn(params, program, r, g,b,a);                                                  \
         }                                                                                  \
         SI void name##_k(ARG, const size_t dx, const size_t dy, const F x, const F y,      \
                          U16& r, U16& g, U16& b, U16& a)
@@ -5333,10 +5359,10 @@ static void start_pipeline(size_t x0,     size_t y0,
                          U16& dr, U16& dg, U16& db, U16& da);                              \
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              U16 r, U16 g, U16 b, U16 a) {                                 \
-            name##_k(Ctx{program}, params->dx,params->dy, r,g,b,a,                         \
+            name##_k(Ctx{program}, params->dx,params->dy, r, g,b,a,                         \
                      params->dr,params->dg,params->db,params->da);                         \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(params, program, r,g,b,a);                                                  \
+            fn(params, program, r, g,b,a);                                                  \
         }                                                                                  \
         SI void name##_k(ARG, const size_t dx, const size_t dy,                            \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
@@ -5348,13 +5374,13 @@ static void start_pipeline(size_t x0,     size_t y0,
                              const size_t dx, const size_t dy,                             \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
-            auto x = join<F>(r,g),                                                         \
+            auto x = join<F>(r, g),                                                         \
                  y = join<F>(b,a);                                                         \
             name##_k(Ctx{program}, dx,dy, x,y);                                            \
             split(x, &r,&g);                                                               \
             split(y, &b,&a);                                                               \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
+            fn(program, dx,dy, r, g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
         SI void name##_k(ARG, const size_t dx, const size_t dy, F& x, F& y)
 
@@ -5365,11 +5391,11 @@ static void start_pipeline(size_t x0,     size_t y0,
                              const size_t dx, const size_t dy,                             \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
-            auto x = join<F>(r,g),                                                         \
+            auto x = join<F>(r, g),                                                         \
                  y = join<F>(b,a);                                                         \
-            name##_k(Ctx{program}, dx,dy, x,y, r,g,b,a);                                   \
+            name##_k(Ctx{program}, dx,dy, x,y, r, g,b,a);                                   \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
+            fn(program, dx,dy, r, g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
         SI void name##_k(ARG, const size_t dx, const size_t dy, const F x, const F y,      \
                          U16& r, U16& g, U16& b, U16& a)
@@ -5382,9 +5408,9 @@ static void start_pipeline(size_t x0,     size_t y0,
                              const size_t dx, const size_t dy,                             \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
-            name##_k(Ctx{program}, dx,dy, r,g,b,a, dr,dg,db,da);                           \
+            name##_k(Ctx{program}, dx,dy, r, g,b,a, dr,dg,db,da);                           \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
+            fn(program, dx,dy, r, g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
         SI void name##_k(ARG, const size_t dx, const size_t dy,                            \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
@@ -6101,7 +6127,7 @@ SI void load_8888_(const uint32_t* ptr, U16* r, U16* g, U16* b, U16* a) {
     *b = cast<U16>(rgba.val[2]);
     *a = cast<U16>(rgba.val[3]);
 #else
-    from_8888(load<U32>(ptr), r,g,b,a);
+    from_8888(load<U32>(ptr), r, g,b,a);
 #endif
 }
 SI void store_8888_(uint32_t* ptr, U16 r, U16 g, U16 b, U16 a) {
@@ -6156,7 +6182,7 @@ LOWP_STAGE_PP(load_8888_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     load_8888_(ptr_at_xy<const uint32_t>(ctx, dx,dy), &dr,&dg,&db,&da);
 }
 LOWP_STAGE_PP(store_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    store_8888_(ptr_at_xy<uint32_t>(ctx, dx,dy), r,g,b,a);
+    store_8888_(ptr_at_xy<uint32_t>(ctx, dx,dy), r, g,b,a);
 }
 LOWP_STAGE_GP(gather_8888, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint32_t* ptr;
@@ -6178,7 +6204,7 @@ SI void from_565(U16 rgb, U16* r, U16* g, U16* b) {
     *b = (B << 3) | (B >> 2);
 }
 SI void load_565_(const uint16_t* ptr, U16* r, U16* g, U16* b) {
-    from_565(load<U16>(ptr), r,g,b);
+    from_565(load<U16>(ptr), r, g,b);
 }
 SI void store_565_(uint16_t* ptr, U16 r, U16 g, U16 b) {
     r = min(r, 255);
@@ -6206,7 +6232,7 @@ LOWP_STAGE_PP(load_565_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     da = U16_255;
 }
 LOWP_STAGE_PP(store_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    store_565_(ptr_at_xy<uint16_t>(ctx, dx,dy), r,g,b);
+    store_565_(ptr_at_xy<uint16_t>(ctx, dx,dy), r, g,b);
 }
 LOWP_STAGE_GP(gather_565, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint16_t* ptr;
@@ -6229,7 +6255,7 @@ SI void from_4444(U16 rgba, U16* r, U16* g, U16* b, U16* a) {
     *a = (A << 4) | A;
 }
 SI void load_4444_(const uint16_t* ptr, U16* r, U16* g, U16* b, U16* a) {
-    from_4444(load<U16>(ptr), r,g,b,a);
+    from_4444(load<U16>(ptr), r, g,b,a);
 }
 SI void store_4444_(uint16_t* ptr, U16 r, U16 g, U16 b, U16 a) {
     r = min(r, 255);
@@ -6256,7 +6282,7 @@ LOWP_STAGE_PP(load_4444_dst, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     load_4444_(ptr_at_xy<const uint16_t>(ctx, dx,dy), &dr,&dg,&db,&da);
 }
 LOWP_STAGE_PP(store_4444, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    store_4444_(ptr_at_xy<uint16_t>(ctx, dx,dy), r,g,b,a);
+    store_4444_(ptr_at_xy<uint16_t>(ctx, dx,dy), r, g,b,a);
 }
 LOWP_STAGE_GP(gather_4444, const SkRasterPipelineContexts::GatherCtx* ctx) {
     const uint16_t* ptr;
@@ -6275,7 +6301,7 @@ SI void load_88_(const uint16_t* ptr, U16* r, U16* g) {
     *r = cast<U16>(rg.val[0]);
     *g = cast<U16>(rg.val[1]);
 #else
-    from_88(load<U16>(ptr), r,g);
+    from_88(load<U16>(ptr), r, g);
 #endif
 }
 
@@ -6621,7 +6647,7 @@ SI void gradient_lookup(const SkRasterPipelineContexts::GradientCtx* c,
                    mad(t, fg, bg),
                    mad(t, fb, bb),
                    mad(t, fa, ba),
-                   r,g,b,a);
+                   r, g,b,a);
 }
 
 LOWP_STAGE_GP(gradient, const SkRasterPipelineContexts::GradientCtx* c) {
@@ -6813,7 +6839,7 @@ LOWP_STAGE_PP(srcover_rgba_8888, const SkRasterPipelineContexts::MemoryCtx* ctx)
     g = g + div255( dg*inv(a) );
     b = b + div255( db*inv(a) );
     a = a + div255( da*inv(a) );
-    store_8888_(ptr, r,g,b,a);
+    store_8888_(ptr, r, g,b,a);
 }
 
 // ~~~~~~ skgpu::Swizzle stage ~~~~~~ //
