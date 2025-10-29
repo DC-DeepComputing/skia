@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cec3b69_8d8c736b",
+        "filename": "tools/sk_app/win/Window_win.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-10-29T20:10:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ee46848_c46cf56d",
+      "range": {
+        "startLine": 369,
+        "startChar": 94,
+        "endLine": 369,
+        "endChar": 104
+      },
+      "revId": "2cffc55edd5e053544221402511fe40285046e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e36de8b_82103dcd",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-29T19:37:50Z",
       "side": 1,
       "message": "100 chars",
+      "range": {
+        "startLine": 45,
+        "startChar": 92,
+        "endLine": 45,
+        "endChar": 103
+      },
+      "revId": "2cffc55edd5e053544221402511fe40285046e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "161495d0_97a2c6df",
+        "filename": "tools/window/win/GraphiteDawnWindowContext_win.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-10-29T20:10:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e36de8b_82103dcd",
       "range": {
         "startLine": 45,
         "startChar": 92,
