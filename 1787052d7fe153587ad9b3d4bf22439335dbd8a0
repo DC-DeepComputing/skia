@@ -16,6 +16,29 @@
       "message": "@kjlubick and/or @bungeman, can you PTAL?",
       "revId": "1787052d7fe153587ad9b3d4bf22439335dbd8a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c7bc07_b9245d67",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-29T18:33:30Z",
+      "side": 1,
+      "message": "nit: line length. Can you run `git clang-format origin/main`?",
+      "range": {
+        "startLine": 793,
+        "startChar": 104,
+        "endLine": 793,
+        "endChar": 108
+      },
+      "revId": "1787052d7fe153587ad9b3d4bf22439335dbd8a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
