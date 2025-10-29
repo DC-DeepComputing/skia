@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64ef1c0b_5f6a5b0e",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-29T17:16:28Z",
+      "side": 1,
+      "message": "precompiled?",
+      "range": {
+        "startLine": 178,
+        "startChar": 70,
+        "endLine": 178,
+        "endChar": 81
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02132572_31ea9645",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-29T17:16:28Z",
+      "side": 1,
+      "message": "How is the client going to know when this is the case? Or is it something that we handle internally and just do nothing in the event of a stale data?",
+      "range": {
+        "startLine": 188,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 49
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd1137ed_79cb5563",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-29T17:16:28Z",
+      "side": 1,
+      "message": "This callback is only invoked for PipelineCacheOp::kAddingPipeline ops and when the key is serializable. It is ignored if `fPipelineCachingCallback` is set.?",
+      "range": {
+        "startLine": 194,
+        "startChar": 52,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
