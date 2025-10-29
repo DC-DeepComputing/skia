@@ -16,6 +16,52 @@
       "message": "Followup as requested. PTAL. Thanks!",
       "revId": "2cffc55edd5e053544221402511fe40285046e7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee46848_c46cf56d",
+        "filename": "tools/sk_app/win/Window_win.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-29T19:37:50Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 369,
+        "startChar": 94,
+        "endLine": 369,
+        "endChar": 104
+      },
+      "revId": "2cffc55edd5e053544221402511fe40285046e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e36de8b_82103dcd",
+        "filename": "tools/window/win/GraphiteDawnWindowContext_win.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-29T19:37:50Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 45,
+        "startChar": 92,
+        "endLine": 45,
+        "endChar": 103
+      },
+      "revId": "2cffc55edd5e053544221402511fe40285046e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
