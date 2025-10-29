@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8f1dde_6ce453d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "LGTM with some error singleton tweaks.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ee9f62_3b506b22",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "It seems that this should live right next to peekerrorsingleton, ideally static/anonymous in SkPathData.cpp.  Maybe doable with a couple of changes (see other comments)?",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68285feb_fe6c6714",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "If only used in SkPathData.cpp, this doesn\u0027t have to be a class method.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7ae2fd8_ebb9e687",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "We could add an `SkPathData::Error()` helper so we don\u0027t have to export `PeekErrorSingleton()`.",
+      "range": {
+        "startLine": 50,
+        "startChar": 16,
+        "endLine": 50,
+        "endChar": 47
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04efc359_f37fa72b",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "Since there\u0027s nothing magic about this anymore, I wonder if we should remove it from the API (after we switch all clients to pathdata).",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 1
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691f3005_506b9ea3",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "`SkPathData::isFinite()`? (to hide peeker)",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720833fb_480d2f34",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "`SkPathData::Error()`?",
+      "range": {
+        "startLine": 199,
+        "startChar": 18,
+        "endLine": 199,
+        "endChar": 49
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ea9c9e6_b4f5be2d",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:06:04Z",
+      "side": 1,
+      "message": "We could push this check to `SkPathData::addGenIDChangeListener`, similar to the empty check.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
