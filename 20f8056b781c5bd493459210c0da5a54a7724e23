@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df883a22_5f98e0c5",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T18:25:14Z",
+      "side": 1,
+      "message": "Consistency with other implicitly immutable Skia types (shaders, color filters, etc) is a good point though.  It makes sense to keep things aligned, and we don\u0027t have to make a decision right now.  Let\u0027s chat internally about what we want to do with those, and apply globally.",
+      "parentUuid": "119f92bc_5ba6c75e",
+      "range": {
+        "startLine": 1950,
+        "startChar": 10,
+        "endLine": 1950,
+        "endChar": 20
+      },
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "614757ff_84bd8da3",
         "filename": "src/core/SkPathData.cpp",
         "patchSetId": 14
