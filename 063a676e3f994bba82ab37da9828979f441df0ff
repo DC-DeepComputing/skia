@@ -33,6 +33,24 @@
       "message": "@bungeman and @kjlubick, can you PTAL at this CL once more?  If you are strongly opposed to landing this CL, then I\u0027ll go ahead and abandon this, but I don\u0027t see what would be the harm in landing it + I do see benefit of reducing risk/complexity of dealing with any potential https://crrev.com/c/7079866 trouble.\n\nIf https://crrev.com/c/7079866 sticks, then the code from _this_ CL can just be deleted.  If https://crrev.com/c/7079866 causes trouble, then we\u0027ll be glad we\u0027ve landed _this_ CL.",
       "revId": "063a676e3f994bba82ab37da9828979f441df0ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dec3b6a_e40b4a48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T20:23:38Z",
+      "side": 1,
+      "message": "Resolving...",
+      "parentUuid": "afbbd49c_155bfa3a",
+      "revId": "063a676e3f994bba82ab37da9828979f441df0ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
