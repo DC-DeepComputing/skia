@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01cac79f_2447ca00",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:44:08Z",
+      "side": 1,
+      "message": "Another option (ha) would be to add `pngEncoder` as a plain `AutoElement` field, and then also add an `AutoElement(const char[], const AutoElement\u0026 parent)` helper that copies writer/encoder from the parent.  That may result in less typing (leaving fWriter alone), but I don\u0027t feel strongly either way - your call.",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b90434f_c6b62053",
+        "filename": "src/svg/SkSVGDevice.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:44:08Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 84,
+        "startChar": 42,
+        "endLine": 84,
+        "endChar": 45
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8fc690ef_5d8bc75b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/svg/SkSVGDevice.h",
+              "range": {
+                "startLine": 84,
+                "startChar": 0,
+                "endLine": 85,
+                "endChar": 0
+              },
+              "replacement": "    const SkSVGCanvas::Options            fOpts;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
