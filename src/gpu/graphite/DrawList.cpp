@@ -165,6 +165,7 @@ const Transform& DrawList::deduplicateTransform(const Transform& localToDevice) 
     return fTransforms.back();
 }
 
+// Create a sort key for every render step in this draw
 void DrawList::recordDraw(const Renderer* renderer,
                           const Transform& localToDevice,
                           const Geometry& geometry,
@@ -182,14 +183,8 @@ void DrawList::recordDraw(const Renderer* renderer,
 
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
 
-    // Create a sort key for every render step in this draw, extracting out any
-    // RenderStep-specific data.
-    UniformDataCache::Index shadingUniformIndex = UniformDataCache::kInvalidIndex;
     if (paintID.isValid()) {
-        UniformDataBlock paintUniforms = gatherer->endPaintData();
-        if (paintUniforms) {
-            shadingUniformIndex = fShadingUniformDataCache.insert(paintUniforms);
-        }
+        gatherer->endPaintData();
     }
 
     const Draw& draw = fDraws.emplace_back(renderer,
@@ -206,24 +201,25 @@ void DrawList::recordDraw(const Renderer* renderer,
         const RenderStep* const step = draw.renderer()->steps()[stepIndex];
         const bool performsShading = step->performsShading();
 
+        // TODO CHECK ME! Make sure this isnt causing any issues. . .
+        // Might even improve reusability, because we always have paintID on the pair?
         GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
-                { step->renderStepID(),
-                  performsShading ? paintID : UniquePaintParamsID::Invalid() });
+                { step->renderStepID(), paintID});
+                //   performsShading ? paintID : UniquePaintParamsID::Invalid() });
 
         step->writeUniformsAndTextures(draw.drawParams(), gatherer);
-        auto [stepUniforms, combinedTextures] = gatherer->endRenderStepData(performsShading);
 
-        UniformDataCache::Index geomUniformIndex = stepUniforms ?
-                fGeometryUniformDataCache.insert(stepUniforms) : UniformDataCache::kInvalidIndex;
+        auto [combinedUniforms, combinedTextures] = gatherer->endRenderStepData(performsShading);
+
+        UniformDataCache::Index uniformIndex = combinedUniforms ?
+                fUniformDataCache.insert(combinedUniforms) : UniformDataCache::kInvalidIndex;
         TextureDataCache::Index textureBindingIndex = combinedTextures ?
                 fTextureDataCache.insert(combinedTextures) : TextureDataCache::kInvalidIndex;
 
         fSortKeys.push_back({&draw,
                              stepIndex,
                              pipelineIndex,
-                             geomUniformIndex,
-                             performsShading ? shadingUniformIndex :
-                                               UniformDataCache::kInvalidIndex,
+                             uniformIndex,
                              textureBindingIndex});
         gatherer->rewindForRenderStep();
     }
@@ -262,7 +258,6 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     //    indirection and does not work as well with SkTBlockList.
     // In pseudo tests, manipulating the pointer or having to mask out indices was about 15% slower
     // than an 8 byte key and unmodified pointer.
-    static_assert(sizeof(SortKey) == SkAlignTo(16 + sizeof(void*), alignof(SortKey)));
 
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
@@ -292,8 +287,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
     const Caps* caps = recorder->priv().caps();
     const bool useStorageBuffers = caps->storageBufferSupport();
-    UniformTracker geometryUniformTracker(useStorageBuffers);
-    UniformTracker shadingUniformTracker(useStorageBuffers);
+    UniformTracker uniformTracker(useStorageBuffers);
 
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
@@ -316,10 +310,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         drawPass->fPipelineDrawAreas[key.pipelineIndex()] +=
                 draw.drawParams().drawBounds().area();
 
-        const bool geomBindingChange = geometryUniformTracker.writeUniforms(
-                fGeometryUniformDataCache, bufferMgr, key.geometryUniformIndex());
-        const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
-                fShadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
+        const bool uniformBindingChange = uniformTracker.writeUniforms(
+                fUniformDataCache, bufferMgr, key.uniformIndex());
 
         // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
         // dst copy to the texture bind group/descriptor set automatically when processing a
@@ -336,9 +328,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         std::optional<SkIRect> newScissor =
                 renderStep.getScissor(draw.drawParams(), lastScissor, targetBounds);
 
-        const bool stateChange = geomBindingChange     ||
-                                 shadingBindingChange  ||
-                                 textureBindingsChange ||
+        const bool stateChange = uniformBindingChange  || textureBindingsChange ||
                                  newScissor.has_value();
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
@@ -367,12 +357,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
             lastPipeline = key.pipelineIndex();
         }
         if (stateChange) {
-            if (geomBindingChange) {
-                geometryUniformTracker.bindUniforms(UniformSlot::kRenderStep,
-                                                    &drawPass->fCommandList);
-            }
-            if (shadingBindingChange) {
-                shadingUniformTracker.bindUniforms(UniformSlot::kPaint, &drawPass->fCommandList);
+            if (uniformBindingChange) {
+                uniformTracker.bindUniforms(UniformSlot::kCombinedUniforms, &drawPass->fCommandList);
             }
             if (textureBindingsChange) {
                 textureBindingTracker.bindTextures(&drawPass->fCommandList);
@@ -383,10 +369,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
             }
         }
 
-        uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
-        uint32_t shadingSsboIndex = useStorageBuffers ? shadingUniformTracker.ssboIndex() : 0;
-        skvx::uint2 ssboIndices = {geometrySsboIndex, shadingSsboIndex};
-        renderStep.writeVertices(&drawWriter, draw.drawParams(), ssboIndices);
+        uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;
+        renderStep.writeVertices(&drawWriter, draw.drawParams(), uniformSsboIndex);
 
         if (bufferMgr->hasMappingFailed()) {
             SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
@@ -429,8 +413,7 @@ void DrawList::reset(LoadOp loadOp, SkColor4f color) {
     fDstReadBounds = Rect::InfiniteInverted();
     fPassBounds = Rect::InfiniteInverted();
 
-    fGeometryUniformDataCache.reset();
-    fShadingUniformDataCache.reset();
+    fUniformDataCache.reset();
     fTextureDataCache.reset();
     fPipelineCache.reset();
 }

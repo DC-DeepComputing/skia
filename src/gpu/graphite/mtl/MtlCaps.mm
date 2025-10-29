@@ -165,9 +165,7 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
 
     fResourceBindingReqs.fIntrinsicBufferBinding =
             MtlGraphicsPipeline::kIntrinsicUniformBufferIndex;
-    fResourceBindingReqs.fRenderStepBufferBinding =
-            MtlGraphicsPipeline::kRenderStepUniformBufferIndex;
-    fResourceBindingReqs.fPaintParamsBufferBinding = MtlGraphicsPipeline::kPaintUniformBufferIndex;
+    fResourceBindingReqs.fCombinedUniformBufferBinding = MtlGraphicsPipeline::kCombinedUniformIndex;
     fResourceBindingReqs.fGradientBufferBinding = MtlGraphicsPipeline::kGradientBufferIndex;
 
     // Metal does not distinguish between uniform and storage buffers.
@@ -1043,10 +1041,7 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     // Recreate the GraphicsPipelineDesc
     const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
 
-    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
-                                                                : UniquePaintParamsID::Invalid();
-
-    *pipelineDesc = GraphicsPipelineDesc(renderStep->renderStepID(), paintID);
+    *pipelineDesc = GraphicsPipelineDesc(renderStep->renderStepID(), keyData.fPaintParamsID);
 
     return true;
 }

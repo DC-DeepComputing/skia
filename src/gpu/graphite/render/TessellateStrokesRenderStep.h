@@ -29,7 +29,7 @@ public:
     ~TessellateStrokesRenderStep() override;
 
     std::string vertexSkSL() const override;
-    void writeVertices(DrawWriter*, const DrawParams&, skvx::uint2 ssboIndices) const override;
+    void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndices) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 
 private:
