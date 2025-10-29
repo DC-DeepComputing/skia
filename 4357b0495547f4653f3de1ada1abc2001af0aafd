@@ -273,6 +273,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d585bae_51d31176",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-29T14:46:39Z",
+      "side": 1,
+      "message": "You can also test this (somewhat) in viewer by changing the path rendering strategy in the backend sectino of the settings menu. That currently doesn\u0027t change how clipping is handled, but that will be changing soon.  \n\nGold is showing some pixel diffs that might indicate the rendering offset is off by fractions of a pixel and then sampling poorly because of NN?  This likely could reproduce in viewer even without the clipping going through the ClipAtlasManager.",
+      "parentUuid": "902f4c5a_8f05cf92",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60ab0283_abc7e9da",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 4
