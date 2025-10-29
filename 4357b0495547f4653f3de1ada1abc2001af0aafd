@@ -249,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "902f4c5a_8f05cf92",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-10-29T14:28:14Z",
+      "side": 1,
+      "message": "Thanks for starting that try job. I hadn\u0027t realized this code was mostly not being exercised.\n\nSo it turns out that the clip masks are sampled out to the full locator1 rect, including the padding. The padding needs to be updated as the elements are processed, not just cleared. So I changed ClipAtlasManager to work with the full-sized locator pixmap.\n\nThere are two other fixes in the latest PS:\n1) I had the sign of the translation wrong in the RasterPathAtlas\n2) RasterMaskHelper is moved out from Allocate but it had an internal pointer from fDraw.fRC to fRasterClip. Rather than either writing a custom move copy/assign or deleting them, I modified it to just make a skcpu::Draw on the stack since it is small and doesn\u0027t have any real setup cost.",
+      "parentUuid": "170e969f_742d9e29",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "4357b0495547f4653f3de1ada1abc2001af0aafd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60ab0283_abc7e9da",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 4
