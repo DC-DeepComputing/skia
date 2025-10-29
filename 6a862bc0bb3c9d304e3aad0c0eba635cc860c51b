@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de240e0b_f6feb6b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-29T13:10:15Z",
+      "side": 1,
+      "message": "Chromium canary failure seems unrelated",
+      "revId": "6a862bc0bb3c9d304e3aad0c0eba635cc860c51b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
