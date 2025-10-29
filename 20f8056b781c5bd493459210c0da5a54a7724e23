@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "119f92bc_5ba6c75e",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-29T17:09:03Z",
+      "side": 1,
+      "message": "I know we rarely *have done* it, but I\u0027m also a fan of calling out const for data like things even though it\u0027s sort of implicit. https://review.skia.org/1084037. So let\u0027s add it in here now.",
+      "parentUuid": "e5b71404_b821f1d1",
+      "range": {
+        "startLine": 1950,
+        "startChar": 10,
+        "endLine": 1950,
+        "endChar": 20
+      },
+      "revId": "20f8056b781c5bd493459210c0da5a54a7724e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "614757ff_84bd8da3",
         "filename": "src/core/SkPathData.cpp",
         "patchSetId": 14
