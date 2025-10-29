@@ -53,8 +53,8 @@ public:
         return UniformDataBlock(uniforms->finish());
     }
 
-    static UniformDataBlock Wrap(UniformManager* uniforms, size_t subspanOffset) {
-        return UniformDataBlock(uniforms->finish(subspanOffset));
+    static UniformDataBlock WrapNonShading(UniformManager* uniforms) {
+        return UniformDataBlock(uniforms->finishNonShading());
     }
 
     constexpr UniformDataBlock& operator=(const UniformDataBlock&) = default;
@@ -374,22 +374,27 @@ public:
 
     // Mark the end of extracting paint uniforms and textures. This finalizes the paint uniform
     // data, pads it correctly, and records its size.
-    UniformDataBlock endPaintData() {
+    void endPaintData() {
         fPaintTextureCount = fTextures.size();
-        auto paintData = UniformDataBlock::Wrap(&fUniformManager, /*subspanOffset=*/0);
-        fUniformManager.markNewOffset(); // No-op if already assigned
-        return paintData;
+        fUniformManager.markRewindOffset(); // Mark the end of paint-time uniforms
+    }
+
+    void alignForNonShading(bool performsShading) {
+        if (!performsShading) {
+            fUniformManager.alignForNonShading();
+        }
     }
 
     // Mark the end of extracting uniforms and textures from a RenderStep.
     std::pair<UniformDataBlock, TextureDataBlock> endRenderStepData(bool performsShading) {
         SkSpan<const TextureDataBlock::SampledTexture> textures{fTextures};
-        if (!performsShading) {
+        if (performsShading) {
+            // Return *all* uniform data (paint AND renderstep) written since the last resetForDraw().
+            return {UniformDataBlock::Wrap(&fUniformManager), TextureDataBlock(textures)};
+        } else {
             textures = textures.subspan(fPaintTextureCount);
+            return {UniformDataBlock::WrapNonShading(&fUniformManager), TextureDataBlock(textures)};
         }
-        // By this point, the fStartingOffset of the uniform manager will have advanced to the end
-        // of the paint uniforms, so calling wrap now returns the renderstep uniforms.
-        return {UniformDataBlock::Wrap(&fUniformManager), TextureDataBlock(textures)};
     }
 
     // Rewind to collect data for another RenderStep using the same paint data.

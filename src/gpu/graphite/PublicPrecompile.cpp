@@ -63,12 +63,8 @@ void compile(const RendererProvider* rendererProvider,
 
         for (auto&& s : r->steps()) {
             SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
-
-            UniquePaintParamsID paintID = s->performsShading() ? uniqueID
-                                                               : UniquePaintParamsID::Invalid();
-
             GraphicsPipelineHandle handle = resourceProvider->createGraphicsPipelineHandle(
-                    { s->renderStepID(), paintID },
+                    { s->renderStepID(), uniqueID },
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);
             resourceProvider->startPipelineCreationTask(keyContext.rtEffectDict(), handle);
