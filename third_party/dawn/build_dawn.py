@@ -18,10 +18,12 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 
 from cmake_utils import (add_common_cmake_args, combine_into_library,
                          discover_dependencies, get_cmake_os_cpu,
-                         get_windows_settings, quote_if_needed, write_depfile)
+                         get_windows_settings, get_python_executable,
+                         quote_if_needed, write_depfile)
 
 
 def gn_bool_to_cmake(s):
@@ -175,9 +177,50 @@ def main():
     # DetectWindowsSDK function uses the correct, hermetic SDK path.
     env["WINDOWSSDKDIR"] = args.win_sdk
 
+  python_exe = get_python_executable()
+  configure_cmd.append(f"-DPython3_EXECUTABLE={python_exe}")
+
   print(" ".join(configure_cmd))
   print("with environment", env)
-  subprocess.run(configure_cmd, check=True, env=env)
+  try:
+    subprocess.run(configure_cmd, check=True, env=env)
+  except subprocess.CalledProcessError as e:
+    print("configure failed")
+    print("jinja debug")
+    webgpu_headers_src_path = os.path.join(dawn_dir, "third_party", "webgpu-headers", "src")
+    contents = os.listdir(webgpu_headers_src_path)
+    if contents:
+      for item in contents:
+        print(f"  - {item}")
+    else:
+      print("empty webgpu")
+
+    git_command = ["git", "submodule", "status", webgpu_headers_src_path]
+    print(f"Running command: {" ".join(git_command)}")
+    result = subprocess.run(git_command, cwd=base_path, capture_output=True, text=True, check=False)
+
+    print(f"Git Submodule Status Stdout:\n{result.stdout.strip()}")
+    if result.stderr:
+        print(f"Git Submodule Status Stderr:\n{result.stderr.strip()}")
+    print(f"Git Submodule Status Exit Code: {result.returncode}")
+
+    print("webgpu debug")
+    jinja2_path = os.path.join(dawn_dir, "third_party", "jinja2")
+    contents = os.listdir(jinja2_path)
+    if contents:
+      for item in contents:
+        print(f"  - {item}")
+    else:
+      print("empty jinja2")
+
+    git_command = ["git", "submodule", "status", jinja2_path]
+    print(f"Running command: {" ".join(git_command)}")
+    result = subprocess.run(git_command, cwd=base_path, capture_output=True, text=True, check=False)
+
+    print(f"Git Submodule Status Stdout:\n{result.stdout.strip()}")
+    if result.stderr:
+        print(f"Git Submodule Status Stderr:\n{result.stderr.strip()}")
+    print(f"Git Submodule Status Exit Code: {result.returncode}")
 
   build_cmd = [ninja_exe, "-C", build_dir, "-dkeepdepfile"] + build_targets
   subprocess.run(build_cmd, check=True, env=env)
