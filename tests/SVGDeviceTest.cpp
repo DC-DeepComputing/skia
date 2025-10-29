@@ -8,6 +8,8 @@
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
+#include <string>
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -31,7 +33,11 @@
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
-#include <string>
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif  // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
 
 using namespace skia_private;
 
@@ -45,9 +51,18 @@ using namespace skia_private;
 
 
 static std::unique_ptr<SkCanvas> MakeDOMCanvas(SkDOM* dom, uint32_t flags = 0) {
+    SkSVGCanvas::Options opts;
+    opts.flags = static_cast<SkSVGCanvas::Flags>(flags);
+    opts.pngEncoder = [](SkWStream* dst, const SkPixmap& src) {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        return SkPngRustEncoder::Encode(dst, src, {});
+#else
+        return SkPngEncoder::Encode(dst, src, {});
+#endif // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    };
     auto svgDevice = SkSVGDevice::Make(SkISize::Make(100, 100),
                                        std::make_unique<SkXMLParserWriter>(dom->beginParsing()),
-                                       flags);
+                                       opts);
     return svgDevice ? std::make_unique<SkCanvas>(svgDevice)
                      : nullptr;
 }
