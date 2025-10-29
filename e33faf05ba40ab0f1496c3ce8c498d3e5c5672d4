@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95b3ab6c_1a5048c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "First round of feedback - so far I only managed to look at things outside of the `experimental/rust_bmp/` directory.",
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08b452b0_588a060f",
+        "filename": "BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 1652,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "I don\u0027t see a PNG-equivalent or non-Rust-BMP-equivalent to `SK_USE_RUST_BMP_DECODE`.  Why is this new macro definition needed?\n\n(`SK_CODEC_DECODES_BMP_WITH_RUST` LGTM, I only have a question about `SK_USE_RUST_BMP_DECODE`)",
+      "range": {
+        "startLine": 1652,
+        "startChar": 5,
+        "endLine": 1652,
+        "endChar": 27
+      },
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7d8748_9b6791ff",
+        "filename": "dm/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "Why is this new dependency edge needed?  IIUC the new decoder is not at this point used from underneath `dm/` directory, right?",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 49
+      },
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96dc37ef_72349a96",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "Is this needed for the BMP decoder?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 24
+      },
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43879d03_2a62e359",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "This is somewhat concerning, but I am not sure how to solve this.  I guess one solution would be to build everything either in Blaze, or in GN/ninja - IIUC mixing Blaze and GN/ninja is what causes the `png` crate to be statically linked twice.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 3
+      },
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e0f9598_213bc83e",
+        "filename": "rust/png/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 1,
+      "message": "We probably should move `UtilsForFFI.h` out of `rust/png` directory (maybe to `rust/SpanUtils.h`?  It probably would be best to do this in a separate CL, because it probably requires introducing a separate `gn/*.gni` (`gn/shared_sources.gni`) list (say `rust_shared_cpp_sources`).",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 1
+      },
+      "revId": "e33faf05ba40ab0f1496c3ce8c498d3e5c5672d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

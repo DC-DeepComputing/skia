@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc7c4320_2c8602bd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T23:54:53Z",
+      "side": 0,
+      "message": "Is this change required for the rest of the CL?  Maybe this just accidentally undoes https://skia-review.googlesource.com/c/skia/+/1073036?",
+      "range": {
+        "startLine": 568,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 34
+      },
+      "revId": "b85c7ae190928b09723b63ba2fedd5416513d51f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
