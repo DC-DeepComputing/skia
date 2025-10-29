@@ -94,6 +94,30 @@
       },
       "revId": "6c61f77b008014417692152505ee11078225ec99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ec3ef1_13b07c98",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-29T20:21:22Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "fb6cad2e_fa2bf79e",
+      "range": {
+        "startLine": 27,
+        "startChar": 13,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "6c61f77b008014417692152505ee11078225ec99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
