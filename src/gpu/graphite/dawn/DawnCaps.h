@@ -58,6 +58,8 @@ public:
                               const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
+    SkString toString(const ImmutableSamplerInfo&) const override;
+
     bool isRenderable(const TextureInfo&) const override;
     bool isStorage(const TextureInfo&) const override;
 
