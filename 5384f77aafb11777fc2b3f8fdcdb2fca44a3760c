@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68a965a8_bfaf420d",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-29T19:20:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10dbe269_010b2b6f",
+      "revId": "5384f77aafb11777fc2b3f8fdcdb2fca44a3760c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52310878_e9290722",
@@ -83,6 +101,30 @@
           ]
         }
       ],
+      "revId": "5384f77aafb11777fc2b3f8fdcdb2fca44a3760c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "973afaea_37a0e938",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-29T19:20:41Z",
+      "side": 1,
+      "message": "Yeah - I intentionally took this out from behind the SK_ENABLE_PRECOMPILE flag. I felt that having its behavior gated by that flag would be surprising to users.",
+      "parentUuid": "52310878_e9290722",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 5
+      },
       "revId": "5384f77aafb11777fc2b3f8fdcdb2fca44a3760c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
