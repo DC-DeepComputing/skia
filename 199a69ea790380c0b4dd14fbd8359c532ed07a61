@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1942a89f_459dbba2",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-29T17:43:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64ef1c0b_5f6a5b0e",
+      "range": {
+        "startLine": 178,
+        "startChar": 70,
+        "endLine": 178,
+        "endChar": 81
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02132572_31ea9645",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0560f10_d2e5eab2",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-29T17:43:16Z",
+      "side": 1,
+      "message": "This hasn\u0027t changed for the serialized keys. When precompiling a serialized key we do check that it is still valid (i.e., all the IDs are valid, the number of children match, etc).",
+      "parentUuid": "02132572_31ea9645",
+      "range": {
+        "startLine": 188,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 49
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd1137ed_79cb5563",
         "filename": "include/gpu/graphite/ContextOptions.h",
         "patchSetId": 11
@@ -60,6 +108,30 @@
       "writtenOn": "2025-10-29T17:16:28Z",
       "side": 1,
       "message": "This callback is only invoked for PipelineCacheOp::kAddingPipeline ops and when the key is serializable. It is ignored if `fPipelineCachingCallback` is set.?",
+      "range": {
+        "startLine": 194,
+        "startChar": 52,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c2ca8df_606aab28",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-10-29T17:43:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd1137ed_79cb5563",
       "range": {
         "startLine": 194,
         "startChar": 52,
