@@ -2239,4 +2239,33 @@ ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& text
     return {};
 }
 
+std::string VulkanCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+    skgpu::VulkanYcbcrConversionInfo info =
+            VulkanYcbcrConversion::FromImmutableSamplerInfo(immutableSamplerInfo);
+    SkASSERT(info.isValid());
+
+    std::string result;
+
+    if (info.hasExternalFormat()) {
+        result += 'x';
+        result += info.externalFormat();
+    } else {
+        result += info.format();
+    }
+
+    result += " ";
+    result += VkModelToStr(info.model());
+    result += "+";
+    result += VkRangeToStr(info.range());
+    result += info.xChromaOffset() ? " mid"  : " cos"; // midpoint or cosited-even
+    result += info.yChromaOffset() ? " mid"  : " cos"; // midpoint or cosited-even
+    result += info.chromaFilter()  ? " linear" : " nearest";
+    result += info.forceExplicitReconstruction() ? " T " : " F ";
+    result += VkSwizzleToStr(info.components().r, 'r');
+    result += VkSwizzleToStr(info.components().g, 'g');
+    result += VkSwizzleToStr(info.components().b, 'b');
+    result += VkSwizzleToStr(info.components().a, 'a');
+    return result;
+}
+
 } // namespace skgpu::graphite
