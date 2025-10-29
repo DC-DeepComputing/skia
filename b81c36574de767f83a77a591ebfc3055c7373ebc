@@ -50,6 +50,24 @@
       "message": "...is identical to this one.  So this is always `false`.  I don\u0027t know if we intended a different check here, or should just remove this to avoid potential confusion in the future.",
       "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "600d0074_b9f99986",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-10-29T13:16:34Z",
+      "side": 1,
+      "message": "Oops, good catch! Will fix.",
+      "parentUuid": "d1ad4c3e_5516567b",
+      "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
