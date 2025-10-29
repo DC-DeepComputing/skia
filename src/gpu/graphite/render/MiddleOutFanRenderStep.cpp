@@ -38,7 +38,7 @@ MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
                      /*appendAttrs=*/
                      {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                     {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}}) {}
+                     {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}}) {}
 
 MiddleOutFanRenderStep::~MiddleOutFanRenderStep() {}
 
@@ -51,7 +51,7 @@ std::string MiddleOutFanRenderStep::vertexSkSL() const {
 
 void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
-                                           skvx::uint2 ssboIndices) const {
+                                           uint32_t ssboIndices) const {
     // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non
     // paths to SkPath just to iterate their pts/verbs
     SkPath path = params.geometry().shape().asPath();
