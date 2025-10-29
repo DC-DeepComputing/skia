@@ -70,6 +70,30 @@
       },
       "revId": "6c61f77b008014417692152505ee11078225ec99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb6cad2e_fa2bf79e",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T18:50:57Z",
+      "side": 0,
+      "message": "Ok, so https://crrev.com/c/7079866 is in Chromium\u0027s CQ, so the code modified by this CL will not (for now at least) be used from Chromium.  But...\n\nWhat\u0027s the harm in landing this CL?\n\nThe benefit of landing this Skia-side CL, is that if https://crrev.com/c/7079866 causes any trouble in Chromium/Stable release channel, then fixing this will just require reverting Chromium-side changes (reverting https://crrev.com/c/7079866) without having to also worry about reverting or fixing any follow-ups that may stop incluing `SkPngEncoder.cpp` in Chromium.",
+      "parentUuid": "052c08fa_f27595c0",
+      "range": {
+        "startLine": 27,
+        "startChar": 13,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "6c61f77b008014417692152505ee11078225ec99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
