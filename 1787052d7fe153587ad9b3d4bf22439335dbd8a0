@@ -39,6 +39,30 @@
       },
       "revId": "1787052d7fe153587ad9b3d4bf22439335dbd8a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3647959f_7103b759",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T18:40:43Z",
+      "side": 1,
+      "message": "\u003e Can you run `git clang-format origin/main`?\n\nThis doesn\u0027t do anything:\n\n```\n$ git clang-format origin/main\nno modified files to format\n```\n\nFWIW I note that old/existing line 778) is 101 characters long:\n\n```\n            familyName.appendf((familyName.isEmpty() ? \"%s\" : \", %s\"), familyString.fString.c_str());\n```\n\n\u003e nit: line length.\n\nDone (manually).",
+      "parentUuid": "f5c7bc07_b9245d67",
+      "range": {
+        "startLine": 793,
+        "startChar": 104,
+        "endLine": 793,
+        "endChar": 108
+      },
+      "revId": "1787052d7fe153587ad9b3d4bf22439335dbd8a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
