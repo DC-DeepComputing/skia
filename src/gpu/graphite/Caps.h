@@ -202,6 +202,8 @@ public:
         return {};
     }
 
+    virtual std::string toString(const ImmutableSamplerInfo&) const = 0;
+
     /**
      * Backends may have restrictions on what types of textures support Device::writePixels().
      * If this returns false then the caller should implement a fallback where a temporary texture
