@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d4cd271_a293917d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-10-29T16:58:18Z",
+      "side": 1,
+      "message": "We have no more (planned) refactorings, so this version (#27) is reviewable now.",
+      "revId": "b1e8782d502eaba8275c9c02ed7967e8747d0c2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
