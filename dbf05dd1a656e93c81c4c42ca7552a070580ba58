@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1130ddb4_992e1f01",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:58:13Z",
+      "side": 1,
+      "message": "Done.  Do you want to take another look (unresolving if this is the case)?",
+      "parentUuid": "01cac79f_2447ca00",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b90434f_c6b62053",
         "filename": "src/svg/SkSVGDevice.h",
         "patchSetId": 8
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06306813_912ea1b7",
+        "filename": "src/svg/SkSVGDevice.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b90434f_c6b62053",
+      "range": {
+        "startLine": 84,
+        "startChar": 42,
+        "endLine": 84,
+        "endChar": 45
+      },
       "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
