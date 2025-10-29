@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "081e12f7_e3322d42",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-29T19:59:15Z",
+      "side": 1,
+      "message": "Thanks, lgtm++.",
+      "parentUuid": "1130ddb4_992e1f01",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "dbf05dd1a656e93c81c4c42ca7552a070580ba58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b90434f_c6b62053",
