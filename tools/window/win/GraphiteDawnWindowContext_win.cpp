@@ -13,37 +13,52 @@ using skwindow::internal::GraphiteDawnWindowContext;
 
 namespace {
 
-class GraphiteDawnD3D12WindowContext_win : public GraphiteDawnWindowContext {
-public:
-    GraphiteDawnD3D12WindowContext_win(HWND hwnd, std::unique_ptr<const DisplayParams> params);
+wgpu::BackendType ToDawnBackendType(sk_app::Window::BackendType backendType) {
+    switch (backendType) {
+        case sk_app::Window::kGraphiteDawnD3D11_BackendType:
+            return wgpu::BackendType::D3D11;
+        case sk_app::Window::kGraphiteDawnD3D12_BackendType:
+            return wgpu::BackendType::D3D12;
+        default:
+            SkASSERT(false);
+            return wgpu::BackendType::D3D12;
+    }
+}
 
-    ~GraphiteDawnD3D12WindowContext_win() override;
+class GraphiteDawnWindowContext_win : public GraphiteDawnWindowContext {
+public:
+    GraphiteDawnWindowContext_win(HWND hwnd, std::unique_ptr<const DisplayParams> params,
+                                  sk_app::Window::BackendType backendType);
+
+    ~GraphiteDawnWindowContext_win() override;
 
     bool onInitializeContext() override;
     void onDestroyContext() override;
     void resize(int w, int h) override;
 
 private:
-    HWND fWindow;
+    HWND              fWindow;
+    wgpu::BackendType fBackendType;
 };
 
-GraphiteDawnD3D12WindowContext_win::GraphiteDawnD3D12WindowContext_win(
-        HWND hwnd, std::unique_ptr<const DisplayParams> params)
+GraphiteDawnWindowContext_win::GraphiteDawnWindowContext_win(
+        HWND hwnd, std::unique_ptr<const DisplayParams> params, sk_app::Window::BackendType backendType)
         : GraphiteDawnWindowContext(std::move(params), wgpu::TextureFormat::BGRA8Unorm)
-        , fWindow(hwnd) {
+        , fWindow(hwnd)
+        , fBackendType(ToDawnBackendType(backendType)) {
     RECT rect;
     GetClientRect(hwnd, &rect);
     this->initializeContext(rect.right - rect.left, rect.bottom - rect.top);
 }
 
-GraphiteDawnD3D12WindowContext_win::~GraphiteDawnD3D12WindowContext_win() {
+GraphiteDawnWindowContext_win::~GraphiteDawnWindowContext_win() {
     this->destroyContext();
 }
 
-bool GraphiteDawnD3D12WindowContext_win::onInitializeContext() {
+bool GraphiteDawnWindowContext_win::onInitializeContext() {
     SkASSERT(!!fWindow);
 
-    auto device = this->createDevice(wgpu::BackendType::D3D12);
+    auto device = this->createDevice(fBackendType);
     if (!device) {
         SkASSERT(device);
         return false;
@@ -68,9 +83,9 @@ bool GraphiteDawnD3D12WindowContext_win::onInitializeContext() {
     return true;
 }
 
-void GraphiteDawnD3D12WindowContext_win::onDestroyContext() {}
+void GraphiteDawnWindowContext_win::onDestroyContext() {}
 
-void GraphiteDawnD3D12WindowContext_win::resize(int w, int h) {
+void GraphiteDawnWindowContext_win::resize(int w, int h) {
     configureSurface();
 }
 
@@ -78,10 +93,10 @@ void GraphiteDawnD3D12WindowContext_win::resize(int w, int h) {
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGraphiteDawnD3D12ForWin(
-        HWND hwnd, std::unique_ptr<const DisplayParams> params) {
+std::unique_ptr<WindowContext> MakeGraphiteDawnForWin(
+        HWND hwnd, std::unique_ptr<const DisplayParams> params, sk_app::Window::BackendType backendType) {
     std::unique_ptr<WindowContext> ctx(
-            new GraphiteDawnD3D12WindowContext_win(hwnd, std::move(params)));
+            new GraphiteDawnWindowContext_win(hwnd, std::move(params), backendType));
     if (!ctx->isValid()) {
         return nullptr;
     }
