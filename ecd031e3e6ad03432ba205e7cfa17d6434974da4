@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "311b54b5_9679ab7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-29T15:16:44Z",
+      "side": 1,
+      "message": "Adding suggested owners as reviewers. CCing Michael if he has drive-by thoughts. \n\nHim and I talked offline about how it should be fine for ganesh to not support this CT as a Surface (similar to how we disallow it for `kR16G16_unorm_SkColorType`, `kA16_unorm_SkColorType`, etc.). However, this CL does allow that CT to be used on render targets in graphite since it isn\u0027t as invasive to add support for. \n\nIn Ganesh, we have to worry about GL supporting that CT as a render target (`r16FRenderTargetSupport`). In graphite, Dawn guards usage of that CT behind `__EMSCRIPTEN__` `#ifdefs`.",
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
