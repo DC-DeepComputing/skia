@@ -68,6 +68,24 @@
       "parentUuid": "d1ad4c3e_5516567b",
       "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742a52db_a25b1fbe",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-29T13:17:17Z",
+      "side": 1,
+      "message": "good catch. My guess is this is meant to be d3d12.",
+      "parentUuid": "d1ad4c3e_5516567b",
+      "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
