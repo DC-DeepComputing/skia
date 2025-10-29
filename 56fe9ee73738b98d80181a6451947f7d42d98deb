@@ -18,6 +18,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3433809_24f34ddb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "e49c3cc1_4c5dc8be",
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "413f5168_edd5699f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?",
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1de78ae5_c818e574",
@@ -31,6 +66,30 @@
       "writtenOn": "2025-10-29T18:47:14Z",
       "side": 1,
       "message": "XPS? Think a bunch of these should be `SK_DISABLE_LEGACY_SVG_FACTORIES`?",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 44
+      },
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3aaa981_89f580af",
+        "filename": "src/svg/SkSVGCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "Ooops.  Done.",
+      "parentUuid": "1de78ae5_c818e574",
       "range": {
         "startLine": 19,
         "startChar": 13,
@@ -58,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25f7d3e3_5a30f85b",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "Done.  Was just copying from the old location of this comment.",
+      "parentUuid": "3a54cbfe_ad4c19f0",
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b58c3c69_fcb79827",
@@ -75,6 +152,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa9c2828_0c43e737",
+        "filename": "src/svg/SkSVGDevice.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b58c3c69_fcb79827",
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3fb7f82_671c08a7",
@@ -88,6 +183,24 @@
       "writtenOn": "2025-10-29T18:47:14Z",
       "side": 1,
       "message": "nit: Skia style is to put system includes after local includes. So just leave this where it was.",
+      "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10bc084f_20b8245d",
+        "filename": "tests/SVGDeviceTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-29T19:05:16Z",
+      "side": 1,
+      "message": "Oh.  TIL.  Done.",
+      "parentUuid": "a3fb7f82_671c08a7",
       "revId": "56fe9ee73738b98d80181a6451947f7d42d98deb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
