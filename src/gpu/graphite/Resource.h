@@ -145,6 +145,55 @@ class Texture;
  *        - Since there are no other usage refs (beyond what the cache might re-add), no other
  *          thread can re-add a command buffer ref.
  *
+ *
+ * Resource Threadsafe Labeling Model
+ * ========================
+ *
+ * Resource labels, if enabled, are updated in two steps to ensure thread safety:
+ * 1. Setting the label on the Resource object. This can happen on any thread at nearly any time.
+ * 2. Syncing the updated label to the backend resource. This should only occur at certain points
+ *    within the Resource's lifecycle depending upon its shareability.
+ *
+ * Label update policy per resource shareability:
+ *   - Shareable resources can be returned from the cache at any time. Therefore, the resource
+ *     provider should only update shareable resource labels upon initial insertion into the cache
+ *     and should not be altered. It is safe to set the backend resource label at creation time
+ *     since it is not yet visible in the cache.
+ *        - Callers of `ResourceProvider::findOrCreate...` methods pass in a label - the
+ *          ResourceProvider is in charge of ensuring that any shareable resource returned from the
+ *          cache has a label that matches.
+ *
+ * TODO(b/387505250): Implement and enforce backend resource label update policies for non-shareable
+ * and scratch resources:
+ *   - Non-shareable resources are never returned from the ResourceCache for simultaneous usage.
+ *     Therefore, once set, non-shareable backend resources' labels should stay the same until that
+ *     resource becomes reusable again.
+ *         - Non-shareable backend resource labels can be reassigned whenever a resource is fetched
+ *           from or first added to the cache.
+ *         - This is because, in the case of a cache hit, `findAndRefResource` returns a non-null
+ *           object. The calling thread is then the sole holder of the object’s newly-added usage
+ *           ref and its backend resource label can be updated.
+ *         - If there is no cache hit, `findAndRefResource` returns a null object, and a new object
+ *           is created. In that case, its label can safely be assigned prior to cache insertion (at
+ *           which point the object becomes visible to other threads’ cache queries).
+ *   - Scratch resources are the most complicated because their labels can change both across
+ *     Recorder threads and within the same Recorder thread as it is reused for different purposes.
+ *         - Within a recording, a scratch resource's label is the union of all TextureProxy labels
+ *           instantiated with the same resource.
+ *         - Scratch resources are only ever used for Graphite-internal rendering purposes, and
+ *           associated TextureProxy labels are all constant strings. We can therefore improve
+ *           efficiency by having ScratchResourceManager represent scratch labels as a bitmask of
+ *           possible usages.
+ *             - The resource's scratch mask can then be compared to its prior usages. We can avoid
+ *               generating a union of strings to set the resource label if the label does not need
+ *               to change (i.e., the usage is the same).
+ *         - Across recoder threads, we don’t want to intermingle proxy labels on the resource’s
+ *           final label.
+ *             - ScratchResourceManager will maintain a label map for all the scratch resources it
+ *               creates.
+ *             - This map will only be modified on the recorder thread and will become immutable
+ *               after snap(). The map is then transferred to be stored on the recording. This lets
+ *               insertRecording() to update the backend resource labels on the context thread.
  */
 class Resource {
     enum class RefType {
