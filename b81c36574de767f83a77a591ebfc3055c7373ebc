@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2725b6de_3a349c58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-10-29T13:11:22Z",
+      "side": 1,
+      "message": "Naive post-submit drive-by.  My intention is to be helpful, hopefully not bothersome.  Thanks!",
+      "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb08257_65e55ede",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-10-29T13:11:22Z",
+      "side": 1,
+      "message": "It looks like this check...",
+      "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1ad4c3e_5516567b",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-10-29T13:11:22Z",
+      "side": 1,
+      "message": "...is identical to this one.  So this is always `false`.  I don\u0027t know if we intended a different check here, or should just remove this to avoid potential confusion in the future.",
+      "revId": "b81c36574de767f83a77a591ebfc3055c7373ebc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
