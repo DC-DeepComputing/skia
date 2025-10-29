@@ -124,15 +124,30 @@ bool TextureProxy::InstantiateIfNotLazy(ResourceProvider* resourceProvider,
     return textureProxy->instantiate(resourceProvider);
 }
 
+namespace {
+ScratchTextureUsageFlags str_to_usage_flag(std::string_view str) {
+    ScratchTextureUsageFlags usageFlags;
+    if (str.find("_AsyncReadPixelsFallback") != 0) {
+        return ScratchTextureUsageFlags::kAsyncReadPixelsFallbackTexture;
+        //usageFlags |= ScratchTextureUsageFlags::kAsyncReadPixelsFallbackTexture;
+    }
+    // TODO: Add other usages.
+    return usageFlags;
+}
+} // anonymous
+
 bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
                                         TextureProxy* textureProxy) {
     if (textureProxy->isLazy() || textureProxy->isInstantiated()) {
         return true;
     }
 
-    textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
-                                                               textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+    // Is a proxy only ever requested for one purpose, and the actual texture itself is what gets
+    // all the usage flags as a bitmask?
+    textureProxy->fTexture =
+            scratchManager->getScratchTexture(textureProxy->dimensions(),
+                                              textureProxy->textureInfo(),
+                                              str_to_usage_flag(textureProxy->fLabel));
     if (!textureProxy->fTexture) {
         return false;
     }
@@ -215,6 +230,17 @@ sk_sp<TextureProxy> TextureProxy::MakeFullyLazy(const TextureInfo& textureInfo,
                                                 std::move(callback)));
 }
 
+// TextureProxy reads the resource’s label inside TextureProxy::Wrap in order to keep it in sync.
+//
+// This factory is only used for creating a TextureProxy that is already instantiated. Every call
+// site already has the client-provided label for the Texture, so Wrap should be updated to take in
+// the label as well.
+//
+// Other factories for TextureProxy represent un-instantiated proxies, so they are the source of
+// truth for the label that is eventually passed into the ResourceProvider when instantiating it.
+//
+// TextureProxy can have a variant label to either be a client-provided string or a mask to
+// generate a label inside InsertRecording.
 sk_sp<TextureProxy> TextureProxy::Wrap(sk_sp<Texture> texture) {
     return sk_sp<TextureProxy>(new TextureProxy(std::move(texture)));
 }

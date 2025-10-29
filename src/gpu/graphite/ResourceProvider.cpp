@@ -109,14 +109,63 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
                                      Shareable::kNo);
 }
 
+namespace {
+std::string usage_to_str(ScratchTextureUsageFlags usage) {
+    std::string allUsagesLabel {"Texture"};
+    if (usage & ScratchTextureUsageFlags::kAsyncReadPixelsFallbackTexture) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (usage & ScratchTextureUsageFlags::kCopyDeviceTexture) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (usage & ScratchTextureUsageFlags::kDiscardableLoadMSAATexture) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (usage & ScratchTextureUsageFlags::kDispatchWriteOnlyStorageTexture) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (usage & ScratchTextureUsageFlags::kDstCopy) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (usage & ScratchTextureUsageFlags::kEvalBlurTexture) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (usage & ScratchTextureUsageFlags::kImageFilterCachedBitmap) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (usage & ScratchTextureUsageFlags::kImageFilterResult) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (usage & ScratchTextureUsageFlags::kImageMakeCTandCSTexture) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (usage & ScratchTextureUsageFlags::kImageSubsetTexture) {
+        allUsagesLabel += "_Subset";
+    }
+    if (usage & ScratchTextureUsageFlags::kRescaleDstTexture) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (usage & ScratchTextureUsageFlags::kRescaleImageTempTexture) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (usage & ScratchTextureUsageFlags::kRescaleLinearGammaTexture) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    // In debug, assert that we added label strings from at least one usage.
+    SkASSERT(allUsagesLabel != "Texture");
+
+    return allUsagesLabel;
+}
+} // anonymous
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
-        std::string_view label,
+        ScratchTextureUsageFlags usage,
         const ResourceCache::ScratchResourceSet& unavailable) {
     return this->findOrCreateTexture(dimensions,
                                      info,
-                                     std::move(label),
+                                     usage_to_str(usage),
                                      Budgeted::kYes,
                                      Shareable::kScratch,
                                      &unavailable);

@@ -10,6 +10,7 @@
 
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkLRUCache.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -47,6 +48,7 @@ class Sampler;
 class SharedContext;
 class Texture;
 class TextureInfo;
+enum class ScratchTextureUsageFlags : uint32_t;
 
 class ResourceProvider {
 public:
@@ -72,7 +74,7 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
-                                              std::string_view label,
+                                              ScratchTextureUsageFlags,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
@@ -81,6 +83,8 @@ public:
                                                  BufferType type,
                                                  AccessPattern,
                                                  std::string_view label);
+    // TODO: Modify the following method to use a buffer scratch usage flags like
+    // `findOrCreateScratchTexture` uses scratch texture usage flags.
     sk_sp<Buffer> findOrCreateScratchBuffer(size_t size,
                                             BufferType type,
                                             AccessPattern,
@@ -173,6 +177,7 @@ private:
     virtual void onFreeGpuResources() {}
     virtual void onPurgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {}
 };
+
 
 } // namespace skgpu::graphite
 
