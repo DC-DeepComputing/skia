@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f5417d_8ef54c61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-29T17:01:55Z",
+      "side": 1,
+      "message": "Michael, making sure I have you review this initial CL which adds a comment doc outline of the backend resource labeling model. Throwing Thomas on as another reviewer so he could perhaps handle some of the later CLs.",
+      "revId": "a76ea5c6ff81d916937ca88b8efe3bc065cc3a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
