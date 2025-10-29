@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93a6765b_1c3bede2",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-29T17:45:02Z",
+      "side": 1,
+      "message": "That\u0027s what I expected, but can we ahve this comment reflect something along those lines? like \"the SkData contains all the information Graphite requires to create the Pipeline at a later date, but it is versioned so recreation can fail if it\u0027s incompatible with a newer version of Skia\"?",
+      "parentUuid": "a0560f10_d2e5eab2",
+      "range": {
+        "startLine": 188,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 49
+      },
+      "revId": "199a69ea790380c0b4dd14fbd8359c532ed07a61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd1137ed_79cb5563",
         "filename": "include/gpu/graphite/ContextOptions.h",
         "patchSetId": 11
