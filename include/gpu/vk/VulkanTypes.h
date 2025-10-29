@@ -204,6 +204,10 @@ private:
             , fSamplerFilterMustMatchChromaFilter(mustMatchChromaFilter)
             , fSupportsLinearFilter(supportsLinearFilter) {}
 
+// TODO: Temporarily make these fields public until we can move clients to using ctor
+public:
+    std::string toString() const;
+
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
     // a valid image format otherwise.
     VkFormat fFormat = VK_FORMAT_UNDEFINED;
