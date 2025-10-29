@@ -16,6 +16,29 @@
       "message": "Chromium canary failure seems unrelated",
       "revId": "6a862bc0bb3c9d304e3aad0c0eba635cc860c51b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13d6dd0f_5ed461d8",
+        "filename": "include/ports/SkTypeface_fontations.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-10-29T14:46:13Z",
+      "side": 1,
+      "message": "While `sk_sp\u003cconst Foo\u003e` or any `const Foo` where `Foo : public SkRefCnt` is fine but should always be redundant, which is why we often don\u0027t. That is to say, if a class has an intrusive thread safe reference count it should already by externally const to be thread safe. So, yeah, `const` here is correct, it\u0027s just annoying that the default is mutable so `const` is all noisy and in one\u0027s face.\n\nThat being said, `SkData` does have non-const methods for construction purposes, so this might be fine.\n\nIf this is a crusade to make as many `sk_sp\u003cFoo\u003e` into `sk_sp\u003cconst Foo\u003e` as possible, that\u0027s fine, just wanted to note that this wasn\u0027t already the case due to the visual noise of the extra `const` (which should be implicit) when the classes should always be logically const anyway after construction / initialization (before the first additional reference escapes).",
+      "range": {
+        "startLine": 21,
+        "startChar": 52,
+        "endLine": 21,
+        "endChar": 71
+      },
+      "revId": "6a862bc0bb3c9d304e3aad0c0eba635cc860c51b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
