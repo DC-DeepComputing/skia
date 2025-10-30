@@ -22,6 +22,30 @@
       },
       "revId": "b85c7ae190928b09723b63ba2fedd5416513d51f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d20610e_f59bf200",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-10-30T14:58:17Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "dc7c4320_2c8602bd",
+      "range": {
+        "startLine": 568,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 34
+      },
+      "revId": "b85c7ae190928b09723b63ba2fedd5416513d51f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
