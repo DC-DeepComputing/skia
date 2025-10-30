@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b41087b5_819fff1f",
+        "filename": "gn/rust_shared_cpp_sources.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-10-30T18:10:15Z",
+      "side": 1,
+      "message": "I agree that for simplicity we can get rid of the new gni. I generated the gni file manually, that\u0027s why exporter_tool was not updated. I missed that these files should be generated from the tool, thanks for pointing to it.",
+      "parentUuid": "5499da90_aa1fd22a",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "d8998660e2928c4d32d2d0a3bc89fb1a40d15c28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50607599_7a10a579",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-30T14:58:33Z",
       "side": 1,
       "message": "nit: Can this go in rust/common/ ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 12
+      },
+      "revId": "d8998660e2928c4d32d2d0a3bc89fb1a40d15c28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25feac32_feffc92a",
+        "filename": "rust/SpanUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-10-30T18:10:15Z",
+      "side": 1,
+      "message": "Moved file to rust/common",
+      "parentUuid": "50607599_7a10a579",
       "range": {
         "startLine": 2,
         "startChar": 3,
