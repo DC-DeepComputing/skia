@@ -1064,6 +1064,9 @@
     "name": "Perf-ChromeOS-Clang-Cherry-GPU-MaliG57-arm64-Release-All"
   },
   {
+    "name": "Perf-ChromeOS-Clang-Corsola-GPU-MaliG52-arm64-Release-All"
+  },
+  {
     "name": "Perf-ChromeOS-Clang-Guybrush-GPU-RadeonVega3-x86_64-Release-All"
   },
   {
@@ -1549,6 +1552,12 @@
   },
   {
     "name": "Test-ChromeOS-Clang-Cherry-GPU-MaliG57-arm64-Release-All"
+  },
+  {
+    "name": "Test-ChromeOS-Clang-Corsola-GPU-MaliG52-arm64-Debug-All"
+  },
+  {
+    "name": "Test-ChromeOS-Clang-Corsola-GPU-MaliG52-arm64-Release-All"
   },
   {
     "name": "Test-ChromeOS-Clang-Guybrush-GPU-RadeonVega3-x86_64-Debug-All"
