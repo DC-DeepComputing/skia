@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 #if defined(__EMSCRIPTEN__)
@@ -1161,6 +1162,52 @@ ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureInfo& textur
 
     // If the YCbCr conversion for is invalid, then return a default ImmutableSamplerInfo struct.
     return {};
+}
+
+#if !defined(__EMSCRIPTEN__)
+static constexpr const char* filter_mode_to_str(wgpu::FilterMode mode) {
+    switch (mode) {
+        case wgpu::FilterMode::Undefined: return "undefined";
+        case wgpu::FilterMode::Nearest:   return "nearest";
+        case wgpu::FilterMode::Linear:    return "linear";
+    }
+    SkUNREACHABLE;
+}
+#endif
+
+std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+#if defined(__EMSCRIPTEN__)
+    return "";
+#else
+    wgpu::YCbCrVkDescriptor info =
+                DawnDescriptorFromImmutableSamplerInfo(immutableSamplerInfo);
+    if (!DawnDescriptorIsValid(info)) {
+        return "";
+    }
+
+    std::string result;
+
+    if (info.vkFormat == 0) {
+        result += 'x';
+        result += info.externalFormat;
+    } else {
+        result += info.vkFormat;
+    }
+
+    result += " ";
+    result += VkModelToStr(static_cast<VkSamplerYcbcrModelConversion>(info.vkYCbCrModel));
+    result += "+";
+    result += VkRangeToStr(static_cast<VkSamplerYcbcrRange>(info.vkYCbCrRange));
+    result += info.vkXChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
+    result += info.vkYChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
+    result += filter_mode_to_str(info.vkChromaFilter);
+    result += info.forceExplicitReconstruction ? " T " : " F ";
+    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleRed),   'r');
+    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleGreen), 'g');
+    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleBlue),  'b');
+    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleAlpha), 'a');
+    return result;
+#endif
 }
 
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
