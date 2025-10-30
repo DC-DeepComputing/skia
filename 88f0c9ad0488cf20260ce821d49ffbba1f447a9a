@@ -211,6 +211,30 @@
       },
       "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c5b11bd_5566cb7b",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:49:12Z",
+      "side": 1,
+      "message": "(and `ResourceCache::insertResource(...)`)",
+      "parentUuid": "68389509_14fe355a",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 43
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
