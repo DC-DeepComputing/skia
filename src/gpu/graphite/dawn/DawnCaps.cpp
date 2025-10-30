@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 #if defined(__EMSCRIPTEN__)
@@ -1161,6 +1162,52 @@ ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureInfo& textur
 
     // If the YCbCr conversion for is invalid, then return a default ImmutableSamplerInfo struct.
     return {};
+}
+
+#if !defined(__EMSCRIPTEN__)
+static constexpr const char* filter_mode_to_str(wgpu::FilterMode mode) {
+    switch (mode) {
+        case wgpu::FilterMode::kUndefined: return "undefined";
+        case wgpu::FilterMode::kNearest:   return "nearest";
+        case wgpu::FilterMode::kLinear:    return "linear";
+    }
+    SkUNREACHABLE;
+}
+#endif
+
+std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+#if defined(__EMSCRIPTEN__)
+    return "";
+#else
+    wgpu::YCbCrVkDescriptor info =
+                DawnDescriptorFromImmutableSamplerInfo(immutableSamplerInfo);
+//    if (!info.isValid()) {
+//        return "";
+//    }
+
+    SkString result;
+
+    if (info.fFormat == 0) {
+        result += 'x';
+        result += info.fExternalFormat;
+    } else {
+        result += info.fFormat;
+    }
+
+    result += " ";
+    result += VkModelToStr(info.fYcbcrModel);
+    result += "+";
+    result += VkRangeToStr(info.fYcbcrRange);
+    result += info.fXChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
+    result += info.fYChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
+    result += filter_mode_to_str(info.fChromaFilter);
+    result += info.fForceExplicitReconstruction ? " T " : " F ";
+    result += VkSwizzleToStr(info.fComponents.r, 'r');
+    result += VkSwizzleToStr(info.fComponents.g, 'g');
+    result += VkSwizzleToStr(info.fComponents.b, 'b');
+    result += VkSwizzleToStr(info.fComponents.a, 'a');
+    return result;
+#endif
 }
 
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
