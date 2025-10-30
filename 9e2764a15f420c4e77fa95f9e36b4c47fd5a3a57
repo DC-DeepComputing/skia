@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceeaf12d_c68a1d0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4426294
+      },
+      "writtenOn": "2025-10-30T18:23:42Z",
+      "side": 1,
+      "message": "Hi Michael,\n\nJust a quick follow up CL to my previous one. After merging to Chrome we found we are experiencing crashes on newer versions of the Android emulator as well when upgrading to GLES 3. This CL here applies the fix to all versions of the emulator.\n\nMy tech lead Vasiliy Telezhnikov mentioned we could eventually revisit this once the emulator switches to using Lavapipe, but for the moment this is the workaround.\n\nPlease let me know if you have any questions. Thanks!",
+      "revId": "9e2764a15f420c4e77fa95f9e36b4c47fd5a3a57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
