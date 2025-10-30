@@ -2252,9 +2252,6 @@ static constexpr const char* vk_chromafilter_to_str(VkFilter f) {
 std::string VulkanCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
     skgpu::VulkanYcbcrConversionInfo info =
             VulkanYcbcrConversion::FromImmutableSamplerInfo(immutableSamplerInfo);
-    if (!info.isValid()) {
-        return "";
-    }
 
     std::string result;
 
