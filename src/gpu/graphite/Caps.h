@@ -189,7 +189,7 @@ public:
      */
     size_t requiredTransferBufferAlignment() const { return fRequiredTransferBufferAlignment; }
 
-    /* Returns the aligned rowBytes when transfering to or from a Texture */
+    /* Returns the aligned rowBytes when transferring to or from a Texture */
     size_t getAlignedTextureDataRowBytes(size_t rowBytes) const {
         return SkAlignTo(rowBytes, fTextureDataRowBytesAlignment);
     }
@@ -201,6 +201,9 @@ public:
     virtual ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const {
         return {};
     }
+
+    /* Returns a compressed label describing the immutable sampler for the Pipline label */
+    virtual std::string toString(const ImmutableSamplerInfo&) const { return ""; }
 
     /**
      * Backends may have restrictions on what types of textures support Device::writePixels().
