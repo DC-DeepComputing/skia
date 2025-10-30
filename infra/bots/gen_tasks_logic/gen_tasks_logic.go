@@ -1344,8 +1344,11 @@ func (b *jobBuilder) compile() string {
 					b.asset("provisioning_profile_ios")
 				}
 				if b.shellsOutToBazel() {
-					// All of our current Mac compile machines are x64 Mac only.
-					b.usesBazel("mac_x64")
+					if b.MatchOs("AppleIntel") {
+						b.usesBazel("mac_x64")
+					} else {
+						b.usesBazel("mac_arm64")
+					}
 					b.attempts(1)
 				}
 			}
