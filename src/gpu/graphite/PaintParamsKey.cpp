@@ -233,7 +233,27 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     return SkSpan(rootSpan, roots.size());
 }
 
-static int key_to_string(SkString* str,
+static void append_as_base64(SkString* str, SkSpan<const uint32_t> data) {
+    if (data.empty()) {
+        // We shorten the string for the common case of no extra data.
+        str->append("(0)");
+        return;
+    }
+
+    str->append("(");
+    str->appendU32(data.size());
+    str->append(": ");
+    // Encode data in base64 to shorten it
+    const size_t srcDataSize = data.size() * sizeof(uint32_t); // size in bytes
+    SkAutoMalloc encodedData{SkBase64::EncodedSize(srcDataSize)};
+    char* dst = static_cast<char*>(encodedData.get());
+    size_t encodedLen = SkBase64::Encode(data.data(), srcDataSize, dst);
+    str->append(dst, encodedLen);
+    str->append(")");
+}
+
+static int key_to_string(const Caps* caps,
+                         SkString* str,
                          const ShaderCodeDictionary* dict,
                          SkSpan<const uint32_t> keyData,
                          int currentIndex,
@@ -269,21 +289,26 @@ static int key_to_string(SkString* str,
         const int dataIndexCount = keyData[currentIndex++];
         SkASSERT(currentIndex + dataIndexCount < SkTo<int>(keyData.size()));
 
-        // We shorten the string for the common case of no extra data.
-        if (dataIndexCount == 0) {
-            str->append("(0)");
-        } else {
-            str->append("(");
-            str->appendU32(dataIndexCount);
-            str->append(": ");
-            // Encode data in base64 to shorten it
-            const size_t srcDataSize = dataIndexCount * sizeof(uint32_t); // size in bytes
-            SkAutoMalloc encodedData{SkBase64::EncodedSize(srcDataSize)};
-            char* dst = static_cast<char*>(encodedData.get());
-            size_t encodedLen = SkBase64::Encode(&keyData[currentIndex], srcDataSize, dst);
-            str->append(dst, encodedLen);
-            str->append(")");
+        bool descriptiveFormAppended = false;
+        if (dataIndexCount == 3) {
+            // Attempt to append the sampler data as human-readable YCbCr information
+            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
+
+            if (s.isImmutable()) {
+                std::string tmp = caps->toString(s.immutableSamplerInfo());
+                if (!tmp.empty()) {
+                    descriptiveFormAppended = true;
+                    str->append("(");
+                    str->append(tmp);
+                    str->append(")");
+                }
+            }
         }
+
+        if (!descriptiveFormAppended) {
+            append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
+        }
+
         // Increment current index past the indices which contain data
         currentIndex += dataIndexCount;
     }
@@ -297,7 +322,7 @@ static int key_to_string(SkString* str,
         }
 
         for (int i = 0; i < entry->fNumChildren; ++i) {
-            currentIndex = key_to_string(str, dict, keyData, currentIndex, indent);
+            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent);
         }
 
         if (!multiline) {
@@ -313,18 +338,21 @@ static int key_to_string(SkString* str,
     return currentIndex;
 }
 
-SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
+SkString PaintParamsKey::toString(const Caps* caps,
+                                  const ShaderCodeDictionary* dict) const {
     SkString str;
     const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
-        currentIndex = key_to_string(&str, dict, fData, currentIndex, /*indent=*/-1);
+        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1);
     }
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
 #ifdef SK_DEBUG
 
-void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID id) const {
+void PaintParamsKey::dump(const Caps* caps,
+                          const ShaderCodeDictionary* dict,
+                          UniquePaintParamsID id) const {
     const int keySize = SkTo<int>(fData.size());
 
     SkDebugf("--------------------------------------\n");
@@ -338,7 +366,7 @@ void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID 
     int currentIndex = 0;
     while (currentIndex < keySize) {
         SkString nodeStr;
-        currentIndex = key_to_string(&nodeStr, dict, fData, currentIndex, /*indent=*/1);
+        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1);
         SkDebugf("%s", nodeStr.c_str());
     }
 }
