@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ff82da_77f4d81d",
+        "filename": "third_party/dawn/build_dawn.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-10-30T14:28:40Z",
+      "side": 0,
+      "message": "Is this intentional?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 29
+      },
+      "revId": "83789d3741942181b2340158b0de80f6134233af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
