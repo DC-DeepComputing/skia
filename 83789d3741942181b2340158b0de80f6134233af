@@ -22,6 +22,30 @@
       },
       "revId": "83789d3741942181b2340158b0de80f6134233af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96db627_96189b5b",
+        "filename": "third_party/dawn/build_dawn.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-30T14:30:39Z",
+      "side": 0,
+      "message": "Yes. This was a speculative fix for Python problems, which I\u0027m doubting is doing anything.",
+      "parentUuid": "53ff82da_77f4d81d",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 29
+      },
+      "revId": "83789d3741942181b2340158b0de80f6134233af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
