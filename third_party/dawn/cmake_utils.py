@@ -75,7 +75,8 @@ def discover_dependencies(build_dir, targets):
     current_batch = list(worklist)[:BATCH_SIZE]
     worklist = worklist.difference(current_batch)
 
-    cmd = ["ninja", "-C", build_dir, "-tinputs"] + current_batch
+    ninja = shutil.which("ninja")
+    cmd = [ninja, "-C", build_dir, "-tinputs"] + current_batch
     inputs = subprocess.check_output(cmd).decode("utf-8").splitlines()
     # inputs looks like:
     #   /home/user/skia/third_party/externals/dawn/src/tint/utils/text/styled_text_theme.cc
@@ -110,7 +111,8 @@ def discover_dependencies(build_dir, targets):
 
   for i in range(0, len(all_targets), BATCH_SIZE):
     chunk = all_targets[i:i + BATCH_SIZE]
-    cmd = ["ninja", "-C", build_dir, "-tdeps"] + chunk
+    ninja = shutil.which("ninja")
+    cmd = [ninja, "-C", build_dir, "-tdeps"] + chunk
     output = subprocess.check_output(cmd).decode("utf-8").splitlines()
 
     # When a target has deps, which are read from the .d files generated from the "-dkeepdepfile
