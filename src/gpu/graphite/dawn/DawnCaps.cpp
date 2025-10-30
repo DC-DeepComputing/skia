@@ -1181,9 +1181,6 @@ std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo)
 #else
     wgpu::YCbCrVkDescriptor info =
                 DawnDescriptorFromImmutableSamplerInfo(immutableSamplerInfo);
-//    if (!info.isValid()) {
-//        return "";
-//    }
 
     SkString result;
 
