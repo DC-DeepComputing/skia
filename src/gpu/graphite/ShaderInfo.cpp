@@ -796,7 +796,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
 
     // The fragment shader must be generated before the vertex shader, because we determine
     // properties of the entire program while generating the fragment shader.
-    SkString paintLabel = dict->idToString(paintID); // will be "(empty)" if paintID is invalid
+    SkString paintLabel = dict->idToString(caps, paintID); // will be "(empty)" if paintID is invalid
     if (hasFragShader) {
         result->generateFragmentSkSL(caps,
                                      dict,
@@ -878,6 +878,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                       SkSpan<const ShaderNode*>* rootNodes) {
     PaintParamsKey key = dict->lookup(paintID);
     SkASSERT(key.isValid());  // invalid keys should have been caught by invalid paint ID earlier
+
+//    std::string label = key.toString(caps, dict).c_str();
 
     // Two varyings are reserved for 1) the SSBO indices and 2) local coordinates.
     constexpr int kFixedVaryings = 2;

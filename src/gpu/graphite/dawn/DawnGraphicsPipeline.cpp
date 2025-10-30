@@ -402,6 +402,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         return {};
     }
 
+    std::string pipelineLabel = GetPipelineLabel(sharedContext->caps(),
+                                                 sharedContext->shaderCodeDictionary(),
+                                                 renderPassDesc, step, paintID);
+
     wgpu::RenderPipelineDescriptor descriptor;
     // Always set the label for pipelines, dawn may need it for tracing.
     descriptor.label = shaderInfo->pipelineLabel().c_str();

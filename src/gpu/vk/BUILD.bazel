@@ -13,6 +13,7 @@ VK_FILES = [
     "VulkanMemory.cpp",
     "VulkanMemory.h",
     "VulkanPreferredFeatures.cpp",
+    "VulkanTypes.cpp",
     "VulkanUtilsPriv.cpp",
     "VulkanUtilsPriv.h",
     "VulkanMutableTextureStatePriv.h",
