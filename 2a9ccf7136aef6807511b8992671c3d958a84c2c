@@ -16,6 +16,24 @@
       "message": "@sergiog, can you please reformat the Bazel files?  The CQ complained about the following:\n\n```\ndiff --git a/src/codec/BUILD.bazel b/src/codec/BUILD.bazel\nindex 1128f80..c3bf3d5 100644\n--- a/src/codec/BUILD.bazel\n+++ b/src/codec/BUILD.bazel\n@@ -390,9 +390,9 @@ skia_cc_library(\n         \":png_codec_base\",\n         \"//:core\",\n         \"//modules/skcms\",\n+        \"//rust/common:span_utils\",\n         \"//rust/png:cxx_bridge\",\n         \"//rust/png:ffi_cpp\",\n-        \"//rust/common:span_utils\",\n         \"//src/base\",\n         \"//src/core:core_priv\",\n         \"@crates//:cxx_cc\",\ndiff --git a/src/encode/BUILD.bazel b/src/encode/BUILD.bazel\nindex b3dc005..136ccf1 100644\n--- a/src/encode/BUILD.bazel\n+++ b/src/encode/BUILD.bazel\n@@ -181,9 +181,9 @@ skia_cc_library(\n         \":encoder_common\",\n         \":png_encode_base\",\n         \"//:core\",\n+        \"//rust/common:span_utils\",\n         \"//rust/png:cxx_bridge\",\n         \"//rust/png:ffi_cpp\",\n-        \"//rust/common:span_utils\",\n         \"//src/base\",\n         \"//src/codec:any_decoder\",\n         \"//src/core:core_priv\",\n```",
       "revId": "2a9ccf7136aef6807511b8992671c3d958a84c2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d0580fe_09b2eb8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-10-30T22:38:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6d28ab3d_ddb0d14f",
+      "revId": "2a9ccf7136aef6807511b8992671c3d958a84c2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
