@@ -26,7 +26,6 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
-#include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 #if defined(__EMSCRIPTEN__)
@@ -1173,6 +1172,41 @@ static constexpr const char* filter_mode_to_str(wgpu::FilterMode mode) {
     }
     SkUNREACHABLE;
 }
+
+static constexpr const char* model_to_str(uint32_t c) {
+    switch (c) {
+        case 0 /* VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY */:   return "RGB-I";
+        case 1 /* VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY */: return "YCbCr-I";
+        case 2 /* VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709 */:      return "709";
+        case 3 /* VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601 */:      return "601";
+        case 4 /* VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020 */:     return "2020";
+        default:                                                       return "unknown";
+    }
+    SkUNREACHABLE;
+}
+
+static constexpr const char* range_to_str(uint32_t r) {
+    switch (r) {
+        case 0 /* VK_SAMPLER_YCBCR_RANGE_ITU_FULL */:   return "full";
+        case 1 /* VK_SAMPLER_YCBCR_RANGE_ITU_NARROW */: return "narrow";
+        default:                                return "unknown";
+    }
+    SkUNREACHABLE;
+}
+
+static constexpr char swizzle_to_str(uint32_t c, char identityAnswer) {
+    switch (c) {
+        case 0 /* VK_COMPONENT_SWIZZLE_IDENTITY */: return identityAnswer;
+        case 1 /* VK_COMPONENT_SWIZZLE_ZERO */:     return '0';
+        case 2 /* VK_COMPONENT_SWIZZLE_ONE */:      return '1';
+        case 3 /* VK_COMPONENT_SWIZZLE_R */:        return 'r';
+        case 4 /* VK_COMPONENT_SWIZZLE_G */:        return 'g';
+        case 5 /* VK_COMPONENT_SWIZZLE_B */:        return 'b';
+        case 6 /* VK_COMPONENT_SWIZZLE_A */:        return 'a';
+        default:                                    return '?';
+    }
+    SkUNREACHABLE;
+}
 #endif
 
 std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
@@ -1195,17 +1229,17 @@ std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo)
     }
 
     result += " ";
-    result += VkModelToStr(static_cast<VkSamplerYcbcrModelConversion>(info.vkYCbCrModel));
+    result += model_to_str(info.vkYCbCrModel);
     result += "+";
-    result += VkRangeToStr(static_cast<VkSamplerYcbcrRange>(info.vkYCbCrRange));
+    result += range_to_str(info.vkYCbCrRange);
     result += info.vkXChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
     result += info.vkYChromaOffset ? " mid "  : " cos "; // midpoint or cosited-even
     result += filter_mode_to_str(info.vkChromaFilter);
     result += info.forceExplicitReconstruction ? " T " : " F ";
-    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleRed),   'r');
-    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleGreen), 'g');
-    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleBlue),  'b');
-    result += VkSwizzleToStr(static_cast<VkComponentSwizzle>(info.vkComponentSwizzleAlpha), 'a');
+    result += swizzle_to_str(info.vkComponentSwizzleRed,   'r');
+    result += swizzle_to_str(info.vkComponentSwizzleGreen, 'g');
+    result += swizzle_to_str(info.vkComponentSwizzleBlue,  'b');
+    result += swizzle_to_str(info.vkComponentSwizzleAlpha, 'a');
     return result;
 #endif
 }
