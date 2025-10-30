@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15db8784_9b282b21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-30T15:18:58Z",
+      "side": 1,
+      "message": "Thanks for the CL!  LGTM after addressing my and @kjlubick\u0027s CR feedback.",
+      "revId": "d8998660e2928c4d32d2d0a3bc89fb1a40d15c28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5499da90_aa1fd22a",
+        "filename": "gn/rust_shared_cpp_sources.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-10-30T15:18:58Z",
+      "side": 1,
+      "message": "I can see arguments for keeping this new `.gni` file, or removing it.\n\nI see that `skia_encode_rust_png_srcs` in `core.gni` covers the new location of `SpanUtils.h`, so everything works okay today.  And I think it should be okay to do the same thing when depending on `SpanUtils.h` from new, BMP-related code.\n\nI also note that even before this CL `UtilsForFFI.h` would appear on **two** `.gni` lists (`skia_encode_rust_png_srcs` in `core.gni` and `skia_codec_rust_png` in `codec.gni`).  So having a header in two `.gni` lists seems ok (or at least it doesn\u0027t cause any trouble today).\n\nSo, for simplicity, maybe we should avoid adding `gn/rust_shared_cpp_sources.gni` for now?  We can always do it in a separate CL later / when it is actually needed?\n\n-----------------\n\nIf we _do_ want to add `gn/rust_shared_cpp_sources.gni` (which I try to argue against above), then I have a question: How was this file generated?  This file isn\u0027t mentioned in the changes I see in `bazel/exporter_tool/main.go`, so I don\u0027t think that `make -C bazel generate_gni` would have generated the new file.  But maybe I am missing something?",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "d8998660e2928c4d32d2d0a3bc89fb1a40d15c28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50607599_7a10a579",
