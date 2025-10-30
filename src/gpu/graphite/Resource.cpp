@@ -54,7 +54,8 @@ Resource::~Resource() {
 void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
                                  const GraphiteResourceKey& key,
                                  Budgeted initialBudgetedState,
-                                 Shareable initialShareableState) {
+                                 Shareable initialShareableState,
+                                 std::string_view label) {
     // ResourceCache should be registered before the Resource escapes the ResourceProvider, e.g. it
     // has a single usage ref and no others.
     SkASSERT(this->isUniquelyHeld());
@@ -65,7 +66,7 @@ void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
     fReturnCache = std::move(returnCache);
 
     this->addRef<RefType::kCache>();
-
+    this->setLabel(std::move(label));
     this->setBudgeted(initialBudgetedState);
     this->setShareable(initialShareableState);
 }

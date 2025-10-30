@@ -250,6 +250,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
     // Search for available descriptor sets by assembling a key based upon the set's structure.
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
+    // TODO: Assign label.
     if (auto descSet = fResourceCache->findAndRefResource(
                 key, skgpu::Budgeted::kYes, Shareable::kNo)) {
         // A non-null resource pointer indicates we have found an available descriptor set.
@@ -421,6 +422,7 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         builder[0] = VulkanRenderPass::GetRenderPassKey(renderPassDesc,
                                                         /*compatibleForPipelineKey=*/false);
     }
+    // TODO: Assign label.
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
@@ -557,6 +559,7 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
         builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
     }
 
+    // TODO: Assign label.
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
     }

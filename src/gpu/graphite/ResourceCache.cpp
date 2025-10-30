@@ -110,7 +110,8 @@ void ResourceCache::shutdown() {
 void ResourceCache::insertResource(Resource* resource,
                                    const GraphiteResourceKey& key,
                                    Budgeted budgeted,
-                                   Shareable shareable) {
+                                   Shareable shareable,
+                                   std::string_view label) {
     ASSERT_SINGLE_OWNER
     SkASSERT(resource);
     SkASSERT(key.isValid());
@@ -137,6 +138,8 @@ void ResourceCache::insertResource(Resource* resource,
         this->processReturnedResources();
     }
 
+    // If a resource is being added to the cache, it is safe to assign its label prior to insertion.
+    resource->setLabel(std::move(label));
     resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable);
 
     // We must set the use token before adding to the array in case the token wraps and we wind
@@ -163,6 +166,7 @@ void ResourceCache::insertResource(Resource* resource,
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
+                                            std::string_view label,
                                             const ScratchResourceSet* unavailable) {
     ASSERT_SINGLE_OWNER
 
@@ -205,7 +209,11 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
+            // If a resource is changing to be shareable, it is safe to re-assign its label at this
+            // point. No-op if the label is unchanged.
             resource->setShareable(shareable);
+            // TODO: Scratch to shareable comment/functionality?
+            resource->setLabel(std::move(label));
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
