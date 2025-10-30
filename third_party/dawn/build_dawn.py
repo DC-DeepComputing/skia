@@ -174,6 +174,13 @@ def main():
 
   print(" ".join(configure_cmd))
   print("with environment", env)
+  subprocess.run(["ls", "-ahl",
+    "/b/s/w/ir/cache/work/skia/third_party/externals/dawn/third_party/",
+    "/b/s/w/ir/cache/work/skia/third_party/externals/dawn/third_party/glslang/",
+    "/b/s/w/ir/cache/work/skia/third_party/externals/dawn/third_party/spirv-tools/",
+    "/b/s/w/ir/cache/work/skia/third_party/externals/dawn/third_party/vulkan-utility-libraries/",
+    ], check=False)
+
   subprocess.run(configure_cmd, check=True, env=env)
 
   build_cmd = [ninja_exe, "-C", build_dir, "-dkeepdepfile"] + build_targets
