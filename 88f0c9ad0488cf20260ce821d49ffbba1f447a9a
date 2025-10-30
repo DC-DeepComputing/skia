@@ -24,6 +24,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8565b8fc_2ea9ffee",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:43:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aa006f9_63f25ef5",
+      "range": {
+        "startLine": 150,
+        "startChar": 3,
+        "endLine": 150,
+        "endChar": 27
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d38b9f55_cea0d304",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:43:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aa006f9_63f25ef5",
+      "range": {
+        "startLine": 150,
+        "startChar": 3,
+        "endLine": 150,
+        "endChar": 27
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "678777f8_a43956b3",
@@ -37,6 +85,30 @@
       "writtenOn": "2025-10-29T18:31:19Z",
       "side": 1,
       "message": "For the first paragraph, I think want something more general here for the labeling model, that touches on these points:\n\n- Resources should have labels even if we aren\u0027t setting them on the backend objects for our memory dumps and other debugging.\n- Resources can change labels over time as they get reused.\n- These changes to the Resource\u0027s label and (if enabled) to its backend label need to be thread safe.\n\nI also think either here or after the 2nd paragraph we should layout how the Resource\u0027s label gets synced with the backend label. I believe the design doc suggested we\u0027d want to set changed labels during `insertRecording` so that we wouldn\u0027t mess with previously set labels for non-shareable/scratch resources in a web capture.",
+      "range": {
+        "startLine": 152,
+        "startChar": 2,
+        "endLine": 155,
+        "endChar": 70
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c3f0df_4606309e",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:43:48Z",
+      "side": 1,
+      "message": "Took a stab at including this info, LMKWYT! :)",
+      "parentUuid": "678777f8_a43956b3",
       "range": {
         "startLine": 152,
         "startChar": 2,
@@ -70,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab694c0a_17279b98",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:43:48Z",
+      "side": 1,
+      "message": "I took this suggestion, adding a phrase or so from the original documentation that I personally found valuable for explaining why certain update policies are safe (such as shareable resource labels needing to be stable since they can be returned from the cache at any time  and their labels should not be changing across usages). TAL and LMK :)",
+      "parentUuid": "28e64806_b199662a",
+      "range": {
+        "startLine": 157,
+        "startChar": 3,
+        "endLine": 164,
+        "endChar": 43
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b668486b_791c9bf2",
@@ -83,6 +179,30 @@
       "writtenOn": "2025-10-29T18:31:19Z",
       "side": 1,
       "message": "WDYT about moving this to private (or protected) in this CL so we don\u0027t have to worry about new uses cropping up.  This would let subclasses call it directly in their constructor (pipelines) and we could either have ResourceCache\u0027s functions take a label for findOrCreate+insert, or have ResourceProvider be a friend.\n\nI think we can also start adding asserts to this function about when this is called and what its usage ref count and shareability state is.",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 43
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68389509_14fe355a",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-10-30T18:43:48Z",
+      "side": 1,
+      "message": "I\u0027m on board with this - I think given our offline discussion re: allowing resources that become shareable to re-assign a label, it would make the most sense to pass the label from the provider (if there is one) into `ResourceCache::findAndRefResource`. \n\nBefore that method returns any resource is returned to the caller, it internally assesses if a non-shareable resource needs to become shareable. At that point, the label could be updated w/ the private setLabel method. \n\nThe alternative would be for the resource provider to re-assign the label passed in after fetching any resource unless it has some way of knowing that cached resource\u0027s previous shareability prior to it being returned, relying upon the expectation that any resource returned from the cache as shareable already had its label set upon creation/cache insertion and that it shouldn\u0027t have changed.\n\nIf we add the label to findAndRefResource as I\u0027m wanting to, it touches more files, so I propose I do that as a follow-up CL.",
+      "parentUuid": "b668486b_791c9bf2",
       "range": {
         "startLine": 277,
         "startChar": 0,
