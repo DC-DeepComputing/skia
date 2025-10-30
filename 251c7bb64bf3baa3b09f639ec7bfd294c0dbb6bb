@@ -46,6 +46,30 @@
       },
       "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a2539f3_e688e016",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-10-30T18:26:20Z",
+      "side": 1,
+      "message": "What do you mean by precede the other ColorTypeInfo? Does that matter for anything?",
+      "parentUuid": "fe9e4831_2f877d7c",
+      "range": {
+        "startLine": 709,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 13
+      },
+      "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
