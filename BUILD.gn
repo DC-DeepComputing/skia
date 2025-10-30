@@ -1533,7 +1533,7 @@ optional("png_decode_rust") {
   public_defines = [ "SK_CODEC_DECODES_PNG_WITH_RUST" ]
   enabled = skia_use_rust_png_decode
   public = skia_codec_rust_png_public
-  sources = skia_codec_rust_png
+  sources = skia_codec_rust_png + rust_shared_cpp_sources
   sources_for_tests = [ "tests/SkPngRustDecoderTest.cpp" ]
 
   deps = [
@@ -1551,7 +1551,8 @@ optional("png_encode_rust") {
   public_defines = [ "SK_CODEC_ENCODES_PNG_WITH_RUST" ]
   enabled = skia_use_rust_png_encode
   public = skia_encode_rust_png_public  # From `gn/core.gni`
-  sources = skia_encode_rust_png_srcs  # From `gn/core.gni`
+  sources =
+      skia_encode_rust_png_srcs + rust_shared_cpp_sources  # From `gn/core.gni`
   sources_for_tests = [ "tests/SkPngRustEncoderTest.cpp" ]
   deps = [
     ":png_encode_common",

@@ -1,0 +1,9 @@
+# Copyright 2024 Google LLC.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Shared C++ FFI utilities used by multiple Rust integrations.
+
+_rust = get_path_info("../rust", "abspath")
+
+rust_shared_cpp_sources = [ "$_rust/SpanUtils.h" ]

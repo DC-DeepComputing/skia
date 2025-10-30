@@ -183,7 +183,7 @@ skia_cc_library(
         "//:core",
         "//rust/png:cxx_bridge",
         "//rust/png:ffi_cpp",
-        "//rust/png:utils",
+        "//rust:span_utils",
         "//src/base",
         "//src/codec:any_decoder",
         "//src/core:core_priv",
