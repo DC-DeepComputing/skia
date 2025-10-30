@@ -54,7 +54,8 @@ public:
                                       sk_sp<MutableTextureState>,
                                       VkImage,
                                       const VulkanAlloc&,
-                                      sk_sp<VulkanYcbcrConversion>);
+                                      sk_sp<VulkanYcbcrConversion>,
+                                      std::string_view label);
 
     ~VulkanTexture() override;
 
@@ -114,7 +115,8 @@ private:
                   VkImage,
                   const VulkanAlloc&,
                   Ownership,
-                  sk_sp<VulkanYcbcrConversion>);
+                  sk_sp<VulkanYcbcrConversion>,
+                  std::string_view label);
 
     void freeGpuData() override;
 

@@ -75,18 +75,22 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                        SkISize dimensions,
                        const TextureInfo& info,
                        sk_cfp<id<MTLTexture>> texture,
-                       Ownership ownership)
+                       Ownership ownership,
+                       std::string_view label)
         : Texture(sharedContext,
                   dimensions,
                   info,
                   /*isTransient=*/has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership)
-        , fTexture(std::move(texture)) {}
+        , fTexture(std::move(texture)) {
+            this->setLabel(std::move(label));
+        }
 
 sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                 SkISize dimensions,
-                                const TextureInfo& info) {
+                                const TextureInfo& info,
+                                std::string_view label) {
     sk_cfp<id<MTLTexture>> texture = MakeMtlTexture(sharedContext, dimensions, info);
     if (!texture) {
         return nullptr;
@@ -95,18 +99,21 @@ sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
-                                         Ownership::kOwned));
+                                         Ownership::kOwned,
+                                         std::move(label)));
 }
 
 sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
                                        SkISize dimensions,
                                        const TextureInfo& info,
-                                       sk_cfp<id<MTLTexture>> texture) {
+                                       sk_cfp<id<MTLTexture>> texture,
+                                       std::string_view label) {
     return sk_sp<Texture>(new MtlTexture(sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
-                                         Ownership::kWrapped));
+                                         Ownership::kWrapped),
+                                         std::move(label));
 }
 
 void MtlTexture::freeGpuData() {

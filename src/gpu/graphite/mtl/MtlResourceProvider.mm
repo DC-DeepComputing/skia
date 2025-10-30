@@ -67,14 +67,15 @@ sk_sp<Texture> MtlResourceProvider::createTexture(SkISize dimensions,
     return MtlTexture::Make(this->mtlSharedContext(), dimensions, info);
 }
 
-sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
+sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
+                                                           std::string_view label) {
     CFTypeRef mtlHandleTexture = BackendTextures::GetMtlTexture(texture);
     if (!mtlHandleTexture) {
         return nullptr;
     }
     sk_cfp<id<MTLTexture>> mtlTexture = sk_ret_cfp((id<MTLTexture>)mtlHandleTexture);
     return MtlTexture::MakeWrapped(this->mtlSharedContext(), texture.dimensions(), texture.info(),
-                                   std::move(mtlTexture));
+                                   std::move(mtlTexture), std::move(label));
 }
 
 sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,

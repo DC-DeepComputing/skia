@@ -158,7 +158,8 @@ private:
                                      Shareable,
                                      const ResourceCache::ScratchResourceSet* = nullptr);
 
-    virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&) = 0;
+    virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&,
+                                                  std::string_view label) = 0;
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
 #ifdef SK_BUILD_FOR_ANDROID

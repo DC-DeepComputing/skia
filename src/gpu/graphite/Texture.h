@@ -53,7 +53,8 @@ protected:
             const TextureInfo& info,
             bool isTransient,
             sk_sp<MutableTextureState> mutableState,
-            Ownership);
+            Ownership,
+            std::string_view label);
 
     MutableTextureState* mutableState() const;
 

@@ -25,7 +25,7 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0)
         , fPipelineInfo(pipelineInfo) {
-    this->setLabel(label);
+    this->setLabel(std::move(label));
 }
 
 GraphicsPipeline::~GraphicsPipeline() {
