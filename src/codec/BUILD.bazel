@@ -392,7 +392,7 @@ skia_cc_library(
         "//modules/skcms",
         "//rust/png:cxx_bridge",
         "//rust/png:ffi_cpp",
-        "//rust/png:utils",
+        "//rust:span_utils",
         "//src/base",
         "//src/core:core_priv",
         "@crates//:cxx_cc",
