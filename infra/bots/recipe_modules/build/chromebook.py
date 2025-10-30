@@ -78,6 +78,8 @@ def compile_fn(api, checkout_root, out_dir):
       '-march=armv8-a',
       '-mfpu=neon',
       '-mthumb',
+      # TODO(borenet): Is this necessary?
+      '-mno-outline-atomics',
     ]
 
     args['extra_cflags'] = [
