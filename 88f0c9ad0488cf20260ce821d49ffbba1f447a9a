@@ -235,6 +235,30 @@
       },
       "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb5fd1e_96597abc",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-30T18:51:09Z",
+      "side": 1,
+      "message": "I am also thinking it should be added to findAndRefResource. It is valid for ResourceProvider to be the one to set the label after findAndRef or insertResource is called based on shareability, but then it would mean every specific resource type creation function in ResourceProvider would have to get the rules right, whereas we can handle it in one place inside ResourceCache.\n\nA follow-up is fine.",
+      "parentUuid": "9c5b11bd_5566cb7b",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 43
+      },
+      "revId": "88f0c9ad0488cf20260ce821d49ffbba1f447a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
