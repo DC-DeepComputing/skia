@@ -1,0 +1,40 @@
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_cc_library",
+    "skia_filegroup",
+)
+
+skia_filegroup(
+    name = "hdrs",
+    srcs = [
+        "SkBmpRustDecoder.h",
+    ],
+)
+
+skia_filegroup(
+    name = "srcs",
+    srcs = [
+        "SkBmpRustDecoder.cpp",
+    ],
+)
+
+skia_cc_library(
+    name = "decoder", 
+    srcs = [":srcs"],
+    hdrs = [":hdrs"],
+    defines = ["SK_CODEC_DECODES_BMP_WITH_RUST"],
+    features = ["layering_check"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:core",
+        "//:bmp_decode_codec",
+        "//modules/skcms",
+        "//experimental/rust_bmp/ffi:cxx_bridge", 
+        "//experimental/rust_bmp/ffi:ffi_cpp",
+        "//experimental/rust_bmp/ffi:ffi_rs",
+        "//experimental/rust_bmp/decoder/impl:skbmprustcodec",
+        "//src/base",
+        "//src/core:core_priv",
+        "@crates//:cxx_cc",
+    ],
+)
