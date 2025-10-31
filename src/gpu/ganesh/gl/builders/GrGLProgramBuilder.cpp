@@ -234,6 +234,14 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         return nullptr;
     }
 
+#ifndef GL_PROGRAM
+# define GL_PROGRAM 0x82E2
+#endif
+    if (this->gpu()->glInterface()->fFunctions.fObjectLabel) {
+        const char* label = this->geometryProcessor().name();
+        GL_CALL(ObjectLabel(GL_PROGRAM, programID, -1, label));
+    }
+
     if (this->gpu()->glCaps().programBinarySupport() &&
         this->gpu()->glCaps().programParameterSupport() &&
         this->gpu()->getContext()->priv().getPersistentCache() &&
@@ -425,6 +433,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         }
         this->storeShaderInCache(interface, programID, glsl, isSkSL, &settings);
     }
+
     return this->createProgram(programID);
 }
 
