@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c1b3a4_8fd8dd3d",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-10-31T01:46:10Z",
+      "side": 1,
+      "message": "This is UNORM/16, not a half-float, right?  We need something similar to `kA16_unorm_SkColorType`, not `kA16_float_SkColorType`.",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 69
+      },
+      "revId": "59d376f76291bb4fbbadcb4e6d808d16d8fd51a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
