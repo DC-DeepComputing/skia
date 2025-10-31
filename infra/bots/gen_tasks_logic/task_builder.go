@@ -233,6 +233,7 @@ func (b *TaskBuilder) asset(assets ...string) {
 func (b *TaskBuilder) usesBazel(hostOSArch string) {
 	archToPkg := map[string]string{
 		"linux_x64":   "bazelisk_linux_amd64",
+		"mac_arm64":   "bazelisk_mac_arm64",
 		"mac_x64":     "bazelisk_mac_amd64",
 		"windows_x64": "bazelisk_win_amd64",
 	}
@@ -276,7 +277,16 @@ func (b *TaskBuilder) usesGit() {
 	if b.IsWindows() {
 		b.cipd(specs.CIPD_PKGS_GIT_WINDOWS_AMD64...)
 	} else if b.IsMac() {
-		b.cipd(specs.CIPD_PKGS_GIT_MAC_AMD64...)
+		// TODO(borenet): Upstream support for Mac ARM64
+		b.cipd(
+			&cipd.Package{
+				Path:    "cipd_bin_packages",
+				Name:    "infra/3pp/tools/git/${platform}",
+				Version: "version:3@2.51.2.chromium.11",
+			},
+			cipd.MustGetPackage("infra/tools/git/${platform}"),
+			cipd.MustGetPackage("infra/tools/luci/git-credential-luci/${platform}"),
+		)
 	} else if b.IsLinux() {
 		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
 	} else {
