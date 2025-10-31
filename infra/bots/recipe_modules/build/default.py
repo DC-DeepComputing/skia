@@ -105,7 +105,7 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
       env['MACOSX_DEPLOYMENT_TARGET'] = '11.0'
 
   # ccache + clang-tidy.sh chokes on the argument list.
-  if (api.vars.is_linux or os == 'Mac') and 'Tidy' not in extra_tokens:
+  if api.vars.is_linux and 'Tidy' not in extra_tokens:
     if api.vars.is_linux:
       ccache = workdir.joinpath('ccache_linux', 'bin', 'ccache')
       # As of 2020-02-07, the sum of each Debian10-Clang-x86
