@@ -18,7 +18,7 @@ def main():
   parser.add_argument("--dawn_dir", required=True, help="Path to the Dawn checkout.")
   args = parser.parse_args()
 
-  fetch_script = os.path.join(args.dawn_dir, "tools", "fetch_dawn_dependencies.py")
+  fetch_script = os.path.join(os.path.dirname(__file__), "fetch_dawn_dependencies.py")
   subprocess.check_call([sys.executable, fetch_script, "--directory=" + args.dawn_dir])
 
   # Create the stamp file.

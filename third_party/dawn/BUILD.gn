@@ -23,8 +23,9 @@ action("dawn_fetch_deps") {
   depfile = "$root_gen_dir/dawn_fetch_deps.d"
 
   sources = [
-    "../externals/dawn/tools/fetch_dawn_dependencies.py",
+    #"../externals/dawn/tools/fetch_dawn_dependencies.py",
     "fetch_and_stamp.py",
+    "fetch_dawn_dependencies.py",
   ]
 
   args = [
