@@ -987,6 +987,9 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				"AppleM3": {
 					"MacBookPro15.3": {"cpu": "arm64-64-Apple_M3"},
 				},
+				"AppleM4": {
+					"MacMini16.10": {"cpu": "arm64-64-Apple_M4"},
+				},
 				"AppleIntel": {
 					"MacBookPro15.1": {"cpu": "x86-64"},
 					"MacBookPro16.2": {"cpu": "x86-64"},
@@ -1081,6 +1084,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				gpu, ok := map[string]string{
 					"AppleM1":             "AppleM1",
 					"AppleM3":             "apple:m3",
+					"AppleM4":             "apple:m4",
 					"IntelHD6000":         "8086:1626",
 					"IntelHD615":          "8086:591e",
 					"IntelIris5100":       "8086:0a2e",
@@ -1129,6 +1133,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 					"Mac13": "",
 					"Mac14": "Macmini9,1",
 				},
+				"MacMini16.10": "Mac16,10",
 				// TODO(borenet): This is currently resolving to multiple
 				// different actual device types.
 				"VMware7.1": "",
