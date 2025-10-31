@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkAnnotation.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -828,9 +829,16 @@ DEF_TEST(Serialization, reporter) {
         sk_sp<SkData> data = pict->serialize(&sProcs);
         REPORTER_ASSERT(reporter, data);
 
-        // Deserialize picture using the default procs.
-        // TODO(kjlubick) Specify a proc for decoding image data.
-        sk_sp<SkPicture> readPict = SkPicture::MakeFromData(data.get());
+        SkDeserialProcs dProcs;
+        dProcs.fImageDataProc = [](sk_sp<SkData> data,
+                                   std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+            auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+            if (!codec) {
+                return nullptr;
+            }
+            return std::get<0>(codec->getImage());
+        };
+        sk_sp<SkPicture> readPict = SkPicture::MakeFromData(data.get(), &dProcs);
         REPORTER_ASSERT(reporter, readPict);
         sk_sp<SkImage> img0 = render(*pict);
         sk_sp<SkImage> img1 = render(*readPict);
