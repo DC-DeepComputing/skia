@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71b1bc6_a8a5b2b7",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-10-31T16:14:39Z",
+      "side": 1,
+      "message": "nit: GPU frame",
+      "range": {
+        "startLine": 165,
+        "startChar": 26,
+        "endLine": 165,
+        "endChar": 29
+      },
+      "revId": "566e3fc93386221ff4484a71e96a773f8fdef4aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
