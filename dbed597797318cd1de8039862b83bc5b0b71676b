@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "318676f0_9068170f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-10-31T22:22:00Z",
+      "side": 1,
+      "message": "This ... well, it\u0027s a horribly long patch. I actually stopped here (not including gain computation and application and serialization) cause it\u0027s already fairly long.\n\nI vaguely think that I may want rename this to like `skhdr::AgtmImpl` and have `skhdr::Agtm` be something that is a reference-created interface. What are your feelings on that? (felt this was a decent step regardless of the outcome, and I want to land the internal code and the tests in chunks, then find the final home for the interface).\n\nFor the moment, this just lands the code and a whole pile of tests (which found approximately a bazillion bugs).",
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

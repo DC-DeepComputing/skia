@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74675db0_460ca512",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-10-31T22:22:00Z",
+      "side": 1,
+      "message": "Given the (relatively) small size, it seemed better to have this be statically allocated instead of an `std::vector` because (1) it\u0027s simpler (no resizing, etc) and (2) it\u0027s likely to be more performant because all of the relevant data will be pulled into cache together.",
+      "revId": "bac89ec700d77d3bad0c154f26f8e66f2bb69a76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
