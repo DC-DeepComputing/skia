@@ -78,6 +78,8 @@ def compile_fn(api, checkout_root, out_dir):
       '-march=armv8-a',
       '-mfpu=neon',
       '-mthumb',
+      # TODO(borenet): Is this necessary?
+      '-mno-outline-atomics',
     ]
 
     args['extra_cflags'] = [
@@ -88,6 +90,8 @@ def compile_fn(api, checkout_root, out_dir):
       '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12', 'aarch64-linux-gnu'),
       '-I%s' % os.path.join(gl_dir, 'include'),
       '-U_GLIBCXX_DEBUG',
+      # TODO(borenet): Is this necessary?
+      '-mno-outline-atomics',
     ]
 
     args['extra_ldflags'] = [
