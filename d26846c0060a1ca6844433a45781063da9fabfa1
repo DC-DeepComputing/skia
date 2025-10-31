@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38f19585_a44d7ca8",
+        "filename": "BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 3274,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-10-31T13:45:40Z",
+      "side": 0,
+      "message": "Something in this change has made it so we can\u0027t build fuzzers anymore. I\u0027m looking into it.",
+      "range": {
+        "startLine": 3274,
+        "startChar": 2,
+        "endLine": 3274,
+        "endChar": 4
+      },
+      "revId": "d26846c0060a1ca6844433a45781063da9fabfa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
