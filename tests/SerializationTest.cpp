@@ -44,7 +44,6 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
@@ -59,6 +58,18 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
+#endif
+
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 #include <algorithm>
 #include <array>
@@ -823,14 +834,30 @@ DEF_TEST(Serialization, reporter) {
         // typeface when deserializing.
         SkSerialProcs sProcs;
         sProcs.fImageProc = [](SkImage* img, void*) -> sk_sp<SkData> {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+            return SkPngRustEncoder::Encode(nullptr, img, SkPngRustEncoder::Options{});
+#else
             return SkPngEncoder::Encode(nullptr, img, SkPngEncoder::Options{});
+#endif
         };
         sk_sp<SkData> data = pict->serialize(&sProcs);
         REPORTER_ASSERT(reporter, data);
 
-        // Deserialize picture using the default procs.
-        // TODO(kjlubick) Specify a proc for decoding image data.
-        sk_sp<SkPicture> readPict = SkPicture::MakeFromData(data.get());
+        SkDeserialProcs dProcs;
+        dProcs.fImageDataProc = [](sk_sp<SkData> data,
+                                   std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+            std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+            auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+            auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+#endif
+            if (!codec) {
+                return nullptr;
+            }
+            return std::get<0>(codec->getImage());
+        };
+        sk_sp<SkPicture> readPict = SkPicture::MakeFromData(data.get(), &dProcs);
         REPORTER_ASSERT(reporter, readPict);
         sk_sp<SkImage> img0 = render(*pict);
         sk_sp<SkImage> img1 = render(*readPict);
