@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e44a7ee_112705e9",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-01T12:47:25Z",
+      "side": 1,
+      "message": "I had been (perhaps misguidedly) trying to separate these two ideas:\n- SkPathData returns null if it can\u0027t build something (e.g. bad verbs, nonfinite)\n- SkPath has decided to still use a pathdata for error cases, so it makes a singleton.\n\nIt looks like you\u0027re suggesting we change this idea, and have SkPathData never return null, but have its own idea of special singleton?",
+      "parentUuid": "e7ae2fd8_ebb9e687",
+      "range": {
+        "startLine": 50,
+        "startChar": 16,
+        "endLine": 50,
+        "endChar": 47
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "04efc359_f37fa72b",
