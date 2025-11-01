@@ -11,10 +11,15 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/encode/SkJpegEncoder.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkOSFile.h"
+
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 #include <vector>
 
@@ -39,10 +44,24 @@ static SkBitmap make_fuzzed_bitmap(Fuzz* fuzz) {
 DEF_FUZZ(PNGEncoder, fuzz) {
     auto bm = make_fuzzed_bitmap(fuzz);
 
-    auto opts = SkPngEncoder::Options{};
-    fuzz->nextRange(&opts.fZLibLevel, 0, 9);
+    int compression_level;
+    fuzz->nextRange(&compression_level, 0, 9);
 
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    auto opts = SkPngRustEncoder::Options{};
+    if (compression_level < 3) {
+      opts.fCompressionLevel = SkPngRustEncoder::CompressionLevel::kLow;
+    } else if (compression_level < 6) {
+      opts.fCompressionLevel = SkPngRustEncoder::CompressionLevel::kMedium;
+    } else {
+      opts.fCompressionLevel = SkPngRustEncoder::CompressionLevel::kHigh;
+    }
+    std::ignore = SkPngRustEncoder::Encode(bm.pixmap(), opts);
+#else
+    auto opts = SkPngEncoder::Options{};
+    opts.fZLibLevel = compression_level;
     std::ignore = SkPngEncoder::Encode(bm.pixmap(), opts);
+#endif
 }
 
 DEF_FUZZ(JPEGEncoder, fuzz) {
