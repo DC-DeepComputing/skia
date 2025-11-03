@@ -16,6 +16,253 @@
       "message": "This ... well, it\u0027s a horribly long patch. I actually stopped here (not including gain computation and application and serialization) cause it\u0027s already fairly long.\n\nI vaguely think that I may want rename this to like `skhdr::AgtmImpl` and have `skhdr::Agtm` be something that is a reference-created interface. What are your feelings on that? (felt this was a decent step regardless of the outcome, and I want to land the internal code and the tests in chunks, then find the final home for the interface).\n\nFor the moment, this just lands the code and a whole pile of tests (which found approximately a bazillion bugs).",
       "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c71f5d_e8ab511d",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace18f96_13623703",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "Can we add an SkAssert here for 5.2.2 that all the fields are in [0,1] and add up to 1 (+/- floating point error)?",
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2805d98_0174ce99",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "FYI: I only have access to draft 1 (which has a different piecewise function), so I cannot double check this.",
+      "range": {
+        "startLine": 110,
+        "startChar": 47,
+        "endLine": 110,
+        "endChar": 64
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4cd1bd_ea19fff2",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "Should this be a constructor or a static factory function? (see below for similar question)",
+      "range": {
+        "startLine": 47,
+        "startChar": 13,
+        "endLine": 47,
+        "endChar": 35
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b109588e_860dfb51",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "Should this be a constructor or a static factory function? It seems a bit awkward to have to construct an object and then remember to call this method. It would be nice to have `Agtm` be a const object after creation if that\u0027s possible.",
+      "range": {
+        "startLine": 107,
+        "startChar": 9,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f5e57fd_2615ecff",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7049aef5_88fb47ce",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "Can we add some subtests to this? Something like\n```\nauto test \u003d [](std::string name, skhdr::Agtm::ComponentMixingFunction mix,\n    SkColor4f input, SkColor4f expected) {\n    skiatest::ReporterContext ctx(name);\n    SkColor4f actual \u003d mix.evaluate(input);\n    REPORTER_ASSERT(r, actual.fR \u003d\u003d expected.fR);\n    REPORTER_ASSERT(r, actual.fG \u003d\u003d expected.fG);\n    REPORTER_ASSERT(r, actual.fB \u003d\u003d expected.fB);\n    REPORTER_ASSERT(r, actual.fA \u003d\u003d expected.fA);\n    REPORTER_ASSERT(r, actual.fA \u003d\u003d input.fA);\n};\n\n\ntest(\"max component\", skhdr::Agtm::ComponentMixingFunction{fMax\u003d1.f},\n    SkColor4f(0.75f, 0.50f, 0.25f, 0.125f},\n    SkColor4f(0.75f, 0.75f, 0.75f, 0.125f})\n...\n\n```\n\nThat will make it easier to see which tests fail and the names can add a tiny bit of human context too.",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 7
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c297355a_7e6a5c73",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "IIUC, the alpha is always unused/modified for this componentMixingFunction, yeah?",
+      "range": {
+        "startLine": 108,
+        "startChar": 25,
+        "endLine": 108,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8c66a37_bcbfcc69",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "Can we add a test that sets the fRed, fGreen, fBlue params too?",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 1
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d1545d4_e8f42681",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "I\u0027d prefer these be distinct subtests so if the asserts fail, we can more easily tell which h was problematic.",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 26
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc0d0392_535821d0",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T21:33:30Z",
+      "side": 1,
+      "message": "See suggestion above for subtests",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 9
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
