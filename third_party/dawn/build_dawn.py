@@ -77,6 +77,7 @@ def main():
   script_dir = os.path.dirname(os.path.realpath(__file__))
 
   dawn_dir = os.path.join(script_dir, "..", "externals", "dawn")
+  third_party_dir = os.path.realpath(os.path.join(script_dir, "..", "externals"))
   build_dir = args.build_dir
 
   configure_cmd = [
