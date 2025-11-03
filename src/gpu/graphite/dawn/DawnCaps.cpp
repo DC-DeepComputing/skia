@@ -1209,7 +1209,7 @@ static constexpr char swizzle_to_str(uint32_t c, char identityAnswer) {
 }
 #endif
 
-std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+std::string DawnCaps::toString1(const ImmutableSamplerInfo& immutableSamplerInfo) const {
 #if defined(__EMSCRIPTEN__)
     return "";
 #else

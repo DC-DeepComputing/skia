@@ -1103,7 +1103,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     // This block prints out a final report. This includes a list of the cases in 'kCases' that
     // were not covered by the PaintOptions.
 
-    collector.finalReport();
+    collector.finalReport(reporter);
 #endif
 }
 

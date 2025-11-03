@@ -52,7 +52,7 @@ public:
     DstReadStrategy getDstReadStrategy() const override;
 
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
-    std::string toString(const ImmutableSamplerInfo&) const override;
+    std::string toString1(const ImmutableSamplerInfo&) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;

@@ -203,7 +203,7 @@ public:
     }
 
     /* Returns a compressed label describing the immutable sampler for the Pipeline label */
-    virtual std::string toString(const ImmutableSamplerInfo&) const { return ""; }
+    virtual std::string toString1(const ImmutableSamplerInfo&) const { return ""; }
 
     /**
      * Backends may have restrictions on what types of textures support Device::writePixels().

@@ -158,6 +158,7 @@ ImmutableSamplerInfo VulkanYcbcrConversion::ToImmutableSamplerInfo(
 
 VulkanYcbcrConversionInfo VulkanYcbcrConversion::FromImmutableSamplerInfo(
         ImmutableSamplerInfo info) {
+    SkDebugf("77\n");
     const uint32_t nonFormatInfo = info.fNonFormatYcbcrConversionInfo;
 
     VkFormat format = VK_FORMAT_UNDEFINED;
@@ -208,6 +209,7 @@ VulkanYcbcrConversionInfo VulkanYcbcrConversion::FromImmutableSamplerInfo(
     VulkanYcbcrConversionInfo vkInfo(format, externalFormat, model, range, xChromaOffset,
                                      yChromaOffset, chromaFilter, forceExplicitReconstruction,
                                      components, chromaMustMatch, supportsLinearFilter);
+    SkDebugf("88\n");
 
     return vkInfo;
 }
