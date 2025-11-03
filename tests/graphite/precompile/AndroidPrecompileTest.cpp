@@ -1634,7 +1634,7 @@ void test(skiatest::Reporter* reporter,
     // This block prints out a final report. This includes a list of the cases in 'labels' that
     // were not covered by the PaintOptions.
 
-    collector.finalReport();
+    collector.finalReport(reporter);
 #endif
 }
 

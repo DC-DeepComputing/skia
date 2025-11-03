@@ -234,6 +234,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
 }
 
 static void append_as_base64(SkString* str, SkSpan<const uint32_t> data) {
+    SkDebugf("7\n");
     if (data.empty()) {
         // We shorten the string for the common case of no extra data.
         str->append("(0)");
@@ -250,6 +251,7 @@ static void append_as_base64(SkString* str, SkSpan<const uint32_t> data) {
     size_t encodedLen = SkBase64::Encode(data.data(), srcDataSize, dst);
     str->append(dst, encodedLen);
     str->append(")");
+    SkDebugf("8\n");
 }
 
 static int key_to_string(const Caps* caps,
@@ -291,12 +293,21 @@ static int key_to_string(const Caps* caps,
 
         bool descriptiveFormAppended = false;
         if (dataIndexCount == 3) {
+            SkDebugf("1 %d\n", dataIndexCount);
             // Attempt to append the sampler data as human-readable YCbCr information
-            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
+            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2], true);
+
+            SkDebugf("tileModes: %d %d filterMode: %d mipmap: %d\n",
+                     static_cast<int>(s.tileModeX()),
+                     static_cast<int>(s.tileModeY()),
+                     static_cast<int>(s.filterMode()),
+                     static_cast<int>(s.mipmap()));
 
             if (s.isImmutable()) {
+                SkDebugf("2\n");
                 std::string tmp = caps->toString(s.immutableSamplerInfo());
                 if (!tmp.empty()) {
+                    SkDebugf("3\n");
                     descriptiveFormAppended = true;
                     str->append("(");
                     str->append(tmp);
@@ -306,6 +317,7 @@ static int key_to_string(const Caps* caps,
         }
 
         if (!descriptiveFormAppended) {
+            SkDebugf("4\n");
             append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
         }
 
