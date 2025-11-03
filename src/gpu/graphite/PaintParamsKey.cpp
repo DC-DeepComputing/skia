@@ -291,12 +291,15 @@ static int key_to_string(const Caps* caps,
 
         bool descriptiveFormAppended = false;
         if (dataIndexCount == 3) {
+            SkDebugf("1\n");
             // Attempt to append the sampler data as human-readable YCbCr information
             SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
 
             if (s.isImmutable()) {
+                SkDebugf("2\n");
                 std::string tmp = caps->toString(s.immutableSamplerInfo());
                 if (!tmp.empty()) {
+            SkDebugf("3\n");
                     descriptiveFormAppended = true;
                     str->append("(");
                     str->append(tmp);
@@ -306,6 +309,7 @@ static int key_to_string(const Caps* caps,
         }
 
         if (!descriptiveFormAppended) {
+            SkDebugf("4\n");
             append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
         }
 

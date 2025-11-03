@@ -2250,9 +2250,11 @@ static constexpr const char* vk_chromafilter_to_str(VkFilter f) {
 }
 
 std::string VulkanCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo) const {
+    SkDebugf("a\n");
     skgpu::VulkanYcbcrConversionInfo info =
             VulkanYcbcrConversion::FromImmutableSamplerInfo(immutableSamplerInfo);
     if (!info.isValid()) {
+        SkDebugf("b\n");
         return "";
     }
 
@@ -2265,22 +2267,29 @@ std::string VulkanCaps::toString(const ImmutableSamplerInfo& immutableSamplerInf
         result += info.format();
     }
 
+    SkDebugf("c %s\n", result.c_str());
+
     result += " ";
     result += VkModelToStr(info.model());
     result += "+";
     result += VkRangeToStr(info.range());
     result += info.xChromaOffset() ? " mid "  : " cos "; // midpoint or cosited-even
     result += info.yChromaOffset() ? " mid "  : " cos "; // midpoint or cosited-even
+    SkDebugf("d %s\n", result.c_str());
     result += vk_chromafilter_to_str(info.chromaFilter());
     result += info.forceExplicitReconstruction() ? " T " : " F ";
     result += VkSwizzleToStr(info.components().r, 'r');
     result += VkSwizzleToStr(info.components().g, 'g');
     result += VkSwizzleToStr(info.components().b, 'b');
     result += VkSwizzleToStr(info.components().a, 'a');
+    SkDebugf("e %s\n", result.c_str());
+
     result += " cf";
     result += info.samplerFilterMustMatchChromaFilter() ? '1' : '0';
     result += "lf";
     result += info.supportsLinearFilter() ? '1' : '0';
+    SkDebugf("f %s\n", result.c_str());
+
     return result;
 }
 
