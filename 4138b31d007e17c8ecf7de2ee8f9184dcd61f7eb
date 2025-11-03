@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6322866c_ae63110c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Still in conversation with Florin about other ways to handle \"error\" paths.\nSince this CL doesn\u0027t turn pathdata ON yet, will address that, and other nits in a quick follow-up CL.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22ee9f62_3b506b22",
@@ -35,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d78548c_6e76be88",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "22ee9f62_3b506b22",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68285feb_fe6c6714",
@@ -48,6 +83,24 @@
       "writtenOn": "2025-10-29T19:06:04Z",
       "side": 1,
       "message": "If only used in SkPathData.cpp, this doesn\u0027t have to be a class method.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81770f55_55847fdd",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "68285feb_fe6c6714",
       "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -163,6 +216,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db998cd1_3c5bc124",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "691f3005_506b9ea3",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "720833fb_480d2f34",
@@ -186,6 +257,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7cd9c15_5beb5bb0",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "720833fb_480d2f34",
+      "range": {
+        "startLine": 199,
+        "startChar": 18,
+        "endLine": 199,
+        "endChar": 49
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ea9c9e6_b4f5be2d",
@@ -199,6 +294,24 @@
       "writtenOn": "2025-10-29T19:06:04Z",
       "side": 1,
       "message": "We could push this check to `SkPathData::addGenIDChangeListener`, similar to the empty check.",
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3ccc45_ae44fb82",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-03T18:08:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ea9c9e6_b4f5be2d",
       "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
