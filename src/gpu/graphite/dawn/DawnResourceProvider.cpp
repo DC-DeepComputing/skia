@@ -241,7 +241,7 @@ private:
     template<typename T> void purgeBuffersIf(T pred);
 
     DawnResourceProvider* const fResourceProvider;
-    // The current buffer being filled up, as well as the how much of it has been written to.
+    // The current buffer being filled up, as well as how much of it has been written to.
     IntrinsicBuffer* fCurrentBuffer = nullptr;
 
     // All cached intrinsic buffers, in LRU order.
@@ -557,6 +557,25 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
 
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }
+
+#if 0
+sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
+                                      this,
+                                      runtimeDict,
+                                      pipelineKey,
+                                      pipelineDesc,
+                                      renderPassDesc,
+                                      pipelineCreationFlags,
+                                      compilationID);
+}
+#endif
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
         const ComputePipelineDesc& desc) {

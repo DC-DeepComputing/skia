@@ -92,6 +92,8 @@ public:
     // it from the GlobalCache.
     virtual bool didAsyncCompilationFail() const { return false; }
 
+    virtual bool isReady() const = 0;
+
 protected:
     // GraphicsPipeline labels are often provided to the description of what needs to be compiled,
     // so it is required before the actual pipeline has been successfully created. Instead of adding

@@ -51,7 +51,13 @@ public:
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
 
-
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(ResourceProvider*,
+                                                   const RuntimeEffectDictionary*,
+                                                   const UniqueKey&,
+                                                   const GraphicsPipelineDesc&,
+                                                   const RenderPassDesc&,
+                                                   SkEnumBitMask<PipelineCreationFlags>,
+                                                   uint32_t compilationID) override;
 private:
 
     MtlSharedContext(sk_cfp<id<MTLDevice>>,

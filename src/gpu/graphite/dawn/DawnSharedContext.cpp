@@ -101,6 +101,24 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       resourceBudget));
 }
 
+sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
+        ResourceProvider* resourceProvider,
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t compilationID) {
+    return DawnGraphicsPipeline::Make(this,
+                                      resourceProvider,
+                                      runtimeDict,
+                                      pipelineKey,
+                                      pipelineDesc,
+                                      renderPassDesc,
+                                      pipelineCreationFlags,
+                                      compilationID);
+}
+
 void DawnSharedContext::deviceTick(Context* context) {
 #if !defined(__EMSCRIPTEN__)
     this->device().Tick();
