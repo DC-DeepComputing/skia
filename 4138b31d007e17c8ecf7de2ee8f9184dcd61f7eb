@@ -101,6 +101,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6bfc51a9_56871f52",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-03T13:56:44Z",
+      "side": 1,
+      "message": "Ack, I can see the reasoning behind that now.  SGTM, we can always shuffle things around later if needed.",
+      "parentUuid": "1e44a7ee_112705e9",
+      "range": {
+        "startLine": 50,
+        "startChar": 16,
+        "endLine": 50,
+        "endChar": 47
+      },
+      "revId": "4138b31d007e17c8ecf7de2ee8f9184dcd61f7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "04efc359_f37fa72b",
         "filename": "src/core/SkPath_pathdata.cpp",
         "patchSetId": 29
