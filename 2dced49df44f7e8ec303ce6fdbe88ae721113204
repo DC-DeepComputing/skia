@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30f4e36_a8eb2de8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T16:48:17Z",
+      "side": 1,
+      "message": "We\u0027ll also need to update https://github.com/google/skia/blob/23105b3c719a813f93d82ae82e0772a84cff7a07/fuzz/FuzzMain.cpp#L325 to have both of these and make https://github.com/google/skia/blob/23105b3c719a813f93d82ae82e0772a84cff7a07/fuzz/FuzzMain.cpp#L461 conditional",
+      "revId": "2dced49df44f7e8ec303ce6fdbe88ae721113204",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
