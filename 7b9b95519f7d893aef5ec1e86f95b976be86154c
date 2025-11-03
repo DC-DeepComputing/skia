@@ -39,6 +39,30 @@
       },
       "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528477b9_79e393aa",
+        "filename": "fuzz/FuzzMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-03T18:08:33Z",
+      "side": 1,
+      "message": "It will be needed after the other steps are used to introduce a new Fuzzer into oss-fuzz. Can you add the entry here now?",
+      "parentUuid": "db7930d5_d2e1f030",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 34
+      },
+      "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
