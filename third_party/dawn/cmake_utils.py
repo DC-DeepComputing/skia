@@ -340,3 +340,13 @@ def combine_into_library(args, output_path, build_dir, target_os, object_files):
   subprocess.run(combine_obj_cmd, cwd=build_dir, check=True)
 
   copy_if_changed(gen_library_path, os.path.join(os.getcwd(), output_path))
+
+def get_third_party_locations():
+  third_party_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "externals"))
+
+  return [
+    f"-DDAWN_GLSLANG_DIR={os.path.join(third_party_dir, 'glslang')}",
+    f"-DDAWN_WEBGPU_HEADERS_DIR={os.path.join(third_party_dir, 'webgpu-headers')}",
+    f"-DDAWN_OPENGL_REGISTRY_DIR={os.path.join(third_party_dir, 'opengl-registry')}",
+    f"-DDAWN_EGL_REGISTRY_DIR={os.path.join(third_party_dir, 'egl-registry')}",
+  ]

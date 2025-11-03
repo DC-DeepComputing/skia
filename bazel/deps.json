@@ -2,12 +2,6 @@
   "!note": "DO NOT MODIFY BY HAND. Instead, bazelisk run //bazel/deps_parser",
   "direct": [
     {
-      "build_file": "//bazel/external/dawn:BUILD.bazel",
-      "commit": "bc96cfcbee1333aeee977b7d710bfab913ebfbd9",
-      "name": "dawn",
-      "remote": "https://dawn.googlesource.com/dawn.git"
-    },
-    {
       "build_file": "//bazel/external/delaunator:BUILD.bazel",
       "commit": "98305ef6c4e862f7d48df9cc647b690d796fec68",
       "name": "delaunator",
@@ -144,38 +138,16 @@
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross"
     },
     {
-      "commit": "f2e4bd213104fe323a01e935df56557328d37ac8",
-      "name": "spirv_headers",
-      "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git"
-    },
-    {
-      "commit": "6570fd4076d3f6ba7e1349af042d9f97f7378884",
-      "name": "spirv_tools",
-      "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git"
-    },
-    {
       "build_file": "//bazel/external/vello:BUILD.bazel",
       "commit": "3ee3bea02164c5a816fe6c16ef4e3a810edb7620",
       "name": "vello",
       "remote": "https://skia.googlesource.com/external/github.com/linebender/vello.git"
     },
     {
-      "build_file": "//bazel/external/vulkan_headers:BUILD.bazel",
-      "commit": "766aaabe571fa32c53606085775340b78ab8d728",
-      "name": "vulkan_headers",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers"
-    },
-    {
       "build_file": "//bazel/external/vulkan_tools:BUILD.bazel",
       "commit": "5f090a13d0629694036efb104f8633af69ba3ce7",
       "name": "vulkan_tools",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools"
-    },
-    {
-      "build_file": "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
-      "commit": "cd5b255b5c1932797bbf552c6773d9aa44f800f7",
-      "name": "vulkan_utility_libraries",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries"
     },
     {
       "build_file": "//bazel/external/wuffs:BUILD.bazel",
@@ -188,6 +160,34 @@
       "commit": "646b7f569718921d7d4b5b8e22572ff6c76f2596",
       "name": "zlib",
       "remote": "https://chromium.googlesource.com/chromium/src/third_party/zlib"
+    },
+    {
+      "build_file": "//bazel/external/dawn:BUILD.bazel",
+      "commit": "bc96cfcbee1333aeee977b7d710bfab913ebfbd9",
+      "name": "dawn",
+      "remote": "https://dawn.googlesource.com/dawn.git"
+    },
+    {
+      "commit": "f2e4bd213104fe323a01e935df56557328d37ac8",
+      "name": "spirv_headers",
+      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers"
+    },
+    {
+      "commit": "05b0ab1253db43c3ea29efd593f3f13dfa621ab1",
+      "name": "spirv_tools",
+      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools"
+    },
+    {
+      "build_file": "//bazel/external/vulkan_headers:BUILD.bazel",
+      "commit": "df274657d83f3bd8c77aef816c1cbf27352a948b",
+      "name": "vulkan_headers",
+      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers"
+    },
+    {
+      "build_file": "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
+      "commit": "78857abb727c4eedffa15a1f6282678a27f61ef6",
+      "name": "vulkan_utility_libraries",
+      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries"
     }
   ],
   "indirect": [
@@ -197,14 +197,14 @@
       "remote": "https://skia.googlesource.com/external/github.com/google/brotli.git"
     },
     {
-      "commit": "9d692d669253232c024b20ae19d2ff0b581ee1cd",
-      "name": "abseil_cpp",
-      "remote": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
-    },
-    {
       "commit": "424360251cdcfc314cfc528f53c872ecd63af0f0",
       "name": "highway",
       "remote": "https://chromium.googlesource.com/external/github.com/google/highway.git"
+    },
+    {
+      "commit": "9d692d669253232c024b20ae19d2ff0b581ee1cd",
+      "name": "abseil_cpp",
+      "remote": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
     }
   ]
 }
