@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442f1127_69510852",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-03T18:02:17Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\n/cc @bungeman as FYI",
+      "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7930d5_d2e1f030",
+        "filename": "fuzz/FuzzMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-03T18:02:17Z",
+      "side": 1,
+      "message": "IIUC this entry is mostly unused.  This entry may be used [in `try_auto_detect` here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/fuzz/FuzzMain.cpp;l\u003d372-374;drc\u003dda772ace76fffffe6036ea0ae9d83c308cf5ba8c) (this is the only place that uses `cf_map`).  And then the result of `try_auto_detect` may be used [in `fuzz_file` here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/fuzz/FuzzMain.cpp;l\u003d167-169;drc\u003dda772ace76fffffe6036ea0ae9d83c308cf5ba8c).  But... `\"png_encoder\"` nor `\"PNGEncoder\"` strings are used anywhere else in this file, so in the end none of that is really used in practice.\n\nSo I think no other changes are needed in this file.",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 34
+      },
+      "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
