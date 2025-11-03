@@ -34,12 +34,7 @@ deps = {
   "third_party/externals/angle2"                 : "https://chromium.googlesource.com/angle/angle.git@a212e75c20582dd8bdca8e0c26b8eea8320fff8a",
   "third_party/externals/brotli"                 : "https://skia.googlesource.com/external/github.com/google/brotli.git@6d03dfbedda1615c4cba1211f8d81735575209c8",
   "third_party/externals/d3d12allocator"         : "https://skia.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator.git@169895d529dfce00390a20e69c2f516066fe7a3b",
-  # Dawn requires jinja2 and markupsafe for the code generator, tint for SPIRV compilation, and abseil for string formatting.
-  # When the Dawn revision is updated these should be updated from the Dawn DEPS as well.
   "third_party/externals/dawn"                   : "https://dawn.googlesource.com/dawn.git@bc96cfcbee1333aeee977b7d710bfab913ebfbd9",
-  "third_party/externals/jinja2"                 : "https://chromium.googlesource.com/chromium/src/third_party/jinja2@e2d024354e11cc6b041b0cff032d73f0c7e43a07",
-  "third_party/externals/markupsafe"             : "https://chromium.googlesource.com/chromium/src/third_party/markupsafe@0bad08bb207bbfc1d6f3bbc82b9242b0c50e5794",
-  "third_party/externals/abseil-cpp"             : "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp@9d692d669253232c024b20ae19d2ff0b581ee1cd",
   "third_party/externals/delaunator-cpp"         : "https://skia.googlesource.com/external/github.com/skia-dev/delaunator-cpp.git@98305ef6c4e862f7d48df9cc647b690d796fec68",
   "third_party/externals/dng_sdk"                : "https://android.googlesource.com/platform/external/dng_sdk.git@dbe0a676450d9b8c71bf00688bb306409b779e90",
   "third_party/externals/egl-registry"           : "https://skia.googlesource.com/external/github.com/KhronosGroup/EGL-Registry@b055c9b483e70ecd57b3cf7204db21f5a06f9ffe",
@@ -111,3 +106,12 @@ deps = {
     'condition': 'False',
   },
 }
+
+hooks = [
+  {
+    'name': 'dawn_deps',
+    'pattern': 'third_party/externals/dawn',
+    'action': ['vpython3', 'third_party/externals/dawn/tools/fetch_dawn_dependencies.py',
+    '--directory=third_party/externals/dawn/third_party', '--no-shallow'],
+  },
+]
