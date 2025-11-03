@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f157c657_65d61024",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T21:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaf28d0d_360f14fb",
+      "revId": "f3c2077c0e91aa96eebdaa461fc89f2b2edbb0ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "218bd51a_019feda5",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-11-03T18:53:23Z",
       "side": 1,
       "message": "Can the \u0027:\u0027 be down here beneath the \u0027?\u0027 ?",
+      "revId": "f3c2077c0e91aa96eebdaa461fc89f2b2edbb0ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6418fef6_f83aa501",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1353,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T21:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "218bd51a_019feda5",
       "revId": "f3c2077c0e91aa96eebdaa461fc89f2b2edbb0ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
