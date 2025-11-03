@@ -290,7 +290,6 @@ static int key_to_string(const Caps* caps,
         SkASSERT(currentIndex + dataIndexCount < SkTo<int>(keyData.size()));
 
         bool descriptiveFormAppended = false;
-#if 0 // To be turned on in the next CL
         if (dataIndexCount == 3) {
             // Attempt to append the sampler data as human-readable YCbCr information
             SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
@@ -305,7 +304,6 @@ static int key_to_string(const Caps* caps,
                 }
             }
         }
-#endif
 
         if (!descriptiveFormAppended) {
             append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
