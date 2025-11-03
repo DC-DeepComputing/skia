@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf7d0ad_15bfe673",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T21:51:53Z",
+      "side": 1,
+      "message": "Gerrit let me +2 submit even though I had an unpublished edit on the CL!",
+      "revId": "0031c6a1279322e9467a64201d3e0b07174d60bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
