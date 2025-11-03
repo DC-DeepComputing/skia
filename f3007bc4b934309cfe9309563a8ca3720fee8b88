@@ -1,0 +1,694 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e4c751c_3147f364",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "WDYT about moving this comment to just above the for loop over the renderer\u0027s steps?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 55
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "366f34b2_4b3ea073",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "This comment isn\u0027t true anymore right?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 76
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88106655_99f90f1b",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit. Remove?",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 29
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3de69a5d_b9b6fa52",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 110
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e18aed50_93e2a7dd",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "Can we add a comment here that the RenderStep uniforms have to be emitted after the paint uniforms in order to match the expectations of PipelineDataGatherer?",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 32
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db684d84_17c28d1c",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 103
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "103586c0_37630749",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "This can be `ShaderInfo::SharedGeneratorData`\n\nnit: update fields to have `f` prefix.",
+      "range": {
+        "startLine": 752,
+        "startChar": 7,
+        "endLine": 752,
+        "endChar": 26
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2486601b_988bb840",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "Does it fit to move the `:` below the `?` and have `DstReadStrategy::kNone` lined up with the rpDesc field?",
+      "range": {
+        "startLine": 787,
+        "startChar": 86,
+        "endLine": 788,
+        "endChar": 77
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "915a941c_a7608bc4",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "index",
+      "range": {
+        "startLine": 800,
+        "startChar": 53,
+        "endLine": 800,
+        "endChar": 60
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21166121_2255a6f4",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 802,
+        "startChar": 0,
+        "endLine": 802,
+        "endChar": 101
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f70e31a2_4b41a4b2",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "The VS should not require a varying to be declared in order to use the ssbo index from the input attributes. We only need the varying if we have to convey it to the FS.",
+      "range": {
+        "startLine": 865,
+        "startChar": 0,
+        "endLine": 865,
+        "endChar": 70
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92124107_4616fe7f",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "A lot of this could be moved into the constructor for SharedGeneratorData or a helper function on that type instead of Make.",
+      "range": {
+        "startLine": 821,
+        "startChar": 3,
+        "endLine": 884,
+        "endChar": 0
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "487dd61b_903e4592",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I don\u0027t know if we need to pass this in? If the nodes have uniforms declared, and caps says SSBOs are supported, then generateFragmentSkSL has all the information it needs to just use storage buffer generation instead of passing in another parameter that is coupled with the Make() function.",
+      "range": {
+        "startLine": 898,
+        "startChar": 37,
+        "endLine": 898,
+        "endChar": 62
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3416a4d3_9f29b1e8",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "Let\u0027s declare this closer to where we first reference it.",
+      "range": {
+        "startLine": 968,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 27
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ab80565_1131225b",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "Yes, I think we can remove this",
+      "range": {
+        "startLine": 994,
+        "startChar": 0,
+        "endLine": 994,
+        "endChar": 92
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0641329_09e9d4e1",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 1350,
+        "startChar": 0,
+        "endLine": 1350,
+        "endChar": 101
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3cf7eb2_c9c6127c",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 1360,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 101
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efdc1baa_d8c09547",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "The logic is somewhat tricky to follow because we have 3 different places that may add this local value or assign it along to the varying.\n\nI think if we just add an if at the start that\u0027s like\n\n    if (hasSsboIndicesVarying || (useUniformStorageBufferVS \u0026\u0026 (hasStepUniforms || hasLiftedPaintUniforms)) {\n        // declare local variable\n    }\n    \nThen all the 3 places that use it later should be able to just assume it exists.",
+      "range": {
+        "startLine": 1364,
+        "startChar": 0,
+        "endLine": 1365,
+        "endChar": 71
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "507b5d70_be3d23b1",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I don\u0027t think using a move here on the sharedPreamble buys us much because we are immediatley re-allocating with the `reserve()`, which will copy sharedPreamble into it anyways.\n\nWe can just pass in the SharedGeneratorData as a const\u0026 to keep things the same between FS and VS generation functons.",
+      "range": {
+        "startLine": 1409,
+        "startChar": 0,
+        "endLine": 1409,
+        "endChar": 55
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d9d3174_eeb7bdec",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "You can forward declare this inside the private section of ShaderInfo since it\u0027s only used for its generateSkSL function signatures.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 27
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3907b6ba_6491f6ac",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem like it\u0027s meant to be for `hasGradientBuffer`.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 95
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2665ac7a_4c70bd15",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "cleanup?",
+      "range": {
+        "startLine": 127,
+        "startChar": 42,
+        "endLine": 127,
+        "endChar": 49
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6df22ba_711bc134",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: when we\u0027re restoring the required alignment here, the fMarkedAlignment only is the paint\u0027s required alignment so that we can accumulate the new LCM for the next render step.",
+      "range": {
+        "startLine": 91,
+        "startChar": 63,
+        "endLine": 91,
+        "endChar": 73
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e59a32_2818c00c",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I think it would be more accurate to assert that rewindToOffset and marking of an offset are not called when inside an open struct declaration.",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e64b313_84e8ad4e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I don\u0027t think we can get rid of the alignTo because we may have trailing padding that must be included to get the final size correct.\n\nWe can/should change the starting value of fReqAlignment to be 1 and then can at least remove the branch.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 9
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25084d7a_13ae9a0c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 254,
+        "startChar": 62,
+        "endLine": 254,
+        "endChar": 63
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e9cd6f_fadf509e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "We could take a non-shading parameter here to also handle resetting the required alignment and remove `alignForNonShading()`?\n\nPipelineDataGatherer can call this markRewindOffset() and then query the uniform manager\u0027s size afterwards?\n\nWe also need non-shading uniforms to start at their required alignment, not the required alignment of the paint uniform block. So we could have the branching behavior determined by whether or not we pass in a required alignment to start at. RenderSteps would calculate their required alignment at creation time so that DrawList could pass it in if they don\u0027t perform shading.",
+      "range": {
+        "startLine": 264,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 29
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82e8a8f2_1baac416",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I think PipelineDataGatherer can be responsible for holding this and calling `finish(offset)` directly.",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 30
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba3f65d_99651b7c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "I would group `fRewindOffset` and `fMarkedAlignment` together after `fReqAlignment` and `fStructBaseAlignment` since the former are for the mark/rewind system and the latter are for tracking what\u0027s being written.",
+      "range": {
+        "startLine": 450,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 29
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a34fcd3_4c4ca516",
+        "filename": "src/gpu/graphite/render/AnalyticBlurRenderStep.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:30:44Z",
+      "side": 1,
+      "message": "nit: `ssboIndex` here and the attribute declarations in the render steps",
+      "range": {
+        "startLine": 33,
+        "startChar": 64,
+        "endLine": 33,
+        "endChar": 75
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
