@@ -145,6 +145,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "583c48f5_1d01c7e9",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1978,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-11-03T14:51:55Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 1978,
+        "startChar": 57,
+        "endLine": 1978,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9f90e265_df63dd12",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 1978,
+                "startChar": 0,
+                "endLine": 1979,
+                "endChar": 0
+              },
+              "replacement": "    static SkPath MakeInternal(const SkPathVerbAnalysis\u0026 analysis,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d15444797833cfc9cad8fd62d200654aee81292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "031c3bca_b65c041b",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 11
