@@ -16,6 +16,23 @@
       "message": "@kjlubick and/or @bungeman, can you PTAL?",
       "revId": "5e56c35777e8c59cf0be979dffa7023d6a3388dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4536ceee_2fed5cc7",
+        "filename": "fuzz/FuzzEncoders.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-03T15:11:34Z",
+      "side": 1,
+      "message": "The right way to go about doing this would be to create a new fuzzer, not attempt to replace this one.",
+      "revId": "5e56c35777e8c59cf0be979dffa7023d6a3388dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
