@@ -208,7 +208,6 @@ VulkanYcbcrConversionInfo VulkanYcbcrConversion::FromImmutableSamplerInfo(
     VulkanYcbcrConversionInfo vkInfo(format, externalFormat, model, range, xChromaOffset,
                                      yChromaOffset, chromaFilter, forceExplicitReconstruction,
                                      components, chromaMustMatch, supportsLinearFilter);
-
     return vkInfo;
 }
 

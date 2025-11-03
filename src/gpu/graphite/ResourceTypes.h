@@ -222,7 +222,7 @@ struct SamplerDesc {
     constexpr SamplerDesc& operator=(const SamplerDesc&) = default;
 
 #if defined(GPU_TEST_UTILS)
-    constexpr SamplerDesc(uint32_t desc, uint32_t format, uint32_t extFormatMSB)
+    constexpr SamplerDesc(uint32_t desc, uint32_t format, uint32_t extFormatMSB, bool)
             : fDesc(desc)
             , fFormat(format)
             , fExternalFormatMostSignificantBits(extFormatMSB) {}

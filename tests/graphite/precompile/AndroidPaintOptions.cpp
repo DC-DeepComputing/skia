@@ -1138,6 +1138,7 @@ void VisitAndroidPrecompileSettings_Protected(
     // The number in parentheses after the label indices following the "handles" keyword is the
     // index of the label in the old set.
     const PrecompileSettings precompileCases[] = {
+#if 0
         // 0: 100% (1/1) handles: 0 (63*) and 105 (63)
         { Builder().hwImg(kPremul).srcOver(),
           DrawTypeFlags::kAnalyticRRect,
@@ -1201,6 +1202,7 @@ void VisitAndroidPrecompileSettings_Protected(
         { {}, // ignored
           DrawTypeFlags::kDropShadows,
           kRGBA_1_D },
+#endif
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
         // 15: 100% (1/1) handles: 2 (46)
