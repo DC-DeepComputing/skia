@@ -268,6 +268,11 @@ def main(argv):
   subprocess.check_call(
       [sys.executable,
        os.path.join(os.path.dirname(deps_file_path), 'bin', 'fetch-gn')])
+  subprocess.check_call(
+      ['vpython3',
+       os.path.join(os.path.dirname(deps_file_path), 'third_party', 'externals', 'dawn', 'tools', 'fetch_dawn_dependencies.py'),
+       '--directory',
+       os.path.join(os.path.dirname(deps_file_path), 'third_party', 'externals', 'dawn')])
   if not skip_emsdk:
     subprocess.check_call(
         [sys.executable,
