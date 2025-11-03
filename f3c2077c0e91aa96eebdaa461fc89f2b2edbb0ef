@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43aa4c02_6055f1a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-03T16:41:16Z",
+      "side": 1,
+      "message": "This no longer causes pixel diffs in skia or chrome; the red appears to be ToT build failures in chrome. The mac-arm jobs pass successfully where they didn\u0027t use to when the inverse local matrix was being constructed directly from Rect2Rect(dst, src). In the latest CLs it\u0027s back to computing the local matrix up front (Rect2Rect(src, dst)) and then inverting it.",
+      "revId": "f3c2077c0e91aa96eebdaa461fc89f2b2edbb0ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
