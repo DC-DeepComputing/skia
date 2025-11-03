@@ -269,7 +269,7 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
 
     REPORTER_ASSERT(reporter, matchesInCases.size() >= 1,   // This tests requirement 1, above
                     "%d: num matches: %zu", precompileSettingsIndex, matchesInCases.size());
-    float utilization = ((float) matchesInCases.size())/generatedLabels.size();
+    float utilization = generatedLabels.size() ? ((float) matchesInCases.size())/generatedLabels.size() : -1;
     REPORTER_ASSERT(reporter, utilization >= 0.4f,         // This tests requirement 2, above
                     "%d: utilization: %f", precompileSettingsIndex, utilization);
 

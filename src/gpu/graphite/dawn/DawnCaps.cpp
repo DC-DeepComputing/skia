@@ -1213,7 +1213,7 @@ std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo)
 #if defined(__EMSCRIPTEN__)
     return "";
 #else
-    wgpu::YCbCrVkDescriptor info =
+    const wgpu::YCbCrVkDescriptor info =
                 DawnDescriptorFromImmutableSamplerInfo(immutableSamplerInfo);
     if (!DawnDescriptorIsValid(info)) {
         return "";
@@ -1223,7 +1223,7 @@ std::string DawnCaps::toString(const ImmutableSamplerInfo& immutableSamplerInfo)
 
     if (info.vkFormat == 0) {
         result += 'x';
-        result += info.externalFormat;
+        result += std::to_string(info.externalFormat());
     } else {
         result += info.vkFormat;
     }
