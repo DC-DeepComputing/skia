@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b805591_7f45fa6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T18:04:17Z",
+      "side": 1,
+      "message": "@kjlubick and/or @bungeman, can you PTAL?  This is a reland of https://review.skia.org/1090776 (which you have already reviewed and LGTM-ed), but with new tweaks in `BUILD.gn` and adding `FuzzPNGRustEncoder.cpp` - see the delta at https://skia-review.googlesource.com/c/skia/+/1092696/1..4",
+      "revId": "c669eb0dfddc16db43ac0466b72ec4ed0889dec8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
