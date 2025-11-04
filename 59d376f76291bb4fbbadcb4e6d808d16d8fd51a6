@@ -22,6 +22,30 @@
       },
       "revId": "59d376f76291bb4fbbadcb4e6d808d16d8fd51a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c09c73a8_8ceb6dde",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Good catch! Fixed.",
+      "parentUuid": "b7c1b3a4_8fd8dd3d",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 69
+      },
+      "revId": "59d376f76291bb4fbbadcb4e6d808d16d8fd51a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

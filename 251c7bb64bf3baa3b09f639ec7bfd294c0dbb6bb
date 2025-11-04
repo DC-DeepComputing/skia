@@ -70,6 +70,30 @@
       },
       "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c15744_cbb1897c",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Ah, no, a `ColorTypeInfo`\u0027s order within `FormatInfo` doesn\u0027t actually matter. I was thinking of our SkColorType --\u003e VkFormat mappings, where the order that formats are passed in indicates priority in selecting which format we use for a given color type, which is handled separately.",
+      "parentUuid": "5a2539f3_e688e016",
+      "range": {
+        "startLine": 709,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 13
+      },
+      "revId": "251c7bb64bf3baa3b09f639ec7bfd294c0dbb6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

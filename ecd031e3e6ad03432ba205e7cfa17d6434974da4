@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc1e4ebe_d0d303c7",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Done - will align the rest in this file to do the same in a follow-up CL as discussed offline.",
+      "parentUuid": "66131bc2_20df4fb1",
+      "range": {
+        "startLine": 237,
+        "startChar": 19,
+        "endLine": 237,
+        "endChar": 84
+      },
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f4099d2_004d8a3a",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-10-30T18:26:20Z",
       "side": 1,
       "message": "should this be R16",
+      "range": {
+        "startLine": 926,
+        "startChar": 45,
+        "endLine": 926,
+        "endChar": 54
+      },
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de6ee08c_d1c4afc3",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 13
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f4099d2_004d8a3a",
       "range": {
         "startLine": 926,
         "startChar": 45,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00a4db6c_e4c224f4",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1263,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3186c43_5d1566e9",
+      "range": {
+        "startLine": 1263,
+        "startChar": 56,
+        "endLine": 1263,
+        "endChar": 65
+      },
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44b13d71_29226575",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-10-30T18:26:20Z",
       "side": 1,
       "message": "why are you adding this space before all the g\u0027s in this file?",
+      "range": {
+        "startLine": 310,
+        "startChar": 39,
+        "endLine": 310,
+        "endChar": 40
+      },
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a16b06_41b99e98",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-04T19:23:33Z",
+      "side": 1,
+      "message": "Ah, I had the \"ignore all whitespace changes\" setting enabled within gerrit and my git config for diffs, so I didn\u0027t catch how widespread this change was from my find + replace adventures. I\u0027ve changed this setting in gerrit at least to ignore leading + trailing only.\n\nAnyhow, it seems as though it\u0027s inconsistent whether we use spaces or not between `r,g,b,a` / `r, g, b, a` when defining these load/gather/store operations (e.g. `gather_a16` as opposed to `gather_a8`). I have removed all changes to this file except for the addition of the functions related to the new color type, where I\u0027ve opted to use spaces between each argument passed in to a function. The inconsistency is no big deal and can be addressed in a follow-up if we care.",
+      "parentUuid": "44b13d71_29226575",
       "range": {
         "startLine": 310,
         "startChar": 39,
