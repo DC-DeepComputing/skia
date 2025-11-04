@@ -1,0 +1,412 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c206f1ba_be098552",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "So far I have gone over:\n\n* `SkBmpRustCodec.h` and `SkBmpRustCodec.cpp`: see the comments below\n* `SkBmpRustDecoder.h` and `SkBmpRustDecoder.cpp`: LGTM\n\n-------------------\n\nI also have looked more closely at the option of reusing the BMP decoder from [the `image` crate](https://docs.rs/image).  I apologize for not doing this earlier (ideally before our previous meeting where we tentatively concluded to try a new codec implementation).  FWIW the size of this CL has been a strong motivator for re-considering reusing the `image` crate.\n\nI understand that if we (hypothetically) decide to reverse this decision, then this may result in some unfortunate churn.  The reversal may:\n\n* Invalidate some (but definitely not all) work that you have put into this CL\n* Make some of my code review feedback below non-applicable anymore\n\nWith the disclaimers out of the way, let me try to go over the gaps that [the design doc](https://docs.google.com/document/d/1fc7KI1AhvCOLZhAStg_jIQLlCA3aCZP4vhgFlLn1ZTk/edit?tab\u003dt.0#heading\u003dh.fy7bc7pfp9fa) has identified in the `image` crate:\n\n\u003e Streaming decode not supported\n\n- For PNG this was also missing - we also had to add this in https://github.com/image-rs/image-png/pull/496\n- AFAICT `SkBmpCodec.cpp` only returns `kIncompleteInput` from `SkBmpCodec::ReadHeader` (i.e. doesn’t support streaming decoding of actual pixels).  If this is indeed the case, then maybe initially `SkBmpRustCodec` may ignore streaming and just implement/override `SkCodec::onGetPixels`.  This doesn\u0027t reduce the overall amount of work (since to replicate `blink::BMPImageDecoder`\u0027s functionality we would still need streaming support I think), but splitting the work into smaller CL seems desirable.\n\n\u003e JPEG/PNG encoding: not supported\n\nFWIW https://crbug.com/456842524 proposes to remove Chromium support for JPEG/PNG-embedded-in-BMP.\n\n\u003e OS/2 Advanced Formats: HUFFMAN1D, RLE24 not supported\n\u003e Color management: Color space info, ICC profiles not supported\n\u003e BITMAPARRAY (filetype 0x4241 - “BA” -multiple BMPs in one file) not supported (only file type 0x424D - “BM” is supported, see).\n\nAck.\n\nI note that the public API for accessing the ICC profile already exists, except that `image::codecs::bmp::BmpDecoder` indeed doesn\u0027t implement the `icc_profile` accessor from the `ImageDecoder` trait.\n\nI think the main question here would be about the cost of contributing (+maintaining!) these features 1) in a new library VS 2) in the `image` crate.\n\n\u003e seems far from having a full test coverage\n\nAck.\n\nThis particular gap seems fairly easy to address - IIUC there is already an end-to-end test that tries to decode all the images from https://github.com/image-rs/image/tree/main/tests/images/bmp.  So maybe things would auto-magically work if we just added images from the BMP test suite to that directory?",
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf265732_bf92608d",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "I see that other codecs provide an API that allows their clients to specify if the input is a BMP vs BMP-embedded-in-ICO:\n\n* `SkBmpCodec::MakeFromStream` and `SkBmpCodec::MakeFromIco`\n* `blink::BMPImageReader(..., bool is_in_ico)`\n* [`pub(crate) fn new_with_ico_format`](https://github.com/image-rs/image/blob/3dba2bd6e1e783974cce6e011a6e55be681ddcd3/src/codecs/bmp/decoder.rs#L545) vs public [`BmpDecoder::new`](https://docs.rs/image/latest/image/codecs/bmp/struct.BmpDecoder.html#method.new)\n\nI wonder if we can discuss our longer-term plans for BMP-in-ICO:\n\n* Option 1: Ship `SkBmpRustCodec` itself first.\n    - Option 1a: Provide API that `SkIcoCodec` can use to use `SkBmpRustCodec` instead of `SkBmpCodec`\n    - Option 1b: Continue shipping `SkIcoCodec` built on top of `SkBmpCodec`\n* Option 2: Postpone shipping `SkBmpRustCodec` until it can ship together with `SkIcoRustCodec` (potentially handling ICO \u003d\u003e BMP handoff in the Rust layer, without any C++-level APIs for ICO handling)\n\nOnce we settle on a plan, it would be great to capture that in a TODO comment (or if longer description is needed, then in a bug).",
+      "range": {
+        "startLine": 25,
+        "startChar": 32,
+        "endLine": 25,
+        "endChar": 62
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bdad0e_2a3abd7c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "[`blink::SegmentStream`]() can initially contain only a partial input (e.g. when only a part of a HTTP response has been received).  In this case:\n\n* `SkPngRustDecoder::MakeFromStream` succeeds, and when/if `codec-\u003eincrementalDecode` returns `kIncompleteInput`, then the caller can retry after more data is available through the original input stream.\n* IIUC `SkBmpRustCodec::MakeFromStream` returns `kIncompleteInput`.  This means that when `SkiaImageDecoderBase::OnSetData` receives more data, then it has to retry parsing the BMP from scratch (i.e. calling `OnCreateSkCodec` again, potentially copying the same pixels again).\n\nThe behavior of `SkBmpRustCodec` seems functionally correct, but it\u0027s probably desirable to match what the legacy `blink::BMPImageReader` is doing and supporting streaming/incremental decoding.  FWIW we don\u0027t need to copy the approach of `blink::BMPImageReader` which tracks how far the image has been decoded via [`decoded_offset_`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_reader.h;l\u003d323-324;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) and [`coord_`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_reader.h;l\u003d379-380;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) - we can do something different.  One approach here would be to reuse [`ReadAndSeekTraitsAdapterForSkStream`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d306-308;drc\u003d5658e91de531f3a05ebb87fad3deed5da7ecb5b2) from `SkPngRustCodec.cpp`.  If we decide to try this route, then I think it would be useful to try and move this part of code into `skia/common/rust`:\n\n* `ReadAndSeekTraitsAdapterForSkStream` in `common/SkStreamAdapter.h` and `SkStreamAdapter.cpp`\n* `skia/rust/png/FFI.h` \u003d\u003e `common/SkStreamAdapterInterfaces.h`\n* I/O-trait-related parts of `skia/rust/png/FFI.rs` \u003d\u003e `io_traits_ffi.rs`\n* Adjust `#[cxx::bridge]` as needed - most likely using techniques from https://cxx.rs/extern-c++.html#safely-unifying-occurrences-of-an-extern-type-across-bridges",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a35e1ab_b204b842",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Can you help me understand why this a soft `kIncompleteInput` failure can\u0027t happen here?  I see the `kSizeOfFileHeader` checks on line 42, but I assume that `BITMAPV5HEADER` can still be partially received / truncated.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f19f5010_ef6f9f82",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Should there be a `TODO` here for handling ICC profile data?",
+      "range": {
+        "startLine": 86,
+        "startChar": 32,
+        "endLine": 86,
+        "endChar": 51
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78a4e824_0cdbdfeb",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Would it be possible to read/manipulate these bytes on Rust side?  Maybe returning the row order as a field of `DecodeInfoResult`?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 5
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a99c3db2_a3b7a76a",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "nit: `std::move` to avoid ref-count churn?\n\n```suggestion\n        std::move(data),  // Cache the data we read\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 12
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eba1f778_a54a5bf5",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Please either:\n\n* Add a comment why integer overflow is not possible here (maybe also adding `SkASSERT` or `SkASSERT_RELEASE` that explains why `width` is capped\n* Use `SkSafeMath`",
+      "range": {
+        "startLine": 171,
+        "startChar": 58,
+        "endLine": 171,
+        "endChar": 59
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3efa36a_e7aa6522",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Pointer manipulation here may bypass C++ stdlib hardening - I would suggest to replace this with `operator[]` instead:\n\n```suggestion\n        const uint8_t* srcRow \u003d \u0026fDecodingState-\u003efRustDecodedData[y * srcRowBytes];\n```\n\nEven better, we probably should use `span`s instead of raw pointers.  `SkSpan` is a bit limited compared to `std::span` (or to Chromium\u0027s `base::span`), but it still seems beneficial.  So maybe (hand-waving) something like this:\n\n```\n    const SkSpan\u003cconst uint8_t\u003e srcImage \u003d fDecodingState-\u003efRustDecodedData;\n    for (int y \u003d 0; y \u003c height; ++y) {\n        const SkSpan\u003cconst uint8_t\u003e srcRow \u003d srcImage.first(srcRowBytes);\n        // ...\n        \n        srcImage \u003d srcImage.subspan(srcRowBytes);\n    }\n```\n\n(Using spans will also side-step the question if the multiplication here is safe from integer overflow.)",
+      "range": {
+        "startLine": 183,
+        "startChar": 32,
+        "endLine": 183,
+        "endChar": 89
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6197e1e_311a2df9",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "This manual calculation looks okay, but I think it can be avoided by using `SkPixmap`:\n\n```\n// At the top of the method:\nSkPixmap dstPixmap(dstInfo, dst, dstRowStride);\n\n// And then here:\nuint8_t* dstRow \u003d dstPixmap.writable_addr8(0, y);\n```\n\n(I think it would be great if `SkPixmap` could be potentially extended with `writable_row8(int y)` API that returns `SkSpan\u003cuint8_t\u003e`.  That seems like something that could be done in a separate CL.  OTOH maybe this requires a more strategic approach to span-ification of Skia.)",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 71
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa3212d_8d20632e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "IIUC this `else` block can execute when `dstRow` is (say) `kGray_8_SkColorType`.  In this case, `memcpy` would be incorrect.  AFAIU the legacy `SkBmpCodec` [uses](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkBmpStandardCodec.cpp;l\u003d227;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) `SkSwizzler` to handle all the pixel format transformations.  I think using `SkSwizzler` would also let us avoid the manual BGR/RGB -\u003e RGB_565 and RGBA/BGRA transformations on lines 186-260.",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 71
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3783ee74_1cb5106c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "This works (and microoptimizations are the root of all evil), but I wonder if we could avoid copying the pixels here by storing `rust::Vec\u003cuint8_t\u003e` and then doing `fDecodingState-\u003efRustDecodedData \u003d std::move(decode_result.pixels)`.",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 6
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6c499d1_aa36a351",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "I think this needs an explanatory anti-integer-overflow comment or `SkSafeMath`.",
+      "range": {
+        "startLine": 333,
+        "startChar": 37,
+        "endLine": 333,
+        "endChar": 38
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "273b7832_aa9df7f5",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Here I would also suggest using `SkSpan` instead of manually manipulating pointers.",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 49
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623cdb95_81f5d080",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "I assume that this also needs to take `dstInfo` into account?",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 14
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "966c450c_e85ae906",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "nit: I would remove this comment - this info can be inferred from the field name + type.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 28
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dda42fd_fe83b5fd",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "nit: I would remove this comment - this info can be inferred from the field name + type.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 21
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "655a88cb_dd1b0c5a",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T01:19:58Z",
+      "side": 1,
+      "message": "Can that be `std::optional`?",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 19
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
