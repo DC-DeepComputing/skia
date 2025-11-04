@@ -63,6 +63,30 @@
       },
       "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f3fa17_9e072674",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-04T16:57:36Z",
+      "side": 1,
+      "message": "Oh and to be clear the pattern i\u0027m talking about above is a patter matching the directories/files, not the jobs themselves.",
+      "parentUuid": "eb79b5eb_71da7e8b",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 7
+      },
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
