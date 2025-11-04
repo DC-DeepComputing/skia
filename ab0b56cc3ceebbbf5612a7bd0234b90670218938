@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d96c5d_36dd8e17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-04T18:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "681d1811_0bad493f",
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2031419_585a3af2",
@@ -136,6 +154,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a463f36d_dd1cd101",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2017,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-04T18:57:20Z",
+      "side": 1,
+      "message": "woops copied wrong block fixed.",
+      "parentUuid": "f8e12a1a_2410aa38",
+      "range": {
+        "startLine": 2017,
+        "startChar": 0,
+        "endLine": 2017,
+        "endChar": 16
+      },
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42613c94_0b4f6460",
@@ -167,6 +209,24 @@
       "side": 1,
       "message": "oh yeah I will. I just did this so the CQ would trigger the trybots so yall could see them. Will be removed by the time a land this",
       "parentUuid": "42613c94_0b4f6460",
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35945ce4_8aa40b92",
+        "filename": "src/gpu/graphite/Texture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-04T18:57:20Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "1f37e636_6a8af719",
       "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
