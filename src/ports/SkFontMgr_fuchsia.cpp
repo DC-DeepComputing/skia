@@ -17,10 +17,12 @@
 #include "src/ports/SkFontMgr_custom.h"
 #include "src/ports/SkFontScanner_FreeType_priv.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_proxy.h"
 
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "include/ports/SkFontScanner_FreeType.h"
 #include "include/private/base/SkThreadAnnotations.h"
 #include "src/core/SkTypefaceCache.h"
 
@@ -230,63 +232,49 @@ struct TypefaceId {
 
 constexpr kNullTypefaceId = {0xFFFFFFFF, 0xFFFFFFFF};
 
-class SkTypeface_Fuchsia : public SkTypeface_FreeTypeStream {
+class SkTypeface_Fuchsia : public SkTypeface_proxy {
 public:
-    SkTypeface_Fuchsia(std::unique_ptr<SkFontData> fontData, const SkFontStyle& style,
-                       bool isFixedPitch, const SkString familyName, TypefaceId id)
-            : SkTypeface_FreeTypeStream(std::move(fontData), familyName, style, isFixedPitch)
-            , fId(id) {}
+    static sk_sp<SkTypeface_Fuchsia> Make(sk_sp<SkTypeface> realTypeface,
+                                          const SkFontStyle& style,
+                                          bool isFixedPitch,
+                                          TypefaceId id) {
+        SkASSERT(realTypeface);
+        return sk_sp(new SkTypeface_Fuchsia(std::move(realTypeface), style, isFixedPitch, id));
+    }
 
-    TypefaceId id() { return fId; }
+    TypefaceId id() const { return fId; }
+
+protected:
+    SkTypeface_Fuchsia(sk_sp<SkTypeface> realTypeface,
+                       const SkFontStyle& style,
+                       bool isFixedPitch,
+                       TypefaceId id)
+            : SkTypeface_proxy(std::move(realTypeface), style, isFixedPitch), fId(id) {}
+
+    sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
+        auto proxy = SkTypeface_proxy::onMakeClone(args);
+        if (proxy == nullptr) {
+            return nullptr;
+        }
+        return Make(std::move(proxy), this->fontStyle(), this->isFixedPitch(), id());
+    }
+
+    void onGetFamilyName(SkString* familyName) const override {
+        return SkTypeface_proxy::onGetFamilyName(familyName);
+    }
+
+    SkFontStyle onGetFontStyle() const override { return SkTypeface_proxy::onGetFontStyle(); }
+
+    bool onGetFixedPitch() const override { return SkTypeface_proxy::onGetFixedPitch(); }
 
 private:
     TypefaceId fId;
 };
 
-sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stream,
-                                             const SkFontArguments& args, TypefaceId id) {
-    SkFontScanner_FreeType fontScanner;
-    int numInstances;
-    if (!fontScanner.scanFace(stream.get(), args.getCollectionIndex(), &numInstances)) {
-        return nullptr;
-    }
-    bool isFixedPitch;
-    SkFontStyle style;
-    SkString name;
-    SkFontScanner::AxisDefinitions axisDefinitions;
-    SkFontScanner::VariationPosition current;
-    if (!fontScanner.scanInstance(stream.get(),
-                                  args.getCollectionIndex(),
-                                  0,
-                                  &name,
-                                  &style,
-                                  &isFixedPitch,
-                                  &axisDefinitions,
-                                  &current)) {
-        return nullptr;
-    }
-
-    const SkFontArguments::VariationPosition position = args.getVariationDesignPosition();
-    AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
-    const SkFontArguments::VariationPosition currentPos{current.data(), current.size()};
-    SkFontScanner_FreeType::computeAxisValues(axisDefinitions, currentPos, position, axisValues,
-                                              name, &style);
-
-    auto fontData = std::make_unique<SkFontData>(
-        std::move(stream), args.getCollectionIndex(), args.getPalette().index,
-        axisValues.get(), axisDefinitions.size(),
-        args.getPalette().overrides, args.getPalette().overrideCount);
-    return sk_make_sp<SkTypeface_Fuchsia>(std::move(fontData), style, isFixedPitch, name, id);
-}
-
-sk_sp<SkTypeface> CreateTypefaceFromSkData(sk_sp<SkData> data, TypefaceId id) {
-    return CreateTypefaceFromSkStream(std::make_unique<SkMemoryStream>(std::move(data)),
-                                      SkFontArguments().setCollectionIndex(id.ttcIndex), id);
-}
-
 class SkFontMgr_Fuchsia final : public SkFontMgr {
 public:
-    SkFontMgr_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider);
+    SkFontMgr_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider,
+                      std::unique_ptr<SkFontScanner> scanner);
     ~SkFontMgr_Fuchsia() override;
 
 protected:
@@ -295,10 +283,13 @@ protected:
     void onGetFamilyName(int index, SkString* familyName) const override;
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override;
     sk_sp<SkFontStyleSet> onCreateStyleSet(int index) const override;
-    sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[], const SkFontStyle&) const override;
-    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[], const SkFontStyle&,
-                                            const char* bcp47[], int bcp47Count,
-                                            SkUnichar character) const override;
+    sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
+                                         const SkFontStyle&) const override;
+    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
+                                                  const SkFontStyle&,
+                                                  const char* bcp47[],
+                                                  int bcp47Count,
+                                                  SkUnichar character) const override;
     sk_sp<SkTypeface> onMakeFromData(sk_sp<SkData>, int ttcIndex) const override;
     sk_sp<SkTypeface> onMakeFromStreamIndex(std::unique_ptr<SkStreamAsset>,
                                             int ttcIndex) const override;
@@ -310,9 +301,13 @@ protected:
 private:
     friend class SkFontStyleSet_Fuchsia;
 
-    sk_sp<SkTypeface> FetchTypeface(const char familyName[], const SkFontStyle& style,
-                                    const char* bcp47[], int bcp47Count, SkUnichar character,
-                                    bool allow_fallback, bool exact_style_match) const;
+    sk_sp<SkTypeface> FetchTypeface(const char familyName[],
+                                    const SkFontStyle& style,
+                                    const char* bcp47[],
+                                    int bcp47Count,
+                                    SkUnichar character,
+                                    bool allow_fallback,
+                                    bool exact_style_match) const;
 
     sk_sp<SkTypeface> GetOrCreateTypeface(TypefaceId id, const fuchsia::mem::Buffer& buffer) const;
 
@@ -322,12 +317,14 @@ private:
 
     mutable SkMutex fCacheMutex;
     mutable SkTypefaceCache fTypefaceCache SK_GUARDED_BY(fCacheMutex);
+    std::unique_ptr<SkFontScanner> fScanner;
 };
 
 class SkFontStyleSet_Fuchsia : public SkFontStyleSet {
 public:
-    SkFontStyleSet_Fuchsia(sk_sp<SkFontMgr_Fuchsia> font_manager, std::string familyName,
-                 std::vector<SkFontStyle> styles)
+    SkFontStyleSet_Fuchsia(sk_sp<SkFontMgr_Fuchsia> font_manager,
+                           std::string familyName,
+                           std::vector<SkFontStyle> styles)
             : fFontManager(font_manager), fFamilyName(familyName), fStyles(styles) {}
 
     ~SkFontStyleSet_Fuchsia() override = default;
@@ -348,10 +345,13 @@ public:
         if (fTypefaces.empty()) fTypefaces.resize(fStyles.size());
 
         if (!fTypefaces[index]) {
-            fTypefaces[index] = fFontManager->FetchTypeface(
-                    fFamilyName.c_str(), fStyles[index], /*bcp47=*/nullptr,
-                    /*bcp47Count=*/0, /*character=*/0,
-                    /*allow_fallback=*/false, /*exact_style_match=*/true);
+            fTypefaces[index] = fFontManager->FetchTypeface(fFamilyName.c_str(),
+                                                            fStyles[index],
+                                                            /*bcp47=*/nullptr,
+                                                            /*bcp47Count=*/0,
+                                                            /*character=*/0,
+                                                            /*allow_fallback=*/false,
+                                                            /*exact_style_match=*/true);
         }
 
         return fTypefaces[index];
@@ -368,8 +368,11 @@ private:
     std::vector<sk_sp<SkTypeface>> fTypefaces;
 };
 
-SkFontMgr_Fuchsia::SkFontMgr_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider)
-        : fFontProvider(std::move(provider)), fBufferCache(sk_make_sp<SkFuchsiaFontDataCache>()) {}
+SkFontMgr_Fuchsia::SkFontMgr_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider,
+                                     std::unique_ptr<SkFontScanner> scanner)
+        : fFontProvider(std::move(provider))
+        , fBufferCache(sk_make_sp<SkFuchsiaFontDataCache>())
+        , fScanner(std::move(scanner)) {}
 
 SkFontMgr_Fuchsia::~SkFontMgr_Fuchsia() = default;
 
@@ -398,31 +401,42 @@ sk_sp<SkFontStyleSet> SkFontMgr_Fuchsia::onMatchFamily(const char familyName[]) 
 
     std::vector<SkFontStyle> styles;
     for (auto& style : familyInfo.styles()) {
-        styles.push_back(SkFontStyle(style.weight(), FuchsiaToSkWidth(style.width()),
-                                     FuchsiaToSkSlant(style.slant())));
+        styles.push_back(SkFontStyle(
+                style.weight(), FuchsiaToSkWidth(style.width()), FuchsiaToSkSlant(style.slant())));
     }
 
     return sk_sp<SkFontStyleSet>(
-        new SkFontStyleSet_Fuchsia(sk_ref_sp(this), familyInfo.name().name, std::move(styles)));
+            new SkFontStyleSet_Fuchsia(sk_ref_sp(this), familyInfo.name().name, std::move(styles)));
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMatchFamilyStyle(const char familyName[],
                                                         const SkFontStyle& style) const {
-    return FetchTypeface(familyName, style, /*bcp47=*/nullptr, /*bcp47Count=*/0, /*character=*/0,
-                         /*allow_fallback=*/false, /*exact_style_match=*/false);
+    return FetchTypeface(familyName,
+                         style,
+                         /*bcp47=*/nullptr,
+                         /*bcp47Count=*/0,
+                         /*character=*/0,
+                         /*allow_fallback=*/false,
+                         /*exact_style_match=*/false);
 }
 
-sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMatchFamilyStyleCharacter(
-    const char familyName[], const SkFontStyle& style,
-    const char* bcp47[], int bcp47Count,
-    SkUnichar character) const
-{
-    return FetchTypeface(familyName, style, bcp47, bcp47Count, character,
-                         /*allow_fallback=*/true, /*exact_style_match=*/false);
+sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMatchFamilyStyleCharacter(const char familyName[],
+                                                                 const SkFontStyle& style,
+                                                                 const char* bcp47[],
+                                                                 int bcp47Count,
+                                                                 SkUnichar character) const {
+    return FetchTypeface(familyName,
+                         style,
+                         bcp47,
+                         bcp47Count,
+                         character,
+                         /*allow_fallback=*/true,
+                         /*exact_style_match=*/false);
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMakeFromData(sk_sp<SkData> data, int ttcIndex) const {
-    return makeFromStream(std::make_unique<SkMemoryStream>(std::move(data)), ttcIndex);
+    return makeFromStream(std::unique_ptr<SkStreamAsset>(new SkMemoryStream(std::move(data))),
+                          ttcIndex);
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMakeFromStreamIndex(std::unique_ptr<SkStreamAsset> asset,
@@ -432,21 +446,31 @@ sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMakeFromStreamIndex(std::unique_ptr<SkStr
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMakeFromStreamArgs(std::unique_ptr<SkStreamAsset> asset,
                                                           const SkFontArguments& args) const {
-    return CreateTypefaceFromSkStream(std::move(asset), args, kNullTypefaceId);
+    return fScanner->MakeFromStream(std::move(asset), args);
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onMakeFromFile(const char path[], int ttcIndex) const {
-    return makeFromStream(std::make_unique<SkFILEStream>(path), ttcIndex);
+    std::unique_ptr<SkStreamAsset> asset = SkStream::MakeFromFile(path);
+    return asset ? makeFromStream(std::move(asset), ttcIndex) : nullptr;
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::onLegacyMakeTypeface(const char familyName[],
                                                           SkFontStyle style) const {
-    return sk_sp<SkTypeface>(matchFamilyStyle(familyName, style));
+    return sk_sp<SkTypeface>(this->onMatchFamilyStyle(familyName, style));
+}
+
+static bool FindByTypefaceId(SkTypeface* cachedTypeface, void* ctx) {
+    SkTypeface_Fuchsia* cachedFuchsiaTypeface = static_cast<SkTypeface_Fuchsia*>(cachedTypeface);
+    TypefaceId* id = static_cast<TypefaceId*>(ctx);
+
+    return cachedFuchsiaTypeface->id() == *id;
 }
 
 sk_sp<SkTypeface> SkFontMgr_Fuchsia::FetchTypeface(const char familyName[],
-                                                   const SkFontStyle& style, const char* bcp47[],
-                                                   int bcp47Count, SkUnichar character,
+                                                   const SkFontStyle& style,
+                                                   const char* bcp47[],
+                                                   int bcp47Count,
+                                                   SkUnichar character,
                                                    bool allow_fallback,
                                                    bool exact_style_match) const {
     fuchsia::fonts::TypefaceQuery query;
@@ -497,34 +521,38 @@ sk_sp<SkTypeface> SkFontMgr_Fuchsia::FetchTypeface(const char familyName[],
     // The service may return an empty response if there is no font matching the request.
     if (response.IsEmpty()) return nullptr;
 
-    return GetOrCreateTypeface(TypefaceId{response.buffer_id(), response.font_index()},
-                               response.buffer());
-}
+    // return GetOrCreateTypeface(TypefaceId{response.buffer_id(), response.font_index()},
+    //                            response.buffer());
 
-static bool FindByTypefaceId(SkTypeface* cachedTypeface, void* ctx) {
-    SkTypeface_Fuchsia* cachedFuchsiaTypeface = static_cast<SkTypeface_Fuchsia*>(cachedTypeface);
-    TypefaceId* id = static_cast<TypefaceId*>(ctx);
-
-    return cachedFuchsiaTypeface->id() == *id;
-}
-
-sk_sp<SkTypeface> SkFontMgr_Fuchsia::GetOrCreateTypeface(TypefaceId id,
-                                                         const fuchsia::mem::Buffer& buffer) const {
+    TypefaceId id = TypefaceId{response.buffer_id(), response.font_index()};
     SkAutoMutexExclusive mutexLock(fCacheMutex);
 
     sk_sp<SkTypeface> cached = fTypefaceCache.findByProcAndRef(FindByTypefaceId, &id);
     if (cached) return cached;
 
-    sk_sp<SkData> data = fBufferCache->GetOrCreateSkData(id.bufferId, buffer);
+    sk_sp<SkData> data = fBufferCache->GetOrCreateSkData(id.bufferId, response.buffer());
     if (!data) return nullptr;
 
-    auto result = CreateTypefaceFromSkData(std::move(data), id);
-    if (result) {
+    sk_sp<SkTypeface> realTypeface =
+            fScanner->MakeFromStream(SkMemoryStream::Make(std::move(data)),
+                                     SkFontArguments().setCollectionIndex(id.ttcIndex));
+
+    if (realTypeface) {
+        auto result =
+                SkTypeface_Fuchsia::Make(realTypeface, style, realTypeface->isFixedPitch(), id);
         fTypefaceCache.add(result);
+        return result;
     }
-    return result;
+    return nullptr;
 }
 
+sk_sp<SkFontMgr> SkFontMgr_New_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider,
+                                       std::unique_ptr<SkFontScanner> scanner) {
+    return sk_make_sp<SkFontMgr_Fuchsia>(std::move(provider), std::move(scanner));
+}
+
+// TODO: Remove the default FreeType scanner and remove the dependency on it (after we fix all the
+// calls)
 sk_sp<SkFontMgr> SkFontMgr_New_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider) {
-    return sk_make_sp<SkFontMgr_Fuchsia>(std::move(provider));
+    return sk_make_sp<SkFontMgr_Fuchsia>(std::move(provider), SkFontScanner_Make_FreeType());
 }
