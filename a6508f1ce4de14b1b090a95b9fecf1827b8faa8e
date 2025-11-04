@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40917ca9_dc6adb95",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "What does the Y stand for?",
+      "range": {
+        "startLine": 138,
+        "startChar": 10,
+        "endLine": 138,
+        "endChar": 11
+      },
+      "revId": "a6508f1ce4de14b1b090a95b9fecf1827b8faa8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8397bd6a_4a3cda27",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "suggestion: Since the target-0 is on the is same line, we can maybe drop the comment if you think it\u0027s redundant.",
+      "range": {
+        "startLine": 201,
+        "startChar": 29,
+        "endLine": 201,
+        "endChar": 53
+      },
+      "revId": "a6508f1ce4de14b1b090a95b9fecf1827b8faa8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

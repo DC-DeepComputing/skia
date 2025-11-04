@@ -119,6 +119,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "42f15478_691522f8",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8343f783_cc28c7ca",
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b2805d98_0174ce99",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 7
@@ -211,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea8b8d26_c640936c",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0adbfad5_fc56ffa9",
+      "range": {
+        "startLine": 47,
+        "startChar": 13,
+        "endLine": 47,
+        "endChar": 35
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b109588e_860dfb51",
@@ -248,6 +290,30 @@
       "side": 1,
       "message": "Yes, I\u0027d like for an `Agtm` to be const after creation. For now I called this `Agtm`, but I think I\u0027m going to rename it to `AgtmImpl`, and have a public `Agtm` interface with things like:\n\n```\n  class Agtm {\n    public:\n      static sk_sp\u003cAgtm\u003e MakeFromEncoded(const SkData* data);\n      static sk_sp\u003cAgtm\u003e MakeRWTMO(float hdrReferenceWhite,\n                                   float baselineHdrHeadroom);\n\n      virtual sk_sp\u003cSkColorFilter\u003e makeColorFilter(float targetedHdrHeadroom) \u003d 0;\n  };\n```\n\nIn that case, these various \"populate\" functions are hidden implementation details that are exposed only for testing.\n\nBut it\u0027s not clear to me yet exactly how much of the interface will need to be public. It may be that we\u0027ll need to expose more.",
       "parentUuid": "b109588e_860dfb51",
+      "range": {
+        "startLine": 107,
+        "startChar": 9,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07df87c4_ff192b90",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6b5bc5e2_ec81b527",
       "range": {
         "startLine": 107,
         "startChar": 9,
@@ -328,6 +394,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d4c0b1_bb2351d1",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7049aef5_88fb47ce",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 7
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c297355a_7e6a5c73",
@@ -375,6 +465,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2cf79ce_1adec75a",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "SkColor4f is a good call, even if we don\u0027t \"use\" the alpha.",
+      "parentUuid": "1eeb3ce6_a2e87b14",
+      "range": {
+        "startLine": 108,
+        "startChar": 25,
+        "endLine": 108,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8c66a37_bcbfcc69",
@@ -412,6 +526,30 @@
       "side": 1,
       "message": "Done (the subset structure made that easier).",
       "parentUuid": "d8c66a37_bcbfcc69",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 1
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "165ed61e_25a5dad0",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T13:23:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "854b6d9c_21ed4bfd",
       "range": {
         "startLine": 132,
         "startChar": 0,
