@@ -12,8 +12,13 @@
 
 #include "include/core/SkRefCnt.h"
 
-class SkFontMgr;
+#include <memory>
 
+class SkFontMgr;
+class SkFontScanner;
+
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider, std::unique_ptr<SkFontScanner> scanner);
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_Fuchsia(fuchsia::fonts::ProviderSyncPtr provider);
+
 
 #endif  // SkFontMgr_fuchsia_DEFINED
