@@ -115,6 +115,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8e12a1a_2410aa38",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2017,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-11-04T18:31:10Z",
+      "side": 1,
+      "message": "I\u0027m surprised this isn\u0027t \"bazel/external/dawn/*\"",
+      "range": {
+        "startLine": 2017,
+        "startChar": 0,
+        "endLine": 2017,
+        "endChar": 16
+      },
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42613c94_0b4f6460",
         "filename": "src/gpu/graphite/Texture.cpp",
         "patchSetId": 3
