@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6be37713_2078ae72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ve updated the patch with the suggestions.\n\nThe one thing that is still unclear is what will be needed for the public interface. I\u0027ve outlined what is the minimal public interface needed to render images and videos that use this.\n\nIt may be that web APIs, and display controller programming will come to \"want\" another interface.\n\nFor the moment I\u0027m keeping everything in a private header and using the \"populate\" methods, since that\u0027s the simplest way to write and test (and I still have to add things like the binary encoding, etc).",
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97c71f5d_e8ab511d",
@@ -31,6 +48,30 @@
       "writtenOn": "2025-11-03T21:33:30Z",
       "side": 1,
       "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2f165f2_d68ec4cc",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97c71f5d_e8ab511d",
       "range": {
         "startLine": 2,
         "startChar": 25,
@@ -58,6 +99,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8343f783_cc28c7ca",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done. (There\u0027s debate if we should require they sum to 1 or if we should divide by 1/sum on the spec ... for now I\u0027m sticking with the existing constraint).",
+      "parentUuid": "ace18f96_13623703",
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b2805d98_0174ce99",
@@ -71,6 +130,30 @@
       "writtenOn": "2025-11-03T21:33:30Z",
       "side": 1,
       "message": "FYI: I only have access to draft 1 (which has a different piecewise function), so I cannot double check this.",
+      "range": {
+        "startLine": 110,
+        "startChar": 47,
+        "endLine": 110,
+        "endChar": 64
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7db3b32_91c9b18a",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Yeah, CD2 mostly adds sections for binary encoding (which includes PCHIP and RWTMO stuff here). I\u0027ve sent you a PDF of where it stands.",
+      "parentUuid": "b2805d98_0174ce99",
       "range": {
         "startLine": 110,
         "startChar": 47,
@@ -106,6 +189,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0adbfad5_fc56ffa9",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "(See below ... for now this is the simplest way to go, but if we ever need to expose this structure publicly, then I\u0027ll move PCHIP to some private method that can be unit tested).",
+      "parentUuid": "2c4cd1bd_ea19fff2",
+      "range": {
+        "startLine": 47,
+        "startChar": 13,
+        "endLine": 47,
+        "endChar": 35
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b109588e_860dfb51",
         "filename": "src/codec/SkHdrAgtmPriv.h",
         "patchSetId": 7
@@ -129,6 +236,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b5bc5e2_ec81b527",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Yes, I\u0027d like for an `Agtm` to be const after creation. For now I called this `Agtm`, but I think I\u0027m going to rename it to `AgtmImpl`, and have a public `Agtm` interface with things like:\n\n```\n  class Agtm {\n    public:\n      static sk_sp\u003cAgtm\u003e MakeFromEncoded(const SkData* data);\n      static sk_sp\u003cAgtm\u003e MakeRWTMO(float hdrReferenceWhite,\n                                   float baselineHdrHeadroom);\n\n      virtual sk_sp\u003cSkColorFilter\u003e makeColorFilter(float targetedHdrHeadroom) \u003d 0;\n  };\n```\n\nIn that case, these various \"populate\" functions are hidden implementation details that are exposed only for testing.\n\nBut it\u0027s not clear to me yet exactly how much of the interface will need to be public. It may be that we\u0027ll need to expose more.",
+      "parentUuid": "b109588e_860dfb51",
+      "range": {
+        "startLine": 107,
+        "startChar": 9,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f5e57fd_2615ecff",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 7
@@ -140,6 +271,30 @@
       "writtenOn": "2025-11-03T21:33:30Z",
       "side": 1,
       "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cfd746c_3ab4de36",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f5e57fd_2615ecff",
       "range": {
         "startLine": 2,
         "startChar": 25,
@@ -198,6 +353,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1eeb3ce6_a2e87b14",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Yeah, I was thinking to use [SkColor3f](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkPoint3.h;l\u003d147;drc\u003d578e79bdde1c05b1aa8ab6fe23ee4d42e27a43c6), but it seemed a bit dodgy.",
+      "parentUuid": "c297355a_7e6a5c73",
+      "range": {
+        "startLine": 108,
+        "startChar": 25,
+        "endLine": 108,
+        "endChar": 27
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8c66a37_bcbfcc69",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 7
@@ -209,6 +388,30 @@
       "writtenOn": "2025-11-03T21:33:30Z",
       "side": 1,
       "message": "Can we add a test that sets the fRed, fGreen, fBlue params too?",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 1
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "854b6d9c_21ed4bfd",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done (the subset structure made that easier).",
+      "parentUuid": "d8c66a37_bcbfcc69",
       "range": {
         "startLine": 132,
         "startChar": 0,
@@ -242,6 +445,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba3bf1c7_666e69a9",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d1545d4_e8f42681",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 26
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc0d0392_535821d0",
@@ -255,6 +482,30 @@
       "writtenOn": "2025-11-03T21:33:30Z",
       "side": 1,
       "message": "See suggestion above for subtests",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 9
+      },
+      "revId": "dbed597797318cd1de8039862b83bc5b0b71676b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f60592d7_ba7ce811",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T09:56:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc0d0392_535821d0",
       "range": {
         "startLine": 190,
         "startChar": 8,
