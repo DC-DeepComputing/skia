@@ -51,7 +51,6 @@ public:
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
 
-
 private:
 
     MtlSharedContext(sk_cfp<id<MTLDevice>>,

@@ -72,6 +72,60 @@ sk_sp<GraphicsPipeline> ResourceProvider::resolveHandle(const GraphicsPipelineHa
     return pipelineManager->resolveHandle(handle);
 }
 
+#if 0
+sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
+        const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+    auto globalCache = fSharedContext->globalCache();
+
+    GlobalCache* globalCache = fSharedContext->globalCache();
+
+    uint32_t compilationID = 0;
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags,
+                                                                         &compilationID);
+    if (!pipeline) {
+        // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
+        // across Recorders, we could theoretically create equivalent pipelines on different
+        // threads. If this happens, GlobalCache returns the first-through-gate pipeline and we
+        // discard the redundant pipeline. While this is wasted effort in the rare event of a race,
+        // it allows pipeline creation to be performed without locking the global cache.
+        // NOTE: The parameters to TRACE_EVENT are only evaluated inside an if-block when the
+        // category is enabled.
+        TRACE_EVENT1_ALWAYS(
+                "skia.shaders", "createGraphicsPipeline", "desc",
+                TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
+
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+        bool forPrecompile =
+                SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+
+        static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
+        TRACE_EVENT_INSTANT2("skia.gpu",
+                             TRACE_STR_STATIC(kNames[forPrecompile]),
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "key", pipelineKey.hash(),
+                             "compilationID", compilationID);
+#endif
+
+        pipeline = fSharedContext->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                          pipelineDesc, renderPassDesc,
+                                                          pipelineCreationFlags,
+                                                          compilationID);
+        if (pipeline) {
+            globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
+            // TODO: Should we store a null pipeline if we failed to create one so that subsequent
+            // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
+            pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+        }
+    }
+    return pipeline;
+}
+#endif
+
 sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
         const ComputePipelineDesc& pipelineDesc) {
     auto globalCache = fSharedContext->globalCache();

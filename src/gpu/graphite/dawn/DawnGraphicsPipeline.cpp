@@ -785,6 +785,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
            !fAsyncPipelineCreation->fRenderPipeline;
 }
 
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     if (!fAsyncPipelineCreation) {
         static const wgpu::RenderPipeline kNullPipeline = nullptr;
