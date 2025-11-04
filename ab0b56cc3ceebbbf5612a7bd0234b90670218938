@@ -39,6 +39,30 @@
       },
       "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb79b5eb_71da7e8b",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-04T16:56:09Z",
+      "side": 1,
+      "message": "If we see that the CQ for graphite changes stops have really long poles on mac graphite jobs then I would consider removing the pattern matching from these jobs. But like if we were to do that right now (before our change) we\u0027d slow down even more jobs in the CQ.\n\nTBH in some ways I like the pattern matching to keep the CQ as narrow (but useful) as possible. I personally think I would want a system where we first just list every job we want on the waterfall,  i.e. no cq annotation. The have a separate CQ section that looks the following:\n\n```\nCQ_jobs {\n  pattern \"\" {\n  // all default jobs\n  ...\n  }\n  pattern \"something\" {\n  // jobs matching something\n  ...\n  }\n}\n```\n\nNow with this jobs would be listed twice in the main list as well as in the cq list. So we\u0027d need some check to make sure anything in the cq list appears in the main list so we don\u0027t end up with jobs that run on cq but not main waterfall (or maybe we do want that?, could add special tag to say CQ only job).\n\nAnyways for this CL I don\u0027t know if there is a better solution right now with out a large refactor that I\u0027m not looking to do at the moment.",
+      "parentUuid": "f2031419_585a3af2",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 7
+      },
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
