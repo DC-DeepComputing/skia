@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88b080dd_94f324eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-04T14:55:46Z",
+      "side": 1,
+      "message": "FYI: Flutter was updated in https://github.com/flutter/flutter/pull/177272",
+      "revId": "d7ad65bd3c219c0f9257a05887af5f52fcb00ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
