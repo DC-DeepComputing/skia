@@ -105,6 +105,7 @@ float SkPixmap::getAlphaf(int x, int y) const {
             return 0;
         case kGray_8_SkColorType:
         case kR8G8_unorm_SkColorType:
+        case kR16_unorm_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGB_565_SkColorType:
@@ -230,6 +231,10 @@ SkColor SkPixmap::getColor(int x, int y) const {
             return (uint32_t)( ((value >>  0) & 0xff) ) << 16
                  | (uint32_t)( ((value >>  8) & 0xff) ) <<  8
                  | 0xff000000;
+        }
+        case kR16_unorm_SkColorType: {
+            uint16_t value = *this->addr16(x, y);
+            return SkColorSetRGB(value * (255 / 65535.0f), 0, 0);
         }
         case kR16G16_unorm_SkColorType: {
             uint32_t value = *this->addr32(x, y);
@@ -409,7 +414,7 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
     switch (this->colorType()) {
         case kGray_8_SkColorType: {
             float value = *this->addr8(x, y) / 255.0f;
-            return SkColor4f{value, value, value, 1.0};
+            return SkColor4f{value, value, value, 1.0f};
         }
         case kR8_unorm_SkColorType: {
             float value = *this->addr8(x, y) / 255.0f;
@@ -441,6 +446,10 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
             SkColor c = (uint32_t)(((value >> 0) & 0xff)) << 16 |
                         (uint32_t)(((value >> 8) & 0xff)) << 8 | 0xff000000;
             return SkColor4f::FromColor(c);
+        }
+        case kR16_unorm_SkColorType: {
+            float value = *this->addr16(x, y) / 65535.0f;
+            return SkColor4f{value, 0.0f, 0.0f, 1.0f};
         }
         case kR16G16_unorm_SkColorType: {
             uint32_t value = *this->addr32(x, y);
@@ -635,6 +644,7 @@ bool SkPixmap::computeIsOpaque() const {
         case kRGB_565_SkColorType:
         case kGray_8_SkColorType:
         case kR8G8_unorm_SkColorType:
+        case kR16_unorm_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGB_888x_SkColorType:
