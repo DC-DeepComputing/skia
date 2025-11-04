@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2aee98d_818186f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-04T20:05:49Z",
+      "side": 1,
+      "message": "Bug: 457696386",
+      "revId": "c6727697e515cf080772b2792113e016b03debc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd09842c_4d0f6ba3",
         "filename": "include/ports/SkFontMgr_fuchsia.h",
         "patchSetId": 3
