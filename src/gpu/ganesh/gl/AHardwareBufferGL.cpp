@@ -37,21 +37,27 @@ GrBackendFormat GetGLBackendFormat(GrDirectContext* dContext,
         return GrBackendFormat();
     }
     switch (bufferFormat) {
-        //TODO: find out if we can detect, which graphic buffers support GR_GL_TEXTURE_2D
         case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM:
         case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D);
         case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT:
-            return GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D);
         case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_2D);
         case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_2D);
         case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_2D);
 #if __ANDROID_API__ >= 33
         case AHARDWAREBUFFER_FORMAT_R8_UNORM:
             return GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_EXTERNAL);
+#endif
+#if __ANDROID_API__ >= 34
+        case AHARDWAREBUFFER_FORMAT_R10G10B10A10_UNORM: {
+            // There is no GLFormat enum that corresponds to this texture format
+            return GrBackendFormats::MakeGL(GR_GL_RGBA, GR_GL_TEXTURE_EXTERNAL);
+            break;
+        }
 #endif
         default:
             if (requireKnownFormat) {
