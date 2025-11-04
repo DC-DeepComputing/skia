@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf490a5_b719beb3",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-04T19:57:05Z",
+      "side": 0,
+      "message": "Not sure why the initial indent went from four spaces to three?",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 4
+      },
+      "revId": "c89b6118266b7e8d94309546f6af1fd8f3edb623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
