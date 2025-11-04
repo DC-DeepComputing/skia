@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eaf92ae_5af3432b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-04T02:14:00Z",
+      "side": 1,
+      "message": "LGTM, failing tests are due to a bad patch on the tree.",
+      "revId": "5b42c5ead561d60b89eb8e9e71a38863a1a62028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e67355ea_7f551351",
