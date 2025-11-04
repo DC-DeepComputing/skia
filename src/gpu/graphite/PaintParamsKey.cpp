@@ -288,9 +288,7 @@ static int key_to_string(const Caps* caps,
             // We shorten the string for the common case of no extra data.
             str->append("(0)");
             descriptiveFormAppended = true;
-        }
-#if 0 // To be turned on in the next CL
-        else {
+        } else {
             SkASSERT(dataIndexCount == 3);
 
             // Attempt to append the sampler data as human-readable YCbCr information
@@ -306,7 +304,6 @@ static int key_to_string(const Caps* caps,
                 }
             }
         }
-#endif
 
         if (!descriptiveFormAppended) {
             append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
