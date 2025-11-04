@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bfa2803_bff0f33d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "Reviewed `bmp_types.rs`, `bmp_icc.rs`, `bmp_constants.rs`...",
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf265732_bf92608d",
@@ -404,6 +421,167 @@
         "startChar": 4,
         "endLine": 84,
         "endChar": 19
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf83eb8f_ee139140",
+        "filename": "experimental/rust_bmp/ffi/FFI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "Let\u0027s remove this mostly empty file for now - we can introduce it later if needed (together with supporting `BUILD.bazel` / `.gn*` / `#[cxx::bridge]` changes ).",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ecba6d_157af11d",
+        "filename": "experimental/rust_bmp/ffi/bmp_constants.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "nit: I wonder if replacing `2` with `BMP_SIGNATURE_SIZE` would make it a tiny bit clearer that `BMP_SIGNATURE` and `BITMAPARRAY_SIGNATURE` refer to the same 2 bytes.\n\n```suggestion\npub const BMP_SIGNATURE: [u8; BMP_SIGNATURE_SIZE] \u003d [0x42, 0x4D];\npub const BMP_SIGNATURE_U16: u16 \u003d 0x4D42;\npub const BITMAPARRAY_SIGNATURE: [u8; BMP_SIGNATURE_SIZE] \u003d [0x42, 0x41];\npub const BMP_SIGNATURE_SIZE: usize \u003d 2;\n```",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7230f25c_61f3c8b4",
+        "filename": "experimental/rust_bmp/ffi/bmp_constants.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "Optional: I don\u0027t have a strong opinion, but WDYT about directly replicating the whole `BITMAPV5HEADER` as a `#[repr(C)]` `struct` in Rust - this would give the offset and the field definition for free.  And `bytemuck` should help with transmuting `\u0026[u8]` to `\u0026BitmapV5Header` (I think this can be done without using `unsafe impl` or other `unsafe` - `#[derive(AnyBitPattern)]` should help with this).\n\nBenefit of doing this: more direct link to the original definition/documentation of the BMP header structs / less magical constants like 123 or 56.\n\nDownside of doing this: have to spell all the fields, even ones that are unused.\n\nBut as I said, I don\u0027t feel strongly about this.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 37
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef1ac0a_64572a6d",
+        "filename": "experimental/rust_bmp/ffi/bmp_header.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "Optional alternative spelling:\n\n`u32::from_le_bytes(slice[30..33].try_into().unwrap())`\n\n`try_into` converts `\u0026[u8]` into `Option\u003c[u8; 4]\u003e` depending on whether the input slice has the right length.  And then `unwrap` gets `[u8; 4]`.\n\n------\n\nFWIW the `png` crate has its own helper trait [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/rust/chromium_crates_io/vendor/png-v0_18/src/traits.rs;l\u003d27-41;drc\u003d128f35b3fb019f2fa67e1e798e113ed95f766096) (usage example [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/rust/chromium_crates_io/vendor/png-v0_18/src/decoder/stream.rs;l\u003d1319-1327;drc\u003d28aa32fee5483719888905c78bcd54649a8c8c8d)).\n\nAnd the `image` crate uses the `byteorder_lite` crate and its `read_u32` helper: https://docs.rs/byteorder-lite/latest/byteorder_lite/trait.ReadBytesExt.html#method.read_u32",
+      "range": {
+        "startLine": 49,
+        "startChar": 36,
+        "endLine": 49,
+        "endChar": 96
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b23d0c6d_fe1a6c8d",
+        "filename": "experimental/rust_bmp/ffi/bmp_icc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "I think the `data.len()` checks (on lines 25 and 30) can be avoided be delegating to https://doc.rust-lang.org/std/primitive.slice.html#method.get\n\n```suggestion\n    let end \u003d offset.checked_add(size)?;\n    let icc_data \u003d data.get(offset..end)?;\n```",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adf732bf_a2a51a9c",
+        "filename": "experimental/rust_bmp/ffi/bmp_icc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "One high-level/design concern here is that the target color space (in `const SkImageInfo\u0026 dstInfo` passed to `SkCodec` APIs like [`getImage`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodec.h;l\u003d444-445;drc\u003d82de95a10c9db0d1d59de4a6db75ffd41bc93d81)) is not always sRGB IIUC.  In particular, a user may have calibrated their local display differently.\n\nI wonder if it would be possible to instead:\n\n1. Continue (from the current `SkPngRustCodec` and the future/WIP `SkPngBmpCodec`) using Skia for actual color space transformations (i.e. `skcms` / `SkCodec::applyColorXform` / maaaybe also somehow reusing `SkSwizzler`+`ColorXform` combo provided by `SkPngCodecBase`)\n2. Put together a separate/prerequisite CL to:\n    * Try creating a new internal Skia API for using Rust/`moxcms` for parsing `\u0026[u8]` / `SkSpan\u003cconst uint8_t\u003e` into `SkEncodedInfo::ICCProfile`\n    * Using this parser from `SkPngRustCodec`.\n    \nInitial `SkBmpRustCodec` implementation can either:\n\n* Initially parse ICC using native/C++ code (just as the current/old `SkPngRustCodec` code does [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d158-169;drc\u003d5658e91de531f3a05ebb87fad3deed5da7ecb5b2)) use Skia to parse the ICC bytes exposed/provided/decoded from BMP\n* Or use the new internal, Rust-backed parsing from the separate CL suggested above.\n    \nWDYT?",
+      "range": {
+        "startLine": 41,
+        "startChar": 22,
+        "endLine": 41,
+        "endChar": 69
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe450ce1_a5705ae1",
+        "filename": "experimental/rust_bmp/ffi/bmp_types.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-04T22:12:30Z",
+      "side": 1,
+      "message": "I am not sure if/how my feedback here is actionable, but it seems to me that `Rle8`-vs-`Rle4` difference is not necessarily something that the decoder client needs to know about.\n\nMy first reaction to that was to ask if `CompressionType` needs to be `pub`-lic.  And that would cascade into a question if `BmpHeaderInfo` needs to be `pub`-lic (vs crate-internal).  This doesn\u0027t matter that much at this point (where `rust_bmp/.../*.rs` is just an internal implementation detail of Skia), but would matter in the long-term if/when we want to extract this crate out of Skia and publish as a separate crate.\n\nI think that the decoder client wants to know what kind of pixel format will/can come out of the decoder - maybe the API can be built around that?  I don\u0027t know what is supported by the BMP format - RGBA8 and RGB8?  And also BGRA8 and BGR8?  Is palette-index also a possible output (I know that `SkSwizzler` can accept that as input and efficiently transform into RGBA)?  Is gray-scale also a possible output?  Is something like RGBA-16bits or RGBA-4bits or RGB-5-6-5 also a possible output?\n\nPS. IIUC the `image` crate uses the `ColorType` enum for this.  This seems a little bit incomplete (e.g. it can\u0027t represent \"indexed\" output from a PNG decoder), but maybe this is good enough for BMP?  `ColorType` doesn\u0027t explicitly cover BGRA, but we could in theory cover this with some extra copies :-/.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 9
       },
       "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
