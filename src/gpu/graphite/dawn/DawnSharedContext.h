@@ -69,7 +69,8 @@ private:
     void createUniformBuffersBindGroupLayout();
     void createSingleTextureSamplerBindGroupLayout();
 
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+    sk_sp<GraphicsPipeline> createGraphicsPipeline(ResourceProvider*,
+                                                   const RuntimeEffectDictionary*,
                                                    const UniqueKey&,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,

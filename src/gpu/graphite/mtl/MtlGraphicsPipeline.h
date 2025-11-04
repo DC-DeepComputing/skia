@@ -50,6 +50,8 @@ public:
     static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(const MtlSharedContext*,
                                                            const RenderPassDesc&);
 
+    bool isReady() const override;
+
     ~MtlGraphicsPipeline() override {}
 
     id<MTLRenderPipelineState> mtlPipelineState() const { return fPipelineState.get(); }
@@ -57,6 +59,9 @@ public:
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
 
 private:
+    bool fAsync = false;
+    bool fAsyncFinished = false;
+
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                         const PipelineInfo& pipelineInfo,
                         std::string_view pipelineLabel,
