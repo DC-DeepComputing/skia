@@ -16,6 +16,29 @@
       "message": "Take a look at the try jobs in patch 2 (no graphite changes) and patch 3 (graphite change) to see what jobs get triggered. Let me know if you see anything you think we should add/change/remove/etc.",
       "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2031419_585a3af2",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-04T16:47:57Z",
+      "side": 1,
+      "message": "Is there a way to save this expression somehow? There are a few varieties of it throughout this file.\n\nAlternatively, is it time that we drop the pattern-matching CQ adding of jobs for Graphite and just have these be explicitly on the CQ?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 7
+      },
+      "revId": "ab0b56cc3ceebbbf5612a7bd0234b90670218938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
