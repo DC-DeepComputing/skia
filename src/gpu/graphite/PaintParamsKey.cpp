@@ -306,7 +306,6 @@ static int key_to_string(const Caps* caps,
                 }
             }
         }
-#endif
 
         if (!descriptiveFormAppended) {
             append_as_base64(str, { &keyData[currentIndex], dataIndexCount });
