@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b59b869a_a0c07204",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T13:42:13Z",
+      "side": 1,
+      "message": "CIE luminance (changed the name to \"CIE Y (luminance)\")",
+      "parentUuid": "40917ca9_dc6adb95",
+      "range": {
+        "startLine": 138,
+        "startChar": 10,
+        "endLine": 138,
+        "endChar": 11
+      },
+      "revId": "a6508f1ce4de14b1b090a95b9fecf1827b8faa8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8397bd6a_4a3cda27",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-04T13:23:09Z",
       "side": 1,
       "message": "suggestion: Since the target-0 is on the is same line, we can maybe drop the comment if you think it\u0027s redundant.",
+      "range": {
+        "startLine": 201,
+        "startChar": 29,
+        "endLine": 201,
+        "endChar": 53
+      },
+      "revId": "a6508f1ce4de14b1b090a95b9fecf1827b8faa8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "873d3693_3d65789f",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-04T13:42:13Z",
+      "side": 1,
+      "message": "Yeah, I originally didn\u0027t have a structure to the expected value (so it was 3 floats and 2 ints and not obvious). Removed.",
+      "parentUuid": "8397bd6a_4a3cda27",
       "range": {
         "startLine": 201,
         "startChar": 29,
