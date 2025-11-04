@@ -16,6 +16,23 @@
       "message": "FYI: Flutter was updated in https://github.com/flutter/flutter/pull/177272",
       "revId": "d7ad65bd3c219c0f9257a05887af5f52fcb00ac9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb14539a_70508353",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-04T17:57:54Z",
+      "side": 1,
+      "message": "Chromium is also good to go: https://chromium-review.googlesource.com/c/chromium/src/+/7067794",
+      "revId": "d7ad65bd3c219c0f9257a05887af5f52fcb00ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
