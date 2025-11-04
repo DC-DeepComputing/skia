@@ -196,6 +196,7 @@ void MtlSharedContext::createCompatibleDepthStencilState(
 }
 
 sk_sp<GraphicsPipeline> MtlSharedContext::createGraphicsPipeline(
+        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,

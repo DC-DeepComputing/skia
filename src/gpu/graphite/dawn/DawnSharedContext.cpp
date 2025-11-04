@@ -181,6 +181,7 @@ void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
 }
 
 sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
+        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -188,6 +189,7 @@ sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
     return DawnGraphicsPipeline::Make(this,
+                                      resourceProvider,
                                       runtimeDict,
                                       pipelineKey,
                                       pipelineDesc,

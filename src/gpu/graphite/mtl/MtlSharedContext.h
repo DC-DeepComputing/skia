@@ -51,7 +51,6 @@ public:
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
 
-
 private:
 
     MtlSharedContext(sk_cfp<id<MTLDevice>>,
@@ -63,6 +62,7 @@ private:
     void createCompatibleDepthStencilState(const DepthStencilSettings&);
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(
+            ResourceProvider*,
             const RuntimeEffectDictionary*,
             const UniqueKey&,
             const GraphicsPipelineDesc&,

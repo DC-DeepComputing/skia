@@ -35,8 +35,8 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
     : fCaps(std::move(caps))
     , fBackend(backend)
     , fGlobalCache()
-    , fPipelineManager() // TODO(robertphillips): pass in executor here
-    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
+    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects)
+    , fPipelineManager(executor) {}
 
 SharedContext::~SharedContext() {
     // TODO: add disconnect?
@@ -68,12 +68,13 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
 }
 
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
+        ResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
-    auto globalCache = this->globalCache();
+    GlobalCache* globalCache = this->globalCache();
 
     uint32_t compilationID = 0;
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
@@ -103,7 +104,7 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                              "compilationID", compilationID);
 #endif
 
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
+        pipeline = this->createGraphicsPipeline(resourceProvider, runtimeDict, pipelineKey,
                                                 pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags,
                                                 compilationID);

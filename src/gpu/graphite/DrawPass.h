@@ -72,14 +72,23 @@ public:
         return fCommandList.commands();
     }
 
+    // This should only be called after addResourceRefs() has been called (i.e., at
+    // Context::insertRecording time) so all the PipelineHandles will have been resolved to
+    // Pipelines
     const GraphicsPipeline* getPipeline(size_t index) const {
+        SkASSERT(fPipelineHandles.empty());
         return fFullPipelines[index].get();
     }
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
-    // Not valid until after prepareResources() is called
-    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
+
+    // Not valid until after after addResourceRefs() is called (i.e., at Context::insertRecording
+    // time) so all the PipelineHandles will have been resolved to Pipelines
+    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const {
+        SkASSERT(fPipelineHandles.empty());
+        return fFullPipelines;
+    }
 
     [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
@@ -108,7 +117,7 @@ private:
     skia_private::TArray<GraphicsPipelineHandle> fPipelineHandles;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
 
-    // These get resolved (from the GraphicsPipelineHandles) in prepareResources
+    // These get resolved (from the GraphicsPipelineHandles) in addResourceRefs
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
 
     sk_sp<FloatStorageManager> fFloatStorageManager;

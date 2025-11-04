@@ -325,6 +325,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 // static
 sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const DawnSharedContext* sharedContext,
+        ResourceProvider*,
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -783,6 +784,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
     return fAsyncPipelineCreation &&
            fAsyncPipelineCreation->fFinished &&
            !fAsyncPipelineCreation->fRenderPipeline;
+}
+
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
