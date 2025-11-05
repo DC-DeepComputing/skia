@@ -9,15 +9,29 @@ package(
 
 licenses(["notice"])
 
-# Shared FFI utilities for Rust integrations.
-# This header-only library provides ToSkSpan() for converting rust::Slice to SkSpan.
+# Shared FFI utilities for Rust codec integrations.
 skia_cc_library(
-    name = "span_utils",
-    hdrs = ["SpanUtils.h"],
+    name = "ffi_utils",
+    hdrs = [
+        "SkStreamAdapter.h",
+        "SpanUtils.h",
+    ],
+    srcs = ["SkStreamAdapter.cpp"],
     features = ["layering_check"],
     visibility = [
+        "//rust/png:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
-    deps = ["//:core"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "@crates//:cxx_cc",
+    ],
+)
+
+# Export shared Rust macro file for codec implementations.
+exports_files(
+    ["io_traits_ffi.rs"],
+    visibility = ["//rust/png:__pkg__"],
 )

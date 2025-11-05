@@ -11,6 +11,11 @@ use std::borrow::Cow;
 use std::io::{BufReader, ErrorKind, Read, Seek, SeekFrom, Write};
 use std::pin::Pin;
 
+// Include shared stream adapter implementations
+include!("../common/io_traits_ffi.rs");
+
+// Import the common I/O traits module for type unification
+
 // No `use png::...` nor `use ffi::...` because we want the code to explicitly
 // spell out if it means `ffi::ColorType` vs `png::ColorType` (or `Reader`
 // vs `png::Reader`).
@@ -118,21 +123,26 @@ mod ffi {
 
     unsafe extern "C++" {
         include!("rust/png/FFI.h");
-
-        type ReadAndSeekTraits;
-        fn read(self: Pin<&mut ReadAndSeekTraits>, buffer: &mut [u8]) -> usize;
+        include!("rust/common/SkStreamAdapter.h");
+        
+        // StreamAdapter is declared in rust/common/io_traits_ffi.rs
+        // with the same namespace and type names. CXX's type unification ensures
+        // this refers to the same C++ type across all codec modules.
+        #[namespace = "rust::stream"]
+        type StreamAdapter;
+        fn read(self: Pin<&mut StreamAdapter>, buffer: &mut [u8]) -> usize;
         fn seek_from_start(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut StreamAdapter>,
             requested_pos: u64,
             final_pos: &mut u64,
         ) -> bool;
         fn seek_from_end(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut StreamAdapter>,
             requested_offset: i64,
             final_pos: &mut u64,
         ) -> bool;
         fn seek_relative(
-            self: Pin<&mut ReadAndSeekTraits>,
+            self: Pin<&mut StreamAdapter>,
             requested_offset: i64,
             final_pos: &mut u64,
         ) -> bool;
@@ -141,14 +151,13 @@ mod ffi {
         fn write(self: Pin<&mut WriteTrait>, buffer: &[u8]) -> bool;
         fn flush(self: Pin<&mut WriteTrait>);
     }
-
     // Rust functions, types, and methods that are exposed through FFI.
     //
     // To avoid duplication, there are no doc comments inside the `extern "Rust"`
     // section. The doc comments of these items can instead be found in the
     // actual Rust code, outside of the `#[cxx::bridge]` manifest.
     extern "Rust" {
-        fn new_reader(input: UniquePtr<ReadAndSeekTraits>) -> Box<ResultOfReader>;
+        fn new_reader(input: UniquePtr<StreamAdapter>) -> Box<ResultOfReader>;
 
         type ResultOfReader;
         fn err(self: &ResultOfReader) -> DecodingResult;
@@ -344,27 +353,8 @@ impl From<Option<&png::EncodingError>> for ffi::EncodingResult {
     }
 }
 
-impl<'a> Read for Pin<&'a mut ffi::ReadAndSeekTraits> {
-    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
-        Ok(self.as_mut().read(buf))
-    }
-}
-
-impl<'a> Seek for Pin<&'a mut ffi::ReadAndSeekTraits> {
-    fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
-        let mut new_pos = 0;
-        let success = match pos {
-            SeekFrom::Start(pos) => self.as_mut().seek_from_start(pos, &mut new_pos),
-            SeekFrom::End(offset) => self.as_mut().seek_from_end(offset, &mut new_pos),
-            SeekFrom::Current(offset) => self.as_mut().seek_relative(offset, &mut new_pos),
-        };
-        if success {
-            Ok(new_pos)
-        } else {
-            Err(ErrorKind::Other.into())
-        }
-    }
-}
+// Stream adapters - implementations use shared code from stream.rs
+impl_stream_adapter!(ffi::StreamAdapter);
 
 impl<'a> Write for Pin<&'a mut ffi::WriteTrait> {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
@@ -445,12 +435,12 @@ fn compute_transformations(info: &png::Info) -> png::Transformations {
 /// generics, so we manually monomorphize here, but still expose a minimal,
 /// somewhat tweaked API of the original type).
 struct Reader {
-    reader: png::Reader<BufReader<cxx::UniquePtr<ffi::ReadAndSeekTraits>>>,
+    reader: png::Reader<BufReader<cxx::UniquePtr<ffi::StreamAdapter>>>,
     last_interlace_info: Option<png::InterlaceInfo>,
 }
 
 impl Reader {
-    fn new(input: cxx::UniquePtr<ffi::ReadAndSeekTraits>) -> Result<Self, png::DecodingError> {
+    fn new(input: cxx::UniquePtr<ffi::StreamAdapter>) -> Result<Self, png::DecodingError> {
         // The magic value of `BUF_CAPACITY` is based on `CHUNK_BUFFER_SIZE` which was
         // used in `BufReader::with_capacity` calls by `png` crate up to version
         // 0.17.16 - see: https://github.com/image-rs/image-png/pull/558/files#diff-c28833b65510e37441203b4256b74068f191d29ea34b6e753442e644d3a316b8L28
@@ -795,7 +785,7 @@ fn png_u32_into_f32(v: png::ScaledFloat) -> f32 {
 }
 
 /// This provides a public C++ API for decoding a PNG image.
-fn new_reader(input: cxx::UniquePtr<ffi::ReadAndSeekTraits>) -> Box<ResultOfReader> {
+fn new_reader(input: cxx::UniquePtr<ffi::StreamAdapter>) -> Box<ResultOfReader> {
     Box::new(ResultOfReader(Reader::new(input)))
 }
 
