@@ -109,6 +109,7 @@ skia_cc_library(
     local_defines = [
         "SK_DISABLE_LEGACY_SHAPER_FACTORY",
         "SK_ENABLE_SKOTTIE_SKSLEFFECT",
+        "SK_ENABLE_SKOTTIE_FILLRULE",
     ],
     visibility = ["//:__subpackages__"],
     deps = [
