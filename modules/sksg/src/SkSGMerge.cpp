@@ -36,8 +36,10 @@ void Merge::onClip(SkCanvas* canvas, bool antiAlias) const {
     canvas->clipPath(fMerged, SkClipOp::kIntersect, antiAlias);
 }
 
-void Merge::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
-    canvas->drawPath(fMerged, paint);
+void Merge::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType fillRule) const {
+    SkPath tmp = fMerged.snapshot();
+    tmp.setFillType(fillRule);
+    canvas->drawPath(tmp, paint);
 }
 
 bool Merge::onContains(const SkPoint& p) const {

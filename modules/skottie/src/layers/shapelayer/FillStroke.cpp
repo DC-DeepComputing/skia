@@ -77,6 +77,12 @@ public:
         if (fShaderType == ShaderType::kColor) {
             this->bind(abuilder, jpaint["c"], fColor);
         }
+        static constexpr SkPathFillType gFillRules[] = {
+                SkPathFillType::kWinding,
+                SkPathFillType::kEvenOdd,
+        };
+        this->node()->setFillType(gFillRules[std::min<size_t>(
+                ParseDefault<size_t>(jpaint["r"], 1) - 1, std::size(gFillRules) - 1)]);
     }
 
 private:

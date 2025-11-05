@@ -23,7 +23,7 @@ void Rect::onClip(SkCanvas* canvas, bool antiAlias) const {
     canvas->clipRect(fRect, SkClipOp::kIntersect, antiAlias);
 }
 
-void Rect::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
+void Rect::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType) const {
     canvas->drawRect(fRect, paint);
 }
 
@@ -47,7 +47,7 @@ void RRect::onClip(SkCanvas* canvas, bool antiAlias) const {
     canvas->clipRRect(fRRect, SkClipOp::kIntersect, antiAlias);
 }
 
-void RRect::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
+void RRect::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType) const {
     canvas->drawRRect(fRRect, paint);
 }
 

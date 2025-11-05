@@ -11,6 +11,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -44,6 +45,7 @@ public:
     SG_ATTRIBUTE(Style      , SkPaint::Style, fStyle      )
     SG_ATTRIBUTE(StrokeJoin , SkPaint::Join , fStrokeJoin )
     SG_ATTRIBUTE(StrokeCap  , SkPaint::Cap  , fStrokeCap  )
+    SG_ATTRIBUTE(FillType, SkPathFillType, fFillType)
 
 protected:
     PaintNode();
@@ -59,6 +61,7 @@ private:
     SkPaint::Style fStyle       = SkPaint::kFill_Style;
     SkPaint::Join  fStrokeJoin  = SkPaint::kMiter_Join;
     SkPaint::Cap   fStrokeCap   = SkPaint::kButt_Cap;
+    SkPathFillType fFillType = SkPathFillType::kDefault;
 
     using INHERITED = Node;
 };
