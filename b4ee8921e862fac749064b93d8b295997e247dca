@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "300b0e5e_67ddc871",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-05T15:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c5eed7f_74be28dc",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 50
+      },
+      "revId": "b4ee8921e862fac749064b93d8b295997e247dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "320c8f3e_46e09abc",
@@ -61,6 +85,30 @@
       "writtenOn": "2025-11-05T15:32:28Z",
       "side": 1,
       "message": "Talked offline if we want to change this to a new factory MakeGLExternal()",
+      "range": {
+        "startLine": 58,
+        "startChar": 37,
+        "endLine": 58,
+        "endChar": 43
+      },
+      "revId": "b4ee8921e862fac749064b93d8b295997e247dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c081ff_f586f5f1",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-05T15:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "320c8f3e_46e09abc",
       "range": {
         "startLine": 58,
         "startChar": 37,
