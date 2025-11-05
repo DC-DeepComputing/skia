@@ -241,7 +241,7 @@ private:
     template<typename T> void purgeBuffersIf(T pred);
 
     DawnResourceProvider* const fResourceProvider;
-    // The current buffer being filled up, as well as the how much of it has been written to.
+    // The current buffer being filled up, as well as how much of it has been written to.
     IntrinsicBuffer* fCurrentBuffer = nullptr;
 
     // All cached intrinsic buffers, in LRU order.

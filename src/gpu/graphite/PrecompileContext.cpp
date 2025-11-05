@@ -84,6 +84,9 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
             PipelineCreationFlags::kForPrecompilation);
     fResourceProvider->startPipelineCreationTask(rtEffectDict, handle);
 
+    // Precompiling a serialized pipeline key shouldn't ever add a new runtime effect
+    SkASSERT(rtEffectDict->empty());
+
     return true;
 #else
     return false;
