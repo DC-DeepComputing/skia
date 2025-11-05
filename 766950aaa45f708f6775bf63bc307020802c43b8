@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a126bef_4787e6de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-05T18:41:45Z",
+      "side": 1,
+      "message": "Actually it looks like we\u0027ve already rebaselined Chromium - let\u0027s see if we can drop the flag instead.",
+      "revId": "766950aaa45f708f6775bf63bc307020802c43b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
