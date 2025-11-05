@@ -204,6 +204,30 @@
       },
       "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2256d31_69e513df",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-11-05T16:53:42Z",
+      "side": 1,
+      "message": "Marking as resolved.",
+      "parentUuid": "56a16b06_41b99e98",
+      "range": {
+        "startLine": 310,
+        "startChar": 39,
+        "endLine": 310,
+        "endChar": 40
+      },
+      "revId": "ecd031e3e6ad03432ba205e7cfa17d6434974da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
