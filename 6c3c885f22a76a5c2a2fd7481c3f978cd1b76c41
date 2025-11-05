@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "99195ab1_a819a832",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-05T15:57:21Z",
+      "side": 1,
+      "message": "I think this needs a little rewording. Maybe something at the end like \"for now we will just keep it as an external format until we figure out the RGB vs RGBA compatiblity.\"",
+      "range": {
+        "startLine": 45,
+        "startChar": 23,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "6c3c885f22a76a5c2a2fd7481c3f978cd1b76c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "636c4e94_24f4eb51",
