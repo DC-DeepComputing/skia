@@ -22,9 +22,9 @@ void GeometryNode::clip(SkCanvas* canvas, bool aa) const {
     this->onClip(canvas, aa);
 }
 
-void GeometryNode::draw(SkCanvas* canvas, const SkPaint& paint) const {
+void GeometryNode::draw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType fillType) const {
     SkASSERT(!this->hasInval());
-    this->onDraw(canvas, paint);
+    this->onDraw(canvas, paint, fillType);
 }
 
 bool GeometryNode::contains(const SkPoint& p) const {

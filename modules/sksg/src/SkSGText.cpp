@@ -71,7 +71,7 @@ SkRect Text::onRevalidate(InvalidationController*, const SkMatrix&) {
     return bounds.makeOffset(aligned_pos.x(), aligned_pos.y());
 }
 
-void Text::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
+void Text::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType) const {
     const auto aligned_pos = this->alignedPosition(this->bounds().width());
     canvas->drawTextBlob(fBlob, aligned_pos.x(), aligned_pos.y(), paint);
 }

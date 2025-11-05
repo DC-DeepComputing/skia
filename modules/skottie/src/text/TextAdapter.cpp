@@ -74,7 +74,7 @@ protected:
         return fGlyphs.computeBounds(Shaper::ShapedGlyphs::BoundsType::kTight);
     }
 
-    void onDraw(SkCanvas* canvas, const SkPaint& paint) const override {
+    void onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType) const override {
         fGlyphs.draw(canvas, {0,0}, paint);
     }
 
