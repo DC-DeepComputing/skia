@@ -81,39 +81,6 @@ rust_png::EncodingResult EncodeComments(rust_png::Writer& writer,
     return rust_png::EncodingResult::Success;
 }
 
-// This helper class adapts `SkWStream` to expose the API required by Rust FFI
-// (i.e. the `WriteTrait` API).
-class WriteTraitAdapterForSkWStream final : public rust_png::WriteTrait {
-public:
-    // SAFETY: The caller needs to guarantee that `stream` will be alive for
-    // as long as `WriteTraitAdapterForSkWStream`.
-    explicit WriteTraitAdapterForSkWStream(SkWStream* stream) : fStream(stream) {
-        SkASSERT_RELEASE(fStream);
-    }
-
-    ~WriteTraitAdapterForSkWStream() override = default;
-
-    // Non-copyable and non-movable.
-    WriteTraitAdapterForSkWStream(const WriteTraitAdapterForSkWStream&) = delete;
-    WriteTraitAdapterForSkWStream& operator=(const WriteTraitAdapterForSkWStream&) = delete;
-    WriteTraitAdapterForSkWStream(WriteTraitAdapterForSkWStream&&) = delete;
-    WriteTraitAdapterForSkWStream& operator=(WriteTraitAdapterForSkWStream&&) = delete;
-
-    // Implementation of the `std::io::Read::read` method.  See `RustTrait`'s
-    // doc comments and
-    // https://doc.rust-lang.org/nightly/std/io/trait.Read.html#tymethod.read
-    // for guidance on the desired implementation and behavior of this method.
-    bool write(rust::Slice<const uint8_t> buffer) override {
-        SkSpan<const uint8_t> span = ToSkSpan(buffer);
-        return fStream->write(span.data(), span.size());
-    }
-
-    void flush() override { fStream->flush(); }
-
-private:
-    SkWStream* fStream = nullptr;  // Non-owning pointer.
-};
-
 }  // namespace
 
 // static
@@ -180,9 +147,9 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
             SkUNREACHABLE;
     }
 
-    auto writeTraitAdapter = std::make_unique<WriteTraitAdapterForSkWStream>(dst);
+    auto writeAdapter = std::make_unique<rust::stream::WriteAdapter>(dst);
     rust::Box<rust_png::ResultOfWriter> resultOfWriter =
-            rust_png::new_writer(std::move(writeTraitAdapter),
+            rust_png::new_writer(std::move(writeAdapter),
                                  width,
                                  height,
                                  rustEncoderColorType,
