@@ -37,27 +37,37 @@ GrBackendFormat GetGLBackendFormat(GrDirectContext* dContext,
         return GrBackendFormat();
     }
     switch (bufferFormat) {
-        //TODO: find out if we can detect, which graphic buffers support GR_GL_TEXTURE_2D
         case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM:
+            return GrBackendFormats::MakeGL(GR_GL_RGBA8);
         case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
+            // According to  https://developer.android.com/ndk/reference/group/a-hardware-buffer,
+            // the GL format equivalent is GL_RGB8 but that is considered to be 24bpp throughout
+            // Ganesh. While its VkFormat is RGBA8_UNORM, and could probably also treat it as
+            // GL_RGBA8, keep it as an external format.
+            return GrBackendFormats::MakeGLExternal();
         case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT:
-            return GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGBA16F);
         case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB565);
         case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB10_A2);
         case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_RGB8);
 #if __ANDROID_API__ >= 33
         case AHARDWAREBUFFER_FORMAT_R8_UNORM:
-            return GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_EXTERNAL);
+            return GrBackendFormats::MakeGL(GR_GL_R8);
+#endif
+#if __ANDROID_API__ >= 34
+        case AHARDWAREBUFFER_FORMAT_R10G10B10A10_UNORM:
+            // There is no GLFormat enum that corresponds to this texture format, but it is known
+            // (GrColorType and SkColorType can describe it).
+            return GrBackendFormats::MakeGLExternal();
 #endif
         default:
             if (requireKnownFormat) {
                 return GrBackendFormat();
             } else {
-                return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGLExternal();
             }
     }
     SkUNREACHABLE;
