@@ -29,6 +29,7 @@ void SkTaskGroup::add(std::function<void(void)> fn, int workList) {
 void SkTaskGroup::discardAllPendingWork() {
     int numDiscarded = fExecutor.discardAllPendingWork();
     fPending.fetch_add(-numDiscarded, std::memory_order_release);
+    SkDebugf("----------------- Discarded: %d\n", numDiscarded);
 }
 
 void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
