@@ -43,7 +43,7 @@ void Draw::onRender(SkCanvas* canvas, const RenderContext* ctx) const {
             (paint.getStyle() == SkPaint::kStroke_Style && paint.getStrokeWidth() <= 0);
 
     if (!skipDraw) {
-        fGeometry->draw(canvas, paint);
+        fGeometry->draw(canvas, paint, fPaint->getFillType());
     }
 }
 

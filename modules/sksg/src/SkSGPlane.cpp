@@ -21,7 +21,7 @@ Plane::Plane() = default;
 
 void Plane::onClip(SkCanvas*, bool) const {}
 
-void Plane::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
+void Plane::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType) const {
     canvas->drawPaint(paint);
 }
 

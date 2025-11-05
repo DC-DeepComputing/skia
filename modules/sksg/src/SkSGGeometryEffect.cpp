@@ -48,8 +48,10 @@ void GeometryEffect::onClip(SkCanvas* canvas, bool antiAlias) const {
     canvas->clipPath(fPath, SkClipOp::kIntersect, antiAlias);
 }
 
-void GeometryEffect::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
-    canvas->drawPath(fPath, paint);
+void GeometryEffect::onDraw(SkCanvas* canvas, const SkPaint& paint, SkPathFillType fillRule) const {
+    SkPath tmp = fPath.snapshot();
+    tmp.setFillType(fillRule);
+    canvas->drawPath(tmp, paint);
 }
 
 bool GeometryEffect::onContains(const SkPoint& p) const {

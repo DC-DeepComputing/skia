@@ -8,6 +8,7 @@
 #ifndef SkSGGeometryNode_DEFINED
 #define SkSGGeometryNode_DEFINED
 
+#include "include/core/SkPathTypes.h"
 #include "modules/sksg/include/SkSGNode.h"
 
 class SkCanvas;
@@ -26,7 +27,7 @@ namespace sksg {
 class GeometryNode : public Node {
 public:
     void clip(SkCanvas*, bool antiAlias) const;
-    void draw(SkCanvas*, const SkPaint&) const;
+    void draw(SkCanvas*, const SkPaint&, SkPathFillType) const;
 
     bool contains(const SkPoint&) const;
 
@@ -37,7 +38,7 @@ protected:
 
     virtual void onClip(SkCanvas*, bool antiAlias) const = 0;
 
-    virtual void onDraw(SkCanvas*, const SkPaint&) const = 0;
+    virtual void onDraw(SkCanvas*, const SkPaint&, SkPathFillType) const = 0;
 
     virtual bool onContains(const SkPoint&) const = 0;
 

@@ -38,7 +38,7 @@ protected:
     ~GeometryEffect() override;
 
     void onClip(SkCanvas*, bool antiAlias) const final;
-    void onDraw(SkCanvas*, const SkPaint&) const final;
+    void onDraw(SkCanvas*, const SkPaint&, SkPathFillType) const final;
     bool onContains(const SkPoint&)        const final;
 
     SkRect onRevalidate(InvalidationController*, const SkMatrix&) final;
