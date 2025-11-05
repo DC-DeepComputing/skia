@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6060aa69_ab4545fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-05T20:20:03Z",
+      "side": 1,
+      "message": "FWIW: I don\u0027t see anything suspicious on https://chrome-internal.googlesource.com/infradata/config/+log so it must have been some other type of update",
+      "revId": "c0d34d802e80f5e75e8f2530419d7a8c764042b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
