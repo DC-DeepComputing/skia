@@ -14,7 +14,10 @@ licenses(["notice"])
 
 skia_filegroup(
     name = "rs_srcs",
-    srcs = ["FFI.rs"],
+    srcs = [
+        "FFI.rs",
+        "//rust/common:stream.rs",
+    ],
 )
 
 skia_filegroup(
@@ -24,11 +27,17 @@ skia_filegroup(
 
 skia_cc_library(
     name = "ffi_cpp",
-    hdrs = ["FFI.h"],
-    features = ["layering_check"],
+    srcs = ["//rust/common:SkRustIOAdapters.cpp"],
     visibility = [
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
+    ],
+    deps = [
+        ":cxx_bridge/include",
+        "//rust/common:io_traits_bridge/include",
+        "//rust/common:stream_adapter",
+        "//rust/common:span_utils",
+        "//:core",
     ],
 )
 
@@ -39,11 +48,15 @@ rust_cxx_bridge(
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
-    deps = [":ffi_cpp"],
+    deps = [
+        ":ffi_cpp",
+        "//rust/common:stream_adapter",
+    ],
 )
 
 rust_static_library(
     name = "ffi_rs",
+    crate_root = "FFI.rs",
     srcs = [":rs_srcs"],
     rustc_flags = ["-Dwarnings"],
     visibility = [
@@ -51,6 +64,7 @@ rust_static_library(
         "//src/encode:__pkg__",
     ],
     deps = [
+        ":cxx_bridge",
         ":ffi_cpp",
         "@crates//:cxx",
         "@crates//:png",

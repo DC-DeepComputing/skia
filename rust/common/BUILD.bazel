@@ -16,8 +16,68 @@ skia_cc_library(
     hdrs = ["SpanUtils.h"],
     features = ["layering_check"],
     visibility = [
+        "//rust/png:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
     deps = ["//:core"],
+)
+
+# Shared StreamAdapter - C++ headers for Read + Seek for Rust codecs
+# The .cpp implementation is compiled by the codec packages (src/codec, src/encode)
+# since they have access to private Skia headers
+skia_cc_library(
+    name = "stream_adapter",
+    hdrs = [
+        "SkRustIOAdaptersInterfaces.h",
+        "SkRustIOAdapters.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//rust/bmp:__pkg__",
+        "//rust/png:__pkg__",
+        "//src/codec:__pkg__",
+        "//src/encode:__pkg__",
+    ],
+    deps = ["//:core"],
+)
+
+# Export shared Rust files for codec implementations to include
+exports_files(
+    [
+        "stream.rs",
+        "SkRustIOAdapters.cpp",
+    ],
+    visibility = [
+        "//rust/png:__pkg__",
+        "//experimental/rust_bmp:__pkg__",
+    ],
+)
+
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+# CXX bridge for common I/O traits (StreamAdapter, WriteAdapter)
+# This is the canonical declaration that other codecs reference
+rust_cxx_bridge(
+    name = "io_traits_bridge",
+    src = "io_traits_ffi.rs",
+    visibility = ["//rust/bmp:__pkg__", "//rust/png:__pkg__", "//experimental/rust_bmp:__pkg__"],
+    deps = [":stream_adapter"],
+)
+
+# Rust library wrapping the I/O traits bridge
+# Other codecs can depend on this to get unified StreamAdapter/WriteAdapter types
+rust_library(
+    name = "io_traits",
+    srcs = ["io_traits_ffi.rs"],
+    visibility = [
+        "//rust/bmp:__pkg__",
+        "//rust/png:__pkg__",
+        "//experimental/rust_bmp:__pkg__",
+    ],
+    deps = [
+        ":io_traits_bridge",
+        "@crates//:cxx",
+    ],
 )
