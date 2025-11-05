@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2906e5a_2c664593",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-05T17:29:35Z",
+      "side": 1,
+      "message": "We\u0027ve landed https://skia-review.googlesource.com/c/skia/+/1032616 a couple of months ago to add fill-rule support.  It\u0027s a somewhat tricky solution to minimize the blast radius compared to the more straightforward approach in your CL.\n\nInterestingly, it doesn\u0027t seem to work in the *web/wasm* build of Skottie (https://skottie.skia.org/1f5ed006a2da4e5102a4911f2e098953?h\u003d256\u0026w\u003d256), but it does work in native builds (https://imgur.com/a/IieupOl).  We need to look into what\u0027s going on there (old wasm build? webgl bindings bug?).\n\nI don\u0027t have access to the linked drive files in your CL - do you mind making them public so we can verify that your tests also pass with our current impl?",
+      "revId": "e7956fa171e6cf18a8f806235d88a4734006d215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
