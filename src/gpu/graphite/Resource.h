@@ -268,21 +268,6 @@ public:
 
     const char* getLabel() const { return fLabel.c_str(); }
 
-    // We allow the label on a Resource to change when used for a different function. For example
-    // when reusing a scratch Texture we can change the label to match callers current use.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
-    }
-
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -319,6 +304,22 @@ protected:
 
     // Needs to be protected for DawnBuffer's emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
+    // TODO update comment
+    // We allow the label on a Resource to change when used for a different function. For example
+    // when reusing a scratch Texture we can change the label to match callers current use.
+    void setLabel(std::string_view label) {
+        if (fLabel == label) {
+            return;
+        }
+
+        fLabel = label;
+
+        if (!fLabel.empty()) {
+            const std::string fullLabel = "Skia_" + fLabel;
+            this->setBackendLabel(fullLabel.c_str());
+        }
+    }
 
 private:
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -392,7 +393,11 @@ private:
     virtual bool prepareForReturnToCache(const std::function<void()>& takeRef) { return false; }
 
     // Adds a cache ref to the resource. May only be called once.
-    void registerWithCache(sk_sp<ResourceCache>, const GraphiteResourceKey&, Budgeted, Shareable);
+    void registerWithCache(sk_sp<ResourceCache>,
+                           const GraphiteResourceKey&,
+                           Budgeted,
+                           Shareable,
+                           std::string_view label);
 
     // This version of ref allows adding a ref when the usage count is 0. This should only be called
     // from the ResourceCache.

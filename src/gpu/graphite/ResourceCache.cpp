@@ -110,7 +110,8 @@ void ResourceCache::shutdown() {
 void ResourceCache::insertResource(Resource* resource,
                                    const GraphiteResourceKey& key,
                                    Budgeted budgeted,
-                                   Shareable shareable) {
+                                   Shareable shareable,
+                                   std::string_view label) {
     ASSERT_SINGLE_OWNER
     SkASSERT(resource);
     SkASSERT(key.isValid());
@@ -137,7 +138,7 @@ void ResourceCache::insertResource(Resource* resource,
         this->processReturnedResources();
     }
 
-    resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable);
+    resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable, std::move(label));
 
     // We must set the use token before adding to the array in case the token wraps and we wind
     // up iterating over all the resources that already have use tokens.
@@ -163,12 +164,15 @@ void ResourceCache::insertResource(Resource* resource,
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
+                                            std::string_view label,
                                             const ScratchResourceSet* unavailable) {
     ASSERT_SINGLE_OWNER
 
     SkASSERT(key.isValid());
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
-    SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
+    // Shareable resources should not have labels assigned and should instead use scratch usage
+    // bitmask logic.
+    SkASSERT(shareable != Shareable::kScratch || (SkToBool(unavailable) && label.empty()));
 
     auto shareablePredicate = [shareable, unavailable](Resource* r) {
         // If the resource is in fResourceMap then it's available, so a non-shareable state means
@@ -205,7 +209,11 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
+            // If a resource is changing to be shareable, it is safe to re-assign its label at this
+            // point. No-op if the label is unchanged.
             resource->setShareable(shareable);
+            // TODO: Scratch to shareable comment/functionality?
+            resource->setLabel(std::move(label));
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();

@@ -146,13 +146,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
     if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
-        // Shareable resource labels should only be set upon creation.
-        if (shareable == Shareable::kYes) {
-            SkASSERT(resource->getLabel() == label);
-        } else {
-            resource->setLabel(std::move(label));
-        }
+                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -161,8 +155,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         return nullptr;
     }
 
-    tex->setLabel(std::move(label));
-    fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
+    fResourceCache->insertResource(tex.get(), key, budgeted, shareable, std::move(label));
 
     return tex;
 }
@@ -171,7 +164,6 @@ sk_sp<Texture> ResourceProvider::createWrappedTexture(const BackendTexture& back
                                                       std::string_view label) {
     sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture);
     if (texture) {
-        texture->setLabel(std::move(label));
         SkASSERT(texture->ownership() == Ownership::kWrapped);
     }
     return texture;
@@ -264,14 +256,11 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         }
     }
 
-    if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
-        // Shareable resource labels should only be set upon creation.
-        if (shareable == Shareable::kYes) {
-            SkASSERT(resource->getLabel() == label);
-        } else {
-            resource->setLabel(std::move(label));
-        }
+    if (Resource* resource = fResourceCache->findAndRefResource(key,
+                                                                kBudgeted,
+                                                                shareable,
+                                                                label,
+                                                                unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
     auto buffer = this->createBuffer(size, type, accessPattern);
@@ -279,8 +268,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         return nullptr;
     }
 
-    buffer->setLabel(std::move(label));
-    fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable);
+    fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable, std::move(label));
     return buffer;
 }
 
