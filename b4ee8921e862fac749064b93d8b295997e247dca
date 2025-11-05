@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39a27468_e2ae59f6",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-05T14:52:23Z",
+      "side": 1,
+      "message": "According to https://developer.android.com/ndk/reference/group/a-hardware-buffer#group___a_hardware_buffer_1gga94397844440c1c27b5b454d56ba5ff38a912783c3b1b525d0d17d6220d14223ed, R8G8B8X8 corresponds to GL_RGB8, but I\u0027m not sure of the implications to changing that given we may start to expect it should be 24bpp.\n\nPerhaps that AHB format should also remain an external texture?",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 50
+      },
+      "revId": "b4ee8921e862fac749064b93d8b295997e247dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
