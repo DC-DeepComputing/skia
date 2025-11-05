@@ -1447,7 +1447,6 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
     script = "gn/bazel_build.py"
     sources = [
       "rust/png/BUILD.bazel",
-      "rust/png/FFI.h",
       "rust/png/FFI.rs",
     ]
     outputs = [

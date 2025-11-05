@@ -16,8 +16,37 @@ skia_cc_library(
     hdrs = ["SpanUtils.h"],
     features = ["layering_check"],
     visibility = [
+        "//rust/png:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
     deps = ["//:core"],
+)
+
+# Shared StreamAdapter - C++ headers for Read + Seek for Rust codecs
+skia_cc_library(
+    name = "stream_adapter",
+    hdrs = [
+        "SkStreamAdapter.h",
+    ],
+    features = ["layering_check"],
+    visibility = [
+        "//rust/bmp:__pkg__",
+        "//rust/png:__pkg__",
+        "//src/codec:__pkg__",
+        "//src/encode:__pkg__",
+    ],
+    deps = ["//:core"],
+)
+
+# Export shared Rust files for codec implementations to include
+exports_files(
+    [
+        "io_traits_ffi.rs",
+        "SkStreamAdapter.cpp",
+    ],
+    visibility = [
+        "//rust/png:__pkg__",
+        "//experimental/rust_bmp:__pkg__",
+    ],
 )
