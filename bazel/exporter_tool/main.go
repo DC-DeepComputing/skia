@@ -68,7 +68,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_codec_rust_png",
 			Rules: []string{
 				"//src/codec:rust_png_srcs",
-				"//rust/common:span_utils",
+				"//rust/common:ffi_utils",
 			},
 		},
 		{Var: "skia_codec_rust_png_ffi_rs_srcs",
@@ -137,7 +137,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_encode_rust_png_srcs",
 			Rules: []string{
 				"//src/encode:rust_png_srcs",
-				"//rust/common:span_utils",
+				"//rust/common:ffi_utils",
 			}},
 		{Var: "skia_encode_png_base",
 			Rules: []string{
