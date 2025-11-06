@@ -1,3 +1,5 @@
+load("@rules_rust//rust:defs.bzl", "rust_static_library")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
 load(
     "//bazel:skia_rules.bzl",
     "skia_cc_library",
@@ -9,15 +11,53 @@ package(
 
 licenses(["notice"])
 
-# Shared FFI utilities for Rust integrations.
-# This header-only library provides ToSkSpan() for converting rust::Slice to SkSpan.
+# Shared FFI utilities for Rust codec integrations.
 skia_cc_library(
-    name = "span_utils",
-    hdrs = ["SpanUtils.h"],
+    name = "ffi_utils",
+    hdrs = [
+        "SkStreamAdapter.h",
+        "SpanUtils.h",
+    ],
+    srcs = ["SkStreamAdapter.cpp"],
     features = ["layering_check"],
     visibility = [
+        "//rust/png:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
-    deps = ["//:core"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "@crates//:cxx_cc",
+    ],
+)
+
+# Export shared Rust macro file for codec implementations.
+# Note: This is deprecated. New code should use the :ffi rust_static_library below.
+exports_files(
+    ["io_traits_ffi.rs"],
+    visibility = ["//rust/png:__pkg__"],
+)
+
+# CXX bridge for the common FFI library
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "ffi.rs",
+    visibility = ["//rust/png:__pkg__"],
+    deps = [":ffi_utils"],
+)
+
+# Rust static library providing SkStreamAdapter type and Read/Seek traits
+rust_static_library(
+    name = "ffi",
+    crate_name = "rust_common",
+    crate_root = "ffi.rs",
+    srcs = ["ffi.rs"],
+    rustc_flags = ["-Dwarnings"],
+    visibility = ["//rust/png:__pkg__"],
+    deps = [
+        ":cxx_bridge",
+        ":ffi_utils",
+        "@crates//:cxx",
+    ],
 )
