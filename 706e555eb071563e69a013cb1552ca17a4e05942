@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2358be1e_26ea54b5",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 16
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T22:53:27Z",
+      "side": 1,
+      "message": "I think that this is a good plan to guarantee that we don\u0027t break Chromium build. I will keep this CL on hold till we complete the other 2 CLs",
+      "parentUuid": "d8818830_327eef3c",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 12
+      },
+      "revId": "706e555eb071563e69a013cb1552ca17a4e05942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47e45d5b_7e4e03c5",
         "filename": "rust/png/FFI.rs",
         "patchSetId": 16
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-06T22:08:10Z",
       "side": 1,
       "message": "nit: Probably best to name the new crate something that is unlikely to collide with other crate names.  Maybe `skia_rust_common`?",
+      "range": {
+        "startLine": 125,
+        "startChar": 31,
+        "endLine": 125,
+        "endChar": 42
+      },
+      "revId": "706e555eb071563e69a013cb1552ca17a4e05942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a2e978_b4018db7",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T22:53:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "47e45d5b_7e4e03c5",
       "range": {
         "startLine": 125,
         "startChar": 31,

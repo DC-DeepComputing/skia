@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3cf66e5_647ec9b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T22:53:27Z",
+      "side": 1,
+      "message": "For some reason Apply Patch did not make the change despite I thought it was done. I have manually edited it. Sorry for the confusion.",
+      "parentUuid": "cf920c22_a92ef212",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a9dd71d_40551068",
@@ -497,6 +521,30 @@
       "side": 1,
       "message": "I think this is the problem described in https://cxx.rs/extern-c++.html#explicit-shim-trait-impls.  I think the `#[cxx::bridge]` in `rust/common/____.rs` needs to say: `impl UniquePtr\u003cSkStreamAdapter\u003e {}` (at `mod`-level / outside of `extern-\"C++\"`).",
       "parentUuid": "08908075_9828d91d",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 148,
+        "endChar": 18
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fc9ff94_653cfc22",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T22:53:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "27ce581c_c77a33fb",
       "range": {
         "startLine": 128,
         "startChar": 1,
