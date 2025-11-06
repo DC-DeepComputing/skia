@@ -60,6 +60,11 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/codec:common_libpng_srcs",
 			},
 		},
+                {Var: "skia_codec_rust_common_ffi",
+                        Rules: []string{
+                                "//rust/common:ffi_utils",
+                        },
+                },
 		{Var: "skia_codec_rust_png_public",
 			Rules: []string{
 				"//include/codec:rust_png_public_hdrs",
@@ -68,7 +73,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_codec_rust_png",
 			Rules: []string{
 				"//src/codec:rust_png_srcs",
-				"//rust/common:span_utils",
 			},
 		},
 		{Var: "skia_codec_rust_png_ffi_rs_srcs",
@@ -137,7 +141,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_encode_rust_png_srcs",
 			Rules: []string{
 				"//src/encode:rust_png_srcs",
-				"//rust/common:span_utils",
 			}},
 		{Var: "skia_encode_png_base",
 			Rules: []string{
