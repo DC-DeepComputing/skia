@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c5d44ad_8ce97d0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-06T15:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2aee98d_818186f3",
+      "revId": "c6727697e515cf080772b2792113e016b03debc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd09842c_4d0f6ba3",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-04T19:57:05Z",
       "side": 1,
       "message": "Because this is exporting an assignment `SkFontScanner` must be a complete type here, so need to `#include` `SkFontScanner.h`. Alternatively, could just have two declarations here (and two definitions in the `.cpp` file), one with this new parameter and one without.",
+      "revId": "c6727697e515cf080772b2792113e016b03debc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f7675cd_b18d7028",
+        "filename": "include/ports/SkFontMgr_fuchsia.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-06T15:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd09842c_4d0f6ba3",
       "revId": "c6727697e515cf080772b2792113e016b03debc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

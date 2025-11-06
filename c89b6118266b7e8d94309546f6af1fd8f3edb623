@@ -22,6 +22,30 @@
       },
       "revId": "c89b6118266b7e8d94309546f6af1fd8f3edb623",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457c0444_0616ec27",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-06T15:20:21Z",
+      "side": 0,
+      "message": "I have no idea.",
+      "parentUuid": "faf490a5_b719beb3",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 4
+      },
+      "revId": "c89b6118266b7e8d94309546f6af1fd8f3edb623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
