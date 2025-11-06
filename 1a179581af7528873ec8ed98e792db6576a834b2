@@ -22,6 +22,30 @@
       },
       "revId": "1a179581af7528873ec8ed98e792db6576a834b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd0ad903_0ac45981",
+        "filename": "gn/codec.gni",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 0,
+      "message": "Thanks for bringing this point, I was not considering this specific issue and you are totally right. I will redefine current changeset to avoid breaking the Skia-Chromium integration by splitting the work in different CLs",
+      "parentUuid": "e0279fa5_1b808dee",
+      "range": {
+        "startLine": 117,
+        "startChar": 2,
+        "endLine": 117,
+        "endChar": 30
+      },
+      "revId": "1a179581af7528873ec8ed98e792db6576a834b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dca48d8_a717326d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "5a38e57e_e33b77e5",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a9dd71d_40551068",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b88dfefc_7fd09ca8",
+        "filename": "rust/common/SkStreamAdapter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6a9dd71d_40551068",
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cecf646_02341ddc",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-11-06T00:45:29Z",
       "side": 1,
       "message": "I wonder if we can avoid duplicating this piece of `third_party/skia/rust/common/SpanUtils.h` somehow.  For a moment I wondered whether to move this forward-declaration into a separate `rust/common/CxxFwdDecls.h`, but I see that a comment in `SpanUtils.h` [asks](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/rust/common/SpanUtils.h;l\u003d13;drc\u003d5658e91de531f3a05ebb87fad3deed5da7ecb5b2) to eventually \"use a real `#include` if possible\".  So maybe we can just `#include \"rust/common/SpanUtils.h\"` here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397e4607_c367a693",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6cecf646_02341ddc",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f5be10_b7ae8a70",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "I like the idea, I will change it.",
+      "parentUuid": "4f44c1a9_0b3f7152",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 18
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30713e32_e6f21139",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-11-06T00:45:29Z",
       "side": 1,
       "message": "nit: Let\u0027s name this `SkStreamAdapter` to match the filename (and having an `Sk` prefix seems reasonable in general).",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 19
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4de3734d_47836948",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "30713e32_e6f21139",
       "range": {
         "startLine": 22,
         "startChar": 6,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cda5fdc_29177d7a",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "707706f2_11f97a06",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57af9928_6c2a665f",
@@ -146,6 +284,30 @@
       "writtenOn": "2025-11-06T00:45:29Z",
       "side": 1,
       "message": "IIUC these methods no longer need to be `virtual` after moving the implementation out of `src/codec/SkPngRustCodec.cpp`.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 78
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9876298_4ae63246",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "57af9928_6c2a665f",
       "range": {
         "startLine": 36,
         "startChar": 0,
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac1824b4_3c6bdaf1",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Yes, that\u0027s a good consideration. We need to revisit in the future",
+      "parentUuid": "47f73936_307a90d9",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6896c56_b3991970",
@@ -192,6 +378,30 @@
       "writtenOn": "2025-11-06T00:45:29Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 8
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ca7a14_9096a7ec",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6896c56_b3991970",
       "range": {
         "startLine": 127,
         "startChar": 0,
@@ -225,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08908075_9828d91d",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "The reason why I had to keep function definition in rust/png/FFI.rs was an error that I was getting when building, because SkStreamAdapter did not satisfied the UniquePtrTarget trait.\n\nerror[E0277]: the trait bound `SkStreamAdapter: UniquePtrTarget` is not satisfied\n  --\u003e rust/common/io_traits_ffi.rs:79:31\n   |\n79 | fn force_unique_ptr_bridge(_: cxx::UniquePtr\u003cSkStreamAdapter\u003e) {\n   |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `UniquePtrTarget` is not implemented for `SkStreamAdapter`\n   |\n   \u003d help: the following other types implement trait `UniquePtrTarget`:\n             CxxString\n             CxxVector\u003cT\u003e\nnote: required by a bound in `UniquePtr`\n  --\u003e external/rules_rust++crate+crates__cxx-1.0.168/src/unique_ptr.rs:23:1\n\nAfter some investigation I found that this should be generated by cxx bridge, but it is only used if the types is actually used in any function of the bridge. The workaround I have found now and which allows to remove the function definition from rust/png/FFI.rs is to define some dummy function in io_traits_ffi.rs which makes use to it, so that cxx bridge generates the expected trait. Do you know if there is any other way that we can force the generation?",
+      "parentUuid": "733ce75d_d81499d1",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 148,
+        "endChar": 18
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "851dad07_72b18600",
@@ -238,6 +472,30 @@
       "writtenOn": "2025-11-06T00:45:29Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 4
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4a6019_65aef71e",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-06T16:55:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "851dad07_72b18600",
       "range": {
         "startLine": 154,
         "startChar": 0,
