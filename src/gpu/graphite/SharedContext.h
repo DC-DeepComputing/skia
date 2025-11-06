@@ -110,7 +110,8 @@ protected:
     std::unique_ptr<ThreadSafeResourceProvider> fThreadSafeResourceProvider;
 
 private:
-    friend class Context; // for setRendererProvider() and setCaptureManager()
+    // for setRendererProvider(), setCaptureManager(), synchronizeBackendLabels()
+    friend class Context;
 
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
             const RuntimeEffectDictionary*,
@@ -124,6 +125,8 @@ private:
     void setRendererProvider(std::unique_ptr<RendererProvider> rendererProvider);
 
     void setCaptureManager(sk_sp<SkCaptureManager> captureManager);
+
+    void synchronizeBackendLabels();
 
     std::unique_ptr<const Caps> fCaps; // Provided by backend subclass
 

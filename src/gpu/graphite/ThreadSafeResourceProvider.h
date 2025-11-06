@@ -42,6 +42,7 @@ public:
     void freeGpuResources() SK_EXCLUDES(fSpinLock);
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) SK_EXCLUDES(fSpinLock);
     void forceProcessReturnedResources() SK_EXCLUDES(fSpinLock);
+    void synchronizeBackendLabels() SK_EXCLUDES(fSpinLock);
 
 protected:
     mutable SkSpinlock fSpinLock;

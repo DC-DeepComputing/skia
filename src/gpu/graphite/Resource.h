@@ -317,10 +317,24 @@ protected:
 
         fLabel = label;
 
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
+        // if (!fLabel.empty()) {
+        //     const std::string fullLabel = "Skia_" + fLabel;
+        //     // Shareable resources can be synchronized immediately.
+        //     // TODO explain why
+        //     if (fShareable == Shareable::kYes) {
+        //         this->setBackendLabel(fullLabel.c_str());
+        //     }
+        // }
+    }
+
+    // Only when safe to do so; only called by ResourceCache or by scratch resource manager maybe
+    void setLabelAndSynchronizeToBackend(std::string_view label) {
+        if (fLabel == label) { return; }
+
+        fLabel = label;
+        if (fLabel.empty()) { return; }
+        const std::string fullLabel = "Skia_" + fLabel;
+        this->setBackendLabel(label.c_str());
     }
 
 private:
@@ -461,6 +475,9 @@ private:
                 next};
     }
 
+    // Overridden to set the label on the underlying GPU resource
+    virtual void setBackendLabel(char const* label) {}
+
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
     bool hasCacheRef() const {
         return (fRefs.load(std::memory_order_acquire) & RefMask(RefType::kCache)) != 0;
@@ -503,7 +520,7 @@ private:
 #endif
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // The remaining calls are meant to be truely private (including virtuals for subclasses)
+    // The remaining calls are meant to be truly private (including virtuals for subclasses)
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     // Overridden to free GPU resources in the backend API.
@@ -511,9 +528,6 @@ private:
 
     // Overridden to call any release callbacks, if necessary
     virtual void invokeReleaseProc() {}
-
-    // Overridden to set the label on the underlying GPU resource
-    virtual void setBackendLabel(char const* label) {}
 
     // Overridden to add extra information to the memory dump.
     virtual void onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,

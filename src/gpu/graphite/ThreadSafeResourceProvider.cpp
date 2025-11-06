@@ -61,5 +61,10 @@ void ThreadSafeResourceProvider::forceProcessReturnedResources() {
     fWrappedProvider->forceProcessReturnedResources();
 }
 
+void ThreadSafeResourceProvider::synchronizeBackendLabels() {
+    SkAutoSpinlock lock{fSpinLock};
+    fWrappedProvider->synchronizeBackendLabels();
+}
+
 } // namespace skgpu::graphite
 
