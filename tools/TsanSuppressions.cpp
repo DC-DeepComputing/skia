@@ -17,10 +17,16 @@ extern "C" {
 
     const char* __tsan_default_suppressions();
     const char* __tsan_default_suppressions() {
-        // b/373932392 (Precompile isn't thread safe on Native Vulkan)
-        return "race:anv_shader_bin_create";      // Intel Vulkan drivers (mesa-22.1.3).
-    }
+        const char* kDefaultSuppressions =
 
+            // b/373932392 (Precompile isn't thread safe on Native Vulkan)
+            "race:anv_shader_bin_create\n"                 // Intel Vulkan drivers (mesa-22.1.3).
+
+            "race:libgallium-25.0.7-0ubuntu0.24.04.2.so\n" // Ubuntu24.04/QuadroP400 driver
+            "race:libgallium-24.2.8-1ubuntu1~24.04.1.so";  // Ubuntu24.04/IntelIrisXe driver
+
+        return kDefaultSuppressions;
+    }
 }
 
 #endif
