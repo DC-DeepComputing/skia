@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8818830_327eef3c",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 16
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T22:08:10Z",
+      "side": 1,
+      "message": "This Rust library target doesn\u0027t yet exist in Chromium\u0027s [`//skia/BUILD.gn`](https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;drc\u003d5a8477498cc4e4cecb1250a3b24acd99cca38ffe).  I think to move forward we can first create two separate CLs like this:\n\n* Skia CL:\n    * Introduce empty `rust/common:ffi` (with empty `io_traits_ffi.rs`)\n    * Introduce new `.gni` lists\n        - Open question: which of the `third_party/skia/gn/*.gni` files?  A new one?\n        - The lists should cover enough to build the new library in Chromium (when combined with the Chromium CL below).  So probably need:\n            - skia_rust_common_ffi_rs_srcs\n            - skia_rust_common_ffi_cxx_bridge_srcs\n            - skia_rust_common_ffi_crate_root\n            - skia_rust_common_ffi_cpp_hdrs\n            - skia_rust_common_ffi_cpp_srcs\n* Chromium CL: editing `//skia/BUILD.gn`\n    * Add a new rust_static_library built out of\n        - sources \u003d skia_rust_common_ffi_rs_srcs\n        - crate_root \u003d skia_rust_common_ffi_crate_root\n        - cxx_bindings \u003d skia_rust_common_ffi_cxx_bridge_srcs\n        - deps \u003d \u003cthe new source_set below\u003e\n    * Add a new source_set built out of:\n        - sources \u003d skia_rust_common_ffi_cpp_srcs\n        - public \u003d skia_rust_common_ffi_cpp_hdrs\n    * Add `deps` edges\n        - From the old //skia:rust_png_ffi` crate to the new rust_static_library\n        - From skia:skia to the new source_set\n        \nProbably easiest to make all the changes above together - in the same CHromium repo (and then upload one CL with `git cl upload` from the root, and with `git cl upload` from `third_party/skia`).\n\nAnd then **this** CL can be landed afterwards (and can be tested as a separate `git` branch under `third_party/skia` repo - after `git branch --set-upstream-to\u003dprerequisite-branch` the dependency/sequencing should be seen by both `git cl upload` and `git map-branches -v`).",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 12
+      },
+      "revId": "706e555eb071563e69a013cb1552ca17a4e05942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e45d5b_7e4e03c5",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T22:08:10Z",
+      "side": 1,
+      "message": "nit: Probably best to name the new crate something that is unlikely to collide with other crate names.  Maybe `skia_rust_common`?",
+      "range": {
+        "startLine": 125,
+        "startChar": 31,
+        "endLine": 125,
+        "endChar": 42
+      },
+      "revId": "706e555eb071563e69a013cb1552ca17a4e05942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
