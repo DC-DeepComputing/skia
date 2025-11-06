@@ -92,7 +92,7 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
     }
     *result = kInternalError;
     // Either wrap or copy stream data.
-    sk_sp<SkData> data = nullptr;
+    sk_sp<const SkData> data = nullptr;
     if (stream->getMemoryBase()) {
         data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
     } else {
@@ -489,7 +489,7 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkJpegxlCodec::MakeFromStream(std::move(stream), outResult);
 }
 
-std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext) {
     if (!data) {
