@@ -5039,6 +5039,11 @@ bool GrGLCaps::isFormatTexturable(const GrBackendFormat& format, GrTextureType t
     if (textureType == GrTextureType::kRectangle && !this->rectangleTextureSupport()) {
         return false;
     }
+    if (textureType == GrTextureType::kExternal) {
+        // If the backend format is external, we assume it's texturable if there is support.
+        // A non-texturable AHB would fail to get wrapped in a GrBackendTexture and never get here.
+        return this->shaderCaps()->fExternalTextureSupport;
+    }
     return this->isFormatTexturable(GrBackendFormats::AsGLFormat(format));
 }
 
@@ -5171,6 +5176,11 @@ void GrGLCaps::didQueryImplementationReadSupport(GrGLFormat format,
 
 bool GrGLCaps::onAreColorTypeAndFormatCompatible(GrColorType ct,
                                                  const GrBackendFormat& format) const {
+    if (format.textureType() == GrTextureType::kExternal) {
+        // For lack of a better alternative, assume the external format matches the requested ct.
+        return true;
+    }
+
     GrGLFormat glFormat = GrBackendFormats::AsGLFormat(format);
     const auto& info = this->getFormatInfo(glFormat);
     for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
