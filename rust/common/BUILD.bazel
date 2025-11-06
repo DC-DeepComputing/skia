@@ -1,6 +1,9 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
 load(
     "//bazel:skia_rules.bzl",
     "skia_cc_library",
+    "skia_filegroup",
 )
 
 package(
@@ -9,15 +12,79 @@ package(
 
 licenses(["notice"])
 
-# Shared FFI utilities for Rust integrations.
-# This header-only library provides ToSkSpan() for converting rust::Slice to SkSpan.
+skia_filegroup(
+    name = "rs_srcs",
+    srcs = ["io_traits_ffi.rs"],
+    visibility = ["//:__subpackages__"],
+)
+
+skia_filegroup(
+    name = "cxx_bridge_srcs",
+    srcs = ["io_traits_ffi.rs"],
+    visibility = ["//:__subpackages__"],
+)
+
+# Shared FFI utilities for Rust codec integrations.
 skia_cc_library(
-    name = "span_utils",
-    hdrs = ["SpanUtils.h"],
+    name = "ffi_utils",
+    hdrs = [
+        "SkStreamAdapter.h",
+        "SpanUtils.h",
+    ],
+    srcs = ["SkStreamAdapter.cpp"],
     features = ["layering_check"],
     visibility = [
+        "//rust/png:__pkg__",
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
-    deps = ["//:core"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "@crates//:cxx_cc",
+    ],
+)
+
+# Export io_traits_ffi.rs for direct inclusion in BUILD files (for GNI generation)
+exports_files(
+    ["io_traits_ffi.rs"],
+    visibility = ["//rust/png:__pkg__"],
+)
+
+# TODO(crbug.com/452666425): Temporary exports for multi-CL transition.
+# Remove these after Chromium's //skia/BUILD.gn is updated to use
+# skia_codec_rust_common_ffi instead of skia_codec_rust_png_ffi_cpp_hdrs.
+exports_files(
+    [
+        "SkStreamAdapter.cpp",
+        "SkStreamAdapter.h",
+        "SpanUtils.h",
+    ],
+    visibility = ["//rust/png:__pkg__"],
+)
+
+# CXX bridge for the common FFI library
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "io_traits_ffi.rs",
+    visibility = ["//rust/png:__pkg__"],
+    deps = [":ffi_utils"],
+)
+
+# Rust library providing SkStreamAdapter type and Read/Seek traits
+rust_library(
+    name = "ffi",
+    crate_name = "skia_rust_common",
+    crate_root = "io_traits_ffi.rs",
+    srcs = ["io_traits_ffi.rs"],
+    rustc_flags = [
+        "-Dwarnings",
+        "--cfg=cxxbridge1",
+    ],
+    visibility = ["//rust/png:__pkg__"],
+    deps = [
+        ":cxx_bridge",
+        ":ffi_utils",
+        "@crates//:cxx",
+    ],
 )
