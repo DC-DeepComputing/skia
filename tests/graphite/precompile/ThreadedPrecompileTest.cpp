@@ -553,6 +553,23 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompilePurgingTest,
     REPORTER_ASSERT(reporter, stats.fGraphicsPurges == kNumDiffPipelines);
 }
 
+//extern "C" {
+
+     extern "C" __attribute__((visibility("default"))) const char* __tsan_default_suppressions(void) {
+        static const char* kDefaultSuppressions =
+
+            // b/373932392 (Precompile isn't thread safe on Native Vulkan)
+            "race:anv_shader_bin_create\n"                 // Intel Vulkan drivers (mesa-22.1.3).
+
+            "race:libgallium-25.0.7-0\n" // Ubuntu24.04/QuadroP400 driver
+            "race:libgallium-24.2.8-1";  // Ubuntu24.04/IntelIrisXe driver
+
+        SkDebugf("%s\n", kDefaultSuppressions);
+         exit(0);
+        return kDefaultSuppressions;
+    }
+//}
+
 // This test fires off two compilation threads, two precompilation threads and one
 // purging thread. This is intended to stress test the Pipeline cache's thread safety and
 // the purging behavior.
