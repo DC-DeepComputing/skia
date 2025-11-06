@@ -24,11 +24,26 @@ skia_filegroup(
 
 skia_cc_library(
     name = "ffi_cpp",
-    hdrs = ["FFI.h"],
-    features = ["layering_check"],
+    hdrs = [
+        "FFI.h",
+        # TODO(crbug.com/452666425): Remove these after Chromium's //skia/BUILD.gn
+        # is updated to include skia_codec_rust_common_ffi. For now, we export
+        # these headers from both PNG and common to maintain backward compatibility.
+        "//rust/common:SkStreamAdapter.h",
+        "//rust/common:SpanUtils.h",
+    ],
+    srcs = [
+        # TODO(crbug.com/452666425): Remove after Chromium update (see above).
+        "//rust/common:SkStreamAdapter.cpp",
+    ],
     visibility = [
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
+    ],
+    deps = [
+        ":cxx_bridge/include",
+        "//rust/common:ffi_utils",
+        "//:core",
     ],
 )
 
@@ -39,11 +54,15 @@ rust_cxx_bridge(
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
     ],
-    deps = [":ffi_cpp"],
+    deps = [
+        ":ffi_cpp",
+        "//rust/common:ffi_utils",
+    ],
 )
 
 rust_static_library(
     name = "ffi_rs",
+    crate_root = "FFI.rs",
     srcs = [":rs_srcs"],
     rustc_flags = ["-Dwarnings"],
     visibility = [
@@ -51,7 +70,9 @@ rust_static_library(
         "//src/encode:__pkg__",
     ],
     deps = [
+        ":cxx_bridge",
         ":ffi_cpp",
+        "//rust/common:ffi",
         "@crates//:cxx",
         "@crates//:png",
     ],
