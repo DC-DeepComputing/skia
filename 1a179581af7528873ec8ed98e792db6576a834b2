@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0279fa5_1b808dee",
+        "filename": "gn/codec.gni",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 0,
+      "message": "I think that landing this CL as-is will break Chromium when this Skia CL rolls into Chromium (blocking the auto-roll CL).  This is because Chromium\u0027s `//skia/BUILD.gn` continues to use `skia_codec_rust_png` (which now is missing `SpanUtils.h`) and doesn\u0027t yet use `skia_codec_rust_common_ffi` (which is now needed to build the PNG/FFI crate).\n\nPlease see my other code review comment in `rust/png/FFI.rs` for ideas on how to resolve this (which unfortunately involve having to split this work across 3+ CLs).",
+      "range": {
+        "startLine": 117,
+        "startChar": 2,
+        "endLine": 117,
+        "endChar": 30
+      },
+      "revId": "1a179581af7528873ec8ed98e792db6576a834b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a38e57e_e33b77e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "Let\u0027s refer to https://crbug.com/452666425 here - this way the bug will keep track of the CLs associated with this work.\n\n```suggestion\n\nBug: 452666425\nChange-Id: I8e2ec205d485603816690c0e15600f0c9a4eb89f\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9dd71d_40551068",
+        "filename": "rust/common/SkStreamAdapter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "nit: Remove one blank line.",
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cecf646_02341ddc",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "I wonder if we can avoid duplicating this piece of `third_party/skia/rust/common/SpanUtils.h` somehow.  For a moment I wondered whether to move this forward-declaration into a separate `rust/common/CxxFwdDecls.h`, but I see that a comment in `SpanUtils.h` [asks](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/rust/common/SpanUtils.h;l\u003d13;drc\u003d5658e91de531f3a05ebb87fad3deed5da7ecb5b2) to eventually \"use a real `#include` if possible\".  So maybe we can just `#include \"rust/common/SpanUtils.h\"` here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f44c1a9_0b3f7152",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "WDYT about renaming this namespace to `rust::skia`?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 18
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30713e32_e6f21139",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "nit: Let\u0027s name this `SkStreamAdapter` to match the filename (and having an `Sk` prefix seems reasonable in general).",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 19
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "707706f2_11f97a06",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "Let\u0027s add an explicit comment:\n\n```\n// The caller needs to guarantee that `stream` will be alive for at least as\n// long as the `StreamAdapter`.\n```",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57af9928_6c2a665f",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "IIUC these methods no longer need to be `virtual` after moving the implementation out of `src/codec/SkPngRustCodec.cpp`.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 78
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47f73936_307a90d9",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "This works for now.  I think in the long-term we may want to delegate ownership model into specific codecs (not having to worry about ownership in this layer + supporting different ownership models - I wonder if `SkBmpCodec` maybe doesn\u0027t have to support rewinding because it only supports a single image / doesn\u0027t support multiple animation frames).\n\nMaybe for now just a `TODO` - e.g.:\n\n```\n// TODO: Consider avoiding holding a raw / unowned pointer here:\n// * Replace `fStream` field with an abstract method declaration:\n//   `virtual SkStream\u0026 stream() \u003d 0`.\n// * Remove the constructor.\n// * Derive-from/implement this in a child class in `src/codec/SkPngRustCodec.cpp`\n```\n\nWDYT?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6896c56_b3991970",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 8
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "733ce75d_d81499d1",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "I was hoping that these Rust-side pieces can also move to `rust/common` (in addition to `impl ... Read`).\n\n* `rust/common/BUILD.bazel` would define a new `rust_static_library`\n  (let\u0027s maybe focus on Bazel builds / `bazelisk build` first and worry\n  about gn/ninja builds later)\n* The new `rust/common` Rust library would:\n    - Have `#[cxx::bridge]` with\n        - `type StreamAdapter;`\n        - `read`, `seek_from_start`, etc.\n    - Have `impl ... Read for StreamAdapter`\n    - Re-export public API with something like: `pub use StreamAdapter \u003d ffi::StreamAdapter`.\n* The old `rust/png/FFI.rs` would:\n    - Replace `type StreamAdapter` with `type StreamAdapter \u003d other_crate_name::StreamAdapter` based on https://cxx.rs/extern-c++.html#safely-unifying-occurrences-of-an-extern-type-across-bridges\n    - Delete declarationf of `fn read`, `fn seek_from_start`, etc.\n\nBasing `rust/common/io_traits_ffi.rs` around a macro seems to introduce extra complexity - I don\u0027t understand why this is needed.\n\n--------------------------\n\nI understand that covering GN/ninja build is a bit difficult.  So I think getting the Bazel build working first and getting that reviewed may be a reasonable way forward.\n\nThe GN/ninja difficulties mostly arise from the fact that definitions of build targets are spread across the Skia repo and the Chromium repo (and now the PDFium repo) and both/all repos have to keep working in intermediate states.  So if we stick with the current Skia approach of providing `skia/gn/*.gni` files and having Chromium/PDFium/etc assemble `BUILD.gn` files out of these `.gni` files, then I think we would have to do a multi-step CL dance similar to:\n\n* Skia: Land new `//rust/common` Rust crate\n  (new crate builds via Bazelisk + `.gni` files cover new `.rs` sources).\n  No changes to old PNG targets yet.\n* Chromium/PDFium: Start using the new `.rs` sources.\n  (Tweaking their `//skia/BUILD.gn` to define a new `rust_static_library` target + make the old PNG/FFI Rust crate depend on the new target.)\n* Skia: Actually start using the new crate from the old PNG crate\n  (in Bazel + GN/ninja builds)",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 148,
+        "endChar": 18
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "851dad07_72b18600",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-06T00:45:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 4
+      },
+      "revId": "49f2f49df4769e7dbb78ae2208d1534efc4bd087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
