@@ -34,6 +34,24 @@
       "parentUuid": "b2906e5a_2c664593",
       "revId": "e7956fa171e6cf18a8f806235d88a4734006d215",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07a8c5fd_631b0d5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-06T16:03:12Z",
+      "side": 1,
+      "message": "FYI, fill-rule support is now enabled in the test web app: https://skottie.skia.org/1f5ed006a2da4e5102a4911f2e098953?h\u003d512\u0026w\u003d512\n\nLet us know if you notice any issues.",
+      "parentUuid": "b8f78e92_f061fa1d",
+      "revId": "e7956fa171e6cf18a8f806235d88a4734006d215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
