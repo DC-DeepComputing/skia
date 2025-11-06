@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "171ee993_09af2c27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-06T19:39:51Z",
+      "side": 1,
+      "message": "PTAL; had to update the texture target selection when creating the texture. With just the backend format being set to texture2d, we\u0027d been still creating it as an external texture (from the isRenderbale parameter being false).  Then the sampler declaration would use the backend format\u0027s texture2d target.  Previously for renderable textures we\u0027d have a mismatch of declaring a samplerExternalOES in the shader but binding it to a texture2d and that was okay, but were consistent on samplerExternalOES for non-renderable textures. \n\nBefore PS5, my change switched it so that we were consistent with renderable textures but inconsistent with non-renderable textures in the opposite direction: creating an external texture but binding it to a `sampler2D`, which was then very not okay.\n\nThe latest change removes `isRenderable` from the helper function and just picks the GL texture target from the backend format. The public API checks isRenderable still to make sure the caps thinks that it\u0027s renderable. Locally this fixed the GrAHardwareBuffer unit tests that had been failing in skqp during the android canary. Hopefully it also fixes all the other android test failures.",
+      "revId": "94fc5042b990bb1e7f7df2766931159438f95cf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
