@@ -67,7 +67,10 @@ func (b *TaskBuilder) nanobenchFlags(doUpload bool) {
 			}
 		} else if b.Os("ChromeOS") {
 			glPrefix = "gles"
+		} else if b.GPU("QuadroP400") && b.MatchOs("Ubuntu24.04") {
+			sampleCount = 4
 		}
+
 
 		configs = append(configs, glPrefix, "srgb-"+glPrefix)
 
