@@ -7,3 +7,18 @@
 # [alignment]
 src:.*third_party/externals/libpng/intel/filter_sse2_intrinsics.c
 src:.*third_party/externals/zlib/deflate.c
+
+# Ubuntu24.04/QuadroP400 driver
+#called_from_lib:libgallium-25.0.7-0
+# Ubuntu24.04/IntelIrisXe driver
+#called_from_lib:libgallium-24.2.8-1
+
+mutex:libgallium-*.so
+race:libgallium-*.so
+called_from_lib:libgallium-*.so
+
+#race:libgallium
+#race:pthread_mutex_lock
+#race:pthread_mutex_destroy
+#race:pthread_cond_destroy
+#race:pthread_cond_broadcast
