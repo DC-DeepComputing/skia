@@ -86,6 +86,11 @@ public:
 
     void forceProcessReturnedResources();
 
+    // Method to propagate any Resource label updates to underlying backend resource labels. Should
+    // only be called by the Context thread during insertRecording() per thread safe labeling
+    // model outlined in Resource.h.
+    void synchronizeBackendLabels();
+
 #if defined(GPU_TEST_UTILS)
     void forcePurgeAsNeeded() { this->purgeAsNeeded(); }
 

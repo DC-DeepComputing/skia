@@ -153,5 +153,8 @@ void SharedContext::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeT
 void SharedContext::forceProcessReturnedResources() {
     fThreadSafeResourceProvider->forceProcessReturnedResources();
 }
+void SharedContext::synchronizeBackendLabels() {
+    fThreadSafeResourceProvider->synchronizeBackendLabels();
+}
 
 } // namespace skgpu::graphite
