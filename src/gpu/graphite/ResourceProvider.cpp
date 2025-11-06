@@ -109,14 +109,71 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
                                      Shareable::kNo);
 }
 
+namespace {
+std::string usage_to_str(SkEnumBitMask<ScratchUsageFlags> usageMask) {
+    std::string allUsagesLabel;
+
+    // A scratch resource is either a texture or a buffer. Buffers are not expected to have
+    // other usages.
+    if ((usageMask & ScratchUsageFlags::kScratchBuffer)) {
+        allUsagesLabel = "Texture";
+    } else {
+        allUsagesLabel = "Buffer";
+        SkASSERT(usageMask & SkEnumBitMask<ScratchUsageFlags>(~ScratchUsageFlags::kScratchBuffer) == 0);
+    }
+
+    if (usageMask & ScratchUsageFlags::kAsyncReadPixelsFallbackTexture) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (usageMask & ScratchUsageFlags::kCopyDeviceTexture) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (usageMask & ScratchUsageFlags::kDiscardableLoadMSAATexture) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (usageMask & ScratchUsageFlags::kDispatchWriteOnlyStorageTexture) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (usageMask & ScratchUsageFlags::kDstCopy) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (usageMask & ScratchUsageFlags::kEvalBlurTexture) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (usageMask & ScratchUsageFlags::kImageFilterCachedBitmap) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (usageMask & ScratchUsageFlags::kImageFilterResult) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (usageMask & ScratchUsageFlags::kImageMakeCTandCSTexture) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (usageMask & ScratchUsageFlags::kImageSubsetTexture) {
+        allUsagesLabel += "_Subset";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleDstTexture) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleImageTempTexture) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleLinearGammaTexture) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    return allUsagesLabel;
+}
+} // anonymous
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
-        std::string_view label,
+        SkEnumBitMask<ScratchUsageFlags> usageMask,
         const ResourceCache::ScratchResourceSet& unavailable) {
+    // Record the scratch texture's usage
     return this->findOrCreateTexture(dimensions,
                                      info,
-                                     std::move(label),
+                                     /*label=*/"", // scratch textures should have no string label
                                      Budgeted::kYes,
                                      Shareable::kScratch,
                                      &unavailable);
@@ -132,7 +189,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     // If the resource is shareable it should be budgeted since it shouldn't be backing any client
     // owned object.
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
-    SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
+    // Scratch textures should have no string label but rather use usage bitmasks.
+    SkASSERT(shareable != Shareable::kScratch || (SkToBool(unavailable) && label.empty()));
 
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
@@ -215,12 +273,19 @@ sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
         size_t size,
         BufferType type,
         AccessPattern access,
-        std::string_view label,
         const ResourceCache::ScratchResourceSet& unvailable) {
+
+    // TODO: Add scratch buffer usage flag to ... not the proxy, but..
+
     // Scratch buffers must be GPU only, mapped access makes it too difficult to scope their
     // reads and writes within the actual command buffer execution.
     SkASSERT(access != AccessPattern::kHostVisible);
-    return this->findOrCreateBuffer(size, type, access, label, Shareable::kScratch, &unvailable);
+    return this->findOrCreateBuffer(size,
+                                    type,
+                                    access,
+                                    "",
+                                    Shareable::kScratch,
+                                    &unvailable);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
