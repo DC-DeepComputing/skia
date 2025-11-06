@@ -7,3 +7,6 @@
 # [alignment]
 src:.*third_party/externals/libpng/intel/filter_sse2_intrinsics.c
 src:.*third_party/externals/zlib/deflate.c
+
+called_from_lib:libgallium-25.0.7-0ubuntu0.24.04.2.so # Ubuntu24.04/QuadroP400 driver
+called_from_lib:libgallium-24.2.8-1ubuntu1~24.04.1.so # Ubuntu24.04/IntelIrisXe driver
