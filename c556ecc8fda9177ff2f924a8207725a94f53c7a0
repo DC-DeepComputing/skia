@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef54e080_7d7f5e99",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-06T16:44:42Z",
+      "side": 1,
+      "message": "This is a `realTypeface`. Here `this` is a proxy (it derives from `SkTypeface_proxy`) and we\u0027re calling the superclass to make a clone of the underlying real typeface to produce a new real typeface.",
+      "range": {
+        "startLine": 255,
+        "startChar": 13,
+        "endLine": 255,
+        "endChar": 18
+      },
+      "revId": "c556ecc8fda9177ff2f924a8207725a94f53c7a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ee6ce6_d3b73c85",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-06T16:44:42Z",
+      "side": 1,
+      "message": "This creates a new `SkTypeface_Fuchsia` with the same `fId` as an existing one, which may be an issue? Previously, it looks like this method acted like\n\n`return SkTypeface_proxy::onMakeClone(args);`\n\nWhere a \"real\" typeface was returned, not a proxy `SkTypeface_Fuchsia`. That \"real\" typeface may have different style attributes that aren\u0027t overridden, but I think that\u0027s correct as the font arguments may have changed the style?\n\nMaybe the `fId` doesn\u0027t matter because these don\u0027t end up in the cache at any point, but the font style and fixed pitch bits should come from the real typeface.",
+      "range": {
+        "startLine": 259,
+        "startChar": 79,
+        "endLine": 259,
+        "endChar": 83
+      },
+      "revId": "c556ecc8fda9177ff2f924a8207725a94f53c7a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac42e35e_7a12d5fc",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-06T16:44:42Z",
+      "side": 1,
+      "message": "Before the `style` used by the `SkTypeface_Fuchsia` was the style found by the font scanner, but this is changing that to the style of the request?",
+      "range": {
+        "startLine": 542,
+        "startChar": 55,
+        "endLine": 542,
+        "endChar": 60
+      },
+      "revId": "c556ecc8fda9177ff2f924a8207725a94f53c7a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7db444c_1640c7f6",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-06T16:44:42Z",
+      "side": 1,
+      "message": "can `std::move(realTypeface)`",
+      "range": {
+        "startLine": 542,
+        "startChar": 41,
+        "endLine": 542,
+        "endChar": 53
+      },
+      "revId": "c556ecc8fda9177ff2f924a8207725a94f53c7a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
