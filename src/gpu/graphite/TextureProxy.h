@@ -12,6 +12,9 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkTo.h"
+#include "src/base/SkEnumBitMask.h"
+
+// include src/gpu/graphite/ResourceTypes.h ?
 
 #include <functional>
 
@@ -24,6 +27,7 @@ class Recorder;
 class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
+enum class ScratchUsageFlags : uint32_t;
 
 class TextureProxy : public SkRefCnt {
 public:
@@ -38,6 +42,7 @@ public:
     const TextureInfo& textureInfo() const { return fInfo; }
 
     const char* label() const { return fLabel.c_str(); }
+    SkEnumBitMask<ScratchUsageFlags> scratchUsageMask() const { return fScratchUsageMask; }
 
     bool isLazy() const;
     bool isFullyLazy() const;
@@ -82,7 +87,9 @@ public:
     const Texture* texture() const;
     Texture* texture() { return fTexture.get(); }
 
-    // Make() will immediately instantiate non-budgeted proxies.
+    // TODO update comment
+    // Make() and MakeWithCustomLabel() will immediately instantiate non-budgeted proxies. For
+    // Graphite internal usage, we
     static sk_sp<TextureProxy> Make(const Caps*,
                                     ResourceProvider*,
                                     SkISize dimensions,
@@ -108,7 +115,7 @@ public:
 private:
     TextureProxy(SkISize dimensions,
                  const TextureInfo& info,
-                 std::string_view label,
+                 ScratchUsageFlags usage,
                  skgpu::Budgeted budgeted);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
@@ -127,8 +134,21 @@ private:
     const TextureInfo fInfo;
 
     // String used to describe the current use of this TextureProxy. It will be set on its
-    // Texture object when the proxy gets instantiated.
+    // Texture object when the proxy gets instantiated. Should be empty for proxies instantiated
+    // as scratch textures.
+    // TODO: Is this how we get custom scratch labels from the client?
     std::string fLabel;
+
+    // If the proxy represents / is instantiated as a scratch Texture, its label will not be stored
+    // as a string but rather as a bitmask of potential usages. These usages map to string labels
+    // and are generated upon recording insertion if necessary (i.e. the usages have changed so its
+    // label must actually be updated). Should be 0 for texture proxies instantiated as non-scratch.
+    // TODO: Fix comment.
+    SkEnumBitMask<ScratchUsageFlags> fScratchUsageMask = 0;
+    // Track prior scratch usage flags so that we can compare a proxy's current usages against its
+    // past ones. This allows us to determine whether or not we actually need to generate a string
+    // label and update the resource's label or not.
+    SkEnumBitMask<ScratchUsageFlags> fPriorScratchUsageMask = 0;
 
     skgpu::Budgeted fBudgeted;
     const Volatile fVolatile;

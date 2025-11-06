@@ -37,11 +37,12 @@ ScratchResourceManager::~ScratchResourceManager() {
     SkASSERT(!fProxyReadCounts->hasPendingReads());
 }
 
-sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
-                                                         const TextureInfo& info,
-                                                         std::string_view label) {
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        SkEnumBitMask<ScratchUsageFlags> usageMask) {
     sk_sp<Texture> scratchTexture = fResourceProvider->findOrCreateScratchTexture(
-            dimensions, info, label, fUnavailable);
+            dimensions, info, usageMask, fUnavailable);
     // Store the returned scratch texture into fUnavailable so that it is filtered from the
     // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
     // remain visible to other Recorders.

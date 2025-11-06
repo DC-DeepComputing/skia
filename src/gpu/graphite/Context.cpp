@@ -239,6 +239,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+    // Before inserting the recording, update any resource labels that need it.
+    // Compare bitmasks of scratch usages between a proxy's usage and its prior usage.
+    fSharedContext->updateCachedResourceLabels();
+
     return fQueueManager->addRecording(info, this);
 }
 

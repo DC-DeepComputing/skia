@@ -84,6 +84,8 @@ public:
 
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
+    void updateLabels();
+
     void forceProcessReturnedResources();
 
 #if defined(GPU_TEST_UTILS)
