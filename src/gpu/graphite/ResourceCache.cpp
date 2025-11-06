@@ -197,24 +197,48 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         SkASSERT(resource->budgeted() == Budgeted::kYes);
         SkASSERT(resource->key() == key);
 
-        if (shareable == Shareable::kNo) {
-            // If the returned resource is no longer shareable then we remove it from the map so
-            // that it isn't found again.
-            SkASSERT(resource->shareable() == Shareable::kNo);
-            this->removeFromResourceMap(resource);
-            if (budgeted == Budgeted::kNo) {
-                resource->setBudgeted(Budgeted::kNo);
-                fBudgetedBytes -= resource->gpuMemorySize();
+        switch (shareable) {
+            case Shareable::kNo: {
+                // If we have a cached non-shareable resource, it means that the calling thread will
+                // become the sole holder of the object’s newly-added usage ref. This means we can
+                // safely synchronize the resource's label to its backend label at this time.
+                resource->setLabelAndSynchronizeToBackend(std::move(label));
+
+                // If the returned resource is no longer shareable then we remove it from the map so
+                // that it isn't found again.
+                if (budgeted == Budgeted::kNo) {
+                    resource->setBudgeted(Budgeted::kNo);
+                    fBudgetedBytes -= resource->gpuMemorySize();
+                }
+                break;
             }
+            case Shareable::kYes: {
+                SkASSERT(budgeted == Budgeted::kYes);
+                resource->setShareable(shareable);
+                // If a resource is changing to be shareable, it is safe to re-assign its label at
+                // this point.
+                resource->setLabelAndSynchronizeToBackend(std::move(label));
+                break;
+            }
+            case Shareable::kScratch: {
+                SkASSERT(budgeted == Budgeted::kYes);
+                break;
+            }
+            default:
+                SkUNREACHABLE;
+        }
+
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
             // If a resource is changing to be shareable, it is safe to re-assign its label at this
             // point. No-op if the label is unchanged.
             resource->setShareable(shareable);
-            // TODO (b/387505250): Only update this label for shareable resources. Scratch resource
-            // label changes will be handled differently per policy outlined in Resource.h.
-            resource->setLabel(std::move(label));
+            // TODO (b/387505250): Only update the resource's label and synchronize the backend
+            // resource's label for shareable resources. Scratch resource label changes will be
+            // handled differently per policy outlined in Resource.h.
+            resource->setLabel(label);
+            resource->setBackendLabel(std::move(label));
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
@@ -253,6 +277,11 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+void ResourceCache::synchronizeBackendLabels() {
+    ASSERT_SINGLE_OWNER
+    // At this point, go through all queued label updates now.
 }
 
 bool ResourceCache::returnResource(Resource* resource) {
