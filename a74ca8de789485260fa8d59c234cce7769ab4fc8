@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6f54fcf_4d74b769",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-06T16:24:11Z",
+      "side": 1,
+      "message": "Here and the other spots: could we return a deferred image (which is also in line with the old deserialization code)?\n\n```\n    return SkCodecs::DeferredImage(std::move(codec), alphaType);\n```",
+      "range": {
+        "startLine": 2120,
+        "startChar": 0,
+        "endLine": 2126,
+        "endChar": 50
+      },
+      "revId": "a74ca8de789485260fa8d59c234cce7769ab4fc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
