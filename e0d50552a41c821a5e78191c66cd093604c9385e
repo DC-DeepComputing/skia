@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4543bdd_4caa4221",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T19:04:42Z",
+      "side": 1,
+      "message": "Thanks!  LGTM after @kjlubick approves whatever we decide to do about the copyrights header in the new `.rs` file.",
+      "revId": "e0d50552a41c821a5e78191c66cd093604c9385e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
