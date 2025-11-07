@@ -63,6 +63,30 @@
       },
       "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed25f756_322687b2",
+        "filename": "fuzz/FuzzMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T22:02:33Z",
+      "side": 1,
+      "message": "\u003e It will be needed after the other steps are used to introduce a new Fuzzer into oss-fuzz.\n\nCan we postpone adding an entry until later, when it will be actually used/needed?\n\n\u003e Can you add the entry here now?\n\nI\u0027d rather avoid adding code when I don\u0027t quite understand what the code should do.  These entries don\u0027t seem to be used for the old decoder (at least based on my current understanding - I tried to explain my reasoning in my previous comment).  So I wouldn\u0027t know how to add them and use the for the new decoder.\n\nIf you think the new entry should be added in *this* CL, then can you please offer more guidance on what to add?  I could blindly just add `{\"png_rust_encoder\" , \"PngRustEncoder\"}`, but I don\u0027t know the meaning of the strings so I don\u0027t know how to spell them (e.g. `PNGRustEncoder`?  `PngRustEncoder`? `SkPngRustEncoder`?",
+      "parentUuid": "528477b9_79e393aa",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 34
+      },
+      "revId": "7b9b95519f7d893aef5ec1e86f95b976be86154c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
