@@ -68,7 +68,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_codec_rust_png",
 			Rules: []string{
 				"//src/codec:rust_png_srcs",
-				"//rust/common:span_utils",
+				"//rust/common:ffi_utils",
 			},
 		},
 		{Var: "skia_codec_rust_png_ffi_rs_srcs",
@@ -137,7 +137,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_encode_rust_png_srcs",
 			Rules: []string{
 				"//src/encode:rust_png_srcs",
-				"//rust/common:span_utils",
+				"//rust/common:ffi_utils",
 			}},
 		{Var: "skia_encode_png_base",
 			Rules: []string{
@@ -166,6 +166,26 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//include/private/chromium:discardable_memory_hdrs"}},
 		{Var: "skia_no_slug_srcs",
 			Rules: []string{}},
+		{Var: "skia_rust_common_ffi_rs_srcs",
+			Rules: []string{
+				"//rust/common:rs_srcs",
+			},
+		},
+		{Var: "skia_rust_common_ffi_cxx_bridge_srcs",
+			Rules: []string{
+				"//rust/common:cxx_bridge_srcs",
+			},
+		},
+		{Var: "skia_rust_common_ffi_cpp_hdrs",
+			Rules: []string{
+				"//rust/common:ffi_hdrs",
+			},
+		},
+		{Var: "skia_rust_common_ffi_cpp_srcs",
+			Rules: []string{
+				"//rust/common:ffi_cpp",
+			},
+		},
 	},
 	},
 	{GNI: "gn/effects.gni", Vars: []exporter.GNIFileListExportDesc{
