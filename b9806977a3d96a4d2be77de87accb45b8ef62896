@@ -16,6 +16,24 @@
       "message": "Making this a default argument here means `SkFontScanner` must be a complete type, since the caller must be able to instantiate the destructor. Best to keep the old declaration and add this as a new declaration to avoid the default argument.",
       "revId": "b9806977a3d96a4d2be77de87accb45b8ef62896",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff272fbf_cb7dbd6c",
+        "filename": "include/ports/SkFontMgr_fuchsia.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-07T18:11:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc660f2c_8d234dfb",
+      "revId": "b9806977a3d96a4d2be77de87accb45b8ef62896",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
