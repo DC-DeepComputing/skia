@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b802d96_63cf65b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 1,
+      "message": "There shouldn\u0027t be any need to override any of the methods in the proxy, since there previously weren\u0027t any overrides.",
+      "revId": "a9f223c4a63a990dcf8b5c5432d7b83db6017349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ddd807_ded4aa21",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 1,
+      "message": "Still need this to be a proxy.\n\n`SkTypeface_proxy`",
+      "range": {
+        "startLine": 233,
+        "startChar": 34,
+        "endLine": 233,
+        "endChar": 59
+      },
+      "revId": "a9f223c4a63a990dcf8b5c5432d7b83db6017349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27622d39_97fac46c",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 1,
+      "message": "`sk_sp\u003cSkTypeface\u003e realTypeface`",
+      "range": {
+        "startLine": 235,
+        "startChar": 23,
+        "endLine": 235,
+        "endChar": 59
+      },
+      "revId": "a9f223c4a63a990dcf8b5c5432d7b83db6017349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a56a96_32e57c70",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 1,
+      "message": "`SkTypeface_proxy(std::move(realTypeface), realTypeface-\u003estyle(), realTypeface-\u003eisFixedPitch())`",
+      "range": {
+        "startLine": 237,
+        "startChar": 14,
+        "endLine": 237,
+        "endChar": 93
+      },
+      "revId": "a9f223c4a63a990dcf8b5c5432d7b83db6017349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d3c1110_bd0e9bd0",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 1,
+      "message": "```\nsk_sp\u003cSkTypeface\u003e realTypeface \u003d scanner-\u003eMakeFromStream(std::move(stream));\nif (!realTypeface) {\n    return nullptr;\n}\nreturn SkTypeface_Fuchsia::Make(realTypeface, id);\n```",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 94
+      },
+      "revId": "a9f223c4a63a990dcf8b5c5432d7b83db6017349",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

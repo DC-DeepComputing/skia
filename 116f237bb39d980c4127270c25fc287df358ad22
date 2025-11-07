@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ff5172_15175b6a",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 0,
+      "message": "This deletion isn\u0027t needed.",
+      "revId": "116f237bb39d980c4127270c25fc287df358ad22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "345bdee1_f5372260",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-07T19:25:29Z",
+      "side": 0,
+      "message": "This can remain the same.",
+      "revId": "116f237bb39d980c4127270c25fc287df358ad22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
