@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "902164c6_456dd997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "Thanks @sergiog!  @kjlubick - can you PTAL at my question about file headers below?  The CL LGTM except the handful of minor open questions tracked in unresolved comment threads below.",
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee81a133_c749a17d",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "Ack - makes sense.  Thank you for explaining this in a comment (it would have surprised me otherwise).",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d972b06_59a34b51",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "`SpanUtils.h`?\n\n```suggestion\n    srcs \u003d [\"SpanUtils.h\"],\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 13,
+        "endLine": 38,
+        "endChar": 22
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d3e3e7a_47702f6e",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "Can you please help me understand if/why these `exports_files` are necessary here?  Would it be possible to:\n\n* Remove these `export_files` \"targets\"\n* Depend from `//rust/png/...` directly on `//rust/common:ffi` and `/rust/common:ffi_utils`?\n* (But continue to generate `.gni` files out of `skia_filegroups` - no changes here.)",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 1
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a659551_0e757da5",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "No action needed for this comment.  But I wanted to mention that it feels that we should be able to have more descriptive names for `ffi` and `ffi_utils` targets.  But the current names are okay, and I don\u0027t feel strongly about this.  And most importantly I have trouble clearly expressing why I feel better names should be possible:\n\n* One minor concern I have is that `ffi` doesn\u0027t convey that this is a target that Rust crates depend on, and that `ffi_utils` is a target that C++ targets depend on.\n* Maybe one minor change to consider would be to rename the `ffi` target to `skia_rust_common` (matching the `crate_name` seems nice)?",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 15
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "565223e6_4e5d8781",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-07T17:24:28Z",
+      "side": 1,
+      "message": "@kjlubick, I see that `third_party/skia/rust/png/FFI.rs` says:\n\n```\n// Copyright 2024 Google LLC\n// Use of this source code is governed by a BSD-style license that can be\n// found in the LICENSE file.\n```\n\nOTOH Chromium-side `.rs` files don\u0027t mention specific companies and just use a more inclusive/broader \"Chromium Authors\" - e.g. `tools/crates/gnrt/lib/config.rs` says:\n\n```\n// Copyright 2023 The Chromium Authors\n// Use of this source code is governed by a BSD-style license that can be\n// found in the LICENSE file.\n```\n\nDo we need/want something similar in this new file here?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 4
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
