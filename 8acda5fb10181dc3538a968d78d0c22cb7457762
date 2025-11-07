@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d1fdac2_93bbd1c0",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-07T16:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b083f4b4_d43eeaa7",
+      "range": {
+        "startLine": 169,
+        "startChar": 9,
+        "endLine": 169,
+        "endChar": 37
+      },
+      "revId": "8acda5fb10181dc3538a968d78d0c22cb7457762",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41de8796_69fbfea8",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-07T15:32:17Z",
       "side": 1,
       "message": "Go ahead and download `buildifier` from https://github.com/bazelbuild/buildtools/releases/tag/v8.2.1 and put it on your PATH. Then run `buildifier /path/to/BUILD.bazel` to handle formatting and such. This will also allow our presubmit hook to run buildifier.",
+      "range": {
+        "startLine": 34,
+        "startChar": 68,
+        "endLine": 34,
+        "endChar": 71
+      },
+      "revId": "8acda5fb10181dc3538a968d78d0c22cb7457762",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85053f3_8173d274",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-07T16:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41de8796_69fbfea8",
       "range": {
         "startLine": 34,
         "startChar": 68,
