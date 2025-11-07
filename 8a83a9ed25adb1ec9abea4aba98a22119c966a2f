@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e7660e1_79faa9eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2025-11-07T14:42:44Z",
+      "side": 1,
+      "message": "PTAL this one even if it needs a roll of Dawn with the deprecation before it can be landed.",
+      "revId": "8a83a9ed25adb1ec9abea4aba98a22119c966a2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
