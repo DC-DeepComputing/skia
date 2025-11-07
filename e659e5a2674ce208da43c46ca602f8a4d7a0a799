@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a203178b_d76c3956",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-07T18:43:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d972b06_59a34b51",
+      "range": {
+        "startLine": 38,
+        "startChar": 13,
+        "endLine": 38,
+        "endChar": 22
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d3e3e7a_47702f6e",
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab48539_745f4d01",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-07T18:43:08Z",
+      "side": 1,
+      "message": "They are in fact not necesary, we can safely remove it.",
+      "parentUuid": "2d3e3e7a_47702f6e",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 1
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a659551_0e757da5",
@@ -100,6 +148,30 @@
       "writtenOn": "2025-11-07T17:24:28Z",
       "side": 1,
       "message": "No action needed for this comment.  But I wanted to mention that it feels that we should be able to have more descriptive names for `ffi` and `ffi_utils` targets.  But the current names are okay, and I don\u0027t feel strongly about this.  And most importantly I have trouble clearly expressing why I feel better names should be possible:\n\n* One minor concern I have is that `ffi` doesn\u0027t convey that this is a target that Rust crates depend on, and that `ffi_utils` is a target that C++ targets depend on.\n* Maybe one minor change to consider would be to rename the `ffi` target to `skia_rust_common` (matching the `crate_name` seems nice)?",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 15
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "339c786f_3de62bf3",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-07T18:43:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4a659551_0e757da5",
       "range": {
         "startLine": 81,
         "startChar": 12,
