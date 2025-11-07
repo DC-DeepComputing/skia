@@ -16,6 +16,23 @@
       "message": "Finally got android to pass all of its tests. The external backend format needs to use a GL format value that maps back to a supported GrGLFormat enum value. This is being checked in enough places that it\u0027s easier to just use RGBA8 than try and update everything to be more robust to external formats; so I\u0027ve removed the external check for isFormatTexturable, which is redundant with using RGBA8.",
       "revId": "3c48e4f5f393a8559e35f3d8d36b26d55ca2ce34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "491e7409_6b23495e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-07T17:49:54Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "3c48e4f5f393a8559e35f3d8d36b26d55ca2ce34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
