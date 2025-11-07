@@ -39,6 +39,30 @@
       },
       "revId": "94fc5042b990bb1e7f7df2766931159438f95cf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4b36bfb_da879523",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-07T14:37:52Z",
+      "side": 1,
+      "message": "Talking offline, this is technically something that should be done by the spec, and if somehow we had GL_OES_EGL_image_external but not GL_OES_EGL_image we could switch to creating these as external textures AND having the GrBackendFormat be GLExternal(). \n\nBut given the amount of caps workarounds for detecting and triggering GL_OES_EGL_image_external, and that everything has been working fine w/o this check, and that there is 99.9% coverage in Android, we are not going to further change this code until something comes up in the future that would require it.",
+      "parentUuid": "da98e8a7_f706321f",
+      "range": {
+        "startLine": 164,
+        "startChar": 10,
+        "endLine": 164,
+        "endChar": 71
+      },
+      "revId": "94fc5042b990bb1e7f7df2766931159438f95cf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
