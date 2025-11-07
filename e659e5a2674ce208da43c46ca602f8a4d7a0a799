@@ -203,6 +203,30 @@
       },
       "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e21c9322_a874c75d",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-07T20:41:46Z",
+      "side": 1,
+      "message": "I\u0027ve asked hcm@ for guidance here",
+      "parentUuid": "565223e6_4e5d8781",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 4
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
