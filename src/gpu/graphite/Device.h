@@ -362,10 +362,10 @@ private:
 
     // The DrawContext's target supports MSAA
     bool fMSAASupported = false;
-    // Even when MSAA is supported, small paths may be sent to the atlas for higher quality and to
-    // avoid triggering MSAA overhead on a render pass. However, the number of paths is capped
-    // per Device flush.
-    int fAtlasedPathCount = 0;
+    // If the RasterPathAtlas fails to add a small path and we fall back to MSAA, there is no
+    // flush that would trigger more room for subsequent path draws. In that case, it's faster to
+    // remember that we're full and just skip right to MSAA rendering.
+    bool fSmallPathAtlasFilled = false;
 
     // TODO(b/330864257): Clean up once flushPendingWorkToRecorder() doesn't have to be re-entrant
     bool fIsFlushing = false;

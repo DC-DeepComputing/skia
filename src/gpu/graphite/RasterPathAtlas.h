@@ -26,7 +26,12 @@ class RasterPathAtlas : public PathAtlas {
 public:
     explicit RasterPathAtlas(Recorder* recorder);
     ~RasterPathAtlas() override {}
-    void recordUploads(DrawContext*);
+
+    void recordUploads(DrawContext* ctx) {
+        fCachedAtlasMgr.recordUploads(ctx, fRecorder);
+        fSmallPathAtlasMgr.recordUploads(ctx, fRecorder);
+        fUncachedAtlasMgr.recordUploads(ctx, fRecorder);
+    }
 
     void compact() {
         fCachedAtlasMgr.compact(fRecorder);
@@ -46,23 +51,26 @@ public:
         fUncachedAtlasMgr.evictAll();
     }
 
-protected:
-    sk_sp<TextureProxy> onAddShape(const Shape&,
-                                   const Transform& localToDevice,
-                                   const SkStrokeRec&,
-                                   skvx::half2 maskOrigin,
-                                   skvx::half2 maskSize,
-                                   SkIVector transformedMaskOffset,
-                                   skvx::half2* outPos) override;
 private:
+    struct AtlasConfig {
+        uint32_t fWidth, fHeight;
+        uint32_t fPlotWidth, fPlotHeight;
+        DrawAtlas::AllowMultitexturing fAllowMultitexturing;
+    };
+    static AtlasConfig GetDefaultAtlasConfig(uint32_t size, const Caps* caps);
+    static AtlasConfig GetSmallPathAtlasConfig(const Caps* caps);
+
     class RasterAtlasMgr : public PathAtlas::DrawAtlasMgr {
     public:
-        RasterAtlasMgr(size_t width, size_t height,
-                       size_t plotWidth, size_t plotHeight,
-                       const Caps* caps)
-            : PathAtlas::DrawAtlasMgr(width, height, plotWidth, plotHeight,
+        RasterAtlasMgr(AtlasConfig config,
+                       uint32_t maxWidth, uint32_t maxHeight,
+                       std::string_view label)
+            : PathAtlas::DrawAtlasMgr(std::min(config.fWidth, maxWidth),
+                                      std::min(config.fHeight, maxHeight),
+                                      config.fPlotWidth, config.fPlotHeight,
                                       DrawAtlas::UseStorageTextures::kNo,
-                                      /*label=*/"RasterPathAtlas", caps) {}
+                                      config.fAllowMultitexturing,
+                                      label) {}
 
     protected:
         bool onAddToAtlas(const Shape&,
@@ -73,9 +81,22 @@ private:
                           const AtlasLocator&) override;
     };
 
+    sk_sp<TextureProxy> onAddShape(const Shape&,
+                                   const Transform& localToDevice,
+                                   const SkStrokeRec&,
+                                   skvx::half2 maskOrigin,
+                                   skvx::half2 maskSize,
+                                   SkIVector transformedMaskOffset,
+                                   skvx::half2* outPos) override;
+
     RasterAtlasMgr fCachedAtlasMgr;
     RasterAtlasMgr fSmallPathAtlasMgr;
     RasterAtlasMgr fUncachedAtlasMgr;
+
+    // Behavior policy for putting paths in the small path atlas and whether or
+    // not to allow falling back to MSAA.
+    float fMaxSmallPathSize;
+    bool fUseProxyCacheFallback;
 };
 
 }  // namespace skgpu::graphite

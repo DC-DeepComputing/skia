@@ -64,7 +64,7 @@ struct SK_API ContextOptions {
      * than `fGlyphsAsPathsFontSize` or large glyphs will not correctly avoid higher memory
      * overhead.
      */
-    float fMinimumPathSizeForMSAA = 0;
+    float fMinimumPathSizeForMSAA = 32;
 
     /**
      * Will the client make sure to only ever be executing one thread that uses the Context and all

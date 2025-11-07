@@ -35,6 +35,13 @@ PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t reque
 
 PathAtlas::~PathAtlas() = default;
 
+bool PathAtlas::isSuitableForAtlasing(const Rect& transformedShapeBounds,
+                                      const Rect& clipBounds) const {
+    Rect shapeBounds = transformedShapeBounds.makeRoundOut();
+    Rect maskBounds = shapeBounds.makeIntersect(clipBounds);
+    return all(maskBounds.size() <= skvx::float2(this->width(), this->height()));
+}
+
 std::pair<const Renderer*, std::optional<PathAtlas::MaskAndOrigin>> PathAtlas::addShape(
         const Rect& transformedShapeBounds,
         const Shape& shape,
@@ -84,8 +91,8 @@ std::pair<const Renderer*, std::optional<PathAtlas::MaskAndOrigin>> PathAtlas::a
 PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                       size_t plotWidth, size_t plotHeight,
                                       DrawAtlas::UseStorageTextures useStorageTextures,
-                                      std::string_view label,
-                                      const Caps* caps) {
+                                      DrawAtlas::AllowMultitexturing allowMultitexturing,
+                                      std::string_view label) {
     static constexpr SkColorType colorType = kAlpha_8_SkColorType;
 
     fDrawAtlas = DrawAtlas::Make(colorType,
@@ -93,9 +100,7 @@ PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                  width, height,
                                  plotWidth, plotHeight,
                                  /*generationCounter=*/this,
-                                 caps->allowMultipleAtlasTextures() ?
-                                         DrawAtlas::AllowMultitexturing::kYes :
-                                         DrawAtlas::AllowMultitexturing::kNo,
+                                 allowMultitexturing,
                                  useStorageTextures,
                                  /*evictor=*/this,
                                  label);

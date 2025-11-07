@@ -132,6 +132,10 @@ public:
     // Record the compute dispatches that will draw the atlas contents.
     bool recordDispatches(Recorder*, ComputeTask::DispatchGroupList*) const override;
 
+    virtual int shapeCount() const override {
+        return fCachedAtlasMgr.shapeCount();
+    }
+
 private:
     sk_sp<TextureProxy> onAddShape(const Shape&,
                                    const Transform& localToDevice,

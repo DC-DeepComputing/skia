@@ -101,9 +101,7 @@ public:
      * should apply to the shape.
      */
     virtual bool isSuitableForAtlasing(const Rect& transformedShapeBounds,
-                                       const Rect& clipBounds) const {
-        return true;
-    }
+                                       const Rect& clipBounds) const;
 
     uint32_t width() const { return fWidth; }
     uint32_t height() const { return fHeight; }
@@ -154,7 +152,8 @@ protected:
         DrawAtlasMgr(size_t width, size_t height,
                      size_t plotWidth, size_t plotHeight,
                      DrawAtlas::UseStorageTextures useStorageTextures,
-                     std::string_view label, const Caps*);
+                     DrawAtlas::AllowMultitexturing allowMultitexturing,
+                     std::string_view label);
 
         bool virtual onAddToAtlas(const Shape&,
                                   const Transform& localToDevice,
