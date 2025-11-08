@@ -39,7 +39,7 @@ struct SkPathRRectInfo;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
 #ifndef SK_HIDE_PATH_EDIT_METHODS
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 #endif
 
 // Migrate clients so this is unneeded
@@ -47,7 +47,7 @@ struct SkPathRRectInfo;
 
 #ifdef SK_HIDE_PATH_EDIT_METHODS
     // enable this to try using SkPathData
-    //#define SK_PATH_USES_PATHDATA
+    #define SK_PATH_USES_PATHDATA
 #endif
 
 #ifdef SK_PATH_USES_PATHDATA
