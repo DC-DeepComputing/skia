@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "629ab955_6c5b56d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-08T22:00:39Z",
+      "side": 1,
+      "message": "... fixes the pixel diffs in https://skia-review.googlesource.com/1092240",
+      "revId": "b4c7945c3f9da9b63b954a3cdaada68d2f980dde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
