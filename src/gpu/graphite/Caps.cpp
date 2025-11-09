@@ -28,7 +28,12 @@ Caps::~Caps() {}
 void Caps::finishInitialization(const ContextOptions& options) {
     fCapabilities->initSkCaps(fShaderCaps.get());
 
-    fDefaultMSAASamples = options.fInternalMultisampleCount;
+    // Don't allow ContextOptions to re-enable MSAA. The subclass of Caps will
+    // set it to the maximum supported on the GPU, so only allow options to opt
+    // out of using a higher MSAA quality.
+    if (options.fInternalMultisampleCount < fDefaultMSAASamples) {
+        fDefaultMSAASamples = options.fInternalMultisampleCount;
+    }
 
     if (options.fShaderErrorHandler) {
         fShaderErrorHandler = options.fShaderErrorHandler;
