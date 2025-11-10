@@ -128,22 +128,11 @@ public:
 
     // Access the actual geometric description of the shape. May only access the appropriate type
     // based on what was last set. The type may change after simplify() is called.
-    SkPoint& point() { SkASSERT(this->isPoint()); return fPoint; }
     const SkPoint& point() const { SkASSERT(this->isPoint()); return fPoint; }
-
-    SkRect& rect() { SkASSERT(this->isRect()); return fRect; }
     const SkRect& rect() const { SkASSERT(this->isRect()); return fRect; }
-
-    SkRRect& rrect() { SkASSERT(this->isRRect()); return fRRect; }
     const SkRRect& rrect() const { SkASSERT(this->isRRect()); return fRRect; }
-
-    SkPath& path() { SkASSERT(this->isPath()); return fPath; }
     const SkPath& path() const { SkASSERT(this->isPath()); return fPath; }
-
-    SkArc& arc() { SkASSERT(this->isArc()); return fArc; }
     const SkArc& arc() const { SkASSERT(this->isArc()); return fArc; }
-
-    GrLineSegment& line() { SkASSERT(this->isLine()); return fLine; }
     const GrLineSegment& line() const { SkASSERT(this->isLine()); return fLine; }
 
     // Update the geometry stored in the GrShape and update its associated type to match. This
@@ -151,7 +140,7 @@ public:
     // true will still be considered an rrect by this shape until simplify() is called.
     //
     // These also reset any extracted direction, start, and inverted state from a prior simplified
-    // path, since these functions ared used to describe a new geometry.
+    // path, since these functions are used to describe a new geometry.
     void setPoint(const SkPoint& point) {
         this->reset(Type::kPoint);
         fPoint = point;
@@ -181,8 +170,6 @@ public:
             this->setType(Type::kPath);
             new (&fPath) SkPath(path);
         }
-        // Must also set these since we didn't call reset() like other setX functions.
-        this->setPathWindingParams(kDefaultDir, kDefaultStart);
         fInverted = path.isInverseFillType();
     }
     void reset() {
@@ -275,10 +262,10 @@ private:
         GrLineSegment fLine;
     };
 
-    Type            fType = Type::kEmpty;
-    uint8_t         fStart; // Restricted to rrects and simpler, so this will be < 8
-    bool            fCW;
-    bool            fInverted;
+    Type     fType = Type::kEmpty;
+    uint8_t  fStart = kDefaultStart; // Restricted to rrects and simpler, so this will be < 8
+    bool     fCW = (kDefaultDir == SkPathDirection::kCW);
+    bool     fInverted = false;
 
     static_assert(::sk_is_trivially_relocatable<decltype(fPoint)>::value);
     static_assert(::sk_is_trivially_relocatable<decltype(fRect)>::value);

@@ -654,8 +654,8 @@ private:
 
         preStyle = fBase->asPath();
         SkStrokeRec postPEStrokeRec(SkStrokeRec::kFill_InitStyle);
-        if (fBase->style().applyPathEffectToPath(&postPathEffect, &postPEStrokeRec, preStyle,
-                                                 scale)) {
+        if (auto ppe = fBase->style().applyPathEffectToPath(&postPEStrokeRec, preStyle, scale)) {
+            postPathEffect = ppe.value();
             // run postPathEffect through GrStyledShape to get any geometry reductions that would
             // have occurred to fAppliedPE.
             postPathEffect = GrStyledShape(postPathEffect, GrStyle(postPEStrokeRec, nullptr))
@@ -666,7 +666,8 @@ private:
             REPORTER_ASSERT(r, postPEStrokeRec.hasEqualEffect(fAppliedPE->style().strokeRec()));
         }
         SkStrokeRec::InitStyle fillOrHairline;
-        if (fBase->style().applyToPath(&postAllStyle, &fillOrHairline, preStyle, scale)) {
+        if (auto pas = fBase->style().applyToPath(&fillOrHairline, preStyle, scale)) {
+            postAllStyle = pas.value();
             SkPath testPath = fAppliedFull->asPath();
             if (fBase->style().hasPathEffect()) {
                 // Because GrStyledShape always does two-stage application when there is a path

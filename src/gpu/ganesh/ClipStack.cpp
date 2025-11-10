@@ -603,7 +603,7 @@ void ClipStack::RawElement::simplify(const SkIRect& deviceBounds, bool forceAA) 
         if (fShape.isRect()) {
             // The actual geometry can be updated to the device-intersected bounds and we can
             // know the inner bounds
-            fShape.rect() = outer;
+            fShape.setRect(outer);
             fLocalToDevice.setIdentity();
             fDeviceToLocal.setIdentity();
 
@@ -621,7 +621,7 @@ void ClipStack::RawElement::simplify(const SkIRect& deviceBounds, bool forceAA) 
             // Can't transform in place and must still check transform result since some very
             // ill-formed scale+translate matrices can cause invalid rrect radii.
             if (auto rr = fShape.rrect().transform(fLocalToDevice)) {
-                fShape.rrect() = *rr;
+                fShape.setRRect(rr.value());
                 fLocalToDevice.setIdentity();
                 fDeviceToLocal.setIdentity();
 
@@ -674,12 +674,14 @@ bool ClipStack::RawElement::combine(const RawElement& other, const SaveRecord& c
         }
 
         if (aaMatch && fLocalToDevice == other.fLocalToDevice) {
-            if (!fShape.rect().intersect(other.fShape.rect())) {
+            SkRect overlap;
+            if (!overlap.intersect(fShape.rect(), other.fShape.rect())) {
                 // By floating point, it turns out the combination should be empty
                 this->fShape.reset();
                 this->markInvalid(current);
                 return true;
             }
+            fShape.setRect(overlap);
             shapeUpdated = true;
         }
     } else if ((fShape.isRect() || fShape.isRRect()) &&

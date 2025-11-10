@@ -356,9 +356,6 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
     const GrStyledShape* parentForKey = &parent;
     std::optional<GrStyledShape> tmpParent;
 
-    // Start out as an empty path that is filled in by the applied style
-    fShape.setPath(SkPath());
-
     if (pe) {
         const SkPath* srcForPathEffect;
         if (parent.fShape.isPath()) {
@@ -369,12 +366,14 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
         // Should we consider bounds? Would have to include in key, but it'd be nice to know
         // if the bounds actually modified anything before including in key.
         SkStrokeRec strokeRec = parent.fStyle.strokeRec();
-        if (!parent.fStyle.applyPathEffectToPath(&fShape.path(), &strokeRec, *srcForPathEffect,
-                                                 scale)) {
+        std::optional<SkPath> newPath =
+                parent.fStyle.applyPathEffectToPath(&strokeRec, *srcForPathEffect, scale);
+        if (!newPath) {
             tmpParent.emplace(*srcForPathEffect, GrStyle(strokeRec, nullptr));
             *this = tmpParent->applyStyle(apply, scale);
             return;
         }
+        fShape.setPath(newPath.value());
         // A path effect has access to change the res scale but we aren't expecting it to and it
         // would mess up our key computation.
         SkASSERT(scale == strokeRec.getResScale());
@@ -395,8 +394,9 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
             SkStrokeRec::InitStyle fillOrHairline;
             // The parent shape may have simplified away the strokeRec, check for that here.
             if (tmpParent->style().applies()) {
-                SkAssertResult(tmpParent->style().applyToPath(&fShape.path(), &fillOrHairline,
-                                                              tmpPath.value(), scale));
+                newPath = parent.fStyle.applyToPath(&fillOrHairline, tmpPath.value(), scale);
+                SkASSERT(newPath);
+                fShape.setPath(newPath.value_or(SkPath()));
             } else if (tmpParent->style().isSimpleFill()) {
                 fillOrHairline = SkStrokeRec::kFill_InitStyle;
             } else {
@@ -418,8 +418,10 @@ GrStyledShape::GrStyledShape(const GrStyledShape& parent, GrStyle::Apply apply, 
         SkStrokeRec::InitStyle fillOrHairline;
         SkASSERT(parent.fStyle.applies());
         SkASSERT(!parent.fStyle.pathEffect());
-        SkAssertResult(parent.fStyle.applyToPath(&fShape.path(), &fillOrHairline,
-                                                 *srcForParentStyle, scale));
+        std::optional<SkPath> newPath =
+                parent.fStyle.applyToPath(&fillOrHairline, *srcForParentStyle, scale);
+        SkASSERT(newPath);
+        fShape.setPath(newPath.value_or(SkPath()));
         fStyle.resetToInitStyle(fillOrHairline);
     }
 
@@ -558,7 +560,7 @@ void GrStyledShape::simplify() {
             // Stroke styles don't differentiate between winding and even/odd. There is no
             // distinction between even/odd and non-zero winding count for convex paths.
             // Moreover, dashing ignores inverseness (skbug.com/40036591)
-            fShape.path().setFillType(GrShape::kDefaultFillType);
+            fShape.setPath(fShape.path().makeFillType(GrShape::kDefaultFillType));
         }
     } else {
         fInheritedKey.reset(0);
@@ -586,7 +588,7 @@ void GrStyledShape::simplifyStroke() {
         }
 
         SkScalar r = fStyle.strokeRec().getWidth() / 2;
-        fShape.rect().outset(r, r);
+        fShape.setRect(fShape.rect().makeOutset(r, r));
         if (fStyle.strokeRec().getJoin() == SkPaint::kRound_Join) {
             // There's no dashing to worry about if we got here, so it's okay that this resets
             // winding parameters
