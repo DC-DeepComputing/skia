@@ -131,15 +131,15 @@ void GrStyle::initPathEffect(sk_sp<SkPathEffect> pe) {
     }
 }
 
-bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath& src) const {
+std::optional<SkPath> GrStyle::applyPathEffect(SkStrokeRec* strokeRec, const SkPath& src) const {
     if (!fPathEffect) {
-        return false;
+        return {};
     }
 
     // TODO: [skbug.com/40043046] Plumb CTM callers and pass it to filterPath().
     SkASSERT(!fPathEffect->needsCTM());
 
-    SkPathBuilder builder;  // todo: change our api to take builder
+    SkPathBuilder builder;
 
     if (DashType::kDash == fDashInfo.fType) {
         // We apply the dash ourselves here rather than using the path effect. This is so that
@@ -156,52 +156,51 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
                                         nullptr, fDashInfo.fIntervals,
                                         initialLength, initialIndex, intervalLength, phase,
                                         SkDashPath::StrokeRecApplication::kDisallow)) {
-            return false;
+            return {};
         }
     } else if (!fPathEffect->filterPath(&builder, src, strokeRec, nullptr, SkMatrix::I())) {
-        return false;
+        return {};
     }
-    *dst = builder.detach();
-    dst->setIsVolatile(true);
-    return true;
+    builder.setIsVolatile(true);
+    return builder.detach();
 }
 
-bool GrStyle::applyPathEffectToPath(SkPath *dst, SkStrokeRec *remainingStroke,
-                                    const SkPath &src, SkScalar resScale) const {
-    SkASSERT(dst);
+std::optional<SkPath> GrStyle::applyPathEffectToPath(SkStrokeRec* remainingStroke,
+                                                     const SkPath& src,
+                                                     SkScalar resScale) const {
     SkStrokeRec strokeRec = fStrokeRec;
     strokeRec.setResScale(resScale);
-    if (!this->applyPathEffect(dst, &strokeRec, src)) {
-        return false;
+    if (auto result = this->applyPathEffect(&strokeRec, src)) {
+        *remainingStroke = strokeRec;
+        return result;
     }
-    *remainingStroke = strokeRec;
-    return true;
+    return {};
 }
 
-bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPath& src,
-                          SkScalar resScale) const {
+std::optional<SkPath> GrStyle::applyToPath(SkStrokeRec::InitStyle* style,
+                                           const SkPath& src,
+                                           SkScalar resScale) const {
     SkASSERT(style);
-    SkASSERT(dst);
     SkStrokeRec strokeRec = fStrokeRec;
     strokeRec.setResScale(resScale);
     const SkPath* pathForStrokeRec = &src;
-    if (this->applyPathEffect(dst, &strokeRec, src)) {
-        pathForStrokeRec = dst;
+    SkPathBuilder builder;
+
+    std::optional<SkPath> result = this->applyPathEffect(&strokeRec, src);
+    if (result) {
+        pathForStrokeRec = &result.value();
     } else if (fPathEffect) {
-        return false;
+        return {};
     }
-    // todo: change our signature to take pathbuilder, or return an optional<SkPath>
     if (strokeRec.needToApply()) {
-        SkPathBuilder builder;
         if (!strokeRec.applyToPath(&builder, *pathForStrokeRec)) {
-            return false;
+            return {};
         }
-        *dst = builder.detach();
-        dst->setIsVolatile(true);
+        builder.setIsVolatile(true);
         *style = SkStrokeRec::kFill_InitStyle;
     } else if (!fPathEffect) {
         // Nothing to do for path effect or stroke, fail.
-        return false;
+        return {};
     } else {
         SkASSERT(SkStrokeRec::kFill_Style == strokeRec.getStyle() ||
                  SkStrokeRec::kHairline_Style == strokeRec.getStyle());
@@ -209,5 +208,5 @@ bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPa
                  ? SkStrokeRec::kFill_InitStyle
                  : SkStrokeRec::kHairline_InitStyle;
     }
-    return true;
+    return builder.detach();
 }

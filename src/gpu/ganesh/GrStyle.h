@@ -168,8 +168,9 @@ public:
      * geometric approximations made by the path effect. It is typically computed from the view
      * matrix.
      */
-    [[nodiscard]] bool applyPathEffectToPath(SkPath* dst, SkStrokeRec* remainingStoke,
-                                             const SkPath& src, SkScalar scale) const;
+    [[nodiscard]] std::optional<SkPath> applyPathEffectToPath(SkStrokeRec* remainingStoke,
+                                                              const SkPath& src,
+                                                              SkScalar scale) const;
 
     /**
      * If this succeeds then the result path should be filled or hairlined as indicated by the
@@ -178,8 +179,9 @@ public:
      * been overwritten. Scale controls geometric approximations made by the path effect and
      * stroker. It is typically computed from the view matrix.
      */
-    [[nodiscard]] bool applyToPath(SkPath* dst, SkStrokeRec::InitStyle* fillOrHairline,
-                                   const SkPath& src, SkScalar scale) const;
+    [[nodiscard]] std::optional<SkPath> applyToPath(SkStrokeRec::InitStyle* fillOrHairline,
+                                                    const SkPath& src,
+                                                    SkScalar scale) const;
 
     /** Given bounds of a path compute the bounds of path with the style applied. */
     void adjustBounds(SkRect* dst, const SkRect& src) const {
@@ -224,7 +226,7 @@ private:
         skia_private::AutoSTArray<4, SkScalar>  fIntervals;
     };
 
-    bool applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath& src) const;
+    std::optional<SkPath> applyPathEffect(SkStrokeRec* strokeRec, const SkPath& src) const;
 
     SkStrokeRec         fStrokeRec;
     sk_sp<SkPathEffect> fPathEffect;
