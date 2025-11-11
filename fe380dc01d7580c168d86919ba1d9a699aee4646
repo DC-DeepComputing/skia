@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d99163_2e3dcfd1",
+        "filename": "fuzz/FuzzCommon.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-11T18:17:02Z",
+      "side": 1,
+      "message": "Any reason to reset to 1.0 instead of 0?  IIRC zero is a valid weight value (line segment degenerate).",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "fe380dc01d7580c168d86919ba1d9a699aee4646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
