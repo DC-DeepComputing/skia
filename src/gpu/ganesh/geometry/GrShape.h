@@ -173,14 +173,8 @@ public:
         fLine = line;
     }
     void setPath(const SkPath& path) {
-        if (this->isPath()) {
-            // Assign directly
-            fPath = path;
-        } else {
-            // In-place initialize
-            this->setType(Type::kPath);
-            new (&fPath) SkPath(path);
-        }
+        this->setType(Type::kPath);
+        fPath = path;
         // Must also set these since we didn't call reset() like other setX functions.
         this->setPathWindingParams(kDefaultDir, kDefaultStart);
         fInverted = path.isInverseFillType();
@@ -238,7 +232,7 @@ private:
     void setType(Type type) {
         if (this->isPath() && type != Type::kPath) {
             fInverted = fPath.isInverseFillType();
-            fPath.~SkPath();
+            fPath.reset();
         }
         fType = type;
     }
@@ -270,10 +264,10 @@ private:
         SkPoint       fPoint;
         SkRect        fRect;
         SkRRect       fRRect;
-        SkPath        fPath;
         SkArc         fArc;
         GrLineSegment fLine;
     };
+    SkPath          fPath;
 
     Type            fType = Type::kEmpty;
     uint8_t         fStart; // Restricted to rrects and simpler, so this will be < 8
