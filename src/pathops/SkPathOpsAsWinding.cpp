@@ -49,8 +49,8 @@ struct Contour {
     bool fReverse{false};
 };
 
-static int VerbPtCount(SkPathVerb verb) {
-    static const int kPtCount[] = { 1, 1, 2, 2, 3, 0 };
+static unsigned VerbPtCount(SkPathVerb verb) {
+    static const uint8_t kPtCount[] = { 1, 1, 2, 2, 3, 0 };
     unsigned index = static_cast<unsigned>(verb);
     SkASSERT(index < std::size(kPtCount));
     return kPtCount[index];
