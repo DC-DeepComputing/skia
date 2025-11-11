@@ -119,10 +119,11 @@ public:
                                       SkIRect currentScissor,
                                       SkIRect deviceBounds) const;
 
+    // TODO update me comment
     // The DrawWriter is configured with the vertex and instance strides of the RenderStep, and its
     // primitive type. The recorded draws will be executed with a graphics pipeline compatible with
     // this RenderStep.
-    virtual void writeVertices(DrawWriter*, const DrawParams&, skvx::uint2 ssboIndices) const = 0;
+    virtual void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndex) const = 0;
 
     // Write out the uniform values (aligned for the layout), textures, and samplers. The uniform
     // values will be de-duplicated across all draws using the RenderStep before uploading to the
@@ -199,12 +200,11 @@ public:
     size_t numStaticAttributes() const { return fStaticAttrs.size(); }
     size_t numAppendAttributes() const { return fAppendAttrs.size(); }
 
-    // Name of an attribute containing both render step and shading SSBO indices, if used.
-    static const char* ssboIndicesAttribute() { return "ssboIndices"; }
+    // Name of an attribute containing both the render step and shading SSBO index, if used.
+    static const char* ssboIndexAttribute() { return "ssboIndex"; }
 
-    // Name of a varying to pass SSBO indices to fragment shader. Both render step and shading
-    // indices are passed, because render step uniforms are sometimes used for coverage.
-    static const char* ssboIndicesVarying() { return "ssboIndicesVar"; }
+    // Name of a varying to pass the SSBO index to fragment shader
+    static const char* ssboIndexVarying() { return "ssboIndexVar"; }
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
