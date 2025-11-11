@@ -1242,15 +1242,15 @@ void Device::drawGeometry(const Transform& localToDevice,
     // TODO: The tessellating and atlas path renderers haven't implemented perspective yet, so
     // transform to device space so we draw something approximately correct (barring local coord
     // issues).
-    if (geometry.isShape() && localToDevice.type() == Transform::Type::kPerspective &&
-        !is_simple_shape(geometry.shape(), style.getStyle())) {
-        SkPath devicePath = geometry.shape().asPath();
-        devicePath.transform(localToDevice.matrix().asM33());
-        devicePath.setIsVolatile(true);
-        this->drawGeometry(Transform::Identity(), Geometry(Shape(devicePath)), paint, style, flags,
-                           std::move(primitiveBlender), skipColorXform);
-        return;
-    }
+    // if (geometry.isShape() && localToDevice.type() == Transform::Type::kPerspective &&
+    //     !is_simple_shape(geometry.shape(), style.getStyle())) {
+    //     SkPath devicePath = geometry.shape().asPath();
+    //     devicePath.transform(localToDevice.matrix().asM33());
+    //     devicePath.setIsVolatile(true);
+    //     this->drawGeometry(Transform::Identity(), Geometry(Shape(devicePath)), paint, style, flags,
+    //                        std::move(primitiveBlender), skipColorXform);
+    //     return;
+    // }
 
     // TODO: Manually snap pixels for rects, rrects, and lines if paint is non-AA (ideally also
     // consider snapping stroke width and/or adjusting geometry for hairlines). This pixel snapping
@@ -1670,7 +1670,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     // TODO: enable other uses of the software path renderer
     if (!pathAtlas && atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kRaster) &&
         (strategy == PathRendererStrategy::kRasterAA ||
-         (strategy == PathRendererStrategy::kDefault && !fMSAASupported))) {
+         (strategy == PathRendererStrategy::kDefault && !fMSAASupported) ||
+         (strategy == PathRendererStrategy::kDefault && localToDevice.type() == Transform::Type::kPerspective))) {
         // NOTE: RasterPathAtlas doesn't implement `PathAtlas::isSuitableForAtlasing` as it doesn't
         // reject paths (unlike ComputePathAtlas).
         pathAtlas = atlasProvider->getRasterPathAtlas();
@@ -1902,12 +1903,19 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
 
     // CoverageMaskShape() wraps a Shape when it's used as a PathAtlas, but in this case the
     // original shape has been long lost, so just use a Rect that bounds the image.
+
+    SkMatrix devToLocal;
+    if (!this->localToDevice().invert(&devToLocal)) {
+        return;
+    }
+
     CoverageMaskShape maskShape{Shape{Rect::WH((float)mask->width(), (float)mask->height())},
                                 maskProxyView.proxy(),
                                 // Use the active local-to-device transform for this since it
                                 // determines the local coords for evaluating the skpaint, whereas
                                 // the provided 'localToDevice' just places the coverage mask.
-                                this->localToDeviceTransform().inverse(),
+                                // this->localToDeviceTransform().inverse(),
+                                SkM44(devToLocal),
                                 maskInfo};
 
     this->drawGeometry(Transform(SkM44(localToDevice)),

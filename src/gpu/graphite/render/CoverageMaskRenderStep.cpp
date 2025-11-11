@@ -84,14 +84,19 @@ CoverageMaskRenderStep::CoverageMaskRenderStep()
                       {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
                      /*varyings=*/
                      {// `maskBounds` are the atlas-relative, sorted bounds of the coverage mask.
-                      // `textureCoords` are the atlas-relative UV coordinates of the draw, which
-                      // can spill beyond `maskBounds` for inverse fills.
                       // TODO: maskBounds is constant for all fragments for a given instance,
                       // could we store them in the draw's SSBO?
-                      {"maskBounds"   , SkSLType::kFloat4},
-                      {"textureCoords", SkSLType::kFloat2},
-                      // 'invert' is set to 0 use unmodified coverage, and set to 1 for "1-c".
-                      {"invert", SkSLType::kHalf}}) {}
+                      {"maskBounds"   , SkSLType::kFloat4, Interpolation::kLinear},
+                      // `flags` holds two separate parameters:
+                      //  .x = 'invert', set to 0 to use unmodified coverage, set to 1 for "1-c".
+                      //  .y = linearly interpolated 1/w value from just deviceToLocal to undo that
+                      //       transform's perspective interpolation, while still allowing
+                      //       textureCoords to be perspectively interpolated with respect to the
+                      //       maskToDevice transform.
+                      {"flags", SkSLType::kFloat2, Interpolation::kLinear},
+                      // `textureCoords` are the atlas-relative UV coordinates of the draw, which
+                      // can spill beyond `maskBounds` for inverse fills.
+                      {"textureCoords", SkSLType::kFloat2}}) {}
 
 std::string CoverageMaskRenderStep::vertexSkSL() const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
@@ -100,7 +105,7 @@ std::string CoverageMaskRenderStep::vertexSkSL() const {
                     "float2(sk_VertexID >> 1, sk_VertexID & 1), "
                     "maskToDeviceRemainder, drawBounds, maskBoundsIn, deviceOrigin, "
                     "depth, float3x3(mat0, mat1, mat2), "
-                    "maskBounds, textureCoords, invert, stepLocalCoords);\n";
+                    "maskBounds, flags, textureCoords, stepLocalCoords);\n";
 }
 
 std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
@@ -110,7 +115,9 @@ std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
 
 const char* CoverageMaskRenderStep::fragmentCoverageSkSL() const {
     return
-        "half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;\n"
+        "half invert = half(flags.x);"
+        "float2 maskCoords = clamp(textureCoords.xy * flags.y, maskBounds.LT, maskBounds.RB);"
+        "half c = sample(pathAtlas, maskCoords).r;\n"
         "outputCoverage = half4(mix(c, 1 - c, invert));\n";
 }
 

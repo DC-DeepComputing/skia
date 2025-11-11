@@ -1105,8 +1105,8 @@ float4 coverage_mask_vertex_fn(float2 quadCoords,
                                float3x3 deviceToLocal,
                                // Varyings
                                out float4 maskBounds,
+                               out float2 flags,
                                out float2 textureCoords,
-                               out half invert,
                                // Render Step
                                out float2 stepLocalCoords) {
     // An atlas shape is an axis-aligned rectangle tessellated as a triangle strip.
@@ -1120,9 +1120,12 @@ float4 coverage_mask_vertex_fn(float2 quadCoords,
     // Local coordinates used for shading are derived from the final device coords and the inverse
     // of the original local-to-device matrix.
     float3 localCoords = deviceToLocal * drawCoords;
+    float invW = 1.0 / localCoords.z;
     // TODO: Support float3 local coordinates if the matrix has perspective so that W is
     // interpolated correctly to the fragment shader.
-    stepLocalCoords = localCoords.xy / localCoords.z;
+    stepLocalCoords = localCoords.xy * invW;
+    textureCoords = textureCoords * invW;
+    flags.y = localCoords.z;
 
     // For an inverse fill, `textureCoords` will get clamped to `maskBounds` and the edge pixels
     // will always land on a 0-coverage border pixel assuming the atlas was prepared with 1px
@@ -1132,14 +1135,14 @@ float4 coverage_mask_vertex_fn(float2 quadCoords,
     if (all(lessThanEqual(maskBoundsIn.LT, maskBoundsIn.RB))) {
         // Regular fill
         maskBounds = maskBoundsIn;
-        invert = 0;
+        flags.x = 0;
     } else {
         // Re-arrange the mask bounds to sorted order for texture clamping in the fragment shader
         maskBounds = maskBoundsIn.RBLT;
-        invert = 1;
+        flags.x = 1;
     }
 
-    return float4(drawCoords.xy, depth*drawCoords.z, drawCoords.z);
+    return float4(drawCoords.xy*invW, depth*drawCoords.z*invW, drawCoords.z*invW);
 }
 
 float4 cover_bounds_vertex_fn(float2 corner,

@@ -14,6 +14,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/core/SkColorData.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
 
 #include <memory>
 #include <utility>
@@ -75,8 +76,12 @@ public:
      */
     void setCoverageFragmentProcessor(std::unique_ptr<GrFragmentProcessor> fp) {
         SkASSERT(fp);
-        SkASSERT(fCoverageFragmentProcessor == nullptr);
-        fCoverageFragmentProcessor = std::move(fp);
+        // SkASSERT(fCoverageFragmentProcessor == nullptr);
+        if (fCoverageFragmentProcessor) {
+            fCoverageFragmentProcessor = GrBlendFragmentProcessor::Make<SkBlendMode::kSrcIn>(std::move(fCoverageFragmentProcessor), std::move(fp));
+        } else {
+            fCoverageFragmentProcessor = std::move(fp);
+        }
         fTrivial = false;
     }
 
