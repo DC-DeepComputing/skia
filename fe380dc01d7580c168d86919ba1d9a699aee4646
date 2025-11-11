@@ -22,6 +22,30 @@
       },
       "revId": "fe380dc01d7580c168d86919ba1d9a699aee4646",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d46eebd_354ca999",
+        "filename": "fuzz/FuzzCommon.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-11T18:19:59Z",
+      "side": 1,
+      "message": "SkPathBuilder doesn\u0027t treat it as a line, but it does have special casing for 1.0, so I chose that. I think we should follow up to make SkPathBuilder use the degenerate lineTo, but that\u0027s another CL.",
+      "parentUuid": "29d99163_2e3dcfd1",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "fe380dc01d7580c168d86919ba1d9a699aee4646",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
