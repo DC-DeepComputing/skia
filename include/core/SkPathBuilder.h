@@ -238,7 +238,8 @@ public:
     */
     SkPathBuilder& quadTo(const SkPoint pts[2]) { return this->quadTo(pts[0], pts[1]); }
 
-    /** Adds conic from last point towards pt1, to pt2, weighted by w.
+    /** Adds conic from last point towards pt1, to pt2, weighted by w (which must be positive
+        and finite).
         If SkPathBuilder is empty, or last SkPath::Verb is kClose_Verb, last point is set to (0, 0)
         before adding conic.
 
@@ -248,9 +249,6 @@ public:
         and pt1, pt2 to SkPoint array; and w to conic weights.
 
         If w is one, appends kQuad_Verb to verb array, and
-        pt1, pt2 to SkPoint array.
-
-        If w is not finite, appends kLine_Verb twice to verb array, and
         pt1, pt2 to SkPoint array.
 
         @param pt1  control SkPoint of conic
