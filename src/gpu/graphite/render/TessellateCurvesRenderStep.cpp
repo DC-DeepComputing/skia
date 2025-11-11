@@ -58,19 +58,19 @@ using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountCurves>,
 
 // The order of the attribute declarations must match the order used by
 // PatchWriter::emitPatchAttribs, i.e.:
-//     join << fanPoint << stroke << color << depth << curveType << ssboIndices
+//     join << fanPoint << stroke << color << depth << curveType << ssboIndex
 static constexpr Attribute kBaseAttributes[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}};
+        {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr Attribute kAttributesWithCurveType[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
         {"curveType", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}};
+        {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveType,
                                                            kBaseAttributes};
@@ -131,7 +131,7 @@ std::string TessellateCurvesRenderStep::vertexSkSL() const {
 
 void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
                                                const DrawParams& params,
-                                               skvx::uint2 ssboIndices) const {
+                                               uint32_t ssboIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountCurves::PreallocCount(path.countVerbs());
@@ -141,7 +141,7 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
                   fIndexBuffer,
                   patchReserveCount};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
-    writer.updateSsboIndexAttrib(ssboIndices);
+    writer.updateSsboIndexAttrib(ssboIndex);
 
     // The vector xform approximates how the control points are transformed by the shader to
     // more accurately compute how many *parametric* segments are needed.
