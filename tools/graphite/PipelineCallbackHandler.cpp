@@ -18,18 +18,19 @@ void PipelineCallBackHandler::add(skgpu::graphite::ContextOptions::PipelineCache
                                   sk_sp<SkData> androidStyleKey) {
     SkAutoSpinlock lock{ fSpinLock };
 
-    std::unique_ptr<PipelineData>* foundData = fMap.find({ &label, uniqueKeyHash });
-    if (foundData) {
+    auto iter = fMap.find({ &label, uniqueKeyHash });
+    if (iter != fMap.end()) {
         if (op == skgpu::graphite::ContextOptions::PipelineCacheOp::kPipelineFound) {
-            (*foundData)->fUses++;
+            iter->second->fUses++;
         }
     } else {
         SkASSERT(op == skgpu::graphite::ContextOptions::PipelineCacheOp::kAddingPipeline);
 
         std::unique_ptr<PipelineData> newData = std::make_unique<PipelineData>(
-            label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));
+            label, fromPrecompile, std::move(androidStyleKey));
 
-        fMap.set(std::move(newData));
+        fMap.insert({ PipelineKey(&newData->fLabel, uniqueKeyHash),
+                      std::move(newData) });
     }
 }
 
@@ -40,10 +41,11 @@ void PipelineCallBackHandler::report() {
 
     std::vector<const PipelineData*> tmp;
 
-    tmp.reserve(fMap.count());
-    fMap.foreach([&tmp](std::unique_ptr<PipelineData>* data) -> void {
-        tmp.push_back((*data).get());
-    });
+    tmp.reserve(fMap.size());
+
+    for (const auto& [key, value] : fMap) {
+        tmp.push_back(value.get());
+    }
 
     std::sort(tmp.begin(), tmp.end(), [](const PipelineData* a, const PipelineData* b) {
                                             if (a->fUses != b->fUses) {

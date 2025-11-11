@@ -16,6 +16,7 @@
 #include "src/core/SkTHash.h"
 
 #include <vector>
+#include <unordered_map>
 
 class SkData;
 
@@ -50,20 +51,20 @@ public:
     void retrieveKeys(std::vector<sk_sp<SkData>>* result) SK_EXCLUDES(fSpinLock) {
         SkAutoSpinlock lock{ fSpinLock };
 
-        result->reserve(fMap.count());
+        result->reserve(fMap.size());
 
-        fMap.foreach([result](std::unique_ptr<PipelineData>* data) {
+        for (const auto& [key, value] : fMap) {
             // Because not all Pipelines are serializable we need to check for nulls here
-            if ((*data)->fAndroidStyleKey) {
-                result->push_back((*data)->fAndroidStyleKey);
+            if (value->fAndroidStyleKey) {
+                result->push_back(value->fAndroidStyleKey);
             }
-        });
+        }
     }
 
     void reset() SK_EXCLUDES(fSpinLock) {
         SkAutoSpinlock lock{ fSpinLock };
 
-        fMap.reset();
+        fMap.clear();
     }
 
     void report() SK_EXCLUDES(fSpinLock);
@@ -73,39 +74,37 @@ private:
 
     struct PipelineData {
         PipelineData(const std::string& label,
-                     uint32_t uniqueKeyHash,
                      bool fromPrecompile,
                      sk_sp<SkData> androidStyleKey) :
                fLabel(label),
                fAndroidStyleKey(std::move(androidStyleKey)),
-               fUniqueKeyHash(uniqueKeyHash),
                fUses(fromPrecompile ? 0 : 1),
                fFromPrecompile(fromPrecompile) {
         }
 
-        std::string   fLabel;
-        sk_sp<SkData> fAndroidStyleKey;
-        uint32_t      fUniqueKeyHash;
-        uint32_t      fUses;
-        bool          fFromPrecompile;
+        const std::string   fLabel;
+        const sk_sp<SkData> fAndroidStyleKey;
+        uint32_t            fUses;
+        const bool          fFromPrecompile;
     };
 
     struct PipelineKey {
-        const std::string* fLabel;
-        uint32_t fUniqueKeyHash;
+        PipelineKey(const std::string* label, uint32_t uniqueKeyHash)
+            : fLabel(label)
+            , fUniqueKeyHash(uniqueKeyHash) {}
+        PipelineKey() = default;
 
-        static PipelineKey GetKey(const std::unique_ptr<PipelineData>& v) {
-            return { &v->fLabel, v->fUniqueKeyHash };
-        }
-        static uint32_t Hash(const PipelineKey& k) { return k.fUniqueKeyHash; }
+        std::size_t operator()(const PipelineKey& k) const { return k.fUniqueKeyHash; }
 
         bool operator==(const PipelineKey& other) const {
             return fUniqueKeyHash == other.fUniqueKeyHash && *fLabel == *other.fLabel;
         }
+
+        const std::string* fLabel = nullptr;
+        uint32_t fUniqueKeyHash = 0;
     };
 
-    using Map = skia_private::THashTable<std::unique_ptr<PipelineData>, PipelineKey, PipelineKey>;
-    Map fMap SK_GUARDED_BY(fSpinLock);
+    std::unordered_map<PipelineKey, std::unique_ptr<PipelineData>, PipelineKey> fMap;
 };
 
 }  // namespace skiatools::graphite
