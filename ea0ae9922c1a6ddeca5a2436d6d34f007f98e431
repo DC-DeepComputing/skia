@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b0daa9a_2e916df4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-11T00:22:01Z",
+      "side": 1,
+      "message": "Moving this check here will cause the assert to fire inside localToDevice.maxScaleFactor() (line 1487) if the transform is invalid, as opposed to exiting somewhat gracefully. Is that the intended behavior?",
+      "range": {
+        "startLine": 1520,
+        "startChar": 4,
+        "endLine": 1524,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "06b390f3_c53e655a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 1476,
+                "startChar": 0,
+                "endLine": 1476,
+                "endChar": 0
+              },
+              "replacement": "    ASSERT_SINGLE_OWNER\n\n    if (!localToDevice.valid()) {\n        // If the transform is not invertible or not finite then drawing isn\u0027t well defined.\n        SKGPU_LOG_W(\"Skipping draw with non-invertible/non-finite transform.\");\n        return;\n    }\n\n"
+            },
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 1519,
+                "startChar": 0,
+                "endLine": 1525,
+                "endChar": 0
+              },
+              "replacement": "    // localToDevice should have been validated by the calling draw method.\n    SkASSERT(localToDevice.valid());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ea0ae9922c1a6ddeca5a2436d6d34f007f98e431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
