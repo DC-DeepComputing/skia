@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9cc51146_4eb3b19f",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T16:20:51Z",
+      "side": 1,
+      "message": "This is explicitly called out as undefined behavior if the array is empty. I think just `fData.get()` should be ok?",
+      "range": {
+        "startLine": 144,
+        "startChar": 15,
+        "endLine": 144,
+        "endChar": 24
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b0dbf25_203034ff",
         "filename": "src/core/SkPathBuilder.cpp",
         "patchSetId": 8
