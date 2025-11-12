@@ -8,6 +8,10 @@
 #ifndef SkSpan_DEFINED
 #define SkSpan_DEFINED
 
+#define SK_USE_LEGACY_SKSPAN
+
+#ifdef SK_USE_LEGACY_SKSPAN
+
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
@@ -125,5 +129,13 @@ private:
 template <typename Container>
 SkSpan(Container&&) ->
         SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<Container>()))>>;
+
+#else
+
+#include <span>
+
+#define SkSpan std::span
+
+#endif  // legacy
 
 #endif  // SkSpan_DEFINED
