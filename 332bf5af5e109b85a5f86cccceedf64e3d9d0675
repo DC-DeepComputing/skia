@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cd0cae_f21a1091",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T15:49:02Z",
+      "side": 1,
+      "message": "Gotta love https://groups.google.com/a/isocpp.org/g/std-proposals/c/M3MfGtYMGyY . However, something like this should go in some other header in the `sknonstd` namespace. Or just inlined everywhere or the affected code updated to use iterators instead of pointers.",
+      "range": {
+        "startLine": 133,
+        "startChar": 25,
+        "endLine": 133,
+        "endChar": 33
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0dbf25_203034ff",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T15:49:02Z",
+      "side": 1,
+      "message": "These could be rbegin and rend iterators.",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b2370b9_c29cdb75",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T15:49:02Z",
+      "side": 1,
+      "message": "These can be reverse iterators as well.",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0f800a_84bc8c3d",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T15:49:02Z",
+      "side": 1,
+      "message": "Why change these to not be iterators? In fact, it looks like making this change points out that the existing logic is probably unintended? `std::find_if` returns an iterator, not a boolean. This previously always incorrectly evaluated to `true` because one of the pointers or the \"last\" pointer (one past the end) was returned, all of which would evaluate as true.",
+      "range": {
+        "startLine": 343,
+        "startChar": 34,
+        "endLine": 343,
+        "endChar": 61
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
