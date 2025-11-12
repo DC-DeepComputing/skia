@@ -16,6 +16,24 @@
       "message": "I think `using` should work for template aliases, instead of preprocessor macro:\n\n```\ntemplate \u003ctypename T\u003e\nusing SkSpan \u003d std::span\u003cT\u003e;\n```\n\nHopefully it doesn\u0027t add extra friction, if it does then let\u0027s stick to the macro.",
       "revId": "b4e65fc5fc2804527fc169d00d568b1e2ee55d8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "349c8ce6_2262f74a",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T19:22:20Z",
+      "side": 1,
+      "message": "Heck yea!!!",
+      "parentUuid": "715cffe7_01428ba2",
+      "revId": "b4e65fc5fc2804527fc169d00d568b1e2ee55d8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
