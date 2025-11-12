@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2f9a1ee_c94fd74e",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T16:35:03Z",
+      "side": 1,
+      "message": "Oh, nothing is being caught by the CQ because nothing changed.",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6cd0cae_f21a1091",
         "filename": "include/private/base/SkSpan_impl.h",
         "patchSetId": 8
