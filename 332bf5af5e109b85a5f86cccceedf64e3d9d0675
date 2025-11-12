@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55cf9666_69c2d7b7",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T16:33:55Z",
+      "side": 1,
+      "message": "Too bad the initializer list constructor is a C++26 thing.",
+      "range": {
+        "startLine": 123,
+        "startChar": 24,
+        "endLine": 123,
+        "endChar": 30
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6cd0cae_f21a1091",
         "filename": "include/private/base/SkSpan_impl.h",
         "patchSetId": 8
