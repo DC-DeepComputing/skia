@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc7a3c1_cfbbfaa6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T22:05:48Z",
+      "side": 1,
+      "message": "thanks reviewers -- naturally, I lost the +1s on my last update",
+      "revId": "dcb1af188645846f50b4a950145a17844388a056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
