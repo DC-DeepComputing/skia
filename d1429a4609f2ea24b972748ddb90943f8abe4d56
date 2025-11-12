@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b84722a_a27bdd36",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-12T02:58:59Z",
+      "side": 1,
+      "message": "AHardwareBufferGL.cpp was touched quite a bit in https://skia-review.googlesource.com/c/skia/+/1093057, so this should be updated to match its style, and choose whether or not this should be imported as external or texture2d.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 81
+      },
+      "revId": "d1429a4609f2ea24b972748ddb90943f8abe4d56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
