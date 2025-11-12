@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f798880_c533739a",
+        "filename": "src/core/SkRecordCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T21:38:08Z",
+      "side": 1,
+      "message": "We\u0027re matching the declaration for the SkRecords::DrawAtlas struct, which went from int to unsigned (same size) to allow it to map to spans.",
+      "parentUuid": "b7faf7f4_95346da2",
+      "range": {
+        "startLine": 330,
+        "startChar": 40,
+        "endLine": 330,
+        "endChar": 48
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b63a726_cc237e72",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-12T19:52:48Z",
       "side": 1,
       "message": "`size_t`?",
+      "range": {
+        "startLine": 338,
+        "startChar": 8,
+        "endLine": 338,
+        "endChar": 16
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adfceaf3_dfaa42ba",
+        "filename": "src/core/SkRecords.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T21:38:08Z",
+      "side": 1,
+      "message": "Can, but that will change the size of the struct, adding 4 bytes ...",
+      "parentUuid": "2b63a726_cc237e72",
       "range": {
         "startLine": 338,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a00b5f_98aa2ce0",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T21:38:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17521f50_17aba744",
+      "range": {
+        "startLine": 343,
+        "startChar": 26,
+        "endLine": 343,
+        "endChar": 33
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3e43c07_6cb5f807",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-11-12T19:52:48Z",
       "side": 1,
       "message": "Why `unsigned`?",
+      "range": {
+        "startLine": 271,
+        "startChar": 17,
+        "endLine": 271,
+        "endChar": 25
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "997a4b47_ffd827a7",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T21:38:08Z",
+      "side": 1,
+      "message": "To handle warning of signed/unsigned comparison with VerbPtCount(). Switching to size_t (I\u0027m guessing that\u0027s your suggestion...)",
+      "parentUuid": "b3e43c07_6cb5f807",
       "range": {
         "startLine": 271,
         "startChar": 17,
