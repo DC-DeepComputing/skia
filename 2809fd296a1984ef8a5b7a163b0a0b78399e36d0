@@ -16,6 +16,24 @@
       "message": "In particular, the `build ci/fuchsia_profile_arm64 flutter/shell/platform/fuchsia:fuchsia` had a number of errors like when linking like `ld.lld: error: undefined symbol: vtable for SkTypeface_proxy`.",
       "revId": "2809fd296a1984ef8a5b7a163b0a0b78399e36d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9746152_9b283061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T21:40:08Z",
+      "side": 1,
+      "message": "Needs a dependency on `\":typeface_proxy\",` in [fontmgr_fuchsia](https://github.com/flutter/flutter/blob/e983e4bd81f29b17215057fa5c9f46f96cbaf183/engine/src/flutter/skia/BUILD.gn#L314).",
+      "parentUuid": "06b9cda2_ed2df9bc",
+      "revId": "2809fd296a1984ef8a5b7a163b0a0b78399e36d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
