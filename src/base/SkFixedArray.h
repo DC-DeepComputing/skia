@@ -52,12 +52,12 @@ public:
     }
 
     FixedArray(const FixedArray<N, T>& that) {
-        this->reset({that.data(), that.size()});
+        this->reset({that.data(), (unsigned)that.size()});
     }
 
     FixedArray<N, T>& operator=(const FixedArray<N, T>& that) {
         if (this != &that) {
-            this->reset({that.data(), that.size()});
+            this->reset({that.data(), (unsigned)that.size()});
         }
         return *this;
     }
