@@ -333,7 +333,7 @@ void GrDrawingManager::sortTasks() {
         SkASSERT(std::none_of(span.begin(), span.end(), [](const auto& t) {
             return t->blocksReordering();
         }));
-        SkASSERT(span.end() == fDAG.end() || fDAG[end]->blocksReordering());
+        SkASSERT(&(*span.end()) == fDAG.end() || fDAG[end]->blocksReordering());
 
 #if defined(SK_DEBUG)
         // In order to partition the dag array like this it must be the case that each partition
@@ -341,7 +341,7 @@ void GrDrawingManager::sortTasks() {
         auto check = [&](const GrRenderTask* task, auto&& check) -> void {
             SkASSERT(GrRenderTask::TopoSortTraits::WasOutput(task) ||
                      std::find_if(span.begin(), span.end(), [task](const auto& n) {
-                         return n.get() == task; }));
+                         return n.get() == task; }) != span.end());
             for (int i = 0; i < task->fDependencies.size(); ++i) {
                 check(task->fDependencies[i], check);
             }
