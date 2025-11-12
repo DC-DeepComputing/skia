@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7faf7f4_95346da2",
+        "filename": "src/core/SkRecordCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T19:52:48Z",
+      "side": 1,
+      "message": "`size_t`?",
+      "range": {
+        "startLine": 330,
+        "startChar": 40,
+        "endLine": 330,
+        "endChar": 48
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b63a726_cc237e72",
+        "filename": "src/core/SkRecords.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T19:52:48Z",
+      "side": 1,
+      "message": "`size_t`?",
+      "range": {
+        "startLine": 338,
+        "startChar": 8,
+        "endLine": 338,
+        "endChar": 16
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17521f50_17aba744",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T19:52:48Z",
+      "side": 1,
+      "message": "Would be clearer to just do `std::any_of` which essentially does this.",
+      "range": {
+        "startLine": 343,
+        "startChar": 26,
+        "endLine": 343,
+        "endChar": 33
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e43c07_6cb5f807",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T19:52:48Z",
+      "side": 1,
+      "message": "Why `unsigned`?",
+      "range": {
+        "startLine": 271,
+        "startChar": 17,
+        "endLine": 271,
+        "endChar": 25
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
