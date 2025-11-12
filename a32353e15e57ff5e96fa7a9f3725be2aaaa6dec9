@@ -16,6 +16,24 @@
       "message": "There are more of these in `SkPngRustCodec.h` and `SkPngRustEncoderImpl.h`. Not sure why that isn\u0027t being caught by the CQ.",
       "revId": "a32353e15e57ff5e96fa7a9f3725be2aaaa6dec9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4eb7256_637689f7",
+        "filename": "src/codec/SkPngCodecBase.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T16:53:31Z",
+      "side": 0,
+      "message": "And `SkShaperJSONWriter.h`.",
+      "parentUuid": "c712ca2e_7a255f61",
+      "revId": "a32353e15e57ff5e96fa7a9f3725be2aaaa6dec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

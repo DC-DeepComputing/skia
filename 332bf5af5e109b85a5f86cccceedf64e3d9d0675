@@ -89,6 +89,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8af606bb_2b3eb625",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-12T16:53:31Z",
+      "side": 1,
+      "message": "`unsigned`? Seems odd.",
+      "range": {
+        "startLine": 55,
+        "startChar": 35,
+        "endLine": 55,
+        "endChar": 43
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b0dbf25_203034ff",
         "filename": "src/core/SkPathBuilder.cpp",
         "patchSetId": 8
