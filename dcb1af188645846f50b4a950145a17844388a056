@@ -33,6 +33,24 @@
       "message": "After landing this, will want to comment this out and run a CQ on that, plus one of the GCC jobs and maybe a few others. Locally building debug with this commented out on Linux (building more or less everything) with GCC produces a lot of failures. Mostly want to point out here that this change is more or less of a first step and it isn\u0027t expected that anything will actually build yet with SkSpan being an alias for std::span.",
       "revId": "dcb1af188645846f50b4a950145a17844388a056",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f1dbec_1b72946f",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T23:00:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bcda1948_1a82562a",
+      "revId": "dcb1af188645846f50b4a950145a17844388a056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
