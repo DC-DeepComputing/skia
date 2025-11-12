@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fc48c15_963c53b3",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "55cf9666_69c2d7b7",
+      "range": {
+        "startLine": 123,
+        "startChar": 24,
+        "endLine": 123,
+        "endChar": 30
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f9a1ee_c94fd74e",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32511978_ad3ae177",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e2f9a1ee_c94fd74e",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6cd0cae_f21a1091",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-11-12T15:49:02Z",
       "side": 1,
       "message": "Gotta love https://groups.google.com/a/isocpp.org/g/std-proposals/c/M3MfGtYMGyY . However, something like this should go in some other header in the `sknonstd` namespace. Or just inlined everywhere or the affected code updated to use iterators instead of pointers.",
+      "range": {
+        "startLine": 133,
+        "startChar": 25,
+        "endLine": 133,
+        "endChar": 33
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e28b11a1_0f097eee",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "b6cd0cae_f21a1091",
       "range": {
         "startLine": 133,
         "startChar": 25,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25c2f1b3_e864f5bc",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cc51146_4eb3b19f",
+      "range": {
+        "startLine": 144,
+        "startChar": 15,
+        "endLine": 144,
+        "endChar": 24
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8af606bb_2b3eb625",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-11-12T16:53:31Z",
       "side": 1,
       "message": "`unsigned`? Seems odd.",
+      "range": {
+        "startLine": 55,
+        "startChar": 35,
+        "endLine": 55,
+        "endChar": 43
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f856fc75_e8080e9a",
+        "filename": "src/base/SkFixedArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8af606bb_2b3eb625",
       "range": {
         "startLine": 55,
         "startChar": 35,
@@ -127,6 +241,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf121f22_d58aac20",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Switch the logic of the actual loops is beyond this CL (i.e. using reverse iterators in a forward way). But, using auto allows this to build with both SkSpan and std::span",
+      "parentUuid": "9b0dbf25_203034ff",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b2370b9_c29cdb75",
@@ -140,6 +272,24 @@
       "writtenOn": "2025-11-12T15:49:02Z",
       "side": 1,
       "message": "These can be reverse iterators as well.",
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb474a9_a233a486",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "ditto",
+      "parentUuid": "5b2370b9_c29cdb75",
       "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -181,6 +331,30 @@
       "side": 1,
       "message": "I assume what is wanted is `std::any_of`?",
       "parentUuid": "3e0f800a_84bc8c3d",
+      "range": {
+        "startLine": 343,
+        "startChar": 34,
+        "endLine": 343,
+        "endChar": 61
+      },
+      "revId": "332bf5af5e109b85a5f86cccceedf64e3d9d0675",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71b5b79_f91b2e24",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 1,
+      "message": "Fixed the return value, and with that we can go back to passing begin/end",
+      "parentUuid": "833a66ed_ba2e4447",
       "range": {
         "startLine": 343,
         "startChar": 34,

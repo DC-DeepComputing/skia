@@ -34,6 +34,24 @@
       "parentUuid": "c712ca2e_7a255f61",
       "revId": "a32353e15e57ff5e96fa7a9f3725be2aaaa6dec9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde5cc01_ac3841c7",
+        "filename": "src/codec/SkPngCodecBase.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T17:18:40Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "f4eb7256_637689f7",
+      "revId": "a32353e15e57ff5e96fa7a9f3725be2aaaa6dec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
