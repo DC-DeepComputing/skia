@@ -34,6 +34,23 @@
       "parentUuid": "0b3f915b_948b8f12",
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5d82df_4ad05924",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-12T18:28:37Z",
+      "side": 1,
+      "message": "It does look like the canary failures will require rebaselining.  There is 1 gold test that can be done during the roll, but there are 2 layout tests that get modified. \n\nSince it\u0027s only two, we could suppress them and land this, unless it\u0027s easy to restore the old positioning behind a flag...",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
