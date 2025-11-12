@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4044f053_12cfda12",
+        "filename": "src/core/SkRecords.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-12T22:05:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "adfceaf3_dfaa42ba",
+      "range": {
+        "startLine": 338,
+        "startChar": 8,
+        "endLine": 338,
+        "endChar": 16
+      },
+      "revId": "39329e212693d5aa90b1c1d016ec332eb8f679b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17521f50_17aba744",
