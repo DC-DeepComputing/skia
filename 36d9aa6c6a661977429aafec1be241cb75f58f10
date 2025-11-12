@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d70722_a7f84484",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-12T23:10:29Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?",
+      "revId": "36d9aa6c6a661977429aafec1be241cb75f58f10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed20f394_3c5bbe80",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-12T23:10:29Z",
+      "side": 1,
+      "message": "I don\u0027t remember what I was thinking when adding this comment.  I am guessing that Blink implementation didn\u0027t exist back then.  At any rate, I think removing the TODO (but keeping the rest of the comment) is the right way forward.",
+      "range": {
+        "startLine": 246,
+        "startChar": 57,
+        "endLine": 246,
+        "endChar": 58
+      },
+      "revId": "36d9aa6c6a661977429aafec1be241cb75f58f10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
