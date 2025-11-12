@@ -16,6 +16,24 @@
       "message": "I did a test based on one of the GM differences I see locally to prove to myself that the differences are the SW rasterizer operating in different absolute coords because of snug pixmaps in the new code (since we have more FP precision near 0).\n\nHere is the test code:\n\n    SkPath path \u003d  ToolUtils::make_star(SkRect::MakeWH(20, 20), 7)\n                    .makeTransform(SkMatrix::Translate(0, 20))\n                    .makeFillType(SkPathFillType::kEvenOdd);\n\n    SkPaint paint;\n    paint.setBlendMode(SkBlendMode::kSrc);  // \"Replace\" mode\n    paint.setAntiAlias(true);\n    paint.setColor(SK_ColorWHITE);\n\n    SkAutoPixmapStorage pm1;\n    pm1.alloc(SkImageInfo::MakeA8(512, 256));\n    pm1.erase(SK_ColorTRANSPARENT);\n    SkRasterClip rc1;\n    rc1.setRect(SkIRect::MakeLTRB(45, 1, 87, 43));\n    SkMatrix ctm1;\n    ctm1.setAll(2, 0, 46,\n                0, 2, -38,\n                0, 0, 1);\n    make_draw(pm1, rc1, ctm1).drawPathCoverage(path, paint);\n    auto im1 \u003d SkImages::RasterFromPixmapCopy(pm1);\n\n    pm1.erase(SK_ColorTRANSPARENT);\n    SkPixmap pm2;\n    pm1.extractSubset(\u0026pm2, SkIRect::MakeXYWH(45, 1, 43, 43));\n    SkRasterClip rc2;\n    rc2.setRect(SkIRect::MakeLTRB(0, 0, 42, 42));\n    SkMatrix ctm2;\n    ctm2.setAll(2, 0, 1,\n                0, 2, -39,\n                0, 0, 1);\n    make_draw(pm2, rc2, ctm2).drawPathCoverage(path, paint);\n\n\n    auto im2 \u003d SkImages::RasterFromPixmapCopy(pm1);\n\n    // canvas-\u003edrawImage(im1, 0, 0);\n    canvas-\u003edrawImage(im2, 0, 0);\n\nThe positioning of the path within pm1 was determined by logging where Graphite put this path in a plot when running the GM that I extracted the path from (presevefillrule_little). When I draw this I get pixel differences between im1 and im2 that look just like what I see for this path in the GM.",
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c085ccc9_382ad55c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-12T18:25:48Z",
+      "side": 1,
+      "message": "Great test, thanks for checking on this. I think then we can follow up with existing sampling issues at a later time, this certainly wasn\u0027t the cause of it.",
+      "parentUuid": "0b3f915b_948b8f12",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
