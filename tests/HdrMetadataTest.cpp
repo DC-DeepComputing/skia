@@ -273,3 +273,187 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
           {0.75f, 0.25f}});
 }
 
+static bool operator==(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b) {
+    return memcmp(&a, &b, sizeof(a)) == 0;
+}
+
+static void assert_agtms_equal(skiatest::Reporter* r,
+                               const skhdr::Agtm& agtmIn,
+                               const skhdr::Agtm& agtmOut) {
+    REPORTER_ASSERT(r, agtmIn.fToneMapType         == agtmOut.fToneMapType);
+    REPORTER_ASSERT(r, agtmIn.fHdrReferenceWhite   == agtmOut.fHdrReferenceWhite);
+    REPORTER_ASSERT(r, agtmIn.fBaselineHdrHeadroom == agtmOut.fBaselineHdrHeadroom);
+    REPORTER_ASSERT(r, agtmIn.fGainApplicationSpacePrimaries ==
+                          agtmOut.fGainApplicationSpacePrimaries);
+    REPORTER_ASSERT(r, agtmIn.fNumAlternateImages == agtmOut.fNumAlternateImages);
+    if (agtmIn.fNumAlternateImages != agtmOut.fNumAlternateImages) {
+        return;
+    }
+    for (size_t a = 0; a < agtmIn.fNumAlternateImages; ++a) {
+        REPORTER_ASSERT(r, SkScalarNearlyEqual(
+            agtmIn.fAlternateHdrHeadroom[a], agtmOut.fAlternateHdrHeadroom[a], 0.0001f));
+
+        auto& mixIn = agtmIn.fGainFunction[a].fComponentMixing;
+        auto& mixOut = agtmOut.fGainFunction[a].fComponentMixing;
+
+        REPORTER_ASSERT(r, mixIn.fRed == mixOut.fRed);
+        REPORTER_ASSERT(r, mixIn.fGreen == mixOut.fGreen);
+        REPORTER_ASSERT(r, mixIn.fBlue == mixOut.fBlue);
+        REPORTER_ASSERT(r, mixIn.fMax == mixOut.fMax);
+        REPORTER_ASSERT(r, mixIn.fMin == mixOut.fMin);
+        REPORTER_ASSERT(r, mixIn.fComponent == mixOut.fComponent);
+
+        auto& curveIn = agtmIn.fGainFunction[a].fPiecewiseCubic;
+        auto& curveOut = agtmOut.fGainFunction[a].fPiecewiseCubic;
+        REPORTER_ASSERT(r, curveIn.fNumControlPoints == curveOut.fNumControlPoints);
+        if (curveIn.fNumControlPoints != curveOut.fNumControlPoints) {
+            return;
+        }
+        for (size_t c = 0; c < curveIn.fNumControlPoints; ++c) {
+            REPORTER_ASSERT(r, SkScalarNearlyEqual(curveIn.fX[c], curveOut.fX[c], 0.002f));
+            REPORTER_ASSERT(r, SkScalarNearlyEqual(curveIn.fY[c], curveOut.fY[c], 0.002f));
+            REPORTER_ASSERT(r, SkScalarNearlyEqual(curveIn.fM[c], curveOut.fM[c], 0.002f));
+        }
+    }
+};
+
+// Test round-trip serialization of AGTM metadata.
+DEF_TEST(HdrMetadata_Agtm_Serialize, r) {
+    {
+        skiatest::ReporterContext ctx(r, "NoAdaptiveToneMap");
+
+        skhdr::Agtm agtmIn;
+        agtmIn.fHdrReferenceWhite = 123.f;
+        agtmIn.fToneMapType = skhdr::Agtm::AdaptiveToneMap::kNone;
+
+        skhdr::Agtm agtmOut;
+        REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
+
+        assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+
+    {
+        skiatest::ReporterContext ctx(r, "RWTMO");
+
+        skhdr::Agtm agtmIn;
+        agtmIn.fBaselineHdrHeadroom = 1.f;
+        agtmIn.populateUsingRwtmo();
+
+        skhdr::Agtm agtmOut;
+        REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
+
+        assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+
+    {
+        skiatest::ReporterContext ctx(r, "ClampInRec601");
+
+        skhdr::Agtm agtmIn;
+        agtmIn.fToneMapType = skhdr::Agtm::AdaptiveToneMap::kCustom;
+        agtmIn.fHdrReferenceWhite = 100.f;
+        agtmIn.fBaselineHdrHeadroom = 2.f;
+        agtmIn.fGainApplicationSpacePrimaries = SkNamedPrimaries::kRec601;
+        agtmIn.fNumAlternateImages = 0;
+
+        skhdr::Agtm agtmOut;
+        REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
+
+        assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+
+    {
+        skiatest::ReporterContext ctx(r, "OneAlternates");
+
+        skhdr::Agtm agtmIn;
+        agtmIn.fToneMapType = skhdr::Agtm::AdaptiveToneMap::kCustom;
+        agtmIn.fHdrReferenceWhite = 400.f;
+        agtmIn.fBaselineHdrHeadroom = 4.f;
+        agtmIn.fGainApplicationSpacePrimaries = SkNamedPrimaries::kSMPTE_EG_432_1;
+        agtmIn.fNumAlternateImages = 1;
+        agtmIn.fAlternateHdrHeadroom[0] = 0.f;
+        agtmIn.fGainFunction[0] = {
+            .fComponentMixing = {
+                .fMax = 1.f,
+            },
+            .fPiecewiseCubic = {
+                .fNumControlPoints = 2u,
+                .fX = {1.f, 16.f},
+                .fY = {0.f, -4.f},
+                .fM = {0.f,  0.f},
+            },
+        };
+
+        skhdr::Agtm agtmOut;
+        REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
+
+        assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+
+    {
+        skiatest::ReporterContext ctx(r, "FourAlternates");
+
+        skhdr::Agtm agtmIn;
+        agtmIn.fToneMapType = skhdr::Agtm::AdaptiveToneMap::kCustom;
+        agtmIn.fHdrReferenceWhite = 400.f;
+        agtmIn.fBaselineHdrHeadroom = 2.f;
+        agtmIn.fGainApplicationSpacePrimaries = SkNamedPrimaries::kSMPTE_EG_432_1;
+        agtmIn.fNumAlternateImages = 4;
+        agtmIn.fAlternateHdrHeadroom[0] = 0.f;
+        agtmIn.fAlternateHdrHeadroom[1] = 1.f;
+        agtmIn.fAlternateHdrHeadroom[2] = 3.f;
+        agtmIn.fAlternateHdrHeadroom[3] = 4.f;
+        agtmIn.fGainFunction[0] = {
+            .fComponentMixing = {
+                .fMax = 0.75f,
+                .fMin = 0.25f
+            },
+            .fPiecewiseCubic = {
+                .fNumControlPoints = 1u,
+                .fX = {0.f},
+                .fY = {1.f},
+                .fM = {0.f},
+            },
+        };
+        agtmIn.fGainFunction[1] = {
+            .fComponentMixing = {
+                .fMax = 1.f,
+            },
+            .fPiecewiseCubic = {
+                .fNumControlPoints = 4u,
+                .fX = {0.f, 1.f,  2.f,  3.f},
+                .fY = {1.f, 0.5f, 0.4f, 0.3f},
+                .fM = {0.f, 0.1f, 0.2f, 0.3f},
+            },
+        };
+        agtmIn.fGainFunction[2] = {
+            .fComponentMixing = {
+                .fComponent = 1.f,
+            },
+            .fPiecewiseCubic = {
+                .fNumControlPoints = 2u,
+                .fX = {0.f, 1.f},
+                .fY = {1.f, 0.5f},
+                .fM = {0.f, 0.1f},
+            },
+        };
+        agtmIn.fGainFunction[3] = {
+            .fComponentMixing = {
+                .fRed   = 0.3f,
+                .fGreen = 0.6f,
+                .fBlue  = 0.1f,
+            },
+            .fPiecewiseCubic = {
+                .fNumControlPoints = 3u,
+                .fX = {0.f, 1.f,  2.f},
+                .fY = {1.f, 0.5f, 0.4f},
+                .fM = {0.f, 0.1f, 0.5},
+            },
+        };
+
+        skhdr::Agtm agtmOut;
+        REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
+
+        assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+}
+
