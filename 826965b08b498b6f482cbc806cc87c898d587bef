@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba6c43f4_2c1e96f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "All the `*foo.end()` are UB.",
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929fd2ed_1ff3eb27",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 45,
+        "startChar": 59,
+        "endLine": 45,
+        "endChar": 71
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a56107d1_82fc1c8e",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 359,
+        "startChar": 10,
+        "endLine": 359,
+        "endChar": 21
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7a1a0e_13191d2f",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 932,
+        "startChar": 40,
+        "endLine": 932,
+        "endChar": 54
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba774dd_3c3b02cc",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 300,
+        "startChar": 17,
+        "endLine": 300,
+        "endChar": 28
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29294b2f_33ec80bf",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4279,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 4279,
+        "startChar": 23,
+        "endLine": 4279,
+        "endChar": 43
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9198ac_1b021939",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2625,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:35:53Z",
+      "side": 1,
+      "message": "UB",
+      "range": {
+        "startLine": 2625,
+        "startChar": 48,
+        "endLine": 2625,
+        "endChar": 64
+      },
+      "revId": "826965b08b498b6f482cbc806cc87c898d587bef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
