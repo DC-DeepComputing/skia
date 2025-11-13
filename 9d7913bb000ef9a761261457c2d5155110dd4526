@@ -34,6 +34,46 @@
       "parentUuid": "9c998042_227d23c2",
       "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05ac9765_37263b4c",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T22:02:18Z",
+      "side": 1,
+      "message": "Should fix this line length.",
+      "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1869808a_64b235fe",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T22:02:18Z",
+      "side": 1,
+      "message": "Why are we passing `scanner` here and not using it? It looks like we don\u0027t need this parameter, since below `fScanner` can be used?",
+      "range": {
+        "startLine": 494,
+        "startChar": 57,
+        "endLine": 494,
+        "endChar": 79
+      },
+      "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
