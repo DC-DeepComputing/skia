@@ -655,7 +655,8 @@ static constexpr VkFormat kDepthStencilVkFormats[] = {
     VK_FORMAT_D32_SFLOAT_S8_UINT,
 };
 
-bool VulkanCaps::isSampleCountSupported(TextureFormat format, uint8_t requestedSampleCount) const {
+bool VulkanCaps::isSampleCountSupported(TextureFormat format,
+                                        SampleCount requestedSampleCount) const {
     VkFormat vkFormat = TextureFormatToVkFormat(format);
     const SupportedSampleCounts* sampleCounts;
 
@@ -670,7 +671,7 @@ bool VulkanCaps::isSampleCountSupported(TextureFormat format, uint8_t requestedS
         sampleCounts = &formatInfo.fSupportedSampleCounts;
     } else {
         const FormatInfo& formatInfo = this->getFormatInfo(vkFormat);
-        if (!formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, 1)) {
+        if (!formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, SampleCount::k1)) {
             return false;
         }
         sampleCounts = &formatInfo.fSupportedSampleCounts;
@@ -715,12 +716,12 @@ TextureInfo VulkanCaps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
      * VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT flag. This flag is expected to
      * be harmless (if not, it's a driver bug).
      */
-    if (desc.fSampleCount == 1 && this->msaaRenderToSingleSampledSupport()) {
+    if (desc.fSampleCount == SampleCount::k1 && this->msaaRenderToSingleSampledSupport()) {
         createFlags |= VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT;
     }
 
     VulkanTextureInfo info;
-    info.fSampleCount = desc.fSampleCount;
+    info.fSampleCount = (uint8_t) desc.fSampleCount;
     info.fMipmapped = Mipmapped::kNo;
     info.fFlags = createFlags;
     info.fFormat = TextureFormatToVkFormat(desc.fFormat);
@@ -739,16 +740,15 @@ TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType ct,
     VkFormat format = this->getFormatFromColorType(ct);
     const FormatInfo& formatInfo = this->getFormatInfo(format);
 
-    static constexpr int kSingleSampled = 1;
     if ((isProtected == Protected::kYes && !this->protectedSupport()) ||
         !formatInfo.isTexturable(VK_IMAGE_TILING_OPTIMAL) ||
         (isRenderable == Renderable::kYes &&
-         !formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, kSingleSampled)) ) {
+         !formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, SampleCount::k1)) ) {
         return {};
     }
 
     VulkanTextureInfo info;
-    info.fSampleCount = kSingleSampled;
+    info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
     info.fFlags = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = format;
@@ -820,14 +820,13 @@ TextureInfo VulkanCaps::getDefaultCompressedTextureInfo(SkTextureCompressionType
                                                         Protected isProtected) const {
     VkFormat format = format_from_compression(compression);
     const FormatInfo& formatInfo = this->getFormatInfo(format);
-    static constexpr int defaultSampleCount = 1;
     if ((isProtected == Protected::kYes && !this->protectedSupport()) ||
         !formatInfo.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
         return {};
     }
 
     VulkanTextureInfo info;
-    info.fSampleCount = defaultSampleCount;
+    info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
     info.fFlags = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = format;
@@ -1649,15 +1648,9 @@ void VulkanCaps::SupportedSampleCounts::initSampleCounts(const skgpu::VulkanInte
     }
 }
 
-bool VulkanCaps::SupportedSampleCounts::isSampleCountSupported(int requestedCount) const {
-    requestedCount = std::max(1, requestedCount);
-    // Non-power-of-two sample counts are never supported (but practically also never expected to be
-    // requested)
-    if (!SkIsPow2(requestedCount)) {
-        return false;
-    }
-
-    return (fSampleCounts & requestedCount) != 0;
+bool VulkanCaps::SupportedSampleCounts::isSampleCountSupported(SampleCount requestedCount) const {
+    VkSampleCountFlagBits vkCount = SampleCountToVkSampleCount(requestedCount);
+    return (fSampleCounts & vkCount) != 0;
 }
 
 
@@ -1752,7 +1745,7 @@ bool VulkanCaps::FormatInfo::isTexturable(VkImageTiling imageTiling) const {
 }
 
 bool VulkanCaps::FormatInfo::isRenderable(VkImageTiling imageTiling,
-                                          uint32_t sampleCount) const {
+                                          SampleCount sampleCount) const {
     if (!fSupportedSampleCounts.isSampleCountSupported(sampleCount)) {
         return false;
     }
@@ -1965,9 +1958,10 @@ bool VulkanCaps::isTexturable(const VulkanTextureInfo& vkInfo) const {
 }
 
 bool VulkanCaps::isRenderable(const VulkanTextureInfo& vkInfo) const {
+    SkASSERT(IsValidSampleCount(vkInfo.fSampleCount));
     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
     // All renderable vulkan textures within graphite must also support input attachment usage
-    return info.isRenderable(vkInfo.fImageTiling, vkInfo.fSampleCount) &&
+    return info.isRenderable(vkInfo.fImageTiling, (SampleCount) vkInfo.fSampleCount) &&
            SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT);
 }
 
@@ -2160,7 +2154,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(vkInfo.fFormat != VK_FORMAT_UNDEFINED || vkInfo.fYcbcrConversionInfo.isValid());
 
     uint32_t format = static_cast<uint32_t>(vkInfo.fFormat);
-    uint32_t samples = SamplesToKey(info.numSamples());
+    uint32_t samples = SamplesToKey(info.sampleCount());
     // We don't have to key the number of mip levels because it is inherit in the combination of
     // isMipped and dimensions.
     bool isMipped = info.mipmapped() == Mipmapped::kYes;
