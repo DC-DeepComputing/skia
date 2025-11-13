@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e46d7fc8_c7305e02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T16:47:50Z",
+      "side": 1,
+      "message": "In general, it is explicitly undefined behavior to dereference std::span::end(). The iterator does not even need to have a dereference operator.",
+      "revId": "c99017484b3d3597f2f7b060648592a3cd079ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "398a3294_f224e294",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T16:47:50Z",
+      "side": 1,
+      "message": "This is undefined behavior. This should assert in some debug build somewhere since it is undefined to deference an end iterator. The only accepted way to do this is `fText.data() + fText.size()`.",
+      "range": {
+        "startLine": 24,
+        "startChar": 32,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "c99017484b3d3597f2f7b060648592a3cd079ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a35128_3c4acb13",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T16:47:50Z",
+      "side": 1,
+      "message": "Same here. Alternatively (and better) would be to re-write this in terms of iterators instead of pointers.",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 25,
+        "endChar": 36
+      },
+      "revId": "c99017484b3d3597f2f7b060648592a3cd079ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12cfeb98_6707726c",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T16:47:50Z",
+      "side": 1,
+      "message": "UB here and below.",
+      "range": {
+        "startLine": 448,
+        "startChar": 28,
+        "endLine": 448,
+        "endChar": 29
+      },
+      "revId": "c99017484b3d3597f2f7b060648592a3cd079ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
