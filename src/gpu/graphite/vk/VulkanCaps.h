@@ -117,7 +117,6 @@ public:
     }
 
     bool mustLoadFullImageForMSAA() const { return fMustLoadFullImageForMSAA; }
-    bool avoidMSAA() const { return fAvoidMSAA; }
 
     bool supportsFrameBoundary() const { return fSupportsFrameBoundary; }
 
@@ -338,7 +337,6 @@ private:
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;
-    bool fAvoidMSAA = false;
 };
 
 } // namespace skgpu::graphite
