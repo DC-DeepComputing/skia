@@ -12,6 +12,16 @@ package(
 
 licenses(["notice"])
 
+# Export files for visibility from rust/png package
+exports_files(
+    [
+        "SkStreamAdapter.cpp",
+        "SkStreamAdapter.h",
+        "SpanUtils.h",
+    ],
+    visibility = ["//rust/png:__pkg__"],
+)
+
 skia_filegroup(
     name = "rs_srcs",
     srcs = ["io_traits_ffi.rs"],
@@ -42,7 +52,9 @@ skia_filegroup(
 # Shared FFI utilities for Rust codec integrations.
 skia_cc_library(
     name = "ffi_utils",
+    srcs = ["SkStreamAdapter.cpp"],
     hdrs = [
+        "SkStreamAdapter.h",
         "SpanUtils.h",
     ],
     features = ["layering_check"],
@@ -53,6 +65,7 @@ skia_cc_library(
     ],
     deps = [
         "//:core",
+        "//src/base",
         "@crates//:cxx_cc",
     ],
 )
