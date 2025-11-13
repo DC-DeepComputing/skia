@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77e08627_8d900d22",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-13T21:18:04Z",
+      "side": 1,
+      "message": "missed one",
+      "range": {
+        "startLine": 45,
+        "startChar": 57,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "945a5d6c77306c3af6c0a81f1175421f333ca7c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
