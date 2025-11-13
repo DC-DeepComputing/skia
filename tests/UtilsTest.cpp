@@ -26,6 +26,11 @@
 #include <utility>
 #include <vector>
 
+#include <span>
+static void foo0(SkSpan<const int>) {}
+static void foo1(std::span<const int>) {}
+
+
 using namespace skia_private;
 
 class RefClass : public SkRefCnt {
@@ -40,6 +45,13 @@ private:
 };
 
 static void test_autounref(skiatest::Reporter* reporter) {
+
+    foo0( { 1 });        // fine
+    foo0({{ 1 }});      // warning
+
+//    foo1( { 1  } );     // error
+    foo1({{ 1  }});     // fine
+
     RefClass obj(0);
     REPORTER_ASSERT(reporter, obj.unique());
 
