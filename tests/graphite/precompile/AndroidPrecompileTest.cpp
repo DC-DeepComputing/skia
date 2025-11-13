@@ -1563,10 +1563,8 @@ void test(skiatest::Reporter* reporter,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);
 
-    const bool msaaSupported =
-            caps->msaaRenderToSingleSampledSupport() ||
-            caps->isSampleCountSupported(TextureInfoPriv::ViewFormat(textureInfo),
-                                         caps->defaultMSAASamplesCount());
+    const bool msaaSupported = caps->getDefaultMSAASampleCount(textureInfo) > SampleCount::k1;
+
 
     if (!msaaSupported) {
         // The following pipelines rely on having MSAA
