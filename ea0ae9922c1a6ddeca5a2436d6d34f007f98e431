@@ -50,6 +50,30 @@
       ],
       "revId": "ea0ae9922c1a6ddeca5a2436d6d34f007f98e431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e67324_e53685a8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-13T14:01:10Z",
+      "side": 1,
+      "message": "Good catch, that was unintentional. I added a check for only applying the path effect when the transform is valid so the assert won\u0027t fire. If the transform is invalid, it\u0027ll fall through to drawGeometry and be dropped with the same warning.",
+      "parentUuid": "8b0daa9a_2e916df4",
+      "range": {
+        "startLine": 1520,
+        "startChar": 4,
+        "endLine": 1524,
+        "endChar": 5
+      },
+      "revId": "ea0ae9922c1a6ddeca5a2436d6d34f007f98e431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
