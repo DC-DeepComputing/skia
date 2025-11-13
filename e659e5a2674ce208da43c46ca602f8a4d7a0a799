@@ -251,6 +251,30 @@
       },
       "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ef688e_001a33af",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5095
+      },
+      "writtenOn": "2025-11-13T14:35:56Z",
+      "side": 1,
+      "message": "Most recently we were given guidance to stick with the Google in Skia repo for code we were contributing, like most of the files around it in our repo, but also that it really scarcely matters with the licensing and code control/obvious contribution history we have. If I get new guidance, we can come back and adjust.",
+      "parentUuid": "e21c9322_a874c75d",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 4
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
