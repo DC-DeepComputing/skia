@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "331e94bc_34afc34c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-13T19:59:45Z",
+      "side": 1,
+      "message": "It seemed somewhat surprising for `SkEnumBitmask\u003cT\u003e` to take up more space than `T`. Given that `SkEnumBitmask` expects the actual T values to already be set to bit patterns and doesn\u0027t do any auto shifting, the underlying type of T is sufficient.",
+      "revId": "4cc040e2c2cae602a4c2d56212b797e99fcc5a9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
