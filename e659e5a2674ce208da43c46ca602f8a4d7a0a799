@@ -275,6 +275,30 @@
       },
       "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e759859_6d4de78b",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-13T14:47:16Z",
+      "side": 1,
+      "message": "Thanks for the confirmation. I have updated the file to use the version with Google as suggested for Skia repo.",
+      "parentUuid": "25ef688e_001a33af",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 4
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
