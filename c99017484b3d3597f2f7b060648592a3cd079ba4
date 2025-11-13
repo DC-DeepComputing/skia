@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a4373d_8be51bbb",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T18:38:03Z",
+      "side": 1,
+      "message": "I don\u0027t think `std::to_address()` needs to work at all, since the iterator returned by `end()` need not be dereferenceable.",
+      "parentUuid": "2423642b_19c5292c",
+      "range": {
+        "startLine": 24,
+        "startChar": 32,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "c99017484b3d3597f2f7b060648592a3cd079ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08a35128_3c4acb13",
