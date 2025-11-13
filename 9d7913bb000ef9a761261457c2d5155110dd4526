@@ -55,6 +55,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43829350_b5adfe40",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T22:11:45Z",
+      "side": 1,
+      "message": "line length. Probably best to just remove the names of the parameters, since they\u0027re somewhat redundant here.",
+      "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be71cde_61bf672f",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-13T22:11:45Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1869808a_64b235fe",
         "filename": "src/ports/SkFontMgr_fuchsia.cpp",
         "patchSetId": 1
