@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3cdf285_71a9c9ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-13T18:42:07Z",
+      "side": 1,
+      "message": "One nit for now. I can also help you set up a fuzzer for this if you\u0027d like",
+      "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa05f60a_8937c25f",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-13T18:42:07Z",
+      "side": 1,
+      "message": "nit: I think we typically make parsing functions like this be static functions\n\ne.g. \n```\nstd::unique_ptr\u003cAgtm\u003e Make(const SkData*);\n```",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
