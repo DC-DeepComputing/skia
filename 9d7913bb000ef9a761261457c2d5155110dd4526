@@ -74,6 +74,30 @@
       },
       "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4053a4d0_29edd3a9",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-13T22:07:47Z",
+      "side": 1,
+      "message": "Yes, I just noticed, but I don\u0027t think it\u0027s the problem. It\u0027s still comes from fScanner.",
+      "parentUuid": "1869808a_64b235fe",
+      "range": {
+        "startLine": 494,
+        "startChar": 57,
+        "endLine": 494,
+        "endChar": 79
+      },
+      "revId": "9d7913bb000ef9a761261457c2d5155110dd4526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
