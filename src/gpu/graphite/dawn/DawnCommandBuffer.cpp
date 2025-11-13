@@ -791,11 +791,8 @@ void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlo
 
     unsigned int bufferIndex;
     switch (slot) {
-        case UniformSlot::kRenderStep:
-            bufferIndex = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
-            break;
-        case UniformSlot::kPaint:
-            bufferIndex = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+        case UniformSlot::kCombinedUniforms:
+            bufferIndex = DawnGraphicsPipeline::kCombinedUniformIndex;
             break;
         case UniformSlot::kGradient:
             bufferIndex = DawnGraphicsPipeline::kGradientBufferIndex;
@@ -946,9 +943,8 @@ void DawnCommandBuffer::syncUniformBuffers() {
                 !fSharedContext->dawnCaps()
                          ->resourceBindingRequirements()
                          .fUsePushConstantsForIntrinsicConstants,  // intrinsic uniforms
-                fActiveGraphicsPipeline->hasStepUniforms(),            // render step uniforms
-                fActiveGraphicsPipeline->hasPaintUniforms(),           // paint uniforms
-                fActiveGraphicsPipeline->hasGradientBuffer(),          // gradient SSBO
+                fActiveGraphicsPipeline->hasCombinedUniforms(),    // paint AND renderstep uniforms!
+                fActiveGraphicsPipeline->hasGradientBuffer(),      // gradient SSBO
         };
 
         for (int i = 0; i < kNumBuffers; ++i) {
@@ -999,11 +995,7 @@ bool DawnCommandBuffer::updateIntrinsicUniformsAsPushConstant(UniformDataBlock u
 #if !defined(__EMSCRIPTEN__)
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(uniformData.size() <= DawnGraphicsPipeline::kIntrinsicUniformSize);
-#if defined(WGPU_BREAKING_CHANGE_SET_IMMEDIATES)
     fActiveRenderPassEncoder.SetImmediates(0, uniformData.data(), uniformData.size());
-#else
-    fActiveRenderPassEncoder.SetImmediateData(0, uniformData.data(), uniformData.size());
-#endif
     return true;
 #else
     SkASSERT(false); // No push constant support in WASM yet
