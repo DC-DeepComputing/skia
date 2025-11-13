@@ -190,18 +190,27 @@ private:
 };
 
 static VelloAaConfig get_vello_aa_config(Recorder* recorder) {
+<<<<<<< PATCH SET (9ec1cd2d52c7e922a971d1273d0e7ae06a566fd7 [graphite] RendererProvider selects path strategy)
+    PathRendererStrategy strategy = recorder->priv().rendererProvider()->pathRendererStrategy();
+||||||| BASE      (0b77780f11ada3006b84b96137295292e3478520 [graphite] Move more strategy IsSupported logic to RendererP)
+    // Use the analytic area AA mode unless caps say otherwise.
+    VelloAaConfig config = VelloAaConfig::kAnalyticArea;
+#if defined(GPU_TEST_UTILS)
+    PathRendererStrategy strategy = recorder->priv().caps()->requestedPathRendererStrategy();
+=======
     // Use the analytic area AA mode unless caps say otherwise.
     VelloAaConfig config = VelloAaConfig::kAnalyticArea;
 #if defined(GPU_TEST_UTILS)
     auto strategy = recorder->priv().caps()->requestedPathRendererStrategy();
+>>>>>>> BASE      (d1d3c166e0216d6fa3f663cb1f2ffe5890f7f1df [graphite] Move more strategy IsSupported logic to RendererP)
     if (strategy == PathRendererStrategy::kComputeMSAA16) {
-        config = VelloAaConfig::kMSAA16;
+        return VelloAaConfig::kMSAA16;
     } else if (strategy == PathRendererStrategy::kComputeMSAA8) {
-        config = VelloAaConfig::kMSAA8;
+        return VelloAaConfig::kMSAA8;
+    } else {
+        SkASSERT(strategy == PathRendererStrategy::kComputeAnalyticAA);
+        return VelloAaConfig::kAnalyticArea;
     }
-#endif
-
-    return config;
 }
 
 static std::unique_ptr<DispatchGroup> render_vello_scene(Recorder* recorder,
