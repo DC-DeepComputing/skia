@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86b33ef3_8144e597",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-13T13:56:04Z",
+      "side": 1,
+      "message": "Thanks this is helpful cleanup for debugging!",
+      "revId": "cea3a6d22f24083cc81dae281ab70a0ff516b71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1947a6d9_1a5f0153",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-13T13:56:04Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 351,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 101
+      },
+      "revId": "cea3a6d22f24083cc81dae281ab70a0ff516b71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
