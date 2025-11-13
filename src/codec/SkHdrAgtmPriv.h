@@ -31,6 +31,7 @@ struct SK_API Agtm {
     // A PiecewiseCubic metadata group, described in Clause 5.1, Piecewise cubic function.
     struct PiecewiseCubicFunction {
         // The GainCurveNumControlPoints metadata item.
+        static constexpr size_t kMinNumControlPoints = 1;
         static constexpr size_t kMaxNumControlPoints = 32;
         size_t fNumControlPoints = 0;
 
@@ -78,6 +79,17 @@ struct SK_API Agtm {
         SkColor4f evaluate(const SkColor4f& c) const;
     };
 
+    // Information about the bitstream used to create this metadata.
+    enum class AdaptiveToneMap {
+        // Did not specify an AdaptiveToneMap.
+        kNone,
+        // Specified to use RWTMO as the tone mapping.
+        kReferenceWhite,
+        // Specified its own custom parameters.
+        kCustom,
+    };
+    AdaptiveToneMap fToneMapType = AdaptiveToneMap::kNone;
+
     // The HdrReferenceWhite metadata item.
     float fHdrReferenceWhite = 203.f;
 
@@ -86,9 +98,6 @@ struct SK_API Agtm {
 
     // The GainApplicationSpaceColorPrimaries metadata item.
     SkColorSpacePrimaries fGainApplicationSpacePrimaries = {0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f};
-
-    // The GainApplicationOffset metadata item.
-    float fGainApplicationOffset = 0.f;
 
     // The NumAlternateImages metadata item.
     static constexpr size_t kMaxNumAlternateImages = 4;
@@ -105,6 +114,17 @@ struct SK_API Agtm {
      * parameters, based on the value of fBaselineHdrHeadroom.
      */
     void populateUsingRwtmo();
+
+    /**
+     * The encoding is defined in SMPTE ST 2094-50 candidate draft 2. This will deserialize the
+     * smpte_st_2094_50_application_info_v0() bitstream. Return false if parsing fails.
+     */
+    bool parse(const SkData* data);
+
+    /**
+     * Serialize to a smpte_st_2094_50_application_info_v0() bitstream.
+     */
+    sk_sp<SkData> serialize() const;
 
     /**
      * Compute the weighting for the specified targeted HDR headroom according to the computations
