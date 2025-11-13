@@ -70,18 +70,18 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     // they weren't supported. Downgrade to single-sampled if we get here somehow anyways.
     const bool msaaRenderToSingleSampledSupport =
             caps->msaaTextureRenderToSingleSampledSupport(targetInfo);
-    const uint8_t defaultSamples = caps->defaultMSAASamplesCount();
+    const SampleCount defaultSamples = caps->defaultMSAASamplesCount();
     const bool canUseDefaultMSAA = msaaRenderToSingleSampledSupport ||
                                    caps->isSampleCountSupported(colorFormat, defaultSamples);
-    desc.fSampleCount = requiresMSAA && targetInfo.numSamples() == 1
-            ? (canUseDefaultMSAA ? defaultSamples : 1)
-            : targetInfo.numSamples();
+    desc.fSampleCount = requiresMSAA && targetInfo.sampleCount() == SampleCount::k1
+            ? (canUseDefaultMSAA ? defaultSamples : SampleCount::k1)
+            : targetInfo.sampleCount();
 
     // We need to handle MSAA with an extra color attachment if:
     const bool needsMSAAColorAttachment =
-            desc.fSampleCount > 1 &&            // using MSAA for the render pass,
-            targetInfo.numSamples() == 1 &&     // the target isn't already MSAA'ed,
-            !msaaRenderToSingleSampledSupport;  // can't use an MSAA->single extension.
+            desc.fSampleCount > SampleCount::k1 &&         // using MSAA for the render pass,
+            targetInfo.sampleCount() == SampleCount::k1 && // the target isn't already MSAA'ed,
+            !msaaRenderToSingleSampledSupport;             // can't use an MSAA->single extension.
     if (needsMSAAColorAttachment) {
         // We set the color and resolve attachments up the same regardless of if the backend ends up
         // using msaaRenderToSingleSampledSupport() to skip explicitly creating the MSAA attachment.
@@ -94,14 +94,14 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fColorResolveAttachment = {colorFormat,
                                         loadOp != LoadOp::kLoad ? LoadOp::kDiscard : LoadOp::kLoad,
                                         storeOp,
-                                        /*sampleCount=*/1};
+                                        SampleCount::k1};
     } else {
         // The target will be the color attachment and skip configuring the resolve attachment.
         SkASSERT(desc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported);
         desc.fColorAttachment = {colorFormat,
                                  loadOp,
                                  storeOp,
-                                 SkTo<uint8_t>(targetInfo.numSamples())};
+                                 targetInfo.sampleCount()};
     }
 
     if (depthStencilFlags != DepthStencilFlags::kNone) {
@@ -148,9 +148,9 @@ SkString RenderPassDesc::toPipelineLabel() const {
     SkASSERT(fDepthStencilAttachment.fFormat == TextureFormat::kUnsupported ||
              fDepthStencilAttachment.fSampleCount == fColorAttachment.fSampleCount);
     SkASSERT(fColorResolveAttachment.fFormat == TextureFormat::kUnsupported ||
-             fColorResolveAttachment.fSampleCount == 1);
+             fColorResolveAttachment.fSampleCount == SampleCount::k1);
     SkASSERT(fColorAttachment.fSampleCount == fSampleCount ||
-             (fColorAttachment.fSampleCount == 1 && fSampleCount > 1));
+             (fColorAttachment.fSampleCount == SampleCount::k1 && fSampleCount > SampleCount::k1));
 
     const char* colorFormatStr = TextureFormatName(fColorAttachment.fFormat);
     const char* dsFormatStr = "{}";
@@ -214,8 +214,7 @@ SkString AttachmentDesc::toString() const {
 }
 
 bool AttachmentDesc::isCompatible(const TextureInfo& texInfo) const {
-    return fFormat == TextureInfoPriv::ViewFormat(texInfo) &&
-           fSampleCount == texInfo.numSamples();
+    return fFormat == TextureInfoPriv::ViewFormat(texInfo) && fSampleCount == texInfo.sampleCount();
 }
 
 } // namespace skgpu::graphite
