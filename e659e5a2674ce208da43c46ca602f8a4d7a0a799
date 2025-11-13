@@ -227,6 +227,30 @@
       },
       "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda18b9c_15880027",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-13T10:22:09Z",
+      "side": 1,
+      "message": "@kjlubick@google.com, do we have any update on how the license header text should be written?",
+      "parentUuid": "e21c9322_a874c75d",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 4
+      },
+      "revId": "e659e5a2674ce208da43c46ca602f8a4d7a0a799",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
