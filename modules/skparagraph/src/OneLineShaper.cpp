@@ -439,13 +439,13 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
         while (!fUnresolvedBlocks.empty()) {
             auto unresolvedRange = fUnresolvedBlocks.front().fText;
             auto unresolvedText = fParagraph->text(unresolvedRange);
-            const char* ch = unresolvedText.begin();
+            const char* ch = unresolvedText.data();
             // We have the global cache for all already found typefaces for SkUnichar
             // but we still need to keep track of all SkUnichars used in this unresolved block
             THashSet<SkUnichar> alreadyTriedCodepoints;
             THashSet<SkTypefaceID> alreadyTriedTypefaces;
             while (true) {
-                if (ch == unresolvedText.end()) {
+                if (ch == &(*unresolvedText.end())) {
                     // Not a single codepoint could be resolved but we finished the block
                     hopelessBlocks.push_back(fUnresolvedBlocks.front());
                     fUnresolvedBlocks.pop_front();
@@ -456,16 +456,16 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                 SkUnichar codepoint = -1;
                 SkUnichar emojiStart = -1;
                 // We may loop until we find a new codepoint/emoji run
-                while (ch != unresolvedText.end()) {
+                while (ch != &(*unresolvedText.end())) {
                   emojiStart = OneLineShaper::getEmojiSequenceStart(
                                                 fParagraph->fUnicode.get(),
                                                 &ch,
-                                                unresolvedText.end());
+                                                &(*unresolvedText.end()));
                     if (emojiStart != -1) {
                         // We do not keep a cache of emoji runs, but we need to move the cursor
                         break;
                     } else {
-                        codepoint = SkUTF::NextUTF8WithReplacement(&ch, unresolvedText.end());
+                        codepoint = SkUTF::NextUTF8WithReplacement(&ch, &(*unresolvedText.end()));
                         if (!alreadyTriedCodepoints.contains(codepoint)) {
                             alreadyTriedCodepoints.add(codepoint);
                             break;
@@ -693,7 +693,7 @@ bool OneLineShaper::shape() {
                     LangIterator langIter(unresolvedText, blockSpan,
                                       fParagraph->paragraphStyle().getTextStyle());
                     SkShaper::TrivialBiDiRunIterator bidiIter(defaultBidiLevel, unresolvedText.size());
-                    auto scriptIter = SkShapers::HB::ScriptRunIterator(unresolvedText.begin(),
+                    auto scriptIter = SkShapers::HB::ScriptRunIterator(unresolvedText.data(),
                                                                        unresolvedText.size());
                     fCurrentText = unresolvedRange;
 
@@ -708,7 +708,7 @@ bool OneLineShaper::shape() {
                         }
                     }
 
-                    shaper->shape(unresolvedText.begin(), unresolvedText.size(),
+                    shaper->shape(unresolvedText.data(), unresolvedText.size(),
                             fontIter, bidiIter,*scriptIter, langIter,
                             adjustedFeatures.data(), adjustedFeatures.size(),
                             limitlessWidth, this);
