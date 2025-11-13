@@ -22,6 +22,30 @@
       },
       "revId": "945a5d6c77306c3af6c0a81f1175421f333ca7c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "070222b3_64ac35ae",
+        "filename": "modules/skparagraph/src/Iterators.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-13T21:57:13Z",
+      "side": 1,
+      "message": "doh! -- I finally wrote a good grep expression ... and then only ran it on my .cpp files.\n\nthanks.",
+      "parentUuid": "77e08627_8d900d22",
+      "range": {
+        "startLine": 45,
+        "startChar": 57,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "945a5d6c77306c3af6c0a81f1175421f333ca7c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
