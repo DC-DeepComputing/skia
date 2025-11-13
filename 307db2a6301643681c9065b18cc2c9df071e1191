@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a914901d_0c3d7d6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-13T15:51:16Z",
+      "side": 1,
+      "message": "How can we have call-sites that cons-up a span of 1 scalar element in both versions of \"span\"?",
+      "revId": "307db2a6301643681c9065b18cc2c9df071e1191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
