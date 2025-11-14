@@ -104,6 +104,24 @@
       "parentUuid": "13036e4e_6a1a7419",
       "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e528b39e_abc6e6b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-11-14T17:46:55Z",
+      "side": 1,
+      "message": "Ah, yes!!!\n\nSkPath, SkPathBuilder, SkPath:Factories, SkPathData::Factories, all of these have their own notions of fixing (or not) inverted bounds (so does SkCanvas::drawRect btw).\n\nI propose we try a tiny CL in flutter itself, where they wrap MakeOval, MakeRRect, etc. to have flutter do whatever fix-up they want. That way they hare future-proofed against present/future Skia\u0027s (semi) undefined behavior.",
+      "parentUuid": "e70cf466_9c460a3e",
+      "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
