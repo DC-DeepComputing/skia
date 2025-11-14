@@ -68,6 +68,24 @@
       "parentUuid": "d82a8fa7_4035a066",
       "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13036e4e_6a1a7419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-14T16:56:30Z",
+      "side": 1,
+      "message": "G3 looks ok. The Flutter issues look like rectangular paths that start at the bottom right (or otherwise \"unsorted\") may be considered to be empty.",
+      "parentUuid": "d82a8fa7_4035a066",
+      "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
