@@ -1133,7 +1133,7 @@ float4 coverage_mask_vertex_fn(float2 quadCoords,
                                float4 maskBoundsIn,
                                float2 deviceOrigin,
                                float depth,
-                               float3x3 deviceToLocal,
+                               float3x3 localToDevice,
                                // Varyings
                                out float4 maskBounds,
                                out float2 textureCoords,
@@ -1150,7 +1150,7 @@ float4 coverage_mask_vertex_fn(float2 quadCoords,
 
     // Local coordinates used for shading are derived from the final device coords and the inverse
     // of the original local-to-device matrix.
-    float3 localCoords = deviceToLocal * drawCoords;
+    float3 localCoords = inverse(localToDevice) * drawCoords;
     // TODO: Support float3 local coordinates if the matrix has perspective so that W is
     // interpolated correctly to the fragment shader.
     stepLocalCoords = localCoords.xy / localCoords.z;

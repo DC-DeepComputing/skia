@@ -35,7 +35,7 @@ PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t reque
 
 PathAtlas::~PathAtlas() = default;
 
-std::pair<PathAtlas::AddResult, PathAtlas::MaskAndOrigin> PathAtlas::addShape(
+std::pair<PathAtlas::AddResult, CoverageMaskShape> PathAtlas::addShape(
         const Rect& clippedShapeBounds,
         const Shape& shape,
         const Transform& localToDevice,
@@ -71,13 +71,14 @@ std::pair<PathAtlas::AddResult, PathAtlas::MaskAndOrigin> PathAtlas::addShape(
                                                  &maskInfo.fTextureOrigin);
     if (!atlasProxy) {
         SkASSERT(result != AddResult::kSuccess);
-        return {result, {CoverageMaskShape(), SkIPoint()}}; // empty MaskAndOrigin will be ignored
+        return {result, CoverageMaskShape()}; // empty CoverageMaskShape will be ignored
     }
 
     return {AddResult::kSuccess,
-            std::make_pair(CoverageMaskShape(shape, std::move(atlasProxy), localToDevice.inverse(),
-                                             maskInfo),
-                           SkIPoint{(int) maskBounds.left(), (int) maskBounds.top()})};
+            CoverageMaskShape(shape,
+                              std::move(atlasProxy),
+                              SkM44::Translate(maskBounds.left(), maskBounds.top()),
+                              maskInfo)};
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

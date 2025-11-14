@@ -55,10 +55,10 @@ public:
     CoverageMaskShape() = default;
     CoverageMaskShape(const Shape& shape,
                       sk_sp<TextureProxy> proxy,
-                      const SkM44& deviceToLocal,
+                      const SkM44& maskToDevice,
                       const MaskInfo& maskInfo)
             : fTextureProxy(std::move(proxy))
-            , fDeviceToLocal(deviceToLocal)
+            , fMaskToDevice(maskToDevice)
             , fInverted(shape.inverted())
             , fMaskInfo(maskInfo) {
         SkASSERT(fTextureProxy);
@@ -78,8 +78,9 @@ public:
         return Rect(0.f, 0.f, (float) this->maskSize().x(), (float) this->maskSize().y());
     }
 
-    // The inverse local-to-device matrix.
-    const SkM44& deviceToLocal() const { return fDeviceToLocal; }
+    // The transform from the mask's texture coordinate space to device coordinates, which may be
+    // different from the local-to-device transform used for shading coordinates.
+    const SkM44& maskToDevice() const { return fMaskToDevice; }
 
     // The texture-relative integer UV coordinates of the top-left corner of this shape's
     // coverage mask bounds.
@@ -98,7 +99,7 @@ private:
     // We store a ref to the texture proxy to keep it alive.
     // TODO: switch to raw pointer once textures/uniforms are extracted in Device::drawGeometry.
     sk_sp<TextureProxy> fTextureProxy;
-    SkM44 fDeviceToLocal;
+    SkM44 fMaskToDevice;
     bool fInverted;
     MaskInfo fMaskInfo;
 };

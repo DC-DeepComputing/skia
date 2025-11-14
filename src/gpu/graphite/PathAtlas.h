@@ -47,8 +47,6 @@ public:
     PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t requestedHeight);
     virtual ~PathAtlas();
 
-    using MaskAndOrigin = std::pair<CoverageMaskShape, SkIPoint>;
-
     enum class AddResult : uint8_t {
         kSuccess, // The shape was added and the provided MaskAndOrigin are valid.
         kOutOfRoom, // The shape could be added if the Recorder were flushed to reuse space.
@@ -85,7 +83,7 @@ public:
      * The stroke-and-fill style is drawn as a single combined coverage mask containing the stroke
      * and the fill.
      */
-    std::pair<AddResult, MaskAndOrigin> addShape(
+    std::pair<AddResult, CoverageMaskShape> addShape(
             const Rect& clippedShapeBounds,
             const Shape& shape,
             const Transform& localToDevice,
