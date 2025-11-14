@@ -69,6 +69,41 @@
       "parentUuid": "ae5d82df_4ad05924",
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f15908a_af62e5fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T15:05:44Z",
+      "side": 1,
+      "message": "Adding Thomas for another +1 since Greg is OoO",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b85e4b_0869d09c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T15:05:44Z",
+      "side": 1,
+      "message": "This will have to be approved on the actual Skia-\u003eChrome roll since the approvals are tied to the specific gerrit CL unfortunately. But I will watch the roll and do it then.",
+      "parentUuid": "c65e0327_9601733c",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
