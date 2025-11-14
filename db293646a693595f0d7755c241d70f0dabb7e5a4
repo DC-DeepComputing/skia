@@ -86,6 +86,24 @@
       "parentUuid": "d82a8fa7_4035a066",
       "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e70cf466_9c460a3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-14T16:59:43Z",
+      "side": 1,
+      "message": "One of the Flutter failing tests is [DrawUnorderedRectangularPath](https://github.com/flutter/flutter/blob/1f69497f4fb6f140bd63f96689f5eea0a98acabb/engine/src/flutter/display_list/display_list_unittests.cc#L3422) with output like\n\n```\n../../../flutter/display_list/display_list_unittests.cc:151: Failure\nExpected equality of these values:\n  dl-\u003eop_count()\n    Which is: 0\n  1u\n    Which is: 1\nDrawRectangularPath LR swapped\n\n../../../flutter/display_list/display_list_unittests.cc:152: Failure\nExpected equality of these values:\n  dl-\u003eGetBounds()\n    Which is: ((0, 0) \u003d\u003e (0, 0))\n  expected_bounds\n    Which is: ((0, 0) \u003d\u003e (10, 10))\nDrawRectangularPath LR swapped\n\n../../../flutter/display_list/display_list_unittests.cc:151: Failure\nExpected equality of these values:\n  dl-\u003eop_count()\n    Which is: 0\n  1u\n    Which is: 1\nDrawRectangularPath TB swapped\n\n../../../flutter/display_list/display_list_unittests.cc:152: Failure\nExpected equality of these values:\n  dl-\u003eGetBounds()\n    Which is: ((0, 0) \u003d\u003e (0, 0))\n  expected_bounds\n    Which is: ((0, 0) \u003d\u003e (10, 10))\nDrawRectangularPath TB swapped\n\n../../../flutter/display_list/display_list_unittests.cc:151: Failure\nExpected equality of these values:\n  dl-\u003eop_count()\n    Which is: 0\n  1u\n    Which is: 1\nDrawRectangularPath LR\u0026TB swapped\n```",
+      "parentUuid": "13036e4e_6a1a7419",
+      "revId": "db293646a693595f0d7755c241d70f0dabb7e5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
