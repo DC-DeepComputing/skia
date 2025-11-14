@@ -5,6 +5,7 @@
 
 import("gn/codec.gni")
 import("gn/pathops.gni")
+import("gn/rust.gni")
 import("gn/shared_sources.gni")
 import("gn/skia.gni")
 import("gn/toolchain/wasm.gni")
@@ -1520,6 +1521,14 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   }
 }
 
+# Shared Rust FFI utilities for codecs
+optional("rust_common") {
+  enabled = skia_use_rust_png_decode || skia_use_rust_png_encode
+  public = skia_rust_common_ffi_cpp_hdrs
+  sources = skia_rust_common_ffi_cpp_srcs
+  deps = [ ":rust_png_cxx_bridge" ]
+}
+
 optional("png_decode_rust") {
   public_defines = [ "SK_CODEC_DECODES_PNG_WITH_RUST" ]
   enabled = skia_use_rust_png_decode
@@ -1529,6 +1538,7 @@ optional("png_decode_rust") {
 
   deps = [
     ":png_decode_common",
+    ":rust_common",
     ":rust_png_cxx_bridge",
     ":rust_png_cxx_core_bazel_build",
   ]
@@ -1546,6 +1556,7 @@ optional("png_encode_rust") {
   sources_for_tests = [ "tests/SkPngRustEncoderTest.cpp" ]
   deps = [
     ":png_encode_common",
+    ":rust_common",
     ":rust_png_cxx_bridge",
     ":rust_png_cxx_core_bazel_build",
   ]
