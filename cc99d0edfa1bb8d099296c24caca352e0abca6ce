@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0433b993_f707cd29",
+        "filename": "infra/bots/recipe_modules/flavor/examples/full.expected/Test-Android-Clang-Nexus5x-GPU-Adreno418-arm64-Release-All-Android_ASAN.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-14T18:17:49Z",
+      "side": 0,
+      "message": "We have this job, but no Nexus5x. Also there are no other Android ASAN jobs, only HWASAN jobs.",
+      "revId": "cc99d0edfa1bb8d099296c24caca352e0abca6ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
