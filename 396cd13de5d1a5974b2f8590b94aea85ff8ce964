@@ -108,6 +108,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24fb5b12_0b822daa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T20:27:41Z",
+      "side": 1,
+      "message": "Also, I don\u0027t think I\u0027m allowed to copy and paste the direct test results from the chrome roll, but the chrome roll is failing on mac release and android release.\n\nThe mac one is possibly a flake on the intel HD 630. (That gpu is known to have issues).\n\nThe android one is reporting an issue in a video sizing test where the top left pixel in the viewport is the wrong color.",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "72db7402_38969464",
         "filename": "src/gpu/AtlasTypes.h",
         "patchSetId": 7
