@@ -5,12 +5,15 @@
  * found in the LICENSE file.
  */
 
+#include <cstdint>
+#include <tuple>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkShader.h"
@@ -1383,7 +1386,7 @@ public:
     SkString fName;
 
     PathBuildBench(const char name[], Builder* builder) : fBuilder(builder) {
-        fName.printf("path_buider_%s", name);
+        fName.printf("path_builder_%s", name);
     }
 
 protected:
@@ -1476,3 +1479,72 @@ DEF_BENCH( return new PathIsRectBench("complex_norect", SkPathBuilder()
                                                     .conicTo(10, 20, 20, 20, .7f)
                                                     .close()
                                                     .detach()); )
+template <typename Builder>
+class PathIncBuildBench : public Benchmark {
+public:
+    PathIncBuildBench(const char name[], size_t verbs_count)
+        : fName(SkStringPrintf("path_incbuilder_%s_%zu", name, verbs_count))
+        , fVerbsCount(verbs_count)
+    {}
+
+protected:
+    const char* onGetName() override {
+        return fName.c_str();
+    }
+
+    void onDraw(int loops, SkCanvas*) override {
+        for (int i = 0; i < loops; ++i) {
+            Builder path;
+            SkRandom rand;
+            for (size_t j = 0; j < fVerbsCount; ++j) this->addRandomVerb(rand, path);
+            std::ignore = path.detach();
+        }
+    }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering;
+    }
+
+private:
+    static void addRandomVerb(SkRandom& rand, Builder& b) {
+        switch(rand.nextULessThan((uint32_t)SkPathVerb::kLast_Verb + 1)) {
+            case (uint32_t)SkPathVerb::kMove:
+                b.moveTo(rand.nextF(), rand.nextF());
+                break;
+            case (uint32_t)SkPathVerb::kLine:
+                b.lineTo(rand.nextF(), rand.nextF());
+                break;
+            case (uint32_t)SkPathVerb::kQuad:
+                b.quadTo(rand.nextF(), rand.nextF(),
+                         rand.nextF(), rand.nextF());
+                break;
+            case (uint32_t)SkPathVerb::kCubic:
+                b.cubicTo(rand.nextF(), rand.nextF(),
+                          rand.nextF(), rand.nextF(),
+                          rand.nextF(), rand.nextF());
+                break;
+            case (uint32_t)SkPathVerb::kConic:
+                b.conicTo(rand.nextF(), rand.nextF(),
+                          rand.nextF(), rand.nextF(),
+                          rand.nextF());
+                break;
+            case (uint32_t)SkPathVerb::kClose:
+                b.close();
+                break;
+        }
+    }
+
+    const SkString fName;
+    const size_t   fVerbsCount;
+};
+
+#ifndef SK_HIDE_PATH_EDIT_METHODS
+DEF_BENCH( return new PathIncBuildBench<SkPath>("path", 10);)
+DEF_BENCH( return new PathIncBuildBench<SkPath>("path", 100);)
+DEF_BENCH( return new PathIncBuildBench<SkPath>("path", 1000);)
+DEF_BENCH( return new PathIncBuildBench<SkPath>("path", 10000);)
+#endif
+DEF_BENCH( return new PathIncBuildBench<SkPathBuilder>("pathbuilder", 10);)
+DEF_BENCH( return new PathIncBuildBench<SkPathBuilder>("pathbuilder", 100);)
+DEF_BENCH( return new PathIncBuildBench<SkPathBuilder>("pathbuilder", 1000);)
+DEF_BENCH( return new PathIncBuildBench<SkPathBuilder>("pathbuilder", 10000);)
