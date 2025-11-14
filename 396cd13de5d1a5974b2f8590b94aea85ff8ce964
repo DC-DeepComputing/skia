@@ -123,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3fc8711_eba4a9b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-11-14T20:47:14Z",
+      "side": 1,
+      "message": "Thanks! I saw those on the latest run but not in an earlier run several days ago (with same changes but before some layout test suppression). So I\u0027m pretty confident they\u0027re unrelated.",
+      "parentUuid": "24fb5b12_0b822daa",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72db7402_38969464",
@@ -160,6 +178,30 @@
           ]
         }
       ],
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8ead0c5_f81a4a0e",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-11-14T20:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72db7402_38969464",
+      "range": {
+        "startLine": 389,
+        "startChar": 50,
+        "endLine": 389,
+        "endChar": 61
+      },
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -205,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79222f1f_12e9a5ce",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-11-14T20:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dfa6c2a_54fa32ec",
+      "range": {
+        "startLine": 127,
+        "startChar": 50,
+        "endLine": 127,
+        "endChar": 61
+      },
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78faf468_d91839f8",
@@ -242,6 +308,30 @@
           ]
         }
       ],
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "255084c9_23ac59f2",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-11-14T20:47:14Z",
+      "side": 1,
+      "message": "Nice catch. Yes there is a bug I think your change does the same thing, right? I think the real fix is to use a padded size and leave \"size\" alone.",
+      "parentUuid": "78faf468_d91839f8",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 99
+      },
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
