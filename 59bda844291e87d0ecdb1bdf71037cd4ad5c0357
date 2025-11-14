@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68ecb62_1aa8c4fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Ran into some issues with the UniformManager simplification.",
+      "revId": "59bda844291e87d0ecdb1bdf71037cd4ad5c0357",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

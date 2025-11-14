@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80264727_8940a5c5",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "I don\u0027t think this works unless you plumb `performsShading` into `markAndAlign` too. If your first step is shading, then you\u0027ll record the paint\u0027s alignment as 1/0, which will mess up validation downstream.",
+      "parentUuid": "a41ba35e_a94769de",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 388,
+        "endChar": 5
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e949ab52_0346f84d",
         "filename": "src/gpu/graphite/PipelineData.h",
         "patchSetId": 34
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "nit: `endRenderStepData` probably should be generalized to `endCombinedData` since in most cases it is now the combined uniforms.",
+      "range": {
+        "startLine": 391,
+        "startChar": 50,
+        "endLine": 391,
+        "endChar": 67
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc447d0f_9fbf8185",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e949ab52_0346f84d",
       "range": {
         "startLine": 391,
         "startChar": 50,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a2cbfe8_8ca9a23b",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "This causes issues as well because `rewindForRenderStep` is resizing `fTextures` with the express purpose of truncating away any textures added during the step.\n\nBecause `endCombinedData` is getting a span of the data and not copying it out, we can\u0027t rewind until after the data is added into the TextureDataCache.",
+      "parentUuid": "de31eff4_21a28034",
+      "range": {
+        "startLine": 391,
+        "startChar": 3,
+        "endLine": 406,
+        "endChar": 5
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd0c9e71_55cfdec6",
         "filename": "src/gpu/graphite/Renderer.cpp",
         "patchSetId": 34
@@ -83,6 +155,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "We should probably just have UniformOffsetCalculator start out with a required alignment of 1 to handle this case automatically.",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 47,
+        "endChar": 67
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7f720ee_bec1f87c",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "UniformOffsetCalculator already started at an alignment of 1. Oops.",
+      "parentUuid": "cd0c9e71_55cfdec6",
       "range": {
         "startLine": 46,
         "startChar": 24,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cc81fc6_418ba28b",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Good catch, I marked \u0027done\u0027 on the comments, but this and above got blasted by a stash restore.",
+      "parentUuid": "700e48f5_4c96fbfd",
+      "range": {
+        "startLine": 850,
+        "startChar": 0,
+        "endLine": 861,
+        "endChar": 35
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22fb9458_b154fcad",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "nit: comment is out of date",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 91
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf7bfaf_6b6b8a8b",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22fb9458_b154fcad",
       "range": {
         "startLine": 103,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb2f00c3_d1e4f1f2",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18ef6ff1_b569076a",
+      "range": {
+        "startLine": 125,
+        "startChar": 43,
+        "endLine": 125,
+        "endChar": 49
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8c8bbf3_0b39f3e5",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fd51a12_551bea0b",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8c8bbf3_0b39f3e5",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 44
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa7965c9_ea7f6cc1",
@@ -198,6 +390,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "per offline discussion, we can combine this behavior and the markEndPaint logic so that DrawList only calls this function (transititively through PipelineDataGatherer) at the start of its loop over the render steps.\n\nI would update it to be called something like `markOffsetAndAlign(requiredAlignment)`.  It always sets `fEndPaintOffset|Alignment` but then if `requiredAlignment \u003e 1` also calls alignTo.",
+      "range": {
+        "startLine": 224,
+        "startChar": 9,
+        "endLine": 224,
+        "endChar": 27
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4769f18c_78e04a79",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa7965c9_ea7f6cc1",
       "range": {
         "startLine": 224,
         "startChar": 9,
@@ -233,6 +449,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f548f843_c25b8548",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "nit: `finishMarked`?",
+      "parentUuid": "774e797f_0702450d",
+      "range": {
+        "startLine": 251,
+        "startChar": 23,
+        "endLine": 251,
+        "endChar": 39
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63dd5354_550a98e4",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 34
@@ -244,6 +484,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "per offline discussion, let\u0027s fold this into `alignForNonShading`",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 5
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b59e5773_fbf96934",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T21:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63dd5354_550a98e4",
       "range": {
         "startLine": 255,
         "startChar": 0,
