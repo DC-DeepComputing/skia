@@ -612,6 +612,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96094374_efa210e5",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T14:12:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "de6d34ca_5084e50e",
+      "range": {
+        "startLine": 898,
+        "startChar": 37,
+        "endLine": 898,
+        "endChar": 62
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3416a4d3_9f29b1e8",
@@ -837,6 +861,30 @@
       "side": 1,
       "message": "Not exactly your change, but I\u0027ve simplified the spaghetti logic:\n\nIf `useUniformStorageBufferVS`, then `hasLiftedPaintUniforms` || `hasStepUniforms`. So in either case, we want at least the attribute. \n\nIf `hasStepUniforms`, then we emit uniforms from storage buffer.\n\nWhen it is time to assign the varying, we can simply check `useUniformStorageBufferVS`, to see if we can use the local variable or not.",
       "parentUuid": "efdc1baa_d8c09547",
+      "range": {
+        "startLine": 1364,
+        "startChar": 0,
+        "endLine": 1365,
+        "endChar": 71
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70882004_9ebc9b81",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T14:12:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "496bd50a_ed762343",
       "range": {
         "startLine": 1364,
         "startChar": 0,
@@ -1272,6 +1320,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82b9bffb_0a548ad5",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T14:12:46Z",
+      "side": 1,
+      "message": "From our meeting, I believe we concluded that that isn\u0027t the case, right? \n\nIf the new `markAndAlign` saves both the ending offset and the aligned starting offset, the post-marked data will come from the aligned starting offset and all rewinding will go back to the ending offset/alignment that was the pre-collected paint data.",
+      "parentUuid": "fe77cf7b_c80a0969",
+      "range": {
+        "startLine": 264,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 29
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82e8a8f2_1baac416",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 19
@@ -1307,6 +1379,30 @@
       "side": 1,
       "message": "The UniformManager needs `fNonShadingOffset` for the validator. If we did lift the offset into PipelineDataGatherer, this would necessitate saving a copy inside UniformManager during `alignForNonShading.`",
       "parentUuid": "82e8a8f2_1baac416",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 30
+      },
+      "revId": "f3007bc4b934309cfe9309563a8ca3720fee8b88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5629262_fa312bdc",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-14T14:12:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2a32a214_bb0039da",
       "range": {
         "startLine": 448,
         "startChar": 0,
