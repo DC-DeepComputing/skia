@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67db5478_29c32f0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-14T18:47:36Z",
+      "side": 1,
+      "message": "This found at least one incorrect use of [SkAutoCanvasRestore](https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/libs/hwui/RecordingCanvas.cpp;l\u003d696;drc\u003d572d801cca5d1b0289fe3d0038c875ebc8457352). Will go try and get that fixed first.",
+      "revId": "c1d3a9056ac42e5fb5819ae6befe0853a3c47d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
