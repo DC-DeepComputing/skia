@@ -104,6 +104,129 @@
       "parentUuid": "c65e0327_9601733c",
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72db7402_38969464",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T20:03:34Z",
+      "side": 1,
+      "message": "nit typo: initialColor",
+      "range": {
+        "startLine": 389,
+        "startChar": 50,
+        "endLine": 389,
+        "endChar": 61
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8a3e6a6c_b83017bf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/AtlasTypes.h",
+              "range": {
+                "startLine": 389,
+                "startChar": 0,
+                "endLine": 390,
+                "endChar": 0
+              },
+              "replacement": "                           std::optional\u003cSkColor\u003e initialColor \u003d {});\n"
+            }
+          ]
+        }
+      ],
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dfa6c2a_54fa32ec",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T20:03:34Z",
+      "side": 1,
+      "message": "nit typo: initialColor",
+      "range": {
+        "startLine": 127,
+        "startChar": 50,
+        "endLine": 127,
+        "endChar": 61
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ed4b885e_764b56f4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawAtlas.h",
+              "range": {
+                "startLine": 127,
+                "startChar": 0,
+                "endLine": 128,
+                "endChar": 0
+              },
+              "replacement": "                           std::optional\u003cSkColor\u003e initialColor \u003d {});\n"
+            }
+          ]
+        }
+      ],
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78faf468_d91839f8",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-14T20:03:34Z",
+      "side": 1,
+      "message": "If I\u0027m understand this allocation function correctly, the goal is to return an innerPM of exactly size, with allocated padding. If that is correct then I think there is a bug here:\n\nBy passing the post-padding size to `SkIRect::MakePtSize({padding, padding}, size)))` you get a rect of `size + padding * 3`.\n\nThen, inside `extractSubset` you set srcRect with the `size + padding * 2`. This results in an intersection of `{0,0, size + padding * 2, size + padding * 2} with  {padding, padding, size + padding * 3, size + padding * 3}`\n\nThis results in an innerPM with size of `size + padding` instead of `size.`",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 99
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b9a3632f_1d56fd70",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/RasterPathUtils.cpp",
+              "range": {
+                "startLine": 34,
+                "startChar": 0,
+                "endLine": 35,
+                "endChar": 0
+              },
+              "replacement": "    SkAssertResult(outerPM.extractSubset(\u0026innerPM,\n                                         SkIRect::MakeXYWH(padding, padding,\n                                                           size.fWidth, size.fHeight)));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
