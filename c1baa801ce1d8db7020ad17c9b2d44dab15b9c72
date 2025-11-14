@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9ac386_eb942aba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "Thanks!  The C/C++/Rust code LGTM (with minor nits below), but I think additional `BUILD.gn` changes may be required (and once those are done I can kick off a CQ dry run to double-check).",
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "790c2161_68fec1d2",
+        "filename": "BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "After this CL, the existing dependency edge from `//rust/png:ffi_rs` to `//rust/common:skia_rust_common` (and the new edge to `//rust/common:cxx_bridge`) becomes actually used/needed by `rust/png/FFI.rs`.  So, we probably need to tweak a few things here to make sure that the artifacts/results of the Bazel build are propagated into Skia\u0027s GN/ninja build.\n\nI think that for simplicity it\u0027s okay to cover *both* `//rust/png` and `//rust/common` inside the same targets (keeping the target names for now).\n\n------------------------------\n\nLet me try to share a broader context - I hope this helps.\n\nI understand that having to support multiple build environments leads to quite a few complications.  I wish that we could go back in time and just use Bazel for Chromium and Skia (IIUC Bazel wasn\u0027t ready for OSS back when Chromium was deciding whether to invest in GN/ninja).  But we\u0027re here, and this is what we have to deal with :-/.\n\nOn Skia-side, the goals are:\n\n1. Ensure that Bazel build works fine.  It seems that this may already work after this CL, but I am mentioning this here for completeness.   (Can also build `//tools:full_build` target for more coverage/assurance; both the narrow and broader build targets will transitively cover `//rust/png` and [after this CL] `//rust/common`).  \n\n    ```\n    $ cd third_party/skia/\n    $ bazelisk build //:png_decode_rust //:png_encode_rust\n    ```\n\n2. Ensure that GN/ninja build works fine.  I think that this part may be broken (because there are no changes between new lines 1447-1522.  GN/ninja build in Skia (unlike in Chromium) doesn\u0027t support Rust - for building Rust it delegates to Bazel (as described in this comment).  I wrote this piece of `BUILD.gn` but the precedence for this approach is Fontations (which has a similar piece elsewhere in this `BUILD.gn`).\n\n    ```\n    $ #optional?: python3 tools/git-sync-deps\n    $ cat out/args.gn\n    # A bit random / just what I happen to use on my machine at the moment.\n    cc \u003d \"clang\"\n    cxx \u003d \"clang++\"\n    \n    skia_build_fuzzers \u003d true\n    \n    skia_use_fontations \u003d false\n    skia_use_rust_png_decode \u003d true\n    skia_use_rust_png_encode \u003d true\n    skia_use_libpng_decode \u003d false\n    skia_use_libpng_encode \u003d true\n    \n    $ autoninja -C out dm # build tests that (among other things) cover Rust PNG decoding/encoding\n    ```\n    \n3. Make sure that Chromium build works fine when combined with the Skia CL.  I think you have already verified this, so only mentioning this for completeness.",
+      "range": {
+        "startLine": 1443,
+        "startChar": 0,
+        "endLine": 1446,
+        "endChar": 43
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10b3bf1_cc289441",
+        "filename": "BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this dependency edge is here.  IIUC `rust/common/SkStreamAdapter.cpp` does *not* use anything from Rust side.  Can this be removed?  Or will things break after removing new line 1529?",
+      "range": {
+        "startLine": 1529,
+        "startChar": 0,
+        "endLine": 1529,
+        "endChar": 35
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58361eaa_be33f911",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "Is `exports_files` required here?  Can this be removed?\n\nIIUC the CL doesn\u0027t add references to these files from `rust/png/BUILD.bazel` (but maybe I missed/misunderstood something).\n\nAnd I _feel_ (not sure though) that it may be preferable to add an explicit `deps` edge instead of reusing source files.  (Which I think you are already doing in `rust/png/BUILD.bazel` by adding `//rust/common:ffi_utils` to `deps` of `//rust/png:cxx_bridge`",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 1
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2dedfd_ce492235",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "nit: Would it be possible to avoid duplication by referring back to the file groups?  IIRC (and double-checking at https://bazel.build/reference/be/general#filegroup) the following syntax should work:\n\n```suggestion\n    srcs \u003d [\":ffi_cpp\"],\n    hdrs \u003d [\":ffi_hdrs\"],\n```",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 6
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e1809f_0d29b5fd",
+        "filename": "rust/common/SkStreamAdapter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "nitty nit, sorry: I think that we\u0027ll have to keep using `requestedOffset` spelling to match https://skia.org/docs/dev/contrib/style/#naming.  It\u0027s a bummer that Skia uses https://skia.org/docs/dev/contrib/style/#naming and Chromium/Google use https://google.github.io/styleguide/cppguide.html#Variable_Names... :-(\n\n(this comment probably applies to other variables/names in this file)",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 24
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66957c58_4a5a10a9",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "nit: This can be non-`virtual` IIUC, because no derived classes are present, right?  (To make this CL self-contained / standing on its own.  I understand that when following-up on the TODO below we would have to make the destructor virtual again - this is okay.)",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 11
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b4e0289_d64a3e6f",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-14T18:56:00Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 43,
+        "startChar": 74,
+        "endLine": 43,
+        "endChar": 75
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
