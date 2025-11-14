@@ -51,6 +51,24 @@
       "message": "It does look like the canary failures will require rebaselining.  There is 1 gold test that can be done during the roll, but there are 2 layout tests that get modified. \n\nSince it\u0027s only two, we could suppress them and land this, unless it\u0027s easy to restore the old positioning behind a flag...",
       "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c65e0327_9601733c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-11-14T14:52:58Z",
+      "side": 1,
+      "message": "Could you approve \"Pixel_GpuRasterization_ConcavePaths\"? I don\u0027t have permission. I\u0027m relaunching the Chrome Canary now that the layout suppressions have landed.",
+      "parentUuid": "ae5d82df_4ad05924",
+      "revId": "396cd13de5d1a5974b2f8590b94aea85ff8ce964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
