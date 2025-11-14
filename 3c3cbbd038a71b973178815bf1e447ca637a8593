@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a61bb31_79bfd527",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-14T20:08:09Z",
+      "side": 1,
+      "message": "Ok, I think this is ready (modulo the fuzzers, which will need to be landed).\n\nI\u0027ve kept the `Agtm` class as private. Once I have the shader landed (the last part!), then I\u0027ll rename and add the `sk_sp` private interface.\n\nAlso, I moved everything to a separate file.",
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

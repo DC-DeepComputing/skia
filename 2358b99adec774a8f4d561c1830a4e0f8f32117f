@@ -39,6 +39,30 @@
       },
       "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f4e75c_5ea3935c",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-14T20:08:09Z",
+      "side": 1,
+      "message": "Yes. At this point I plan to rename this to AgtmImpl, and then create a public interface as:\n\n```\nclass Agtm {\n  public:\n    static sk_sp\u003cAgtm\u003e Make(const SkData* data);\n    static sk_sp\u003cAgtm\u003e MakeReferenceWhite(float hdrReferenceWhite,\n                                          float baselineHdrHeadroom);\n\n    virtual sk_sp\u003cSkColorFilter\u003e makeColorFilter(float targetedHdrHeadroom) \u003d 0;\n    virtual sk_sp\u003cSkData\u003e serialize() const \u003d 0;\n}\n```\n\nThat\u0027s the extent of the public interface that I\u0027ll want for now. It may get built out a bit, but I think I\u0027ll want to keep the details private.\n\n(And so the `parse` call won\u0027t be public -- it\u0027ll be called by `Make`)",
+      "parentUuid": "aa05f60a_8937c25f",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
