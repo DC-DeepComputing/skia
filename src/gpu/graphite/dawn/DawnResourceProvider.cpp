@@ -53,7 +53,7 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
                                                  const char* fsEntryPoint,
                                                  wgpu::TextureFormat renderPassColorFormat,
                                                  wgpu::TextureFormat renderPassDepthStencilFormat,
-                                                 int numSamples) {
+                                                 SampleCount sampleCount) {
     wgpu::RenderPipelineDescriptor descriptor;
     descriptor.label = label;
     descriptor.layout = nullptr;
@@ -93,7 +93,7 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
     descriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleStrip;
     descriptor.primitive.stripIndexFormat = wgpu::IndexFormat::Undefined;
 
-    descriptor.multisample.count = numSamples;
+    descriptor.multisample.count = (uint8_t) sampleCount;
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
@@ -421,12 +421,12 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
 DawnResourceProvider::~DawnResourceProvider() = default;
 
 DawnResourceProvider::BlitWithDrawEncoder DawnResourceProvider::findOrCreateBlitWithDrawEncoder(
-        const RenderPassDesc& renderPassDesc, int srcSampleCount) {
+        const RenderPassDesc& renderPassDesc, SampleCount srcSampleCount) {
     // Currently Dawn only supports one sample count > 1. So we can optimize the pipeline key by
     // specifying whether the source has MSAA or not.
-    SkASSERT(srcSampleCount <= 1 ||
+    SkASSERT(srcSampleCount == SampleCount::k1 ||
              srcSampleCount == this->dawnSharedContext()->dawnCaps()->defaultMSAASamplesCount());
-    const bool srcIsMSAA = srcSampleCount > 1;
+    const bool srcIsMSAA = srcSampleCount > SampleCount::k1;
     const uint32_t pipelineKey = this->dawnSharedContext()->dawnCaps()->getRenderPassDescKeyForPipeline(
             renderPassDesc, srcIsMSAA);
     wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[pipelineKey];
@@ -498,7 +498,7 @@ DawnResourceProvider::BlitWithDrawEncoder DawnResourceProvider::findOrCreateBlit
                 TextureFormatToDawnFormat(renderPassDesc.fColorAttachment.fFormat),
                 /*renderPassDepthStencilFormat=*/
                 TextureFormatToDawnFormat(renderPassDesc.fDepthStencilAttachment.fFormat),
-                /*numSamples=*/renderPassDesc.fColorAttachment.fSampleCount);
+                renderPassDesc.fColorAttachment.fSampleCount);
 
         if (pipeline) {
             fBlitWithDrawPipelines.set(pipelineKey, pipeline);

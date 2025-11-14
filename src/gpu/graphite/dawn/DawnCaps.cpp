@@ -171,7 +171,7 @@ bool DawnCaps::isRenderable(const TextureInfo& info) const {
     TextureFormat format = TextureInfoPriv::ViewFormat(info);
     const auto& dawnInfo = TextureInfoPriv::Get<DawnTextureInfo>(info);
     return (dawnInfo.fUsage & wgpu::TextureUsage::RenderAttachment) &&
-           this->isSampleCountSupported(format, info.numSamples());
+           this->isSampleCountSupported(format, info.sampleCount());
 }
 
 bool DawnCaps::isStorage(const TextureInfo& info) const {
@@ -183,19 +183,21 @@ bool DawnCaps::isStorage(const TextureInfo& info) const {
         return false;
     }
     const FormatInfo& formatInfo = this->getFormatInfo(dawnInfo.getViewFormat());
-    return dawnInfo.fSampleCount == 1 && SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
+    return info.sampleCount() == SampleCount::k1 &&
+           SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
-bool DawnCaps::isSampleCountSupported(TextureFormat format, uint8_t requestedSampleCount) const {
+bool DawnCaps::isSampleCountSupported(TextureFormat format,
+                                      SampleCount requestedSampleCount) const {
     const FormatInfo& formatInfo = this->getFormatInfo(TextureFormatToDawnFormat(format));
     if (!SkToBool(formatInfo.fFlags & FormatInfo::kRenderable_Flag)) {
         return 0;
     }
     if (SkToBool(formatInfo.fFlags & FormatInfo::kMSAA_Flag)) {
         // WebGPU only supports a sample count of 1 or 4.
-        return requestedSampleCount == 1 || requestedSampleCount == 4;
+        return requestedSampleCount == SampleCount::k1 || requestedSampleCount == SampleCount::k4;
     } else {
-        return requestedSampleCount == 1;
+        return requestedSampleCount == SampleCount::k1;
     }
 }
 
@@ -222,7 +224,7 @@ TextureInfo DawnCaps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
     }
 
     DawnTextureInfo info;
-    info.fSampleCount = desc.fSampleCount;
+    info.fSampleCount = (uint8_t) desc.fSampleCount;
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = TextureFormatToDawnFormat(desc.fFormat);
     info.fUsage       = wgpu::TextureUsage::RenderAttachment;
@@ -1098,13 +1100,13 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     const uint32_t rpDescBits = rawKeyData[2];
     TextureFormat colorFormat =
             static_cast<TextureFormat>((rpDescBits >> kColorFormatOffset) & kFormatMask);
-    uint8_t colorSamples =
-            SkTo<uint8_t>(1 << ((rpDescBits >> kColorNumSamplesOffset) & kNumSamplesMask));
+    SampleCount colorSamples =
+            KeyToSamples((rpDescBits >> kColorNumSamplesOffset) & kNumSamplesMask);
 
     TextureFormat depthStencilFormat =
             static_cast<TextureFormat>((rpDescBits >> kDepthStencilFormatOffset) & kFormatMask);
-    uint8_t depthStencilSamples =
-            SkTo<uint8_t>(1 << ((rpDescBits >> kDepthStencilNumSamplesOffset) & kNumSamplesMask));
+    SampleCount depthStencilSamples =
+            KeyToSamples((rpDescBits >> kDepthStencilNumSamplesOffset) & kNumSamplesMask);
 
     const bool loadFromResolve = (rpDescBits & kResolveMask) != 0;
     // This bit should only be set if Dawn supports ExpandResolveTexture load op
@@ -1123,11 +1125,11 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                                LoadOp::kClear,
                                                StoreOp::kDiscard,
                                                depthStencilSamples};
-    if (colorSamples > 1) {
+    if (colorSamples > SampleCount::k1) {
         renderPassDesc->fColorResolveAttachment = {colorFormat,
                                                    loadFromResolve ? LoadOp::kLoad : LoadOp::kClear,
                                                    StoreOp::kStore,
-                                                   /*fSampleCount=*/1};
+                                                   SampleCount::k1};
         renderPassDesc->fColorAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
@@ -1263,7 +1265,7 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     // we could go further if we said textures were likely to be under 65kx65kf...
     uint32_t formatKey = static_cast<uint32_t>(dawnInfo.getViewFormat());
 
-    uint32_t samplesKey = SamplesToKey(info.numSamples());
+    uint32_t samplesKey = SamplesToKey(info.sampleCount());
     // We don't have to key the number of mip levels because it is inherit in the combination of
     // isMipped and dimensions.
     bool isMipped = info.mipmapped() == Mipmapped::kYes;
