@@ -11,6 +11,9 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+// Not all build targets support std::numbers::pi, so hard-code the value here.
+static constexpr float kPi = 3.1415926535897932384626;
+
 namespace skhdr {
 
 SkColor4f Agtm::ComponentMixingFunction::evaluate(const SkColor4f& c) const {
@@ -142,6 +145,7 @@ void Agtm::PiecewiseCubicFunction::populateSlopeFromPCHIP() {
 }
 
 void Agtm::populateUsingRwtmo() {
+   fToneMapType = AdaptiveToneMap::kReferenceWhite;
    fGainApplicationSpacePrimaries = SkNamedPrimaries::kRec2020;
 
     if (fBaselineHdrHeadroom == 0.f) {
@@ -272,6 +276,398 @@ Agtm::Weighting Agtm::ComputeWeighting(float targetedHdrHeadroom) const {
     }
 
     return result;
+}
+
+// Return x clamped to [a, b].
+template<typename T, typename U>
+static T clamp(T x, U a, U b) {
+  return std::min(std::max(x, static_cast<T>(a)), static_cast<T>(b));
+}
+
+// Helper class to read individual fields of a uint8_t bitfield.
+class BitfieldReader {
+  public:
+    bool readFromStream(SkMemoryStream& s) {
+        return s.readU8(&fBits);
+    }
+    uint8_t readBits(size_t bits) {
+        // Read the topmost `bits` bits, then shift them off.
+        uint8_t result = fBits >> (8 - bits);
+        fBits <<= bits;
+        fBitsRead += bits;
+        return result;
+    }
+  private:
+    uint8_t fBits = 0;
+    size_t fBitsRead = 0;
+};
+
+// Helper class to write individual fields of a uint8_t bitfield.
+class BitfieldWriter {
+  public:
+    void writeBits(uint8_t value, size_t bits) {
+        // Ensure the value fits in `bits`.
+        SkASSERT(value <= (1 << bits) - 1);
+        fBits <<= bits;
+        fBits |= value;
+        fBitsWritten += bits;
+    }
+    void padAndWriteToStream(SkDynamicMemoryWStream& s) {
+        // Write the remaining bits as zero, then write the result.
+        SkASSERT(fBitsWritten <= 8);
+        fBits <<= (8 - fBitsWritten);
+        fBitsWritten = 8;
+        s.write8(fBits);
+    }
+  private:
+    uint8_t fBits = 0;
+    size_t fBitsWritten = 0;
+};
+
+// Helper function to write a float as a big-endian uint16.
+static void write_float_as_uint16(SkDynamicMemoryWStream& s, float f,
+                                  uint16_t clamp_min, uint16_t clamp_max,
+                                  uint16_t offset, float factor) {
+    int32_t v = static_cast<int32_t>(std::lround(f * factor)) + offset;
+    v = clamp(v, clamp_min, clamp_max);
+    SkWStreamWriteU16BE(&s, v);
+}
+
+// Helper function to read a float as a big-endian uint16.
+static bool read_float_as_uint16(SkMemoryStream& s, float& out,
+                                 uint16_t clamp_min, uint16_t clamp_max,
+                                 uint16_t offset, float factor) {
+    uint16_t value = 0;
+    if (!SkStreamReadU16BE(&s, &value)) {
+        return false;
+    }
+    out = (static_cast<int32_t>(clamp(value, clamp_min, clamp_max)) - offset) / factor;
+    return true;
+}
+
+// Wrapper to return false if the specified call returns false.
+#define RETURN_ON_FALSE(x) \
+    do { \
+        if (!(x)) { \
+            return false; \
+        } \
+    } while (0)
+
+bool Agtm::parse(const SkData* data) {
+    RETURN_ON_FALSE(data != nullptr);
+    SkMemoryStream s(data->data(), data->size());
+
+    // smpte_st_2094_50_application_info_v0
+    // The value application_minor_version will only have an effect in future versions. Read it
+    // and discard it.
+    uint8_t application_minor_version = 0;
+    RETURN_ON_FALSE(s.readU8(&application_minor_version));
+
+    // smpte_st_2094_50_color_volume_transform
+    BitfieldReader cvtFlags;
+    RETURN_ON_FALSE(cvtFlags.readFromStream(s));
+    const uint8_t has_hdr_reference_white_flag = cvtFlags.readBits(1);
+    const uint8_t has_adaptive_tone_map_flag = cvtFlags.readBits(1);
+    RETURN_ON_FALSE(cvtFlags.readBits(6) == 0);
+
+    if (has_hdr_reference_white_flag == 1) {
+        RETURN_ON_FALSE(read_float_as_uint16(s, fHdrReferenceWhite, 1u, 50000u, 0, 5.f));
+    } else {
+        fHdrReferenceWhite = 203.f;
+    }
+    if (has_adaptive_tone_map_flag == 0) {
+        fToneMapType = AdaptiveToneMap::kNone;
+        return true;
+    }
+
+    // smpte_st_2094_50_adaptive_tone_map()
+    RETURN_ON_FALSE(read_float_as_uint16(s, fBaselineHdrHeadroom, 0u, 60000u, 0, 10000.f));
+
+    BitfieldReader atmFlags;
+    RETURN_ON_FALSE(atmFlags.readFromStream(s));
+    const uint8_t use_reference_white_tone_mapping_flag = atmFlags.readBits(1);
+    if (use_reference_white_tone_mapping_flag == 1) {
+        RETURN_ON_FALSE(atmFlags.readBits(7) == 0);
+        populateUsingRwtmo();
+        fToneMapType = AdaptiveToneMap::kReferenceWhite;
+        return true;
+    } else {
+        fToneMapType = AdaptiveToneMap::kCustom;
+    }
+    const uint8_t num_alternate_images = atmFlags.readBits(3);
+    const uint8_t gain_application_space_primaries = atmFlags.readBits(2);
+    const uint8_t has_common_component_mix_params_flag = atmFlags.readBits(1);
+    const uint8_t has_common_cubic_params_flag = atmFlags.readBits(1);
+
+    fNumAlternateImages = clamp(num_alternate_images, 0, 4);
+    switch (gain_application_space_primaries) {
+        case 0:
+            fGainApplicationSpacePrimaries = SkNamedPrimaries::kRec709;
+            break;
+        case 1:
+            fGainApplicationSpacePrimaries = SkNamedPrimaries::kSMPTE_EG_432_1;
+            break;
+        case 2:
+            fGainApplicationSpacePrimaries = SkNamedPrimaries::kRec2020;
+            break;
+        case 3: {
+            auto& p = fGainApplicationSpacePrimaries;
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fRX, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fRY, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fGX, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fGY, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fBX, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fBY, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fWX, 0u, 50000u, 0, 50000.f));
+            RETURN_ON_FALSE(read_float_as_uint16(s, p.fWY, 0u, 50000u, 0, 50000.f));
+            break;
+        }
+    }
+
+    // If `has_common_cubic_params_flag` is true then these will be used to save the parameters from
+    // the first alternate images.
+    uint8_t gain_curve_use_pchip_flag = 0;
+
+    for (size_t a = 0; a < fNumAlternateImages; ++a) {
+        // alternate_hdr_headrooms[a]
+        RETURN_ON_FALSE(read_float_as_uint16(s, fAlternateHdrHeadroom[a], 0u, 60000u, 0, 10000.f));
+
+        auto& mix = fGainFunction[a].fComponentMixing;
+        if (a == 0 || has_common_component_mix_params_flag == 0) {
+            // smpte_st_2094_50_component_mixing(a)
+            mix = ComponentMixingFunction();
+            BitfieldReader mixFlags;
+            RETURN_ON_FALSE(mixFlags.readFromStream(s));
+            uint8_t component_mixing_type = mixFlags.readBits(2);
+            switch (component_mixing_type) {
+                case 0:
+                    mix.fMax = 1.f;
+                    RETURN_ON_FALSE(mixFlags.readBits(6) == 0);
+                    break;
+                case 1:
+                    mix.fComponent = 1.f;
+                    RETURN_ON_FALSE(mixFlags.readBits(6) == 0);
+                    break;
+                case 2:
+                    mix.fMax = 1.f / 2.f;
+                    mix.fRed = mix.fGreen = mix.fBlue = 1.f / 6.f;
+                    RETURN_ON_FALSE(mixFlags.readBits(6) == 0);
+                    break;
+                case 3:
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fRed, 0u, 50000u, 0, 50000.f));
+                    }
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fGreen, 0u, 50000u, 0, 50000.f));
+                    }
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fBlue, 0u, 50000u, 0, 50000.f));
+                    }
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fMax, 0u, 50000u, 0, 50000.f));
+                    }
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fMin, 0u, 50000u, 0, 50000.f));
+                    }
+                    if (mixFlags.readBits(1)) {
+                        RETURN_ON_FALSE(
+                            read_float_as_uint16(s, mix.fComponent, 0u, 50000u, 0, 50000.f));
+                    }
+                    break;
+            }
+        } else {
+            mix = fGainFunction[0].fComponentMixing;
+        }
+
+        // smpte_st_2094_50_gain_curve(a)
+        auto& cubic = fGainFunction[a].fPiecewiseCubic;
+        if (a == 0 || has_common_cubic_params_flag == 0) {
+            BitfieldReader cubicFlags;
+            RETURN_ON_FALSE(cubicFlags.readFromStream(s));
+            const uint8_t gain_cubic_num_control_points_minus_1 = cubicFlags.readBits(5);
+            gain_curve_use_pchip_flag = cubicFlags.readBits(1);
+            RETURN_ON_FALSE(cubicFlags.readBits(2) == 0);
+
+            cubic.fNumControlPoints = gain_cubic_num_control_points_minus_1 + 1;
+            for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+                RETURN_ON_FALSE(read_float_as_uint16(s, cubic.fX[c], 0u, 64000u, 0, 1000.f));
+            }
+        } else {
+            cubic.fNumControlPoints = fGainFunction[0].fPiecewiseCubic.fNumControlPoints;
+            for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+                cubic.fX[c] = fGainFunction[0].fPiecewiseCubic.fX[c];
+            }
+        }
+        for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+            RETURN_ON_FALSE(read_float_as_uint16(s, cubic.fY[c], 0u, 48000u, 24000, 1000.f));
+        }
+        if (gain_curve_use_pchip_flag) {
+            cubic.populateSlopeFromPCHIP();
+        } else {
+            for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+                float theta = 0.f;
+                RETURN_ON_FALSE(
+                    read_float_as_uint16(s, theta, 1u, 35999u, 18000, 36000.f / kPi));
+                cubic.fM[c] = std::tan(theta);
+            }
+        }
+    }
+
+    return true;
+}
+
+static bool operator==(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b) {
+    return memcmp(&a, &b, sizeof(a)) == 0;
+}
+
+sk_sp<SkData> Agtm::serialize() const {
+    SkDynamicMemoryWStream s;
+
+    // application_minor_version
+    s.write8(0);
+
+    // smpte_st_2094_50_color_volume_transform
+    const uint8_t has_hdr_reference_white_flag = 1;
+    const uint8_t has_adaptive_tone_map_flag = fToneMapType == AdaptiveToneMap::kNone ? 0 : 1;
+
+    BitfieldWriter cvtFlags;
+    cvtFlags.writeBits(has_hdr_reference_white_flag, 1);
+    cvtFlags.writeBits(has_adaptive_tone_map_flag, 1);
+    cvtFlags.padAndWriteToStream(s);
+
+    if (has_hdr_reference_white_flag) {
+        write_float_as_uint16(s, fHdrReferenceWhite, 1u, 50000u, 0, 5.f);
+    }
+    if (has_adaptive_tone_map_flag == 0) {
+        return s.detachAsData();
+    }
+
+    // smpte_st_2094_50_adaptive_tone_map
+    write_float_as_uint16(s, fBaselineHdrHeadroom, 0u, 60000u, 0, 10000.f);
+    const uint8_t use_reference_white_tone_mapping_flag =
+        fToneMapType == AdaptiveToneMap::kReferenceWhite ? 1 : 0;
+    BitfieldWriter atmFlags;
+    atmFlags.writeBits(use_reference_white_tone_mapping_flag, 1);
+    if (use_reference_white_tone_mapping_flag == 1) {
+        atmFlags.padAndWriteToStream(s);
+        return s.detachAsData();
+    }
+
+    if (fNumAlternateImages > kMaxNumAlternateImages) {
+        return nullptr;
+    }
+    atmFlags.writeBits(fNumAlternateImages, 3);
+
+    uint8_t gain_application_space_primaries = 3;
+    if (fGainApplicationSpacePrimaries == SkNamedPrimaries::kRec709) {
+        gain_application_space_primaries = 0;
+    } else if (fGainApplicationSpacePrimaries == SkNamedPrimaries::kSMPTE_EG_432_1) {
+        gain_application_space_primaries = 1;
+    } else if (fGainApplicationSpacePrimaries == SkNamedPrimaries::kRec2020) {
+        gain_application_space_primaries = 2;
+    } else {
+        gain_application_space_primaries = 3;
+    }
+    atmFlags.writeBits(gain_application_space_primaries, 2);
+
+    const uint8_t has_common_component_mix_params_flag = 0;
+    atmFlags.writeBits(has_common_component_mix_params_flag, 1);
+
+    const uint8_t has_common_cubic_params_flag = 0;
+    atmFlags.writeBits(has_common_cubic_params_flag, 1);
+    atmFlags.padAndWriteToStream(s);
+
+    if (gain_application_space_primaries == 3) {
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fRX, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fRY, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fGX, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fGY, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fBX, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fBY, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fWX, 0u, 50000u, 0, 50000.f);
+        write_float_as_uint16(s, fGainApplicationSpacePrimaries.fWY, 0u, 50000u, 0, 50000.f);
+    }
+
+    for (size_t a = 0; a < fNumAlternateImages; ++a) {
+        // alternate_hdr_headrooms[a]
+        write_float_as_uint16(s, fAlternateHdrHeadroom[a], 0u, 60000u, 0, 10000.f);
+
+        // smpte_st_2094_50_component_mixing(a)
+        auto& mix = fGainFunction[a].fComponentMixing;
+        if (mix.fRed == 0.f && mix.fGreen == 0.f && mix.fBlue == 0.f &&
+            mix.fMax == 1.f && mix.fMin == 0.f && mix.fComponent == 0.f) {
+            BitfieldWriter mixFlags;
+            mixFlags.writeBits(0, 2);
+            mixFlags.padAndWriteToStream(s);
+        } else if (mix.fRed == 0.f && mix.fGreen == 0.f && mix.fBlue == 0.f &&
+                   mix.fMax == 0.f && mix.fMin == 0.f && mix.fComponent == 1.f) {
+            BitfieldWriter mixFlags;
+            mixFlags.writeBits(1, 2);
+            mixFlags.padAndWriteToStream(s);
+        } else if (mix.fRed == 1.f/6.f && mix.fGreen == 1.f/6.f && mix.fBlue == 1.f/6.f &&
+                   mix.fMax == 1.f/2.f && mix.fMin == 0.f && mix.fComponent == 1.f) {
+            BitfieldWriter mixFlags;
+            mixFlags.writeBits(2, 2);
+            mixFlags.padAndWriteToStream(s);
+        } else {
+            BitfieldWriter mixFlags;
+            mixFlags.writeBits(3, 2);
+            mixFlags.writeBits(mix.fRed != 0.f, 1);
+            mixFlags.writeBits(mix.fGreen != 0.f, 1);
+            mixFlags.writeBits(mix.fBlue != 0.f, 1);
+            mixFlags.writeBits(mix.fMax != 0.f, 1);
+            mixFlags.writeBits(mix.fMin != 0.f, 1);
+            mixFlags.writeBits(mix.fComponent != 0.f, 1);
+            mixFlags.padAndWriteToStream(s);
+            if (mix.fRed != 0.f) {
+                write_float_as_uint16(s, mix.fRed, 0u, 50000u, 0, 50000.f);
+            }
+            if (mix.fGreen != 0.f) {
+                write_float_as_uint16(s, mix.fGreen, 0u, 50000u, 0, 50000.f);
+            }
+            if (mix.fBlue != 0.f) {
+                write_float_as_uint16(s, mix.fBlue, 0u, 50000u, 0, 50000.f);
+            }
+            if (mix.fMax != 0.f) {
+                write_float_as_uint16(s, mix.fMax, 0u, 50000u, 0, 50000.f);
+            }
+            if (mix.fMin != 0.f) {
+                write_float_as_uint16(s, mix.fMin, 0u, 50000u, 0, 50000.f);
+            }
+            if (mix.fComponent != 0.f) {
+                write_float_as_uint16(s, mix.fComponent, 0u, 50000u, 0, 50000.f);
+            }
+        }
+
+        // smpte_st_2094_50_gain_curve(a)
+        auto& cubic = fGainFunction[a].fPiecewiseCubic;
+        const uint8_t gain_curve_use_pchip_slope_flag = 0;
+        BitfieldWriter curveFlags;
+        if (cubic.fNumControlPoints < PiecewiseCubicFunction::kMinNumControlPoints ||
+            cubic.fNumControlPoints > PiecewiseCubicFunction::kMaxNumControlPoints) {
+            return nullptr;
+        }
+        curveFlags.writeBits(cubic.fNumControlPoints - 1, 5);
+        curveFlags.writeBits(gain_curve_use_pchip_slope_flag, 1);
+        curveFlags.padAndWriteToStream(s);
+        for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+            write_float_as_uint16(s, cubic.fX[c], 0u, 64000u, 0, 1000.f);
+        }
+        for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+            write_float_as_uint16(s, cubic.fY[c], 0u, 48000u, 24000, 1000.f);
+        }
+        for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+            float theta = std::atan(cubic.fM[c]);
+            write_float_as_uint16(s, theta, 1u, 35999u, 18000, 36000.f / kPi);
+        }
+    }
+
+    return s.detachAsData();
 }
 
 }  // namespace skhdr
