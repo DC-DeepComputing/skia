@@ -1557,45 +1557,118 @@ void Device::drawGeometry(const Transform& localToDevice,
                                                       style,
                                                       clip.transformedShapeBounds(),
                                                       /*requireMSAA=*/false);
-    if (!renderer && !pathAtlas) {
-        SKGPU_LOG_W("Skipping draw with no supported renderer or PathAtlas.");
-        return;
-    }
-
     // Update the pixel bounds of the draw to include any outsets done by the renderer (or that
     // must be included in the pixels required when using an atlas). This is important so that
     // all bounds overlap checks take into account pixels touched by rasterization, even if the
     // calculated coverage for a pixel is 0.
-    if (!renderer || renderer->outsetBoundsForAA()) {
+    if (pathAtlas || renderer->outsetBoundsForAA()) {
         clip.outsetBoundsForAA();
     }
 
+    // A flood-fill may be converted into a load op and never render anything; they should never
+    // be routed to a path atlas given how trivial they are don't become a load op.
+    SkASSERT(!pathAtlas || !(geometry.isShape() && geometry.shape().isFloodFill()));
+
+    // If an atlas path renderer was chosen, we need to insert the shape into the atlas and schedule
+    // it to be drawn. This may trigger a flush to free up room in the atlas. If that's the case,
+    // we can skip flushing later for other reasons (e.g. texture copy for dst read).
+    bool flushedAlready = false;
+    PathAtlas::MaskAndOrigin atlasMask;  // only used if `pathAtlas != nullptr`
+    if (pathAtlas != nullptr) {
+        Rect clippedShapeBounds = clip.transformedShapeBounds().makeIntersect(clip.scissor());
+        if (clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
+            // The clip isn't excluding very much of the original shape, so store the entire path
+            // in the atlas to avoid redundant entries with slightly different clips.
+            clippedShapeBounds = clip.transformedShapeBounds();
+        }
+
+        auto [status, maskAndOrigin] = pathAtlas->addShape(clippedShapeBounds,
+                                                           geometry.shape(),
+                                                           localToDevice,
+                                                           style);
+
+        // If there was no space in the atlas and we haven't flushed already, then flush pending
+        // work to clear up space in the atlas. If we had already flushed once (which would have
+        // cleared the atlas) then the atlas is too small for this shape.
+        if (status == PathAtlas::AddResult::kOutOfRoom) {
+            // We need to flush work for all devices associated with the current Recorder.
+            // Otherwise we may end up with outstanding draws that depend on past atlas state.
+            flushedAlready = true;
+            fRecorder->priv().flushTrackedDevices(
+                    SK_DUMP_TASKS_CODE("Device::drawGeometry Atlas Flush"));
+
+            // Try inserting the shape again.
+            std::tie(status, maskAndOrigin) = pathAtlas->addShape(clippedShapeBounds,
+                                                                  geometry.shape(),
+                                                                  localToDevice,
+                                                                  style);
+        }
+
+        if (status == PathAtlas::AddResult::kSuccess) {
+            atlasMask = maskAndOrigin;
+            renderer = fRecorder->priv().rendererProvider()->coverageMask();
+        } else {
+            // We've already tried flushing if the status had been kOutOfRoom, so if it's still out
+            // of room or kUnsuitable, fall back to MSAA based rendering.
+            std::tie(renderer, pathAtlas) = this->chooseRenderer(localToDevice,
+                                                                 geometry,
+                                                                 style,
+                                                                 clip.transformedShapeBounds(),
+                                                                 /*requireMSAA=*/true);
+            SkASSERT(renderer && !pathAtlas);
+            // NOTE: As setup for attempting the path atlas, we outset the clip's bounds for
+            // analytic AA. Since the atlas ended up rejecting the path and we're using an MSAA
+            // renderer, that outset is unnecessary and inflates the draws it might intersect with.
+            // However, we only expect to hit this path when the paths are particularly large, in
+            // which case the slight increase in bounds is negligible.
+        }
+        fAtlasedPathCount++;
+    }
+
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping draw with no supported renderer.");
+        return;
+    }
+
+#if defined(SK_DEBUG)
+    // Renderers and their component RenderSteps have flexibility in defining their
+    // DepthStencilSettings. However, the clipping and ordering managed between Device and ClipStack
+    // requires that only LESS or LEQUAL depth tests are used for draws recorded through the
+    // client-facing, painters-order-oriented API. We assert here vs. in Renderer's constructor to
+    // allow internal-oriented Renderers that are never selected for a "regular" draw call to have
+    // more flexibility in their settings.
+    for (const RenderStep* step : renderer->steps()) {
+        auto dss = step->depthStencilSettings();
+        SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
+                 (!dss.fDepthTestEnabled ||
+                  dss.fDepthCompareOp == CompareOp::kLess ||
+                  dss.fDepthCompareOp == CompareOp::kLEqual));
+    }
+#endif
+
     // A renderer that emits a primitive color should only be used by a drawX() call that sets a
     // non-null primitive blender.
-    SkASSERT(SkToBool(paint.primitiveBlender()) == (renderer && renderer->emitsPrimitiveColor()));
+    SkASSERT(SkToBool(paint.primitiveBlender()) == (renderer->emitsPrimitiveColor()));
 
     ShadingParams shading{fRecorder->priv().caps(),
                           paint,
                           clip.nonMSAAClip(),
                           clip.shader(),
-                          renderer ? renderer->coverage() : Coverage::kSingleChannel,
+                          renderer->coverage(),
                           TextureInfoPriv::ViewFormat(fDC->target()->textureInfo())};
 
     // Some shapes and styles combine multiple draws so the total render step count is split between
     // the main renderer and possibly a secondaryRenderer. As we can't be sure whether a secondary
     // renderer is required prior to getting the dstUsage from shading.toKey(), we pessimistically
     // assume it's required for needsFlushBeforeDraw().
-    int numNewRenderSteps = 1;
     SkStrokeRec::Style styleType = style.getStyle();
-    if (renderer) {
-        numNewRenderSteps = renderer->numRenderSteps();
-        if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
-            numNewRenderSteps +=
-                fRecorder->priv().rendererProvider()->tessellatedStrokes()->numRenderSteps();
-        } else if (style.isFillStyle() && renderer->useNonAAInnerFill()) {
-            numNewRenderSteps +=
-                fRecorder->priv().rendererProvider()->nonAABounds()->numRenderSteps();
-        }
+    int numNewRenderSteps = renderer->numRenderSteps();
+    if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
+        numNewRenderSteps +=
+            fRecorder->priv().rendererProvider()->tessellatedStrokes()->numRenderSteps();
+    } else if (style.isFillStyle() && renderer->useNonAAInnerFill()) {
+        numNewRenderSteps +=
+            fRecorder->priv().rendererProvider()->nonAABounds()->numRenderSteps();
     }
 
     // Decide if we have any reason to flush pending work. A flush may be necessary for two reasons:
@@ -1608,7 +1681,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     DstReadStrategy dstReadStrategy = shading.dstReadRequired() ?
                                       fDC->dstReadStrategy() : DstReadStrategy::kNoneRequired;
     const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
-    if (needsFlush) {
+    if (needsFlush && !flushedAlready) {
         if (pathAtlas != nullptr) {
             // We need to flush work for all devices associated with the current Recorder.
             // Otherwise we may end up with outstanding draws that depend on past atlas state.
@@ -1674,67 +1747,6 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
     }
 
-    // If an atlas path renderer was chosen we need to insert the shape into the atlas and schedule
-    // it to be drawn.
-    std::optional<PathAtlas::MaskAndOrigin> atlasMask;  // only used if `pathAtlas != nullptr`
-    if (pathAtlas != nullptr) {
-        Rect clippedShapeBounds = clip.transformedShapeBounds().makeIntersect(clip.scissor());
-        if (clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
-            // The clip isn't excluding very much of the original shape, so store the entire path
-            // in the atlas to avoid redundant entries with slightly different clips.
-            clippedShapeBounds = clip.transformedShapeBounds();
-        }
-        std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                            geometry.shape(),
-                                                            localToDevice,
-                                                            style);
-
-        // If there was no space in the atlas and we haven't flushed already, then flush pending
-        // work to clear up space in the atlas. If we had already flushed once (which would have
-        // cleared the atlas) then the atlas is too small for this shape.
-        if (!atlasMask && !needsFlush) {
-            // We need to flush work for all devices associated with the current Recorder.
-            // Otherwise we may end up with outstanding draws that depend on past atlas state.
-            fRecorder->priv().flushTrackedDevices(
-                    SK_DUMP_TASKS_CODE("Device::drawGeometry Atlas Flush"));
-
-            // Try inserting the shape again.
-            std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                                geometry.shape(),
-                                                                localToDevice,
-                                                                style);
-        }
-
-        if (!atlasMask) {
-            SKGPU_LOG_E("Failed to add shape to atlas!");
-            // TODO(b/285195175): This can happen if the atlas is not large enough or a compatible
-            // atlas texture cannot be created. Handle the first case in `chooseRenderer` and make
-            // sure that the atlas path renderer is not chosen if the path is larger than the atlas
-            // texture.
-            return;
-        }
-        // Since addShape() was successful we should have a valid Renderer now.
-        SkASSERT(renderer && renderer->numRenderSteps() == 1 && !renderer->emitsPrimitiveColor());
-        fAtlasedPathCount++;
-    }
-
-#if defined(SK_DEBUG)
-    // Renderers and their component RenderSteps have flexibility in defining their
-    // DepthStencilSettings. However, the clipping and ordering managed between Device and ClipStack
-    // requires that only LESS or LEQUAL depth tests are used for draws recorded through the
-    // client-facing, painters-order-oriented API. We assert here vs. in Renderer's constructor to
-    // allow internal-oriented Renderers that are never selected for a "regular" draw call to have
-    // more flexibility in their settings.
-    SkASSERT(renderer);
-    for (const RenderStep* step : renderer->steps()) {
-        auto dss = step->depthStencilSettings();
-        SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
-                 (!dss.fDepthTestEnabled ||
-                  dss.fDepthCompareOp == CompareOp::kLess ||
-                  dss.fDepthCompareOp == CompareOp::kLEqual));
-    }
-#endif
-
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
     // this point.
     DrawOrder order(fCurrentDepth.next());
@@ -1774,8 +1786,8 @@ void Device::drawGeometry(const Transform& localToDevice,
     // next invocation of flushPendingWork().
     if (pathAtlas != nullptr) {
         // Record the draw as a fill since stroking is handled by the atlas render/upload.
-        SkASSERT(atlasMask.has_value());
-        auto [mask, origin] = *atlasMask;
+        auto [mask, origin] = atlasMask;
+        SkASSERT(mask.textureProxy()); // Otherwise a fallback should have been chosen
         fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
                         order, paintID, dstUsage, scopedDrawBuilder.gatherer(), nullptr);
     } else {
@@ -1992,15 +2004,14 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         switch (renderers->pathRendererStrategy()) {
             case PathRendererStrategy::kComputeAnalyticAA:
             case PathRendererStrategy::kComputeMSAA16:
-            case PathRendererStrategy::kComputeMSAA8: {
-                PathAtlas* atlas = fDC->getComputePathAtlas(fRecorder);
-                SkASSERT(atlas);
+            case PathRendererStrategy::kComputeMSAA8:
+                pathAtlas = fDC->getComputePathAtlas(fRecorder);
+                break;
 
-                // Don't use the compute renderer if it can't handle the shape efficiently.
-                if (atlas->isSuitableForAtlasing(drawBounds, fClip.conservativeBounds())) {
-                    pathAtlas = atlas;
-                } // else falls back to tessellation
-            } break;
+            case PathRendererStrategy::kRasterAtlas:
+                // Everything is rasterized on the CPU and packed into the atlas
+                pathAtlas = atlasProvider->getRasterPathAtlas();
+                break;
 
             case PathRendererStrategy::kTessellationAndSmallAtlas: {
                 static constexpr int kMaxSmallPathAtlasCount = 256;
@@ -2011,11 +2022,6 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
                     pathAtlas = atlasProvider->getRasterPathAtlas();
                 } // else falls back to tessellation
             } break;
-
-            case PathRendererStrategy::kRasterAtlas:
-                // Everything is rasterized on the CPU and packed into the atlas
-                pathAtlas = atlasProvider->getRasterPathAtlas();
-                break;
 
             case PathRendererStrategy::kTessellation:
                 // Never uses an atlas for rendering, leave it null

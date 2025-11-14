@@ -35,8 +35,8 @@ PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t reque
 
 PathAtlas::~PathAtlas() = default;
 
-std::pair<const Renderer*, std::optional<PathAtlas::MaskAndOrigin>> PathAtlas::addShape(
-        const Rect& transformedShapeBounds,
+std::pair<PathAtlas::AddResult, PathAtlas::MaskAndOrigin> PathAtlas::addShape(
+        const Rect& clippedShapeBounds,
         const Shape& shape,
         const Transform& localToDevice,
         const SkStrokeRec& style) {
@@ -45,38 +45,39 @@ std::pair<const Renderer*, std::optional<PathAtlas::MaskAndOrigin>> PathAtlas::a
     // CoverageMaskShapeRenderStep will automatically handle the simple fill. We'll handle this
     // by adding an empty mask.
     // TODO: We could have addShape() handle this fully except we need a valid TextureProxy still.
-    const bool emptyMask = transformedShapeBounds.isEmptyNegativeOrNaN();
+    const bool emptyMask = clippedShapeBounds.isEmptyNegativeOrNaN();
 
     // Round out the shape bounds to preserve any fractional offset so that it is present in the
     // translation that we use when deriving the atlas-space transform later.
-    Rect maskBounds = transformedShapeBounds.makeRoundOut();
+    Rect maskBounds = clippedShapeBounds.makeRoundOut();
 
     CoverageMaskShape::MaskInfo maskInfo;
     // This size does *not* include any padding that the atlas may place around the mask. This size
     // represents the area the shape can actually modify.
     maskInfo.fMaskSize = emptyMask ? skvx::half2(0) : skvx::cast<uint16_t>(maskBounds.size());
+
     // We use the origin of the clipped mask bounds relative to the full mask to distinguish
     // between clips of the same size.
     Rect shapeDevBounds = localToDevice.mapRect(shape.bounds());
     skvx::float2 clippedMaskOrigin = maskBounds.topLeft() - shapeDevBounds.topLeft();
     SkIVector transformedMaskOffset = SkIVector::Make(maskBounds.topLeft().x(),
                                                       maskBounds.topLeft().y());
-    sk_sp<TextureProxy> atlasProxy = this->onAddShape(shape,
-                                                      localToDevice,
-                                                      style,
-                                                      skvx::cast<uint16_t>(clippedMaskOrigin),
-                                                      maskInfo.fMaskSize,
-                                                      transformedMaskOffset,
-                                                      &maskInfo.fTextureOrigin);
+    auto [result, atlasProxy] = this->onAddShape(shape,
+                                                 localToDevice,
+                                                 style,
+                                                 skvx::cast<uint16_t>(clippedMaskOrigin),
+                                                 maskInfo.fMaskSize,
+                                                 transformedMaskOffset,
+                                                 &maskInfo.fTextureOrigin);
     if (!atlasProxy) {
-        return std::make_pair(nullptr, std::nullopt);
+        SkASSERT(result != AddResult::kSuccess);
+        return {result, {CoverageMaskShape(), SkIPoint()}}; // empty MaskAndOrigin will be ignored
     }
 
-    std::optional<PathAtlas::MaskAndOrigin> atlasMask =
+    return {AddResult::kSuccess,
             std::make_pair(CoverageMaskShape(shape, std::move(atlasProxy), localToDevice.inverse(),
                                              maskInfo),
-                           SkIPoint{(int) maskBounds.left(), (int) maskBounds.top()});
-    return std::make_pair(fRecorder->priv().rendererProvider()->coverageMask(), atlasMask);
+                           SkIPoint{(int) maskBounds.left(), (int) maskBounds.top()})};
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

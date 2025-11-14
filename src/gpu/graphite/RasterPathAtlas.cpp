@@ -63,13 +63,14 @@ static bool draw_path_to_pixmap(const Shape& shape,
     return true;
 }
 
-sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
-                                                const Transform& localToDevice,
-                                                const SkStrokeRec& strokeRec,
-                                                skvx::half2 maskOrigin,
-                                                skvx::half2 maskSize,
-                                                SkIVector transformedMaskOffset,
-                                                skvx::half2* outPos) {
+std::pair<PathAtlas::AddResult, sk_sp<TextureProxy>> RasterPathAtlas::onAddShape(
+        const Shape& shape,
+        const Transform& localToDevice,
+        const SkStrokeRec& strokeRec,
+        skvx::half2 maskOrigin,
+        skvx::half2 maskSize,
+        SkIVector transformedMaskOffset,
+        skvx::half2* outPos) {
     sk_sp<TextureProxy> proxy;
 
     if (!shape.isVolatilePath()) {
@@ -110,7 +111,7 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
                                              &loc);
     }
     if (proxy) {
-        return proxy;
+        return {AddResult::kSuccess, proxy};
     }
 
     // Failed to add to atlases, try to add to ProxyCache
@@ -150,7 +151,11 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
             });
 
     *outPos = { kEntryPadding, kEntryPadding };
-    return cachedProxy;
+
+    // TODO(michaelludwig): The RasterPathAtlas should let Device handle the fallback to the proxy
+    // cache for paths that won't ever fit in the atlas. In the case where it's just out of room,
+    // we should flush the Recorder instead of accruing more unatlased ached proxies .
+    return {AddResult::kSuccess, cachedProxy};
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

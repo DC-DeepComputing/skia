@@ -45,13 +45,10 @@ class CoverageMaskShape {
 public:
     struct MaskInfo {
         // The texture-relative integer UV coordinates of the top-left corner of this shape's
-        // coverage mask bounds. This will include the rounded out transformed device space bounds
-        // of the shape plus a 1-pixel border.
+        // coverage mask bounds.
         half2 fTextureOrigin;
 
-        // The width and height of the bounds of the coverage mask shape in device coordinates. This
-        // includes the rounded out transformed device space bounds of the shape + a 1-pixel border
-        // added for AA.
+        // The width and height of the bounds of the coverage mask shape in device coordinates.
         half2 fMaskSize;
     };
 

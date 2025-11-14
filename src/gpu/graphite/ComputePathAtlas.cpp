@@ -38,11 +38,11 @@ constexpr uint16_t kComputeAtlasDim = 4096;
 // creating too many flushes in a Recording containing many large path draws. These shapes often
 // don't make efficient use of the available atlas texture space and the cost of sequential
 // dispatches to render multiple atlas pages can be prohibitive.
-constexpr size_t kBboxAreaThreshold = 1024 * 512;
+[[maybe_unused]] constexpr size_t kBboxAreaThreshold = 1024 * 512;
 
 // Coordinate size that is too large for vello to handle efficiently. See the discussion on
 // https://github.com/linebender/vello/pull/542.
-constexpr float kCoordinateThreshold = 1e10;
+[[maybe_unused]] constexpr float kCoordinateThreshold = 1e10;
 
 }  // namespace
 
@@ -61,34 +61,6 @@ bool ComputePathAtlas::initializeTextureIfNeeded() {
                                                                       /*requireStorageUsage=*/true);
     }
     return fTexture != nullptr;
-}
-
-bool ComputePathAtlas::isSuitableForAtlasing(const Rect& transformedShapeBounds,
-                                             const Rect& clipBounds) const {
-    Rect shapeBounds = transformedShapeBounds.makeRoundOut();
-    Rect maskBounds = shapeBounds.makeIntersect(clipBounds);
-    skvx::float2 maskSize = maskBounds.size();
-    float width = maskSize.x(), height = maskSize.y();
-
-    if (width > this->width() || height > this->height()) {
-        return false;
-    }
-
-    // For now we're allowing paths that are smaller than 1/32nd of the full 4096x4096 atlas size
-    // to prevent the atlas texture from filling up too often. There are several approaches we
-    // should explore to alleviate the cost of atlasing large paths.
-    if (width * height > kBboxAreaThreshold) {
-        return false;
-    }
-
-    // Reject pathological shapes that vello can't handle efficiently yet.
-    skvx::float2 unclippedSize = shapeBounds.size();
-    if (std::fabs(unclippedSize.x()) > kCoordinateThreshold ||
-        std::fabs(unclippedSize.y()) > kCoordinateThreshold) {
-        return false;
-    }
-
-    return true;
 }
 
 sk_sp<TextureProxy> ComputePathAtlas::addRect(skvx::half2 maskSize,
@@ -133,13 +105,15 @@ public:
     bool recordDispatches(Recorder*, ComputeTask::DispatchGroupList*) const override;
 
 private:
-    sk_sp<TextureProxy> onAddShape(const Shape&,
-                                   const Transform& localToDevice,
-                                   const SkStrokeRec&,
-                                   skvx::half2 maskOrigin,
-                                   skvx::half2 maskSize,
-                                   SkIVector transformedMaskOffset,
-                                   skvx::half2* outPos) override;
+    std::pair<AddResult, sk_sp<TextureProxy>> onAddShape(
+            const Shape&,
+            const Transform& localToDevice,
+            const SkStrokeRec&,
+            skvx::half2 maskOrigin,
+            skvx::half2 maskSize,
+            SkIVector transformedMaskOffset,
+            skvx::half2* outPos) override;
+
     void onReset() override {
         fCachedAtlasMgr.onReset();
 
@@ -312,7 +286,7 @@ bool VelloComputePathAtlas::recordDispatches(Recorder* recorder,
     return addedDispatches;
 }
 
-sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
+std::pair<PathAtlas::AddResult, sk_sp<TextureProxy>> VelloComputePathAtlas::onAddShape(
         const Shape& shape,
         const Transform& localToDevice,
         const SkStrokeRec& style,
@@ -320,6 +294,26 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
         skvx::half2 maskSize,
         SkIVector transformedMaskOffset,
         skvx::half2* outPos) {
+    // Check for suitability for Vello
+    if (maskSize.x() + 2*kEntryPadding > this->width() ||
+        maskSize.y() + 2*kEntryPadding > this->height()) {
+        // Cannot fit in the atlas texture
+        return {AddResult::kUnsuitable, nullptr};
+    }
+
+    // For now we're allowing paths that are smaller than 1/32nd of the full 4096x4096 atlas size
+    // to prevent the atlas texture from filling up too often. There are several approaches we
+    // should explore to alleviate the cost of atlasing large paths.
+    if (maskSize.x() * maskSize.y() > kBboxAreaThreshold) {
+        return {AddResult::kUnsuitable, nullptr};
+    }
+
+    // Reject pathological shapes that vello can't handle efficiently yet.
+    skvx::float2 unclippedSize = localToDevice.mapRect(shape.bounds()).size();
+    if (std::fabs(unclippedSize.x()) > kCoordinateThreshold ||
+        std::fabs(unclippedSize.y()) > kCoordinateThreshold) {
+        return {AddResult::kUnsuitable, nullptr};
+    }
 
     skgpu::UniqueKey maskKey;
     if (!shape.isVolatilePath()) {
@@ -333,7 +327,7 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
                                                                       transformedMaskOffset,
                                                                       outPos);
         if (proxy) {
-            return proxy;
+            return {AddResult::kSuccess, proxy};
         }
     }
 
@@ -341,28 +335,26 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
     SkIPoint16 iPos;
     sk_sp<TextureProxy> texProxy = this->addRect(maskSize, &iPos);
     if (!texProxy) {
-        return nullptr;
+        return {AddResult::kOutOfRoom, nullptr};
     }
     *outPos = skvx::half2(iPos.x(), iPos.y());
-    // If the mask is empty, just return.
-    // TODO: This may not be needed if we can handle clipped out bounds with inverse fills
-    // another way. See PathAtlas::addShape().
-    if (!all(maskSize)) {
-        return texProxy;
+
+    // If the mask is not empty, add it to the Vello scene for later rendering.
+    if (all(maskSize)) {
+        // TODO: The compute renderer doesn't support perspective yet. We assume that the path has
+        // been appropriately transformed in that case.
+        SkASSERT(localToDevice.type() != Transform::Type::kPerspective);
+
+        // Restrict the render to the occupied area of the atlas, including entry padding so that
+        // the padded row/column is cleared when Vello renders.
+        Rect atlasBounds = Rect::XYWH(skvx::float2(iPos.x(), iPos.y()),
+                                      skvx::cast<float>(maskSize));
+
+        add_shape_to_scene(shape, localToDevice, style, atlasBounds, transformedMaskOffset,
+                           &fUncachedScene, &fUncachedOccupiedArea);
     }
 
-    // TODO: The compute renderer doesn't support perspective yet. We assume that the path has been
-    // appropriately transformed in that case.
-    SkASSERT(localToDevice.type() != Transform::Type::kPerspective);
-
-    // Restrict the render to the occupied area of the atlas, including entry padding so that the
-    // padded row/column is cleared when Vello renders.
-    Rect atlasBounds = Rect::XYWH(skvx::float2(iPos.x(), iPos.y()), skvx::cast<float>(maskSize));
-
-    add_shape_to_scene(shape, localToDevice, style, atlasBounds, transformedMaskOffset,
-                       &fUncachedScene, &fUncachedOccupiedArea);
-
-    return texProxy;
+    return {AddResult::kSuccess, texProxy};
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

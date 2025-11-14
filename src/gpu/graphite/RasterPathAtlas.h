@@ -47,13 +47,15 @@ public:
     }
 
 protected:
-    sk_sp<TextureProxy> onAddShape(const Shape&,
-                                   const Transform& localToDevice,
-                                   const SkStrokeRec&,
-                                   skvx::half2 maskOrigin,
-                                   skvx::half2 maskSize,
-                                   SkIVector transformedMaskOffset,
-                                   skvx::half2* outPos) override;
+    std::pair<AddResult, sk_sp<TextureProxy>> onAddShape(
+            const Shape&,
+            const Transform& localToDevice,
+            const SkStrokeRec&,
+            skvx::half2 maskOrigin,
+            skvx::half2 maskSize,
+            SkIVector transformedMaskOffset,
+            skvx::half2* outPos) override;
+
 private:
     class RasterAtlasMgr : public PathAtlas::DrawAtlasMgr {
     public:

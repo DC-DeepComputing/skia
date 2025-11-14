@@ -49,10 +49,11 @@ public:
 
     using MaskAndOrigin = std::pair<CoverageMaskShape, SkIPoint>;
 
-    // Subclasses should ensure that the recorded masks have this much padding around each entry.
-    // PathAtlas passes in un-padded sizes to onAddShape and assumes that padding has been included
-    // in the outPos value.
-    static constexpr int kEntryPadding = 1;
+    enum class AddResult : uint8_t {
+        kSuccess, // The shape was added and the provided MaskAndOrigin are valid.
+        kOutOfRoom, // The shape could be added if the Recorder were flushed to reuse space.
+        kUnsuitable, // The shape will never be able to be added to the atlas.
+    };
 
     /**
      * Searches the atlas for a slot that can fit a coverage mask for a clipped shape with the given
@@ -73,7 +74,7 @@ public:
      *
      * `shape` will be drawn after applying the linear components (scale, rotation, skew) of the
      * provided `localToDevice` transform. This is done by  translating the shape by the inverse of
-     * the rounded out `transformedShapeBounds` offset. For an unclipped shape this amounts to
+     * the rounded out `clippedShapeBounds` offset. For an unclipped shape this amounts to
      * translating it back to its origin while preserving any sub-pixel translation. For a clipped
      * shape, this ensures that the visible portions of the mask are centered in the atlas slot
      * while invisible portions that would lie outside the atlas slot get clipped out.
@@ -84,41 +85,32 @@ public:
      * The stroke-and-fill style is drawn as a single combined coverage mask containing the stroke
      * and the fill.
      */
-    std::pair<const Renderer*, std::optional<MaskAndOrigin>> addShape(
-            const Rect& transformedShapeBounds,
+    std::pair<AddResult, MaskAndOrigin> addShape(
+            const Rect& clippedShapeBounds,
             const Shape& shape,
             const Transform& localToDevice,
             const SkStrokeRec& style);
-
-    /**
-     * Returns true if a path coverage mask with the given device-space bounds is sufficiently
-     * small to benefit from atlasing without causing too many atlas renders.
-     *
-     * `transformedShapeBounds` represents the device-space bounds of the coverage mask shape
-     * unrestricted by clip and viewport bounds.
-     *
-     * `clipBounds` represents the conservative bounding box of the union of the clip stack that
-     * should apply to the shape.
-     */
-    virtual bool isSuitableForAtlasing(const Rect& transformedShapeBounds,
-                                       const Rect& clipBounds) const {
-        return true;
-    }
 
     uint32_t width() const { return fWidth; }
     uint32_t height() const { return fHeight; }
 
 protected:
+    // Subclasses should ensure that the recorded masks have this much padding around each entry.
+    // PathAtlas passes in un-padded sizes to onAddShape and assumes that padding has been included
+    // in the outPos value.
+    static constexpr int kEntryPadding = 1;
+
     // The 'transform' has been adjusted to draw the Shape into a logical image from (0,0) to
     // 'maskSize'. The actual rendering into the returned TextureProxy will need to be further
     // translated by the value written to 'outPos', which is the responsibility of subclasses.
-    virtual sk_sp<TextureProxy> onAddShape(const Shape&,
-                                           const Transform& localToDevice,
-                                           const SkStrokeRec&,
-                                           skvx::half2 maskOrigin,
-                                           skvx::half2 maskSize,
-                                           SkIVector transformedMaskOffset,
-                                           skvx::half2* outPos) = 0;
+    virtual std::pair<AddResult, sk_sp<TextureProxy>> onAddShape(
+            const Shape&,
+            const Transform& localToDevice,
+            const SkStrokeRec&,
+            skvx::half2 maskOrigin,
+            skvx::half2 maskSize,
+            SkIVector transformedMaskOffset,
+            skvx::half2* outPos) = 0;
 
     // Wrapper class to manage DrawAtlas and associated caching operations
     class DrawAtlasMgr : public AtlasGenerationCounter, public PlotEvictionCallback {
