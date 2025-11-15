@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b36e11ce_a2b3cc41",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-15T00:13:36Z",
+      "side": 1,
+      "message": "So kind of meet in the middle solution, UniformManager has separate mark and align functions, PipelineDataGatherer has a unified function. . .",
+      "parentUuid": "80264727_8940a5c5",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 388,
+        "endChar": 5
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e949ab52_0346f84d",
         "filename": "src/gpu/graphite/PipelineData.h",
         "patchSetId": 34
@@ -531,6 +555,30 @@
       "writtenOn": "2025-11-14T14:12:46Z",
       "side": 1,
       "message": "nit: let\u0027s rename this to `rewindToMark` to clarify that it\u0027s the specific offset that was set earlier instead of an `offset` param that is missing.",
+      "range": {
+        "startLine": 262,
+        "startChar": 9,
+        "endLine": 262,
+        "endChar": 23
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce60c4fa_68761c82",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-15T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0d606a3_d94bc6b7",
       "range": {
         "startLine": 262,
         "startChar": 9,
