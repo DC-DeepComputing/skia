@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf2556fa_a6b72124",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-15T01:42:58Z",
+      "side": 1,
+      "message": "This should just be part of markOffsetAndAlign",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 46
+      },
+      "revId": "a0010285f422cfa3246f71ad15e58f144134f9c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67e85c92_2905a9fd",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-15T01:42:58Z",
+      "side": 1,
+      "message": "!performsShading",
+      "range": {
+        "startLine": 385,
+        "startChar": 0,
+        "endLine": 385,
+        "endChar": 30
+      },
+      "revId": "a0010285f422cfa3246f71ad15e58f144134f9c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b96f49b_a5a3891b",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-15T01:42:58Z",
+      "side": 1,
+      "message": "I think we can skip modifying the high watermark here",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 81
+      },
+      "revId": "a0010285f422cfa3246f71ad15e58f144134f9c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
