@@ -214,6 +214,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde07fd8_72d95a85",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-15T18:42:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bcdf5b8_97aed2cf",
+      "range": {
+        "startLine": 391,
+        "startChar": 3,
+        "endLine": 406,
+        "endChar": 5
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd0c9e71_55cfdec6",
@@ -557,6 +581,30 @@
       "side": 1,
       "message": "Sure, works for me",
       "parentUuid": "f548f843_c25b8548",
+      "range": {
+        "startLine": 251,
+        "startChar": 23,
+        "endLine": 251,
+        "endChar": 39
+      },
+      "revId": "2832441b2b0aaa548ceeae70331b6517099a6ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2399cc40_b660410c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-15T18:42:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c16f565_83bb762a",
       "range": {
         "startLine": 251,
         "startChar": 23,
