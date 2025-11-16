@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7de8330f_16b80d58",
+        "filename": "BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:51:34Z",
+      "side": 1,
+      "message": "Thanks for all the detailed context, I really appreciate it. I have validated locally the full build with bazel, the gn builds with different configurations (enableing and disabling rust_png) and the work fine with latest changes, as well as Chromium build.\n\nCould you help queueing try jobs for this CL?",
+      "parentUuid": "790c2161_68fec1d2",
+      "range": {
+        "startLine": 1443,
+        "startChar": 0,
+        "endLine": 1446,
+        "endChar": 43
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e10b3bf1_cc289441",
