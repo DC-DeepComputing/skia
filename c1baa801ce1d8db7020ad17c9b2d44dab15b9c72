@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1deadc_bce39e3f",
+        "filename": "BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "It is required because of the include \"third_party/rust/cxx/v1/cxx.h\" to find defintion of \"template \u003ctypename T\u003e class Slice\"\n\nI think that we really need is not rust_png_cxx_bridge but:\n\nconfig(\"rust_png_cxx_bridge_public_config\") {\n    include_dirs \u003d [\n      # This is where `rust/png/FFI.rs.h` and\n      # `third_party/rust/cxx/v1/cxx.h` were put by Bazel\n      \"$root_out_dir\",\n    ]\n  }\n\nThat despite it has rust_png in its name, it is defining the common output folder for generated rust headers, so we can rename it to rust_common_cxx_bridge_public_config instead I think.\n\nHowever, testing gn args I found that despite it is only referenced from the optional(\"rust_common\"), when both rust_png encode and decode are disabled I get this error saving gn file\n\nWaiting for editor on \"/workspace/skia_2/skia/out/TestNoRust/args.gn\"...\nGenerating files...\nERROR Unresolved dependencies.\n//:rust_common(//gn/toolchain:gcc_like)\n  needs //:rust_common_cxx_bridge_public_config(//gn/toolchain:gcc_like)\n\nSo I needed to move the definition outside the if clause it was placed. It seems that public_config in optional elements are still evaluated even the enabled condition is false",
+      "parentUuid": "e10b3bf1_cc289441",
+      "range": {
+        "startLine": 1529,
+        "startChar": 0,
+        "endLine": 1529,
+        "endChar": 35
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58361eaa_be33f911",
@@ -77,6 +101,30 @@
       "writtenOn": "2025-11-14T18:56:00Z",
       "side": 1,
       "message": "Is `exports_files` required here?  Can this be removed?\n\nIIUC the CL doesn\u0027t add references to these files from `rust/png/BUILD.bazel` (but maybe I missed/misunderstood something).\n\nAnd I _feel_ (not sure though) that it may be preferable to add an explicit `deps` edge instead of reusing source files.  (Which I think you are already doing in `rust/png/BUILD.bazel` by adding `//rust/common:ffi_utils` to `deps` of `//rust/png:cxx_bridge`",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 1
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb7f5c7_057c5a7d",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "Good catch, this can be cleaned up",
+      "parentUuid": "58361eaa_be33f911",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2556417f_4224f447",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e2dedfd_ce492235",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 6
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59e1809f_0d29b5fd",
@@ -123,6 +195,30 @@
       "writtenOn": "2025-11-14T18:56:00Z",
       "side": 1,
       "message": "nitty nit, sorry: I think that we\u0027ll have to keep using `requestedOffset` spelling to match https://skia.org/docs/dev/contrib/style/#naming.  It\u0027s a bummer that Skia uses https://skia.org/docs/dev/contrib/style/#naming and Chromium/Google use https://google.github.io/styleguide/cppguide.html#Variable_Names... :-(\n\n(this comment probably applies to other variables/names in this file)",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 24
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ebc6ba_48fede49",
+        "filename": "rust/common/SkStreamAdapter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "Thanks for pointing to this, I totally missed that fact. Fixing it.",
+      "parentUuid": "59e1809f_0d29b5fd",
       "range": {
         "startLine": 57,
         "startChar": 8,
@@ -156,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d374c37_7e43518f",
+        "filename": "rust/common/SkStreamAdapter.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66957c58_4a5a10a9",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 11
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b4e0289_d64a3e6f",
@@ -169,6 +289,30 @@
       "writtenOn": "2025-11-14T18:56:00Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 43,
+        "startChar": 74,
+        "endLine": 43,
+        "endChar": 75
+      },
+      "revId": "c1baa801ce1d8db7020ad17c9b2d44dab15b9c72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b0973f4_08442f7d",
+        "filename": "rust/common/io_traits_ffi.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-16T19:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b4e0289_d64a3e6f",
       "range": {
         "startLine": 43,
         "startChar": 74,
