@@ -87,6 +87,30 @@
       },
       "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d55d0e9_7dd15ea9",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-11-17T15:05:17Z",
+      "side": 1,
+      "message": "re. the interface, just to note that since android would want to construct LUTs out of this to hardware accelerate display tonemapping, we should probably make sure the fields themselves are public too",
+      "parentUuid": "44ca33ad_6845c34a",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
