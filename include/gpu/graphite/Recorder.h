@@ -302,10 +302,6 @@ private:
     skia_private::STArray<kMaxKeyAndDataBuilders, std::unique_ptr<KeyAndDataBuilder>>
         fKeyAndDataBuilders;
 
-    // Iterating over tracked devices in flushTrackedDevices() needs to be re-entrant and support
-    // additions to fTrackedDevices if registerDevice() is triggered by a temporary device during
-    // flushing. Removals are handled by setting elements to null; final clean up is handled at the
-    // end of the initial call to flushTrackedDevices().
     skia_private::TArray<sk_sp<Device>> fTrackedDevices;
     int fFlushingDevicesIndex = -1;
 
@@ -329,6 +325,10 @@ private:
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+
+#if defined(SK_DEBUG)
+    bool fIsFlushingTrackedDevices = false;
+#endif
 
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
