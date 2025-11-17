@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcc6b9f8_f0438785",
+        "filename": "BUILD.gn",
+        "patchSetId": 22
+      },
+      "lineNbr": 1511,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-17T16:46:14Z",
+      "side": 1,
+      "message": "I am a bit surprised that we don\u0027t have to add references to the library build via Bazel\u0027s `//rust/common:skia_rust_common` target.  But if it works, then it works (and I see that CQ dry run is green).  So LGTM, even though I don\u0027t quite understand this.",
+      "range": {
+        "startLine": 1511,
+        "startChar": 28,
+        "endLine": 1511,
+        "endChar": 46
+      },
+      "revId": "9c879c96aaf136b64c8019b71966aecf271fd123",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
