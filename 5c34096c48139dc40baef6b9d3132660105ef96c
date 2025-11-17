@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60eea769_83dff039",
+        "filename": "BUILD.gn",
+        "patchSetId": 23
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-17T21:35:06Z",
+      "side": 1,
+      "message": "This needs to depend on something in order for the files it references to exist, like `third_party/rust/cxx/v1/cxx.h`.",
+      "revId": "5c34096c48139dc40baef6b9d3132660105ef96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce49076f_c8f08f3d",
+        "filename": "rust/common/SkStreamAdapter.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-17T21:35:06Z",
+      "side": 1,
+      "message": "In particular, whatever creates this cxx.h.",
+      "revId": "5c34096c48139dc40baef6b9d3132660105ef96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
