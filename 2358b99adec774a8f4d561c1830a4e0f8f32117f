@@ -111,6 +111,30 @@
       },
       "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6ce9a16_48936207",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "That\u0027s something I\u0027ve been thinking about.\n\nThe metadata divides into two categories: (1) getting into relative linear space parameters, which is just HDR reference white and (2) gain curve parameters.\n\nFor 1, we\u0027ll want to expose everything.\n\nFor 2, I think we just want to expose a function to evaluate the gain at a given headroom (at a number of specified input points). That way, the evaluation math only exists one place (well, two, if you count the shader).",
+      "parentUuid": "5d55d0e9_7dd15ea9",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 14
+      },
+      "revId": "2358b99adec774a8f4d561c1830a4e0f8f32117f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

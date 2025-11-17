@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20417b6e_1218e82a",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "There were also the classes, which I wanted to keep in the anonymous namespace. Should I un-static the static methods, to avoid the redundancy?",
+      "parentUuid": "c9875cfd_567e9749",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63edc09a_054ca92b",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -54,6 +78,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "include/private/base/SkFloatingPoint.h has one of these for floats and one for doubles, if you like",
+      "range": {
+        "startLine": 15,
+        "startChar": 7,
+        "endLine": 15,
+        "endChar": 16
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57798657_b8cb13b1",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63edc09a_054ca92b",
       "range": {
         "startLine": 15,
         "startChar": 7,
@@ -77,6 +125,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "SkDebugf?",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 18
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9c73be_d680d7de",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Yikes! Fixed.\n\n(Maybe this escaped presubmits cause it was in a macro!)",
+      "parentUuid": "724b23dc_e0a7c8e8",
       "range": {
         "startLine": 89,
         "startChar": 12,
@@ -133,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12490bf8_95d2f10f",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "I wanted the parsing to be exactly the same as the bitstream syntax (which has a 4 there), but ...  yeah, that was going too far. Used the constant.\n\nI also changed the constants and indices to uint8_ts, to avoid having to cast so much.",
+      "parentUuid": "967f4cc4_237e34e0",
+      "range": {
+        "startLine": 205,
+        "startChar": 83,
+        "endLine": 205,
+        "endChar": 85
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de3be53c_c5a3c9a0",
@@ -146,6 +242,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "suggestion: could we just `return flags.readBits(6) \u003d\u003d 0` and then unindent the following else block?",
+      "range": {
+        "startLine": 247,
+        "startChar": 12,
+        "endLine": 247,
+        "endChar": 27
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b887c5_321e5488",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Ordinarily I vastly prefer the \"early return\" style instead of big if-then-else loops, but in this case I wanted exact structure that the bitstream syntax has.\n\nIn fact, I\u0027ve changed \n```\n  RETURN_ON_FALSE(flags.readBits(6) \u003d\u003d 0);\n```\nto\n```\n  const auto reserved_zero \u003d flags.readBits(6);\n  RETURN_ON_FALSE(reserved_zero \u003d\u003d 0);\n```",
+      "parentUuid": "de3be53c_c5a3c9a0",
       "range": {
         "startLine": 247,
         "startChar": 12,
@@ -181,6 +301,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9664c992_048af0a7",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Same deal that I want to keep the structure (even the indentation structure) the same between the two.",
+      "parentUuid": "b1d27517_a37dc643",
+      "range": {
+        "startLine": 259,
+        "startChar": 8,
+        "endLine": 259,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b42ca483_1494f64b",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -192,6 +336,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "suggestion: add note from spec that these bits are reserved 0. If enough other places have reserved 0s, maybe add a helper function/macro for that.",
+      "range": {
+        "startLine": 297,
+        "startChar": 30,
+        "endLine": 297,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28933c3b_09f1b65c",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Changed all of them to read an explicit `reserved_zero` and then put the RETURN_ON_FALSE in a separate line.",
+      "parentUuid": "b42ca483_1494f64b",
       "range": {
         "startLine": 297,
         "startChar": 30,
@@ -227,6 +395,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f6a551f_dbdeb6ba",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Exactly, it has the implicit max of 32.",
+      "parentUuid": "587b8adb_72c84f06",
+      "range": {
+        "startLine": 298,
+        "startChar": 31,
+        "endLine": 298,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcfb7743_d0cf8c47",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -238,6 +430,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "a, not 0 as per the spec? Can we add/update our tests to catch this?",
+      "range": {
+        "startLine": 303,
+        "startChar": 40,
+        "endLine": 303,
+        "endChar": 41
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cfc4daf_8c5cbba5",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Good catch.\n\nRight now I don\u0027t have a way to generate metadata with `gain_curve_use_pchip_slope_flag\u003d1`, because the `AgtmSyntax` structure is private to this file.\n\nI was thinking to add examples that test this using a hard-coded binary as the input. I\u0027d generally prefer to keep `AgtmSyntax` out of headers (which would be other way to test this).",
+      "parentUuid": "dcfb7743_d0cf8c47",
       "range": {
         "startLine": 303,
         "startChar": 40,
@@ -273,6 +489,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57db3bf1_775c5953",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Done (make it `kDefaultHdrReferenceWhite`).",
+      "parentUuid": "191d7969_a9179371",
+      "range": {
+        "startLine": 360,
+        "startChar": 28,
+        "endLine": 360,
+        "endChar": 34
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7ca681b_7663f678",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -284,6 +524,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "kMaxNumAlternateImages",
+      "range": {
+        "startLine": 376,
+        "startChar": 64,
+        "endLine": 376,
+        "endChar": 65
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e839b3b2_1b4e1c67",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d7ca681b_7663f678",
       "range": {
         "startLine": 376,
         "startChar": 64,
@@ -319,6 +583,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a788cec0_96700105",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Added a comment and SkASSERT",
+      "parentUuid": "cf1eee7e_4e23c918",
+      "range": {
+        "startLine": 419,
+        "startChar": 16,
+        "endLine": 419,
+        "endChar": 47
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8903373_eef1e496",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -330,6 +618,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "The spec says to divide by 4000 and subtract 6. An offset of 24000 is 6 * 4000 so that looks fine, but shouldn\u0027t this be 4000? Same question for the serialize bit.",
+      "range": {
+        "startLine": 459,
+        "startChar": 77,
+        "endLine": 459,
+        "endChar": 81
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1149b22_106ebfee",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Yes, good catch, that\u0027s the sort of bug that\u0027s going to happen when only testing serialize\u003c-\u003edeserialize round-trip.\n\nBTW, I think I\u0027m going to change the spec here to read\n```\n   (min(gain_curve_control_points_y[a][c], 48000) - 24000) * (1/4000)\n```\n\nThat\u0027s slightly numerically \"nicer\", and removes some of the confusion.",
+      "parentUuid": "c8903373_eef1e496",
       "range": {
         "startLine": 459,
         "startChar": 77,
@@ -365,6 +677,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fda8a750_6e2e188e",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "This, too, should be fixed int spec, to read\n```\n   (clamp(gain_curve_control_points_theta[a][c], 1, 35999) - 18000) * (pi / 36000)\n```\n\nThat way it will be more clear that this is the right math (the fact that the \"factor\" parameter is a reciprocal shouldn\u0027t be too alarming, with the rest of it sorted out).\n\nFiled\nhttps://github.com/SMPTE/st2094-50/issues/63",
+      "parentUuid": "2299d58b_e22d29a2",
+      "range": {
+        "startLine": 463,
+        "startChar": 36,
+        "endLine": 463,
+        "endChar": 51
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6164c95_ec0285fc",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -376,6 +712,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "Should we assert this is less than or equal to kMaxNumAlternateImages?",
+      "range": {
+        "startLine": 491,
+        "startChar": 34,
+        "endLine": 491,
+        "endChar": 53
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cefcc70f_80059b64",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Added an `SkASSERT`.",
+      "parentUuid": "f6164c95_ec0285fc",
       "range": {
         "startLine": 491,
         "startChar": 34,
@@ -411,6 +771,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6059ce9e_8bc7dd2b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "I was only interested in making sure the values round-tripped (which doesn\u0027t require the tolerances).",
+      "parentUuid": "f061f814_dfcf6245",
+      "range": {
+        "startLine": 536,
+        "startChar": 19,
+        "endLine": 536,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e47a197c_d89855eb",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -422,6 +806,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "Should we assert this is less than or equal to kMaxNumControlPoints?",
+      "range": {
+        "startLine": 564,
+        "startChar": 64,
+        "endLine": 564,
+        "endChar": 81
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27acab7b_45d896b7",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Added an `SkASSERT`. Also for kMin.",
+      "parentUuid": "e47a197c_d89855eb",
       "range": {
         "startLine": 564,
         "startChar": 64,
@@ -457,6 +865,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ae8c019_c99e4eaf",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "7ba6ac42_d19de438",
+      "range": {
+        "startLine": 572,
+        "startChar": 64,
+        "endLine": 572,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d9377ba_c8f5526c",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -468,6 +900,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "See above for comment about tricky math",
+      "range": {
+        "startLine": 576,
+        "startChar": 19,
+        "endLine": 576,
+        "endChar": 50
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da761c9c_2aa5b6c8",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Same issue.\nhttps://github.com/SMPTE/st2094-50/issues/63",
+      "parentUuid": "7d9377ba_c8f5526c",
       "range": {
         "startLine": 576,
         "startChar": 19,
@@ -501,6 +957,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12996e18_0a3850b5",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "257ef8c5_d10731a7",
+      "range": {
+        "startLine": 293,
+        "startChar": 8,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c63de74_c7c11588",
@@ -514,6 +994,30 @@
       "writtenOn": "2025-11-17T14:57:10Z",
       "side": 1,
       "message": "How did you end up with this (and below) precision tolerances?",
+      "range": {
+        "startLine": 294,
+        "startChar": 79,
+        "endLine": 294,
+        "endChar": 86
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7105a85c_079e12bd",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Added tolerance values to the top, with an explanation (for everything but slope, it\u0027s the quantization error).",
+      "parentUuid": "9c63de74_c7c11588",
       "range": {
         "startLine": 294,
         "startChar": 79,

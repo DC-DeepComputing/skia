@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d6e8eb_35903a78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-17T22:04:03Z",
+      "side": 1,
+      "message": "Thanks, updated.\n\nIndeed the testing for this isn\u0027t as thorough as it will need to be before it can be enabled, cause I\u0027m holding off on adding hard-coded until the format is set in stone.\n\n(I\u0027m tempted to add this as `application_version\u003d255` so that we can test it more widely without adding compatibility issues).",
+      "revId": "6975d2aa6ec04c66cb0b867e1f8252fce7e7e7da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
