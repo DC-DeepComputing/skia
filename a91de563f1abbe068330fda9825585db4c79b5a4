@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f5c96d1_d7bafea3",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-17T16:07:33Z",
+      "side": 1,
+      "message": "They are not flag bits from the public API, but they are used as enum bits internally. Unfortunately SkEnumBitmask is set up to expect the enum values to already be shifted.  But I\u0027ve often thought it would be nice if it could auto-shift the values to make mask enum declarations simpler, so maybe I\u0027ll see how hard that change is first, and will either just change these to decimal values or have them use the packed values.",
+      "parentUuid": "bf21aa6c_73ec75fd",
+      "range": {
+        "startLine": 212,
+        "startChar": 11,
+        "endLine": 212,
+        "endChar": 22
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a65716ff_f17cedfb",
         "filename": "src/gpu/graphite/Caps.cpp",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-17T15:24:03Z",
       "side": 1,
       "message": "Hmm I\u0027m not sure if we should be increasing sampling count from what was requested. Like that could actually impact memory usage the client was expecting to use. Also shouldn\u0027t we already have a power2 of count if we use the new enums?",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 79
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5dfb4ff_21f3c618",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-17T16:07:33Z",
+      "side": 1,
+      "message": "That\u0027s a good point, I switched it to round down to the lower power of 2.  \n\nContextOptions::fInternalMultisampleCount is a `uint8_t` so for now we can\u0027t just switch it to SampleCount until clients are updated. After seeing how things behaved for our own backend texture code, I don\u0027t think we should have TextureInfo::Data::fSampleCount get moved to `SampleCount` because it makes bridging the backend-specific representations cumbersome.\n\nThat at least has the advantage that we can validate the value when creating the TextureInfo. So far ContextOptions::fInternalMultisampleCount is the only place that has this auto-sizing logic, and I think that it could be moved to an enum since that\u0027s a policy situation not necessarily a texture object situation.\n\nProposal: add a std::optional\u003cSampleCount\u003e fInternalSampleCount field that is used if set, and otherwise we use the old uint8_t value with auto-sizing. Then we update clients and drop the old field and switch the type to no longer be std::optional.",
+      "parentUuid": "a65716ff_f17cedfb",
       "range": {
         "startLine": 31,
         "startChar": 5,

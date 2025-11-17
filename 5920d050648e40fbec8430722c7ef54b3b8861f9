@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dfd3325_4287ae8c",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-17T16:07:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22576962_20340d79",
+      "revId": "5920d050648e40fbec8430722c7ef54b3b8861f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1604974_00c84e8d",
