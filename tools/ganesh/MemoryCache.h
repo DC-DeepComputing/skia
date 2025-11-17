@@ -32,8 +32,8 @@ public:
         fMap.clear();
     }
 
-    sk_sp<SkData> load(const SkData& key) override;
-    void store(const SkData& key, const SkData& data, const SkString& description) override;
+    sk_sp<SkData> load1(const SkData& key) override;
+    void store2(const SkData& key, const SkData& data, const SkString& description) override;
     int numCacheMisses() const { return fCacheMissCnt; }
     int numCacheStores() const { return fCacheStoreCnt; }
     void resetCacheStats() {
