@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22576962_20340d79",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-11-17T15:20:21Z",
+      "side": 1,
+      "message": "Add spaces here to line the \u0027*\u0027s up?",
+      "revId": "5920d050648e40fbec8430722c7ef54b3b8861f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1604974_00c84e8d",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-11-17T15:20:21Z",
+      "side": 1,
+      "message": "Hmm - wdyt about having a kNumBitsForSampleCount?",
+      "range": {
+        "startLine": 23,
+        "startChar": 68,
+        "endLine": 23,
+        "endChar": 69
+      },
+      "revId": "5920d050648e40fbec8430722c7ef54b3b8861f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
