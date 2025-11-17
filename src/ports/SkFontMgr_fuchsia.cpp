@@ -245,9 +245,11 @@ private:
 
 sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stream,
                                              const SkFontArguments& args, TypefaceId id) {
+    SkDEBUGF("CreateTypefaceFromSkStream(%d:%d)", id.ttcIndex, id.bufferId);
     SkFontScanner_FreeType fontScanner;
     int numInstances;
     if (!fontScanner.scanFace(stream.get(), args.getCollectionIndex(), &numInstances)) {
+        SkDEBUGF("CreateTypefaceFromSkStream scanFace failed");
         return nullptr;
     }
     bool isFixedPitch;
@@ -263,6 +265,7 @@ sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stre
                                   &isFixedPitch,
                                   &axisDefinitions,
                                   &current)) {
+        SkDEBUGF("CreateTypefaceFromSkStream scanInstance failed");
         return nullptr;
     }
 
@@ -276,6 +279,7 @@ sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stre
         std::move(stream), args.getCollectionIndex(), args.getPalette().index,
         axisValues.get(), axisDefinitions.size(),
         args.getPalette().overrides, args.getPalette().overrideCount);
+    SkDEBUGF("SkTypeface_Fuchsia('%s')", name.c_str());
     return sk_make_sp<SkTypeface_Fuchsia>(std::move(fontData), style, isFixedPitch, name, id);
 }
 
