@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e476e3e_1c49fb13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-17T14:54:12Z",
+      "side": 1,
+      "message": "I think the android canary is red due to timeouts that are probably unrelated to this CL",
+      "revId": "e087ae4429032126a1d9defc72405bba1e62f5d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
