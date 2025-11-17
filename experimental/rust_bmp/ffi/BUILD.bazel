@@ -1,0 +1,91 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_static_library", "rust_test")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_cc_library",
+    "skia_filegroup",
+)
+
+# Rust source files for BMP decoder FFI
+# Uses image-rs crate for BMP decoding instead of custom implementation
+skia_filegroup(
+    name = "rs_srcs",
+    srcs = [
+        "FFI.rs",  # Main FFI bridge with cxx::bridge macro
+        "bmp_types.rs",  # Error type definitions for FFI
+    ],
+)
+
+# Source file containing the cxx::bridge macro
+skia_filegroup(
+    name = "cxx_bridge_srcs",
+    srcs = ["FFI.rs"],
+)
+
+# C++ side of the FFI bridge
+skia_cc_library(
+    name = "ffi_cpp",
+    hdrs = ["FFI.h"],
+    features = ["layering_check"],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge/include",  # Auto-generated FFI.rs.h header
+        "//rust/common:ffi_utils",  # Shared SkStreamAdapter
+    ],
+)
+
+# Generate C++/Rust FFI bindings using cxx bridge
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "FFI.rs",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [":ffi_cpp"],
+)
+
+# Rust static library containing BMP decoder FFI
+rust_static_library(
+    name = "ffi_rs",
+    srcs = [":rs_srcs"],
+    crate_root = "FFI.rs",  # No lib.rs - FFI.rs is the crate root (matches rust/png pattern)
+    edition = "2021",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge",
+        "//rust/common:cxx_bridge",  # CXX bridge support
+        "//rust/common:skia_rust_common",  # SkStreamAdapter for streaming I/O
+        "@crates//:cxx",  # CXX FFI framework
+        "@crates//:image",  # image-rs for BMP decoding
+        "@crates//:thiserror",  # Error handling
+    ],
+)
+
+# Unit tests for Rust FFI code
+rust_test(
+    name = "test_bmp_ffi",
+    timeout = "short",
+    crate = ":ffi_rs",
+)
+
+# Binary for fuzzing Rust BMP decoder - tests full decode pipeline
+rust_binary(
+    name = "fuzz_rust_bmp",
+    srcs = [
+        "fuzz_rust_bmp.rs",
+        ":rs_srcs",
+    ],
+    crate_root = "fuzz_rust_bmp.rs",
+    edition = "2021",
+    deps = [
+        ":cxx_bridge",
+        "//rust/common:skia_rust_common",
+        "@crates//:cxx",
+        "@crates//:image",
+        "@crates//:thiserror",
+    ],
+)
