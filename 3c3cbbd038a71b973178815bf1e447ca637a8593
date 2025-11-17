@@ -16,6 +16,535 @@
       "message": "Ok, I think this is ready (modulo the fuzzers, which will need to be landed).\n\nI\u0027ve kept the `Agtm` class as private. Once I have the shader landed (the last part!), then I\u0027ll rename and add the `sk_sp` private interface.\n\nAlso, I moved everything to a separate file.",
       "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9875cfd_567e9749",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "nit: Since all the functions below are static, do we need the anonymous namespace?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63edc09a_054ca92b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "include/private/base/SkFloatingPoint.h has one of these for floats and one for doubles, if you like",
+      "range": {
+        "startLine": 15,
+        "startChar": 7,
+        "endLine": 15,
+        "endChar": 16
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724b23dc_e0a7c8e8",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "SkDebugf?",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 18
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcae1109_12269a32",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "note to self: we clamp after parsing.",
+      "range": {
+        "startLine": 169,
+        "startChar": 47,
+        "endLine": 169,
+        "endChar": 66
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967f4cc4_237e34e0",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "kMaxNumAlternateImages",
+      "range": {
+        "startLine": 205,
+        "startChar": 83,
+        "endLine": 205,
+        "endChar": 85
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de3be53c_c5a3c9a0",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "suggestion: could we just `return flags.readBits(6) \u003d\u003d 0` and then unindent the following else block?",
+      "range": {
+        "startLine": 247,
+        "startChar": 12,
+        "endLine": 247,
+        "endChar": 27
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1d27517_a37dc643",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "to avoid an else and a nested block after this, what about just returning true here? I know it makes the return true redundant, but the fewer nests, the happier my brain is.",
+      "range": {
+        "startLine": 259,
+        "startChar": 8,
+        "endLine": 259,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b42ca483_1494f64b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "suggestion: add note from spec that these bits are reserved 0. If enough other places have reserved 0s, maybe add a helper function/macro for that.",
+      "range": {
+        "startLine": 297,
+        "startChar": 30,
+        "endLine": 297,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "587b8adb_72c84f06",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "Just to check my understanding here, the spec doesn\u0027t force a clamp on the number of control points aside from 5 bits max (31+1 \u003d 32)?",
+      "range": {
+        "startLine": 298,
+        "startChar": 31,
+        "endLine": 298,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcfb7743_d0cf8c47",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "a, not 0 as per the spec? Can we add/update our tests to catch this?",
+      "range": {
+        "startLine": 303,
+        "startChar": 40,
+        "endLine": 303,
+        "endChar": 41
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "191d7969_a9179371",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "nit: let\u0027s pull this out as a constant and add a comment that this magical value is specified in the spec. (I see 203 used in the writing logic also)",
+      "range": {
+        "startLine": 360,
+        "startChar": 28,
+        "endLine": 360,
+        "endChar": 34
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7ca681b_7663f678",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "kMaxNumAlternateImages",
+      "range": {
+        "startLine": 376,
+        "startChar": 64,
+        "endLine": 376,
+        "endChar": 65
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf1eee7e_4e23c918",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "note to self (and maybe this is SkASSERT worthy) since we read 2 bits, we don\u0027t need a default case here.",
+      "range": {
+        "startLine": 419,
+        "startChar": 16,
+        "endLine": 419,
+        "endChar": 47
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8903373_eef1e496",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "The spec says to divide by 4000 and subtract 6. An offset of 24000 is 6 * 4000 so that looks fine, but shouldn\u0027t this be 4000? Same question for the serialize bit.",
+      "range": {
+        "startLine": 459,
+        "startChar": 77,
+        "endLine": 459,
+        "endChar": 81
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2299d58b_e22d29a2",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "I think this math is correct, but it could use a comment to help explain the conversion between the spec and the offset (pi in the denominator instead of the numerator made me really look at it hard)",
+      "range": {
+        "startLine": 463,
+        "startChar": 36,
+        "endLine": 463,
+        "endChar": 51
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6164c95_ec0285fc",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "Should we assert this is less than or equal to kMaxNumAlternateImages?",
+      "range": {
+        "startLine": 491,
+        "startChar": 34,
+        "endLine": 491,
+        "endChar": 53
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f061f814_dfcf6245",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "Do we need any floating point tolerance check for these 1/6 fractions?",
+      "range": {
+        "startLine": 536,
+        "startChar": 19,
+        "endLine": 536,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e47a197c_d89855eb",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "Should we assert this is less than or equal to kMaxNumControlPoints?",
+      "range": {
+        "startLine": 564,
+        "startChar": 64,
+        "endLine": 564,
+        "endChar": 81
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba6ac42_d19de438",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "See above for possible incorrect value",
+      "range": {
+        "startLine": 572,
+        "startChar": 64,
+        "endLine": 572,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d9377ba_c8f5526c",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "See above for comment about tricky math",
+      "range": {
+        "startLine": 576,
+        "startChar": 19,
+        "endLine": 576,
+        "endChar": 50
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "257ef8c5_d10731a7",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "Adding\n```\nskiatest::ReporterContext ctx(r, SkStringPrintf(\"image %u\", a));\n```\nCan make all these asserts easier to debug if they fail.\n\nMaybe also add one in the curve down below.",
+      "range": {
+        "startLine": 293,
+        "startChar": 8,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c63de74_c7c11588",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "How did you end up with this (and below) precision tolerances?",
+      "range": {
+        "startLine": 294,
+        "startChar": 79,
+        "endLine": 294,
+        "endChar": 86
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0890fd8d_10038ae1",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-17T14:57:10Z",
+      "side": 1,
+      "message": "I had to double check while reviewing that `agtmIn` will not be destroyed until the semicolon (I\u0027d worried it would be destroyed after the .get()). Indeed, it\u0027s fine and you don\u0027t hold onto the pointer so it\u0027s doubly fine.",
+      "range": {
+        "startLine": 330,
+        "startChar": 41,
+        "endLine": 330,
+        "endChar": 47
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
