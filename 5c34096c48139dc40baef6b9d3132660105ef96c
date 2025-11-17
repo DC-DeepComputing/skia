@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ee142a9_57287c0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-17T21:44:33Z",
+      "side": 1,
+      "message": "Also, locally building from scratch after this commit I am getting many errors of the form\n\n`mold: error: duplicate symbol: librust_png_ffi_rs.a(SkCanvas.o): libskia.a(core.SkCanvas.o): SkCanvas::SkCanvas()`\n\nI\u0027m not sure why `librust_png_ffi_rs.a` references a `SkCanvas.o`, but I\u0027m pretty sure it isn\u0027t supposed to.",
+      "revId": "5c34096c48139dc40baef6b9d3132660105ef96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60eea769_83dff039",
         "filename": "BUILD.gn",
         "patchSetId": 23
