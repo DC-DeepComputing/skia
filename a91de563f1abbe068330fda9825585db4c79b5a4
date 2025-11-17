@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf21aa6c_73ec75fd",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-17T15:24:03Z",
+      "side": 1,
+      "message": "Are these meant to be used as flag bits or from the public API is it just you have one of these. If it is the latter, I would suggest just writing the decimal numbers instead of the hex. Also should we consider just making this raw enum values that don\u0027t correspond the actual decimal values they represent? That would give us more type/value safety but at the cost of a little more annoying conversions.",
+      "range": {
+        "startLine": 212,
+        "startChar": 11,
+        "endLine": 212,
+        "endChar": 22
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a65716ff_f17cedfb",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-11-17T15:24:03Z",
+      "side": 1,
+      "message": "Hmm I\u0027m not sure if we should be increasing sampling count from what was requested. Like that could actually impact memory usage the client was expecting to use. Also shouldn\u0027t we already have a power2 of count if we use the new enums?",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 79
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
