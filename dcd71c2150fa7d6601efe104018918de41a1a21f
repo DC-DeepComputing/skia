@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204a7ebe_21d3afdd",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T15:46:55Z",
+      "side": 1,
+      "message": "GCC really likes to warn about this `-` and `\u0026`. It is the case that `-` binds tighter than `\u0026` so the subtraction does happen first, but it is somewhat difficult to see that.\n\nhttps://skia-review.googlesource.com/c/skia/+/1104336",
+      "range": {
+        "startLine": 233,
+        "startChar": 18,
+        "endLine": 233,
+        "endChar": 59
+      },
+      "revId": "dcd71c2150fa7d6601efe104018918de41a1a21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
