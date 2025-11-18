@@ -34,6 +34,23 @@
       "parentUuid": "7bc65cc1_ca4a98a3",
       "revId": "be5483271a549e77bccf9141ddeccf9bf266c03e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f4fa3ac_76f00d60",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T16:25:36Z",
+      "side": 1,
+      "message": "And after making sure this works, remove all the `SkDEBUGF` or put them behind a flag, like `kSkShowTextBlitCoverage` or something like that. Once behind a flag they can just be `SkDebugf`.",
+      "revId": "be5483271a549e77bccf9141ddeccf9bf266c03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
