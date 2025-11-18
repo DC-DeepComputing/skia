@@ -125,9 +125,9 @@ skgpu::graphite::PaintOptions LinearEffect(sk_sp<SkRuntimeEffect> linearEffect,
                                             std::move(linearEffect),
                                             { { std::move(child) } }) });
     if (matrixColorFilter) {
-        paintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
+        paintOptions.setColorFilters(SKSPAN_INIT_ONE( PrecompileColorFilters::Matrix() ));
     }
-    paintOptions.setBlendModes({ blendMode });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( blendMode ));
     paintOptions.setPaintColorIsOpaque(paintColorIsOpaque);
     paintOptions.setDither(dither);
 
