@@ -330,6 +330,10 @@ private:
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 
+#if defined(SK_DEBUG)
+    bool fIsFlushingTrackedDevices = false;
+#endif
+
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
     Context* fContext = nullptr;
