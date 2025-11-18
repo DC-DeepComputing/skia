@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da239355_f263c458",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-18T16:02:37Z",
+      "side": 1,
+      "message": "I tried updating SkEnumBitMask to use unshifted values in its wrapped enum and it\u0027s pretty awkward in C++ because there\u0027s no way to know the max value of the underlying enum to choose the mask value type for the enum. Right now we can use `std::underlying_type\u003cE\u003e` because we know the enum author had to size it appropriately for the explicitly shifted values. Trying to add additional template parameters makes forward declarations of SkEnumBitmask awkward as well.\n\nSo I\u0027ll just have this be set to 1,2,4,8,16 in decimal",
+      "parentUuid": "8f5c96d1_d7bafea3",
+      "range": {
+        "startLine": 212,
+        "startChar": 11,
+        "endLine": 212,
+        "endChar": 22
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a65716ff_f17cedfb",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "That\u0027s a good point, I switched it to round down to the lower power of 2.  \n\nContextOptions::fInternalMultisampleCount is a `uint8_t` so for now we can\u0027t just switch it to SampleCount until clients are updated. After seeing how things behaved for our own backend texture code, I don\u0027t think we should have TextureInfo::Data::fSampleCount get moved to `SampleCount` because it makes bridging the backend-specific representations cumbersome.\n\nThat at least has the advantage that we can validate the value when creating the TextureInfo. So far ContextOptions::fInternalMultisampleCount is the only place that has this auto-sizing logic, and I think that it could be moved to an enum since that\u0027s a policy situation not necessarily a texture object situation.\n\nProposal: add a std::optional\u003cSampleCount\u003e fInternalSampleCount field that is used if set, and otherwise we use the old uint8_t value with auto-sizing. Then we update clients and drop the old field and switch the type to no longer be std::optional.",
       "parentUuid": "a65716ff_f17cedfb",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 79
+      },
+      "revId": "a91de563f1abbe068330fda9825585db4c79b5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc6af2e5_33824c05",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-18T16:02:37Z",
+      "side": 1,
+      "message": "After talking offline with both Greg and Rob, we\u0027ve decided that the end API will be that `SampleCount` will be the consistent type that is set on the TextureInfo and ContextOptions.\n\nHowever, in order to stage it with clients that currently assign an integer directly, we will land this CL as-is. In a follow-up CL, I\u0027ll replace the SampleCount enum with a temporary pseudo enum class that looks like an enum class but provides an integer assignment operator and update the type fields to be strictly typed. After updating clients, the pseudo enum will be reverted back to the regular enum class in this CL.",
+      "parentUuid": "b5dfb4ff_21f3c618",
       "range": {
         "startLine": 31,
         "startChar": 5,

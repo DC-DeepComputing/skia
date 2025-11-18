@@ -57,6 +57,30 @@
       },
       "revId": "5920d050648e40fbec8430722c7ef54b3b8861f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64cd763f_aab32288",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-18T16:02:37Z",
+      "side": 1,
+      "message": "Done. In a follow up I am also planning to add a bitfield template helper to significantly clean up this code pattern in graphite.",
+      "parentUuid": "e1604974_00c84e8d",
+      "range": {
+        "startLine": 23,
+        "startChar": 68,
+        "endLine": 23,
+        "endChar": 69
+      },
+      "revId": "5920d050648e40fbec8430722c7ef54b3b8861f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
