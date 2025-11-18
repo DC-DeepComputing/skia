@@ -230,7 +230,7 @@ public:
     void alignForNonShading(int requiredAlignment) {
         this->alignTo(requiredAlignment);
         fNonShadingOffset = fStorage.size();
-        SkASSERT((requiredAlignment - 1 & requiredAlignment) == 0);
+        SkASSERT(((requiredAlignment - 1) & requiredAlignment) == 0);
         fReqAlignment = std::max(fReqAlignment, requiredAlignment);
 
 #ifdef SK_DEBUG
