@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3e9b345_833c5eed",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-18T17:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "addc7f03_98167254",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63edc09a_054ca92b",
