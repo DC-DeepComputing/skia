@@ -22,6 +22,30 @@
       },
       "revId": "dcd71c2150fa7d6601efe104018918de41a1a21f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aeddd0b_356ebffd",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-11-18T15:50:56Z",
+      "side": 1,
+      "message": "Sorry, bad habit I picked up from trying to keep parenthesis to a minimum in my personal code.",
+      "parentUuid": "204a7ebe_21d3afdd",
+      "range": {
+        "startLine": 233,
+        "startChar": 18,
+        "endLine": 233,
+        "endChar": 59
+      },
+      "revId": "dcd71c2150fa7d6601efe104018918de41a1a21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
