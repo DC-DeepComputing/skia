@@ -667,10 +667,10 @@ public:
         return { /*isSDF=*/false, fVertexFiller.isLCD(), /*isAA=*/true };
     }
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
+    std::tuple<bool, int> regenerateAtlas(int begin,
                                           RegenerateAtlasDelegate regenerateAtlas) const override {
         return regenerateAtlas(
-                &fGlyphs, begin, end, fVertexFiller.grMaskType(), this->glyphSrcPadding());
+                &fGlyphs, begin, fVertexFiller.grMaskType(), this->glyphSrcPadding());
     }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
@@ -781,10 +781,9 @@ public:
         return { /*isSDF=*/false, fVertexFiller.isLCD(), /*isAA=*/true };
     }
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
-                                          RegenerateAtlasDelegate regenerateAtlas) const override {
+    std::tuple<bool, int> regenerateAtlas(int begin, RegenerateAtlasDelegate regenerateAtlas) const override {
         return regenerateAtlas(
-                &fGlyphs, begin, end, fVertexFiller.grMaskType(), this->glyphSrcPadding());
+                &fGlyphs, begin, fVertexFiller.grMaskType(), this->glyphSrcPadding());
     }
 
 protected:
@@ -909,9 +908,8 @@ public:
         return { /*isSDF=*/true, fUseLCDText, /*isAA=*/fAntiAliased };
     }
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
-                                          RegenerateAtlasDelegate regenerateAtlas) const override {
-        return regenerateAtlas(&fGlyphs, begin, end, MaskFormat::kA8, this->glyphSrcPadding());
+    std::tuple<bool, int> regenerateAtlas(int begin, RegenerateAtlasDelegate regenerateAtlas) const override {
+        return regenerateAtlas(&fGlyphs, begin, MaskFormat::kA8, this->glyphSrcPadding());
     }
 
 protected:

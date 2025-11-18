@@ -524,19 +524,18 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
                   (int)subRun.vertexStride(geo->fDrawMatrix), vertexStride);
 
         const int subRunEnd = subRun.glyphCount();
+        int regenEnd;
         auto regenerateDelegate = [&](sktext::gpu::GlyphVector* glyphs,
                                       int begin,
-                                      int end,
                                       skgpu::MaskFormat maskFormat,
                                       int padding) {
-            return glyphs->regenerateAtlasForGanesh(begin, end, maskFormat, padding, target);
+            return glyphs->regenerateAtlasForGanesh(begin, regenEnd, maskFormat, padding, target);
         };
         for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
             // Regenerate the atlas for the remainder of the glyphs in the run, or the remainder
-            // of the glyphs to fill the vertex buffer.
-            int regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
-            auto[ok, glyphsRegenerated] = subRun.regenerateAtlas(subRunCursor, regenEnd,
-                                                                 regenerateDelegate);
+            // of the glyphs to fill the vertex buffer. This was captured above by reference.
+            regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
+            auto[ok, glyphsRegenerated] = subRun.regenerateAtlas(subRunCursor, regenerateDelegate);
             // There was a problem allocating the glyph in the atlas. Bail.
             if (!ok) {
                 return;

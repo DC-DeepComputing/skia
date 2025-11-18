@@ -90,7 +90,7 @@ private:
     // This function is implemented in graphite/text/AtlasManager.cpp, and should only be called
     // from graphite::Device or linking issues may occur.
     std::tuple<bool, int> regenerateAtlasForGraphite(
-            int begin, int end,
+            int begin,
             skgpu::MaskFormat maskFormat,
             int srcPadding,
             skgpu::graphite::Recorder*);

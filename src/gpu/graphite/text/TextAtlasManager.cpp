@@ -341,10 +341,11 @@ namespace sktext::gpu {
 using DrawAtlas = skgpu::graphite::DrawAtlas;
 
 std::tuple<bool, int> GlyphVector::regenerateAtlasForGraphite(int begin,
-                                                              int end,
                                                               skgpu::MaskFormat maskFormat,
                                                               int srcPadding,
                                                               skgpu::graphite::Recorder* recorder) {
+    SkASSERT(begin < SkToInt(fGlyphs.size() - 1));
+
     auto atlasManager = recorder->priv().atlasProvider()->textAtlasManager();
     auto tokenTracker = recorder->priv().tokenTracker();
 
@@ -369,7 +370,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlasForGraphite(int begin,
         SkBulkGlyphMetricsAndImages metricsAndImages{fTextStrike->strikeSpec()};
 
         // Update the atlas information in the GrStrike.
-        auto glyphs = fGlyphs.subspan(begin, end - begin);
+        auto glyphs = fGlyphs.subspan(begin, fGlyphs.size() - begin);
         int glyphsPlacedInAtlas = 0;
         bool success = true;
         for (const Variant& variant : glyphs) {
@@ -398,17 +399,13 @@ std::tuple<bool, int> GlyphVector::regenerateAtlasForGraphite(int begin,
         }
 
         return {success, glyphsPlacedInAtlas};
-    } else {
-        // The atlas hasn't changed, so our texture coordinates are still valid.
-        if (end == SkCount(fGlyphs)) {
-            // The atlas hasn't changed and the texture coordinates are all still valid. Update
-            // all the plots used to the new use token.
-            atlasManager->setUseTokenBulk(fBulkUseUpdater,
-                                          tokenTracker->nextFlushToken(),
-                                          maskFormat);
-        }
-        return {true, end - begin};
     }
+    // The atlas hasn't changed so our texture coordinates are still valid.
+    // Update all the plots used to the new use token.
+    atlasManager->setUseTokenBulk(fBulkUseUpdater,
+                                  tokenTracker->nextFlushToken(),
+                                  maskFormat);
+    return {true, fGlyphs.size() - begin};
 }
 
 }  // namespace sktext::gpu
