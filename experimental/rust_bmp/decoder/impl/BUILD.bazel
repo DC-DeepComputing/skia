@@ -1,0 +1,45 @@
+load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+# Filegroups for GN export (matches rust_png pattern)
+skia_filegroup(
+    name = "skbmprustcodec_hdrs",
+    srcs = ["SkBmpRustCodec.h"],
+    visibility = ["//experimental/rust_bmp/decoder:__pkg__"],
+)
+
+skia_filegroup(
+    name = "skbmprustcodec_srcs",
+    srcs = ["SkBmpRustCodec.cpp"],
+    visibility = ["//experimental/rust_bmp/decoder:__pkg__"],
+)
+
+# SkCodec implementation for Rust BMP decoder
+# Bridges Skia's codec interface to Rust FFI
+skia_cc_library(
+    name = "skbmprustcodec",
+    srcs = [
+        "SkBmpRustCodec.cpp",
+    ],
+    hdrs = [
+        "SkBmpRustCodec.h",
+    ],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+        "//tests:__subpackages__",  # Allow tests to verify decoder
+    ],
+    deps = [
+        "//:bmp_decode_codec",
+        "//:core",
+        "//experimental/rust_bmp/ffi:cxx_bridge",  # Generated bridge
+        "//experimental/rust_bmp/ffi:ffi_cpp",  # C++ FFI headers
+        "//experimental/rust_bmp/ffi:ffi_rs",  # Rust implementation
+        "//rust/common:ffi_utils",  # SkStreamAdapter for streaming I/O
+        "@crates//:cxx_cc",  # CXX runtime
+    ],
+)
