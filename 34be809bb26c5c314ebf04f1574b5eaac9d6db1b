@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad69a0b_4824d17b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-18T15:58:36Z",
+      "side": 1,
+      "message": "This can be reduced with `SkDEBUGCODE(bool fIsFlushingTrackedDevices \u003d false;)`",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 6
+      },
+      "revId": "34be809bb26c5c314ebf04f1574b5eaac9d6db1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85810d7f_3e9e2224",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-18T15:58:36Z",
+      "side": 1,
+      "message": "entrant",
+      "range": {
+        "startLine": 669,
+        "startChar": 55,
+        "endLine": 669,
+        "endChar": 61
+      },
+      "revId": "34be809bb26c5c314ebf04f1574b5eaac9d6db1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
