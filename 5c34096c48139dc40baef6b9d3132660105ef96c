@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9959649f_3936409f",
+        "filename": "BUILD.gn",
+        "patchSetId": 23
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T11:35:26Z",
+      "side": 1,
+      "message": "I submitted this CL to add the missing dependency which should assure that the header file exists in output folder.\n\nhttps://skia-review.googlesource.com/c/skia/+/1104116",
+      "parentUuid": "11a89eac_3feec702",
+      "revId": "5c34096c48139dc40baef6b9d3132660105ef96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce49076f_c8f08f3d",
