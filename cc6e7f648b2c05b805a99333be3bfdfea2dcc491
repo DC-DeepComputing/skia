@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8b9527a_32e311e7",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "If we delegate rust implementation of ICO format also to image crate, then it would be the crate which would handle internally the decoding of the image.",
+      "parentUuid": "cf265732_bf92608d",
+      "range": {
+        "startLine": 25,
+        "startChar": 32,
+        "endLine": 25,
+        "endChar": 62
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77bdad0e_2a3abd7c",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "[`blink::SegmentStream`]() can initially contain only a partial input (e.g. when only a part of a HTTP response has been received).  In this case:\n\n* `SkPngRustDecoder::MakeFromStream` succeeds, and when/if `codec-\u003eincrementalDecode` returns `kIncompleteInput`, then the caller can retry after more data is available through the original input stream.\n* IIUC `SkBmpRustCodec::MakeFromStream` returns `kIncompleteInput`.  This means that when `SkiaImageDecoderBase::OnSetData` receives more data, then it has to retry parsing the BMP from scratch (i.e. calling `OnCreateSkCodec` again, potentially copying the same pixels again).\n\nThe behavior of `SkBmpRustCodec` seems functionally correct, but it\u0027s probably desirable to match what the legacy `blink::BMPImageReader` is doing and supporting streaming/incremental decoding.  FWIW we don\u0027t need to copy the approach of `blink::BMPImageReader` which tracks how far the image has been decoded via [`decoded_offset_`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_reader.h;l\u003d323-324;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) and [`coord_`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_reader.h;l\u003d379-380;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) - we can do something different.  One approach here would be to reuse [`ReadAndSeekTraitsAdapterForSkStream`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d306-308;drc\u003d5658e91de531f3a05ebb87fad3deed5da7ecb5b2) from `SkPngRustCodec.cpp`.  If we decide to try this route, then I think it would be useful to try and move this part of code into `skia/common/rust`:\n\n* `ReadAndSeekTraitsAdapterForSkStream` in `common/SkStreamAdapter.h` and `SkStreamAdapter.cpp`\n* `skia/rust/png/FFI.h` \u003d\u003e `common/SkStreamAdapterInterfaces.h`\n* I/O-trait-related parts of `skia/rust/png/FFI.rs` \u003d\u003e `io_traits_ffi.rs`\n* Adjust `#[cxx::bridge]` as needed - most likely using techniques from https://cxx.rs/extern-c++.html#safely-unifying-occurrences-of-an-extern-type-across-bridges",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09e46f9c_88fd7af4",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Defined rust/common and using it from BMP decoder.",
+      "parentUuid": "77bdad0e_2a3abd7c",
       "range": {
         "startLine": 38,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eef57c7_479dde8a",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a35e1ab_b204b842",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f19f5010_ef6f9f82",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "Should there be a `TODO` here for handling ICC profile data?",
+      "range": {
+        "startLine": 86,
+        "startChar": 32,
+        "endLine": 86,
+        "endChar": 51
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb5907b9_54382aa9",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f19f5010_ef6f9f82",
       "range": {
         "startLine": 86,
         "startChar": 32,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e63b91d_8e9d4df4",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78a4e824_0cdbdfeb",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 5
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a99c3db2_a3b7a76a",
@@ -163,6 +283,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "nit: `std::move` to avoid ref-count churn?\n\n```suggestion\n        std::move(data),  // Cache the data we read\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 12
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae558883_b219376e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a99c3db2_a3b7a76a",
       "range": {
         "startLine": 114,
         "startChar": 8,
@@ -196,6 +340,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88b72756_73c77351",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eba1f778_a54a5bf5",
+      "range": {
+        "startLine": 171,
+        "startChar": 58,
+        "endLine": 171,
+        "endChar": 59
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3efa36a_e7aa6522",
@@ -209,6 +377,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "Pointer manipulation here may bypass C++ stdlib hardening - I would suggest to replace this with `operator[]` instead:\n\n```suggestion\n        const uint8_t* srcRow \u003d \u0026fDecodingState-\u003efRustDecodedData[y * srcRowBytes];\n```\n\nEven better, we probably should use `span`s instead of raw pointers.  `SkSpan` is a bit limited compared to `std::span` (or to Chromium\u0027s `base::span`), but it still seems beneficial.  So maybe (hand-waving) something like this:\n\n```\n    const SkSpan\u003cconst uint8_t\u003e srcImage \u003d fDecodingState-\u003efRustDecodedData;\n    for (int y \u003d 0; y \u003c height; ++y) {\n        const SkSpan\u003cconst uint8_t\u003e srcRow \u003d srcImage.first(srcRowBytes);\n        // ...\n        \n        srcImage \u003d srcImage.subspan(srcRowBytes);\n    }\n```\n\n(Using spans will also side-step the question if the multiplication here is safe from integer overflow.)",
+      "range": {
+        "startLine": 183,
+        "startChar": 32,
+        "endLine": 183,
+        "endChar": 89
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6e182e_6e8187c0",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3efa36a_e7aa6522",
       "range": {
         "startLine": 183,
         "startChar": 32,
@@ -242,6 +434,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d6c79f7_74664923",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Conversion no longer required after switch to image crate and SkSwizzler.",
+      "parentUuid": "f6197e1e_311a2df9",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 71
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aaa3212d_8d20632e",
@@ -255,6 +471,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "IIUC this `else` block can execute when `dstRow` is (say) `kGray_8_SkColorType`.  In this case, `memcpy` would be incorrect.  AFAIU the legacy `SkBmpCodec` [uses](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkBmpStandardCodec.cpp;l\u003d227;drc\u003d35d26d364efb57d0386b98312ba739f7f65ae97e) `SkSwizzler` to handle all the pixel format transformations.  I think using `SkSwizzler` would also let us avoid the manual BGR/RGB -\u003e RGB_565 and RGBA/BGRA transformations on lines 186-260.",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 71
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df158416_c1ec7641",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Switched to SkSwizzler.",
+      "parentUuid": "aaa3212d_8d20632e",
       "range": {
         "startLine": 262,
         "startChar": 0,
@@ -288,6 +528,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b256dc_6a7214c4",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Switched to SkSwizzler.",
+      "parentUuid": "3783ee74_1cb5106c",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 6
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6c499d1_aa36a351",
@@ -301,6 +565,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "I think this needs an explanatory anti-integer-overflow comment or `SkSafeMath`.",
+      "range": {
+        "startLine": 333,
+        "startChar": 37,
+        "endLine": 333,
+        "endChar": 38
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ad386be_f96c58c6",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6c499d1_aa36a351",
       "range": {
         "startLine": 333,
         "startChar": 37,
@@ -334,6 +622,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fedba62_bab6ccdc",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "273b7832_aa9df7f5",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 49
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "623cdb95_81f5d080",
@@ -347,6 +659,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "I assume that this also needs to take `dstInfo` into account?",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 14
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6af9356_4135a03c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Switched to SkSwizzler.",
+      "parentUuid": "623cdb95_81f5d080",
       "range": {
         "startLine": 342,
         "startChar": 8,
@@ -380,6 +716,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "814b2ec6_6516c6d8",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "966c450c_e85ae906",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 28
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dda42fd_fe83b5fd",
@@ -393,6 +753,30 @@
       "writtenOn": "2025-11-04T01:19:58Z",
       "side": 1,
       "message": "nit: I would remove this comment - this info can be inferred from the field name + type.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 21
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7bbc1dc_dd895dfc",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dda42fd_fe83b5fd",
       "range": {
         "startLine": 82,
         "startChar": 0,
@@ -426,6 +810,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5892fd47_e20b9568",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "655a88cb_dd1b0c5a",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 19
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf83eb8f_ee139140",
@@ -439,6 +847,30 @@
       "writtenOn": "2025-11-04T22:12:30Z",
       "side": 1,
       "message": "Let\u0027s remove this mostly empty file for now - we can introduce it later if needed (together with supporting `BUILD.bazel` / `.gn*` / `#[cxx::bridge]` changes ).",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12c4d49c_a37c3090",
+        "filename": "experimental/rust_bmp/ffi/FFI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf83eb8f_ee139140",
       "range": {
         "startLine": 19,
         "startChar": 0,
@@ -472,6 +904,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27c2779c_77615d39",
+        "filename": "experimental/rust_bmp/ffi/bmp_constants.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Not relevant after switching to image crate",
+      "parentUuid": "00ecba6d_157af11d",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7230f25c_61f3c8b4",
@@ -485,6 +941,30 @@
       "writtenOn": "2025-11-04T22:12:30Z",
       "side": 1,
       "message": "Optional: I don\u0027t have a strong opinion, but WDYT about directly replicating the whole `BITMAPV5HEADER` as a `#[repr(C)]` `struct` in Rust - this would give the offset and the field definition for free.  And `bytemuck` should help with transmuting `\u0026[u8]` to `\u0026BitmapV5Header` (I think this can be done without using `unsafe impl` or other `unsafe` - `#[derive(AnyBitPattern)]` should help with this).\n\nBenefit of doing this: more direct link to the original definition/documentation of the BMP header structs / less magical constants like 123 or 56.\n\nDownside of doing this: have to spell all the fields, even ones that are unused.\n\nBut as I said, I don\u0027t feel strongly about this.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 37
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "625f9496_75513b83",
+        "filename": "experimental/rust_bmp/ffi/bmp_constants.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "This file is no longer relevant after switching to image crate",
+      "parentUuid": "7230f25c_61f3c8b4",
       "range": {
         "startLine": 63,
         "startChar": 0,
@@ -518,6 +998,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8842d6c_a0aeb140",
+        "filename": "experimental/rust_bmp/ffi/bmp_header.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ef1ac0a_64572a6d",
+      "range": {
+        "startLine": 49,
+        "startChar": 36,
+        "endLine": 49,
+        "endChar": 96
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b23d0c6d_fe1a6c8d",
@@ -531,6 +1035,30 @@
       "writtenOn": "2025-11-04T22:12:30Z",
       "side": 1,
       "message": "I think the `data.len()` checks (on lines 25 and 30) can be avoided be delegating to https://doc.rust-lang.org/std/primitive.slice.html#method.get\n\n```suggestion\n    let end \u003d offset.checked_add(size)?;\n    let icc_data \u003d data.get(offset..end)?;\n```",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e561a84b_185965e6",
+        "filename": "experimental/rust_bmp/ffi/bmp_icc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "This file is no longer relevant after switching to image crate",
+      "parentUuid": "b23d0c6d_fe1a6c8d",
       "range": {
         "startLine": 25,
         "startChar": 0,
@@ -564,6 +1092,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a4fcff0_84d7cd31",
+        "filename": "experimental/rust_bmp/ffi/bmp_icc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "It sounds a good idea to have a common support for ICC profile parsing, which can be reused from both SkBmpRustCodec and SkPngRustCodec. I will prepare a separated CL for that. Regarding location, should we place it in rust/common, its own folder under rust/ or under experimental?",
+      "parentUuid": "adf732bf_a2a51a9c",
+      "range": {
+        "startLine": 41,
+        "startChar": 22,
+        "endLine": 41,
+        "endChar": 69
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe450ce1_a5705ae1",
@@ -577,6 +1129,30 @@
       "writtenOn": "2025-11-04T22:12:30Z",
       "side": 1,
       "message": "I am not sure if/how my feedback here is actionable, but it seems to me that `Rle8`-vs-`Rle4` difference is not necessarily something that the decoder client needs to know about.\n\nMy first reaction to that was to ask if `CompressionType` needs to be `pub`-lic.  And that would cascade into a question if `BmpHeaderInfo` needs to be `pub`-lic (vs crate-internal).  This doesn\u0027t matter that much at this point (where `rust_bmp/.../*.rs` is just an internal implementation detail of Skia), but would matter in the long-term if/when we want to extract this crate out of Skia and publish as a separate crate.\n\nI think that the decoder client wants to know what kind of pixel format will/can come out of the decoder - maybe the API can be built around that?  I don\u0027t know what is supported by the BMP format - RGBA8 and RGB8?  And also BGRA8 and BGR8?  Is palette-index also a possible output (I know that `SkSwizzler` can accept that as input and efficiently transform into RGBA)?  Is gray-scale also a possible output?  Is something like RGBA-16bits or RGBA-4bits or RGB-5-6-5 also a possible output?\n\nPS. IIUC the `image` crate uses the `ColorType` enum for this.  This seems a little bit incomplete (e.g. it can\u0027t represent \"indexed\" output from a PNG decoder), but maybe this is good enough for BMP?  `ColorType` doesn\u0027t explicitly cover BGRA, but we could in theory cover this with some extra copies :-/.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 9
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46872c3e_7d7f1427",
+        "filename": "experimental/rust_bmp/ffi/bmp_types.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-18T18:13:58Z",
+      "side": 1,
+      "message": "We are switching to image crate, so we are no longer exposing header parameters like compression type",
+      "parentUuid": "fe450ce1_a5705ae1",
       "range": {
         "startLine": 50,
         "startChar": 0,
