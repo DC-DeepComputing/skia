@@ -125,9 +125,9 @@ skgpu::graphite::PaintOptions LinearEffect(sk_sp<SkRuntimeEffect> linearEffect,
                                             std::move(linearEffect),
                                             { { std::move(child) } }) });
     if (matrixColorFilter) {
-        paintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
+        paintOptions.setColorFilters(SKSPAN_INIT_ONE( PrecompileColorFilters::Matrix() ));
     }
-    paintOptions.setBlendModes({ blendMode });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( blendMode ));
     paintOptions.setPaintColorIsOpaque(paintColorIsOpaque);
     paintOptions.setDither(dither);
 
@@ -178,7 +178,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul(
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(crosstalk) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
@@ -195,7 +195,7 @@ skgpu::graphite::PaintOptions MouriMapChunk8x8Effect(RuntimeEffectManager& effec
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(chunk8x8) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
@@ -212,7 +212,7 @@ skgpu::graphite::PaintOptions MouriMapBlur(RuntimeEffectManager& effectManager) 
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(blur) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
@@ -238,7 +238,7 @@ skgpu::graphite::PaintOptions MouriMapToneMap(RuntimeEffectManager& effectManage
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(inLinear) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
@@ -258,7 +258,7 @@ skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver(RuntimeEffectManager& effe
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(kawase) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc, SkBlendMode::kSrcOver });
+    paintOptions.setBlendModes({{ SkBlendMode::kSrc, SkBlendMode::kSrcOver }});
     return paintOptions;
 }
 
@@ -277,7 +277,7 @@ skgpu::graphite::PaintOptions KawaseBlurHighSrc(RuntimeEffectManager& effectMana
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(kawase) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
@@ -296,7 +296,7 @@ skgpu::graphite::PaintOptions BlurFilterMix(RuntimeEffectManager& effectManager)
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(mix) });
-    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
     return paintOptions;
 }
 
