@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4814a0a4_6767b3c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:56:18Z",
+      "side": 1,
+      "message": "```\n~/skia/skia$ bazel query \"somepath(//rust/png:*,//src/core:SkCanvas.cpp)\"\n//rust/png:cxx_bridge\n//rust/common:ffi_utils\n//:core\n//src/core:core\n//src/core:core_srcs\n//src/core:SkCanvas.cpp\n```\nVia SkStreamAdapter it seems",
+      "parentUuid": "000f11ce_92c886bd",
+      "revId": "5c34096c48139dc40baef6b9d3132660105ef96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60eea769_83dff039",
         "filename": "BUILD.gn",
         "patchSetId": 23
