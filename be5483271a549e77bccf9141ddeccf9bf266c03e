@@ -16,6 +16,24 @@
       "message": "`isFixedPitch` can also be `const`.\n\nThese two locals should be in `SkTypeface_Fuchsia::Make` which makes it clear that the style bits aren\u0027t currently supposed to be overridden.",
       "revId": "be5483271a549e77bccf9141ddeccf9bf266c03e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "355b6f79_e9157f2e",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-11-18T16:12:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bc65cc1_ca4a98a3",
+      "revId": "be5483271a549e77bccf9141ddeccf9bf266c03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
