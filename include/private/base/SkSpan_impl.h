@@ -8,7 +8,13 @@
 #ifndef SkSpan_DEFINED
 #define SkSpan_DEFINED
 
-#define SK_USE_LEGACY_SKSPAN
+#define SK_USE_LEGACY_SKSPANx
+
+#ifdef SK_USE_LEGACY_SKSPAN
+    #define SKSPAN_INIT_ONE(elem)   {elem}
+#else
+    #define SKSPAN_INIT_ONE(elem)   {{elem}}
+#endif
 
 #ifdef SK_USE_LEGACY_SKSPAN
 
