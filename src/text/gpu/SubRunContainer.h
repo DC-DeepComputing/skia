@@ -48,7 +48,6 @@ class StrikeCache;
 
 using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*,
                                                                     int begin,
-                                                                    int end,
                                                                     skgpu::MaskFormat,
                                                                     int padding)>;
 
@@ -163,7 +162,7 @@ public:
 
     // This call is not thread safe. It should only be called from a known single-threaded env.
     virtual std::tuple<bool, int> regenerateAtlas(
-            int begin, int end, RegenerateAtlasDelegate) const = 0;
+            int begin, RegenerateAtlasDelegate) const = 0;
 
     const VertexFiller& vertexFiller() const { return fVertexFiller; }
 
