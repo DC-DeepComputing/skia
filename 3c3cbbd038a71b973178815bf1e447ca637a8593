@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "addc7f03_98167254",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Yes, please do.",
+      "parentUuid": "20417b6e_1218e82a",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63edc09a_054ca92b",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 7
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "Yikes! Fixed.\n\n(Maybe this escaped presubmits cause it was in a macro!)",
       "parentUuid": "724b23dc_e0a7c8e8",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 18
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "692283d7_f1e696dc",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "I don\u0027t think we have a presubmit that checks for printf (because Skia has a few \"printf\" methods, I\u0027d imagine).",
+      "parentUuid": "7a9c73be_d680d7de",
       "range": {
         "startLine": 89,
         "startChar": 12,
@@ -276,6 +324,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a100b38_7ec5a9ae",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "03b887c5_321e5488",
+      "range": {
+        "startLine": 247,
+        "startChar": 12,
+        "endLine": 247,
+        "endChar": 27
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1d27517_a37dc643",
@@ -313,6 +385,30 @@
       "side": 1,
       "message": "Same deal that I want to keep the structure (even the indentation structure) the same between the two.",
       "parentUuid": "b1d27517_a37dc643",
+      "range": {
+        "startLine": 259,
+        "startChar": 8,
+        "endLine": 259,
+        "endChar": 9
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06bcd0cf_66c3d6cb",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9664c992_048af0a7",
       "range": {
         "startLine": 259,
         "startChar": 8,
@@ -370,6 +466,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f575d2_5a582d1b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "28933c3b_09f1b65c",
+      "range": {
+        "startLine": 297,
+        "startChar": 30,
+        "endLine": 297,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "587b8adb_72c84f06",
@@ -407,6 +527,30 @@
       "side": 1,
       "message": "Exactly, it has the implicit max of 32.",
       "parentUuid": "587b8adb_72c84f06",
+      "range": {
+        "startLine": 298,
+        "startChar": 31,
+        "endLine": 298,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d648d41a_7b907495",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3f6a551f_dbdeb6ba",
       "range": {
         "startLine": 298,
         "startChar": 31,
@@ -464,6 +608,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bfddd83_e3b3b00d",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8cfc4daf_8c5cbba5",
+      "range": {
+        "startLine": 303,
+        "startChar": 40,
+        "endLine": 303,
+        "endChar": 41
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "191d7969_a9179371",
@@ -501,6 +669,30 @@
       "side": 1,
       "message": "Done (make it `kDefaultHdrReferenceWhite`).",
       "parentUuid": "191d7969_a9179371",
+      "range": {
+        "startLine": 360,
+        "startChar": 28,
+        "endLine": 360,
+        "endChar": 34
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6bf749_c920e66b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "57db3bf1_775c5953",
       "range": {
         "startLine": 360,
         "startChar": 28,
@@ -605,6 +797,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d0e47d3_47fa588f",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a788cec0_96700105",
+      "range": {
+        "startLine": 419,
+        "startChar": 16,
+        "endLine": 419,
+        "endChar": 47
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8903373_eef1e496",
@@ -652,6 +868,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51942903_f8082c1a",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e1149b22_106ebfee",
+      "range": {
+        "startLine": 459,
+        "startChar": 77,
+        "endLine": 459,
+        "endChar": 81
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2299d58b_e22d29a2",
@@ -689,6 +929,30 @@
       "side": 1,
       "message": "This, too, should be fixed int spec, to read\n```\n   (clamp(gain_curve_control_points_theta[a][c], 1, 35999) - 18000) * (pi / 36000)\n```\n\nThat way it will be more clear that this is the right math (the fact that the \"factor\" parameter is a reciprocal shouldn\u0027t be too alarming, with the rest of it sorted out).\n\nFiled\nhttps://github.com/SMPTE/st2094-50/issues/63",
       "parentUuid": "2299d58b_e22d29a2",
+      "range": {
+        "startLine": 463,
+        "startChar": 36,
+        "endLine": 463,
+        "endChar": 51
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9102a1f4_10d9ab4a",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fda8a750_6e2e188e",
       "range": {
         "startLine": 463,
         "startChar": 36,
@@ -793,6 +1057,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "709893ce_16f26f4d",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6059ce9e_8bc7dd2b",
+      "range": {
+        "startLine": 536,
+        "startChar": 19,
+        "endLine": 536,
+        "endChar": 38
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e47a197c_d89855eb",
@@ -887,6 +1175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acec571a_90943f67",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1ae8c019_c99e4eaf",
+      "range": {
+        "startLine": 572,
+        "startChar": 64,
+        "endLine": 572,
+        "endChar": 68
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d9377ba_c8f5526c",
@@ -924,6 +1236,30 @@
       "side": 1,
       "message": "Same issue.\nhttps://github.com/SMPTE/st2094-50/issues/63",
       "parentUuid": "7d9377ba_c8f5526c",
+      "range": {
+        "startLine": 576,
+        "startChar": 19,
+        "endLine": 576,
+        "endChar": 50
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54c8958_7f7cb84d",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "da761c9c_2aa5b6c8",
       "range": {
         "startLine": 576,
         "startChar": 19,
@@ -1018,6 +1354,30 @@
       "side": 1,
       "message": "Added tolerance values to the top, with an explanation (for everything but slope, it\u0027s the quantization error).",
       "parentUuid": "9c63de74_c7c11588",
+      "range": {
+        "startLine": 294,
+        "startChar": 79,
+        "endLine": 294,
+        "endChar": 86
+      },
+      "revId": "3c3cbbd038a71b973178815bf1e447ca637a8593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a71ca15_ea2a4c45",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7105a85c_079e12bd",
       "range": {
         "startLine": 294,
         "startChar": 79,

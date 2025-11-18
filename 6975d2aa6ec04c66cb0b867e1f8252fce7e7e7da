@@ -16,6 +16,29 @@
       "message": "Thanks, updated.\n\nIndeed the testing for this isn\u0027t as thorough as it will need to be before it can be enabled, cause I\u0027m holding off on adding hard-coded until the format is set in stone.\n\n(I\u0027m tempted to add this as `application_version\u003d255` so that we can test it more widely without adding compatibility issues).",
       "revId": "6975d2aa6ec04c66cb0b867e1f8252fce7e7e7da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "985e7b55_e699f24b",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-18T13:46:04Z",
+      "side": 1,
+      "message": "nit: SkUNREACHABLE or SkDEBUGFAIL(\"...\")",
+      "range": {
+        "startLine": 420,
+        "startChar": 12,
+        "endLine": 420,
+        "endChar": 20
+      },
+      "revId": "6975d2aa6ec04c66cb0b867e1f8252fce7e7e7da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
