@@ -11,6 +11,12 @@
 #define SK_USE_LEGACY_SKSPAN
 
 #ifdef SK_USE_LEGACY_SKSPAN
+    #define SKSPAN_INIT_ONE(elem)   {elem}
+#else
+    #define SKSPAN_INIT_ONE(elem)   {{elem}}
+#endif
+
+#ifdef SK_USE_LEGACY_SKSPAN
 
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
