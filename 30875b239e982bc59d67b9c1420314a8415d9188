@@ -33,6 +33,24 @@
       "message": "Actually, `SkIsPow2` already exists. May want to use that since it is the same thing.",
       "revId": "30875b239e982bc59d67b9c1420314a8415d9188",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b3dac9_88109fa8",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T16:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8afa5396_da18d3fc",
+      "revId": "30875b239e982bc59d67b9c1420314a8415d9188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
