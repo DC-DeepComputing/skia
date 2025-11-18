@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08f3de22_740165d9",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T15:27:02Z",
+      "side": 1,
+      "message": "Can `std::move`",
+      "range": {
+        "startLine": 239,
+        "startChar": 44,
+        "endLine": 239,
+        "endChar": 56
+      },
+      "revId": "245c68f60e40012e3a36a87c8353cf9db1b54316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac422a1_b3a34ff8",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T15:27:02Z",
+      "side": 1,
+      "message": "This `std::move` can cause `realTypeface` to become nullptr, causing the evaluation of the other arguments to fail.",
+      "range": {
+        "startLine": 246,
+        "startChar": 31,
+        "endLine": 246,
+        "endChar": 40
+      },
+      "revId": "245c68f60e40012e3a36a87c8353cf9db1b54316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ad220c_693d3524",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-11-18T15:27:02Z",
+      "side": 1,
+      "message": "Can `std::move`",
+      "range": {
+        "startLine": 266,
+        "startChar": 36,
+        "endLine": 266,
+        "endChar": 48
+      },
+      "revId": "245c68f60e40012e3a36a87c8353cf9db1b54316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
