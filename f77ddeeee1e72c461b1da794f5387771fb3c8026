@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1412bcd1_77509a8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-19T20:23:44Z",
+      "side": 1,
+      "message": "While this creates more tasks, my hope is that reducing the number of in-`dm` configs for the ANGLE jobs will offset the new graphite tasks workload so our capacity needs on the limited devices is still okay.",
+      "revId": "f77ddeeee1e72c461b1da794f5387771fb3c8026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
