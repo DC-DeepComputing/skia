@@ -85,7 +85,7 @@ sk_sp<SkFlattenable> SkRuntimeBlender::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
-    return effect->makeBlender(std::move(uniforms), SkSpan(children));
+    return effect->makeBlender(std::move(uniforms), children);
 }
 
 bool SkRuntimeBlender::onAppendStages(const SkStageRec& rec) const {

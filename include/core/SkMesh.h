@@ -154,7 +154,7 @@ public:
                        sk_sp<SkColorSpace>     cs,
                        SkAlphaType             at);
 
-    SkSpan<const Attribute> attributes() const { return SkSpan(fAttributes); }
+    SkSpan<const Attribute> attributes() const { return fAttributes; }
 
     /**
      * Combined size of all 'uniform' variables. When creating a SkMesh with this specification
@@ -167,10 +167,10 @@ public:
      * Provides info about individual uniforms including the offset into an SkData where each
      * uniform value should be placed.
      */
-    SkSpan<const Uniform> uniforms() const { return SkSpan(fUniforms); }
+    SkSpan<const Uniform> uniforms() const { return fUniforms; }
 
     /** Provides basic info about individual children: names, indices and runtime effect type. */
-    SkSpan<const Child> children() const { return SkSpan(fChildren); }
+    SkSpan<const Child> children() const { return fChildren; }
 
     /** Returns a pointer to the named child's description, or nullptr if not found. */
     const Child* findChild(std::string_view name) const;
@@ -364,7 +364,7 @@ public:
     sk_sp<const SkData> refUniforms() const { return fUniforms; }
     const SkData* uniforms() const { return fUniforms.get(); }
 
-    SkSpan<const ChildPtr> children() const { return SkSpan(fChildren); }
+    SkSpan<const ChildPtr> children() const { return fChildren; }
 
     SkRect bounds() const { return fBounds; }
 

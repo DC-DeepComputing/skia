@@ -728,7 +728,7 @@ SkContourMeasure::VerbMeasure SkContourMeasure::ForwardVerbIterator::operator*()
     return {
         fSegments.front().fDistance,
         seg_verb[fSegments.front().fType],
-        SkSpan(fPts.data() + fSegments.front().fPtIndex, seg_pt_count[fSegments.front().fType]),
+        {fPts.data() + fSegments.front().fPtIndex, seg_pt_count[fSegments.front().fType]},
     };
 }
 
