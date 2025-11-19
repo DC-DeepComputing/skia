@@ -172,8 +172,7 @@ SkBezierCubic::Intersect(double AX, double BX, double CX, double DX,
                          double AY, double BY, double CY, double DY,
                          float toIntersect, float intersectionsStorage[3]) {
     double roots[3];
-    SkSpan<double> ts = SkSpan(roots,
-                               SkCubics::RootsReal(AY, BY, CY, DY - toIntersect, roots));
+    SkSpan<double> ts = {roots, (size_t)SkCubics::RootsReal(AY, BY, CY, DY - toIntersect, roots)};
 
     size_t intersectionCount = 0;
     for (double t : ts) {

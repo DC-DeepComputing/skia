@@ -14,6 +14,8 @@
 #include <utility>
 #include <vector>
 
+#ifdef SK_USE_LEGACY_SKSPAN
+
 DEF_TEST(SkSpanBasicTemplateGuide, reporter) {
     // Test constness preservation for SkSpan.
     {
@@ -124,7 +126,9 @@ DEF_TEST(SkSpanDeduceSize, reporter) {
     }
     {
         size_t s = std::size(d);
-        SkSpan span = SkSpan{d, s};
+        SkSpan span = {d, s};
         REPORTER_ASSERT(reporter, span.size() == std::size(d));
     }
 }
+
+#endif
