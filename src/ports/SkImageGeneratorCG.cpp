@@ -25,23 +25,28 @@
 namespace {
 class ImageGeneratorCG : public SkImageGenerator {
 public:
-    ImageGeneratorCG(const SkImageInfo&, SkUniqueCFRef<CGImageSourceRef> imageSrc,
-                     sk_sp<SkData> data, SkEncodedOrigin);
+    ImageGeneratorCG(const SkImageInfo&,
+                     SkUniqueCFRef<CGImageSourceRef> imageSrc,
+                     sk_sp<const SkData> data,
+                     SkEncodedOrigin);
 
 protected:
+#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)
+    sk_sp<const SkData> onRefEncodedData() override;
+#else
     sk_sp<SkData> onRefEncodedData() override;
-
+#endif
     bool onGetPixels(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&) override;
 
 private:
     const SkUniqueCFRef<CGImageSourceRef> fImageSrc;
-    const sk_sp<SkData> fData;
+    const sk_sp<const SkData> fData;
     const SkEncodedOrigin fOrigin;
 
     using INHERITED = SkImageGenerator;
 };
 
-static SkUniqueCFRef<CGImageSourceRef> data_to_CGImageSrc(SkData* data) {
+static SkUniqueCFRef<CGImageSourceRef> data_to_CGImageSrc(const SkData* data) {
     SkUniqueCFRef<CGDataProviderRef> cgData(
             CGDataProviderCreateWithData(data, data->data(), data->size(), nullptr));
     if (!cgData) {
@@ -53,7 +58,7 @@ static SkUniqueCFRef<CGImageSourceRef> data_to_CGImageSrc(SkData* data) {
 
 }  // namespace
 
-std::unique_ptr<SkImageGenerator> SkImageGeneratorCG::MakeFromEncodedCG(sk_sp<SkData> data) {
+std::unique_ptr<SkImageGenerator> SkImageGeneratorCG::MakeFromEncodedCG(sk_sp<const SkData> data) {
     SkUniqueCFRef<CGImageSourceRef> imageSrc = data_to_CGImageSrc(data.get());
     if (!imageSrc) {
         return nullptr;
@@ -104,17 +109,19 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorCG::MakeFromEncodedCG(sk_sp<Sk
                                                                   std::move(data), origin));
 }
 
-ImageGeneratorCG::ImageGeneratorCG(const SkImageInfo& info, SkUniqueCFRef<CGImageSourceRef> src,
-                                   sk_sp<SkData> data, SkEncodedOrigin origin)
-    : INHERITED(info)
-    , fImageSrc(std::move(src))
-    , fData(std::move(data))
-    , fOrigin(origin)
-{}
+ImageGeneratorCG::ImageGeneratorCG(const SkImageInfo& info,
+                                   SkUniqueCFRef<CGImageSourceRef> src,
+                                   sk_sp<const SkData> data,
+                                   SkEncodedOrigin origin)
+        : INHERITED(info), fImageSrc(std::move(src)), fData(std::move(data)), fOrigin(origin) {}
 
+#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)
+sk_sp<const SkData> ImageGeneratorCG::onRefEncodedData() { return fData; }
+#else
 sk_sp<SkData> ImageGeneratorCG::onRefEncodedData() {
-    return fData;
+    return sk_sp<SkData>(const_cast<SkData*>(fData.get()));
 }
+#endif
 
 bool ImageGeneratorCG::onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
                                    const Options&)
