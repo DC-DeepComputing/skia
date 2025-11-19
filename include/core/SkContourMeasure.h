@@ -134,7 +134,7 @@ public:
         return ForwardVerbIterator(fSegments, fPts);
     }
     ForwardVerbIterator end() const {
-        return ForwardVerbIterator(SkSpan(fSegments.end(), 0), fPts);
+        return ForwardVerbIterator({fSegments.end(), 0}, fPts);
     }
 
 private:
