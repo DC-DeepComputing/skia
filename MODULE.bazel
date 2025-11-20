@@ -160,6 +160,10 @@ crate.spec(
     package = "thiserror",
     version = "=1.0.69",
 )
+crate.spec(
+    package = "moxcms",
+    version = "=0.2.2",
+)
 crate.from_specs(
     # by default, intel macs are not included in this list, but we have CI hardware
     # that still uses them, so we add them to the list.
