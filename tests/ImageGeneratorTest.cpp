@@ -34,11 +34,19 @@
 
 static bool gMyFactoryWasCalled;
 
+#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+static std::unique_ptr<SkImageGenerator> my_factory(sk_sp<const SkData>) {
+    gMyFactoryWasCalled = true;
+    return nullptr;
+}
+#else
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
 static std::unique_ptr<SkImageGenerator> my_factory(sk_sp<SkData>) {
     gMyFactoryWasCalled = true;
     return nullptr;
 }
+#endif
 
 static void test_imagegenerator_factory(skiatest::Reporter* reporter) {
     // just need a non-empty data to test things
