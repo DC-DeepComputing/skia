@@ -16,6 +16,24 @@
       "message": "De we need this in addition to `fMaxAllocation`?  If we redefine `fMaxAllocation` to be cumulative (instead of single allocation), it seems it would provide an equivalent signal.\n\nThe reason I prefer the former is this estimation would require us to duplicate the complex decision tree of how the decoder is set up (do we need a swizzler buffer?  how about a color transform buffer? etc), whereas we can perform `fMaxAllocation` accounting inline, as we decode, and fail the decode operation if we overflow.",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0532fd6_82d6d205",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-20T20:08:08Z",
+      "side": 1,
+      "message": "I think that depends on how our clients want to use it.",
+      "parentUuid": "2fdf44ff_2a274388",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
