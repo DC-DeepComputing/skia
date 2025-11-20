@@ -140,6 +140,30 @@
       },
       "revId": "95fa99807117bcedb67142bc4b776ef1ec7ab9be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f1b634_ebfffc20",
+        "filename": "tools/viewer/ChineseFlingSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-11-20T02:35:07Z",
+      "side": 1,
+      "message": "I actually don\u0027t think PingPong is relevant here. I had misunderstood the use of `fScrollUnitsPerSecondLog2` on my first read and thought it was used to change scroll direction as part of the animation, not just with the \u0027,\u0027 and \u0027.\u0027 keys.",
+      "parentUuid": "2d9e3ca6_2db85449",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 65
+      },
+      "revId": "95fa99807117bcedb67142bc4b776ef1ec7ab9be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
