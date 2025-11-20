@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkHdrMetadata.h"
 #include "src/codec/SkHdrAgtmPriv.h"
@@ -190,7 +193,7 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
                             float targetedHdrHeadroom,
                             const skhdr::Agtm::Weighting& wExpected) {
         skiatest::ReporterContext ctx(r, name);
-        skhdr::Agtm::Weighting w = agtm.ComputeWeighting(targetedHdrHeadroom);
+        skhdr::Agtm::Weighting w = agtm.computeWeighting(targetedHdrHeadroom);
         REPORTER_ASSERT(r, w.fWeight[0] == wExpected.fWeight[0]);
         REPORTER_ASSERT(r, w.fWeight[1] == wExpected.fWeight[1]);
         REPORTER_ASSERT(r, w.fAlternateImageIndex[0] == wExpected.fAlternateImageIndex[0]);
@@ -465,6 +468,142 @@ DEF_TEST(HdrMetadata_Agtm_Serialize, r) {
         REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
 
         assert_agtms_equal(r, agtmIn, agtmOut);
+    }
+}
+
+// Test the logic to apply the AGTM tone mapping.
+DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
+    // Use RWTMO for this test.
+    skhdr::Agtm agtm;
+    agtm.fBaselineHdrHeadroom = 2;
+    agtm.populateUsingRwtmo();
+
+    // Create an input image with 6 different pixel values.
+    constexpr size_t kNumTestColors = 6;
+    SkColor4f inputTestColors[kNumTestColors] = {
+        {1.00f, 1.00f, 1.00f, 1.f},
+        {1.00f, 0.50f, 0.25f, 1.f},
+        {4.00f, 4.00f, 4.00f, 1.f},
+        {1.00f, 2.00f, 4.00f, 1.f},
+        {0.50f, 0.50f, 0.50f, 1.f},
+        {2.00f, 2.00f, 2.00f, 1.f},
+    };
+    sk_sp<SkImage> inputImage;
+    {
+        SkBitmap inputBitmap;
+        inputBitmap.allocPixels(SkImageInfo::Make(kNumTestColors, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, agtm.getGainApplicationSpace()));
+        for (size_t t = 0; t < kNumTestColors; ++t) {
+            float* pixel = reinterpret_cast<float*>(inputBitmap.getAddr(t, 0));
+            for (size_t c = 0; c < 4; ++c) {
+                pixel[c] = inputTestColors[t][c];
+            }
+        }
+        inputBitmap.setImmutable();
+        inputImage = inputBitmap.asImage();
+    }
+
+    // Test this with 5 different HDR headroom values.
+    constexpr size_t kNumTests = 5;
+    const float testTargetedHdrHeadrooms[kNumTests] = {
+        0.f,
+        1.f,
+        agtm.fAlternateHdrHeadroom[1],
+        std::log2(3.f),
+        2.f,
+    };
+    SkColor4f expectedTestColors[kNumTests][kNumTestColors] = {
+        {
+            {0.565302f, 0.565302f, 0.565302f, 1.f},
+            {0.565302f, 0.282651f, 0.141326f, 1.f},
+            {1.000000f, 1.000000f, 1.000000f, 1.f},
+            {0.250000f, 0.500000f, 1.000000f, 1.f},
+            {0.282651f, 0.282651f, 0.282651f, 1.f},
+            {0.815278f, 0.815278f, 0.815278f, 1.f},
+        },
+        {
+            {0.898755f, 0.898755f, 0.898755f, 1.f},
+            {0.898755f, 0.449377f, 0.224689f, 1.f},
+            {2.000000f, 2.000000f, 2.000000f, 1.f},
+            {0.500000f, 1.000000f, 2.000000f, 1.f},
+            {0.449377f, 0.449377f, 0.449377f, 1.f},
+            {1.471569f, 1.471569f, 1.471569f, 1.f},
+        },
+        {
+            {1.000000f, 1.000000f, 1.000000f, 1.f},
+            {1.000000f, 0.500000f, 0.250000f, 1.f},
+            {2.346040f, 2.346040f, 2.346040f, 1.f},
+            {0.586510f, 1.173020f, 2.346040f, 1.f},
+            {0.500000f, 0.500000f, 0.500000f, 1.f},
+            {1.685886f, 1.685886f, 1.685886f, 1.f},
+        },
+        {
+            {1.000000f, 1.000000f, 1.000000f, 1.f},
+            {1.000000f, 0.500000f, 0.250000f, 1.f},
+            {3.000000f, 3.000000f, 3.000000f, 1.f},
+            {0.750000f, 1.500000f, 3.000000f, 1.f},
+            {0.500000f, 0.500000f, 0.500000f, 1.f},
+            {1.823991f, 1.823991f, 1.823991f, 1.f},
+        },
+        {
+            {1.00f, 1.00f, 1.00f, 1.f},
+            {1.00f, 0.50f, 0.25f, 1.f},
+            {4.00f, 4.00f, 4.00f, 1.f},
+            {1.00f, 2.00f, 4.00f, 1.f},
+            {0.50f, 0.50f, 0.50f, 1.f},
+            {2.00f, 2.00f, 2.00f, 1.f},
+        },
+    };
+
+    for (size_t t = 0; t < kNumTests; ++t) {
+        constexpr float kEpsilon = 0.01f;
+        const auto targetedHdrHeadroom = testTargetedHdrHeadrooms[t];
+        skiatest::ReporterContext ctx(r, SkStringPrintf("targetedHdrHeadroom:%f", targetedHdrHeadroom));
+
+        // Test the non-shader applyGain function.
+        {
+            skiatest::ReporterContext ctxApply(r, "applyGain");
+
+            SkColor4f outputTestColors[kNumTestColors];
+            for (size_t i = 0; i < kNumTestColors; ++i) {
+                outputTestColors[i] = inputTestColors[i];
+            }
+            agtm.applyGain(SkSpan<SkColor4f>(outputTestColors, kNumTestColors), targetedHdrHeadroom);
+            for (size_t i = 0; i < kNumTestColors; ++i) {
+                const auto& output = outputTestColors[i];
+                const auto& expected = expectedTestColors[t][i];
+
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fR, expected.fR, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fG, expected.fG, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fB, expected.fB, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fA, expected.fA, kEpsilon));
+            }
+        }
+
+        // Test the getColorFilter shader-based implementation on the same points.
+        {
+            skiatest::ReporterContext ctxApply(r, "makeColorFilter");
+
+            SkBitmap bm;
+            bm.allocPixels(SkImageInfo::Make(kNumTestColors, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, agtm.getGainApplicationSpace()));
+            {
+                auto canvas = SkCanvas::MakeRasterDirect(bm.info(), bm.getPixels(), bm.rowBytes());
+                SkPaint paint;
+                auto colorFilter = agtm.makeColorFilter(targetedHdrHeadroom);
+                SkASSERT(colorFilter);
+                paint.setColorFilter(colorFilter);
+                canvas->drawImage(inputImage.get(), 0, 0, SkSamplingOptions(), &paint);
+            }
+
+            for (size_t i = 0; i < kNumTestColors; ++i) {
+                const auto& output = *reinterpret_cast<const SkColor4f*>(bm.getAddr(i, 0));
+                const auto& expected = expectedTestColors[t][i];
+
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fR, expected.fR, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fG, expected.fG, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fB, expected.fB, kEpsilon));
+                REPORTER_ASSERT(r, SkScalarNearlyEqual(output.fA, expected.fA, kEpsilon));
+            }
+        }
     }
 }
 
