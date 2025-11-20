@@ -16,6 +16,64 @@
       "message": "Happy to make any changes!",
       "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc05d78_7ed78cfe",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-20T20:01:09Z",
+      "side": 1,
+      "message": "nit: `fBounds.isSorted()`",
+      "range": {
+        "startLine": 255,
+        "startChar": 13,
+        "endLine": 255,
+        "endChar": 44
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "54608215_f78d9f2c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathData.cpp",
+              "range": {
+                "startLine": 255,
+                "startChar": 0,
+                "endLine": 256,
+                "endChar": 0
+              },
+              "replacement": "    SkASSERT(fBounds.isSorted());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349c5406_46841d82",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-20T20:01:09Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
