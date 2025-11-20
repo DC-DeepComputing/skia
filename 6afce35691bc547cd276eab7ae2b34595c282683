@@ -34,6 +34,24 @@
       "parentUuid": "2fdf44ff_2a274388",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "541dd5e2_ee9d61d5",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-11-20T21:18:17Z",
+      "side": 1,
+      "message": "I think a cumulative `fMaxAllocation` is perfect for us and it just returns an error somehow when hit (or will be hit)",
+      "parentUuid": "a0532fd6_82d6d205",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
