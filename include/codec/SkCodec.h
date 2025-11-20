@@ -340,10 +340,11 @@ public:
             : fZeroInitialized(kNo_ZeroInitialized)
             , fSubset(nullptr)
             , fFrameIndex(0)
-            , fPriorFrame(kNoFrame)
+            , fPriorFrame(kNoFrame),
+            , fMaxAllocation(0),
         {}
 
-        ZeroInitialized            fZeroInitialized;
+        ZeroInitialized fZeroInitialized;
         /**
          *  If not NULL, represents a subset of the original image to decode.
          *  Must be within the bounds returned by getInfo().
@@ -361,14 +362,14 @@ public:
          *  subset left and subset width to decode partial scanlines on calls
          *  to getScanlines().
          */
-        const SkIRect*             fSubset;
+        const SkIRect* fSubset;
 
         /**
          *  The frame to decode.
          *
          *  Only meaningful for multi-frame images.
          */
-        int                        fFrameIndex;
+        int fFrameIndex;
 
         /**
          *  If not kNoFrame, the dst already contains the prior frame at this index.
@@ -383,7 +384,12 @@ public:
          *
          *  If set to kNoFrame, the codec will decode any necessary required frame(s) first.
          */
-        int                        fPriorFrame;
+        int fPriorFrame;
+
+        /**
+         * If non-zero, image decoding will fail if any single allocations exceed this many bytes.
+         */
+        size_t fMaxAllocation;
     };
 
     /**
@@ -830,6 +836,11 @@ public:
         kUnknown,
     };
     IsAnimated isAnimated() { return this->onIsAnimated(); }
+
+    // Estimate the maximum amount of memory necessary when creating an image or bitmap from
+    // the parsed image data. This may be more than the output dimensions would suggest due
+    // to some codecs being unable to directly scale to a smaller size.
+    size_t estimateMaxAllocation(SkISize outputDimensions) virtual;
 
     // Register a decoder at runtime by passing two function pointers:
     //    - peek() to return true if the span of bytes appears to be your encoded format;
