@@ -52,6 +52,24 @@
       "parentUuid": "a0532fd6_82d6d205",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42743fa_502a957c",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 4485838
+      },
+      "writtenOn": "2025-11-20T23:18:46Z",
+      "side": 1,
+      "message": "why do we want cumulative? is the typical case that the allocations all/mostly have overlapping lifepsans?",
+      "parentUuid": "541dd5e2_ee9d61d5",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
