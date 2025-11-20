@@ -1514,6 +1514,51 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   }
 }
 
+# ICC profile parsing using moxcms (conditionally enabled with Rust codecs)
+if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
+  action("rust_icc_ffi_bazel_build") {
+    script = "gn/bazel_build.py"
+    sources = [
+      "rust/icc/BUILD.bazel",
+      "rust/icc/FFI.h",
+      "rust/icc/FFI.rs",
+    ]
+    outputs = [
+      "$root_out_dir/librust_icc_ffi_rs.a",
+      "$root_out_dir/rust/icc/FFI.rs.h",
+      "$root_out_dir/rust/icc/FFI.rs.cc",
+    ]
+    args = [
+             "//rust/icc:*",
+
+             rebase_path("//bazel-bin/rust/icc/libffi_rs.a", root_build_dir) +
+                 "=librust_icc_ffi_rs.a",
+
+             rebase_path("//bazel-bin/rust/icc/FFI.rs.h", root_build_dir) +
+                 "=rust/icc/FFI.rs.h",
+             rebase_path("//bazel-bin/rust/icc/FFI.rs.cc", root_build_dir) +
+                 "=rust/icc/FFI.rs.cc",
+           ] + bazel_args
+  }
+
+  config("rust_icc_cxx_bridge_private_config") {
+    include_dirs = [
+      # This entry is needed so that `FFI.rs.cc` can resolve
+      # `#include "rust/icc/FFI.h"`
+      ".",
+    ]
+  }
+
+  skia_source_set("rust_icc_cxx_bridge") {
+    deps = [ ":rust_icc_ffi_bazel_build" ]
+    public = [ "${root_out_dir}/rust/icc/FFI.rs.h" ]
+    sources = [ "${root_out_dir}/rust/icc/FFI.rs.cc" ]
+    libs = [ "$root_out_dir/librust_icc_ffi_rs.a" ]
+    public_configs = [ ":rust_common_cxx_bridge_public_config" ]
+    configs = [ ":rust_icc_cxx_bridge_private_config" ]
+  }
+}
+
 config("rust_common_cxx_bridge_public_config") {
   include_dirs = [
     # This is where `rust/.../*.rs.h` and
