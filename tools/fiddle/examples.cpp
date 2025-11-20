@@ -20,6 +20,12 @@
 #include "include/ports/SkFontMgr_directory.h"
 #endif
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
+#endif
+
 template sk_tools::Registry<fiddle::Example>* sk_tools::Registry<fiddle::Example>::gHead;
 
 // These globals are needed by fiddles:
@@ -38,8 +44,17 @@ int main() {
     SkBitmap bitmaps[kImgCount];
     for (int i = 1; i < kImgCount; ++i) {
         SkString path = SkStringPrintf("resources/images/example_%d.png", i);
-        images[i] = SkImages::DeferredFromEncodedData(SkData::MakeFromFileName(path.c_str()));
-        SkAssertResult(images[i] && images[i]->asLegacyBitmap(&bitmaps[i]));
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+        std::unique_ptr<SkStream> stream =
+                SkMemoryStream::Make(SkData::MakeFromFileName(path.c_str()));
+        auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+        auto codec = SkPngDecoder::Decode(SkData::MakeFromFileName(path.c_str()), nullptr, nullptr);
+#endif
+
+        bitmaps[i] = *codec->getBitmap();
+        images[i] = SkCodecs::DeferredImage(std::move(codec));
+        SkASSERT(images[i]);
     }
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
     fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());

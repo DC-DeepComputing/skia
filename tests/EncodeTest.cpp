@@ -148,20 +148,21 @@ static inline bool almost_equals(SkPMColor a, SkPMColor b, int tolerance) {
     return true;
 }
 
-static inline bool almost_equals(const SkBitmap& a, const SkBitmap& b, int tolerance) {
-    if (a.info() != b.info()) {
+static inline bool almost_equals(const SkBitmap* a, const SkBitmap* b, int tolerance) {
+    SkASSERT(a);
+    SkASSERT(b);
+    if (a->info() != b->info()) {
         return false;
     }
 
-    SkASSERT(kN32_SkColorType == a.colorType());
-    for (int y = 0; y < a.height(); y++) {
-        for (int x = 0; x < a.width(); x++) {
-            if (!almost_equals(*a.getAddr32(x, y), *b.getAddr32(x, y), tolerance)) {
+    SkASSERT(kN32_SkColorType == a->colorType());
+    for (int y = 0; y < a->height(); y++) {
+        for (int x = 0; x < a->width(); x++) {
+            if (!almost_equals(*a->getAddr32(x, y), *b->getAddr32(x, y), tolerance)) {
                 return false;
             }
         }
     }
-
     return true;
 }
 
@@ -386,12 +387,11 @@ DEF_TEST(Encode_JpegDownsample, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
-    REPORTER_ASSERT(r, almost_equals(bm0, bm1, 60));
-    REPORTER_ASSERT(r, almost_equals(bm1, bm2, 60));
+    auto bm0 = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto bm1 = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto bm2 = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, almost_equals(bm0.get(), bm1.get(), 60));
+    REPORTER_ASSERT(r, almost_equals(bm1.get(), bm2.get(), 60));
 }
 
 static inline void pushComment(
@@ -497,12 +497,11 @@ DEF_TEST(Encode_PngOptions, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
-    REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
-    REPORTER_ASSERT(r, almost_equals(bm0, bm2, 0));
+    auto bm0 = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto bm1 = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto bm2 = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, almost_equals(bm0.get(), bm1.get(), 0));
+    REPORTER_ASSERT(r, almost_equals(bm0.get(), bm2.get(), 0));
 }
 
 #ifndef SK_BUILD_FOR_GOOGLE3
@@ -598,14 +597,13 @@ DEF_TEST(Encode_WebpOptions, r) {
     REPORTER_ASSERT(r, data1->size() > data2->size());
     REPORTER_ASSERT(r, data2->size() > data3->size());
 
-    SkBitmap bm0, bm1, bm2, bm3;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
-    SkImages::DeferredFromEncodedData(data3)->asLegacyBitmap(&bm3);
-    REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
-    REPORTER_ASSERT(r, almost_equals(bm0, bm2, 90));
-    REPORTER_ASSERT(r, almost_equals(bm2, bm3, 50));
+    auto bm0 = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto bm1 = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto bm2 = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    auto bm3 = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, almost_equals(bm0.get(), bm1.get(), 0));
+    REPORTER_ASSERT(r, almost_equals(bm0.get(), bm2.get(), 90));
+    REPORTER_ASSERT(r, almost_equals(bm2.get(), bm3.get(), 50));
 }
 
 DEF_TEST(Encode_WebpAnimated, r) {
@@ -651,7 +649,7 @@ DEF_TEST(Encode_WebpAnimated, r) {
             ERRORF(r, "error in frame %zu: %s", i, SkCodec::ResultToString(result));
         }
 
-        REPORTER_ASSERT(r, almost_equals(bitmap, bitmaps[i], 0));
+        REPORTER_ASSERT(r, almost_equals(&bitmap, &bitmaps[i], 0));
         REPORTER_ASSERT(r, frameInfos[i].fDuration == durations[i]);
     }
 }

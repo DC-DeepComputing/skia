@@ -21,6 +21,12 @@
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "tools/Resources.h"
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
+#endif
+
 DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
                            3 * 256 + 40, 256 + 128 + 30) {
     sk_sp<SkData> encodedData = GetResourceAsData("images/mandrill_256.png");
@@ -35,14 +41,21 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
         return skiagm::DrawResult::kSkip;
     }
 
-    sk_sp<SkImage> images[3];
-    images[0] = SkImages::DeferredFromEncodedData(encodedData);
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    std::unique_ptr<SkStream> stream = SkMemoryStream::Make(encodedData);
+    auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+    auto codec = SkPngDecoder::Decode(encodedData, nullptr, nullptr);
+#endif
+    SkASSERT(codec);
 
-    SkBitmap bmp;
+    auto bmp = codec->getBitmap();
+    SkASSERT(bmp);
     SkPixmap pixmap;
-    SkAssertResult(images[0]->asLegacyBitmap(&bmp) &&
-                   bmp.peekPixels(&pixmap));
+    SkAssertResult(bmp->peekPixels(&pixmap));
 
+    sk_sp<SkImage> images[3];
+    images[0] = SkCodecs::DeferredImage(std::move(codec));
     images[1] = SkImages::CrossContextTextureFromPixmap(dContext, pixmap, false);
     images[2] = SkImages::CrossContextTextureFromPixmap(dContext, pixmap, true);
 
