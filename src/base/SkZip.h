@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <iterator>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 // Take a list of things that can be pointers, and use them all in parallel. The iterators and
@@ -76,7 +77,8 @@ public:
     constexpr Iterator begin() const { return Iterator(this, 0); }
     constexpr Iterator end() const { return Iterator(this, this->size()); }
     template<size_t I> constexpr auto get() const {
-        return SkSpan(std::get<I>(fPointers), fSize);
+        using T = std::remove_pointer_t<typename std::tuple_element<I, std::tuple<Ts*...>>::type>;
+        return SkSpan<T>(std::get<I>(fPointers), fSize);
     }
     constexpr std::tuple<Ts*...> data() const { return fPointers; }
     constexpr SkZip first(size_t n) const {

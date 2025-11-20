@@ -322,7 +322,7 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
 
     fFS.emitFunction(SkSLType::kHalf4,
                      impl.functionName(),
-                     SkSpan(params, numParams),
+                     {params, SkToSizeT(numParams)},
                      fFS.code().c_str());
     fFS.deleteStage();
 }

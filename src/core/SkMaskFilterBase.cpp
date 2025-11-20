@@ -266,12 +266,12 @@ bool SkMaskFilterBase::filterPath(const SkPathRaw& devRaw,
                                   SkStrokeRec::InitStyle style,
                                   SkResourceCache* cache) const {
     SkRect rects[2];
-    int rectCount = 0;
+    size_t rectCount = 0;
     if (SkStrokeRec::kFill_InitStyle == style) {
         rectCount = countNestedRects(devRaw, rects);
     }
     if (rectCount > 0) {
-        switch (this->filterRects(SkSpan(rects, rectCount), matrix, clip, blitter, cache)) {
+        switch (this->filterRects({rects, rectCount}, matrix, clip, blitter, cache)) {
             case FilterReturn::kFalse:
                 return false;
             case FilterReturn::kTrue:

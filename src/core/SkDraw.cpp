@@ -874,7 +874,7 @@ bool Draw::drawRRectNinePatch(const SkRRect& rrect, const SkPaint& paint) const 
         const SkMaskFilterBase* maskFilter = as_MFB(paint.getMaskFilter());
         if (rrect.getType() == SkRRect::kRect_Type) {
             SkRect devRect = rr->rect();
-            if (maskFilter->filterRects(SkSpan(&devRect, 1), *fCTM, *fRC, blitter.get(), cache) ==
+            if (maskFilter->filterRects({&devRect, 1}, *fCTM, *fRC, blitter.get(), cache) ==
                 SkMaskFilterBase::FilterReturn::kTrue) {
                 return true;
             }

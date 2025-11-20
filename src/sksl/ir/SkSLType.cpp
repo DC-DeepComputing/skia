@@ -256,7 +256,7 @@ public:
     }
 
     SkSpan<const Type* const> coercibleTypes() const override {
-        return SkSpan(fCoercibleTypes, fNumTypes);
+        return {fCoercibleTypes, fNumTypes};
     }
 
     const Type& slotType(size_t) const override {

@@ -658,7 +658,7 @@ void SkRasterPipeline::run(size_t x, size_t y, size_t w, size_t h) const {
 
     auto start_pipeline = this->buildPipeline(program.get() + stagesNeeded);
     start_pipeline(x, y, x + w, y + h, program.get(),
-                   SkSpan{patches.data(), numMemoryCtxs},
+                   {patches.data(), numMemoryCtxs},
                    fTailPointer);
 }
 

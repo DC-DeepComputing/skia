@@ -61,7 +61,7 @@ static void eliminate_empty_statements(SkSpan<std::unique_ptr<ProgramElement>> e
 }
 
 void Transform::EliminateEmptyStatements(Module& module) {
-    return eliminate_empty_statements(SkSpan(module.fElements));
+    return eliminate_empty_statements(module.fElements);
 }
 
 }  // namespace SkSL

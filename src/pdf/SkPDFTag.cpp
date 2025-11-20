@@ -59,6 +59,10 @@ struct Location {
 } // namespace
 
 struct SkPDFStructElem {
+    SkPDFStructElem() = default;
+    SkPDFStructElem(const SkPDFStructElem&) = delete;
+    SkPDFStructElem& operator=(const SkPDFStructElem&) = delete;
+
     // Structure elements (/StructElem) may have an element identifier (/ID) which is a byte string.
     // Element identifiers are used by attributes (/StructElem /A) to refer to structure elements.
     // The mapping from element identifier to structure element is emitted in the /IDTree.
@@ -229,7 +233,7 @@ void SkPDFStructTree::move(SkPDF::StructureElementNode& node,
     structElem->fLang = std::move(node.fLang);
 
     size_t childCount = node.fChildVector.size();
-    structElem->fChildren = SkSpan(fArena.makeArray<SkPDFStructElem>(childCount), childCount);
+    structElem->fChildren = {fArena.makeArray<SkPDFStructElem>(childCount), childCount};
     for (auto&& [nodeChild, elemChild] : SkMakeZip(node.fChildVector, structElem->fChildren)) {
         elemChild.fParent = structElem;
         this->move(*nodeChild, &elemChild, wantTitle);

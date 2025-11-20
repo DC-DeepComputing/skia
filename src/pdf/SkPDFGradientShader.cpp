@@ -8,6 +8,7 @@
 #include "src/pdf/SkPDFGradientShader.h"
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkSpan.h"
@@ -316,7 +317,7 @@ static void gradient_function_code(const SkShaderBase::GradientInfo& info,
     }
 
     // If a cap on depth is needed, loop here.
-    write_gradient_ranges(info, SkSpan(rangeEnds.get(), rangeEndsCount),
+    write_gradient_ranges(info, {rangeEnds.get(), rangeEndsCount},
                           numComponents, true, true, result);
 
     // Clamp the final color.
@@ -1054,7 +1055,7 @@ static SkPDFGradientShader::Key make_key(const SkShader* shader,
     as_SB(shader)->asGradient(&key.fInfo);
     if (is_premul(key.fInfo)) {
         bool changedByPremul = false;
-        for (auto&& c : SkSpan(key.fInfo.fColors, key.fInfo.fColorCount)) {
+        for (auto&& c : SkSpan<SkColor4f>(key.fInfo.fColors, key.fInfo.fColorCount)) {
             if (c.fA != 1.0) {
                 changedByPremul = true;
             }

@@ -100,7 +100,7 @@ std::unique_ptr<SkPDFArray> SkPDFMakeCIDGlyphWidthsArray(const SkPDFStrikeSpec& 
     subset.getSetValues([&](unsigned index) {
         glyphIDs.push_back(SkTo<SkGlyphID>(index));
     });
-    auto glyphs = paths.glyphs(SkSpan(glyphIDs));
+    auto glyphs = paths.glyphs(glyphIDs);
 
     // C++20 = make_unique_for_overwrite<SkScalar[]>(glyphs.size());
     auto advances = std::unique_ptr<SkScalar[]>(new SkScalar[glyphs.size()]);
@@ -116,7 +116,7 @@ std::unique_ptr<SkPDFArray> SkPDFMakeCIDGlyphWidthsArray(const SkPDFStrikeSpec& 
         }
     }
     std::sort(advances.get(), advances.get() + numIntAdvances);
-    int32_t modeAdvance = (int32_t)find_mode_or_0(SkSpan(advances.get(), numIntAdvances));
+    int32_t modeAdvance = (int32_t)find_mode_or_0({advances.get(), numIntAdvances});
     *defaultAdvance = modeAdvance;
 
     // Pre-convert to pdf advances.

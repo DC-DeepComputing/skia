@@ -154,7 +154,7 @@ public:
         this->INHERITED::onRender(canvas, local_ctx);
 
         fDecorator->onDecorate(canvas, {
-            SkSpan(fDecoratorInfo.get(), fFragCount),
+            {fDecoratorInfo.get(), fFragCount},
             fScale
         });
     }

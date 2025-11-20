@@ -281,7 +281,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(skgpu::graphite::Recorder* recorder,
         planes[i] = TextureProxyView(std::move(lazyProxy));
     }
     return Image_YUVA::Make(recorder->priv().caps(), backendTextureInfo.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+                            planes, std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
@@ -476,7 +476,7 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
         planes[i] = std::move(view);
     }
     return Image_YUVA::Make(recorder->priv().caps(), finalInfo.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+                            planes, std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
@@ -510,7 +510,7 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
     }
 
     return Image_YUVA::Make(recorder->priv().caps(), yuvaTextures.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+                            planes, std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> TextureFromYUVAImages(Recorder* recorder,

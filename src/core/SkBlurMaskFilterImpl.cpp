@@ -488,7 +488,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
      *  with our outer-rect (dstM.fBounds)
      */
     SkRect smallR[2];
-    int rectCount;
+    size_t rectCount;
     SkIPoint center;
 
     // +2 is from +1 for each edge (to account for possible fractional edges
@@ -534,7 +534,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
 
     const SkScalar sigma = this->computeXformedSigma(matrix);
     SkTLazy<SkMask> cachedMask;
-    SkSpan<const SkRect> smallRects = SkSpan(smallR, rectCount);
+    SkSpan<const SkRect> smallRects = {smallR, rectCount};
     SkCachedData* cached = find_cached_rects(&cachedMask, sigma, fBlurStyle, smallRects, cache);
     if (!cached) {
         SkMaskBuilder filterM;

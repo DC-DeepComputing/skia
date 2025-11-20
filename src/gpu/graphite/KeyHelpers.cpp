@@ -171,12 +171,12 @@ void add_gradient_preamble(const GradientShaderBlocks::GradientData& gradData,
     if (gradData.fNumStops <= kInternalStopLimit) {
         if (gradData.fNumStops <= 4) {
             // Round up to 4 stops.
-            gatherer->writeArray(SkSpan{gradData.fColors, 4});
+            gatherer->writeArray(SkSpan<const SkPMColor4f>{gradData.fColors, 4});
             gatherer->write(gradData.fOffsets[0]);
         } else if (gradData.fNumStops <= 8) {
             // Round up to 8 stops.
-            gatherer->writeArray(SkSpan{gradData.fColors, 8});
-            gatherer->writeArray(SkSpan{gradData.fOffsets, 2});
+            gatherer->writeArray(SkSpan<const SkPMColor4f>{gradData.fColors, 8});
+            gatherer->writeArray(SkSpan<const SkV4>{gradData.fOffsets, 2});
         } else {
             // Did kNumInternalStorageStops change?
             SkUNREACHABLE;

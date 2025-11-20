@@ -98,8 +98,8 @@ public:
      */
     void addDependenciesFromOtherTask(GrRenderTask* otherTask);
 
-    SkSpan<GrRenderTask*> dependencies() { return SkSpan(fDependencies); }
-    SkSpan<GrRenderTask*> dependents() { return SkSpan(fDependents); }
+    SkSpan<GrRenderTask*> dependencies() { return fDependencies; }
+    SkSpan<GrRenderTask*> dependents() { return fDependents; }
 
     void replaceDependency(const GrRenderTask* toReplace, GrRenderTask* replaceWith);
     void replaceDependent(const GrRenderTask* toReplace, GrRenderTask* replaceWith);

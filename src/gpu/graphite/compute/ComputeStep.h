@@ -238,8 +238,8 @@ public:
                                       const ResourceDesc&,
                                       UniformManager*) const;
 
-    SkSpan<const ResourceDesc> resources() const { return SkSpan(fResources); }
-    SkSpan<const WorkgroupBufferDesc> workgroupBuffers() const { return SkSpan(fWorkgroupBuffers); }
+    SkSpan<const ResourceDesc> resources() const { return fResources; }
+    SkSpan<const WorkgroupBufferDesc> workgroupBuffers() const { return fWorkgroupBuffers; }
 
     // Identifier that can be used as part of a unique key for a compute pipeline state object
     // associated with this `ComputeStep`.

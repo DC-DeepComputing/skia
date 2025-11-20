@@ -1467,7 +1467,7 @@ SpvId SPIRVCodeGenerator::writeOpCompositeConstruct(const Type& type,
     // If this is a vector composed entirely of literals, write a constant-composite instead.
     if (type.isVector()) {
         STArray<4, SpvId> constants;
-        if (this->toConstants(SkSpan(values), &constants)) {
+        if (this->toConstants(values, &constants)) {
             // Create a vector from literals.
             return this->writeOpConstantComposite(type, constants);
         }
@@ -1476,7 +1476,7 @@ SpvId SPIRVCodeGenerator::writeOpCompositeConstruct(const Type& type,
     // If this is a matrix composed entirely of literals, constant-composite them instead.
     if (type.isMatrix()) {
         STArray<16, SpvId> constants;
-        if (this->toConstants(SkSpan(values), &constants)) {
+        if (this->toConstants(values, &constants)) {
             // Create each matrix column.
             SkASSERT(type.isMatrix());
             const Type& vecType = type.columnType(fContext);

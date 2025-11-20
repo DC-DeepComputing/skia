@@ -187,9 +187,9 @@ public:
         /**
          * Get handle for SlotManager after animation is built.
          */
-        const sk_sp<SlotManager>& getSlotManager() const {return fSlotManager;}
+        const sk_sp<SlotManager>& getSlotManager() const { return fSlotManager; }
 
-        SkSpan<const LayerInfo> getLayerInfo() const {return SkSpan(fLayerInfo);}
+        SkSpan<const LayerInfo> getLayerInfo() const { return fLayerInfo; }
 
     private:
         const uint32_t          fFlags;

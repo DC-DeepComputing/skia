@@ -19,6 +19,7 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLIntrinsicList.h"
 #include "src/sksl/SkSLOperator.h"
@@ -1148,7 +1149,8 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             std::string msg =
                     "no match for " + arguments.back()->type().displayName() +
                     "::" + std::string(ref.overloadChain()->name().substr(1)) +
-                    build_argument_type_list(SkSpan(arguments).first(arguments.size() - 1));
+                    build_argument_type_list(
+                        SkSpan<ExpressionArray::value_type>(arguments).first(arguments.size() - 1));
             context.fErrors->error(pos, msg);
             return nullptr;
         }

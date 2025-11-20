@@ -297,7 +297,7 @@ public:
     /**
      * Returns the corner radii for all four corners, in the same order as `Corner`.
      */
-    SkSpan<const SkVector> radii() const { return SkSpan(fRadii, 4); }
+    SkSpan<const SkVector> radii() const { return {fRadii, 4}; }
 
     /** Returns bounds. Bounds may have zero width or zero height. Bounds right is
         greater than or equal to left; bounds bottom is greater than or equal to top.
