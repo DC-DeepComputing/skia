@@ -16,6 +16,23 @@
       "message": "I promise the gargantuan patches are coming to an end soon...",
       "revId": "bf5180204e08d828aa49d442acac2332568563df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d63de47_bdc0ffc8",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-20T15:02:42Z",
+      "side": 1,
+      "message": "Sorry, had one question about this. This texture weighs in at 32x4x4x2 (well, it will if I change it to float16), which is 1k. It\u0027s not totally ridiculous to re-upload it every frame, but I wanted to know if the bowels of skia will cache it on the GPU somehow.",
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
