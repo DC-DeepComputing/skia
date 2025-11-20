@@ -1116,6 +1116,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6e00889_9b2ee74d",
+        "filename": "experimental/rust_bmp/ffi/bmp_icc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-20T16:43:06Z",
+      "side": 1,
+      "message": "To continue in this approach, I just created a CL for bringing moxcms FFI layer that we can use later from PNG and BMP\n\nhttps://skia-review.googlesource.com/c/skia/+/1106557",
+      "parentUuid": "2a4fcff0_84d7cd31",
+      "range": {
+        "startLine": 41,
+        "startChar": 22,
+        "endLine": 41,
+        "endChar": 69
+      },
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe450ce1_a5705ae1",
