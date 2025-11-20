@@ -1040,21 +1040,25 @@ HRESULT SkXPSDevice::createXpsBrush(const SkPaint& skPaint,
         }
     }
 
-    SkBitmap outTexture;
+    SkPixmap outTexture;
     SkMatrix outMatrix;
     SkTileMode xy[2];
     SkImage* image = shader->isAImage(&outMatrix, xy);
-    if (image && image->asLegacyBitmap(&outTexture)) {
+    if (image && image->peekPixels(&outTexture)) {
         if (parentTransform) {
             outMatrix.postConcat(*parentTransform);
         }
 
         SkTScopedComPtr<IXpsOMTileBrush> tileBrush;
-        HR(this->createXpsImageBrush(outTexture.pixmap(), outMatrix, xy, skPaint.getAlpha(),
+        HR(this->createXpsImageBrush(outTexture, outMatrix, xy, skPaint.getAlpha(),
                                      &tileBrush));
 
         HRM(tileBrush->QueryInterface<IXpsOMBrush>(brush), "QI failed.");
     } else {
+        if (image) {
+            SkDEBUGFAILF("non-raster image passed in to xps backend paint: %d\n",
+                         as_IB(image)->type());
+        }
         HR(this->createXpsSolidColorBrush(skPaint.getColor4f(), 0xFF, brush));
     }
     return S_OK;
