@@ -192,7 +192,7 @@ DEF_TEST(SkPDF_JpegIdentification, r) {
     // Test several malformed jpegs.
     SkJFIFInfo info;
     {
-        static const char goodJpeg[] =
+        static const unsigned char goodJpeg[] =
             "\377\330\377\340\0\20JFIF\0\1\1\0\0\1\0\1\0\0\377\333\0C\0\20\13\14"
             "\16\14\n\20\16\r\16\22\21\20\23\30(\32\30\26\26\0301#%\35(:3=<9387"
             "@H\\N@DWE78PmQW_bghg>Mqypdx\\egc\377\333\0C\1\21\22\22\30\25\30/\32"
@@ -218,7 +218,7 @@ DEF_TEST(SkPDF_JpegIdentification, r) {
             "\262\310\253\363tl\22209\35O~\237\\\24QZ\306Mh\216\252i\364ml\177\377"
             "\331";
         size_t goodJpegLength = 659;
-        auto data = SkData::MakeWithoutCopy(goodJpeg, goodJpegLength);
+        auto data = SkData::MakeWithoutCopy(SkSpan(goodJpeg).first(goodJpegLength));
         REPORTER_ASSERT(r, SkIsJFIF(data.get(), &info));
         REPORTER_ASSERT(r, info.fSize == (SkISize{8, 8}));
         REPORTER_ASSERT(r, info.fType == SkJFIFInfo::kYCbCr);

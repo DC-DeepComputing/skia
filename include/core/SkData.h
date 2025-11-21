@@ -96,7 +96,9 @@ public:
      *  Create a new dataref by copying the specified data
      */
     static sk_sp<SkData> MakeWithCopy(const void* data, size_t length);
-
+    static sk_sp<SkData> MakeWithCopy(SkSpan<const uint8_t> span) {
+        return MakeWithCopy(span.data(), span.size());
+    }
 
     /**
      *  Create a new data with uninitialized contents. The caller should call writable_data()
@@ -130,6 +132,9 @@ public:
      */
     static sk_sp<SkData> MakeWithoutCopy(const void* data, size_t length) {
         return MakeWithProc(data, length, NoopReleaseProc, nullptr);
+    }
+    static sk_sp<SkData> MakeWithoutCopy(SkSpan<const uint8_t> span) {
+        return MakeWithoutCopy(span.data(), span.size());
     }
 
     /**

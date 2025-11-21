@@ -169,7 +169,7 @@ DEF_TEST(ExifParse, r) {
 
         // Zero out the denominators of signed and unsigned rationals, to verify that we do not
         // divide by zero.
-        data = SkData::MakeWithCopy(data->bytes(), data->size());
+        data = SkData::MakeWithCopy(data->byteSpan());
         memset(static_cast<uint8_t*>(data->writable_data()) + 186, 0, 4);
         memset(static_cast<uint8_t*>(data->writable_data()) + 2171, 0, 4);
         memset(static_cast<uint8_t*>(data->writable_data()) + 2240, 0, 4);
@@ -196,7 +196,7 @@ DEF_TEST(ExifTruncate, r) {
     // At 545 bytes, we do not have either value yet.
     {
         SkExif::Metadata exif;
-        SkExif::Parse(exif, SkData::MakeWithCopy(data->bytes(), 545).get());
+        SkExif::Parse(exif, SkData::MakeWithCopy(data->byteSpan().first(545)).get());
         REPORTER_ASSERT(r, !exif.fPixelXDimension.has_value());
         REPORTER_ASSERT(r, !exif.fPixelYDimension.has_value());
     }
@@ -204,7 +204,7 @@ DEF_TEST(ExifTruncate, r) {
     // At 546 bytes, we have one.
     {
         SkExif::Metadata exif;
-        SkExif::Parse(exif, SkData::MakeWithCopy(data->bytes(), 546).get());
+        SkExif::Parse(exif, SkData::MakeWithCopy(data->byteSpan().first(546)).get());
         REPORTER_ASSERT(r, exif.fPixelXDimension.has_value());
         REPORTER_ASSERT(r, !exif.fPixelYDimension.has_value());
     }
@@ -212,7 +212,7 @@ DEF_TEST(ExifTruncate, r) {
     // At 558 bytes (12 bytes later, one tag), we have both.
     {
         SkExif::Metadata exif;
-        SkExif::Parse(exif, SkData::MakeWithCopy(data->bytes(), 558).get());
+        SkExif::Parse(exif, SkData::MakeWithCopy(data->byteSpan().first(558)).get());
         REPORTER_ASSERT(r, exif.fPixelXDimension.has_value());
         REPORTER_ASSERT(r, exif.fPixelYDimension.has_value());
     }
