@@ -245,8 +245,7 @@ std::pair<sk_sp<SkShader>, sk_sp<SkShader>> make_defective_annulus_shader_pair()
     SkASSERT(blessed != cursed.get());
 
     static const float kUniforms[4] = { 50.0f, 50.0f, 40.0f, 50.0f };
-
-    sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms, sizeof(kUniforms));
+    sk_sp<SkData> uniforms = SkData::MakeWithCopy(kUniforms);
 
     return { blessed->makeShader(uniforms, /* children= */ {}),
              cursed->makeShader(uniforms, /* children= */ {}) };
