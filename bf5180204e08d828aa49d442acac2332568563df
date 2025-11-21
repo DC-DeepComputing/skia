@@ -20,6 +20,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a495ed07_2f2339d5",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "nit: we don\u0027t need the newlines",
+      "range": {
+        "startLine": 17,
+        "startChar": 30,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9b10343_0f22a2eb",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "nit: to reduce code size, don\u0027t include spaces in the quotes (although you can indent it *outside* the quotes as per usual).",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "483840c8_3df12ba1",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "Is that because there\u0027s up to 32 control points and 5 is log_2(32)? If so, maybe add that to the comment.",
+      "range": {
+        "startLine": 51,
+        "startChar": 91,
+        "endLine": 51,
+        "endChar": 92
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6552ab9_133822fd",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "I\u0027m not super familiar with writing shaders (or optimizing them), so my only note is that there\u0027s a lot of branching here, which I vaguely recall to be Not Good for shader code if we can avoid it. Is there a way we could maybe write this to be branchless with step/mix/max/min and friends?",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 11
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb82b3dc_bb9b65be",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "This aborts if we can\u0027t allocate. Is that an acceptable failure case? Is there a more graceful way we want to handle this like just returning nullptr?",
+      "range": {
+        "startLine": 440,
+        "startChar": 21,
+        "endLine": 440,
+        "endChar": 32
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e2e21aa_edf79c2e",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "nit: `SkImages::RasterFromBitmap()` is the equivalent (.asImage() just calls it) and preferred way.",
+      "range": {
+        "startLine": 454,
+        "startChar": 25,
+        "endLine": 454,
+        "endChar": 45
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d63de47_bdc0ffc8",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 6
@@ -31,6 +169,75 @@
       "writtenOn": "2025-11-20T15:02:42Z",
       "side": 1,
       "message": "Sorry, had one question about this. This texture weighs in at 32x4x4x2 (well, it will if I change it to float16), which is 1k. It\u0027s not totally ridiculous to re-upload it every frame, but I wanted to know if the bowels of skia will cache it on the GPU somehow.",
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46642522_4ffbb5e7",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "Maybe mention the fact that this is lazy loaded is why we have it be mutable.\n\nAnother thing to consider is could we avoid having the mutable part and explicitly invoke the creation of this cached value? I personally like to have as few mutable fields as possible (but a lazy load cache is a fine reason to have one), so if there\u0027s a clean way to avoid it, I\u0027d prefer that.",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 13
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec4e7471_97b00cb2",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "There\u0027s a lot going on in this test and it took me a while to figure it out. I\u0027d like to introduce a few named helper functions to assist with understanding this.\n\nMaybe the following structure\n```\nDEF_TEST(...) {\n   // set up AGTM\n   skhdr::Agtm agtm;\n   ...\n   // Maybe hoist this into a static getter?\n   SkColor4f inputTestColors[kNumTestColors] \u003d ...;\n   \n   auto test_shader_matches_nonshader \u003d [r, agtm](\n           float targetedHdrHeadroom,\n           SkColor4f[kNumTestColors] expectedTestColors) {\n       skiatest::ReporterContext ctx(r, SkStringPrintf(\"targetedHdrHeadroom:%f\", targetedHdrHeadroom));\n       auto actualShaderColors \u003d test_shader_impl(targetedHdrHeadroom, agtm, inputTestColors);\n       auto actualNonShaderColors \u003d test_nonshader_impl(targetedHdrHeadroom, agtm, inputTestColors);\n       // assert both equal the expected values\n   };\n   \n   test_shader_matches_nonshader(0.0,\n           {\n           // Maybe some commentary on why these values are accurate\n           // or how they were verified. \n            {0.565302f, 0.565302f, 0.565302f, 1.f},\n            {0.565302f, 0.282651f, 0.141326f, 1.f},\n            // Note that we max out at 1.0 because 0.0 means ...\n            {1.000000f, 1.000000f, 1.000000f, 1.f},\n            {0.250000f, 0.500000f, 1.000000f, 1.f},\n            {0.282651f, 0.282651f, 0.282651f, 1.f},\n            {0.815278f, 0.815278f, 0.815278f, 1.f},\n        }\n   );\n   \n   ...\n\n}\n```\nI think those few extra helper functions will make a big scary test seem a lot more inspectable.",
+      "range": {
+        "startLine": 474,
+        "startChar": 3,
+        "endLine": 474,
+        "endChar": 7
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a96cd1d9_a54c86ca",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-21T14:26:55Z",
+      "side": 1,
+      "message": "I\u0027m curious about the choice of input colors here. I see several in the \"normal\" range, like a normal white and a normal orange, but also some colors way above 1.0. Could you add some annotation to them about why they are interesting?",
+      "range": {
+        "startLine": 484,
+        "startChar": 9,
+        "endLine": 484,
+        "endChar": 14
+      },
       "revId": "bf5180204e08d828aa49d442acac2332568563df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
