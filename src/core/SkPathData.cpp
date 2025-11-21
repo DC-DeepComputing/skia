@@ -17,6 +17,7 @@
 #include "src/core/SkPathRawShapes.h"
 #include "src/core/SkSpanPriv.h"
 
+#include <functional>
 #include <new>
 #include <optional>
 #include <type_traits>
