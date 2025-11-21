@@ -26,8 +26,8 @@ DEF_TEST(HdrMetadata_ParseSerialize_ContentLightLevelInformation, r) {
     skhdr::ContentLightLevelInformation clliExpected = {
         1000.f, 250.f,
     };
-    auto skData = SkData::MakeWithoutCopy(data, sizeof(data));
-    auto skDataPng = SkData::MakeWithoutCopy(dataPng, sizeof(dataPng));
+    auto skData = SkData::MakeWithoutCopy(data);
+    auto skDataPng = SkData::MakeWithoutCopy(dataPng);
 
     skhdr::ContentLightLevelInformation clli;
     REPORTER_ASSERT(r, clli.parse(skData.get()));
@@ -58,7 +58,7 @@ DEF_TEST(HdrMetadata_ParseSerialize_MasteringDisplayColorVolume, r) {
         {0.708f, 0.292f, 0.17f, 0.797f, 0.131f, 0.046f, 0.3127f, 0.329f},
         4000.f, 0.0005f,
     };
-    auto skData = SkData::MakeWithoutCopy(data, sizeof(data));
+    auto skData = SkData::MakeWithoutCopy(data);
 
     skhdr::MasteringDisplayColorVolume mdcv;
     REPORTER_ASSERT(r, mdcv.parse(skData.get()));

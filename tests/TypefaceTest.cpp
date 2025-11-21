@@ -54,7 +54,7 @@ static void TypefaceStyle_test(skiatest::Reporter* reporter,
 {
     sk_sp<SkData> dataCopy;
     if (!data->unique()) {
-        dataCopy = SkData::MakeWithCopy(data->data(), data->size());
+        dataCopy = SkData::MakeWithCopy(data->byteSpan());
         data = dataCopy.get();
     }
     SkSFNTHeader* sfntHeader = static_cast<SkSFNTHeader*>(data->writable_data());
