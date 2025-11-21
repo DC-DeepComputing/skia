@@ -1,0 +1,190 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d591d68_387f8172",
+        "filename": "relnotes/constrefencoded.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "nit: pointer to const SkData",
+      "range": {
+        "startLine": 1,
+        "startChar": 83,
+        "endLine": 1,
+        "endChar": 110
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cdfd90b_88fd6982",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "We should be able to avoid adding `onRefEncodedDataConst` if we ifdef the whole method, or maybe just the return statement:\n\n```\n#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)\nsk_sp\u003cconst SkData\u003e SkCodecImageGenerator::onRefEncodedData()\n#else\nsk_sp\u003cconst SkData\u003e SkCodecImageGenerator::onRefEncodedData()\n#endif\n{\n    ...\n#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)\n    return fCachedData;\n#else\n    return sk_ref_sp(...);\n#endif\n}\n```",
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e927ff6_39f3a25a",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "`stream.getData()`?",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 65
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b3f2f74b_d75b8a72",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkCodecImageGenerator.cpp",
+              "range": {
+                "startLine": 68,
+                "startChar": 0,
+                "endLine": 69,
+                "endChar": 0
+              },
+              "replacement": "        fCachedData \u003d stream-\u003egetData();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e43d98_8511bfc4",
+        "filename": "src/ports/SkImageGeneratorCG.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "nit: I think we can omit the template type, it should be inferred from the arg type.",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b65f8991_c800edce",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkImageGeneratorCG.cpp",
+              "range": {
+                "startLine": 124,
+                "startChar": 0,
+                "endLine": 125,
+                "endChar": 0
+              },
+              "replacement": "    return sk_ref_sp(const_cast\u003cSkData*\u003e(fData.get()));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99c7d94e_254992eb",
+        "filename": "src/ports/SkImageGeneratorNDK.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "typo (+ we can prolly skip the template type)",
+      "range": {
+        "startLine": 231,
+        "startChar": 20,
+        "endLine": 231,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ce563be7_af421c6f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkImageGeneratorNDK.cpp",
+              "range": {
+                "startLine": 231,
+                "startChar": 0,
+                "endLine": 232,
+                "endChar": 0
+              },
+              "replacement": "    return sk_ref_sp(const_cast\u003cSkData*\u003e(fData.get()));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9e4a930_bb983454",
+        "filename": "src/ports/SkImageGeneratorWIC.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T16:33:31Z",
+      "side": 1,
+      "message": "nit: same",
+      "range": {
+        "startLine": 203,
+        "startChar": 20,
+        "endLine": 203,
+        "endChar": 28
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
