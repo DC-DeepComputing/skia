@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7bba45_a821b346",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2025-11-21T15:28:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc05d78_7ed78cfe",
+      "range": {
+        "startLine": 255,
+        "startChar": 13,
+        "endLine": 255,
+        "endChar": 44
+      },
+      "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "349c5406_46841d82",
@@ -72,6 +96,24 @@
       "writtenOn": "2025-11-20T20:01:09Z",
       "side": 1,
       "message": "nit: line break",
+      "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7400a059_8d0e0535",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6199,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2025-11-21T15:28:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "349c5406_46841d82",
       "revId": "7a37d6d2d100933adea2d222cf7fe22b2c5875bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
