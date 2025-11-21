@@ -1,0 +1,671 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "345099a6_32a02aa3",
+        "filename": "MODULE.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "nitty nit: I notice that the other entries here are (almost...) sorted alphabetically, so let\u0027s move `moxcms` a bit higher - above `crate.spec(...package \u003d \"naga\"...)`?",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 1
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf076f5_551e0903",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I wonder if this could be replaced with:\n\n1. `std::is_layout_compatible_v` (which IIUC also covers field offsets+types;  and AFAIK Skia started recently allowing usage of C++20 features)\n2. `std::is_standard_layout_v` (this is probably redundant wrt `std::is_layout_compatible_v`, but it seems that it wouldn\u0027t hurt covering this explicitly)\n3. `is_trivially_copyable_v`\n\n?\n\nThis review comment is mostly motivated by the desire to detect future scenarios where these structs change in `memcpy`-incompatible ways.  I guess these structs are unlikely to change, but it still seems desirable to document why `memcpy` is safe.\n\nFWIW this comment also applies to other `static_assert` / `sizeof(...)` / `memcpy` in this `.cc` file.\n\nPS. For longer-term I\u0027ve also opened https://crbug.com/462770920, but I guess that this won\u0027t help in the short-term... :-(",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 50
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a893baac_f58222e7",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Would it be worth spot-checking the offset of `g` and `a` fields (since they are in a weird order) via https://en.cppreference.com/w/cpp/types/offsetof.html?  OTOH maybe this is somewhat optional, because you already cover this via the `RustIcc_transfer_function_conversion` test (thanks!).",
+      "range": {
+        "startLine": 30,
+        "startChar": 56,
+        "endLine": 30,
+        "endChar": 57
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe88e313_27446017",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "TIL about https://en.cppreference.com/w/cpp/language/union.html#:~:text\u003dIf%20two%20union%20members%20are%20standard%2Dlayout%20types%2C%20it%27s%20well%2Ddefined%20to%20examine%20their%20common%20subsequence%20on%20any%20compiler\n\n(for a moment I was worried about https://en.cppreference.com/w/cpp/language/union.html#:~:text\u003dIt%20is%20undefined%20behavior%20to%20read%20from%20the%20member%20of%20the%20union%20that%20wasn%27t%20most%20recently%20written )",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 37
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35df8705_91f85703",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can this be `const_cast`?",
+      "range": {
+        "startLine": 41,
+        "startChar": 30,
+        "endLine": 41,
+        "endChar": 46
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad2e9c1_b4ea559f",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Do we need to enforce the `input_channels must be in [1, 4]` part of the comment from `skcms_A2B` declaration?\n\nDo we want to enforce that `rust_a2b.input_channels` is equal to (or less than) the length of `rust_a2b.grid_points`?",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 56
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ce7c0d_e95c2115",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "`std::min` seems to a no-op / could be replaced with a literal `4`.  Maybe we can instead have `static_assert`s that `sizeof(skcms_A2B::grid_points) \u003d\u003d 4` and `sizeof(rust_icc::A2B::grid_points) \u003d\u003d 4`?\n\nPS. It is a bit frustrating that `memcpy` is necessary here.  But I don\u0027t see an alternative.  (Chromium has `base::span::copy_from` but IIUC there is no equivalent in `std::span`.)",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 79
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a74535e9_31d58d12",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "That ownership model seems okay given the currently documented behavior of `ToSkcmsIccProfile`.  But if we change this model, then this may need a follow-up - see the discussion at https://skia-review.googlesource.com/c/skia/+/1106557/9/rust/icc/FFI.h#46",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "405a0751_63094453",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can a malicious input trigger a panic here at runtime?\n\nSomewhat relatedly, do we want to enforce that `matrix_channels` is equal to or less than the length of `matrix_curves`?",
+      "range": {
+        "startLine": 66,
+        "startChar": 73,
+        "endLine": 66,
+        "endChar": 76
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c356024_e5a80842",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "FWIW the doc comment in `skcms_public.h` says: \"output_channels must be 3\".  Do we need to enforce that here?  Maybe we don\u0027t - in this case can you document why not?\n\nBTW if such enforcement is needed, then maybe we also need to enforce that `rust_a2b.output_curves.len()` is 3?  I dunno... :-/",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 58
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73538fd9_f4f40b2c",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Didn\u0027t review this closely, sorry.  But, I assume that maybe the feedback for `ToSkcmsA2B` may also apply here?  I\u0027ll try to take a closer look in the next review iteration.",
+      "range": {
+        "startLine": 88,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 22
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02235fd2_84df2750",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I wonder if this cast can be avoided by ensuring that the `#[cxx::bridge]`-defined `enum` has a matching representation - see https://cxx.rs/shared.html#:~:text\u003dBy%20default%20CXX%20represents%20your%20enum%20using%20the%20smallest%20integer%20type%20capable%20of%20fitting%20all%20the%20discriminants%20(whether%20explicit%20or%20implicit).%20If%20you%20need%20a%20different%20representation%20for%20reasons%2C%20provide%20a%20repr%20attribute:\n\n```\n#[cxx::bridge]\nmod ffi {\n    #[repr(u32)]  // \u003c\u003d\u003d Would this let us avoid the `static_cast`?\n    enum Enum {\n        Zero,\n        One,\n        Five \u003d 5,\n        Six,\n    }\n}\n```",
+      "range": {
+        "startLine": 134,
+        "startChar": 34,
+        "endLine": 134,
+        "endChar": 55
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eadaebaf_adc6aaab",
+        "filename": "rust/icc/FFI.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Does that imply that the caller has to guarantee that the lifetime of `*out_skcms` will not be longer than the lifetime of `rust_profile`?  If so, then:\n\n* Can you please add this to the doc comment here?\n* Is it actually possible to fulfill this guarantee in `SkPngRustCodec.cpp`?  See for example the problem fixed by https://review.skia.org/917191.\n\n---------------------------------\n\nIf the 2nd item above is a concern, then I wonder if it may be possible for `FFI.rs` to propagate the `\u0027input` lifetime into the output.  Hand-waving:\n\n```\npub fn parse_icc_profile\u003c\u0027input\u003e(\n    data: \u0026\u0027input [u8],\n    out: \u0026mut ffi::IccProfile\u003c\u0027input\u003e,\n) -\u003e bool { ... }`?\n```\n\n(Maybe this can be done in a follow-up CL and for now we can just leave a TODO?)",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 61
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46654437_ae8bb2b7",
+        "filename": "rust/icc/FFI.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I notice that the implementation doesn\u0027t set `out_skcms-\u003ebuffer`, `out_skcms-\u003esize`, nor `out_skcms-\u003etag_count`.  I wonder if this can be mentioned in the doc comment of this function - e.g. maybe: \"Note that the following members won\u0027t be copied from `rust_profile`: `buffer` will be set to null, `size` and `tag_count` will be set to 0\".\n\n(Not for this CL, but I am curious if these members will need to be set in the future in a higher-layer wrapper under `rust/icc` or `src/codec/SkPngRustCodec.cpp`?)",
+      "range": {
+        "startLine": 49,
+        "startChar": 55,
+        "endLine": 49,
+        "endChar": 82
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de2c111_0d12293f",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I wonder if a comment could be added to explain these struct/type redefinitions.  Maybe something like:\n\n```suggestion\nmod ffi {\n    // The types below re-define C structs defined in `skcms_public.h`.\n    // The type definitions below have to be manually kept in-sync with the ones\n    // in `skcms_public.h`.  Some guardrails exist, but they are not 100% accurate:\n    //\n    // * `static_assert`s in `rust/icc/FFI.cpp` verify that the 2 types are\n    //   `std::is_layout_compatible` (this won\u0027t catch if the order of two\n    //   field definitions is swapped for fields of the same type)\n    // * Tests in `tests/RustIccTest.cpp` verify round-tripping\n    //   (this should catch issues with order of *known* fields)\n    //\n    // TODO(https://crbug.com/462751628): If all Skia clients using Rust codecs\n    // support `bindgen`, then it may be possible to avoid duplicating / redefining\n    // the types below.\n\n    /// 3x3 matrix for color space transforms (matches skcms_Matrix3x3).\n```",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 72
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20d7547d_d2692c48",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I notice that this field is not needed / not propagated in `ToSkcmsIccProfile`.  Can we therefore simplify the code by removing this field (and the corresponding `enum` + handling code)?",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 42
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "126830d0_0f87aa9c",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can you please use the technique from https://cxx.rs/shared.html#extern-enums to make `cxx::bridge` generate code that ensures that enum values match on both sides of the FFI boundary?\n\nThis may require some additional changes - e.g. to provide a name for [the anonymous enum](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/src/skcms_public.h;l\u003d325-357;drc\u003d410256218592fb34586325b4e065a0325256e868) defined in `skcms_public.h`.  And this may also require indicating that the enum comes from a different C/C++ namespace than the other types around - see https://cxx.rs/attributes.html?highlight\u003dnamespace#namespace\n\nI am also a bit confused why `YCbCR \u003d 4` above but `skcms_public.h` says `skcms_Signature_YCbCr  \u003d 0x59436272`",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 5
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c7e3fe_9cafbaac",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "nit: Let\u0027s simplify a bit with:\n\n```suggestion\n    let Ok(profile) \u003d ColorProfile::new_from_slice(data)\n        else { return false; };\n```",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 6
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb49fc1b_bbfac113",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can a separate binding/variable be avoided / can this directly assign to `out`?:\n\n```suggestion\n    out.data_color_space \u003d match profile.color_space {\n```",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 24
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64688fc9_2abbd32a",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can a separate binding/variable be avoided / can this directly assign to `out`?:\n\n```suggestion\n    out.connection_space \u003d match profile.color_space {\n```",
+      "range": {
+        "startLine": 192,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 24
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3100a435_0481db4a",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "IIUC `skcms_ParseWithA2BPriority` will [`return false`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/skcms.cc;l\u003d1414-1416;drc\u003ddb569cd7847d479358bd391a18b2c28393803333) for non-XYZ/non-Lab values.  Should we consider doing the same here instead of using `ColorSpace::Unknown`?\n\nAlso - could you please add a comment to explain to future readers/maintainers why other values are rejected - e.g.: \"Mimicking `skcms_ParseWithA2BPriority` which rejects non-XYZ, non-Lab values\".",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 6
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9e9e98_095bf8ff",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can you please add a comment why this particular indices are checked?  (I don\u0027t have a strong background in computer graphics so maybe I am just missing something.  But I also didn\u0027t find any equivalent checks in `skcms_ParseWithA2BPriority`.)",
+      "range": {
+        "startLine": 218,
+        "startChar": 24,
+        "endLine": 221,
+        "endChar": 33
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4942ad44_c25713d7",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "I am unable to review - it\u0027s probably best to ask somebody from Skia to take a quick look later / once this CL is close to landing.",
+      "range": {
+        "startLine": 288,
+        "startChar": 12,
+        "endLine": 288,
+        "endChar": 14
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d005daa8_28abf252",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "nit: Can we reuse code for doing the conversion?\n\n```suggestion\n                data.extend_from_slice(\u0026value.to_le_bytes());\n```\n\nAlternatively this could use `bytemuck` to reinterpret `\u0026[u16]` as `\u0026[u8]`, but this is probably an overkill here (microoptimizations are the root of all evil).",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 331,
+        "endChar": 62
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce9b6a9_349d71e8",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "nit: If you want to shorted this, then you can use `#[derive(Default)]` inside the `#[cxx::bridge]` and then use `ffi::TransferFunction::default()` here.",
+      "range": {
+        "startLine": 344,
+        "startChar": 16,
+        "endLine": 344,
+        "endChar": 18
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7386960f_00d65fb8",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Same as above - can this use `u16.to_le_bytes` from Rust std lib?",
+      "range": {
+        "startLine": 372,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 59
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c252124_122830b5",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can this be simplified to?:\n\n```suggestion\n            let grid_points: [u8; 4] \u003d mdt.grid_points[..4].try_into().unwrap();\n```",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 412,
+        "endChar": 13
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a06e292a_a375619c",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Not sure, but it seems that similar code is also present in `fn convert_to_curve` above.  Would it be possible to deduplicate into a shared helper?",
+      "range": {
+        "startLine": 449,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 13
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6e8526_97547f56",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Can this use a different/unique value to verify that the redefinition didn\u0027t accidentally transpose `e` and `f` fields?",
+      "range": {
+        "startLine": 53,
+        "startChar": 16,
+        "endLine": 53,
+        "endChar": 21
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

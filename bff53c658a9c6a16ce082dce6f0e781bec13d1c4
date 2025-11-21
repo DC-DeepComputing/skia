@@ -330,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4120631d_60ca7259",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-21T21:44:27Z",
+      "side": 1,
+      "message": "Thanks!  One more thought that I hope may be helpful (_if_ you decide that proceeding with `bindgen` is the best path forward - I am not sure either way, sorry): `bindgen` may help with reusing C/C++ structs/enums from Rust, but we would also need to declare to `cxx::bridge` how it can reuse these `bindgen`-generated Rust structs - i.e. this snippet from `cxx` docs may help: https://cxx.rs/extern-c++.html#integrating-with-bindgen-generated-or-handwritten-unsafe-bindings",
+      "parentUuid": "6d8f8408_e83ee678",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23f59274_8c59f9a3",
