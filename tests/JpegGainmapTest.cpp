@@ -264,7 +264,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
                 0xf9, 0xb7, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
         };
         auto mpParams =
-                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes, sizeof(bytes)));
+                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes));
         REPORTER_ASSERT(r, mpParams);
         REPORTER_ASSERT(r, mpParams->images.size() == 2);
         REPORTER_ASSERT(r, mpParams->images[0].dataOffset == 0);
@@ -285,7 +285,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
                 0x00, 0x55, 0x7c, 0x1f, 0x00, 0x00, 0x00, 0x00,
         };
         auto mpParams =
-                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes, sizeof(bytes)));
+                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes));
         REPORTER_ASSERT(r, mpParams);
         REPORTER_ASSERT(r, mpParams->images.size() == 2);
         REPORTER_ASSERT(r, mpParams->images[0].dataOffset == 0);
@@ -307,7 +307,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
                 0x00, 0x96, 0x6b, 0x00, 0x22, 0x18, 0x9c, 0x00, 0x00, 0x00, 0x00,
         };
         auto mpParams =
-                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes, sizeof(bytes)));
+                SkJpegMultiPictureParameters::Make(SkData::MakeWithoutCopy(bytes));
         REPORTER_ASSERT(r, mpParams);
         REPORTER_ASSERT(r, mpParams->images.size() == 3);
         REPORTER_ASSERT(r, mpParams->images[0].dataOffset == 0);
@@ -357,7 +357,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
 
         {
             // Change the version to {'0', '1', '0', '1'}.
-            auto bytesInvalid = SkData::MakeWithCopy(bytes, sizeof(bytes));
+            auto bytesInvalid = SkData::MakeWithCopy(bytes);
             REPORTER_ASSERT(r, bytes[25] == '0');
             reinterpret_cast<uint8_t*>(bytesInvalid->writable_data())[25] = '1';
             REPORTER_ASSERT(r, SkJpegMultiPictureParameters::Make(bytesInvalid) == nullptr);
@@ -365,7 +365,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
 
         {
             // Change the number of images to be undefined type instead of unsigned long type.
-            auto bytesInvalid = SkData::MakeWithCopy(bytes, sizeof(bytes));
+            auto bytesInvalid = SkData::MakeWithCopy(bytes);
             REPORTER_ASSERT(r, bytes[29] == 0x04);
             reinterpret_cast<uint8_t*>(bytesInvalid->writable_data())[29] = 0x07;
             REPORTER_ASSERT(r, SkJpegMultiPictureParameters::Make(bytesInvalid) == nullptr);
@@ -373,7 +373,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
 
         {
             // Make the MP entries point off of the end of the buffer.
-            auto bytesInvalid = SkData::MakeWithCopy(bytes, sizeof(bytes));
+            auto bytesInvalid = SkData::MakeWithCopy(bytes);
             REPORTER_ASSERT(r, bytes[49] == 0x32);
             reinterpret_cast<uint8_t*>(bytesInvalid->writable_data())[49] = 0xFE;
             REPORTER_ASSERT(r, SkJpegMultiPictureParameters::Make(bytesInvalid) == nullptr);
@@ -381,7 +381,7 @@ DEF_TEST(Codec_multiPictureParams, r) {
 
         {
             // Make the MP entries too small.
-            auto bytesInvalid = SkData::MakeWithCopy(bytes, sizeof(bytes));
+            auto bytesInvalid = SkData::MakeWithCopy(bytes);
             REPORTER_ASSERT(r, bytes[45] == 0x20);
             reinterpret_cast<uint8_t*>(bytesInvalid->writable_data())[45] = 0x1F;
             REPORTER_ASSERT(r, SkJpegMultiPictureParameters::Make(bytesInvalid) == nullptr);
@@ -1097,12 +1097,12 @@ DEF_TEST(AndroidCodec_gainmapInfoParse, r) {
     // Verify the version from data.
     REPORTER_ASSERT(r,
                     SkGainmapInfo::ParseVersion(
-                            SkData::MakeWithoutCopy(versionData, sizeof(versionData)).get()));
+                            SkData::MakeWithoutCopy(versionData).get()));
 
     // Verify the SkGainmapInfo from data.
     SkGainmapInfo info;
     REPORTER_ASSERT(r,
-                    SkGainmapInfo::Parse(SkData::MakeWithoutCopy(data, sizeof(data)).get(), info));
+                    SkGainmapInfo::Parse(SkData::MakeWithoutCopy(data).get(), info));
     expect_approx_eq_info(r, info, kExpectedInfo);
 
     // Verify the parsed version.
