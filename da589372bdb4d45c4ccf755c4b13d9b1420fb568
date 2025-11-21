@@ -33,6 +33,24 @@
       "message": "Oh I see, do I need a re-review now after an approved patchset? @Florin PTAL if so",
       "revId": "da589372bdb4d45c4ccf755c4b13d9b1420fb568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dcdc446_1b38d74c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-21T15:53:33Z",
+      "side": 1,
+      "message": "Yup, +1s are now more volatile (IIRC cleared on any change for non-googlers, cleared for new files for googlers).  You also need 2 +1s as an external contributor.",
+      "parentUuid": "315fd7c5_369cd29f",
+      "revId": "da589372bdb4d45c4ccf755c4b13d9b1420fb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
