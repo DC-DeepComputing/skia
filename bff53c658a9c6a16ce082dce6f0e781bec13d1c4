@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d7dae4f_beb276eb",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 1518,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Yes, that\u0027s a good appreciation, the parsing of ICC profiles will only be used from decoder but not encoder.",
+      "parentUuid": "96cdb924_7e2d3a49",
+      "range": {
+        "startLine": 1518,
+        "startChar": 4,
+        "endLine": 1518,
+        "endChar": 56
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96c81600_a010d8a0",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-20T21:12:39Z",
       "side": 1,
       "message": "Just wanted to check: should this also depend on `\":rust_cxx_core_bazel_build\"`?\n\n(although this dependency is missing in `rust_png_cxx_bridge` and it seems fine?  but maybe it should also be added there?)",
+      "range": {
+        "startLine": 1553,
+        "startChar": 41,
+        "endLine": 1553,
+        "endChar": 42
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "056bfcc9_dd95a9e2",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Yes, we are importing the cxx.h file that is copied to output by the rust_cxx_core_bazel_build action, so for correctness we should depend here also",
+      "parentUuid": "96c81600_a010d8a0",
       "range": {
         "startLine": 1553,
         "startChar": 41,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0bd809b_16fcd4b8",
+        "filename": "rust/icc/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "588d0e99_2ebe7b0b",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 6
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "630efb3a_469dc468",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadd1f93_4038f2d4",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "630efb3a_469dc468",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 15
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2119795b_ca0325aa",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-11-20T21:12:39Z",
       "side": 1,
       "message": "It seems that `SkPngRustCodec` will ignore this field - can you remove this field please?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 30
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "104e729b_def347a3",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2119795b_ca0325aa",
       "range": {
         "startLine": 28,
         "startChar": 0,
@@ -141,6 +261,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c10d15a1_71813d6b",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "874b2771_3f3c7484",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 31
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c5480131_ad5e3d2d",
         "filename": "rust/icc/FFI.rs",
         "patchSetId": 6
@@ -152,6 +296,30 @@
       "writtenOn": "2025-11-20T21:12:39Z",
       "side": 1,
       "message": "Thanks for putting this together!  Replicating data structure definitions requires quite a bit of work, but I don\u0027t know if we can do anything better :-/.  I think that [`bindgen`](https://github.com/rust-lang/rust-bindgen) _may_ help, but I don\u0027t know if 1) Bazel supports `bindgen` and 2) if it would actually be less work to figure out Bazel support for `bindgen` + [existing support](https://source.chromium.org/chromium/chromium/src/+/main:build/rust/rust_bindgen.gni;drc\u003d2e9b302a123d3ec65afd8a186a16671af1dca358) for `bindgen` in Chromium `BUILD.gn` rules.\n\n(I assume that you\u0027d also need to cover FFI for other from `skcms_public.h` like `skcms_Matrix3x3`, `skcms_A2B` and other pieces of data used underneath `skcms_ICCProfile`.)",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d8f8408_e83ee678",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Yes, having them replicated is not desirable as sounds quite error-prone. I will investigate if we can get bindgen to do this (https://bazelbuild.github.io/rules_rust/rust_bindgen.html)",
+      "parentUuid": "c5480131_ad5e3d2d",
       "range": {
         "startLine": 83,
         "startChar": 0,
@@ -175,6 +343,30 @@
       "writtenOn": "2025-11-20T21:12:39Z",
       "side": 1,
       "message": "Is this extra validation necessary?  Would `moxcms` detect these cases and return an error anyway?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 5
+      },
+      "revId": "bff53c658a9c6a16ce082dce6f0e781bec13d1c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12574c98_60096c55",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-21T16:19:40Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "23f59274_8c59f9a3",
       "range": {
         "startLine": 99,
         "startChar": 0,
