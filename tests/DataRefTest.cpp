@@ -196,7 +196,7 @@ template <typename T> bool deep_equal(SkSpan<T> a, SkSpan<T> b) {
 
 static void test_subsets(skiatest::Reporter* reporter) {
     uint8_t array[] = {1, 2, 3, 4};
-    auto src = SkData::MakeWithoutCopy(array, sizeof(array));
+    auto src = SkData::MakeWithoutCopy(array);
 
     struct Subset {
         size_t offset, length;
