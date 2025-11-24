@@ -70,6 +70,24 @@
       "parentUuid": "541dd5e2_ee9d61d5",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c71a7a2_b2f870ea",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T18:52:09Z",
+      "side": 1,
+      "message": "Ok, so drop the estimateMaxAllocation and just go with fMaxAllocation? I\u0027m not quite sure how feasible it is to have a super accurate cumulative memory usage if we are keeping track of allocations and frees, but if we just track allocations, that shouldn\u0027t be too hard.",
+      "parentUuid": "c42743fa_502a957c",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
