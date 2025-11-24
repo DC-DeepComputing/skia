@@ -92096,6 +92096,7 @@
     "Build-Ubuntu24.04-Clang-arm-Debug-Android": {},
     "Build-Ubuntu24.04-Clang-arm-Release-Android_API26": {},
     "Build-Ubuntu24.04-Clang-arm64-Debug-Android": {},
+    "Build-Ubuntu24.04-Clang-arm64-Debug-Android_API30": {},
     "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Graphite_Native_Vulkan": {},
     "Build-Ubuntu24.04-Clang-arm64-Release-Android_Graphite_Dawn_Vulkan": {
       "location_regexes": [
