@@ -62,7 +62,7 @@ struct SkSharingSerialContext {
     // SkSerialProcs procs;
     // procs.fImageProc = SkSharingSerialContext::serializeImage;
     // procs.fImageCtx = ctx.get();
-    static sk_sp<SkData> serializeImage(SkImage* img, void* ctx);
+    static sk_sp<const SkData> serializeImage(SkImage* img, void* ctx);
 };
 
 struct SkSharingDeserialContext {

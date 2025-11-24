@@ -29,7 +29,7 @@ public:
         uint32_t numPictures;
     };
 
-    static sk_sp<SkCapture> MakeFromData(sk_sp<SkData>);
+    static sk_sp<SkCapture> MakeFromData(sk_sp<const SkData>);
     // TODO: instead of a make from pictures factory, the CaptureManager might just need hooks into
     // the to build it over time. Move the SkPictures (fPictures) here and just maintain that in one
     // place.
@@ -43,7 +43,7 @@ public:
 
 private:
     // TODO: add more awareness of the image meta data to a SkCaptureContext object
-    static sk_sp<SkData> serializeImageProc(SkImage* img, void* ctx);
+    static sk_sp<const SkData> serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
                                                std::optional<SkAlphaType>, void* ctx);
 

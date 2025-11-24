@@ -18,7 +18,7 @@
 #include "include/encode/SkPngEncoder.h"
 
 namespace {
-    sk_sp<SkData> collectNonTextureImagesProc(SkImage* img, void* ctx) {
+    sk_sp<const SkData> collectNonTextureImagesProc(SkImage* img, void* ctx) {
         SkSharingSerialContext* context = reinterpret_cast<SkSharingSerialContext*>(ctx);
         uint32_t originalId = img->uniqueID();
         sk_sp<SkImage>* imageInMap = context->fNonTexMap.find(originalId);
@@ -45,7 +45,7 @@ void SkSharingSerialContext::setDirectContext(GrDirectContext* ctx) {
     fDirectContext = ctx;
 }
 
-sk_sp<SkData> SkSharingSerialContext::serializeImage(SkImage* img, void* ctx) {
+sk_sp<const SkData> SkSharingSerialContext::serializeImage(SkImage* img, void* ctx) {
     SkSharingSerialContext* context = reinterpret_cast<SkSharingSerialContext*>(ctx);
     uint32_t id = img->uniqueID(); // get this process's id for the image. these are not hashes.
     // find out if we have already serialized this, and if so, what its in-file id is.
