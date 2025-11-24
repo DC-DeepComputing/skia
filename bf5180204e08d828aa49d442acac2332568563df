@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02fd3b8_2cef4517",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Thanks, updated the patch!",
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a495ed07_2f2339d5",
@@ -31,6 +48,30 @@
       "writtenOn": "2025-11-21T14:26:55Z",
       "side": 1,
       "message": "nit: we don\u0027t need the newlines",
+      "range": {
+        "startLine": 17,
+        "startChar": 30,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1dcc6c_e0e57e2c",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a495ed07_2f2339d5",
       "range": {
         "startLine": 17,
         "startChar": 30,
@@ -64,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b2db9a_5e324ad1",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9b10343_0f22a2eb",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "483840c8_3df12ba1",
@@ -77,6 +142,30 @@
       "writtenOn": "2025-11-21T14:26:55Z",
       "side": 1,
       "message": "Is that because there\u0027s up to 32 control points and 5 is log_2(32)? If so, maybe add that to the comment.",
+      "range": {
+        "startLine": 51,
+        "startChar": 91,
+        "endLine": 51,
+        "endChar": 92
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecdcd103_65eaab7e",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "483840c8_3df12ba1",
       "range": {
         "startLine": 51,
         "startChar": 91,
@@ -112,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bea0b814_61300d8a",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "The worst-case scenario for branching in a shader is that the shader core ends up executing all of the branches and then selecting the result. That is, historically, the very-very-very worst case scenario. And it\u0027s not that bad.\n\nBut, the last chip that I know of that did that was the NV40, which is ~20 years old. Nowadays (ever since G80, ~19 years ago, but I only know NV chips well), you only pay the price for divergence of branches within a \"warp\". A \"warp\" is a SIMD unit of 16 or 32 \"threads\", with each \"thread\" corresponding to a pixel. If all of the pixels take the same path, then you only pay for that path.\n\nSo I take a very cavalier attitude towards doing this sort of thing in shaders.\n\nWhat is, \"bad\", however, about this shader, is that I\u0027m reading the control points out of a texture. Ideally I would use a uniform buffer for that, but SKSL doesn\u0027t allow that sort of indexing. Reading from a texture is going to be fairly high latency compared to reading a uniform (probably). But, because this texture is microscopic, it\u0027s probably going to be sitting, in its entirety, in the closest cache.",
+      "parentUuid": "e6552ab9_133822fd",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 11
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb82b3dc_bb9b65be",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 6
@@ -135,6 +248,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2374b1dc_1d5db690",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Yeah, this is so small (max size 2k bytes) that it\u0027s the same as malloc failing (so, an OOM crash).",
+      "parentUuid": "cb82b3dc_bb9b65be",
+      "range": {
+        "startLine": 440,
+        "startChar": 21,
+        "endLine": 440,
+        "endChar": 32
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e2e21aa_edf79c2e",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 6
@@ -146,6 +283,30 @@
       "writtenOn": "2025-11-21T14:26:55Z",
       "side": 1,
       "message": "nit: `SkImages::RasterFromBitmap()` is the equivalent (.asImage() just calls it) and preferred way.",
+      "range": {
+        "startLine": 454,
+        "startChar": 25,
+        "endLine": 454,
+        "endChar": 45
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51cc028f_1a49d9f7",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e2e21aa_edf79c2e",
       "range": {
         "startLine": 454,
         "startChar": 25,
@@ -198,6 +359,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cecb5d6e_eafb8a7a",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "Added the comment about lazy allocation.\n\nI may indeed revisit this and populate it at creation time, once I have the public interface built out.",
+      "parentUuid": "46642522_4ffbb5e7",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 13
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec4e7471_97b00cb2",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 6
@@ -221,6 +406,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3238761b_6100e5c3",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "I re-ordered this slightly differently, to put the input colors, test headrooms, and expected values at the top.\n\nThen, I run the two types of tests in two for-loops.",
+      "parentUuid": "ec4e7471_97b00cb2",
+      "range": {
+        "startLine": 474,
+        "startChar": 3,
+        "endLine": 474,
+        "endChar": 7
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a96cd1d9_a54c86ca",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 6
@@ -232,6 +441,30 @@
       "writtenOn": "2025-11-21T14:26:55Z",
       "side": 1,
       "message": "I\u0027m curious about the choice of input colors here. I see several in the \"normal\" range, like a normal white and a normal orange, but also some colors way above 1.0. Could you add some annotation to them about why they are interesting?",
+      "range": {
+        "startLine": 484,
+        "startChar": 9,
+        "endLine": 484,
+        "endChar": 14
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d3d332f_15a8acd6",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-24T09:40:00Z",
+      "side": 1,
+      "message": "I put a comment above this indicating that we\u0027re aiming for monochrome, non-monochrome, less-than-1, and greater-than-1 values.",
+      "parentUuid": "a96cd1d9_a54c86ca",
       "range": {
         "startLine": 484,
         "startChar": 9,
