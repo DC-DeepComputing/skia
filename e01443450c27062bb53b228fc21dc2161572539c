@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "601430f5_fdb27ddb",
+        "filename": "MODULE.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "345099a6_32a02aa3",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 1
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bf076f5_551e0903",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc5404e_c77f9377",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Thanks for the suggestion, I was not familiar with these std traits. I couldn\u0027t use std::is_layout_compatible_v though:\n\nrust/icc/FFI.cpp:31:24: error: no member named \u0027is_layout_compatible_v\u0027 in namespace \u0027std\u0027\n   31 |     static_assert(std::is_layout_compatible_v\u003cTransferFunction, skcms_TransferFunction\u003e,\n\nI investigated and while C++20 is enabled, is_layout_compatible_v is defined in P0466R5 but this is not yet implemented on LLVM: https://github.com/llvm/llvm-project/issues/100013",
+      "parentUuid": "5bf076f5_551e0903",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 50
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a893baac_f58222e7",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Would it be worth spot-checking the offset of `g` and `a` fields (since they are in a weird order) via https://en.cppreference.com/w/cpp/types/offsetof.html?  OTOH maybe this is somewhat optional, because you already cover this via the `RustIcc_transfer_function_conversion` test (thanks!).",
+      "range": {
+        "startLine": 30,
+        "startChar": 56,
+        "endLine": 30,
+        "endChar": 57
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edb49ecb_b44bae2a",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a893baac_f58222e7",
       "range": {
         "startLine": 30,
         "startChar": 56,
@@ -116,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20cfe57e_18a18c71",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "The cast is indeed not required, I think that this was remanent from a previous iteration of the implementation and no longer required.",
+      "parentUuid": "35df8705_91f85703",
+      "range": {
+        "startLine": 41,
+        "startChar": 30,
+        "endLine": 41,
+        "endChar": 46
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ad2e9c1_b4ea559f",
@@ -129,6 +225,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Do we need to enforce the `input_channels must be in [1, 4]` part of the comment from `skcms_A2B` declaration?\n\nDo we want to enforce that `rust_a2b.input_channels` is equal to (or less than) the length of `rust_a2b.grid_points`?",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 56
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f55fecaa_2852dac6",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ad2e9c1_b4ea559f",
       "range": {
         "startLine": 47,
         "startChar": 4,
@@ -162,6 +282,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10520067_c7662914",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68ce7c0d_e95c2115",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 79
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a74535e9_31d58d12",
@@ -175,6 +319,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "That ownership model seems okay given the currently documented behavior of `ToSkcmsIccProfile`.  But if we change this model, then this may need a follow-up - see the discussion at https://skia-review.googlesource.com/c/skia/+/1106557/9/rust/icc/FFI.h#46",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7f24c2_25c77f1b",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a74535e9_31d58d12",
       "range": {
         "startLine": 57,
         "startChar": 8,
@@ -208,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75c8113f_85dbe775",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Yes, I think that it is worth adding checks avoiding the panic to occur",
+      "parentUuid": "405a0751_63094453",
+      "range": {
+        "startLine": 66,
+        "startChar": 73,
+        "endLine": 66,
+        "endChar": 76
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c356024_e5a80842",
@@ -221,6 +413,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "FWIW the doc comment in `skcms_public.h` says: \"output_channels must be 3\".  Do we need to enforce that here?  Maybe we don\u0027t - in this case can you document why not?\n\nBTW if such enforcement is needed, then maybe we also need to enforce that `rust_a2b.output_curves.len()` is 3?  I dunno... :-/",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 58
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d559f59d_2e845181",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c356024_e5a80842",
       "range": {
         "startLine": 81,
         "startChar": 0,
@@ -254,6 +470,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b3167e6_5865e615",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73538fd9_f4f40b2c",
+      "range": {
+        "startLine": 88,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 22
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02235fd2_84df2750",
@@ -267,6 +507,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "I wonder if this cast can be avoided by ensuring that the `#[cxx::bridge]`-defined `enum` has a matching representation - see https://cxx.rs/shared.html#:~:text\u003dBy%20default%20CXX%20represents%20your%20enum%20using%20the%20smallest%20integer%20type%20capable%20of%20fitting%20all%20the%20discriminants%20(whether%20explicit%20or%20implicit).%20If%20you%20need%20a%20different%20representation%20for%20reasons%2C%20provide%20a%20repr%20attribute:\n\n```\n#[cxx::bridge]\nmod ffi {\n    #[repr(u32)]  // \u003c\u003d\u003d Would this let us avoid the `static_cast`?\n    enum Enum {\n        Zero,\n        One,\n        Five \u003d 5,\n        Six,\n    }\n}\n```",
+      "range": {
+        "startLine": 134,
+        "startChar": 34,
+        "endLine": 134,
+        "endChar": 55
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d3b3fd7_853ff65b",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "It is still requiring case even with repr(u32) annotation\n\nrust/icc/FFI.cpp:206:35: error: assigning to \u0027uint32_t\u0027 (aka \u0027unsigned int\u0027) from incompatible type \u0027const ::rust_icc::ColorSpace\u0027\n  206 |     out_skcms-\u003epcs \u003d rust_profile.connection_space;\n  \nDespite the definition in the generated FFI.rs.h explicitly marks it as uint8_t:\n\n// Color space types supported by ICC profiles.\n// These match the color spaces recognized by skcms (see skcms_public.h).\nenum class ColorSpace : ::std::uint8_t {\n  Unknown \u003d 0,\n  XYZ \u003d 1,\n  Lab \u003d 2,",
+      "parentUuid": "02235fd2_84df2750",
       "range": {
         "startLine": 134,
         "startChar": 34,
@@ -300,6 +564,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c523d441_bde4df00",
+        "filename": "rust/icc/FFI.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "It\u0027s a good point. For now I will add a TODO comment to revisit this in a future CL",
+      "parentUuid": "eadaebaf_adc6aaab",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 61
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46654437_ae8bb2b7",
@@ -313,6 +601,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "I notice that the implementation doesn\u0027t set `out_skcms-\u003ebuffer`, `out_skcms-\u003esize`, nor `out_skcms-\u003etag_count`.  I wonder if this can be mentioned in the doc comment of this function - e.g. maybe: \"Note that the following members won\u0027t be copied from `rust_profile`: `buffer` will be set to null, `size` and `tag_count` will be set to 0\".\n\n(Not for this CL, but I am curious if these members will need to be set in the future in a higher-layer wrapper under `rust/icc` or `src/codec/SkPngRustCodec.cpp`?)",
+      "range": {
+        "startLine": 49,
+        "startChar": 55,
+        "endLine": 49,
+        "endChar": 82
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3fb8db3_cdcf67d7",
+        "filename": "rust/icc/FFI.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Yeah, my initial idea of not copying them is to avoid the access to the source data from C++ to avoid breaking memory safety. It is true that we may find some scenario during the integration with codecs that may require accessing to any of these fields, but we should revisit then to find a solution to the concrete case. For now I will add the comment.",
+      "parentUuid": "46654437_ae8bb2b7",
       "range": {
         "startLine": 49,
         "startChar": 55,
@@ -346,6 +658,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "601dd026_64300a6e",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0de2c111_0d12293f",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 72
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20d7547d_d2692c48",
@@ -359,6 +695,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "I notice that this field is not needed / not propagated in `ToSkcmsIccProfile`.  Can we therefore simplify the code by removing this field (and the corresponding `enum` + handling code)?",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 42
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "332c14fb_cd9d6266",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20d7547d_d2692c48",
       "range": {
         "startLine": 89,
         "startChar": 8,
@@ -392,6 +752,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55defee_f9577a18",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Thanks for pointing this, I thought I matched the values to skcms but seems I lost this change. It is a difference between Skcms and moxcms: Skcms uses the values of this enum to compare with the actual signature, so the byte values found in the file correspond to this string. Moxcms has different constants for validating the signatures corresponding to each type and it is using an incremental indexed enum instead.\n\nIn the case of skcms_Signature_YCbCr  \u003d 0x59436272, signature corresponds to \"YCbr\" ASCI, which moxcms converts to the indexed enum:\n\nhttps://github.com/awxkee/moxcms/blob/0d051071233a890247a9470d117df6c0d755456a/src/profile.rs#L309\n\nAfter the change, I validated that if enum values do not match we would get reported a build error like this:\n\nbazel-out/k8-fastbuild/bin/rust/icc/FFI.rs.cc:710:15: error: static assertion failed due to requirement \u0027static_cast\u003cunsigned int\u003e(skcms_Signature::skcms_Signature_15CLR) \u003d\u003d 1178815571\u0027: disagrees with the value in #[cxx::bridge]\n  710 | static_assert(static_cast\u003c::std::uint32_t\u003e(skcms_Signature::skcms_Signature_15CLR) \u003d\u003d 1178815571, \"disagrees with the value in #[cxx::bridge]\");\n      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nbazel-out/k8-fastbuild/bin/rust/icc/FFI.rs.cc:710:84: note: expression evaluates to \u00271178815570 \u003d\u003d 1178815571\u0027\n  710 | static_assert(static_cast\u003c::std::uint32_t\u003e(skcms_Signature::skcms_Signature_15CLR) \u003d\u003d 1178815571, \"disagrees with the value in #[cxx::bridge]\");\n      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~\n1 error generated.",
+      "parentUuid": "126830d0_0f87aa9c",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 5
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5c7e3fe_9cafbaac",
@@ -405,6 +789,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "nit: Let\u0027s simplify a bit with:\n\n```suggestion\n    let Ok(profile) \u003d ColorProfile::new_from_slice(data)\n        else { return false; };\n```",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 6
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "039b33cf_16a1f7b7",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5c7e3fe_9cafbaac",
       "range": {
         "startLine": 155,
         "startChar": 0,
@@ -438,6 +846,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6f6fe48_e6ec4ac5",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb49fc1b_bbfac113",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 24
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64688fc9_2abbd32a",
@@ -451,6 +883,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Can a separate binding/variable be avoided / can this directly assign to `out`?:\n\n```suggestion\n    out.connection_space \u003d match profile.color_space {\n```",
+      "range": {
+        "startLine": 192,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 24
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e99c26d_73015df8",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64688fc9_2abbd32a",
       "range": {
         "startLine": 192,
         "startChar": 4,
@@ -484,6 +940,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd207668_4bf664ee",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3100a435_0481db4a",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 6
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c9e9e98_095bf8ff",
@@ -497,6 +977,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Can you please add a comment why this particular indices are checked?  (I don\u0027t have a strong background in computer graphics so maybe I am just missing something.  But I also didn\u0027t find any equivalent checks in `skcms_ParseWithA2BPriority`.)",
+      "range": {
+        "startLine": 218,
+        "startChar": 24,
+        "endLine": 221,
+        "endChar": 33
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bede15c_29d94307",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c9e9e98_095bf8ff",
       "range": {
         "startLine": 218,
         "startChar": 24,
@@ -530,6 +1034,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7e39049_28b5d4c0",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4942ad44_c25713d7",
+      "range": {
+        "startLine": 288,
+        "startChar": 12,
+        "endLine": 288,
+        "endChar": 14
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d005daa8_28abf252",
@@ -543,6 +1071,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "nit: Can we reuse code for doing the conversion?\n\n```suggestion\n                data.extend_from_slice(\u0026value.to_le_bytes());\n```\n\nAlternatively this could use `bytemuck` to reinterpret `\u0026[u16]` as `\u0026[u8]`, but this is probably an overkill here (microoptimizations are the root of all evil).",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 331,
+        "endChar": 62
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "072ad967_4b9a010b",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d005daa8_28abf252",
       "range": {
         "startLine": 330,
         "startChar": 0,
@@ -576,6 +1128,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f1035fc_f59b4ced",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dce9b6a9_349d71e8",
+      "range": {
+        "startLine": 344,
+        "startChar": 16,
+        "endLine": 344,
+        "endChar": 18
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7386960f_00d65fb8",
@@ -589,6 +1165,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Same as above - can this use `u16.to_le_bytes` from Rust std lib?",
+      "range": {
+        "startLine": 372,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 59
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9da0081_8b64c2e9",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7386960f_00d65fb8",
       "range": {
         "startLine": 372,
         "startChar": 0,
@@ -622,6 +1222,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "292efea9_62d2a3d3",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c252124_122830b5",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 412,
+        "endChar": 13
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a06e292a_a375619c",
@@ -645,6 +1269,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54fa7d07_c4de3a6d",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a06e292a_a375619c",
+      "range": {
+        "startLine": 449,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 13
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db6e8526_97547f56",
@@ -658,6 +1306,30 @@
       "writtenOn": "2025-11-21T21:44:27Z",
       "side": 1,
       "message": "Can this use a different/unique value to verify that the redefinition didn\u0027t accidentally transpose `e` and `f` fields?",
+      "range": {
+        "startLine": 53,
+        "startChar": 16,
+        "endLine": 53,
+        "endChar": 21
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182ab242_e044f653",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-24T20:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db6e8526_97547f56",
       "range": {
         "startLine": 53,
         "startChar": 16,
