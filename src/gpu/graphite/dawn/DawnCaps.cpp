@@ -516,7 +516,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fDrawBufferCanBeMappedForReadback = false;
 #endif
 
-#if defined(__EMSCRIPTEN__)
+#if 1 || defined(__EMSCRIPTEN__)
     // For wasm, we use async map.
     fBufferMapsAreAsync = true;
 #else
