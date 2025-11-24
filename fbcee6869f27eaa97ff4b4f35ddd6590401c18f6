@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d81e697_df3adf17",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T23:48:26Z",
+      "side": 1,
+      "message": "Can this return indicate a failure?  e.g. `return false`?  This way the failure can be propagated up the call stack through `ToSkcmsIccProfile` (which also means that we don\u0027t need to wonder whether it\u0027s okay to return `input_channels \u003d\u003d 0` after `memset`).\n\n(Same for other `return` statements.)",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 15
+      },
+      "revId": "fbcee6869f27eaa97ff4b4f35ddd6590401c18f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c82aad66_30b45e82",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T23:48:26Z",
+      "side": 1,
+      "message": "This condition feels unexpected, because new line 86 guarantees that the RHS (`rust_a2b.grid_points.size()`) is always 4.  Maybe this was meant to be `rust_a2b.input_curves.size()`?",
+      "range": {
+        "startLine": 72,
+        "startChar": 34,
+        "endLine": 72,
+        "endChar": 61
+      },
+      "revId": "fbcee6869f27eaa97ff4b4f35ddd6590401c18f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdf5d6a3_da1bc07e",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T23:48:26Z",
+      "side": 1,
+      "message": "nit: I think this `\u0026` is not needed.",
+      "range": {
+        "startLine": 384,
+        "startChar": 8,
+        "endLine": 384,
+        "endChar": 9
+      },
+      "revId": "fbcee6869f27eaa97ff4b4f35ddd6590401c18f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

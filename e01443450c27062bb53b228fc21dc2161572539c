@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa65bf9_bc8fd7cd",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T23:48:26Z",
+      "side": 1,
+      "message": "Sounds good - thanks for looking into this.",
+      "parentUuid": "5fc5404e_c77f9377",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 50
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a893baac_f58222e7",
@@ -531,6 +555,30 @@
       "side": 1,
       "message": "It is still requiring case even with repr(u32) annotation\n\nrust/icc/FFI.cpp:206:35: error: assigning to \u0027uint32_t\u0027 (aka \u0027unsigned int\u0027) from incompatible type \u0027const ::rust_icc::ColorSpace\u0027\n  206 |     out_skcms-\u003epcs \u003d rust_profile.connection_space;\n  \nDespite the definition in the generated FFI.rs.h explicitly marks it as uint8_t:\n\n// Color space types supported by ICC profiles.\n// These match the color spaces recognized by skcms (see skcms_public.h).\nenum class ColorSpace : ::std::uint8_t {\n  Unknown \u003d 0,\n  XYZ \u003d 1,\n  Lab \u003d 2,",
       "parentUuid": "02235fd2_84df2750",
+      "range": {
+        "startLine": 134,
+        "startChar": 34,
+        "endLine": 134,
+        "endChar": 55
+      },
+      "revId": "e01443450c27062bb53b228fc21dc2161572539c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc981619_dba4edbd",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T23:48:26Z",
+      "side": 1,
+      "message": "I see.  I\u0027ve had wrong expectations.  The cast of `enum class` LGTM.",
+      "parentUuid": "3d3b3fd7_853ff65b",
       "range": {
         "startLine": 134,
         "startChar": 34,
