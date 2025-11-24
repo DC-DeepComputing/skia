@@ -400,6 +400,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2bab801_1c60146f",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-24T13:45:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d17d047_5f1ce992",
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46642522_4ffbb5e7",
