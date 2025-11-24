@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeaebd7b_412e57b9",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-24T17:25:44Z",
+      "side": 1,
+      "message": "`sk_ref_sp` uses `SkSafeRef`, it should be define to call directly and drop the conditional.",
+      "revId": "443567d4e4c762d9dfc53968067d198362fe0ce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
