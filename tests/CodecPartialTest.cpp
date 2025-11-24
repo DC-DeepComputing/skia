@@ -23,6 +23,7 @@
 #include <cstring>
 #include <initializer_list>
 #include <memory>
+#include <span>
 #include <utility>
 #include <vector>
 
@@ -397,7 +398,7 @@ static unsigned char gNoGlobalColorMap[] = {
 
 // Test that a gif file truncated before its local color map behaves as expected.
 DEF_TEST(Codec_GifPreMap, r) {
-    sk_sp<SkData> data = SkData::MakeWithoutCopy(gNoGlobalColorMap, sizeof(gNoGlobalColorMap));
+    sk_sp<SkData> data = SkData::MakeWithoutCopy(std::span(gNoGlobalColorMap));
     std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(data));
     if (!codec) {
         ERRORF(r, "failed to create codec");
@@ -414,13 +415,12 @@ DEF_TEST(Codec_GifPreMap, r) {
     // Truncate to 23 bytes, just before the color map. This should fail to decode.
     //
     // See also Codec_GifTruncated2 in GifTest.cpp for this magic 23.
-    codec = SkCodec::MakeFromData(SkData::MakeWithoutCopy(gNoGlobalColorMap, 23));
+    codec = SkCodec::MakeFromData(SkData::MakeWithoutCopy(SkSpan(gNoGlobalColorMap).first(23)));
     REPORTER_ASSERT(r, codec);
     if (codec) {
         SkBitmap bm;
         bm.allocPixels(info);
         result = codec->getPixels(info, bm.getPixels(), bm.rowBytes());
-
         REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput);
     }
 
