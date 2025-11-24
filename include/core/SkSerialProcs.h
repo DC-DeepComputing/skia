@@ -33,11 +33,15 @@ namespace sktext::gpu {
  *  The default action for images is to encode either in its native format or PNG.
  *  The default action for typefaces is to use Skia's internal format.
  */
-
+#if defined(SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS)
+using SkSerialPictureProc = sk_sp<const SkData> (*)(SkPicture*, void* ctx);
+using SkSerialImageProc = sk_sp<const SkData> (*)(SkImage*, void* ctx);
+using SkSerialTypefaceProc = sk_sp<const SkData> (*)(SkTypeface*, void* ctx);
+#else
 using SkSerialPictureProc = sk_sp<SkData> (*)(SkPicture*, void* ctx);
 using SkSerialImageProc = sk_sp<SkData> (*)(SkImage*, void* ctx);
 using SkSerialTypefaceProc = sk_sp<SkData> (*)(SkTypeface*, void* ctx);
-
+#endif
 /**
  *  Called with the encoded form of a picture (previously written with a custom
  *  SkSerialPictureProc proc). Return a picture object, or nullptr indicating failure.

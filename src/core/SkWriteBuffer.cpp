@@ -153,8 +153,8 @@ bool SkBinaryWriteBuffer::writeToStream(SkWStream* stream) const {
     return fWriter.writeToStream(stream);
 }
 
-static sk_sp<SkData> serialize_image(const SkImage* image, SkSerialProcs procs) {
-    sk_sp<SkData> data;
+static sk_sp<const SkData> serialize_image(const SkImage* image, SkSerialProcs procs) {
+    sk_sp<const SkData> data;
     if (procs.fImageProc) {
         data = procs.fImageProc(const_cast<SkImage*>(image), procs.fImageCtx);
     }
@@ -170,7 +170,7 @@ static sk_sp<SkData> serialize_image(const SkImage* image, SkSerialProcs procs) 
     return nullptr;
 }
 
-static sk_sp<SkData> serialize_mipmap(const SkMipmap* mipmap, SkSerialProcs procs) {
+static sk_sp<const SkData> serialize_mipmap(const SkMipmap* mipmap, SkSerialProcs procs) {
     /*  Format
         count_levels:32
         for each level, starting with the biggest (index 0 in our iterator)
@@ -186,7 +186,7 @@ static sk_sp<SkData> serialize_mipmap(const SkMipmap* mipmap, SkSerialProcs proc
         SkMipmap::Level level;
         if (mipmap->getLevel(i, &level)) {
             sk_sp<SkImage> levelImage = SkImages::RasterFromPixmap(level.fPixmap, nullptr, nullptr);
-            sk_sp<SkData> levelData = serialize_image(levelImage.get(), procs);
+            auto levelData = serialize_image(levelImage.get(), procs);
             buffer.writeDataAsByteArray(levelData.get());
         } else {
             return nullptr;
@@ -213,12 +213,12 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
 
     this->write32(flags);
 
-    sk_sp<SkData> data = serialize_image(image, fProcs);
+    auto data = serialize_image(image, fProcs);
     SkASSERT(data);
     this->writeDataAsByteArray(data.get());
 
     if (flags & SkWriteBufferImageFlags::kHasMipmap) {
-        sk_sp<SkData> mipData = serialize_mipmap(mips, fProcs);
+        auto mipData = serialize_mipmap(mips, fProcs);
         this->writeDataAsByteArray(mipData.get());
     }
 }
