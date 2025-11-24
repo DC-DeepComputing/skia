@@ -52,6 +52,41 @@
       "parentUuid": "456641d5_9c36d0bb",
       "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb99ec71_40de9941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4318968
+      },
+      "writtenOn": "2025-11-24T18:06:35Z",
+      "side": 1,
+      "message": "One other thing to note is that all (reasonably implemented) span types implicitly convet to each other as they all are containers providing data()/size or begin()/end() method pairs.\n\nOne deficiency of std::span is that it lacks operator\u003d\u003d(), which SkSpan currently seems to provide.  So conversion may take some work.",
+      "parentUuid": "8a51784d_48c321cc",
+      "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28da2594_d4d13c94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4318968
+      },
+      "writtenOn": "2025-11-24T18:06:35Z",
+      "side": 1,
+      "message": "ving",
+      "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
