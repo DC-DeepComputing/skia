@@ -87,6 +87,24 @@
       "message": "ving",
       "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2268884_f5585c8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4318968
+      },
+      "writtenOn": "2025-11-24T18:09:39Z",
+      "side": 1,
+      "message": "Excusing the typo, PS#6 shows passing a std::span to a SkSpan function implicitly.",
+      "parentUuid": "28da2594_d4d13c94",
+      "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
