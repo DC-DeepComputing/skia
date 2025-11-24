@@ -16,6 +16,24 @@
       "message": "Skia is currently going through a \"should Skia convert from using SkSpan to std::span\" decision (Skia very recently started requiring C++20), so I think Skia would prefer not to add an SkSpan API right now if it can be avoided. I think the current state of things is to prefer `std::span` for new API.\n\nAlso, to better indicate intent this should be a span of `std::byte`.\n\nSo I think this should be `std::span\u003cconst std::byte\u003e`.",
       "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "456641d5_9c36d0bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4318968
+      },
+      "writtenOn": "2025-11-24T17:24:31Z",
+      "side": 1,
+      "message": "Agree with std::span\u003c\u003e, though chrome in general isn\u0027t fond of std::byte. In this case, these are typically pixel values upon which we\u0027d like to perform arithmetic without having to cast.",
+      "parentUuid": "a409d7a7_93793022",
+      "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
