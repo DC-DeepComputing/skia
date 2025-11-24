@@ -34,6 +34,24 @@
       "parentUuid": "a409d7a7_93793022",
       "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a51784d_48c321cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4318968
+      },
+      "writtenOn": "2025-11-24T17:35:08Z",
+      "side": 1,
+      "message": "See e.g. https://source.chromium.org/chromium/chromium/src/+/main:styleguide/c++/c++-features.md;drc\u003d9a27ccbaf8ec3ec7b34ff80a2de982b1e8e31587;l\u003d526",
+      "parentUuid": "456641d5_9c36d0bb",
+      "revId": "bb364cf9a2305286bc6145c3852684230837ef6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
