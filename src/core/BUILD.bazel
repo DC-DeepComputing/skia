@@ -506,6 +506,7 @@ skia_cc_library(
         "//include/utils:core_hdrs",
     ],
     features = ["layering_check"],
+    local_defines = ["SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS"],
     textual_hdrs = [
         "//src/opts:textual_hdrs",
         ":textual_hdrs",
