@@ -445,6 +445,26 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//rust/common:ffi_cpp",
 			},
 		},
+		{Var: "skia_rust_icc_ffi_rs_srcs",
+			Rules: []string{
+				"//rust/icc:rs_srcs",
+			},
+		},
+		{Var: "skia_rust_icc_ffi_cxx_bridge_srcs",
+			Rules: []string{
+				"//rust/icc:cxx_bridge_srcs",
+			},
+		},
+		{Var: "skia_rust_icc_ffi_cpp_hdrs",
+			Rules: []string{
+				"//rust/icc:ffi_hdrs",
+			},
+		},
+		{Var: "skia_rust_icc_ffi_cpp_srcs",
+			Rules: []string{
+				"//rust/icc:ffi_cpp",
+			},
+		},
 	}},
 	{GNI: "gn/sksl.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_sksl_core_sources",
