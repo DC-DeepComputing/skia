@@ -911,18 +911,6 @@ std::unique_ptr<SkStreamAsset> SkDynamicMemoryWStream::detachAsStream() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-bool SkDebugfStream::write(const void* buffer, size_t size) {
-    SkDebugf("%.*s", (int)size, (const char*)buffer);
-    fBytesWritten += size;
-    return true;
-}
-
-size_t SkDebugfStream::bytesWritten() const {
-    return fBytesWritten;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 static sk_sp<SkData> mmap_filename(const char path[]) {
@@ -950,8 +938,8 @@ std::unique_ptr<SkStreamAsset> SkStream::MakeFromFile(const char path[]) {
     return stream;
 }
 
-// Declared in SkStreamPriv.h:
-sk_sp<SkData> SkCopyStreamToData(SkStream* stream) {
+namespace SkStreamPriv {
+sk_sp<SkData> CopyStreamToData(SkStream* stream) {
     SkASSERT(stream != nullptr);
 
     if (stream->hasLength()) {
@@ -968,7 +956,7 @@ sk_sp<SkData> SkCopyStreamToData(SkStream* stream) {
     return tempStream.detachAsData();
 }
 
-bool SkStreamCopy(SkWStream* out, SkStream* input) {
+bool Copy(SkWStream* out, SkStream* input) {
     const char* base = static_cast<const char*>(input->getMemoryBase());
     if (base && input->hasPosition() && input->hasLength()) {
         // Shortcut that avoids the while loop.
@@ -990,7 +978,7 @@ bool SkStreamCopy(SkWStream* out, SkStream* input) {
     }
 }
 
-bool StreamRemainingLengthIsBelow(SkStream* stream, size_t len) {
+bool RemainingLengthIsBelow(SkStream* stream, size_t len) {
     SkASSERT(stream);
     if (stream->hasLength()) {
         if (stream->hasPosition()) {
@@ -1003,3 +991,13 @@ bool StreamRemainingLengthIsBelow(SkStream* stream, size_t len) {
     }
     return false;
 }
+
+bool DebugfStream::write(const void* buffer, size_t size) {
+    SkDebugf("%.*s", (int)size, (const char*)buffer);
+    fBytesWritten += size;
+    return true;
+}
+
+size_t DebugfStream::bytesWritten() const { return fBytesWritten; }
+
+}  // namespace SkStreamPriv
