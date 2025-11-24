@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49f8f58e_557d1667",
+        "filename": "relnotes/constrefencoded.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d591d68_387f8172",
+      "range": {
+        "startLine": 1,
+        "startChar": 83,
+        "endLine": 1,
+        "endChar": 110
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3cdfd90b_88fd6982",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-11-21T16:33:31Z",
       "side": 1,
       "message": "We should be able to avoid adding `onRefEncodedDataConst` if we ifdef the whole method, or maybe just the return statement:\n\n```\n#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)\nsk_sp\u003cconst SkData\u003e SkCodecImageGenerator::onRefEncodedData()\n#else\nsk_sp\u003cconst SkData\u003e SkCodecImageGenerator::onRefEncodedData()\n#endif\n{\n    ...\n#if defined(SK_DISABLE_LEGACY_NONCONST_ENCODED_IMAGE_DATA)\n    return fCachedData;\n#else\n    return sk_ref_sp(...);\n#endif\n}\n```",
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8013b835_1b90c5c9",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cdfd90b_88fd6982",
       "revId": "dce7c20896355d965381826bbe5eb44021431322",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "008ae800_8a6503bb",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e927ff6_39f3a25a",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 65
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2e43d98_8511bfc4",
@@ -119,6 +185,30 @@
           ]
         }
       ],
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e5c351e_3b847946",
+        "filename": "src/ports/SkImageGeneratorCG.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2e43d98_8511bfc4",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 28
+      },
       "revId": "dce7c20896355d965381826bbe5eb44021431322",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -164,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0801a6aa_33583631",
+        "filename": "src/ports/SkImageGeneratorNDK.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done. I\u0027m going to add a Build.+Android_API30 to our CQ to catch typos like this in the future.",
+      "parentUuid": "99c7d94e_254992eb",
+      "range": {
+        "startLine": 231,
+        "startChar": 20,
+        "endLine": 231,
+        "endChar": 29
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9e4a930_bb983454",
@@ -177,6 +291,30 @@
       "writtenOn": "2025-11-21T16:33:31Z",
       "side": 1,
       "message": "nit: same",
+      "range": {
+        "startLine": 203,
+        "startChar": 20,
+        "endLine": 203,
+        "endChar": 28
+      },
+      "revId": "dce7c20896355d965381826bbe5eb44021431322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b20644_9a5da89b",
+        "filename": "src/ports/SkImageGeneratorWIC.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T14:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9e4a930_bb983454",
       "range": {
         "startLine": 203,
         "startChar": 20,
