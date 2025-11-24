@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56b8a76_19e41049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-24T19:16:53Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?  This CL ensures that we consistently use only simple/single conditions in `#if`s.  Before this CL the `#include`s would be controlled by a simple/single conditions (so Rust-decoder and libpng-encoder could be `#include`d) but the code was controlled by compound conditions (e.g. forcing Rust-decoder to be used with Rust-encoder).",
+      "revId": "979f8a17fb01929fdf8ec65a193b7ee110baef29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
