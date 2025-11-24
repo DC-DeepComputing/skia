@@ -16,6 +16,24 @@
       "message": "`sk_ref_sp` uses `SkSafeRef`, it should be define to call directly and drop the conditional.",
       "revId": "443567d4e4c762d9dfc53968067d198362fe0ce4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07334f4d_4d6428fa",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T17:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eeaebd7b_412e57b9",
+      "revId": "443567d4e4c762d9dfc53968067d198362fe0ce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
