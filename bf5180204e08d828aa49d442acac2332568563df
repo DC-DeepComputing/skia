@@ -223,6 +223,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5caf028_ca27306f",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bea0b814_61300d8a",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 11
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb82b3dc_bb9b65be",
@@ -260,6 +284,30 @@
       "side": 1,
       "message": "Yeah, this is so small (max size 2k bytes) that it\u0027s the same as malloc failing (so, an OOM crash).",
       "parentUuid": "cb82b3dc_bb9b65be",
+      "range": {
+        "startLine": 440,
+        "startChar": 21,
+        "endLine": 440,
+        "endChar": 32
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68798071_8c04df70",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2374b1dc_1d5db690",
       "range": {
         "startLine": 440,
         "startChar": 21,
@@ -336,6 +384,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d17d047_5f1ce992",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "@egdaniel@google.com knows more about GPU caches than I do.",
+      "parentUuid": "4d63de47_bdc0ffc8",
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46642522_4ffbb5e7",
         "filename": "src/codec/SkHdrAgtmPriv.h",
         "patchSetId": 6
@@ -371,6 +437,30 @@
       "side": 1,
       "message": "Added the comment about lazy allocation.\n\nI may indeed revisit this and populate it at creation time, once I have the public interface built out.",
       "parentUuid": "46642522_4ffbb5e7",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 13
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7645a74d_ef3b3dd7",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cecb5d6e_eafb8a7a",
       "range": {
         "startLine": 116,
         "startChar": 7,
@@ -428,6 +518,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "433803fc_7721197f",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "Thanks. I appreciate the additional comments",
+      "parentUuid": "3238761b_6100e5c3",
+      "range": {
+        "startLine": 474,
+        "startChar": 3,
+        "endLine": 474,
+        "endChar": 7
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a96cd1d9_a54c86ca",
@@ -465,6 +579,30 @@
       "side": 1,
       "message": "I put a comment above this indicating that we\u0027re aiming for monochrome, non-monochrome, less-than-1, and greater-than-1 values.",
       "parentUuid": "a96cd1d9_a54c86ca",
+      "range": {
+        "startLine": 484,
+        "startChar": 9,
+        "endLine": 484,
+        "endChar": 14
+      },
+      "revId": "bf5180204e08d828aa49d442acac2332568563df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c34b67b1_fc20578b",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-24T13:25:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2d3d332f_15a8acd6",
       "range": {
         "startLine": 484,
         "startChar": 9,
