@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455be95e_14efa6ee",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T17:39:27Z",
+      "side": 1,
+      "message": "`SkBitmap` is kinda-sorta-unofficially deprecated, e.g. [1]. We even started converting clients in the past IIRC, but never made much progress.  I\u0027d prefer not to add new public APIs based on it.\n\nCan we convert the existing call sites to use `SkImage`/`peekPixels`/\u0027readPixels`/etc instead?  Especially since they appear to be tools/tests only, we could also add some helper if needed (essentially try `peekPixels`, fall back to `readPixels`).\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkBitmap.h;drc\u003d2580675b46d56acbe6633e043a45dc80c8c6fe7e;l\u003d49",
+      "revId": "db6f1be0ca21191b1156a31b8cd39d77205e3e1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
