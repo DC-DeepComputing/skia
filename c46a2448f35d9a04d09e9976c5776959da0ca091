@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c2b0fa6_71703c1e",
+        "filename": "tools/CrashHandler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-11-25T18:21:36Z",
+      "side": 1,
+      "message": "I\u0027m just assuming that the diff is messed up here and all that changed is we removed the SK_BUILD_FOR_GOOGLE3 section.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "c46a2448f35d9a04d09e9976c5776959da0ca091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
