@@ -389,6 +389,9 @@ DEF_TEST(Encode_JpegDownsample, r) {
     auto [bm0, r0] = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
     auto [bm1, r1] = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
     auto [bm2, r2] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, r0 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r1 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r2 == SkCodec::kSuccess);
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 60));
     REPORTER_ASSERT(r, almost_equals(bm1, bm2, 60));
 }
@@ -497,16 +500,19 @@ DEF_TEST(Encode_PngOptions, r) {
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
-    #define DECODE SkPngRustDecoder::Decode
+    auto [bm0, r0] = SkPngRustDecoder::Decode(SkMemoryStream::Make(data0), nullptr)->getBitmap();
+    auto [bm1, r1] = SkPngRustDecoder::Decode(SkMemoryStream::Make(data1), nullptr)->getBitmap();
+    auto [bm2, r2] = SkPngRustDecoder::Decode(SkMemoryStream::Make(data2), nullptr)->getBitmap();
 #else
-    #define DECODE SkPngDecoder::Decode
+    auto [bm0, r0] = SkPngDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkPngDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkPngDecoder::Decode(data2, nullptr)->getBitmap();
 #endif
-    auto [bm0, r0] = DECODE(data0, nullptr)->getBitmap();
-    auto [bm1, r1] = DECODE(data1, nullptr)->getBitmap();
-    auto [bm2, r2] = DECODE(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, r0 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r1 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r2 == SkCodec::kSuccess);
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 0));
-#undef DECODE
 }
 
 #ifndef SK_BUILD_FOR_GOOGLE3
@@ -606,6 +612,10 @@ DEF_TEST(Encode_WebpOptions, r) {
     auto [bm1, r1] = SkWebpDecoder::Decode(data1, nullptr)->getBitmap();
     auto [bm2, r2] = SkWebpDecoder::Decode(data2, nullptr)->getBitmap();
     auto [bm3, r3] = SkWebpDecoder::Decode(data2, nullptr)->getBitmap();
+    REPORTER_ASSERT(r, r0 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r1 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r2 == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, r3 == SkCodec::kSuccess);
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 90));
     REPORTER_ASSERT(r, almost_equals(bm2, bm3, 50));
