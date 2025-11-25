@@ -16,6 +16,23 @@
       "message": "PTAL - Chromium Canary failure seems unrelated",
       "revId": "b35070c57af750402bc6b020735b20ea1fee5973",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c24fd6d6_07f616a7",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T17:56:49Z",
+      "side": 1,
+      "message": "oh noes, is Chromium using private headers/APIs?!",
+      "revId": "b35070c57af750402bc6b020735b20ea1fee5973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
