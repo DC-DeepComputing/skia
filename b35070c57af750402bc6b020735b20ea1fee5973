@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d7d456d_60c08783",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T15:51:28Z",
+      "side": 1,
+      "message": "PTAL - Chromium Canary failure seems unrelated",
+      "revId": "b35070c57af750402bc6b020735b20ea1fee5973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
