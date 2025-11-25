@@ -1,0 +1,79 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3006256_b67cb612",
+        "filename": "docs/examples/SkImage_to_PPM_ascii.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T17:40:30Z",
+      "side": 1,
+      "message": "I guess the preexisting assumption here is that `image` is a fully decoded raster image.  For an example/documentation it would help to make that part explicit, something like\n\n```\n    SkAssertResult(image-\u003emakeRasterImage()-\u003epeekPixels(\u0026pm));\n```",
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77ed832f_f51fa766",
+        "filename": "docs/examples/SkImage_to_PPM_binary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T17:40:30Z",
+      "side": 1,
+      "message": "Same comment.\n\n(leaving the ai suggestion for lols)",
+      "fixSuggestions": [
+        {
+          "fixId": "9caca4b8_1c75817c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "docs/examples/SkImage_to_PPM_binary.cpp",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "    image-\u003epeekPixels(\u0026pm);  // Same comment.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd7ab0c9_98c2bb0a",
+        "filename": "gm/drawbitmaprect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T17:40:30Z",
+      "side": 1,
+      "message": "`readPixels` should work with any type of image, do we actually need the raster surface/image duplication?  Looks like we could keep the old code and read from the normal image snapshot.",
+      "range": {
+        "startLine": 113,
+        "startChar": 17,
+        "endLine": 113,
+        "endChar": 27
+      },
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
