@@ -105,7 +105,22 @@ declare_args() {
   }
 
   skia_build_rust_targets = false
+
+  # PartitionAlloc is Chrome's memory allocator.
+  #
+  # This is useful to:
+  # - Align Skia benchmark results closer with in-browser behavior.
+  # - Expand UAFs vulnerabilities protection to Skia's internal pointers.
+  #
+  # While GCC is supported, it lacks CI coverage to catch regressions.
+  # Therefore, we disable it by default on GCC builds.
+  skia_use_partition_alloc = is_clang
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
+
+# PartitionAlloc support GCC, but has no infra builders ensuring this won't
+# regress. Since it is not important, we just disable it fully on GCC builds.
+skia_use_partition_alloc = skia_use_partition_alloc && is_clang
 
 declare_args() {
   if (is_mac) {
