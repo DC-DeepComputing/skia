@@ -30,6 +30,7 @@
 #include <tuple>
 #include <vector>
 
+class SkBitmap;
 class SkData;
 class SkFrameHolder;
 class SkImage;
@@ -438,12 +439,20 @@ public:
     }
 
     /**
-     *  Return an image containing the pixels. If the codec's origin is not "upper left",
-     *  This will rotate the output image accordingly.
+     *  Return a raster-backed image containing the pixels. If the codec's origin is not
+     *  "upper left", this will rotate the output image accordingly.
      */
     std::tuple<sk_sp<SkImage>, SkCodec::Result> getImage(const SkImageInfo& info,
                                                          const Options* opts = nullptr);
     std::tuple<sk_sp<SkImage>, SkCodec::Result> getImage();
+
+    /**
+     *  Return a bitmap containing the pixels. If the codec's origin is not "upper left",
+     *  This will rotate the output image accordingly.
+     */
+    std::tuple<SkBitmap, SkCodec::Result> getBitmap(const SkImageInfo& info,
+                                                    const Options* opts = nullptr);
+    std::tuple<SkBitmap, SkCodec::Result> getBitmap();
 
     /**
      *  If decoding to YUV is supported, this returns true. Otherwise, this

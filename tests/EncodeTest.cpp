@@ -161,7 +161,6 @@ static inline bool almost_equals(const SkBitmap& a, const SkBitmap& b, int toler
             }
         }
     }
-
     return true;
 }
 
@@ -386,10 +385,9 @@ DEF_TEST(Encode_JpegDownsample, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
+    auto [bm0, r0] = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 60));
     REPORTER_ASSERT(r, almost_equals(bm1, bm2, 60));
 }
@@ -497,10 +495,9 @@ DEF_TEST(Encode_PngOptions, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
+    auto [bm0, r0] = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 0));
 }
@@ -598,11 +595,10 @@ DEF_TEST(Encode_WebpOptions, r) {
     REPORTER_ASSERT(r, data1->size() > data2->size());
     REPORTER_ASSERT(r, data2->size() > data3->size());
 
-    SkBitmap bm0, bm1, bm2, bm3;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
-    SkImages::DeferredFromEncodedData(data3)->asLegacyBitmap(&bm3);
+    auto [bm0, r0] = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
+    auto [bm3, r3] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 90));
     REPORTER_ASSERT(r, almost_equals(bm2, bm3, 50));
