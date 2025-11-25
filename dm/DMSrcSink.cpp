@@ -1688,8 +1688,7 @@ Result GPUSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream* write, SkStri
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
         [&](SkCanvas* canvas){
-            testCanvas.init(canvas);
-            return testCanvas.get();
+            return &testCanvas.emplace(canvas);
         });
 }
 
@@ -1708,8 +1707,7 @@ Result GPUSerializeSlugSink::draw(
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
                   [&](SkCanvas* canvas){
-                      testCanvas.init(canvas);
-                      return testCanvas.get();
+                      return &testCanvas.emplace(canvas);
                   });
 }
 
@@ -1728,8 +1726,7 @@ Result GPURemoteSlugSink::draw(
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
                   [&](SkCanvas* canvas) {
-                      testCanvas.init(canvas);
-                      return testCanvas.get();
+                      return &testCanvas.emplace(canvas);
                   });
 }
 

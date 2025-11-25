@@ -79,7 +79,7 @@ struct RRectBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        result->init(rec.fValue);
+        result->emplace(rec.fValue);
         return true;
     }
 };
@@ -94,7 +94,7 @@ SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
         return nullptr;
     }
 
-    mask->init(static_cast<const uint8_t*>(result->fData->data()),
+    mask->emplace(static_cast<const uint8_t*>(result->fData->data()),
                result->fMask.fBounds, result->fMask.fRowBytes, result->fMask.fFormat);
     return result->fData;
 }
@@ -167,7 +167,7 @@ struct RectsBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        result->init(rec.fValue);
+        result->emplace(rec.fValue);
         return true;
     }
 };
@@ -184,7 +184,7 @@ SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma,
         return nullptr;
     }
 
-    mask->init(static_cast<const uint8_t*>(result->fData->data()),
+    mask->emplace(static_cast<const uint8_t*>(result->fData->data()),
                result->fMask.fBounds, result->fMask.fRowBytes, result->fMask.fFormat);
     return result->fData;
 }
