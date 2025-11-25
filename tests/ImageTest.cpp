@@ -827,54 +827,6 @@ static void check_legacy_bitmap(skiatest::Reporter* reporter, GrDirectContext* d
     REPORTER_ASSERT(reporter, imageColor == *bitmap.getAddr32(0, 0));
 }
 
-static void test_legacy_bitmap(skiatest::Reporter* reporter, GrDirectContext* dContext,
-                               const SkImage* image) {
-    if (!image) {
-        ERRORF(reporter, "Failed to create image.");
-        return;
-    }
-    SkBitmap bitmap;
-    REPORTER_ASSERT(reporter, image->asLegacyBitmap(&bitmap));
-    check_legacy_bitmap(reporter, dContext, image, bitmap);
-
-    // Test subsetting to exercise the rowBytes logic.
-    SkBitmap tmp;
-    REPORTER_ASSERT(reporter, bitmap.extractSubset(&tmp, SkIRect::MakeWH(image->width() / 2,
-                                                                         image->height() / 2)));
-    sk_sp<SkImage> subsetImage(tmp.asImage());
-    REPORTER_ASSERT(reporter, subsetImage.get());
-
-    SkBitmap subsetBitmap;
-    REPORTER_ASSERT(reporter, subsetImage->asLegacyBitmap(&subsetBitmap));
-    check_legacy_bitmap(reporter, nullptr, subsetImage.get(), subsetBitmap);
-}
-DEF_TEST(ImageLegacyBitmap, reporter) {
-    sk_sp<SkImage> image(create_image());
-    test_legacy_bitmap(reporter, nullptr, image.get());
-
-    image = create_data_image();
-    test_legacy_bitmap(reporter, nullptr, image.get());
-
-    RasterDataHolder dataHolder;
-    image = create_rasterproc_image(&dataHolder);
-    test_legacy_bitmap(reporter, nullptr, image.get());
-    image.reset();
-    REPORTER_ASSERT(reporter, 1 == dataHolder.fReleaseCount);
-
-    image = create_codec_image();
-    test_legacy_bitmap(reporter, nullptr, image.get());
-}
-#if defined(SK_GANESH)
-DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageLegacyBitmap_Gpu,
-                                       reporter,
-                                       ctxInfo,
-                                       CtsEnforcement::kApiLevel_T) {
-    auto dContext = ctxInfo.directContext();
-    sk_sp<SkImage> image(create_gpu_image(dContext));
-    test_legacy_bitmap(reporter, dContext, image.get());
-}
-#endif
-
 static void test_peek(skiatest::Reporter* reporter, SkImage* image, bool expectPeekSuccess) {
     if (!image) {
         ERRORF(reporter, "Failed to create image!");
@@ -1354,6 +1306,14 @@ DEF_TEST(Image_ColorSpace, r) {
     REPORTER_ASSERT(r, SkColorSpace::Equals(rec2020.get(), image->colorSpace()));
 }
 
+static SkBitmap read_pixels(skiatest::Reporter* r, sk_sp<SkImage> image) {
+    SkASSERT(image);
+    SkBitmap bm;
+    REPORTER_ASSERT(r, bm.tryAllocPixels(image->imageInfo()));
+    REPORTER_ASSERT(r, image->readPixels(nullptr, bm.info(), bm.getPixels(), bm.rowBytes(), 0, 0));
+    return bm;
+}
+
 DEF_TEST(Image_makeColorSpace, r) {
     sk_sp<SkColorSpace> p3 = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3);
     skcms_TransferFunction fn;
@@ -1366,28 +1326,23 @@ DEF_TEST(Image_makeColorSpace, r) {
     srgbBitmap.setImmutable();
     sk_sp<SkImage> srgbImage = srgbBitmap.asImage();
     sk_sp<SkImage> p3Image = srgbImage->makeColorSpace(nullptr, p3, {});
-    SkBitmap p3Bitmap;
-    bool success = p3Image->asLegacyBitmap(&p3Bitmap);
+    SkBitmap p3Bitmap = read_pixels(r, p3Image);
 
     auto almost_equal = [](int a, int b) { return SkTAbs(a - b) <= 2; };
 
-    REPORTER_ASSERT(r, success);
     REPORTER_ASSERT(r, almost_equal(0x28, SkGetPackedR32(*p3Bitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x40, SkGetPackedG32(*p3Bitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x5E, SkGetPackedB32(*p3Bitmap.getAddr32(0, 0))));
 
     sk_sp<SkImage> adobeImage = srgbImage->makeColorSpace(nullptr, adobeGamut, {});
-    SkBitmap adobeBitmap;
-    success = adobeImage->asLegacyBitmap(&adobeBitmap);
-    REPORTER_ASSERT(r, success);
+    SkBitmap adobeBitmap = read_pixels(r, adobeImage);
     REPORTER_ASSERT(r, almost_equal(0x21, SkGetPackedR32(*adobeBitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x31, SkGetPackedG32(*adobeBitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x4C, SkGetPackedB32(*adobeBitmap.getAddr32(0, 0))));
 
     srgbImage = ToolUtils::GetResourceAsImage("images/1x1.png");
     p3Image = srgbImage->makeColorSpace(nullptr, p3, {});
-    success = p3Image->asLegacyBitmap(&p3Bitmap);
-    REPORTER_ASSERT(r, success);
+    p3Bitmap = read_pixels(r, p3Image);
     REPORTER_ASSERT(r, almost_equal(0x8B, SkGetPackedR32(*p3Bitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x82, SkGetPackedG32(*p3Bitmap.getAddr32(0, 0))));
     REPORTER_ASSERT(r, almost_equal(0x77, SkGetPackedB32(*p3Bitmap.getAddr32(0, 0))));
