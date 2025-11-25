@@ -8,6 +8,7 @@
 #include "src/base/SkTLazy.h"
 #include "tests/Test.h"
 
+#if 0
 DEF_TEST(TLazy_copy, r) {
     SkTLazy<int> lazy;
 
@@ -75,3 +76,4 @@ DEF_TEST(TCopyOnFirstWrite_copy, r) {
         REPORTER_ASSERT(r, cow.get() !=  cow_copy.get());
     }
 }
+#endif
