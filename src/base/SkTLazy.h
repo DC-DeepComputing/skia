@@ -21,6 +21,7 @@ template <typename T> const T* SkOptAddressOrNull(const std::optional<T>& object
     return object.has_value() ? &object.value() :  nullptr;
 }
 
+#if 0
 /**
  *  Efficient way to defer allocating/initializing a class until it is needed
  *  (if ever).
@@ -119,6 +120,9 @@ public:
 private:
     std::optional<T> fValue;
 };
+#else
+template <typename T> using SkTLazy = std::optional<T>;
+#endif
 
 /**
  * A helper built on top of std::optional to do copy-on-first-write. The object is initialized
