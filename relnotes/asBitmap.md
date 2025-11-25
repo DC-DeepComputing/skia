@@ -1,0 +1,1 @@
+`SkCodec::getBitmap` has been added as a more direct way to get decoded pixels.
