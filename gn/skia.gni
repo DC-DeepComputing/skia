@@ -105,7 +105,15 @@ declare_args() {
   }
 
   skia_build_rust_targets = false
+
+  # partition_alloc
+  skia_use_partition_alloc = false
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
+
+# PartitionAlloc support GCC, but has no infra builders ensuring this won't
+# regress. Since it is not important, we just disable it fully on GCC builds.
+skia_use_partition_alloc = skia_use_partition_alloc && is_clang
 
 declare_args() {
   if (is_mac) {
