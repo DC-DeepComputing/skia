@@ -33,6 +33,24 @@
       "message": "Do you think it would be better to have the following structure?\n\n```\n  // Add \"serialized\" to the function names\n  void setSerializedAgtm(sk_sp\u003cSkData\u003e);\n  sk_sp\u003cSkData\u003e getSerializedAgtm() const;\n\n  // Maybe in the future add this getter, which just wraps\n  // Agtm::Make(getSerializedAgtm().get())\n  std::unique_ptr\u003cAgtm\u003e getAgtm() const;\n```\n\nI also wonder about the above MDCV and CLLI interfaces. Maybe it would be a good idea to expose the same interface for them as well (so they would return an `std::unique_ptr` instead of the current `bool`-based accessor).",
       "revId": "1fef8e718a19274af63dac7964e61def3f6ce4ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24f24de_2a71710c",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T17:02:56Z",
+      "side": 1,
+      "message": "Ok, so your general idea is to have Metadata be a \"box of bytes\" and then clients can get/set the bytes for each section? And if they want to parse it, they call the above? I think that\u0027s ok, but maybe it\u0027s convenient to also have\n```\n  void setSerializedAgtm(sk_sp\u003cconst SkData\u003e);\n  sk_sp\u003cconst SkData\u003e getSerializedAgtm() const;\n  std::unique_ptr\u003cAgtm\u003e getAgtm() const {\n     return Agtm::Make(fAgtm);\n  }\n```\nor call that last thing `parseAgtm()` to indicate it\u0027s not a simple getter.\n\nThe \"serialized\" in the name is good. Can use `sk_sp\u003cconst SkData\u003e` on both of these? I think we want to tell people \"we promise not to touch the data as we parse it\". Because we are caching the serialized data, I\u0027d want to return a `sk_sp\u003cconst SkData\u003e` to tell people not to mess with it.",
+      "parentUuid": "b0fe3ee0_faddf716",
+      "revId": "1fef8e718a19274af63dac7964e61def3f6ce4ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
