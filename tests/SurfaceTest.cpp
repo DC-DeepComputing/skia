@@ -1287,23 +1287,25 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReplaceSurfaceBackendTexture,
 }
 #endif
 
-static void test_overdraw_surface(skiatest::Reporter* r, SkSurface* surface) {
+static void test_overdraw_surface(skiatest::Reporter* r, SkSurface* surface, GrDirectContext* ctx) {
     SkOverdrawCanvas canvas(surface->getCanvas());
     canvas.drawPaint(SkPaint());
     sk_sp<SkImage> image = surface->makeImageSnapshot();
 
-    SkBitmap bitmap;
-    image->asLegacyBitmap(&bitmap);
+    SkBitmap bm;
+    REPORTER_ASSERT(r, bm.tryAllocPixels(image->imageInfo()));
+    REPORTER_ASSERT(r, image->readPixels(ctx, bm.info(), bm.getPixels(), bm.rowBytes(), 0, 0));
+
     for (int y = 0; y < 10; y++) {
         for (int x = 0; x < 10; x++) {
-            REPORTER_ASSERT(r, 1 == SkGetPackedA32(*bitmap.getAddr32(x, y)));
+            REPORTER_ASSERT(r, 1 == SkGetPackedA32(*bm.getAddr32(x, y)));
         }
     }
 }
 
 DEF_TEST(OverdrawSurface_Raster, r) {
     sk_sp<SkSurface> surface = create_surface();
-    test_overdraw_surface(r, surface.get());
+    test_overdraw_surface(r, surface.get(), nullptr);
 }
 
 #if defined(SK_GANESH)
@@ -1313,7 +1315,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(OverdrawSurface_Gpu,
                                        CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
     sk_sp<SkSurface> surface = create_gpu_surface(context);
-    test_overdraw_surface(r, surface.get());
+    test_overdraw_surface(r, surface.get(), context);
 }
 #endif
 
