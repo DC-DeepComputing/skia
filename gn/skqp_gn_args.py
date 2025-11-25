@@ -35,6 +35,7 @@ def GetGNArgs(api_level, debug, arch=None, ndk=None, is_android_bp=False):
             'is_official_build':  'true',
             # gn_to_bp.py copies vk_mem_alloc.h to //vma_android/include
             'skia_vulkan_memory_allocator_dir': '"//vma_android"',
+            'skia_use_partition_alloc': 'false',
         })
     else:
         gn_args.update({
