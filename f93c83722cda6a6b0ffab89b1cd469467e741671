@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a29d8be6_ae08514d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-25T16:21:27Z",
+      "side": 1,
+      "message": "Can you please also add a bug that I\u0027ve just opened for tracking making SkPngRustCodec rule-of-2-compliant?: \n\n```\nBug: 452666425\nBug: 463653726\n```",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1168516_1e1798c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-25T16:21:27Z",
+      "side": 1,
+      "message": "I sent a few remaining comments below, but I think this should be ready for a review from Skia side.\n\n@kjlubick / @fmalita - who from Skia can review this?  Not sure if we should loop in @ccameron for color profiles expertise, or if we can just review ourselves?\n\nSome notes that I hope will help guide the review:\n\n* I have already reviewed the CL, but a 2nd pair of eyes would be appreciated for 1) Skia style, 2) memory safety.\n* I tried to do a shallow review of conversion functions, but I wasn\u0027t really sure which Skia constraints may be important or less important.  So this part would probably also benefit from being reviewed by a Skia engineer.\n* One specific piece that I didn\u0027t know how to review was `a2b_to_b2a` (it LGTM, but I don\u0027t have enough background to provide meaningful review)",
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd953fe_06ecad67",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-25T16:21:27Z",
+      "side": 1,
+      "message": "Maybe this is okay for landing this CL and making progress, but IIUC here we are pinky-promising to the compiler that we got the function signature correct, and that the `.h` file didn\u0027t change some time after we copied the signature.  So I think we should try to avoid this in the long term.  If this is hard to resolve, then can you please add a TODO comment about this?\n\nI am not sure how exactly to avoid this though... let me share some initial, unbaked ideas:\n\n* Would it be possible to use `#[cxx::bridge]` as done for the other things?  Or would that lead to an explicit circular dependency in the build graph?  Implicit circular dependencies are probably also somewhat undesirable although this one seems ok to me for the short term...\n* Alternatively, maybe `#[cxx::bridge]` could support things better with a slightly redesigned API?  A few alternatives to consider:\n    - A function pointer to `skcms_ApproximateCurve` can be theoretically passed as an argument to `parse_icc_profile`?\n    - Or maybe Rust can return a Rust-only data structures and then C/C++ side can drive finishing the conversion (e.g. calling `skcms_ApproximateCurve`)?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd56ee3_6537d362",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-25T16:21:27Z",
+      "side": 1,
+      "message": "I think it should be ok to unify/reuse `ffi::TransferFunction`?  We already have some guarantees that the `#[cxx::bridge]` declaration matches the declaration from `.h` files (via `static_assert`s about size, alignment, standard layout, etc.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 1
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
