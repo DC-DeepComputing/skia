@@ -248,3 +248,27 @@ if (is_win) {
   default_toolchain_name = "gcc_like"
   host_toolchain = "gcc_like_host"
 }
+
+# PartitionAlloc is a memory allocator optimized for space efficiency,
+# allocation latency, and security.
+#
+# `skia_partitition_alloc_dir` can be provided by embedders to enable the use
+# of MiraclePtr UAF protection in Skia pointers.
+#
+# Most embedders aren't expected to define this value.
+#
+# Known location of PartitionAlloc:
+# - chromium : //base/allocator/partition_allocator
+# - dawn     : //third_party/partition_alloc
+# - pdfium   : //third_party/partition_alloc
+# - skia     : //third_party/externals/partition_alloc
+#
+# Notes:
+# - PartitionAlloc implementation depends on the CPU architecture. BP isn't
+#   supported here, because the reported CPU is "none".
+# - PartitionAlloc and Skia uses C++20. However the bot:
+#   Build-Debian11-GCC-x86_64-Debug-Docker uses gcc 10, which only supports
+#   up to C++17. Disable GCC for now.
+if (current_cpu != "none" && is_clang) {
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+}
