@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebdaaaf1_3c1c3994",
+        "filename": "docs/examples/SkImage_to_PPM_ascii.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T22:28:16Z",
+      "side": 1,
+      "message": "It is (when running these examples in fiddle, which is the only place I believe they are run).\n\nI don\u0027t want to use SkAssertResult here in an example b/c that\u0027s a private API.",
+      "parentUuid": "c3006256_b67cb612",
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77ed832f_f51fa766",
@@ -53,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "561b685b_4c8ba11d",
+        "filename": "docs/examples/SkImage_to_PPM_binary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T22:28:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "77ed832f_f51fa766",
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd7ab0c9_98c2bb0a",
@@ -66,6 +102,30 @@
       "writtenOn": "2025-11-25T17:40:30Z",
       "side": 1,
       "message": "`readPixels` should work with any type of image, do we actually need the raster surface/image duplication?  Looks like we could keep the old code and read from the normal image snapshot.",
+      "range": {
+        "startLine": 113,
+        "startChar": 17,
+        "endLine": 113,
+        "endChar": 27
+      },
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f821a30_cc6608b6",
+        "filename": "gm/drawbitmaprect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T22:28:16Z",
+      "side": 1,
+      "message": "I didn\u0027t think readPixels worked with Graphite images, thus the split. (Graphite would need an async setup for reading, IIRC)",
+      "parentUuid": "cd7ab0c9_98c2bb0a",
       "range": {
         "startLine": 113,
         "startChar": 17,
