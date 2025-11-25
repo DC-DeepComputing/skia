@@ -933,7 +933,6 @@
 #include "docs/examples/gpu8888diff.cpp"
 #include "docs/examples/homogeneous.cpp"
 #include "docs/examples/image_subsets_get_different_uids.cpp"
-#include "docs/examples/image_to_bitmap_does_not_preserve_genid.cpp"
 #include "docs/examples/incomplete.cpp"
 #include "docs/examples/inlinepixmapconstructor.cpp"
 #include "docs/examples/issue640176.cpp"
