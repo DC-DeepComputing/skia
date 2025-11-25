@@ -105,6 +105,10 @@ declare_args() {
   }
 
   skia_build_rust_targets = false
+
+  # partition_alloc
+  skia_use_partition_alloc = false
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
 
 declare_args() {

@@ -1,0 +1,22 @@
+# Copyright 2026 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_cc_library(
+    name = "test_support",
+    testonly = True,
+    srcs = ["TestSupport.cpp"],
+    hdrs = ["TestSupport.h"],
+    visibility = ["//dm:__pkg__"],
+
+    # TODO(351867706): Add partition_alloc Bazel support. At the moment, the
+    # target builds without using it.
+)
