@@ -71,6 +71,7 @@ declare_args() {
   skia_use_lua = is_skia_dev_build && !is_ios
   skia_use_metal = false
   skia_use_ndk_images = is_android && defined(ndk_api) && ndk_api >= 30
+  skia_use_partition_alloc = false
   skia_use_perfetto = is_linux || is_mac || is_android
   skia_enable_pipeline_label_tracing = false
 
@@ -162,6 +163,9 @@ declare_args() {
 
   # libgrapheme sources
   skia_libgrapheme_third_party_dir = "//third_party/libgrapheme"
+
+  # partition_alloc sources
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
 
 assert(!skia_use_dawn || skia_enable_graphite)  # Dawn is Graphite-only
