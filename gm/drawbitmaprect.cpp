@@ -28,6 +28,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/utils/SkNWayCanvas.h"
 #include "src/base/SkMathPriv.h"
 #include "src/core/SkBlurMask.h"
 #include "tools/GpuToolUtils.h"
@@ -50,59 +51,74 @@ static SkBitmap make_chessbm(int w, int h) {
 
 // Creates a bitmap and a matching image.
 static sk_sp<SkImage> makebm(SkCanvas* origCanvas, SkBitmap* resultBM, int w, int h) {
+    SkASSERT(origCanvas);
+    SkASSERT(resultBM);
     SkImageInfo info = SkImageInfo::MakeN32Premul(w, h);
 
-    auto      surface(ToolUtils::makeSurface(origCanvas, info));
-    SkCanvas* canvas = surface->getCanvas();
-
-    canvas->clear(SK_ColorTRANSPARENT);
-
-    SkScalar wScalar = SkIntToScalar(w);
-    SkScalar hScalar = SkIntToScalar(h);
-
-    SkPoint     pt = { wScalar / 2, hScalar / 2 };
-
-    SkScalar    radius = 4 * std::max(wScalar, hScalar);
-
-    SkColor     colors[] = { SK_ColorRED, SK_ColorYELLOW,
-                             SK_ColorGREEN, SK_ColorMAGENTA,
-                             SK_ColorBLUE, SK_ColorCYAN,
-                             SK_ColorRED};
-
-    SkScalar    pos[] = {0,
-                         SK_Scalar1 / 6,
-                         2 * SK_Scalar1 / 6,
-                         3 * SK_Scalar1 / 6,
-                         4 * SK_Scalar1 / 6,
-                         5 * SK_Scalar1 / 6,
-                         SK_Scalar1};
-
-    SkPaint     paint;
-    SkRect rect = SkRect::MakeWH(wScalar, hScalar);
-    SkMatrix mat = SkMatrix::I();
-    for (int i = 0; i < 4; ++i) {
-        paint.setShader(SkGradientShader::MakeRadial(
-                        pt, radius,
-                        colors, pos,
-                        std::size(colors),
-                        SkTileMode::kRepeat,
-                        0, &mat));
-        canvas->drawRect(rect, paint);
-        rect.inset(wScalar / 8, hScalar / 8);
-        mat.postScale(SK_Scalar1 / 4, SK_Scalar1 / 4);
+    // We want a raster image as well as an image that matches the canvas we are drawing into
+    sk_sp<SkSurface> rSurface = SkSurfaces::Raster(info, nullptr);
+    sk_sp<SkSurface> nSurface = origCanvas->makeSurface(info, nullptr);
+    SkNWayCanvas canvas(w, h);
+    canvas.addCanvas(rSurface->getCanvas());
+    if (nSurface) {
+        canvas.addCanvas(nSurface->getCanvas());
+    } else {
+        nSurface = rSurface;
     }
 
-    auto image = surface->makeImageSnapshot();
+    {
+        canvas.clear(SK_ColorTRANSPARENT);
+
+        SkScalar wScalar = SkIntToScalar(w);
+        SkScalar hScalar = SkIntToScalar(h);
+
+        SkPoint pt = {wScalar / 2, hScalar / 2};
+
+        SkScalar radius = 4 * std::max(wScalar, hScalar);
+
+        SkColor colors[] = {SK_ColorRED,
+                            SK_ColorYELLOW,
+                            SK_ColorGREEN,
+                            SK_ColorMAGENTA,
+                            SK_ColorBLUE,
+                            SK_ColorCYAN,
+                            SK_ColorRED};
+
+        SkScalar pos[] = {0,
+                          SK_Scalar1 / 6,
+                          2 * SK_Scalar1 / 6,
+                          3 * SK_Scalar1 / 6,
+                          4 * SK_Scalar1 / 6,
+                          5 * SK_Scalar1 / 6,
+                          SK_Scalar1};
+
+        SkPaint paint;
+        SkRect rect = SkRect::MakeWH(wScalar, hScalar);
+        SkMatrix mat = SkMatrix::I();
+        for (int i = 0; i < 4; ++i) {
+            paint.setShader(SkGradientShader::MakeRadial(
+                    pt, radius, colors, pos, std::size(colors), SkTileMode::kRepeat, 0, &mat));
+            canvas.drawRect(rect, paint);
+            rect.inset(wScalar / 8, hScalar / 8);
+            mat.postScale(SK_Scalar1 / 4, SK_Scalar1 / 4);
+        }
+    }
+
+    auto rImage = rSurface->makeImageSnapshot();
 
     SkBitmap tempBM;
-
-    image->asLegacyBitmap(&tempBM);
+    if (!tempBM.tryAllocPixels(info)) {
+        return nullptr;
+    }
+    if (!rImage->readPixels(nullptr, info, tempBM.getPixels(), tempBM.rowBytes(), 0, 0)) {
+        return nullptr;
+    }
 
     // Let backends know we won't change this, so they don't have to deep copy it defensively.
     tempBM.setImmutable();
     *resultBM = tempBM;
 
-    return image;
+    return nSurface->makeImageSnapshot();
 }
 
 static void bitmapproc(SkCanvas* canvas, sk_sp<SkImage> image,

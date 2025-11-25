@@ -38,15 +38,10 @@ sk_sp<SkData> Encode_PPM_B(const SkPixmap& src) {
     return result;
 }
 
-SkBitmap ToBitmap(SkImage * img) {
-    SkBitmap bitmap;
-    (void)img->asLegacyBitmap(&bitmap, SkImage::kRO_LegacyBitmapMode);
-    return bitmap;
-}
-
 void draw(SkCanvas*) {
-    SkBitmap bitmap = ToBitmap(image.get());
-    sk_sp<SkData> data = Encode_PPM_B(bitmap.pixmap());
+    SkPixmap pm;
+    image->makeRasterImage()->peekPixels(&pm);
+    sk_sp<SkData> data = Encode_PPM_B(pm);
     print_data(data.get(), "foo.ppm");
 }
 }  // END FIDDLE
