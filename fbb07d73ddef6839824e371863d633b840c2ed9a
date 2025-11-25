@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1e00493_de8c4edb",
+        "filename": "src/base/SkTLazy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T19:56:48Z",
+      "side": 1,
+      "message": "Let\u0027s just delete the block.",
+      "revId": "fbb07d73ddef6839824e371863d633b840c2ed9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01acd71b_c1d214f6",
+        "filename": "tests/TLazyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-25T19:56:48Z",
+      "side": 1,
+      "message": "Delete the whole file?",
+      "revId": "fbb07d73ddef6839824e371863d633b840c2ed9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
