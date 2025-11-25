@@ -33,6 +33,24 @@
       "message": "oh noes, is Chromium using private headers/APIs?!",
       "revId": "b35070c57af750402bc6b020735b20ea1fee5973",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d506783_8e77802b",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-25T18:03:13Z",
+      "side": 1,
+      "message": "They use include/private/SkJpegMetadataDecoder.h which is kind of ok. I believe it\u0027s because the gainmap stuff wasn\u0027t ready for public use yet but Chromium was driving the implementation.",
+      "parentUuid": "c24fd6d6_07f616a7",
+      "revId": "b35070c57af750402bc6b020735b20ea1fee5973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
