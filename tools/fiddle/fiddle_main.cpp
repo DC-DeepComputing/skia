@@ -296,12 +296,12 @@ int main(int argc, char** argv) {
             perror("Corrupt source image file\n");
             return 1;
         }
-        image = std::get<0>(codec->getImage());
-        if (!image) {
+        auto [bm, result] = codec->getBitmap();
+        if (result != SkCodec::kSuccess) {
             perror("Unable to decode the source image.\n");
             return 1;
         }
-        SkAssertResult(image->asLegacyBitmap(&source));
+        source = bm;
     }
     sk_sp<SkData> rasterData, gpuData, pdfData, skpData;
     SkColorType colorType = kN32_SkColorType;

@@ -538,15 +538,49 @@ SkCodec::Result SkCodec::getPixels(const SkImageInfo& info, void* pixels, size_t
 }
 
 std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage(const SkImageInfo& info,
-                                                              const Options* options) {
+                                                              const Options* opts) {
+    auto [bm, result] = this->getBitmap(info, opts);
+    if (result != kSuccess) {
+        return {nullptr, result};
+    }
+    return {SkImages::RasterFromBitmap(bm), kSuccess};
+}
+
+std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage() {
+    // If the codec reports that it is rotated, we need to rotate the image info
+    // it says it is, so the output is what the user wants.
+    SkImageInfo info = this->getInfo();
+    if (SkEncodedOriginSwapsWidthHeight(this->getOrigin())) {
+        info = SkPixmapUtils::SwapWidthHeight(info);
+    }
+
+    auto [bm, result] = this->getBitmap(info, nullptr);
+    if (result != kSuccess) {
+        return {nullptr, result};
+    }
+    return {SkImages::RasterFromBitmap(bm), kSuccess};
+}
+
+std::tuple<SkBitmap, SkCodec::Result> SkCodec::getBitmap() {
+    // If the codec reports that it is rotated, we need to rotate the image info
+    // it says it is, so the output is what the user wants.
+    SkImageInfo info = this->getInfo();
+    if (SkEncodedOriginSwapsWidthHeight(this->getOrigin())) {
+        info = SkPixmapUtils::SwapWidthHeight(info);
+    }
+    return this->getBitmap(info, nullptr);
+}
+
+std::tuple<SkBitmap, SkCodec::Result> SkCodec::getBitmap(const SkImageInfo& info,
+                                                         const Options* opts) {
     SkBitmap bm;
     if (!bm.tryAllocPixels(info)) {
-        return {nullptr, kInternalError};
+        return {{}, SkCodec::kInternalError};
     }
 
     Result result;
-    auto decode = [this, options, &result](const SkPixmap& pm) {
-        result = this->getPixels(pm, options);
+    auto decode = [this, opts, &result](const SkPixmap& pm) {
+        result = this->getPixels(pm, opts);
         switch (result) {
             case SkCodec::kSuccess:
             case SkCodec::kIncompleteInput:
@@ -562,21 +596,12 @@ std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage(const SkImageInfo&
     // to bm that we allocated above. If the image is not rotated, we will
     // decode straight into that allocated pixmap.
     if (!SkPixmapUtils::Orient(bm.pixmap(), this->getOrigin(), decode)) {
-        return {nullptr, result};
+        SkASSERT(result != SkCodec::kSuccess);
+        return {{}, result};
     }
     // Setting the bitmap to be immutable saves us from having to copy it.
     bm.setImmutable();
-    return {SkImages::RasterFromBitmap(bm), kSuccess};
-}
-
-std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage() {
-    // If the codec reports that it is rotated, we need to rotate the image info
-    // it says it is, so the output is what the user wants.
-    SkImageInfo info = this->getInfo();
-    if (SkEncodedOriginSwapsWidthHeight(this->getOrigin())) {
-        info = SkPixmapUtils::SwapWidthHeight(info);
-    }
-    return this->getImage(info, nullptr);
+    return {bm, SkCodec::kSuccess};
 }
 
 SkCodec::Result SkCodec::startIncrementalDecode(const SkImageInfo& info, void* pixels,

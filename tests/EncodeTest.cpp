@@ -8,6 +8,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/codec/SkJpegDecoder.h"
+#include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -161,7 +162,6 @@ static inline bool almost_equals(const SkBitmap& a, const SkBitmap& b, int toler
             }
         }
     }
-
     return true;
 }
 
@@ -386,10 +386,9 @@ DEF_TEST(Encode_JpegDownsample, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
+    auto [bm0, r0] = SkJpegDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkJpegDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkJpegDecoder::Decode(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 60));
     REPORTER_ASSERT(r, almost_equals(bm1, bm2, 60));
 }
@@ -497,12 +496,17 @@ DEF_TEST(Encode_PngOptions, r) {
     REPORTER_ASSERT(r, data0->size() < data1->size());
     REPORTER_ASSERT(r, data1->size() < data2->size());
 
-    SkBitmap bm0, bm1, bm2;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    #define DECODE SkPngRustDecoder::Decode
+#else
+    #define DECODE SkPngDecoder::Decode
+#endif
+    auto [bm0, r0] = DECODE(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = DECODE(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = DECODE(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 0));
+#undef DECODE
 }
 
 #ifndef SK_BUILD_FOR_GOOGLE3
@@ -598,11 +602,10 @@ DEF_TEST(Encode_WebpOptions, r) {
     REPORTER_ASSERT(r, data1->size() > data2->size());
     REPORTER_ASSERT(r, data2->size() > data3->size());
 
-    SkBitmap bm0, bm1, bm2, bm3;
-    SkImages::DeferredFromEncodedData(data0)->asLegacyBitmap(&bm0);
-    SkImages::DeferredFromEncodedData(data1)->asLegacyBitmap(&bm1);
-    SkImages::DeferredFromEncodedData(data2)->asLegacyBitmap(&bm2);
-    SkImages::DeferredFromEncodedData(data3)->asLegacyBitmap(&bm3);
+    auto [bm0, r0] = SkWebpDecoder::Decode(data0, nullptr)->getBitmap();
+    auto [bm1, r1] = SkWebpDecoder::Decode(data1, nullptr)->getBitmap();
+    auto [bm2, r2] = SkWebpDecoder::Decode(data2, nullptr)->getBitmap();
+    auto [bm3, r3] = SkWebpDecoder::Decode(data2, nullptr)->getBitmap();
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 90));
     REPORTER_ASSERT(r, almost_equals(bm2, bm3, 50));
