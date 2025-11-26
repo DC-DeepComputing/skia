@@ -51,6 +51,24 @@
       "parentUuid": "b0fe3ee0_faddf716",
       "revId": "1fef8e718a19274af63dac7964e61def3f6ce4ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4338fb54_646a85ef",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-26T11:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a24f24de_2a71710c",
+      "revId": "1fef8e718a19274af63dac7964e61def3f6ce4ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
