@@ -141,6 +141,40 @@
       "message": "????",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8439ef5_1449f8c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-11-26T08:52:15Z",
+      "side": 1,
+      "message": "Thanks for working on this, I hope the linkage problems can be resolved.",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3001287_2bb05c96",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 37
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-11-26T08:52:15Z",
+      "side": 1,
+      "message": "Don\u0027t we have this already in https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/fontations/src/base.rs;l\u003d401 ?",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
