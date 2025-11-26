@@ -219,7 +219,7 @@ static SkCachedData* copy_mask_to_cacheddata(SkMaskBuilder* mask, SkResourceCach
     return data;
 }
 
-static SkCachedData* find_cached_rrect(SkTLazy<SkMask>* mask,
+static SkCachedData* find_cached_rrect(std::optional<SkMask>* mask,
                                        SkScalar sigma,
                                        SkBlurStyle style,
                                        const SkRRect& rrect,
@@ -239,7 +239,7 @@ static SkCachedData* add_cached_rrect(SkMaskBuilder* mask,
     return cached;
 }
 
-static SkCachedData* find_cached_rects(SkTLazy<SkMask>* mask,
+static SkCachedData* find_cached_rects(std::optional<SkMask>* mask,
                                        SkScalar sigma,
                                        SkBlurStyle style,
                                        SkSpan<const SkRect> rects,
@@ -380,7 +380,7 @@ std::optional<SkMaskFilterBase::NinePatch> SkBlurMaskFilterImpl::filterRRectToNi
 
     const float sigma = this->computeXformedSigma(matrix);
     // If we've already blurred this small rrect, pull it out of the cache and we are done
-    SkTLazy<SkMask> cachedMask;
+    std::optional<SkMask> cachedMask;
     SkCachedData* cached = find_cached_rrect(&cachedMask, sigma, fBlurStyle, smallRR, cache);
     if (!cached) {
         // Blit the small rrect into a buffer (9x7)
@@ -415,7 +415,7 @@ std::optional<SkMaskFilterBase::NinePatch> SkBlurMaskFilterImpl::filterRRectToNi
         SkASSERT(filterM.fBounds.height() == (srcM.fBounds.height() + 2*margin.fY));
 
         cached = add_cached_rrect(&filterM, sigma, fBlurStyle, smallRR, cache);
-        cachedMask.init(filterM);
+        cachedMask.emplace(filterM);
     }
 
     // The bounds of the blurred mask are at -margin, so we need to offset it back to 0,0
@@ -533,7 +533,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
     }
 
     const SkScalar sigma = this->computeXformedSigma(matrix);
-    SkTLazy<SkMask> cachedMask;
+    std::optional<SkMask> cachedMask;
     SkSpan<const SkRect> smallRects = SkSpan(smallR, rectCount);
     SkCachedData* cached = find_cached_rects(&cachedMask, sigma, fBlurStyle, smallRects, cache);
     if (!cached) {
@@ -555,7 +555,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
             }
         }
         cached = add_cached_rects(&filterM, sigma, fBlurStyle, smallRects, cache);
-        cachedMask.init(filterM);
+        cachedMask.emplace(filterM);
     }
     SkIRect bounds = cachedMask->fBounds;
     bounds.offsetTo(0, 0);
