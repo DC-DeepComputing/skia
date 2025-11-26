@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41fbd5c7_672847cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-26T20:26:02Z",
+      "side": 1,
+      "message": "Question about the general setup here.\n\nThe TLDR is that I think we should hide all use of skcms behind an abstract interface, and then we can Rustify all ICC profile parsing and transforms for all codecs (even the non-rust-ones) together.\n\nI\u0027m really not a fan of how we pass around the semi-parsed ICC profile, with tons of raw pointers going every which-way in [`SkEncodedInfo::ICCProfile`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/SkEncodedInfo.h;l\u003d34;drc\u003d15601d1d8a0676da6e14a174c95553cd0e58c9d2).\n\nI also don\u0027t think that the codecs should be calling skcms directly, because it means that they all have to do various things like [synthesize an ICC profile for the `SkColorSpace` they are decoding to](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d824;drc\u003d4497bff67a809a49fdb7f3fa7635329021000e2f). Our CMS never needs to convert to anything besides an `SkColorSpace`, and it would be better if the interfaces reflected that.\n\nRather than populate this monstrosity via Rust as well as skcms, I\u0027d really rather hide the whole thing behind an abstract interface. That way, we should move all of the ICC parsing for all codecs (even the non-Rustified-yet ones) to Rust together.\n\nThis approach may make everything easier because then, instead of needing to make moxcms \"talk like skcms\", we can replace skcms with moxcms under the covers.\n\nMaybe we can get on a call to discuss how to go about this?",
+      "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
