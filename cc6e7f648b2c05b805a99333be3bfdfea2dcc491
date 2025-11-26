@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39150256_adcb62ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T11:41:24Z",
+      "side": 1,
+      "message": "Re-implemented FFI to call image crate as it is now. Main gaps detected so far:\n- Image crate not supporting streamed decoding\n- Image crate not supporting embedded ICC proiles\n\nAny specific image configuration not supported by image crate can also be contributed there to close gap.",
+      "parentUuid": "c206f1ba_be098552",
+      "revId": "cc6e7f648b2c05b805a99333be3bfdfea2dcc491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf265732_bf92608d",
