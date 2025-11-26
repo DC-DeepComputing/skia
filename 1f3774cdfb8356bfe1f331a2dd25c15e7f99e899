@@ -39,6 +39,30 @@
       },
       "revId": "1f3774cdfb8356bfe1f331a2dd25c15e7f99e899",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e070ae_3cd426db",
+        "filename": "include/codec/SkJpegDecoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T15:15:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21818534_bd5224ce",
+      "range": {
+        "startLine": 41,
+        "startChar": 63,
+        "endLine": 41,
+        "endChar": 66
+      },
+      "revId": "1f3774cdfb8356bfe1f331a2dd25c15e7f99e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
