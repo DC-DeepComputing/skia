@@ -44,11 +44,11 @@ DEF_TEST(RRectMaskCache, reporter) {
     SkRRect rrect;
     rrect.setRectXY(rect, 30, 30);
     SkBlurStyle style = kNormal_SkBlurStyle;
-    SkTLazy<SkMask> lazyMask;
+    std::optional<SkMask> lazyMask;
 
     SkCachedData* data = SkMaskCache::FindAndRef(sigma, style, rrect, &lazyMask, &cache);
     REPORTER_ASSERT(reporter, nullptr == data);
-    REPORTER_ASSERT(reporter, !lazyMask.isValid());
+    REPORTER_ASSERT(reporter, !lazyMask.has_value());
 
     size_t size = 256;
     data = cache.newCachedData(size);
@@ -80,11 +80,11 @@ DEF_TEST(RectsMaskCache, reporter) {
     SkRect rect = SkRect::MakeWH(100, 100);
     SkRect rects[2] = {rect};
     SkBlurStyle style = kNormal_SkBlurStyle;
-    SkTLazy<SkMask> lazyMask;
+    std::optional<SkMask> lazyMask;
 
     SkCachedData* data = SkMaskCache::FindAndRef(sigma, style, SkSpan(rects, 1), &lazyMask, &cache);
     REPORTER_ASSERT(reporter, nullptr == data);
-    REPORTER_ASSERT(reporter, !lazyMask.isValid());
+    REPORTER_ASSERT(reporter, !lazyMask.has_value());
 
     size_t size = 256;
     data = cache.newCachedData(size);

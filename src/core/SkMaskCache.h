@@ -10,6 +10,7 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
+#include "src/base/SkTLazy.h"
 
 class SkCachedData;
 class SkRRect;
@@ -17,7 +18,6 @@ class SkResourceCache;
 enum SkBlurStyle : int;
 struct SkMask;
 struct SkRect;
-template <typename T> class SkTLazy;
 
 class SkMaskCache {
 public:
@@ -28,12 +28,12 @@ public:
      * On failure, return nullptr.
      */
     static SkCachedData* FindAndRef(SkScalar sigma, SkBlurStyle style,
-                                    const SkRRect& rrect, SkTLazy<SkMask>* mask,
+                                    const SkRRect& rrect, std::optional<SkMask>* mask,
                                     SkResourceCache* localCache = nullptr);
     static SkCachedData* FindAndRef(SkScalar sigma,
                                     SkBlurStyle style,
                                     SkSpan<const SkRect> rects,
-                                    SkTLazy<SkMask>* mask,
+                                    std::optional<SkMask>* mask,
                                     SkResourceCache* localCache = nullptr);
 
     /**
