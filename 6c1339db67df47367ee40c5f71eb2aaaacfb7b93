@@ -34,6 +34,24 @@
       "parentUuid": "41fbd5c7_672847cb",
       "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cc1eb5c_8cdcf78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-26T23:04:39Z",
+      "side": 1,
+      "message": "\u003e replace skcms with moxcms under the covers.\n\nI think the high-level idea here is that:\n\n1) parsing via skcms is not Rule-of-2 compliant, so we may want to delegate parsing to Rust\n2) actual color transformations are Rule-of-2 compliant and so may remain going through skcms (to minimize risk of regressions: performance regressions, or functional regressions - e.g. not supporting the same pixel formats in `moxcms` an in `skcms`)\n\n\u003e I\u0027m really not a fan of how we pass around the semi-parsed ICC profile, with tons of raw pointers going every which-way in SkEncodedInfo::ICCProfile.\n\nAck.  +1.  Having to manually author conversion routines between `skcms` and `moxcmd` is also not great.\n\n\u003e Maybe we can get on a call to discuss how to go about this?\n\nYes, definitely.  FWIW I\u0027ll be back on Monday, but feel free to start without me (especially since I am the west-most and least-timezone-compatible person in this group).",
+      "parentUuid": "efb9338d_e050be1d",
+      "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
