@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "246decea_3b575c73",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-11-26T18:32:03Z",
+      "side": 0,
+      "message": "Note: I had to remove this assert since Resource::isPurgeable() is private. If desired, I can make it protected and restore this call.",
+      "revId": "cf90054d6985e8f64f5dbdef488f1e0a1ad22778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
