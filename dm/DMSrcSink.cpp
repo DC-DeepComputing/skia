@@ -1684,12 +1684,11 @@ Result GPUSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream* write, SkStri
     // Force padded atlas entries for slug drawing.
     grOptions.fSupportBilerpFromGlyphAtlas |= true;
 
-    SkTLazy<skiatest::TestCanvas<skiatest::SkSlugTestKey>> testCanvas;
+    std::optional<skiatest::TestCanvas<skiatest::SkSlugTestKey>> testCanvas;
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
         [&](SkCanvas* canvas){
-            testCanvas.init(canvas);
-            return testCanvas.get();
+            return &testCanvas.emplace(canvas);
         });
 }
 
@@ -1704,12 +1703,11 @@ Result GPUSerializeSlugSink::draw(
     // Force padded atlas entries for slug drawing.
     grOptions.fSupportBilerpFromGlyphAtlas |= true;
 
-    SkTLazy<skiatest::TestCanvas<skiatest::SkSerializeSlugTestKey>> testCanvas;
+    std::optional<skiatest::TestCanvas<skiatest::SkSerializeSlugTestKey>> testCanvas;
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
                   [&](SkCanvas* canvas){
-                      testCanvas.init(canvas);
-                      return testCanvas.get();
+                      return &testCanvas.emplace(canvas);
                   });
 }
 
@@ -1724,12 +1722,11 @@ Result GPURemoteSlugSink::draw(
     // Force padded atlas entries for slug drawing.
     grOptions.fSupportBilerpFromGlyphAtlas |= true;
 
-    SkTLazy<skiatest::TestCanvas<skiatest::SkRemoteSlugTestKey>> testCanvas;
+    std::optional<skiatest::TestCanvas<skiatest::SkRemoteSlugTestKey>> testCanvas;
 
     return onDraw(src, dst, write, log, grOptions, nullptr,
                   [&](SkCanvas* canvas) {
-                      testCanvas.init(canvas);
-                      return testCanvas.get();
+                      return &testCanvas.emplace(canvas);
                   });
 }
 

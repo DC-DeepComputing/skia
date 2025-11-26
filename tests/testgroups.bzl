@@ -144,7 +144,6 @@ CORE_TESTS = [
     "StrokeTest.cpp",
     "TArrayTest.cpp",
     "TDPQueueTest.cpp",
-    "TLazyTest.cpp",
     "TemplatesTest.cpp",
     "TracingTest.cpp",
     "UtilsTest.cpp",

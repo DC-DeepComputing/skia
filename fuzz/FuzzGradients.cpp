@@ -117,23 +117,23 @@ void fuzzLinearGradient(Fuzz* fuzz) {
     uint32_t flags;
     fuzz->next(&flags);
 
-    SkTLazy<SkMatrix> localMatrix;
+    std::optional<SkMatrix> localMatrix;
     if (useLocalMatrix) {
-        makeMatrix(fuzz, localMatrix.init());
+        makeMatrix(fuzz, &localMatrix.emplace());
     }
     p.setShader(SkGradientShader::MakeLinear(pts, colors.data(), pos.data(),
-        colors.size(), mode, flags, localMatrix.getMaybeNull()));
+        colors.size(), mode, flags, SkOptAddressOrNull(localMatrix)));
 
     sk_sp<SkSurface> surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(50, 50)));
     if (useGlobalMatrix) {
         SkMatrix gm;
         makeMatrix(fuzz, &gm);
-        logLinearGradient(pts, colors, pos, mode, flags, localMatrix.getMaybeNull(), &gm);
+        logLinearGradient(pts, colors, pos, mode, flags, SkOptAddressOrNull(localMatrix), &gm);
         SkCanvas* c = surface->getCanvas();
         c->setMatrix(gm);
         c->drawPaint(p);
     } else {
-        logLinearGradient(pts, colors, pos, mode, flags, localMatrix.getMaybeNull(), nullptr);
+        logLinearGradient(pts, colors, pos, mode, flags, SkOptAddressOrNull(localMatrix), nullptr);
         surface->getCanvas()->drawPaint(p);
     }
 }
@@ -155,12 +155,12 @@ void fuzzRadialGradient(Fuzz* fuzz) {
     uint32_t flags;
     fuzz->next(&flags);
 
-    SkTLazy<SkMatrix> localMatrix;
+    std::optional<SkMatrix> localMatrix;
     if (useLocalMatrix) {
-        makeMatrix(fuzz, localMatrix.init());
+        makeMatrix(fuzz, &localMatrix.emplace());
     }
     p.setShader(SkGradientShader::MakeRadial(center, radius, colors.data(),
-        pos.data(), colors.size(), mode, flags, localMatrix.getMaybeNull()));
+        pos.data(), colors.size(), mode, flags, SkOptAddressOrNull(localMatrix)));
 
     sk_sp<SkSurface> surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(50, 50)));
     if (useGlobalMatrix) {
@@ -192,13 +192,13 @@ void fuzzTwoPointConicalGradient(Fuzz* fuzz) {
     uint32_t flags;
     fuzz->next(&flags);
 
-    SkTLazy<SkMatrix> localMatrix;
+    std::optional<SkMatrix> localMatrix;
     if (useLocalMatrix) {
-        makeMatrix(fuzz, localMatrix.init());
+        makeMatrix(fuzz, &localMatrix.emplace());
     }
     p.setShader(SkGradientShader::MakeTwoPointConical(start, startRadius,
         end, endRadius, colors.data(), pos.data(), colors.size(), mode,
-        flags, localMatrix.getMaybeNull()));
+        flags, SkOptAddressOrNull(localMatrix)));
 
     sk_sp<SkSurface> surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(50, 50)));
     if (useGlobalMatrix) {

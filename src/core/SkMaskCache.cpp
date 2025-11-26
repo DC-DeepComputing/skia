@@ -71,7 +71,7 @@ struct RRectBlurRec : public SkResourceCache::Rec {
 
     static bool Visitor(const SkResourceCache::Rec& baseRec, void* contextData) {
         const RRectBlurRec& rec = static_cast<const RRectBlurRec&>(baseRec);
-        SkTLazy<MaskValue>* result = (SkTLazy<MaskValue>*)contextData;
+        std::optional<MaskValue>* result = (std::optional<MaskValue>*)contextData;
 
         SkCachedData* tmpData = rec.fValue.fData;
         tmpData->ref();
@@ -79,22 +79,22 @@ struct RRectBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        result->init(rec.fValue);
+        result->emplace(rec.fValue);
         return true;
     }
 };
 } // namespace
 
 SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
-                                      const SkRRect& rrect, SkTLazy<SkMask>* mask,
+                                      const SkRRect& rrect, std::optional<SkMask>* mask,
                                       SkResourceCache* localCache) {
-    SkTLazy<MaskValue> result;
+    std::optional<MaskValue> result;
     RRectBlurKey key(sigma, rrect, style);
     if (!CHECK_LOCAL(localCache, find, Find, key, RRectBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
-    mask->init(static_cast<const uint8_t*>(result->fData->data()),
+    mask->emplace(static_cast<const uint8_t*>(result->fData->data()),
                result->fMask.fBounds, result->fMask.fRowBytes, result->fMask.fFormat);
     return result->fData;
 }
@@ -159,7 +159,7 @@ struct RectsBlurRec : public SkResourceCache::Rec {
 
     static bool Visitor(const SkResourceCache::Rec& baseRec, void* contextData) {
         const RectsBlurRec& rec = static_cast<const RectsBlurRec&>(baseRec);
-        SkTLazy<MaskValue>* result = static_cast<SkTLazy<MaskValue>*>(contextData);
+        std::optional<MaskValue>* result = static_cast<std::optional<MaskValue>*>(contextData);
 
         SkCachedData* tmpData = rec.fValue.fData;
         tmpData->ref();
@@ -167,7 +167,7 @@ struct RectsBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        result->init(rec.fValue);
+        result->emplace(rec.fValue);
         return true;
     }
 };
@@ -176,15 +176,15 @@ struct RectsBlurRec : public SkResourceCache::Rec {
 SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma,
                                       SkBlurStyle style,
                                       SkSpan<const SkRect> rects,
-                                      SkTLazy<SkMask>* mask,
+                                      std::optional<SkMask>* mask,
                                       SkResourceCache* localCache) {
-    SkTLazy<MaskValue> result;
+    std::optional<MaskValue> result;
     RectsBlurKey key(sigma, style, rects);
     if (!CHECK_LOCAL(localCache, find, Find, key, RectsBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
-    mask->init(static_cast<const uint8_t*>(result->fData->data()),
+    mask->emplace(static_cast<const uint8_t*>(result->fData->data()),
                result->fMask.fBounds, result->fMask.fRowBytes, result->fMask.fFormat);
     return result->fData;
 }
