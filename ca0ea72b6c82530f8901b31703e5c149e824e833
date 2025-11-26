@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3b5c2b0_9c441c7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-26T21:24:17Z",
+      "side": 1,
+      "message": "Good point, guarded this by an `#if`...",
+      "parentUuid": "d45d059b_2f15fa16",
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6993d048_9d2e5761",
         "filename": "src/core/SkYUVMath.cpp",
         "patchSetId": 2
@@ -71,6 +89,30 @@
       "writtenOn": "2025-11-26T18:29:49Z",
       "side": 1,
       "message": "I guess one more option is to output the floats in hex format, so we are exact (and maybe include the scientific notation as a comment). What do you think is a good tradeoff between readable and accurate?",
+      "range": {
+        "startLine": 737,
+        "startChar": 26,
+        "endLine": 737,
+        "endChar": 31
+      },
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "445baf40_70fe8341",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-11-26T21:24:17Z",
+      "side": 1,
+      "message": "... and, I went with hex format for high-precision, but the `#if` is repeated for each matrix and lists the old values, which provides the readability.",
+      "parentUuid": "b5590a96_968a6638",
       "range": {
         "startLine": 737,
         "startChar": 26,
