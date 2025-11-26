@@ -415,7 +415,7 @@ std::optional<SkMaskFilterBase::NinePatch> SkBlurMaskFilterImpl::filterRRectToNi
         SkASSERT(filterM.fBounds.height() == (srcM.fBounds.height() + 2*margin.fY));
 
         cached = add_cached_rrect(&filterM, sigma, fBlurStyle, smallRR, cache);
-        cachedMask.init(filterM);
+        cachedMask.emplace(filterM);
     }
 
     // The bounds of the blurred mask are at -margin, so we need to offset it back to 0,0
@@ -555,7 +555,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
             }
         }
         cached = add_cached_rects(&filterM, sigma, fBlurStyle, smallRects, cache);
-        cachedMask.init(filterM);
+        cachedMask.emplace(filterM);
     }
     SkIRect bounds = cachedMask->fBounds;
     bounds.offsetTo(0, 0);
