@@ -134,6 +134,30 @@
       },
       "revId": "869796a733bfe69de866953934ae7b32173adcce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a9eb06_566851b5",
+        "filename": "gm/drawbitmaprect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T16:56:35Z",
+      "side": 1,
+      "message": "*gasp* that\u0027s terrifying - has the Graphite API truly diverged to the point where we don\u0027t support synchronous readPixels anymore?  If `asLegacyBitmap` is supported, surely `readPixels` can be too.\n\n(also totally not a this-cl problem)",
+      "parentUuid": "5f821a30_cc6608b6",
+      "range": {
+        "startLine": 113,
+        "startChar": 17,
+        "endLine": 113,
+        "endChar": 27
+      },
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
