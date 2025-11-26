@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70436ed5_46e2ba21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T14:12:19Z",
+      "side": 1,
+      "message": "Temporary/speculative fix for the g3 roller.",
+      "revId": "1f3774cdfb8356bfe1f331a2dd25c15e7f99e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
