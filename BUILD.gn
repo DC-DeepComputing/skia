@@ -1514,6 +1514,54 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   }
 }
 
+# ICC profile parsing using moxcms (conditionally enabled with Rust codecs)
+if (skia_use_rust_png_decode) {
+  action("rust_icc_ffi_bazel_build") {
+    script = "gn/bazel_build.py"
+    sources = [
+      "rust/icc/BUILD.bazel",
+      "rust/icc/FFI.h",
+      "rust/icc/FFI.rs",
+    ]
+    outputs = [
+      "$root_out_dir/librust_icc_ffi_rs.a",
+      "$root_out_dir/rust/icc/FFI.rs.h",
+      "$root_out_dir/rust/icc/FFI.rs.cc",
+    ]
+    args = [
+             "//rust/icc:*",
+
+             rebase_path("//bazel-bin/rust/icc/libffi_rs.a", root_build_dir) +
+                 "=librust_icc_ffi_rs.a",
+
+             rebase_path("//bazel-bin/rust/icc/FFI.rs.h", root_build_dir) +
+                 "=rust/icc/FFI.rs.h",
+             rebase_path("//bazel-bin/rust/icc/FFI.rs.cc", root_build_dir) +
+                 "=rust/icc/FFI.rs.cc",
+           ] + bazel_args
+  }
+
+  config("rust_icc_cxx_bridge_private_config") {
+    include_dirs = [
+      # This entry is needed so that `FFI.rs.cc` can resolve
+      # `#include "rust/icc/FFI.h"`
+      ".",
+    ]
+  }
+
+  skia_source_set("rust_icc_cxx_bridge") {
+    deps = [
+      ":rust_cxx_core_bazel_build",
+      ":rust_icc_ffi_bazel_build",
+    ]
+    public = [ "${root_out_dir}/rust/icc/FFI.rs.h" ]
+    sources = [ "${root_out_dir}/rust/icc/FFI.rs.cc" ]
+    libs = [ "$root_out_dir/librust_icc_ffi_rs.a" ]
+    public_configs = [ ":rust_common_cxx_bridge_public_config" ]
+    configs = [ ":rust_icc_cxx_bridge_private_config" ]
+  }
+}
+
 config("rust_common_cxx_bridge_public_config") {
   include_dirs = [
     # This is where `rust/.../*.rs.h` and
@@ -1528,6 +1576,19 @@ optional("rust_common") {
   sources = skia_rust_common_ffi_cpp_srcs
   public_configs = [ ":rust_common_cxx_bridge_public_config" ]
   deps = [ ":rust_cxx_core_bazel_build" ]
+}
+
+optional("rust_icc") {
+  enabled = skia_use_rust_png_decode
+  public = skia_rust_icc_ffi_cpp_hdrs
+  sources = skia_rust_icc_ffi_cpp_srcs
+  sources_for_tests = [ "tests/RustIccTest.cpp" ]
+  public_configs = [ ":rust_common_cxx_bridge_public_config" ]
+  deps = [
+    ":rust_common",
+    ":rust_icc_cxx_bridge",
+    "//modules/skcms",
+  ]
 }
 
 optional("png_decode_rust") {
@@ -2562,6 +2623,7 @@ if (skia_enable_tools) {
         ":png_decode_libpng_tests",
         ":png_decode_rust_tests",
         ":png_encode_rust_tests",
+        ":rust_icc_tests",
         ":skia",
         ":test",
         ":tool_utils",
