@@ -16,6 +16,29 @@
       "message": "Temporary/speculative fix for the g3 roller.",
       "revId": "1f3774cdfb8356bfe1f331a2dd25c15e7f99e899",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21818534_bd5224ce",
+        "filename": "include/codec/SkJpegDecoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T15:01:28Z",
+      "side": 1,
+      "message": "I think you need the \u003dnullptr here",
+      "range": {
+        "startLine": 41,
+        "startChar": 63,
+        "endLine": 41,
+        "endChar": 66
+      },
+      "revId": "1f3774cdfb8356bfe1f331a2dd25c15e7f99e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
