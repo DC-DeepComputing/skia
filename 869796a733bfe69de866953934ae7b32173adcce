@@ -182,6 +182,30 @@
       },
       "revId": "869796a733bfe69de866953934ae7b32173adcce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a5e04f9_ff669508",
+        "filename": "gm/drawbitmaprect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T19:20:16Z",
+      "side": 1,
+      "message": "\u003e Revisiting: I don\u0027t think `asLegacyBitmap` works with graphite either, so the previous version of the GM was already broken with graphite.\n\nMore investigation of current behavior, since the GM does look correct for all backends:\n\n  - with graphite, `asLegacyBitmap` fails, leaving `tempBM` empty\n  - which yields an empty `fLargeBitmap`\n  - the only section that does something interesting with the bitmap is `bitmapsubsetproc`, which [has this check](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gm/drawbitmaprect.cpp;drc\u003df950263bb3d4b311e2cc12f0dceea24dcb9c2373;l\u003d120) upfront:\n\n```\n    if (!bm.bounds().contains(srcR)) {\n        bitmapproc(canvas, std::move(image), bm, srcR, dstR, sampling, paint);\n        return;\n    }\n```\n  - so with graphite, we\u0027re always falling back to `bitmapproc` (due to empty bounds), which happens to work because it ignores the bitmap and [draws the image](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gm/drawbitmaprect.cpp;drc\u003df950263bb3d4b311e2cc12f0dceea24dcb9c2373;l\u003d112) instead\n\nBasically the GM works with graphite accidentally, due to the `drawImage` fallback logic, even though the bitmap is empty.\n\nI think we can preserve that behavior with a minimal change like\n\n```\n@@ -95,12 +96,13 @@ static sk_sp\u003cSkImage\u003e makebm(SkCanvas* origCanvas, SkBitmap* resultBM, int w, in\n     auto image \u003d surface-\u003emakeImageSnapshot();\n \n     SkBitmap tempBM;\n-\n-    image-\u003easLegacyBitmap(\u0026tempBM);\n-\n-    // Let backends know we won\u0027t change this, so they don\u0027t have to deep copy it defensively.\n-    tempBM.setImmutable();\n-    *resultBM \u003d tempBM;\n+    if (tempBM.tryAllocPixels(info) \u0026\u0026\n+        image-\u003ereadPixels(GrAsDirectContext(canvas-\u003erecordingContext()), info,\n+                          tempBM.getPixels(), tempBM.rowBytes(), 0, 0)) {\n+        // Let backends know we won\u0027t change this, so they don\u0027t have to deep copy it defensively.\n+        tempBM.setImmutable();\n+        *resultBM \u003d tempBM;\n+    }\n \n     return image;\n }\n\n```",
+      "parentUuid": "acd9b8fe_4ff232ae",
+      "range": {
+        "startLine": 113,
+        "startChar": 17,
+        "endLine": 113,
+        "endChar": 27
+      },
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
