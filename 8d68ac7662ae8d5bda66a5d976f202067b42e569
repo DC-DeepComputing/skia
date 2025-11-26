@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a2572e9_818398ac",
+        "filename": "modules/skcms/src/skcms_public.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Created this CL for making the change in skcms: https://skia-review.googlesource.com/c/skcms/+/1111536 and undo change here",
+      "parentUuid": "b277c1dc_fae594f5",
+      "range": {
+        "startLine": 326,
+        "startChar": 8,
+        "endLine": 326,
+        "endChar": 12
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be9a82e3_7d2df509",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-11-26T18:15:39Z",
       "side": 1,
       "message": "I\u0027d prefer more specific visibility lists.",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 37
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67b589d7_0bc79347",
+        "filename": "rust/icc/BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "be9a82e3_7d2df509",
       "range": {
         "startLine": 18,
         "startChar": 22,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf6f6c00_dfe280cd",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef5f6e80_6290c391",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 15
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdfcfcb8_a9432fe1",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-11-26T18:15:39Z",
       "side": 1,
       "message": "Is the setting to nullptr necessary? We\u0027ve done a memset earlier, yeah?",
+      "range": {
+        "startLine": 120,
+        "startChar": 19,
+        "endLine": 120,
+        "endChar": 25
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56bca43a_ca4ff985",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cdfcfcb8_a9432fe1",
       "range": {
         "startLine": 120,
         "startChar": 19,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59c7fd9d_642bd41b",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "208b2e3d_9fc04b6e",
+      "range": {
+        "startLine": 234,
+        "startChar": 28,
+        "endLine": 234,
+        "endChar": 35
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "866d6265_0fe7e2dd",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41bf354c_4b3b42c8",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "866d6265_0fe7e2dd",
+      "range": {
+        "startLine": 33,
+        "startChar": 55,
+        "endLine": 33,
+        "endChar": 62
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb55c7fc_b23b9018",
@@ -169,6 +313,30 @@
       "writtenOn": "2025-11-26T18:15:39Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 60,
+        "startChar": 42,
+        "endLine": 60,
+        "endChar": 46
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cabd453_8f3ef1ef",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T19:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb55c7fc_b23b9018",
       "range": {
         "startLine": 60,
         "startChar": 42,
