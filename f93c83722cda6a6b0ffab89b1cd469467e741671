@@ -130,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17e6d62_95d6169e",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-11-26T16:44:49Z",
+      "side": 1,
+      "message": "Nice - thanks!",
+      "parentUuid": "439f05c0_57845b35",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcd56ee3_6537d362",
