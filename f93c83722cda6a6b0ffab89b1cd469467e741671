@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "12add9f9_9e8c5828",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T11:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a29d8be6_ae08514d",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e1168516_1e1798c2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 12
@@ -82,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "439f05c0_57845b35",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T11:24:17Z",
+      "side": 1,
+      "message": "We could avoid circular dependency defining a header only library to which cxx_bridge can depende, so we can inlcude definition in cxx bridge.",
+      "parentUuid": "cdd953fe_06ecad67",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcd56ee3_6537d362",
@@ -95,6 +143,30 @@
       "writtenOn": "2025-11-25T16:21:27Z",
       "side": 1,
       "message": "I think it should be ok to unify/reuse `ffi::TransferFunction`?  We already have some guarantees that the `#[cxx::bridge]` declaration matches the declaration from `.h` files (via `static_assert`s about size, alignment, standard layout, etc.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 1
+      },
+      "revId": "f93c83722cda6a6b0ffab89b1cd469467e741671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f24f59_41312c98",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-11-26T11:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcd56ee3_6537d362",
       "range": {
         "startLine": 47,
         "startChar": 0,
