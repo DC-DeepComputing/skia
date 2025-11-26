@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77746d68_98a5bc13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4497568
+      },
+      "writtenOn": "2025-11-26T22:12:23Z",
+      "side": 1,
+      "message": "PTAL\n\nFairly minor clean-up, but first patch, so lmk if I\u0027m doing something wrong, thanks!\n\nAlso I don\u0027t have permission to land code into Skia so please push for me (if it looks good of course).",
+      "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
