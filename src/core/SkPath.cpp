@@ -87,7 +87,8 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
     int segmentCount = 0;
     SkDEBUGCODE(int moveCnt = 0;)
 
-    for (auto [verb, pts, weight] : SkPathPriv::Iterate(*this)) {
+    for (auto iter = this->iter(); auto rec = iter.next(); ) {
+        SkPathVerb verb = rec->fVerb;
         if (verb == SkPathVerb::kClose || (segmentCount > 0 && verb == SkPathVerb::kMove)) {
             // Closing the current contour; but since convexity is a precondition, it's the only
             // contour that matters.
@@ -99,17 +100,15 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
             // keep the last one before a non-move verb).
             SkASSERT(!segmentCount);
             SkDEBUGCODE(++moveCnt);
-            firstPt = prevPt = pts[0];
+            firstPt = prevPt = rec->fPoints[0];
         } else {
-            int pointCount = SkPathPriv::PtsInVerb((unsigned) verb);
-            SkASSERT(pointCount > 0);
+            auto pts = rec->fPoints;
 
-            if (!SkPathPriv::AllPointsEq({pts, (size_t)pointCount + 1})) {
+            if (!SkPathPriv::AllPointsEq(pts)) {
                 SkASSERT(moveCnt);
-                int nextPt = pointCount;
-                segmentCount++;
+                const SkPoint lastPt = pts.back();
 
-                if (prevPt == pts[nextPt]) {
+                if (prevPt == lastPt) {
                     // A pre-condition to getting here is that the path is convex, so if a
                     // verb's start and end points are the same, it means it's the only
                     // verb in the contour (and the only contour). While it's possible for
@@ -119,7 +118,7 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
                     return false;
                 } else if (SkPathVerb::kConic == verb) {
                     SkConic orig;
-                    orig.set(pts, *weight);
+                    orig.set(pts.data(), rec->conicWeight());
                     SkPoint quadPts[5];
                     int count = orig.chopIntoQuadsPOW2(quadPts, 1);
                     SkASSERT_RELEASE(2 == count);
@@ -131,11 +130,11 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
                         return false;
                     }
                 } else {
-                    if (!check_edge_against_rect(prevPt, pts[nextPt], rect, *direction)) {
+                    if (!check_edge_against_rect(prevPt, lastPt, rect, *direction)) {
                         return false;
                     }
                 }
-                prevPt = pts[nextPt];
+                prevPt = lastPt;
             }
         }
     }
@@ -815,20 +814,20 @@ std::optional<SkPathRectInfo> SkPathPriv::IsSimpleRect(const SkPath& path, bool 
     SkPoint rectPts[5];
     int rectPtCnt = 0;
     bool needsClose = !isSimpleFill;
-    for (auto [v, verbPts, w] : SkPathPriv::Iterate(path)) {
-        switch (v) {
+    for (auto iter = path.iter(); auto rec = iter.next(); ) {
+        switch (rec->fVerb) {
             case SkPathVerb::kMove:
                 if (0 != rectPtCnt) {
                     return {};
                 }
-                rectPts[0] = verbPts[0];
+                rectPts[0] = rec->fPoints[0];
                 ++rectPtCnt;
                 break;
             case SkPathVerb::kLine:
                 if (5 == rectPtCnt) {
                     return {};
                 }
-                rectPts[rectPtCnt] = verbPts[1];
+                rectPts[rectPtCnt] = rec->fPoints[1];
                 ++rectPtCnt;
                 break;
             case SkPathVerb::kClose:

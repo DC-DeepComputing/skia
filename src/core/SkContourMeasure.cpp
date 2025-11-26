@@ -192,18 +192,18 @@ class SkContourMeasureIter::Impl {
 public:
     Impl(const SkPath& path, bool forceClosed, SkScalar resScale)
         : fPath(path)
-        , fIter(SkPathPriv::Iterate(fPath).begin())
+        , fIter(fPath.iter())
         , fTolerance(CHEAP_DIST_LIMIT * sk_ieee_float_divide(1.0f, resScale))
         , fForceClosed(forceClosed) {}
 
-    bool hasNextSegments() const { return fIter != SkPathPriv::Iterate(fPath).end(); }
+    bool hasNextSegments() const { return !fIter.isDone(); }
     SkContourMeasure* buildSegments();
 
 private:
-    SkPath                fPath;
-    SkPathPriv::RangeIter fIter;
-    SkScalar              fTolerance;
-    bool                  fForceClosed;
+    SkPath      fPath;
+    SkPathIter  fIter;
+    SkScalar    fTolerance;
+    bool        fForceClosed;
 
     // temporary
     SkTDArray<SkContourMeasure::Segment>  fSegments;
@@ -374,13 +374,12 @@ SkContourMeasure* SkContourMeasureIter::Impl::buildSegments() {
     fSegments.reset();
     fPts.reset();
 
-    auto end = SkPathPriv::Iterate(fPath).end();
-    for (; fIter != end; ++fIter) {
-        auto [verb, pts, w] = *fIter;
-        if (haveSeenMoveTo && verb == SkPathVerb::kMove) {
+    while (auto rec = fIter.next()) {
+        if (haveSeenMoveTo && rec->fVerb == SkPathVerb::kMove) {
             break;
         }
-        switch (verb) {
+        auto pts = rec->fPoints.data();
+        switch (rec->fVerb) {
             case SkPathVerb::kMove:
                 ptIndex += 1;
                 fPts.append(1, pts);
@@ -410,7 +409,7 @@ SkContourMeasure* SkContourMeasureIter::Impl::buildSegments() {
 
             case SkPathVerb::kConic: {
                 SkASSERT(haveSeenMoveTo);
-                const SkConic conic(pts, *w);
+                const SkConic conic(pts, rec->conicWeight());
                 SkScalar prevD = distance;
                 distance = this->compute_conic_segs(conic, distance, 0, conic.fPts[0],
                                                     kMaxTValue, conic.fPts[2], ptIndex);

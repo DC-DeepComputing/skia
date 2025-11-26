@@ -58,6 +58,8 @@ public:
         return {};
     }
 
+    bool isDone() const { return vIndex >= fVerbs.size(); }
+
 private:
     size_t                   pIndex, vIndex, cIndex;
     SkSpan<const SkPoint>    fPoints;
