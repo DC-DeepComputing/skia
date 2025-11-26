@@ -16,6 +16,29 @@
       "message": "Looks like this doesn\u0027t break things(!)",
       "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6993d048_9d2e5761",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:18:34Z",
+      "side": 1,
+      "message": "nit: `constexpr`",
+      "range": {
+        "startLine": 731,
+        "startChar": 14,
+        "endLine": 731,
+        "endChar": 19
+      },
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
