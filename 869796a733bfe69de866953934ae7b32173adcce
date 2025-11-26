@@ -158,6 +158,30 @@
       },
       "revId": "869796a733bfe69de866953934ae7b32173adcce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd9b8fe_4ff232ae",
+        "filename": "gm/drawbitmaprect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T17:29:39Z",
+      "side": 1,
+      "message": "Revisiting: I don\u0027t think `asLegacyBitmap` works with graphite either, so the previous version of the GM was already broken with graphite.\n\nUnless you really want to make the GM portable in this change, I would skip the complexity and just use readpixels.",
+      "parentUuid": "94a9eb06_566851b5",
+      "range": {
+        "startLine": 113,
+        "startChar": 17,
+        "endLine": 113,
+        "endChar": 27
+      },
+      "revId": "869796a733bfe69de866953934ae7b32173adcce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
