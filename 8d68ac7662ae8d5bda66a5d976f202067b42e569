@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31af7ca7_16cf27c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "Made some Skia comments for style and such. @ccameron@google.com Could you look over the tests and rust parts and lend us some of your colorspace expertise?",
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b277c1dc_fae594f5",
+        "filename": "modules/skcms/src/skcms_public.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "Don\u0027t make edits directly here - we make them in https://skia.googlesource.com/skcms/ and then it gets autorolled in.",
+      "range": {
+        "startLine": 326,
+        "startChar": 8,
+        "endLine": 326,
+        "endChar": 12
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be9a82e3_7d2df509",
+        "filename": "rust/icc/BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "I\u0027d prefer more specific visibility lists.",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 37
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5f6e80_6290c391",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "nit:\n```\nif (!success) {\n  return false;\n}\n... copy\nreturn true;\n```\nto be a smidge more explicit.",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 15
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdfcfcb8_a9432fe1",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "Is the setting to nullptr necessary? We\u0027ve done a memset earlier, yeah?",
+      "range": {
+        "startLine": 120,
+        "startChar": 19,
+        "endLine": 120,
+        "endChar": 25
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "208b2e3d_9fc04b6e",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "Same questions about nullptr",
+      "range": {
+        "startLine": 234,
+        "startChar": 28,
+        "endLine": 234,
+        "endChar": 35
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "866d6265_0fe7e2dd",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "rust_matrix should be unchanged (it\u0027s passed in as a const reference). Could we just loop through the comparison? Maybe make this a helper function for reuse below?",
+      "range": {
+        "startLine": 33,
+        "startChar": 55,
+        "endLine": 33,
+        "endChar": 62
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb55c7fc_b23b9018",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T18:15:39Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 60,
+        "startChar": 42,
+        "endLine": 60,
+        "endChar": 46
+      },
+      "revId": "8d68ac7662ae8d5bda66a5d976f202067b42e569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
