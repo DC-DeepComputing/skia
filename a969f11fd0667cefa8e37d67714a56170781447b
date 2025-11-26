@@ -1,0 +1,860 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43dcaef9_a451c834",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Please also review https://chromium.googlesource.com/chromium/src/+/9c163b7e/agents/ai_policy.md and make sure that this CL and future CLs conform to the policy, even tests.",
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1205b6f0_0ee2b1e9",
+        "filename": "experimental/rust_bmp/decoder/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "We only need one of these file groups (hdrs or rust_bmp_public_hdrs). Get rid of this one and we\u0027ll use the other from the GNI exporter (when we are ready to make those file lists)",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b9a333_746c8c8d",
+        "filename": "experimental/rust_bmp/decoder/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "We don\u0027t need this filegroup either. Remove it and we\u0027ll use `srcs` from the GNI exporter",
+      "range": {
+        "startLine": 35,
+        "startChar": 12,
+        "endLine": 35,
+        "endChar": 25
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d0c5849_7f726fcf",
+        "filename": "experimental/rust_bmp/decoder/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "I don\u0027t like making packages public from deep in the Skia tree. What we typically do is make it available to `//:__pkg__` and then re-export it (as an alias) in the top level BUILD.bazel",
+      "range": {
+        "startLine": 52,
+        "startChar": 21,
+        "endLine": 52,
+        "endChar": 31
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bdba0c_3abd82eb",
+        "filename": "experimental/rust_bmp/decoder/SkBmpRustDecoder.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 35,
+        "startChar": 38,
+        "endLine": 35,
+        "endChar": 44
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "845434ae_f57a1da3",
+        "filename": "experimental/rust_bmp/decoder/SkBmpRustDecoder.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "`sk_sp\u003cconst SkData\u003e` (see https://skia-review.googlesource.com/c/skia/+/1084056)",
+      "range": {
+        "startLine": 32,
+        "startChar": 45,
+        "endLine": 32,
+        "endChar": 51
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f51a722f_71855baf",
+        "filename": "experimental/rust_bmp/decoder/impl/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "use the above file groups instead of duplicating the files.",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4425145_6e19a6e8",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "result is an optional parameter. Typically what we do is something like this https://github.com/google/skia/blob/cf90054d6985e8f64f5dbdef488f1e0a1ad22778/src/codec/SkJpegCodec.cpp#L1006-L1009",
+      "range": {
+        "startLine": 75,
+        "startChar": 71,
+        "endLine": 75,
+        "endChar": 77
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9504841b_89b7e5fa",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "assert not needed with check on line 76",
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "718f60da_d05bcf20",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "nit: `TODO(crbug.com/452666425)` or similar",
+      "range": {
+        "startLine": 106,
+        "startChar": 7,
+        "endLine": 106,
+        "endChar": 11
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bcbba19_478ec44b",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "I prefer to just `#include include/core/SkSpan.h` instead of complex forward declarations like this.",
+      "range": {
+        "startLine": 22,
+        "startChar": 28,
+        "endLine": 22,
+        "endChar": 34
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492fb75e_591bbddb",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "nit: put this bool before fDataIsIncomplete to (slightly) reduce padding.",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 12
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93a17662_4f7ec123",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This is no longer in the Skia style to do. Delete this and just use SkCodec directly (if necessary)",
+      "range": {
+        "startLine": 90,
+        "startChar": 10,
+        "endLine": 90,
+        "endChar": 19
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31fb1b74_c08a64fb",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 19
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "FWIW: Skia currently handles only the BM magic bytes with a TODO for `\"IC\", \"PT\", \"CI\", \"CP\", \"BA\"`",
+      "range": {
+        "startLine": 115,
+        "startChar": 7,
+        "endLine": 115,
+        "endChar": 18
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc10de76_30523fae",
+        "filename": "rust/common/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Please put the colon back",
+      "range": {
+        "startLine": 65,
+        "startChar": 11,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e31b597f_5a0f2372",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "We generally reserve names like `SkCamelHumps` for public APIs. Let\u0027s call this `decode_bmp_with_rust` or just `decode_bmp` and declare it static.",
+      "range": {
+        "startLine": 33,
+        "startChar": 25,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbabc994_8d9e29ba",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "`skiatest::ReporterContext ctx(path);` will give the path to the bad file in the assert message. Add one in `decode_bmp_as_image` also",
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4224d5_2ac810d9",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "`SkMemoryStream::Make` is a tiny bit shorter (here and below).",
+      "range": {
+        "startLine": 42,
+        "startChar": 37,
+        "endLine": 42,
+        "endChar": 69
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5377e56f_927b6d43",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Can you add a test case that passes in a nullptr `SkCodec::Result`?",
+      "range": {
+        "startLine": 42,
+        "startChar": 30,
+        "endLine": 42,
+        "endChar": 36
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2b1406_12dad90b",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "`static` \u0026\u0026 `decode_bmp_as_image`",
+      "range": {
+        "startLine": 49,
+        "startChar": 15,
+        "endLine": 49,
+        "endChar": 29
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02de5ba7_411daa70",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "nit: `assert_pixel_color`",
+      "range": {
+        "startLine": 61,
+        "startChar": 12,
+        "endLine": 61,
+        "endChar": 28
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77faadb1_f84f1742",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "`skiatest::ReporterContext ctx(description);` instead of needing to add it in the asserts",
+      "range": {
+        "startLine": 66,
+        "startChar": 42,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc694a1_42ec5518",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "We can combine these tests using a strategy I\u0027ve heard called \"table based testing\"\n\n(roughly)\n```\nDEF_TEST(RustBmpCodec_decode_valid_bmp, r) {\n\n    auto test \u003d [\u0026r](const char* description, const char* file, SkISize expectedSize) {\n        skiatest::ReporterContext ctx(description);\n        std::unique_ptr\u003cSkCodec\u003e codec \u003d decode_bmp(r, file);\n        if (!codec) {\n            return;\n        }\n        REPORTER_ASSERT(r,\n                    codec-\u003edimensions() \u003d\u003d expectedSize,\n                    \"dimensions\u003d%dx%d !\u003d expected\u003d%dx%d\",\n                    codec-\u003edimensions().width(),\n                    codec-\u003edimensions().height(),\n                    expectedSize.width(),\n                    expectedSize.height());\n        auto [image, result] \u003d codec-\u003egetImage();\n        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);\n        REPORTER_ASSERT(r, image);\n        REPORTER_ASSERT(r, image-\u003ewidth() \u003d\u003d expectedSize.width());\n        REPORTER_ASSERT(r, image-\u003eheight() \u003d\u003d expectedSize.height());\n    };\n    \n    test(\"basic\", \"images/randPixels.bmp\", {8, 8});\n    test(\"rle compression\", \"images/rle.bmp\", {320, 240});\n    test(\"8 bit indexed\", \"images/bmp-size-32x32-8bpp.bmp\", {32, 32});\n    \n}\n```",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 1
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afeac0a_ea071d3f",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Use tests/ComparePixels.h or something similar to make sure these are the same.",
+      "range": {
+        "startLine": 201,
+        "startChar": 28,
+        "endLine": 201,
+        "endChar": 38
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c5ef34d_099f7f0d",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Can we spot check a few pixels for the correct value?\nEdit: I see that\u0027s handled below - can we merge the two tests?",
+      "range": {
+        "startLine": 219,
+        "startChar": 21,
+        "endLine": 219,
+        "endChar": 31
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d37861_664337cf",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "nit: or BA - do we have a test image that has those magic bytes?",
+      "range": {
+        "startLine": 250,
+        "startChar": 25,
+        "endLine": 250,
+        "endChar": 27
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08d9fa8f_95082a04",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This test comment doesn\u0027t do what the test seems to indicate it does.",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 256,
+        "endChar": 44
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61485604_d0da53a2",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "I don\u0027t see any checking of pixel values.",
+      "range": {
+        "startLine": 289,
+        "startChar": 7,
+        "endLine": 289,
+        "endChar": 11
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b072d45_04efe5fd",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This test case seems to be the same as the above. I don\u0027t see where the 24bit part comes in.",
+      "range": {
+        "startLine": 297,
+        "startChar": 71,
+        "endLine": 297,
+        "endChar": 81
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834d9359_bb30c7ba",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "If the intent is to check getImage, let\u0027s fold that in to the table-based test above.",
+      "range": {
+        "startLine": 303,
+        "startChar": 34,
+        "endLine": 303,
+        "endChar": 42
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6018a005_9548e3e9",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "For the error cases, make another table-based test to reduce duplicated code.",
+      "range": {
+        "startLine": 323,
+        "startChar": 8,
+        "endLine": 323,
+        "endChar": 16
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3320d7a4_f40b1149",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This should be an \u0026\u0026. Let\u0027s do it in two different asserts",
+      "range": {
+        "startLine": 336,
+        "startChar": 30,
+        "endLine": 336,
+        "endChar": 32
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bdbb19d_9e475534",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Can we check against the colorType we expect? It should be deterministic, yes? Maybe this is something to fold into the above table-based testing - the expected color type.",
+      "range": {
+        "startLine": 443,
+        "startChar": 28,
+        "endLine": 443,
+        "endChar": 37
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b621068_060fd022",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This seems redundant with RustBmpCodec_rewind",
+      "range": {
+        "startLine": 448,
+        "startChar": 9,
+        "endLine": 448,
+        "endChar": 33
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d57adc9_2ee9400d",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This also seems redundant.",
+      "range": {
+        "startLine": 503,
+        "startChar": 9,
+        "endLine": 503,
+        "endChar": 38
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa20babc_610daa75",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "If all of these should be the same, just fold it into decode_bmp or the table-based testing above.",
+      "range": {
+        "startLine": 531,
+        "startChar": 41,
+        "endLine": 531,
+        "endChar": 66
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4545c552_9af19785",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "Why is this test here? It reads in the same file as the previous test but now has an or? It\u0027s redundant or should be done with a file that actually has a top-down BMP",
+      "range": {
+        "startLine": 537,
+        "startChar": 0,
+        "endLine": 552,
+        "endChar": 1
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ab41f7_5d707da4",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-11-26T17:02:04Z",
+      "side": 1,
+      "message": "This also seems redundant or that it could be folded in above.",
+      "range": {
+        "startLine": 613,
+        "startChar": 9,
+        "endLine": 613,
+        "endChar": 48
+      },
+      "revId": "a969f11fd0667cefa8e37d67714a56170781447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
