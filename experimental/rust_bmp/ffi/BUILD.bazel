@@ -1,0 +1,72 @@
+load("@rules_rust//rust:defs.bzl", "rust_static_library", "rust_test")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_cc_library",
+    "skia_filegroup",
+)
+
+skia_filegroup(
+    name = "rs_srcs",
+    srcs = [
+        "FFI.rs",
+    ],
+)
+
+skia_filegroup(
+    name = "cxx_bridge_srcs",
+    srcs = ["FFI.rs"],
+)
+
+skia_cc_library(
+    name = "ffi_cpp",
+    features = ["layering_check"],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge/include",
+        "//rust/common:ffi_utils",
+    ],
+)
+
+rust_cxx_bridge(
+    name = "cxx_bridge",
+    src = "FFI.rs",
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [":ffi_cpp"],
+)
+
+rust_static_library(
+    name = "ffi_rs",
+    srcs = [":rs_srcs"],
+    crate_root = "FFI.rs",
+    edition = "2021",
+    # Metadata prevents symbol collisions when GN links multiple Rust static
+    # libraries together (e.g., librust_bmp_ffi_rs.a + librust_png_ffi_rs.a).
+    # GN invokes Bazel separately for each library, so they each contain their
+    # own copies of std/core symbols, which must be disambiguated at link time.
+    rustc_flags = [
+        "-C",
+        "metadata=bmp_ffi",
+    ],
+    visibility = [
+        "//experimental/rust_bmp:__subpackages__",
+    ],
+    deps = [
+        ":cxx_bridge",
+        "//rust/common:cxx_bridge",
+        "//rust/common:skia_rust_common",
+        "@crates//:cxx",
+        "@crates//:image",
+        "@crates//:thiserror",
+    ],
+)
+
+rust_test(
+    name = "test_bmp_ffi",
+    timeout = "short",
+    crate = ":ffi_rs",
+)
