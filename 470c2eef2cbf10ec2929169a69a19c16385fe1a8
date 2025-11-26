@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "571ed5bc_b557c84e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T21:37:15Z",
+      "side": 1,
+      "message": "Nice find!",
+      "revId": "470c2eef2cbf10ec2929169a69a19c16385fe1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b225612_075b706f",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-11-26T21:37:15Z",
+      "side": 1,
+      "message": "If we have points, then a negative `fLastMoveIndex` is a bug (we always inject moveTos before point-bearing verbs).\n\nLet\u0027s assert instead.",
+      "range": {
+        "startLine": 225,
+        "startChar": 48,
+        "endLine": 225,
+        "endChar": 70
+      },
+      "revId": "470c2eef2cbf10ec2929169a69a19c16385fe1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
