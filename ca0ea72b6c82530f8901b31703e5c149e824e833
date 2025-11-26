@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd39cae0_05b586d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-26T21:58:18Z",
+      "side": 1,
+      "message": "Good call, changed it to be behind `SK_YUV_COLOR_SPACE_HIGH_PRECISION`, which I\u0027ll switch Chromium to use.",
+      "parentUuid": "d45d059b_2f15fa16",
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6993d048_9d2e5761",
         "filename": "src/core/SkYUVMath.cpp",
         "patchSetId": 2
@@ -66,6 +84,30 @@
       "writtenOn": "2025-11-26T18:18:34Z",
       "side": 1,
       "message": "nit: `constexpr`",
+      "range": {
+        "startLine": 731,
+        "startChar": 14,
+        "endLine": 731,
+        "endChar": 19
+      },
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "320d0de8_5fabc1fd",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-26T21:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6993d048_9d2e5761",
       "range": {
         "startLine": 731,
         "startChar": 14,
@@ -112,6 +154,30 @@
       "writtenOn": "2025-11-26T21:24:17Z",
       "side": 1,
       "message": "... and, I went with hex format for high-precision, but the `#if` is repeated for each matrix and lists the old values, which provides the readability.",
+      "parentUuid": "b5590a96_968a6638",
+      "range": {
+        "startLine": 737,
+        "startChar": 26,
+        "endLine": 737,
+        "endChar": 31
+      },
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d1cf0f5_cdb06e88",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-26T21:58:18Z",
+      "side": 1,
+      "message": "Is there a hex format we can use for",
       "parentUuid": "b5590a96_968a6638",
       "range": {
         "startLine": 737,
