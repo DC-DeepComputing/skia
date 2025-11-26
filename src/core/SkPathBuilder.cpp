@@ -222,7 +222,7 @@ SkPathBuilder& SkPathBuilder::close() {
 SkPathBuilder& SkPathBuilder::rMoveTo(SkVector pt) {
     SkPoint lastPt = {0,0}; // in case we're empty
     if (!fPts.empty()) {
-        if (fVerbs.back() == SkPathVerb::kClose) {
+        if (fVerbs.back() == SkPathVerb::kClose && fLastMoveIndex >= 0) {
             lastPt = fPts[fLastMoveIndex];
         } else {
             lastPt = fPts.back();

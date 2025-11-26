@@ -236,8 +236,8 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->addRaw(pdata.raw(src.getFillType(), SkResolveConvexity::kYes));
 
     // These are not part of SkPathRaw, so we set them separately
-
-    fLastMoveIndex = SkPathPriv::FindLastMoveToIndex(pdata.verbs(), pdata.points().size());
+    fLastMoveIndex = SkPathPriv::FindLastMoveToIndex(fVerbs, fPts.size());
+    SkASSERT(fLastMoveIndex < fPts.size());
     fType = pdata.fType;
     fIsA  = pdata.fIsA;
 
