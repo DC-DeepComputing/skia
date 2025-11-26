@@ -467,6 +467,13 @@ std::optional<SkPath::IterRec> SkPath::Iter::next() {
     }};
 }
 
+SkPath::RawIter::RawIter(SkSpan<const SkPoint> pts, SkSpan<const SkPathVerb> vbs,
+                         SkSpan<const float> cns) {
+    SkPathPriv::Iterate iterate(vbs, pts.data(), cns.data());
+    fIter = iterate.begin();
+    fEnd = iterate.end();
+}
+
 void SkPath::RawIter::setPath(const SkPath& path) {
     SkPathPriv::Iterate iterate(path);
     fIter = iterate.begin();

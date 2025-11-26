@@ -1796,6 +1796,7 @@ public:
         RawIter(const SkPath& path) {
             setPath(path);
         }
+        RawIter(SkSpan<const SkPoint> pts, SkSpan<const SkPathVerb> vbs, SkSpan<const float> cns);
 
         /** Sets SkPath::Iter to return elements of verb array, SkPoint array, and conic weight in
             path.
