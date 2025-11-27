@@ -55,6 +55,7 @@
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
@@ -1359,6 +1360,11 @@ class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler 
 };
 
 int main(int argc, char** argv) {
+    // Memory allocations are handled by PartitionAlloc, if available. It brings performance
+    // benefits, but also memory safety features to detect additional types of memory corruption
+    // bugs that could be missed otherwise.
+    skiatest::InitializePartitionAllocForTesting();
+
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
