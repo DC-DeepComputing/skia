@@ -664,6 +664,7 @@ config("debug_symbols") {
     cflags = [
       "-g",
       "-gdwarf-4",  # older versions of addr2line do not work well with v5
+      "-fno-omit-frame-pointer",
     ]
   }
 }

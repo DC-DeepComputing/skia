@@ -40,12 +40,14 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
 #include <memory>
 #include <vector>
+#include <map>
 
 #include <stdlib.h>
 
@@ -1595,8 +1597,46 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
+void InitializePartitionAllocForTesting() {
+    // Enabling partition_alloc causes a 180x slowdown to
+    // Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan.
+    //
+    // This might be due to an nVidia driver issue. Until we can investigate and resolve the issue,
+    // disable PA on this bot.
+    //
+    // TODO(351867706): Enable partition_alloc on this bot once the issue is
+    // resolved.
+    std::map<std::string, std::string> properties = {
+            {"os", "Ubuntu24.04"},
+            {"compiler", "Clang"},
+            {"model", "Golo"},
+            {"cpu_or_gpu", "GPU"},
+            {"cpu_or_gpu_value", "QuadroP400"},
+            {"arch", "x86_64"},
+            {"configuration", "Debug"},
+            {"extra_config", "Vulkan"},
+    };
+    bool skip_bot = true;
+    for (int i = 0; i < FLAGS_properties.size(); i += 2) {
+        if (properties.count(FLAGS_properties[i]) &&
+            properties[FLAGS_properties[i]] != FLAGS_properties[i + 1]) {
+            skip_bot = false;
+            break;
+        }
+    }
+    if (skip_bot) {
+        return;
+    }
+
+    skiatest::InitializePartitionAllocForTesting();
+}
+
 int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
+
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    InitializePartitionAllocForTesting();
 
     initializeEventTracingForTools();
 

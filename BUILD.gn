@@ -2678,6 +2678,7 @@ if (skia_enable_tools) {
           "modules/skottie:utils",
           "modules/skshaper",
           "modules/skunicode",
+          "tools/partition_alloc:test_support",
         ]
         if (skia_use_libpng_decode) {
           deps += [ "modules/svg" ]

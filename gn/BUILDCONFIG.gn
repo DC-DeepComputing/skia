@@ -248,3 +248,23 @@ if (is_win) {
   default_toolchain_name = "gcc_like"
   host_toolchain = "gcc_like_host"
 }
+
+# Optional variable, used by Skia to enable the use of PartitionAlloc in its
+# tests. This is also enabled in Chromium. PartitionAlloc is a memory allocator
+# optimized for space efficiency, allocation latency, and security.
+#
+# Embedders have different locations for PartitionAlloc.
+# - skia     : //third_party/externals/partition_alloc  (here)
+# - dawn     : //third_party/partition_alloc
+# - pdfium   : //third_party/partition_alloc
+# - chromium : //base/allocator/partition_allocator
+#
+# Note 1: Most embedders do not use PartitionAlloc.
+# Note 2: PartitionAlloc relies on the CPU architecture. With BP, the
+#         `current_cpu` is `"none"`, which is not supported.
+# Note 3: PartitionAlloc and Skia dropped C++17 support, but
+#         Build-Debian11-GCC-x86_64-Debug-Docker still declares using it, so
+#         it has been excluded for now.
+if (current_cpu != "none" && is_clang) {
+  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+}
