@@ -51,6 +51,7 @@ skia_cc_binary(
         "//tools/ganesh:ddl_utils",
         "//tools/ganesh:ganesh_gl_utils",
         "//tools/graphite:graphite_utils",
+        "//tools/partition_alloc:test_support",
         "//tools/trace",
     ],
 )
