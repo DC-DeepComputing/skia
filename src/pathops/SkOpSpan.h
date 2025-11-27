@@ -11,6 +11,9 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMath.h"
+#include "src/partition_alloc/partition_alloc/pointers/raw_ptr.h"
+#include "src/partition_alloc/partition_alloc/pointers/raw_ptr_exclusion.h"
+#include "src/partition_alloc/partition_alloc/pointers/raw_ref.h"
 #include "src/pathops/SkPathOpsTypes.h"
 
 class SkOpAngle;
@@ -563,7 +566,7 @@ public:
     }
 
 private:  // no direct access to internals to avoid treating a span base as a span
-    SkOpSpan* fCoincident;  // linked list of spans coincident with this one (may point to itself)
+    raw_ptr<SkOpSpan> fCoincident;  // linked list of spans coincident with this one (may point to itself)
     SkOpAngle* fToAngle;  // points to next angle from span start to end
     SkOpSpanBase* fNext;  // next intersection point
     int fWindSum;  // accumulated from contours surrounding this one.

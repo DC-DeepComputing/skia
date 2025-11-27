@@ -86,5 +86,6 @@ skia_cc_library(
         "//src/base",
         "//src/core",
         "//src/core:core_priv",
+        "//src/partition_alloc:raw_ptr",
     ],
 )

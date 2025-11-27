@@ -1663,6 +1663,7 @@ skia_source_set("core") {
     ":fontmgr_win_gdi",
     ":png_decode_libpng",
     ":png_encode_libpng",
+    "src/partition_alloc:raw_ptr",
   ]
   deps = [ ":typeface_fontations" ]
 }
