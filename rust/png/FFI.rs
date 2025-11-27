@@ -367,7 +367,7 @@ fn compute_transformations(info: &png::Info) -> png::Transformations {
     //
     // We avoid using `EXPAND` for `ColorType::Indexed` because this results in some
     // performance gains - see https://crbug.com/356882657 for more details.
-    let mut result = match info.color_type {
+    let result = match info.color_type {
         // Work around bpp<8 limitations of `SkSwizzler`
         png::ColorType::Rgba | png::ColorType::GrayscaleAlpha if (info.bit_depth as u8) < 8 => {
             png::Transformations::EXPAND
@@ -386,14 +386,14 @@ fn compute_transformations(info: &png::Info) -> png::Transformations {
     //
     // TODO(https://crbug.com/359245096): Avoid stripping least signinficant 8 bits in G16 and
     // GA16 images.
-    if info.bit_depth == png::BitDepth::Sixteen {
-        if matches!(
-            info.color_type,
-            png::ColorType::Grayscale | png::ColorType::GrayscaleAlpha
-        ) {
-            result = result | png::Transformations::STRIP_16;
-        }
-    }
+    // if info.bit_depth == png::BitDepth::Sixteen {
+    //     if matches!(
+    //         info.color_type,
+    //         png::ColorType::Grayscale | png::ColorType::GrayscaleAlpha
+    //     ) {
+    //         result = result | png::Transformations::STRIP_16;
+    //     }
+    // }
 
     result
 }
