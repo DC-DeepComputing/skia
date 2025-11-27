@@ -26,15 +26,23 @@
 
 struct SkEncodedInfo {
 public:
-    class ICCProfile {
+    class ColorProfile : public SkRefCnt {
     public:
-        static std::unique_ptr<ICCProfile> Make(sk_sp<const SkData>);
-        static std::unique_ptr<ICCProfile> Make(const skcms_ICCProfile&);
+        static sk_sp<ColorProfile> Make(sk_sp<SkData>);
+        static sk_sp<ColorProfile> Make(sk_sp<SkColorSpace>);
+        static sk_sp<ColorProfile> MakeCICP(uint8_t color_primaries,
+                                            uint8_t transfer_characteristics,
+                                            uint8_t matrix_coefficients,
+                                            uint8_t full_range_flag);
 
+        // Return the profile's data space as one of skcms_Signature_RGB, skcms_Signature_Grey, or
+        // skcms_Signature_CMYK.
+        uint32_t getDataColorSpace() const;
+        bool needsColorConversionTo(SkColorSpace* cs) const;
         const skcms_ICCProfile* profile() const { return &fProfile; }
         sk_sp<const SkData> data() const { return fData; }
     private:
-        ICCProfile(const skcms_ICCProfile&, sk_sp<const SkData> = nullptr);
+        ColorProfile(const skcms_ICCProfile&, sk_sp<const SkData> = nullptr);
 
         skcms_ICCProfile     fProfile;
         sk_sp<const SkData>  fData;
@@ -112,20 +120,20 @@ public:
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, std::unique_ptr<ICCProfile> profile) {
+            Alpha alpha, int bitsPerComponent, sk_sp<ColorProfile> profile) {
         return Make(width, height, color, alpha, /*bitsPerComponent*/ bitsPerComponent,
                 std::move(profile), /*colorDepth*/ bitsPerComponent);
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, std::unique_ptr<ICCProfile> profile,
+            Alpha alpha, int bitsPerComponent, sk_sp<ColorProfile> profile,
             int colorDepth) {
         return Make(width, height, color, alpha, bitsPerComponent, colorDepth, std::move(profile),
                     skhdr::Metadata::MakeEmpty());
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, int colorDepth, std::unique_ptr<ICCProfile> profile,
+            Alpha alpha, int bitsPerComponent, int colorDepth, sk_sp<ColorProfile> profile,
             const skhdr::Metadata& hdrMetadata) {
         SkASSERT(1 == bitsPerComponent ||
                  2 == bitsPerComponent ||
@@ -219,7 +227,7 @@ public:
                              fAlpha,
                              fBitsPerComponent,
                              fColorDepth,
-                             fProfile ? std::make_unique<const ICCProfile>(*fProfile) : nullptr,
+                             fProfile,
                              fHdrMetadata);
     }
 
@@ -241,7 +249,7 @@ private:
                   Alpha alpha,
                   uint8_t bitsPerComponent,
                   uint8_t colorDepth,
-                  std::unique_ptr<const ICCProfile> profile,
+                  sk_sp<ColorProfile> profile,
                   const skhdr::Metadata& hdrMetadata)
             : fWidth(width)
             , fHeight(height)
@@ -298,14 +306,14 @@ private:
         SkASSERT(false);  // Unrecognized `color` enum value.
     }
 
-    int                               fWidth;
-    int                               fHeight;
-    Color                                   fColor;
-    Alpha                             fAlpha;
-    uint8_t                           fBitsPerComponent;
-    uint8_t                           fColorDepth;
-    std::unique_ptr<const ICCProfile> fProfile;
-    skhdr::Metadata                   fHdrMetadata;
+    int                 fWidth;
+    int                 fHeight;
+    Color               fColor;
+    Alpha               fAlpha;
+    uint8_t             fBitsPerComponent;
+    uint8_t             fColorDepth;
+    sk_sp<ColorProfile> fProfile;
+    skhdr::Metadata     fHdrMetadata;
 };
 
 #endif
