@@ -169,7 +169,7 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
         // Likely incompatible colorspace.
         iccSize = 0;
     }
-    std::unique_ptr<SkEncodedInfo::ICCProfile> profile = nullptr;
+    sk_sp<SkEncodedInfo::ColorProfile> profile;
     if (iccSize) {
         auto icc = SkData::MakeUninitialized(iccSize);
         // TODO(eustas): format field is currently ignored by decoder.
@@ -183,7 +183,7 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
             SkDEBUGFAIL("libjxl returned unexpected status");
             return nullptr;
         }
-        profile = SkEncodedInfo::ICCProfile::Make(std::move(icc));
+        profile = SkEncodedInfo::ColorProfile::Make(std::move(icc));
     }
 
     int bitsPerChannel = 16;
