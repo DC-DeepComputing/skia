@@ -26,17 +26,44 @@
 
 struct SkEncodedInfo {
 public:
-    class ICCProfile {
+    class ColorProfile : public SkRefCnt {
     public:
-        static std::unique_ptr<ICCProfile> Make(sk_sp<const SkData>);
-        static std::unique_ptr<ICCProfile> Make(const skcms_ICCProfile&);
+        // Create a ColorProfile from an SkData for an ICC profile. Returns nullptr if the
+        // data fails to parse.
+        static sk_sp<ColorProfile> MakeICCProfile(sk_sp<const SkData>);
 
-        const skcms_ICCProfile* profile() const { return &fProfile; }
+        // Create a ColorProfile from an SkColorSpace. Returns nullptr if the color space is
+        // nullptr.
+        static sk_sp<ColorProfile> Make(sk_sp<SkColorSpace>);
+
+        // Create a ColorProfile from the specified matrix and transfer curves. This will always
+        // succeed.
+        static sk_sp<ColorProfile> Make(const skcms_TransferFunction& trfn,
+                                        const skcms_Matrix3x3& toXYZD50);
+
+        // Create a ColorProfile with the specified CICP values. This will always succeed, even if
+        // the values are unrecognized.
+        static sk_sp<ColorProfile> MakeCICP(uint8_t color_primaries,
+                                            uint8_t transfer_characteristics,
+                                            uint8_t matrix_coefficients,
+                                            uint8_t full_range_flag);
+
+        // Return the profile's data space as one of skcms_Signature_RGB, skcms_Signature_Grey, or
+        // skcms_Signature_CMYK.
+        uint32_t getDataColorSpace() const;
+
+        // Return true if color conversion is needed to convert to `cs`. This is performed using
+        // skcms_ApproximatelyEqualProfiles.
+        bool needsColorConversionTo(SkColorSpace* cs) const;
+
+        // TODO(https://issues.skia.org/issues/464217864): Remove direct access to the
+        // skcms_ICCProfile and change data() to be a serialize() function.
+        const skcms_ICCProfile* profile() const { return &fColorProfile; }
         sk_sp<const SkData> data() const { return fData; }
     private:
-        ICCProfile(const skcms_ICCProfile&, sk_sp<const SkData> = nullptr);
+        ColorProfile(const skcms_ICCProfile&, sk_sp<const SkData> = nullptr);
 
-        skcms_ICCProfile     fProfile;
+        skcms_ICCProfile     fColorProfile;
         sk_sp<const SkData>  fData;
     };
 
@@ -112,20 +139,20 @@ public:
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, std::unique_ptr<ICCProfile> profile) {
+            Alpha alpha, int bitsPerComponent, sk_sp<ColorProfile> profile) {
         return Make(width, height, color, alpha, /*bitsPerComponent*/ bitsPerComponent,
                 std::move(profile), /*colorDepth*/ bitsPerComponent);
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, std::unique_ptr<ICCProfile> profile,
+            Alpha alpha, int bitsPerComponent, sk_sp<ColorProfile> profile,
             int colorDepth) {
         return Make(width, height, color, alpha, bitsPerComponent, colorDepth, std::move(profile),
                     skhdr::Metadata::MakeEmpty());
     }
 
     static SkEncodedInfo Make(int width, int height, Color color,
-            Alpha alpha, int bitsPerComponent, int colorDepth, std::unique_ptr<ICCProfile> profile,
+            Alpha alpha, int bitsPerComponent, int colorDepth, sk_sp<ColorProfile> profile,
             const skhdr::Metadata& hdrMetadata) {
         SkASSERT(1 == bitsPerComponent ||
                  2 == bitsPerComponent ||
@@ -155,7 +182,7 @@ public:
                                            kN32_SkColorType      ;
         auto alpha = kOpaque_Alpha == fAlpha ? kOpaque_SkAlphaType
                                              : kUnpremul_SkAlphaType;
-        sk_sp<SkColorSpace> cs = fProfile ? SkColorSpace::Make(*fProfile->profile())
+        sk_sp<SkColorSpace> cs = fColorProfile ? SkColorSpace::Make(*fColorProfile->profile())
                                           : nullptr;
         if (!cs) {
             cs = SkColorSpace::MakeSRGB();
@@ -168,13 +195,16 @@ public:
     Color color() const { return fColor;  }
     Alpha alpha() const { return fAlpha;  }
     bool opaque() const { return fAlpha == kOpaque_Alpha; }
+    const ColorProfile* colorProfile() const {
+        return fColorProfile.get();
+    }
     const skcms_ICCProfile* profile() const {
-        if (!fProfile) return nullptr;
-        return fProfile->profile();
+        if (!fColorProfile) return nullptr;
+        return fColorProfile->profile();
     }
     sk_sp<const SkData> profileData() const {
-        if (!fProfile) return nullptr;
-        return fProfile->data();
+        if (!fColorProfile) return nullptr;
+        return fColorProfile->data();
     }
 
     uint8_t bitsPerComponent() const { return fBitsPerComponent; }
@@ -219,7 +249,7 @@ public:
                              fAlpha,
                              fBitsPerComponent,
                              fColorDepth,
-                             fProfile ? std::make_unique<const ICCProfile>(*fProfile) : nullptr,
+                             fColorProfile,
                              fHdrMetadata);
     }
 
@@ -241,7 +271,7 @@ private:
                   Alpha alpha,
                   uint8_t bitsPerComponent,
                   uint8_t colorDepth,
-                  std::unique_ptr<const ICCProfile> profile,
+                  sk_sp<ColorProfile> profile,
                   const skhdr::Metadata& hdrMetadata)
             : fWidth(width)
             , fHeight(height)
@@ -249,7 +279,7 @@ private:
             , fAlpha(alpha)
             , fBitsPerComponent(bitsPerComponent)
             , fColorDepth(colorDepth)
-            , fProfile(std::move(profile))
+            , fColorProfile(std::move(profile))
             , fHdrMetadata(hdrMetadata) {}
 
     static void VerifyColor(Color color, Alpha alpha, int bitsPerComponent) {
@@ -298,14 +328,14 @@ private:
         SkASSERT(false);  // Unrecognized `color` enum value.
     }
 
-    int                               fWidth;
-    int                               fHeight;
-    Color                                   fColor;
-    Alpha                             fAlpha;
-    uint8_t                           fBitsPerComponent;
-    uint8_t                           fColorDepth;
-    std::unique_ptr<const ICCProfile> fProfile;
-    skhdr::Metadata                   fHdrMetadata;
+    int                 fWidth;
+    int                 fHeight;
+    Color               fColor;
+    Alpha               fAlpha;
+    uint8_t             fBitsPerComponent;
+    uint8_t             fColorDepth;
+    sk_sp<ColorProfile> fColorProfile;
+    skhdr::Metadata     fHdrMetadata;
 };
 
 #endif
