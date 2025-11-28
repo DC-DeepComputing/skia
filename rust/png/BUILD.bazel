@@ -51,7 +51,13 @@ rust_static_library(
     name = "ffi_rs",
     srcs = [":rs_srcs"],
     crate_root = "FFI.rs",
-    rustc_flags = ["-Dwarnings"],
+    rustc_flags = [
+        "-Dwarnings",
+        # Metadata prevents symbol collisions when GN links multiple Rust static
+        # libraries together. See experimental/rust_bmp/ffi/BUILD.bazel for details.
+        "-C",
+        "metadata=png_ffi",
+    ],
     visibility = [
         "//src/codec:__pkg__",
         "//src/encode:__pkg__",
