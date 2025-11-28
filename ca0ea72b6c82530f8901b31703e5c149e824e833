@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b37414_2b8506ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-28T08:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd39cae0_05b586d9",
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6993d048_9d2e5761",
@@ -179,6 +197,30 @@
       "side": 1,
       "message": "Is there a hex format we can use for",
       "parentUuid": "b5590a96_968a6638",
+      "range": {
+        "startLine": 737,
+        "startChar": 26,
+        "endLine": 737,
+        "endChar": 31
+      },
+      "revId": "ca0ea72b6c82530f8901b31703e5c149e824e833",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42883582_c1669f98",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-11-28T08:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d1cf0f5_cdb06e88",
       "range": {
         "startLine": 737,
         "startChar": 26,
