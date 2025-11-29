@@ -770,11 +770,12 @@ private:
                       .arcTo(fPts[11], fPts[12], fRadius)
                       .detach();
         SkPath::Iter iter(path, false);
-        SkPoint pts[4];
-        iter.next(pts);
-        if (SkPath::kLine_Verb == iter.next(pts)) {
-            iter.next(pts);
+        auto rec = iter.next();
+        if (rec.has_value() && SkPathVerb::kLine == rec->fVerb) {
+            rec = iter.next();
         }
+        SkASSERT(rec.has_value());
+        auto pts = rec->fPoints;
         SkVector before = pts[0] - pts[1];
         SkVector after = pts[1] - pts[2];
         before.setLength(fRadius);
