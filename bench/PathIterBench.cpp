@@ -16,7 +16,7 @@
 #include "src/core/SkPathPriv.h"
 
 enum class PathIterType {
-    kOldIter,
+//    kOldIter,
     kNewIter,
     kPriv,
     kEdge,
@@ -98,6 +98,7 @@ protected:
                     }
                 }
                 break;
+#if 0
             case PathIterType::kOldIter:
                 for (int i = 0; i < loops; ++i) {
                     SkPath::Iter iter(fPath, false);
@@ -111,6 +112,7 @@ protected:
                     }
                 }
                 break;
+#endif
             case PathIterType::kPriv:
                 for (int i = 0; i < loops; ++i)  {
                     for (auto [verb, pts, w] : SkPathPriv::Iterate(fPath)) {
@@ -144,7 +146,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 DEF_BENCH( return new PathIterBench(PathIterType::kNewIter); )
-DEF_BENCH( return new PathIterBench(PathIterType::kOldIter); )
+//DEF_BENCH( return new PathIterBench(PathIterType::kOldIter); )
 DEF_BENCH( return new PathIterBench(PathIterType::kPriv); )
 DEF_BENCH( return new PathIterBench(PathIterType::kPathIter); )
 DEF_BENCH( return new PathIterBench(PathIterType::kEdge); )

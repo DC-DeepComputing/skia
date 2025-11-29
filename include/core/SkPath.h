@@ -1647,7 +1647,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Path_RawIter_next
         */
-        Verb next(SkPoint pts[4]);
+        Verb nextx(SkPoint pts[4]);
 
         std::optional<IterRec> next();
 

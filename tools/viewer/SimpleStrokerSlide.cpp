@@ -10,6 +10,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathUtils.h"
 #include "include/utils/SkParsePath.h"
+#include "src/core/SkSpanPriv.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 #include "src/core/SkGeometry.h"
@@ -93,7 +94,7 @@ public:
 
 private:
     struct PathSegment {
-        SkPath::Verb fVerb;
+        SkPathVerb fVerb;
         SkPoint fPoints[4];
     };
 
@@ -138,10 +139,12 @@ SkPath SkPathStroker2::getFillPath(const SkPath& path, const SkPaint& paint) {
 
     // Trace the inner and outer paths simultaneously. Inner will therefore be
     // recorded in reverse from how we trace the outline.
-    SkPath::Iter it(path, false);
+    SkPathIter it = path.iter();
     PathSegment segment, prevSegment;
     bool firstSegment = true;
-    while ((segment.fVerb = it.next(segment.fPoints)) != SkPath::kDone_Verb) {
+    while (auto rec = it.next()) {
+        segment.fVerb = rec->fVerb;
+        SkSpanPriv::Copy({segment.fPoints, rec->fPoints.size()}, rec->fPoints);
         // Join to the previous segment
         if (!firstSegment) {
             join(prevSegment, segment);
@@ -149,14 +152,14 @@ SkPath SkPathStroker2::getFillPath(const SkPath& path, const SkPaint& paint) {
 
         // Stroke the current segment
         switch (segment.fVerb) {
-            case SkPath::kLine_Verb:
+            case SkPathVerb::kLine:
                 strokeLine(segment, firstSegment);
                 break;
-            case SkPath::kMove_Verb:
+            case SkPathVerb::kMove:
                 // Don't care about multiple contours currently
                 continue;
             default:
-                SkDebugf("Unhandled path verb %d\n", segment.fVerb);
+                SkDebugf("Unhandled path verb %d\n", (int)segment.fVerb);
                 break;
         }
 
@@ -326,8 +329,8 @@ void SkPathStroker2::appendPathReversed(const PathRecorder& path, PathRecorder* 
 }
 
 SkPoint SkPathStroker2::unitNormal(const PathSegment& seg, float t) {
-    if (seg.fVerb != SkPath::kLine_Verb) {
-        SkDebugf("Unhandled verb for unit normal %d\n", seg.fVerb);
+    if (seg.fVerb != SkPathVerb::kLine) {
+        SkDebugf("Unhandled verb for unit normal %d\n", (int)seg.fVerb);
     }
 
     (void)t;  // Not needed for lines
@@ -337,7 +340,7 @@ SkPoint SkPathStroker2::unitNormal(const PathSegment& seg, float t) {
 }
 
 float SkPathStroker2::squaredLineLength(const PathSegment& lineSeg) {
-    SkASSERT(lineSeg.fVerb == SkPath::kLine_Verb);
+    SkASSERT(lineSeg.fVerb == SkPathVerb::kLine);
     const SkPoint diff = lineSeg.fPoints[1] - lineSeg.fPoints[0];
     return diff.dot(diff);
 }
