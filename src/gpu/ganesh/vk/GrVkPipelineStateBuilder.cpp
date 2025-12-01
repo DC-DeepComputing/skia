@@ -175,7 +175,7 @@ void GrVkPipelineStateBuilder::storeShadersInCache(const SkSL::NativeShader shad
             interfaces,
             kGrShaderTypeCount);
 
-    this->gpu()->getContext()->priv().getPersistentCache()->store(*key, *data, description);
+    this->gpu()->getContext()->priv().getPersistentCache()->store2(*key, *data, description);
 }
 
 GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
@@ -226,7 +226,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
         // The +4 is to include the kShader_PersistentCacheKeyType code the Vulkan backend adds
         // to the key right after the base key.
         sk_sp<SkData> key = SkData::MakeWithoutCopy(desc.asKey(), desc.initialKeyLength()+4);
-        cached = persistentCache->load(*key);
+        cached = persistentCache->load1(*key);
         if (cached) {
             reader.setMemory(cached->data(), cached->size());
             shaderType = GrPersistentCacheUtils::GetType(&reader);

@@ -24,6 +24,7 @@ namespace sktext::gpu {
     class Slug;
 }
 
+#define SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS 1
 #if defined(SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS)
 using SkSerialReturnType = sk_sp<const SkData>;
 #else
