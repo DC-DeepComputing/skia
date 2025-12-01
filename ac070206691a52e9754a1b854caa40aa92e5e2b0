@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "508b6887_ed2b07af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-01T19:02:02Z",
+      "side": 1,
+      "message": "Because we took care to all avoid the use of interface inside d3d, specific Windows windowing code, or public header files. Our idea was we don\u0027t want microsofts naming to requirements to have to be enforced throughout all of Skia\u0027s library (there is more than just interface). The issue only happens when you include like Windows.h or something like that.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 50
+      },
+      "revId": "ac070206691a52e9754a1b854caa40aa92e5e2b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
