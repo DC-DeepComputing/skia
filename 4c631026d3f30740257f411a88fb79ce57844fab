@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4cc3496c_b9511112",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-01T21:37:16Z",
+      "side": 1,
+      "message": "It was defensive ... I\u0027ve removed it. If something breaks, there will be a revert.",
+      "parentUuid": "7afccd08_96278fdc",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 20
+      },
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2064cdee_9c09a151",
         "filename": "src/codec/SkCodecPriv.h",
         "patchSetId": 13
@@ -54,6 +78,30 @@
       "writtenOn": "2025-12-01T17:16:40Z",
       "side": 1,
       "message": "nit: Add an #include for skcms.h (`skcms_ICCProfile`)",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 8
+      },
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a84b53_396a1353",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-01T21:37:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2064cdee_9c09a151",
       "range": {
         "startLine": 17,
         "startChar": 1,
@@ -77,6 +125,30 @@
       "writtenOn": "2025-12-01T17:16:40Z",
       "side": 1,
       "message": "I think we want this to be declared in just the SkCodecs namespace and be something like `MakeICCProfileUsingSKCMS` so eventually we can have `MakeICCProfileUsingRustThing` or whatever. Maybe a nested namespace like we have for text shaping stuff. `SkCodecs::skcms::MakeICCProfile` and then `SkCodecs::rust_thing::MakeICCProfile`.\n\nWhile we are bikeshedding, maybe that\u0027s something to go in a `SkColorSpaces` if that feels like a better fit.\n\nIn any case, let\u0027s set this up for a better split down the line - we\u0027ll have a header that declares the skcms-factory (factories?) and a header for the rust one and that will be a more clean separation.",
+      "range": {
+        "startLine": 37,
+        "startChar": 41,
+        "endLine": 37,
+        "endChar": 55
+      },
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78a9f04a_8de2e14d",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-01T21:37:16Z",
+      "side": 1,
+      "message": "I think like to keep this as-is for now (I\u0027d be fine with renaming to something, but I do think `SkCodecs::ColorProfile` is a good name for \"the color profile for a codec, that could have come from CICP, ICC, or any of the bizarro PNG things\").\n\nThe main reason is that I want the codecs themselves to all call the same `::MakeICCProfile` call, and then a flag will move the internals of that call  one implementation and the other (probably at least in some version a runtime flag, to make testing easier). One of the things that I got scared about with the `moxcms` proposal was the idea of moving individual codecs over (to be good enough to ship with one codec it needs to be good enough for all of them).",
+      "parentUuid": "712e2d65_d73dffe6",
       "range": {
         "startLine": 37,
         "startChar": 41,
