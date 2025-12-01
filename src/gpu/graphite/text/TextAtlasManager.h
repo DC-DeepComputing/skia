@@ -18,13 +18,10 @@
 
 class SkGlyph;
 
-namespace sktext::gpu {
-class Glyph;
-}
-
 namespace skgpu::graphite {
 
 class DrawContext;
+class Glyph;
 class Recorder;
 class TextureProxy;
 
@@ -52,19 +49,16 @@ public:
 
     void freeGpuResources();
 
-    bool hasGlyph(MaskFormat, sktext::gpu::Glyph*);
+    bool hasGlyph(MaskFormat, Glyph*);
 
-    DrawAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&,
-                                         sktext::gpu::Glyph*,
-                                         int srcPadding);
+    DrawAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&, Glyph*, int srcPadding);
 
     // To ensure the DrawAtlas does not evict the Glyph Mask from its texture backing store,
-    // the client must pass in the current draw token along with the sktext::gpu::Glyph.
+    // the client must pass in the current draw token along with the Glyph.
     // A BulkUsePlotUpdater is used to manage bulk last use token updating in the Atlas.
     // For convenience, this function will also set the use token for the current glyph if required
     // NOTE: the bulk uploader is only valid if the subrun has a valid atlasGeneration
-    void addGlyphToBulkAndSetUseToken(BulkUsePlotUpdater*, MaskFormat,
-                                      sktext::gpu::Glyph*, Token);
+    void addGlyphToBulkAndSetUseToken(BulkUsePlotUpdater*, MaskFormat, Glyph*, Token);
 
     void setUseTokenBulk(const BulkUsePlotUpdater& updater,
                          Token token,
