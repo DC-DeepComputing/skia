@@ -24,19 +24,20 @@ SkStrikePromise::SkStrikePromise(sk_sp<SkStrike>&& strike)
 SkStrikePromise::SkStrikePromise(const SkStrikeSpec& spec)
         : fStrikeOrSpec{std::make_unique<SkStrikeSpec>(spec)} {}
 
-SkStrike* SkStrikePromise::strike() {
-    if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec)) {
+SkStrike* SkStrikePromise::strike() const {
+    auto* self = const_cast<SkStrikePromise*>(this);
+    if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(self->fStrikeOrSpec)) {
         // Turn the strike spec into a strike.
-        std::unique_ptr<SkStrikeSpec> spec =
-            std::exchange(std::get<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec), nullptr);
+        std::unique_ptr<SkStrikeSpec> spec = std::exchange(
+                std::get<std::unique_ptr<SkStrikeSpec>>(self->fStrikeOrSpec), nullptr);
 
-        fStrikeOrSpec = SkStrikeCache::GlobalStrikeCache()->findOrCreateStrike(*spec);
+        self->fStrikeOrSpec = SkStrikeCache::GlobalStrikeCache()->findOrCreateStrike(*spec);
     }
-    return std::get<sk_sp<SkStrike>>(fStrikeOrSpec).get();
+    return std::get<sk_sp<SkStrike>>(self->fStrikeOrSpec).get();
 }
 
-void SkStrikePromise::resetStrike() {
-    fStrikeOrSpec = sk_sp<SkStrike>();
+void SkStrikePromise::resetStrike() const {
+    const_cast<SkStrikePromise*>(this)->fStrikeOrSpec = sk_sp<SkStrike>();
 }
 
 const SkDescriptor& SkStrikePromise::descriptor() const {

@@ -54,10 +54,10 @@ public:
     void flatten(SkWriteBuffer& buffer) const;
 
     // Do what is needed to return a strike.
-    SkStrike* strike();
+    SkStrike* strike() const;
 
     // Reset the sk_sp<SkStrike> to nullptr.
-    void resetStrike();
+    void resetStrike() const;
 
     // Return a descriptor used to look up the SkStrike.
     const SkDescriptor& descriptor() const;
