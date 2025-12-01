@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f1d4a0e_053144e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-12-01T19:11:55Z",
+      "side": 1,
+      "message": "We have been careful to only avoid the \"interface\" name when forced to by the inclusion of a Windows header. For the gl and vk directories/backends avoiding it should be unnecessary.\n\nIn general we don\u0027t want Microsoft\u0027s behavior to compromise the rest of the code.",
+      "revId": "7e8c9eae24b6f0c7c05bc170800d6d7e72a8a42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
