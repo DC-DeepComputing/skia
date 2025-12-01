@@ -63,7 +63,7 @@ VkPipelineCache GrVkResourceProvider::pipelineCache() {
         if (persistentCache) {
             uint32_t key = GrVkGpu::kPipelineCache_PersistentCacheKeyType;
             sk_sp<SkData> keyData = SkData::MakeWithoutCopy(&key, sizeof(uint32_t));
-            cached = persistentCache->load(*keyData);
+            cached = persistentCache->load1(*keyData);
         }
         bool usedCached = false;
         if (cached) {
@@ -586,7 +586,7 @@ void GrVkResourceProvider::storePipelineCacheData(size_t maxSize) {
     uint32_t key = GrVkGpu::kPipelineCache_PersistentCacheKeyType;
     sk_sp<SkData> keyData = SkData::MakeWithoutCopy(&key, sizeof(uint32_t));
 
-    fGpu->getContext()->priv().getPersistentCache()->store(
+    fGpu->getContext()->priv().getPersistentCache()->store2(
             *keyData, *SkData::MakeWithoutCopy(data.get(), dataSize), SkString("VkPipelineCache"));
 }
 
