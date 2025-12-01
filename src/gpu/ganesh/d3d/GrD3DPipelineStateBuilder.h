@@ -28,6 +28,7 @@ struct ShaderCaps;
 
 class GrProgramDesc;
 class GrD3DGpu;
+class GrD3DRenderTarget;
 class GrVkRenderPass;
 
 class GrD3DPipelineStateBuilder : public GrGLSLProgramBuilder {
