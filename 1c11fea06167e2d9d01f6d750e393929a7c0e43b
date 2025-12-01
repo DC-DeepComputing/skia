@@ -16,6 +16,23 @@
       "message": "Nice!",
       "revId": "1c11fea06167e2d9d01f6d750e393929a7c0e43b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3315f698_fd7ba77d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-01T16:29:50Z",
+      "side": 1,
+      "message": "+michaelludwig for include OWNERship (removing a protected method)",
+      "revId": "1c11fea06167e2d9d01f6d750e393929a7c0e43b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
