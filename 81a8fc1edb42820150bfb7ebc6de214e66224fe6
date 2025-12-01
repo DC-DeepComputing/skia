@@ -16,6 +16,24 @@
       "message": "@kjlubick@google.com I defined this file based on skia documentation, however I don\u0027t know how to execute it using the oss-fuzz infrastructure. Could you help me here?",
       "revId": "81a8fc1edb42820150bfb7ebc6de214e66224fe6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed0baaf_5e77156e",
+        "filename": "fuzz/oss_fuzz/FuzzBMPRustDecoder.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T17:51:43Z",
+      "side": 1,
+      "message": "Yes, I can do so after this lands.",
+      "parentUuid": "34693297_734f9d1b",
+      "revId": "81a8fc1edb42820150bfb7ebc6de214e66224fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
