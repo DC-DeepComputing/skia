@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d86c4b_66b0fb55",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T14:29:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b225612_075b706f",
+      "range": {
+        "startLine": 225,
+        "startChar": 48,
+        "endLine": 225,
+        "endChar": 70
+      },
+      "revId": "470c2eef2cbf10ec2929169a69a19c16385fe1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "222a97b9_7c7a0f3e",
@@ -71,6 +95,24 @@
       "writtenOn": "2025-11-27T17:03:26Z",
       "side": 1,
       "message": "Let\u0027s remove this named local now, since we know its not useful.\n\ni.e. on line 236: src.fPathData-\u003eraw(...)",
+      "revId": "470c2eef2cbf10ec2929169a69a19c16385fe1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b69f91_b9310e02",
+        "filename": "src/core/SkPath_pathdata.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T14:29:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "222a97b9_7c7a0f3e",
       "revId": "470c2eef2cbf10ec2929169a69a19c16385fe1a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
