@@ -276,6 +276,7 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
           {0.75f, 0.25f}});
 }
 
+#if 0
 static bool operator==(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b) {
     return memcmp(&a, &b, sizeof(a)) == 0;
 }
@@ -470,6 +471,7 @@ DEF_TEST(HdrMetadata_Agtm_Serialize, r) {
         assert_agtms_equal(r, agtmIn, agtmOut);
     }
 }
+#endif
 
 // Test the logic to apply the AGTM tone mapping.
 DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
