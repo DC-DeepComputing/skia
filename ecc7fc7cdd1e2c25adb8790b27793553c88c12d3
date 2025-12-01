@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ec021b_19e00f51",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-12-01T16:19:21Z",
+      "side": 1,
+      "message": "Do we have static asserts re this anywhere?",
+      "revId": "ecc7fc7cdd1e2c25adb8790b27793553c88c12d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d06084de_555b44ad",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-12-01T16:19:21Z",
+      "side": 1,
+      "message": "Maybe remove \u0027static\u0027 since we\u0027re in an anonymous namespace",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 6
+      },
+      "revId": "ecc7fc7cdd1e2c25adb8790b27793553c88c12d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
