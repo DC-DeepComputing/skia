@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ab106f9_917c02aa",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T21:40:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4cc3496c_b9511112",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 20
+      },
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2064cdee_9c09a151",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "I think like to keep this as-is for now (I\u0027d be fine with renaming to something, but I do think `SkCodecs::ColorProfile` is a good name for \"the color profile for a codec, that could have come from CICP, ICC, or any of the bizarro PNG things\").\n\nThe main reason is that I want the codecs themselves to all call the same `::MakeICCProfile` call, and then a flag will move the internals of that call  one implementation and the other (probably at least in some version a runtime flag, to make testing easier). One of the things that I got scared about with the `moxcms` proposal was the idea of moving individual codecs over (to be good enough to ship with one codec it needs to be good enough for all of them).",
       "parentUuid": "712e2d65_d73dffe6",
+      "range": {
+        "startLine": 37,
+        "startChar": 41,
+        "endLine": 37,
+        "endChar": 55
+      },
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08e2f374_24efbf18",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T21:40:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "78a9f04a_8de2e14d",
       "range": {
         "startLine": 37,
         "startChar": 41,

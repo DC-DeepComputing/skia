@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62b80de9_54b297ab",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T21:40:19Z",
+      "side": 1,
+      "message": "For single class declarations, we can just omit the comment (or make it say namespace SkCodecs for longer uses.",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 29,
+        "endChar": 15
+      },
+      "revId": "4be22a09c3f3cf8abf1eec311984457da4803e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
