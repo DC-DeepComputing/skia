@@ -76,7 +76,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::CreateProgram(
     auto persistentCache = dContext->priv().getPersistentCache();
     if (persistentCache && !precompiledProgram) {
         sk_sp<SkData> key = SkData::MakeWithoutCopy(desc.asKey(), desc.keyLength());
-        builder.fCached = persistentCache->load(*key);
+        builder.fCached = persistentCache->load1(*key);
         // the eventual end goal is to completely skip emitAndInstallProcs on a cache hit, but it's
         // doing necessary setup in addition to generating the SkSL code. Currently we are only able
         // to skip the SkSL->GLSL step on a cache hit.
@@ -200,7 +200,7 @@ void GrGLProgramBuilder::storeShaderInCache(const SkSL::Program::Interface& inte
             writer.writePad32(binary.get(), length);
 
             auto data = writer.snapshotAsData();
-            this->gpu()->getContext()->priv().getPersistentCache()->store(*key, *data, description);
+            this->gpu()->getContext()->priv().getPersistentCache()->store2(*key, *data, description);
         }
     } else {
         // source cache, plus metadata to allow for a complete precompile
@@ -216,7 +216,7 @@ void GrGLProgramBuilder::storeShaderInCache(const SkSL::Program::Interface& inte
 
         auto data = GrPersistentCacheUtils::PackCachedShaders(
                 isSkSL ? kSKSL_Tag : kGLSL_Tag, shaders, &interface, 1, &meta);
-        this->gpu()->getContext()->priv().getPersistentCache()->store(*key, *data, description);
+        this->gpu()->getContext()->priv().getPersistentCache()->store2(*key, *data, description);
     }
 }
 
