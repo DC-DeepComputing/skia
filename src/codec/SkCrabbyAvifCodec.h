@@ -13,6 +13,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/base/SkMutex.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkScalingCodec.h"
 
@@ -80,6 +81,8 @@ private:
                                                  sk_sp<const SkData>,
                                                  Result*,
                                                  bool gainmapOnly);
+
+    static SkMutex fMutex;
 
     // fAvifDecoder has a pointer to this data. This should not be freed until
     // the decode is completed. To ensure that, we declare this before
