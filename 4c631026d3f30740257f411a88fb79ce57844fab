@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfb9763_556cefa9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-01T12:31:55Z",
+      "side": 1,
+      "message": "ptal -- this is from that whole ICC/Rust discussion\n\nThis is a bit complicated because it needs to not break the code that I linked via email.",
+      "revId": "4c631026d3f30740257f411a88fb79ce57844fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
