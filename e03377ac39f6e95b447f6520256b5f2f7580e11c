@@ -22,6 +22,30 @@
       },
       "revId": "e03377ac39f6e95b447f6520256b5f2f7580e11c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e4b6b04_1136a0c3",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-12-01T21:44:43Z",
+      "side": 1,
+      "message": "hmm, while that would technically work, it seems like tying it to the class makes the synchronization boundary a bit more clear.\n\nif you have a strong preference please re-open this comment and i can update it to a function local static mutex. otherwise i\u0027d like to leave this as-is.",
+      "parentUuid": "d3fe20e6_31392648",
+      "range": {
+        "startLine": 394,
+        "startChar": 30,
+        "endLine": 394,
+        "endChar": 36
+      },
+      "revId": "e03377ac39f6e95b447f6520256b5f2f7580e11c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
