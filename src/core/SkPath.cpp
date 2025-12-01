@@ -372,7 +372,7 @@ SkPathVerb SkPath::Iter::autoClose(SkPoint pts[2]) {
     return SkPathVerb::kClose;
 }
 
-SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
+SkPath::Verb SkPath::Iter::nextx(SkPoint ptsParam[4]) {
     SkASSERT(ptsParam);
 
     if (fVerbs == fVerbStop) {
@@ -454,7 +454,7 @@ static inline uint8_t SkPathIterPointsPerVerb(SkPathVerb verb) {
 }
 
 std::optional<SkPath::IterRec> SkPath::Iter::next() {
-    auto legacyVerb = this->next(fStorage.data());
+    auto legacyVerb = this->nextx(fStorage.data());
     if (legacyVerb == kDone_Verb) {
         return {};
     }

@@ -14,6 +14,7 @@
 #include "include/core/SkPathUtils.h"
 #include "include/utils/SkParsePath.h"
 #include "src/core/SkGeometry.h"
+#include "src/core/SkSpanPriv.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 #include <stack>
@@ -349,38 +350,40 @@ SkScalar PathVerbMeasure::totalLength() const {
 }
 
 void PathVerbMeasure::nextVerb() {
-    SkPoint pts[4];
-    SkPath::Verb verb = fIter.next(pts);
+    auto rec = fIter.next();
 
-    while (verb == SkPath::kMove_Verb || verb == SkPath::kClose_Verb) {
-        if (verb == SkPath::kMove_Verb) {
-            fFirstPointInContour = pts[0];
+    while (rec.has_value() &&
+           (rec->fVerb == SkPathVerb::kMove || rec->fVerb == SkPathVerb::kClose)) {
+        if (rec->fVerb == SkPathVerb::kMove) {
+            fFirstPointInContour = rec->fPoints[0];
             fPreviousPoint = fFirstPointInContour;
         }
-        verb = fIter.next(pts);
+        rec = fIter.next();
     }
 
     SkPathBuilder builder;
     builder.moveTo(fPreviousPoint);
-    switch (verb) {
-        case SkPath::kLine_Verb:
-            builder.lineTo(pts[1]);
-            break;
-        case SkPath::kQuad_Verb:
-            builder.quadTo(pts[1], pts[2]);
-            break;
-        case SkPath::kCubic_Verb:
-            builder.cubicTo(pts[1], pts[2], pts[3]);
-            break;
-        case SkPath::kConic_Verb:
-            builder.conicTo(pts[1], pts[2], fIter.conicWeight());
-            break;
-        case SkPath::kDone_Verb:
-            break;
-        case SkPath::kClose_Verb:
-        case SkPath::kMove_Verb:
-            SkASSERT(false);
-            break;
+
+    if (rec.has_value()) {
+        auto pts = rec->fPoints;
+        switch (rec->fVerb) {
+            case SkPathVerb::kLine:
+                builder.lineTo(pts[1]);
+                break;
+            case SkPathVerb::kQuad:
+                builder.quadTo(pts[1], pts[2]);
+                break;
+            case SkPathVerb::kCubic:
+                builder.cubicTo(pts[1], pts[2], pts[3]);
+                break;
+            case SkPathVerb::kConic:
+                builder.conicTo(pts[1], pts[2], fIter.conicWeight());
+                break;
+            case SkPathVerb::kClose:
+            case SkPathVerb::kMove:
+                SkASSERT(false);
+                break;
+        }
     }
     fCurrVerb = builder.detach();
 
@@ -441,7 +444,7 @@ public:
 private:
     /** Helper struct referring to a single segment of an SkPath */
     struct PathSegment {
-        SkPath::Verb fVerb;
+        SkPathVerb fVerb;
         std::array<SkPoint, 4> fPoints;
     };
 
@@ -553,13 +556,15 @@ SkPath SkVarWidthStroker::getFillPath(const SkPath& path,
 
     // Trace the inner and outer paths simultaneously. Inner will therefore be
     // recorded in reverse from how we trace the outline.
-    SkPath::Iter it(path, false);
+    SkPathIter it = path.iter();
     PathSegment segment, prevSegment;
     OffsetSegments offsetSegs, prevOffsetSegs;
     bool firstSegment = true, prevWasFirst = false;
 
     float lenTraveled = 0;
-    while ((segment.fVerb = it.next(&segment.fPoints[0])) != SkPath::kDone_Verb) {
+    while (auto rec = it.next()) {
+        segment.fVerb = rec->fVerb;
+        SkSpanPriv::Copy({segment.fPoints.data(), rec->fPoints.size()}, rec->fPoints);
         const float verbLength = lengthMetric == LengthMetric::kPathLength
                                          ? (meas.currentVerbLength() / totalPathLength)
                                          : (1.0f / totalPathLength);
@@ -574,16 +579,16 @@ SkPath SkVarWidthStroker::getFillPath(const SkPath& path,
 
         // Stroke the current segment
         switch (segment.fVerb) {
-            case SkPath::kLine_Verb:
-            case SkPath::kQuad_Verb:
-            case SkPath::kCubic_Verb:
+            case SkPathVerb::kLine:
+            case SkPathVerb::kQuad:
+            case SkPathVerb::kCubic:
                 offsetSegs = strokeSegment(segment, partVarWidth, partVarWidthInner, firstSegment);
                 break;
-            case SkPath::kMove_Verb:
+            case SkPathVerb::kMove:
                 // Don't care about multiple contours currently
                 continue;
             default:
-                SkDebugf("Unhandled path verb %d\n", segment.fVerb);
+                SkDebugf("Unhandled path verb %d\n", (int)segment.fVerb);
                 SkASSERT(false);
                 break;
         }
@@ -736,7 +741,7 @@ std::vector<SkVarWidthStroker::PathSegment> SkVarWidthStroker::strokeSegment(
             stack.push(Item(left, distFncL, distFncSqdL));
         } else {
             // Approximation is good enough.
-            quadApprox.fVerb = SkPath::kQuad_Verb;
+            quadApprox.fVerb = SkPathVerb::kQuad;
             result.push_back(quadApprox);
         }
     }
@@ -968,7 +973,7 @@ void SkVarWidthStroker::approximateSegment(const PathSegment& seg,
 
 SkPoint SkVarWidthStroker::unitNormal(const PathSegment& seg, float t, SkPoint* tangentOut) {
     switch (seg.fVerb) {
-        case SkPath::kLine_Verb: {
+        case SkPathVerb::kLine: {
             const SkPoint tangent = setLength(seg.fPoints[1] - seg.fPoints[0], 1);
             const SkPoint normal = rotate90(tangent);
             if (tangentOut) {
@@ -976,7 +981,7 @@ SkPoint SkVarWidthStroker::unitNormal(const PathSegment& seg, float t, SkPoint* 
             }
             return normal;
         }
-        case SkPath::kQuad_Verb: {
+        case SkPathVerb::kQuad: {
             SkPoint tangent;
             if (t == 0) {
                 tangent = seg.fPoints[1] - seg.fPoints[0];
@@ -996,7 +1001,7 @@ SkPoint SkVarWidthStroker::unitNormal(const PathSegment& seg, float t, SkPoint* 
             }
             return rotate90(tangent);
         }
-        case SkPath::kCubic_Verb: {
+        case SkPathVerb::kCubic: {
             SkPoint tangent;
             SkEvalCubicAt(seg.fPoints.data(), t, nullptr, &tangent, nullptr);
             if (!tangent.normalize()) {
@@ -1009,7 +1014,7 @@ SkPoint SkVarWidthStroker::unitNormal(const PathSegment& seg, float t, SkPoint* 
             return rotate90(tangent);
         }
         default:
-            SkDebugf("Unhandled verb for unit normal %d\n", seg.fVerb);
+            SkDebugf("Unhandled verb for unit normal %d\n", (int)seg.fVerb);
             SkASSERT(false);
             return {};
     }
@@ -1213,26 +1218,25 @@ private:
     }
 
     void drawStrokePoints(SkCanvas* canvas, const SkPath& fillPath) {
-        SkPath::Iter it(fillPath, false);
-        SkPoint points[4];
-        SkPath::Verb verb;
+        SkPathIter it = fillPath.iter();
         std::vector<SkPoint> pointsVec, ctrlPts;
-        while ((verb = it.next(&points[0])) != SkPath::kDone_Verb) {
-            switch (verb) {
-                case SkPath::kLine_Verb:
+        while (auto rec = it.next()) {
+            auto points = rec->fPoints;
+            switch (rec->fVerb) {
+                case SkPathVerb::kLine:
                     pointsVec.push_back(points[1]);
                     break;
-                case SkPath::kQuad_Verb:
+                case SkPathVerb::kQuad:
                     ctrlPts.push_back(points[1]);
                     pointsVec.push_back(points[2]);
                     break;
-                case SkPath::kMove_Verb:
+                case SkPathVerb::kMove:
                     pointsVec.push_back(points[0]);
                     break;
-                case SkPath::kClose_Verb:
+                case SkPathVerb::kClose:
                     break;
                 default:
-                    SkDebugf("Unhandled path verb %d for stroke points\n", verb);
+                    SkDebugf("Unhandled path verb %d for stroke points\n", (int)rec->fVerb);
                     SkASSERT(false);
                     break;
             }
