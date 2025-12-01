@@ -51,18 +51,18 @@ struct SK_API GrContextOptions {
         /**
          * Returns the data for the key if it exists in the cache, otherwise returns null.
          */
-        virtual sk_sp<SkData> load(const SkData& key) = 0;
+        virtual sk_sp<SkData> load1(const SkData& key) = 0;
 
         // Placeholder until all clients override the 3-parameter store(), then remove this, and
         // make that version pure virtual.
-        virtual void store(const SkData& /*key*/, const SkData& /*data*/) { SkASSERT(false); }
+        virtual void store1(const SkData& /*key*/, const SkData& /*data*/) { SkASSERT(false); }
 
         /**
          * Stores data in the cache, indexed by key. description provides a human-readable
          * version of the key.
          */
-        virtual void store(const SkData& key, const SkData& data, const SkString& /*description*/) {
-            this->store(key, data);
+        virtual void store2(const SkData& key, const SkData& data, const SkString& /*description*/) {
+            this->store1(key, data);
         }
 
     protected:
