@@ -1280,11 +1280,10 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
 
     SkTScopedComPtr<IXpsOMGeometryFigure> xpsFigure;
     SkPath::Iter iter(path, true);
-    SkPoint points[4];
-    SkPath::Verb verb;
-    while ((verb = iter.next(points)) != SkPath::kDone_Verb) {
-        switch (verb) {
-            case SkPath::kMove_Verb: {
+    while (auto rec = iter.next()) {
+        auto points = rec->fPoints;
+        switch (rec->fVerb) {
+            case SkPathVerb::kMove: {
                 if (xpsFigure.get()) {
                     HR(close_figure(segmentTypes, segmentData, segmentStrokes,
                                     stroke, fill,
@@ -1302,14 +1301,14 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
                     "Could not create path geometry figure.");
                 break;
             }
-            case SkPath::kLine_Verb:
+            case SkPathVerb::kLine:
                 if (iter.isCloseLine()) break; //ignore the line, auto-closed
                 segmentTypes.push_back(XPS_SEGMENT_TYPE_LINE);
                 segmentData.push_back(SkScalarToFLOAT(points[1].fX));
                 segmentData.push_back(SkScalarToFLOAT(points[1].fY));
                 segmentStrokes.push_back(stroke);
                 break;
-            case SkPath::kQuad_Verb:
+            case SkPathVerb::kQuad:
                 segmentTypes.push_back(XPS_SEGMENT_TYPE_QUADRATIC_BEZIER);
                 segmentData.push_back(SkScalarToFLOAT(points[1].fX));
                 segmentData.push_back(SkScalarToFLOAT(points[1].fY));
@@ -1317,7 +1316,7 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
                 segmentData.push_back(SkScalarToFLOAT(points[2].fY));
                 segmentStrokes.push_back(stroke);
                 break;
-            case SkPath::kCubic_Verb:
+            case SkPathVerb::kCubic:
                 segmentTypes.push_back(XPS_SEGMENT_TYPE_BEZIER);
                 segmentData.push_back(SkScalarToFLOAT(points[1].fX));
                 segmentData.push_back(SkScalarToFLOAT(points[1].fY));
@@ -1327,7 +1326,7 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
                 segmentData.push_back(SkScalarToFLOAT(points[3].fY));
                 segmentStrokes.push_back(stroke);
                 break;
-            case SkPath::kConic_Verb: {
+            case SkPathVerb::kConic: {
                 const SkScalar tol = SK_Scalar1 / 4;
                 SkAutoConicToQuads converter;
                 const SkPoint* quads =
@@ -1342,7 +1341,7 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
                 }
                 break;
             }
-            case SkPath::kClose_Verb:
+            case SkPathVerb::kClose:
                 // we ignore these, and just get the whole segment from
                 // the corresponding line/quad/cubic verbs
                 break;

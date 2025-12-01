@@ -283,8 +283,8 @@ bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std
     for (;;) {
         if (fBreak) break;
         bool needToSplit = false;
-        SkPoint pts[4];
-        SkPath::Verb verb = iter.next(pts);
+        auto rec = iter.next();
+
 
         // The last t-value is always the end of the path (when t=1).
         if (t_value_idx >= tValues.size() - 1) {
@@ -299,57 +299,60 @@ bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std
             needToSplit = true;
         }
 
-        switch (verb) {
-            case SkPath::kMove_Verb:
-               // Only supports one contour currently.
-               builder.moveTo(pts[0]);
-            break;
-            case SkPath::kLine_Verb: {
-                t_value_idx++;
-                SkPoint pt1, pt2;
-                pt1 = pts[0]*(1.0f / 3.0f) + pts[1]*(2.0f / 3.0f);
-                pt2 = pts[0]*(2.0f / 3.0f) + pts[1]*(1.0f / 3.0f);
-                if (!needToSplit) {
-                    builder.cubicTo(pt1, pt2, pts[1]);
-                } else {
-                    std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
-                    const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[1]};
-                    addSegmentsFromTValues(cubic_pts, tVector, out);
-                }
+        if (rec.has_value()) {
+            auto pts = rec->fPoints;
+            switch (rec->fVerb) {
+                case SkPathVerb::kMove:
+                   // Only supports one contour currently.
+                   builder.moveTo(pts[0]);
                 break;
+                case SkPathVerb::kLine: {
+                    t_value_idx++;
+                    SkPoint pt1, pt2;
+                    pt1 = pts[0]*(1.0f / 3.0f) + pts[1]*(2.0f / 3.0f);
+                    pt2 = pts[0]*(2.0f / 3.0f) + pts[1]*(1.0f / 3.0f);
+                    if (!needToSplit) {
+                        builder.cubicTo(pt1, pt2, pts[1]);
+                    } else {
+                        std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+                        const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[1]};
+                        addSegmentsFromTValues(cubic_pts, tVector, out);
+                    }
+                    break;
+                }
+                case SkPathVerb::kQuad: {
+                    t_value_idx++;
+                    SkPoint pt1, pt2;
+                    pt1 = pts[0] + (pts[1]-pts[0])*(2.0f / 3.0f);
+                    pt2 = pts[2] + (pts[1]-pts[2])*(2.0f / 3.0f);
+                    if (!needToSplit) {
+                        builder.cubicTo(pt1, pt2, pts[2]);
+                    } else {
+                        std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+                        const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[2]};
+                        addSegmentsFromTValues(cubic_pts, tVector, out);
+                    }
+                    break;
+                }
+                case SkPathVerb::kCubic:
+                    t_value_idx++;
+                    if (!needToSplit) {
+                        builder.cubicTo(pts[1], pts[2], pts[3]);
+                    } else {
+                        std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
+                        addSegmentsFromTValues(pts.data(), tVector, out);
+                    }
+                    break;
+                case SkPathVerb::kConic:
+                    // Conic not yet supported.
+                    return false;
+                case SkPathVerb::kClose:
+                    // Close not yet supported.
+                    builder.close();
+                    break;
             }
-            case SkPath::kQuad_Verb: {
-                t_value_idx++;
-                SkPoint pt1, pt2;
-                pt1 = pts[0] + (pts[1]-pts[0])*(2.0f / 3.0f);
-                pt2 = pts[2] + (pts[1]-pts[2])*(2.0f / 3.0f);
-                if (!needToSplit) {
-                    builder.cubicTo(pt1, pt2, pts[2]);
-                } else {
-                    std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
-                    const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[2]};
-                    addSegmentsFromTValues(cubic_pts, tVector, out);
-                }
-                break;
-            }
-            case SkPath::kCubic_Verb:
-                t_value_idx++;
-                if (!needToSplit) {
-                    builder.cubicTo(pts[1], pts[2], pts[3]);
-                } else {
-                    std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
-                    addSegmentsFromTValues(pts, tVector, out);
-                }
-                break;
-            case SkPath::kConic_Verb:
-                // Conic not yet supported.
-                return false;
-            case SkPath::kClose_Verb:
-                // Close not yet supported.
-                builder.close();
-                break;
-            case SkPath::kDone_Verb:
-                fBreak = true;
+        } else {
+            fBreak = true;
         }
     }
     *out = builder.detach();
