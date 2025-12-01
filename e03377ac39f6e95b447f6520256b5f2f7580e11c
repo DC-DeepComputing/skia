@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3fe20e6_31392648",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-01T21:38:24Z",
+      "side": 1,
+      "message": "fMutex is only used here. Could we have a function local static SkMutex instead of the class-local one?",
+      "range": {
+        "startLine": 394,
+        "startChar": 30,
+        "endLine": 394,
+        "endChar": 36
+      },
+      "revId": "e03377ac39f6e95b447f6520256b5f2f7580e11c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
