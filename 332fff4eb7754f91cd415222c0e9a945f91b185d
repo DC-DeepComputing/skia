@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda5dcd1_42562ee9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-01T16:46:55Z",
+      "side": 1,
+      "message": "As a drive by on the implementation of this, `UnscaledFontDWrite` appears to be much more like Skia\u0027s `SkScalerContext` (in this case `SkScalerContext_DW`), where `ScaledFontDWrite` looks more like Skia\u0027s `SkTypeface` (in this case `DWriteFontTypeface`).",
+      "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "77746d68_98a5bc13",
