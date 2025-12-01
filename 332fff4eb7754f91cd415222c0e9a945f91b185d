@@ -33,6 +33,23 @@
       "message": "Adding another reviewer based on the auto suggestions. There\u0027s no rush in getting this landed in any case. Thanks! :)",
       "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e50f594_e81d8f62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-01T16:29:25Z",
+      "side": 1,
+      "message": "Thanks for pointing this out. After taking a look, it appears it is probably better to just delete this code, as `SkTypeface::getAdvancedMetrics` will call `getPostscriptName` when needed anyway. See https://skia-review.googlesource.com/c/skia/+/1113856 .",
+      "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
