@@ -38,7 +38,7 @@ static SkString data_to_str(const SkData& data) {
 
 namespace sk_gpu_test {
 
-sk_sp<SkData> MemoryCache::load(const SkData& key) {
+sk_sp<SkData> MemoryCache::load1(const SkData& key) {
     auto result = fMap.find(key);
     if (result == fMap.end()) {
         if (LOG_MEMORY_CACHE) {
@@ -55,7 +55,7 @@ sk_sp<SkData> MemoryCache::load(const SkData& key) {
     return result->second.fData;
 }
 
-void MemoryCache::store(const SkData& key, const SkData& data, const SkString& description) {
+void MemoryCache::store2(const SkData& key, const SkData& data, const SkString& description) {
     if (LOG_MEMORY_CACHE) {
         SkDebugf("Store Key: %s\n\tData: %s\n\n", data_to_str(key).c_str(),
                  data_to_str(data).c_str());

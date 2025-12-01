@@ -80,7 +80,7 @@ void GrMtlPipelineStateBuilder::storeShadersInCache(const SkSL::NativeShader sha
     SkFourByteTag tag = isSkSL ? kSKSL_Tag : kMSL_Tag;
     sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(
             tag, shaders, interfaces, kGrShaderTypeCount, &meta);
-    fGpu->getContext()->priv().getPersistentCache()->store(*key, *data, description);
+    fGpu->getContext()->priv().getPersistentCache()->store2(*key, *data, description);
 }
 
 id<MTLLibrary> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
@@ -485,7 +485,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     auto persistentCache = fGpu->getContext()->priv().getPersistentCache();
     if (persistentCache && !precompiledLibs) {
         sk_sp<SkData> key = SkData::MakeWithoutCopy(desc.asKey(), desc.keyLength());
-        cached = persistentCache->load(*key);
+        cached = persistentCache->load1(*key);
     }
     if (persistentCache && !cached) {
         writer = std::make_unique<SkBinaryWriteBuffer>(SkSerialProcs{});
