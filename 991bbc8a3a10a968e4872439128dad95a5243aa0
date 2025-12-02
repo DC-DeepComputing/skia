@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663ab49b_396b0900",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T17:51:54Z",
+      "side": 1,
+      "message": "Thanks, fixed (but need +1s again)",
+      "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

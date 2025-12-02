@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81814ea4_bc0e8fda",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T17:51:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aa475a2_0c46fa11",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 104
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58ec61e2_e20232b0",
@@ -98,6 +122,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36b2b0dc_6afefb7d",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T17:51:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58ec61e2_e20232b0",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 30
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12418ede_6977bfd8",
@@ -111,6 +159,30 @@
       "writtenOn": "2025-12-02T14:36:38Z",
       "side": 1,
       "message": "final?",
+      "range": {
+        "startLine": 32,
+        "startChar": 6,
+        "endLine": 32,
+        "endChar": 14
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b1a9058_b410be81",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T17:51:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12418ede_6977bfd8",
       "range": {
         "startLine": 32,
         "startChar": 6,
