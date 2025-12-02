@@ -56,6 +56,8 @@ class SkPathData;
 class SkPathRef;
 #endif
 
+#define SK_SUPPORT_LEGACY_PATH_ITER_NEXT
+
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
     outline a figure. SkPath always starts with a move verb to a Cartesian coordinate,
@@ -1637,6 +1639,9 @@ public:
         */
         void setPath(const SkPath& path, bool forceClose);
 
+#ifndef SK_SUPPORT_LEGACY_PATH_ITER_NEXT
+private:
+#endif
         /** Returns next SkPath::Verb in verb array, and advances SkPath::Iter.
             When verb array is exhausted, returns kDone_Verb.
 
@@ -1648,6 +1653,9 @@ public:
         example: https://fiddle.skia.org/c/@Path_RawIter_next
         */
         Verb next(SkPoint pts[4]);
+#ifndef SK_SUPPORT_LEGACY_PATH_ITER_NEXT
+public:
+#endif
 
         std::optional<IterRec> next();
 

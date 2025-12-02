@@ -1287,6 +1287,7 @@ static void stroke_tiny_cubic() {
 }
 
 static void check_close(skiatest::Reporter* reporter, const SkPath& path) {
+#ifdef SK_SUPPORT_LEGACY_PATH_ITER_NEXT
     for (int i = 0; i < 2; ++i) {
         SkPath::Iter iter(path, SkToBool(i));
         SkPoint mv;
@@ -1313,6 +1314,7 @@ static void check_close(skiatest::Reporter* reporter, const SkPath& path) {
         // for every moveTo
         REPORTER_ASSERT(reporter, !i || nMT == nCL);
     }
+#endif
 }
 
 static void test_close(skiatest::Reporter* reporter) {
@@ -2920,6 +2922,7 @@ static void test_transform(skiatest::Reporter* reporter) {
 }
 
 static void test_zero_length_paths(skiatest::Reporter* reporter) {
+#ifdef SK_SUPPORT_LEGACY_PATH_ITER_NEXT
     struct SUPPRESS_VISIBILITY_WARNING zeroPathTestData {
         const char* testPath;
         const size_t numResultPts;
@@ -2983,6 +2986,7 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
             REPORTER_ASSERT(reporter, gZeroLengthTests[i].resultVerbs[j] == (uint8_t)verbs[j]);
         }
     }
+#endif
 }
 
 struct SegmentInfo {
@@ -3049,6 +3053,7 @@ static void test_segment_masks(skiatest::Reporter* reporter) {
 }
 
 static void test_iter(skiatest::Reporter* reporter) {
+#ifdef SK_SUPPORT_LEGACY_PATH_ITER_NEXT
     SkPath  p;
     SkPoint pts[4];
 
@@ -3186,6 +3191,7 @@ static void test_iter(skiatest::Reporter* reporter) {
     iter.setPath(p, false);
     REPORTER_ASSERT(reporter, SkPathVerb::kMove == iter.next()->fVerb);
     REPORTER_ASSERT(reporter, SkPathVerb::kLine == iter.next()->fVerb);
+#endif
 }
 
 static void test_range_iter(skiatest::Reporter* reporter) {
