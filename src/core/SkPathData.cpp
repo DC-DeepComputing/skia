@@ -257,6 +257,8 @@ bool SkPathData::finishInit(std::optional<SkRect> bounds, std::optional<uint8_t>
 }
 
 sk_sp<SkPathData> SkPathData::MakeTransform(const SkPathRaw& src, const SkMatrix& mx) {
+    SkASSERT(valid_verbs(src.verbs()));
+
     if (src.empty()) {
         return SkPathData::Empty();
     }
@@ -523,20 +525,14 @@ sk_sp<SkPathData> SkPathData::Make(SkSpan<const SkPoint> pts,
         return nullptr;
     }
 
+    if (vbs.empty()) {
+        return Empty();
+    }
+
     auto [npts, ncns] = count_pts_cns(vbs);
     if (pts.size() != npts || conics.size() != ncns) {
         report_pathdata_make_failure("unexpected # points or conics");
         return nullptr;
-    }
-
-    // Now we can check for a dangling kMove verb, and just ignore it
-    if (!vbs.empty() && vbs.back() == SkPathVerb::kMove) {
-        SkASSERT(!pts.empty());
-        vbs = vbs.first(vbs.size() - 1);
-        pts = pts.first(pts.size() - 1);
-    }
-    if (vbs.empty()) {
-        return Empty();
     }
 
     for (auto w : conics) {

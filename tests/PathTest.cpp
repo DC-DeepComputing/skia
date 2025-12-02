@@ -6203,3 +6203,13 @@ DEF_TEST(path_factory_inverted_bounds, reporter) {
     REPORTER_ASSERT(reporter,
                     SkPath::RRect(SkRRect::MakeRect(inverted_bounds)).getBounds() == bounds);
 }
+
+DEF_TEST(path_legal_verbs, reporter) {
+    SkPathBuilder bu;
+    bu.moveTo({1, 2});
+    SkPath path = bu.detach();
+    REPORTER_ASSERT(reporter, path.isEmpty());
+
+    path = SkPath::Raw({{{1, 2}}}, SKSPAN_INIT_ONE(SkPathVerb::kMove), {}, SkPathFillType::kDefault);
+    REPORTER_ASSERT(reporter, path.isEmpty());
+}
