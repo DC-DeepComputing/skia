@@ -13,7 +13,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkSLTypeShared.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/AtlasCommon.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColor.h"

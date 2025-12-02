@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/private/base/SkAssert.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/AtlasCommon.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 
 #include <cstdint>

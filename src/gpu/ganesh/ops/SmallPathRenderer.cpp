@@ -33,7 +33,7 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRasterClip.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/AtlasCommon.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"

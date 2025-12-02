@@ -13,6 +13,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/AtlasCommon.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/ops/SmallPathShapeData.h"
 
@@ -121,7 +122,7 @@ SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const GrStyledShape& shape,
 GrDrawOpAtlas::ErrorCode SmallPathAtlasMgr::addToAtlas(GrResourceProvider* resourceProvider,
                                                        GrDeferredUploadTarget* target,
                                                        int width, int height, const void* image,
-                                                       skgpu::AtlasLocator* locator) {
+                                                       GrAtlasLocator* locator) {
     return fAtlas->addToAtlas(resourceProvider, target, width, height, image, locator);
 }
 
@@ -131,7 +132,7 @@ void SmallPathAtlasMgr::setUseToken(SmallPathShapeData* shapeData,
 }
 
 // Callback to clear out internal path cache when eviction occurs
-void SmallPathAtlasMgr::evict(skgpu::PlotLocator plotLocator) {
+void SmallPathAtlasMgr::evict(GrPlotLocator plotLocator) {
     // remove any paths that use this plot
     ShapeDataList::Iter iter;
     iter.init(fShapeList, ShapeDataList::Iter::kHead_IterStart);

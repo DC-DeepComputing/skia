@@ -14,7 +14,7 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/AtlasCommon.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 

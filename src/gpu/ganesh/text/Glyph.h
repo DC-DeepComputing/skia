@@ -9,7 +9,7 @@
 #define skgpu_ganesh_Glyph_DEFINED
 
 #include "src/core/SkGlyph.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/ganesh/GrAtlasTypes.h"
 
 namespace skgpu::ganesh {
 
@@ -23,7 +23,7 @@ public:
     SkPackedGlyphID glyphID() const { return fPackedID; }
 
     const SkPackedGlyphID fPackedID;
-    AtlasLocator fAtlasLocator;
+    GrAtlasLocator fAtlasLocator;
 };
 
 }  // namespace skgpu::ganesh

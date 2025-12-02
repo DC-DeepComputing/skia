@@ -20,22 +20,22 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/AtlasCommon.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
 
 #if defined(SK_GANESH)
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #endif
 
 using MaskFormat = skgpu::MaskFormat;
 
 static SkScalar draw_string(SkCanvas* canvas, const SkString& text, SkScalar x,
-                           SkScalar y, const SkFont& font) {
+                            SkScalar y, const SkFont& font) {
     SkPaint paint;
     canvas->drawString(text, x, y, font, paint);
     return x + font.measureText(text.c_str(), text.size(), SkTextEncoding::kUTF8);

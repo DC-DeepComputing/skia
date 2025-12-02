@@ -19,6 +19,9 @@
 
 struct SkPackedGlyphID;
 
+namespace skgpu::ganesh { class GaneshTextStrike; }
+namespace skgpu::graphite { class GraphiteTextStrike; }
+
 //  SK_DEFAULT_GPU_FONT_CACHE_COUNT_LIMIT and SK_DEFAULT_GPU_FONT_CACHE_LIMIT can be set using -D
 //  on your ompiler commandline, or by using the defines in SkUserConfig.h
 #ifndef SK_DEFAULT_GPU_FONT_CACHE_COUNT_LIMIT
@@ -71,8 +74,10 @@ protected:
     friend class StrikeCache;
 };
 
+
 // StrikeCache manages strikes which are indexed by a SkStrike. These strikes can then be
 // used to generate individual Glyph Masks.
+// Works with polymorphic TextStrikeBase - backend-specific derived classes provide typed getGlyph()
 class StrikeCache {
 public:
     ~StrikeCache();
@@ -81,6 +86,9 @@ public:
 
 private:
     friend class TextStrikeBase;
+    friend class TextStrikeBase;
+    friend class skgpu::ganesh::GaneshTextStrike;
+    friend class skgpu::graphite::GraphiteTextStrike;
 
     void internalRemoveStrike(TextStrikeBase* strike);
     void internalAttachToHead(sk_sp<TextStrikeBase> strike);
