@@ -45,7 +45,7 @@
 #include "src/gpu/AtlasTypes.h"
 #include "src/text/GlyphRun.h"
 #include "src/text/StrikeForGPU.h"
-#include "src/text/gpu/Glyph.h"
+#include "src/text/gpu/GlyphUtils.h"
 #include "src/text/gpu/SDFMaskFilter.h"
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/SubRunControl.h"
@@ -594,9 +594,8 @@ const AtlasSubRun* DrawableSubRun::testingOnly_atlasSubRun() const {
 // -- DirectMaskSubRun -----------------------------------------------------------------------------
 class DirectMaskSubRun final : public AtlasSubRun {
 public:
-    DirectMaskSubRun(VertexFiller&& vertexFiller,
-                     GlyphVector&& glyphs)
-            : AtlasSubRun(std::move(vertexFiller), std::move(glyphs)) {}
+    DirectMaskSubRun(VertexFiller&& vertexFiller, GlyphVector&& glyphVector)
+            : AtlasSubRun{std::move(vertexFiller), std::move(glyphVector)} {}
 
     static SubRunOwner Make(SkRect creationBounds,
                             SkZip<const SkPackedGlyphID, const SkPoint> accepted,
@@ -625,13 +624,14 @@ public:
 
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
-        if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) {
+        if (!buffer.validate(static_cast<int>(glyphVector->glyphs().size()) ==
+                             vertexFiller->count())) {
             return nullptr;
         }
 
         SkASSERT(buffer.isValid());
-        return alloc->makeUnique<DirectMaskSubRun>(
-                std::move(*vertexFiller), std::move(*glyphVector));
+        return alloc->makeUnique<DirectMaskSubRun>(std::move(*vertexFiller),
+                                                   std::move(*glyphVector));
     }
 
     void draw(SkCanvas*,
@@ -639,21 +639,19 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
-        drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
-                  {/* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
+        drawAtlas(this,
+                  drawOrigin,
+                  paint,
+                  std::move(subRunStorage),
+                  {/* isSDF = */ false, fVertexFiller.isLCD(), fVertexFiller.maskFormat()});
     }
 
     int unflattenSize() const override {
-        return sizeof(DirectMaskSubRun) +
-               fGlyphs.unflattenSize() +
+        return sizeof(DirectMaskSubRun) + fGlyphVector.unflattenSize() +
                fVertexFiller.unflattenSize();
     }
 
     int glyphSrcPadding() const override { return 0; }
-
-    void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const override {
-        fGlyphs.packedGlyphIDToGlyph(cache);
-    }
 
     std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
             const SkMatrix &positionMatrix) const override {
@@ -665,12 +663,6 @@ public:
     GlyphParams glyphParams() const override {
         // Since this is non-SDF, isAA will be ignored so we just pass true
         return { /*isSDF=*/false, fVertexFiller.isLCD(), /*isAA=*/true };
-    }
-
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
-                                          RegenerateAtlasDelegate regenerateAtlas) const override {
-        return regenerateAtlas(
-                &fGlyphs, begin, end, fVertexFiller.grMaskType(), this->glyphSrcPadding());
     }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
@@ -689,17 +681,15 @@ protected:
 
     void doFlatten(SkWriteBuffer& buffer) const override {
         fVertexFiller.flatten(buffer);
-        fGlyphs.flatten(buffer);
+        fGlyphVector.flatten(buffer);
     }
 };
 
 // -- TransformedMaskSubRun ------------------------------------------------------------------------
 class TransformedMaskSubRun final : public AtlasSubRun {
 public:
-    TransformedMaskSubRun(bool isBigEnough,
-                          VertexFiller&& vertexFiller,
-                          GlyphVector&& glyphs)
-            : AtlasSubRun(std::move(vertexFiller), std::move(glyphs))
+    TransformedMaskSubRun(bool isBigEnough, VertexFiller&& vertexFiller, GlyphVector&& glyphVector)
+            : AtlasSubRun{std::move(vertexFiller), std::move(glyphVector)}
             , fIsBigEnough{isBigEnough} {}
 
     static SubRunOwner Make(SkZip<const SkPackedGlyphID, const SkPoint> accepted,
@@ -716,13 +706,12 @@ public:
                                                alloc,
                                                kIsTransformed);
 
-        auto glyphVector = GlyphVector::Make(
-                std::move(strikePromise), get_packedIDs(accepted), alloc);
+        GlyphVector glyphVector =
+                GlyphVector::Make(std::move(strikePromise), get_packedIDs(accepted), alloc);
 
-        return alloc->makeUnique<TransformedMaskSubRun>(
-                initialPositionMatrix.getMaxScale() >= 1,
-                std::move(vertexFiller),
-                std::move(glyphVector));
+        return alloc->makeUnique<TransformedMaskSubRun>(initialPositionMatrix.getMaxScale() >= 1,
+                                                        std::move(vertexFiller),
+                                                        std::move(glyphVector));
     }
 
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
@@ -733,7 +722,8 @@ public:
 
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
-        if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) {
+        if (!buffer.validate(static_cast<int>(glyphVector->glyphs().size()) ==
+                             vertexFiller->count())) {
             return nullptr;
         }
         const bool isBigEnough = buffer.readBool();
@@ -742,9 +732,9 @@ public:
     }
 
     int unflattenSize() const override {
-        return sizeof(TransformedMaskSubRun) +
-               fGlyphs.unflattenSize() +
-               fVertexFiller.unflattenSize();
+        return sizeof(TransformedMaskSubRun)
+             + fGlyphVector.unflattenSize()
+             + fVertexFiller.unflattenSize();
     }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
@@ -755,10 +745,6 @@ public:
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
 
-    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override {
-        fGlyphs.packedGlyphIDToGlyph(cache);
-    }
-
     int glyphSrcPadding() const override { return 1; }
 
     void draw(SkCanvas*,
@@ -766,8 +752,11 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
-        drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
-                  {/* isSDF = */false, fVertexFiller.isLCD(), fVertexFiller.grMaskType()});
+        drawAtlas(this,
+                  drawOrigin,
+                  paint,
+                  std::move(subRunStorage),
+                  {/* isSDF = */ false, fVertexFiller.isLCD(), fVertexFiller.maskFormat()});
     }
 
     std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
@@ -781,12 +770,6 @@ public:
         return { /*isSDF=*/false, fVertexFiller.isLCD(), /*isAA=*/true };
     }
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
-                                          RegenerateAtlasDelegate regenerateAtlas) const override {
-        return regenerateAtlas(
-                &fGlyphs, begin, end, fVertexFiller.grMaskType(), this->glyphSrcPadding());
-    }
-
 protected:
     SubRunStreamTag subRunStreamTag() const override {
         return SubRunStreamTag::kTransformMaskStreamTag;
@@ -794,7 +777,7 @@ protected:
 
     void doFlatten(SkWriteBuffer& buffer) const override {
         fVertexFiller.flatten(buffer);
-        fGlyphs.flatten(buffer);
+        fGlyphVector.flatten(buffer);
         buffer.writeBool(fIsBigEnough);
     }
 
@@ -818,14 +801,15 @@ public:
                bool antiAliased,
                const SDFTMatrixRange& matrixRange,
                VertexFiller&& vertexFiller,
-               GlyphVector&& glyphs)
-            : AtlasSubRun(std::move(vertexFiller), std::move(glyphs))
+               GlyphVector&& glyphVector)
+            : AtlasSubRun{std::move(vertexFiller), std::move(glyphVector)}
             , fUseLCDText{useLCDText}
             , fAntiAliased{antiAliased}
             , fMatrixRange{matrixRange} {
-        SkASSERT(fVertexFiller.grMaskType() == MaskFormat::kA8);
+        SkASSERT(fVertexFiller.maskFormat() == MaskFormat::kA8);
     }
 
+    // Backend-agnostic Make - used during SubRun creation when backend is unknown
     static SubRunOwner Make(SkZip<const SkPackedGlyphID, const SkPoint> accepted,
                             const SkFont& runFont,
                             SkStrikePromise&& strikePromise,
@@ -840,8 +824,8 @@ public:
                                                alloc,
                                                kIsTransformed);
 
-        auto glyphVector = GlyphVector::Make(
-                std::move(strikePromise), get_packedIDs(accepted), alloc);
+        GlyphVector glyphVector =
+                GlyphVector::Make(std::move(strikePromise), get_packedIDs(accepted), alloc);
 
         return alloc->makeUnique<SDFTSubRun>(
                 runFont.getEdging() == SkFont::Edging::kSubpixelAntiAlias,
@@ -859,12 +843,13 @@ public:
         SDFTMatrixRange matrixRange = SDFTMatrixRange::MakeFromBuffer(buffer);
         auto vertexFiller = VertexFiller::MakeFromBuffer(buffer, alloc);
         if (!buffer.validate(vertexFiller.has_value())) { return nullptr; }
-        if (!buffer.validate(vertexFiller.value().grMaskType() == MaskFormat::kA8)) {
+        if (!buffer.validate(vertexFiller.value().maskFormat() == MaskFormat::kA8)) {
             return nullptr;
         }
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
-        if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) {
+        if (!buffer.validate(static_cast<int>(glyphVector->glyphs().size()) ==
+                             vertexFiller->count())) {
             return nullptr;
         }
         return alloc->makeUnique<SDFTSubRun>(useLCD,
@@ -875,7 +860,8 @@ public:
     }
 
     int unflattenSize() const override {
-        return sizeof(SDFTSubRun) + fGlyphs.unflattenSize() + fVertexFiller.unflattenSize();
+        return sizeof(SDFTSubRun) + fGlyphVector.glyphs().size_bytes() +
+               fVertexFiller.unflattenSize();
     }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
@@ -883,10 +869,6 @@ public:
     }
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
-
-    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override {
-        fGlyphs.packedGlyphIDToGlyph(cache);
-    }
 
     int glyphSrcPadding() const override { return SK_DistanceFieldInset; }
 
@@ -909,11 +891,6 @@ public:
         return { /*isSDF=*/true, fUseLCDText, /*isAA=*/fAntiAliased };
     }
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end,
-                                          RegenerateAtlasDelegate regenerateAtlas) const override {
-        return regenerateAtlas(&fGlyphs, begin, end, MaskFormat::kA8, this->glyphSrcPadding());
-    }
-
 protected:
     SubRunStreamTag subRunStreamTag() const override { return SubRunStreamTag::kSDFTStreamTag; }
     void doFlatten(SkWriteBuffer& buffer) const override {
@@ -921,7 +898,7 @@ protected:
         buffer.writeInt(fAntiAliased);
         fMatrixRange.flatten(buffer);
         fVertexFiller.flatten(buffer);
-        fGlyphs.flatten(buffer);
+        fGlyphVector.flatten(buffer);
     }
 
 private:
@@ -941,10 +918,10 @@ void add_multi_mask_format(
     if (accepted.empty()) { return; }
 
     auto maskSpan = accepted.get<2>();
-    MaskFormat format = Glyph::FormatFromSkGlyph(maskSpan[0]);
+    MaskFormat format = FormatFromSkGlyph(maskSpan[0]);
     size_t startIndex = 0;
     for (size_t i = 1; i < accepted.size(); i++) {
-        MaskFormat nextFormat = Glyph::FormatFromSkGlyph(maskSpan[i]);
+        MaskFormat nextFormat = FormatFromSkGlyph(maskSpan[i]);
         if (format != nextFormat) {
             auto interval = accepted.subspan(startIndex, i - startIndex);
             // Only pass the packed glyph ids and positions.
@@ -1056,7 +1033,7 @@ size_t SubRunContainer::EstimateAllocSize(const GlyphRunList& glyphRunList) {
     size_t totalGlyphCount = glyphRunList.totalGlyphCount();
     // This is optimized for DirectMaskSubRun which is by far the most common case.
     return totalGlyphCount * sizeof(SkPoint)
-           + GlyphVector::GlyphVectorSize(totalGlyphCount)
+           + totalGlyphCount * sizeof(SkPackedGlyphID)  // GlyphVector array
            + glyphRunList.runCount() * (sizeof(DirectMaskSubRun) + vertexDataToSubRunPadding)
            + sizeof(SubRunContainer);
 }
