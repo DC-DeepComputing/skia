@@ -91784,6 +91784,7 @@
       "root": "..",
       "paths": [
         "skia/example",
+        "skia/experimental",
         "skia/include",
         "skia/modules",
         "skia/rust",
