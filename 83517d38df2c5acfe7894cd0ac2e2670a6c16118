@@ -33,6 +33,92 @@
       "message": "+michaelludwig for include OWNERship. Note there are two changes:\n- static SkData equality comparison (like SkColorSpace)\n- the private/ AGTM interface",
       "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cff2713_d2e55dc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-02T14:36:38Z",
+      "side": 1,
+      "message": "lgtm modulo nits",
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aa475a2_0c46fa11",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-02T14:36:38Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 104
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ec61e2_e20232b0",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-02T14:36:38Z",
+      "side": 1,
+      "message": "nit: can we put the destructor just below the static methods?",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 30
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12418ede_6977bfd8",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-02T14:36:38Z",
+      "side": 1,
+      "message": "final?",
+      "range": {
+        "startLine": 32,
+        "startChar": 6,
+        "endLine": 32,
+        "endChar": 14
+      },
+      "revId": "83517d38df2c5acfe7894cd0ac2e2670a6c16118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
