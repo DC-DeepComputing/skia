@@ -16,6 +16,29 @@
       "message": "Thanks, fixed (but need +1s again)",
       "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9d0344a_5c2ffffa",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-12-02T19:35:33Z",
+      "side": 1,
+      "message": "any chance of making the component mixing part of the api, so that compositors that need to build a LUT can quickly check if the \"right\" type of LUT is supported by hardware?\n\notherwise it seems like we\u0027d have to do a bunch of test-evaluations against an SkImage and try to \"fit\" a LUT.\n\n(leveraging the SkColorFilter to help fill in a LUT is fine by me, though)",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 43
+      },
+      "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
