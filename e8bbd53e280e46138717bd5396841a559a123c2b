@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b464512_2723fd0d",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-02T19:11:57Z",
+      "side": 1,
+      "message": "Oh, interesting. I must\u0027ve deleted that line by mistake. Restored.\n\nBTW, I notice that the emscripten code does sk_ref_sp and a buffer.release(). Does the non-emscripten refcounting look correct, or should I be calling buffer.release() as well? Or perhaps I should be capturing \"this\" with a refcounted pointer, to ensure the buffer lives as long as the lambda?",
+      "parentUuid": "4adfbb67_7e6fa948",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
@@ -71,6 +95,30 @@
       "writtenOn": "2025-12-02T14:22:01Z",
       "side": 1,
       "message": "Just to confirm here, are we wanting to do any actual async map, or was our original goal to just trigger the map call from the Context thread instead of the Recorder thread?",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f24f37_03bb03cb",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-02T19:11:57Z",
+      "side": 1,
+      "message": "That\u0027s right, it\u0027s only supposed to happen from the playback (Context?) thread and not on the Recorder thread.",
+      "parentUuid": "1356f48d_3a4b6316",
       "range": {
         "startLine": 254,
         "startChar": 12,
