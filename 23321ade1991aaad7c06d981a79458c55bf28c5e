@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8199ef02_1f23202e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-02T16:20:00Z",
+      "side": 1,
+      "message": "Had a merge conflict on the release notes file, lost the +1s",
+      "revId": "23321ade1991aaad7c06d981a79458c55bf28c5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
