@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75eabaa9_a0b71f52",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-02T20:07:47Z",
+      "side": 1,
+      "message": "Never mind; I see now that release() just extracts the raw pointer without unref\u0027ing, and it\u0027s the sk_sp\u003c\u003e inside the lambda that\u0027s actually doing the unref.\n\n(I do think it might be safer/clearer for both paths if the lambda took a smart ptr ref at capture time, though.)",
+      "parentUuid": "7b464512_2723fd0d",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
