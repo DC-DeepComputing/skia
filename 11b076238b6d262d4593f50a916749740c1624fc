@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b7b4faf_6aa82da8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T13:14:03Z",
+      "side": 1,
+      "message": "Finally a patch where I\u0027m deleting code!",
+      "revId": "11b076238b6d262d4593f50a916749740c1624fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
