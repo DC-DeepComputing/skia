@@ -9,7 +9,7 @@
 #define skgpu_graphite_Glyph_DEFINED
 
 #include "src/core/SkGlyph.h"
-#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/graphite/AtlasTypes.h"
 
 namespace skgpu::graphite {
 
