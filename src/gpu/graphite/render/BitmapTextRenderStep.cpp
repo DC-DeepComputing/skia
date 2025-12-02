@@ -30,6 +30,7 @@
 #include "src/gpu/graphite/geom/SubRunData.h"
 #include "src/gpu/graphite/geom/Transform.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
+#include "src/gpu/graphite/text/GlyphData.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 #include "src/sksl/SkSLString.h"
 #include "src/text/gpu/SubRunContainer.h"
@@ -160,13 +161,14 @@ void BitmapTextRenderStep::writeVertices(DrawWriter* dw,
                                          uint32_t ssboIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
 
-    subRunData.subRun()->vertexFiller().fillInstanceData(dw,
-                                                         subRunData.startGlyphIndex(),
-                                                         subRunData.glyphCount(),
-                                                         subRunData.subRun()->instanceFlags(),
-                                                         ssboIndex,
-                                                         subRunData.subRun()->glyphs(),
-                                                         params.order().depthAsFloat());
+    auto* glyphData = static_cast<GlyphData*>(subRunData.subRun()->backendData());
+    glyphData->fillInstanceData(subRunData.subRun()->vertexFiller(),
+                                dw,
+                                subRunData.startGlyphIndex(),
+                                subRunData.glyphCount(),
+                                subRunData.subRun()->instanceFlags(),
+                                ssboIndex,
+                                params.order().depthAsFloat());
 }
 
 void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
