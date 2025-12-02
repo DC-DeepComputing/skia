@@ -63,6 +63,30 @@
       },
       "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d6671d_d759a0ac",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-12-02T20:16:57Z",
+      "side": 1,
+      "message": "I think that\u0027d work, as long as it\u0027s palatable enough for skia (generalizes to other platforms and such)",
+      "parentUuid": "68a2b7f5_0a764eda",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 43
+      },
+      "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
