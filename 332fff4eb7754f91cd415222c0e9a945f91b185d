@@ -67,6 +67,24 @@
       "message": "Thanks for pointing this out. After taking a look, it appears it is probably better to just delete this code, as `SkTypeface::getAdvancedMetrics` will call `getPostscriptName` when needed anyway. See https://skia-review.googlesource.com/c/skia/+/1113856 .",
       "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab2273de_ddda2002",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4497568
+      },
+      "writtenOn": "2025-12-02T07:08:34Z",
+      "side": 1,
+      "message": "Sounds great, TYSM!",
+      "parentUuid": "6e50f594_e81d8f62",
+      "revId": "332fff4eb7754f91cd415222c0e9a945f91b185d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
