@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb52bd9_f27e9875",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-02T18:39:22Z",
+      "side": 1,
+      "message": "I think a possible concern here is that ganesh:: and graphite:: Glyph* arrays are allocated separately from GlyphVector. This probably means a small memory usage increase and an extra allocation call for each SubRun on its first use.\n\nI\u0027m wondering if we can just see if this triggers any concerning regressions. There may be ways around the extra memory. Maybe freeing GlyphVector once BackendData is attached and then requiring the latter to be able to iterate on GlyphIDs? But anything I can think of adds complexity to already complex code.",
+      "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
