@@ -59,6 +59,35 @@ std::unique_ptr<ColorProfile> ColorProfile::clone() const {
     return std::unique_ptr<ColorProfile>(new ColorProfile(fProfile, fData));
 }
 
+ColorProfile::DataSpace ColorProfile::dataSpace() const {
+    switch (fProfile.data_color_space) {
+        case skcms_Signature_RGB:
+            return DataSpace::kRGB;
+        case skcms_Signature_CMYK:
+            return DataSpace::kCMYK;
+        case skcms_Signature_Gray:
+            return DataSpace::kGray;
+        default:
+            return DataSpace::kOther;
+    }
+}
+
+// static
+sk_sp<SkColorSpace> ColorProfile::GetClosestColorSpace(const ColorProfile* profile) {
+    sk_sp<SkColorSpace> cs;
+    if (profile) {
+        cs = SkColorSpace::Make(profile->fProfile);
+    }
+    if (!cs) {
+        cs = SkColorSpace::MakeSRGB();
+    }
+    return cs;
+}
+
+sk_sp<SkColorSpace> ColorProfile::getExactColorSpace() const {
+    return SkColorSpace::Make(fProfile);
+}
+
 ColorProfile::ColorProfile(const skcms_ICCProfile& profile, sk_sp<const SkData> data)
     : fProfile(profile)
     , fData(std::move(data))
