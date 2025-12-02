@@ -443,22 +443,29 @@ public:
     }
 
     static std::optional<SkPathRaw> Raw(const SkPathBuilder& builder, SkResolveConvexity rc) {
-        const auto bounds = builder.computeFiniteBounds();
+        SkSpan<const SkPoint> pts = builder.points();
+        SkSpan<const SkPathVerb> vbs = builder.verbs();
+        SkSpan<const float> cns = builder.conicWeights();
+
+        // builders can have a trailing move, but paths and pathraws cannot
+        if (!vbs.empty() && vbs.back() == SkPathVerb::kMove) {
+            SkASSERT(!pts.empty());
+            vbs = vbs.first(vbs.size() - 1);
+            pts = pts.first(pts.size() - 1);
+        }
+
+        const auto bounds = SkRect::Bounds(pts);
         if (!bounds) {
             return {};
         }
 
         SkPathConvexity convexity = builder.fConvexity;
         if (convexity == SkPathConvexity::kUnknown && rc == SkResolveConvexity::kYes) {
-            convexity = SkPathPriv::ComputeConvexity(builder.fPts,
-                                                     builder.fVerbs,
-                                                     builder.fConicWeights);
+            convexity = SkPathPriv::ComputeConvexity(pts, vbs, cns);
         }
 
         return SkPathRaw{
-            builder.points(),
-            builder.verbs(),
-            builder.conicWeights(),
+            pts, vbs, cns,
             *bounds,
             builder.fillType(),
             convexity,

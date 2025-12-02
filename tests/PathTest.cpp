@@ -797,15 +797,15 @@ static void test_bounds_crbug_513799(skiatest::Reporter* reporter) {
     dump_if_ne(reporter, SkRect::MakeLTRB(0, 0, 0, 0), path.getBounds());
 
     SkPathBuilder builder;
-    builder.moveTo(-5, -8);    // should generate bounds
+    builder.moveTo(-5, -8);    // trailing move is removed
     path = builder.snapshot();
-    dump_if_ne(reporter, SkRect::MakeLTRB(-5, -8, -5, -8), path.getBounds());
+    dump_if_ne(reporter, SkRect::MakeLTRB(0, 0, 0, 0), path.getBounds());
 
     builder.addRect(SkRect::MakeLTRB(1, 2, 3, 4)); // should extend the bounds
     path = builder.snapshot();
     dump_if_ne(reporter, SkRect::MakeLTRB(1, 2, 3, 4), path.getBounds());
 
-    builder.moveTo(2, 3);  // don't expect this to have changed the bounds
+    builder.moveTo(2, 3);  // trailing move is removed
     path = builder.snapshot();
     dump_if_ne(reporter, SkRect::MakeLTRB(1, 2, 3, 4), path.getBounds());
 }
@@ -1001,14 +1001,11 @@ static void test_path_isfinite(skiatest::Reporter* reporter) {
     SkPath path;
     REPORTER_ASSERT(reporter, path.isFinite());
 
-    path = SkPathBuilder().moveTo(1, 0).detach();
-    REPORTER_ASSERT(reporter, path.isFinite());
-
-    path = SkPathBuilder().moveTo(inf, negInf).detach();
-    REPORTER_ASSERT(reporter, !path.isFinite());
-
-    path = SkPathBuilder().moveTo(nan, 0).detach();
-    REPORTER_ASSERT(reporter, !path.isFinite());
+    const float xvals[] = {1, inf, negInf, nan};
+    for (auto x : xvals) {
+        path = SkPathBuilder().moveTo(0, 0).lineTo(x, x).detach();
+        REPORTER_ASSERT(reporter, path.isFinite() == SkIsFinite(x));
+    }
 }
 
 static void test_isfinite(skiatest::Reporter* reporter) {
@@ -2388,8 +2385,8 @@ static void test_is_closed_rect(skiatest::Reporter* reporter) {
             builder2 = builder;
             builder2.moveTo(10, 10);
             path2 = builder2.detach();
-            REPORTER_ASSERT(reporter, !SkPathPriv::IsSimpleRect(path2, false));
-            REPORTER_ASSERT(reporter, !SkPathPriv::IsSimpleRect(path2, true));
+            REPORTER_ASSERT(reporter, SkPathPriv::IsSimpleRect(path2, false));
+            REPORTER_ASSERT(reporter, SkPathPriv::IsSimpleRect(path2, true));
 
             builder2 = builder;
             builder2.addRect(testRect, dir, start);
@@ -2928,7 +2925,6 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
         const size_t numResultVerbs;
     };
 
-    static const SkPath::Verb resultVerbs1[] = { SkPath::kMove_Verb };
     static const SkPath::Verb resultVerbs3[] = { SkPath::kMove_Verb, SkPath::kClose_Verb };
     static const SkPath::Verb resultVerbs4[] = { SkPath::kMove_Verb, SkPath::kClose_Verb, SkPath::kMove_Verb, SkPath::kClose_Verb };
     static const SkPath::Verb resultVerbs5[] = { SkPath::kMove_Verb, SkPath::kLine_Verb };
@@ -2950,7 +2946,6 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
         SkPath::kMove_Verb, SkPath::kCubic_Verb, SkPath::kClose_Verb, SkPath::kMove_Verb, SkPath::kCubic_Verb, SkPath::kClose_Verb
     };
     static const struct zeroPathTestData gZeroLengthTests[] = {
-        { "M 1 1", 1, {1, 1, 1, 1}, resultVerbs1, std::size(resultVerbs1) },
         { "M 1 1 z", 1, {1, 1, 1, 1}, resultVerbs3, std::size(resultVerbs3) },
         { "M 1 1 z M 2 1 z", 2, {SK_Scalar1, SK_Scalar1, 2*SK_Scalar1, SK_Scalar1}, resultVerbs4, std::size(resultVerbs4) },
         { "M 1 1 L 1 1", 2, {SK_Scalar1, SK_Scalar1, SK_Scalar1, SK_Scalar1}, resultVerbs5, std::size(resultVerbs5) },
@@ -3195,32 +3190,18 @@ static void test_range_iter(skiatest::Reporter* reporter) {
     SkPathPriv::Iterate iterate(path);
     REPORTER_ASSERT(reporter, iterate.begin() == iterate.end());
 
-    // Test that a move-only path returns the move.
+    // Test that a move-only pathbuilder is an empty path.
     SkPathBuilder builder;
     builder.moveTo(1, 0);
     path = builder.snapshot();
     iterate = SkPathPriv::Iterate(path);
-    SkPathPriv::RangeIter iter = iterate.begin();
-    {
-        auto [verb, pts, w] = *iter++;
-        REPORTER_ASSERT(reporter, verb == SkPathVerb::kMove);
-        REPORTER_ASSERT(reporter, pts[0].fX == 1);
-        REPORTER_ASSERT(reporter, pts[0].fY == 0);
-    }
-    REPORTER_ASSERT(reporter, iter == iterate.end());
+    REPORTER_ASSERT(reporter, iterate.begin() == iterate.end());
 
     // another moveTo just replace the previous position
     builder.moveTo(2, 3);
     path = builder.snapshot();
     iterate = SkPathPriv::Iterate(path);
-    iter = iterate.begin();
-    {
-        auto [verb, pts, w] = *iter++;
-        REPORTER_ASSERT(reporter, verb == SkPathVerb::kMove);
-        REPORTER_ASSERT(reporter, pts[0].fX == 2);
-        REPORTER_ASSERT(reporter, pts[0].fY == 3);
-    }
-    REPORTER_ASSERT(reporter, iter == iterate.end());
+    REPORTER_ASSERT(reporter, iterate.begin() == iterate.end());
 
     // Initial close is never ever stored
     path = SkPathBuilder().close().detach();
@@ -3240,7 +3221,7 @@ static void test_range_iter(skiatest::Reporter* reporter) {
            .close()
            .detach();
     iterate = SkPathPriv::Iterate(path);
-    iter = iterate.begin();
+    auto iter = iterate.begin();
     {
         auto [verb, pts, w] = *iter++;
         REPORTER_ASSERT(reporter, verb == SkPathVerb::kMove);
@@ -3370,6 +3351,12 @@ static void test_range_iter(skiatest::Reporter* reporter) {
             }
             expectedVerbs[numIterVerbs++] = nextVerb;
             prevVerb = nextVerb;
+        }
+
+        // Since path's trim a trailing kMove, we do that manually to our expected results
+        if (!builder.verbs().empty() && builder.verbs().back() == SkPathVerb::kMove) {
+            numIterVerbs -= 1;
+            numPoints -= 1;
         }
 
         numVerbs = numIterVerbs;
@@ -3906,7 +3893,7 @@ static void check_done(skiatest::Reporter* reporter, const SkPath& p, SkPathPriv
 static void check_path_is_move(skiatest::Reporter* reporter, const SkPath& p,
                                SkScalar x0, SkScalar y0) {
     SkPathPriv::RangeIter iter = SkPathPriv::Iterate(p).begin();
-    check_move(reporter, &iter, x0, y0);
+//    check_move(reporter, &iter, x0, y0);
     check_done(reporter, p, &iter);
 }
 
@@ -3931,28 +3918,31 @@ static void test_rMoveTo(skiatest::Reporter* reporter) {
                .lineTo(20, 21)
                .close()
                .rMoveTo({30, 31})
+               .lineTo(20, 21)
                .detach();
     SkPathPriv::RangeIter iter = SkPathPriv::Iterate(p).begin();
     check_move(reporter, &iter, 10, 11);
     check_line(reporter, &iter, 20, 21);
     check_close(reporter, &iter);
     check_move(reporter, &iter, 10 + 30, 11 + 31);
+    check_line(reporter, &iter, 20, 21);
     check_done(reporter, p, &iter);
 
     p = SkPathBuilder()
         .moveTo(10, 11)
         .lineTo(20, 21)
         .rMoveTo({30, 31})
+        .lineTo(20, 21)
         .detach();
     iter = SkPathPriv::Iterate(p).begin();
     check_move(reporter, &iter, 10, 11);
     check_line(reporter, &iter, 20, 21);
     check_move(reporter, &iter, 20 + 30, 21 + 31);
+    check_line(reporter, &iter, 20, 21);
     check_done(reporter, p, &iter);
 
     p = SkPathBuilder().rMoveTo({30, 31}).detach();
     iter = SkPathPriv::Iterate(p).begin();
-    check_move(reporter, &iter, 30, 31);
     check_done(reporter, p, &iter);
 }
 
@@ -6202,4 +6192,14 @@ DEF_TEST(path_factory_inverted_bounds, reporter) {
     REPORTER_ASSERT(reporter, SkPath::Rect(inverted_bounds).getBounds() == bounds);
     REPORTER_ASSERT(reporter,
                     SkPath::RRect(SkRRect::MakeRect(inverted_bounds)).getBounds() == bounds);
+}
+
+DEF_TEST(path_legal_verbs, reporter) {
+    SkPathBuilder bu;
+    bu.moveTo({1, 2});
+    SkPath path = bu.detach();
+    REPORTER_ASSERT(reporter, path.isEmpty());
+
+    path = SkPath::Raw({{{1, 2}}}, SKSPAN_INIT_ONE(SkPathVerb::kMove), {}, SkPathFillType::kDefault);
+    REPORTER_ASSERT(reporter, path.isEmpty());
 }
