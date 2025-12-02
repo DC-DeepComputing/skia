@@ -33,6 +33,52 @@
       "message": "Greg: gentle ping. :)",
       "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4adfbb67_7e6fa948",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-02T14:22:01Z",
+      "side": 1,
+      "message": "Right now this only looks to be used in the emscripten case, but don\u0027t we also need to keep alive the buffer in the native case to? Like mapCallback could remove the last ref to the buffer and cause it to be deleted while we\u0027re still inside the buffers member function. Additionally we can\u0027t depend on the proc passed into asyncMap having a ref on the buffer. I.e. we don\u0027t know that asyncMap is only called from prepareForReturnToCache",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1356f48d_3a4b6316",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-02T14:22:01Z",
+      "side": 1,
+      "message": "Just to confirm here, are we wanting to do any actual async map, or was our original goal to just trigger the map call from the Context thread instead of the Recorder thread?",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
