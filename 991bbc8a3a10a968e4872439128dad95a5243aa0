@@ -39,6 +39,30 @@
       },
       "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68a2b7f5_0a764eda",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-02T20:08:42Z",
+      "side": 1,
+      "message": "How about an API that returns the best [samplingKey](https://developer.android.com/reference/android/hardware/DisplayLuts.Entry) directly (RGB, y, or max)?\n\nI think I may add an API that just fills LUTs directly (rather than exposing a bunch of details to allow a caller to do it).",
+      "parentUuid": "e9d0344a_5c2ffffa",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 43
+      },
+      "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
