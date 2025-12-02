@@ -87,6 +87,30 @@
       },
       "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e99d6f2b_0ab391bd",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-02T20:56:30Z",
+      "side": 1,
+      "message": "Hopefully it\u0027ll be generalizable to some of the Windows video processing LUT stuff and some of the Linux DRM stuff. But if it\u0027s not, then we can expose more of the internals.",
+      "parentUuid": "f6d6671d_d759a0ac",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 43
+      },
+      "revId": "991bbc8a3a10a968e4872439128dad95a5243aa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
