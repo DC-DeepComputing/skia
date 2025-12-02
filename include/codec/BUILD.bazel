@@ -75,6 +75,12 @@ skia_filegroup(
     visibility = ["//src/codec:__pkg__"],
 )
 
+skia_filegroup(
+    name = "rust_jxl_public_hdrs",
+    srcs = ["SkJxlRsDecoder.h"],
+    visibility = ["//src/codec:__pkg__"],
+)
+
 PNG_PUBLIC_HDRS = [
     "SkPngChunkReader.h",
     "SkPngDecoder.h",

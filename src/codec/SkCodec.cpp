@@ -54,7 +54,9 @@
 #include "include/codec/SkJpegDecoder.h"
 #endif
 
-#if defined(SK_CODEC_DECODES_JPEGXL)
+#if defined(SK_CODEC_DECODES_JPEGXL_WITH_RUST)
+#include "include/codec/SkJxlRsDecoder.h"
+#elif defined(SK_CODEC_DECODES_JPEGXL)
 #include "include/codec/SkJpegxlDecoder.h"
 #endif
 
@@ -116,7 +118,9 @@ static std::vector<Decoder>* get_decoders_for_editing() {
             decoders->push_back(SkAvifDecoder::LibAvif::Decoder());
 #endif
 #endif
-#if defined(SK_CODEC_DECODES_JPEGXL)
+#if defined(SK_CODEC_DECODES_JPEGXL_WITH_RUST)
+            decoders->push_back(SkJxlRsDecoder::Decoder());
+#elif defined(SK_CODEC_DECODES_JPEGXL)
             decoders->push_back(SkJpegxlDecoder::Decoder());
 #endif
 #if defined(SK_CODEC_DECODES_RAW)
