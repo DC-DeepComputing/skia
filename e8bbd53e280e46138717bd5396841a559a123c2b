@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c07e7db_6a4b8138",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-02T21:39:07Z",
+      "side": 1,
+      "message": "Yeah I agree and think we could have both lambdas just do `[buffer \u003d sk_ref_sp(this)]`. Drop all the other sk_sp stuff and release calls",
+      "parentUuid": "75eabaa9_a0b71f52",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
@@ -143,6 +167,30 @@
       "side": 1,
       "message": "That\u0027s right, it\u0027s only supposed to happen from the playback (Context?) thread and not on the Recorder thread.",
       "parentUuid": "1356f48d_3a4b6316",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e06a89_d26f94c9",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-02T21:39:07Z",
+      "side": 1,
+      "message": "Okay so we want to make the map call during playback. Like an alternative is up in prepareForReturnToCache we could do something like:\n```\nif enscripten\n   this-\u003easyncMap(...)\nelse\n   this-\u003emap() // this will do a \"synchronous\" map and wait for the async call to finish in the onMap.\n```\n\nBut if we want to actually do async mapping then we can leave this more like you have it.",
+      "parentUuid": "05f24f37_03bb03cb",
       "range": {
         "startLine": 254,
         "startChar": 12,
