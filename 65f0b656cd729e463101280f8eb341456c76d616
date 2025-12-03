@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca635200_707dad13",
+        "filename": "resources/sksl/intrinsics/Reflect.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-03T21:31:42Z",
+      "side": 1,
+      "message": "nit: constructor",
+      "range": {
+        "startLine": 6,
+        "startChar": 18,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3e0194ff_77c6f1d7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "resources/sksl/intrinsics/Reflect.sksl",
+              "range": {
+                "startLine": 6,
+                "startChar": 0,
+                "endLine": 7,
+                "endChar": 0
+              },
+              "replacement": "    // The half() constructor is required to disambiguate from reflect(float, float).\n"
+            }
+          ]
+        }
+      ],
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b73db1ec_11cdc2ac",
+        "filename": "resources/sksl/intrinsics/Refract.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-03T21:31:42Z",
+      "side": 1,
+      "message": "nit: constructor",
+      "range": {
+        "startLine": 6,
+        "startChar": 18,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0712cde_564469f9",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-03T21:31:42Z",
+      "side": 1,
+      "message": "So if I understand it correctly, we explicitly want int and float literals to have the same coercion cost so the compiler cannot tell which to choose, thus forcing the user to explicitly cast (as we discussed)? Otherwise the design of SKSL is that it always chooses the lowest coercion cost?",
+      "range": {
+        "startLine": 962,
+        "startChar": 12,
+        "endLine": 967,
+        "endChar": 83
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ed03f52a_b8671f95",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/ir/SkSLType.cpp",
+              "range": {
+                "startLine": 962,
+                "startChar": 0,
+                "endLine": 968,
+                "endChar": 0
+              },
+              "replacement": "            // NOTE: We allow ${intLiteral} and ${floatLiteral} to coerce freely to compatible\n            // numeric types. This means, for example, coercing a floatLiteral to `half` or `float`\n            // both have a Free cost. This is a deliberate design choice: when only literals are\n            // passed to overloaded functions, SkSL requires an explicit cast to disambiguate\n            // (e.g., `half(1.0)` vs `float(1.0)`). Without this Free cost, the standard numeric\n            // coercion rules would apply. Since `half` has a lower priority than `float`, coercing\n            // a floatLiteral to `half` would be considered a cheaper \"normal\" conversion than\n            // coercing to `float`, leading to `half` being preferentially selected, which is not\n            // the desired behavior for literal types.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
