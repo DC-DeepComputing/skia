@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f3901d5_6010e28f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-12-03T18:13:52Z",
+      "side": 1,
+      "message": "I am hoping this will fix the latest issue with the Android roller:\n\n```\nexternal/skia/src/codec/SkCrabbyAvifCodec.cpp:246:29: error: incomplete type \u0027SkCodecs::ColorProfile\u0027 named in nested name specifier\n  246 |         profile \u003d SkCodecs::ColorProfile::MakeICCProfile(std::move(icc));\n```",
+      "revId": "bb2785554d796f28853d0097fb0407c939d781be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
