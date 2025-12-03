@@ -16,6 +16,57 @@
       "message": "PTAL",
       "revId": "fe05ab7d1263f1b0e5aab99384b1afce8e8ffc65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c70c8c96_ce72755c",
+        "filename": "tests/graphite/PaintParamsTestUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-03T14:46:00Z",
+      "side": 1,
+      "message": "I\u0027ll move this below as it\u0027s not static",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "764a35bb_5e0f6cd4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/graphite/PaintParamsTestUtils.cpp",
+              "range": {
+                "startLine": 297,
+                "startChar": 0,
+                "endLine": 329,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "tests/graphite/PaintParamsTestUtils.cpp",
+              "range": {
+                "startLine": 1389,
+                "startChar": 0,
+                "endLine": 1389,
+                "endChar": 0
+              },
+              "replacement": "\nDrawTypeFlags RandomDrawType(SkRandom* rand) {\n    uint32_t index \u003d rand-\u003enextULessThan(11);\n\n    switch (index) {\n        case 0:\n            return DrawTypeFlags::kBitmapText_Mask;\n        case 1:\n            return DrawTypeFlags::kBitmapText_LCD;\n        case 2:\n            return DrawTypeFlags::kBitmapText_Color;\n        case 3:\n            return DrawTypeFlags::kSDFText;\n        case 4:\n            return DrawTypeFlags::kSDFText_LCD;\n        case 5:\n            return DrawTypeFlags::kDrawVertices;\n        case 6:\n            return DrawTypeFlags::kCircularArc;\n        case 7:\n            return DrawTypeFlags::kAnalyticRRect;\n        case 8:\n            return DrawTypeFlags::kPerEdgeAAQuad;\n        case 9:\n            return DrawTypeFlags::kNonAAFillRect;\n        case 10:\n            return DrawTypeFlags::kNonSimpleShape;\n    }\n\n    SkASSERT(0);\n    return DrawTypeFlags::kNone;\n}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fe05ab7d1263f1b0e5aab99384b1afce8e8ffc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
