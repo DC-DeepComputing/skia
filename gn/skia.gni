@@ -62,6 +62,7 @@ declare_args() {
   skia_use_libjpeg_turbo_encode = true
   skia_use_no_jpeg_encode = false
   skia_use_libjxl_decode = false
+  skia_use_rust_jxl_decode = true  # Enable JXL Rust decoder
   skia_use_libpng_decode = true
   skia_use_libpng_encode = true
   skia_use_no_png_encode = false

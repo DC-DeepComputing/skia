@@ -129,3 +129,20 @@ skia_codec_rust_png_ffi_cxx_bridge_srcs = [ "$_rust/png/FFI.rs" ]
 skia_codec_rust_png_ffi_cpp_hdrs = [ "$_rust/png/FFI.h" ]
 
 skia_codec_rust_png_ffi_crate_root = "$_rust/png/FFI.rs"
+
+# JXL Rust codec sources
+skia_codec_rust_jxl_public = [ "$_include/codec/SkJxlRsDecoder.h" ]
+
+skia_codec_rust_jxl = [
+  "$_src/codec/SkJxlRsCodec.cpp",
+  "$_src/codec/SkJxlRsCodec.h",
+  "$_src/codec/SkJxlRsDecoder.cpp",
+]
+
+skia_codec_rust_jxl_ffi_rs_srcs = [ "$_rust/jxl/FFI.rs" ]
+
+skia_codec_rust_jxl_ffi_cxx_bridge_srcs = [ "$_rust/jxl/FFI.rs" ]
+
+skia_codec_rust_jxl_ffi_cpp_hdrs = [ "$_rust/jxl/FFI.h" ]
+
+skia_codec_rust_jxl_ffi_crate_root = "$_rust/jxl/FFI.rs"

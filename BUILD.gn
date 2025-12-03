@@ -1517,6 +1517,56 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   }
 }
 
+if (skia_use_rust_jxl_decode) {
+  # JXL Rust FFI
+  action("rust_jxl_ffi_bazel_build") {
+    script = "gn/bazel_build.py"
+    sources = [
+      "rust/jxl/BUILD.bazel",
+      "rust/jxl/FFI.h",
+      "rust/jxl/FFI.rs",
+    ]
+    outputs = [
+      "$root_out_dir/librust_jxl_ffi_rs.a",
+      "$root_out_dir/rust/jxl/FFI.rs.h",
+      "$root_out_dir/rust/jxl/FFI.rs.cc",
+    ]
+    args = [
+             "/rust/jxl:*",
+
+             rebase_path("//bazel-bin/rust/jxl/libffi_rs.a", root_build_dir) +
+                 "=" +
+                 rebase_path("$root_out_dir/librust_jxl_ffi_rs.a",
+                             root_build_dir),
+             rebase_path("//bazel-bin/rust/jxl/FFI.rs.h", root_build_dir) +
+                 "=" +
+                 rebase_path("$root_out_dir/rust/jxl/FFI.rs.h", root_build_dir),
+             rebase_path("//bazel-bin/rust/jxl/FFI.rs.cc", root_build_dir) +
+                 "=" +
+                 rebase_path("$root_out_dir/rust/jxl/FFI.rs.cc",
+                             root_build_dir),
+             rebase_path(
+                     "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.168/_virtual_includes/cxx_cc/third_party/rust/cxx/v1/cxx.h",
+                     root_build_dir) + "=third_party/rust/cxx/v1/cxx.h",
+           ] + bazel_args
+  }
+  config("rust_jxl_cxx_bridge_private_config") {
+    include_dirs = [
+      # This entry is needed so that `FFI.rs.cc` can resolve
+      # `#include "rust/jxl/FFI.h"`
+      ".",
+    ]
+  }
+  skia_source_set("rust_jxl_cxx_bridge") {
+    deps = [ ":rust_jxl_ffi_bazel_build" ]
+    public = [ "${root_out_dir}/rust/jxl/FFI.rs.h" ]
+    sources = [ "${root_out_dir}/rust/jxl/FFI.rs.cc" ]
+    libs = [ "$root_out_dir/librust_jxl_ffi_rs.a" ]
+    public_configs = [ ":rust_common_cxx_bridge_public_config" ]
+    configs = [ ":rust_jxl_cxx_bridge_private_config" ]
+  }
+}
+
 config("rust_common_cxx_bridge_public_config") {
   include_dirs = [
     # This is where `rust/.../*.rs.h` and
@@ -1526,7 +1576,8 @@ config("rust_common_cxx_bridge_public_config") {
 }
 
 optional("rust_common") {
-  enabled = skia_use_rust_png_decode || skia_use_rust_png_encode
+  enabled = skia_use_rust_png_decode || skia_use_rust_png_encode ||
+            skia_use_rust_jxl_decode
   public = skia_rust_common_ffi_cpp_hdrs
   sources = skia_rust_common_ffi_cpp_srcs
   public_configs = [ ":rust_common_cxx_bridge_public_config" ]
@@ -1563,6 +1614,23 @@ optional("png_encode_rust") {
     ":rust_common",
     ":rust_cxx_core_bazel_build",
     ":rust_png_cxx_bridge",
+  ]
+  libs = [
+    "$root_out_dir/libcxx_cc.a",
+    "c++",
+  ]
+}
+
+optional("jxl_decode_rust") {
+  public_defines = [ "SK_CODEC_DECODES_JXL_WITH_RUST" ]
+  enabled = skia_use_rust_jxl_decode
+  public = skia_codec_rust_jxl_public
+  sources = skia_codec_rust_jxl
+
+  deps = [
+    ":rust_common",
+    ":rust_cxx_core_bazel_build",
+    ":rust_jxl_cxx_bridge",
   ]
   libs = [
     "$root_out_dir/libcxx_cc.a",
@@ -1692,6 +1760,7 @@ skia_component("skia") {
     ":hsw",
     ":jpeg_decode",
     ":jpegxl_decode",
+    ":jxl_decode_rust",
     ":lasx",
     ":minify_sksl",
     ":ndk_images",
