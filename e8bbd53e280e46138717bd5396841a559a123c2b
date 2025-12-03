@@ -156,6 +156,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "faa06c72_edcc9a74",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-12-03T06:46:27Z",
+      "side": 1,
+      "message": "Also FWIW, Greg mentioned that `prepareForReturnToCache` is not guaranteed to be called on playback thread all the time. If we want a more robust solution, I think we should register a mapping request and trigger them during playback.\n\ne.g.\n```\nbool DawnBuffer::prepareForReturnToCache(...) {\n\tqueueManager-\u003eenquePendingMap(this);\n}\n```\n\n```\nvoid DawnQueueManager::onSubmitToGpu() {\n    // This is guaranteed to be called on playback thread.\n\tfor (auto buffer: fPendingMapBuffer) {\n\t\tbuffer-\u003emap(); // or asyncMap();\n\t}\n}\n```",
+      "parentUuid": "3f0d9821_00aa4941",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
