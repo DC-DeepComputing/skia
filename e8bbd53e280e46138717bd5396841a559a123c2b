@@ -228,6 +228,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27963857_944004e3",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-03T15:58:09Z",
+      "side": 1,
+      "message": "This is a larger question about how threading is handled in the GLES backend, but how is the context handled when another Recorder thread tries to create a DawnBuffer or DawnTexture? Do we switch thread the GL context is current on?",
+      "parentUuid": "16140c7f_5f901d47",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
