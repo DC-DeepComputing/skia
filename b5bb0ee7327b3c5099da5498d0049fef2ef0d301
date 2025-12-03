@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "076af254_c9f332c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2025-12-03T20:14:27Z",
+      "side": 1,
+      "message": "jamesgk/nicolette I saw you did a similar update in https://review.skia.org/996957. I ran into viewer not building again with JVM 25 and bumped gradle version.",
+      "revId": "b5bb0ee7327b3c5099da5498d0049fef2ef0d301",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
