@@ -268,7 +268,9 @@ private:
     std::string assembleIntrinsicCall(const FunctionCall& call,
                                       IntrinsicKind kind,
                                       Precedence parentPrecedence);
-    std::string assembleSimpleIntrinsic(std::string_view intrinsicName, const FunctionCall& call);
+    std::string assembleSimpleIntrinsic(std::string_view intrinsicName,
+                                        const FunctionCall& call,
+                                        bool forceHighPrecision=false);
     std::string assembleUnaryOpIntrinsic(Operator op,
                                          const FunctionCall& call,
                                          Precedence parentPrecedence);
@@ -386,9 +388,14 @@ private:
 
     // These fields track whether we have written the polyfill for `inverse()` for a given matrix
     // type.
-    bool fWrittenInverse2 = false;
-    bool fWrittenInverse3 = false;
-    bool fWrittenInverse4 = false;
+    struct InversePolyfills {
+        bool fWritten2x2 = false;
+        bool fWritten3x3 = false;
+        bool fWritten4x4 = false;
+    };
+    InversePolyfills fF16Polyfills;
+    InversePolyfills fF32Polyfills;
+
     PrettyPrint fPrettyPrint;
     IncludeSyntheticCode fGenSyntheticCode;
 
@@ -737,14 +744,13 @@ std::string_view address_space_to_str(PtrAddressSpace addressSpace) {
     return "unsupported";
 }
 
-std::string_view to_scalar_type(const Type& type) {
+std::string_view to_scalar_type(const Type& type, bool f16Available) {
     SkASSERT(type.typeKind() == Type::TypeKind::kScalar);
     switch (type.numberKind()) {
-        // Floating-point numbers in WebGPU currently always have 32-bit footprint and
-        // relaxed-precision is not supported without extensions. f32 is the only floating-point
-        // number type in WGSL (see the discussion on https://github.com/gpuweb/gpuweb/issues/658).
         case Type::NumberKind::kFloat:
-            return "f32";
+            // Floating point numbers can map to f32 or f16 depending on whether or not the
+            // shader-f16 wgsl extension is supported.
+            return type.highPrecision() || !f16Available ? "f32" : "f16";
         case Type::NumberKind::kSigned:
             return "i32";
         case Type::NumberKind::kUnsigned:
@@ -761,22 +767,28 @@ std::string_view to_scalar_type(const Type& type) {
 
 // Convert a SkSL type to a WGSL type. Handles all plain types except structure types
 // (see https://www.w3.org/TR/WGSL/#plain-types-section).
-std::string to_wgsl_type(const Context& context, const Type& raw, const Layout* layout = nullptr) {
+std::string to_wgsl_type(const Context& context,
+                         const Type& raw,
+                         const Layout* layout = nullptr,
+                         bool forceHighPrecision = false) {
     const Type& type = raw.resolve().scalarTypeForLiteral();
+    const bool f16Available = !(context.fConfig->fSettings.fForceHighPrecision ||
+                                forceHighPrecision);
+
     switch (type.typeKind()) {
         case Type::TypeKind::kScalar:
-            return std::string(to_scalar_type(type));
+            return std::string(to_scalar_type(type, f16Available));
 
         case Type::TypeKind::kAtomic:
             SkASSERT(type.matches(*context.fTypes.fAtomicUInt));
             return "atomic<u32>";
 
         case Type::TypeKind::kVector: {
-            std::string_view ct = to_scalar_type(type.componentType());
+            std::string_view ct = to_scalar_type(type.componentType(), f16Available);
             return String::printf("vec%d<%.*s>", type.columns(), (int)ct.length(), ct.data());
         }
         case Type::TypeKind::kMatrix: {
-            std::string_view ct = to_scalar_type(type.componentType());
+            std::string_view ct = to_scalar_type(type.componentType(), f16Available);
             return String::printf("mat%dx%d<%.*s>",
                                   type.columns(), type.rows(), (int)ct.length(), ct.data());
         }
@@ -810,6 +822,7 @@ std::string to_wgsl_type(const Context& context, const Type& raw, const Layout* 
                 }
             }
             if (type.matches(*context.fTypes.fReadOnlyTexture2D)) {
+                // FIXME texture precision here.
                 return "texture_2d<f32>";
             }
             break;
@@ -876,7 +889,7 @@ std::string_view wgsl_builtin_type(WGSLCodeGenerator::Builtin builtin) {
         case Builtin::kPosition:
             return "vec4<f32>";
         case Builtin::kLastFragColor:
-            return "vec4<f32>";
+            return "vec4<f32>"; // FIXME?
         case Builtin::kFrontFacing:
             return "bool";
         case Builtin::kSampleIndex:
@@ -1776,7 +1789,7 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl
                 // Create parameters for both the texture and associated sampler.
                 this->write(param.name());
                 this->write(kTextureSuffix);
-                this->write(": texture_2d<f32>, ");
+                this->write(": texture_2d<f32>, "); // FIXME texture precision
                 this->write(param.name());
                 this->write(kSamplerSuffix);
                 this->write(": sampler");
@@ -1829,8 +1842,9 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
         // Synthesize a basic entrypoint which just calls straight through to main.
         // This is only used by skslc and just needs to pass the WGSL validator; Skia won't ever
         // emit functions like this.
-        this->writeLine("@fragment fn main(@location(0) _coords: vec2<f32>) -> "
-                                     "@location(0) vec4<f32> {");
+        this->write("@fragment fn main(@location(0) _coords: vec2<f32>) -> @location(0) ");
+        this->write(to_wgsl_type(fContext, main.declaration().returnType()));
+        this->writeLine(" {");
         ++fIndentation;
         this->writeLine("return _skslMain(_coords);");
         --fIndentation;
@@ -2860,7 +2874,8 @@ static bool all_arguments_constant(const ExpressionArray& arguments) {
 }
 
 std::string WGSLCodeGenerator::assembleSimpleIntrinsic(std::string_view intrinsicName,
-                                                       const FunctionCall& call) {
+                                                       const FunctionCall& call,
+                                                       bool forceHighPrecision) {
     // Invoke the function, passing each function argument.
     std::string expr = std::string(intrinsicName);
     expr.push_back('(');
@@ -2871,7 +2886,15 @@ std::string WGSLCodeGenerator::assembleSimpleIntrinsic(std::string_view intrinsi
         expr += separator();
 
         std::string argument = this->assembleExpression(*args[index], Precedence::kSequence);
-        if (args[index]->type().isAtomic()) {
+        if (forceHighPrecision && !args[index]->type().highPrecision()) {
+            // Use a scratch-let and cast to high precision
+            SkASSERT(!args[index]->type().isAtomic());
+            const std::string highPType = to_wgsl_type(fContext,
+                                                       args[index]->type(),
+                                                       /*layout=*/nullptr,
+                                                       /*forceHighPrecision=*/true);
+            expr += this->writeScratchLet(highPType + "(" + argument + ")");
+        } else if (args[index]->type().isAtomic()) {
             // WGSL passes atomic values to intrinsics as pointers.
             expr += '&';
             expr += argument;
@@ -2889,7 +2912,13 @@ std::string WGSLCodeGenerator::assembleSimpleIntrinsic(std::string_view intrinsi
         this->writeLine(";");
         return std::string();
     } else {
-        return this->writeScratchLet(expr);
+        // Wrap the call expression in a cast back to its low precision type if necessary.
+        if (forceHighPrecision && !call.type().highPrecision()) {
+            const std::string lowPType = to_wgsl_type(fContext, call.type());
+            return this->writeScratchLet(lowPType + "(" + expr + ")");
+        } else {
+            return this->writeScratchLet(expr);
+        }
     }
 }
 
@@ -3091,12 +3120,16 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             const char* name = (arguments.size() == 1) ? "atan" : "atan2";
             return this->assembleSimpleIntrinsic(name, call);
         }
+
+        // Derivative functions in WGSL are only defined for full precision types
         case k_dFdx_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("dpdx", call);
+            return this->assembleSimpleIntrinsic("dpdx", call, /*forceHighPrecision=*/true);
 
         case k_dFdy_IntrinsicKind:
-            // TODO(b/294274678): apply RTFlip here
-            return this->assembleSimpleIntrinsic("dpdy", call);
+            // WSGL is only generated for Graphite, which does not use RTFlip so there's no need
+            // to flip the Y derivatives either.
+            SkASSERT(fContext.fConfig->fSettings.fForceNoRTFlip);
+            return this->assembleSimpleIntrinsic("dpdy", call, /*forceHighPrecision=*/true);
 
         case k_dot_IntrinsicKind: {
             if (arguments[0]->type().isScalar()) {
@@ -3356,95 +3389,101 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
     }
 }
 
-static constexpr char kInverse2x2[] =
-     "fn mat2_inverse(m: mat2x2<f32>) -> mat2x2<f32> {"
-"\n"     "return mat2x2<f32>(m[1].y, -m[0].y, -m[1].x, m[0].x) * (1/determinant(m));"
-"\n" "}"
-"\n";
+static std::string generate_inverse2x2(const char* scalarName) {
+    return SkSL::String::printf(
+            "fn mat2_inverse(m: mat2x2<%s>) -> mat2x2<%s> {\n"
+                "return mat2x2<%s>(m[1].y, -m[0].y, -m[1].x, m[0].x) * (1/determinant(m));\n"
+            "}\n", scalarName, scalarName, scalarName);
+}
 
-static constexpr char kInverse3x3[] =
-     "fn mat3_inverse(m: mat3x3<f32>) -> mat3x3<f32> {"
-"\n"     "let a00 = m[0].x; let a01 = m[0].y; let a02 = m[0].z;"
-"\n"     "let a10 = m[1].x; let a11 = m[1].y; let a12 = m[1].z;"
-"\n"     "let a20 = m[2].x; let a21 = m[2].y; let a22 = m[2].z;"
-"\n"     "let b01 =  a22*a11 - a12*a21;"
-"\n"     "let b11 = -a22*a10 + a12*a20;"
-"\n"     "let b21 =  a21*a10 - a11*a20;"
-"\n"     "let det = a00*b01 + a01*b11 + a02*b21;"
-"\n"     "return mat3x3<f32>(b01, (-a22*a01 + a02*a21), ( a12*a01 - a02*a11),"
-"\n"                        "b11, ( a22*a00 - a02*a20), (-a12*a00 + a02*a10),"
-"\n"                        "b21, (-a21*a00 + a01*a20), ( a11*a00 - a01*a10)) * (1/det);"
-"\n" "}"
-"\n";
+static std::string generate_inverse3x3(const char* scalarName) {
+    return SkSL::String::printf(
+            "fn mat3_inverse(m: mat3x3<%s>) -> mat3x3<%s> {\n"
+                "let a00 = m[0].x; let a01 = m[0].y; let a02 = m[0].z;\n"
+                "let a10 = m[1].x; let a11 = m[1].y; let a12 = m[1].z;\n"
+                "let a20 = m[2].x; let a21 = m[2].y; let a22 = m[2].z;\n"
+                "let b01 =  a22*a11 - a12*a21;\n"
+                "let b11 = -a22*a10 + a12*a20;\n"
+                "let b21 =  a21*a10 - a11*a20;\n"
+                "let det = a00*b01 + a01*b11 + a02*b21;\n"
+                "return mat3x3<%s>(b01, (-a22*a01 + a02*a21), ( a12*a01 - a02*a11),\n"
+                                  "b11, ( a22*a00 - a02*a20), (-a12*a00 + a02*a10),\n"
+                                  "b21, (-a21*a00 + a01*a20), ( a11*a00 - a01*a10)) * (1/det);\n"
+            "}\n", scalarName, scalarName, scalarName);
+}
 
-static constexpr char kInverse4x4[] =
-     "fn mat4_inverse(m: mat4x4<f32>) -> mat4x4<f32>{"
-"\n"     "let a00 = m[0].x; let a01 = m[0].y; let a02 = m[0].z; let a03 = m[0].w;"
-"\n"     "let a10 = m[1].x; let a11 = m[1].y; let a12 = m[1].z; let a13 = m[1].w;"
-"\n"     "let a20 = m[2].x; let a21 = m[2].y; let a22 = m[2].z; let a23 = m[2].w;"
-"\n"     "let a30 = m[3].x; let a31 = m[3].y; let a32 = m[3].z; let a33 = m[3].w;"
-"\n"     "let b00 = a00*a11 - a01*a10;"
-"\n"     "let b01 = a00*a12 - a02*a10;"
-"\n"     "let b02 = a00*a13 - a03*a10;"
-"\n"     "let b03 = a01*a12 - a02*a11;"
-"\n"     "let b04 = a01*a13 - a03*a11;"
-"\n"     "let b05 = a02*a13 - a03*a12;"
-"\n"     "let b06 = a20*a31 - a21*a30;"
-"\n"     "let b07 = a20*a32 - a22*a30;"
-"\n"     "let b08 = a20*a33 - a23*a30;"
-"\n"     "let b09 = a21*a32 - a22*a31;"
-"\n"     "let b10 = a21*a33 - a23*a31;"
-"\n"     "let b11 = a22*a33 - a23*a32;"
-"\n"     "let det = b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06;"
-"\n"     "return mat4x4<f32>(a11*b11 - a12*b10 + a13*b09,"
-"\n"                        "a02*b10 - a01*b11 - a03*b09,"
-"\n"                        "a31*b05 - a32*b04 + a33*b03,"
-"\n"                        "a22*b04 - a21*b05 - a23*b03,"
-"\n"                        "a12*b08 - a10*b11 - a13*b07,"
-"\n"                        "a00*b11 - a02*b08 + a03*b07,"
-"\n"                        "a32*b02 - a30*b05 - a33*b01,"
-"\n"                        "a20*b05 - a22*b02 + a23*b01,"
-"\n"                        "a10*b10 - a11*b08 + a13*b06,"
-"\n"                        "a01*b08 - a00*b10 - a03*b06,"
-"\n"                        "a30*b04 - a31*b02 + a33*b00,"
-"\n"                        "a21*b02 - a20*b04 - a23*b00,"
-"\n"                        "a11*b07 - a10*b09 - a12*b06,"
-"\n"                        "a00*b09 - a01*b07 + a02*b06,"
-"\n"                        "a31*b01 - a30*b03 - a32*b00,"
-"\n"                        "a20*b03 - a21*b01 + a22*b00) * (1/det);"
-"\n" "}"
-"\n";
+static std::string generate_inverse4x4(const char* scalarName) {
+    return SkSL::String::printf(
+            "fn mat4_inverse(m: mat4x4<%s>) -> mat4x4<%s>{\n"
+                "let a00 = m[0].x; let a01 = m[0].y; let a02 = m[0].z; let a03 = m[0].w;\n"
+                "let a10 = m[1].x; let a11 = m[1].y; let a12 = m[1].z; let a13 = m[1].w;\n"
+                "let a20 = m[2].x; let a21 = m[2].y; let a22 = m[2].z; let a23 = m[2].w;\n"
+                "let a30 = m[3].x; let a31 = m[3].y; let a32 = m[3].z; let a33 = m[3].w;\n"
+                "let b00 = a00*a11 - a01*a10;\n"
+                "let b01 = a00*a12 - a02*a10;\n"
+                "let b02 = a00*a13 - a03*a10;\n"
+                "let b03 = a01*a12 - a02*a11;\n"
+                "let b04 = a01*a13 - a03*a11;\n"
+                "let b05 = a02*a13 - a03*a12;\n"
+                "let b06 = a20*a31 - a21*a30;\n"
+                "let b07 = a20*a32 - a22*a30;\n"
+                "let b08 = a20*a33 - a23*a30;\n"
+                "let b09 = a21*a32 - a22*a31;\n"
+                "let b10 = a21*a33 - a23*a31;\n"
+                "let b11 = a22*a33 - a23*a32;\n"
+                "let det = b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06;\n"
+                "return mat4x4<%s>(a11*b11 - a12*b10 + a13*b09,\n"
+                                  "a02*b10 - a01*b11 - a03*b09,\n"
+                                  "a31*b05 - a32*b04 + a33*b03,\n"
+                                  "a22*b04 - a21*b05 - a23*b03,\n"
+                                  "a12*b08 - a10*b11 - a13*b07,\n"
+                                  "a00*b11 - a02*b08 + a03*b07,\n"
+                                  "a32*b02 - a30*b05 - a33*b01,\n"
+                                  "a20*b05 - a22*b02 + a23*b01,\n"
+                                  "a10*b10 - a11*b08 + a13*b06,\n"
+                                  "a01*b08 - a00*b10 - a03*b06,\n"
+                                  "a30*b04 - a31*b02 + a33*b00,\n"
+                                  "a21*b02 - a20*b04 - a23*b00,\n"
+                                  "a11*b07 - a10*b09 - a12*b06,\n"
+                                  "a00*b09 - a01*b07 + a02*b06,\n"
+                                  "a31*b01 - a30*b03 - a32*b00,\n"
+                                  "a20*b03 - a21*b01 + a22*b00) * (1/det);\n"
+            "}\n", scalarName, scalarName, scalarName);
+}
 
 std::string WGSLCodeGenerator::assembleInversePolyfill(const FunctionCall& call) {
     const ExpressionArray& arguments = call.arguments();
     const Type& type = arguments.front()->type();
 
     // The `inverse` intrinsic should only accept a single-argument square matrix.
-    // Once we implement f16 support, these polyfills will need to be updated to support `hmat`;
-    // for the time being, all floats in WGSL are f32, so we don't need to worry about precision.
     SkASSERT(arguments.size() == 1);
     SkASSERT(type.isMatrix());
     SkASSERT(type.rows() == type.columns());
 
+    const bool useF16 = !fContext.fConfig->fSettings.fForceHighPrecision &&
+                        !type.highPrecision();
+    InversePolyfills* polyfill = useF16 ? &fF16Polyfills : &fF32Polyfills;
+    const char* typeName = useF16 ? "f16" : "f32";
+
     switch (type.slotCount()) {
         case 4:
-            if (!fWrittenInverse2) {
-                fWrittenInverse2 = true;
-                fHeader.writeText(kInverse2x2);
+            if (!polyfill->fWritten2x2) {
+                polyfill->fWritten2x2 = true;
+                fHeader.writeText(generate_inverse2x2(typeName).c_str());
             }
             return this->assembleSimpleIntrinsic("mat2_inverse", call);
 
         case 9:
-            if (!fWrittenInverse3) {
-                fWrittenInverse3 = true;
-                fHeader.writeText(kInverse3x3);
+            if (!polyfill->fWritten3x3) {
+                polyfill->fWritten3x3 = true;
+                fHeader.writeText(generate_inverse3x3(typeName).c_str());
             }
             return this->assembleSimpleIntrinsic("mat3_inverse", call);
 
         case 16:
-            if (!fWrittenInverse4) {
-                fWrittenInverse4 = true;
-                fHeader.writeText(kInverse4x4);
+            if (!polyfill->fWritten4x4) {
+                polyfill->fWritten4x4 = true;
+                fHeader.writeText(generate_inverse4x4(typeName).c_str());
             }
             return this->assembleSimpleIntrinsic("mat4_inverse", call);
 
@@ -4172,6 +4211,7 @@ void WGSLCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclaration& d)
         // If the texture binding was unassigned, provide a scratch value (for golden-output tests).
         int textureLocation = var.layout().fTexture >= 0 ? var.layout().fTexture
                                                          : 10000 + fScratchCount++;
+                                                         // FIXME precision
         this->writeTextureOrSampler(var, textureLocation, kTextureSuffix, "texture_2d<f32>");
         return;
     }
@@ -4297,6 +4337,10 @@ void WGSLCodeGenerator::writeEnables() {
     this->writeLine("diagnostic(off, derivative_uniformity);");
     this->writeLine("diagnostic(off, chromium.unreachable_code);");
 
+    if (!fContext.fConfig->fSettings.fForceHighPrecision) {
+        // Always turn on f16, even if technically a given program might not use half values.
+        this->writeLine("enable f16;");
+    }
     if (fRequirements.fPixelLocalExtension) {
         this->writeLine("enable chromium_experimental_pixel_local;");
     }

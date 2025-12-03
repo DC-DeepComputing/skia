@@ -300,6 +300,7 @@ static std::unique_ptr<Expression> zero_expression(const Context& context,
                                                    Position pos,
                                                    const Type& type) {
     std::unique_ptr<Expression> zero = Literal::Make(pos, 0.0, &type.componentType());
+    SkASSERT(zero);
     if (type.isScalar()) {
         return zero;
     }

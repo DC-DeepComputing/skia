@@ -23,7 +23,8 @@ static bool validate_wgsl(ErrorReporter& reporter,
     // Enable the WGSL optional features that Skia might rely on.
     tint::wgsl::reader::Options options;
     for (auto extension : {tint::wgsl::Extension::kChromiumExperimentalPixelLocal,
-                           tint::wgsl::Extension::kDualSourceBlending}) {
+                           tint::wgsl::Extension::kDualSourceBlending,
+                           tint::wgsl::Extension::kF16}) {
         options.allowed_features.extensions.insert(extension);
     }
     options.allowed_features.features.insert(
@@ -35,18 +36,18 @@ static bool validate_wgsl(ErrorReporter& reporter,
 
     if (program.Diagnostics().ContainsErrors()) {
         // The program isn't valid WGSL.
+        tint::diag::Formatter diagFormatter;
+        std::string diagOutput = diagFormatter.Format(program.Diagnostics()).Plain();
+        diagOutput += "\n";
+        diagOutput += wgsl;
         if (appendError) {
             // Report the error via SkDEBUGFAIL and append the generated program for
             // ease of debugging. We don't do this for our golden test output because
             // it can change too often
-            tint::diag::Formatter diagFormatter;
-            std::string diagOutput = diagFormatter.Format(program.Diagnostics()).Plain();
-            diagOutput += "\n";
-            diagOutput += wgsl;
             SkDEBUGFAILF("%s", diagOutput.c_str());
         } else {
             reporter.error(Position(),
-                           std::string("Tint compilation failed.\n\n") + std::string(wgsl));
+                           std::string("Tint compilation failed.\n\n") + diagOutput);
         }
         return false;
     }

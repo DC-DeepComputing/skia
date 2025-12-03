@@ -1,0 +1,10 @@
+/*#pragma settings ForceHighPrecision*/
+// ForceHighPrecision is set by DawnGraphicsPipeline when shader-f16 feature is not present
+
+uniform float unknownInput;
+
+void main() {
+    half x = half(unknownInput);
+    half4 y = half4(x);
+    sk_FragColor = y;
+}

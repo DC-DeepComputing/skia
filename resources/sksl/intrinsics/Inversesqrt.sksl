@@ -4,16 +4,18 @@ uniform half4 colorGreen, colorRed;
 half4 main(float2 coords) {
     const half4 constVal = half4(1, 4, 16, 64);
     const half4 negativeVal = half4(-1, -4, -16, -64);  // should not optimize away
-    return (inversesqrt(inputVal.x)       == expected.x     &&
-            inversesqrt(inputVal.xy)      == expected.xy    &&
-            inversesqrt(inputVal.xyz)     == expected.xyz   &&
-            inversesqrt(inputVal.xyzw)    == expected.xyzw  &&
-            inversesqrt(constVal.x)       == expected.x     &&
-            inversesqrt(constVal.xy)      == expected.xy    &&
-            inversesqrt(constVal.xyz)     == expected.xyz   &&
-            inversesqrt(constVal.xyzw)    == expected.xyzw  &&
-            inversesqrt(negativeVal.x)    == expected.x     &&
-            inversesqrt(negativeVal.xy)   == expected.xy    &&
-            inversesqrt(negativeVal.xyz)  == expected.xyz   &&
-            inversesqrt(negativeVal.xyzw) == expected.xyzw) ? colorGreen : colorRed;
+
+    bool v =      inversesqrt(inputVal.x)       == expected.x;
+         v = v && inversesqrt(inputVal.xy)      == expected.xy;
+         v = v && inversesqrt(inputVal.xyz)     == expected.xyz;
+         v = v && inversesqrt(inputVal.xyzw)    == expected.xyzw;
+         v = v && inversesqrt(constVal.x)       == expected.x;
+         v = v && inversesqrt(constVal.xy)      == expected.xy;
+         v = v && inversesqrt(constVal.xyz)     == expected.xyz;
+         v = v && inversesqrt(constVal.xyzw)    == expected.xyzw;
+         v = v && inversesqrt(negativeVal.x)    == expected.x;
+         v = v && inversesqrt(negativeVal.xy)   == expected.xy;
+         v = v && inversesqrt(negativeVal.xyz)  == expected.xyz;
+         v = v && inversesqrt(negativeVal.xyzw) == expected.xyzw;
+    return v ? colorGreen : colorRed;
 }
