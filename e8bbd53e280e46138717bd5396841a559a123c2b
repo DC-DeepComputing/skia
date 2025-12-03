@@ -300,6 +300,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f5169f2_86dad278",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-12-03T16:32:50Z",
+      "side": 1,
+      "message": "Yes, a shadow copy before 1st \"real\" map in Dawn/GLES is acceptable.",
+      "parentUuid": "cab69e95_5db27ae1",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
