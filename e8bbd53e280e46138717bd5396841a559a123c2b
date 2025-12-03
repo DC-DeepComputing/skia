@@ -252,6 +252,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed4176dd_a6f4202c",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-12-03T16:22:39Z",
+      "side": 1,
+      "message": "\u003e how is the context handled when another Recorder thread tries to create a DawnBuffer or DawnTexture? \n\nWe would defer the creations of GL buffers/GL textures until `Queue::submit` is called. This is one approach to keep all GL calls on the playback thread. This is one direction we plan to go in Dawn/GLES for both Clank \u0026 WebView. And Stephen would prefer to avoid shadow copies \u0026 context switching between threads in this approach.\n\nAnw, my suggestion for moving map to `QueueManager::onSubmitToGpu` might not be necessary in this CL. It could be done separately. The suggestion is only for making sure the deferred approach can work 100% and no shadow copies, no context switching are needed.",
+      "parentUuid": "27963857_944004e3",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
