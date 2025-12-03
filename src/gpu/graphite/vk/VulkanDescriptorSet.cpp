@@ -23,9 +23,14 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
     dsAllocateInfo.pSetLayouts = pool->descSetLayout();
 
     VkResult result;
-    VULKAN_CALL_RESULT(
-            ctxt, result, AllocateDescriptorSets(ctxt->device(), &dsAllocateInfo, &descSet));
-    if (result != VK_SUCCESS) {
+    SkASSERT(pool->descPool() != nullptr);
+    SkASSERT(pool->descSetLayout() != nullptr);
+    VULKAN_CALL_RESULT_NOCHECK(ctxt->interface(),
+                               result,
+                               AllocateDescriptorSets(ctxt->device(), &dsAllocateInfo, &descSet));
+    if (result != VK_SUCCESS)
+        SKGPU_LOG_E("VkResult = %i", (int)result);
+        // TODO: Print layout info?
         return nullptr;
     }
     return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
