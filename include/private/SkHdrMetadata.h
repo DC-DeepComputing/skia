@@ -150,6 +150,9 @@ class SK_API Agtm {
      */
     static std::unique_ptr<Agtm> MakeClamp(float hdrReferenceWhite, float baselineHdrHeadroom);
 
+    Agtm() = default;
+    Agtm(const Agtm&) = delete;
+    Agtm& operator=(const Agtm&) = delete;
     virtual ~Agtm() = default;
 
     /**
