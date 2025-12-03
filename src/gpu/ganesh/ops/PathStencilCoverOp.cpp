@@ -307,34 +307,36 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
                                                                  fPathCount,
                                                                  &fBBoxBuffer,
                                                                  &fBBoxBaseInstance);
-        SkDEBUGCODE(int pathCount = 0;)
-        for (auto [pathMatrix, path, color] : *fPathDrawList) {
-            SkDEBUGCODE(auto end = vertexWriter.mark(instanceStride));
-            vertexWriter << pathMatrix.getScaleX()
-                         << pathMatrix.getSkewY()
-                         << pathMatrix.getSkewX()
-                         << pathMatrix.getScaleY()
-                         << pathMatrix.getTranslateX()
-                         << pathMatrix.getTranslateY();
-            if (path.isInverseFillType()) {
-                // Fill the entire backing store to make sure we clear every stencil value back to
-                // 0. If there is a scissor it will have already clipped the stencil draw.
-                auto rtBounds =
-                        flushState->writeView().asRenderTargetProxy()->backingStoreBoundsRect();
-                SkASSERT(rtBounds == fOriginalDrawBounds);
-                SkRect pathSpaceRTBounds;
-                if (SkMatrixPriv::InverseMapRect(pathMatrix, &pathSpaceRTBounds, rtBounds)) {
-                    vertexWriter << pathSpaceRTBounds;
+        if (vertexWriter) {
+            SkDEBUGCODE(int pathCount = 0;)
+            for (auto [pathMatrix, path, color] : *fPathDrawList) {
+                SkDEBUGCODE(auto end = vertexWriter.mark(instanceStride));
+                vertexWriter << pathMatrix.getScaleX()
+                             << pathMatrix.getSkewY()
+                             << pathMatrix.getSkewX()
+                             << pathMatrix.getScaleY()
+                             << pathMatrix.getTranslateX()
+                             << pathMatrix.getTranslateY();
+                if (path.isInverseFillType()) {
+                    // Fill the entire backing store to make sure we clear every stencil value back
+                    // to 0. If there is a scissor it will have already clipped the stencil draw.
+                    auto rtBounds =
+                            flushState->writeView().asRenderTargetProxy()->backingStoreBoundsRect();
+                    SkASSERT(rtBounds == fOriginalDrawBounds);
+                    SkRect pathSpaceRTBounds;
+                    if (SkMatrixPriv::InverseMapRect(pathMatrix, &pathSpaceRTBounds, rtBounds)) {
+                        vertexWriter << pathSpaceRTBounds;
+                    } else {
+                        vertexWriter << path.getBounds();
+                    }
                 } else {
                     vertexWriter << path.getBounds();
                 }
-            } else {
-                vertexWriter << path.getBounds();
+                SkASSERT(vertexWriter.mark() == end);
+                SkDEBUGCODE(++pathCount;)
             }
-            SkASSERT(vertexWriter.mark() == end);
-            SkDEBUGCODE(++pathCount;)
+            SkASSERT(pathCount == fPathCount);
         }
-        SkASSERT(pathCount == fPathCount);
     }
 
     if (!flushState->caps().shaderCaps()->fVertexIDSupport) {

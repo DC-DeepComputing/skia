@@ -89,6 +89,9 @@ public:
 
     void write(const void* src, size_t bytes) {
         auto s = this->slice(bytes);
+        // attempting to write to a null location
+        // copying s into src, which is apparenly nullptr
+        SkASSERT(src);
         memcpy(s.data(), src, s.size_bytes());
     }
 
@@ -318,6 +321,7 @@ private:
 template <typename T>
 inline VertexWriter& operator<<(VertexWriter& w, const T& val) {
     static_assert(std::is_trivially_copyable<T>::value, "");
+    // val MUST be a valid value... so why is using its address leading to writing to a null area?
     w.write(&val, sizeof(T));
     return w;
 }
