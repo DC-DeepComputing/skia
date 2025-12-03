@@ -180,6 +180,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "328e0b53_7a2f8345",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-03T15:24:30Z",
+      "side": 1,
+      "message": "We may have to do some work to get access to the list of buffers we want to map at the time we call submit, but could probably be done. Also is it safe to call \"map\" on the buffer while it is being submitted for GPU work? I guess as long as we don\u0027t ever actually try to use the returned mapped pointer until the GPU is done, it should be fine.\n\nAs Quyen said, prepareForReturnToCache isn\u0027t guaranteed to be called on the playback thread. The easiest example where it wouldn\u0027t is if Chrome starts holding onto Recordings for reuse, the Recording could be holding the last ref and thus we\u0027d call prepareForReturnToCache on the thread we delete the Recording. But in the current system and probably also true for the future, the vast majority of calls should happen on the playback thread when we see that a previous submit has finished on the GPU. So doing it in prepareForReturnToCache will give us the behavior we want 99% (maybe 100% today??) of the time and it may not have any noticeable impact for the 1% it doesn\u0027t",
+      "parentUuid": "faa06c72_edcc9a74",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
