@@ -9,7 +9,7 @@
 #define skgpu_graphite_Glyph_DEFINED
 
 #include "src/core/SkGlyph.h"
-#include "src/gpu/graphite/AtlasTypes.h"
+#include "src/gpu/graphite/DrawAtlas.h"
 
 namespace skgpu::graphite {
 
@@ -23,7 +23,7 @@ public:
     SkPackedGlyphID glyphID() const { return fPackedID; }
 
     const SkPackedGlyphID fPackedID;
-    AtlasLocator fAtlasLocator;
+    DrawAtlas::AtlasLocator fAtlasLocator;
 };
 
 }  // namespace skgpu::graphite

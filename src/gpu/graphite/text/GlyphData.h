@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "src/gpu/graphite/DrawAtlas.h"
 #include "src/gpu/graphite/text/Glyph.h"
 #include "src/text/gpu/BackendGlyphData.h"
 
@@ -77,8 +78,8 @@ private:
 
     int fGlyphCount;
     sk_sp<TextStrike> fTextStrike;
-    uint64_t fAtlasGeneration{AtlasGenerationCounter::kInvalidGeneration};
-    BulkUsePlotUpdater fBulkUseUpdater;
+    uint64_t fAtlasGeneration{DrawAtlas::GenerationCounter::kInvalidGeneration};
+    DrawAtlas::BulkUsePlotUpdater fBulkUseUpdater;
 
     // Flexible array member: variable-length array of Glyph pointers allocated inline
     // Ideally, this would be empty [] or [0] but that triggers a warning on MSVC
