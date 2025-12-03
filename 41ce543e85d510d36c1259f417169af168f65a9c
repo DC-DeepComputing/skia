@@ -1194,6 +1194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97c6d6aa_16b4b17c",
+        "filename": "experimental/rust_bmp/ffi/BUILD.bazel",
+        "patchSetId": 28
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-03T22:07:11Z",
+      "side": 1,
+      "message": "Thanks you for your understanding and patiently dealing with the way multiple repos and build systems need to be supported here.  I understand that this is not the most glamorous work.  And I understand that ideally things would be organized differently to avoid these rough edges.",
+      "parentUuid": "97f9bc77_d23527e7",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 6
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "620a0463_f8fcaa3c",
         "filename": "experimental/rust_bmp/ffi/FFI.rs",
         "patchSetId": 28
@@ -1264,6 +1288,30 @@
       "side": 1,
       "message": "Yes, it has a top_down field on BMPDecoder struct, however it is currently private and not accessible. I will add a TODO comment here and raise a PR later in image crate to expose it somehow.",
       "parentUuid": "ef17287c_409f997b",
+      "range": {
+        "startLine": 169,
+        "startChar": 8,
+        "endLine": 169,
+        "endChar": 10
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63cc4263_ca3a4345",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 28
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-03T22:07:11Z",
+      "side": 1,
+      "message": "I am not sure if a PR is needed.  From the perspective of the caller/user of `SkBmpRustCodec` the order is always top-down, right?  Because I assume that the `image` crate internally reverses the order and always returns the rows in the top-down order (even if the BMP is encoded using a different order).",
+      "parentUuid": "3f6e6931_cacae6cf",
       "range": {
         "startLine": 169,
         "startChar": 8,
