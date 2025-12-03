@@ -17,7 +17,6 @@
 #include "include/private/base/SkDebug.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/AtlasProvider.h"
-#include "src/gpu/graphite/AtlasTypes.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DrawOrder.h"
