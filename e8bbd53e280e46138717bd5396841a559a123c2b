@@ -324,6 +324,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ed36ab6_b9d13b47",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-03T16:49:35Z",
+      "side": 1,
+      "message": "At a high-level, I\u0027m open to changing how the DawnBuffer mapping flow works if it leads to a simpler implementation in Graphite. But I don\u0027t think (for the reasons Greg has outlined), relying on Graphite to hold things in exactly the right way to meet Dawn-GLES\u0027s threading requirements is a good path forward. Graphite should operate on capabilities that Dawn exposes or Dawn should hide backend differences.\n\nSo viable paths forward for handling multithreaded data writing for GLES in Dawn that I think could work with these constraints are:\n\n1. Dawn exposes a capability for multithreaded resource creation and Graphite takes over all the CPU shadow copy responsibilities and handles creating DawnBuffers and DawnTextures only on submit(). It\u0027s still brittle in the sense that Chrome has to then use the Context on the GL main thread.\n\n2. Dawn-GLES handles shadow copies and other multithreaded resource creation as efficiently as possible and hides the details from Graphite. I believe this can be done in a way that is competitive with Ganesh:\n * Use a shared GL context for creating and uploading texture data off of the main thread if possible.\n * Use shadow copies buffers created off the GL thread if they\u0027ve never been mapped before\n * Use persistent mapping to preserve the mapped pointer after the first map, or automatically re-map writable buffers at the end of a command buffer submission so that it\u0027s address is visible on other threads w/o needing to switch the context.\n * Resource API calls that happen to be made on the GL thread can operate directly w/o needing to use shadow copies.\n \nAs long as dawn can switch between shadow copy and direct GL access on the main thread, it\u0027ll be no different from how Ganesh operates with SkDDLs right now. Ganesh explicitly manages CPU shadow copies of all of its buffers that are created on the viz thread.",
+      "parentUuid": "4f5169f2_86dad278",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
