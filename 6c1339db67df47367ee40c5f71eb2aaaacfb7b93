@@ -70,6 +70,24 @@
       "parentUuid": "8cc1eb5c_8cdcf78b",
       "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f294cefd_8ded4578",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-04T22:15:02Z",
+      "side": 1,
+      "message": "Thanks Christopher! I think than in the final stage it would make sense to have the RUST_ICC build flag to exclude the skcms_Parse and call the rust implementation when enabled. However, as we are still in experimental phase, for the first stage I think it would be safer to duplicate the MakeICCProfile method so that we can explicitly call it from specific codecs: initially RustBMP, then we can go for RustPNG and after that we probably could cleanup the new method and just modify MakeICCProfile as I mention, something like this:\n\n```\nstd::unique_ptr\u003cColorProfile\u003e ColorProfile::MakeICCProfile(\n        sk_sp\u003cconst SkData\u003e data) {\n    if (data) {\n        skcms_ICCProfile profile;\n#if defined(SK_CODEC_COLOR_PROFILE_PARSE_WITH_RUST)\n        rust_icc::ICCProfile rust_profile;\n        if (rust_icc::parse_icc_profile(\n                    rust_icc::ToRustSpan(data-\u003ebyteSpan()), \u0026rust_profile)) {\n                rust_icc::ToSkcmsICCProfile(rust_profile, \u0026profile);\n                return std::unique_ptr\u003cColorProfile\u003e(\n                        new ColorProfile(profile, std::move(data)));\n        }\n#else     \n        if (skcms_Parse(data-\u003edata(), data-\u003esize(), \u0026profile)) {\n            return std::unique_ptr\u003cColorProfile\u003e(new ColorProfile(profile, std::move(data)));\n        }\n#endif\n    }\n    \n    return nullptr;\n}\n```",
+      "parentUuid": "633dee1a_076451dd",
+      "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

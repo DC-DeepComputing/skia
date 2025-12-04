@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8018c3_00995aca",
+        "filename": "BUILD.gn",
+        "patchSetId": 18
+      },
+      "lineNbr": 1504,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-04T22:15:02Z",
+      "side": 1,
+      "message": "I will wait for rust_bmp CL to land in main to move parts of this to the unified bazel action for rust ffi\u0027s as rust_bmp is already having changes and would cause conflicts anyway.",
+      "revId": "318160165c3e7b6cea2d618cc9a88a72057ea04d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
