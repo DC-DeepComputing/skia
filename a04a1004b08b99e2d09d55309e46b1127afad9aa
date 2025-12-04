@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74917c0a_2ab76569",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-04T12:05:32Z",
+      "side": 0,
+      "message": "Just moved to SkCodecsColorProfile.cpp",
+      "revId": "a04a1004b08b99e2d09d55309e46b1127afad9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2ef9eb_8ae68165",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-04T12:05:32Z",
+      "side": 0,
+      "message": "This just gets moved to `SkCodecs::ColorProfile::getAndroidOutputColorSpace`",
+      "revId": "a04a1004b08b99e2d09d55309e46b1127afad9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

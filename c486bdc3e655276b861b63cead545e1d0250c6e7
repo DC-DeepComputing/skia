@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39c704a3_34483f8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-04T12:05:32Z",
+      "side": 1,
+      "message": "Some clean-up to avoid exposing skcms as far out",
+      "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5e11f66_d2144e9b",
+        "filename": "src/codec/SkCodecColorProfile.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-04T12:05:32Z",
+      "side": 1,
+      "message": "This is the stuff moved (and slightly shuffled) from `SkAndroidCodec`.",
+      "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af9e6d9_83cf7cb5",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-12-04T12:05:32Z",
+      "side": 1,
+      "message": "Ideally we\u0027ll unify Android with everything else. But for now this allows us to remove the accessors (and moves it closer to `getExactColorSpace`, so the differences are more obvious).",
+      "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
