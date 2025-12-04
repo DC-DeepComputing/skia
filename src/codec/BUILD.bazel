@@ -71,6 +71,18 @@ skia_cc_library(
 )
 
 skia_cc_library(
+    name = "rust_icc_support",
+    defines = ["SK_CODEC_COLOR_PROFILE_PARSE_WITH_RUST"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//rust/icc:cxx_bridge",
+        "//rust/icc:ffi_cpp_lib",
+        "//rust/icc:ffi_rs",
+        "@crates//:cxx_cc",
+    ],
+)
+
+skia_cc_library(
     name = "codec_support",
     # This is its own rule (with no srcs) to explicitly expose any_codec_hdrs
     # as public in case a client does not want to use any of our codecs, but
