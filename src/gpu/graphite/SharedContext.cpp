@@ -59,12 +59,12 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
 }
 
 // This is only used when tracing is enabled at compile time.
-[[maybe_unused]] static std::string to_str(const SharedContext* ctx,
+[[maybe_unused]] static std::string to_str1(const SharedContext* ctx,
                                            const GraphicsPipelineDesc& gpDesc,
                                            const RenderPassDesc& rpDesc) {
     const ShaderCodeDictionary* dict = ctx->shaderCodeDictionary();
     const RenderStep* step = ctx->rendererProvider()->lookup(gpDesc.renderStepID());
-    return GetPipelineLabel(ctx->caps(), dict, rpDesc, step, gpDesc.paintParamsID());
+    return GetPipelineLabel1(ctx->caps(), dict, rpDesc, step, gpDesc.paintParamsID());
 }
 
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
@@ -89,7 +89,7 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
         // category is enabled.
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
-                TRACE_STR_COPY(to_str(this, pipelineDesc, renderPassDesc).c_str()));
+                TRACE_STR_COPY(to_str1(this, pipelineDesc, renderPassDesc).c_str()));
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool forPrecompile =

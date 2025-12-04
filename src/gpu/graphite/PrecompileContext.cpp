@@ -90,7 +90,7 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 #endif
 }
 
-std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipelineKey) {
+std::string PrecompileContext::getPipelineLabel1(sk_sp<SkData> serializedPipelineKey) {
 #if defined(SK_ENABLE_PRECOMPILE)
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
@@ -110,7 +110,7 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
         return "";
     }
 
-    return GetPipelineLabel(fSharedContext->caps(),
+    return GetPipelineLabel1(fSharedContext->caps(),
                             fSharedContext->shaderCodeDictionary(),
                             renderPassDesc,
                             renderStep,

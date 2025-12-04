@@ -340,7 +340,7 @@ static int key_to_string(const Caps* caps,
     return currentIndex;
 }
 
-SkString PaintParamsKey::toString(const Caps* caps,
+SkString PaintParamsKey::toString1(const Caps* caps,
                                   const ShaderCodeDictionary* dict) const {
     SkString str;
     const int keySize = SkTo<int>(fData.size());

@@ -68,7 +68,7 @@ void CollectIntrinsicUniforms(const Caps* caps,
 // the shader. If an SkBlender is used instead of an SkBlendMode, it can never use hardware blending
 bool CanUseHardwareBlending(const Caps*, TextureFormat, SkBlendMode, Coverage);
 
-std::string GetPipelineLabel(const Caps*,
+std::string GetPipelineLabel1(const Caps*,
                              const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,
                              const RenderStep* renderStep,

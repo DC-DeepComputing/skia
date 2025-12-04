@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#if 0
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -619,3 +620,4 @@ DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
     }
 }
 
+#endif

@@ -23,6 +23,10 @@ namespace skiagm {
 class ArcOfZorroGM : public GM {
 public:
     ArcOfZorroGM() {
+        static uint32_t graphiteKey = 123456789;
+        static constexpr size_t graphiteKeySize = sizeof(graphiteKey);
+
+        SkDebugf("===== %zu\n", graphiteKeySize);
         this->setBGColor(0xFFCCCCCC);
     }
 

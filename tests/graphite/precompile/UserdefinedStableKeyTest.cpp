@@ -321,7 +321,7 @@ void test_get_pipeline_label_api(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, origKeys.size() == 1);
     REPORTER_ASSERT(reporter, androidStyleKeys.size() == 1);
 
-    std::string label = precompileContext->getPipelineLabel(androidStyleKeys[0]);
+    std::string label = precompileContext->getPipelineLabel1(androidStyleKeys[0]);
 
     REPORTER_ASSERT(reporter, std::string::npos != label.find("AnnulusShader"));
     REPORTER_ASSERT(reporter, std::string::npos != label.find("SrcBlender"));

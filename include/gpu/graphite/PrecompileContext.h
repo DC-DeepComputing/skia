@@ -68,7 +68,7 @@ public:
      * @param serializedPipelineKey   serialized Pipeline key.
      * @return                        A human-readable version of the provided key; "" on failure.
      */
-    std::string getPipelineLabel(sk_sp<SkData> serializedPipelineKey);
+    std::string getPipelineLabel1(sk_sp<SkData> serializedPipelineKey);
 
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();
