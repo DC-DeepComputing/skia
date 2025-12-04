@@ -25,6 +25,7 @@ PRIVATE_HEADERS = [
     "SkCPUTypes.h",
     "SkDebug.h",
     "SkFeatures.h",
+    "SkFibBlockSizes.h",
     "SkFixed.h",
     "SkLoadUserConfig.h",
     "SkMacros.h",

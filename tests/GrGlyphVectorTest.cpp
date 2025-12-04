@@ -10,6 +10,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/base/SkZip.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkGlyph.h"
@@ -19,7 +20,6 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/text/StrikeForGPU.h"
 #include "src/text/gpu/GlyphVector.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "tests/Test.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -35,11 +35,9 @@ namespace sktext::gpu {
 class GlyphVectorTestingPeer {
 public:
     static const SkDescriptor& GetDescriptor(const GlyphVector& v) {
-        return v.fStrikePromise.descriptor();
+        return v.strikePromise().descriptor();
     }
-    static SkSpan<GlyphVector::Variant> GetGlyphs(const GlyphVector& v) {
-        return v.fGlyphs;
-    }
+    static SkSpan<const SkPackedGlyphID> GetGlyphs(const GlyphVector& v) { return v.glyphs(); }
 };
 
 DEF_TEST(GlyphVector_Serialization, r) {
@@ -72,7 +70,7 @@ DEF_TEST(GlyphVector_Serialization, r) {
     auto srcGlyphs = GlyphVectorTestingPeer::GetGlyphs(src);
     auto dstGlyphs = GlyphVectorTestingPeer::GetGlyphs(*dst);
     for (auto [srcGlyphID, dstGlyphID] : SkMakeZip(srcGlyphs, dstGlyphs)) {
-        REPORTER_ASSERT(r, srcGlyphID.packedGlyphID == dstGlyphID.packedGlyphID);
+        REPORTER_ASSERT(r, srcGlyphID == dstGlyphID);
     }
 }
 

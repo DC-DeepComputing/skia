@@ -98,8 +98,8 @@
 #include "src/gpu/graphite/geom/Transform.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/UploadTask.h"
+#include "src/gpu/graphite/text/GlyphData.h"
 #include "src/image/SkImage_Base.h"
-#include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
@@ -1379,7 +1379,7 @@ sktext::gpu::AtlasDrawDelegate Device::atlasDelegate() {
     return [&](const sktext::gpu::AtlasSubRun* subRun,
                SkPoint drawOrigin,
                const SkPaint& paint,
-               sk_sp<SkRefCnt> subRunStorage,
+               sk_sp<sktext::gpu::RefCntedSubrunAllocator> subRunStorage,
                sktext::gpu::RendererData rendererData) {
         this->drawAtlasSubRun(subRun, drawOrigin, paint, std::move(subRunStorage), rendererData);
     };
@@ -1400,7 +1400,7 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
 void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                              SkPoint drawOrigin,
                              const SkPaint& paint,
-                             sk_sp<SkRefCnt> subRunStorage,
+                             sk_sp<sktext::gpu::RefCntedSubrunAllocator> subRunStorage,
                              sktext::gpu::RendererData rendererData) {
     ASSERT_SINGLE_OWNER
 
@@ -1420,17 +1420,24 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
     const Transform& localToDevice = this->localToDeviceTransform();
 
     const int subRunEnd = subRun->glyphCount();
-    auto regenerateDelegate = [&](sktext::gpu::GlyphVector* glyphs,
-                                  int begin,
-                                  int end,
-                                  skgpu::MaskFormat maskFormat,
-                                  int padding) {
-        return glyphs->regenerateAtlasForGraphite(begin, end, maskFormat, padding, fRecorder);
-    };
+
+    auto* glyphData = static_cast<GlyphData*>(subRun->backendData());
+    if (!glyphData) {
+        auto newGlyphData = GlyphData::Make(&subRunStorage->alloc(),
+                                            subRun->glyphVector().glyphs().size());
+        glyphData = newGlyphData.get();
+        subRun->attachBackendData(std::move(newGlyphData));
+    }
+
     for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
         // For the remainder of the run, add any atlas uploads to the Recorder's TextAtlasManager
-        auto[ok, glyphsRegenerated] = subRun->regenerateAtlas(subRunCursor, subRunEnd,
-                                                              regenerateDelegate);
+        auto [ok, glyphsRegenerated] = glyphData->regenerateAtlas(subRunCursor,
+                                                                  subRunEnd,
+                                                                  subRun->glyphVector(),
+                                                                  subRun->maskFormat(),
+                                                                  subRun->glyphSrcPadding(),
+                                                                  this->recorder());
+
         // There was a problem allocating the glyph in the atlas. Bail.
         if (!ok) {
             return;
@@ -1439,8 +1446,7 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
             auto [bounds, maskToDevice] =
                     subRun->vertexFiller().boundsAndDeviceMatrix(localToDevice, drawOrigin);
 
-
-            this->drawGeometry(maskToDevice,
+            this->drawGeometry(Transform{SkM44{maskToDevice}},
                                Geometry(SubRunData(subRun,
                                                    subRunStorage,
                                                    bounds,
@@ -2311,7 +2317,10 @@ sk_sp<sktext::gpu::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRu
 
 void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkPaint& paint) {
     auto slugImpl = static_cast<const sktext::gpu::SlugImpl*>(slug);
-    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, slugImpl, this->atlasDelegate());
+    auto calloc = static_cast<const sktext::gpu::RefCntedSubrunAllocator*>(slug);
+    auto alloc = const_cast<sktext::gpu::RefCntedSubrunAllocator*>(calloc);
+
+    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, alloc, this->atlasDelegate());
 }
 
 bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {

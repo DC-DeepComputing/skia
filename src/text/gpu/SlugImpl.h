@@ -12,7 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/chromium/Slug.h"
-#include "src/text/gpu/SubRunAllocator.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
 #include <cstddef>
@@ -63,9 +63,6 @@ public:
     void* operator new(size_t, void* p) { return p; }
 
 private:
-    // The allocator must come first because it needs to be destroyed last. Other fields of this
-    // structure may have pointers into it.
-    SubRunAllocator fAlloc;
     gpu::SubRunContainerOwner fSubRuns;
     const SkRect fSourceBounds;
     const SkPoint fOrigin;

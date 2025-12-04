@@ -17,6 +17,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMacros.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkCPUContextImpl.h"
 #include "src/core/SkCPURecorderImpl.h"
@@ -29,7 +30,6 @@
 #include "src/gpu/ganesh/PathRendererChain.h"
 #include "src/gpu/ganesh/SkGaneshRecorder.h"
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #include <utility>

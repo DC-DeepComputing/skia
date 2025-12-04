@@ -13,6 +13,7 @@
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkCPUTypes.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkFontPriv.h"
@@ -21,7 +22,6 @@
 #include "src/core/SkScalerContext.h"
 #include "src/text/GlyphRun.h"
 #include "src/text/gpu/SlugImpl.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/SubRunControl.h"
 
@@ -247,10 +247,10 @@ TextBlob::TextBlob(SubRunAllocator&& alloc,
                    SubRunContainerOwner subRuns,
                    int totalMemorySize,
                    SkColor initialLuminance)
-        : fAlloc{std::move(alloc)}
+        : RefCntedSubrunAllocator{std::move(alloc)}
         , fSubRuns{std::move(subRuns)}
         , fSize(totalMemorySize)
-        , fInitialLuminance{initialLuminance} { }
+        , fInitialLuminance{initialLuminance} {}
 
 sk_sp<Slug> MakeSlug(const SkMatrix& drawMatrix,
                      const sktext::GlyphRunList& glyphRunList,

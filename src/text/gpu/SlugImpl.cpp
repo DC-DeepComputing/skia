@@ -13,11 +13,11 @@
 #include "include/core/SkSerialProcs.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/chromium/Slug.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/text/GlyphRun.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
 #include <memory>
@@ -31,8 +31,8 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
                    gpu::SubRunContainerOwner subRuns,
                    SkRect sourceBounds,
                    SkPoint origin)
-        : fAlloc {std::move(alloc)}
-        , fSubRuns(std::move(subRuns))
+        : Slug{std::move(alloc)}
+        , fSubRuns{std::move(subRuns)}
         , fSourceBounds{sourceBounds}
         , fOrigin{origin} {}
 
