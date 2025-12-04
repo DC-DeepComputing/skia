@@ -16,6 +16,29 @@
       "message": "I think a possible concern here is that ganesh:: and graphite:: Glyph* arrays are allocated separately from GlyphVector. This probably means a small memory usage increase and an extra allocation call for each SubRun on its first use.\n\nI\u0027m wondering if we can just see if this triggers any concerning regressions. There may be ways around the extra memory. Maybe freeing GlyphVector once BackendData is attached and then requiring the latter to be able to iterate on GlyphIDs? But anything I can think of adds complexity to already complex code.",
       "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc582aa6_50741eae",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-04T15:53:02Z",
+      "side": 1,
+      "message": "In the old code, we did one arena allocation that held the packed IDs and the Glyph* together (as Variant). Now we are still using the arena allocation for the packed IDs but later on doing a heap allocation to store the Glyph* as part of the backend GlyphData.\n\nCan we reuse that storage for the Glyph* addresses even if we allow the backends to set them to the backend-specific Glyphs? I am unsure how often SubRuns are able to be reused to benefit from caching the GlyphData allocations.\n\nIf we don\u0027t want to have the variant, is it possible to plumb the slug\u0027s arena through so that the glyph data can use it as well?",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
