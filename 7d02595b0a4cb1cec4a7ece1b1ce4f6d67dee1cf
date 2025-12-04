@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd70ce06_829b5f3d",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-04T20:59:42Z",
+      "side": 1,
+      "message": "True, I was only considering the possible color types on source file but totally missed the dstInfo. You are totally right, there may be unsupported dstInfo, so we should gracefuly handle the case instead of asserting. Thanks for sharing the details!",
+      "parentUuid": "bd1c8edf_e65dcf9d",
+      "range": {
+        "startLine": 201,
+        "startChar": 10,
+        "endLine": 201,
+        "endChar": 37
+      },
+      "revId": "7d02595b0a4cb1cec4a7ece1b1ce4f6d67dee1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23a5ee1a_672d086f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-04T17:59:32Z",
       "side": 1,
       "message": "nit: `int32_t` (to match the type of `height`)",
+      "range": {
+        "startLine": 236,
+        "startChar": 9,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "revId": "7d02595b0a4cb1cec4a7ece1b1ce4f6d67dee1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529fbc84_daf3f44e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-04T20:59:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23a5ee1a_672d086f",
       "range": {
         "startLine": 236,
         "startChar": 9,
