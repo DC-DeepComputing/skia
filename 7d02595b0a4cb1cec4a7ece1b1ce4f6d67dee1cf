@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd1c8edf_e65dcf9d",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-04T17:59:32Z",
+      "side": 1,
+      "message": "I understand that SkSwizzler supports all the possible **source** color types.  But does it also support all the possible **destination** color types that the Skia client may request via `dstInfo`?  IIUC [`SkSwizzler::Make`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkSwizzler.cpp;l\u003d829;drc\u003d87bea1a4f021b9cc7ec5124efd026c395b083b03) doesn\u0027t mention `kBGRA_10101010_XR_SkColorType` in any of the `switch (dstInfo.colorType())` cases.",
+      "range": {
+        "startLine": 201,
+        "startChar": 10,
+        "endLine": 201,
+        "endChar": 37
+      },
+      "revId": "7d02595b0a4cb1cec4a7ece1b1ce4f6d67dee1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23a5ee1a_672d086f",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-04T17:59:32Z",
+      "side": 1,
+      "message": "nit: `int32_t` (to match the type of `height`)",
+      "range": {
+        "startLine": 236,
+        "startChar": 9,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "revId": "7d02595b0a4cb1cec4a7ece1b1ce4f6d67dee1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
