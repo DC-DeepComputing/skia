@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc43c186_4048f334",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-04T23:36:13Z",
+      "side": 1,
+      "message": "LGTM - thanks!",
+      "revId": "9c37626d16e4c692dd486a21cb2355343597a1b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c690b8_4202e12c",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-04T23:36:13Z",
+      "side": 1,
+      "message": "Please wrap this file to 100 columns per https://skia.org/docs/dev/contrib/style/#:~:text\u003dWe%20wrap%20lines%20at%20100%20columns%20unless%20it%20is%20excessively%20ugly%20(use%20your%20judgement)",
+      "range": {
+        "startLine": 115,
+        "startChar": 128,
+        "endLine": 115,
+        "endChar": 129
+      },
+      "revId": "9c37626d16e4c692dd486a21cb2355343597a1b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
