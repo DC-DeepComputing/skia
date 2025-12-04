@@ -88,6 +88,24 @@
       "parentUuid": "633dee1a_076451dd",
       "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81eee900_72970a3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-04T23:40:01Z",
+      "side": 1,
+      "message": "\u003e Thanks Christopher! I think than in the final stage it would make sense to have the RUST_ICC build flag to exclude the skcms_Parse and call the rust implementation when enabled. However, as we are still in experimental phase, for the first stage I think it would be safer to duplicate the MakeICCProfile method so that we can explicitly call it from specific codecs: initially RustBMP, then we can go for RustPNG\n\n+1\n\nThis would unblock further testing of the `moxcms` approach - e.g.:\n\n* Testing functional parity\n* Testing binary size impact for Chromium (ATLs will ask for this piece of info when we request approval to import `moxcms` into Chromium)",
+      "parentUuid": "f294cefd_8ded4578",
+      "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
