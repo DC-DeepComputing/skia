@@ -52,6 +52,24 @@
       "parentUuid": "efb9338d_e050be1d",
       "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "633dee1a_076451dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-04T12:07:36Z",
+      "side": 1,
+      "message": "I\u0027ve finished moving all codecs\u0027 ICC profile parsing to go through [this line](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodecColorProfile.cpp;l\u003d17;drc\u003ddb4c79d41513f9912bf2f2238ff58826afe12c0d).\n\nThis means we can switch all codecs over by hooking there.\n\nI\u0027m still working to remove all accessors to the actual `skcms_ICCProfile` member.",
+      "parentUuid": "8cc1eb5c_8cdcf78b",
+      "revId": "6c1339db67df47367ee40c5f71eb2aaaacfb7b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
