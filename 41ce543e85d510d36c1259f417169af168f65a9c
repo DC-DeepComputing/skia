@@ -1216,6 +1216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b52ffd9a_64deb55a",
+        "filename": "experimental/rust_bmp/ffi/BUILD.bazel",
+        "patchSetId": 28
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-04T10:48:31Z",
+      "side": 1,
+      "message": "CL is out: https://skia-review.googlesource.com/c/skia/+/1116716",
+      "parentUuid": "97c6d6aa_16b4b17c",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 6
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "620a0463_f8fcaa3c",
