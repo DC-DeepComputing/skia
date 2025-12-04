@@ -16,6 +16,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/core/SkColorData.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
@@ -48,8 +49,12 @@ class SkPaint;
 enum class GrXferBarrierFlags;
 struct GrShaderCaps;
 
-namespace skgpu { namespace ganesh { class SurfaceDrawContext; } }
-namespace sktext { namespace gpu { class AtlasSubRun; } }
+namespace skgpu::ganesh { class SurfaceDrawContext; }
+
+namespace sktext::gpu {
+    class AtlasSubRun;
+    class RefCntedSubrunAllocator;
+}
 
 namespace skgpu::ganesh {
 
@@ -57,13 +62,14 @@ class AtlasTextOp final : public GrMeshDrawOp {
 public:
     DEFINE_OP_CLASS_ID
 
-    static std::tuple<const GrClip*, GrOp::Owner> Make(SurfaceDrawContext*,
-                                                       const sktext::gpu::AtlasSubRun*,
-                                                       const GrClip*,
-                                                       const SkMatrix& viewMatrix,
-                                                       SkPoint drawOrigin,
-                                                       const SkPaint&,
-                                                       sk_sp<SkRefCnt>&& subRunStorage);
+    static std::tuple<const GrClip*, GrOp::Owner> Make(
+            SurfaceDrawContext*,
+            const sktext::gpu::AtlasSubRun*,
+            const GrClip*,
+            const SkMatrix& viewMatrix,
+            SkPoint drawOrigin,
+            const SkPaint&,
+            sk_sp<sktext::gpu::RefCntedSubrunAllocator> subRunStorage);
 
     ~AtlasTextOp() override {
         for (const Geometry* g = fHead; g != nullptr;) {
@@ -82,22 +88,22 @@ public:
                  const SkMatrix& drawMatrix,
                  SkPoint drawOrigin,
                  SkIRect clipRect,
-                 sk_sp<SkRefCnt>&& supportData,
+                 sk_sp<sktext::gpu::RefCntedSubrunAllocator> subrunAllocator,
                  const SkPMColor4f& color)
             : fSubRun{subRun}
-            , fSupportDataKeepAlive{std::move(supportData)}
+            , fSubrunAllocator{std::move(subrunAllocator)}
             , fDrawMatrix{drawMatrix}
             , fDrawOrigin{drawOrigin}
             , fClipRect{clipRect}
             , fColor{color} {
-                SkASSERT(fSupportDataKeepAlive != nullptr);
+                SkASSERT(fSubrunAllocator != nullptr);
         }
 
         static Geometry* Make(const sktext::gpu::AtlasSubRun& subRun,
                               const SkMatrix& drawMatrix,
                               SkPoint drawOrigin,
                               SkIRect clipRect,
-                              sk_sp<SkRefCnt>&& supportData,
+                              sk_sp<sktext::gpu::RefCntedSubrunAllocator> subrunAllocator,
                               const SkPMColor4f& color,
                               SkArenaAlloc* alloc);
 
@@ -105,8 +111,9 @@ public:
 
         const sktext::gpu::AtlasSubRun& fSubRun;
 
-        // Keep the TextBlob or Slug alive until the op is deleted.
-        sk_sp<SkRefCnt> fSupportDataKeepAlive;
+        // Keep the TextBlob or Slug alive until the op is deleted. This is also used when
+        // allocating Ganesh-specific glyph data.
+        sk_sp<sktext::gpu::RefCntedSubrunAllocator> fSubrunAllocator;
 
         const SkMatrix fDrawMatrix;
         const SkPoint fDrawOrigin;

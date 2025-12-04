@@ -13,10 +13,10 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
-#include "src/text/gpu/SubRunAllocator.h"
 
 #include <cstddef>
 #include <cstdint>

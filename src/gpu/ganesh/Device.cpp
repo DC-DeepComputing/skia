@@ -1443,7 +1443,7 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
     auto atlasDelegate = [&](const sktext::gpu::AtlasSubRun* subRun,
                              SkPoint drawOrigin,
                              const SkPaint& paint,
-                             sk_sp<SkRefCnt> subRunStorage,
+                             sk_sp<sktext::gpu::RefCntedSubrunAllocator> subRunStorage,
                              sktext::gpu::RendererData) {
         auto[drawingClip, op] = AtlasTextOp::Make(
                 fSurfaceDrawContext.get(), subRun,
@@ -1454,7 +1454,9 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
         }
     };
 
-    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, slugImpl, atlasDelegate);
+    auto calloc = static_cast<const sktext::gpu::RefCntedSubrunAllocator*>(slugImpl);
+    auto alloc = const_cast<sktext::gpu::RefCntedSubrunAllocator*>(calloc);
+    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, alloc, atlasDelegate);
 }
 
 }  // namespace skgpu::ganesh

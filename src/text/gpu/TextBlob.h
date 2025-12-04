@@ -15,9 +15,9 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/base/SkTo.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/base/SkTInternalLList.h"
 #include "src/core/SkMaskFilterBase.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
 #include <cstddef>
@@ -51,7 +51,7 @@ class Slug;
 //                    with.
 //
 //
-class TextBlob final : public SkRefCnt {
+class TextBlob final : public RefCntedSubrunAllocator {
 public:
     // Key is not used as part of a hash map, so the hash is never taken. It's only used in a
     // list search using operator =().
@@ -119,10 +119,6 @@ public:
 
 private:
     friend class TextBlobTools;
-    // The allocator must come first because it needs to be destroyed last. Other fields of this
-    // structure may have pointers into it.
-    SubRunAllocator fAlloc;
-
     SubRunContainerOwner fSubRuns;
 
     // Overall size of this struct plus vertices and glyphs at the end.
