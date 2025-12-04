@@ -39,6 +39,30 @@
       },
       "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fb0d38_f5a0c7d5",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-04T22:00:46Z",
+      "side": 1,
+      "message": "Yeah, this is what I was trying to get at in my earlier comment.\n\nI tried the allocator plumbing method (see PS 6-\u003e8 diff). It adds quite a bit of complexity. The one thing it doesn\u0027t do (yet) is update the estimate for the allocator size. This allocator gets initialized in one place, the remote-glyph-cache device, where we don\u0027t know which backend we\u0027ll be on. So we\u0027d have to take have some common value that works well for both backends. It is just an estimate and it seems that the current overall estimate has a bunch of assumptions.\n\nI could also try going back to something like the Variant approach, maybe with void*s that have to be down cast? Though, it then requires that backends always want to store something pointer-sized per glyph. There would still need to be a way to handle the meta-data that is per glyph-vector, not per glyph-in-vector (currently sk_sp\u003cTextStrike\u003e, uint64_t, BulkUsePlotUpdater but will change for Graphite).\n\nI hate to pile on complexity here unless it really is warranted. This whole blob/slug/runs system seems insanely complex to me. I\u0027ve been working on it for a while now and am just starting to grasp how it all fits together.\n\nThere are Bazel build errors that I\u0027d have to work out through trial-and-error because the Bazel build doesn\u0027t seem to work on my Mac, so I\u0027ll just hold off on that until we have more clarity about what approach to take.",
+      "parentUuid": "fc582aa6_50741eae",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
