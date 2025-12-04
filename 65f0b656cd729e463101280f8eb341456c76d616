@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf3d6600_46812294",
+        "filename": "resources/sksl/intrinsics/Reflect.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-04T14:52:17Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "ca635200_707dad13",
+      "range": {
+        "startLine": 6,
+        "startChar": 18,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b73db1ec_11cdc2ac",
@@ -61,6 +85,48 @@
         "endLine": 6,
         "endChar": 29
       },
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72d06524_79a36194",
+        "filename": "resources/sksl/intrinsics/Refract.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-04T14:52:17Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "b73db1ec_11cdc2ac",
+      "range": {
+        "startLine": 6,
+        "startChar": 18,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "08ae3a96_9b71fa91",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "resources/sksl/intrinsics/Refract.sksl",
+              "range": {
+                "startLine": 6,
+                "startChar": 0,
+                "endLine": 7,
+                "endChar": 0
+              },
+              "replacement": "    // The half() constructor is required to disambiguate from reflect(float, float).\n"
+            }
+          ]
+        }
+      ],
       "revId": "65f0b656cd729e463101280f8eb341456c76d616",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -102,6 +168,30 @@
           ]
         }
       ],
+      "revId": "65f0b656cd729e463101280f8eb341456c76d616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6f93da4_0447d53e",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-04T14:52:17Z",
+      "side": 1,
+      "message": "Roughly yes. SkSL allows non-narrowing (normal) coercion for literals so that you can write `0` or `1` in the constructors for floating point values w/o issue. Except in some rare cases (that might need to change as it mismatches with what wgsl allows), SkSL doesn\u0027t really allow narrowing coercion.\n\nI believe that means that if all the parameters to a function call are variables (no literals), then function overload typically just picks the exact match. For a mixture of `half` and `float` variables, it should select the `float`-only overload since the half can be coerced to a float w/o narrowing but not vice versa. This is pretty intuitive and doesn\u0027t result in ambiguity that I\u0027ve encountered.\n\nThe challenge comes up when we mix `half` or `float` with literals. Literals have different type `${floatLiteral}` that has a priority lower than both `half` and `float` so that it\u0027s not considered a narrowing coercion to go to either of them. If we had SkSL that called `foo(float(...), 5.0)` and there were two overloads `foo(half, half)` and `foo(float, float)`, the old logic ended up ambiguous:\n\n* The cost to coerce to `foo(half, half)` would be 1,1 \u003d 2.\n* The cost to coerce to `foo(float, float)` would be 0,2 \u003d 2.\n\nIt wasn\u0027t sufficient to just base the coercion cost of the literal with its associated scalar type (`${floatLiteral}` -\u003e `float`) because that would also be ambiguous for a call to `foo(half(...), 5.0)`:\n\n* The cost to coerce to `foo(half, half)` would be 0,1 \u003d 1\n* The cost to coerce to `foo(float, float)` would be 1,0 \u003d 1\n\nBy having this explicit check, we treat the cost of coercing a `${floatLiteral}` to either a `half` or ` float` as the same cost. As long as there\u0027s another variable that is fully typed, the call will not be ambiguous. If there\u0027s a function that is only passed in literals, then the casts need to be added to select the half version over the float version. That seems like a pretty rare situation to me.",
+      "parentUuid": "c0712cde_564469f9",
+      "range": {
+        "startLine": 962,
+        "startChar": 12,
+        "endLine": 967,
+        "endChar": 83
+      },
       "revId": "65f0b656cd729e463101280f8eb341456c76d616",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
