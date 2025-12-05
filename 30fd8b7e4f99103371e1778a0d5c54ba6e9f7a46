@@ -39,6 +39,30 @@
       },
       "revId": "30fd8b7e4f99103371e1778a0d5c54ba6e9f7a46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "430b5483_3ea832cf",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7370
+      },
+      "writtenOn": "2025-12-05T17:20:38Z",
+      "side": 1,
+      "message": "Yes it does. Done.",
+      "parentUuid": "82bc6146_f368c936",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 14
+      },
+      "revId": "30fd8b7e4f99103371e1778a0d5c54ba6e9f7a46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
