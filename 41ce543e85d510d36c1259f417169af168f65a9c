@@ -1030,6 +1030,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2d810a4_a6e89875",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-05T15:16:59Z",
+      "side": 1,
+      "message": "@sergiog have you sketched out the Blink integration yet, is there any friction with scanline decoding?  IIRC all Blink decoders are streaming/incremental/push-model, to handle potentially partial data, so I assume incremental would be the path of least resistance.\n\nOTOH scanline decoding is interesting for Android when downscaling large images, to avoid excessive intermediate allocations.\n\nI\u0027d say ultimately it would be nice to support both APIs (assuming it\u0027s feasible), but since Chromium is the initial client we should focus on minimizing friction in that space for now.  Let\u0027s pick the approach best suited for Blink.",
+      "parentUuid": "bab974a2_0d8e71f0",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df96ac52_fe77b340",
         "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
         "patchSetId": 28
