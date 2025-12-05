@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d0bf45_4d700974",
+        "filename": "src/codec/SkCodecColorProfile.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-05T12:55:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c5e11f66_d2144e9b",
+      "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4af9e6d9_83cf7cb5",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-12-04T12:05:32Z",
       "side": 1,
       "message": "Ideally we\u0027ll unify Android with everything else. But for now this allows us to remove the accessors (and moves it closer to `getExactColorSpace`, so the differences are more obvious).",
+      "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "449a125d_79deb372",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-05T12:55:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4af9e6d9_83cf7cb5",
       "revId": "c486bdc3e655276b861b63cead545e1d0250c6e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
