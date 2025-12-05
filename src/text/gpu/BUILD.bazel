@@ -7,9 +7,10 @@ package(
 licenses(["notice"])
 
 GPU_FILES = [
+    "BackendGlyphData.h",
     "DistanceFieldAdjustTable.cpp",
     "DistanceFieldAdjustTable.h",
-    "Glyph.h",
+    "GlyphUtils.h",
     "GlyphVector.cpp",
     "GlyphVector.h",
     "SDFMaskFilter.cpp",
@@ -21,7 +22,6 @@ GPU_FILES = [
     "StrikeCache.cpp",
     "StrikeCache.h",
     "SubRunAllocator.cpp",
-    "SubRunAllocator.h",
     "SubRunContainer.cpp",
     "SubRunContainer.h",
     "SubRunControl.cpp",

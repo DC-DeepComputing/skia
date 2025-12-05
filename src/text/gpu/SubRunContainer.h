@@ -14,9 +14,10 @@
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkTLogic.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 #include "src/core/SkColorData.h"  // IWYU pragma: keep
+#include "src/text/gpu/BackendGlyphData.h"
 #include "src/text/gpu/GlyphVector.h"
-#include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/VertexFiller.h"
 
 #include <cstddef>
@@ -43,14 +44,8 @@ enum class MaskFormat : int;
 }
 
 namespace sktext::gpu {
-class Glyph;
+class GlyphVector;
 class StrikeCache;
-
-using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*,
-                                                                    int begin,
-                                                                    int end,
-                                                                    skgpu::MaskFormat,
-                                                                    int padding)>;
 
 struct RendererData {
     bool isSDF = false;
@@ -62,8 +57,8 @@ class AtlasSubRun;
 using AtlasDrawDelegate = std::function<void(const sktext::gpu::AtlasSubRun* subRun,
                                              SkPoint drawOrigin,
                                              const SkPaint& paint,
-                                             sk_sp<SkRefCnt> subRunStorage,
-                                             sktext::gpu::RendererData)>;
+                                             sk_sp<RefCntedSubrunAllocator> subRunStorage,
+                                             RendererData)>;
 
 // -- SubRun -------------------------------------------------------------------------------------
 // SubRun defines the most basic functionality of a SubRun; the ability to draw, and the
@@ -74,7 +69,10 @@ class SubRun {
 public:
     virtual ~SubRun();
 
-    virtual void draw(SkCanvas*, SkPoint drawOrigin, const SkPaint&, sk_sp<SkRefCnt> subRunStorage,
+    virtual void draw(SkCanvas*,
+                      SkPoint drawOrigin,
+                      const SkPaint&,
+                      sk_sp<RefCntedSubrunAllocator> allocator,
                       const AtlasDrawDelegate&) const = 0;
 
     void flatten(SkWriteBuffer& buffer) const;
@@ -120,14 +118,13 @@ private:
 //        rectangles are in source space.
 class AtlasSubRun : public SubRun {
 public:
-    AtlasSubRun(VertexFiller&& vertexFiller, GlyphVector&& glyphs)
-            : fVertexFiller{std::move(vertexFiller)}
-            , fGlyphs{std::move(glyphs)} {}
+    AtlasSubRun(VertexFiller&& vertexFiller, GlyphVector&& glyphVector)
+            : fVertexFiller{std::move(vertexFiller)}, fGlyphVector{std::move(glyphVector)} {}
+
     ~AtlasSubRun() override = default;
 
-    SkSpan<const Glyph*> glyphs() const { return fGlyphs.glyphs(); }
-    int glyphCount() const { return SkCount(fGlyphs.glyphs()); }
-    skgpu::MaskFormat maskFormat() const { return fVertexFiller.grMaskType(); }
+    int glyphCount() const { return static_cast<int>(fGlyphVector.glyphs().size()); }
+    skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
     virtual int glyphSrcPadding() const = 0;
     unsigned short instanceFlags() const { return (unsigned short)this->maskFormat(); }
 
@@ -141,40 +138,28 @@ public:
     };
     virtual GlyphParams glyphParams() const = 0;
 
-    size_t vertexStride(const SkMatrix& drawMatrix) const {
-        return fVertexFiller.vertexStride(drawMatrix);
-    }
-
-    void fillVertexData(
-            void* vertexDst, int offset, int count,
-            const SkPMColor4f& color,
-            const SkMatrix& drawMatrix,
-            SkPoint drawOrigin,
-            SkIRect clip) const {
-        SkMatrix positionMatrix = drawMatrix;
-        positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
-        fVertexFiller.fillVertexData(offset, count,
-                                     fGlyphs.glyphs(),
-                                     color,
-                                     positionMatrix,
-                                     clip,
-                                     vertexDst);
-    }
-
-    // This call is not thread safe. It should only be called from a known single-threaded env.
-    virtual std::tuple<bool, int> regenerateAtlas(
-            int begin, int end, RegenerateAtlasDelegate) const = 0;
-
     const VertexFiller& vertexFiller() const { return fVertexFiller; }
 
-    virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
+    GlyphVector& glyphVector() const { return fGlyphVector; }
+    BackendGlyphData* backendData() const { return fBackendData.get(); }
+
+    // Attach backend-specific glyph data.
+    // This should only be called once, when backend data is first needed.
+    // The attached data does not participate in [de]serialization.
+    void attachBackendData(BackendGlyphDataOwner<> data) const {
+        SkASSERT(!fBackendData);  // Should only attach once
+        fBackendData = std::move(data);
+    }
 
 protected:
     const VertexFiller fVertexFiller;
 
-    // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
-    // be single threaded.
-    mutable GlyphVector fGlyphs;
+    // Backend-agnostic glyph data: strike info + packed glyph IDs
+    mutable GlyphVector fGlyphVector;
+
+    // Backend-specific glyph data: atlas locations, generation tracking, etc.
+    // Lazily allocated and attached when needed by the backend.
+    mutable BackendGlyphDataOwner<> fBackendData;
 };
 
 // -- SubRunList -----------------------------------------------------------------------------------
@@ -251,7 +236,10 @@ public:
 
     static size_t EstimateAllocSize(const GlyphRunList& glyphRunList);
 
-    void draw(SkCanvas*, SkPoint drawOrigin, const SkPaint&, const SkRefCnt* subRunStorage,
+    void draw(SkCanvas*,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              RefCntedSubrunAllocator* allocator,
               const AtlasDrawDelegate&) const;
 
     const SkMatrix& initialPosition() const { return fInitialPositionMatrix; }

@@ -8,13 +8,14 @@
 #ifndef sktext_gpu_SubRunAllocator_DEFINED
 #define sktext_gpu_SubRunAllocator_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkAssert.h"
+#include "include/private/base/SkFibBlockSizes.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTLogic.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkArenaAlloc.h"
 
 #include <algorithm>
 #include <array>
@@ -56,8 +57,10 @@ public:
                 requestedSize, assumedAlignment, sizeof(Block), kMaxAlignment);
     }
 
-    static constexpr int MinimumSizeWithOverhead(
-            int requestedSize, int assumedAlignment, int blockSize, int maxAlignment) {
+    static constexpr int MinimumSizeWithOverhead(int requestedSize,
+                                                 int assumedAlignment,
+                                                 int blockSize,
+                                                 int maxAlignment) {
         SkASSERT_RELEASE(0 <= requestedSize && requestedSize < kMaxByteSize);
         SkASSERT_RELEASE(SkIsPow2(assumedAlignment) && SkIsPow2(maxAlignment));
 
@@ -111,6 +114,13 @@ public:
         SkASSERT_RELEASE(WillCountFit<T>(n));
 
         int size = n ? n * sizeof(T) : 1;
+        return this->allocateBytes(size, alignof(T));
+    }
+
+    template <typename T> char* allocateBytesForSized(size_t size) {
+        static_assert(alignof(T) <= kMaxAlignment, "Alignment is too big for arena");
+        SkASSERT(size >= sizeof(T));
+        SkASSERT_RELEASE(size <= kMaxByteSize);
         return this->allocateBytes(size, alignof(T));
     }
 
@@ -259,6 +269,14 @@ public:
         return std::unique_ptr<T, Destroyer>{new (bytes) T(std::forward<Args>(args)...)};
     }
 
+    template <typename T, typename... Args>
+    std::unique_ptr<T, Destroyer> makeSizedUnique(size_t size, Args&&... args) {
+        SkASSERT(size >= sizeof(T));
+        static_assert(!HasNoDestructor<T>, "This is POD. Use makePOD.");
+        char* bytes = fAlloc.template allocateBytesForSized<T>(size);
+        return std::unique_ptr<T, Destroyer>{new (bytes) T(std::forward<Args>(args)...)};
+    }
+
     template<typename T> T* makePODArray(int n) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUniqueArray.");
         return reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(n));
@@ -338,6 +356,16 @@ public:
     explicit STSubRunAllocator(size_t firstHeapAllocation = InlineStorageSize)
             : SubRunAllocator{this->data(), SkToInt(this->size()), SkToInt(firstHeapAllocation)} {}
 };
+
+class RefCntedSubrunAllocator : public SkRefCnt {
+public:
+    SubRunAllocator& alloc() { return fAlloc; }
+
+protected:
+    RefCntedSubrunAllocator(sktext::gpu::SubRunAllocator&& alloc) : fAlloc{std::move(alloc)} {}
+    SubRunAllocator fAlloc;
+};
+
 }  // namespace sktext::gpu
 
-#endif // sktext_gpu_SubRunAllocator_DEFINED
+#endif  // sktext_gpu_SubRunAllocator_DEFINED

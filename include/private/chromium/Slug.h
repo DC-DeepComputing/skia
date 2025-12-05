@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -30,7 +31,7 @@ namespace sktext::gpu {
 // manipulated using matrix and clip changes to the canvas. If the canvas is transformed, then
 // the Slug will also transform with smaller glyphs using bi-linear interpolation to render. You
 // can think of a Slug as making a rubber stamp out of a SkTextBlob.
-class SK_API Slug : public SkRefCnt {
+class SK_API Slug : public RefCntedSubrunAllocator {
 public:
     // Return nullptr if the blob would not draw. This is not because of clipping, but because of
     // some paint optimization. The Slug is captured as if drawn using drawTextBlob.
@@ -61,11 +62,13 @@ public:
 
     uint32_t uniqueID() const { return fUniqueID; }
 
+protected:
+    Slug(SubRunAllocator&& alloc) : RefCntedSubrunAllocator{std::move(alloc)} {}
+
 private:
     static uint32_t NextUniqueID();
     const uint32_t  fUniqueID{NextUniqueID()};
 };
-
 
 }  // namespace sktext::gpu
 

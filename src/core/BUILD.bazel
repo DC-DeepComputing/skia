@@ -502,6 +502,7 @@ skia_cc_library(
         "//include/codec:core_hdrs",
         "//include/core:core_hdrs",
         "//include/effects:core_hdrs",
+        "//include/private/text/gpu:private_hdrs",
         "//include/sksl:core_hdrs",
         "//include/utils:core_hdrs",
     ],

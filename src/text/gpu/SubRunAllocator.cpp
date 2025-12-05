@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/text/gpu/SubRunAllocator.h"
+#include "include/private/text/gpu/SubRunAllocator.h"
 
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTFitsIn.h"
