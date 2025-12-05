@@ -1054,6 +1054,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d0acf486_a77d7c76",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-05T18:58:48Z",
+      "side": 1,
+      "message": "Thanks for the information @fmalita@chromium.org, really appreciated. My plan is to support streamed/incremental decoding because as you pointed it is a requirement for all Blink decoders, however currently this is something not yet supported in bmp decoder from image crate we are using. I am already working on a contribution to image crate to bring support to incremental decoding (I expect being able to publish it by the end of next week). But it will still take some time till we have it available in image crate.\n\n@lukasza@google.com, what is your recommendation with this CL? Would you complete this one and then do a follow-up CL with the  implementation of the incremental decoding once we have it supported on image crate? Even this is not the final state we need, I have the feeling that this CL is already quite big and it seems that we may want to avoid including additional changes on it. What do you think?",
+      "parentUuid": "d2d810a4_a6e89875",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df96ac52_fe77b340",
         "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
         "patchSetId": 28
