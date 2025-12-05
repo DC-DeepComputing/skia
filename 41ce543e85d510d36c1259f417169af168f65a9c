@@ -1078,6 +1078,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a3697d7_8c11b614",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-05T19:11:17Z",
+      "side": 1,
+      "message": "\u003e OTOH scanline decoding is interesting for Android when downscaling large images, to avoid excessive intermediate allocations.\n\nTwo notes:\n\n* `startIncrementalDecoding` can also support the downscaling-with-minimial-additional-allocations requirement (doing subscaling itself as requested by options)\n* The CL allocates a full image buffer anyway for now + doesn\u0027t do streaming yet\n\n\u003e @lukasza what is your recommendation with this CL? \n\nI agree that it will be useful to land this CL in some form.  This will have quite a few benefits: holding the line via Skia CQ, avoiding merge conflicts when rebasing, unblocking Chromium CLs for importing the crates and `skia/BUILD.gn`, etc..\n\nNot sure what \"some form\" means.  Let me try to brainstorm some options:\n\n* Option1 (seems best to me - WDYT?): Land after removing scanline-based code (i.e. implementing `onGetPixels` but not `onGetScanlines`, `onStartScanlineDecode`, nor `onSkipScanlines`).  This seems to provide most benefits without necessarily committing to any particular approach.  And I am okay with landing non-streaming scanlines impl, but it seems a bit undesirable (IIUC this part will need to be replaced anyway with a really-streaming impl in the future).\n* Option2 (LGTM as well): Land as-is\n* Option3: Hold-off until double-checking how well either approach works for Blink integration.  I agree that this is undesirable -",
+      "parentUuid": "d0acf486_a77d7c76",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df96ac52_fe77b340",
         "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
         "patchSetId": 28
