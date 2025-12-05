@@ -2589,6 +2589,7 @@ bool WGSLCodeGenerator::binaryOpNeedsComponentwiseMatrixPolyfill(const Type& lef
                                                                  Operator op) {
     switch (op.kind()) {
         case OperatorKind::SLASH:
+        case OperatorKind::SLASHEQ:
             // WGSL does not natively support componentwise matrix-op-matrix for division.
             if (left.isMatrix() && right.isMatrix()) {
                 return true;
@@ -2596,7 +2597,9 @@ bool WGSLCodeGenerator::binaryOpNeedsComponentwiseMatrixPolyfill(const Type& lef
             [[fallthrough]];
 
         case OperatorKind::PLUS:
+        case OperatorKind::PLUSEQ:
         case OperatorKind::MINUS:
+        case OperatorKind::MINUSEQ:
             // WGSL does not natively support componentwise matrix-op-scalar or scalar-op-matrix for
             // addition, subtraction or division.
             return (left.isMatrix() && right.isScalar()) ||
@@ -2713,6 +2716,9 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
     }
 
     // Handle assignment-expressions.
+    const bool compMatrixOp =
+            this->binaryOpNeedsComponentwiseMatrixPolyfill(left.type(), right.type(), op);
+
     if (op.isAssignment()) {
         std::unique_ptr<LValue> lvalue = this->makeLValue(left);
         if (!lvalue) {
@@ -2729,7 +2735,7 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
             std::string lhs = lvalue->load();
             std::string rhs = this->assembleExpression(right, op.getBinaryPrecedence());
 
-            if (this->binaryOpNeedsComponentwiseMatrixPolyfill(left.type(), right.type(), op)) {
+            if (compMatrixOp) {
                 if (is_nontrivial_expression(right)) {
                     rhs = this->writeScratchLet(rhs);
                 }
@@ -2773,7 +2779,7 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
     std::string lhs = this->assembleExpression(left, precedence);
     std::string rhs = this->assembleExpression(right, precedence);
 
-    if (this->binaryOpNeedsComponentwiseMatrixPolyfill(left.type(), right.type(), op)) {
+    if (compMatrixOp) {
         if (bothSidesConstant || is_nontrivial_expression(left)) {
             lhs = this->writeScratchLet(lhs);
         }
