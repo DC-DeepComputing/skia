@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c7dc60_3f4c378e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-05T18:34:45Z",
+      "side": 1,
+      "message": "Looks like this is breaking some of the Mac rust builds: https://logs.chromium.org/logs/skia/7502e22e2e241511/+/steps/ninja/0/stdout",
+      "revId": "77c7ba92aaf82cdea6c060b3f372a0e3f60ee396",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
