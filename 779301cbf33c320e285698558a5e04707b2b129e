@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb0f5ec5_ac472ec7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3295,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-05T21:10:45Z",
+      "side": 1,
+      "message": "nit: auto is used here, but std::tie is used above?",
+      "range": {
+        "startLine": 3286,
+        "startChar": 12,
+        "endLine": 3295,
+        "endChar": 79
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "fa04f55d_26c78c1e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 3286,
+                "startChar": 0,
+                "endLine": 3289,
+                "endChar": 0
+              },
+              "replacement": "            std::string expr;\n            const char* close;\n            std::tie(expr, close) \u003d this-\u003eassemblePartialSampleCall(\"textureSampleLevel\",\n                                                                    *arguments[0],\n                                                                    *arguments[1]);\n"
+            },
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 3294,
+                "startChar": 0,
+                "endLine": 3297,
+                "endChar": 0
+              },
+              "replacement": "            std::string expr;\n            const char* close;\n            std::tie(expr, close) \u003d this-\u003eassemblePartialSampleCall(\"textureSampleGrad\",\n                                                                    *arguments[0],\n                                                                    *arguments[1]);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "779301cbf33c320e285698558a5e04707b2b129e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
