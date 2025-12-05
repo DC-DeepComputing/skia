@@ -88,6 +88,24 @@
       "parentUuid": "c42743fa_502a957c",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46e84480_e8dd5185",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-05T15:37:23Z",
+      "side": 1,
+      "message": "\u003e why do we want cumulative? is the typical case that the allocations all/mostly have overlapping lifepsans?\n\nYes, allocations are performed in the decode setup phase (e.g. destination buffer if managed, scanline buffer, swizzle buffer, color xform buffer) and their lifespan is roughly bound to the decode operation (they are reset when the next decode starts).  The proposed cumulative maximum would also be scoped to a single decode operation, most likely part of `SkCodec::Options`.\n\n\u003e if we are keeping track of allocations and frees, but if we just track allocations, that shouldn\u0027t be too hard\n\nRight, I wasn\u0027t thinking of tracking frees, just persistent allocations that are used during decoding.  We shouldn\u0027t be churning alloc/free while decoding, only at the beginning/end.",
+      "parentUuid": "9c71a7a2_b2f870ea",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
