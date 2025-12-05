@@ -183,23 +183,17 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
                  /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
-#if defined(__EMSCRIPTEN__)
                  // prepareForReturnToCache only needs to be called for a buffer that is mappable
-                 // for writing
+                 // for writing, and only if the async map cap is enabled
                  /* requiresPrepareForReturnToCache= */
-                                                   fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite
-#else
-                 /* requiresPrepareForReturnToCache= */ false)
-#endif
+                 sharedContext->caps()->bufferMapsAreAsync() &&
+                     (buffer.GetUsage() & wgpu::BufferUsage::MapWrite))
         , fBuffer(std::move(buffer)) {
 
     fMapPtr = mappedAtCreationPtr;
 }
 
-#if defined(__EMSCRIPTEN__)
 bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
-    // This function is only useful for Emscripten where we have to pre-map the buffer
-    // once it is returned to the cache.
     SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
 
     // This implementation is almost Dawn-agnostic. However, Buffer base class doesn't have any
@@ -207,9 +201,6 @@ bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
     // We only need to re-map the former.
     SkASSERT(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite);
 
-    // We cannot start an async map while the GPU is still using the buffer. We asked that
-    // our Resource not become reusable until it was purgeable (no outstanding CPU or GPU refs)
-    SkASSERT(this->isPurgeable());
     // Note that the map state cannot change on another thread when we are here. We got here
     // because there were no UsageRefs on the buffer but async mapping holds a UsageRef until it
     // completes.
@@ -247,24 +238,24 @@ void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
     SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Unmapped);
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
-    auto buffer = sk_ref_sp(this);
 
     fBuffer.MapAsync(
             isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read,
             0,
             fBuffer.GetSize(),
-            [](WGPUBufferMapAsyncStatus s, void* userData) {
-                sk_sp<DawnBuffer> buffer(static_cast<DawnBuffer*>(userData));
+#if defined(__EMSCRIPTEN__)
+            [buffer = sk_ref_sp(this)](WGPUBufferMapAsyncStatus s, void* userData) {
                 buffer->mapCallback(s, /*message=*/nullptr);
             },
-            buffer.release());
-}
-
-void DawnBuffer::onMap() {
-    SKGPU_LOG_W("Synchronous buffer mapping not supported in Dawn. Failing map request.");
-}
-
+            buffer.release()
 #else
+            wgpu::CallbackMode::AllowSpontaneous,
+            [buffer = sk_ref_sp(this)](wgpu::MapAsyncStatus s, wgpu::StringView) {
+                buffer->mapCallback(s, /*message=*/nullptr);
+            }
+#endif  // defined(__EMSCRIPTEN__)
+            );
+}
 
 void DawnBuffer::onMap() {
     SkASSERT(!this->sharedContext()->caps()->bufferMapsAreAsync());
@@ -313,7 +304,6 @@ void DawnBuffer::onMap() {
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(mapWaitInfo.completed);
 }
-#endif  // defined(__EMSCRIPTEN__)
 
 void DawnBuffer::onUnmap() {
     SkASSERT(fBuffer);
