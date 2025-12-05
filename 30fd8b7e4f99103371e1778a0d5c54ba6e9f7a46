@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf979e8_c32d57ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-05T16:36:58Z",
+      "side": 1,
+      "message": "Kaylee: PTAL. Thanks!",
+      "revId": "30fd8b7e4f99103371e1778a0d5c54ba6e9f7a46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
