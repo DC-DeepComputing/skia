@@ -487,6 +487,30 @@
       },
       "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "985f66f1_c2cfa4ad",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-05T15:53:23Z",
+      "side": 1,
+      "message": "\"Yeah I agree and think we could have both lambdas just do [buffer \u003d sk_ref_sp(this)]. Drop all the other sk_sp stuff and release calls.\"\n\nDone.\n\nI attempted to do an Emscripten build, but it seems to be broken at the moment. The canvaskit BUILD file refers to \"SampleSlide.cpp\", which no longer exists. Commenting that out resulted in the dawn_cmake build failing with \"Unsupported OS\".",
+      "parentUuid": "3af90cbb_3f7fbe19",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
