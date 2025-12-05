@@ -63,6 +63,30 @@
       },
       "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2011752_64689e86",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-05T14:49:15Z",
+      "side": 1,
+      "message": "I\u0027m taking a stab at something like the variant approach so we can compare...",
+      "parentUuid": "13fb0d38_f5a0c7d5",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "e31fc410c91e5cefbc668f5acaff1e3822d0faac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
