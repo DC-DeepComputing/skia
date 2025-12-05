@@ -511,6 +511,30 @@
       },
       "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0491f141_f25fa954",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-05T16:15:04Z",
+      "side": 1,
+      "message": "OK, I got the Emscripten build limping along enough to verify that Quyen is right: it\u0027s still using the callback function, not a lambda. Restored the old code for Emscripten.",
+      "parentUuid": "985f66f1_c2cfa4ad",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
