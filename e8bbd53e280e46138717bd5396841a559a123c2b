@@ -439,6 +439,30 @@
       },
       "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af90cbb_3f7fbe19",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-05T14:52:58Z",
+      "side": 1,
+      "message": "Sorry, still catching up:\n\n\"If the GL buffer isn\u0027t being created until Queue::submit, then by definition the Recorder on the viz compositor thread will need to have shadow copies because we write the data during or before Recorder::snap(). This would require the DawnBuffer to provide a CPU buffer we write to that it is pretending is the \"mapped\" buffer and then memcpy it during submit().\"\n\nThis is true, but we plan to do this in Dawn/GLES, and not make it Skia\u0027s responsibility.",
+      "parentUuid": "40e06a89_d26f94c9",
+      "range": {
+        "startLine": 254,
+        "startChar": 12,
+        "endLine": 254,
+        "endChar": 49
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
