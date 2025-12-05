@@ -372,6 +372,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecabe30f_858665e3",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2025-12-05T15:30:26Z",
+      "side": 1,
+      "message": "\"Also is it safe to call \"map\" on the buffer while it is being submitted for GPU work? I guess as long as we don\u0027t ever actually try to use the returned mapped pointer until the GPU is done, it should be fine.\"\n\nYes, it\u0027s safe to call, by design. That\u0027s why it\u0027s async: you don\u0027t actually receive the host-side pointer until the GPU is finished with it, so there\u0027s no danger of using it \"too early\".",
+      "parentUuid": "ec0fe43f_303dd266",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 34
+      },
+      "revId": "e8bbd53e280e46138717bd5396841a559a123c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1356f48d_3a4b6316",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 2
