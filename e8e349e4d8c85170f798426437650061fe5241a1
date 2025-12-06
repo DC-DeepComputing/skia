@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cc87c30_b08a5662",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:10:57Z",
+      "side": 1,
+      "message": "love it!",
+      "revId": "e8e349e4d8c85170f798426437650061fe5241a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b42df715_e1953d74",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:10:57Z",
+      "side": 1,
+      "message": "naming nit: SVG calls these \"color stops\", which seems better suited since they hold more than just colors.",
+      "range": {
+        "startLine": 129,
+        "startChar": 10,
+        "endLine": 129,
+        "endChar": 16
+      },
+      "revId": "e8e349e4d8c85170f798426437650061fe5241a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4c8b04d_7ff58254",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:10:57Z",
+      "side": 1,
+      "message": "This assert looks exclusive with the cleanup below.  Since we still need to validate in gradient factories (to return null for bad inputs), should we sanitize at this stage at all?  Maybe have an `isValid` helper instead?",
+      "revId": "e8e349e4d8c85170f798426437650061fe5241a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
