@@ -40,10 +40,9 @@ public:
         Descriptor();
         ~Descriptor();
 
-        Descriptor(const SkColor4f colors[],
+        Descriptor(SkSpan<const SkColor4f>,
                    sk_sp<SkColorSpace> colorSpace,
-                   const SkScalar positions[],
-                   int colorCount,
+                   SkSpan<const float> posOrEmpty,
                    SkTileMode mode,
                    const Interpolation& interpolation);
 
@@ -82,14 +81,12 @@ public:
     const float* getPositions() const { return fPositions; }
     const Interpolation& getInterpolation() const { return fInterpolation; }
 
-    static bool ValidGradient(const SkColor4f colors[],
-                              int count,
+    static bool ValidGradient(SkSpan<const SkColor4f>,
                               SkTileMode tileMode,
                               const Interpolation& interpolation);
 
-    static sk_sp<SkShader> MakeDegenerateGradient(const SkColor4f colors[],
-                                                  const SkScalar pos[],
-                                                  int colorCount,
+    static sk_sp<SkShader> MakeDegenerateGradient(SkSpan<const SkColor4f>,
+                                                  SkSpan<const float> posOrEmpty,
                                                   sk_sp<SkColorSpace> colorSpace,
                                                   SkTileMode mode);
 
@@ -195,5 +192,14 @@ void SkRegisterConicalGradientShaderFlattenable();
 void SkRegisterLinearGradientShaderFlattenable();
 void SkRegisterRadialGradientShaderFlattenable();
 void SkRegisterSweepGradientShaderFlattenable();
+
+#define MAKE_COLORS_POS_SPANS(colorPtr, posPtr, count)      \
+    SkSpan<const SkColor4f> colors{colorPtr, (size_t)count};\
+    SkSpan<const float> pos{};                              \
+    do {                                                    \
+        if (posPtr) {                                       \
+            pos = {posPtr, (size_t)count};                  \
+        }                                                   \
+    } while (0)
 
 #endif
