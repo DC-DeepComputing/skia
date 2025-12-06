@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2319885a_04394b45",
+        "filename": "src/shaders/gradients/SkConicalGradient.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:58:59Z",
+      "side": 1,
+      "message": "nit: `SkToInt`?",
+      "range": {
+        "startLine": 313,
+        "startChar": 30,
+        "endLine": 313,
+        "endChar": 35
+      },
+      "revId": "daf0c8c7d0e8b8abdb66e9661510a112811f7aed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "871558d5_e888eb99",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:58:59Z",
+      "side": 1,
+      "message": "nit: `const sk_sp\u003c\u003e\u0026`",
+      "range": {
+        "startLine": 145,
+        "startChar": 4,
+        "endLine": 145,
+        "endChar": 23
+      },
+      "revId": "daf0c8c7d0e8b8abdb66e9661510a112811f7aed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455b042e_af0ff626",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:58:59Z",
+      "side": 1,
+      "message": "Does switching to `size_t` lower the casting noise or make it worse?",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 7
+      },
+      "revId": "daf0c8c7d0e8b8abdb66e9661510a112811f7aed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2606da_d0cd916a",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-06T17:58:59Z",
+      "side": 1,
+      "message": "nit: I think `do {} while(0)` is only useful if it wraps the whole macro, we already have multiple top-level statements here.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 15
+      },
+      "revId": "daf0c8c7d0e8b8abdb66e9661510a112811f7aed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
