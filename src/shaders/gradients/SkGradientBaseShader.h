@@ -85,10 +85,7 @@ public:
                               SkTileMode tileMode,
                               const Interpolation& interpolation);
 
-    static sk_sp<SkShader> MakeDegenerateGradient(SkSpan<const SkColor4f>,
-                                                  SkSpan<const float> posOrEmpty,
-                                                  sk_sp<SkColorSpace> colorSpace,
-                                                  SkTileMode mode);
+    static sk_sp<SkShader> MakeDegenerateGradient(const SkGradientShader::Colors&);
 
     // The default SkScalarNearlyZero threshold of .0024 is too big and causes regressions for svg
     // gradients defined in the wild.
@@ -193,7 +190,10 @@ struct SkColor4fXformer {
 };
 
 struct SkColorConverter {
+    SkColorConverter() {}
     SkColorConverter(const SkColor* colors, int count);
+
+    SkSpan<SkColor4f> convert(SkSpan<const SkColor>);
 
     skia_private::STArray<2, SkColor4f> fColors4f;
 };

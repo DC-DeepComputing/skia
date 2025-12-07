@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkAPI.h"
 
@@ -124,6 +125,59 @@ public:
                     HueMethod::kShorter};
         }
     };
+
+    /**
+     *  Specification for the colors in a gradient.
+     *
+     *  @param  colors  The span of colors for the gradient.
+     *  @param  pos     Relative positions of each color across the gradient. If empty,
+     *                  the the colors are distributed evenly. If this is not null, the values
+     *                  must lie between 0.0 and 1.0, and be strictly increasing. If the first
+     *                  value is not 0.0, then an additional color stop is added at position 0.0,
+     *                  with the same color as colors[0]. If the the last value is less than 1.0,
+     *                  then an additional color stop is added at position 1.0, with the same color
+     *                  as colors[count - 1].
+     *  @param mode     Tiling mode for the gradient.
+     *  @param cs       Optional colorspace associated with the span of colors. If this is null,
+     *                  the colors are treated as sRGB.
+     */
+    class Colors {
+    public:
+        Colors(SkSpan<const SkColor4f> colors, SkSpan<const float> pos,
+               SkTileMode mode, sk_sp<SkColorSpace> cs = nullptr)
+            : fColors(colors)
+            , fPos(pos)
+            , fColorSpace(std::move(cs))
+            , fTileMode(mode)
+        {
+            SkASSERT(fPos.size() == 0 || fPos.size() == fColors.size());
+
+            // throw away inconsistent inputs
+            if (fPos.size() != fColors.size()) {
+                fPos = {};
+            }
+        }
+
+        Colors(SkSpan<const SkColor4f> colors, SkTileMode tm, sk_sp<SkColorSpace> cs = nullptr)
+            : Colors(colors, {}, tm, std::move(cs))
+        {}
+
+    private:
+        SkSpan<const SkColor4f> fColors;
+        SkSpan<const float>     fPos;
+        sk_sp<SkColorSpace>     fColorSpace;
+        SkTileMode              fTileMode;
+
+        friend class SkGradientShader;
+        friend class SkGradientBaseShader;
+    };
+
+    /** Returns a shader that generates a linear gradient between the two specified points.
+     *  If the inputs are invalid, this will return nullptr.
+     */
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const Colors&, const Interpolation&,
+                                      const SkMatrix* localMatrix = nullptr);
+
 
     /** Returns a shader that generates a linear gradient between the two specified points.
         <p />
