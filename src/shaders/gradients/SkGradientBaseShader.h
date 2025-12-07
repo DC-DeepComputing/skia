@@ -193,7 +193,10 @@ struct SkColor4fXformer {
 };
 
 struct SkColorConverter {
+    SkColorConverter() {}
     SkColorConverter(const SkColor* colors, int count);
+
+    SkSpan<SkColor4f> convert(SkSpan<const SkColor>);
 
     skia_private::STArray<2, SkColor4f> fColors4f;
 };
