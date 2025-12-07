@@ -46,6 +46,15 @@ public:
                    SkTileMode mode,
                    const Interpolation& interpolation);
 
+        SkSpan<const SkColor4f> colors() const { return {fColors, fColorCount}; }
+        SkSpan<const float> positions() const {
+            SkSpan<const float> pos;
+            if (fPositions) {
+                pos = {fPositions, fColorCount};
+            }
+            return pos;
+        }
+
         const SkColor4f* fColors;
         sk_sp<SkColorSpace> fColorSpace;
         const SkScalar* fPositions;
@@ -79,16 +88,14 @@ public:
     const SkMatrix& getGradientMatrix() const { return fPtsToUnit; }
     size_t getColorCount() const { return fColorCount; }
     const float* getPositions() const { return fPositions; }
+
     const Interpolation& getInterpolation() const { return fInterpolation; }
 
     static bool ValidGradient(SkSpan<const SkColor4f>,
                               SkTileMode tileMode,
                               const Interpolation& interpolation);
 
-    static sk_sp<SkShader> MakeDegenerateGradient(SkSpan<const SkColor4f>,
-                                                  SkSpan<const float> posOrEmpty,
-                                                  sk_sp<SkColorSpace> colorSpace,
-                                                  SkTileMode mode);
+    static sk_sp<SkShader> MakeDegenerateGradient(const SkGradientShader::Colors&);
 
     // The default SkScalarNearlyZero threshold of .0024 is too big and causes regressions for svg
     // gradients defined in the wild.
@@ -193,7 +200,10 @@ struct SkColor4fXformer {
 };
 
 struct SkColorConverter {
+    SkColorConverter() {}
     SkColorConverter(const SkColor* colors, int count);
+
+    SkSpan<SkColor4f> convert(SkSpan<const SkColor>);
 
     skia_private::STArray<2, SkColor4f> fColors4f;
 };

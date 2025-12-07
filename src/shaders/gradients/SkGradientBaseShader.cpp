@@ -1010,13 +1010,20 @@ SkColor4fXformer::SkColor4fXformer(const SkGradientBaseShader* shader,
 }
 
 SkColorConverter::SkColorConverter(const SkColor* colors, int count) {
+    (void)this->convert({colors, (size_t)count});
+}
+
+SkSpan<SkColor4f> SkColorConverter::convert(SkSpan<const SkColor> src) {
     constexpr float ONE_OVER_255 = 1.f / 255;
-    for (int i = 0; i < count; ++i) {
-        fColors4f.push_back({SkColorGetR(colors[i]) * ONE_OVER_255,
-                             SkColorGetG(colors[i]) * ONE_OVER_255,
-                             SkColorGetB(colors[i]) * ONE_OVER_255,
-                             SkColorGetA(colors[i]) * ONE_OVER_255});
+
+    fColors4f.resize(src.size());
+    for (size_t i = 0; i < src.size(); ++i) {
+        fColors4f[i] = {SkColorGetR(src[i]) * ONE_OVER_255,
+                        SkColorGetG(src[i]) * ONE_OVER_255,
+                        SkColorGetB(src[i]) * ONE_OVER_255,
+                        SkColorGetA(src[i]) * ONE_OVER_255};
     }
+    return fColors4f;
 }
 
 void SkGradientBaseShader::commonAsAGradient(GradientInfo* info) const {
@@ -1121,11 +1128,8 @@ static SkColor4f average_gradient_color(SkSpan<const SkColor4f> colors,
 // Except for special circumstances of clamped gradients, every gradient shape--when degenerate--
 // can be mapped to the same fallbacks. The specific shape factories must account for special
 // clamped conditions separately, this will always return the last color for clamped gradients.
-sk_sp<SkShader> SkGradientBaseShader::MakeDegenerateGradient(SkSpan<const SkColor4f> colors,
-                                                             SkSpan<const float> pos,
-                                                             sk_sp<SkColorSpace> colorSpace,
-                                                             SkTileMode mode) {
-    switch (mode) {
+sk_sp<SkShader> SkGradientBaseShader::MakeDegenerateGradient(const SkGradientShader::Colors& c) {
+    switch (c.fTileMode) {
         case SkTileMode::kDecal:
             // normally this would reject the area outside of the interpolation region, so since
             // inside region is empty when the radii are equal, the entire draw region is empty
@@ -1135,11 +1139,11 @@ sk_sp<SkShader> SkGradientBaseShader::MakeDegenerateGradient(SkSpan<const SkColo
             // repeat and mirror are treated the same: the border colors are never visible,
             // but approximate the final color as infinite repetitions of the colors, so
             // it can be represented as the average color of the gradient.
-            return SkShaders::Color(average_gradient_color(colors, pos), std::move(colorSpace));
+            return SkShaders::Color(average_gradient_color(c.fColors, c.fPos), c.fColorSpace);
         case SkTileMode::kClamp:
             // Depending on how the gradient shape degenerates, there may be a more specialized
             // fallback representation for the factories to use, but this is a reasonable default.
-            return SkShaders::Color(colors.back(), std::move(colorSpace));
+            return SkShaders::Color(c.fColors.back(), c.fColorSpace);
     }
     SkDEBUGFAIL("Should not be reached");
     return nullptr;
