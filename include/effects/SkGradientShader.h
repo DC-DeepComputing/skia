@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkAPI.h"
 
@@ -124,6 +125,54 @@ public:
                     HueMethod::kShorter};
         }
     };
+
+    class Colors {
+    public:
+        Colors(SkSpan<const SkColor> colors, SkSpan<const float> pos, SkTileMode tm,
+               sk_sp<SkColorSpace> cs = nullptr)
+            : Colors(colors, {}, pos, tm, std::move(cs))
+        {}
+
+        Colors(SkSpan<const SkColor4f> colors, SkSpan<const float> pos, SkTileMode tm,
+               sk_sp<SkColorSpace> cs = nullptr)
+            : Colors({}, colors, pos, tm, std::move(cs))
+        {}
+
+    private:
+        SkSpan<const SkColor>   fColors32;  // this XOR fColors4f
+        SkSpan<const SkColor4f> fColors4f;  // this XOR fColors32
+        SkSpan<const float>     fPos;
+        sk_sp<SkColorSpace>     fColorSpace;
+        SkTileMode              fTileMode;
+
+        Colors(SkSpan<const SkColor> c32, SkSpan<const SkColor4f> c4f, SkSpan<const float> pos,
+               SkTileMode tm, sk_sp<SkColorSpace> cs)
+            : fColors32(c32)
+            , fColors4f(c4f)
+            , fPos(pos)
+            , fColorSpace(std::move(cs))
+            , fTileMode(tm)
+        {
+            SkASSERT(fColors32.size() == 0 || fColors4f.size() == 0);   // can't have both
+            const size_t N = std::max(fColors32.size(), fColors4f.size());
+            SkASSERT(fPos.size() == 0 || fPos.size() == N);
+
+            // throw away inconsistent inputs
+            if (fColors32.size() && fColors4f.size()) {
+                fColors32 = {};
+                fColors4f = {};
+                fPos = {};
+            } else if (fPos.size() != N) {
+                fPos = {};
+            }
+        }
+
+        friend class SkGradientShader;
+    };
+
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const Colors&, const Interpolation&,
+                                      const SkMatrix* localMatrix = nullptr);
+
 
     /** Returns a shader that generates a linear gradient between the two specified points.
         <p />
