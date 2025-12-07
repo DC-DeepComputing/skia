@@ -1010,13 +1010,20 @@ SkColor4fXformer::SkColor4fXformer(const SkGradientBaseShader* shader,
 }
 
 SkColorConverter::SkColorConverter(const SkColor* colors, int count) {
+    (void)this->convert({colors, (size_t)count});
+}
+
+SkSpan<SkColor4f> SkColorConverter::convert(SkSpan<const SkColor> src) {
     constexpr float ONE_OVER_255 = 1.f / 255;
-    for (int i = 0; i < count; ++i) {
-        fColors4f.push_back({SkColorGetR(colors[i]) * ONE_OVER_255,
-                             SkColorGetG(colors[i]) * ONE_OVER_255,
-                             SkColorGetB(colors[i]) * ONE_OVER_255,
-                             SkColorGetA(colors[i]) * ONE_OVER_255});
+
+    fColors4f.resize(src.size());
+    for (size_t i = 0; i < src.size(); ++i) {
+        fColors4f[i] = {SkColorGetR(src[i]) * ONE_OVER_255,
+                        SkColorGetG(src[i]) * ONE_OVER_255,
+                        SkColorGetB(src[i]) * ONE_OVER_255,
+                        SkColorGetA(src[i]) * ONE_OVER_255};
     }
+    return fColors4f;
 }
 
 void SkGradientBaseShader::commonAsAGradient(GradientInfo* info) const {

@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkAPI.h"
 
@@ -124,6 +125,36 @@ public:
                     HueMethod::kShorter};
         }
     };
+
+    class Colors {
+    public:
+        Colors(SkSpan<const SkColor4f> colors, SkSpan<const float> pos,
+               SkTileMode tm, sk_sp<SkColorSpace> cs = nullptr)
+            : fColors(colors)
+            , fPos(pos)
+            , fColorSpace(std::move(cs))
+            , fTileMode(tm)
+        {
+            SkASSERT(fPos.size() == 0 || fPos.size() == fColors.size());
+
+            // throw away inconsistent inputs
+            if (fPos.size() != fColors.size()) {
+                fPos = {};
+            }
+        }
+
+    private:
+        SkSpan<const SkColor4f> fColors;
+        SkSpan<const float>     fPos;
+        sk_sp<SkColorSpace>     fColorSpace;
+        SkTileMode              fTileMode;
+
+        friend class SkGradientShader;
+    };
+
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const Colors&, const Interpolation&,
+                                      const SkMatrix* localMatrix = nullptr);
+
 
     /** Returns a shader that generates a linear gradient between the two specified points.
         <p />
