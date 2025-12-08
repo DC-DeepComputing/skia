@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca7daeb_ab13f34c",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-08T19:46:30Z",
+      "side": 1,
+      "message": "Sure -- just separated it now to make reviewing two separate pieces",
+      "parentUuid": "0557ebb0_5ffe1242",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 16
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7255977_55bbadd0",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae72398a_74b2e582",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-08T19:46:30Z",
+      "side": 1,
+      "message": "Definitely expect we\u0027ll create a helper (w/ storage) way to create a gradient (or Colors) from SkColor32s",
+      "parentUuid": "f7255977_55bbadd0",
+      "range": {
+        "startLine": 118,
+        "startChar": 21,
+        "endLine": 118,
+        "endChar": 30
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "474ef648_2a6d35b9",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-12-08T19:31:55Z",
       "side": 1,
       "message": "Should we fold the lm into SkGradient too?  Seems more relevant to geometry than color stops, so I\u0027m inclined to say no.  Leaving comment open in case you think otherwise.",
+      "range": {
+        "startLine": 89,
+        "startChar": 57,
+        "endLine": 89,
+        "endChar": 85
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08423644_a7d4092b",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-08T19:46:30Z",
+      "side": 1,
+      "message": "I think not -- matrices are tied to the geometry, not the colors. And (conceivably) some future gradient type might not support matrices (or support a different set of transforms).",
+      "parentUuid": "474ef648_2a6d35b9",
       "range": {
         "startLine": 89,
         "startChar": 57,
