@@ -50,6 +50,30 @@
       ],
       "revId": "779301cbf33c320e285698558a5e04707b2b129e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7efb45e6_27c82527",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3295,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T15:20:04Z",
+      "side": 1,
+      "message": "I don\u0027t think I want to do this; I generally prefer `auto [expansion]`, but I was forced to use std::tie because two different expressions had to assign to variables that needed a larger scope. In this particular case, the auto isn\u0027t hiding particularly tricky/important types either.",
+      "parentUuid": "cb0f5ec5_ac472ec7",
+      "range": {
+        "startLine": 3286,
+        "startChar": 12,
+        "endLine": 3295,
+        "endChar": 79
+      },
+      "revId": "779301cbf33c320e285698558a5e04707b2b129e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
