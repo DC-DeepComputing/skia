@@ -209,3 +209,24 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGraphite, reporte
     test_nested_blends(reporter, surface.get());
 }
 #endif
+
+DEF_TEST(ShaderLocalMatrix, reporter) {
+    auto s = SkShaders::Color(SK_ColorRED);
+
+    {
+        // not wrapping for identity
+        auto lms = s->makeWithLocalMatrix(SkMatrix::I());
+        REPORTER_ASSERT(reporter, lms == s);
+    }
+
+    {
+        // wrapping for translation
+        auto lms1 = s->makeWithLocalMatrix(SkMatrix::Translate(10, 10));
+        REPORTER_ASSERT(reporter, lms1 != s);
+        lms1 = lms1->makeWithLocalMatrix(SkMatrix::Translate(10, 10));
+
+        // unwrapping for inverse
+        auto lms2 = lms1->makeWithLocalMatrix(SkMatrix::Translate(-20, -20));
+        REPORTER_ASSERT(reporter, lms2 == s);
+    }
+}
