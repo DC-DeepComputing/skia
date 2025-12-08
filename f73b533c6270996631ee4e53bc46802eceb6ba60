@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddbc7b52_3316fb9a",
+        "filename": "include/config/copts.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-08T17:31:59Z",
+      "side": 1,
+      "message": "This caught a lot of issues, at least a few were false positives.",
+      "range": {
+        "startLine": 107,
+        "startChar": 10,
+        "endLine": 107,
+        "endChar": 14
+      },
+      "revId": "f73b533c6270996631ee4e53bc46802eceb6ba60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
