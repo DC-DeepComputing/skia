@@ -14,8 +14,18 @@ struct SPIRV_Cross_Output
 
 void frag_main()
 {
-    sk_FragColor.x = float(firstbitlow(_11_a));
-    sk_FragColor.y = float(int(firstbitlow(_11_b)));
+    sk_FragColor.x = float(firstbitlow(_11_a)) + float(int(firstbitlow(_11_b)));
+    int2 _33 = firstbitlow(_11_a.xx);
+    int2 _44 = int2(firstbitlow(_11_b.xx));
+    float2 _54 = float2(float(_33.x), float(_33.y)) + float2(float(_44.x), float(_44.y));
+    sk_FragColor = float4(_54.x, _54.y, sk_FragColor.z, sk_FragColor.w);
+    int3 _57 = firstbitlow(_11_a.xxx);
+    int3 _70 = int3(firstbitlow(_11_b.xxx));
+    float3 _82 = float3(float(_57.x), float(_57.y), float(_57.z)) + float3(float(_70.x), float(_70.y), float(_70.z));
+    sk_FragColor = float4(_82.x, _82.y, _82.z, sk_FragColor.w);
+    int4 _85 = firstbitlow(_11_a.xxxx);
+    int4 _99 = int4(firstbitlow(_11_b.xxxx));
+    sk_FragColor = float4(float(_85.x), float(_85.y), float(_85.z), float(_85.w)) + float4(float(_99.x), float(_99.y), float(_99.z), float(_99.w));
 }
 
 SPIRV_Cross_Output main()

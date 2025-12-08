@@ -1,7 +1,3 @@
-### Compilation failed:
-
-error: Tint compilation failed.
-
 diagnostic(off, derivative_uniformity);
 diagnostic(off, chromium.unreachable_code);
 struct FSOut {
@@ -14,8 +10,10 @@ struct _GlobalUniforms {
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    (*_stageOut).sk_FragColor.x = f32(findLSB(_globalUniforms.a));
-    (*_stageOut).sk_FragColor.y = f32(findLSB(_globalUniforms.b));
+    (*_stageOut).sk_FragColor.x = f32(firstTrailingBit(_globalUniforms.a)) + f32(firstTrailingBit(_globalUniforms.b));
+    (*_stageOut).sk_FragColor = vec4<f32>((vec2<f32>(firstTrailingBit(vec2<i32>(_globalUniforms.a))) + vec2<f32>(firstTrailingBit(vec2<u32>(_globalUniforms.b)))), (*_stageOut).sk_FragColor.zw);
+    (*_stageOut).sk_FragColor = vec4<f32>((vec3<f32>(firstTrailingBit(vec3<i32>(_globalUniforms.a))) + vec3<f32>(firstTrailingBit(vec3<u32>(_globalUniforms.b)))), (*_stageOut).sk_FragColor.w);
+    (*_stageOut).sk_FragColor = vec4<f32>(firstTrailingBit(vec4<i32>(_globalUniforms.a))) + vec4<f32>(firstTrailingBit(vec4<u32>(_globalUniforms.b)));
   }
 }
 @fragment fn main() -> FSOut {
@@ -23,5 +21,3 @@ fn _skslMain(_stageOut: ptr<function, FSOut>) {
   _skslMain(&_stageOut);
   return _stageOut;
 }
-
-1 error
