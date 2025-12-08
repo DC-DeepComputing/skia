@@ -7,15 +7,39 @@ error: 3: 'main' must return: 'vec4', 'float4', or 'half4'
 void main() {
 ^^^^^^^^^^^
 error: 4: unknown identifier 'sk_FragColor'
-    sk_FragColor.x = half(bitCount(a));
+    sk_FragColor.x    = half(bitCount(a))        + half(bitCount(b));
     ^^^^^^^^^^^^
 error: 4: unknown identifier 'bitCount'
-    sk_FragColor.x = half(bitCount(a));
-                          ^^^^^^^^
+    sk_FragColor.x    = half(bitCount(a))        + half(bitCount(b));
+                             ^^^^^^^^
+error: 4: unknown identifier 'bitCount'
+    sk_FragColor.x    = half(bitCount(a))        + half(bitCount(b));
+                                                        ^^^^^^^^
 error: 5: unknown identifier 'sk_FragColor'
-    sk_FragColor.y = half(bitCount(b));
+    sk_FragColor.xy   = half2(bitCount(int2(a))) + half2(bitCount(uint2(b)));
     ^^^^^^^^^^^^
 error: 5: unknown identifier 'bitCount'
-    sk_FragColor.y = half(bitCount(b));
-                          ^^^^^^^^
-6 errors
+    sk_FragColor.xy   = half2(bitCount(int2(a))) + half2(bitCount(uint2(b)));
+                              ^^^^^^^^
+error: 5: unknown identifier 'bitCount'
+    sk_FragColor.xy   = half2(bitCount(int2(a))) + half2(bitCount(uint2(b)));
+                                                         ^^^^^^^^
+error: 6: unknown identifier 'sk_FragColor'
+    sk_FragColor.xyz  = half3(bitCount(int3(a))) + half3(bitCount(uint3(b)));
+    ^^^^^^^^^^^^
+error: 6: unknown identifier 'bitCount'
+    sk_FragColor.xyz  = half3(bitCount(int3(a))) + half3(bitCount(uint3(b)));
+                              ^^^^^^^^
+error: 6: unknown identifier 'bitCount'
+    sk_FragColor.xyz  = half3(bitCount(int3(a))) + half3(bitCount(uint3(b)));
+                                                         ^^^^^^^^
+error: 7: unknown identifier 'sk_FragColor'
+    sk_FragColor.xyzw = half4(bitCount(int4(a))) + half4(bitCount(uint4(b)));
+    ^^^^^^^^^^^^
+error: 7: unknown identifier 'bitCount'
+    sk_FragColor.xyzw = half4(bitCount(int4(a))) + half4(bitCount(uint4(b)));
+                              ^^^^^^^^
+error: 7: unknown identifier 'bitCount'
+    sk_FragColor.xyzw = half4(bitCount(int4(a))) + half4(bitCount(uint4(b)));
+                                                         ^^^^^^^^
+14 errors

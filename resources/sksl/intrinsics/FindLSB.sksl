@@ -1,6 +1,8 @@
 uniform int a;
 uniform uint b;
 void main() {
-    sk_FragColor.x = half(findLSB(a));
-    sk_FragColor.y = half(findLSB(b));
+    sk_FragColor.x    = half(findLSB(a))        + half(findLSB(b));
+    sk_FragColor.xy   = half2(findLSB(int2(a))) + half2(findLSB(uint2(b)));
+    sk_FragColor.xyz  = half3(findLSB(int3(a))) + half3(findLSB(uint3(b)));
+    sk_FragColor.xyzw = half4(findLSB(int4(a))) + half4(findLSB(uint4(b)));
 }
