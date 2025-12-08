@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf47c93_27c90c74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T19:07:03Z",
+      "side": 1,
+      "message": "@James, I\u0027m CC\u0027ing on this change since I\u0027m curious if it\u0027ll significantly change the backend shader code that tint produces, or if it\u0027s main effect is to create wgsl that takes up less space.",
+      "revId": "4aef64470cf5302cd569f5c08c7f80717f867eeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
