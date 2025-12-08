@@ -24,17 +24,24 @@ SkImage* SkShader::isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const {
 }
 
 sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
+    if (localMatrix.isIdentity()) {
+        return sk_ref_sp(this);
+    }
+
     const SkMatrix* lm = &localMatrix;
 
     sk_sp<SkShader> baseShader;
     SkMatrix otherLocalMatrix;
-    sk_sp<SkShader> proxy = as_SB(this)->makeAsALocalMatrixShader(&otherLocalMatrix);
-    if (proxy) {
+    if (sk_sp<SkShader> proxy = as_SB(this)->makeAsALocalMatrixShader(&otherLocalMatrix)) {
         otherLocalMatrix = SkShaderBase::ConcatLocalMatrices(localMatrix, otherLocalMatrix);
+        if (otherLocalMatrix.isIdentity()) {
+            return proxy;
+        }
+
         lm = &otherLocalMatrix;
-        baseShader = proxy;
+        baseShader = std::move(proxy);
     } else {
-        baseShader = sk_ref_sp(const_cast<SkShader*>(this));
+        baseShader = sk_ref_sp(this);
     }
 
     return sk_make_sp<SkLocalMatrixShader>(std::move(baseShader), *lm);
