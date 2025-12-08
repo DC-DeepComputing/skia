@@ -137,7 +137,7 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
                              endAngle, interpolation, localMatrix);
         } else {
             return SkGradientBaseShader::MakeDegenerateGradient(
-                    colors, pos, std::move(colorSpace), mode);
+                    {colors, pos, mode, std::move(colorSpace)});
         }
     }
 
