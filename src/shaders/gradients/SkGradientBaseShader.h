@@ -34,17 +34,31 @@ struct SkStageRec;
 
 class SkGradientBaseShader : public SkShaderBase {
 public:
-    using Interpolation = SkGradientShader::Interpolation;
+    using Interpolation = SkGradient::Interpolation;
 
     struct Descriptor {
         Descriptor();
         ~Descriptor();
 
+        Descriptor(const SkGradient& grad) : Descriptor(grad.colors().colors(),
+                                                        grad.colors().colorSpace(),
+                                                        grad.colors().positions(),
+                                                        grad.colors().tileMode(),
+                                                        grad.interpolation()) {}
         Descriptor(SkSpan<const SkColor4f>,
                    sk_sp<SkColorSpace> colorSpace,
                    SkSpan<const float> posOrEmpty,
                    SkTileMode mode,
                    const Interpolation& interpolation);
+
+        SkSpan<const SkColor4f> colors() const { return {fColors, fColorCount}; }
+        SkSpan<const float> positions() const {
+            SkSpan<const float> pos;
+            if (fPositions) {
+                pos = {fPositions, fColorCount};
+            }
+            return pos;
+        }
 
         const SkColor4f* fColors;
         sk_sp<SkColorSpace> fColorSpace;
@@ -73,22 +87,20 @@ public:
     bool isOpaque() const override;
 
     bool interpolateInPremul() const {
-        return fInterpolation.fInPremul == SkGradientShader::Interpolation::InPremul::kYes;
+        return fInterpolation.fInPremul == Interpolation::InPremul::kYes;
     }
 
     const SkMatrix& getGradientMatrix() const { return fPtsToUnit; }
     size_t getColorCount() const { return fColorCount; }
     const float* getPositions() const { return fPositions; }
+
     const Interpolation& getInterpolation() const { return fInterpolation; }
 
     static bool ValidGradient(SkSpan<const SkColor4f>,
                               SkTileMode tileMode,
                               const Interpolation& interpolation);
 
-    static sk_sp<SkShader> MakeDegenerateGradient(SkSpan<const SkColor4f>,
-                                                  SkSpan<const float> posOrEmpty,
-                                                  sk_sp<SkColorSpace> colorSpace,
-                                                  SkTileMode mode);
+    static sk_sp<SkShader> MakeDegenerateGradient(const SkGradient::Colors&);
 
     // The default SkScalarNearlyZero threshold of .0024 is too big and causes regressions for svg
     // gradients defined in the wild.
@@ -193,7 +205,10 @@ struct SkColor4fXformer {
 };
 
 struct SkColorConverter {
+    SkColorConverter() {}
     SkColorConverter(const SkColor* colors, int count);
+
+    SkSpan<SkColor4f> convert(SkSpan<const SkColor>);
 
     skia_private::STArray<2, SkColor4f> fColors4f;
 };
@@ -210,6 +225,22 @@ void SkRegisterSweepGradientShaderFlattenable();
         if (posPtr) {                                       \
             pos = {posPtr, (size_t)count};                  \
         }                                                   \
+    } while (0)
+
+
+#define GRADIENT_FACTORY_EARLY_EXIT(grad, lm) \
+    do {                                                                                        \
+        const auto& colors = grad.colors();                                                     \
+        const auto& interp = grad.interpolation();                                              \
+        if (!SkGradientBaseShader::ValidGradient(colors.colors(), colors.tileMode(), interp)) { \
+            return nullptr;                                                                     \
+        }                                                                                       \
+        if (colors.colors().size() == 1) {                                                      \
+            return SkShaders::Color(colors.colors().front(), colors.colorSpace());              \
+        }                                                                                       \
+        if (lm && !lm->invert(nullptr)) {                                                       \
+            return nullptr;                                                                     \
+        }                                                                                       \
     } while (0)
 
 #endif
