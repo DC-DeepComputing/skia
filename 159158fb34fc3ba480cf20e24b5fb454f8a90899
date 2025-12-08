@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc00c60_7b192007",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T20:30:24Z",
+      "side": 1,
+      "message": "I think it\u0027d be more straightforward to just track the remaining budget instead of max + current, then we don\u0027t need to worry about overflow etc.\n\n```\nbool SkCodec::allocateFromBudget(size_t numBytes) {\n    if (numBytes \u003e fAllocBudget)\n        return false;\n\n    fAllocBudget -\u003d numBytes;\n    return true;\n}\n```",
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a1c17e_f6dabaa3",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T20:30:24Z",
+      "side": 1,
+      "message": "One thought to minimize the boilerplate: we could add a RAII-style private helper that handles budget management, something like\n\n```\n   class ScopedAllocBudget {\n       SkCodec* fCodec;\n     public:\n       ScopedAllocBudget(SkCodec* codec, Options* options)\n         : fCodec(codec) {\n           SkASSERT(codec-\u003efAllocBudget \u003d\u003d SIZE_MAX); // hopefully we\u0027re not nesting\n           codec-\u003efAllocBudget \u003d (options \u0026\u0026 options-\u003efMaxDecodeMemory)\n                   ? options-\u003efMaxDecodeMemory : SIZE_MAX;\n       }\n       ~ScopedAllocBudget() {\n           fCodec-\u003efAllocBudget \u003d SIZE_MAX;\n       }\n   }\n```\n\nThen we only need to add `ScopedAllocBudget sab(this, options);` to the entry points.",
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62583366_a993199d",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T20:30:24Z",
+      "side": 1,
+      "message": "This should prolly also be budgeted.",
+      "range": {
+        "startLine": 575,
+        "startChar": 12,
+        "endLine": 575,
+        "endChar": 26
+      },
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
