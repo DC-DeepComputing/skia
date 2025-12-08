@@ -14,7 +14,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/effects/SkGradient.h"
 #include "include/private/base/SkAPI.h"
 
 #include <cstdint>
@@ -68,6 +70,8 @@ public:
         kInterpolateColorsInPremul_Flag = 1 << 0,
     };
 
+    using Interpolation = SkGradient::Interpolation;
+    #if 0
     struct Interpolation {
         enum class InPremul : bool { kNo = false, kYes = true };
 
@@ -124,6 +128,20 @@ public:
                     HueMethod::kShorter};
         }
     };
+#endif
+    /** Returns a shader that generates a linear gradient between the two specified points.
+     *  If the inputs are invalid, this will return nullptr.
+     */
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const SkGradient&,
+                                      const SkMatrix* localMatrix = nullptr);
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const SkGradient::Colors& colors,
+                                      const SkGradient::Interpolation& interp,
+                                      const SkMatrix* localMatrix = nullptr) {
+        return MakeLinear(pts, {colors, interp}, localMatrix);
+    }
+    static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const SkGradient::Colors& colors) {
+        return MakeLinear(pts, {colors, {}}, nullptr);
+    }
 
     /** Returns a shader that generates a linear gradient between the two specified points.
         <p />

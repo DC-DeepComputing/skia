@@ -300,7 +300,7 @@ sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
             } else {
                 // Otherwise use the default degenerate case
                 return SkGradientBaseShader::MakeDegenerateGradient(
-                        colors, pos, std::move(colorSpace), mode);
+                        {colors, pos, mode, std::move(colorSpace)});
             }
         } else if (SkScalarNearlyZero(startRadius, SkGradientBaseShader::kDegenerateThreshold)) {
             // We can treat this gradient as radial, which is faster. If we got here, we know

@@ -766,14 +766,12 @@ bool colrv1_configure_skpaint(FT_Face face,
 
             sk_sp<SkShader> shader(SkGradientShader::MakeLinear(
                 linePositions,
-                colors.data(), SkColorSpace::MakeSRGB(), stops.data(), stops.size(),
-                tileMode,
-                SkGradientShader::Interpolation{
-                    SkGradientShader::Interpolation::InPremul::kNo,
-                    SkGradientShader::Interpolation::ColorSpace::kSRGB,
-                    SkGradientShader::Interpolation::HueMethod::kShorter
-                },
-                nullptr));
+                {colors, stops, tileMode, SkColorSpace::MakeSRGB()},
+                SkGradient::Interpolation{
+                    SkGradient::Interpolation::InPremul::kNo,
+                    SkGradient::Interpolation::ColorSpace::kSRGB,
+                    SkGradient::Interpolation::HueMethod::kShorter
+                }));
 
             SkASSERT(shader);
             // An opaque color is needed to ensure the gradient is not modulated by alpha.
