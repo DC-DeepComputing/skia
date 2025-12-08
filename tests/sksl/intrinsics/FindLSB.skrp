@@ -7,15 +7,39 @@ error: 3: 'main' must return: 'vec4', 'float4', or 'half4'
 void main() {
 ^^^^^^^^^^^
 error: 4: unknown identifier 'sk_FragColor'
-    sk_FragColor.x = half(findLSB(a));
+    sk_FragColor.x    = half(findLSB(a))        + half(findLSB(b));
     ^^^^^^^^^^^^
 error: 4: unknown identifier 'findLSB'
-    sk_FragColor.x = half(findLSB(a));
-                          ^^^^^^^
+    sk_FragColor.x    = half(findLSB(a))        + half(findLSB(b));
+                             ^^^^^^^
+error: 4: unknown identifier 'findLSB'
+    sk_FragColor.x    = half(findLSB(a))        + half(findLSB(b));
+                                                       ^^^^^^^
 error: 5: unknown identifier 'sk_FragColor'
-    sk_FragColor.y = half(findLSB(b));
+    sk_FragColor.xy   = half2(findLSB(int2(a))) + half2(findLSB(uint2(b)));
     ^^^^^^^^^^^^
 error: 5: unknown identifier 'findLSB'
-    sk_FragColor.y = half(findLSB(b));
-                          ^^^^^^^
-6 errors
+    sk_FragColor.xy   = half2(findLSB(int2(a))) + half2(findLSB(uint2(b)));
+                              ^^^^^^^
+error: 5: unknown identifier 'findLSB'
+    sk_FragColor.xy   = half2(findLSB(int2(a))) + half2(findLSB(uint2(b)));
+                                                        ^^^^^^^
+error: 6: unknown identifier 'sk_FragColor'
+    sk_FragColor.xyz  = half3(findLSB(int3(a))) + half3(findLSB(uint3(b)));
+    ^^^^^^^^^^^^
+error: 6: unknown identifier 'findLSB'
+    sk_FragColor.xyz  = half3(findLSB(int3(a))) + half3(findLSB(uint3(b)));
+                              ^^^^^^^
+error: 6: unknown identifier 'findLSB'
+    sk_FragColor.xyz  = half3(findLSB(int3(a))) + half3(findLSB(uint3(b)));
+                                                        ^^^^^^^
+error: 7: unknown identifier 'sk_FragColor'
+    sk_FragColor.xyzw = half4(findLSB(int4(a))) + half4(findLSB(uint4(b)));
+    ^^^^^^^^^^^^
+error: 7: unknown identifier 'findLSB'
+    sk_FragColor.xyzw = half4(findLSB(int4(a))) + half4(findLSB(uint4(b)));
+                              ^^^^^^^
+error: 7: unknown identifier 'findLSB'
+    sk_FragColor.xyzw = half4(findLSB(int4(a))) + half4(findLSB(uint4(b)));
+                                                        ^^^^^^^
+14 errors
