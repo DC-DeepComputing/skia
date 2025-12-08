@@ -42,8 +42,7 @@ sk_sp<SkShader> LinearGradient::onMakeShader(const std::vector<SkColor4f>& color
     SkASSERT(colors.size() == positions.size());
 
     const SkPoint pts[] = { fStartPoint, fEndPoint };
-    return SkGradientShader::MakeLinear(pts, colors.data(), nullptr, positions.data(),
-                                        SkToInt(colors.size()), this->getTileMode());
+    return SkGradientShader::MakeLinear(pts, {colors, positions, this->getTileMode(), nullptr});
 }
 
 sk_sp<SkShader> RadialGradient::onMakeShader(const std::vector<SkColor4f>& colors,

@@ -112,7 +112,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     if (SkScalarNearlyZero(radius, SkGradientBaseShader::kDegenerateThreshold)) {
         // Degenerate gradient optimization, and no special logic needed for clamped radial gradient
         return SkGradientBaseShader::MakeDegenerateGradient(
-                colors, pos, std::move(colorSpace), mode);
+                {colors, pos, mode, std::move(colorSpace)});
     }
 
     SkGradientBaseShader::Descriptor desc(
