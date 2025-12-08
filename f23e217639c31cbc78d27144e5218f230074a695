@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0557ebb0_5ffe1242",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T19:31:55Z",
+      "side": 1,
+      "message": "Since this is only used in SkGradientShader factories, we could also keep the definition in that header.",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 16
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7255977_55bbadd0",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T19:31:55Z",
+      "side": 1,
+      "message": "Is the plan to deprecate SkColor factories?  I guess that makes sense, though it would be nice to offer some helper for clients that work with SkColors.\n\nMaybe we can add an SkAutoGradientColors converter later.",
+      "range": {
+        "startLine": 118,
+        "startChar": 21,
+        "endLine": 118,
+        "endChar": 30
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "474ef648_2a6d35b9",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-08T19:31:55Z",
+      "side": 1,
+      "message": "Should we fold the lm into SkGradient too?  Seems more relevant to geometry than color stops, so I\u0027m inclined to say no.  Leaving comment open in case you think otherwise.",
+      "range": {
+        "startLine": 89,
+        "startChar": 57,
+        "endLine": 89,
+        "endChar": 85
+      },
+      "revId": "f23e217639c31cbc78d27144e5218f230074a695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
