@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13df003d_89e757ab",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T16:50:17Z",
+      "side": 1,
+      "message": "I\u0027m not opposed to that control level, I think there\u0027s several ways we could do it. I\u0027m planning to add a SkSurfaceProp to control the small atlas behavior, so we could have the exact sample count match be the behavior for the \"prefers-quality\" flag.  It may also be moot if sparse strips completely replace the need for these MSAA algorithms.",
+      "parentUuid": "dc95cd4e_652d9406",
+      "range": {
+        "startLine": 54,
+        "startChar": 16,
+        "endLine": 54,
+        "endChar": 41
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48295c29_dcbbf2c9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-08T16:13:45Z",
       "side": 1,
       "message": "I feel like with the amount of logic that goes in here, `getDefaultMSAASampleCount` is not the right name. Like Default to me really implies a set value that is dependent of something a passed in TextureInfo. Maybe something more generic like `getMSAASampleCount` or `getCompatibleMSAASampleCount`.",
+      "range": {
+        "startLine": 117,
+        "startChar": 18,
+        "endLine": 117,
+        "endChar": 43
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9d7bf0_eafd14eb",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T16:50:17Z",
+      "side": 1,
+      "message": "I changed it to `getCompatibleMSAASampleCount`",
+      "parentUuid": "48295c29_dcbbf2c9",
       "range": {
         "startLine": 117,
         "startChar": 18,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0738fc13_aa8205ad",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T16:50:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd4fe0dc_b2d0ee09",
+      "range": {
+        "startLine": 508,
+        "startChar": 21,
+        "endLine": 509,
+        "endChar": 60
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f22e89fc_9ebebb35",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7081f855_3e4b5700",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T16:50:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f22e89fc_9ebebb35",
+      "range": {
+        "startLine": 74,
+        "startChar": 40,
+        "endLine": 74,
+        "endChar": 83
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c5d7e27_28380244",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-12-08T16:13:45Z",
       "side": 1,
       "message": "Do we need to update this to say dawn only supports 1 or 4? The way it reads says dawn could support 1 and 8.",
+      "range": {
+        "startLine": 425,
+        "startChar": 7,
+        "endLine": 425,
+        "endChar": 56
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c1b3d7_6ef565f1",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-08T16:50:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c5d7e27_28380244",
       "range": {
         "startLine": 425,
         "startChar": 7,
