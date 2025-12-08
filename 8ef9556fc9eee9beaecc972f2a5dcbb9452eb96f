@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc95cd4e_652d9406",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-08T16:13:45Z",
+      "side": 1,
+      "message": "I don\u0027t think we should for this change, but in theory we could add another option to say what the minimum allowed multisample count the client wants. Like maybe there is a client that cares purely about quality so if a device doesn\u0027t support 8 they\u0027d rather fall back to software. Or alternatively allow a client to query the count we\u0027re using after Context creation and allow changing it after creating the context.",
+      "range": {
+        "startLine": 54,
+        "startChar": 16,
+        "endLine": 54,
+        "endChar": 41
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48295c29_dcbbf2c9",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-08T16:13:45Z",
+      "side": 1,
+      "message": "I feel like with the amount of logic that goes in here, `getDefaultMSAASampleCount` is not the right name. Like Default to me really implies a set value that is dependent of something a passed in TextureInfo. Maybe something more generic like `getMSAASampleCount` or `getCompatibleMSAASampleCount`.",
+      "range": {
+        "startLine": 117,
+        "startChar": 18,
+        "endLine": 117,
+        "endChar": 43
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd4fe0dc_b2d0ee09",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-08T16:13:45Z",
+      "side": 1,
+      "message": "I find this formatting really hard to read. Maybe store the default msaa count in a local variable",
+      "range": {
+        "startLine": 508,
+        "startChar": 21,
+        "endLine": 509,
+        "endChar": 60
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f22e89fc_9ebebb35",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-08T16:13:45Z",
+      "side": 1,
+      "message": "is this check needed anymore?",
+      "range": {
+        "startLine": 74,
+        "startChar": 40,
+        "endLine": 74,
+        "endChar": 83
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5d7e27_28380244",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-08T16:13:45Z",
+      "side": 1,
+      "message": "Do we need to update this to say dawn only supports 1 or 4? The way it reads says dawn could support 1 and 8.",
+      "range": {
+        "startLine": 425,
+        "startChar": 7,
+        "endLine": 425,
+        "endChar": 56
+      },
+      "revId": "8ef9556fc9eee9beaecc972f2a5dcbb9452eb96f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
