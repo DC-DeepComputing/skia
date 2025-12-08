@@ -710,13 +710,8 @@ public:
                 {0.f, .1f, 1.f, .1f},
                 {.7f, .8f, .2f, .7f},
         };
-        auto shader = SkGradientShader::MakeRadial({100, 100},
-                                                   230,
-                                                   colors,
-                                                   nullptr,
-                                                   nullptr,
-                                                   std::size(colors),
-                                                   SkTileMode::kRepeat);
+        auto shader = SkGradientShader::MakeRadial({100, 100}, 230,
+                                                   {colors, {}, SkTileMode::kRepeat, nullptr});
         SkPaint paint;
         paint.setShader(std::move(shader));
 
