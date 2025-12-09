@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "407f52eb_954f4159",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-09T21:54:36Z",
+      "side": 1,
+      "message": "This is the other approach. I think among the three options (use heap, plumb subrun alloc, and this) I like this the best.\n\nPS1 is heap approach (identical to PS 6 that Michael commented on on the other review). So you may just want to view diff vs PS1 rather than base to see how it compares.\n\nObviously, I need to fix this for platforms where sizeof(ptr) \u003c 8, but thought it was worth getting your sense of whether this is the direction I should pursue before dealing with that.",
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
