@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2de8c77_0cb50f8c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-09T22:09:59Z",
+      "side": 1,
+      "message": "I don\u0027t feel strongly about this, but I would also remove this.  Two arguments:\n\n* If we remove, then when it is actually needed in a later CL, the readers/reviewers can see how this is plumbed/introduced.\n* But maybe more importantly: It is unclear if this will be needed because:\n    - `image` crate handles this internally today.  I guess we may need to expose this for streaming rows one-by-one.  But then if we do, then `bottomUp` will come from the `image` crate, so we probably should remove for now the `bottom_up` calculations in `experimental/rust_bmp/ffi/FFI.rs`\n    - I am not 100% clear on how scanline-vs-incremental decoding approach needs this.  If incremental always wants a top-down decoding + if we decide to reuse `blink::SkiaImageDecoderBase` as-is, then we probably won\u0027t need to know if the image is bottom-up or top-down (because \"incremental\" may force us to fully decode bottom-up inputs and then proceed without actual/real streaming).",
+      "range": {
+        "startLine": 104,
+        "startChar": 9,
+        "endLine": 104,
+        "endChar": 17
+      },
+      "revId": "63d7b344c9c3dcf614b73d32ad6165e65a7ee555",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
