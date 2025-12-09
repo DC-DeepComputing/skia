@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "815aca51_60dbb6dc",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-09T22:04:45Z",
+      "side": 1,
+      "message": "If one passes in a family name and that gets a (real) hit, then even just the `CTFontCreateForString` will match style.\n\nHowever, passing in `nullptr` or otherwise ending up with a \"default font\" will do fallback but not apply the style (possibly because the somewhat magic \"default font\" doesn\u0027t really have any styles other than default). Making a copy with style attributes still doesn\u0027t dislodge this \"default font with no styles\" bit and the style doesn\u0027t change.",
+      "revId": "dfa008371606c907eefb5b0492844a2c74dc560b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
