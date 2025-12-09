@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0e15f8_86b55858",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-12-09T19:48:35Z",
+      "side": 1,
+      "message": "Yeah it looks like this bug wouldn\u0027t have actually affected anything. The only place we access this field is when creating a key for the texture. Since the formats for DS are disjoint from the formats for color attachments, the keys would have never collided anyways. To be honest we probably could be fine removing add the aspect mask to the texture key.\n\nEverywhere else besides the key explicitly derives the aspect mask from looking at the format. With the fix I wonder if we could update all those places to just grab the aspect mask from the VulkanTextureInfo instead of looking at the format.",
+      "revId": "89810b5ee0d90acdf592e7b49ecf9d0517042d41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
