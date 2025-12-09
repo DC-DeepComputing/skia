@@ -40,6 +40,30 @@
       ],
       "revId": "671eed557f2793cd34678fe34b9a1741ea35a614",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590b72be_0cf44b1c",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-09T16:18:58Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "94448f29_ed27d913",
+      "range": {
+        "startLine": 705,
+        "startChar": 85,
+        "endLine": 705,
+        "endChar": 86
+      },
+      "revId": "671eed557f2793cd34678fe34b9a1741ea35a614",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
