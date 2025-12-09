@@ -73,6 +73,7 @@ void sk_out_of_memory(void) {
 }
 
 void* sk_realloc_throw(void* addr, size_t size) {
+    printf("sk_realloc_throw(%p, %zu)\n", addr, size);
     if (size == 0) {
         sk_free(addr);
         return nullptr;
@@ -89,6 +90,7 @@ void sk_free(void* p) {
 }
 
 void* sk_malloc_flags(size_t size, unsigned flags) {
+    printf("sk_malloc_flags(%zu, %u)\n", size, flags);
     void* p;
     if (flags & SK_MALLOC_ZERO_INITIALIZE) {
         p = calloc(size, 1);
@@ -117,6 +119,7 @@ void* sk_malloc_flags(size_t size, unsigned flags) {
 }
 
 size_t sk_malloc_size(void* addr, size_t size) {
+    printf("sk_malloc_size(%p, %zu)\n", addr, size);
     size_t completeSize = size;
 
     // Use the OS specific calls to find the actual capacity.

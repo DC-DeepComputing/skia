@@ -31,6 +31,7 @@ cc_binary(
     ],
     deps = [
         "@skia//:core",
+        "@skia//:jpeg_decode_codec",
         "@skia//:png_decode_codec",
     ],
 )
