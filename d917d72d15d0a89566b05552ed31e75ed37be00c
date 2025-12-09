@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c94df2f_61eb0d58",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-09T23:03:10Z",
+      "side": 1,
+      "message": "Not your bug, but I think Precedence::kAssignment can cause an issue if N is `a + b` because the addition will have higher precedence than the addition. Then, because the unary minus has higher precedence than addition for you\u0027ll get:\n`select(-a + b, . . .)` instead of `select(-(a + b), . . .)`",
+      "range": {
+        "startLine": 3108,
+        "startChar": 16,
+        "endLine": 3109,
+        "endChar": 89
+      },
+      "revId": "d917d72d15d0a89566b05552ed31e75ed37be00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
