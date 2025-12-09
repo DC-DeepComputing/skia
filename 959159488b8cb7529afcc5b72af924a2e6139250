@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f8c1242_0ba6b8c7",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T22:17:53Z",
+      "side": 1,
+      "message": "I tried several techniques, but had compile issues (I think battling with the default for local matrix).\n\nPerhaps that is an idea that can be explored after this lands, so we can begin to update clients...",
+      "parentUuid": "a06e699b_5a5ea691",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 65
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "029f14e1_47774387",
