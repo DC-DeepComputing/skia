@@ -39,6 +39,30 @@
       },
       "revId": "08831705529e0f1d0c2384e6b02e8360f140ba91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9915b51_1555787b",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-09T21:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29ba9755_6942a746",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 36
+      },
+      "revId": "08831705529e0f1d0c2384e6b02e8360f140ba91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
