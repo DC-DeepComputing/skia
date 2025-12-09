@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92510644_a9bd7d40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-09T21:01:55Z",
+      "side": 1,
+      "message": "I think you were right, the reflect and modf expressions should have parentheses now. Previously they didn\u0027t have it because they were forced into a scratch let.  Those intrinsics don\u0027t go through assembleSimpleIntrinsic, they just return from assembleIntrinsicCall directly which isn\u0027t adding anything.",
+      "parentUuid": "ebe8d229_7100fa4e",
+      "revId": "4aef64470cf5302cd569f5c08c7f80717f867eeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "887e7cab_ff6cf650",
