@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edec016f_713abd77",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T21:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "029f14e1_47774387",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d40afd60_86396b3d",
@@ -101,6 +125,30 @@
       "writtenOn": "2025-12-09T20:37:25Z",
       "side": 1,
       "message": "Everywhere: I think we can omit this.",
+      "range": {
+        "startLine": 45,
+        "startChar": 86,
+        "endLine": 45,
+        "endChar": 93
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d347cb09_beb2c2ae",
+        "filename": "modules/sksg/src/SkSGGradient.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T21:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d40afd60_86396b3d",
       "range": {
         "startLine": 45,
         "startChar": 86,
@@ -128,6 +176,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f796681f_e9d6c95e",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T21:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5add2cf9_7ab8ad03",
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fb432b6_95b2c0a4",
@@ -145,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5141b1b1_f9e50469",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T21:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fb432b6_95b2c0a4",
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8260168f_eda8fe81",
@@ -158,6 +242,30 @@
       "writtenOn": "2025-12-09T20:37:25Z",
       "side": 1,
       "message": "`std::transform`?",
+      "range": {
+        "startLine": 1033,
+        "startChar": 0,
+        "endLine": 1035,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cba44db5_e9aecfca",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-09T21:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8260168f_eda8fe81",
       "range": {
         "startLine": 1033,
         "startChar": 0,
