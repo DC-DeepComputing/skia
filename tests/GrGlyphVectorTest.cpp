@@ -35,11 +35,9 @@ namespace sktext::gpu {
 class GlyphVectorTestingPeer {
 public:
     static const SkDescriptor& GetDescriptor(const GlyphVector& v) {
-        return v.fStrikePromise.descriptor();
+        return v.strikePromise().descriptor();
     }
-    static SkSpan<GlyphVector::Variant> GetGlyphs(const GlyphVector& v) {
-        return v.fGlyphs;
-    }
+    static SkSpan<const SkPackedGlyphID> GetGlyphs(const GlyphVector& v) { return v.glyphs(); }
 };
 
 DEF_TEST(GlyphVector_Serialization, r) {
@@ -72,7 +70,7 @@ DEF_TEST(GlyphVector_Serialization, r) {
     auto srcGlyphs = GlyphVectorTestingPeer::GetGlyphs(src);
     auto dstGlyphs = GlyphVectorTestingPeer::GetGlyphs(*dst);
     for (auto [srcGlyphID, dstGlyphID] : SkMakeZip(srcGlyphs, dstGlyphs)) {
-        REPORTER_ASSERT(r, srcGlyphID.packedGlyphID == dstGlyphID.packedGlyphID);
+        REPORTER_ASSERT(r, srcGlyphID == dstGlyphID);
     }
 }
 
