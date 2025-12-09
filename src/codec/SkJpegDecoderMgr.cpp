@@ -100,9 +100,16 @@ JpegDecoderMgr::JpegDecoderMgr(SkStream* stream)
 }
 
 void JpegDecoderMgr::init() {
+    // From jpeglib.h "You must set up the error-manager BEFORE calling jpeg_create_xxx"
+    SkASSERT(fDInfo.err);
+    SkASSERT(!fInit);
+
     jpeg_create_decompress(&fDInfo);
     fInit = true;
     fDInfo.src = &fSrcMgr;
+    fMemMgr.fOrig = fDInfo.mem;
+    fDInfo.mem = &fMemMgr;
+
     fDInfo.err->output_message = &output_message;
     fDInfo.progress = &fProgressMgr;
     fProgressMgr.progress_monitor = &progress_monitor;
@@ -112,6 +119,113 @@ JpegDecoderMgr::~JpegDecoderMgr() {
     if (fInit) {
         jpeg_destroy_decompress(&fDInfo);
     }
+}
+
+JpegDecoderMgr::MemoryMgr::MemoryMgr() {
+    alloc_small = JpegDecoderMgr::MemoryMgr::AllocSmall;
+    alloc_large = JpegDecoderMgr::MemoryMgr::AllocLarge;
+    alloc_sarray = JpegDecoderMgr::MemoryMgr::AllocSarray;
+    alloc_barray = JpegDecoderMgr::MemoryMgr::AllocBarray;
+    request_virt_sarray = JpegDecoderMgr::MemoryMgr::RequestVirtSarray;
+    request_virt_barray = JpegDecoderMgr::MemoryMgr::RequestVirtBarray;
+    realize_virt_arrays = JpegDecoderMgr::MemoryMgr::RealizeVirtArrays;
+    access_virt_sarray = JpegDecoderMgr::MemoryMgr::AccessVirtSarray;
+    access_virt_barray = JpegDecoderMgr::MemoryMgr::AccessVirtBarray;
+    free_pool = JpegDecoderMgr::MemoryMgr::FreePool;
+    self_destruct = JpegDecoderMgr::MemoryMgr::SelfDestruct;
+}
+
+
+void* JpegDecoderMgr::MemoryMgr::AllocSmall(j_common_ptr cinfo, int pool_id, size_t sizeofobject) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AllocSmall: pool_id=%d size=%zu\n", pool_id, sizeofobject);
+    cinfo->mem = self->fOrig;
+    auto answer = self->fOrig->alloc_small(cinfo, pool_id, sizeofobject);
+    cinfo->mem = self;
+    return answer;
+}
+
+void* JpegDecoderMgr::MemoryMgr::AllocLarge(j_common_ptr cinfo, int pool_id, size_t sizeofobject) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AllocLarge: pool_id=%d size=%zu\n", pool_id, sizeofobject);
+    return self->fOrig->alloc_large(cinfo, pool_id, sizeofobject);
+}
+
+JSAMPARRAY JpegDecoderMgr::MemoryMgr::AllocSarray(j_common_ptr cinfo, int pool_id,
+                                          JDIMENSION samplesperrow, JDIMENSION numrows) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AllocSarray: pool_id=%d samples=%u rows=%u\n", pool_id, samplesperrow, numrows);
+    cinfo->mem = self->fOrig;
+    auto answer =  self->fOrig->alloc_sarray(cinfo, pool_id, samplesperrow, numrows);
+    cinfo->mem = self;
+    return answer;
+}
+
+JBLOCKARRAY JpegDecoderMgr::MemoryMgr::AllocBarray(j_common_ptr cinfo, int pool_id,
+                                           JDIMENSION blocksperrow, JDIMENSION numrows) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AllocBarray: pool_id=%d blocks=%u rows=%u\n", pool_id, blocksperrow, numrows);
+    return self->fOrig->alloc_barray(cinfo, pool_id, blocksperrow, numrows);
+}
+
+jvirt_sarray_ptr JpegDecoderMgr::MemoryMgr::RequestVirtSarray(j_common_ptr cinfo, int pool_id,
+                                                      boolean pre_zero,
+                                                      JDIMENSION samplesperrow,
+                                                      JDIMENSION numrows,
+                                                      JDIMENSION maxaccess) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("RequestVirtSarray: pool_id=%d pre_zero=%d samples=%u rows=%u maxaccess=%u\n",
+                  pool_id, pre_zero, samplesperrow, numrows, maxaccess);
+    return self->fOrig->request_virt_sarray(cinfo, pool_id, pre_zero, samplesperrow, numrows, maxaccess);
+}
+
+jvirt_barray_ptr JpegDecoderMgr::MemoryMgr::RequestVirtBarray(j_common_ptr cinfo, int pool_id,
+                                                      boolean pre_zero,
+                                                      JDIMENSION blocksperrow,
+                                                      JDIMENSION numrows,
+                                                      JDIMENSION maxaccess) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("RequestVirtBarray: pool_id=%d pre_zero=%d blocks=%u rows=%u maxaccess=%u\n",
+                  pool_id, pre_zero, blocksperrow, numrows, maxaccess);
+    return self->fOrig->request_virt_barray(cinfo, pool_id, pre_zero, blocksperrow, numrows, maxaccess);
+}
+
+void JpegDecoderMgr::MemoryMgr::RealizeVirtArrays(j_common_ptr cinfo) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("RealizeVirtArrays\n");
+    cinfo->mem = self->fOrig;
+    self->fOrig->realize_virt_arrays(cinfo);
+    cinfo->mem = self;
+}
+
+JSAMPARRAY JpegDecoderMgr::MemoryMgr::AccessVirtSarray(j_common_ptr cinfo, jvirt_sarray_ptr ptr,
+                                               JDIMENSION start_row, JDIMENSION num_rows,
+                                               boolean writable) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AccessVirtSarray: start_row=%u num_rows=%u writable=%d\n", start_row, num_rows, writable);
+    return self->fOrig->access_virt_sarray(cinfo, ptr, start_row, num_rows, writable);
+}
+
+JBLOCKARRAY JpegDecoderMgr::MemoryMgr::AccessVirtBarray(j_common_ptr cinfo, jvirt_barray_ptr ptr,
+                                                JDIMENSION start_row, JDIMENSION num_rows,
+                                                boolean writable) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("AccessVirtBarray: start_row=%u num_rows=%u writable=%d\n", start_row, num_rows, writable);
+    return self->fOrig->access_virt_barray(cinfo, ptr, start_row, num_rows, writable);
+}
+
+void JpegDecoderMgr::MemoryMgr::FreePool(j_common_ptr cinfo, int pool_id) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("FreePool: pool_id=%d\n", pool_id);
+    self->fOrig->free_pool(cinfo, pool_id);
+}
+
+void JpegDecoderMgr::MemoryMgr::SelfDestruct(j_common_ptr cinfo) {
+    JpegDecoderMgr::MemoryMgr* self = (JpegDecoderMgr::MemoryMgr*)cinfo->mem;
+    SkDebugf("SelfDestruct\n");
+    cinfo->mem = self->fOrig;
+    self->fOrig->self_destruct(cinfo);
+    cinfo->mem = self;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

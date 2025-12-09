@@ -6,7 +6,9 @@
  */
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkPngDecoder.h"
+#include "include/codec/SkJpegDecoder.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkStream.h"
 
@@ -14,7 +16,8 @@
 
 int main(int argc, char** argv) {
     if (argc != 2) {
-        printf("Usage: %s <name.png>", argv[0]);
+        // printf("Usage: %s <name.png>", argv[0]);
+        printf("Usage: %s <name.jpeg>", argv[0]);
         return 1;
     }
 
@@ -24,10 +27,18 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    // SkCodec::Result result;
+    // auto codec = SkPngDecoder::Decode(std::move(input), &result);
+    // if (!codec) {
+    //     printf("Cannot decode file %s as a PNG\n", argv[1]);
+    //     printf("Result code: %d\n", result);
+    //     return 1;
+    // }
+
     SkCodec::Result result;
-    auto codec = SkPngDecoder::Decode(std::move(input), &result);
+    auto codec = SkJpegDecoder::Decode(std::move(input), &result);
     if (!codec) {
-        printf("Cannot decode file %s as a PNG\n", argv[1]);
+        printf("Cannot decode file %s as a JPEG\n", argv[1]);
         printf("Result code: %d\n", result);
         return 1;
     }
@@ -35,5 +46,18 @@ int main(int argc, char** argv) {
     SkImageInfo info = codec->getInfo();
     printf("Image is %d by %d pixels.\n", info.width(), info.height());
 
+    SkImageInfo dstInfo = SkImageInfo::Make(
+            codec->getScaledDimensions(0.125f), kBGRA_8888_SkColorType, kPremul_SkAlphaType);
+    // SkImageInfo dstInfo = info.makeWH(4, 4);
+
+    printf("Decoding to %dx%d\n", dstInfo.width(), dstInfo.height());
+    SkCodec::Options opts;
+    opts.fMaxDecodeMemory = 0;
+    auto [img, _] = codec->getImage(dstInfo, &opts);
+    if (!img) {
+        printf("Could not get pixels from jpeg\n");
+        return 1;
+    }
+    printf("Success!\n");
     return 0;
 }
