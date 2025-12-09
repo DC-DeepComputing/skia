@@ -22,6 +22,30 @@
       },
       "revId": "63d7b344c9c3dcf614b73d32ad6165e65a7ee555",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c56899b9_3432754b",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-09T22:18:57Z",
+      "side": 1,
+      "message": "I agree that it is better to keep it simplest possible on this first implementation while we have not yet defined the incremental decoding implementation, so better to remove it",
+      "parentUuid": "f2de8c77_0cb50f8c",
+      "range": {
+        "startLine": 104,
+        "startChar": 9,
+        "endLine": 104,
+        "endChar": 17
+      },
+      "revId": "63d7b344c9c3dcf614b73d32ad6165e65a7ee555",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
