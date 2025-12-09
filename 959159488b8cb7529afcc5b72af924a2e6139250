@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a06e699b_5a5ea691",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-09T20:50:44Z",
+      "side": 1,
+      "message": "If you provide a default argument here, we can let SkGradient be implicitly constructable from SkGradient::Colors and then remove half of the new factory functions.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 65
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "029f14e1_47774387",
         "filename": "include/effects/SkGradientShader.h",
         "patchSetId": 19
@@ -31,6 +54,30 @@
       "writtenOn": "2025-12-09T20:37:25Z",
       "side": 1,
       "message": "These could all use more docs.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050d5211_33f1b78e",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-09T20:50:44Z",
+      "side": 1,
+      "message": "Can these be in `SkShaders` namespace? If possible maybe even in the `SkShader.h` header like the other factories, named along the lines of `SkShaders::LinearGradient` etc.",
+      "parentUuid": "029f14e1_47774387",
       "range": {
         "startLine": 88,
         "startChar": 0,
