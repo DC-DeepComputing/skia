@@ -1100,6 +1100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74bbd1e2_e745a978",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-09T15:57:16Z",
+      "side": 1,
+      "message": "It sounds the best approach to simplify current CL to only implement onGetPixels but not scanline decoding to avoid coupling to specific approach.",
+      "parentUuid": "0a3697d7_8c11b614",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "41ce543e85d510d36c1259f417169af168f65a9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df96ac52_fe77b340",
