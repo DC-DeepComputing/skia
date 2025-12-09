@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94448f29_ed27d913",
+        "filename": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-12-09T15:35:07Z",
+      "side": 1,
+      "message": "Missing a closing parenthesis.",
+      "range": {
+        "startLine": 705,
+        "startChar": 85,
+        "endLine": 705,
+        "endChar": 86
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "137fe234_d74bda01",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/AAConvexPathRenderer.cpp",
+              "range": {
+                "startLine": 705,
+                "startChar": 0,
+                "endLine": 706,
+                "endChar": 0
+              },
+              "replacement": "                                     \"saturate(0.5 - edgeAlpha / max(length(gF), 1e-6));}\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "671eed557f2793cd34678fe34b9a1741ea35a614",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
