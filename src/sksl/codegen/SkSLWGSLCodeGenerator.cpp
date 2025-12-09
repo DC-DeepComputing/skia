@@ -755,14 +755,13 @@ std::string_view address_space_to_str(PtrAddressSpace addressSpace) {
     return "unsupported";
 }
 
-std::string_view to_scalar_type(const Type& type) {
+std::string_view to_scalar_type(const Type& type, bool f16Available) {
     SkASSERT(type.typeKind() == Type::TypeKind::kScalar);
     switch (type.numberKind()) {
-        // Floating-point numbers in WebGPU currently always have 32-bit footprint and
-        // relaxed-precision is not supported without extensions. f32 is the only floating-point
-        // number type in WGSL (see the discussion on https://github.com/gpuweb/gpuweb/issues/658).
         case Type::NumberKind::kFloat:
-            return "f32";
+            // Floating point numbers can map to f32 or f16 depending on whether or not the
+            // shader-f16 wgsl extension is supported.
+            return type.highPrecision() || !f16Available ? "f32" : "f16";
         case Type::NumberKind::kSigned:
             return "i32";
         case Type::NumberKind::kUnsigned:
@@ -781,20 +780,22 @@ std::string_view to_scalar_type(const Type& type) {
 // (see https://www.w3.org/TR/WGSL/#plain-types-section).
 std::string to_wgsl_type(const Context& context, const Type& raw, const Layout* layout = nullptr) {
     const Type& type = raw.resolve().scalarTypeForLiteral();
+    const bool f16Available = !context.fConfig->fSettings.fForceHighPrecision;
+
     switch (type.typeKind()) {
         case Type::TypeKind::kScalar:
-            return std::string(to_scalar_type(type));
+            return std::string(to_scalar_type(type, f16Available));
 
         case Type::TypeKind::kAtomic:
             SkASSERT(type.matches(*context.fTypes.fAtomicUInt));
             return "atomic<u32>";
 
         case Type::TypeKind::kVector: {
-            std::string_view ct = to_scalar_type(type.componentType());
+            std::string_view ct = to_scalar_type(type.componentType(), f16Available);
             return String::printf("vec%d<%.*s>", type.columns(), (int)ct.length(), ct.data());
         }
         case Type::TypeKind::kMatrix: {
-            std::string_view ct = to_scalar_type(type.componentType());
+            std::string_view ct = to_scalar_type(type.componentType(), f16Available);
             return String::printf("mat%dx%d<%.*s>",
                                   type.columns(), type.rows(), (int)ct.length(), ct.data());
         }
@@ -4450,6 +4451,10 @@ void WGSLCodeGenerator::writeEnables() {
     this->writeLine("diagnostic(off, derivative_uniformity);");
     this->writeLine("diagnostic(off, chromium.unreachable_code);");
 
+    if (!fContext.fConfig->fSettings.fForceHighPrecision) {
+        // Always turn on f16, even if technically a given program might not use half values.
+        this->writeLine("enable f16;");
+    }
     if (fRequirements.fPixelLocalExtension) {
         this->writeLine("enable chromium_experimental_pixel_local;");
     }
