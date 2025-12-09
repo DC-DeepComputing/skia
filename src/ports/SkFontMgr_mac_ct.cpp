@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
 #ifdef SK_BUILD_FOR_MAC
@@ -28,14 +29,11 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkFontMgr_mac_ct.h"
-#include "include/private/base/SkFixed.h"
 #include "include/private/base/SkOnce.h"
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkUTF.h"
-#include "src/core/SkFontDescriptor.h"
 #include "src/ports/SkTypeface_mac_ct.h"
+#include "src/utils/mac/SkUniqueCFRef.h"
 
 #include <string.h>
 #include <memory>
@@ -396,6 +394,12 @@ protected:
         return create_from_desc(resolvedDesc.get());
     }
 
+    static bool has_character(CTFontRef ctFont, SkUnichar character) {
+        UniChar utf16[2] = {}; // UniChar is a UTF-16 16-bit code unit.
+        CGGlyph glyph[2] = {};
+        int srcCount = SkUTF::ToUTF16(character, utf16);
+        return CTFontGetGlyphsForCharacters(ctFont, utf16, glyph, srcCount);
+    }
     sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
                                                   const SkFontStyle& style,
                                                   const char* bcp47[], int bcp47Count,
@@ -419,8 +423,27 @@ protected:
             return nullptr;
         }
         CFRange range = CFRangeMake(0, CFStringGetLength(string.get()));  // in UniChar units.
-        SkUniqueCFRef<CTFontRef> fallbackFont(
-                CTFontCreateForString(familyFont.get(), string.get(), range));
+
+        const char* locale = bcp47Count ? bcp47[0] : "";
+        SkUniqueCFRef<CFStringRef> cfLocale(CFStringCreateWithBytes(
+                kCFAllocatorDefault, reinterpret_cast<const UInt8 *>(locale), strlen(locale),
+                kCFStringEncodingUTF8, false));
+
+        SkUniqueCFRef<CTFontRef> fallbackFont(CTFontCreateForStringWithLanguage(
+                familyFont.get(), string.get(), range, cfLocale.get()));
+        if (!fallbackFont || !has_character(fallbackFont.get(), character)) {
+            return nullptr;
+        }
+
+        SkUniqueCFRef<CTFontDescriptorRef> styleDesc = create_descriptor(nullptr, style);
+        if (styleDesc) {
+            SkUniqueCFRef<CTFontRef> styledFallbackFont(CTFontCreateCopyWithAttributes(
+                    fallbackFont.get(), 0.0, nullptr, styleDesc.get()));
+
+            if (styledFallbackFont && has_character(styledFallbackFont.get(), character)) {
+                fallbackFont = std::move(styledFallbackFont);
+            }
+        }
         return SkTypeface_Mac::Make(std::move(fallbackFont), OpszVariation(), nullptr);
     }
 
