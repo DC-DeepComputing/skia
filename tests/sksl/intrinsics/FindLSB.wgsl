@@ -7,7 +7,7 @@ struct _GlobalUniforms {
   a: i32,
   b: u32,
 };
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
+@group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
     (*_stageOut).sk_FragColor.x = f32(firstTrailingBit(_globalUniforms.a)) + f32(firstTrailingBit(_globalUniforms.b));
