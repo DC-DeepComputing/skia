@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c156c7d_eb825f04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "LG with some nits.",
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "029f14e1_47774387",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "These could all use more docs.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40afd60_86396b3d",
+        "filename": "modules/sksg/src/SkSGGradient.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "Everywhere: I think we can omit this.",
+      "range": {
+        "startLine": 45,
+        "startChar": 86,
+        "endLine": 45,
+        "endChar": 93
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5add2cf9_7ab8ad03",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "Delete?",
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb432b6_95b2c0a4",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "Doesn\u0027t seem to be used outside of the constructor, we should be able to inline.",
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8260168f_eda8fe81",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-09T20:37:25Z",
+      "side": 1,
+      "message": "`std::transform`?",
+      "range": {
+        "startLine": 1033,
+        "startChar": 0,
+        "endLine": 1035,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
