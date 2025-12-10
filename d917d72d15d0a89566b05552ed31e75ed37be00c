@@ -46,6 +46,30 @@
       },
       "revId": "d917d72d15d0a89566b05552ed31e75ed37be00c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b323ef28_fcc98b53",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-10T15:09:10Z",
+      "side": 1,
+      "message": "I think this is safe because if N were `a+b` it would be a non-trivial expression so then `writeNontrivialScratchLet` would store it in a temporary and then `N` would just be the variable reference.\n\n`writeNonTrivialScratchLet` is going away in https://skia-review.googlesource.com/c/skia/+/1118697, so I will double-check how this situation behaves in that CL and see if the precedence should be switched.",
+      "parentUuid": "02449442_dc24bab7",
+      "range": {
+        "startLine": 3108,
+        "startChar": 16,
+        "endLine": 3109,
+        "endChar": 89
+      },
+      "revId": "d917d72d15d0a89566b05552ed31e75ed37be00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
