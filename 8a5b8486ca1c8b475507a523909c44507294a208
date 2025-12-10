@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c8955d_247718ad",
+        "filename": "gm/fontmgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-12-10T21:22:58Z",
+      "side": 1,
+      "message": "I am not sure I understand what is going on here. Some side effects? Some comments for somebody who is not this wonderful CoreText API?",
+      "fixSuggestions": [
+        {
+          "fixId": "fee5d760_53f18ce9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/fontmgr.cpp",
+              "range": {
+                "startLine": 176,
+                "startChar": 0,
+                "endLine": 180,
+                "endChar": 0
+              },
+              "replacement": "                    // Draw the request string. drawString returns the x-coordinate after the text.\n                    SkScalar x \u003d drawString(canvas, str, 0, y, f) + 20;\n\n                    // The following drawCharacter calls test the font manager\u0027s ability to find\n                    // appropriate typefaces for a specific character (0x5203, a CJK ideograph)\n                    // based on language context (bcp47 tags). We pass nullptr for the fontName\n                    // to let the font manager find the best match across all families.\n\n                    // Check if a Chinese-specific glyph is selected for 0x5203.\n"
+            },
+            {
+              "path": "gm/fontmgr.cpp",
+              "range": {
+                "startLine": 181,
+                "startChar": 0,
+                "endLine": 181,
+                "endChar": 0
+              },
+              "replacement": "                    // Check if a Japanese-specific glyph is selected for the same character.\n                    // Ideally, these should result in different glyphs being drawn.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
