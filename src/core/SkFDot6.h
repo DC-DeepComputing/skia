@@ -13,6 +13,11 @@
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTo.h"
 
+/** \file SkFDot6.h
+
+    Types and macros for 26.6 fixed point
+*/
+
 typedef int32_t SkFDot6;
 
 /* This uses the magic number approach suggested here:
