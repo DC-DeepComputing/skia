@@ -103,6 +103,30 @@
       },
       "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d175ebfb_61529f26",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-10T21:50:37Z",
+      "side": 1,
+      "message": "This is ugly, but with CoreText any font name that starts with \u0027.\u0027 is considered \"magic\" and one should not attempt to use such a name to do font requests. In general one should not expect to get anything back from such a request that makes any sense. This same silly check is required in WebKit as well.",
+      "parentUuid": "2d7afc7e_e845cef2",
+      "range": {
+        "startLine": 469,
+        "startChar": 69,
+        "endLine": 469,
+        "endChar": 75
+      },
+      "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
