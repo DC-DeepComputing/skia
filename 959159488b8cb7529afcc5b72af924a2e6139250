@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "959c2da6_e5016cac",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-10T15:43:01Z",
+      "side": 1,
+      "message": "oops, I missed the namespace idea when I clicked resolved. I\u0027ll try that now.",
+      "parentUuid": "edec016f_713abd77",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "959159488b8cb7529afcc5b72af924a2e6139250",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d40afd60_86396b3d",
         "filename": "modules/sksg/src/SkSGGradient.cpp",
         "patchSetId": 19
