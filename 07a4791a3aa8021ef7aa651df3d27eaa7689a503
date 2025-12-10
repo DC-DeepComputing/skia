@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a15ed180_1e4197c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-10T15:14:05Z",
+      "side": 1,
+      "message": "May help a bit with issues like https://github.com/flutter/flutter/issues/132475 , especially in the future when other issues are worked around.",
+      "revId": "07a4791a3aa8021ef7aa651df3d27eaa7689a503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
