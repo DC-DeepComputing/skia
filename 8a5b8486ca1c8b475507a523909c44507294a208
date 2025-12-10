@@ -44,6 +44,24 @@
       ],
       "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1edbd87f_d933ff69",
+        "filename": "gm/fontmgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-10T21:29:26Z",
+      "side": 1,
+      "message": "This is drawing a few Han Unified code points with locale to ensure we\u0027re getting the right glyphs for the locale. `fontmgr_iter` above does something very similar, but passes along the requested font family name, where this tests that the fallback also works properly when passing `nullptr` for the font family name (which is similar to what Paragraph was doing).\n\nThis isn\u0027t CoreText code here, this is just test code. This change applies to all platforms under test and is filling a gap in testing in order to avoid future regressions.",
+      "parentUuid": "86c8955d_247718ad",
+      "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
