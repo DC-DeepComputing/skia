@@ -146,7 +146,9 @@ private:
 
     // We will save the state of the decompress struct after reading the header.
     // This allows us to safely call onGetScaledDimensions() at any time.
-    const int                          fReadyState;
+    const int fReadyState;
+
+    size_t fBytesAllocated;
 
     skia_private::AutoTMalloc<uint8_t> fStorage;
     uint8_t* fSwizzleSrcRow = nullptr;

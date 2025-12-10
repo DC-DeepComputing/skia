@@ -83,8 +83,40 @@ private:
         std::unique_ptr<SkJpegSourceMgr> fSourceMgr;
     };
 
+    struct MemoryMgr : jpeg_memory_mgr {
+        MemoryMgr();
+
+        static void* AllocSmall(j_common_ptr, int, size_t);
+        static void* AllocLarge(j_common_ptr, int, size_t) ;
+        static JSAMPARRAY AllocSarray(j_common_ptr, int, JDIMENSION, JDIMENSION);
+        static JBLOCKARRAY AllocBarray(j_common_ptr , int ,
+                                                   JDIMENSION blocksperrow, JDIMENSION numrows);
+        static jvirt_sarray_ptr RequestVirtSarray(j_common_ptr , int ,
+                                                              boolean ,
+                                                              JDIMENSION ,
+                                                              JDIMENSION ,
+                                                              JDIMENSION );
+        static jvirt_barray_ptr RequestVirtBarray(j_common_ptr , int ,
+                                                              boolean ,
+                                                              JDIMENSION ,
+                                                              JDIMENSION ,
+                                                              JDIMENSION );
+        static void RealizeVirtArrays(j_common_ptr );
+        static JSAMPARRAY AccessVirtSarray(j_common_ptr , jvirt_sarray_ptr ,
+                                                       JDIMENSION , JDIMENSION ,
+                                                       boolean );
+        static JBLOCKARRAY AccessVirtBarray(j_common_ptr , jvirt_barray_ptr ,
+                                                        JDIMENSION , JDIMENSION ,
+                                                        boolean );
+        static void FreePool(j_common_ptr , int );
+        static void SelfDestruct(j_common_ptr );
+
+        jpeg_memory_mgr* fOrig;
+    };
+
     jpeg_decompress_struct fDInfo;
     SourceMgr              fSrcMgr;
+    MemoryMgr              fMemMgr;
     skjpeg_error_mgr       fErrorMgr;
     jpeg_progress_mgr      fProgressMgr;
     bool                   fInit;

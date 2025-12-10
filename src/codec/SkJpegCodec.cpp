@@ -379,8 +379,8 @@ bool SkJpegCodec::onDimensionsSupported(const SkISize& size) {
     dinfo.global_state = fReadyState;
 
     // libjpeg-turbo can scale to 1/8, 1/4, 3/8, 1/2, 5/8, 3/4, 7/8, and 1/1
-    unsigned int num = 8;
-    const unsigned int denom = 8;
+    unsigned num = 8;
+    constexpr unsigned denom = 8;
     calc_output_dimensions(&dinfo, num, denom);
     while (dinfo.output_width != dstWidth || dinfo.output_height != dstHeight) {
 
@@ -530,49 +530,47 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     if (isProgressive) {
-      // Keep consuming input until we can't anymore, and only output/read scanlines
-      // if there is at least one valid output.
-      int last_scan_completed = 0;
-      while (!jpeg_input_complete(dinfo)) {
-        // Call the progress monitor hook if present, to prevent decoder from hanging.
-        if (dinfo->progress) {
-           dinfo->progress->progress_monitor((j_common_ptr)dinfo);
+        // Keep consuming input until we can't anymore, and only output/read scanlines
+        // if there is at least one valid output.
+        int last_scan_completed = 0;
+        while (!jpeg_input_complete(dinfo)) {
+            // Call the progress monitor hook if present, to prevent decoder from hanging.
+            if (dinfo->progress) {
+                dinfo->progress->progress_monitor((j_common_ptr)dinfo);
+            }
+            const int res = jpeg_consume_input(dinfo);
+            if (res == JPEG_SUSPENDED) {
+                break;
+            }
+            if (res == JPEG_SCAN_COMPLETED) {
+                last_scan_completed = dinfo->input_scan_number;
+            }
         }
-        const int res = jpeg_consume_input(dinfo);
-        if (res == JPEG_SUSPENDED) {
-           break;
+        if (last_scan_completed <= 0) {
+            return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
         }
-        if (res == JPEG_SCAN_COMPLETED) {
-           last_scan_completed = dinfo->input_scan_number;
-        }
-      }
-      if (last_scan_completed >  0) {
         jpeg_start_output(dinfo, last_scan_completed);
         int rows = 0;
-         SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
-                                                     dstInfo.height(), options, &rows);
-         // Checks if scan was called too many times to not stall the decoder.
-         jpeg_finish_output(dinfo);
-         if (readResult != kSuccess) {
+        SkCodec::Result readResult =
+                this->readRows(dstInfo, dst, dstRowBytes, dstInfo.height(), options, &rows);
+        // Checks if scan was called too many times to not stall the decoder.
+        jpeg_finish_output(dinfo);
+        if (readResult != kSuccess) {
             return fDecoderMgr->returnFailure("readRows", readResult);
-         }
-         if (rows < dstInfo.height()) {
-             *rowsDecoded = rows;
-             return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
-         }
-      } else {
-           return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
-      }
-    } else {
-      // Baseline image
-      int rows = 0;
-      this->readRows(dstInfo, dst, dstRowBytes, dstInfo.height(), options, &rows);
-      if (rows < dstInfo.height()) {
-          *rowsDecoded = rows;
-          return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
-      }
-  }
-
+        }
+        if (rows < dstInfo.height()) {
+            *rowsDecoded = rows;
+            return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+        }
+        return kSuccess;
+    }
+    // Baseline image
+    int rows = 0;
+    this->readRows(dstInfo, dst, dstRowBytes, dstInfo.height(), options, &rows);
+    if (rows < dstInfo.height()) {
+        *rowsDecoded = rows;
+        return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+    }
     return kSuccess;
 }
 
