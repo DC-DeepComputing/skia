@@ -51,6 +51,24 @@
       ],
       "revId": "6bbc46b20a3d0cfc29a270e77580da6fc6bdf4cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e474689_459d0f21",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-10T20:40:23Z",
+      "side": 1,
+      "message": "Per chat, that would require an explicit constructor call, which is even more verbose.  Never mind.",
+      "parentUuid": "1f30ef43_4a528ca9",
+      "revId": "6bbc46b20a3d0cfc29a270e77580da6fc6bdf4cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
