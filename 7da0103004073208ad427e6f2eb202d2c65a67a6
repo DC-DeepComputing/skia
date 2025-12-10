@@ -16,6 +16,24 @@
       "message": "Are you sure that we actually fixed all google3 code?",
       "revId": "7da0103004073208ad427e6f2eb202d2c65a67a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee617e1b_80c566b8",
+        "filename": "modules/skparagraph/include/ParagraphBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-10T15:19:54Z",
+      "side": 0,
+      "message": "Yes - Google3 uses the Bazel-derived build which has had this define set for a long while.",
+      "parentUuid": "d0350ad1_7ce5ddfd",
+      "revId": "7da0103004073208ad427e6f2eb202d2c65a67a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
