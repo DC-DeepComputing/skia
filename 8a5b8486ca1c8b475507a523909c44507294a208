@@ -80,6 +80,29 @@
       "parentUuid": "1edbd87f_d933ff69",
       "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7afc7e_e845cef2",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-10T21:42:31Z",
+      "side": 1,
+      "message": "What are these `.`-prefixed family names that we\u0027re excluding?",
+      "range": {
+        "startLine": 469,
+        "startChar": 69,
+        "endLine": 469,
+        "endChar": 75
+      },
+      "revId": "8a5b8486ca1c8b475507a523909c44507294a208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
