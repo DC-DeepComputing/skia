@@ -10,7 +10,10 @@ declare_args() {
   # The location of an activated emsdk. We default to the one brought in by
   # DEPS and bin/activate-emsdk.
   skia_emsdk_dir = rebase_path("../../third_party/externals/emsdk")
+
+  wasi_toolchain_dir = rebase_path("../../third_party/externals/wasi-sdk/wasi-sdk")
 }
+
 
 # Defines a WASM library target.
 template("skia_wasm_lib") {
@@ -45,7 +48,7 @@ wasm_defines = [
   "SK_FORCE_8_BYTE_ALIGNMENT",
 ]
 
-if (!is_debug && !skia_canvaskit_force_tracing) {
+if (is_wasm2 || (!is_debug && !skia_canvaskit_force_tracing)) {
   wasm_defines += [ "SK_DISABLE_TRACING" ]
 }
 

@@ -3,7 +3,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-if (is_wasm) {
+if (is_wasm || is_wasm2) {
   import("../toolchain/wasm.gni")
 }
 
@@ -303,6 +303,42 @@ config("default") {
   if (is_wasm) {
     cflags += [ "--sysroot=$skia_emsdk_dir/upstream/emscripten/cache/sysroot" ]
     ldflags += [ "--sysroot=$skia_emsdk_dir/upstream/emscripten/cache/sysroot" ]
+    if (is_wasm2) {
+      setjmp_flags = [
+        "-sWASM_LEGACY_EXCEPTIONS=0",
+        "-sSUPPORT_LONGJMP=wasm",
+        "-Xclang", "-mllvm", "-Xclang", "-wasm-use-legacy-eh=false", # can remove with emscripten >= 4.0.?
+        "-fwasm-exceptions", ]
+      cflags += setjmp_flags
+      ldflags += setjmp_flags
+      ldflags += [
+        "-sDYNAMIC_EXECUTION=0",
+        "-sWASM=1",
+        "-sSTANDALONE_WASM=1",
+      ]
+    }
+  } else if (is_wasm2) {
+    cflags += [
+      "--target=wasm32-wasi-threads",
+      "--sysroot=$wasi_toolchain_dir/share/wasi-sysroot",
+      "-mllvm", "-wasm-enable-sjlj",
+      "-mllvm", "-wasm-use-legacy-eh=false",
+      "-D_WASI_EMULATED_MMAN",
+      "-D_WASI_EMULATED_SIGNAL", # for libicu
+      "-D_WASI_EMULATED_GETPID", # for libexpat
+     ]
+     if (is_clang && current_cpu == "arm64") {
+    }
+    ldflags += [
+      "--target=wasm32-wasi-threads",
+      "--sysroot=$wasi_toolchain_dir/share/wasi-sysroot",
+      "-mllvm", "-wasm-use-legacy-eh=false",
+      "-lwasi-emulated-mman",
+      "-lwasi-emulated-signal", # for libicu
+      "-lwasi-emulated-getpid", # for libexpat
+      "-lsetjmp",
+      "-Wl,--max-memory=1073741824", # 1GB
+    ]
   }
 
   # sanitize only applies to the default toolchain (usually the target).

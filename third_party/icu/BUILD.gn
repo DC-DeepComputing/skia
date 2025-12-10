@@ -92,6 +92,7 @@ if (skia_use_system_icu) {
       # Tell ICU that we are a 32 bit platform, otherwise,
       # double-conversion-utils.h doesn't know how to operate.
       defines += [ "__i386__" ]
+      defines += [ "U_HAVE_TZSET=0", "U_HAVE_TZNAME=0", "U_HAVE_TIMEZONE=0" ]
     }
     sources = icu_sources
     if (is_win) {

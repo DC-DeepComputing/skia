@@ -1,4 +1,4 @@
-if (is_wasm) {
+if (is_wasm || is_wasm2) {
   import("wasm.gni")
 }
 
@@ -337,7 +337,7 @@ template("gcc_like_toolchain") {
       # LLD doesn't need these flags, but accepts and ignores them.
       _start_group = "-Wl,--start-group"
       _end_group = "-Wl,--end-group"
-      if (is_mac || is_ios) {
+      if (is_mac || is_ios || is_wasm2) {
         _start_group = ""
         _end_group = ""
       }
@@ -369,7 +369,7 @@ template("gcc_like_toolchain") {
       # LLD doesn't need these flags, but accepts and ignores them.
       _start_group = "-Wl,--start-group"
       _end_group = "-Wl,--end-group"
-      if (is_mac || is_ios) {
+      if (is_mac || is_ios || is_wasm2) {
         _start_group = ""
         _end_group = ""
       }
@@ -445,5 +445,39 @@ if (is_wasm) {
       cxx = "$skia_emsdk_dir/upstream/emscripten/em++"
     }
     link = cxx
+  }
+} else if (is_wasm2) {
+  gcc_like_toolchain("wasm") {
+    cpu = "wasm"
+    os = "wasm"
+    ar = "$wasi_toolchain_dir/bin/llvm-ar"
+    cc = "$wasi_toolchain_dir/bin/clang"
+    cxx = "$wasi_toolchain_dir/bin/clang++"
+    link = cxx
+  }
+}
+
+if (is_wasm2) {
+  emsdk_py = "$skia_emsdk_dir/emsdk.py"
+  emsdk_version = "4.0.7"
+
+  action("emsdk_install") {
+    script = emsdk_py
+    args = [ "install", emsdk_version ]
+    outputs = [ "$target_gen_dir/emsdk_install.stamp" ]
+  }
+
+  action("emsdk_activate") {
+    script = emsdk_py
+    args = [ "activate", emsdk_version ]
+    outputs = [ "$target_gen_dir/emsdk_done.stamp" ]
+    deps = [ ":emsdk_install" ]
+  }
+
+  group("emsdk") {
+    deps = [
+      ":emsdk_install",
+      ":emsdk_activate"
+    ]
   }
 }

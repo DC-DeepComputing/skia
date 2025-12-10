@@ -49,6 +49,7 @@ extern "C" {
         #if __has_cpp_attribute(clang::musttail) && !__has_feature(memory_sanitizer) \
                                                  && !__has_feature(address_sanitizer) \
                                                  && !defined(__EMSCRIPTEN__) \
+                                                 && !defined(__wasi__) \
                                                  && !defined(__arm__) \
                                                  && !defined(__riscv) \
                                                  && !defined(__powerpc__) \
