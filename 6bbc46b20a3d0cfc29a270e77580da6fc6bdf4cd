@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56ac015e_b28fc458",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-10T20:31:51Z",
+      "side": 1,
+      "message": "There is real work to be done to fix the other call-sites in Skia (internal and external) -- but that can logically be a follow-on task, and need not clog the reviewing of this CL: which is introducing a new API pattern.",
+      "revId": "6bbc46b20a3d0cfc29a270e77580da6fc6bdf4cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f30ef43_4a528ca9",
