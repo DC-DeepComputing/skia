@@ -22,6 +22,30 @@
       },
       "revId": "d917d72d15d0a89566b05552ed31e75ed37be00c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02449442_dc24bab7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-10T14:58:46Z",
+      "side": 1,
+      "message": "addition will have higher precedence than assignment**",
+      "parentUuid": "7c94df2f_61eb0d58",
+      "range": {
+        "startLine": 3108,
+        "startChar": 16,
+        "endLine": 3109,
+        "endChar": 89
+      },
+      "revId": "d917d72d15d0a89566b05552ed31e75ed37be00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
