@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18bedbbd_94205535",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-12-10T17:43:11Z",
+      "side": 1,
+      "message": "Small suggestion: Perhaps elaborate on which code area does this and why that might occur?",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 90
+      },
+      "revId": "df92997825ade7f231d3234457067e62bd7b1b7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bdfc8bd_ee016d2c",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-12-10T17:43:11Z",
+      "side": 1,
+      "message": "Perhaps I\u0027m just not familiar, but is this just how we mark new features we are experimenting with? Is there a tracking bug or link to reference, or perhaps should we add a TODO to solidify using the following options or remove them based on the results of the experiment?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 19
+      },
+      "revId": "df92997825ade7f231d3234457067e62bd7b1b7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
