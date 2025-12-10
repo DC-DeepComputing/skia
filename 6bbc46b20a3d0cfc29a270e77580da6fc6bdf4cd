@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f30ef43_4a528ca9",
+        "filename": "include/effects/SkGradient.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-10T20:31:25Z",
+      "side": 1,
+      "message": "If we add a constructor that only takes `Colors` I think it would cut down some of the client boilerplate (lots of `{}` for interpolation at call sites).",
+      "fixSuggestions": [
+        {
+          "fixId": "9065d6ee_a6950b57",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/effects/SkGradient.h",
+              "range": {
+                "startLine": 131,
+                "startChar": 0,
+                "endLine": 131,
+                "endChar": 0
+              },
+              "replacement": "    explicit SkGradient(const Colors\u0026 colors) : fColors(colors) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6bbc46b20a3d0cfc29a270e77580da6fc6bdf4cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
