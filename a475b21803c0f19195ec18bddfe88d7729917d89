@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54c3f5bc_c6a9166d",
+        "filename": "tools/viewer/ZoomInSlide.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-11T14:07:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d31cd8b_f20176f2",
+      "range": {
+        "startLine": 50,
+        "startChar": 3,
+        "endLine": 59,
+        "endChar": 52
+      },
+      "revId": "a475b21803c0f19195ec18bddfe88d7729917d89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4ceb660_664c16a8",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d514f2df_f7a2d7fc",
+        "filename": "tools/viewer/ZoomInSlide.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-11T14:07:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4ceb660_664c16a8",
+      "range": {
+        "startLine": 86,
+        "startChar": 9,
+        "endLine": 86,
+        "endChar": 17
+      },
+      "revId": "a475b21803c0f19195ec18bddfe88d7729917d89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c865a26_6e4844b8",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-12-10T21:53:16Z",
       "side": 1,
       "message": "all this private?",
+      "range": {
+        "startLine": 102,
+        "startChar": 3,
+        "endLine": 114,
+        "endChar": 0
+      },
+      "revId": "a475b21803c0f19195ec18bddfe88d7729917d89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "675d6f5d_7b978107",
+        "filename": "tools/viewer/ZoomInSlide.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-11T14:07:17Z",
+      "side": 1,
+      "message": "ScaledClick needs to be protected or the subclasses can\u0027t see it. Everything else is now private.",
+      "parentUuid": "9c865a26_6e4844b8",
       "range": {
         "startLine": 102,
         "startChar": 3,
