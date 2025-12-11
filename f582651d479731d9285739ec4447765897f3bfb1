@@ -16,6 +16,47 @@
       "message": "This is the other approach. I think among the three options (use heap, plumb subrun alloc, and this) I like this the best.\n\nPS1 is heap approach (identical to PS 6 that Michael commented on on the other review). So you may just want to view diff vs PS1 rather than base to see how it compares.\n\nObviously, I need to fix this for platforms where sizeof(ptr) \u003c 8, but thought it was worth getting your sense of whether this is the direction I should pursue before dealing with that.",
       "revId": "f582651d479731d9285739ec4447765897f3bfb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c07061_2f4eb815",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-11T19:25:50Z",
+      "side": 1,
+      "message": "I like this direction more, although one significant thing is that I believe its our first use of concepts within Skia\u0027s codebase. This *should* be fine now that we are on C++20, but it is somewhat novel (and not a syntax that I\u0027m personally super familiar with).",
+      "parentUuid": "407f52eb_954f4159",
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1874d640_32ceb27c",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-11T19:25:50Z",
+      "side": 1,
+      "message": "Does anything in this class get simpler by using SkAnySubclass here?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 55
+      },
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
