@@ -16,8 +16,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let valueIsNaN: vec4<f16> = 0.0h / _globalUniforms.testInputs.yyyy;
-    let valueIsNumber: vec4<f16> = 1.0h / _globalUniforms.testInputs;
+    let valueIsNaN = 0.0h / _globalUniforms.testInputs.yyyy;
+    let valueIsNumber = 1.0h / _globalUniforms.testInputs;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(((((((isnan(valueIsNaN.x) && all(isnan(valueIsNaN.xy))) && all(isnan(valueIsNaN.xyz))) && all(isnan(valueIsNaN))) && (!isnan(valueIsNumber.x))) && (!any(isnan(valueIsNumber.xy)))) && (!any(isnan(valueIsNumber.xyz)))) && (!any(isnan(valueIsNumber)))));
   }
 }

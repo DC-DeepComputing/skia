@@ -12,10 +12,10 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_int_b() -> bool {
   {
-    var ok: bool = true;
-    let inputRed: vec4<i32> = vec4<i32>(_globalUniforms.colorRed);
-    let inputGreen: vec4<i32> = vec4<i32>(_globalUniforms.colorGreen);
-    var x: vec4<i32> = inputRed + 2;
+    var ok = true;
+    let inputRed = vec4<i32>(_globalUniforms.colorRed);
+    let inputGreen = vec4<i32>(_globalUniforms.colorGreen);
+    var x = inputRed + 2;
     ok = ok && all(x == vec4<i32>(3, 2, 2, 3));
     x = inputGreen.ywxz - 2;
     ok = ok && all(x == vec4<i32>(-1, -1, -2, -2));
@@ -54,10 +54,10 @@ fn test_int_b() -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _0_ok: bool = true;
-    let _1_inputRed: vec4<f16> = _globalUniforms.colorRed;
-    let _2_inputGreen: vec4<f16> = _globalUniforms.colorGreen;
-    var _3_x: vec4<f16> = _1_inputRed + 2.0h;
+    var _0_ok = true;
+    let _1_inputRed = _globalUniforms.colorRed;
+    let _2_inputGreen = _globalUniforms.colorGreen;
+    var _3_x = _1_inputRed + 2.0h;
     _0_ok = _0_ok && all(_3_x == vec4<f16>(3.0h, 2.0h, 2.0h, 3.0h));
     _3_x = _2_inputGreen.ywxz - 2.0h;
     _0_ok = _0_ok && all(_3_x == vec4<f16>(-1.0h, -1.0h, -2.0h, -2.0h));

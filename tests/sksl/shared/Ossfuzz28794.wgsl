@@ -6,7 +6,7 @@ struct FSOut {
 };
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var i: i32 = 1;
+    var i = 1;
     i = 3;
     (*_stageOut).sk_FragColor.x = f16(i);
   }

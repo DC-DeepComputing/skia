@@ -22,7 +22,7 @@ fn blend_overlay_component_Qhh2h2(s: vec2<f16>, d: vec2<f16>) -> f16 {
 }
 fn blend_overlay_h4h4h4(src: vec4<f16>, dst: vec4<f16>) -> vec4<f16> {
   {
-    var result: vec4<f16> = vec4<f16>(blend_overlay_component_Qhh2h2(src.xw, dst.xw), blend_overlay_component_Qhh2h2(src.yw, dst.yw), blend_overlay_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0h - src.w) * dst.w);
+    var result = vec4<f16>(blend_overlay_component_Qhh2h2(src.xw, dst.xw), blend_overlay_component_Qhh2h2(src.yw, dst.yw), blend_overlay_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0h - src.w) * dst.w);
     result = vec4<f16>((result.xyz + (dst.xyz * (1.0h - src.w) + src.xyz * (1.0h - dst.w))), result.w);
     return result;
   }

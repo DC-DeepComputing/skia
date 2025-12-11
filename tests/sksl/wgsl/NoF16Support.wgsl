@@ -9,9 +9,9 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    let x: f32 = f32(_globalUniforms.unknownInput);
-    let y: vec4<f32> = vec4<f32>(x);
-    let z: vec4<f32> = dpdx(y);
+    let x = f32(_globalUniforms.unknownInput);
+    let y = vec4<f32>(x);
+    let z = dpdx(y);
     (*_stageOut).sk_FragColor = z;
   }
 }

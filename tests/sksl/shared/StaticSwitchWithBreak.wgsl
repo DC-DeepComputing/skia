@@ -6,7 +6,7 @@ struct FSOut {
 };
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var x: f32 = 0.0;
+    var x = 0.0;
     {
       x = 0.0;
     }

@@ -11,8 +11,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn TrueFalse_b() -> bool {
   {
-    const x: i32 = 1;
-    var y: i32 = 1;
+    const x = 1;
+    var y = 1;
     var _skTemp0: bool;
     if x == 1 {
       _skTemp0 = true;
@@ -34,8 +34,8 @@ fn TrueFalse_b() -> bool {
 }
 fn FalseTrue_b() -> bool {
   {
-    const x: i32 = 1;
-    var y: i32 = 1;
+    const x = 1;
+    var y = 1;
     var _skTemp1: bool;
     if x == 2 {
       _skTemp1 = true;
@@ -57,8 +57,8 @@ fn FalseTrue_b() -> bool {
 }
 fn FalseFalse_b() -> bool {
   {
-    const x: i32 = 1;
-    var y: i32 = 1;
+    const x = 1;
+    var y = 1;
     var _skTemp2: bool;
     if x == 2 {
       _skTemp2 = true;
@@ -81,7 +81,7 @@ fn FalseFalse_b() -> bool {
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
     var _0_TrueTrue: bool;
-    const _2_y: i32 = 1;
+    const _2_y = 1;
     {
       _0_TrueTrue = (_2_y == 1);
     }

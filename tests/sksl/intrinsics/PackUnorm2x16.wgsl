@@ -12,9 +12,9 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let xy: u32 = pack2x16unorm(_globalUniforms.testInputs.xy);
-    let zw: u32 = pack2x16unorm(_globalUniforms.testInputs.zw);
-    const tolerance: vec2<f32> = vec2<f32>(0.015625);
+    let xy = pack2x16unorm(_globalUniforms.testInputs.xy);
+    let zw = pack2x16unorm(_globalUniforms.testInputs.zw);
+    const tolerance = vec2<f32>(0.015625);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all((abs(unpack2x16unorm(xy)) < tolerance)) && all((abs(unpack2x16unorm(zw) - vec2<f32>(0.75, 1.0)) < tolerance))));
   }
 }

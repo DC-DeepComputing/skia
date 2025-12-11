@@ -9,7 +9,7 @@ struct _GlobalUniforms {
   colorRed: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-var<private> x: f16 = 1.0h;
+var<private> x = 1.0h;
 fn out_params_are_distinct_from_global_bh(y: ptr<function, f16>) -> bool {
   {
     (*y) = 2.0h;

@@ -23,7 +23,7 @@ fn return_on_both_sides_b() -> bool {
 fn for_inside_body_b() -> bool {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
           return true;
@@ -40,7 +40,7 @@ fn for_inside_body_b() -> bool {
 fn after_for_body_b() -> bool {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
         }
@@ -56,7 +56,7 @@ fn after_for_body_b() -> bool {
 fn for_with_double_sided_conditional_return_b() -> bool {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
           if _globalUniforms.unknownInput == 1.0h {

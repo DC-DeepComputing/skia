@@ -6,10 +6,10 @@ struct FSOut {
 };
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var x: f32 = 0.0;
+    var x = 0.0;
     switch 0 {
       case 0, 1 {
-        var _skTemp0: bool = false;
+        var _skTemp0 = false;
         if 0 == 0 {
           x = 0.0;
           if x < 1.0 {

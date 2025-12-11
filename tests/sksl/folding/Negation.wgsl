@@ -8,22 +8,22 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_ivec_b() -> bool {
   {
-    const one: i32 = 1;
-    const two: i32 = 2;
-    var ok: bool = true;
+    const one = 1;
+    const two = 2;
+    var ok = true;
     ok = ok && all((-vec2<i32>(-one, one + one)) == (-vec2<i32>(one - two, 2)));
     return ok;
   }
 }
 fn test_mat_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const _4_ok: bool = true;
+    const _4_ok = true;
     var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
     var _skTemp2: bool;

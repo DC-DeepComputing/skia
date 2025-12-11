@@ -20,26 +20,26 @@ struct S {
 };
 fn local_variable_hides_struct_b() -> bool {
   {
-    const S: bool = true;
+    const S = true;
     return S;
   }
 }
 fn local_struct_variable_hides_struct_type_b() -> bool {
   {
-    const S: S = S(1);
+    const S = S(1);
     return S.i == 1;
   }
 }
 fn local_variable_hides_global_variable_b() -> bool {
   {
-    const glob: i32 = 1;
+    const glob = 1;
     return glob == 1;
   }
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
     glob = 2;
-    const _0_var: bool = true;
+    const _0_var = true;
     var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
     var _skTemp2: bool;

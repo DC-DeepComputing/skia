@@ -6,7 +6,7 @@ struct FSOut {
 };
 fn d_vi(_skParam0: i32) {
   {
-    const b: i32 = 4;
+    const b = 4;
   }
 }
 fn c_vi(i: i32) {

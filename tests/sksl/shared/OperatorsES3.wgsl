@@ -12,17 +12,17 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: f32 = 1.0;
-    var y: f32 = 2.0;
-    var z: i32 = 3;
+    var x = 1.0;
+    var y = 2.0;
+    var z = 3;
     x = (x - x) + ((y * x) * x) * (y - x);
     y = (x / y) / x;
     z = ((((z / 2) % 3) << 4) >> 2) << 1;
-    let b: bool = ((x > 4.0) == (x < 2.0)) || ((2.0 >= _globalUniforms.unknownInput) && (y <= x));
-    let c: bool = _globalUniforms.unknownInput > 2.0;
-    let d: bool = b != c;
-    let e: bool = b && c;
-    let f: bool = b || c;
+    let b = ((x > 4.0) == (x < 2.0)) || ((2.0 >= _globalUniforms.unknownInput) && (y <= x));
+    let c = _globalUniforms.unknownInput > 2.0;
+    let d = b != c;
+    let e = b && c;
+    let f = b || c;
     x = x + 12.0;
     x = x - 12.0;
     y = y * 0.1;
@@ -36,7 +36,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     x = f32(6);
     y = f32(6.0);
     z = i32(6);
-    var w: vec2<i32> = vec2<i32>(-6);
+    var w = vec2<i32>(-6);
     w = ~w;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(((((w.x == 5) && (w.y == 5)) && (x == 6.0)) && (y == 6.0)) && (z == 6)));
   }

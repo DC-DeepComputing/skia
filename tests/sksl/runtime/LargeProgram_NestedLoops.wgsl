@@ -5,19 +5,19 @@ fn _skslMain(xy: vec2<f32>) -> vec4<f16> {
   {
     var i: i32;
     {
-      var a: i32 = 0;
+      var a = 0;
       loop {
         {
           {
-            var b: i32 = 0;
+            var b = 0;
             loop {
               {
                 {
-                  var c: i32 = 0;
+                  var c = 0;
                   loop {
                     {
                       {
-                        var d: i32 = 0;
+                        var d = 0;
                         loop {
                           {
                             i = i + i32(1);

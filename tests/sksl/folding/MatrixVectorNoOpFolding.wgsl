@@ -78,11 +78,11 @@ fn test_no_op_mat4_X_vec4_b() -> bool {
 }
 fn test_no_op_vec2_X_mat2_b() -> bool {
   {
-    const n: vec2<f32> = vec2<f32>(-1.0);
-    const i: vec2<f32> = vec2<f32>(1.0);
-    const z: vec2<f32> = vec2<f32>(0.0);
+    const n = vec2<f32>(-1.0);
+    const i = vec2<f32>(1.0);
+    const z = vec2<f32>(0.0);
     var v: vec2<f32>;
-    var vv: vec2<f32> = vec2<f32>(0.0);
+    var vv = vec2<f32>(0.0);
     vv = vec2<f32>(0.0);
     if any(vv != z) {
       return false;
@@ -105,11 +105,11 @@ fn test_no_op_vec2_X_mat2_b() -> bool {
 }
 fn test_no_op_vec3_X_mat3_b() -> bool {
   {
-    const n: vec3<f32> = vec3<f32>(-1.0);
-    const i: vec3<f32> = vec3<f32>(1.0);
-    const z: vec3<f32> = vec3<f32>(0.0);
+    const n = vec3<f32>(-1.0);
+    const i = vec3<f32>(1.0);
+    const z = vec3<f32>(0.0);
     var v: vec3<f32>;
-    var vv: vec3<f32> = vec3<f32>(0.0);
+    var vv = vec3<f32>(0.0);
     vv = vec3<f32>(0.0);
     if any(vv != z) {
       return false;
@@ -132,9 +132,9 @@ fn test_no_op_vec3_X_mat3_b() -> bool {
 }
 fn test_no_op_vec4_X_mat4_b() -> bool {
   {
-    const n: vec4<f32> = vec4<f32>(-1.0);
-    const i: vec4<f32> = vec4<f32>(1.0);
-    const z: vec4<f32> = vec4<f32>(0.0);
+    const n = vec4<f32>(-1.0);
+    const i = vec4<f32>(1.0);
+    const z = vec4<f32>(0.0);
     let _skTemp0 = _skUnpacked__globalUniforms_testMatrix2x2[0];
     let _skTemp1 = _skUnpacked__globalUniforms_testMatrix2x2[1];
     let _skTemp2 = _skUnpacked__globalUniforms_testMatrix2x2[0];
@@ -143,9 +143,9 @@ fn test_no_op_vec4_X_mat4_b() -> bool {
     let _skTemp5 = _skUnpacked__globalUniforms_testMatrix2x2[1];
     let _skTemp6 = _skUnpacked__globalUniforms_testMatrix2x2[0];
     let _skTemp7 = _skUnpacked__globalUniforms_testMatrix2x2[1];
-    let testMatrix4x4: mat4x4<f32> = mat4x4<f32>(_skTemp0[0], _skTemp0[1], _skTemp1[0], _skTemp1[1], _skTemp2[0], _skTemp2[1], _skTemp3[0], _skTemp3[1], _skTemp4[0], _skTemp4[1], _skTemp5[0], _skTemp5[1], _skTemp6[0], _skTemp6[1], _skTemp7[0], _skTemp7[1]);
+    let testMatrix4x4 = mat4x4<f32>(_skTemp0[0], _skTemp0[1], _skTemp1[0], _skTemp1[1], _skTemp2[0], _skTemp2[1], _skTemp3[0], _skTemp3[1], _skTemp4[0], _skTemp4[1], _skTemp5[0], _skTemp5[1], _skTemp6[0], _skTemp6[1], _skTemp7[0], _skTemp7[1]);
     var v: vec4<f32>;
-    var vv: vec4<f32> = vec4<f32>(0.0);
+    var vv = vec4<f32>(0.0);
     vv = vec4<f32>(0.0);
     if any(vv != z) {
       return false;

@@ -8,7 +8,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
+    var ok = true;
     ok = ok && (_globalUniforms.colorGreen.y >= _globalUniforms.colorGreen.x);
     ok = ok && (_globalUniforms.colorGreen.y > _globalUniforms.colorGreen.x);
     ok = ok && (_globalUniforms.colorGreen.z <= _globalUniforms.colorGreen.y);

@@ -1556,6 +1556,9 @@ void WGSLCodeGenerator::writeUniformPolyfills() {
         anyFieldAccessed = true;
         this->write("var<private> ");
         this->write(info.fReplacementName);
+
+        // Include an explicit type on this declaration because there is nothing assigned to it
+        // that lets WGSL infer the type.
         this->write(": ");
 
         const Type& interfaceBlockType = info.fInterfaceBlock->var()->type();
@@ -1718,6 +1721,8 @@ void WGSLCodeGenerator::writeVariableDecl(const Layout& layout,
                                           std::string_view name,
                                           Delimiter delimiter) {
     this->write(this->assembleName(name));
+    // FIXME type needed? for globals and w/o assignments yes, but
+    // will assignment statements call into this too?
     this->write(": " + to_wgsl_type(fContext, type, &layout));
     this->writeLine(delimiter_to_str(delimiter));
 }
@@ -1796,6 +1801,8 @@ void WGSLCodeGenerator::writeBuiltinIODecl(const Type& type,
     this->write(wgsl_builtin_name(builtin));
     this->write(" ");
     this->write(this->assembleName(name));
+    // Explicitly include the type; the @builtin annotation does not provide type information that
+    // the struct definition requires.
     this->write(": ");
     this->write(wgsl_builtin_type(builtin));
     this->writeLine(delimiter_to_str(delimiter));
@@ -1885,6 +1892,7 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl
     for (size_t index = 0; index < decl.parameters().size(); ++index) {
         this->write(separator());
 
+        // Each parameter explicitly declares its type
         const Variable& param = *decl.parameters()[index];
         if (param.type().isOpaque()) {
             SkASSERT(!paramNeedsDedicatedStorage[index]);
@@ -2555,12 +2563,15 @@ void WGSLCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
         this->write("var ");
     }
     this->write(this->assembleName(varDecl.var()->mangledName()));
-    this->write(": ");
-    this->write(to_wgsl_type(fContext, varDecl.var()->type(), &varDecl.var()->layout()));
 
     if (varDecl.value()) {
+        // Do not declare the type if it can be inferred from an initial value
         this->write(" = ");
         this->write(initialValue);
+    } else {
+        // If there's no assignment, include the type information explicitly
+        this->write(": ");
+        this->write(to_wgsl_type(fContext, varDecl.var()->type(), &varDecl.var()->layout()));
     }
 
     this->write(";");
@@ -3921,11 +3932,13 @@ std::string WGSLCodeGenerator::writeScratchVar(const Type& type, const std::stri
     std::string scratchVarName = "_skTemp" + std::to_string(fScratchCount++);
     this->write("var ");
     this->write(scratchVarName);
-    this->write(": ");
-    this->write(to_wgsl_type(fContext, type));
+    // Write either the value (implicit type) or the explicit type
     if (!value.empty()) {
         this->write(" = ");
         this->write(value);
+    } else {
+        this->write(": ");
+        this->write(to_wgsl_type(fContext, type));
     }
     this->writeLine(";");
     return scratchVarName;
@@ -3936,6 +3949,8 @@ std::string WGSLCodeGenerator::writeScratchLet(const std::string& expr,
     std::string scratchVarName = "_skTemp" + std::to_string(fScratchCount++);
     this->write(fAtFunctionScope && !isCompileTimeConstant ? "let " : "const ");
     this->write(scratchVarName);
+    // NOTE: To save parse time and wgsl size, we never emit explicit types for scratch lets
+    // because there is always an expression that can be used to infer it from
     this->write(" = ");
     this->write(expr);
     this->writeLine(";");
@@ -4456,15 +4471,6 @@ void WGSLCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclaration& d)
         return;
     }
 
-    std::string initializer;
-    if (decl.value()) {
-        // We assume here that the initial-value expression will not emit any helper statements.
-        // Initial-value expressions are required to pass IsConstantExpression, which limits the
-        // blast radius to constructors, literals, and other constant values/variables.
-        initializer += " = ";
-        initializer += this->assembleExpression(*decl.value(), Precedence::kAssignment);
-    }
-
     if (var.modifierFlags().isConst()) {
         this->write("const ");
     } else if (var.modifierFlags().isWorkgroup()) {
@@ -4475,8 +4481,17 @@ void WGSLCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclaration& d)
         this->write("var<private> ");
     }
     this->write(this->assembleName(var.mangledName()));
-    this->write(": " + to_wgsl_type(fContext, var.type(), &var.layout()));
-    this->write(initializer);
+    if (decl.value()) {
+        // Let initializer implicitly define the type. We assume here that the initial-value
+        // expression will not emit any helper statements. Initial-value expressions are required to
+        // pass IsConstantExpression, which limits the blast radius to constructors, literals, and
+        // other constant values/variables.
+        this->write(" = ");
+        this->write(this->assembleExpression(*decl.value(), Precedence::kAssignment));
+    } else {
+        // Declaration requires explicit typing
+        this->write(": " + to_wgsl_type(fContext, var.type(), &var.layout()));
+    }
     this->writeLine(";");
 }
 

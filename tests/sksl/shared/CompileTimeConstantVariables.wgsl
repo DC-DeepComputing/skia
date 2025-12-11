@@ -8,17 +8,17 @@ struct _GlobalUniforms {
   colorGreen: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-const kConstant: i32 = 0;
-const kOtherConstant: i32 = 1;
-const kAnotherConstant: i32 = 2;
-const kFloatConstant: f32 = 2.14;
-const kFloatConstantAlias: f32 = kFloatConstant;
-const kConstVec: vec4<f16> = vec4<f16>(1.0h, 0.2h, 2.14h, 1.0h);
+const kConstant = 0;
+const kOtherConstant = 1;
+const kAnotherConstant = 2;
+const kFloatConstant = 2.14;
+const kFloatConstantAlias = kFloatConstant;
+const kConstVec = vec4<f16>(1.0h, 0.2h, 2.14h, 1.0h);
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
-    const kLocalFloatConstant: f32 = 3.14;
-    let kLocalFloatConstantAlias: f32 = kLocalFloatConstant;
-    let integerInput: i32 = i32(_globalUniforms.colorGreen.y);
+    const kLocalFloatConstant = 3.14;
+    let kLocalFloatConstantAlias = kLocalFloatConstant;
+    let integerInput = i32(_globalUniforms.colorGreen.y);
     if integerInput == kConstant {
       {
         return vec4<f16>(2.14h);

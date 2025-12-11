@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _0_ok: bool = true;
+    var _0_ok = true;
     const _skTemp0 = mat2x2<f16>(1.0h, 2.0h, 3.0h, 4.0h);
     _0_ok = _0_ok && (all(_skUnpacked__globalUniforms_testMatrix2x2[0] == _skTemp0[0]) && all(_skUnpacked__globalUniforms_testMatrix2x2[1] == _skTemp0[1]));
     const _skTemp1 = mat3x3<f16>(1.0h, 2.0h, 3.0h, 4.0h, 5.0h, 6.0h, 7.0h, 8.0h, 9.0h);
@@ -22,10 +22,10 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     _0_ok = _0_ok && (any(_skUnpacked__globalUniforms_testMatrix2x2[0] != _skTemp2[0]) || any(_skUnpacked__globalUniforms_testMatrix2x2[1] != _skTemp2[1]));
     const _skTemp3 = mat3x3<f16>(9.0h, 8.0h, 7.0h, 6.0h, 5.0h, 4.0h, 3.0h, 2.0h, 1.0h);
     _0_ok = _0_ok && (any(_skUnpacked__globalUniforms_testMatrix3x3[0] != _skTemp3[0]) || any(_skUnpacked__globalUniforms_testMatrix3x3[1] != _skTemp3[1]) || any(_skUnpacked__globalUniforms_testMatrix3x3[2] != _skTemp3[2]));
-    let _1_zero: f32 = f32(_globalUniforms.colorGreen.x);
-    let _2_one: f32 = f32(_globalUniforms.colorGreen.y);
-    let _3_two: f32 = 2.0 * _2_one;
-    let _4_nine: f32 = 9.0 * _2_one;
+    let _1_zero = f32(_globalUniforms.colorGreen.x);
+    let _2_one = f32(_globalUniforms.colorGreen.y);
+    let _3_two = 2.0 * _2_one;
+    let _4_nine = 9.0 * _2_one;
     let _skTemp4 = mat2x2<f32>(_2_one, _1_zero, _1_zero, _2_one);
     const _skTemp5 = mat2x2<f32>(1.0, 0.0, 0.0, 1.0);
     _0_ok = _0_ok && (all(_skTemp4[0] == _skTemp5[0]) && all(_skTemp4[1] == _skTemp5[1]));
@@ -101,7 +101,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     _0_ok = _0_ok && all((vec4<f32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])) * vec4<f32>(_2_one)) == vec4<f32>(1.0, 2.0, 3.0, 4.0));
     _0_ok = _0_ok && all((vec4<f32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])) * vec4<f32>(_2_one)) == vec4<f32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])));
     _0_ok = _0_ok && all((vec4<f32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])) * vec4<f32>(_1_zero)) == vec4<f32>(0.0));
-    let _5_m: mat3x3<f32> = mat3x3<f32>(_2_one, _3_two, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, _4_nine);
+    let _5_m = mat3x3<f32>(_2_one, _3_two, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, _4_nine);
     _0_ok = _0_ok && all(_5_m[0] == vec3<f32>(1.0, 2.0, 3.0));
     _0_ok = _0_ok && all(_5_m[1] == vec3<f32>(4.0, 5.0, 6.0));
     _0_ok = _0_ok && all(_5_m[2] == vec3<f32>(7.0, 8.0, 9.0));

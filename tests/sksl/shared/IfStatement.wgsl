@@ -10,7 +10,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn ifElseTest_h4h4h4h4(colorBlue: vec4<f16>, colorGreen: vec4<f16>, colorRed: vec4<f16>) -> vec4<f16> {
   {
-    var result: vec4<f16> = vec4<f16>(0.0h);
+    var result = vec4<f16>(0.0h);
     if any(_globalUniforms.colorWhite != colorBlue) {
       {
         if all(colorGreen == colorRed) {

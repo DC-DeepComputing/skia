@@ -15,7 +15,7 @@ struct _GlobalUniforms {
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
     let _skTemp0 = 65504.0h;
-    var result: vec4<f16> = vec4<f16>(refract(vec2<f16>(_skTemp0 * 2.0h, 0), vec2<f16>(2.0h, 0), 2.0h).x);
+    var result = vec4<f16>(refract(vec2<f16>(_skTemp0 * 2.0h, 0), vec2<f16>(2.0h, 0), 2.0h).x);
     result.x = refract(vec2<f16>(_globalUniforms.a, 0), vec2<f16>(_globalUniforms.b, 0), _globalUniforms.c).x;
     result = refract(_globalUniforms.d, _globalUniforms.e, _globalUniforms.c);
     result = vec4<f16>((vec2<f16>(0.5h, -0.8660254h)), result.zw);

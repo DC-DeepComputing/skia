@@ -8,8 +8,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_matrix_b() -> bool {
   {
-    var ok: bool = true;
-    var num: f32 = 0.0;
+    var ok = true;
+    var num = 0.0;
     var _skTemp0: bool;
     if ok {
       num = num + f32(1);
@@ -111,8 +111,8 @@ fn test_matrix_b() -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _0_ok: bool = true;
-    var _1_num: f32 = 0.0;
+    var _0_ok = true;
+    var _1_num = 0.0;
     var _skTemp19: bool;
     if _0_ok {
       _1_num = _1_num + f32(1);

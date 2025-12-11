@@ -10,7 +10,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var h4: vec4<f16> = vec4<f16>(_globalUniforms.unknownInput);
+    var h4 = vec4<f16>(_globalUniforms.unknownInput);
     h4 = vec4<f16>(vec2<f16>(_globalUniforms.unknownInput), 0.0h, 1.0h);
     h4 = vec4<f16>(0.0h, _globalUniforms.unknownInput, 1.0h, 0.0h);
     h4 = vec4<f16>(0.0h, _globalUniforms.unknownInput, 0.0h, _globalUniforms.unknownInput);

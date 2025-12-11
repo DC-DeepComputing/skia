@@ -47,12 +47,12 @@ fn modifies_a_struct_vS(s: ptr<function, S>) {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var s: S = returns_a_struct_S();
-    let x: f32 = accepts_a_struct_fS(s);
-    var _skTemp0: S = s;
+    var s = returns_a_struct_S();
+    let x = accepts_a_struct_fS(s);
+    var _skTemp0 = s;
     modifies_a_struct_vS(&_skTemp0);
     s = _skTemp0;
-    let expected: S = constructs_a_struct_S();
+    let expected = constructs_a_struct_S();
     var n1: Nested;
     var n2: Nested;
     var n3: Nested;
@@ -60,12 +60,12 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     n1.b = n1.a;
     n2 = n1;
     n3 = n2;
-    var _skTemp1: S = n3.b;
+    var _skTemp1 = n3.b;
     modifies_a_struct_vS(&_skTemp1);
     n3.b = _skTemp1;
-    const c1: Compound = Compound(vec4<f32>(1.0, 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
-    let c2: Compound = Compound(vec4<f32>(f32(_globalUniforms.colorGreen.y), 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
-    let c3: Compound = Compound(vec4<f32>(f32(_globalUniforms.colorGreen.x), 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
+    const c1 = Compound(vec4<f32>(1.0, 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
+    let c2 = Compound(vec4<f32>(f32(_globalUniforms.colorGreen.y), 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
+    let c3 = Compound(vec4<f32>(f32(_globalUniforms.colorGreen.x), 2.0, 3.0, 4.0), vec3<i32>(5, 6, 7));
     var _skTemp2: bool;
     const _skTemp3 = S(2.0, 3);
     if ((((x == 3.0) && (s.x == 2.0)) && (s.y == 3)) && ((s.x == expected.x) && (s.y == expected.y))) && ((s.x == _skTemp3.x) && (s.y == _skTemp3.y)) {
@@ -75,7 +75,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
       _skTemp2 = false;
     }
     const _skTemp5 = Nested(S(1.0, 2), S(2.0, 3));
-    let valid: bool = ((((_skTemp2 && (((n1.a.x == n2.a.x) && (n1.a.y == n2.a.y)) && ((n1.b.x == n2.b.x) && (n1.b.y == n2.b.y)))) && (((n1.a.x != n3.a.x) || (n1.a.y != n3.a.y)) || ((n1.b.x != n3.b.x) || (n1.b.y != n3.b.y)))) && (((n3.a.x == _skTemp5.a.x) && (n3.a.y == _skTemp5.a.y)) && ((n3.b.x == _skTemp5.b.x) && (n3.b.y == _skTemp5.b.y)))) && (all(c1.f4 == c2.f4) && all(c1.i3 == c2.i3))) && (any(c2.f4 != c3.f4) || any(c2.i3 != c3.i3));
+    let valid = ((((_skTemp2 && (((n1.a.x == n2.a.x) && (n1.a.y == n2.a.y)) && ((n1.b.x == n2.b.x) && (n1.b.y == n2.b.y)))) && (((n1.a.x != n3.a.x) || (n1.a.y != n3.a.y)) || ((n1.b.x != n3.b.x) || (n1.b.y != n3.b.y)))) && (((n3.a.x == _skTemp5.a.x) && (n3.a.y == _skTemp5.a.y)) && ((n3.b.x == _skTemp5.b.x) && (n3.b.y == _skTemp5.b.y)))) && (all(c1.f4 == c2.f4) && all(c1.i3 == c2.i3))) && (any(c2.f4 != c3.f4) || any(c2.i3 != c3.i3));
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(valid));
   }
 }

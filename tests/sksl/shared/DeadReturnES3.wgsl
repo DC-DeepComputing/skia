@@ -120,7 +120,7 @@ fn test_loop_return_b() -> bool {
 fn test_loop_break_b() -> bool {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
           break;

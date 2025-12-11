@@ -11,7 +11,7 @@ struct S {
   b: i32,
   c: i32,
 };
-var<private> numSideEffects: i32 = 0;
+var<private> numSideEffects = 0;
 fn side_effecting_ii(value: i32) -> i32 {
   {
     numSideEffects = numSideEffects + i32(1);
@@ -20,13 +20,13 @@ fn side_effecting_ii(value: i32) -> i32 {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _0_val1: i32 = 2;
-    var _1_val2: i32 = 1;
+    var _0_val1 = 2;
+    var _1_val2 = 1;
     _0_val1 = _0_val1 - i32(1);
-    let _2_noFlatten0: i32 = S(_0_val1, side_effecting_ii(2), 3).a;
-    let _3_noFlatten1: i32 = S(side_effecting_ii(1), 2, 3).b;
+    let _2_noFlatten0 = S(_0_val1, side_effecting_ii(2), 3).a;
+    let _3_noFlatten1 = S(side_effecting_ii(1), 2, 3).b;
     _1_val2 = _1_val2 + 1;
-    let _4_noFlatten2: i32 = S(1, _1_val2, 3).c;
+    let _4_noFlatten2 = S(1, _1_val2, 3).c;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((((_2_noFlatten0 == 1) && (_3_noFlatten1 == 2)) && (_4_noFlatten2 == 3)) && (_0_val1 == 1)) && (_1_val2 == 2)) && (numSideEffects == 2)));
   }
 }

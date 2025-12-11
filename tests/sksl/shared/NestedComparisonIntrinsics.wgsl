@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let result: vec4<bool> = (_globalUniforms.colorRed < vec4<f16>(2.0h)) == (vec4<f16>(3.0h) > _globalUniforms.colorGreen);
+    let result = (_globalUniforms.colorRed < vec4<f16>(2.0h)) == (vec4<f16>(3.0h) > _globalUniforms.colorGreen);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all(result)));
   }
 }

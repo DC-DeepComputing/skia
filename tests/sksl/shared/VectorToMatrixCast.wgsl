@@ -12,7 +12,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
+    var ok = true;
     let _skTemp0 = mat2x2<f16>(_globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3]);
     const _skTemp1 = mat2x2<f16>(-1.25h, 0.0h, 0.75h, 2.25h);
     ok = ok && (all(_skTemp0[0] == _skTemp1[0]) && all(_skTemp0[1] == _skTemp1[1]));

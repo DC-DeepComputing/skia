@@ -10,15 +10,15 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var u1: u32 = 0u;
+    var u1 = 0u;
     u1 = u1 + u32(1);
-    var u2: u32 = 305441741u;
+    var u2 = 305441741u;
     u2 = u2 + u32(1);
-    var u3: u32 = 2147483646u;
+    var u3 = 2147483646u;
     u3 = u3 + u32(1);
-    var u4: u32 = 4294967294u;
+    var u4 = 4294967294u;
     u4 = u4 + u32(1);
-    var u5: u32 = 65534u;
+    var u5 = 65534u;
     u5 = u5 + u32(1);
     return _globalUniforms.colorGreen;
   }

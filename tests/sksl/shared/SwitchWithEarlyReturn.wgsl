@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn return_in_one_case_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1 {
         val = val + i32(1);
@@ -47,7 +47,7 @@ fn return_in_every_case_bi(x: i32) -> bool {
 }
 fn return_in_every_case_no_default_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1 {
         return false;
@@ -63,7 +63,7 @@ fn return_in_every_case_no_default_bi(x: i32) -> bool {
 }
 fn case_has_break_before_return_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1 {
         break;
@@ -96,7 +96,7 @@ fn case_has_break_after_return_bi(x: i32) -> bool {
 }
 fn no_return_in_default_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1 {
         return false;
@@ -114,7 +114,7 @@ fn no_return_in_default_bi(x: i32) -> bool {
 }
 fn empty_default_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1 {
         return false;
@@ -144,7 +144,7 @@ fn return_with_fallthrough_bi(x: i32) -> bool {
 }
 fn fallthrough_ends_in_break_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1, 2 {
         break;
@@ -159,7 +159,7 @@ fn fallthrough_ends_in_break_bi(x: i32) -> bool {
 }
 fn fallthrough_to_default_with_break_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1, 2, default {
         break;
@@ -180,13 +180,13 @@ fn fallthrough_to_default_with_return_bi(x: i32) -> bool {
 }
 fn fallthrough_with_loop_break_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1, 2, default {
-        var _skTemp0: bool = false;
+        var _skTemp0 = false;
         if x == 1 {
           {
-            var i: i32 = 0;
+            var i = 0;
             loop {
               {
                 val = val + i32(1);
@@ -209,13 +209,13 @@ fn fallthrough_with_loop_break_bi(x: i32) -> bool {
 }
 fn fallthrough_with_loop_continue_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1, 2, default {
-        var _skTemp1: bool = false;
+        var _skTemp1 = false;
         if x == 1 {
           {
-            var i: i32 = 0;
+            var i = 0;
             loop {
               {
                 val = val + i32(1);
@@ -238,7 +238,7 @@ fn fallthrough_with_loop_continue_bi(x: i32) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let x: i32 = i32(_globalUniforms.colorGreen.y);
+    let x = i32(_globalUniforms.colorGreen.y);
     var _skTemp2: vec4<f16>;
     var _skTemp3: bool;
     var _skTemp4: bool;

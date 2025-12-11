@@ -1,8 +1,8 @@
 diagnostic(off, derivative_uniformity);
 diagnostic(off, chromium.unreachable_code);
 enable f16;
-const gInitialized: f32 = -1.0;
-var<private> gInitializedFromOther: f32 = 1.0;
+const gInitialized = -1.0;
+var<private> gInitializedFromOther = 1.0;
 var<private> gUninitialized: f32;
 fn init_globals_v() {
   {

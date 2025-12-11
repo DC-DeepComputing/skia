@@ -10,7 +10,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var color: vec4<f16> = vec4<f16>(0.0h);
+    var color = vec4<f16>(0.0h);
     if _globalUniforms.unknownInput == 1.0h {
       color.y = 1.0h;
     }

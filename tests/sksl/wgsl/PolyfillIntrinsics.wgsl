@@ -14,7 +14,7 @@ fn _skslMain(xy: vec2<f32>) -> vec4<f16> {
   {
     let _skTemp0 = _globalUniforms.N.x;
     let _skTemp1 = 1e+30;
-    var huge: f32 = select(-_skTemp0, _skTemp0, _skTemp1 * 1e+30 < 0);
+    var huge = select(-_skTemp0, _skTemp0, _skTemp1 * 1e+30 < 0);
     let _skTemp2 = 1e+30;
     huge = 1e+30 - 2 * _skTemp2 * 1e+30 * _skTemp2;
     let _skTemp3 = 0.0;

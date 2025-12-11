@@ -17,13 +17,13 @@ fn GetTestMatrix_f33() -> mat3x3<f32> {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var expected: f32 = 0.0;
+    var expected = 0.0;
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           {
-            var j: i32 = 0;
+            var j = 0;
             loop {
               {
                 expected = expected + 1.0;

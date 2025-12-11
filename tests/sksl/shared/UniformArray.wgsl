@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
     {
-      var index: i32 = 0;
+      var index = 0;
       loop {
         {
           if _skUnpacked__globalUniforms_testArray[index] != f32(index + 1) {

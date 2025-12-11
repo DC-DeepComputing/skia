@@ -13,7 +13,7 @@ struct S {
 };
 fn test_same_structs_bbfff(eq: bool, f1: f32, f2: f32, f3: f32) -> bool {
   {
-    let one: f32 = f32(_globalUniforms.colorGreen.x + 1.0h);
+    let one = f32(_globalUniforms.colorGreen.x + 1.0h);
     var a: S;
     a.f1 = f1;
     a.f2 = f2;
@@ -33,7 +33,7 @@ fn test_same_structs_bbfff(eq: bool, f1: f32, f2: f32, f3: f32) -> bool {
 }
 fn test_diff_structs_bbfff(eq: bool, f1: f32, f2: f32, f3: f32) -> bool {
   {
-    let two: f32 = f32(_globalUniforms.colorGreen.x + 2.0h);
+    let two = f32(_globalUniforms.colorGreen.x + 2.0h);
     var a: S;
     a.f1 = f1;
     a.f2 = f2;
@@ -53,16 +53,16 @@ fn test_diff_structs_bbfff(eq: bool, f1: f32, f2: f32, f3: f32) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
   {
-    let NAN1: f32 = f32(_globalUniforms.colorGreen.x / _globalUniforms.colorGreen.z);
-    let NAN2: f32 = f32(_globalUniforms.colorGreen.z / _globalUniforms.colorGreen.x);
-    let ZP: f32 = f32(_globalUniforms.colorGreen.x * _globalUniforms.colorGreen.z);
-    let ZM: f32 = f32(-_globalUniforms.colorGreen.x * _globalUniforms.colorGreen.z);
-    let F42: f32 = f32(_globalUniforms.colorGreen.y * 42.0h);
-    let F43: f32 = f32(_globalUniforms.colorGreen.y * 43.0h);
-    let F44: f32 = f32(_globalUniforms.colorGreen.y * 44.0h);
-    const EQ: bool = true;
-    const NE: bool = false;
-    let _0_one: f32 = f32(_globalUniforms.colorGreen.x + 1.0h);
+    let NAN1 = f32(_globalUniforms.colorGreen.x / _globalUniforms.colorGreen.z);
+    let NAN2 = f32(_globalUniforms.colorGreen.z / _globalUniforms.colorGreen.x);
+    let ZP = f32(_globalUniforms.colorGreen.x * _globalUniforms.colorGreen.z);
+    let ZM = f32(-_globalUniforms.colorGreen.x * _globalUniforms.colorGreen.z);
+    let F42 = f32(_globalUniforms.colorGreen.y * 42.0h);
+    let F43 = f32(_globalUniforms.colorGreen.y * 43.0h);
+    let F44 = f32(_globalUniforms.colorGreen.y * 44.0h);
+    const EQ = true;
+    const NE = false;
+    let _0_one = f32(_globalUniforms.colorGreen.x + 1.0h);
     var _1_a: S;
     _1_a.f1 = F42;
     _1_a.f2 = ZM;

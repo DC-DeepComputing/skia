@@ -14,8 +14,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let FTFT: vec4<bool> = vec4<bool>(_globalUniforms.colorGreen);
-    let TFTF: vec4<bool> = FTFT.wzyx;
+    let FTFT = vec4<bool>(_globalUniforms.colorGreen);
+    let TFTF = FTFT.wzyx;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((((((select(_globalUniforms.colorBlack.x, _globalUniforms.colorWhite.x, FTFT.x) == _globalUniforms.colorBlack.x) && all(select(_globalUniforms.colorBlack.xy, _globalUniforms.colorWhite.xy, FTFT.xy) == vec2<f16>(_globalUniforms.colorBlack.x, 1.0h))) && all(select(_globalUniforms.colorBlack.xyz, _globalUniforms.colorWhite.xyz, FTFT.xyz) == vec3<f16>(_globalUniforms.colorBlack.x, 1.0h, _globalUniforms.colorBlack.z))) && all(select(_globalUniforms.colorBlack, _globalUniforms.colorWhite, FTFT) == vec4<f16>(_globalUniforms.colorBlack.x, 1.0h, _globalUniforms.colorBlack.z, 1.0h))) && (select(_globalUniforms.colorWhite.x, _globalUniforms.testInputs.x, TFTF.x) == _globalUniforms.testInputs.x)) && all(select(_globalUniforms.colorWhite.xy, _globalUniforms.testInputs.xy, TFTF.xy) == vec2<f16>(_globalUniforms.testInputs.x, 1.0h))) && all(select(_globalUniforms.colorWhite.xyz, _globalUniforms.testInputs.xyz, TFTF.xyz) == vec3<f16>(_globalUniforms.testInputs.x, 1.0h, _globalUniforms.testInputs.z))) && all(select(_globalUniforms.colorWhite, _globalUniforms.testInputs, TFTF) == vec4<f16>(_globalUniforms.testInputs.x, 1.0h, _globalUniforms.testInputs.z, 1.0h))));
   }
 }

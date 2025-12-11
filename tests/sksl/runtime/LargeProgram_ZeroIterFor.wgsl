@@ -3,7 +3,7 @@ diagnostic(off, chromium.unreachable_code);
 enable f16;
 fn _skslMain(xy: vec2<f32>) -> vec4<f16> {
   {
-    const i: i32 = 0;
+    const i = 0;
     return vec4<f16>(f16(i));
   }
 }

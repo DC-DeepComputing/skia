@@ -11,15 +11,15 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var i2: array<i32, 2> = array<i32, 2>(1, 2);
-    var s2: array<i32, 2> = array<i32, 2>(1, 2);
-    var f2: array<f32, 2> = array<f32, 2>(1.0, 2.0);
-    var h2: array<f16, 2> = array<f16, 2>(1.0h, 2.0h);
+    var i2 = array<i32, 2>(1, 2);
+    var s2 = array<i32, 2>(1, 2);
+    var f2 = array<f32, 2>(1.0, 2.0);
+    var h2 = array<f16, 2>(1.0h, 2.0h);
     i2 = s2;
     s2 = i2;
     f2 = array<f32, 2>(f32(h2[0]), f32(h2[1]));
     h2 = array<f16, 2>(f16(f2[0]), f16(f2[1]));
-    const cf2: array<f32, 2> = array<f32, 2>(1.0, 2.0);
+    const cf2 = array<f32, 2>(1.0, 2.0);
     let _skTemp0 = s2;
     let _skTemp1 = array<f32, 2>(f32(h2[0]), f32(h2[1]));
     const _skTemp2 = array<i32, 2>(1, 2);

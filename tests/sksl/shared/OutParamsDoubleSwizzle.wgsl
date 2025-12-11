@@ -17,17 +17,17 @@ fn swizzle_lvalue_h2hhh2h(x: f16, y: f16, color: ptr<function, vec2<f16>>, z: f1
 }
 fn func_vh4(color: ptr<function, vec4<f16>>) {
   {
-    var _skTemp0: vec2<f16> = (*color).xz;
+    var _skTemp0 = (*color).xz;
     let _skTemp1 = swizzle_lvalue_h2hhh2h(1.0h, 2.0h, &_skTemp0, 5.0h);
     (*color) = vec4<f16>((_skTemp0), (*color).yw).xzyw;
-    let t: vec2<f16> = _skTemp1;
+    let t = _skTemp1;
     (*color) = vec4<f16>((*color).xz, (t)).xzyw;
   }
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var result: vec4<f16> = vec4<f16>(0.0h, 1.0h, 2.0h, 3.0h);
-    var _skTemp2: vec4<f16> = result;
+    var result = vec4<f16>(0.0h, 1.0h, 2.0h, 3.0h);
+    var _skTemp2 = result;
     func_vh4(&_skTemp2);
     result = _skTemp2;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all(result == vec4<f16>(2.0h, 3.0h, 0.0h, 5.0h))));

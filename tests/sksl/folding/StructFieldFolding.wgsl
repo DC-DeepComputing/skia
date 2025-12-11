@@ -13,8 +13,8 @@ struct S {
 };
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const _6_two: i32 = 2;
-    let _8_flatten1: i32 = _6_two;
+    const _6_two = 2;
+    let _8_flatten1 = _6_two;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(_8_flatten1 == 2));
   }
 }

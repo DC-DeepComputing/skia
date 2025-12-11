@@ -6,7 +6,7 @@ struct FSOut {
 };
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: vec4<f16> = vec4<f16>(1.0h);
+    var x = vec4<f16>(1.0h);
     loop {
       {
         x.x = x.x - 0.25h;

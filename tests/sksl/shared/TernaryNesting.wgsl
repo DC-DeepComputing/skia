@@ -10,16 +10,16 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let colorBlue: vec4<f16> = vec4<f16>(0.0h, 0.0h, _globalUniforms.colorWhite.zw);
-    let colorGreen: vec4<f16> = vec4<f16>(0.0h, _globalUniforms.colorWhite.y, 0.0h, _globalUniforms.colorWhite.w);
-    let colorRed: vec4<f16> = vec4<f16>(_globalUniforms.colorWhite.x, 0.0h, 0.0h, _globalUniforms.colorWhite.w);
+    let colorBlue = vec4<f16>(0.0h, 0.0h, _globalUniforms.colorWhite.zw);
+    let colorGreen = vec4<f16>(0.0h, _globalUniforms.colorWhite.y, 0.0h, _globalUniforms.colorWhite.w);
+    let colorRed = vec4<f16>(_globalUniforms.colorWhite.x, 0.0h, 0.0h, _globalUniforms.colorWhite.w);
     var _skTemp0: vec4<f16>;
     if any(_globalUniforms.colorWhite != colorBlue) {
       _skTemp0 = select(colorGreen, colorRed, vec4<bool>(all(colorGreen == colorRed)));
     } else {
       _skTemp0 = select(_globalUniforms.colorWhite, colorBlue, vec4<bool>(any(colorRed != colorGreen)));
     }
-    let result: vec4<f16> = _skTemp0;
+    let result = _skTemp0;
     var _skTemp1: vec4<f16>;
     if all(colorRed == colorBlue) {
       _skTemp1 = _globalUniforms.colorWhite;

@@ -6,9 +6,9 @@ struct FSOut {
 };
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var x: i32 = 0;
-    var y: i32 = 0;
-    var z: i32 = 0;
+    var x = 0;
+    var y = 0;
+    var z = 0;
     if true {
       x = 1;
     }

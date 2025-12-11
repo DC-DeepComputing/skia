@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const negativeVal: vec4<f16> = vec4<f16>(-1.0h, -4.0h, -16.0h, -64.0h);
+    const negativeVal = vec4<f16>(-1.0h, -4.0h, -16.0h, -64.0h);
     let _skTemp0 = -1.0h;
     let _skTemp1 = vec2<f16>(-1.0h, -4.0h);
     let _skTemp2 = vec3<f16>(-1.0h, -4.0h, -16.0h);

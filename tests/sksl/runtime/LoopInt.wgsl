@@ -6,11 +6,11 @@ struct _GlobalUniforms {
   colorGreen: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-const kZero: i32 = 0;
+const kZero = 0;
 fn return_loop_ii(five: i32) -> i32 {
   {
     {
-      var i: i32 = kZero;
+      var i = kZero;
       loop {
         {
           if i == five {
@@ -28,12 +28,12 @@ fn return_loop_ii(five: i32) -> i32 {
     return 0;
   }
 }
-const kTen: i32 = 10;
+const kTen = 10;
 fn continue_loop_ii(five: i32) -> i32 {
   {
-    var sum: i32 = 0;
+    var sum = 0;
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           if i < five {
@@ -54,10 +54,10 @@ fn continue_loop_ii(five: i32) -> i32 {
 }
 fn break_loop_ii(five: i32) -> i32 {
   {
-    var sum: i32 = 0;
-    const kOne: i32 = 1;
+    var sum = 0;
+    const kOne = 1;
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           if i > five {
@@ -78,9 +78,9 @@ fn break_loop_ii(five: i32) -> i32 {
 }
 fn loop_operator_le_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(8);
+    var result = vec4<i32>(8);
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           result = result + vec4<i32>(1);
@@ -92,7 +92,7 @@ fn loop_operator_le_b() -> bool {
       }
     }
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -108,9 +108,9 @@ fn loop_operator_le_b() -> bool {
 }
 fn loop_operator_lt_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(8);
+    var result = vec4<i32>(8);
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           result = result + vec4<i32>(1);
@@ -122,7 +122,7 @@ fn loop_operator_lt_b() -> bool {
       }
     }
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -138,9 +138,9 @@ fn loop_operator_lt_b() -> bool {
 }
 fn loop_operator_ge_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(8);
+    var result = vec4<i32>(8);
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           result = result + vec4<i32>(1);
@@ -152,7 +152,7 @@ fn loop_operator_ge_b() -> bool {
       }
     }
     {
-      var i: i32 = 3;
+      var i = 3;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -168,9 +168,9 @@ fn loop_operator_ge_b() -> bool {
 }
 fn loop_operator_gt_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(8);
+    var result = vec4<i32>(8);
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = result + vec4<i32>(1);
@@ -182,7 +182,7 @@ fn loop_operator_gt_b() -> bool {
       }
     }
     {
-      var i: i32 = 3;
+      var i = 3;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -198,9 +198,9 @@ fn loop_operator_gt_b() -> bool {
 }
 fn loop_operator_ne_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(8);
+    var result = vec4<i32>(8);
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = result + vec4<i32>(1);
@@ -212,7 +212,7 @@ fn loop_operator_ne_b() -> bool {
       }
     }
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -228,9 +228,9 @@ fn loop_operator_ne_b() -> bool {
 }
 fn loop_operator_eq_b() -> bool {
   {
-    var result: vec4<i32> = vec4<i32>(9);
+    var result = vec4<i32>(9);
     {
-      var i: i32 = 1;
+      var i = 1;
       loop {
         {
           result = vec4<i32>(result.yzw, i);
@@ -246,7 +246,7 @@ fn loop_operator_eq_b() -> bool {
 }
 fn _skslMain(pos: vec2<f32>) -> vec4<f16> {
   {
-    let five: i32 = i32(clamp(pos.x, f32(_globalUniforms.colorGreen.y), f32(_globalUniforms.colorGreen.w))) * 5;
+    let five = i32(clamp(pos.x, f32(_globalUniforms.colorGreen.y), f32(_globalUniforms.colorGreen.w))) * 5;
     var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
     var _skTemp2: bool;

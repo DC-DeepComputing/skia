@@ -11,8 +11,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(c: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
-    var i: i32 = 5;
+    var ok = true;
+    var i = 5;
     i = i + i32(1);
     var _skTemp0: bool;
     if ok {
@@ -36,7 +36,7 @@ fn _skslMain(c: vec2<f32>) -> vec4<f16> {
     ok = ok && (i == 6);
     i = i - i32(1);
     ok = ok && (i == 5);
-    var f: f32 = 0.5;
+    var f = 0.5;
     f = f + f32(1);
     var _skTemp4: bool;
     if ok {
@@ -60,7 +60,7 @@ fn _skslMain(c: vec2<f32>) -> vec4<f16> {
     ok = ok && (f == 1.5);
     f = f - f32(1);
     ok = ok && (f == 0.5);
-    var f2: vec2<f32> = vec2<f32>(0.5);
+    var f2 = vec2<f32>(0.5);
     f2.x = f2.x + f32(1);
     var _skTemp8: bool;
     if ok {
@@ -107,7 +107,7 @@ fn _skslMain(c: vec2<f32>) -> vec4<f16> {
     ok = ok && all(f2 == vec2<f32>(1.5));
     f2 = f2 - vec2<f32>(1, 1);
     ok = ok && all(f2 == vec2<f32>(0.5));
-    var i4: vec4<i32> = vec4<i32>(7, 8, 9, 10);
+    var i4 = vec4<i32>(7, 8, 9, 10);
     i4 = i4 + vec4<i32>(1, 1, 1, 1);
     var _skTemp16: bool;
     if ok {
@@ -131,7 +131,7 @@ fn _skslMain(c: vec2<f32>) -> vec4<f16> {
     ok = ok && all(i4 == vec4<i32>(8, 9, 10, 11));
     i4 = i4 - vec4<i32>(1, 1, 1, 1);
     ok = ok && all(i4 == vec4<i32>(7, 8, 9, 10));
-    var m3x3: mat3x3<f32> = mat3x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
+    var m3x3 = mat3x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
     m3x3 = m3x3 + mat3x3<f32>(1, 1, 1, 1, 1, 1, 1, 1, 1);
     var _skTemp20: bool;
     if ok {

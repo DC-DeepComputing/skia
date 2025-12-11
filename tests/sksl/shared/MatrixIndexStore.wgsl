@@ -14,9 +14,9 @@ struct _GlobalUniforms {
 fn test3x3_b() -> bool {
   {
     var matrix: mat3x3<f32>;
-    var values: vec3<f32> = vec3<f32>(1.0, 2.0, 3.0);
+    var values = vec3<f32>(1.0, 2.0, 3.0);
     {
-      var index: i32 = 0;
+      var index = 0;
       loop {
         {
           matrix[index] = values;
@@ -34,9 +34,9 @@ fn test3x3_b() -> bool {
 fn test4x4_b() -> bool {
   {
     var matrix: mat4x4<f32>;
-    var values: vec4<f32> = vec4<f32>(1.0, 2.0, 3.0, 4.0);
+    var values = vec4<f32>(1.0, 2.0, 3.0, 4.0);
     {
-      var index: i32 = 0;
+      var index = 0;
       loop {
         {
           matrix[index] = values;

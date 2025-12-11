@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
     {
-      let color: vec4<f16> = _globalUniforms.colorGreen;
+      let color = _globalUniforms.colorGreen;
       {
         return color;
       }

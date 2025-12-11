@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
     {
-      const x: i32 = 0;
+      const x = 0;
       loop {
         if x < 4 {
           {

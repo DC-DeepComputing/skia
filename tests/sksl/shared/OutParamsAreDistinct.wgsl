@@ -18,7 +18,7 @@ fn out_params_are_distinct_bhh(x: ptr<function, f16>, y: ptr<function, f16>) -> 
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: f16 = 0.0h;
+    var x = 0.0h;
     var _skTemp0: vec4<f16>;
     var _skTemp1: f16;
     var _skTemp2: f16;

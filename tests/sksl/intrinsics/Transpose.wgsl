@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const testMatrix2x3: mat2x3<f32> = mat2x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+    const testMatrix2x3 = mat2x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
     let _skTemp0 = transpose(_skUnpacked__globalUniforms_testMatrix2x2);
     const _skTemp1 = mat2x2<f32>(1.0, 3.0, 2.0, 4.0);
     let _skTemp2 = transpose(testMatrix2x3);

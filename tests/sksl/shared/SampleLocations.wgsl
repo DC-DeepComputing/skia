@@ -12,18 +12,18 @@ struct VSOut {
 /* unsupported */ var<private> sk_PointSize: f32;
 fn _skslMain(_stageIn: VSIn, _stageOut: ptr<function, VSOut>) {
   {
-    let x: i32 = i32(_stageIn.sk_InstanceID) % 200;
-    let y: i32 = i32(_stageIn.sk_InstanceID) / 200;
-    let ileft: i32 = (i32(_stageIn.sk_InstanceID) * 929) % 17;
-    let iright: i32 = (ileft + 1) + (i32(_stageIn.sk_InstanceID) * 1637) % (17 - ileft);
-    let itop: i32 = (i32(_stageIn.sk_InstanceID) * 313) % 17;
-    let ibot: i32 = (itop + 1) + (i32(_stageIn.sk_InstanceID) * 1901) % (17 - itop);
-    var outset: f32 = 0.03125;
+    let x = i32(_stageIn.sk_InstanceID) % 200;
+    let y = i32(_stageIn.sk_InstanceID) / 200;
+    let ileft = (i32(_stageIn.sk_InstanceID) * 929) % 17;
+    let iright = (ileft + 1) + (i32(_stageIn.sk_InstanceID) * 1637) % (17 - ileft);
+    let itop = (i32(_stageIn.sk_InstanceID) * 313) % 17;
+    let ibot = (itop + 1) + (i32(_stageIn.sk_InstanceID) * 1901) % (17 - itop);
+    var outset = 0.03125;
     outset = select(outset, -outset, 0 == ((x + y) % 2));
-    let l: f32 = f32(ileft) * 0.0625 - outset;
-    let r: f32 = f32(iright) * 0.0625 + outset;
-    let t: f32 = f32(itop) * 0.0625 - outset;
-    let b: f32 = f32(ibot) * 0.0625 + outset;
+    let l = f32(ileft) * 0.0625 - outset;
+    let r = f32(iright) * 0.0625 + outset;
+    let t = f32(itop) * 0.0625 - outset;
+    let b = f32(ibot) * 0.0625 + outset;
     var vertexpos: vec2<f32>;
     vertexpos.x = f32(x) + (select(r, l, 0 == (i32(_stageIn.sk_VertexID) % 2)));
     vertexpos.y = f32(y) + (select(b, t, 0 == (i32(_stageIn.sk_VertexID) / 2)));

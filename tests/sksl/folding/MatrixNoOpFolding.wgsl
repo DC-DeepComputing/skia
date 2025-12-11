@@ -14,7 +14,7 @@ fn test_mat3_mat3_b() -> bool {
   {
     var m: mat3x3<f32>;
     var mm: mat3x3<f32>;
-    const z: mat3x3<f32> = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const z = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     m = _globalUniforms.testMatrix3x3;
     m = _globalUniforms.testMatrix3x3;
     m = (-1.0 * m);
@@ -26,10 +26,10 @@ fn test_mat3_mat3_b() -> bool {
 }
 fn test_mat4_mat4_b() -> bool {
   {
-    let testMatrix4x4: mat4x4<f32> = mat4x4<f32>(_globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3]);
+    let testMatrix4x4 = mat4x4<f32>(_globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3]);
     var m: mat4x4<f32>;
     var mm: mat4x4<f32>;
-    const z: mat4x4<f32> = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const z = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     m = testMatrix4x4;
     m = testMatrix4x4;
     m = (-1.0 * m);
@@ -43,7 +43,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
     var _0_m: mat2x2<f32>;
     var _1_mm: mat2x2<f32>;
-    const _3_z: mat2x2<f32> = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
+    const _3_z = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
     _0_m = _skUnpacked__globalUniforms_testMatrix2x2;
     _0_m = _skUnpacked__globalUniforms_testMatrix2x2;
     _0_m = (-1.0 * _0_m);

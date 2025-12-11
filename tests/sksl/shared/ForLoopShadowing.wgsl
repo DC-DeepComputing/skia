@@ -11,13 +11,13 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
-    var counter: i32 = 0;
-    const increment: i32 = 1;
+    var counter = 0;
+    const increment = 1;
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
-          const increment: i32 = 10;
+          const increment = 10;
           if i == 0 {
             {
               continue;

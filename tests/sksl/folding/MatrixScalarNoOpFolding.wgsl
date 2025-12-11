@@ -14,7 +14,7 @@ fn test_no_op_scalar_X_mat2_b() -> bool {
   {
     var m: mat2x2<f32>;
     var mm: mat2x2<f32>;
-    const z: mat2x2<f32> = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
+    const z = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
     m = _skUnpacked__globalUniforms_testMatrix2x2;
     m = _skUnpacked__globalUniforms_testMatrix2x2;
     if (any(m[0] != _skUnpacked__globalUniforms_testMatrix2x2[0]) || any(m[1] != _skUnpacked__globalUniforms_testMatrix2x2[1])) {
@@ -40,7 +40,7 @@ fn test_no_op_scalar_X_mat3_b() -> bool {
   {
     var m: mat3x3<f32>;
     var mm: mat3x3<f32>;
-    const z: mat3x3<f32> = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const z = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     m = _globalUniforms.testMatrix3x3;
     m = _globalUniforms.testMatrix3x3;
     if (any(m[0] != _globalUniforms.testMatrix3x3[0]) || any(m[1] != _globalUniforms.testMatrix3x3[1]) || any(m[2] != _globalUniforms.testMatrix3x3[2])) {
@@ -64,10 +64,10 @@ fn test_no_op_scalar_X_mat3_b() -> bool {
 }
 fn test_no_op_scalar_X_mat4_b() -> bool {
   {
-    let testMatrix4x4: mat4x4<f32> = mat4x4<f32>(_globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3]);
+    let testMatrix4x4 = mat4x4<f32>(_globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3], _globalUniforms.testInputs[0], _globalUniforms.testInputs[1], _globalUniforms.testInputs[2], _globalUniforms.testInputs[3]);
     var m: mat4x4<f32>;
     var mm: mat4x4<f32>;
-    const z: mat4x4<f32> = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const z = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     m = testMatrix4x4;
     m = testMatrix4x4;
     if (any(m[0] != testMatrix4x4[0]) || any(m[1] != testMatrix4x4[1]) || any(m[2] != testMatrix4x4[2]) || any(m[3] != testMatrix4x4[3])) {
@@ -93,9 +93,9 @@ fn test_no_op_mat2_X_scalar_b() -> bool {
   {
     var m: mat2x2<f32>;
     var mm: mat2x2<f32>;
-    const z: mat2x2<f32> = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
-    const s: mat2x2<f32> = mat2x2<f32>(vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3]);
-    let scalar: f32 = _globalUniforms.testInputs.x;
+    const z = mat2x2<f32>(0.0, 0.0, 0.0, 0.0);
+    const s = mat2x2<f32>(vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3]);
+    let scalar = _globalUniforms.testInputs.x;
     m = mat2x2<f32>(scalar, 0.0, 0.0, scalar);
     m = mat2x2<f32>(scalar, 0.0, 0.0, scalar);
     let _skTemp3 = mat2x2<f32>(scalar, 0.0, 0.0, scalar);
@@ -128,10 +128,10 @@ fn test_no_op_mat3_X_scalar_b() -> bool {
   {
     var m: mat3x3<f32>;
     var mm: mat3x3<f32>;
-    const z: mat3x3<f32> = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    const s: mat3x3<f32> = mat3x3<f32>(vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2], vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2], vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2]);
-    let scalar: f32 = _globalUniforms.testInputs.x;
-    let scalar3: vec3<f32> = vec3<f32>(scalar);
+    const z = mat3x3<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const s = mat3x3<f32>(vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2], vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2], vec3<f32>(1.0)[0], vec3<f32>(1.0)[1], vec3<f32>(1.0)[2]);
+    let scalar = _globalUniforms.testInputs.x;
+    let scalar3 = vec3<f32>(scalar);
     m = mat3x3<f32>(scalar, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, scalar);
     m = mat3x3<f32>(scalar, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, scalar);
     let _skTemp7 = mat3x3<f32>(scalar, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, scalar);
@@ -164,10 +164,10 @@ fn test_no_op_mat4_X_scalar_b() -> bool {
   {
     var m: mat4x4<f32>;
     var mm: mat4x4<f32>;
-    const z: mat4x4<f32> = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    const s: mat4x4<f32> = mat4x4<f32>(vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3]);
-    let scalar: f32 = _globalUniforms.testInputs.x;
-    let scalar4: vec4<f32> = vec4<f32>(scalar);
+    const z = mat4x4<f32>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    const s = mat4x4<f32>(vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3], vec4<f32>(1.0)[0], vec4<f32>(1.0)[1], vec4<f32>(1.0)[2], vec4<f32>(1.0)[3]);
+    let scalar = _globalUniforms.testInputs.x;
+    let scalar4 = vec4<f32>(scalar);
     m = mat4x4<f32>(scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar);
     m = mat4x4<f32>(scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar);
     let _skTemp11 = mat4x4<f32>(scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar, 0.0, 0.0, 0.0, 0.0, scalar);

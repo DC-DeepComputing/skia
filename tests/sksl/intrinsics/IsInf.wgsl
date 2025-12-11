@@ -16,8 +16,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let infiniteValue: vec4<f16> = vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) / _globalUniforms.colorGreen.x;
-    let finiteValue: vec4<f16> = vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) / _globalUniforms.colorGreen.y;
+    let infiniteValue = vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) / _globalUniforms.colorGreen.x;
+    let finiteValue = vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) / _globalUniforms.colorGreen.y;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(((((((isinf(infiniteValue.x) && all(isinf(infiniteValue.xy))) && all(isinf(infiniteValue.xyz))) && all(isinf(infiniteValue))) && (!isinf(finiteValue.x))) && (!any(isinf(finiteValue.xy)))) && (!any(isinf(finiteValue.xyz)))) && (!any(isinf(finiteValue)))));
   }
 }

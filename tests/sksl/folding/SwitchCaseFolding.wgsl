@@ -8,7 +8,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var color: vec4<f16> = _globalUniforms.colorRed;
+    var color = _globalUniforms.colorRed;
     let _skTemp0 = i32(_globalUniforms.colorGreen.y);
     switch _skTemp0 {
       case 0 {

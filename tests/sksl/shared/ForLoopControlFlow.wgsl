@@ -10,9 +10,9 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: vec4<f16> = _globalUniforms.colorWhite;
+    var x = _globalUniforms.colorWhite;
     {
-      var r: f16 = -5.0h;
+      var r = -5.0h;
       loop {
         {
           x.x = saturate(r);
@@ -27,7 +27,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
       }
     }
     {
-      var b: f16 = 5.0h;
+      var b = 5.0h;
       loop {
         {
           x.z = b;

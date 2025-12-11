@@ -27,7 +27,7 @@ fn inoutParameterWrite_vh4(x: ptr<function, vec4<f16>>) {
 }
 fn inoutParameterWriteIndirect_vh4(x: ptr<function, vec4<f16>>) {
   {
-    var _skTemp1: vec4<f16> = (*x);
+    var _skTemp1 = (*x);
     inoutParameterWrite_vh4(&_skTemp1);
     (*x) = _skTemp1;
   }
@@ -41,10 +41,10 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var _skTemp3: vec4<f16>;
     outParameterWriteIndirect_vh4(&_skTemp3);
     c = _skTemp3;
-    var _skTemp4: vec4<f16> = c;
+    var _skTemp4 = c;
     inoutParameterWrite_vh4(&_skTemp4);
     c = _skTemp4;
-    var _skTemp5: vec4<f16> = c;
+    var _skTemp5 = c;
     inoutParameterWriteIndirect_vh4(&_skTemp5);
     c = _skTemp5;
     return c;

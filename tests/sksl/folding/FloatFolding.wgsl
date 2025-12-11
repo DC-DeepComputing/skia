@@ -9,9 +9,9 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let _0_unknown: f16 = f16(_globalUniforms.unknownInput);
-    var _1_ok: bool = true;
-    var _2_x: f16 = 34.0h;
+    let _0_unknown = f16(_globalUniforms.unknownInput);
+    var _1_ok = true;
+    var _2_x = 34.0h;
     _1_ok = _1_ok && (_2_x == 34.0h);
     _2_x = 30.0h;
     _1_ok = _1_ok && (_2_x == 30.0h);

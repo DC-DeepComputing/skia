@@ -15,76 +15,76 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_iscalar_b() -> bool {
   {
-    var x: i32 = i32(_globalUniforms.colorWhite.x);
+    var x = i32(_globalUniforms.colorWhite.x);
     x = -x;
     return x == -1;
   }
 }
 fn test_fvec_b() -> bool {
   {
-    var x: vec2<f16> = _globalUniforms.colorWhite.xy;
+    var x = _globalUniforms.colorWhite.xy;
     x = -x;
     return all(x == vec2<f16>(-1.0h));
   }
 }
 fn test_ivec_b() -> bool {
   {
-    var x: vec2<i32> = vec2<i32>(i32(_globalUniforms.colorWhite.x));
+    var x = vec2<i32>(i32(_globalUniforms.colorWhite.x));
     x = -x;
     return all(x == vec2<i32>(-1));
   }
 }
 fn test_mat2_b() -> bool {
   {
-    const negated: mat2x2<f32> = mat2x2<f32>(-1.0, -2.0, -3.0, -4.0);
-    var x: mat2x2<f32> = _skUnpacked__globalUniforms_testMatrix2x2;
+    const negated = mat2x2<f32>(-1.0, -2.0, -3.0, -4.0);
+    var x = _skUnpacked__globalUniforms_testMatrix2x2;
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]));
   }
 }
 fn test_mat3_b() -> bool {
   {
-    const negated: mat3x3<f32> = mat3x3<f32>(-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0);
-    var x: mat3x3<f32> = _globalUniforms.testMatrix3x3;
+    const negated = mat3x3<f32>(-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0);
+    var x = _globalUniforms.testMatrix3x3;
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]) && all(x[2] == negated[2]));
   }
 }
 fn test_mat4_b() -> bool {
   {
-    const negated: mat4x4<f32> = mat4x4<f32>(-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0, -10.0, -11.0, -12.0, -13.0, -14.0, -15.0, -16.0);
-    var x: mat4x4<f32> = _globalUniforms.testMatrix4x4;
+    const negated = mat4x4<f32>(-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0, -10.0, -11.0, -12.0, -13.0, -14.0, -15.0, -16.0);
+    var x = _globalUniforms.testMatrix4x4;
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]) && all(x[2] == negated[2]) && all(x[3] == negated[3]));
   }
 }
 fn test_hmat2_b() -> bool {
   {
-    const negated: mat2x2<f16> = mat2x2<f16>(-1.0h, -2.0h, -3.0h, -4.0h);
-    var x: mat2x2<f16> = mat2x2<f16>(_skUnpacked__globalUniforms_testMatrix2x2);
+    const negated = mat2x2<f16>(-1.0h, -2.0h, -3.0h, -4.0h);
+    var x = mat2x2<f16>(_skUnpacked__globalUniforms_testMatrix2x2);
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]));
   }
 }
 fn test_hmat3_b() -> bool {
   {
-    const negated: mat3x3<f16> = mat3x3<f16>(-1.0h, -2.0h, -3.0h, -4.0h, -5.0h, -6.0h, -7.0h, -8.0h, -9.0h);
-    var x: mat3x3<f16> = mat3x3<f16>(_globalUniforms.testMatrix3x3);
+    const negated = mat3x3<f16>(-1.0h, -2.0h, -3.0h, -4.0h, -5.0h, -6.0h, -7.0h, -8.0h, -9.0h);
+    var x = mat3x3<f16>(_globalUniforms.testMatrix3x3);
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]) && all(x[2] == negated[2]));
   }
 }
 fn test_hmat4_b() -> bool {
   {
-    const negated: mat4x4<f16> = mat4x4<f16>(-1.0h, -2.0h, -3.0h, -4.0h, -5.0h, -6.0h, -7.0h, -8.0h, -9.0h, -10.0h, -11.0h, -12.0h, -13.0h, -14.0h, -15.0h, -16.0h);
-    var x: mat4x4<f16> = mat4x4<f16>(_globalUniforms.testMatrix4x4);
+    const negated = mat4x4<f16>(-1.0h, -2.0h, -3.0h, -4.0h, -5.0h, -6.0h, -7.0h, -8.0h, -9.0h, -10.0h, -11.0h, -12.0h, -13.0h, -14.0h, -15.0h, -16.0h);
+    var x = mat4x4<f16>(_globalUniforms.testMatrix4x4);
     x = (-1.0 * x);
     return (all(x[0] == negated[0]) && all(x[1] == negated[1]) && all(x[2] == negated[2]) && all(x[3] == negated[3]));
   }
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _0_x: f32 = f32(_globalUniforms.colorWhite.x);
+    var _0_x = f32(_globalUniforms.colorWhite.x);
     _0_x = -_0_x;
     var _skTemp0: vec4<f16>;
     var _skTemp1: bool;

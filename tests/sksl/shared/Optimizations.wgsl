@@ -11,8 +11,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn flatten_compound_constructor_b() -> bool {
   {
-    const x: vec4<i32> = vec4<i32>(vec3<i32>(vec2<i32>(1, 2), 3), 4);
-    const y: vec4<i32> = vec4<i32>(1, vec3<i32>(2, vec2<i32>(3, 4)));
+    const x = vec4<i32>(vec3<i32>(vec2<i32>(1, 2), 3), 4);
+    const y = vec4<i32>(1, vec3<i32>(2, vec2<i32>(3, 4)));
     return all(x == y);
   }
 }
@@ -33,7 +33,7 @@ fn flatten_known_if_b() -> bool {
 }
 fn eliminate_empty_if_else_b() -> bool {
   {
-    var check: bool = false;
+    var check = false;
     check = !check;
     if check {
       {
@@ -47,7 +47,7 @@ fn eliminate_empty_if_else_b() -> bool {
 }
 fn eliminate_empty_else_b() -> bool {
   {
-    const check: bool = true;
+    const check = true;
     if check {
       {
         return true;
@@ -61,22 +61,22 @@ fn eliminate_empty_else_b() -> bool {
 }
 fn flatten_matching_ternary_b() -> bool {
   {
-    const check: bool = true;
+    const check = true;
     return select(true, true, check);
   }
 }
 fn flatten_expr_without_side_effects_b() -> bool {
   {
-    const check: bool = true;
+    const check = true;
     return check;
   }
 }
 fn eliminate_no_op_arithmetic_b() -> bool {
   {
-    const ONE: i32 = 1;
+    const ONE = 1;
     var a1: array<i32, 1>;
     var a2: array<i32, 1>;
-    var x: i32 = ONE;
+    var x = ONE;
     x = x + 0;
     x = x * 1;
     return x == 1;

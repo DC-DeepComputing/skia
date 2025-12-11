@@ -12,8 +12,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const expected: vec4<f32> = vec4<f32>(-0.021816615, 0.0, 0.01308997, 0.03926991);
-    const allowedDelta: vec4<f32> = vec4<f32>(0.0005);
+    const expected = vec4<f32>(-0.021816615, 0.0, 0.01308997, 0.03926991);
+    const allowedDelta = vec4<f32>(0.0005);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((abs(radians(_globalUniforms.testInputs.x) - -0.021816615) < 0.0005) && all((abs(radians(_globalUniforms.testInputs.xy) - vec2<f32>(-0.021816615, 0.0)) < vec2<f32>(0.0005)))) && all((abs(radians(_globalUniforms.testInputs.xyz) - vec3<f32>(-0.021816615, 0.0, 0.01308997)) < vec3<f32>(0.0005)))) && all((abs(radians(_globalUniforms.testInputs) - expected) < allowedDelta))));
   }
 }

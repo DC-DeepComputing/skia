@@ -11,11 +11,11 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn switch_with_continue_in_while_loop_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
-    var i: i32 = 0;
+    var val = 0;
+    var i = 0;
     switch x {
       case 1, default {
-        var _skTemp0: bool = false;
+        var _skTemp0 = false;
         if x == 1 {
           loop {
             if i < 10 {
@@ -37,8 +37,8 @@ fn switch_with_continue_in_while_loop_bi(x: i32) -> bool {
 }
 fn while_loop_with_break_in_switch_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
-    var i: i32 = 0;
+    var val = 0;
+    var i = 0;
     loop {
       if i < 10 {
         {
@@ -63,11 +63,11 @@ fn while_loop_with_break_in_switch_bi(x: i32) -> bool {
 }
 fn switch_with_break_in_do_while_loop_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
-    var i: i32 = 0;
+    var val = 0;
+    var i = 0;
     switch x {
       case 1, default {
-        var _skTemp1: bool = false;
+        var _skTemp1 = false;
         if x == 1 {
           loop {
             {
@@ -88,11 +88,11 @@ fn switch_with_break_in_do_while_loop_bi(x: i32) -> bool {
 }
 fn switch_with_continue_in_do_while_loop_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
-    var i: i32 = 0;
+    var val = 0;
+    var i = 0;
     switch x {
       case 1, default {
-        var _skTemp2: bool = false;
+        var _skTemp2 = false;
         if x == 1 {
           loop {
             {
@@ -113,8 +113,8 @@ fn switch_with_continue_in_do_while_loop_bi(x: i32) -> bool {
 }
 fn do_while_loop_with_break_in_switch_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
-    var i: i32 = 0;
+    var val = 0;
+    var i = 0;
     loop {
       {
         i = i + i32(1);
@@ -138,12 +138,12 @@ fn do_while_loop_with_break_in_switch_bi(x: i32) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let x: i32 = i32(_globalUniforms.colorGreen.y);
-    var _0_val: i32 = 0;
-    var _1_i: i32 = 0;
+    let x = i32(_globalUniforms.colorGreen.y);
+    var _0_val = 0;
+    var _1_i = 0;
     switch x {
       case 1, default {
-        var _skTemp3: bool = false;
+        var _skTemp3 = false;
         if x == 1 {
           loop {
             if _1_i < 10 {

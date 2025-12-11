@@ -122,10 +122,10 @@ fn switch_with_break_in_loop_b() -> bool {
     let _skTemp3 = i32(_globalUniforms.unknownInput);
     switch _skTemp3 {
       case 1, default {
-        var _skTemp4: bool = false;
+        var _skTemp4 = false;
         if _skTemp3 == 1 {
           {
-            var x: i32 = 0;
+            var x = 0;
             loop {
               {
                 break;
@@ -147,10 +147,10 @@ fn switch_with_continue_in_loop_b() -> bool {
     let _skTemp5 = i32(_globalUniforms.unknownInput);
     switch _skTemp5 {
       case 1, default {
-        var _skTemp6: bool = false;
+        var _skTemp6 = false;
         if _skTemp5 == 1 {
           {
-            var x: i32 = 0;
+            var x = 0;
             loop {
               {
                 continue;
@@ -172,7 +172,7 @@ fn switch_with_if_that_returns_b() -> bool {
     let _skTemp7 = i32(_globalUniforms.unknownInput);
     switch _skTemp7 {
       case 1, default {
-        var _skTemp8: bool = false;
+        var _skTemp8 = false;
         if _skTemp7 == 1 {
           if _globalUniforms.unknownInput == 123.0h {
             return false;
@@ -190,7 +190,7 @@ fn switch_with_one_sided_if_then_fallthrough_b() -> bool {
     let _skTemp9 = i32(_globalUniforms.unknownInput);
     switch _skTemp9 {
       case 1, default {
-        var _skTemp10: bool = false;
+        var _skTemp10 = false;
         if _skTemp9 == 1 {
           if _globalUniforms.unknownInput == 123.0h {
             return false;

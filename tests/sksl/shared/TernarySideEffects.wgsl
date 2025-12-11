@@ -11,8 +11,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: f16 = 1.0h;
-    var y: f16 = 1.0h;
+    var x = 1.0h;
+    var y = 1.0h;
     var _skTemp0: f16;
     if x == y {
       x = x + 1.0h;
@@ -73,7 +73,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
       y = y + 4.0h;
       _skTemp7 = y;
     }
-    var b: bool = true;
+    var b = true;
     var _skTemp8: bool;
     b = false;
     if b {
@@ -81,7 +81,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     } else {
       _skTemp8 = b;
     }
-    let c: bool = _skTemp8;
+    let c = _skTemp8;
     var _skTemp9: vec4<f16>;
     if c {
       _skTemp9 = _globalUniforms.colorRed;

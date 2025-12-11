@@ -11,8 +11,8 @@ fn userfunc_ff(v: f32) -> f32 {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var b: f32 = 2.0;
-    const c: f32 = 3.0;
+    var b = 2.0;
+    const c = 3.0;
     b = 2.0;
     b = c + 77.0;
     b = sin(c + 77.0);
@@ -21,7 +21,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     b = cos(c);
     b = b;
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
           continue;
@@ -32,7 +32,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
         }
       }
     }
-    var d: f32 = c;
+    var d = c;
     b = 3.0;
     d = d + f32(1);
     return vec4<f16>(f16(b == 2.0), f16(b == 3.0), f16(d == 5.0), f16(d == 4.0));

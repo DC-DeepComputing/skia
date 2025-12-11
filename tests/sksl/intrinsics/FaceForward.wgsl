@@ -15,15 +15,15 @@ struct _GlobalUniforms {
 fn _skslMain(xy: vec2<f32>) -> vec4<f16> {
   {
     let _skTemp0 = 1e+30;
-    let huge: f32 = select(-1.0, 1.0, _skTemp0 * 1e+30 < 0);
+    let huge = select(-1.0, 1.0, _skTemp0 * 1e+30 < 0);
     let _skTemp1 = vec2<f32>(1.0);
-    let huge2: vec2<f32> = faceForward(_skTemp1, vec2<f32>(1e+30), vec2<f32>(1e+30));
+    let huge2 = faceForward(_skTemp1, vec2<f32>(1e+30), vec2<f32>(1e+30));
     let _skTemp2 = vec3<f32>(1.0);
-    let huge3: vec3<f32> = faceForward(_skTemp2, vec3<f32>(1e+30), vec3<f32>(1e+30));
+    let huge3 = faceForward(_skTemp2, vec3<f32>(1e+30), vec3<f32>(1e+30));
     let _skTemp3 = vec4<f32>(1.0);
-    let huge4: vec4<f32> = faceForward(_skTemp3, vec4<f32>(1e+30), vec4<f32>(1e+30));
-    var expectedPos: vec4<f16> = vec4<f16>(vec4<f32>(huge) + huge2.xxxx);
-    var expectedNeg: vec4<f16> = vec4<f16>(huge3.xxxx + huge4.xxxx);
+    let huge4 = faceForward(_skTemp3, vec4<f32>(1e+30), vec4<f32>(1e+30));
+    var expectedPos = vec4<f16>(vec4<f32>(huge) + huge2.xxxx);
+    var expectedNeg = vec4<f16>(huge3.xxxx + huge4.xxxx);
     expectedPos = vec4<f16>(1.0h, 2.0h, 3.0h, 4.0h);
     expectedNeg = vec4<f16>(-1.0h, -2.0h, -3.0h, -4.0h);
     let _skTemp4 = _globalUniforms.N.x;

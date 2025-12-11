@@ -13,8 +13,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const expectedA: vec4<f16> = vec4<f16>(0.75h, 0.0h, 0.75h, 0.25h);
-    const expectedB: vec4<f16> = vec4<f16>(0.25h, 0.0h, 0.75h, 1.0h);
+    const expectedA = vec4<f16>(0.75h, 0.0h, 0.75h, 0.25h);
+    const expectedB = vec4<f16>(0.25h, 0.0h, 0.75h, 1.0h);
     let _skTemp0 = _globalUniforms.testInputs.x;
     let _skTemp1 = _globalUniforms.testInputs.xy;
     let _skTemp2 = _globalUniforms.testInputs.xyz;

@@ -12,7 +12,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const expected: vec4<f32> = vec4<f32>(0.75, 0.0, 0.75, 0.25);
+    const expected = vec4<f32>(0.75, 0.0, 0.75, 0.25);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((fract(_globalUniforms.testInputs.x) == 0.75) && all(fract(_globalUniforms.testInputs.xy) == vec2<f32>(0.75, 0.0))) && all(fract(_globalUniforms.testInputs.xyz) == vec3<f32>(0.75, 0.0, 0.75))) && all(fract(_globalUniforms.testInputs) == expected)));
   }
 }

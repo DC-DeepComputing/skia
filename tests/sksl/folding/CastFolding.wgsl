@@ -8,7 +8,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const _4_ok: bool = true;
+    const _4_ok = true;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(_4_ok));
   }
 }

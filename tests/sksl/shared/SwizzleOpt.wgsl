@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 fn fn_hh4(v: vec4<f16>) -> f16 {
   {
     {
-      var x: i32 = 1;
+      var x = 1;
       loop {
         {
           return v.x;
@@ -29,7 +29,7 @@ fn fn_hh4(v: vec4<f16>) -> f16 {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var v: vec4<f16> = _globalUniforms.testInputs;
+    var v = _globalUniforms.testInputs;
     v = vec4<f16>(0.0h, v.zyx);
     v = vec4<f16>(0.0h, 0.0h, v.xw);
     v = vec4<f16>(1.0h, 1.0h, v.wx);

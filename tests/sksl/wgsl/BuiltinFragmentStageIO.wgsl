@@ -10,8 +10,8 @@ struct FSOut {
 };
 fn _skslMain(_stageIn: FSIn, _stageOut: ptr<function, FSOut>) {
   {
-    let x: f32 = _stageIn.sk_FragCoord.x;
-    let y: f32 = f32(_stageIn.sk_Clockwise);
+    let x = _stageIn.sk_FragCoord.x;
+    let y = f32(_stageIn.sk_Clockwise);
     (*_stageOut).sk_FragColor = vec4<f16>(f16(x), f16(y), 1.0h, 1.0h);
   }
 }

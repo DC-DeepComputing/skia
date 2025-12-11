@@ -8,27 +8,27 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
-    var a: i32 = 1;
+    var ok = true;
+    var a = 1;
     a = a + a;
     a = a + a;
     a = a + a;
     a = a + a;
     a = a + a;
     ok = ok && (a == 32);
-    var b: i32 = 10;
+    var b = 10;
     b = b - 2;
     b = b - 2;
     b = b - 1;
     b = b - 3;
     ok = ok && (b == 2);
-    var c: i32 = 2;
+    var c = 2;
     c = c * c;
     c = c * c;
     c = c * 4;
     c = c * 2;
     ok = ok && (c == 128);
-    var d: i32 = 256;
+    var d = 256;
     d = d / 2;
     d = d / 2;
     d = d / 4;

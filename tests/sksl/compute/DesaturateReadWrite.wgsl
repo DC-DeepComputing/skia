@@ -10,9 +10,9 @@ fn _skslMain(_stageIn: CSIn) {
   {
     if (_stageIn.sk_GlobalInvocationID.x < textureDimensions(texIn).x) && (_stageIn.sk_GlobalInvocationID.y < textureDimensions(texIn).y) {
       {
-        var _0_color: vec4<f16> = vec4<f16>(textureLoad(texIn, _stageIn.sk_GlobalInvocationID.xy, 0));
+        var _0_color = vec4<f16>(textureLoad(texIn, _stageIn.sk_GlobalInvocationID.xy, 0));
         _0_color = vec4<f16>((vec3<f16>(dot(_0_color.xyz, vec3<f16>(0.22h, 0.67h, 0.11h)))), _0_color.w);
-        let gray: vec4<f16> = _0_color;
+        let gray = _0_color;
         textureStore(texOut, _stageIn.sk_GlobalInvocationID.xy, vec4<f32>(gray));
       }
     }

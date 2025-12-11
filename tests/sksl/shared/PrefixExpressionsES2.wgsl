@@ -12,8 +12,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
-    var i: i32 = 5;
+    var ok = true;
+    var i = 5;
     i = i + i32(1);
     ok = ok && (i == 6);
     var _skTemp0: bool;
@@ -34,7 +34,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     ok = _skTemp1;
     i = i - i32(1);
     ok = ok && (i == 5);
-    var f: f32 = 0.5;
+    var f = 0.5;
     f = f + f32(1);
     ok = ok && (f == 1.5);
     var _skTemp2: bool;
@@ -55,7 +55,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     ok = _skTemp3;
     f = f - f32(1);
     ok = ok && (f == 0.5);
-    var f2: vec2<f32> = vec2<f32>(0.5);
+    var f2 = vec2<f32>(0.5);
     f2.x = f2.x + f32(1);
     ok = ok && (f2.x == 1.5);
     var _skTemp4: bool;
@@ -96,7 +96,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     ok = _skTemp7;
     f2 = f2 - vec2<f32>(1, 1);
     ok = ok && all(f2 == vec2<f32>(0.5));
-    var i4: vec4<i32> = vec4<i32>(7, 8, 9, 10);
+    var i4 = vec4<i32>(7, 8, 9, 10);
     i4 = i4 + vec4<i32>(1, 1, 1, 1);
     ok = ok && all(i4 == vec4<i32>(8, 9, 10, 11));
     var _skTemp8: bool;
@@ -117,7 +117,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     ok = _skTemp9;
     i4 = i4 - vec4<i32>(1, 1, 1, 1);
     ok = ok && all(i4 == vec4<i32>(7, 8, 9, 10));
-    var m3x3: mat3x3<f32> = mat3x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
+    var m3x3 = mat3x3<f32>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
     m3x3 = m3x3 + mat3x3<f32>(1, 1, 1, 1, 1, 1, 1, 1, 1);
     const _skTemp10 = mat3x3<f32>(2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0);
     ok = ok && (all(m3x3[0] == _skTemp10[0]) && all(m3x3[1] == _skTemp10[1]) && all(m3x3[2] == _skTemp10[2]));
@@ -150,7 +150,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     const _skTemp18 = mat2x2<f32>(-1.0, -2.0, -3.0, -4.0);
     let _skTemp19 = (-1.0 * _skUnpacked__globalUniforms_testMatrix2x2);
     ok = ok && (all(_skTemp18[0] == _skTemp19[0]) && all(_skTemp18[1] == _skTemp19[1]));
-    let iv: vec2<i32> = vec2<i32>(i, -i);
+    let iv = vec2<i32>(i, -i);
     ok = ok && ((-i) == -5);
     ok = ok && all((-iv) == vec2<i32>(-5, 5));
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(ok));

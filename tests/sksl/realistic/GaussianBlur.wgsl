@@ -21,14 +21,14 @@ struct uniformBuffer {
 @group(0) @binding(10002) var uTextureSampler_0_Stage1_Texture: texture_2d<f32>;
 fn MatrixEffect_Stage1_c0_c0_h4h4f2(_input: vec4<f16>, _coords: vec2<f32>) -> vec4<f16> {
   {
-    var _1_inCoord: vec2<f32> = (_uniform0.umatrix_Stage1_c0_c0 * vec3<f32>(_coords, 1.0)).xy;
+    var _1_inCoord = (_uniform0.umatrix_Stage1_c0_c0 * vec3<f32>(_coords, 1.0)).xy;
     _1_inCoord = _1_inCoord * _uniform0.unorm_Stage1_c0_c0_c0.xy;
     var _2_subsetCoord: vec2<f32>;
     _2_subsetCoord.x = _1_inCoord.x;
     _2_subsetCoord.y = _1_inCoord.y;
-    let _3_clampedCoord: vec2<f32> = _2_subsetCoord;
-    var _4_textureColor: vec4<f16> = vec4<f16>(textureSample(uTextureSampler_0_Stage1_Texture, uTextureSampler_0_Stage1_Sampler, _3_clampedCoord * _uniform0.unorm_Stage1_c0_c0_c0.zw));
-    let _5_snappedX: f32 = floor(_1_inCoord.x + 0.001) + 0.5;
+    let _3_clampedCoord = _2_subsetCoord;
+    var _4_textureColor = vec4<f16>(textureSample(uTextureSampler_0_Stage1_Texture, uTextureSampler_0_Stage1_Sampler, _3_clampedCoord * _uniform0.unorm_Stage1_c0_c0_c0.zw));
+    let _5_snappedX = floor(_1_inCoord.x + 0.001) + 0.5;
     if (_5_snappedX < _uniform0.usubset_Stage1_c0_c0_c0.x) || (_5_snappedX > _uniform0.usubset_Stage1_c0_c0_c0.z) {
       {
         _4_textureColor = _uniform0.uborder_Stage1_c0_c0_c0;
@@ -45,9 +45,9 @@ fn _skslMain(_stageIn: FSIn, _stageOut: ptr<function, FSOut>) {
       outputColor_Stage0 = vec4<f16>(1.0h);
       outputCoverage_Stage0 = vec4<f16>(1.0h);
     }
-    var _6_output: vec4<f16> = vec4<f16>(0.0h);
-    var _7_coord: vec2<f32> = _stageIn.vLocalCoord_Stage0 - vec2<f32>(12.0h * _uniform0.uIncrement_Stage1_c0);
-    var _8_coordSampled: vec2<f32> = vec2<f32>(0.0);
+    var _6_output = vec4<f16>(0.0h);
+    var _7_coord = _stageIn.vLocalCoord_Stage0 - vec2<f32>(12.0h * _uniform0.uIncrement_Stage1_c0);
+    var _8_coordSampled = vec2<f32>(0.0);
     _8_coordSampled = _7_coord;
     _6_output = _6_output + MatrixEffect_Stage1_c0_c0_h4h4f2(outputColor_Stage0, _8_coordSampled) * _skUnpacked__uniform0_uKernel_Stage1_c0[0].x;
     _7_coord = _7_coord + vec2<f32>(_uniform0.uIncrement_Stage1_c0);
@@ -124,7 +124,7 @@ fn _skslMain(_stageIn: FSIn, _stageOut: ptr<function, FSOut>) {
     _6_output = _6_output + MatrixEffect_Stage1_c0_c0_h4h4f2(outputColor_Stage0, _8_coordSampled) * _skUnpacked__uniform0_uKernel_Stage1_c0[6].x;
     _7_coord = _7_coord + vec2<f32>(_uniform0.uIncrement_Stage1_c0);
     _6_output = _6_output * outputColor_Stage0;
-    let output_Stage1: vec4<f16> = _6_output;
+    let output_Stage1 = _6_output;
     {
       (*_stageOut).sk_FragColor = output_Stage1 * outputCoverage_Stage0;
     }

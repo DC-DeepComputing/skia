@@ -12,8 +12,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
   {
-    const expected1: vec3<f32> = vec3<f32>(-3.0, 6.0, -3.0);
-    const expected2: vec3<f32> = vec3<f32>(6.0, -12.0, 6.0);
+    const expected1 = vec3<f32>(-3.0, 6.0, -3.0);
+    const expected2 = vec3<f32>(6.0, -12.0, 6.0);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all(cross(_globalUniforms.testMatrix3x3[0], _globalUniforms.testMatrix3x3[1]) == expected1) && all(cross(_globalUniforms.testMatrix3x3[2], _globalUniforms.testMatrix3x3[0]) == expected2)));
   }
 }

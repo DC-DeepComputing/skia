@@ -10,8 +10,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let b: bool = bool(_globalUniforms.unknownInput);
-    var b4: vec4<bool> = vec4<bool>(b);
+    let b = bool(_globalUniforms.unknownInput);
+    var b4 = vec4<bool>(b);
     b4 = vec4<bool>(vec2<bool>(b), false, true);
     b4 = vec4<bool>(false, b, true, false);
     b4 = vec4<bool>(false, b, false, b);

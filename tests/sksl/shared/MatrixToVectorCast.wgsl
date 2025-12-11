@@ -12,7 +12,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var ok: bool = true;
+    var ok = true;
     ok = ok && all(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) == vec4<f16>(1.0h, 2.0h, 3.0h, 4.0h));
     ok = ok && all(vec4<f32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])) == vec4<f32>(1.0, 2.0, 3.0, 4.0));
     ok = ok && all(vec4<i32>(vec4<f16>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1])) == vec4<i32>(1, 2, 3, 4));

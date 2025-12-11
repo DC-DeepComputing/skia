@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var _0_result: vec4<f16> = _globalUniforms.src + (1.0h - _globalUniforms.src.w) * _globalUniforms.dst;
+    var _0_result = _globalUniforms.src + (1.0h - _globalUniforms.src.w) * _globalUniforms.dst;
     _0_result = vec4<f16>((max(_0_result.xyz, (1.0h - _globalUniforms.dst.w) * _globalUniforms.src.xyz + _globalUniforms.dst.xyz)), _0_result.w);
     (*_stageOut).sk_FragColor = _0_result;
   }

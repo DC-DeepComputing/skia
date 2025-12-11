@@ -12,8 +12,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let xy: u32 = pack2x16float(_globalUniforms.testInputs.xy);
-    let zw: u32 = pack2x16float(_globalUniforms.testInputs.zw);
+    let xy = pack2x16float(_globalUniforms.testInputs.xy);
+    let zw = pack2x16float(_globalUniforms.testInputs.zw);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all(unpack2x16float(xy) == vec2<f32>(-1.25, 0.0)) && all(unpack2x16float(zw) == vec2<f32>(0.75, 2.25))));
   }
 }

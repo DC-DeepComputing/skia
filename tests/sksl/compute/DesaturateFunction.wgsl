@@ -8,7 +8,7 @@ struct CSIn {
 @group(0) @binding(1) var dest: texture_storage_2d<rgba32float, write>;
 fn desaturate_vTT(_stageIn: CSIn, src: texture_2d<f32>, dest: texture_storage_2d<rgba32float, write>) {
   {
-    var color: vec4<f16> = vec4<f16>(textureLoad(src, _stageIn.sk_GlobalInvocationID.xy, 0));
+    var color = vec4<f16>(textureLoad(src, _stageIn.sk_GlobalInvocationID.xy, 0));
     color = vec4<f16>((vec3<f16>(dot(color.xyz, vec3<f16>(0.22h, 0.67h, 0.11h)))), color.w);
     textureStore(dest, _stageIn.sk_GlobalInvocationID.xy, vec4<f32>(color));
   }

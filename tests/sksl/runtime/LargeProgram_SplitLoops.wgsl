@@ -4,7 +4,7 @@ enable f16;
 fn d_vi(i: ptr<function, i32>) {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         (*i) = (*i) + i32(1);
         continuing {
@@ -18,9 +18,9 @@ fn d_vi(i: ptr<function, i32>) {
 fn c_vi(i: ptr<function, i32>) {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
-        var _skTemp0: i32 = (*i);
+        var _skTemp0 = (*i);
         d_vi(&_skTemp0);
         (*i) = _skTemp0;
         continuing {
@@ -34,9 +34,9 @@ fn c_vi(i: ptr<function, i32>) {
 fn b_vi(i: ptr<function, i32>) {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
-        var _skTemp1: i32 = (*i);
+        var _skTemp1 = (*i);
         c_vi(&_skTemp1);
         (*i) = _skTemp1;
         continuing {
@@ -50,9 +50,9 @@ fn b_vi(i: ptr<function, i32>) {
 fn a_vi(i: ptr<function, i32>) {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
-        var _skTemp2: i32 = (*i);
+        var _skTemp2 = (*i);
         b_vi(&_skTemp2);
         (*i) = _skTemp2;
         continuing {
@@ -65,8 +65,8 @@ fn a_vi(i: ptr<function, i32>) {
 }
 fn _skslMain(xy: vec2<f32>) -> vec4<f16> {
   {
-    var i: i32 = 0;
-    var _skTemp3: i32 = i;
+    var i = 0;
+    var _skTemp3 = i;
     a_vi(&_skTemp3);
     i = _skTemp3;
     return vec4<f16>(0.0h);

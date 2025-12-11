@@ -27,7 +27,7 @@ fn _skslMain(c: vec2<f32>) -> vec4<f16> {
     let _skTemp1 = out_param_func2_ih(&_skTemp0);
     testArray[0] = _skTemp0;
     let _skTemp2 = _skTemp1;
-    var _skTemp3: f16 = testArray[_skTemp2];
+    var _skTemp3 = testArray[_skTemp2];
     out_param_func1_vh(&_skTemp3);
     testArray[_skTemp2] = _skTemp3;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((testArray[0] == 1.0h) && (testArray[1] == 1.0h)));

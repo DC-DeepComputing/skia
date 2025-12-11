@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var check: i32 = 0;
+    var check = 0;
     check = check + i32(select(1, 0, _globalUniforms.colorGreen.y == 1.0h));
     check = check + i32(_globalUniforms.colorGreen.x == 1.0h);
     check = check + i32(select(1, 0, all(_globalUniforms.colorGreen.yx == _globalUniforms.colorRed.xy)));

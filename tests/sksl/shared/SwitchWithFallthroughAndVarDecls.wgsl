@@ -14,13 +14,13 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var ok: bool;
     {
       var a: bool;
-      const ONE: i32 = 1;
+      const ONE = 1;
       var b: i32;
       var c: i32;
       let _skTemp0 = i32(_globalUniforms.colorGreen.y);
       switch _skTemp0 {
         case 0, 1, 2, 3, 4, 5 {
-          var _skTemp1: bool = false;
+          var _skTemp1 = false;
           if _skTemp0 == 0 {
             ;
             _skTemp1 = true;  }
@@ -32,7 +32,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
             _skTemp1 = true;  }
           if _skTemp1 || _skTemp0 == 3 {
             {
-              let d: f32 = f32(b);
+              let d = f32(b);
               c = i32(d);
             }
             _skTemp1 = true;  }

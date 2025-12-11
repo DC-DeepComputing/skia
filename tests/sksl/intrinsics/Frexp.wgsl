@@ -16,7 +16,7 @@ fn checkIntrinsicAsFunctionArg_bf3i3(f3: vec3<f32>, e3: vec3<i32>) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let value: vec4<f32> = vec4<f32>(_globalUniforms.colorGreen.yyyy * 6.0h);
+    let value = vec4<f32>(_globalUniforms.colorGreen.yyyy * 6.0h);
     var _0_exp: vec4<i32>;
     var result: vec4<f32>;
     var ok: vec4<bool>;
@@ -38,7 +38,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     ok.w = (result.w == 0.75) && (_0_exp.w == 3);
     let _skTemp4 = frexp(value.wzy);
     _0_exp = vec4<i32>((_skTemp4.exp), _0_exp.y).ywxz;
-    let funcOk: bool = checkIntrinsicAsFunctionArg_bf3i3(_skTemp4.fract.yxz, _0_exp.yxz);
+    let funcOk = checkIntrinsicAsFunctionArg_bf3i3(_skTemp4.fract.yxz, _0_exp.yxz);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(all(ok) && funcOk));
   }
 }

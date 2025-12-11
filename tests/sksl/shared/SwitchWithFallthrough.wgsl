@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn switch_fallthrough_twice_bi(value: i32) -> bool {
   {
-    var ok: bool = false;
+    var ok = false;
     switch value {
       case 0 {
         break;
@@ -29,8 +29,8 @@ fn switch_fallthrough_twice_bi(value: i32) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let x: i32 = i32(_globalUniforms.colorGreen.y);
-    var _0_ok: bool = false;
+    let x = i32(_globalUniforms.colorGreen.y);
+    var _0_ok = false;
     switch x {
       case 2 {
         break;

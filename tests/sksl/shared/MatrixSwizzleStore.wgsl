@@ -14,9 +14,9 @@ struct _GlobalUniforms {
 fn test4x4_b() -> bool {
   {
     var matrix: mat4x4<f32>;
-    var values: vec4<f32> = vec4<f32>(4.0, 3.0, 2.0, 1.0);
+    var values = vec4<f32>(4.0, 3.0, 2.0, 1.0);
     {
-      var index: i32 = 0;
+      var index = 0;
       loop {
         {
           matrix[index] = vec4<f32>((values.xw), matrix[index].yz).yzwx;
@@ -35,9 +35,9 @@ fn test4x4_b() -> bool {
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
     var _0_matrix: mat3x3<f32>;
-    var _1_values: vec3<f32> = vec3<f32>(3.0, 2.0, 1.0);
+    var _1_values = vec3<f32>(3.0, 2.0, 1.0);
     {
-      var _2_index: i32 = 0;
+      var _2_index = 0;
       loop {
         {
           _0_matrix[_2_index] = vec3<f32>((_1_values.xz), _0_matrix[_2_index].y).yzx;

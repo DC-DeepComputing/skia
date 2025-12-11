@@ -6,11 +6,11 @@ struct FSOut {
 };
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    const R_array: array<f32, 4> = array<f32, 4>(1.0, 2.0, 3.0, 4.0);
-    const x: i32 = 0;
-    const y: u32 = 1u;
-    const z: i32 = 2;
-    const w: u32 = 3u;
+    const R_array = array<f32, 4>(1.0, 2.0, 3.0, 4.0);
+    const x = 0;
+    const y = 1u;
+    const z = 2;
+    const w = 3u;
     (*_stageOut).sk_FragColor = vec4<f16>(f16(R_array[x]), f16(R_array[y]), f16(R_array[z]), f16(R_array[w]));
   }
 }

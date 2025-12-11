@@ -11,13 +11,13 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn switch_with_continue_in_loop_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     switch x {
       case 1, default {
-        var _skTemp0: bool = false;
+        var _skTemp0 = false;
         if x == 1 {
           {
-            var i: i32 = 0;
+            var i = 0;
             loop {
               {
                 val = val + i32(1);
@@ -38,9 +38,9 @@ fn switch_with_continue_in_loop_bi(x: i32) -> bool {
 }
 fn loop_with_break_in_switch_bi(x: i32) -> bool {
   {
-    var val: i32 = 0;
+    var val = 0;
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           switch x {
@@ -65,14 +65,14 @@ fn loop_with_break_in_switch_bi(x: i32) -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let x: i32 = i32(_globalUniforms.colorGreen.y);
-    var _0_val: i32 = 0;
+    let x = i32(_globalUniforms.colorGreen.y);
+    var _0_val = 0;
     switch x {
       case 1, default {
-        var _skTemp1: bool = false;
+        var _skTemp1 = false;
         if x == 1 {
           {
-            var _1_i: i32 = 0;
+            var _1_i = 0;
             loop {
               {
                 _0_val = _0_val + i32(1);

@@ -11,49 +11,49 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_eq_half_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_matrix_op_matrix_float_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_matrix_op_matrix_half_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_vector_op_matrix_float_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_vector_op_matrix_half_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_matrix_op_vector_float_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn test_matrix_op_vector_half_b() -> bool {
   {
-    const ok: bool = true;
+    const ok = true;
     return ok;
   }
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const _0_ok: bool = true;
+    const _0_ok = true;
     var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
     var _skTemp2: bool;

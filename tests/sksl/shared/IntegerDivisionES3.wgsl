@@ -10,20 +10,20 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let zero: i32 = i32(_globalUniforms.colorGreen.x);
-    let one: i32 = i32(_globalUniforms.colorGreen.y);
+    let zero = i32(_globalUniforms.colorGreen.x);
+    let one = i32(_globalUniforms.colorGreen.y);
     {
-      var x: i32 = zero;
+      var x = zero;
       loop {
         if x < 100 {
           {
             {
-              var y: i32 = one;
+              var y = one;
               loop {
                 if y < 100 {
                   {
-                    var _0_x: i32 = x;
-                    var _1_result: i32 = 0;
+                    var _0_x = x;
+                    var _1_result = 0;
                     loop {
                       if _0_x >= y {
                         {

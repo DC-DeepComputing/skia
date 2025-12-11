@@ -9,7 +9,7 @@ struct _GlobalUniforms {
   colorRed: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-var<private> scratchVar: i32 = 0;
+var<private> scratchVar = 0;
 fn test_flat_b() -> bool {
   {
     return true;
@@ -47,7 +47,7 @@ fn test_else_b() -> bool {
 fn test_loop_if_b() -> bool {
   {
     {
-      var x: i32 = 0;
+      var x = 0;
       loop {
         {
           if _globalUniforms.colorGreen.y == 0.0h {

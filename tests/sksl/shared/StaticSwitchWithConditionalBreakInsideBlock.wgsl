@@ -10,10 +10,10 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    var value: f16 = 0.0h;
+    var value = 0.0h;
     switch 0 {
       case 0, 1 {
-        var _skTemp0: bool = false;
+        var _skTemp0 = false;
         if 0 == 0 {
           value = 0.0h;
           if _globalUniforms.unknownInput == 2.0 {

@@ -11,10 +11,10 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var a: i32 = 0;
-    var b: i32 = 0;
-    var c: i32 = 0;
-    const d: i32 = 0;
+    var a = 0;
+    var b = 0;
+    var c = 0;
+    const d = 0;
     a = 1;
     b = 2;
     c = 5;

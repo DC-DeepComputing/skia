@@ -12,8 +12,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let inputVal: vec4<f32> = vec4<f32>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) * vec4<f32>(1.0, 1.0, -1.0, -1.0);
-    const expectedB: vec4<u32> = vec4<u32>(1065353216u, 1073741824u, 3225419776u, 3229614080u);
+    let inputVal = vec4<f32>(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]) * vec4<f32>(1.0, 1.0, -1.0, -1.0);
+    const expectedB = vec4<u32>(1065353216u, 1073741824u, 3225419776u, 3229614080u);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((inputVal.x == bitcast<f32>(expectedB.x)) && all(inputVal.xy == bitcast<vec2<f32>>(expectedB.xy))) && all(inputVal.xyz == bitcast<vec3<f32>>(expectedB.xyz))) && all(inputVal == bitcast<vec4<f32>>(expectedB))));
   }
 }

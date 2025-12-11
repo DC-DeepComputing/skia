@@ -44,7 +44,7 @@ return m;
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const c12: vec2<f32> = vec2<f32>(1.0, 2.0);
+    const c12 = vec2<f32>(1.0, 2.0);
     let _skTemp0 = outer_product_2x2f(_skUnpacked__globalUniforms_testMatrix2x2[0], _skUnpacked__globalUniforms_testMatrix2x2[1]);
     const _skTemp1 = mat2x2<f32>(3.0, 6.0, 4.0, 8.0);
     let _skTemp2 = outer_product_3x3f(_globalUniforms.testMatrix3x3[0], _globalUniforms.testMatrix3x3[1]);

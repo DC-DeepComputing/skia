@@ -9,9 +9,9 @@ struct _GlobalUniforms {
   colorRed: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-const SEVEN: i32 = 7;
-const TEN: i32 = 10;
-const MATRIXFIVE: mat4x4<f16> = mat4x4<f16>(5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h);
+const SEVEN = 7;
+const TEN = 10;
+const MATRIXFIVE = mat4x4<f16>(5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h);
 fn verify_const_globals_biih44(seven: i32, ten: i32, matrixFive: mat4x4<f16>) -> bool {
   {
     const _skTemp0 = mat4x4<f16>(5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h, 0.0, 0.0, 0.0, 0.0, 5.0h);

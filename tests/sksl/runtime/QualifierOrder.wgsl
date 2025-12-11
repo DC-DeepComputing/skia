@@ -22,7 +22,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f32> {
   var coords = _skParam0;
   {
     const_after_in_vf2(coords);
-    var _skTemp0: vec2<f32> = coords;
+    var _skTemp0 = coords;
     inout_after_high_precision_vf2(&_skTemp0);
     coords = _skTemp0;
     var _skTemp1: vec2<f32>;

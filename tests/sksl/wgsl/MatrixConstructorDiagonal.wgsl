@@ -13,7 +13,7 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain() -> vec4<f16> {
   {
-    var ok: bool = true;
+    var ok = true;
     ok = ok && all((mat2x2<f32>(2.0, 0.0, 0.0, 2.0) * vec2<f32>(_globalUniforms.f)) == vec2<f32>(2.0 * _globalUniforms.f));
     ok = ok && all((mat4x4<f16>(2.0h, 0.0, 0.0, 0.0, 0.0, 2.0h, 0.0, 0.0, 0.0, 0.0, 2.0h, 0.0, 0.0, 0.0, 0.0, 2.0h) * vec4<f16>(_globalUniforms.h)) == vec4<f16>(2.0h * _globalUniforms.h));
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(ok));

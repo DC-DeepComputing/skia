@@ -13,14 +13,14 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test3x3_b() -> bool {
   {
-    var expected: vec3<f32> = vec3<f32>(3.0, 2.0, 1.0);
+    var expected = vec3<f32>(3.0, 2.0, 1.0);
     {
-      var c: i32 = 0;
+      var c = 0;
       loop {
         {
-          let vec: vec3<f32> = _globalUniforms.testMatrix3x3[c];
+          let vec = _globalUniforms.testMatrix3x3[c];
           {
-            var r: i32 = 0;
+            var r = 0;
             loop {
               {
                 if vec.zyx[r] != expected[r] {
@@ -48,14 +48,14 @@ fn test3x3_b() -> bool {
 }
 fn test4x4_b() -> bool {
   {
-    var expected: vec4<f32> = vec4<f32>(4.0, 3.0, 2.0, 1.0);
+    var expected = vec4<f32>(4.0, 3.0, 2.0, 1.0);
     {
-      var c: i32 = 0;
+      var c = 0;
       loop {
         {
-          let vec: vec4<f32> = _globalUniforms.testMatrix4x4[c];
+          let vec = _globalUniforms.testMatrix4x4[c];
           {
-            var r: i32 = 0;
+            var r = 0;
             loop {
               {
                 if vec.wzyx[r] != expected[r] {

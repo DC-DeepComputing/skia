@@ -17,24 +17,24 @@ fn check_bf2f2f2f3i2i2f2f2f4i2b4f2f2f2b2b2b3i4(v1: vec2<f32>, v2: vec2<f32>, v3:
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    const v1: vec2<f32> = vec2<f32>(1.0);
-    const v2: vec2<f32> = vec2<f32>(1.0, 2.0);
-    const v3: vec2<f32> = vec2<f32>(1.0);
-    const v4: vec3<f32> = vec3<f32>(1.0);
-    const v5: vec2<i32> = vec2<i32>(1);
-    const v6: vec2<i32> = vec2<i32>(1, 2);
-    const v7: vec2<f32> = vec2<f32>(1.0, 2.0);
-    let v8: vec2<f32> = vec2<f32>(v5);
-    let v9: vec4<f32> = vec4<f32>(f32(v6.x), _globalUniforms.unknownInput, 3.0, 4.0);
-    let v10: vec2<i32> = vec2<i32>(3, i32(v1.x));
-    const v11: vec4<bool> = vec4<bool>(true, false, true, false);
-    const v12: vec2<f32> = vec2<f32>(1.0, 0.0);
-    const v13: vec2<f32> = vec2<f32>(0.0);
-    const v14: vec2<f32> = vec2<f32>(0.0);
-    const v15: vec2<bool> = vec2<bool>(true);
-    const v16: vec2<bool> = vec2<bool>(true);
-    const v17: vec3<bool> = vec3<bool>(true);
-    const v18: vec4<i32> = vec4<i32>(1);
+    const v1 = vec2<f32>(1.0);
+    const v2 = vec2<f32>(1.0, 2.0);
+    const v3 = vec2<f32>(1.0);
+    const v4 = vec3<f32>(1.0);
+    const v5 = vec2<i32>(1);
+    const v6 = vec2<i32>(1, 2);
+    const v7 = vec2<f32>(1.0, 2.0);
+    let v8 = vec2<f32>(v5);
+    let v9 = vec4<f32>(f32(v6.x), _globalUniforms.unknownInput, 3.0, 4.0);
+    let v10 = vec2<i32>(3, i32(v1.x));
+    const v11 = vec4<bool>(true, false, true, false);
+    const v12 = vec2<f32>(1.0, 0.0);
+    const v13 = vec2<f32>(0.0);
+    const v14 = vec2<f32>(0.0);
+    const v15 = vec2<bool>(true);
+    const v16 = vec2<bool>(true);
+    const v17 = vec3<bool>(true);
+    const v18 = vec4<i32>(1);
     var _skTemp0: vec4<f16>;
     if check_bf2f2f2f3i2i2f2f2f4i2b4f2f2f2b2b2b3i4(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18) {
       _skTemp0 = _globalUniforms.colorGreen;

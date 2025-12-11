@@ -19,7 +19,7 @@ fn _skslMain(_stageOut: ptr<function, FSOut>) {
         discard;
       }
     }
-    var i: i32 = 0;
+    var i = 0;
     loop {
       if i < 10 {
         {
@@ -39,7 +39,7 @@ fn _skslMain(_stageOut: ptr<function, FSOut>) {
       }
     }
     {
-      var i: i32 = 0;
+      var i = 0;
       loop {
         {
           if (i % 2) == 1 {

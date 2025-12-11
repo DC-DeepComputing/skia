@@ -9,7 +9,7 @@ struct _GlobalUniforms {
   colorRed: vec4<f16>,
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
-var<private> gAccessCount: i32 = 0;
+var<private> gAccessCount = 0;
 fn Z_i() -> i32 {
   {
     gAccessCount = gAccessCount + i32(1);

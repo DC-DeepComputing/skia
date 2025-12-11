@@ -18,10 +18,10 @@ fn inout_params_are_distinct_bhh(x: ptr<function, f16>, y: ptr<function, f16>) -
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var x: f16 = 0.0h;
+    var x = 0.0h;
     var _skTemp0: vec4<f16>;
-    var _skTemp1: f16 = x;
-    var _skTemp2: f16 = x;
+    var _skTemp1 = x;
+    var _skTemp2 = x;
     let _skTemp3 = inout_params_are_distinct_bhh(&_skTemp1, &_skTemp2);
     x = _skTemp1;
     x = _skTemp2;

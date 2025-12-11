@@ -11,11 +11,11 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var sumA: f16 = 0.0h;
-    var sumB: f16 = 0.0h;
+    var sumA = 0.0h;
+    var sumB = 0.0h;
     {
-      var a: f16 = 0.0h;
-      var b: f16 = 10.0h;
+      var a = 0.0h;
+      var b = 10.0h;
       loop {
         if (a < 10.0h) && (b > 0.0h) {
           {
@@ -36,9 +36,9 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
         return _globalUniforms.colorRed;
       }
     }
-    var sumC: i32 = 0;
+    var sumC = 0;
     {
-      var c: i32 = 0;
+      var c = 0;
       loop {
         if c < 10 {
           {
@@ -57,10 +57,10 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
         return _globalUniforms.colorRed;
       }
     }
-    var sumE: f32 = 0.0;
+    var sumE = 0.0;
     {
-      var d: array<f32, 2> = array<f32, 2>(0.0, 10.0);
-      const e: array<f32, 4> = array<f32, 4>(1.0, 2.0, 3.0, 4.0);
+      var d = array<f32, 2>(0.0, 10.0);
+      const e = array<f32, 4>(1.0, 2.0, 3.0, 4.0);
       loop {
         if d[0] < d[1] {
           {

@@ -4,7 +4,7 @@ enable f16;
 var<private> f: f32;
 fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
   {
-    let fv: vec4<f32> = vec4<f32>(f);
+    let fv = vec4<f32>(f);
     return fv;
   }
 }

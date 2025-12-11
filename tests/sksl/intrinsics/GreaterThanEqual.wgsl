@@ -15,8 +15,8 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    const expectFFTT: vec4<bool> = vec4<bool>(false, false, true, true);
-    const expectTTFF: vec4<bool> = vec4<bool>(true, true, false, false);
+    const expectFFTT = vec4<bool>(false, false, true, true);
+    const expectTTFF = vec4<bool>(true, true, false, false);
     (*_stageOut).sk_FragColor.x = f16((_globalUniforms.a >= _globalUniforms.b).x);
     (*_stageOut).sk_FragColor.y = f16((_globalUniforms.c >= _globalUniforms.d).y);
     (*_stageOut).sk_FragColor.z = f16((_globalUniforms.e >= _globalUniforms.f).z);

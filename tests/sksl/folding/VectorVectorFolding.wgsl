@@ -9,10 +9,10 @@ struct _GlobalUniforms {
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test_int_b() -> bool {
   {
-    let unknown: i32 = i32(_globalUniforms.unknownInput);
-    var ok: bool = true;
+    let unknown = i32(_globalUniforms.unknownInput);
+    var ok = true;
     ok = ok && all((vec4<i32>(0) / vec4<i32>(unknown)) == vec4<i32>(0));
-    var val: vec4<i32> = vec4<i32>(unknown);
+    var val = vec4<i32>(unknown);
     val = val + vec4<i32>(1);
     val = val - vec4<i32>(1);
     val = val + vec4<i32>(1);
@@ -28,10 +28,10 @@ fn test_int_b() -> bool {
 }
 fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    let _0_unknown: f16 = _globalUniforms.unknownInput;
-    var _1_ok: bool = true;
+    let _0_unknown = _globalUniforms.unknownInput;
+    var _1_ok = true;
     _1_ok = _1_ok && all((vec4<f16>(0.0h) / vec4<f16>(_0_unknown)) == vec4<f16>(0.0h));
-    var _2_val: vec4<f16> = vec4<f16>(_0_unknown);
+    var _2_val = vec4<f16>(_0_unknown);
     _2_val = _2_val + vec4<f16>(1.0h);
     _2_val = _2_val - vec4<f16>(1.0h);
     _2_val = _2_val + vec4<f16>(1.0h);

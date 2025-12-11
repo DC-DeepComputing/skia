@@ -255,7 +255,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var _skTemp40: bool;
     out_bool_vb(&_skTemp40);
     b3.z = _skTemp40;
-    var ok: bool = true;
+    var ok = true;
     ok = ok && (1.0h == ((((((h * h2.x) * h3.x) * h4.x) * h2x2[0].x) * h3x3[0].x) * h4x4[0].x));
     ok = ok && (1.0 == ((((((f * f2.x) * f3.x) * f4.x) * f2x2[0].x) * f3x3[0].x) * f4x4[0].x));
     ok = ok && (1 == (((i * i2.x) * i3.x) * i4.x));
