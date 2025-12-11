@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93e4c449_76825b0a",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-11T17:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18bedbbd_94205535",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 90
+      },
+      "revId": "df92997825ade7f231d3234457067e62bd7b1b7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bdfc8bd_ee016d2c",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-10T17:43:11Z",
       "side": 1,
       "message": "Perhaps I\u0027m just not familiar, but is this just how we mark new features we are experimenting with? Is there a tracking bug or link to reference, or perhaps should we add a TODO to solidify using the following options or remove them based on the results of the experiment?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 19
+      },
+      "revId": "df92997825ade7f231d3234457067e62bd7b1b7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48d5a501_d56b8df9",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-11T17:40:55Z",
+      "side": 1,
+      "message": "Skia has used \"experimental\" in various places for features or APIs that aren\u0027t complete. Particularly since this is not a public header, it doesn\u0027t really matter that we follow a specific convention, this is more a note so that we know whether or not a strategy represents something we expect to encounter in production.\n\nThese compute approaches are more-or-less functional but experiments have been completed and their performance wasn\u0027t where it needed to be, so they are slated for removal once we have other compute code that will leverage that component of Graphite (e.g. blurs in compute). Sparse strip rendering will also end up under this header as a strategy until it\u0027s ready to go.\n\nThere isn\u0027t really a specific bug for this, but I also don\u0027t feel like it\u0027s super necessary to couple to a bug that must also be kept up to date.",
+      "parentUuid": "7bdfc8bd_ee016d2c",
       "range": {
         "startLine": 59,
         "startChar": 0,
