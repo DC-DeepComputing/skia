@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6984cd77_2a4c3fec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-11T20:24:04Z",
+      "side": 1,
+      "message": "Let me remove myself from the attention set - I defer to @ccameron on the high-level design of how to use Rust to parse, while still using `skcms` for actual color space transformations.  But please shout (and/or re-add me to the attention set) if/when you\u0027d like me to review the code.",
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
