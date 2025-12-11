@@ -32,7 +32,7 @@ public:
                      const SkScalar* positions,
                      int count,
                      bool colorsAreOpaque,
-                     const SkGradientShader::Interpolation& interpolation,
+                     const SkGradient::Interpolation& interpolation,
                      const SkColorSpace* intermediateColorSpace,
                      const SkColorSpace* dstColorSpace,
                      SkColorType colorType,
@@ -60,7 +60,7 @@ private:
                       const SkScalar* positions,
                       int count,
                       bool colorsAreOpaque,
-                      const SkGradientShader::Interpolation& interpolation,
+                      const SkGradient::Interpolation& interpolation,
                       const SkColorSpace* intermediateColorSpace,
                       const SkColorSpace* dstColorSpace,
                       SkBitmap* bitmap);
