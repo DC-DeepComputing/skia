@@ -9,6 +9,10 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 
+#if defined(SK_CODEC_COLOR_PROFILE_PARSE_WITH_RUST)
+#include "rust/icc/FFI.rs.h"
+#endif
+
 namespace SkCodecs {
 
 namespace {
@@ -62,6 +66,24 @@ std::unique_ptr<ColorProfile> ColorProfile::MakeICCProfile(
     }
     return nullptr;
 }
+
+#if defined(SK_CODEC_COLOR_PROFILE_PARSE_WITH_RUST)
+std::unique_ptr<ColorProfile> ColorProfile::MakeICCProfileWithRust(
+        sk_sp<const SkData> data) {
+    if (data) {
+        rust_icc::IccProfile rust_profile;
+
+        if (rust_icc::parse_icc_profile(
+                    rust::Slice<const uint8_t>(data->bytes(), data->size()), rust_profile)) {
+                skcms_ICCProfile profile;
+                rust_icc::ToSkcmsIccProfile(rust_profile, &profile);
+                return std::unique_ptr<ColorProfile>(
+                        new ColorProfile(profile, std::move(data)));
+        }
+    }
+    return nullptr;
+}
+#endif
 
 std::unique_ptr<ColorProfile> ColorProfile::Make(sk_sp<SkColorSpace> cs) {
     if (!cs) {
