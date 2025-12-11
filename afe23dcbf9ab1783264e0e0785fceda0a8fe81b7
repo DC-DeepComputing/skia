@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e78871b_6b0ea07e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2025-12-11T14:54:58Z",
+      "side": 1,
+      "message": "I posted about some of the motivations behind this PR at https://groups.google.com/g/skia-discuss/c/AtcqWT8Z40E",
+      "revId": "afe23dcbf9ab1783264e0e0785fceda0a8fe81b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
