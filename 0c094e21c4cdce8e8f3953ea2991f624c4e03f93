@@ -39,6 +39,30 @@
       },
       "revId": "0c094e21c4cdce8e8f3953ea2991f624c4e03f93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac6240a6_dab659cf",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-11T15:05:44Z",
+      "side": 1,
+      "message": "After this, YES.\n\nI tried it, but we had a bunch of internal sites still using the flag, scoped by SkGradientShader. That change (moving the guard) is my next CL.",
+      "parentUuid": "475b076d_eb69f44e",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 44
+      },
+      "revId": "0c094e21c4cdce8e8f3953ea2991f624c4e03f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
