@@ -84,7 +84,7 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(
         const SkScalar* positions,
         int count,
         bool colorsAreOpaque,
-        const SkGradientShader::Interpolation& interpolation,
+        const SkGradient::Interpolation& interpolation,
         const SkColorSpace* intermediateColorSpace,
         const SkColorSpace* dstColorSpace,
         const GrFPArgs& args) {
@@ -721,11 +721,11 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
 
 static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
         std::unique_ptr<GrFragmentProcessor> gradient,
-        const SkGradientShader::Interpolation& interpolation,
+        const SkGradient::Interpolation& interpolation,
         SkColorSpace* intermediateColorSpace,
         const GrColorInfo& dstInfo,
         bool allOpaque) {
-    using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
+    using ColorSpace = SkGradient::Interpolation::ColorSpace;
 
     // If these values change, you will need to edit sksl_shared
     static_assert(static_cast<int>(ColorSpace::kDestination)   == 0);
