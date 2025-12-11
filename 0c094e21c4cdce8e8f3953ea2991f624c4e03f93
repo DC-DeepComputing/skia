@@ -16,6 +16,29 @@
       "message": "other comments?",
       "revId": "0c094e21c4cdce8e8f3953ea2991f624c4e03f93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475b076d_eb69f44e",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-11T14:58:05Z",
+      "side": 1,
+      "message": "At this point, can we move this guard to include the `SkGradientShader` class?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 44
+      },
+      "revId": "0c094e21c4cdce8e8f3953ea2991f624c4e03f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
