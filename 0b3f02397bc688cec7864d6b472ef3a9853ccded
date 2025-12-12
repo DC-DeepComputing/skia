@@ -16,6 +16,29 @@
       "message": "lgtm, thanks!",
       "revId": "0b3f02397bc688cec7864d6b472ef3a9853ccded",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f4bde4f_54370457",
+        "filename": "src/codec/SkCodecColorProfileRust.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T22:55:53Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this. We\u0027ll have GN and Bazel just not build these files if the option for rust ICC is not set.",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 11
+      },
+      "revId": "0b3f02397bc688cec7864d6b472ef3a9853ccded",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
