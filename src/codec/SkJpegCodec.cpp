@@ -527,7 +527,7 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     if (!this->allocateStorage(dstInfo)) {
-        return kInternalError;
+        return kOutOfMemory;
     }
 
     if (isProgressive) {
@@ -593,6 +593,9 @@ bool SkJpegCodec::allocateStorage(const SkImageInfo& dstInfo) {
 
     size_t totalBytes = swizzleBytes + xformBytes;
     if (totalBytes > 0) {
+        if (!this->allocateFromBudget(totalBytes)) {
+            return false;
+        }
         if (!fStorage.reset(totalBytes)) {
             return false;
         }
@@ -726,7 +729,7 @@ SkCodec::Result SkJpegCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
     }
 
     if (!this->allocateStorage(dstInfo)) {
-        return kInternalError;
+        return kOutOfMemory;
     }
 
     return kSuccess;
