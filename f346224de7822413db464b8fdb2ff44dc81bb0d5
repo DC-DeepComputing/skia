@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "430e2523_7fb1e22e",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T13:52:21Z",
+      "side": 1,
+      "message": "Move this into its own file. That will make it easier to split the rust and the non-rust API. Please also move the implementation to its own file.",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 50
+      },
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd03c441_a00d5a8e",
         "filename": "src/codec/SkCodecPriv.h",
         "patchSetId": 19
