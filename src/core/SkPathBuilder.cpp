@@ -1025,6 +1025,10 @@ SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix) {
     return *this;
 }
 
+std::optional<SkRect> SkPathBuilder::computeFiniteBounds() const {
+    return SkPathPriv::TrimmedBounds(this->points(), this->verbs());
+}
+
 std::optional<SkRect> SkPathBuilder::computeTightBounds() const {
     if (!this->isFinite()) {
         return {};
