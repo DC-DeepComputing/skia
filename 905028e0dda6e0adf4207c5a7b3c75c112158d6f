@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48269955_1331a86a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-12T17:09:17Z",
+      "side": 1,
+      "message": "From our discussion on the previous scratch let CL, I adjusted this to be kPrefix, which I believe is the precedence associated with the unary `-` operator.",
+      "range": {
+        "startLine": 3164,
+        "startChar": 84,
+        "endLine": 3164,
+        "endChar": 91
+      },
+      "revId": "905028e0dda6e0adf4207c5a7b3c75c112158d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
