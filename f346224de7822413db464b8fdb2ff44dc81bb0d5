@@ -16,6 +16,78 @@
       "message": "Let me remove myself from the attention set - I defer to @ccameron on the high-level design of how to use Rust to parse, while still using `skcms` for actual color space transformations.  But please shout (and/or re-add me to the attention set) if/when you\u0027d like me to review the code.",
       "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e33b2df_4d04186c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-12T11:35:18Z",
+      "side": 1,
+      "message": "lgtm with one suggestion about adding two explicit entrypoints for skcms vs Rust.\n\n(That way we won\u0027t have the temptation to change any codec code when activating this path)",
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd03c441_a00d5a8e",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-12T11:35:18Z",
+      "side": 1,
+      "message": "This looks good, I think the only thing I\u0027d suggest would be to have this have 3 separate functions:\n\n```\n  // Create a ColorProfile from an SKData for an ICC profile.\n  // Returns nullptr if the data fails to parse. This will use\n  // either MakeICCProfileWithSkCMS or MakeICCProfileWithRust\n  // depending on the build configuration.\n  MakeICCProfile()\n\n  // Implementation of MakeICCProfile that uses skcms to parse.\n  // This should only be called by tests.\n  MakeICCProfileWithSkCMS()\n\n  // Implementation of MakeICCProfile that uses moxcms (in Rust) to parse.\n  // This should only be called by tests.\n  MakeICCProfileWithRust()\n```\n\nThat makes it emphatic that the non-`MakeICCProfile` entrypoints are for testing.",
+      "fixSuggestions": [
+        {
+          "fixId": "8c50e048_416c93c5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkCodecPriv.h",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "    // Create a ColorProfile from an SKData for an ICC profile.\n    // Returns nullptr if the data fails to parse. This will use\n    // either MakeICCProfileWithSkCMS or MakeICCProfileWithRust\n    // depending on the build configuration.\n"
+            },
+            {
+              "path": "src/codec/SkCodecPriv.h",
+              "range": {
+                "startLine": 40,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": "    // Implementation of MakeICCProfile that uses skcms to parse.\n    // This should only be called by tests.\n    static std::unique_ptr\u003cColorProfile\u003e MakeICCProfileWithSkCMS(sk_sp\u003cconst SkData\u003e);\n\n"
+            },
+            {
+              "path": "src/codec/SkCodecPriv.h",
+              "range": {
+                "startLine": 41,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": "    // Implementation of MakeICCProfile that uses moxcms (in Rust) to parse.\n    // This should only be called by tests.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
