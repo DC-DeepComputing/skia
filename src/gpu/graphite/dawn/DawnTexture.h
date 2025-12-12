@@ -12,6 +12,7 @@
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+#include <optional>
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
@@ -22,7 +23,8 @@ class DawnTexture : public Texture {
 public:
     static wgpu::Texture MakeDawnTexture(const DawnSharedContext*,
                                          SkISize dimensions,
-                                         const TextureInfo&);
+                                         const TextureInfo&,
+                                         std::optional<uint64_t> ownerGUID = std::nullopt);
 
     static sk_sp<Texture> Make(const DawnSharedContext*,
                                SkISize dimensions,

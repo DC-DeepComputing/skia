@@ -91,6 +91,7 @@ public:
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
 
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
+    BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&, uint64_t ownerGUID);
     void deleteBackendTexture(const BackendTexture&);
 
     ProxyCache* proxyCache() { return fResourceCache->proxyCache(); }
@@ -161,6 +162,7 @@ private:
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&) = 0;
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
+    virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&, uint64_t ownerGUID) = 0;
 #ifdef SK_BUILD_FOR_ANDROID
     virtual BackendTexture onCreateBackendTexture(AHardwareBuffer*,
                                                   bool isRenderable,

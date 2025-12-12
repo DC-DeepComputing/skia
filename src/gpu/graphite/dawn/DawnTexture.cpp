@@ -20,7 +20,8 @@ namespace skgpu::graphite {
 
 wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContext,
                                            SkISize dimensions,
-                                           const TextureInfo& info) {
+                                           const TextureInfo& info,
+                                           std::optional<uint64_t> ownerGUID) {
     const auto* caps = sharedContext->dawnCaps();
     if (dimensions.width() > caps->maxTextureSize() ||
         dimensions.height() > caps->maxTextureSize()) {
@@ -70,6 +71,12 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
     desc.sampleCount             = (uint8_t) info.sampleCount();
     desc.viewFormatCount         = 0;
     desc.viewFormats             = nullptr;
+
+    wgpu::DawnMemoryDumpOwnershipDescriptor ownershipDesc;
+    if (ownerGUID.has_value()) {
+        ownershipDesc.ownerGuid = ownerGUID.value();
+        desc.nextInChain = &ownershipDesc;
+    }
 
     auto texture = sharedContext->device().CreateTexture(&desc);
     if (!texture) {

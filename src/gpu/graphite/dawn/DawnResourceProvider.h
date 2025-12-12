@@ -93,6 +93,7 @@ private:
     sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
+    BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&, uint64_t ownerGUID) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
 
     const wgpu::Buffer& getOrCreateNullBuffer();

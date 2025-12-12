@@ -590,6 +590,18 @@ BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
     return BackendTextures::MakeDawn(texture.MoveToCHandle());
 }
 
+BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
+                                                            const TextureInfo& info, uint64_t ownerGUID) {
+    wgpu::Texture texture = DawnTexture::MakeDawnTexture(this->dawnSharedContext(),
+                                                         dimensions,
+                                                         info, ownerGUID);
+    if (!texture) {
+        return {};
+    }
+
+    return BackendTextures::MakeDawn(texture.MoveToCHandle());
+}
+
 void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kDawn);

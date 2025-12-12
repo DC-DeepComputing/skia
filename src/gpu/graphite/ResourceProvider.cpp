@@ -305,6 +305,13 @@ BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const 
     return this->onCreateBackendTexture(dimensions, info);
 }
 
+BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info, uint64_t ownerGUID) {
+    if (!dimensions_are_valid(fSharedContext->caps()->maxTextureSize(), dimensions)) {
+        return {};
+    }
+    return this->onCreateBackendTexture(dimensions, info, ownerGUID);
+}
+
 #ifdef SK_BUILD_FOR_ANDROID
 BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer* hardwareBuffer,
                                                       bool isRenderable,

@@ -344,6 +344,15 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
     return fResourceProvider->createBackendTexture(dimensions, info);
 }
 
+BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info, uint64_t ownerGUID) {
+    ASSERT_SINGLE_OWNER
+
+    if (!info.isValid() || info.backend() != this->backend()) {
+        return {};
+    }
+    return fResourceProvider->createBackendTexture(dimensions, info, ownerGUID);
+}
+
 #ifdef SK_BUILD_FOR_ANDROID
 
 BackendTexture Recorder::createBackendTexture(AHardwareBuffer* hardwareBuffer,

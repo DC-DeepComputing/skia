@@ -101,6 +101,11 @@ BackendTexture MtlResourceProvider::onCreateBackendTexture(SkISize dimensions,
     return BackendTextures::MakeMetal(dimensions, (CFTypeRef)texture.release());
 }
 
+BackendTexture MtlResourceProvider::onCreateBackendTexture(SkISize dimensions,
+                                                           const TextureInfo& info, uint64_t) {
+    return onCreateBackendTexture(dimensions, info);
+}
+
 void MtlResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
     SkASSERT(texture.backend() == BackendApi::kMetal);
     CFTypeRef texHandle = BackendTextures::GetMtlTexture(texture);

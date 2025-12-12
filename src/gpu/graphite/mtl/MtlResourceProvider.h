@@ -41,6 +41,7 @@ private:
     sk_sp<Sampler> createSampler(const SamplerDesc&) override;
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
+    BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&, uint64_t) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
 
     skia_private::THashMap<uint32_t, sk_sp<MtlGraphicsPipeline>> fLoadMSAAPipelines;

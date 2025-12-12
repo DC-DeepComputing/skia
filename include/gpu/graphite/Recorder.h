@@ -126,6 +126,7 @@ public:
      * same Context to call deleteBackendTexture.
      */
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
+    BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&, uint64_t ownerGUID);
 
 #ifdef SK_BUILD_FOR_ANDROID
     BackendTexture createBackendTexture(AHardwareBuffer*,
