@@ -57,6 +57,30 @@
       },
       "revId": "f582651d479731d9285739ec4447765897f3bfb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32a0afb4_6b662d17",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-12T14:53:12Z",
+      "side": 1,
+      "message": "I think that would make sense if we want a base class for BackendData. Currently the concept BackendData (used in lieu of a base class) constrains the type in the following three ways:\n\n1) alignment. No difference really, SkAnySubclass aligns its storage to 8 bytes and we effectively do as well (once I fix the sizeof(void*) \u003d\u003d 4 platforms). \n\nAside: SkAnySubclass doesn\u0027t compile-time enforce that its alignment is sufficient for the subclass type that gets stored in it, but it could. But 8 bytes should be fine for anything that isn\u0027t explicitly over-aligned.\n\n2) Has a static method FindStrike that returns sk_sp\u003cU\u003e where U is a subclass of TextStrikeBase. We can\u0027t really enforce this through a base class, so we either have to continue to use a concept (or old-school style std::enable_if) to enforce it, or just document the requirement and rely on template substitution errors where FindStrike is called.\n\n3) Has a member method makeGlyphFromID(SkPackedGlyphID) that yields a type conforming to the concept GlyphType. I think this is tricky to convert to a base class model. It\u0027d probably have to be a virtual method on the base. But we specifically want the type yielded to be different for different backends (sort of the point of this refactor). Which I guess could mean a base class for glyphs instead of GlyphType. But that seems undesirable and the objects of GlyphType are mostly only accessed in backend-specific code(*) and would just downcast to the derived type. We certainly wouldn\u0027t want a vtable ptr per glyph.\n\nThe other thing about SkAnySubclass is that it always yields the pointer to the object using std::launder, which is an optimization barrier. It isn\u0027t necessary in our case, though, likely doesn\u0027t actually hurt either.\n\n(*) The one exception is in serialization, where we require the GlyphType conforming instance to be able to convert back to a SkPackedGlyphID. I\u0027m not sure this is entirely necessary. I believe in practice serialization always happens before conversion from SkPackedGlyphID to Glyph. Maybe that could be removed. In any event, we wouldn\u0027t want this to be a virtual method on a theoretical Glyph base class since that would add a vtable ptr per-instance instead of the single function pointer we store in GlyphVector we use for all glyphs.",
+      "parentUuid": "1874d640_32ceb27c",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 55
+      },
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
