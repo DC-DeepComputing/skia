@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "281fbbe2_b80ef80f",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-12T21:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "430e2523_7fb1e22e",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 50
+      },
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd03c441_a00d5a8e",
@@ -109,6 +133,24 @@
           ]
         }
       ],
+      "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012312c1_ea5b73b7",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-12T21:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd03c441_a00d5a8e",
       "revId": "f346224de7822413db464b8fdb2ff44dc81bb0d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
