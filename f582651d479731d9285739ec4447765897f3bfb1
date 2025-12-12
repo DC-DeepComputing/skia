@@ -81,6 +81,30 @@
       },
       "revId": "f582651d479731d9285739ec4447765897f3bfb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "581661c4_00813c06",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-12T16:22:08Z",
+      "side": 1,
+      "message": "Okay that makes sense, and thanks for the details about exactly how trying to have a parent base class makes certain things awkward. Concepts seem like a good approach here then. Given the adjacency to SkAnySubclass it\u0027d be good to distill this comment into the code to justify the use of concepts.",
+      "parentUuid": "32a0afb4_6b662d17",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 55
+      },
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
