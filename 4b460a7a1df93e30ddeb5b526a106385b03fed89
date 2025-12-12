@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7f88883_125a625e",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-12T16:03:24Z",
+      "side": 1,
+      "message": "Looks like this is the only Make caller, we could also merge the two since there isn\u0027t much going on here.",
+      "revId": "4b460a7a1df93e30ddeb5b526a106385b03fed89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
