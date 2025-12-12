@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0b29fe_9e80a1f0",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T13:58:34Z",
+      "side": 1,
+      "message": "caps doesn\u0027t have this method (yet?)",
+      "range": {
+        "startLine": 244,
+        "startChar": 42,
+        "endLine": 244,
+        "endChar": 46
+      },
+      "revId": "ee0b7934987cc754917954bff21b031a2826c4ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
