@@ -122,6 +122,10 @@ public:
          *  FIXME: Perhaps this should be kUnsupported?
          */
         kUnimplemented,
+        /**
+         *  If the memory allocation exceeded the provided budget.
+         */
+        kOutOfMemory,
     };
 
     /**
@@ -337,13 +341,13 @@ public:
      */
     struct Options {
         Options()
-            : fZeroInitialized(kNo_ZeroInitialized)
-            , fSubset(nullptr)
-            , fFrameIndex(0)
-            , fPriorFrame(kNoFrame)
-        {}
+                : fZeroInitialized(kNo_ZeroInitialized)
+                , fSubset(nullptr)
+                , fFrameIndex(0)
+                , fPriorFrame(kNoFrame)
+                , fMaxDecodeMemory(0) {}
 
-        ZeroInitialized            fZeroInitialized;
+        ZeroInitialized fZeroInitialized;
         /**
          *  If not NULL, represents a subset of the original image to decode.
          *  Must be within the bounds returned by getInfo().
@@ -361,14 +365,14 @@ public:
          *  subset left and subset width to decode partial scanlines on calls
          *  to getScanlines().
          */
-        const SkIRect*             fSubset;
+        const SkIRect* fSubset;
 
         /**
          *  The frame to decode.
          *
          *  Only meaningful for multi-frame images.
          */
-        int                        fFrameIndex;
+        int fFrameIndex;
 
         /**
          *  If not kNoFrame, the dst already contains the prior frame at this index.
@@ -383,7 +387,12 @@ public:
          *
          *  If set to kNoFrame, the codec will decode any necessary required frame(s) first.
          */
-        int                        fPriorFrame;
+        int fPriorFrame;
+
+        /**
+         * If non-zero, image decoding will fail if cumulative allocations exceed this many bytes.
+         */
+        size_t fMaxDecodeMemory;
     };
 
     /**
@@ -831,6 +840,11 @@ public:
     };
     IsAnimated isAnimated() { return this->onIsAnimated(); }
 
+    // Estimate the maximum amount of memory necessary when creating an image or bitmap from
+    // the parsed image data. This may be more than the output dimensions would suggest due
+    // to some codecs being unable to directly scale to a smaller size.
+    size_t estimateMaxAllocation(SkISize outputDimensions) const virtual;
+
     // Register a decoder at runtime by passing two function pointers:
     //    - peek() to return true if the span of bytes appears to be your encoded format;
     //    - make() to attempt to create an SkCodec from the given stream.
@@ -985,6 +999,9 @@ protected:
         return IsAnimated::kNo;
     }
 
+    // Returns true if the requested amount keeps the current total under Options::fMaxDecodeMemory.
+    bool allocateFromBudget(size_t numBytes);
+
 private:
     const SkEncodedInfo                fEncodedInfo;
     XformFormat                        fSrcXformFormat;
@@ -1013,6 +1030,9 @@ private:
     // Only meaningful during scanline decodes.
     int fCurrScanline = -1;
 
+    // How many bytes we are allowed to use when decoding.
+    size_t fDecodeBudget = 0;
+
     bool fStartedIncrementalDecode = false;
 
     // Allows SkAndroidCodec to call handleFrameIndex (potentially decoding a prior frame and
@@ -1033,6 +1053,11 @@ private:
     bool dimensionsSupported(const SkISize& dim) {
         return dim == this->dimensions() || this->onDimensionsSupported(dim);
     }
+
+    Result getPixelsBudgeted(const SkImageInfo& info,
+                             void* pixels,
+                             size_t rowBytes,
+                             const Options*);
 
     /**
      *  For multi-framed images, return the object with information about the frames.
