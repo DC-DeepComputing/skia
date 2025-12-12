@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfc2640e_10941dc4",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T19:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdc00c60_7b192007",
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51a1c17e_f6dabaa3",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c435b925_d37117e7",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T19:42:55Z",
+      "side": 1,
+      "message": "I\u0027ll keep that in mind, but I\u0027m not if the RAII makes it more or less error-prone to tracking the bytes.",
+      "parentUuid": "51a1c17e_f6dabaa3",
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62583366_a993199d",
@@ -48,6 +84,30 @@
       "writtenOn": "2025-12-08T20:30:24Z",
       "side": 1,
       "message": "This should prolly also be budgeted.",
+      "range": {
+        "startLine": 575,
+        "startChar": 12,
+        "endLine": 575,
+        "endChar": 26
+      },
+      "revId": "159158fb34fc3ba480cf20e24b5fb454f8a90899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55db337_6d57b212",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T19:42:55Z",
+      "side": 1,
+      "message": "It is - that\u0027s the new code above to calculate how much that allocation is going to be.",
+      "parentUuid": "62583366_a993199d",
       "range": {
         "startLine": 575,
         "startChar": 12,

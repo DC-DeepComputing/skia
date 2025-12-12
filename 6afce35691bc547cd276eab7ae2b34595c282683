@@ -106,6 +106,24 @@
       "parentUuid": "9c71a7a2_b2f870ea",
       "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d53697_84619c7c",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-12T19:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46e84480_e8dd5185",
+      "revId": "6afce35691bc547cd276eab7ae2b34595c282683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
