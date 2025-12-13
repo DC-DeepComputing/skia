@@ -39,6 +39,30 @@
       },
       "revId": "0b3f02397bc688cec7864d6b472ef3a9853ccded",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "950d74e0_c59d6a4c",
+        "filename": "src/codec/SkCodecColorProfileRust.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2025-12-13T19:13:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f4bde4f_54370457",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 11
+      },
+      "revId": "0b3f02397bc688cec7864d6b472ef3a9853ccded",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
