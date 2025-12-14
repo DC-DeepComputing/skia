@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06161dd4_2380baf5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3727202
+      },
+      "writtenOn": "2025-12-14T19:03:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ebaad73_510ab7f5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "bff7c68cfdcf12fbc2e5e130194a5e1148b34e9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbc77bb1_6de54c36",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-13T01:08:39Z",
       "side": 1,
       "message": "Can you please change this to `chromium:359245096` to make it directly link to the Chromium bug tracker, without a redirection hop?",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "bff7c68cfdcf12fbc2e5e130194a5e1148b34e9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed65bc2_c5eeea82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3727202
+      },
+      "writtenOn": "2025-12-14T19:03:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbc77bb1_6de54c36",
       "range": {
         "startLine": 9,
         "startChar": 5,
@@ -77,6 +125,24 @@
       "writtenOn": "2025-12-13T01:08:39Z",
       "side": 1,
       "message": "LGTM, but I wanted to suggest a few tweaks of the CL description.  One reason is to double-check if I understand what the plan going forward is.  I assume that the plan is that once this Skia CL lands (and gets rolled into Chromium), then you will try enabling the new behavior (by editing `skia/BUILD.gn` in Chromium to enable the new `cfg`) and running Chromium tests?",
+      "revId": "bff7c68cfdcf12fbc2e5e130194a5e1148b34e9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa857bb7_ef716d6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3727202
+      },
+      "writtenOn": "2025-12-14T19:03:10Z",
+      "side": 1,
+      "message": "Yes, my plan is to run Chromium tests for gray-16 precision. Based on the test results, we can later decide whether to enable or revert this conditional gray-16 handling.",
+      "parentUuid": "f76ce5bc_9ea2d2fd",
       "revId": "bff7c68cfdcf12fbc2e5e130194a5e1148b34e9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
