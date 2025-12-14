@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3f7558_982060e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-14T16:24:36Z",
+      "side": 1,
+      "message": "`Bug: 467852420, 467884574`\n(to link to the Android issues)",
+      "revId": "72df6c62c6511e630188b98b3a3824599c74f795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "493f27f7_81bbae2d",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-14T16:24:36Z",
+      "side": 1,
+      "message": "nit: typo trailing",
+      "range": {
+        "startLine": 668,
+        "startChar": 13,
+        "endLine": 668,
+        "endChar": 21
+      },
+      "revId": "72df6c62c6511e630188b98b3a3824599c74f795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
