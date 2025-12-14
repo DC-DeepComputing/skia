@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca88cc17_310f6730",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-14T17:18:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff3f7558_982060e0",
+      "revId": "72df6c62c6511e630188b98b3a3824599c74f795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "493f27f7_81bbae2d",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-12-14T16:24:36Z",
       "side": 1,
       "message": "nit: typo trailing",
+      "range": {
+        "startLine": 668,
+        "startChar": 13,
+        "endLine": 668,
+        "endChar": 21
+      },
+      "revId": "72df6c62c6511e630188b98b3a3824599c74f795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d6649b1_6f0e4482",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-12-14T17:18:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493f27f7_81bbae2d",
       "range": {
         "startLine": 668,
         "startChar": 13,
