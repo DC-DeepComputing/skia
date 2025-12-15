@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77a53f8e_102b1bee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-15T21:18:37Z",
+      "side": 1,
+      "message": "This will probably result in a number of new nullptr dereference errors in users. That is fine as previously the crash would have been here in the allocator instead and the users didn\u0027t know they were crashing.",
+      "revId": "ff4b3c5ff0c0d2ffcf7ee79e6dddf41359b490be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
