@@ -1360,7 +1360,8 @@ if (is_debug) {
 # from having multiple copies of the Rust standard library.
 
 if (skia_use_fontations || skia_use_rust_png_decode ||
-    skia_use_rust_png_encode || skia_use_rust_bmp_decode) {
+    skia_use_rust_png_encode || skia_use_rust_bmp_decode ||
+    skia_use_rust_agtm_parse) {
   # Collect all Rust targets, sources, outputs based on what's enabled
   _rust_targets = []
   _rust_sources = []
@@ -1369,7 +1370,8 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
 
   # Add cxx dependency if any feature that needs it is enabled
   _needs_cxx = skia_use_fontations || skia_use_rust_png_decode ||
-               skia_use_rust_png_encode || skia_use_rust_bmp_decode
+               skia_use_rust_png_encode || skia_use_rust_bmp_decode ||
+               skia_use_rust_agtm_parse
   if (_needs_cxx) {
     _rust_targets += [ "@crates//:cxx_cc" ]
     _rust_sources += [
@@ -1433,6 +1435,27 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
           "=rust/png/FFI.rs.h",
       rebase_path("//bazel-bin/rust/png/FFI.rs.cc", root_build_dir) +
           "=rust/png/FFI.rs.cc",
+    ]
+  }
+
+  if (skia_use_rust_agtm_parse) {
+    _rust_targets += [ "//rust/agtm:ffi_rs" ]
+    _rust_sources += [
+      "rust/agtm/BUILD.bazel",
+      "rust/agtm/FFI.rs",
+    ]
+    _rust_outputs += [
+      "$root_out_dir/librust_agtm_ffi_rs.a",
+      "$root_out_dir/rust/agtm/FFI.rs.h",
+      "$root_out_dir/rust/agtm/FFI.rs.cc",
+    ]
+    _rust_output_mappings += [
+      rebase_path("//bazel-bin/rust/agtm/libffi_rs.a", root_build_dir) +
+          "=librust_agtm_ffi_rs.a",
+      rebase_path("//bazel-bin/rust/agtm/FFI.rs.h", root_build_dir) +
+          "=rust/agtm/FFI.rs.h",
+      rebase_path("//bazel-bin/rust/agtm/FFI.rs.cc", root_build_dir) +
+          "=rust/agtm/FFI.rs.cc",
     ]
   }
 
