@@ -425,6 +425,14 @@ struct SkRGBA4f {
     SkRGBA4f pinAlpha() const {
         return { fR, fG, fB, SkTPin(fA, 0.f, 1.f) };
     }
+
+    SkRGBA4f withAlpha(float a) const {
+        return { fR, fG, fB, a };
+    }
+
+    SkRGBA4f withAlphaByte(uint8_t a) const {
+        return { fR, fG, fB, a/255.f };
+    }
 };
 
 /** \struct SkColor4f
