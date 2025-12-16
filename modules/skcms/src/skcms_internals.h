@@ -49,6 +49,7 @@ extern "C" {
         #if __has_cpp_attribute(clang::musttail) && !__has_feature(memory_sanitizer) \
                                                  && !__has_feature(address_sanitizer) \
                                                  && !defined(__EMSCRIPTEN__) \
+                                                 && !defined(__wasi__) \
                                                  && !defined(__arm__) \
                                                  && !defined(__riscv) \
                                                  && !defined(__powerpc__) \
@@ -105,6 +106,10 @@ extern "C" {
 #if !defined(SKCMS_PORTABLE) && !(defined(__clang__) || \
                                   defined(__GNUC__) || \
                                   (defined(__EMSCRIPTEN__) && defined(__wasm_simd128__)))
+    #define SKCMS_PORTABLE 1
+#endif
+
+#if defined(__wasi__)
     #define SKCMS_PORTABLE 1
 #endif
 

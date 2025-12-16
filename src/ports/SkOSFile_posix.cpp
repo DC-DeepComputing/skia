@@ -121,9 +121,19 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
     if (fd < 0) {
         return SIZE_MAX;
     }
-    ssize_t bytesRead = pread(fd, buffer, count, offset);
-    if (bytesRead < 0) {
-        return SIZE_MAX;
+
+    size_t bytesRead = 0;
+    uint8_t* dst = static_cast<uint8_t*>(buffer);
+    while (count > 0) {
+        ssize_t n = pread(fd, dst, count, offset);
+        if (n < 0) {
+            return SIZE_MAX;
+        }
+        SkASSERT(static_cast<size_t>(n) <= count);
+        count -= n;
+        bytesRead += n;
+        offset += n;
+        dst += n;
     }
     return bytesRead;
 }

@@ -35,6 +35,8 @@ declare_args() {
   ios_use_simulator =
       target_os == "ios" && (target_cpu == "x86" || target_cpu == "x64")
 
+  use_wasm2_build = false
+
   # Enable -H, which prints the include tree during compilation.
   # For use by external tools for analyzing include files.
   show_includes = false
@@ -68,7 +70,8 @@ is_ios = current_os == "ios" || current_os == "tvos"
 is_tvos = current_os == "tvos"
 is_linux = current_os == "linux"
 is_mac = current_os == "mac"
-is_wasm = current_os == "wasm"
+is_wasm2 = use_wasm2_build
+is_wasm = current_os == "wasm" && !is_wasm2
 is_win = current_os == "win"
 
 # Dawn has references to fuchsia, but Skia's GN rules do not
@@ -238,7 +241,7 @@ if (is_win) {
   set_default_toolchain("//gn/toolchain:msvc")
   default_toolchain_name = "msvc"
   host_toolchain = "msvc_host"
-} else if (is_wasm) {
+} else if (is_wasm || is_wasm2) {
   set_default_toolchain("//gn/toolchain:wasm")
   default_toolchain_name = "wasm"
   host_toolchain = "wasm"
