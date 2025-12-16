@@ -16,6 +16,24 @@
       "message": "LGTM, I take it choose MSAA renderer is where I would place sparse strips?",
       "revId": "af08282273189774270765a4764e26f28e7ab21f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c375c7f8_76d3fe36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-12-16T15:32:50Z",
+      "side": 1,
+      "message": "I think sparse strips would actually get handled somewhat like the path atlas\u0027ing, where we do a preparatory step to reserve space and then that produces the Renderer that knows how to sample from the \"atlas\" correctly. In this case the atlas is really 2 end caps and a span for how far apart they are visually.",
+      "parentUuid": "25b761fd_6eeedc1f",
+      "revId": "af08282273189774270765a4764e26f28e7ab21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
