@@ -16,6 +16,24 @@
       "message": "This will probably result in a number of new nullptr dereference errors in users. That is fine as previously the crash would have been here in the allocator instead and the users didn\u0027t know they were crashing.",
       "revId": "ff4b3c5ff0c0d2ffcf7ee79e6dddf41359b490be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54723603_267bd58a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-16T17:55:18Z",
+      "side": 1,
+      "message": "The problem is these new crashes can be deferred arbitrarily, and are harder to diagnose.\n\nChromium favors the fail-fast approach, and generally does not pretend to handle allocation failures.  What is the expected behavior anyway?  At best we\u0027re going to render incorrectly, worst case we can end up with bugs downstream.  Also, once the system is borderline OOM, other allocations are likely to fail - so limping along only defers the inevitable.  Crashing early, at the point of first OOM, seems like a sensible choice.\n\n\nThat said, I believe we do use non-crashing alloc in some cases, particularly when dealing with potentially huge chunks (IIRC codecs), and Chromium also offers [unchecked malloc versions](https://source.chromium.org/chromium/chromium/src/+/main:base/process/memory.h;drc\u003d24101aa8ce1083c4623114a512c2cb4c884140d3;l\u003d70) (to be used judiciously).  The linked issue seems to fall within this category as font data can be arbitrarily large (though the actual dump seems to indicate the allocation is \u003c 16M, and if the address space is [exhausted](https://source.chromium.org/chromium/chromium/src/+/main:docs/memory/oom.md;drc\u003d72989a31d2a62df347fa3036043039c42ba35281;l\u003d62) to that degree, it\u0027s likely game over anyway).\n\nLooking at the change, some code paths seem well positioned to handle failures, while some are not (the Empty substitution in particular makes me twitchy).\n\nIs there a way to balance the two extremes, and opt into nothrow malloc only when needed rather than blanket change the behavior?  A couple of thoughts:\n\n* large allocators could allocate the data themselves (using `sk_malloc_canfail` or similar) and then use `SkData::MakeWithProc` to wrap it as needed\n\n* `SkData` factories could take an optional skmalloc flag, so large allocators can again opt into nothrow malloc",
+      "parentUuid": "77a53f8e_102b1bee",
+      "revId": "ff4b3c5ff0c0d2ffcf7ee79e6dddf41359b490be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
