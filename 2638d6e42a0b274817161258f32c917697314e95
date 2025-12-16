@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde116f0_c03939d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-12-16T15:35:25Z",
+      "side": 1,
+      "message": "Comment update to reflect usage of mutlisampled render to single sampled image creation flag",
+      "revId": "2638d6e42a0b274817161258f32c917697314e95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
