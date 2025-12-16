@@ -29,10 +29,10 @@ sk_sp<SkRuntimeEffect> makeEffect(const SkString& sksl, const char* name) {
 // All the SkSL snippets in this constructor are just stubs for the Android code.
 // For Skia's testing purposes they only need to match the real code wrt:
 //   name
-//   number of children
+//   number of child shaders
 //   access method for child shaders (direct sample "eval(xy)" vs indirect "eval(modified-xy)")
 RuntimeEffectManager::RuntimeEffectManager() {
-    static const SkString kMixCode(R"(
+    static const SkString kBlurFilter_MixEffectCode(R"(
         uniform shader img1;
         uniform shader img2;
 
@@ -41,9 +41,7 @@ RuntimeEffectManager::RuntimeEffectManager() {
         }
     )");
 
-    fMixEffect = makeEffect(kMixCode, "RE_BlurFilter_MixEffect");
-
-    static const SkString kEdgeExtensionCode(R"(
+    static const SkString kEdgeExtensionEffectCode(R"(
         uniform shader img;
 
         vec4 main(vec2 xy) {
@@ -52,9 +50,17 @@ RuntimeEffectManager::RuntimeEffectManager() {
         }
     )");
 
-    fEdgeExtensionEffect = makeEffect(kEdgeExtensionCode, "RE_EdgeExtensionEffect");
+    static const SkString kGainmapEffectCode(R"(
+        uniform shader img1;
+        uniform shader img2;
 
-    static const SkString kHighSampleBlurCode(R"(
+        vec4 main(vec2 xy) {
+            float3 sample = img1.eval(xy).rgb + img2.eval(xy).rgb;
+            return float4(sample, 1.0);
+        }
+    )");
+
+    static const SkString kKawaseBlurDualFilterV2_QuarterResDownSampleBlurEffectCode(R"(
         uniform shader img;
 
         half4 main(float2 xy) {
@@ -63,10 +69,7 @@ RuntimeEffectManager::RuntimeEffectManager() {
         }
     )");
 
-    fKawaseHighSampleEffect = makeEffect(kHighSampleBlurCode,
-                                         "RE_KawaseBlurDualFilter_HighSampleBlurEffect");
-
-    static const SkString kLowSampleBlurCode(R"(
+    static const SkString kKawaseBlurDualFilterV2_HalfResDownSampleBlurEffectCode(R"(
         uniform shader img;
 
         half4 main(float2 xy) {
@@ -75,19 +78,38 @@ RuntimeEffectManager::RuntimeEffectManager() {
         }
     )");
 
-    fKawaseLowSampleEffect = makeEffect(kLowSampleBlurCode,
-                                        "RE_KawaseBlurDualFilter_LowSampleBlurEffect");
-
-    static const SkString kBlurCode(R"(
+    static const SkString kKawaseBlurDualFilterV2_UpSampleBlurEffectCode(R"(
         uniform shader img;
-        vec4 main(vec2 xy) {
-            return float4(img.eval(0.4 * xy).rgb, 0.0);
+
+        half4 main(float2 xy) {
+            half3 c = img.eval(0.55 * xy).rgb;
+            return half4(c, 1.0);
         }
     )");
 
-    fBlurEffect = makeEffect(kBlurCode, "RE_MouriMap_BlurEffect");
+    static const SkString kKawaseBlurEffectCode(R"(
+        uniform shader img;
 
-    static const SkString kCrosstalkAndChunk16x16Code(R"(
+        half4 main(float2 xy) {
+            half3 c = img.eval(0.55 * xy).rgb;
+            return half4(c, 1.0);
+        }
+    )");
+
+    static const SkString kLutEffectCode(R"(
+        uniform shader img;
+        uniform shader lut;
+
+        half4 main(float2 xy) {
+            half3 c = img.eval(xy).rgb;
+            float rV = lut.eval(vec2(255, 0)).r;
+            float gV = lut.eval(vec2(128, 0)).r;
+            float bV = lut.eval(vec2(64, 0)).r;
+            return half4(rV+c.r, gV+c.g, bV+c.b, 1.0);
+        }
+    )");
+
+    static const SkString kMouriMap_CrossTalkAndChunk16x16EffectCode(R"(
         uniform shader img;
         vec4 main(vec2 xy) {
             float3 linear = img.eval(0.25 * xy).rgb;
@@ -95,52 +117,58 @@ RuntimeEffectManager::RuntimeEffectManager() {
         }
     )");
 
-    fCrosstalkAndChunk16x16Effect = makeEffect(kCrosstalkAndChunk16x16Code,
-                                               "RE_MouriMap_CrossTalkAndChunk16x16Effect");
-
-    static const SkString kChunk8x8Code(R"(
+    static const SkString kMouriMap_Chunk8x8EffectCode(R"(
         uniform shader img;
         vec4 main(vec2 xy) {
             return float4(img.eval(0.33 * xy).rgb, 1.0);
         }
     )");
 
-    fChunk8x8Effect = makeEffect(kChunk8x8Code, "RE_MouriMap_Chunk8x8Effect");
+    static const SkString kMouriMap_BlurEffectCode(R"(
+        uniform shader img;
+        vec4 main(vec2 xy) {
+            return float4(img.eval(0.4 * xy).rgb, 0.0);
+        }
+    )");
 
-    static const SkString kTonemapCode(R"(
+    static const SkString kMouriMap_TonemapEffectCode(R"(
         uniform shader image;
         uniform shader lux;
         vec4 main(vec2 xy) {
             float localMax = lux.eval(xy * 0.4).r;
-            float4 rgba = image.eval(0.5 * xy);
+            float4 rgba = image.eval(xy);
             float3 linear = rgba.rgb * 0.7;
 
             return float4(linear, rgba.a);
         }
     )");
 
-    fToneMapEffect = makeEffect(kTonemapCode, "RE_MouriMap_TonemapEffect");
+    static const SkString kStretchEffectCode(R"(
+        uniform shader image;
+
+        vec4 main(vec2 xy) {
+            float4 rgba = image.eval(0.5 * xy);
+
+            return rgba;
+        }
+    )");
+
+    static const SkString kBoxShadowEffectCode(R"(
+        vec4 main(vec2 xy) {
+            return float4(.5, .7, .9, .95);
+        }
+    )");
+
+#define M(id) f##id = makeEffect(k##id##Code, "RE_" #id);
+    SK_ALL_ANDROID_KNOWN_EFFECTS(M)
+#undef M
 }
 
 sk_sp<SkRuntimeEffect> RuntimeEffectManager::getKnownRuntimeEffect(KnownId id) {
-
     switch (id) {
-        case KnownId::kBlurFilter_MixEffect:
-            return fMixEffect;
-        case KnownId::kEdgeExtensionEffect:
-            return fEdgeExtensionEffect;
-        case KnownId::kKawaseBlurDualFilter_HighSampleBlurEffect:
-            return fKawaseHighSampleEffect;
-        case KnownId::kKawaseBlurDualFilter_LowSampleBlurEffect:
-            return fKawaseLowSampleEffect;
-        case KnownId::kMouriMap_BlurEffect:
-            return fBlurEffect;
-        case KnownId::kMouriMap_CrossTalkAndChunk16x16Effect:
-            return fCrosstalkAndChunk16x16Effect;
-        case KnownId::kMouriMap_Chunk8x8Effect:
-            return fChunk8x8Effect;
-        case KnownId::kMouriMap_TonemapEffect:
-            return fToneMapEffect;
+#define M(id) case KnownId::k##id : return f##id;
+        SK_ALL_ANDROID_KNOWN_EFFECTS(M)
+#undef M
     }
 
     SkUNREACHABLE;
