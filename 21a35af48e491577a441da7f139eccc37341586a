@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df59ba5b_a87eb685",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-16T18:36:28Z",
+      "side": 1,
+      "message": "LG modulo test failures: I think we\u0027re missing some `allocStorage` entry points (`onStartScanlineDecode`, `getSampler`?)",
+      "revId": "21a35af48e491577a441da7f139eccc37341586a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bc28573_b277a45d",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-16T18:36:28Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "revId": "21a35af48e491577a441da7f139eccc37341586a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
