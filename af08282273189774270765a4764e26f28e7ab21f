@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b761fd_6eeedc1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-16T01:05:54Z",
+      "side": 1,
+      "message": "LGTM, I take it choose MSAA renderer is where I would place sparse strips?",
+      "revId": "af08282273189774270765a4764e26f28e7ab21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
