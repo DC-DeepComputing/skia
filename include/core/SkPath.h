@@ -37,9 +37,10 @@ struct SkPathVerbAnalysis;
 struct SkPathOvalInfo;
 struct SkPathRRectInfo;
 
-// WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/40040287)
+// Immutable paths (hidden editing methods) are not the only supported implementation
+// and the alt. code will soon be deleted.
 #ifndef SK_HIDE_PATH_EDIT_METHODS
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 #endif
 
 // Migrate clients so this is unneeded
@@ -53,7 +54,7 @@ struct SkPathRRectInfo;
 #ifdef SK_PATH_USES_PATHDATA
 class SkPathData;
 #else
-class SkPathRef;
+#error "only SK_PATH_USES_PATHDATA is supported"
 #endif
 
 /** \class SkPath
