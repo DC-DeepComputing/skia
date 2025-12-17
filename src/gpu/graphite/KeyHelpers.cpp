@@ -1284,7 +1284,6 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
                                                             kPremul_SkAlphaType,
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
-
     Compose(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
