@@ -1284,7 +1284,6 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
                                                             kPremul_SkAlphaType,
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
-
     Compose(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
@@ -1620,6 +1619,8 @@ static void add_to_key(const KeyContext& keyContext, const SkTableColorFilter* f
 
 static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorFilter* filter) {
     SkASSERT(filter);
+
+    SkDebugf("------------------------------------------here\n");
 
     const SkColorInfo& dstInfo = keyContext.dstColorInfo();
     const SkAlphaType dstAT = dstInfo.alphaType();
@@ -2268,6 +2269,7 @@ static void add_to_key(const KeyContext& keyContext,
         dstCS = SkColorSpace::MakeSRGB();
     }
 
+    SkDebugf("----------------------- here2\n");
     // It requires C++20 to use an auto structured binding and then reference them in the lambda.
     sk_sp<SkColorSpace> inputCS, outputCS;
     SkAlphaType workingAT;

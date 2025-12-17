@@ -61,6 +61,7 @@ sk_sp<PrecompileShader> PrecompileShader::makeWithWorkingColorSpace(
         return sk_ref_sp(this);
     }
 
+    SkDebugf("$$$$ 1\n");
     return PrecompileShaders::WorkingColorSpaceExplicit(
             {{ sk_ref_sp(this) }},
             {{ { std::move(inputCS), std::move(outputCS) } }});
@@ -963,6 +964,7 @@ sk_sp<PrecompileShader> PrecompileShaders::WorkingColorSpace(
         SkSpan<const sk_sp<PrecompileShader>> shaders,
         SkSpan<const sk_sp<SkColorSpace>> inputSpaces,
         SkSpan<const sk_sp<SkColorSpace>> outputSpaces) {
+    SkDebugf("$$$$ 3\n");
     return sk_make_sp<PrecompileWorkingColorSpaceShader>(std::move(shaders),
                                                          std::move(inputSpaces),
                                                          std::move(outputSpaces));
@@ -972,6 +974,7 @@ sk_sp<PrecompileShader> PrecompileShaders::WorkingColorSpaceExplicit(
         SkSpan<const sk_sp<PrecompileShader>> shaders,
         SkSpan<const std::pair</*input =*/sk_sp<SkColorSpace>,
                                /*output=*/sk_sp<SkColorSpace>>> inputAndOutputSpaces) {
+    SkDebugf("$$$$ 2\n");
     return sk_make_sp<PrecompileWorkingColorSpaceShader>(std::move(shaders),
                                                          std::move(inputAndOutputSpaces));
 }
