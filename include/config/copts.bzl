@@ -16,6 +16,7 @@ They are divided into several lists/selects and were initially created to be ide
 """
 
 CORE_COPTS = [
+    "-std=c++20",
     "-fstrict-aliasing",
 ] + select({
     "@platforms//os:android": [],
