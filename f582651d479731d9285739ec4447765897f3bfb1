@@ -105,6 +105,30 @@
       },
       "revId": "f582651d479731d9285739ec4447765897f3bfb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6dd26dc_41b99aba",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-12-17T19:19:08Z",
+      "side": 1,
+      "message": "Ok I put in the comments and fixed the build for ptr-is-4-bytes. I have a separate change in the works to fix the C++20/Bazel/CanvasKit failure.",
+      "parentUuid": "581661c4_00813c06",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 55
+      },
+      "revId": "f582651d479731d9285739ec4447765897f3bfb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
