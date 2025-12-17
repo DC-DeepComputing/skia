@@ -41,6 +41,11 @@ void VisitAndroidPrecompileSettings_Protected(
                                      int index)>& func);
 
 namespace {
+//RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + Compose [ Compose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ Compose [ RE_LutEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(x54 2020+full mid mid nearest F rgba cf0lf1) ] ColorSpaceTransform ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] Passthrough ] ] ] ColorSpaceTransformSRGB ] ] ColorSpaceTransformSRGB ] Dither ] SrcOver
+
+//RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(x769 709+full mid mid nearest F rgba cf0lf1) ] ColorSpaceTransformPremul ] ] SrcOver
+
+//RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + Compose [ Compose [ RE_LinearEffect_BT2020_HLG__UNKNOWN__false__UNKNOWN__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(x54 2020+full mid mid nearest F rgba cf0lf1) ] ColorSpaceTransform ] ] ] ColorSpaceTransformSRGB ] Dither ] SrcOver
 
 // These Pipelines are candidates for inclusion in Android's precompile. They were generated
 // by collecting all the Pipelines from the main Android CUJs, including various HDR cases.
