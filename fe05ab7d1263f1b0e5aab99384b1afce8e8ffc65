@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d4cfada_0e1d8040",
+        "filename": "tests/graphite/PaintParamsTestUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-17T22:58:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1080c6ad_c501bc38",
+      "range": {
+        "startLine": 266,
+        "startChar": 18,
+        "endLine": 266,
+        "endChar": 20
+      },
+      "revId": "fe05ab7d1263f1b0e5aab99384b1afce8e8ffc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c70c8c96_ce72755c",
@@ -116,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd18591_11668aee",
+        "filename": "tests/graphite/PaintParamsTestUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-17T22:58:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fd9f4d5_c98708e8",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 1
+      },
+      "revId": "fe05ab7d1263f1b0e5aab99384b1afce8e8ffc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b90465a_27ac8403",
@@ -129,6 +177,30 @@
       "writtenOn": "2025-12-10T19:19:22Z",
       "side": 1,
       "message": "ToStr now - here an below",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 18
+      },
+      "revId": "fe05ab7d1263f1b0e5aab99384b1afce8e8ffc65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a183af77_6d4467a0",
+        "filename": "tests/graphite/PaintParamsTestUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-12-17T22:58:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b90465a_27ac8403",
       "range": {
         "startLine": 71,
         "startChar": 12,
