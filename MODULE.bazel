@@ -12,7 +12,7 @@ bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_cc", version = "0.1.1")
 bazel_dep(name = "rules_license", version = "1.0.0")
 bazel_dep(name = "rules_python", version = "1.3.0")
-bazel_dep(name = "rules_rust", version = "0.60.0")
+bazel_dep(name = "rules_rust", version = "0.68.1")
 bazel_dep(name = "rules_shell", version = "0.4.1")
 
 bazel_dep(name = "rules_webtesting", version = "0.4.0", dev_dependency = True)
@@ -86,6 +86,9 @@ rust.toolchain(
         "x86_64-apple-darwin",
         "aarch64-apple-darwin",
         "aarch64-apple-ios",
+        "wasm32-unknown-unknown",
+        "wasm32-wasip1",
+        "wasm32-unknown-emscripten",
     ],
     versions = [
         # supported versions from https://github.com/bazelbuild/rules_rust/blob/6bdae371374a3740e97370bd9379da5b3ecab389/util/fetch_shas/fetch_shas_VERSIONS.txt
@@ -93,6 +96,31 @@ rust.toolchain(
         "1.86.0",
     ],
 )
+
+#use_repo(rust, "rust_toolchains")
+#register_toolchains("@rust_toolchains//:all")
+# This is a hack, but is required
+#register_toolchains("@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain")
+
+# https://github.com/bazelbuild/rules_rust/commit/0d6aac34c6652cb22eb92c7ff0b78440ec180304
+rust_host_tools = use_extension("@rules_rust//rust:extensions.bzl", "rust_host_tools")
+rust_host_tools.host_tools(
+    name = "rust_host_tools_nightly",
+    version = "nightly/2025-12-17",
+)
+use_repo(
+    rust_host_tools,
+    "rust_host_tools_nightly",
+)
+
+#rust_host_tools.host_tools(
+#    name = "rust_host_tools_stable",
+#    version = "1.92.0",
+#)
+#use_repo(
+#    rust_host_tools,
+#    "rust_host_tools_stable",
+#)
 
 crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
 crate.spec(
@@ -103,7 +131,7 @@ crate.spec(
 crate.spec(
     # If this is updated, be sure to update BUILD.gn also
     package = "cxx",
-    version = "=1.0.168",
+    version = "=1.0.192",
 )
 crate.annotation(
     # We want a custom build rule so we can use a different include path
@@ -167,6 +195,7 @@ crate.spec(
     version = "=1.0.69",
 )
 crate.from_specs(
+    host_tools = "@rust_host_tools_nightly",
     # by default, intel macs are not included in this list, but we have CI hardware
     # that still uses them, so we add them to the list.
     # https://bazelbuild.github.io/rules_rust/crate_universe_bzlmod.html#crate.from_specs-supported_platform_triples
@@ -175,6 +204,7 @@ crate.from_specs(
         "aarch64-unknown-linux-gnu",
         "wasm32-unknown-unknown",
         "wasm32-wasip1",
+        "wasm32-unknown-emscripten",
         "x86_64-apple-darwin",
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
@@ -182,13 +212,14 @@ crate.from_specs(
 )
 use_repo(crate, "crates")
 
+
 # cxxbridge-cmd is a binary only Rust crate, so we follow these instructions for it
 # https://bazelbuild.github.io/rules_rust/crate_universe_bzlmod.html#binary-dependencies
-cargo_bindeps = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+cargo_bindeps = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
 cargo_bindeps.spec(
     artifact = "bin",
     package = "cxxbridge-cmd",
-    version = "=1.0.168",
+    version = "=1.0.192",
 )
 cargo_bindeps.annotation(
     crate = "cxxbridge-cmd",
@@ -196,12 +227,15 @@ cargo_bindeps.annotation(
 )
 cargo_bindeps.from_specs(
     name = "cargo_bindeps",
-    host_tools_repo = "rust_host_tools_nightly",
+    host_tools = "@rust_host_tools_nightly",
+    #cargo_lockfile = "//:Cargo.lock",
+    #lockfile = "//:cargo-bazel-lock.json",
     supported_platform_triples = [
         "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
-        "wasm32-unknown-unknown",
-        "wasm32-wasip1",
+        #"wasm32-unknown-unknown",
+        #"wasm32-wasip1",
+        #"wasm32-unknown-emscripten",
         "x86_64-apple-darwin",
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
