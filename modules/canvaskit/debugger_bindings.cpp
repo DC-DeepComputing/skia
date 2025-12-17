@@ -21,6 +21,7 @@
 #include "src/base/SkBase64.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/SkSharingProc.h"
 #include "tools/UrlDataManager.h"
@@ -86,6 +87,8 @@ static void register_typeface() {
   once([] {
     SkTypeface::Register(SkTypeface_FreeType::FactoryId,
                          SkTypeface_FreeType::MakeFromStream );
+    SkTypeface::Register(SkTypeface_Fontations::FactoryId,
+                         SkTypeface_Fontations::MakeFromStream );
   });
 }
 

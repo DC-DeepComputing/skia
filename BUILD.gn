@@ -1385,10 +1385,10 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
     ]
     _rust_output_mappings += [
       rebase_path(
-              "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.168/libcxx_cc.a",
+              "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.192/libcxx_cc.a",
               root_build_dir) + "=libcxx_cc.a",
       rebase_path(
-              "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.168/_virtual_includes/cxx_cc/third_party/rust/cxx/v1/cxx.h",
+              "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.192/_virtual_includes/cxx_cc/third_party/rust/cxx/v1/cxx.h",
               root_build_dir) + "=third_party/rust/cxx/v1/cxx.h",
     ]
   }

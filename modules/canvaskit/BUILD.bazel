@@ -318,6 +318,7 @@ cc_binary(
         ":enable_fonts_true": [
             "//:fontmgr_data_freetype",
             "//:fontmgr_empty_freetype",
+            "//:fontmgr_empty_fontations",
             "//modules/skparagraph:skparagraph_harfbuzz_skunicode",
             "//modules/skunicode:skunicode_icu",
         ],

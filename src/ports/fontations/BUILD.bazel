@@ -37,6 +37,7 @@ rust_static_library(
         ":bridge_rust_side_srcs",
     ],
     crate_root = "src/ffi.rs",
+    platform = "@rules_rust//rust/platform:wasm32",
     deps = [
         "@crates//:cxx",
         "@crates//:font-types",

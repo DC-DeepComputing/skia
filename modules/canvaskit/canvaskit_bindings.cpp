@@ -114,6 +114,7 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontTypes.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_fontations_priv.h"
 #ifdef CK_INCLUDE_PARAGRAPH
 #include "modules/skparagraph/include/Paragraph.h"
 #endif  // CK_INCLUDE_PARAGRAPH
@@ -1166,6 +1167,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
                  once([] {
                      SkTypeface::Register(SkTypeface_FreeType::FactoryId,
                                           SkTypeface_FreeType::MakeFromStream);
+                     SkTypeface::Register(SkTypeface_Fontations::FactoryId,
+                                          SkTypeface_Fontations::MakeFromStream);
                  });
 #endif
 
