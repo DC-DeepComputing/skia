@@ -313,7 +313,7 @@ struct ColorSpaceTransformBlock {
         ReadSwizzle            fReadSwizzle = ReadSwizzle::kRGBA;
     };
 
-    static void AddBlock(const KeyContext&, const ColorSpaceTransformData&);
+    static void AddBlock1(const KeyContext&, const ColorSpaceTransformData&);
 };
 
 struct NonMSAAClipBlock {
@@ -448,9 +448,10 @@ void Blend(const KeyContext& keyContext,
 }
 
 template <typename AddInnerToKeyT, typename AddOuterToKeyT>
-void Compose(const KeyContext& keyContext,
+void Compose1(const KeyContext& keyContext,
              AddInnerToKeyT addInnerToKey,
              AddOuterToKeyT addOuterToKey) {
+SkDebugf("--------------------- here4\n");
     ComposeBlock::BeginBlock(keyContext);
 
         addInnerToKey();

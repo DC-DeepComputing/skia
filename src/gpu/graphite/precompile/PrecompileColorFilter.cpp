@@ -107,7 +107,9 @@ private:
         } else if (!outer) {
             inner->priv().addToKey(keyContext, innerChildOptions);
         } else {
-            Compose(keyContext,
+    SkDebugf("--- here 22\n");
+
+            Compose1(keyContext,
                     /* addInnerToKey= */ [&]() -> void {
                         inner->priv().addToKey(keyContext, innerChildOptions);
                     },
@@ -238,7 +240,8 @@ private:
                         fSrc[srcCombination].get(), kAlphaType,
                         fDst[dstCombination].get(), kAlphaType);
 
-        ColorSpaceTransformBlock::AddBlock(keyContext, csData);
+        SkDebugf("++++++++ 1\n");
+        ColorSpaceTransformBlock::AddBlock1(keyContext, csData);
     }
 
     std::vector<sk_sp<SkColorSpace>> fSrc;
@@ -387,15 +390,21 @@ private:
 
         // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
         // while appearing as one block to the parent node.
-        Compose(keyContext,
+    SkDebugf("--- here 99\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     // Inner compose
-                    Compose(keyContext,
+    SkDebugf("--- here 11\n");
+
+                    Compose1(keyContext,
                             /* addInnerToKey= */ [&]() -> void {
                                 // Innermost (inner of inner compose)
                                 ColorSpaceTransformBlock::ColorSpaceTransformData data1(
                                         dstCS.get(), dstAT, workingCS.get(), workingAT);
-                                ColorSpaceTransformBlock::AddBlock(keyContext, data1);
+        SkDebugf("++++++++ 2\n");
+
+                                ColorSpaceTransformBlock::AddBlock1(keyContext, data1);
                             },
                             /* addOuterToKey= */ [&]() -> void {
                                 // Middle (outer of inner compose)
@@ -407,7 +416,9 @@ private:
                     // Outermost (outer of outer compose)
                     ColorSpaceTransformBlock::ColorSpaceTransformData data2(
                             workingCS.get(), workingAT, dstCS.get(), dstAT);
-                    ColorSpaceTransformBlock::AddBlock(keyContext, data2);
+        SkDebugf("++++++++ 3\n");
+
+                    ColorSpaceTransformBlock::AddBlock1(keyContext, data2);
                 });
     }
 

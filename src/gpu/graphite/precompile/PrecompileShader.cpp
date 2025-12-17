@@ -61,6 +61,7 @@ sk_sp<PrecompileShader> PrecompileShader::makeWithWorkingColorSpace(
         return sk_ref_sp(this);
     }
 
+    SkDebugf("$$$$ 1\n");
     return PrecompileShaders::WorkingColorSpaceExplicit(
             {{ sk_ref_sp(this) }},
             {{ { std::move(inputCS), std::move(outputCS) } }});
@@ -328,12 +329,16 @@ void PrecompileImageShader::addToKey(const KeyContext& keyContext, int desiredCo
                       AddFixedBlendMode(keyContext, SkBlendMode::kDstIn);
                   },
                   /* addSrcToKey= */ [&] () -> void {
-                      Compose(keyContext,
+    SkDebugf("--- here 66\n");
+
+                      Compose1(keyContext,
                               /* addInnerToKey= */ [&]() -> void {
                                   ImageShaderBlock::AddBlock(keyContext, imgData);
                               },
                               /* addOuterToKey= */ [&]() -> void {
-                                  ColorSpaceTransformBlock::AddBlock(keyContext, colorXformData);
+        SkDebugf("++++++++ 4\n");
+
+                                  ColorSpaceTransformBlock::AddBlock1(keyContext, colorXformData);
                               });
                   },
                   /* addDstToKey= */ [&]() -> void {
@@ -342,13 +347,16 @@ void PrecompileImageShader::addToKey(const KeyContext& keyContext, int desiredCo
             return;
         }
     }
+    SkDebugf("--- here aa\n");
 
-    Compose(keyContext,
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 ImageShaderBlock::AddBlock(keyContext, imgData);
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, colorXformData);
+        SkDebugf("++++++++ 5\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, colorXformData);
             });
 }
 
@@ -480,12 +488,16 @@ private:
                 colorInfo.colorSpace(), colorInfo.alphaType(),
                 dstColorSpace, colorInfo.alphaType());
 
-        Compose(keyContext,
+    SkDebugf("--- here bb\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     YUVImageShaderBlock::AddBlock(keyContext, imgData);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    ColorSpaceTransformBlock::AddBlock(keyContext, colorXformData);
+        SkDebugf("++++++++ 7\n");
+
+                    ColorSpaceTransformBlock::AddBlock1(keyContext, colorXformData);
                 });
     }
 
@@ -608,12 +620,16 @@ private:
                 intermediateCS.get(), kPremul_SkAlphaType,
                 dstCS, kPremul_SkAlphaType);
 
-        Compose(keyContext,
+    SkDebugf("--- here cc\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     GradientShaderBlocks::AddBlock(keyContext, gradData);
                 },
                 /* addOuterToKey= */  [&]() -> void {
-                    ColorSpaceTransformBlock::AddBlock(keyContext, csData);
+        SkDebugf("++++++++ 8\n");
+
+                    ColorSpaceTransformBlock::AddBlock1(keyContext, csData);
                 });
     }
 
@@ -838,7 +854,9 @@ private:
         int desiredColorFilterCombination = desiredCombination / fNumShaderCombos;
         SkASSERT(desiredColorFilterCombination < fNumColorFilterCombos);
 
-        Compose(keyContext,
+    SkDebugf("--- here dd\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     AddToKey<PrecompileShader>(keyContext, fShaders, desiredShaderCombination);
                 },
@@ -935,14 +953,18 @@ private:
         KeyContext workingContext =
                 keyContext.withColorInfo({dstInfo.colorType(), workingAT, inputCS});
 
-        Compose(keyContext,
+    SkDebugf("--- here ee\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     AddToKey<PrecompileShader>(workingContext, fShaders, desiredShaderCombination);
                 },
                 /* addOuterToKey= */ [&]() -> void {
                     ColorSpaceTransformBlock::ColorSpaceTransformData data(
                             outputCS.get(), workingAT, dstCS.get(), dstAT);
-                    ColorSpaceTransformBlock::AddBlock(keyContext, data);
+        SkDebugf("++++++++ 6\n");
+
+                    ColorSpaceTransformBlock::AddBlock1(keyContext, data);
                 });
     }
 
@@ -963,6 +985,7 @@ sk_sp<PrecompileShader> PrecompileShaders::WorkingColorSpace(
         SkSpan<const sk_sp<PrecompileShader>> shaders,
         SkSpan<const sk_sp<SkColorSpace>> inputSpaces,
         SkSpan<const sk_sp<SkColorSpace>> outputSpaces) {
+    SkDebugf("$$$$ 3\n");
     return sk_make_sp<PrecompileWorkingColorSpaceShader>(std::move(shaders),
                                                          std::move(inputSpaces),
                                                          std::move(outputSpaces));
@@ -972,6 +995,7 @@ sk_sp<PrecompileShader> PrecompileShaders::WorkingColorSpaceExplicit(
         SkSpan<const sk_sp<PrecompileShader>> shaders,
         SkSpan<const std::pair</*input =*/sk_sp<SkColorSpace>,
                                /*output=*/sk_sp<SkColorSpace>>> inputAndOutputSpaces) {
+    SkDebugf("$$$$ 2\n");
     return sk_make_sp<PrecompileWorkingColorSpaceShader>(std::move(shaders),
                                                          std::move(inputAndOutputSpaces));
 }

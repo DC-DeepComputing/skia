@@ -155,7 +155,8 @@ void PaintOption::handlePaintAlpha(const KeyContext& keyContext) const {
 
 void PaintOption::handleColorFilter(const KeyContext& keyContext) const {
     if (fColorFilter.first) {
-        Compose(keyContext,
+    SkDebugf("--- here 77\n");
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handlePaintAlpha(keyContext);
                 },
@@ -192,7 +193,9 @@ void PaintOption::handleDithering(const KeyContext& keyContext) const {
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (this->shouldDither(ct)) {
-        Compose(keyContext,
+    SkDebugf("--- here 88\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handleColorFilter(keyContext);
                 },

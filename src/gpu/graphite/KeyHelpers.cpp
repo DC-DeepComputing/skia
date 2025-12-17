@@ -1171,7 +1171,7 @@ ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const
                                                                            SkAlphaType dstAT)
         : fSteps(src, srcAT, dst, dstAT) {}
 
-void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
+void ColorSpaceTransformBlock::AddBlock1(const KeyContext& keyContext,
                                         const ColorSpaceTransformData& data) {
     const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize ||
                                          data.fSteps.fFlags.encode    ||
@@ -1285,12 +1285,15 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
 
-    Compose(keyContext,
+    SkDebugf("---- here a\n");
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, toDst);
+        SkDebugf("++++++++ 9\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, toDst);
             });
 }
 
@@ -1424,8 +1427,10 @@ void RuntimeEffectBlock::HandleIntrinsics(const KeyContext& keyContext, const Sk
                                                                       dstCS,
                                                                       kUnpremul_SkAlphaType);
 
-        ColorSpaceTransformBlock::AddBlock(keyContext, dstToLinear);
-        ColorSpaceTransformBlock::AddBlock(keyContext, linearToDst);
+        SkDebugf("++++++++ 10\n");
+
+        ColorSpaceTransformBlock::AddBlock1(keyContext, dstToLinear);
+        ColorSpaceTransformBlock::AddBlock1(keyContext, linearToDst);
     }
 }
 
@@ -1552,13 +1557,17 @@ static void add_to_key(const KeyContext& keyContext, const SkColorSpaceXformColo
     constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
     ColorSpaceTransformBlock::ColorSpaceTransformData csData(filter->src().get(), kAlphaType,
                                                              filter->dst().get(), kAlphaType);
-    ColorSpaceTransformBlock::AddBlock(keyContext, csData);
+        SkDebugf("++++++++ 11\n");
+
+    ColorSpaceTransformBlock::AddBlock1(keyContext, csData);
 }
 
 static void add_to_key(const KeyContext& keyContext, const SkComposeColorFilter* filter) {
     SkASSERT(filter);
 
-    Compose(keyContext,
+    SkDebugf("---- here b\n");
+
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 AddToKey(keyContext, filter->inner().get());
             },
@@ -1621,6 +1630,8 @@ static void add_to_key(const KeyContext& keyContext, const SkTableColorFilter* f
 static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorFilter* filter) {
     SkASSERT(filter);
 
+    SkDebugf("------------------------------------------here\n");
+
     const SkColorInfo& dstInfo = keyContext.dstColorInfo();
     const SkAlphaType dstAT = dstInfo.alphaType();
     sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
@@ -1633,17 +1644,23 @@ static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorF
     KeyContext workingContext =
             keyContext.withColorInfo({dstInfo.colorType(), workingAT, workingCS});
 
+    SkDebugf("---- here b2\n");
+
     // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
     // while appearing as one block to the parent node.
-    Compose(keyContext,
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 // Inner compose
-                Compose(keyContext,
+    SkDebugf("---- here c\n");
+
+                Compose1(keyContext,
                         /* addInnerToKey= */ [&]() -> void {
                             // Innermost (inner of inner compose)
                             ColorSpaceTransformBlock::ColorSpaceTransformData data1(
                                     dstCS.get(), dstAT, workingCS.get(), workingAT);
-                            ColorSpaceTransformBlock::AddBlock(keyContext, data1);
+        SkDebugf("++++++++ 12\n");
+
+                            ColorSpaceTransformBlock::AddBlock1(keyContext, data1);
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
@@ -1654,7 +1671,9 @@ static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorF
                 // Outermost (outer of outer compose)
                 ColorSpaceTransformBlock::ColorSpaceTransformData data2(
                         workingCS.get(), workingAT, dstCS.get(), dstAT);
-                ColorSpaceTransformBlock::AddBlock(keyContext, data2);
+        SkDebugf("++++++++ 13\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, data2);
             });
 }
 
@@ -1744,7 +1763,9 @@ static void add_to_key(const KeyContext& keyContext, const SkColorShader* shader
 static void add_to_key(const KeyContext& keyContext, const SkColorFilterShader* shader) {
     SkASSERT(shader);
 
-    Compose(keyContext,
+    SkDebugf("---- here d\n");
+
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 AddToKey(keyContext, shader->shader().get());
             },
@@ -1915,12 +1936,16 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     }
     ColorSpaceTransformBlock::ColorSpaceTransformData data(steps);
 
-    Compose(keyContext,
+    SkDebugf("---- here e\n");
+
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 YUVImageShaderBlock::AddBlock(keyContext, imgData);
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, data);
+        SkDebugf("++++++++ 14\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, data);
             });
 }
 
@@ -2016,13 +2041,17 @@ static void add_image_to_key(const KeyContext& keyContext,
                       AddFixedBlendMode(keyContext, SkBlendMode::kDstIn);
                   },
                   /* addSrcToKey= */ [&] () -> void {
-                      Compose(keyContext,
+    SkDebugf("---- here f\n");
+
+                      Compose1(keyContext,
                               /* addInnerToKey= */ [&]() -> void {
                                   ImageShaderBlock::AddBlock(keyContext,
                                                              imgData);
                               },
                               /* addOuterToKey= */ [&]() -> void {
-                                  ColorSpaceTransformBlock::AddBlock(keyContext,
+        SkDebugf("++++++++ 15\n");
+
+                                  ColorSpaceTransformBlock::AddBlock1(keyContext,
                                                                      colorXformData);
                               });
                   },
@@ -2033,12 +2062,16 @@ static void add_image_to_key(const KeyContext& keyContext,
         }
     }
 
-    Compose(keyContext,
+    SkDebugf("---- here g\n");
+
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 ImageShaderBlock::AddBlock(keyContext, imgData);
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, colorXformData);
+        SkDebugf("++++++++ 17\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, colorXformData);
             });
 }
 
@@ -2268,6 +2301,7 @@ static void add_to_key(const KeyContext& keyContext,
         dstCS = SkColorSpace::MakeSRGB();
     }
 
+    SkDebugf("----------------------- here2\n");
     // It requires C++20 to use an auto structured binding and then reference them in the lambda.
     sk_sp<SkColorSpace> inputCS, outputCS;
     SkAlphaType workingAT;
@@ -2276,14 +2310,18 @@ static void add_to_key(const KeyContext& keyContext,
 
     // Compose the inner shader (in the input space) with a (output->dst) transform, under the
     // assumption that the child shader handles conversion between input and output CS/alpha types.
-    Compose(keyContext,
+    SkDebugf("---- here h\n");
+
+    Compose1(keyContext,
         /* addInnerToKey= */ [&]() -> void {
             AddToKey(workingContext, shader->shader().get());
         },
         /* addOuterToKey= */ [&]() -> void {
             ColorSpaceTransformBlock::ColorSpaceTransformData data(
                     outputCS.get(), workingAT, dstCS.get(), dstAT);
-            ColorSpaceTransformBlock::AddBlock(keyContext, data);
+        SkDebugf("++++++++ 16\n");
+
+            ColorSpaceTransformBlock::AddBlock1(keyContext, data);
         });
 }
 
@@ -2368,12 +2406,16 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
     // The gradient block and colorSpace conversion block need to be combined
     // (via the Compose block) so that the localMatrix block can treat them as
     // one child.
-    Compose(keyContext,
+    SkDebugf("---- here i\n");
+
+    Compose1(keyContext,
             /* addInnerToKey= */ [&]() -> void {
                 GradientShaderBlocks::AddBlock(keyContext, gradData);
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, data);
+        SkDebugf("++++++++ 18\n");
+
+                ColorSpaceTransformBlock::AddBlock1(keyContext, data);
             });
 }
 

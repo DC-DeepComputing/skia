@@ -311,7 +311,9 @@ bool ShadingParams::handlePaintAlpha(const KeyContext& keyContext) const {
 bool ShadingParams::handleColorFilter(const KeyContext& keyContext) const {
     if (fPaint.colorFilter()) {
         bool srcIsOpaque = false;
-        Compose(keyContext,
+    SkDebugf("--- here 33\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     srcIsOpaque = this->handlePaintAlpha(keyContext);
                 },
@@ -330,7 +332,9 @@ bool ShadingParams::handleDithering(const KeyContext& keyContext) const {
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (should_dither(fPaint, ct)) {
         bool srcIsOpaque = false;
-        Compose(keyContext,
+    SkDebugf("--- here 55\n");
+
+        Compose1(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
                     srcIsOpaque = this->handleColorFilter(keyContext);
                 },
