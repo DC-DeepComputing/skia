@@ -30,8 +30,31 @@ public:
     template <typename... Args>
     inline T& append(SkArenaAlloc* arena, Args... args);
 
+    bool empty() const { return this->begin() == this->end(); }
+
+    void prepend(SkArenaAllocList&& head) {
+        if (!head.fHead) {
+            SkASSERT(!head.fTail);
+            return;
+        }
+        SkASSERT(head.fTail);
+
+        if (fTail) {
+            SkASSERT(fHead);
+            head.fTail->fNext = fHead;
+            fHead = head.fHead;
+        } else {
+            SkASSERT(!fHead);
+            fHead = head.fHead;
+            fTail = head.fTail;
+        }
+        head.reset();
+    }
+
     class Iter {
     public:
+        explicit Iter(Node* node) : fCurr(node) {}
+
         Iter() = default;
         inline Iter& operator++();
         T& operator*() const { return fCurr->fT; }
@@ -41,13 +64,12 @@ public:
 
     private:
         friend class SkArenaAllocList;
-        explicit Iter(Node* node) : fCurr(node) {}
         Node* fCurr = nullptr;
     };
 
-    Iter begin() { return Iter(fHead); }
-    Iter end() { return Iter(); }
-    Iter tail() { return Iter(fTail); }
+    Iter begin() const { return Iter(fHead); }
+    Iter end() const { return Iter(); }
+    Iter tail() const { return Iter(fTail); }
 
 private:
     struct Node {
