@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c4699b3_c86e93b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-12-18T18:35:18Z",
+      "side": 1,
+      "message": "Once this fix passes tests and lands, we should be able to reland the rust bmp change.",
+      "revId": "8a7e32898203f3457babd7f8d3d1017618154aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
