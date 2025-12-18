@@ -153,6 +153,16 @@ mod ffi {
         has_b2a: bool,
     }
 
+    /// Identifies whether we're parsing an A2B or B2A tag from the ICC profile.
+    /// This affects encoding factors applied during matrix conversion.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    enum LutTagType {
+        /// A2B tag (device-to-PCS transform)
+        A2B,
+        /// B2A tag (PCS-to-device transform)
+        B2A,
+    }
+
     // C++ wrapper for skcms_ApproximateCurve.
     // Using cxx::bridge for compile-time type safety.
     // The C++ side (FFI.cpp) wraps skcms_ApproximateCurve, so any signature changes
@@ -227,14 +237,7 @@ pub fn parse_icc_profile(data: &[u8], out: &mut ffi::IccProfile) -> bool {
 
     let matrix = profile.colorant_matrix();
     out.to_xyzd50 = matrix3d_to_ffi(&matrix);
-    // Validate colorant matrix: each column must have at least one non-zero value.
-    // Each column represents a colorant's contribution to XYZ (red, green, blue).
-    // An all-zero column would mean that colorant contributes nothing, which is invalid.
-    // moxcms returns a zero matrix when colorant tags (rXYZ, gXYZ, bXYZ) are missing.
-    let red_valid = matrix.v[0][0] != 0.0 || matrix.v[1][0] != 0.0 || matrix.v[2][0] != 0.0;
-    let green_valid = matrix.v[0][1] != 0.0 || matrix.v[1][1] != 0.0 || matrix.v[2][1] != 0.0;
-    let blue_valid = matrix.v[0][2] != 0.0 || matrix.v[1][2] != 0.0 || matrix.v[2][2] != 0.0;
-    out.has_to_xyzd50 = red_valid && green_valid && blue_valid;
+    out.has_to_xyzd50 = is_valid_colorant_matrix(&matrix);
 
     out.has_trc = false;
     if let Some(gray_trc) = &profile.gray_trc {
@@ -267,7 +270,6 @@ pub fn parse_icc_profile(data: &[u8], out: &mut ffi::IccProfile) -> bool {
     }
 
     // Extract A2B transform (device-to-PCS with LUTs)
-    // Prefer perceptual, then colorimetric, then saturation
     out.has_a2b = false;
     if let Some(ref lut) = profile
         .lut_a_to_b_perceptual
@@ -275,12 +277,13 @@ pub fn parse_icc_profile(data: &[u8], out: &mut ffi::IccProfile) -> bool {
         .or(profile.lut_a_to_b_colorimetric.as_ref())
         .or(profile.lut_a_to_b_saturation.as_ref())
     {
-        if let Some(a2b) = convert_to_a2b(lut) {
+        if let Some(a2b) = convert_to_a2b(lut, profile.pcs, LutTagType::A2B) {
             out.a2b = a2b;
             out.has_a2b = true;
         }
     }
 
+    // Extract B2A transform (PCS-to-device with LUTs)
     out.has_b2a = false;
     if let Some(ref lut) = profile
         .lut_b_to_a_perceptual
@@ -288,7 +291,7 @@ pub fn parse_icc_profile(data: &[u8], out: &mut ffi::IccProfile) -> bool {
         .or(profile.lut_b_to_a_colorimetric.as_ref())
         .or(profile.lut_b_to_a_saturation.as_ref())
     {
-        if let Some(a2b_data) = convert_to_a2b(lut) {
+        if let Some(a2b_data) = convert_to_a2b(lut, profile.pcs, LutTagType::B2A) {
             out.b2a = a2b_to_b2a(a2b_data);
             out.has_b2a = true;
         }
@@ -304,6 +307,17 @@ fn u16_vec_to_bytes(values: &[u16]) -> Vec<u8> {
         bytes.extend(value.to_le_bytes());
     }
     bytes
+}
+
+/// Validate colorant matrix: each column must have at least one non-zero value.
+/// Each column represents a colorant's contribution to XYZ (red, green, blue).
+/// An all-zero column would mean that colorant contributes nothing, which is invalid.
+/// moxcms returns a zero matrix when colorant tags (rXYZ, gXYZ, bXYZ) are missing.
+fn is_valid_colorant_matrix(matrix: &moxcms::Matrix3d) -> bool {
+    let column_has_value = |col: usize| -> bool {
+        matrix.v[0][col] != 0.0 || matrix.v[1][col] != 0.0 || matrix.v[2][col] != 0.0
+    };
+    column_has_value(0) && column_has_value(1) && column_has_value(2)
 }
 
 /// Convert moxcms Matrix3d to FFI Matrix3x3.
@@ -332,10 +346,7 @@ fn matrix3d_to_ffi(matrix: &moxcms::Matrix3d) -> ffi::Matrix3x3 {
 /// Convert LutStore to Vec<u16>, scaling 8-bit values to 16-bit range if needed.
 fn lut_store_to_u16(store: &moxcms::LutStore) -> Vec<u16> {
     match store {
-        moxcms::LutStore::Store8(data) => {
-            // Convert u8 to u16 (scale up to 16-bit range)
-            data.iter().map(|&v| (v as u16) << 8).collect()
-        }
+        moxcms::LutStore::Store8(data) => data.iter().map(|&v| (v as u16) << 8).collect(),
         moxcms::LutStore::Store16(data) => data.clone(),
     }
 }
@@ -384,21 +395,109 @@ fn a2b_to_b2a(a2b: ffi::A2B) -> ffi::B2A {
     }
 }
 
+/// Convert LutStore grid data to bytes.
+/// Returns (grid_data, is_16bit_grid).
+fn convert_grid_data(clut: &moxcms::LutStore) -> (Vec<u8>, bool) {
+    use moxcms::LutStore;
+    match clut {
+        LutStore::Store8(data) => (data.clone(), false),
+        LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
+    }
+}
+
+/// Apply encoding factor to matrix and bias for PCS XYZ conversion.
+/// Modifies matrix and bias in place.
+///
+/// skcms applies different encoding factors for A2B vs B2A tags when PCS is XYZ.
+/// See modules/skcms/skcms.cc read_tag_mab (A2B) and read_tag_mba() (B2A)
+fn apply_encoding_factor(
+    matrix: &mut ffi::Matrix3x3,
+    matrix_bias: &mut [f32; 3],
+    pcs: moxcms::DataColorSpace,
+    tag_type: LutTagType,
+) {
+    if !matches!(pcs, moxcms::DataColorSpace::Xyz) {
+        return;
+    }
+    
+    let encoding_factor = match tag_type {
+        LutTagType::A2B => 65535.0 / 32768.0,
+        LutTagType::B2A => 32768.0 / 65535.0,
+    };
+
+    for i in 0..3 {
+        for j in 0..3 {
+            matrix.vals[i][j] *= encoding_factor;
+        }
+        matrix_bias[i] *= encoding_factor;
+    }
+}
+
 /// Convert moxcms parametric curve parameters to TransferFunction.
-/// Returns None if there are fewer than 7 parameters.
+/// Supports all 5 ICC parametric curve types (kG, kGAB, kGABC, kGABCD, kGABCDEF).
+/// TODO(crbug.com/462751628): This function implementation is the same as
+/// moxcms::ParametricCurve::new() but we cannot use it as it is private.
+/// Consider contributing its public exposure to moxcms.
+/// https://github.com/awxkee/moxcms/blob/ce70195bb0f4a911671eea2695f9298d3e77ebe7/src/trc.rs#L234C1-L288C6
+#[allow(clippy::many_single_char_names)]
 fn params_to_transfer_function(params: &[f32]) -> Option<ffi::TransferFunction> {
-    if params.len() >= 7 {
-        Some(ffi::TransferFunction {
-            g: params[0],
-            a: params[1],
-            b: params[2],
-            c: params[3],
-            d: params[4],
-            e: params[5],
-            f: params[6],
-        })
-    } else {
-        None
+    if params.is_empty() {
+        return None;
+    }
+
+    let g = params[0];
+    match &params[1..] {
+        // kG (function type 0): simple gamma, y = x^g
+        [] => Some(ffi::TransferFunction {
+            g,
+            a: 1.0,
+            b: 0.0,
+            c: 0.0,
+            d: 0.0,
+            e: 0.0,
+            f: 0.0,
+        }),
+        // kGAB (function type 1): y = (a*x + b)^g  for x >= -b/a, else 0
+        [a, b] => Some(ffi::TransferFunction {
+            g,
+            a: *a,
+            b: *b,
+            c: 0.0,
+            d: -b / a,
+            e: 0.0,
+            f: 0.0,
+        }),
+        // kGABC (function type 2): y = (a*x + b)^g + c  for x >= -b/a, else c
+        [a, b, c] => Some(ffi::TransferFunction {
+            g,
+            a: *a,
+            b: *b,
+            c: 0.0,
+            d: -b / a,
+            e: *c,
+            f: *c,
+        }),
+        // kGABCD (function type 3): y = (a*x + b)^g  for x >= d, else c*x
+        [a, b, c, d] => Some(ffi::TransferFunction {
+            g,
+            a: *a,
+            b: *b,
+            c: *c,
+            d: *d,
+            e: 0.0,
+            f: 0.0,
+        }),
+        // kGABCDEF (function type 4): full 7-parameter curve
+        [a, b, c, d, e, f] => Some(ffi::TransferFunction {
+            g,
+            a: *a,
+            b: *b,
+            c: *c,
+            d: *d,
+            e: *e,
+            f: *f,
+        }),
+        _ => None,
     }
 }
 
@@ -411,14 +510,26 @@ fn convert_to_curve(trc: &moxcms::ToneReprCurve) -> Option<ffi::Curve> {
     match trc {
         ToneReprCurve::Parametric(params) => {
             params_to_transfer_function(params).map(|tf| ffi::Curve {
-                table_entries: 0, // 0 indicates parametric
+                table_entries: 0,
                 parametric: tf,
                 table_data: Vec::new(),
             })
         }
         ToneReprCurve::Lut(table) => {
             if table.is_empty() {
-                return None;
+                return Some(ffi::Curve {
+                    table_entries: 0,
+                    parametric: ffi::TransferFunction {
+                        g: 1.0,
+                        a: 1.0,
+                        b: 0.0,
+                        c: 0.0,
+                        d: 0.0,
+                        e: 0.0,
+                        f: 0.0,
+                    },
+                    table_data: Vec::new(),
+                });
             }
 
             Some(ffi::Curve {
@@ -432,58 +543,72 @@ fn convert_to_curve(trc: &moxcms::ToneReprCurve) -> Option<ffi::Curve> {
 
 /// Convert moxcms LutWarehouse to A2B structure.
 /// Returns None if the LUT cannot be converted.
-fn convert_to_a2b(lut: &moxcms::LutWarehouse) -> Option<ffi::A2B> {
-    use moxcms::{LutStore, LutWarehouse};
+fn convert_to_a2b(
+    lut: &moxcms::LutWarehouse,
+    pcs: moxcms::DataColorSpace,
+    tag_type: LutTagType,
+) -> Option<ffi::A2B> {
+    use moxcms::LutWarehouse;
 
     match lut {
         LutWarehouse::Multidimensional(mdt) => {
-            // Convert input curves (A curves)
             let input_curves: Vec<ffi::Curve> = mdt
                 .a_curves
                 .iter()
                 .filter_map(|c| convert_to_curve(c))
                 .collect();
 
-            // Grid data
             let (grid_data, is_16bit_grid) = if let Some(ref clut) = mdt.clut {
-                match clut {
-                    LutStore::Store8(data) => (data.clone(), false),
-                    LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
-                }
+                convert_grid_data(clut)
             } else {
                 (Vec::new(), false)
             };
 
-            // Matrix curves (M curves)
             let matrix_curves: Vec<ffi::Curve> = mdt
                 .m_curves
                 .iter()
                 .filter_map(|c| convert_to_curve(c))
                 .collect();
 
-            // Matrix (3x3 part) and bias
-            let matrix = matrix3d_to_ffi(&mdt.matrix);
-            let matrix_bias = [
+            let mut matrix = matrix3d_to_ffi(&mdt.matrix);
+            let mut matrix_bias = [
                 mdt.bias.v[0] as f32,
                 mdt.bias.v[1] as f32,
                 mdt.bias.v[2] as f32,
             ];
+            apply_encoding_factor(&mut matrix, &mut matrix_bias, pcs, tag_type);
 
-            // Output curves (B curves)
             let output_curves: Vec<ffi::Curve> = mdt
                 .b_curves
                 .iter()
                 .filter_map(|c| convert_to_curve(c))
                 .collect();
 
-            // Copy grid_points (first 4 elements)
             let grid_points: [u8; 4] = mdt.grid_points[..4].try_into().unwrap();
 
             let matrix_channels = if matrix_curves.is_empty() { 0 } else { 3 };
 
+            if output_curves.is_empty() {
+                return None;
+            }
+
+            // If there is no CLUT, input and output channels must match
+            // and we set input_channels to 0 to signal "skip this stage"
+            let (final_input_channels, final_input_curves) = if grid_data.is_empty() {
+                if mdt.num_input_channels != mdt.num_output_channels {
+                    return None;
+                }
+                (0, Vec::new())
+            } else {
+                if input_curves.is_empty() {
+                    return None;
+                }
+                (mdt.num_input_channels as u32, input_curves)
+            };
+
             Some(ffi::A2B {
-                input_curves,
-                input_channels: mdt.num_input_channels as u32,
+                input_curves: final_input_curves,
+                input_channels: final_input_channels,
                 grid_points,
                 grid_data,
                 is_16bit_grid,
@@ -499,7 +624,6 @@ fn convert_to_a2b(lut: &moxcms::LutWarehouse) -> Option<ffi::A2B> {
             // Legacy Lut8Type/Lut16Type (mft1/mft2 tags)
             // Similar structure to Multidimensional, but uses uniform grid size
 
-            // Convert input table curves
             let input_curves: Vec<ffi::Curve> = {
                 let curve_data = lut_store_to_u16(&ldt.input_table);
                 split_table_to_curves(
@@ -509,13 +633,8 @@ fn convert_to_a2b(lut: &moxcms::LutWarehouse) -> Option<ffi::A2B> {
                 )
             };
 
-            // CLUT grid data
-            let (grid_data, is_16bit_grid) = match &ldt.clut_table {
-                LutStore::Store8(data) => (data.clone(), false),
-                LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
-            };
+            let (grid_data, is_16bit_grid) = convert_grid_data(&ldt.clut_table);
 
-            // Legacy LUT uses uniform grid size for all dimensions
             let grid_size = ldt.num_clut_grid_points;
             let grid_points: [u8; 4] = match ldt.num_input_channels {
                 3 => [grid_size, grid_size, grid_size, 0],
@@ -523,12 +642,11 @@ fn convert_to_a2b(lut: &moxcms::LutWarehouse) -> Option<ffi::A2B> {
                 _ => [grid_size, 0, 0, 0], // 1D or 2D case
             };
 
-            // Matrix (3x3 part) and bias
-            let matrix = matrix3d_to_ffi(&ldt.matrix);
+            let mut matrix = matrix3d_to_ffi(&ldt.matrix);
             // Legacy LUT matrix is typically applied post-CLUT, so bias is zero
-            let matrix_bias = [0.0, 0.0, 0.0];
+            let mut matrix_bias = [0.0, 0.0, 0.0];
+            apply_encoding_factor(&mut matrix, &mut matrix_bias, pcs, tag_type);
 
-            // Convert output table curves
             let output_curves: Vec<ffi::Curve> = {
                 let curve_data = lut_store_to_u16(&ldt.output_table);
                 split_table_to_curves(
@@ -538,7 +656,6 @@ fn convert_to_a2b(lut: &moxcms::LutWarehouse) -> Option<ffi::A2B> {
                 )
             };
 
-            // Legacy LUT doesn't have separate matrix curves (M curves)
             let matrix_curves: Vec<ffi::Curve> = Vec::new();
             let matrix_channels = 0;
 
@@ -571,11 +688,9 @@ fn convert_trc_to_transfer_function(trc: &moxcms::ToneReprCurve) -> Option<ffi::
             params_to_transfer_function(params)
         }
         ToneReprCurve::Lut(table) => {
-            // Handle simple gamma curves (single-entry LUT)
             // In ICC, a single u16 value represents gamma in 8.8 fixed-point
             if table.len() == 1 {
                 let gamma = table[0] as f32 / 256.0;
-                // Simple power curve: f(x) = x^gamma
                 Some(ffi::TransferFunction {
                     g: gamma,
                     a: 1.0,
@@ -776,14 +891,11 @@ mod tests {
 
     #[test]
     fn test_approximate_curve_linear() {
-        // Test approximating a linear curve (identity function)
-        // Values from 0 to 65535 in steps
         let table: Vec<u16> = (0..=255).map(|i| (i as u16) * 257).collect();
 
         let mut approx = ffi::TransferFunction::default();
         let mut max_error: f32 = 0.0;
 
-        // For testing, use the C++ wrapper directly
         let success = ffi::approximate_curve_wrapper(&table, &mut approx, &mut max_error);
         assert!(success, "Should successfully approximate linear curve");
 
@@ -798,7 +910,6 @@ mod tests {
 
     #[test]
     fn test_approximate_curve_gamma() {
-        // Test approximating a gamma 2.2 curve
         let table: Vec<u16> = (0..=255)
             .map(|i| {
                 let x = i as f32 / 255.0;
@@ -864,40 +975,32 @@ mod tests {
         };
 
         let lut_warehouse = LutWarehouse::Lut(ldt);
-        let result = convert_to_a2b(&lut_warehouse);
+        let result = convert_to_a2b(&lut_warehouse, moxcms::DataColorSpace::Lab, LutTagType::A2B);
 
         assert!(result.is_some(), "Should successfully convert legacy LUT");
         let a2b = result.unwrap();
 
-        // Verify channel counts
         assert_eq!(a2b.input_channels, 3);
         assert_eq!(a2b.output_channels, 3);
 
-        // Verify grid points (uniform 2x2x2 for 3 input channels)
         assert_eq!(a2b.grid_points, [2, 2, 2, 0]);
 
-        // Verify 3 input curves (one per channel)
         assert_eq!(a2b.input_curves.len(), 3);
         assert_eq!(a2b.input_curves[0].table_entries, 256);
 
-        // Verify 3 output curves (one per channel)
         assert_eq!(a2b.output_curves.len(), 3);
         assert_eq!(a2b.output_curves[0].table_entries, 256);
 
-        // Verify no matrix curves (legacy LUT doesn't have M curves)
         assert_eq!(a2b.matrix_curves.len(), 0);
         assert_eq!(a2b.matrix_channels, 0);
 
-        // Verify grid data is present and 16-bit
         assert!(!a2b.grid_data.is_empty());
         assert!(a2b.is_16bit_grid);
 
-        // Verify matrix is identity
         assert_eq!(a2b.matrix.vals[0][0], 1.0);
         assert_eq!(a2b.matrix.vals[1][1], 1.0);
         assert_eq!(a2b.matrix.vals[2][2], 1.0);
 
-        // Verify bias is zero
         assert_eq!(a2b.matrix_bias, [0.0, 0.0, 0.0]);
     }
 
@@ -925,7 +1028,7 @@ mod tests {
         };
 
         let lut_warehouse = LutWarehouse::Lut(ldt);
-        let result = convert_to_a2b(&lut_warehouse);
+        let result = convert_to_a2b(&lut_warehouse, moxcms::DataColorSpace::Lab, LutTagType::A2B);
 
         assert!(
             result.is_some(),
@@ -933,15 +1036,12 @@ mod tests {
         );
         let a2b = result.unwrap();
 
-        // Verify grid data is 8-bit
         assert!(!a2b.is_16bit_grid);
         assert!(!a2b.grid_data.is_empty());
 
-        // Verify input/output curves converted from 8-bit to 16-bit
         assert_eq!(a2b.input_curves.len(), 3);
         assert_eq!(a2b.output_curves.len(), 3);
 
-        // Check that table data is in 16-bit format (u16 values as bytes)
         // Each curve should have 256 entries * 2 bytes per entry
         assert_eq!(a2b.input_curves[0].table_data.len(), 256 * 2);
     }
@@ -976,7 +1076,7 @@ mod tests {
         };
 
         let lut_warehouse = LutWarehouse::Lut(ldt);
-        let result = convert_to_a2b(&lut_warehouse);
+        let result = convert_to_a2b(&lut_warehouse, moxcms::DataColorSpace::Lab, LutTagType::A2B);
 
         assert!(
             result.is_some(),
@@ -984,14 +1084,11 @@ mod tests {
         );
         let a2b = result.unwrap();
 
-        // Verify 4 input channels
         assert_eq!(a2b.input_channels, 4);
         assert_eq!(a2b.input_curves.len(), 4);
 
-        // Verify grid points for 4D CLUT
         assert_eq!(a2b.grid_points, [2, 2, 2, 2]);
 
-        // Verify 3 output channels (to XYZ/Lab)
         assert_eq!(a2b.output_channels, 3);
         assert_eq!(a2b.output_curves.len(), 3);
     }
@@ -1017,7 +1114,7 @@ mod tests {
         };
 
         let lut_warehouse = LutWarehouse::Lut(ldt);
-        let result = convert_to_a2b(&lut_warehouse);
+        let result = convert_to_a2b(&lut_warehouse, moxcms::DataColorSpace::Lab, LutTagType::A2B);
 
         assert!(result.is_some(), "Should handle empty tables gracefully");
         let a2b = result.unwrap();
@@ -1065,7 +1162,7 @@ mod tests {
         };
 
         let lut_warehouse = LutWarehouse::Lut(ldt);
-        let result = convert_to_a2b(&lut_warehouse);
+        let result = convert_to_a2b(&lut_warehouse, moxcms::DataColorSpace::Lab, LutTagType::A2B);
 
         assert!(result.is_some(), "Should convert LUT with custom matrix");
         let a2b = result.unwrap();
@@ -1075,28 +1172,24 @@ mod tests {
         assert!((a2b.matrix.vals[1][1] - 0.7152).abs() < 0.001);
         assert!((a2b.matrix.vals[2][2] - 0.9505).abs() < 0.001);
 
-        // Bias should still be zero for legacy LUT
         assert_eq!(a2b.matrix_bias, [0.0, 0.0, 0.0]);
     }
 
     #[test]
     fn test_u16_vec_to_bytes() {
-        // Test the helper function for little-endian conversion
         let values: Vec<u16> = vec![0x0000, 0x00FF, 0xFF00, 0xFFFF];
         let bytes = u16_vec_to_bytes(&values);
 
-        assert_eq!(bytes.len(), 8); // 4 values * 2 bytes each
+        assert_eq!(bytes.len(), 8);
 
-        // Verify little-endian encoding
-        assert_eq!(bytes[0..2], [0x00, 0x00]); // 0x0000
-        assert_eq!(bytes[2..4], [0xFF, 0x00]); // 0x00FF
-        assert_eq!(bytes[4..6], [0x00, 0xFF]); // 0xFF00
-        assert_eq!(bytes[6..8], [0xFF, 0xFF]); // 0xFFFF
+        assert_eq!(bytes[0..2], [0x00, 0x00]);
+        assert_eq!(bytes[2..4], [0xFF, 0x00]);
+        assert_eq!(bytes[4..6], [0x00, 0xFF]);
+        assert_eq!(bytes[6..8], [0xFF, 0xFF]);
     }
 
     #[test]
     fn test_params_to_transfer_function() {
-        // Test with valid 7 parameters
         let params = vec![2.2, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0];
         let result = params_to_transfer_function(&params);
         assert!(result.is_some());
@@ -1104,14 +1197,12 @@ mod tests {
         assert_eq!(tf.g, 2.2);
         assert_eq!(tf.a, 1.0);
 
-        // Test with too few parameters
         let params_short = vec![2.2, 1.0];
         let result_short = params_to_transfer_function(&params_short);
         assert!(result_short.is_none());
 
-        // Test with more than 7 parameters (should still work)
         let params_long = vec![2.2, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 99.0, 99.0];
         let result_long = params_to_transfer_function(&params_long);
-        assert!(result_long.is_some());
+        assert!(result_long.is_none());
     }
 }
