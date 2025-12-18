@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2901ed_52a8ae8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-18T20:01:27Z",
+      "side": 1,
+      "message": "nit: Please wrap git commit description to 72 columns.",
+      "range": {
+        "startLine": 17,
+        "startChar": 93,
+        "endLine": 17,
+        "endChar": 94
+      },
+      "revId": "dd125aaea3fc21954e9a72e0ead4393d94f209f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e283b68_dd1fc343",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-12-18T20:01:27Z",
+      "side": 1,
+      "message": "nit: Would it be possible to replace `bool` with an `enum` for clarity?  Maybe:\n\n* Take `pcs: moxcms::DataColorSpace` as a parameter here (and maybe that would also mean that there would be no need for `let pcs_is_xyz...` in the caller)\n* (optional) Introduce a new 2-value `enum` for `is_b2a_tag`?  (\"optional\", because I have a hard time coming up with a good name for this enum and its variants/values...)\n\n(Same feedback below for `convert_to_a2b`)",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 410,
+        "endChar": 21
+      },
+      "revId": "dd125aaea3fc21954e9a72e0ead4393d94f209f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
