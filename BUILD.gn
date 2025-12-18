@@ -41,7 +41,7 @@ config("skia_public") {
   if (skia_enable_precompile) {
     defines += [ "SK_ENABLE_PRECOMPILE" ]
   }
-  if (is_wasm) {
+  if (is_wasm || is_wasm2) {
     defines += wasm_defines
   }
   if (skia_gl_standard == "gles") {
@@ -1665,6 +1665,10 @@ skia_source_set("core") {
     ":png_encode_libpng",
   ]
   deps = [ ":typeface_fontations" ]
+
+  if (is_wasm2 && wasm2_api == "browser") {
+    deps += [ "//gn/toolchain:emsdk" ]
+  }
 }
 
 skia_component("skia") {
@@ -1793,7 +1797,7 @@ skia_component("skia") {
     ]
   }
 
-  if (is_linux || is_wasm) {
+  if (is_linux || is_wasm || is_wasm2) {
     sources += [ "src/ports/SkDebug_stdio.cpp" ]
     if (skia_use_egl) {
       libs += [ "GLESv2" ]
@@ -2142,7 +2146,7 @@ if (skia_enable_tools) {
       libs = []
       frameworks = []
 
-      if (skia_use_gl && target_cpu != "wasm") {
+      if (skia_use_gl && !is_wasm) {
         if (is_android || skia_use_egl) {
           sources +=
               [ "tools/ganesh/gl/egl/CreatePlatformGLTestContext_egl.cpp" ]
@@ -2221,6 +2225,10 @@ if (skia_enable_tools) {
           } else if (is_mac) {
             sources +=
                 [ "tools/ganesh/gl/mac/CreatePlatformGLTestContext_mac.cpp" ]
+          } else if (is_wasm2) {
+            sources += [
+              "tools/ganesh/gl/webgl/CreatePlatformGLTestContext_webgl.cpp",
+            ]
           }
           if (skia_use_angle) {
             deps += [ "//third_party/angle2" ]
@@ -2405,7 +2413,7 @@ if (skia_enable_tools) {
       ]
     }
 
-    if (target_cpu != "wasm") {
+    if (!is_wasm) {
       sources += [ "tools/CrashHandler.cpp" ]
     }
     libs = []
@@ -2637,7 +2645,7 @@ if (skia_enable_tools) {
       "//third_party/libpng",
     ]
   }
-  if (target_cpu != "wasm") {
+  if (!is_wasm) {
     if (skia_enable_tools_that_might_need_ganesh) {
       test_app("convert-to-nia") {
         sources = [ "tools/convert-to-nia.cpp" ]
