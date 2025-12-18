@@ -553,6 +553,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         SkDebugf("failed to enumerate instance version. Err: %d\n", err);
         return false;
     }
+    SkDebugf("vkEnumerateInstanceVersion %d 1.1 %d\n", instanceVersion, VK_API_VERSION_1_1);
     SkASSERT(instanceVersion >= VK_API_VERSION_1_1);
     // We can set the apiVersion to be whatever the highest api we may use in skia. For now we
     // set it to 1.1 since that is the most common Vulkan version on Android devices.
@@ -570,7 +571,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         "vktest",                           // pApplicationName
         0,                                  // applicationVersion
         "vktest",                           // pEngineName
-        0,                                  // engineVerison
+        0,                                  // engineVersion
         apiVersion,                         // apiVersion
     };
 
@@ -586,11 +587,16 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     TArray<const char*> instanceLayerNames;
     std::vector<const char*> instanceExtensionNames;
     for (int i = 0; i < instanceLayers.size(); ++i) {
+        SkDebugf("Layer %d: %s\n", i, instanceLayers[i].layerName);
         instanceLayerNames.push_back(instanceLayers[i].layerName);
     }
     for (int i = 0; i < instanceExtensions.size(); ++i) {
+        SkDebugf("Extension %d: %s\n", i, instanceExtensions[i].extensionName);
         instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
     }
+
+    instanceExtensions.clear();
+    instanceExtensionNames.clear();
 
     testVkFeatures->skiaFeatures.init(apiVersion);
     testVkFeatures->skiaFeatures.addToInstanceExtensions(
@@ -610,7 +616,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     bool hasDebugExtension = false;
     *debugMessenger = VK_NULL_HANDLE;
 
-#ifdef SK_ENABLE_VK_LAYERS
+#if 0
     bool hasLayerSettingsExt = false;
     for (size_t i = 0; i < instanceExtensionNames.size()
                        && !hasDebugExtension && !hasLayerSettingsExt; ++i) {
@@ -663,7 +669,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ACQUIRE_VK_INST_PROC(CreateInstance, VK_NULL_HANDLE);
     err = grVkCreateInstance(&instance_create, nullptr, &inst);
     if (err < 0) {
-        SkDebugf("vkCreateInstance failed: %d\n", err);
+        SkDebugf("1 --- vkCreateInstance failed: %d\n", err);
         return false;
     }
 
