@@ -653,6 +653,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
         TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
 
         if (sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()) {
+            SkDebugf("----here 1\n");
             TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline-CacheLookup");
 
             pipelineCreateInfo->flags |=
@@ -667,9 +668,11 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
                                             /*pAllocator=*/nullptr,
                                             &vkPipeline));
             sharedContext->checkVkResult(result);
+            SkDebugf("----here 2 %d\n", result == VK_PIPELINE_COMPILE_REQUIRED);
         }
 
         if (result == VK_PIPELINE_COMPILE_REQUIRED) {
+            SkDebugf("----here 3\n");
             TRACE_EVENT0_ALWAYS(
                 "skia.shaders",
                 TRACE_STR_STATIC(sharedContext->vulkanCaps().supportsPipelineCreationCacheControl()
@@ -689,6 +692,7 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
             if (result == VK_SUCCESS) {
                 sharedContext->pipelineCompileWasRequired();
             }
+            SkDebugf("----here 4\n");
         }
     }
     if (result != VK_SUCCESS) {
