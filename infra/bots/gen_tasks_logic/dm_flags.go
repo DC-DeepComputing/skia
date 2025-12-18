@@ -1447,6 +1447,15 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skbug.com/40044345
 	}
 
+	if b.GPU("RadeonVega8") && b.ExtraConfig("ANGLE") {
+		skip(ALL, "test", ALL, "TransferPixelsFromTextureTest")
+		skip(ALL, "test", ALL, "ES2BlendWithNoTexture")
+		skip(ALL, "test", ALL, "SkRuntimeBlender_Ganesh")
+		skip(ALL, "test", ALL, "SkImage_MakeCrossContextFromPixmapRelease")
+		skip(ALL, "test", ALL, "Programs")
+		skip(ALL, "test", ALL, "BlendRequiringDstReadWithLargeCoordinates")
+	}
+
 	match := []string{}
 
 	if b.ExtraConfig("Graphite") {
@@ -1562,6 +1571,12 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.GPU("IntelIris6100", "IntelHD4400") && b.ExtraConfig("ANGLE") {
 		// skbug.com/40038077
 		skip("angle_d3d9_es2", "gm", ALL, "lighting")
+	}
+
+	if b.GPU("IntelHD4400") && b.ExtraConfig("ANGLE") {
+		skip(ALL, "test", ALL, "ES2BlendWithNoTexture")
+		skip(ALL, "test", ALL, "Programs")
+		skip(ALL, "test", ALL, "ResourceCacheStencilBuffers")
 	}
 
 	if b.GPU("PowerVRGX6250") {
