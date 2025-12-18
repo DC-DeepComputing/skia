@@ -21,6 +21,20 @@ vars = {
 
   # Pre-built task drivers from this repo, used for CI.
   'task_drivers_revision': 'git_revision:b5d31abb7bc772a69f800de45783768768437675',
+
+  # wasm runtime, used for wasm development
+  'wasmtime_version': 'v39.0.1',
+  'wasmtime_download_url_base': 'https://github.com/bytecodealliance/wasmtime/releases/download/v39.0.1',
+  'wasmtime_archive_sha256': {
+    'wasmtime-v39.0.1-aarch64-macos.tar.xz': '3878fc98ab1fec191476ddec5d195e6d018d7fbe5376e54d2c23aedf38aa1bd2',
+  },
+
+  # wasi-sdk llvm toolchain, used for non-browser wasm compilation
+  'wasi-sdk_version': 'wasi-sdk-29.0',
+  'wasi-sdk_download_url_base': 'https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-29',
+  'wasi-sdk_archive_sha256': {
+    'wasi-sdk-29.0-arm64-macos.tar.gz': 'e11552913e3f99e834d7fe7da1bd081abaf764759ed76b6097a34c63fc83665e',
+  },
 }
 
 # If you modify this file, you will need to regenerate the Bazel version of this file (bazel/deps.bzl).
