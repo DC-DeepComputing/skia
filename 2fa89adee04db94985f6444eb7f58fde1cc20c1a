@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "660a3270_bb9adf7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5700
+      },
+      "writtenOn": "2025-12-18T23:46:59Z",
+      "side": 1,
+      "message": "This will fix crbug.com/462025294 too; could we reference that bug in the CL description?\n\nIs there a possibility this could be landed soon to give it bake time before the new year? Thanks.",
+      "revId": "2fa89adee04db94985f6444eb7f58fde1cc20c1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
