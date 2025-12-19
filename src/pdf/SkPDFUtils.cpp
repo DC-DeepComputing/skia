@@ -340,8 +340,8 @@ void SkPDFUtils::PopulateTilingPatternDict(SkPDFDict* pattern,
     pattern->insertInt("PaintType", kColoredTilingPattern_PaintType);
     pattern->insertInt("TilingType", kConstantSpacing_TilingType);
     pattern->insertObject("BBox", SkPDFUtils::RectToArray(bbox));
-    pattern->insertScalar("XStep", bbox.width());
-    pattern->insertScalar("YStep", bbox.height());
+    pattern->insertScalar("XStep", bbox.width() + 2);
+    pattern->insertScalar("YStep", bbox.height() + 2);
     pattern->insertObject("Resources", std::move(resources));
     if (!matrix.isIdentity()) {
         pattern->insertObject("Matrix", SkPDFUtils::MatrixToArray(matrix));
