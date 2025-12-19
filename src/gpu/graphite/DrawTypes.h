@@ -175,6 +175,12 @@ enum class BarrierType : uint8_t {
     kReadDstFromInput,
 };
 
+enum class BoundsTest {
+    kDisjoint,
+    kCompatibleOverlap,
+    kIncompatibleOverlap
+};
+
 enum class DstUsage : uint8_t {
     kNone            = 0,
     kDependsOnDst    = 0b001,
