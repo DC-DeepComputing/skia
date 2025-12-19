@@ -173,8 +173,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ComposeFailureWithInputElision,
 
     // Install a non-trivial shader, so the color filter isn't just applied to the paint color:
     const SkPoint pts[] = {{0, 0}, {100, 100}};
-    const SkColor colors[] = {SK_ColorWHITE, SK_ColorBLACK};
-    paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp));
+    const SkColor4f colors[] = {SkColors::kWhite, SkColors::kBlack};
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
 
     // Our inner (first) color filter does a "blend" (kSrc) against green, *discarding* the input:
     auto inner = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kSrc);

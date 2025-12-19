@@ -764,9 +764,9 @@ static SkPath create_path_47() {
 static std::unique_ptr<GrFragmentProcessor>
 create_linear_gradient_processor(skgpu::ganesh::SurfaceDrawContext* sdc, const SkMatrix& ctm) {
     SkPoint pts[2] = { {0, 0}, {1, 1} };
-    SkColor colors[2] = { SK_ColorGREEN, SK_ColorBLUE };
-    sk_sp<SkShader> shader = SkGradientShader::MakeLinear(
-        pts, colors, nullptr, std::size(colors), SkTileMode::kClamp);
+    SkColor4f colors[2] = { SkColors::kGreen, SkColors::kBlue };
+    sk_sp<SkShader> shader = SkShaders::LinearGradient(
+        pts, {{colors, {}, SkTileMode::kClamp}, {}});
     GrColorInfo colorInfo(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr);
     SkSurfaceProps props; // default props for testing
     return GrFragmentProcessors::Make(

@@ -155,12 +155,9 @@ void draw_gradient_circle(SkCanvas* canvas, int width, int height) {
     SkScalar y = SkIntToScalar(height / 2);
     SkScalar radius = std::min(x, y) * 0.8f;
     canvas->clear(0x00000000);
-    SkColor colors[2];
-    colors[0] = SK_ColorWHITE;
-    colors[1] = SK_ColorBLACK;
+    const SkColor4f colors[] = {SkColors::kWhite, SkColors::kBlack};
     sk_sp<SkShader> shader(
-        SkGradientShader::MakeRadial(SkPoint::Make(x, y), radius, colors, nullptr, 2,
-                                       SkTileMode::kClamp)
+        SkShaders::RadialGradient({x, y}, radius, {{colors, {}, SkTileMode::kClamp}, {}})
     );
     SkPaint paint;
     paint.setShader(shader);
