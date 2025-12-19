@@ -16,6 +16,23 @@
       "message": "This will fix crbug.com/462025294 too; could we reference that bug in the CL description?\n\nIs there a possibility this could be landed soon to give it bake time before the new year? Thanks.",
       "revId": "2fa89adee04db94985f6444eb7f58fde1cc20c1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4c67d47_4a7146c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-12-19T06:25:49Z",
+      "side": 1,
+      "message": "This has higher priority now since the DMSAA path seems to cause visual glitches on some clients with NVIDIA GPUs https://crbug.com/458086479",
+      "revId": "2fa89adee04db94985f6444eb7f58fde1cc20c1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
