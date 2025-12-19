@@ -35,6 +35,8 @@ declare_args() {
   ios_use_simulator =
       target_os == "ios" && (target_cpu == "x86" || target_cpu == "x64")
 
+  is_standalone_wasm = false
+
   # Enable -H, which prints the include tree during compilation.
   # For use by external tools for analyzing include files.
   show_includes = false
@@ -47,6 +49,10 @@ declare_args() {
 }
 
 assert(!(is_debug && is_official_build))
+
+if (is_standalone_wasm) {
+  target_cpu = "wasm"
+}
 
 if (target_cpu == "wasm") {
   target_os = "wasm"
@@ -68,8 +74,11 @@ is_ios = current_os == "ios" || current_os == "tvos"
 is_tvos = current_os == "tvos"
 is_linux = current_os == "linux"
 is_mac = current_os == "mac"
-is_wasm = current_os == "wasm"
 is_win = current_os == "win"
+
+# is_wasm refers to WASM builds integrated with CanvasKit.
+is_wasm = current_os == "wasm" && !is_standalone_wasm
+is_any_wasm = is_wasm || is_standalone_wasm
 
 # Dawn has references to fuchsia, but Skia's GN rules do not
 is_fuchsia = false
@@ -197,6 +206,9 @@ if (is_trivial_abi) {
 if (!is_official_build) {
   default_configs += [ "//gn/skia:debug_symbols" ]
 }
+if (is_standalone_wasm) {
+  default_configs += [ "//gn/skia:standalone_wasm" ]
+}
 default_configs += [ "//gn/skia:extra_flags" ]
 
 set_defaults("executable") {
@@ -238,7 +250,7 @@ if (is_win) {
   set_default_toolchain("//gn/toolchain:msvc")
   default_toolchain_name = "msvc"
   host_toolchain = "msvc_host"
-} else if (is_wasm) {
+} else if (is_any_wasm) {
   set_default_toolchain("//gn/toolchain:wasm")
   default_toolchain_name = "wasm"
   host_toolchain = "wasm"
