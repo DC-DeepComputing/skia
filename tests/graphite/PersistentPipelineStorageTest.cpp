@@ -55,12 +55,8 @@ bool draw(GraphiteTestContext* origTestContext,
         SkPaint paint;
         if (withGradient) {
             const SkPoint pts[] = {{0, 0}, {64, 64}};
-            const SkColor colors[] = {SK_ColorWHITE, SK_ColorBLACK};
-            paint.setShader(SkGradientShader::MakeLinear(pts,
-                                                         colors,
-                                                         nullptr,
-                                                         /* count= */ 2,
-                                                         SkTileMode::kClamp));
+            const SkColor4f colors[] = {SkColors::kWhite, SkColors::kBlack};
+            paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
         }
         surface->getCanvas()->drawRRect(SkRRect::MakeOval({16, 16, 48, 48 }), paint);
     }

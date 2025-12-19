@@ -53,12 +53,12 @@ static void test_unscaled(skiatest::Reporter* reporter) {
     canvasPaint.clear(0x00000000);
 
     SkPoint center = SkPoint::Make(SkIntToScalar(5), SkIntToScalar(5));
-    SkColor colors[] = {SK_ColorBLUE, SK_ColorRED, SK_ColorGREEN};
+    SkColor4f colors[] = {SkColors::kBlue, SkColors::kRed, SkColors::kGreen};
     SkScalar pos[] = {0, SK_ScalarHalf, SK_Scalar1};
     SkScalar radius = SkIntToScalar(5);
 
-    sk_sp<SkShader> gradient = SkGradientShader::MakeRadial(
-            center, radius, colors, pos, std::size(colors), SkTileMode::kClamp);
+    sk_sp<SkShader> gradient = SkShaders::RadialGradient(
+            center, radius, {{colors, pos, SkTileMode::kClamp}, {}});
 
     // Test using the image filter
     {
@@ -101,12 +101,12 @@ static void test_scaled(skiatest::Reporter* reporter) {
     canvasPaint.clear(0x00000000);
 
     SkPoint center = SkPoint::Make(SkIntToScalar(5), SkIntToScalar(5));
-    SkColor colors[] = {SK_ColorBLUE, SK_ColorRED, SK_ColorGREEN};
+    SkColor4f colors[] = {SkColors::kBlue, SkColors::kRed, SkColors::kGreen};
     SkScalar pos[] = {0, SK_ScalarHalf, SK_Scalar1};
     SkScalar radius = SkIntToScalar(5);
 
-    sk_sp<SkShader> gradient = SkGradientShader::MakeRadial(
-        center, radius, colors, pos, std::size(colors), SkTileMode::kClamp);
+    sk_sp<SkShader> gradient = SkShaders::RadialGradient(
+        center, radius, {{colors, pos, SkTileMode::kClamp}, {}});
 
     // Test using the image filter
     {
