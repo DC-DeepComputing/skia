@@ -16,6 +16,46 @@
       "message": "Happy to make any changes! After this I think a good next step would be adding a basic build bot for this config.",
       "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c6bb0a3_d4f5fa65",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-19T20:01:42Z",
+      "side": 1,
+      "message": "🤯",
+      "range": {
+        "startLine": 777,
+        "startChar": 8,
+        "endLine": 777,
+        "endChar": 15
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a5b21b_f1b75f9c",
+        "filename": "include/private/base/SkFeatures.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-12-19T20:01:42Z",
+      "side": 1,
+      "message": "Should we define `SK_BUILD_FOR_WASM` instead?  It fits the pattern and may come in handy in the future.",
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
