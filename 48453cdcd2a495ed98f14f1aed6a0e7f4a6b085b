@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "928bc814_f7b11672",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-19T21:36:59Z",
+      "side": 1,
+      "message": "Unfortunately CGContextDrawPDFPage (every other viewer seems to be fine) doesn\u0027t appear to apply the transforms in the right order, leading to weird drawing when applying shaders.",
+      "revId": "48453cdcd2a495ed98f14f1aed6a0e7f4a6b085b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
