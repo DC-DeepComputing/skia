@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67ac6fb2_22db2a02",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-22T15:32:31Z",
+      "side": 1,
+      "message": "This would obviously need to be dependent, but the idea is to provide a transition from `wasm32-unknown-emscripten` to `wasm32-unknown-unknown` so that this can be linked into the `cc_library` that depends on it as opposed to being output as a separate `.js` \"static library\".",
+      "revId": "4ebbaf5b7b26f5797831511334500fff78e87954",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
