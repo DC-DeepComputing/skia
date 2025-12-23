@@ -72,6 +72,7 @@ bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInf
     // TODO: add SkTextureCompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
 
+    //return true;
     return SkToBool(this->getColorTypeInfo(ct, info));
 }
 

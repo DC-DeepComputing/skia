@@ -104,6 +104,8 @@ public:
                                                  const SkBitmap&,
                                                  std::string_view label);
 
+    std::optional<BackendTexture> convertBackendTextureIfNeeded(const BackendTexture& beTex);
+
     uint32_t uniqueID() const { return fRecorder->fUniqueID; }
 
 #if defined(SK_DEBUG)
@@ -112,10 +114,10 @@ public:
 
     size_t getResourceCacheLimit() const;
 
+    SharedContext* sharedContext() { return fRecorder->fSharedContext.get(); }
 #if defined(GPU_TEST_UTILS)
     bool deviceIsRegistered(Device*) const;
     ResourceCache* resourceCache() { return fRecorder->fResourceProvider->resourceCache(); }
-    SharedContext* sharedContext() { return fRecorder->fSharedContext.get(); }
     // used by the Context that created this Recorder to set a back pointer
     void setContext(Context*);
     Context* context() { return fRecorder->fContext; }

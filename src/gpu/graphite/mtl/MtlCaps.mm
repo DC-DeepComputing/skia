@@ -941,9 +941,15 @@ TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
 
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
-    MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
-    if (mtlFormat == MTLPixelFormatInvalid) {
-        return nullptr;
+    MTLPixelFormat mtlFormat;
+    if (false && textureInfo.backend() != BackendApi::kMetal) {
+        mtlFormat = MTLPixelFormatRGBA8Unorm;
+        ct = kRGBA_8888_SkColorType;
+    } else {
+        mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
+        if (mtlFormat == MTLPixelFormatInvalid) {
+            return nullptr;
+        }
     }
 
     const FormatInfo& info = this->getFormatInfo(mtlFormat);
@@ -1091,6 +1097,7 @@ bool MtlCaps::onIsTexturable(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
     }
+    return true;
     const auto& mtlInfo = TextureInfoPriv::Get<MtlTextureInfo>(info);
     if (!(mtlInfo.fUsage & MTLTextureUsageShaderRead)) {
         return false;
@@ -1110,6 +1117,7 @@ bool MtlCaps::isRenderable(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
     }
+    return true;
     TextureFormat format = TextureInfoPriv::ViewFormat(info);
     const auto& mtlInfo = TextureInfoPriv::Get<MtlTextureInfo>(info);
     return (mtlInfo.fUsage & MTLTextureUsageRenderTarget) &&
