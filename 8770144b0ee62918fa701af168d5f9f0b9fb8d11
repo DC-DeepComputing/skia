@@ -70,6 +70,30 @@
       },
       "revId": "8770144b0ee62918fa701af168d5f9f0b9fb8d11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7ea1cd1_640e4e59",
+        "filename": "src/gpu/ganesh/vk/GrVkUtil.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-12-23T19:47:52Z",
+      "side": 1,
+      "message": "Added as a TODO due to capacity -- thanks!",
+      "parentUuid": "af6e63d7_cc14017a",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 5
+      },
+      "revId": "8770144b0ee62918fa701af168d5f9f0b9fb8d11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
