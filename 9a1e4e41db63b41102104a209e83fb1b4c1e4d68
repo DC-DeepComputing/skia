@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a616d1e_cc363711",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-23T13:09:38Z",
+      "side": 1,
+      "message": "lgtm. I don\u0027t find the existing comments throughout the Rust too verbose, so I\u0027d vaguely prefer keeping them (or maybe I just need them cause I\u0027m not fluent when reading Rust)",
+      "revId": "9a1e4e41db63b41102104a209e83fb1b4c1e4d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

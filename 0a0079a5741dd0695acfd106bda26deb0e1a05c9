@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15e69839_daf01ce1",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-12-23T13:09:38Z",
+      "side": 0,
+      "message": "I find these comments help when when reading, so I\u0027d be fine leaving them (I was on the fence about some of the ones above, but these seem useful).",
+      "revId": "0a0079a5741dd0695acfd106bda26deb0e1a05c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
