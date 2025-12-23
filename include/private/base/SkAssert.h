@@ -11,6 +11,7 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAttributes.h"
 #include "include/private/base/SkDebug.h" // IWYU pragma: keep
+#include "include/private/base/SkLogPriority.h"
 
 #include <cstddef>
 #include <limits>
@@ -69,7 +70,7 @@
 #  endif
 #  define SK_ABORT(message, ...) \
     do { \
-        SkDebugf(SK_DUMP_LINE_FORMAT ": fatal error: \"" message "\"\n", \
+        SkDebugf(SkLogPriority::kFatal, SK_DUMP_LINE_FORMAT ": fatal error: \"" message "\"\n", \
                  __FILE__, __LINE__, ##__VA_ARGS__); \
         SK_DUMP_GOOGLE3_STACK(); \
         sk_abort_no_print(); \
