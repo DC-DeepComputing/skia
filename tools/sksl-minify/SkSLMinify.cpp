@@ -33,10 +33,21 @@ static bool gUnoptimized = false;
 static bool gStringify = false;
 static SkSL::ProgramKind gProgramKind = SkSL::ProgramKind::kFragment;
 
+void vSkDebugf(SkLogPriority priority, const char format[], va_list args) {
+    vfprintf(stderr, format, args);
+}
+
+void SkDebugf(SkLogPriority priority, const char format[], ...) {
+    va_list args;
+    va_start(args, format);
+    vSkDebugf(priority, format, args);
+    va_end(args);
+}
+
 void SkDebugf(const char format[], ...) {
     va_list args;
     va_start(args, format);
-    vfprintf(stderr, format, args);
+    vSkDebugf(SkLogPriority::kDebug, format, args);
     va_end(args);
 }
 

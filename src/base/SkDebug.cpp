@@ -14,3 +14,17 @@ void SkDebugfForDumpStackTrace(const char* data, void* unused) {
     SkDebugf("%s", data);
 }
 #endif
+
+void SkDebugf(SkLogPriority priority, const char format[], ...) {
+    va_list args;
+    va_start(args, format);
+    vSkDebugf(priority, format, args);
+    va_end(args);
+}
+
+void SkDebugf(const char format[], ...) {
+    va_list args;
+    va_start(args, format);
+    vSkDebugf(SkLogPriority::kDebug, format, args);
+    va_end(args);
+}
