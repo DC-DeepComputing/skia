@@ -16,6 +16,24 @@
       "message": "Have you confirmed this works for both backends? If so, then LGTM",
       "revId": "5f3906e060e1b3b36539cb778a4c12fbf0dc8424",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d2d9ba2_36628d50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-12-23T21:29:38Z",
+      "side": 1,
+      "message": "Yep! Confirmed in Android framework builds for both HWUI-GaneshVk and RE-GraphiteVk.",
+      "parentUuid": "def31a28_a730cd6c",
+      "revId": "5f3906e060e1b3b36539cb778a4c12fbf0dc8424",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
