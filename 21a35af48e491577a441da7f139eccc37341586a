@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86bfb279_39b46224",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T20:44:52Z",
+      "side": 1,
+      "message": "`SkCodec::getSampler` is only called from `SkCodec::fillIncompleteImage` which is only callable from `SkCodec::getPixels` (already handles options) and `SkCodec::getScanlines`, which is only valid to be called after `startScanlineDecode`, which I\u0027ve updated to use the default max budget.",
+      "parentUuid": "df59ba5b_a87eb685",
+      "revId": "21a35af48e491577a441da7f139eccc37341586a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bc28573_b277a45d",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-16T18:36:28Z",
       "side": 1,
       "message": "nit: indentation",
+      "revId": "21a35af48e491577a441da7f139eccc37341586a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1423a2f3_9a9a95a8",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T20:44:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bc28573_b277a45d",
       "revId": "21a35af48e491577a441da7f139eccc37341586a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
