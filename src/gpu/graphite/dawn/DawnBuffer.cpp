@@ -9,6 +9,7 @@
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/private/base/SkAlign.h"
+#include "include/private/base/SkLogPriority.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -23,7 +24,7 @@ bool is_map_succeeded(WGPUBufferMapAsyncStatus status) {
 [[maybe_unused]]
 void log_map_error(WGPUBufferMapAsyncStatus status, const char*) {
     const char* statusStr;
-    LogPriority priority = LogPriority::kError;
+    SkLogPriority priority = SkLogPriority::kError;
     switch (status) {
         case WGPUBufferMapAsyncStatus_ValidationError:
             statusStr = "ValidationError";
@@ -36,11 +37,11 @@ void log_map_error(WGPUBufferMapAsyncStatus status, const char*) {
             break;
         case WGPUBufferMapAsyncStatus_DestroyedBeforeCallback:
             statusStr = "DestroyedBeforeCallback";
-            priority = LogPriority::kDebug;
+            priority = SkLogPriority::kDebug;
             break;
         case WGPUBufferMapAsyncStatus_UnmappedBeforeCallback:
             statusStr = "UnmappedBeforeCallback";
-            priority = LogPriority::kDebug;
+            priority = SkLogPriority::kDebug;
             break;
         case WGPUBufferMapAsyncStatus_MappingAlreadyPending:
             statusStr = "MappingAlreadyPending";
@@ -80,7 +81,7 @@ void log_map_error(wgpu::MapAsyncStatus status, wgpu::StringView message) {
             SkDEBUGFAIL("This status is not an error");
             return;
     }
-    SKGPU_LOG(LogPriority::kError,
+    SKGPU_LOG(SkLogPriority::kError,
               "Buffer async map failed with status %s, message '%.*s'.",
               statusStr,
               static_cast<int>(message.length),
