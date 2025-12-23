@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4199deb5_6082617f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:04:15Z",
+      "side": 1,
+      "message": "Thanks for the cleanup!",
+      "revId": "e3f0c2c1e539a956c7324100d0002cc0ba3696ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cafbf022_c7658dda",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:04:15Z",
+      "side": 1,
+      "message": "nit: add `#include \"include/private/base/SkMacros.h\"`",
+      "revId": "e3f0c2c1e539a956c7324100d0002cc0ba3696ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
