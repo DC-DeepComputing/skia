@@ -154,4 +154,8 @@ void SharedContext::forceProcessReturnedResources() {
     fThreadSafeResourceProvider->forceProcessReturnedResources();
 }
 
+std::optional<BackendTexture>
+SharedContext::convertBackendTextureIfNeeded(const BackendTexture&) const { return {}; }
+
+
 } // namespace skgpu::graphite

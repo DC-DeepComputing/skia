@@ -9,6 +9,7 @@
 #define skgpu_graphite_SharedContext_DEFINED
 
 #include <memory>
+#include <optional>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/base/SingleOwner.h"
@@ -80,6 +81,9 @@ public:
     virtual void deviceTick(Context*) {}
 
     virtual void syncPipelineData(PersistentPipelineStorage*, size_t maxSize) {}
+
+    virtual std::optional<BackendTexture>
+    convertBackendTextureIfNeeded(const BackendTexture&) const;
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 

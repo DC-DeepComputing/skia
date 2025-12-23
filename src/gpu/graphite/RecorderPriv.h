@@ -104,6 +104,8 @@ public:
                                                  const SkBitmap&,
                                                  std::string_view label);
 
+    std::optional<BackendTexture> convertBackendTextureIfNeeded(const BackendTexture& beTex);
+
     uint32_t uniqueID() const { return fRecorder->fUniqueID; }
 
 #if defined(SK_DEBUG)

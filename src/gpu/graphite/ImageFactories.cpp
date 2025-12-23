@@ -65,7 +65,7 @@ static bool validate_backend_texture(const skgpu::graphite::Caps* caps,
 }
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
-                           const BackendTexture& backendTex,
+                           const BackendTexture& inBackendTex,
                            SkColorType ct,
                            SkAlphaType at,
                            sk_sp<SkColorSpace> cs,
@@ -84,7 +84,14 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
     SkColorInfo info(ct, at, std::move(cs));
 
-    if (!validate_backend_texture(caps, backendTex, info)) {
+    const BackendTexture* backendTex = &inBackendTex;
+    std::optional<BackendTexture> optBETex =
+        recorder->priv().convertBackendTextureIfNeeded(inBackendTex);
+    if (optBETex) {
+        backendTex = &optBETex.value();
+    }
+
+    if (!validate_backend_texture(caps, *backendTex, info)) {
         return nullptr;
     }
 
@@ -93,7 +100,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     }
 
     sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, std::move(label));
+            recorder->priv().resourceProvider()->createWrappedTexture(*backendTex, std::move(label));
     if (!texture) {
         SKGPU_LOG_W("Texture creation failed");
         return nullptr;
@@ -103,7 +110,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
     SkASSERT(proxy);
 
-    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex->info());
     TextureProxyView view(std::move(proxy), swizzle, origin);
 
     if (genMipmaps == GenerateMipmapsFromBase::kYes) {
@@ -499,8 +506,16 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < yuvaTextures.yuvaInfo().numPlanes(); ++i) {
+        BackendTexture inPlaneTex = yuvaTextures.planeTexture(i);
+        const BackendTexture* planeTex = &inPlaneTex;
+        std::optional<BackendTexture> optBETex =
+            recorder->priv().convertBackendTextureIfNeeded(inPlaneTex);
+        if (optBETex) {
+            planeTex = &optBETex.value();
+        }
+
         sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
-                yuvaTextures.planeTexture(i), labelStr);
+                *planeTex, labelStr);
         if (!texture) {
             SKGPU_LOG_W("Failed to wrap backend texture for YUVA plane %d", i);
             return nullptr;
