@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4e24daf_1ec73254",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:23:09Z",
+      "side": 1,
+      "message": "I think it might be helpful to add an explicit `skia_build_canvaskit` to replace what we have and then add on `skia_standalone_wasm` to encompass support for what you are adding",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4bd0a0e9_edc31380",
@@ -53,6 +76,29 @@
         "startChar": 25,
         "endLine": 2236,
         "endChar": 34
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86f0a941_c44e38a5",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:23:09Z",
+      "side": 1,
+      "message": "This and is_standalone_wasm are probably better suited to go in //gn/skia.gni",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
       },
       "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
