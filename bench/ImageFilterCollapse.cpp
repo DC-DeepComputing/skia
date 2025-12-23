@@ -55,12 +55,11 @@ private:
 
         SkPaint paint;
         SkPoint pts[] = { {0, 0}, {SkIntToScalar(W), SkIntToScalar(H)} };
-        SkColor colors[] = {
-            SK_ColorBLACK, SK_ColorGREEN, SK_ColorCYAN,
-            SK_ColorRED, 0, SK_ColorBLUE, SK_ColorWHITE
+        SkColor4f colors[] = {
+            SkColors::kBlack, SkColors::kGreen, SkColors::kCyan,
+            SkColors::kRed, SkColors::kTransparent, SkColors::kBlue, SkColors::kWhite
         };
-        paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                                     SkTileMode::kClamp));
+        paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
         surf->getCanvas()->drawPaint(paint);
         fImage = surf->makeImageSnapshot();       // shader->makeImage()
     }

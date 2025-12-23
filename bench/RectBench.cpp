@@ -170,8 +170,8 @@ protected:
         this->INHERITED::onDelayedSetup();
         // Create the shader once, so that isn't included in the timing
         SkPoint pts[2] = { {0.f, 0.f}, {50.f, 50.f} };
-        SkColor colors[] = { SK_ColorWHITE, SK_ColorBLUE };
-        fShader = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
+        SkColor4f colors[] = { SkColors::kWhite, SkColors::kBlue };
+        fShader = SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
     }
 
     void setupPaint(SkPaint* paint) override {

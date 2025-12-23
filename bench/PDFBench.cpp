@@ -211,13 +211,11 @@ struct PDFShaderBench : public Benchmark {
     bool isSuitableFor(Backend b) final { return b == Backend::kNonRendering; }
     void onDelayedSetup() final {
         const SkPoint pts[2] = {{0.0f, 0.0f}, {100.0f, 100.0f}};
-        const SkColor colors[] = {
-            SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE,
-            SK_ColorWHITE, SK_ColorBLACK,
+        const SkColor4f colors[] = {
+            SkColors::kRed, SkColors::kGreen, SkColors::kBlue,
+            SkColors::kWhite, SkColors::kBlack,
         };
-        fShader = SkGradientShader::MakeLinear(
-                pts, colors, nullptr, std::size(colors),
-                SkTileMode::kClamp);
+        fShader = SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
     }
     void onDraw(int loops, SkCanvas*) final {
         SkASSERT(fShader);
