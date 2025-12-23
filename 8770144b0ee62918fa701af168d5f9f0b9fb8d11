@@ -46,6 +46,30 @@
       },
       "revId": "8770144b0ee62918fa701af168d5f9f0b9fb8d11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6e63d7_cc14017a",
+        "filename": "src/gpu/ganesh/vk/GrVkUtil.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Ideally, or perhaps in a follow-up, or make a low priority cleanup bug in taskflow to reference in a comment for someone to get to later. I could probably snag up that task.",
+      "parentUuid": "b07c9e00_423cc846",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 5
+      },
+      "revId": "8770144b0ee62918fa701af168d5f9f0b9fb8d11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
