@@ -20,6 +20,46 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "00347c0d_e8e22503",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:18:18Z",
+      "side": 1,
+      "message": "Be advised, Flutter uses the flags (e.g. is_wasm) that Skia defines in its own BUILD.gn files https://github.com/flutter/flutter/blob/6ff7f300473f8eab6744df9b20f1cf0e958871f8/engine/src/flutter/skia/BUILD.gn#L50-L52",
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd7deedb_55f0da62",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2236,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-12-23T18:18:18Z",
+      "side": 1,
+      "message": "`!is_any_wasm`?",
+      "range": {
+        "startLine": 2236,
+        "startChar": 25,
+        "endLine": 2236,
+        "endChar": 34
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3c6bb0a3_d4f5fa65",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 3
