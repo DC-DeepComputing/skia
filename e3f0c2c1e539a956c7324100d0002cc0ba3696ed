@@ -33,6 +33,24 @@
       "message": "nit: add `#include \"include/private/base/SkMacros.h\"`",
       "revId": "e3f0c2c1e539a956c7324100d0002cc0ba3696ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25cbf70b_edcb8037",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-12-23T18:10:05Z",
+      "side": 1,
+      "message": "Oops, thanks for catching!",
+      "parentUuid": "cafbf022_c7658dda",
+      "revId": "e3f0c2c1e539a956c7324100d0002cc0ba3696ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
