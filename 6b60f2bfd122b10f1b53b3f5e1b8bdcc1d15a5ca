@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc4ab1b_d77cfd7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3727202
+      },
+      "writtenOn": "2025-12-24T15:29:34Z",
+      "side": 1,
+      "message": "@lukasza@google.com Do we need one more reviewer to approve and merge this CL?",
+      "revId": "6b60f2bfd122b10f1b53b3f5e1b8bdcc1d15a5ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
