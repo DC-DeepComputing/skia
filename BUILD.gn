@@ -1358,7 +1358,8 @@ if (is_debug) {
 # from having multiple copies of the Rust standard library.
 
 if (skia_use_fontations || skia_use_rust_png_decode ||
-    skia_use_rust_png_encode || skia_use_rust_bmp_decode || skia_use_rust_icc) {
+    skia_use_rust_png_encode || skia_use_rust_bmp_decode || skia_use_rust_icc ||
+    skia_use_rust_agtm) {
   # Collect all Rust targets, sources, outputs based on what's enabled
   _rust_targets = []
   _rust_sources = []
@@ -1366,9 +1367,9 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
   _rust_output_mappings = []
 
   # Add cxx dependency if any feature that needs it is enabled
-  _needs_cxx =
-      skia_use_fontations || skia_use_rust_png_decode ||
-      skia_use_rust_png_encode || skia_use_rust_bmp_decode || skia_use_rust_icc
+  _needs_cxx = skia_use_fontations || skia_use_rust_png_decode ||
+               skia_use_rust_png_encode || skia_use_rust_bmp_decode ||
+               skia_use_rust_icc || skia_use_rust_agtm
   if (_needs_cxx) {
     _rust_targets += [ "@crates//:cxx_cc" ]
     _rust_sources += [
@@ -1432,6 +1433,27 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
           "=rust/png/FFI.rs.h",
       rebase_path("//bazel-bin/rust/png/FFI.rs.cc", root_build_dir) +
           "=rust/png/FFI.rs.cc",
+    ]
+  }
+
+  if (skia_use_rust_agtm) {
+    _rust_targets += [ "//rust/agtm:ffi_rs" ]
+    _rust_sources += [
+      "rust/agtm/BUILD.bazel",
+      "rust/agtm/FFI.rs",
+    ]
+    _rust_outputs += [
+      "$root_out_dir/librust_agtm_ffi_rs.a",
+      "$root_out_dir/rust/agtm/FFI.rs.h",
+      "$root_out_dir/rust/agtm/FFI.rs.cc",
+    ]
+    _rust_output_mappings += [
+      rebase_path("//bazel-bin/rust/agtm/libffi_rs.a", root_build_dir) +
+          "=librust_agtm_ffi_rs.a",
+      rebase_path("//bazel-bin/rust/agtm/FFI.rs.h", root_build_dir) +
+          "=rust/agtm/FFI.rs.h",
+      rebase_path("//bazel-bin/rust/agtm/FFI.rs.cc", root_build_dir) +
+          "=rust/agtm/FFI.rs.cc",
     ]
   }
 
@@ -1507,6 +1529,9 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
     if (skia_use_rust_icc) {
       _all_rust_libs += [ "$root_out_dir/librust_icc_ffi_rs.a" ]
     }
+    if (skia_use_rust_agtm) {
+      _all_rust_libs += [ "$root_out_dir/librust_agtm_ffi_rs.a" ]
+    }
 
     public_configs = [ ":rust_ffi_libs_config" ]
     all_dependent_configs = [ ":rust_ffi_libs_config" ]
@@ -1528,6 +1553,9 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
     }
     if (skia_use_rust_icc) {
       _all_rust_libs += [ "$root_out_dir/librust_icc_ffi_rs.a" ]
+    }
+    if (skia_use_rust_agtm) {
+      _all_rust_libs += [ "$root_out_dir/librust_agtm_ffi_rs.a" ]
     }
     libs = _all_rust_libs
 
@@ -1621,6 +1649,23 @@ if (skia_use_rust_icc) {
   }
 }
 
+if (skia_use_rust_agtm) {
+  config("rust_agtm_cxx_bridge_private_config") {
+    include_dirs = [
+      # This entry is needed so that `FFI.rs.cc` can resolve
+      # `#include "rust/agtm/FFI.h"`
+      ".",
+    ]
+  }
+  skia_source_set("rust_agtm_cxx_bridge") {
+    deps = [ ":rust_all_ffi_bazel_build" ]
+    public = [ "${root_out_dir}/rust/agtm/FFI.rs.h" ]
+    sources = [ "${root_out_dir}/rust/agtm/FFI.rs.cc" ]
+    public_configs = [ ":rust_common_cxx_bridge_public_config" ]
+    configs = [ ":rust_agtm_cxx_bridge_private_config" ]
+  }
+}
+
 config("rust_common_cxx_bridge_public_config") {
   include_dirs = [
     # This is where `rust/.../*.rs.h` and
@@ -1630,7 +1675,8 @@ config("rust_common_cxx_bridge_public_config") {
 }
 
 optional("rust_common") {
-  enabled = skia_use_rust_png_decode || skia_use_rust_png_encode
+  enabled =
+      skia_use_rust_png_decode || skia_use_rust_png_encode || skia_use_rust_agtm
   public = skia_rust_common_ffi_cpp_hdrs
   sources = skia_rust_common_ffi_cpp_srcs
   public_configs = [ ":rust_common_cxx_bridge_public_config" ]
@@ -1679,6 +1725,18 @@ optional("png_encode_rust") {
     ":rust_common",
     ":rust_ffi_libs",
     ":rust_png_cxx_bridge",
+  ]
+  libs = [ "c++" ]
+}
+
+optional("agtm_parse_rust") {
+  public_defines = [ "SK_CODEC_PARSE_AGTM_WITH_RUST" ]
+  enabled = skia_use_rust_agtm
+
+  public_deps = [
+    ":rust_agtm_cxx_bridge",
+    ":rust_common",
+    ":rust_ffi_libs",
   ]
   libs = [ "c++" ]
 }
@@ -1833,6 +1891,7 @@ skia_component("skia") {
   ]
 
   deps = [
+    ":agtm_parse_rust",
     ":android_utils",
     ":avif",
     ":crabbyavif",

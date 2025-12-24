@@ -10,6 +10,10 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+#include "rust/agtm/FFI.rs.h"
+#endif
+
 namespace {
 
 // TODO(https://issuetracker.google.com/issues/40044808): Include operator== in SkColorSpace.h.
@@ -341,6 +345,17 @@ void AgtmSyntax::write_gain_curve(uint8_t a, SkDynamicMemoryWStream& s) {
     }
 }
 
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+bool parse_agtm_syntax_with_rust(const SkData* data, AgtmSyntax& out) {
+    rust_agtm::AgtmSyntax rust_syntax;
+    rust::Slice<const uint8_t> rust_slice(data->bytes(), data->size());
+    if (!rust_agtm::parse_agtm(rust_slice, rust_syntax)) {
+        return false;
+    }
+    return true;
+}
+#endif
+
 }  // namespace
 
 namespace skhdr {
@@ -349,14 +364,22 @@ bool AgtmImpl::parse(const SkData* data) {
     if (data == nullptr) {
         return false;
     }
-    SkMemoryStream s(data->data(), data->size());
 
     // Parse the syntax according to clause C.2.
     AgtmSyntax syntax;
     memset(&syntax, 0, sizeof(syntax));
-    if (!syntax.parse_application_info(s)) {
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+    if (!parse_agtm_syntax_with_rust(data, syntax)) {
         return false;
     }
+#else
+    {
+        SkMemoryStream s(data->data(), data->size());
+        if (!syntax.parse_application_info(s)) {
+            return false;
+        }
+    }
+#endif
 
     // Apply the semantics to map syntax elements to metadata items according to clause C.3.3.
     if (syntax.has_custom_hdr_reference_white_flag == 1) {
