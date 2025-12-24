@@ -10,6 +10,10 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+#include "rust/agtm/FFI.rs.h"
+#endif
+
 namespace {
 
 // TODO(https://issuetracker.google.com/issues/40044808): Include operator== in SkColorSpace.h.
@@ -114,6 +118,12 @@ struct AgtmSyntax {
     bool parse_gain_curve(uint8_t a, SkMemoryStream& s);
     void write_gain_curve(uint8_t a, SkDynamicMemoryWStream& s);
 
+    // Constants for array sizes.
+    static constexpr uint8_t kNumChromaticities = 8;
+    static constexpr uint8_t kNumAlternateImages = 4;
+    static constexpr uint8_t kNumMixCoefficients = 6;
+    static constexpr uint8_t kNumControlPoints = 32;
+
     // syntax elements of smpte_st_2094_50_application_info()
     uint8_t application_version;
 
@@ -129,20 +139,20 @@ struct AgtmSyntax {
     uint8_t gain_application_space_chromaticities_flag:2;
     uint8_t has_common_component_mix_params_flag:1;
     uint8_t has_common_curve_params_flag:1;
-    uint16_t gain_application_space_chromaticities[8];
-    uint16_t alternate_hdr_headrooms[4];
+    uint16_t gain_application_space_chromaticities[kNumChromaticities];
+    uint16_t alternate_hdr_headrooms[kNumAlternateImages];
 
     // syntax elements of smpte_st_2094_50_component_mixing()
-    uint8_t component_mixing_type[4];
-    uint8_t has_component_mixing_coefficient_flag[4][6];
-    uint16_t component_mixing_coefficient[4][6];
+    uint8_t component_mixing_type[kNumAlternateImages];
+    uint8_t has_component_mixing_coefficient_flag[kNumAlternateImages][kNumMixCoefficients];
+    uint16_t component_mixing_coefficient[kNumAlternateImages][kNumMixCoefficients];
 
     // syntax elements of smpte_st_2094_50_gain_curve()
-    uint8_t gain_curve_num_control_points_minus_1[4];
-    uint8_t gain_curve_use_pchip_slope_flag[4];
-    uint16_t gain_curve_control_points_x[4][32];
-    uint16_t gain_curve_control_points_y[4][32];
-    uint16_t gain_curve_control_points_theta[4][32];
+    uint8_t gain_curve_num_control_points_minus_1[kNumAlternateImages];
+    uint8_t gain_curve_use_pchip_slope_flag[kNumAlternateImages];
+    uint16_t gain_curve_control_points_x[kNumAlternateImages][kNumControlPoints];
+    uint16_t gain_curve_control_points_y[kNumAlternateImages][kNumControlPoints];
+    uint16_t gain_curve_control_points_theta[kNumAlternateImages][kNumControlPoints];
 };
 
 bool AgtmSyntax::parse_application_info(SkMemoryStream& s) {
@@ -249,10 +259,10 @@ bool AgtmSyntax::parse_component_mixing(uint8_t a, SkMemoryStream& s) {
             const auto reserved_zero = flags.readBits(6);
             RETURN_ON_FALSE(reserved_zero == 0);
         } else {
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < kNumMixCoefficients; ++k) {
                 has_component_mixing_coefficient_flag[a][k] = flags.readBits(1);
             }
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < kNumMixCoefficients; ++k) {
                 if (has_component_mixing_coefficient_flag[a][k] == 1) {
                     RETURN_ON_FALSE(
                             SkStreamPriv::ReadU16BE(&s, &component_mixing_coefficient[a][k]));
@@ -264,7 +274,7 @@ bool AgtmSyntax::parse_component_mixing(uint8_t a, SkMemoryStream& s) {
     } else {
         component_mixing_type[a] = component_mixing_type[0];
         if (component_mixing_type[a] == 3) {
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < kNumMixCoefficients; ++k) {
                 component_mixing_coefficient[a][k] = component_mixing_coefficient[0][k];
             }
         }
@@ -277,11 +287,11 @@ void AgtmSyntax::write_component_mixing(uint8_t a, SkDynamicMemoryWStream& s) {
         BitfieldWriter flags;
         flags.writeBits(component_mixing_type[a], 2);
         if (component_mixing_type[a] == 3) {
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < kNumMixCoefficients; ++k) {
                 flags.writeBits(has_component_mixing_coefficient_flag[a][k], 1);
             }
             flags.padAndWriteToStream(s);
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < kNumMixCoefficients; ++k) {
                 if (has_component_mixing_coefficient_flag[a][k] == 1) {
                     SkStreamPriv::WriteU16BE(&s, component_mixing_coefficient[a][k]);
                 }
@@ -341,6 +351,66 @@ void AgtmSyntax::write_gain_curve(uint8_t a, SkDynamicMemoryWStream& s) {
     }
 }
 
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+bool parse_agtm_syntax_with_rust(const SkData* data, AgtmSyntax& syntax) {
+    rust_agtm::AgtmSyntax rust_syntax;
+    rust::Slice<const uint8_t> rust_slice(data->bytes(), data->size());
+    if (!rust_agtm::parse_agtm(rust_slice, rust_syntax)) {
+        return false;
+    }
+
+    // Translate rust_agtm::AgtmSyntax to AgtmSyntax.
+    syntax.application_version = rust_syntax.application_version;
+    syntax.has_custom_hdr_reference_white_flag =
+        rust_syntax.has_custom_hdr_reference_white_flag;
+    syntax.has_adaptive_tone_map_flag =
+        rust_syntax.has_adaptive_tone_map_flag;
+    syntax.hdr_reference_white =
+        rust_syntax.hdr_reference_white;
+    syntax.baseline_hdr_headroom =
+        rust_syntax.baseline_hdr_headroom;
+    syntax.use_reference_white_tone_mapping_flag =
+        rust_syntax.use_reference_white_tone_mapping_flag;
+    syntax.num_alternate_images =
+        rust_syntax.num_alternate_images;
+    syntax.gain_application_space_chromaticities_flag =
+        rust_syntax.gain_application_space_chromaticities_flag;
+    syntax.has_common_component_mix_params_flag =
+        rust_syntax.has_common_component_mix_params_flag;
+    syntax.has_common_curve_params_flag =
+        rust_syntax.has_common_curve_params_flag;
+    for (uint8_t r = 0; r < AgtmSyntax::kNumChromaticities; ++r) {
+        syntax.gain_application_space_chromaticities[r] =
+            rust_syntax.gain_application_space_chromaticities[r];
+    }
+    for (uint8_t a = 0; a < AgtmSyntax::kNumAlternateImages; ++a) {
+        syntax.alternate_hdr_headrooms[a] =
+            rust_syntax.alternate_hdr_headrooms[a];
+        syntax.component_mixing_type[a] =
+            rust_syntax.component_mixing_type[a];
+        for (uint8_t k = 0; k < AgtmSyntax::kNumMixCoefficients; ++k) {
+            syntax.has_component_mixing_coefficient_flag[a][k] =
+                rust_syntax.has_component_mixing_coefficient_flag[a][k];
+            syntax.component_mixing_coefficient[a][k] =
+                rust_syntax.component_mixing_coefficient[a][k];
+        }
+        syntax.gain_curve_num_control_points_minus_1[a] =
+            rust_syntax.gain_curve_num_control_points_minus_1[a];
+        syntax.gain_curve_use_pchip_slope_flag[a] =
+            rust_syntax.gain_curve_use_pchip_slope_flag[a];
+        for (uint8_t c = 0; c < AgtmSyntax::kNumControlPoints; ++c) {
+            syntax.gain_curve_control_points_x[a][c] =
+                rust_syntax.gain_curve_control_points_x[a][c];
+            syntax.gain_curve_control_points_y[a][c] =
+                rust_syntax.gain_curve_control_points_y[a][c];
+            syntax.gain_curve_control_points_theta[a][c] =
+                rust_syntax.gain_curve_control_points_theta[a][c];
+        }
+    }
+    return true;
+}
+#endif
+
 }  // namespace
 
 namespace skhdr {
@@ -349,14 +419,22 @@ bool AgtmImpl::parse(const SkData* data) {
     if (data == nullptr) {
         return false;
     }
-    SkMemoryStream s(data->data(), data->size());
 
     // Parse the syntax according to clause C.2.
     AgtmSyntax syntax;
     memset(&syntax, 0, sizeof(syntax));
-    if (!syntax.parse_application_info(s)) {
+#if defined(SK_CODEC_PARSE_AGTM_WITH_RUST)
+    if (!parse_agtm_syntax_with_rust(data, syntax)) {
         return false;
     }
+#else
+    {
+        SkMemoryStream s(data->data(), data->size());
+        if (!syntax.parse_application_info(s)) {
+            return false;
+        }
+    }
+#endif
 
     // Apply the semantics to map syntax elements to metadata items according to clause C.3.3.
     if (syntax.has_custom_hdr_reference_white_flag == 1) {
@@ -562,7 +640,7 @@ sk_sp<SkData> AgtmImpl::serialize() const {
                 float_to_uint16(mix.fMin, 0u, 50000u, 0u, 50000.f);
             syntax.component_mixing_coefficient[a][5] =
                 float_to_uint16(mix.fComponent, 0u, 50000u, 0u, 50000.f);
-            for (uint8_t k = 0; k < 6; ++k) {
+            for (uint8_t k = 0; k < AgtmSyntax::kNumMixCoefficients; ++k) {
                 syntax.has_component_mixing_coefficient_flag[a][k] =
                     syntax.component_mixing_coefficient[a][k] != 0;
             }
