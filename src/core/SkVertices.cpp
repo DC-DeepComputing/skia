@@ -36,7 +36,7 @@ static uint32_t next_id() {
 
 struct SkVertices::Desc {
     VertexMode  fMode;
-    int         fVertexCount,
+    size_t      fVertexCount,
                 fIndexCount;
     bool        fHasTexs,
                 fHasColors;
@@ -103,7 +103,7 @@ struct SkVertices::Sizes {
     size_t fBuilderTriFanISize;
 };
 
-SkVertices::Builder::Builder(VertexMode mode, int vertexCount, int indexCount,
+SkVertices::Builder::Builder(VertexMode mode, size_t vertexCount, size_t indexCount,
                              uint32_t builderFlags) {
     bool hasTexs = SkToBool(builderFlags & SkVertices::kHasTexCoords_BuilderFlag);
     bool hasColors = SkToBool(builderFlags & SkVertices::kHasColors_BuilderFlag);
@@ -205,11 +205,23 @@ uint16_t* SkVertices::Builder::indices() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkVertices> SkVertices::MakeCopy(VertexMode mode, int vertexCount,
-                                       const SkPoint pos[], const SkPoint texs[],
-                                       const SkColor colors[],
-                                       int indexCount, const uint16_t indices[]) {
-    auto desc = Desc{mode, vertexCount, indexCount, !!texs, !!colors};
+sk_sp<SkVertices> SkVertices::MakeCopy(VertexMode mode,
+                                       SkSpan<const SkPoint>  pos,
+                                       SkSpan<const SkPoint>  texs,
+                                       SkSpan<const SkColor>  colors,
+                                       SkSpan<const uint16_t> indices) {
+    const size_t nverts = pos.size();
+    if (nverts == 0) {
+        return nullptr;
+    }
+    if (texs.size() > 0 && texs.size() != nverts) {
+        return nullptr;
+    }
+    if (colors.size() > 0 && colors.size() != nverts) {
+        return nullptr;
+    }
+
+    const auto desc = Desc{mode, nverts, indices.size(), !texs.empty(), !colors.empty()};
     Builder builder(desc);
     if (!builder.isValid()) {
         return nullptr;
@@ -217,9 +229,9 @@ sk_sp<SkVertices> SkVertices::MakeCopy(VertexMode mode, int vertexCount,
 
     Sizes sizes(desc);
     SkASSERT(sizes.isValid());
-    sk_careful_memcpy(builder.positions(), pos, sizes.fVSize);
-    sk_careful_memcpy(builder.texCoords(), texs, sizes.fTSize);
-    sk_careful_memcpy(builder.colors(), colors, sizes.fCSize);
+    sk_careful_memcpy(builder.positions(), pos.data(), sizes.fVSize);
+    sk_careful_memcpy(builder.texCoords(), texs.data(), sizes.fTSize);
+    sk_careful_memcpy(builder.colors(), colors.data(), sizes.fCSize);
 
     // The builder can update the number of indices.
     const size_t isize = ((mode == kTriangleFan_VertexMode) ? sizes.fBuilderTriFanISize
@@ -227,24 +239,23 @@ sk_sp<SkVertices> SkVertices::MakeCopy(VertexMode mode, int vertexCount,
                 icount = isize / sizeof(uint16_t);
 
     // Ensure that indices are valid for the given vertex count.
-    SkASSERT(vertexCount > 0);
-    const uint16_t max_index = SkToU16(vertexCount - 1);
+    const uint16_t max_index = SkToU16(nverts - 1);
 
     size_t i = 0;
     for (; i + 8 <= icount; i += 8) {
-        const skvx::ushort8 ind8 = skvx::ushort8::Load(indices + i),
+        const skvx::ushort8 ind8 = skvx::ushort8::Load(&indices[i]),
                     clamped_ind8 = skvx::min(ind8, max_index);
         clamped_ind8.store(builder.indices() + i);
     }
     if (i + 4 <= icount) {
-        const skvx::ushort4 ind4 = skvx::ushort4::Load(indices + i),
+        const skvx::ushort4 ind4 = skvx::ushort4::Load(&indices[i]),
                     clamped_ind4 = skvx::min(ind4, max_index);
         clamped_ind4.store(builder.indices() + i);
 
         i += 4;
     }
     if (i + 2 <= icount) {
-        const skvx::ushort2 ind2 = skvx::ushort2::Load(indices + i),
+        const skvx::ushort2 ind2 = skvx::ushort2::Load(&indices[i]),
                     clamped_ind2 = skvx::min(ind2, max_index);
         clamped_ind2.store(builder.indices() + i);
 
@@ -311,8 +322,8 @@ sk_sp<SkVertices> SkVerticesPriv::Decode(SkReadBuffer& buffer) {
         bool hasCustomData = buffer.isVersionLT(SkPicturePriv::kVerticesRemoveCustomData_Version);
 
         const uint32_t packed = buffer.readUInt();
-        const int vertexCount = safe.checkGE(buffer.readInt(), 0);
-        const int indexCount = safe.checkGE(buffer.readInt(), 0);
+        const size_t vertexCount = safe.checkGE(buffer.readInt(), 0);
+        const size_t indexCount = safe.checkGE(buffer.readInt(), 0);
         const int attrCount = hasCustomData ? safe.checkGE(buffer.readInt(), 0) : 0;
         const SkVertices::VertexMode mode = safe.checkLE<SkVertices::VertexMode>(
                 packed & kMode_Mask, SkVertices::kLast_VertexMode);

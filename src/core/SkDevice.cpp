@@ -218,9 +218,9 @@ void SkDevice::drawAtlas(SkSpan<const SkRSXform> xform,
     }
     SkVertices::Builder builder(SkVertices::kTriangles_VertexMode, vertexCount, 0, flags);
 
-    SkPoint* vPos = builder.positions();
-    SkPoint* vTex = builder.texCoords();
-    SkColor* vCol = builder.colors();
+    auto vPos = builder.positionSpan();
+    auto vTex = builder.texSpan();
+    auto vCol = builder.colorSpan();
     for (size_t i = 0; i < quadCount; ++i) {
         SkPoint tmp[4];
         xform[i].toQuad(tex[i].width(), tex[i].height(), tmp);

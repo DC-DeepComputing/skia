@@ -184,8 +184,7 @@ protected:
                             const SkColor* colors = attrs.fHasColors ? fColors : nullptr;
                             const SkPoint* texs = attrs.fHasTexs ? fTexs : nullptr;
                             auto v = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode,
-                                                          kMeshVertexCnt, fPts, texs, colors,
-                                                          kMeshIndexCnt, kMeshFan);
+                                                          fPts, texs, colors, kMeshFan);
                             canvas->drawVertices(v, mode, paint);
                             canvas->translate(40, 0);
                         }

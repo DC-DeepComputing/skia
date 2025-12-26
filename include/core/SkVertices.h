@@ -36,27 +36,37 @@ public:
     };
 
     /**
-     *  Create a vertices by copying the specified arrays. texs, colors may be nullptr,
-     *  and indices is ignored if indexCount == 0.
+     *  Create a vertices by copying the specified arrays. texs, colors may be empty,
+     *  and indices is ignored if it is empty.
      */
-    static sk_sp<SkVertices> MakeCopy(VertexMode mode, int vertexCount,
+    static sk_sp<SkVertices> MakeCopy(VertexMode mode,
+                                      SkSpan<const SkPoint>  positions,
+                                      SkSpan<const SkPoint>  texs,
+                                      SkSpan<const SkColor>  colors,
+                                      SkSpan<const uint16_t> indices);
+
+    static sk_sp<SkVertices> MakeCopyx(VertexMode mode, int vertexCount,
                                       const SkPoint positions[],
                                       const SkPoint texs[],
                                       const SkColor colors[],
                                       int indexCount,
-                                      const uint16_t indices[]);
+                                      const uint16_t indices[]) {
+        return MakeCopy(mode,
+                        {positions, vertexCount},
+                        {texs,      vertexCount},
+                        {colors,    vertexCount},
+                        {indices,   indexCount});
+    }
 
-    static sk_sp<SkVertices> MakeCopy(VertexMode mode, int vertexCount,
+    static sk_sp<SkVertices> MakeCopyx(VertexMode mode, int vertexCount,
                                       const SkPoint positions[],
                                       const SkPoint texs[],
                                       const SkColor colors[]) {
         return MakeCopy(mode,
-                        vertexCount,
-                        positions,
-                        texs,
-                        colors,
-                        0,
-                        nullptr);
+                        {positions, vertexCount},
+                        {texs,      vertexCount},
+                        {colors,    vertexCount},
+                        {});
     }
 
     enum BuilderFlags {
@@ -65,16 +75,21 @@ public:
     };
     class SK_API Builder {
     public:
-        Builder(VertexMode mode, int vertexCount, int indexCount, uint32_t flags);
+        Builder(VertexMode mode, size_t vertexCount, size_t indexCount, uint32_t flags);
 
         bool isValid() const { return fVertices != nullptr; }
 
-        SkPoint* positions();
-        uint16_t* indices();        // returns null if there are no indices
+        SkSpan<SkPoint> positionSpan();
+        SkSpan<SkPoint> texSpan();
+        SkSpan<SkColor> colorSpan();
+        SkSpan<uint16_t> indexSpan();
 
+        // deprected: use span versions
+        SkPoint* positionsx();
+        uint16_t* indicesx();        // returns null if there are no indices
         // If we have custom attributes, these will always be null
-        SkPoint* texCoords();       // returns null if there are no texCoords
-        SkColor* colors();          // returns null if there are no colors
+        SkPoint* texCoordsx();       // returns null if there are no texCoords
+        SkColor* colorsx();          // returns null if there are no colors
 
         // Detach the built vertices object. After the first call, this will always return null.
         sk_sp<SkVertices> detach();
@@ -126,8 +141,8 @@ private:
     SkColor*     fColors;           // [vertexCount] or null
 
     SkRect  fBounds;    // computed to be the union of the fPositions[]
-    int     fVertexCount;
-    int     fIndexCount;
+    size_t  fVertexCount;
+    size_t  fIndexCount;
 
     VertexMode fMode;
     // below here is where the actual array data is stored.
