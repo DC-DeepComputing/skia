@@ -91805,6 +91805,7 @@
         "skia/go.sum",
         "skia/.bazelignore",
         "skia/.bazelrc",
+        "skia/.bazeliskrc",
         "skia/.bazelversion",
         "skia/BUILD.bazel",
         "skia/LICENSE",
@@ -91835,6 +91836,7 @@
     "compile": {
       "root": "..",
       "paths": [
+        "skia/.bazeliskrc",
         "skia/.bazelrc",
         "skia/.bazelversion",
         "skia/.clang-format",
@@ -92008,6 +92010,7 @@
       "root": "..",
       "paths": [
         "skia/.bazelrc",
+        "skia/.bazeliskrc",
         "skia/.bazelversion",
         "skia/BUILD.bazel",
         "skia/LICENSE",
