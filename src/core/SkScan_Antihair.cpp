@@ -572,16 +572,16 @@ void SkScan::AntiHairLineRgn(SkSpan<const SkPoint> src, const SkRegion* clip, Sk
             continue;
         }
 
-        SkFDot6 x0 = SkScalarToFDot6(pts[0].fX);
-        SkFDot6 y0 = SkScalarToFDot6(pts[0].fY);
-        SkFDot6 x1 = SkScalarToFDot6(pts[1].fX);
-        SkFDot6 y1 = SkScalarToFDot6(pts[1].fY);
+        const SkFDot6 x0 = SkScalarToFDot6(pts[0].fX);
+        const SkFDot6 y0 = SkScalarToFDot6(pts[0].fY);
+        const SkFDot6 x1 = SkScalarToFDot6(pts[1].fX);
+        const SkFDot6 y1 = SkScalarToFDot6(pts[1].fY);
 
         if (clip) {
-            SkFDot6 left = std::min(x0, x1);
-            SkFDot6 top = std::min(y0, y1);
-            SkFDot6 right = std::max(x0, x1);
-            SkFDot6 bottom = std::max(y0, y1);
+            const SkFDot6 left = std::min(x0, x1);
+            const SkFDot6 top = std::min(y0, y1);
+            const SkFDot6 right = std::max(x0, x1);
+            const SkFDot6 bottom = std::max(y0, y1);
             SkIRect ir;
 
             ir.setLTRB(SkFDot6Floor(left) - 1,
@@ -604,6 +604,7 @@ void SkScan::AntiHairLineRgn(SkSpan<const SkPoint> src, const SkRegion* clip, Sk
             }
             // fall through to no-clip case
         }
+        SkDebugf("do_anti_hairline(%f, %f, %f, %f)\n", SkFDot6ToFloat(x0), SkFDot6ToFloat(y0), SkFDot6ToFloat(x1),SkFDot6ToFloat(y1));
         do_anti_hairline(x0, y0, x1, y1, nullptr, blitter);
     }
 }

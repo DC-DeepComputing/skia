@@ -41,6 +41,7 @@ public:
         paint.setStrokeCap(SkPaint::kSquare_Cap);
         paint.setStrokeJoin(SkPaint::kMiter_Join);
         paint.setAntiAlias(true);
+        //paint.setStrokeWidth(1.01);
 
         this->drawScaledPath(canvas, makePath(), paint);
     }
@@ -52,7 +53,12 @@ public:
         truthPaint.setAntiAlias(true);
         truthPaint.setStrokeWidth(2.f / fScale);
 
-        canvas->drawPath(makePath(), truthPaint);
+        //canvas->drawPath(makePath(), truthPaint);
+
+        canvas->drawLine({1.500000, 1.000000}, {1.500000, 10.500000}, truthPaint);
+        canvas->drawLine({1.500000, 10.500000}, {10.500000, 10.500000}, truthPaint);
+        canvas->drawLine({10.500000, 10.500000}, {10.500000, 1.000000}, truthPaint);
+        canvas->drawLine({10.500000, 1.000000}, {1.500000, 1.000000}, truthPaint);
 
         SkPaint handlePaint;
         handlePaint.setAntiAlias(true);
@@ -61,6 +67,8 @@ public:
         for (auto pt : fPts) {
             canvas->drawCircle(pt, kHandleRadius / kScale, handlePaint);
         }
+
+
     }
 
     void handleClick(const ScaledClick* click) override {

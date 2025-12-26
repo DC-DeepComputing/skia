@@ -678,6 +678,10 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                 lastPt = pts[3];
             } break;
             case SkPathVerb::kClose:
+                // TODO kjlubick: The problem here is that the first point (below) puts the first pt
+                // to be adjusted by the cap. Then, the third point sets its last point to also be
+                // where the cap ends. This means we draw the first and last point 1/2 pixel too
+                // high up on the screen.
                 pts[0] = lastPt;
                 pts[1] = firstPt;
                 if (SkPaint::kButt_Cap != capStyle && optional_eq(prevVerb, SkPathVerb::kMove)) {
