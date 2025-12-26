@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <memory>
 
+class SkBitmap;
+
 /** \class SkMask
     SkMask is used to describe alpha bitmaps, either 1bit, 8bit, or
     the 3-channel 3D format. These are passed to SkMaskFilter objects.
@@ -305,6 +307,12 @@ struct SkMaskBuilder : public SkMask {
      *  Returns initial destination mask data padded by radiusX and radiusY
      */
     static SkMaskBuilder PrepareDestination(int radiusX, int radiusY, const SkMask& src);
+
+    /**
+     *  Installs the mask pixels into the provided bitmap.
+     *  The maskbuilder will still own the pixels.
+     */
+    bool installIntoBitmap(SkBitmap*);
 };
 
 /**

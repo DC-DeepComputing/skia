@@ -36,7 +36,7 @@ static void paint_rgn(SkCanvas* canvas, const SkAAClip& clip,
 
     SkAutoMaskFreeImage amfi(mask.image());
 
-    bm.installMaskPixels(mask);
+    SkAssertResult(mask.installIntoBitmap(&bm));
 
     // need to copy for deferred drawing test to work
     SkBitmap bm2;

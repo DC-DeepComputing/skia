@@ -7,6 +7,7 @@
 
 #include "src/core/SkMask.h"
 
+#include "include/core/SkBitmap.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTFitsIn.h"
@@ -91,6 +92,13 @@ SkMaskBuilder SkMaskBuilder::PrepareDestination(int radiusX, int radiusY, const 
     return dst;
 }
 
+bool SkMaskBuilder::installIntoBitmap(SkBitmap* bitmap) {
+    SkASSERT(bitmap);
+    SkASSERT(SkMask::kA8_Format == this->fFormat);
+    return bitmap->installPixels(SkImageInfo::MakeA8(this->fBounds.width(), this->fBounds.height()),
+                                 this->image(),
+                                 this->fRowBytes);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
