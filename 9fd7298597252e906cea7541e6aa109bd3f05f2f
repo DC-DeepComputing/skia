@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0fc2353_efb72bed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-29T21:45:20Z",
+      "side": 1,
+      "message": "This change reduces the output of `emptypath` gm from 147KiB to 26KiB by going from  13 to 1 fonts.",
+      "revId": "9fd7298597252e906cea7541e6aa109bd3f05f2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
