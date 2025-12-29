@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ee3c16_007c05f5",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-29T20:40:56Z",
+      "side": 1,
+      "message": "This addition is causing Android roll failures (some code there isn\u0027t handling this new enumeration value is a switch).",
+      "revId": "7abf754bce1464972460c49bda9025cfa5654fe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
