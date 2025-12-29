@@ -18,15 +18,15 @@ class GrSurfaceProxyView;
 class SkBitmap;
 struct GrShaderCaps;
 
-namespace skgpu {
-class KeyBuilder;
-}
+namespace skgpu { class KeyBuilder; }
+
+namespace skgpu::ganesh { class Bitmap; }
 
 class ColorTableEffect : public GrFragmentProcessor {
 public:
     static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                      GrRecordingContext* context,
-                                                     const SkBitmap& bitmap);
+                                                     std::unique_ptr<skgpu::ganesh::Bitmap>);
 
     ~ColorTableEffect() override {}
 

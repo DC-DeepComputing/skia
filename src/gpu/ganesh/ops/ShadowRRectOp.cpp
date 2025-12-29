@@ -42,6 +42,7 @@
 #include "src/gpu/ganesh/effects/GrShadowGeoProc.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/base/SkRandom.h"
@@ -754,7 +755,8 @@ static GrSurfaceProxyView create_falloff_texture(GrRecordingContext* rContext) {
     }
     bitmap.setImmutable();
 
-    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap));
+    auto bm = skgpu::ganesh::Bitmap::MakeAndOwn(bitmap);
+    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, std::move(bm)));
     if (!view) {
         return {};
     }

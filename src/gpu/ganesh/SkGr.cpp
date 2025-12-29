@@ -50,6 +50,7 @@
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/shaders/SkShaderBase.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <optional>
 #include <utility>
@@ -147,7 +148,7 @@ GrSurfaceProxyView GrCopyBaseMipMapToView(GrRecordingContext* context,
 }
 
 static skgpu::Mipmapped adjust_mipmapped(skgpu::Mipmapped mipmapped,
-                                         const SkBitmap& bitmap,
+                                         const skgpu::ganesh::Bitmap& bitmap,
                                          const GrCaps* caps) {
     if (!caps->mipmapSupport() || bitmap.dimensions().area() <= 1) {
         return skgpu::Mipmapped::kNo;
@@ -155,7 +156,7 @@ static skgpu::Mipmapped adjust_mipmapped(skgpu::Mipmapped mipmapped,
     return mipmapped;
 }
 
-static GrColorType choose_bmp_texture_colortype(const GrCaps* caps, const SkBitmap& bitmap) {
+static GrColorType choose_bmp_texture_colortype(const GrCaps* caps, const skgpu::ganesh::Bitmap& bitmap) {
     GrColorType ct = SkColorTypeToGrColorType(bitmap.info().colorType());
     if (caps->getDefaultBackendFormat(ct, GrRenderable::kNo).isValid()) {
         return ct;
@@ -164,12 +165,12 @@ static GrColorType choose_bmp_texture_colortype(const GrCaps* caps, const SkBitm
 }
 
 static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
-                                            const SkBitmap& bitmap,
+                                            const skgpu::ganesh::Bitmap& bitmap,
                                             GrColorType ct,
                                             skgpu::Mipmapped mipmapped,
                                             SkBackingFit fit,
                                             skgpu::Budgeted budgeted) {
-    SkBitmap bmpToUpload;
+    skgpu::ganesh::Bitmap bmpToUpload;
     if (ct != SkColorTypeToGrColorType(bitmap.info().colorType())) {
         SkColorType skCT = GrColorTypeToSkColorType(ct);
         if (!bmpToUpload.tryAllocPixels(bitmap.info().makeColorType(skCT)) ||
@@ -188,7 +189,7 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
 
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
         GrRecordingContext* rContext,
-        const SkBitmap& bitmap,
+        const skgpu::ganesh::Bitmap& bitmap,
         std::string_view label,
         skgpu::Mipmapped mipmapped) {
     if (!bitmap.peekPixels(nullptr)) {
@@ -253,7 +254,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
 
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeUncachedBitmapProxyView(
         GrRecordingContext* rContext,
-        const SkBitmap& bitmap,
+        const skgpu::ganesh::Bitmap& bitmap,
         skgpu::Mipmapped mipmapped,
         SkBackingFit fit,
         skgpu::Budgeted budgeted) {

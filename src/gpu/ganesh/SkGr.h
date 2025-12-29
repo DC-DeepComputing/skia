@@ -33,7 +33,6 @@ class GrPaint;
 class GrRecordingContext;
 class GrSurfaceProxy;
 class GrSurfaceProxyView;
-class SkBitmap;
 class SkBlender;
 class SkIDChangeListener;
 class SkMatrix;
@@ -43,7 +42,10 @@ enum GrSurfaceOrigin : int;
 struct SkIRect;
 
 namespace skgpu { class UniqueKey; }
-namespace skgpu::ganesh { class SurfaceDrawContext; }
+namespace skgpu::ganesh {
+    class SurfaceDrawContext;
+    class Bitmap;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Color type conversions
@@ -130,7 +132,7 @@ static_assert((int)SkBlendModeCoeff::kCoeffCount == 10);
 // Texture management
 
 /**
- * Policies for how to create textures for SkImages (and SkBitmaps).
+ * Policies for how to create textures for SkImages.
  */
 enum class GrImageTexGenPolicy : int {
     // Choose the cheapest way to generate the texture. Use GrResourceCache if appropriate.
@@ -167,7 +169,7 @@ GrSurfaceProxyView GrCopyBaseMipMapToView(GrRecordingContext*,
  */
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
         GrRecordingContext*,
-        const SkBitmap&,
+        std::unique_ptr<skgpu::ganesh::Bitmap>,
         std::string_view label,
         skgpu::Mipmapped = skgpu::Mipmapped::kNo);
 
@@ -177,7 +179,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
  */
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeUncachedBitmapProxyView(
         GrRecordingContext*,
-        const SkBitmap&,
+        std::unique_ptr<skgpu::ganesh::Bitmap>,
         skgpu::Mipmapped = skgpu::Mipmapped::kNo,
         SkBackingFit = SkBackingFit::kExact,
         skgpu::Budgeted = skgpu::Budgeted::kYes);

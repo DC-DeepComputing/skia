@@ -51,6 +51,7 @@
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <algorithm>
 #include <array>
@@ -117,8 +118,9 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(
     SkASSERT(1 == bitmap.height() && SkIsPow2(bitmap.width()));
     SkASSERT(bitmap.isImmutable());
 
+    auto bm = skgpu::ganesh::Bitmap::MakeAndOwn(bitmap);
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-            args.fSurfaceDrawContext->recordingContext(), bitmap, /*label=*/"MakeTexturedColorizer",
+            args.fSurfaceDrawContext->recordingContext(), std::move(bm), /*label=*/"MakeTexturedColorizer",
             skgpu::Mipmapped::kNo));
     if (!view) {
         SkDebugf("Gradient won't draw. Could not create texture.");

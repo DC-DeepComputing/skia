@@ -80,10 +80,10 @@ public:
         fBitmap.pixelRef()->notifyAddedToCache();
     }
 
-    bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
+    bool onHasMipmaps() const override { return SkToBool(fMips); }
     bool onIsProtected() const override { return false; }
 
-    SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
+    SkMipmap* onPeekMips() const override { return fMips.get(); }
 
     sk_sp<SkImage> onMakeWithMipmaps(sk_sp<SkMipmap> mips) const override {
         // It's dangerous to have two SkBitmaps that share a SkPixelRef but have different SkMipmaps
@@ -95,9 +95,9 @@ public:
         sk_sp<SkImage> img = SkMakeImageFromRasterBitmap(fBitmap, kCopyMode);
         auto imgRaster = static_cast<SkImage_Raster*>(img.get());
         if (mips) {
-            imgRaster->fBitmap.fMips = std::move(mips);
+            imgRaster->fMips = std::move(mips);
         } else {
-            imgRaster->fBitmap.fMips.reset(SkMipmap::Build(fBitmap.pixmap(), nullptr));
+            imgRaster->fMips.reset(SkMipmap::Build(fBitmap.pixmap(), nullptr));
         }
         return img;
     }
@@ -107,6 +107,7 @@ public:
     SkBitmap bitmap() const { return fBitmap; }
 private:
     SkBitmap fBitmap;
+    sk_sp<SkMipmap> fMips;
 };
 
 sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id);

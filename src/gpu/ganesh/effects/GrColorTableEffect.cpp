@@ -29,6 +29,7 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <cstdint>
 #include <tuple>
@@ -75,12 +76,11 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> ColorTableEffect::onMakeProgra
 std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make(
         std::unique_ptr<GrFragmentProcessor> inputFP,
         GrRecordingContext* context,
-        const SkBitmap& bitmap) {
-    SkASSERT(kPremul_SkAlphaType == bitmap.alphaType());
-    SkASSERT(bitmap.isImmutable());
+        std::unique_ptr<skgpu::ganesh::Bitmap> bitmap) {
+    SkASSERT(kPremul_SkAlphaType == bitmap->alphaType());
 
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(context,
-                                                        bitmap,
+                                                        std::move(bitmap),
                                                         /*label=*/"MakeColorTableEffect",
                                                         skgpu::Mipmapped::kNo));
     if (!view) {

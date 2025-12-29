@@ -29,6 +29,7 @@
 #include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ganesh/TestOps.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <memory>
 #include <utility>
@@ -102,7 +103,7 @@ protected:
             return DrawResult::kSkip;
         }
         auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-                rContext, fBitmap, /*label=*/"DrawResult_Draw_BitMap", mipmapped));
+                rContext, skgpu::ganesh::Bitmap::Make(fBitmap.pixmap()), /*label=*/"DrawResult_Draw_BitMap", mipmapped));
         if (!view) {
             *errorMsg = "Failed to create proxy.";
             return DrawResult::kFail;
@@ -136,7 +137,7 @@ protected:
         fBitmap.extractSubset(&subsetBmp, texelSubset);
         subsetBmp.setImmutable();
         auto subsetView = std::get<0>(GrMakeCachedBitmapProxyView(
-                rContext, subsetBmp, /*label=*/"DrawResult_Draw_SubsetBitMap", mipmapped));
+                rContext, skgpu::ganesh::Bitmap::Make(subsetBmp.pixmap()), /*label=*/"DrawResult_Draw_SubsetBitMap", mipmapped));
 
         SkRect localRect = SkRect::Make(fBitmap.bounds()).makeOutset(kDrawPad, kDrawPad);
 

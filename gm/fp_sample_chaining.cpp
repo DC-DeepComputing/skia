@@ -20,6 +20,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 namespace {
 
@@ -196,7 +197,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(fp_sample_chaining, rContext, canvas, errorMsg, 232, 
         auto fp = std::unique_ptr<GrFragmentProcessor>(new TestPatternEffect());
 #else
         auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-                rContext, bmp, /*label=*/"FpSampleChaining", skgpu::Mipmapped::kNo));
+                rContext, skgpu::ganesh::Bitmap::Make(bmp.pixmap()), /*label=*/"FpSampleChaining", skgpu::Mipmapped::kNo));
         auto fp = GrTextureEffect::Make(std::move(view), bmp.alphaType());
 #endif
         for (EffectType effectType : effects) {

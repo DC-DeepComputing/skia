@@ -33,6 +33,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 #endif
 
 #include <utility>
@@ -196,7 +197,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu,
                                        CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
     SkBitmap bm = create_bm();
-    auto [view, ct] = GrMakeUncachedBitmapProxyView(context, bm);
+    auto bitmap = skgpu::ganesh::Bitmap::Make(bm);
+    auto [view, ct] = GrMakeUncachedBitmapProxyView(context, std::move(bitmap));
     if (!view) {
         return;
     }
