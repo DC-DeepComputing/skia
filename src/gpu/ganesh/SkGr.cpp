@@ -50,6 +50,7 @@
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/shaders/SkShaderBase.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <optional>
 #include <utility>
@@ -180,7 +181,7 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
     } else {
         bmpToUpload = bitmap;
     }
-    auto proxy = proxyProvider->createProxyFromBitmap(bmpToUpload, mipmapped, fit, budgeted);
+    auto proxy = proxyProvider->createProxyFromBitmap(skgpu::ganesh::Bitmap(bmpToUpload), mipmapped, fit, budgeted);
     SkASSERT(!proxy || mipmapped == skgpu::Mipmapped::kNo ||
              proxy->mipmapped() == skgpu::Mipmapped::kYes);
     return proxy;
@@ -188,9 +189,10 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
 
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
         GrRecordingContext* rContext,
-        const SkBitmap& bitmap,
+        const skgpu::ganesh::Bitmap& bm,
         std::string_view label,
         skgpu::Mipmapped mipmapped) {
+    SkBitmap bitmap = bm.bitmap();
     if (!bitmap.peekPixels(nullptr)) {
         return {};
     }
@@ -253,17 +255,17 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
 
 std::tuple<GrSurfaceProxyView, GrColorType> GrMakeUncachedBitmapProxyView(
         GrRecordingContext* rContext,
-        const SkBitmap& bitmap,
+        const skgpu::ganesh::Bitmap& bitmap,
         skgpu::Mipmapped mipmapped,
         SkBackingFit fit,
         skgpu::Budgeted budgeted) {
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
     const GrCaps* caps = rContext->priv().caps();
 
-    mipmapped = adjust_mipmapped(mipmapped, bitmap, caps);
-    GrColorType ct = choose_bmp_texture_colortype(caps, bitmap);
+    mipmapped = adjust_mipmapped(mipmapped, bitmap.bitmap(), caps);
+    GrColorType ct = choose_bmp_texture_colortype(caps, bitmap.bitmap());
 
-    if (auto proxy = make_bmp_proxy(proxyProvider, bitmap, ct, mipmapped, fit, budgeted)) {
+    if (auto proxy = make_bmp_proxy(proxyProvider, bitmap.bitmap(), ct, mipmapped, fit, budgeted)) {
         skgpu::Swizzle swizzle = caps->getReadSwizzle(proxy->backendFormat(), ct);
         SkASSERT(mipmapped == skgpu::Mipmapped::kNo ||
                  proxy->mipmapped() == skgpu::Mipmapped::kYes);
@@ -330,7 +332,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
     // TecnoSpark3Pro    PowerVRGE8320   200    299ms        820ms (2.74x)     592ms (1.98x)
     // Pixel 4           Adreno640       500    110ms        221ms (2.01x)     214ms (1.95x)
     // Galaxy S20 FE     Mali-G77 MP11   600    165ms        360ms (2.18x)     260ms (1.58x)
-    static const SkBitmap gLUT = skgpu::MakeDitherLUT();
+    static const auto gLUT = skgpu::ganesh::Bitmap(skgpu::MakeDitherLUT());
     auto [tex, ct] = GrMakeCachedBitmapProxyView(
             rContext, gLUT, /*label=*/"MakeDitherEffect", skgpu::Mipmapped::kNo);
     if (!tex) {

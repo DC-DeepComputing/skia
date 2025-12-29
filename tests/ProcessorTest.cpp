@@ -58,6 +58,7 @@
 #include "tests/ganesh/GaneshTestUtils.h"
 #include "tools/EncodeUtils.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <algorithm>
 #include <atomic>
@@ -337,12 +338,10 @@ class TestFPGenerator {
 
                 SkImageInfo ii = SkImageInfo::Make(kTestTextureSize, kTestTextureSize,
                                                    kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-                SkBitmap bitmap;
-                bitmap.installPixels(
-                        ii, rgbaData, ii.minRowBytes(),
+                auto bm = skgpu::ganesh::Bitmap::Make(ii, rgbaData, ii.minRowBytes(),
                         [](void* addr, void* context) { delete[](GrColor*) addr; }, nullptr);
-                bitmap.setImmutable();
-                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap));
+                SkASSERT_RELEASE(bm);
+                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bm.value()));
                 if (!view || !view.proxy()->instantiate(fResourceProvider)) {
                     SkDebugf("Unable to instantiate RGBA8888 test texture.");
                     return false;
@@ -362,12 +361,11 @@ class TestFPGenerator {
 
                 SkImageInfo ii = SkImageInfo::Make(kTestTextureSize, kTestTextureSize,
                                                    kAlpha_8_SkColorType, kPremul_SkAlphaType);
-                SkBitmap bitmap;
-                bitmap.installPixels(
-                        ii, alphaData, ii.minRowBytes(),
+                auto bitmap = skgpu::ganesh::Bitmap::Make(ii, alphaData, ii.minRowBytes(),
                         [](void* addr, void* context) { delete[](uint8_t*) addr; }, nullptr);
-                bitmap.setImmutable();
-                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap));
+                SkASSERT(bitmap);
+
+                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap.value()));
                 if (!view || !view.proxy()->instantiate(fResourceProvider)) {
                     SkDebugf("Unable to instantiate A8 test texture.");
                     return false;
@@ -434,12 +432,11 @@ static std::vector<GrColor> make_input_pixels(int width, int height, SkScalar de
 // Creates a texture of premul colors used as the output of the fragment processor that precedes
 // the fragment processor under test. An array of W*H colors are passed in as the texture data.
 static GrSurfaceProxyView make_input_texture(GrRecordingContext* context,
-                                      int width, int height, GrColor* pixel) {
+                                      int width, int height, const GrColor* pixel) {
     SkImageInfo ii = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    SkBitmap bitmap;
-    bitmap.installPixels(ii, pixel, ii.minRowBytes());
-    bitmap.setImmutable();
-    return std::get<0>(GrMakeUncachedBitmapProxyView(context, bitmap));
+    auto bitmap = skgpu::ganesh::Bitmap::Make(ii, pixel, ii.minRowBytes());
+    SkASSERT_RELEASE(bitmap);
+    return std::get<0>(GrMakeUncachedBitmapProxyView(context, bitmap.value()));
 }
 
 // We tag logged data as unpremul to avoid conversion when encoding as PNG. The input texture

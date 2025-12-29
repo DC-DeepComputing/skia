@@ -20,6 +20,7 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 DEF_SIMPLE_GPU_GM(swizzle, rContext, canvas, 512, 512) {
     auto sfc = skgpu::ganesh::TopDeviceSurfaceFillContext(canvas);
@@ -29,13 +30,16 @@ DEF_SIMPLE_GPU_GM(swizzle, rContext, canvas, 512, 512) {
 
     SkBitmap bmp;
     ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &bmp);
+    auto bitmap = skgpu::ganesh::Bitmap::Make(bmp.pixmap());
+    SkASSERT_RELEASE(bitmap);
+    SkAlphaType alphaType = bitmap->alphaType();
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-            rContext, bmp, /*label=*/"Gm_Swizzle", skgpu::Mipmapped::kNo));
+            rContext, bitmap.value(), /*label=*/"Gm_Swizzle", skgpu::Mipmapped::kNo));
     if (!view) {
         return;
     }
     std::unique_ptr<GrFragmentProcessor> imgFP =
-        GrTextureEffect::Make(std::move(view), bmp.alphaType(), SkMatrix());
+        GrTextureEffect::Make(std::move(view), alphaType, SkMatrix());
     auto fp = GrFragmentProcessor::SwizzleOutput(std::move(imgFP), skgpu::Swizzle("grb1"));
 
     sfc->fillWithFP(std::move(fp));

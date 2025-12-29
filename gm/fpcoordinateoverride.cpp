@@ -31,6 +31,7 @@
 #include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 class SampleCoordEffect : public GrFragmentProcessor {
 public:
@@ -84,8 +85,9 @@ DEF_SIMPLE_GPU_GM_BG(fpcoordinateoverride, rContext, canvas, 512, 512,
 
     SkBitmap bmp;
     ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &bmp);
+    auto bitmap = skgpu::ganesh::Bitmap(bmp);
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-            rContext, bmp, /*label=*/"FpCoordinateOverride", skgpu::Mipmapped::kNo));
+            rContext, bitmap, /*label=*/"FpCoordinateOverride", skgpu::Mipmapped::kNo));
     if (!view) {
         return;
     }

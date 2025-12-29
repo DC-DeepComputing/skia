@@ -73,6 +73,7 @@
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/ganesh/ProxyUtils.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <chrono>
 #include <cstddef>
@@ -690,7 +691,7 @@ GrSurfaceProxyView TestHelper::CreateViewOnCpu(GrRecordingContext* rContext,
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
 
     sk_sp<GrTextureProxy> proxy = proxyProvider->createProxyFromBitmap(
-            create_bitmap(wh), skgpu::Mipmapped::kNo, SkBackingFit::kExact, skgpu::Budgeted::kYes);
+            skgpu::ganesh::Bitmap(create_bitmap(wh)), skgpu::Mipmapped::kNo, SkBackingFit::kExact, skgpu::Budgeted::kYes);
     if (!proxy) {
         return {};
     }

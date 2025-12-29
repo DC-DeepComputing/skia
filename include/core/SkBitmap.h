@@ -27,7 +27,6 @@
 class SkColorSpace;
 class SkImage;
 class SkMatrix;
-class SkMipmap;
 class SkPaint;
 class SkPixelRef;
 class SkShader;
@@ -1248,11 +1247,9 @@ public:
 private:
     sk_sp<SkPixelRef>   fPixelRef;
     SkPixmap            fPixmap;
-    sk_sp<SkMipmap>     fMips;
 
-    friend class SkImage_Raster;
-    friend class SkReadBuffer;        // unflatten
-    friend class GrProxyProvider;     // fMips
+   // friend class SkImage_Raster;
+   // friend class SkReadBuffer;        // unflatten
 };
 
 ///////////////////////////////////////////////////////////////////////////////

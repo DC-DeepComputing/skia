@@ -43,6 +43,7 @@
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 #endif
 
 #include <cstddef>
@@ -251,7 +252,7 @@ DEF_TEST(ImageFilterCache_ImageBackedRaster, reporter) {
 #if defined(SK_GANESH)
 static GrSurfaceProxyView create_proxy_view(GrRecordingContext* rContext) {
     SkBitmap srcBM = create_bm();
-    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, srcBM));
+    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, skgpu::ganesh::Bitmap(srcBM)));
 }
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_ImageBackedGPU,

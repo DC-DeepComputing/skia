@@ -145,7 +145,7 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
     if (requiredProperties.fMipmapped) {
         bool fullCopy = subset == SkIRect::MakeSize(fBitmap.dimensions());
 
-        sk_sp<SkMipmap> mips = fullCopy ? copy_mipmaps(fBitmap, fBitmap.fMips.get()) : nullptr;
+        sk_sp<SkMipmap> mips = fullCopy ? copy_mipmaps(fBitmap, fMips.get()) : nullptr;
 
         // SkImage::withMipmaps will always make a copy for us so we can temporarily share
         // the pixel ref with fBitmap

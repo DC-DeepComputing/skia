@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/image/SkImage_Base.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <memory>
 #include <tuple>
@@ -75,11 +76,15 @@ bool PinAsTexture(GrRecordingContext* rContext, SkImage* img) {
     auto raster = static_cast<SkImage_RasterPinnable*>(ib);
     if (!raster->fPinnedData) {
         auto data = std::make_unique<PinnedData>();
+        auto bitmap = skgpu::ganesh::Bitmap::Make(raster->bitmap().pixmap());
+        if (!bitmap) {
+            return false;
+        }
         std::tie(data->fPinnedView, data->fPinnedColorType) =
-                GrMakeCachedBitmapProxyView(rContext,
-                                            raster->bitmap(),
-                                            /*label=*/"ganesh_PinAsTexture",
-                                            skgpu::Mipmapped::kNo);
+                 GrMakeCachedBitmapProxyView(rContext,
+                                             bitmap.value(),
+                                             /*label=*/"ganesh_PinAsTexture",
+                                             skgpu::Mipmapped::kNo);
         if (!data->fPinnedView) {
             return false;
         }

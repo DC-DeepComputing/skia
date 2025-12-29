@@ -59,6 +59,7 @@
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
 #include "src/image/SkImage_Base.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 
 #include <algorithm>
 #include <memory>
@@ -407,10 +408,12 @@ sk_sp<SkImage> CrossContextTextureFromPixmap(GrDirectContext* dContext,
         pixmap = &resized;
     }
     // Turn the pixmap into a GrTextureProxy
-    SkBitmap bmp;
-    bmp.installPixels(*pixmap);
+    auto bitmap = skgpu::ganesh::Bitmap::Make(pixmap->info(), pixmap->addr(), pixmap->rowBytes());
+    if (!bitmap) {
+        return nullptr;
+    }
     skgpu::Mipmapped mipmapped = buildMips ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
-    auto [view, ct] = GrMakeUncachedBitmapProxyView(dContext, bmp, mipmapped);
+    auto [view, ct] = GrMakeUncachedBitmapProxyView(dContext, bitmap.value(), mipmapped);
     if (!view) {
         return RasterFromPixmapCopy(*pixmap);
     }
@@ -567,13 +570,15 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(GrRecordingContext* context,
     GrColorType pixmapColorTypes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < numPlanes; ++i) {
         // Turn the pixmap into a GrTextureProxy
-        SkBitmap bmp;
-        bmp.installPixels(pixmapsToUpload->plane(i));
-        std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(context, bmp, buildMips);
+        auto bitmap = skgpu::ganesh::Bitmap::Make(pixmapsToUpload->plane(i));
+        if (!bitmap) {
+            return nullptr;
+        }
+        pixmapColorTypes[i] = SkColorTypeToGrColorType(bitmap->colorType());
+        std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(context, bitmap.value(), buildMips);
         if (!views[i]) {
             return nullptr;
         }
-        pixmapColorTypes[i] = SkColorTypeToGrColorType(bmp.colorType());
     }
 
     GrYUVATextureProxies yuvaProxies(pixmapsToUpload->yuvaInfo(), views, pixmapColorTypes);
