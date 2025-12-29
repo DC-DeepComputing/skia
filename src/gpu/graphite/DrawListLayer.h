@@ -7,7 +7,7 @@
 #ifndef skgpu_graphite_DrawListLayer_DEFINED
 #define skgpu_graphite_DrawListLayer_DEFINED
 
-#include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/gpu/graphite/DrawListBase.h"
 
 #include "include/private/base/SkDebug.h"
 #include "src/base/SkBlockAllocator.h"
@@ -33,10 +33,10 @@ class DrawPass;
 class Geometry;
 class Renderer;
 
-class DrawListLayer {
+class DrawListLayer final : public DrawListBase {
 public:
     // Add a construtor to prevent default zero initialization of SkTBlockList members' storage.
-    DrawListLayer() {}
+    DrawListLayer() : DrawListBase() {}
 
     void recordStep(int stepIndex,
                     const RenderStep* step,
@@ -61,36 +61,16 @@ public:
                     SkEnumBitMask<DstUsage> dstUsage,
                     BarrierType barrierBeforeDraws,
                     PipelineDataGatherer* gatherer,
-                    const StrokeStyle* stroke);
+                    const StrokeStyle* stroke) override;
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
-                                           const DstReadStrategy dstReadStrategy);
-
-    int renderStepCount() const { return fRenderStepCount; }
-
-    bool modifiesTarget() const {
-        return this->renderStepCount() > 0 || fLoadOp == LoadOp::kClear;
-    }
-
-    bool samplesTexture(const TextureProxy* texture) const {
-        return fTextureDataCache.hasTexture(texture);
-    }
+                                           const DstReadStrategy dstReadStrategy) override;
 
     // Discard all previously recorded draws and set to the requested load op (with optional clear
     // color).
-    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f});
-
-    // Bounds for a dst read required by this DrawList. These bounds are only valid if drawsReadDst
-    // returns true.
-    const Rect& dstReadBounds() const { return fDstReadBounds; }
-    const Rect& passBounds() const { return fPassBounds; }
-    bool drawsReadDst() const { return !fDstReadBounds.isEmptyNegativeOrNaN(); }
-    bool drawsRequireMSAA() const { return fRequiresMSAA; }
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
-
-    SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
+    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
     friend class DrawPass;
@@ -98,25 +78,6 @@ private:
 
     static constexpr uint32_t kMaxSearchLimit = 32;
     static constexpr uint32_t kDefaultAllocation = 4096; //TODO can be moved upstream as an option
-
-    struct Draw {
-    public:
-        Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
-             const Clip& clip, DrawOrder order, BarrierType barrierBeforeDraws,
-             const StrokeStyle* stroke)
-                : fRenderer(renderer)
-                , fDrawParams(transform, geometry, clip, order, stroke)
-                , fBarrierBeforeDraws(barrierBeforeDraws) {}
-
-        const Renderer* renderer()                             const { return fRenderer;           }
-        const DrawParams& drawParams()                         const { return fDrawParams;         }
-        const BarrierType& barrierBeforeDraws()                const { return fBarrierBeforeDraws; }
-
-    private:
-        const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
-        DrawParams fDrawParams; // The DrawParam's transform is owned by fTransforms of the DrawList
-        BarrierType fBarrierBeforeDraws;
-    };
 
     struct LayerKey {
         GraphicsPipelineCache::Index fPipelineIndex;
@@ -217,29 +178,10 @@ private:
 #endif
     };
 
-    void lookForBindingMatch(LayerKey binding);
-
-    const Transform& deduplicateTransform(const Transform&);
-
-    SkTBlockList<Transform, 16> fTransforms{SkBlockAllocator::GrowthPolicy::kFibonacci};
-
     SkArenaAllocWithReset fStorage{kDefaultAllocation};
     SkTInternalLList<Layer> fLayers;
 
-    int fRenderStepCount = 0;
     int fDrawCount = 0;
-
-    Rect fDstReadBounds = Rect::InfiniteInverted();
-    Rect fPassBounds = Rect::InfiniteInverted();
-    bool fRequiresMSAA = false;
-    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
-
-    UniformDataCache fUniformDataCache;
-    TextureDataCache fTextureDataCache;
-    GraphicsPipelineCache fPipelineCache;
-
-    LoadOp fLoadOp = LoadOp::kLoad;
-    std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 
     // Some hooks for the layer testing
 #if defined(GPU_TEST_UTILS)
@@ -251,10 +193,6 @@ private:
     void setDrawObserver(DrawObserver observer) {
         fDrawObserver = std::move(observer);
     }
-#endif
-
-#if defined(SK_DEBUG)
-    int fCoverageMaskShapeDrawCount = 0;
 #endif
 };
 
