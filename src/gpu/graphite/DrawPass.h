@@ -85,6 +85,7 @@ public:
 
 private:
     friend class DrawList; // For the constructor
+    friend class DrawListLayer;
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
