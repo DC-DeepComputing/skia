@@ -9,7 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkM44.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "modules/jetski/src/Utils.h"
 
 namespace {
@@ -36,12 +36,20 @@ public:
         fEnv->ReleaseFloatArrayElements(fJColors, fColors, 0);
     }
 
-    int count() const { return fCount; }
+    size_t count() const { return fCount; }
 
     const SkColor4f*  colors()      const { return reinterpret_cast<const SkColor4f*>(fColors); }
     const float*      pos()         const { return fPos; }
-    const SkTileMode& tileMode()    const { return fTileMode; }
+    SkTileMode        tileMode()    const { return fTileMode; }
     const SkMatrix&   localMatrix() const { return fLocalMatrix; }
+
+    SkGradient grad() const {
+        SkSpan<const float> pos;
+        if (fPos) {
+            pos = {fPos, fCount};
+        }
+        return {{this->colors(), fCount}, pos, fTileMode}, {}};
+    }
 
 private:
     JNIEnv*            fEnv;
@@ -49,7 +57,7 @@ private:
     const jfloatArray& fJPos;
     float*             fColors;
     float*             fPos;
-    const int          fCount;
+    const size_t       fCount;
     const SkTileMode   fTileMode;
     const SkMatrix     fLocalMatrix;
 };
@@ -59,14 +67,7 @@ static jlong MakeLinear(JNIEnv* env, jobject, jfloat x0, jfloat y0, jfloat x1, j
     const GradientData gdata(env, jcolors, jpos, jtm, native_lm);
     const SkPoint pts[] = {{x0, y0}, {x1, y1}};
 
-    auto shader = SkGradientShader::MakeLinear(pts,
-                                               gdata.colors(),
-                                               nullptr,
-                                               gdata.pos(),
-                                               gdata.count(),
-                                               gdata.tileMode(),
-                                               0,
-                                               &gdata.localMatrix());
+    auto shader = SkShaders::LinearGradient(pts, gdata.grad(), &gdata.localMatrix());
 
     return reinterpret_cast<jlong>(shader.release());
 }
@@ -75,14 +76,7 @@ static jlong MakeRadial(JNIEnv* env, jobject, jfloat x, jfloat y, jfloat r,
                         jfloatArray jcolors, jfloatArray jpos, jint jtm, jlong native_lm) {
     const GradientData gdata(env, jcolors, jpos, jtm, native_lm);
 
-    auto shader = SkGradientShader::MakeRadial({x,y}, r,
-                                               gdata.colors(),
-                                               nullptr,
-                                               gdata.pos(),
-                                               gdata.count(),
-                                               gdata.tileMode(),
-                                               0,
-                                               &gdata.localMatrix());
+    auto shader = SkShaders::RadialGradient({x,y}, r, gdata.grad(), &gdata.localMatrix());
 
     return reinterpret_cast<jlong>(shader.release());
 }
@@ -93,15 +87,8 @@ static jlong MakeTwoPointConical(JNIEnv* env, jobject,
                                  jfloatArray jcolors, jfloatArray jpos, jint jtm, jlong native_lm) {
     const GradientData gdata(env, jcolors, jpos, jtm, native_lm);
 
-    auto shader = SkGradientShader::MakeTwoPointConical({x0,y0}, r0,
-                                                        {x1,y1}, r1,
-                                                        gdata.colors(),
-                                                        nullptr,
-                                                        gdata.pos(),
-                                                        gdata.count(),
-                                                        gdata.tileMode(),
-                                                        0,
-                                                        &gdata.localMatrix());
+    auto shader = SkShaders::TwoPointConicalGradient({x0, y0}, r0, {x1, y1}, r1,
+                                                     gdata.grad(), &gdata.localMatrix());
 
     return reinterpret_cast<jlong>(shader.release());
 }
@@ -110,15 +97,7 @@ static jlong MakeSweep(JNIEnv* env, jobject, jfloat x, jfloat y, jfloat sa, jflo
                        jfloatArray jcolors, jfloatArray jpos, jint jtm, jlong native_lm) {
     const GradientData gdata(env, jcolors, jpos, jtm, native_lm);
 
-    auto shader = SkGradientShader::MakeSweep(x, y,
-                                              gdata.colors(),
-                                              nullptr,
-                                              gdata.pos(),
-                                              gdata.count(),
-                                              gdata.tileMode(),
-                                              sa, ea,
-                                              0,
-                                              &gdata.localMatrix());
+    auto shader = SkShaders::SweepGradient({x, y}, sa, ea, gdata.grad(), &gdata.localMatrix());
 
     return reinterpret_cast<jlong>(shader.release());
 }
