@@ -1833,7 +1833,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     return;
                 }
             } else {
-                dstBitmap.setPixels(imageBuffer);
+                dstBitmap.installPixels(dstBitmap.info(), imageBuffer, dstBitmap.rowBytes());
             }
 
             // Scale unscaledBitmap into dstBitmap.
