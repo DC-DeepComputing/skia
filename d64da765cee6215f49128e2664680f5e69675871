@@ -22,6 +22,30 @@
       },
       "revId": "d64da765cee6215f49128e2664680f5e69675871",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f9cd02a_575b74fc",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-30T20:58:34Z",
+      "side": 1,
+      "message": "The Windows SDK used by the Skia Windows builders is too old and this code is ifdef\u0027ed out. The `DWriteCore` builder brings in the newer dwrite headers which allows this to be built.",
+      "parentUuid": "31c157b8_25d88ef6",
+      "range": {
+        "startLine": 985,
+        "startChar": 14,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "d64da765cee6215f49128e2664680f5e69675871",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
