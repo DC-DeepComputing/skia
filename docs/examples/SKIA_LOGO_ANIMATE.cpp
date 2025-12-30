@@ -70,7 +70,10 @@ void draw(SkCanvas* canvas) {
     float pos = frame > 0.5 ? 1 : frame * 2;
     canvas->translate((1-pos) * -200.0, 0.0);
 
-    const SkColor rgb[] = {0xFFE94037, 0xFF70BF4F, 0xFF465BA6};
+    const SkColor4f rgb[] = {
+        SkColor4f::FromColor(0xFFE94037), SkColor4f::FromColor(0xFF70BF4F),
+        SkColor4f::FromColor(0xFF465BA6)
+    };
     const uint8_t alpha = pos*255.999;
 
     p.setColor(rgb[1]);
@@ -98,8 +101,8 @@ void draw(SkCanvas* canvas) {
 
     // line
     const SkPoint pts[2] = {{160, 290}, {341, 290}};
-    p.setShader(SkGradientShader::MakeLinear(
-            pts, lineColors, nullptr, 2, SkTileMode::kClamp));
+    p.setShader(SkShaders::LinearGradient(
+            pts, {{lineColors, {}, SkTileMode::kClamp}, {}}));
     if (true) {
         SkRRect rrectClip;
         rrectClip.setRectXY({138, 291, 138 + pos*(341-138), 300}, 25.0, 5.0);
