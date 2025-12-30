@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c157b8_25d88ef6",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-30T20:38:56Z",
+      "side": 1,
+      "message": "I\u0027m trying to figure out why the CQ builders didn\u0027t catch the issue here that these are `std::unique_ptr` and so `std::data` isn\u0027t going to work on them. Even if by some crazy way it did work `std::size` isn\u0027t going to work because that information isn\u0027t known.\n\nIn any event, this is breaking at least `Build-Win-Clang-x86_64-Debug-DWriteCore` and the Skia into Chrome roll.",
+      "range": {
+        "startLine": 985,
+        "startChar": 14,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "d64da765cee6215f49128e2664680f5e69675871",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
