@@ -19,6 +19,7 @@
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 
 #include "tests/graphite/precompile/PaintOptionsBuilder.h"
+#include "tests/graphite/precompile/PaintParamsTestUtils.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
 #if defined (SK_VULKAN)
