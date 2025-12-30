@@ -50,6 +50,17 @@ public:
                                       const SkMatrix* localMatrix,
                                       bool clampAsIfUnpremul = false);
 
+    // Convenience function to return a shader that implements the shader+image behavior defined for
+    // drawImage/Bitmap where the paint's shader is ignored when the bitmap is a color image, but
+    // properly compose them together when it is an alpha image. This allows the returned paint to
+    // be assigned to a paint clone without discarding the original behavior.
+    static sk_sp<SkShader> MakeForPaint(sk_sp<SkImage>,
+                                        const SkPaint&,
+                                        SkTileMode tmx,
+                                        SkTileMode tmy,
+                                        const SkSamplingOptions&,
+                                        const SkMatrix* localMatrix);
+
     SkImageShader(sk_sp<SkImage>,
                   const SkRect& subset,
                   SkTileMode tmx, SkTileMode tmy,

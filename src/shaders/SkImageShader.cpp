@@ -355,16 +355,19 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkShader> SkMakeBitmapShaderForPaint(const SkPaint& paint, const SkBitmap& src,
-                                           SkTileMode tmx, SkTileMode tmy,
-                                           const SkSamplingOptions& sampling,
-                                           const SkMatrix* localMatrix, SkCopyPixelsMode mode) {
-    auto s = SkImageShader::Make(SkMakeImageFromRasterBitmap(src, mode),
-                                 tmx, tmy, sampling, localMatrix);
+sk_sp<SkShader> SkImageShader::MakeForPaint(sk_sp<SkImage> image,
+                                            const SkPaint& paint,
+                                            SkTileMode tmx,
+                                            SkTileMode tmy,
+                                            const SkSamplingOptions& sampling,
+                                            const SkMatrix* localMatrix) {
+    SkASSERT(image);
+    SkASSERT(as_IB(image)->isRasterBacked());
+    auto s = SkImageShader::Make(image, tmx, tmy, sampling, localMatrix);
     if (!s) {
         return nullptr;
     }
-    if (SkColorTypeIsAlphaOnly(src.colorType()) && paint.getShader()) {
+    if (SkColorTypeIsAlphaOnly(image->colorType()) && paint.getShader()) {
         // Compose the image shader with the paint's shader. Alpha images+shaders should output the
         // texture's alpha multiplied by the shader's color. DstIn (d*sa) will achieve this with
         // the source image and dst shader (MakeBlend takes dst first, src second).

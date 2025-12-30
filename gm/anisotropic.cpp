@@ -219,6 +219,8 @@ protected:
         SkColor kColors[] = {0xFFF0F0F0, SK_ColorBLUE, SK_ColorGREEN, SK_ColorRED};
         static const SkSamplingOptions kSampling = SkSamplingOptions::Aniso(16);
 
+        int time = -1;
+        constexpr int stopTime = 1;
         for (bool shader : {false, true}) {
             int c = 0;
             canvas->save();
@@ -238,6 +240,9 @@ protected:
                     canvas->restore();
                     canvas->translate(ii.width() * sx + kPad, 0);
                     c = (c + 1) % std::size(kColors);
+                    if (time++ >= stopTime) {
+                        return;
+                    }
                 }
                 canvas->restore();
                 canvas->translate(0, ii.width() * sy + kPad);

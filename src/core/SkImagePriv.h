@@ -9,24 +9,18 @@
 #define SkImagePriv_DEFINED
 
 #include "include/core/SkImage.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 
 class SkPixelRef;
+class SkMipmap;
 
 enum SkCopyPixelsMode {
     kIfMutable_SkCopyPixelsMode,  //!< only copy src pixels if they are marked mutable
     kAlways_SkCopyPixelsMode,     //!< always copy src pixels (even if they are marked immutable)
     kNever_SkCopyPixelsMode,      //!< never copy src pixels (even if they are marked mutable)
 };
-
-// Convenience function to return a shader that implements the shader+image behavior defined for
-// drawImage/Bitmap where the paint's shader is ignored when the bitmap is a color image, but
-// properly compose them together when it is an alpha image. This allows the returned paint to
-// be assigned to a paint clone without discarding the original behavior.
-sk_sp<SkShader> SkMakeBitmapShaderForPaint(const SkPaint& paint, const SkBitmap& src,
-                                           SkTileMode, SkTileMode, const SkSamplingOptions&,
-                                           const SkMatrix* localMatrix, SkCopyPixelsMode);
 
 // Given arguments for a call to SkCanvas::drawImageRect, modify the SkPaint and return a
 // possibly adjusted 'dst' SkRect such that calling SkCanvas::drawRect(newDst, *paint) produces
@@ -55,6 +49,8 @@ SkRect SkModifyPaintAndDstForDrawImageRect(const SkImage* image,
  *  If the bitmap's colortype cannot be converted into a corresponding
  *  SkImageInfo, or the bitmap's pixels cannot be accessed, this will return
  *  nullptr.
+ *
+ *  TODO(kjlubick) Remove external uses (e.g. Android) and replace with SkImage_Raster call.
  */
 extern SK_SPI sk_sp<SkImage> SkMakeImageFromRasterBitmap(const SkBitmap&, SkCopyPixelsMode);
 

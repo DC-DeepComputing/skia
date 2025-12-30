@@ -37,6 +37,8 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkImage_Raster.h"
+#include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 
 #include <utility>
@@ -415,15 +417,18 @@ static inline bool CanApplyDstMatrixAsCTM(const SkMatrix& m, const SkPaint& pain
 void SkBitmapDevice::drawImageRect(const SkImage* image, const SkRect* src, const SkRect& dst,
                                    const SkSamplingOptions& sampling, const SkPaint& paint,
                                    SkCanvas::SrcRectConstraint constraint) {
+    SkASSERT(image);
     SkASSERT(dst.isFinite());
     SkASSERT(dst.isSorted());
 
     SkBitmap bitmap;
     // TODO: Elevate direct context requirement to public API and remove cheat.
-    auto dContext = as_IB(image)->directContext();
-    if (!as_IB(image)->getROPixels(dContext, &bitmap)) {
+    auto imageBase = as_IB(image);
+    auto dContext = imageBase->directContext();
+    if (!imageBase->getROPixels(dContext, &bitmap)) {
         return;
     }
+    sk_sp<SkMipmap> mips = imageBase->refMips();
 
     SkRect      bitmapBounds, tmpSrc, tmpDst;
     SkBitmap    tmpBitmap;
@@ -476,6 +481,7 @@ void SkBitmapDevice::drawImageRect(const SkImage* image, const SkRect* src, cons
             return;
         }
         bitmapPtr = &tmpBitmap;
+        mips = nullptr;
 
         // Since we did an extract, we need to adjust the matrix accordingly
         SkScalar dx = 0, dy = 0;
@@ -515,8 +521,9 @@ void SkBitmapDevice::drawImageRect(const SkImage* image, const SkRect* src, cons
     USE_SHADER:
 
     // construct a shader, so we can call drawRect with the dst
-    auto s = SkMakeBitmapShaderForPaint(paint, *bitmapPtr, SkTileMode::kClamp, SkTileMode::kClamp,
-                                        sampling, &matrix, kNever_SkCopyPixelsMode);
+    auto img = SkImage_Raster::MakeFromBitmap(*bitmapPtr, kNever_SkCopyPixelsMode, mips);
+    auto s = SkImageShader::MakeForPaint(
+            std::move(img), paint, SkTileMode::kClamp, SkTileMode::kClamp, sampling, &matrix);
     if (!s) {
         return;
     }
