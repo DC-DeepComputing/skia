@@ -12,7 +12,7 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkImageInfo.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 
 class SkColorSpace;
 
