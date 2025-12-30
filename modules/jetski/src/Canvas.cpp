@@ -15,7 +15,7 @@
 #include <jni.h>
 
 namespace {
-
+sdfsd
 jint Canvas_GetWidth(JNIEnv* env, jobject, jlong native_instance) {
     const auto* canvas = reinterpret_cast<const SkCanvas*>(native_instance);
     return canvas ? canvas->imageInfo().width() : 0;
