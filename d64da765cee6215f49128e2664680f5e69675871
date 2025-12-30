@@ -46,6 +46,30 @@
       },
       "revId": "d64da765cee6215f49128e2664680f5e69675871",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b180e97_62e133fe",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-12-30T21:33:48Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1133596",
+      "parentUuid": "1f9cd02a_575b74fc",
+      "range": {
+        "startLine": 985,
+        "startChar": 14,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "d64da765cee6215f49128e2664680f5e69675871",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
