@@ -9,7 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkM44.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "modules/jetski/src/Utils.h"
 
 namespace {
