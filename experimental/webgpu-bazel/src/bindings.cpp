@@ -36,6 +36,7 @@
 // This defines the C++ equivalents to the JS WebGPU API.
 #include <webgpu/webgpu_cpp.h>
 
+asf
 static wgpu::Surface getSurfaceForCanvas(wgpu::Device device,
                                          std::string canvasSelector,
                                          int width,
