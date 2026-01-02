@@ -246,7 +246,7 @@ DEF_TEST(Image_MakeFromRasterBitmap, reporter) {
         SkBitmap bm;
         bm.allocN32Pixels(100, 100);
 
-        auto img = SkImage_Raster::MakeFromBitmap(bm, rec.fCPM);
+        auto img = SkImage_Raster::MakeFromBitmap(bm, rec.fCPM, nullptr);
         REPORTER_ASSERT(reporter, img->peekPixels(&pm));
         const bool sameMutable = pm.addr32(0, 0) == bm.getAddr32(0, 0);
         REPORTER_ASSERT(reporter, rec.fExpectSameAsMutable == sameMutable);
@@ -255,7 +255,7 @@ DEF_TEST(Image_MakeFromRasterBitmap, reporter) {
         bm.notifyPixelsChanged();   // force a new generation ID
 
         bm.setImmutable();
-        img = SkImage_Raster::MakeFromBitmap(bm, rec.fCPM);
+        img = SkImage_Raster::MakeFromBitmap(bm, rec.fCPM, nullptr);
         REPORTER_ASSERT(reporter, img->peekPixels(&pm));
         const bool sameImmutable = pm.addr32(0, 0) == bm.getAddr32(0, 0);
         REPORTER_ASSERT(reporter, rec.fExpectSameAsImmutable == sameImmutable);
