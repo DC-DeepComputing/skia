@@ -54,10 +54,11 @@ SkImage_Raster::SkImage_Raster(const SkImageInfo& info, sk_sp<SkData> data, size
     fBitmap.setImmutable();
 }
 
-SkImage_Raster::SkImage_Raster(const SkBitmap& bm, bool bitmapMayBeMutable)
+SkImage_Raster::SkImage_Raster(const SkBitmap& bm, sk_sp<SkMipmap> mips, bool bitmapMayBeMutable)
         : SkImage_Base(bm.info(),
-                    is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID)
-        , fBitmap(bm) {
+                       is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID)
+        , fBitmap(bm)
+        , fMips(mips) {
     SkASSERT(bitmapMayBeMutable || fBitmap.isImmutable());
 }
 
@@ -145,7 +146,7 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
     if (requiredProperties.fMipmapped) {
         bool fullCopy = subset == SkIRect::MakeSize(fBitmap.dimensions());
 
-        sk_sp<SkMipmap> mips = fullCopy ? copy_mipmaps(fBitmap, fBitmap.fMips.get()) : nullptr;
+        sk_sp<SkMipmap> mips = fullCopy ? copy_mipmaps(fBitmap, fMips.get()) : nullptr;
 
         // SkImage::withMipmaps will always make a copy for us so we can temporarily share
         // the pixel ref with fBitmap
@@ -154,7 +155,7 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
             return nullptr;
         }
 
-        sk_sp<SkImage> tmp(new SkImage_Raster(tmpSubset, /* bitmapMayBeMutable= */ true));
+        sk_sp<SkImage> tmp(new SkImage_Raster(tmpSubset, nullptr, /* bitmapMayBeMutable= */ true));
 
         // withMipmaps will auto generate the mipmaps if a nullptr is passed in
         SkASSERT(!mips || mips->validForRootLevel(tmp->imageInfo()));
@@ -169,27 +170,30 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
     return img;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-sk_sp<SkImage> SkMakeImageFromRasterBitmapPriv(const SkBitmap& bm, SkCopyPixelsMode cpm,
-                                               uint32_t idForCopy) {
-    if (kAlways_SkCopyPixelsMode == cpm || (!bm.isImmutable() && kNever_SkCopyPixelsMode != cpm)) {
-        SkPixmap pmap;
-        if (bm.peekPixels(&pmap)) {
-            return MakeRasterCopyPriv(pmap, idForCopy);
-        } else {
-            return sk_sp<SkImage>();
-        }
-    }
-    return sk_make_sp<SkImage_Raster>(bm, kNever_SkCopyPixelsMode == cpm);
+sk_sp<SkImage> SkMakeImageFromRasterBitmap(const SkBitmap& bm, SkCopyPixelsMode cpm) {
+    return SkImage_Raster::MakeFromBitmap(bm, cpm, nullptr);
 }
 
-sk_sp<SkImage> SkMakeImageFromRasterBitmap(const SkBitmap& bm, SkCopyPixelsMode cpm) {
+sk_sp<SkImage> SkImage_Raster::MakeFromBitmap(const SkBitmap& bm,
+                                              SkCopyPixelsMode cpm,
+                                              sk_sp<SkMipmap> mips) {
     if (!SkImageInfoIsValid(bm.info()) || bm.rowBytes() < bm.info().minRowBytes()) {
         return nullptr;
     }
 
-    return SkMakeImageFromRasterBitmapPriv(bm, cpm, kNeedNewImageUniqueID);
+    if (kAlways_SkCopyPixelsMode == cpm || (!bm.isImmutable() && kNever_SkCopyPixelsMode != cpm)) {
+        SkPixmap pmap;
+        if (bm.peekPixels(&pmap)) {
+            auto img = SkImages::RasterFromPixmapCopy(pmap);
+            SkASSERT(as_IB(img)->isRasterBacked());
+            auto imgRaster = static_cast<SkImage_Raster*>(img.get());
+            imgRaster->fMips = std::move(mips);
+            return img;
+        } else {
+            return nullptr;
+        }
+    }
+    return sk_sp<SkImage>(new SkImage_Raster(bm, mips, kNever_SkCopyPixelsMode == cpm));
 }
 
 const SkPixelRef* SkBitmapImageGetPixelRef(const SkImage* image) {

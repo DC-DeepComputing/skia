@@ -34,9 +34,10 @@ struct SkImageInfo;
 
 class SkImage_Raster : public SkImage_Base {
 public:
-    SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb,
+    SkImage_Raster(const SkImageInfo&,
+                   sk_sp<SkData>,
+                   size_t rb,
                    uint32_t id = kNeedNewImageUniqueID);
-    SkImage_Raster(const SkBitmap& bm, bool bitmapMayBeMutable = false);
     ~SkImage_Raster() override;
 
     // From SkImage.h
@@ -80,10 +81,10 @@ public:
         fBitmap.pixelRef()->notifyAddedToCache();
     }
 
-    bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
+    bool onHasMipmaps() const override { return SkToBool(fMips); }
     bool onIsProtected() const override { return false; }
 
-    SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
+    SkMipmap* onPeekMips() const override { return fMips.get(); }
 
     sk_sp<SkImage> onMakeWithMipmaps(sk_sp<SkMipmap> mips) const override {
         // It's dangerous to have two SkBitmaps that share a SkPixelRef but have different SkMipmaps
@@ -92,12 +93,15 @@ public:
         // SkPixelRef can interact badly with SkSurface/SkImage copy-on-write. So we just always
         // make a copy with a new ID.
         static auto constexpr kCopyMode = SkCopyPixelsMode::kAlways_SkCopyPixelsMode;
-        sk_sp<SkImage> img = SkMakeImageFromRasterBitmap(fBitmap, kCopyMode);
+        sk_sp<SkImage> img = SkImage_Raster::MakeFromBitmap(fBitmap, kCopyMode, nullptr);
+        if (!img) SK_UNLIKELY {
+                return nullptr;
+            }
         auto imgRaster = static_cast<SkImage_Raster*>(img.get());
         if (mips) {
-            imgRaster->fBitmap.fMips = std::move(mips);
+            imgRaster->fMips = std::move(mips);
         } else {
-            imgRaster->fBitmap.fMips.reset(SkMipmap::Build(fBitmap.pixmap(), nullptr));
+            imgRaster->fMips.reset(SkMipmap::Build(fBitmap.pixmap(), nullptr));
         }
         return img;
     }
@@ -105,8 +109,33 @@ public:
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kRaster; }
 
     SkBitmap bitmap() const { return fBitmap; }
+
+    /**
+     *  Examines the bitmap to decide if it can share the existing pixelRef, or
+     *  if it needs to make a deep-copy of the pixels.
+     *
+     *  The bitmap's pixelref will be shared if either the bitmap is marked as
+     *  immutable, or CopyPixelsMode allows it. Shared pixel refs are also
+     *  locked when kLocked_SharedPixelRefMode is specified.
+     *
+     *  Passing kLocked_SharedPixelRefMode allows the image's peekPixels() method
+     *  to succeed, but it will force any lazy decodes/generators to execute if
+     *  they exist on the pixelref.
+     *
+     *  It is illegal to call this with a texture-backed bitmap.
+     *
+     *  If the bitmap's colortype cannot be converted into a corresponding
+     *  SkImageInfo, or the bitmap's pixels cannot be accessed, this will return
+     *  nullptr.
+     */
+    static sk_sp<SkImage> MakeFromBitmap(const SkBitmap&, SkCopyPixelsMode, sk_sp<SkMipmap>);
+
+protected:
+    SkImage_Raster(const SkBitmap&, sk_sp<SkMipmap>, bool bitmapMayBeMutable);
+
 private:
     SkBitmap fBitmap;
+    sk_sp<SkMipmap> fMips;
 };
 
 sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id);

@@ -7,6 +7,8 @@ package(
 licenses(["notice"])
 
 IMAGE_FILES = [
+    "GrBitmap.cpp",
+    "GrBitmap.h",
     "GrImageUtils.cpp",
     "GrImageUtils.h",
     "GrTextureGenerator.cpp",
