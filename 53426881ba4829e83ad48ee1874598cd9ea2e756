@@ -52,6 +52,24 @@
       "parentUuid": "11020706_ab937733",
       "revId": "53426881ba4829e83ad48ee1874598cd9ea2e756",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7720f926_2da97cf2",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-02T15:34:49Z",
+      "side": 1,
+      "message": "Unfortunately, in addition there are files like Chromium\u0027s `gpu/command_buffer/service/graphite_precompile.cc` which do not include what they use and were depending on Skia\u0027s `include/gpu/graphite/precompile/PrecompileShader.h` to pull in `SkGradientShader.h`.",
+      "parentUuid": "994a3566_6b97313d",
+      "revId": "53426881ba4829e83ad48ee1874598cd9ea2e756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
