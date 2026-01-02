@@ -24,6 +24,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#if defined(SK_SUPPORT_LEGACY_UNSPANNED_GRADIENTS)
+#include "include/effects/SkGradientShader.h"
+#endif
+
 class SkArenaAlloc;
 class SkRasterPipeline;
 class SkReadBuffer;
