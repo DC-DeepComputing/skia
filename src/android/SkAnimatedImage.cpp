@@ -365,7 +365,7 @@ sk_sp<SkImage> SkAnimatedImage::getCurrentFrameSimple() {
     // This SkBitmap may be reused later to decode the following frame. But Frame::init
     // lazily copies the pixel ref if it has any other references. So it is safe to not
     // do a deep copy here.
-    return SkImage_Raster::MakeFromBitmap(fDisplayFrame.fBitmap, SkCopyPixelsMode::kNever);
+    return SkImage_Raster::MakeFromBitmap(fDisplayFrame.fBitmap, SkCopyPixelsMode::kNever, nullptr);
 }
 
 sk_sp<SkImage> SkAnimatedImage::getCurrentFrame() {
@@ -384,7 +384,8 @@ sk_sp<SkImage> SkAnimatedImage::getCurrentFrame() {
 
     SkCanvas canvas(dst);
     this->draw(&canvas);
-    return SkImage_Raster::MakeFromBitmap(dst, SkCopyPixelsMode::kNever);
+    dst.setImmutable();
+    return SkImage_Raster::MakeFromBitmap(dst, SkCopyPixelsMode::kNever, nullptr);
 }
 
 void SkAnimatedImage::setFilterMode(SkFilterMode filterMode) {

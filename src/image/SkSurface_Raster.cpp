@@ -131,7 +131,7 @@ sk_sp<SkImage> SkSurface_Raster::onNewImageSnapshot(const SkIRect* subset) {
 
     // Our pixels are in memory, so read access on the snapshot SkImage could be cheap.
     // Lock the shared pixel ref to ensure peekPixels() is usable.
-    return SkImage_Raster::MakeFromBitmap(fBitmap, cpm);
+    return SkImage_Raster::MakeFromBitmap(fBitmap, cpm, nullptr);
 }
 
 void SkSurface_Raster::onWritePixels(const SkPixmap& src, int x, int y) {
