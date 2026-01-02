@@ -75,7 +75,7 @@ sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bm) {
         return nullptr;
     }
 
-    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kIfMutable);
+    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kIfMutable, nullptr);
 }
 
 sk_sp<SkImage> RasterFromPixmapCopy(const SkPixmap& pmap) {
