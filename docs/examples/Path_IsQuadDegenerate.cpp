@@ -4,10 +4,11 @@
 REG_FIDDLE(Path_IsQuadDegenerate, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
     auto debugster = [](const SkPath& path, bool exact) -> void {
+        auto points = path.points();
         SkDebugf("quad (%1.8g,%1.8g), (%1.8g,%1.8g), (%1.8g,%1.8g) is %s" "degenerate, %s\n",
-            path.getPoint(0).fX, path.getPoint(0).fY, path.getPoint(1).fX,
-            path.getPoint(1).fY, path.getPoint(2).fX, path.getPoint(2).fY,
-            SkPath::IsQuadDegenerate(path.getPoint(0), path.getPoint(1), path.getPoint(2), exact) ?
+            points[0].fX, points[0].fY, points[1].fX,
+            points[1].fY, points[2].fX, points[2].fY,
+            SkPath::IsQuadDegenerate(points[0], points[1], points[2], exact) ?
             "" : "not ", exact ? "exactly" : "nearly");
     };
     SkPath path = SkPathBuilder()

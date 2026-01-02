@@ -66,18 +66,18 @@ SkSpan<const float> GetPorterDuffBlendConstants(SkBlendMode mode) {
     static constexpr float kXor[]        = {1,  1, -1, -1};
 
     switch (mode) {
-        case SkBlendMode::kClear:      return SkSpan(kClear);
-        case SkBlendMode::kSrc:        return SkSpan(kSrc);
-        case SkBlendMode::kDst:        return SkSpan(kDst);
-        case SkBlendMode::kSrcOver:    return SkSpan(kSrcOver);
-        case SkBlendMode::kDstOver:    return SkSpan(kDstOver);
-        case SkBlendMode::kSrcIn:      return SkSpan(kSrcIn);
-        case SkBlendMode::kDstIn:      return SkSpan(kDstIn);
-        case SkBlendMode::kSrcOut:     return SkSpan(kSrcOut);
-        case SkBlendMode::kDstOut:     return SkSpan(kDstOut);
-        case SkBlendMode::kSrcATop:    return SkSpan(kSrcATop);
-        case SkBlendMode::kDstATop:    return SkSpan(kDstATop);
-        case SkBlendMode::kXor:        return SkSpan(kXor);
+        case SkBlendMode::kClear:      return kClear;
+        case SkBlendMode::kSrc:        return kSrc;
+        case SkBlendMode::kDst:        return kDst;
+        case SkBlendMode::kSrcOver:    return kSrcOver;
+        case SkBlendMode::kDstOver:    return kDstOver;
+        case SkBlendMode::kSrcIn:      return kSrcIn;
+        case SkBlendMode::kDstIn:      return kDstIn;
+        case SkBlendMode::kSrcOut:     return kSrcOut;
+        case SkBlendMode::kDstOut:     return kDstOut;
+        case SkBlendMode::kSrcATop:    return kSrcATop;
+        case SkBlendMode::kDstATop:    return kDstATop;
+        case SkBlendMode::kXor:        return kXor;
         default:                       return {};
     }
 }
