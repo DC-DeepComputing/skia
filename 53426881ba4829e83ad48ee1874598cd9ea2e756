@@ -16,6 +16,24 @@
       "message": "The Skia into Chromium roll is complaining about the content of this block (and possibly the similar ones in the other files).",
       "revId": "53426881ba4829e83ad48ee1874598cd9ea2e756",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11020706_ab937733",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-02T15:06:46Z",
+      "side": 1,
+      "message": "In the Skia build `SK_SUPPORT_LEGACY_UNSPANNED_GRADIENTS` is not defined by the build but is being set when including `SkGradientShader.h` (which was removed from this file with this change). However, other builds are setting `SK_SUPPORT_LEGACY_UNSPANNED_GRADIENTS` and so it is still defined even though the header isn\u0027t being included. That means these blocks exist in those builds and then fail because there is no declaration of `SkGradientShader`.\n\nIt looks like `SkGradientShader.h` still needs to be (conditionally) included, or these implementations be moved to somewhere where it is included, or users should be updated first and these implementations removed.",
+      "parentUuid": "4a87f25f_0b8af328",
+      "revId": "53426881ba4829e83ad48ee1874598cd9ea2e756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
