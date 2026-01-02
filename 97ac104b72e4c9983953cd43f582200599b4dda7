@@ -46,6 +46,30 @@
       },
       "revId": "97ac104b72e4c9983953cd43f582200599b4dda7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e21bae4_872c01fe",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-02T16:18:10Z",
+      "side": 0,
+      "message": "Yes it is, but that header doesn\u0027t actually need it. Better to put the temporary includes where they are needed just for the definitions.",
+      "parentUuid": "f2bf8ee9_32d01a42",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "97ac104b72e4c9983953cd43f582200599b4dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
