@@ -41,11 +41,11 @@ static void makebm(SkBitmap* bm, int w, int h) {
     const SkScalar    kPos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
 
     SkPaint     paint;
-    SkColorConverter conv0({0x80F00080, 0xF0F08000, 0x800080F0});
+    SkColorConverter conv0({{0x80F00080, 0xF0F08000, 0x800080F0}});
     paint.setShader(SkShaders::LinearGradient(kPts0,
                                               {{conv0.colors4f(), kPos, SkTileMode::kClamp}, {}}));
     canvas.drawPaint(paint);
-    SkColorConverter conv1({0xF08000F0, 0x8080F000, 0xF000F080});
+    SkColorConverter conv1({{0xF08000F0, 0x8080F000, 0xF000F080}});
     paint.setShader(SkShaders::LinearGradient(kPts1,
                                               {{conv1.colors4f(), kPos, SkTileMode::kClamp}, {}}));
     canvas.drawPaint(paint);

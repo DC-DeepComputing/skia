@@ -55,10 +55,8 @@ void draw(SkCanvas* canvas) {
 
                 paint.setStrokeWidth(3);
                 paint.setStrokeJoin(SkPaint::kMiter_Join);
-                int n = fillPath.countPoints();
-                std::vector<SkPoint> points(n);
-                fillPath.getPoints(points);
-                canvas->drawPoints(SkCanvas::kPoints_PointMode, points, paint);
+
+                canvas->drawPoints(SkCanvas::kPoints_PointMode, fillPath.points(), paint);
             }
         }
     }
