@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d4c446_d7a564d2",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-02T15:23:53Z",
+      "side": 0,
+      "message": "This should be sufficient, this header is pulled in all gradient impls.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "97ac104b72e4c9983953cd43f582200599b4dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
