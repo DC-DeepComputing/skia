@@ -116,7 +116,7 @@ public:
     */
     void setBlendModes(SkSpan<const SkBlendMode> blendModes);
     SkSpan<const SkBlendMode> getBlendModes() const {
-        return SkSpan<const SkBlendMode>(fBlendModeOptions.data(), fBlendModeOptions.size());
+        return {fBlendModeOptions.data(), (size_t)fBlendModeOptions.size()};
     }
     void addBlendMode(SkBlendMode bm) {
         fBlendModeOptions.push_back(bm);
