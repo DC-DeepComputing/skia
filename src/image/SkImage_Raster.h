@@ -15,7 +15,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMipmap.h"
 #include "src/image/SkImage_Base.h"
 
@@ -31,6 +30,12 @@ class SkSurface;
 enum SkColorType : int;
 struct SkIRect;
 struct SkImageInfo;
+
+enum class SkCopyPixelsMode {
+    kIfMutable,  //!< only copy src pixels if they are marked mutable
+    kAlways,     //!< always copy src pixels (even if they are marked immutable)
+    kNever,      //!< never copy src pixels (even if they are marked mutable)
+};
 
 class SkImage_Raster : public SkImage_Base {
 public:
@@ -91,8 +96,8 @@ public:
         // SkSurfaces are marked "temporarily immutable" and making an image that uses the same
         // SkPixelRef can interact badly with SkSurface/SkImage copy-on-write. So we just always
         // make a copy with a new ID.
-        static auto constexpr kCopyMode = SkCopyPixelsMode::kAlways_SkCopyPixelsMode;
-        sk_sp<SkImage> img = SkMakeImageFromRasterBitmap(fBitmap, kCopyMode);
+        static auto constexpr kCopyMode = SkCopyPixelsMode::kAlways;
+        sk_sp<SkImage> img = SkImage_Raster::MakeFromBitmap(fBitmap, kCopyMode);
         auto imgRaster = static_cast<SkImage_Raster*>(img.get());
         if (mips) {
             imgRaster->fBitmap.fMips = std::move(mips);
@@ -105,10 +110,27 @@ public:
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kRaster; }
 
     SkBitmap bitmap() const { return fBitmap; }
+
+    // Given a raster-backed SkImage, return its pixelref. This
+    // may be called to see if the surface and the image share the same pixelref,
+    // in which case the surface may need to perform a copy-on-write.
+    static const SkPixelRef* GetPixelRef(const SkImage*);
+
+    /**
+     *  Examines the bitmap to decide if it can share the existing pixelRef, or
+     *  if it needs to make a deep-copy of the pixels.
+     *
+     *  The bitmap's pixelref will be shared if either the bitmap is marked as
+     *  immutable, or CopyPixelsMode allows it.
+     *
+     *  If the bitmap's colortype cannot be converted into a corresponding
+     *  SkImageInfo, or the bitmap's pixels cannot be accessed, this will return
+     *  nullptr.
+     */
+    static sk_sp<SkImage> MakeFromBitmap(const SkBitmap&, SkCopyPixelsMode);
+
 private:
     SkBitmap fBitmap;
 };
-
-sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id);
 
 #endif // SkImage_Raster_DEFINED
