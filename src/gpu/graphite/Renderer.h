@@ -212,7 +212,7 @@ public:
     SkSpan<const Uniform>   uniforms()         const { return SkSpan(fUniforms);      }
     SkSpan<const Attribute> staticAttributes() const { return SkSpan(fStaticAttrs);   }
     SkSpan<const Attribute> appendAttributes() const { return SkSpan(fAppendAttrs);   }
-    SkSpan<const Varying>   varyings()         const { return SkSpan(fVaryings);      }
+    SkSpan<const Varying>   varyings()         const { return SkSpan<const Varying>(fVaryings);      }
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 

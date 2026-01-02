@@ -1177,9 +1177,9 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
 
     if (consumedSlots <= 4 && numElements <= 4) {
         // We can fit everything into a little swizzle.
-        int op = (int)BuilderOp::swizzle_1 + numElements - 1;
+        size_t op = (int)BuilderOp::swizzle_1 + numElements - 1;
         this->appendInstruction((BuilderOp)op, {}, consumedSlots,
-                                pack_nybbles(SkSpan(elements, numElements)));
+                                pack_nybbles({elements, SkToSizeT(numElements)}));
         return;
     }
 
@@ -1187,8 +1187,8 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
     // slots. immB counts the generated slots. immC and immD hold packed-nybble shuffle values.
     this->appendInstruction(BuilderOp::shuffle, {},
                             consumedSlots, numElements,
-                            pack_nybbles(SkSpan(&elements[0], 8)),
-                            pack_nybbles(SkSpan(&elements[8], 8)));
+                            pack_nybbles({&elements[0], 8}),
+                            pack_nybbles({&elements[8], 8}));
 }
 
 void Builder::transpose(int columns, int rows) {
@@ -1200,7 +1200,7 @@ void Builder::transpose(int columns, int rows) {
             elements[index++] = (c * rows) + r;
         }
     }
-    this->swizzle(/*consumedSlots=*/columns * rows, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/columns * rows, {elements, index});
 }
 
 void Builder::diagonal_matrix(int columns, int rows) {
@@ -1212,7 +1212,7 @@ void Builder::diagonal_matrix(int columns, int rows) {
             elements[index++] = (c == r) ? 1 : 0;
         }
     }
-    this->swizzle(/*consumedSlots=*/2, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/2, {elements, index});
 }
 
 void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int newRows) {
@@ -1248,7 +1248,7 @@ void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int n
             }
         }
     }
-    this->swizzle(consumedSlots, SkSpan(elements, index));
+    this->swizzle(consumedSlots, {elements, index});
 }
 
 void Builder::matrix_multiply(int leftColumns, int leftRows, int rightColumns, int rightRows) {
@@ -2098,8 +2098,8 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 ctx->ptr = reinterpret_cast<int32_t*>(tempStackPtr) - (N * consumed);
                 ctx->count = generated;
                 // Unpack immB and immC from nybble form into the offset array.
-                unpack_nybbles_to_offsets(inst.fImmC, SkSpan(&ctx->offsets[0], 8));
-                unpack_nybbles_to_offsets(inst.fImmD, SkSpan(&ctx->offsets[8], 8));
+                unpack_nybbles_to_offsets(inst.fImmC, SkSpan{&ctx->offsets[0], 8});
+                unpack_nybbles_to_offsets(inst.fImmD, SkSpan{&ctx->offsets[8], 8});
                 pipeline->push_back({ProgramOp::shuffle, ctx});
                 break;
             }
@@ -2827,24 +2827,24 @@ public:
     // Stringizes a swizzled pointer.
     template <typename T>
     std::string swizzlePtr(const void* ptr, SkSpan<T> offsets) const {
-        return "(" + this->ptrCtx(ptr, this->swizzleWidth(SkSpan(offsets))) + ")." +
-               this->swizzleOffsetSpan(SkSpan(offsets));
+        return "(" + this->ptrCtx(ptr, this->swizzleWidth(offsets)) + ")." +
+               this->swizzleOffsetSpan(offsets);
     }
 
     // Interprets the context value as a SwizzleCtx structure.
     std::tuple<std::string, std::string> swizzleCtx(ProgramOp op, const void* v) const {
         auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipelineContexts::SwizzleCtx*)v);
-        int destSlots = (int)op - (int)BuilderOp::swizzle_1 + 1;
+        size_t destSlots = (int)op - (int)BuilderOp::swizzle_1 + 1;
         return {this->offsetCtx(ctx.dst, destSlots),
-                this->swizzlePtr(this->offsetToPtr(ctx.dst), SkSpan(ctx.offsets, destSlots))};
+                this->swizzlePtr(this->offsetToPtr(ctx.dst), SkSpan{ctx.offsets, destSlots})};
     }
 
     // Interprets the context value as a SwizzleCopyCtx structure.
     std::tuple<std::string, std::string> swizzleCopyCtx(ProgramOp op, const void* v) const {
         const auto* ctx = static_cast<const SkRasterPipelineContexts::SwizzleCopyCtx*>(v);
-        int destSlots = (int)op - (int)BuilderOp::swizzle_copy_slot_masked + 1;
+        size_t destSlots = (int)op - (int)BuilderOp::swizzle_copy_slot_masked + 1;
 
-        return {this->swizzlePtr(ctx->dst, SkSpan(ctx->offsets, destSlots)),
+        return {this->swizzlePtr(ctx->dst, SkSpan{ctx->offsets, destSlots}),
                 this->ptrCtx(ctx->src, destSlots)};
     }
 
@@ -2907,7 +2907,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     fSlots = fProgram.allocateSlotData(&alloc).value();
     float* uniformPtr = alloc.makeArray<float>(fProgram.fNumUniformSlots);
-    fUniforms = SkSpan(uniformPtr, fProgram.fNumUniformSlots);
+    fUniforms = {uniformPtr, SkToSizeT(fProgram.fNumUniformSlots)};
 
     // Turn this program into an array of Raster Pipeline stages.
     fProgram.makeStages(&fStages, &alloc, fUniforms, fSlots);
@@ -3200,11 +3200,10 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::swizzle_copy_to_indirect_masked: {
                 const auto* ctx =
                         static_cast<SkRasterPipelineContexts::SwizzleCopyIndirectCtx*>(stage.ctx);
-                opArg1 = this->ptrCtx(ctx->dst, this->swizzleWidth(SkSpan(ctx->offsets,
-                                                                          ctx->slots)));
+                opArg1 = this->ptrCtx(ctx->dst, this->swizzleWidth(SkSpan{ctx->offsets, ctx->slots}));
                 opArg2 = this->ptrCtx(ctx->src, ctx->slots);
                 opArg3 = this->ptrCtx(ctx->indirectOffset, 1);
-                opSwizzle = this->swizzleOffsetSpan(SkSpan(ctx->offsets, ctx->slots));
+                opSwizzle = this->swizzleOffsetSpan(SkSpan{ctx->offsets, ctx->slots});
                 break;
             }
             case POp::merge_condition_mask:
