@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a87f25f_0b8af328",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-02T14:49:04Z",
+      "side": 1,
+      "message": "The Skia into Chromium roll is complaining about the content of this block (and possibly the similar ones in the other files).",
+      "revId": "53426881ba4829e83ad48ee1874598cd9ea2e756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
