@@ -19,6 +19,7 @@
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/image/GrBitmap.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/image/SkImage_Base.h"
 
@@ -77,7 +78,7 @@ bool PinAsTexture(GrRecordingContext* rContext, SkImage* img) {
         auto data = std::make_unique<PinnedData>();
         std::tie(data->fPinnedView, data->fPinnedColorType) =
                 GrMakeCachedBitmapProxyView(rContext,
-                                            raster->bitmap(),
+                                            skgpu::ganesh::Bitmap(raster->bitmap()),
                                             /*label=*/"ganesh_PinAsTexture",
                                             skgpu::Mipmapped::kNo);
         if (!data->fPinnedView) {
