@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f480c5c_d0a2544b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-05T04:05:40Z",
+      "side": 1,
+      "message": "Hey Corentin, I rebased your patch to get it to pass the chrome canary test, so can you resubmit it again? Apologies thanks!",
+      "revId": "ce7abf7ab9bd4af2325173561d9d6b700a7914af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
