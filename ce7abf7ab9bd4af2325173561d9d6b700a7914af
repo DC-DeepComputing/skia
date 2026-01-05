@@ -16,6 +16,24 @@
       "message": "Hey Corentin, I rebased your patch to get it to pass the chrome canary test, so can you resubmit it again? Apologies thanks!",
       "revId": "ce7abf7ab9bd4af2325173561d9d6b700a7914af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7198d776_68fe0593",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2026-01-05T08:11:49Z",
+      "side": 1,
+      "message": "No worries, thanks for the rebase!",
+      "parentUuid": "7f480c5c_d0a2544b",
+      "revId": "ce7abf7ab9bd4af2325173561d9d6b700a7914af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
