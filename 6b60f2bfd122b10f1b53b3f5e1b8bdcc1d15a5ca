@@ -51,6 +51,23 @@
       "message": "@fmalita, can you PTAL?",
       "revId": "6b60f2bfd122b10f1b53b3f5e1b8bdcc1d15a5ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d3b296_591c7344",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-05T20:58:22Z",
+      "side": 1,
+      "message": "Not sure if you can see the bot logs, here\u0027s the build failure:\n\n```\nERROR: /b/s/w/ir/cache/work/skia/rust/png/BUILD.bazel:50:20: Compiling Rust staticlib ffi_rs (1 files) failed: (Exit 1): process_wrapper failed: error executing Rustc command (from target //rust/png:ffi_rs) bazel-out/k8-opt-exec-ST-29e576965165/bin/external/rules_rust+/util/process_wrapper/process_wrapper --arg-file ... (remaining 75 arguments skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nerror[E0308]: mismatched types\n   --\u003e rust/png/FFI.rs:397:21\n    |\n393 | /                 if matches!(\n394 | |                     info.color_type,\n395 | |                     png::ColorType::Grayscale | png::ColorType::GrayscaleAlpha\n396 | |                 ) {\n397 | |                     result | png::Transformations::STRIP_16\n    | |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `()`, found `Transformations`\n398 | |                 }\n    | |_________________- expected this to be `()`\n    |\nhelp: consider using a semicolon here\n    |\n398 |                 };\n    |                  +\nhelp: you might have meant to return this value\n    |\n397 |                     return result | png::Transformations::STRIP_16;\n    |                     ++++++                                        +\n\nerror: aborting due to 1 previous error\n```",
+      "revId": "6b60f2bfd122b10f1b53b3f5e1b8bdcc1d15a5ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
