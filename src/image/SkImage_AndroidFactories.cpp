@@ -37,7 +37,6 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrAHardwareBufferImageGenerator.h"
@@ -67,6 +66,7 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkImage_Raster.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -173,7 +173,7 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 }
 
 sk_sp<SkImage> RasterFromBitmapNoCopy(const SkBitmap& bm) {
-    return SkMakeImageFromRasterBitmap(bm, kNever_SkCopyPixelsMode);
+    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kNever);
 }
 
 }  // namespace SkImages
