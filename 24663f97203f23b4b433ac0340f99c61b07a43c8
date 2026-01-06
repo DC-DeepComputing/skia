@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "647b8911_ade2aa83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-01-06T16:06:45Z",
+      "side": 1,
+      "message": "The img_dxt_48 Graphite_Native_Vulkan jobs are perma-failing on the tree",
+      "revId": "24663f97203f23b4b433ac0340f99c61b07a43c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
