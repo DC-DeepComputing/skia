@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec17710d_e95054ec",
+        "filename": "src/gpu/ganesh/image/GrBitmap.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-06T18:23:36Z",
+      "side": 1,
+      "message": "I would just not add the namespace stuff to Ganesh. I know there are a few things that we started transitioning to this but the vast majority of Ganesh just uses the \"Gr\" prefix. I say we just keep that model to keep as much of the code consistent since we don\u0027t plan to update all of Ganesh to namespaces.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "a6f2af6d27bd26ef0bb84fb9770eb1859a973794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d8459c_20d52b8c",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-06T18:23:36Z",
+      "side": 1,
+      "message": "add /\\*mips\u003d\\*/ before this",
+      "range": {
+        "startLine": 158,
+        "startChar": 57,
+        "endLine": 158,
+        "endChar": 64
+      },
+      "revId": "a6f2af6d27bd26ef0bb84fb9770eb1859a973794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c7bc364_08c067f4",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-06T18:23:36Z",
+      "side": 1,
+      "message": "Can we not pass in the mips to the factory above? I\u0027m not a big fan of modifying the structure of an image after it is created. Like I think SkImages should be const objects (pixel data doesn\u0027t need to be const). We don\u0027t have any public APIs that allow the client to pass in the mip levels (I don\u0027t think at least), and we don\u0027t want to add any APIs that would do so.\n\nSo we\u0027d want to use a private factory that we can pass the mips in. However, this also means we are always creating the mips internally in Skia. It might be worth looking where we do that and see if we can just have all the building of mips and creation of the new SkImage in a single factory.",
+      "range": {
+        "startLine": 185,
+        "startChar": 12,
+        "endLine": 186,
+        "endChar": 47
+      },
+      "revId": "a6f2af6d27bd26ef0bb84fb9770eb1859a973794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
