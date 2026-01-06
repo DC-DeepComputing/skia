@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "420a5b50_3a18278c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3727202
+      },
+      "writtenOn": "2026-01-06T12:01:03Z",
+      "side": 1,
+      "message": "@fmalita@google.com @lukasza@google.com Fixed the build failures. PTAL.",
+      "revId": "46300f701c9e95caa95843c2b538b8e136ee9b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
