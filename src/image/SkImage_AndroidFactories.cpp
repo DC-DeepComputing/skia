@@ -173,7 +173,7 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 }
 
 sk_sp<SkImage> RasterFromBitmapNoCopy(const SkBitmap& bm) {
-    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kNever);
+    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kNever, nullptr);
 }
 
 }  // namespace SkImages

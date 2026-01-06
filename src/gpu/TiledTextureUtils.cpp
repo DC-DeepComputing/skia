@@ -463,7 +463,8 @@ std::tuple<bool, size_t> TiledTextureUtils::DrawAsTiledImageRect(
                     // caching to work. Image subsets always make a copy of the pixels and lose
                     // the association with the original's SkPixelRef.
                     if (SkBitmap subsetBmp; bm.extractSubset(&subsetBmp, iTileR)) {
-                        return SkImage_Raster::MakeFromBitmap(subsetBmp, SkCopyPixelsMode::kNever);
+                        return SkImage_Raster::MakeFromBitmap(
+                                subsetBmp, SkCopyPixelsMode::kNever, nullptr);
                     }
                     return sk_sp<SkImage>(nullptr);
                 };
