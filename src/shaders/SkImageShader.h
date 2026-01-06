@@ -40,8 +40,8 @@ public:
                                    const SkSamplingOptions&,
                                    const SkMatrix* localMatrix);
 
-    // TODO(skbug.com/40043877): Requires SkImage to be texture backed, and created SkShader can only
-    // be used on GPU-backed surfaces.
+    // TODO(skbug.com/40043877): Requires SkImage to be texture backed, and created SkShader can
+    // only be used on GPU-backed surfaces.
     static sk_sp<SkShader> MakeSubset(sk_sp<SkImage>,
                                       const SkRect& subset,
                                       SkTileMode tmx,
@@ -49,6 +49,28 @@ public:
                                       const SkSamplingOptions&,
                                       const SkMatrix* localMatrix,
                                       bool clampAsIfUnpremul = false);
+
+    // Convenience function to return a shader that implements the shader+image behavior defined for
+    // drawImage/Bitmap where the paint's shader is ignored when the bitmap is a color image, but
+    // properly compose them together when it is an alpha image. This allows the returned paint to
+    // be assigned to a paint clone without discarding the original behavior.
+    static sk_sp<SkShader> MakeForPaint(sk_sp<SkImage>,
+                                        const SkPaint&,
+                                        SkTileMode tmx,
+                                        SkTileMode tmy,
+                                        const SkSamplingOptions&,
+                                        const SkMatrix* localMatrix);
+
+    // Given arguments for a call to SkCanvas::drawImageRect, returns a
+    // possibly adjusted 'dst' SkRect and a shader to apply to the paint such that calling
+    // SkCanvas::drawRect(newDst, *paint) produces
+    // visually equivalent results to the original drawImageRect() call.
+    static std::pair<SkRect, sk_sp<SkShader>> MakeForDrawRect(const SkImage* image,
+                                                              const SkPaint& paint,
+                                                              const SkSamplingOptions&,
+                                                              SkRect src,
+                                                              SkRect dst,
+                                                              bool strictSrcSubset);
 
     SkImageShader(sk_sp<SkImage>,
                   const SkRect& subset,
