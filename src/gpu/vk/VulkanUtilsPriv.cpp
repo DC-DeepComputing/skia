@@ -368,7 +368,7 @@ VulkanYcbcrConversionInfo::VulkanYcbcrConversionInfo(VkFormat format,
         , fChromaFilter(chromaFilter)
         , fForceExplicitReconstruction(forceExplicitReconstruction)
         , fComponents(components) {
-#ifdef SK_DEBUG
+#if 0
     // Format feature flags are only representative of an external format's capabilities, so
     // skip these checks in the case of using a known format or if the featureFlags were clearly
     // not filled in.
