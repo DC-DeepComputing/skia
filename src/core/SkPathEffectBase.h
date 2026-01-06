@@ -13,6 +13,8 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSpan.h"
+#include "src/base/SkFloatBits.h"
+#include "src/core/SkChecksum.h"
 
 #include <optional>
 
@@ -116,6 +118,20 @@ public:
     struct DashInfo {
         SkSpan<const SkScalar> fIntervals;
         SkScalar               fPhase;
+        bool operator==(const DashInfo& that) const {
+            return this->fPhase == that.fPhase &&
+                   this->fIntervals.size() == that.fIntervals.size() &&
+                   std::equal(fIntervals.begin(), fIntervals.end(), that.fIntervals.begin());
+        }
+
+        struct Hash {
+            uint32_t operator()(const DashInfo& k) const {
+                SkGoodHash hash;
+                return hash(SkFloat2Bits(k.fPhase)) ^
+                       SkChecksum::Hash32(k.fIntervals.data(),
+                                          k.fIntervals.size() * sizeof(k.fIntervals[0]));
+            }
+        };
     };
 
     virtual std::optional<DashInfo> asADash() const {

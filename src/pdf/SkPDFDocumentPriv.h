@@ -181,9 +181,9 @@ public:
     skia_private::THashMap<SkTypefaceID, SkPDFIndirectReference> fFontDescriptors;
     skia_private::THashMap<SkTypefaceID, SkPDFIndirectReference> fType3FontDescriptors;
     skia_private::THashTable<sk_sp<SkPDFStrike>, const SkDescriptor&, SkPDFStrike::Traits> fStrikes;
-    skia_private::THashMap<SkPDFStrokeGraphicState,
-                           SkPDFIndirectReference,
-                           SkPDFStrokeGraphicState::Hash> fStrokeGSMap;
+    skia_private::THashTable<std::unique_ptr<SkPDFStrokeGraphicState>,
+                             SkPDFStrokeGraphicState::Key,
+                             SkPDFStrokeGraphicState::Traits> fStrokeGSMap;
     skia_private::THashMap<SkPDFFillGraphicState,
                            SkPDFIndirectReference,
                            SkPDFFillGraphicState::Hash> fFillGSMap;

@@ -61,6 +61,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSpecialImage.h"
@@ -686,22 +687,24 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
     SkMatrix matrix = ctm;
 
     if (paint->getPathEffect()) {
-        if (clipStack.isEmpty(this->bounds())) {
-            return;
-        }
-        SkPathBuilder builder;
-        if (skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder)) {
-            set_style(&paint, SkPaint::kFill_Style);
-        } else {
-            set_style(&paint, SkPaint::kStroke_Style);
-            if (paint->getStrokeWidth() != 0) {
-                paint.writable()->setStrokeWidth(0);
+        // Let dashing pass through the ScopedContentEntry to the Graphics State.
+        // But only for regular fills (TODO: need to clean that up).
+        SkPathEffectBase* peb = as_PEB(paint->getPathEffect());
+        if (origPath.isInverseFillType() || !peb->asADash()) {
+            SkPathBuilder builder;
+            if (skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder)) {
+                set_style(&paint, SkPaint::kFill_Style);
+            } else {
+                set_style(&paint, SkPaint::kStroke_Style);
+                if (paint->getStrokeWidth() != 0) {
+                    paint.writable()->setStrokeWidth(0);
+                }
             }
+            modifiedPath = builder.detach();
+            pathPtr = &modifiedPath;
+            pathIsMutable = true;
+            paint.writable()->setPathEffect(nullptr);
         }
-        modifiedPath = builder.detach();
-        pathPtr = &modifiedPath;
-        pathIsMutable = true;
-        paint.writable()->setPathEffect(nullptr);
     }
 
     if (this->handleInversePath(*pathPtr, *paint, pathIsMutable)) {
@@ -1211,12 +1214,12 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
 bool SkPDFDevice::handleInversePath(const SkPath& origPath,
                                     const SkPaint& srcPaint,
                                     bool pathIsMutable) {
-    // Assume the caller has already applied the path effect.
-    SkASSERT(!srcPaint.getPathEffect());
-
     if (!origPath.isInverseFillType()) {
         return false;
     }
+
+    // Assume the caller has already applied the path effect.
+    SkASSERT(!srcPaint.getPathEffect());
 
     if (this->hasEmptyClip()) {
         return false;
