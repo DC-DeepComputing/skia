@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a5f86ca_d483483b",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-06T18:04:08Z",
+      "side": 1,
+      "message": "Any reason to restrict this to raster-backed images?",
+      "range": {
+        "startLine": 364,
+        "startChar": 27,
+        "endLine": 364,
+        "endChar": 41
+      },
+      "revId": "fdb14eaa58c6c91e042fa0d52907d431bdc63876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
