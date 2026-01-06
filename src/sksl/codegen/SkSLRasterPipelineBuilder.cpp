@@ -2086,7 +2086,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 SkRasterPipelineContexts::SwizzleCtx ctx;
                 ctx.dst = OffsetFromBase(tempStackPtr - (N * inst.fImmA));
                 // Unpack component nybbles into byte-offsets pointing at stack slots.
-                unpack_nybbles_to_offsets(inst.fImmB, SkSpan(ctx.offsets));
+                unpack_nybbles_to_offsets(inst.fImmB, SkSpan<uint8_t>(ctx.offsets));
                 pipeline->push_back({(ProgramOp)inst.fOp, SkRPCtxUtils::Pack(ctx, alloc)});
                 break;
             }
@@ -2322,7 +2322,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 auto* ctx = alloc->make<SkRasterPipelineContexts::SwizzleCopyCtx>();
                 ctx->src = reinterpret_cast<const int32_t*>(tempStackPtr) - (inst.fImmC * N);
                 ctx->dst = reinterpret_cast<int32_t*>(SlotA());
-                unpack_nybbles_to_offsets(inst.fImmB, SkSpan(ctx->offsets));
+                unpack_nybbles_to_offsets(inst.fImmB, SkSpan<uint16_t>(ctx->offsets));
                 pipeline->push_back({stage, ctx});
                 break;
             }
@@ -2380,7 +2380,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 ctx->indirectLimit =
                         inst.fSlotB - inst.fSlotA - (max_packed_nybble(inst.fImmB, inst.fImmA) + 1);
                 ctx->slots = inst.fImmA;
-                unpack_nybbles_to_offsets(inst.fImmB, SkSpan(ctx->offsets));
+                unpack_nybbles_to_offsets(inst.fImmB, SkSpan<uint16_t>(ctx->offsets));
                 pipeline->push_back({ProgramOp::swizzle_copy_to_indirect_masked, ctx});
                 break;
             }

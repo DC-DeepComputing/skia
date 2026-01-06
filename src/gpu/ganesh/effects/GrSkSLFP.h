@@ -50,7 +50,10 @@ template <typename T> struct GrFPUniformType {
     template <> struct GrFPUniformType<__VA_ARGS__> {                                              \
         static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
     };                                                                                             \
-    template <> struct GrFPUniformType<SkSpan<__VA_ARGS__>> {                                      \
+    template <size_t EXT> struct GrFPUniformType<std::span<__VA_ARGS__, EXT>> {                                   \
+        static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
+    };                                                                                             \
+    template <size_t EXT> struct GrFPUniformType<std::span<const __VA_ARGS__, EXT>> {                                   \
         static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
     }
 

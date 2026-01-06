@@ -33,7 +33,7 @@ protected:
     }
 
     void onOnceBeforeDraw() override {
-        SkColorConverter conv({SK_ColorTRANSPARENT, SkColorSetARGB(128, 255, 255, 255)});
+        SkColorConverter conv({{SK_ColorTRANSPARENT, SkColorSetARGB(128, 255, 255, 255)}});
         sk_sp<SkShader> gradient = SkShaders::RadialGradient(
                 {200.f, 200.f}, 25.f,
                 {{conv.colors4f(), {}, SkTileMode::kMirror},

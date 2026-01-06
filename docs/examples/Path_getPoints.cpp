@@ -3,10 +3,10 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_getPoints, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
-    auto debugster = [](const char* prefix, const SkPath& path, SkPoint* points, int max) -> void {
-        int count = path.getPoints({points, max});
-         SkDebugf("%s point count: %d  ", prefix, count);
-         for (int i = 0; i < std::min(count, max) && points; ++i) {
+    auto debugster = [](const char* prefix, const SkPath& path, SkPoint* points, size_t max) -> void {
+        size_t count = path.getPoints({points, max});
+         SkDebugf("%s point count: %zu  ", prefix, count);
+         for (size_t i = 0; i < std::min(count, max) && points; ++i) {
              SkDebugf("(%1.8g,%1.8g) ", points[i].fX, points[i].fY);
          }
          SkDebugf("\n");
