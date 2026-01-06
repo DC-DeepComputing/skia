@@ -69,7 +69,7 @@ double duration; // The total duration of the animation in seconds.
 double frame;    // A value in [0, 1] of where we are in the animation.
 sk_sp<SkFontMgr> fontMgr;
 
-// Global used by the local impl of SkDebugf.
+// Global used by the local impl of vSkDebugf.
 std::ostringstream gTextOutput;
 
 // Global to record the GL driver info via create_direct_context().
@@ -79,12 +79,9 @@ sk_sp<sk_gpu_test::ManagedBackendTexture> managedBackendTextureRenderTarget;
 sk_sp<sk_gpu_test::ManagedBackendTexture> managedBackendTexture;
 sk_sp<GrRenderTarget> backingRenderTarget;
 
-void SkDebugf(const char * fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
+void vSkDebugf(SkLogPriority priority, const char format[], va_list args) {
     char formatbuffer[1024];
-    int n = vsnprintf(formatbuffer, sizeof(formatbuffer), fmt, args);
-    va_end(args);
+    int n = vsnprintf(formatbuffer, sizeof(formatbuffer), format, args);
     if (n>=0 && n<=int(sizeof(formatbuffer))) {
         gTextOutput.write(formatbuffer, n);
     }

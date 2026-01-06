@@ -11,6 +11,7 @@
 #if defined(SK_BUILD_FOR_ANDROID)
 
 #include <stdio.h>
+#include <cstdarg>
 
 #ifdef LOG_TAG
   #undef LOG_TAG
@@ -22,36 +23,33 @@
 // applications
 bool gSkDebugToStdOut = false;
 
-void SkDebugf(const char format[], ...) {
-    va_list args1, args2;
-    va_start(args1, format);
+void vSkDebugf(SkLogPriority priority, const char format[], va_list args) {
+    va_list args_copy;
 
     if (gSkDebugToStdOut) {
-        va_copy(args2, args1);
-        vprintf(format, args2);
-        va_end(args2);
+        va_copy(args_copy, args);
+        vprintf(format, args_copy);
+        va_end(args_copy);
         fflush(stdout);
     }
 
-    // Calls to SkDebugf in Android's SurfaceFligner / RenderEngine are often critical for
-    // investigating high-priority issues, even for production builds. This temporary hack forces
-    // all Skia logging in RenderEngine to the WARN level, which ensures easier filtering in bug
-    // reports, and anecdotally may also reduce the chance of dropping logs (TBD). HWUI and other
-    // non-framework builds of Skia are currently left at DEBUG to de-risk potential log spam.
-    //
-    // TODO: consider printing to logcat's "system" log buffer instead of the app-available "main"
-    // buffer when Skia is used in SurfaceFlinger. This would require turning SkDebugf (or its
-    // replacement) into a variadic templated function to call __android_log_buf_print, or for
-    // Android's liblog to expose its internal __android_log_buf_vprint, which accepts a va_list.
-    // The "system" buffer would only be available when RenderEngine is built into SurfaceFlinger,
-    // and could not be used in e.g. tests, benchmarks, etc.
-#if defined(SK_IN_RENDERENGINE)
-    __android_log_vprint(ANDROID_LOG_WARN, LOG_TAG, format, args1);
-#else
-    __android_log_vprint(ANDROID_LOG_DEBUG, LOG_TAG, format, args1);
-#endif  // defined(SK_IN_RENDERENGINE)
+    int android_priority = ANDROID_LOG_DEBUG;
+    switch (priority) {
+        case SkLogPriority::kFatal:   android_priority = ANDROID_LOG_FATAL;   break;
+        case SkLogPriority::kError:   android_priority = ANDROID_LOG_ERROR;   break;
+        case SkLogPriority::kWarning: android_priority = ANDROID_LOG_WARN;    break;
+        case SkLogPriority::kDebug:   android_priority = ANDROID_LOG_DEBUG;   break;
+        default:                      android_priority = ANDROID_LOG_DEBUG;   break;
+    }
 
-    va_end(args1);
+// Forces all Render Engine logs to show as warnings. This hack should be dropped as we update
+// SkDebugf call sites to have more precise priority.
+#if defined(SK_IN_RENDERENGINE)
+    android_priority = ANDROID_LOG_WARN;
+#endif
+
+    __android_log_vprint(android_priority, LOG_TAG, format, args);
+
 }
 
 #endif  // defined(SK_BUILD_FOR_ANDROID)
