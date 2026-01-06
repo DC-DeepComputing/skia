@@ -46,6 +46,8 @@ template <typename T> struct GrFPUniformType {
     template <typename U> struct add_a_UNIFORM_TYPE_specialization_for {};
     static constexpr add_a_UNIFORM_TYPE_specialization_for<T> value = {};
 };
+
+#if defined(SK_USE_LEGACY_SKSPAN)
 #define UNIFORM_TYPE(E, ...)                                                                       \
     template <> struct GrFPUniformType<__VA_ARGS__> {                                              \
         static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
@@ -53,6 +55,18 @@ template <typename T> struct GrFPUniformType {
     template <> struct GrFPUniformType<SkSpan<__VA_ARGS__>> {                                      \
         static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
     }
+#else
+#define UNIFORM_TYPE(E, ...)                                                                       \
+    template <> struct GrFPUniformType<__VA_ARGS__> {                                              \
+        static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
+    };                                                                                             \
+    template <size_t EXT> struct GrFPUniformType<std::span<__VA_ARGS__, EXT>> {                                   \
+        static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
+    };                                                                                             \
+    template <size_t EXT> struct GrFPUniformType<std::span<const __VA_ARGS__, EXT>> {                                   \
+        static constexpr SkRuntimeEffect::Uniform::Type value = SkRuntimeEffect::Uniform::Type::E; \
+    }
+#endif
 
 UNIFORM_TYPE(kFloat,    float);
 UNIFORM_TYPE(kFloat2,   SkV2);
