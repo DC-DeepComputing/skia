@@ -78,20 +78,25 @@ SkPDFIndirectReference SkPDFGraphicState::GetGraphicStateForPaint(SkPDFDocument*
         fillMap.set(fillKey, ref);
         return ref;
     } else {
-        SkPDFStrokeGraphicState strokeKey = {
+        std::optional<SkPathEffectBase::DashInfo> dash;
+        if (p.getPathEffect()) {
+            dash = as_PEB(p.getPathEffect())->asADash(); // TODO: ownership of dash array
+        }
+        SkPDFStrokeGraphicState::Key strokeKey = {
             p.getStrokeWidth(),
             p.getStrokeMiter(),
             p.getColor4f().fA,
             SkToU8(p.getStrokeCap()),
             SkToU8(p.getStrokeJoin()),
-            pdf_blend_mode(mode)
+            pdf_blend_mode(mode),
+            dash ? *dash : SkPathEffectBase::DashInfo({}, 0)
         };
         auto& sMap = doc->fStrokeGSMap;
-        if (SkPDFIndirectReference* statePtr = sMap.find(strokeKey)) {
-            return *statePtr;
+        if (std::unique_ptr<SkPDFStrokeGraphicState>* statePtr = sMap.find(strokeKey)) {
+            return (*statePtr)->fRef;
         }
         SkPDFDict state;
-        state.reserve(8);
+        state.reserve(9);
         state.insertColorComponentF("CA", strokeKey.fAlpha);
         state.insertColorComponentF("ca", strokeKey.fAlpha);
         state.insertInt("LC", to_stroke_cap(strokeKey.fStrokeCap));
@@ -100,8 +105,19 @@ SkPDFIndirectReference SkPDFGraphicState::GetGraphicStateForPaint(SkPDFDocument*
         state.insertScalar("ML", strokeKey.fStrokeMiter);
         state.insertBool("SA", true);  // SA = Auto stroke adjustment.
         state.insertName("BM", as_pdf_blend_mode_name((SkBlendMode)strokeKey.fBlendMode));
+        std::unique_ptr<SkPDFArray> pdfDashIntervals(new SkPDFArray);
+        pdfDashIntervals->reserve(strokeKey.fDashInfo.fIntervals.size());
+        for (SkScalar interval : strokeKey.fDashInfo.fIntervals) {
+            pdfDashIntervals->appendScalar(interval);
+        }
+        std::unique_ptr<SkPDFArray> pdfDash(new SkPDFArray);
+        pdfDash->appendObject(std::move(pdfDashIntervals));
+        pdfDash->appendScalar(strokeKey.fDashInfo.fPhase);
+        state.insertObject("D", std::move(pdfDash));
         SkPDFIndirectReference ref = doc->emit(state);
-        sMap.set(strokeKey, ref);
+
+        std::unique_ptr<SkPDFStrokeGraphicState> strokeGS(new SkPDFStrokeGraphicState(strokeKey, ref));
+        sMap.set(std::move(strokeGS));
         return ref;
     }
 }
