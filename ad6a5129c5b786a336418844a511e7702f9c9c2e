@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1e042eb_36ece4be",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T16:51:37Z",
+      "side": 1,
+      "message": "BTW, when this was in the header instead of the body, some of the builders failed to compile with errors that `emplace` couldn\u0027t find a suitable candidate. It was all very strange.",
+      "fixSuggestions": [
+        {
+          "fixId": "1e1a7f0f_0eafbd0f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkHdrAgtm.cpp",
+              "range": {
+                "startLine": 132,
+                "startChar": 0,
+                "endLine": 133,
+                "endChar": 0
+              },
+              "replacement": "AgtmImpl::HeadroomAdaptiveToneMap::HeadroomAdaptiveToneMap() \u003d default; \n"
+            }
+          ]
+        }
+      ],
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d7d4c7a_01b52615",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 5
