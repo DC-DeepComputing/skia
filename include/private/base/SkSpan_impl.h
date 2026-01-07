@@ -12,7 +12,7 @@
  *  Define this to keep the bespoke SkSpan implementation, until clients are ready.
  *  When this is not defined, SkSpan becomes just an alias for std::span
  */
-#define SK_USE_LEGACY_SKSPAN
+// #define SK_USE_LEGACY_SKSPAN
 
 /*
  *  SkSpan handles single POD initialization differently from std::span
@@ -151,7 +151,7 @@ SkSpan(Container&&) ->
 
 #include <span>
 
-template <typename T> using SkSpan = std::span<T>;
+#define SkSpan std::span
 
 #endif  // legacy
 

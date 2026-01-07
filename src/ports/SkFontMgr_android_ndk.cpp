@@ -136,7 +136,7 @@ static SkSpan<Coordinate> Normalize(SkSpan<Coordinate> variation) {
 }
 
 static SkSpan<Coordinate> Sort(SkSpan<Coordinate> variation) {
-    SkTQSort(variation.begin(), variation.end(), variation::coordinateLess);
+    SkTQSort(variation.data(), variation.data() + variation.size(), variation::coordinateLess);
     return variation;
 }
 
@@ -256,9 +256,10 @@ private:
         // Find length of result
         size_t retLen = 0;
         bool isDifferent = false;
-        const char* src = s.begin();
-        while (src != s.end()) {
-            SkUnichar uni = SkUTF::NextUTF8(&src, s.end());
+        const char* src = s.data();
+        const char* end = src + s.size();
+        while (src != end) {
+            SkUnichar uni = SkUTF::NextUTF8(&src, end);
             if (uni < 0) {
                 return SkString(s.data(), s.size());
             }
@@ -282,10 +283,10 @@ private:
 
         // Create result
         SkString ret(retLen);
-        src = s.begin();
+        src = s.data();
         char* dst = ret.begin();
-        while (src != s.end()) {
-            SkUnichar uni = SkUTF::NextUTF8(&src, s.end());
+        while (src != end) {
+            SkUnichar uni = SkUTF::NextUTF8(&src, end);
             wint_t wlow = towlower(uni);
             char buffer[SkUTF::kMaxBytesInUTF8Sequence];
             size_t buflen = SkUTF::ToUTF8(wlow, buffer);
