@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "788bd7d5_eddcbbff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "It\u0027s for readability and IPC-ability. I\u0027m going to `std::vectory`-fiy the fixed-size arrays, so that we don\u0027t IPC the extra entries that we don\u0027t use.\n\nIf I leave this as structure-of-arrays, then I\u0027ll have to have 3 arrays that all need to be the same size (for x, y, and m), which is more error-prone than 1 array of (x,y,m) values.\n\nI\u0027d gone with structure-of-arrays because it matches the [metadata set specification](https://doc.smpte-doc.org/st2094-50-private/main/#sec-metadata-set) and because I have a suspicion it may be marginally faster to evaluate.",
+      "parentUuid": "4f89a5bf_0543bb9e",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 51
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0666b4b5_3abdb3ea",
@@ -37,6 +61,23 @@
       "writtenOn": "2026-01-07T16:24:52Z",
       "side": 1,
       "message": "It turns out that all my hopes to avoid exposing this were the wrong hopes to have. The interface is stable enough that I\u0027m not afraid of it.\n\nThis was as much of the refactor as I felt good doing in one go. I left one part of one test disabled (cause re-adding it will be a bit of work).",
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af2cf52e_661ed79b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "Thanks, updated!",
       "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -119,6 +160,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de9071d6_9cdb2a43",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "Yes. The \"is it RWTMO\" is stored in syntax, but not in the semantics. We don\u0027t need to preserve it in a round-trip, but it would be nice to.",
+      "parentUuid": "ef459c7f_4f351c64",
+      "range": {
+        "startLine": 505,
+        "startChar": 11,
+        "endLine": 505,
+        "endChar": 15
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f185371_2c859b83",
         "filename": "src/codec/SkHdrAgtmParse.cpp",
         "patchSetId": 5
@@ -130,6 +195,30 @@
       "writtenOn": "2026-01-07T19:50:03Z",
       "side": 1,
       "message": "The spec seems to indicate putting numbers {0.64,0.33,0.3...} into gain_application_space_chromaticities, is that needed or a TODO? Oh, is it because we are serializing we only have to write the `gain_application_space_chromaticities_flag` and on deserializing, we put those numbers (e.g. the colorspaces) into the struct?",
+      "range": {
+        "startLine": 517,
+        "startChar": 19,
+        "endLine": 517,
+        "endChar": 61
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25fe3374_1d3e814d",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "the 0.64, 0.33, etc, correspond to rec709, p3, and rec2020.\n\nIf gain_application_space_chromaticities_flag\u003d3 then it means \"not one of those three, need go write the actual primary values\".",
+      "parentUuid": "4f185371_2c859b83",
       "range": {
         "startLine": 517,
         "startChar": 19,
@@ -165,6 +254,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71ff810a_bc59db13",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "Updated in the header. Changed it to just reference the item in the metadata set (and the evaluation clause later on).",
+      "parentUuid": "3dd4e0d5_fd536021",
+      "range": {
+        "startLine": 34,
+        "startChar": 55,
+        "endLine": 34,
+        "endChar": 58
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00cd423f_0edc81b6",
         "filename": "src/codec/SkHdrAgtmPriv.h",
         "patchSetId": 5
@@ -176,6 +289,30 @@
       "writtenOn": "2026-01-07T19:50:03Z",
       "side": 1,
       "message": "I finally found this in 7.1 (under HeadroomAdaptiveToneMap) after much looking... Care to add a note?",
+      "range": {
+        "startLine": 88,
+        "startChar": 29,
+        "endLine": 88,
+        "endChar": 49
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "142ad987_711bd2ad",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "Put a blanket note at the top (and when this is in a separate struct, it\u0027ll be more clear that the blanket refers to these structures).",
+      "parentUuid": "00cd423f_0edc81b6",
       "range": {
         "startLine": 88,
         "startChar": 29,
@@ -211,6 +348,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "956eac21_14f8cd15",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "I wanted to give the corresponding name from the metadata set (which in this case is ColorGainFunction, which is exactly the same as the type name ... so it only *looks* useless :).",
+      "parentUuid": "108ca42a_b1060f2c",
+      "range": {
+        "startLine": 93,
+        "startChar": 15,
+        "endLine": 93,
+        "endChar": 32
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7abd3fe2_82483c23",
         "filename": "src/codec/SkHdrAgtmPriv.h",
         "patchSetId": 5
@@ -222,6 +383,30 @@
       "writtenOn": "2026-01-07T19:50:03Z",
       "side": 1,
       "message": "\"described in 7.1\"",
+      "range": {
+        "startLine": 97,
+        "startChar": 40,
+        "endLine": 97,
+        "endChar": 45
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8be6f3d3_024417ed",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T21:53:18Z",
+      "side": 1,
+      "message": "Put this in the blanket statement at the top of the struct (which will be more clear when everything is pulled out).",
+      "parentUuid": "7abd3fe2_82483c23",
       "range": {
         "startLine": 97,
         "startChar": 40,
