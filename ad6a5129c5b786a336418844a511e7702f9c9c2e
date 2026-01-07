@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f89a5bf_0543bb9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "Is this for efficiency or just readability?",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 51
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0666b4b5_3abdb3ea",
@@ -49,6 +72,162 @@
           ]
         }
       ],
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a686f673_c46ab693",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d1e042eb_36ece4be",
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef459c7f_4f351c64",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "Is this TODO for the `If use_reference_white_tone_mapping_flag\u003d\u003d1` case I see in the spec?",
+      "range": {
+        "startLine": 505,
+        "startChar": 11,
+        "endLine": 505,
+        "endChar": 15
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f185371_2c859b83",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "The spec seems to indicate putting numbers {0.64,0.33,0.3...} into gain_application_space_chromaticities, is that needed or a TODO? Oh, is it because we are serializing we only have to write the `gain_application_space_chromaticities_flag` and on deserializing, we put those numbers (e.g. the colorspaces) into the struct?",
+      "range": {
+        "startLine": 517,
+        "startChar": 19,
+        "endLine": 517,
+        "endChar": 61
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd4e0d5_fd536021",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "6.1? http://screen/7S8UFKMLMnCfeCD  I think a lot of the 5.x are now 6.x",
+      "range": {
+        "startLine": 34,
+        "startChar": 55,
+        "endLine": 34,
+        "endChar": 58
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00cd423f_0edc81b6",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "I finally found this in 7.1 (under HeadroomAdaptiveToneMap) after much looking... Care to add a note?",
+      "range": {
+        "startLine": 88,
+        "startChar": 29,
+        "endLine": 88,
+        "endChar": 49
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "108ca42a_b1060f2c",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "I don\u0027t think this comment adds much that\u0027s not in the type/name... consider deleting it.",
+      "range": {
+        "startLine": 93,
+        "startChar": 15,
+        "endLine": 93,
+        "endChar": 32
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7abd3fe2_82483c23",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:03Z",
+      "side": 1,
+      "message": "\"described in 7.1\"",
+      "range": {
+        "startLine": 97,
+        "startChar": 40,
+        "endLine": 97,
+        "endChar": 45
+      },
       "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
