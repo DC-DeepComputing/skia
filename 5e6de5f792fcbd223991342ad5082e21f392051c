@@ -16,6 +16,23 @@
       "message": "Adding Michael as reviewer who initially added the package; adding Eric for infra know-how.",
       "revId": "5e6de5f792fcbd223991342ad5082e21f392051c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b61cf9bd_6f33ef8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-01-07T15:17:06Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like this is referenced by anything other than docs.",
+      "revId": "5e6de5f792fcbd223991342ad5082e21f392051c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
