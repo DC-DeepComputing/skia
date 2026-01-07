@@ -9,6 +9,7 @@
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "src/gpu/graphite/ResourceCache.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 namespace skgpu::graphite {
 
@@ -54,7 +55,8 @@ Resource::~Resource() {
 void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
                                  const GraphiteResourceKey& key,
                                  Budgeted initialBudgetedState,
-                                 Shareable initialShareableState) {
+                                 Shareable initialShareableState,
+                                 std::string_view label) {
     // ResourceCache should be registered before the Resource escapes the ResourceProvider, e.g. it
     // has a single usage ref and no others.
     SkASSERT(this->isUniquelyHeld());
@@ -65,9 +67,17 @@ void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
     fReturnCache = std::move(returnCache);
 
     this->addRef<RefType::kCache>();
-
+    // Any resource's backend label is safe to be updated upon initial insertion to the cache
+    this->setLabel(label, /*syncBackendLabelImmediately=*/true);
     this->setBudgeted(initialBudgetedState);
     this->setShareable(initialShareableState);
+}
+
+void Resource::syncBackendLabel() {
+    if (!fLabel.empty() && fSharedContext->caps()->setBackendLabels()) {
+        const std::string fullLabel = "Skia_" + fLabel;
+        this->setBackendLabel(fullLabel.c_str());
+    }
 }
 
 bool Resource::returnToCache() const {

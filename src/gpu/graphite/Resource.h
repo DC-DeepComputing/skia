@@ -268,21 +268,6 @@ public:
 
     const char* getLabel() const { return fLabel.c_str(); }
 
-    // We allow the label on a Resource to change when used for a different function. For example
-    // when reusing a scratch Texture we can change the label to match callers current use.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
-    }
-
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -320,10 +305,41 @@ protected:
     // Needs to be protected for DawnBuffer's emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
 
+    // A Resource's label can change depending upon how it's use (e.g. when reusing a scratch
+    // Texture, its label can be updated to match caller's current use). See "Resource Thread Safe
+    // Labeling Model" documentation above for more details on label management policies. This
+    // method is protected such that they can be appropriately enforced.
+    //
+    // It is assumed syncBackendLabelImmediately is set to true only when it is safe to do so.
+    void setLabel(std::string_view label, bool syncBackendLabelImmediately = false) {
+        if (fLabel == label) {
+            return;
+        }
+
+        fLabel = label;
+
+        if (syncBackendLabelImmediately) {
+            this->syncBackendLabel();
+        }
+    }
+
 private:
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // The following function is only meant to be called by the ResourceProvider. We don't
+    // want it public to general users of a Resource, but they also aren't purely internal calls.
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    friend class ResourceProvider;
+    // Wrapped resources are not registered with the cache (which is when most resources have their
+    // labels assigned), so allow the ResourceProvider to assign a label upon creation. It is
+    // assumed that once this is called it is safe to immediately sync the backend label.
+    void setWrappedResourceLabel(std::string_view label) {
+        SkASSERT(fOwnership == Ownership::kWrapped);
+        this->setLabel(std::move(label), /*syncBackendLabelImmediately*/true);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the [Global|Proxy]Cache. We
-    // don't want them public general users of a Resource, but they also aren't purely internal.
+    // don't want them public to general users of a Resource, but they also aren't purely internal.
     ///////////////////////////////////////////////////////////////////////////////////////////////
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
     friend GlobalCache; // for lastAccessTime and updateAccessTime
@@ -343,7 +359,7 @@ private:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the ResourceCache. We don't
-    // want them public general users of a Resource, but they also aren't purely internal calls.
+    // want them public to general users of a Resource, but they also aren't purely internal calls.
     ///////////////////////////////////////////////////////////////////////////////////////////////
     friend class ResourceCache;
 
@@ -392,7 +408,11 @@ private:
     virtual bool prepareForReturnToCache(const std::function<void()>& takeRef) { return false; }
 
     // Adds a cache ref to the resource. May only be called once.
-    void registerWithCache(sk_sp<ResourceCache>, const GraphiteResourceKey&, Budgeted, Shareable);
+    void registerWithCache(sk_sp<ResourceCache>,
+                           const GraphiteResourceKey&,
+                           Budgeted,
+                           Shareable,
+                           std::string_view label);
 
     // This version of ref allows adding a ref when the usage count is 0. This should only be called
     // from the ResourceCache.
@@ -503,6 +523,8 @@ private:
 
     // Overridden to set the label on the underlying GPU resource
     virtual void setBackendLabel(char const* label) {}
+    // Syncs backend label to the value of fLabel
+    virtual void syncBackendLabel();
 
     // Overridden to add extra information to the memory dump.
     virtual void onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
