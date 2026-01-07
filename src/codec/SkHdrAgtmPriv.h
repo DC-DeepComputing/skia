@@ -31,18 +31,21 @@ namespace skhdr {
  */
 class AgtmImpl final : public Agtm {
   public:
-    // A PiecewiseCubic metadata group, described in Clause 5.1, Piecewise cubic function.
-    struct PiecewiseCubicFunction {
+    // A GainCurve metadata group, described in Clause 5.1, Gain curve.
+    struct GainCurve {
         // The GainCurveNumControlPoints metadata item.
         static constexpr uint8_t kMinNumControlPoints = 1u;
         static constexpr uint8_t kMaxNumControlPoints = 32u;
         uint8_t fNumControlPoints = 0;
 
-        // The GainCurveControlPointX, GainCurveControlPointY, and GainCurveControlPointM metadata
-        // items.
-        float fX[kMaxNumControlPoints];
-        float fY[kMaxNumControlPoints];
-        float fM[kMaxNumControlPoints];
+        // Structure holding one entry of the GainCurveControlPointX, GainCurveControlPointY, and
+        // GainCurveControlPointM metadata items.
+        struct ControlPoint {
+            float fX = 0.f;
+            float fY = 0.f;
+            float fM = 0.f;
+        };
+        ControlPoint fControlPoints[kMaxNumControlPoints];
 
         /**
          * Populate the fM values using the Piecewise Cubic Hermite Interpolation Package (PCHIP)
@@ -70,47 +73,49 @@ class AgtmImpl final : public Agtm {
         SkColor4f evaluate(const SkColor4f& c) const;
     };
 
-    // A GainFunction metadata group, described in Clause 5.3, Gain function.
-    struct GainFunction {
+    // A ColorGainFunction metadata group, described in Clause 5.3, Color gain function.
+    struct ColorGainFunction {
         // The ComponentMix metadata group.
         ComponentMixingFunction fComponentMixing;
 
-        // The PiecewiseCubic metadata group.
-        PiecewiseCubicFunction fPiecewiseCubic;
+        // The GainCurve metadata group.
+        GainCurve fGainCurve;
 
         // The function evaluation described in Clause 5.3.2.
         SkColor4f evaluate(const SkColor4f& c) const;
     };
 
-    // Characterization of the type of tone mapping specified.
-    enum class Type {
-        // Did not specify an AdaptiveToneMap.
-        kNone,
-        // Specified to use RWTMO as the tone mapping.
-        kReferenceWhite,
-        // Specified its own custom parameters.
-        kCustom,
+    // Structure holding the AlternateHdrHeadroom and ColorGainFunction metadata item and group.
+    struct AlternateImage {
+        // The AlternateHdrHeadroom metadata item.
+        float fHdrHeadroom = 0.f;
+
+        // The ColorGainFunction metadata group.
+        ColorGainFunction fColorGainFunction;
     };
-    Type fType = Type::kNone;
+
+    // HeadroomAdaptiveToneMap metadata group.
+    struct HeadroomAdaptiveToneMap {
+        // The BaselineHdrHeadroom metadata item.
+        float fBaselineHdrHeadroom = 0.f;
+
+        // The GainApplicationSpaceColorPrimaries metadata item.
+        SkColorSpacePrimaries fGainApplicationSpacePrimaries =
+            {0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f};
+
+        // The NumAlternateImages metadata item.
+        static constexpr uint8_t kMaxNumAlternateImages = 4u;
+        uint8_t fNumAlternateImages = 0u;
+
+        // The AlternateHdrHeadroom and ColorGainFunction metadata item lists.
+        AlternateImage fAlternateImages[kMaxNumAlternateImages];
+    };
 
     // The HdrReferenceWhite metadata item.
     float fHdrReferenceWhite = kDefaultHdrReferenceWhite;
 
-    // The BaselineHdrHeadroom metadata item.
-    float fBaselineHdrHeadroom = 0.f;
-
-    // The GainApplicationSpaceColorPrimaries metadata item.
-    SkColorSpacePrimaries fGainApplicationSpacePrimaries = {0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f};
-
-    // The NumAlternateImages metadata item.
-    static constexpr uint8_t kMaxNumAlternateImages = 4u;
-    uint8_t fNumAlternateImages = 0u;
-
-    // The AlternateHdrHeadroom metadata item list.
-    float fAlternateHdrHeadroom[kMaxNumAlternateImages];
-
-    // The GainFunction metadata item list.
-    GainFunction fGainFunction[kMaxNumAlternateImages];
+    // The HeadroomAdaptiveToneMap metadata group.
+    std::optional<HeadroomAdaptiveToneMap> fHeadroomAdaptiveToneMap;
 
     // SkImage containing the control point values for use by the color filter, populated by
     // populateGainCurvesXYM.
