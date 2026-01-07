@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0666b4b5_3abdb3ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T16:24:52Z",
+      "side": 1,
+      "message": "It turns out that all my hopes to avoid exposing this were the wrong hopes to have. The interface is stable enough that I\u0027m not afraid of it.\n\nThis was as much of the refactor as I felt good doing in one go. I left one part of one test disabled (cause re-adding it will be a bit of work).",
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d7d4c7a_01b52615",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-07T16:24:52Z",
+      "side": 1,
+      "message": "I\u0027ll be re-introducing this test in a follow-up CL, but this one was getting too big to handle.",
+      "fixSuggestions": [
+        {
+          "fixId": "60669787_82ddb38d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/HdrMetadataTest.cpp",
+              "range": {
+                "startLine": 387,
+                "startChar": 0,
+                "endLine": 388,
+                "endChar": 0
+              },
+              "replacement": "        assert_agtms_equal(r, agtmIn, agtmOut);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
