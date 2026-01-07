@@ -1,0 +1,303 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "562d4cd2_4508a548",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "mips\u003d",
+      "range": {
+        "startLine": 368,
+        "startChar": 90,
+        "endLine": 368,
+        "endChar": 91
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b015146_305d036c",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "why is this added? Was this a bug before?",
+      "range": {
+        "startLine": 387,
+        "startChar": 4,
+        "endLine": 387,
+        "endChar": 23
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9020a3a_c12747e4",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "mips\u003d (and the rest of MakeFromBitmap calls from now on)",
+      "range": {
+        "startLine": 388,
+        "startChar": 72,
+        "endLine": 388,
+        "endChar": 73
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749e34df_98b84c8f",
+        "filename": "src/gpu/ganesh/GrSWMaskHelper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "don\u0027t use auto here be explicit",
+      "range": {
+        "startLine": 142,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 8
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14dbffbb_e1861f9b",
+        "filename": "src/gpu/ganesh/image/GrBitmap.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "what if we call this GrMippedBitmap. It\u0027s odd that we\u0027re saying mips don\u0027t belong on an SkBitmap class but are fine on a GrBitmap class",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbd9669_b0bca243",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "I think this is not a good use of auto. It is in no way obvious from the factory GrBitmap::Make that this is a std::optional. Normally all of our Make factories return either sk_sp or std::unique_ptr types. So this is definitely not expected and should be explicitly declared.",
+      "range": {
+        "startLine": 180,
+        "startChar": 8,
+        "endLine": 180,
+        "endChar": 12
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "995115a3_a7bc56c9",
+        "filename": "src/gpu/ganesh/image/SkImage_RasterPinnable.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "It will be minimal, but a slightly unfortunate side affect of this change is that we need this extra ref on the mips which we didn\u0027t need before.",
+      "range": {
+        "startLine": 81,
+        "startChar": 79,
+        "endLine": 81,
+        "endChar": 86
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "577953a7_560501c3",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "std::move",
+      "range": {
+        "startLine": 204,
+        "startChar": 49,
+        "endLine": 204,
+        "endChar": 53
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44f2b938_d747b87b",
+        "filename": "src/image/SkImage_Raster.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "Given the number of places that just want to pass in nullptr here do we want to give this a default value? Or do we think it is valuable to force the callers to explicitly make the decision of whether to pass in mips or not.",
+      "range": {
+        "startLine": 113,
+        "startChar": 76,
+        "endLine": 113,
+        "endChar": 92
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "436b4454_c919a189",
+        "filename": "src/image/SkImage_RasterFactories.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "mips\u003d befroe",
+      "range": {
+        "startLine": 78,
+        "startChar": 75,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fce3ac_de2dfb8b",
+        "filename": "src/image/SkSurface_Raster.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "mips",
+      "range": {
+        "startLine": 134,
+        "startChar": 55,
+        "endLine": 134,
+        "endChar": 56
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff70ea4_c012ce37",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "can we move this down to where we use it in MakeFromBitmap call",
+      "range": {
+        "startLine": 1999,
+        "startChar": 4,
+        "endLine": 1999,
+        "endChar": 48
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb3799f_9fb37bcd",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-07T21:12:09Z",
+      "side": 1,
+      "message": "std::move or just replace with refMips() call",
+      "range": {
+        "startLine": 2014,
+        "startChar": 80,
+        "endLine": 2014,
+        "endChar": 84
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
