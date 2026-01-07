@@ -21,11 +21,10 @@ namespace skgpu::graphite {
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                                    const PipelineInfo& pipelineInfo,
                                    std::string_view label)
-        : Resource(sharedContext,
-                   Ownership::kOwned,
-                   /*gpuMemorySize=*/0)
+        : Resource(sharedContext, Ownership::kOwned, /*gpuMemorySize=*/0)
         , fPipelineInfo(pipelineInfo) {
-    this->setLabel(label);
+    // TODO(nikipre): Examine whether we should do this here or elsewhere (global cache insertion?)
+    this->setLabel(label, /*syncBackendLabelImmediately=*/true);
 }
 
 GraphicsPipeline::~GraphicsPipeline() {
