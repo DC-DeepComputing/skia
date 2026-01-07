@@ -265,6 +265,24 @@
       ],
       "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa16db91_fa5b0156",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-07T19:50:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0d7d4c7a_01b52615",
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
