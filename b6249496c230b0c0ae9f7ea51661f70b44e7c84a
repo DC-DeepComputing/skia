@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "026f042c_eb9c02c9",
+        "filename": "tools/install_dependencies.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-07T15:13:11Z",
+      "side": 0,
+      "message": "Perhaps I\u0027m missing something, but I get `E: Unable to locate package xcb` when running this script on both my local Linux PC and my Ubuntu cloudtop and it is not listed as an available package.",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 11
+      },
+      "revId": "b6249496c230b0c0ae9f7ea51661f70b44e7c84a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
