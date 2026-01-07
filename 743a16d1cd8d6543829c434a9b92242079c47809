@@ -16,6 +16,24 @@
       "message": "Unfortunately it looks like Preview doesn\u0027t apply dashing?",
       "revId": "743a16d1cd8d6543829c434a9b92242079c47809",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3df11908_156e5d59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-07T21:19:33Z",
+      "side": 1,
+      "message": "In order to work around this, it appears that at least Safari\u0027s save to PDF function applies the dash manually but then allows the viewer to handle stroking all the little segments.",
+      "parentUuid": "97f1c5d4_0620123b",
+      "revId": "743a16d1cd8d6543829c434a9b92242079c47809",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
