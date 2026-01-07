@@ -381,7 +381,7 @@ class CubicPathShaderGM : public skiagm::GM {
         const SkPoint     kPts[] = { { 0, 0 }, { s, s } };
         const SkScalar    kPos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
 
-        SkColorConverter conv({0x80F00080, 0xF0F08000, 0x800080F0 });
+        SkColorConverter conv({{{0x80F00080, 0xF0F08000, 0x800080F0}}});
         path.setFillType(fill);
 
         SkPaint paint;

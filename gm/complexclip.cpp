@@ -271,7 +271,7 @@ DEF_SIMPLE_GM(clip_shader_nested, canvas, 256, 256) {
     float w = 64.f;
     float h = 64.f;
 
-    SkColorConverter conv({SK_ColorBLACK, SkColorSetARGB(128, 128, 128, 128)});
+    SkColorConverter conv({{{SK_ColorBLACK, SkColorSetARGB(128, 128, 128, 128)}}});
     auto s = SkShaders::RadialGradient({0.5f * w, 0.5f * h}, 0.1f * w,
                                        {{conv.colors4f(), {}, SkTileMode::kRepeat}, {}});
 
@@ -428,7 +428,7 @@ DEF_SIMPLE_GM(clip_shader_persp, canvas, 1370, 1030) {
 
         // Make clipShaders (possibly with local matrices)
         bool gradLM = config.fLM == kGradientWithLocalMat || config.fLM == kBothWithLocalMat;
-        SkColorConverter conv({SK_ColorBLACK, SkColorSetARGB(128, 128, 128, 128)});
+        SkColorConverter conv({{{SK_ColorBLACK, SkColorSetARGB(128, 128, 128, 128)}}});
         auto gradShader = SkShaders::RadialGradient({0.5f * img->width(), 0.5f * img->height()},
                                                      0.1f * img->width(),
                                                    {{conv.colors4f(), {}, SkTileMode::kRepeat}, {}},

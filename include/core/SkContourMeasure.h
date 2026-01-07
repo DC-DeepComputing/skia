@@ -74,7 +74,24 @@ public:
     };
 
 private:
-    struct Segment;
+    struct Segment {
+        SkScalar    fDistance;  // total distance up to this point
+        unsigned    fPtIndex; // index into the fPts array
+        unsigned    fTValue : 30;
+        unsigned    fType : 2;  // actually the enum SkSegType
+        // See SkPathMeasurePriv.h
+
+        SkScalar getScalarT() const;
+
+        static const Segment* Next(const Segment* seg) {
+            unsigned ptIndex = seg->fPtIndex;
+            do {
+                ++seg;
+            } while (seg->fPtIndex == ptIndex);
+            return seg;
+        }
+
+    };
 
 public:
     /** Utility for iterating over the current contour verbs:
@@ -138,25 +155,6 @@ public:
     }
 
 private:
-    struct Segment {
-        SkScalar    fDistance;  // total distance up to this point
-        unsigned    fPtIndex; // index into the fPts array
-        unsigned    fTValue : 30;
-        unsigned    fType : 2;  // actually the enum SkSegType
-        // See SkPathMeasurePriv.h
-
-        SkScalar getScalarT() const;
-
-        static const Segment* Next(const Segment* seg) {
-            unsigned ptIndex = seg->fPtIndex;
-            do {
-                ++seg;
-            } while (seg->fPtIndex == ptIndex);
-            return seg;
-        }
-
-    };
-
     const SkTDArray<Segment>  fSegments;
     const SkTDArray<SkPoint>  fPts; // Points used to define the segments
 
