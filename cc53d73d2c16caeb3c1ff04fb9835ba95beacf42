@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aeffbc6_61da56ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-08T14:22:30Z",
+      "side": 1,
+      "message": "Last of the big changes here. The next ones will just some std::vector clean-up, and then I\u0027ll move this to the public interface.\n\nThe `skhdr::Agtm` thing that I created is going to go away (oops), and I\u0027m instead going to just create a \"color filter generator\" that can be created from an `skhdr::Metadata`.",
+      "revId": "cc53d73d2c16caeb3c1ff04fb9835ba95beacf42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
