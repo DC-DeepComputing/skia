@@ -111,7 +111,8 @@ VulkanSharedContext* VulkanResourceProvider::nonConstVulkanSharedContext() {
     return static_cast<VulkanSharedContext*>(fSharedContext);
 }
 
-sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
+sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
+                                                              std::string_view label) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(texture.info());
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
@@ -127,7 +128,8 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
                                       BackendTextures::GetMutableState(texture),
                                       BackendTextures::GetVkImage(texture),
                                       /*alloc=*/{} /*Skia does not own wrapped texture memory*/,
-                                      std::move(ycbcrConversion));
+                                      std::move(ycbcrConversion),
+                                      std::move(label));
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
@@ -135,7 +137,8 @@ sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const Compu
 }
 
 sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
-                                                     const TextureInfo& info) {
+                                                     const TextureInfo& info,
+                                                     std::string_view label) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
@@ -148,7 +151,8 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
     return VulkanTexture::Make(this->vulkanSharedContext(),
                                size,
                                info,
-                               std::move(ycbcrConversion));
+                               std::move(ycbcrConversion),
+                               std::move(label));
 }
 
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
@@ -253,7 +257,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // Search for available descriptor sets by assembling a key based upon the set's structure.
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
     if (auto descSet = fResourceCache->findAndRefResource(
-                key, skgpu::Budgeted::kYes, Shareable::kNo)) {
+                key, skgpu::Budgeted::kYes, Shareable::kNo, /*label=*/"")) {
         // A non-null resource pointer indicates we have found an available descriptor set.
         return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
     }
@@ -423,7 +427,8 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         builder[0] = VulkanRenderPass::GetRenderPassKey(renderPassDesc,
                                                         /*compatibleForPipelineKey=*/false);
     }
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource =
+                fResourceCache->findAndRefResource(key, kBudgeted, kShareable, /*label=*/"")) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
@@ -559,7 +564,8 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
         builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
     }
 
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource =
+                fResourceCache->findAndRefResource(key, kBudgeted, kShareable, /*label=*/"")) {
         return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
     }
 
