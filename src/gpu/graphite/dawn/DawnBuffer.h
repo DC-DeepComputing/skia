@@ -22,8 +22,8 @@ namespace skgpu::graphite {
 class DawnBuffer : public Buffer {
 public:
     static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
-                                  size_t size,
-                                  BufferType type,
+                                  size_t,
+                                  BufferType,
                                   AccessPattern,
                                   std::string_view label);
 

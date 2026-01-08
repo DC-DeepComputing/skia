@@ -136,7 +136,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
     // Test that the scratch resource can fulfill a new non-budgeted, non-shareable request
     GraphiteResourceKey key;
     TestResource::CreateKey(&key);
-    Resource* resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kNo, Shareable::kNo);
+    Resource* resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kNo, Shareable::kNo, /*label=*/"");
     REPORTER_ASSERT(reporter, resourcePtr == resourcePtr2);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 0);
@@ -146,7 +147,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
 
     // Test making a budgeted, shareable resource. Since we returned all refs to the prior non
     // shareable resource, it should be able to be switched to a shareable resource.
-    resource = sk_sp(resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes));
+    resource = sk_sp(
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes, /*label=*/""));
     REPORTER_ASSERT(reporter, resource.get() == resourcePtr);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 1); // still findable
@@ -155,13 +157,15 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
 
     // While the shareable resource is held, make a second shareable request which should still
     // find the existing resource in the cache.
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes, /*label=*/"");
     REPORTER_ASSERT(reporter, resourcePtr2 == resource.get());
     resourcePtr2->unref();
 
     // Now make a non-shareable request with the same key. This should fail to find a valid resource
     // since the one in the cache still has outstanding usage refs requiring it to be shareable.
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo, /*label=*/"");
     REPORTER_ASSERT(reporter, !resourcePtr2);
 
     // Return the shareable resource and then re-request the non-shareable key. Without any more
@@ -171,7 +175,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 1);
 
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo, /*label=*/"");
     REPORTER_ASSERT(reporter, resourcePtr2 == resourcePtr);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 0); // not findable again
@@ -830,7 +835,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchResourcesTest, reporter, conte
 
     REPORTER_ASSERT(reporter, key == resource->key());
     Resource* resourcePtr2 = resourceCache->findAndRefResource(
-            key, Budgeted::kYes, Shareable::kScratch, &unavailable);
+            key, Budgeted::kYes, Shareable::kScratch, /*label=*/"", &unavailable);
     REPORTER_ASSERT(reporter, !resourcePtr2);
 
     // Return the non-shareable resource and verify that it can now be requested as scratch
@@ -839,31 +844,33 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchResourcesTest, reporter, conte
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 1);
 
     resource = sk_sp(resourceCache->findAndRefResource(
-            key, Budgeted::kYes, Shareable::kScratch, &unavailable));
+            key, Budgeted::kYes, Shareable::kScratch, /*label=*/"", &unavailable));
     REPORTER_ASSERT(reporter, resource.get() == resourcePtr);
     REPORTER_ASSERT(reporter, resource->budgeted() == Budgeted::kYes);
     REPORTER_ASSERT(reporter, resource->shareable() == Shareable::kScratch);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 1); // still findable
 
     // A request of the same key as non-shareable will not return the scratch resource
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kNo, /*label=*/"");
     REPORTER_ASSERT(reporter, !resourcePtr2);
 
     // Similarly, a request for a fully shareable resource cannot be satisfied by a scratch resource
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes, /*label=*/"");
     REPORTER_ASSERT(reporter, !resourcePtr2);
 
     // A request for another scratch resource can return the existing one if it hasn't been marked
     // unavailable in the set passed to the cache.
     resourcePtr2 = resourceCache->findAndRefResource(
-            key, Budgeted::kYes, Shareable::kScratch, &unavailable);
+            key, Budgeted::kYes, Shareable::kScratch, /*label=*/"", &unavailable);
     REPORTER_ASSERT(reporter, resourcePtr2 == resourcePtr);
     resourcePtr2->unref();
 
     // Mark the original resource as unvailable and now it shouldn't be seen by the request.
     unavailable.add(resourcePtr);
     resourcePtr2 = resourceCache->findAndRefResource(
-            key, Budgeted::kYes, Shareable::kScratch, &unavailable);
+            key, Budgeted::kYes, Shareable::kScratch, /*label=*/"", &unavailable);
     REPORTER_ASSERT(reporter, !resourcePtr2);
 
     // Return the scratch resource, and then simulate a threading race where there's a request for
@@ -872,7 +879,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchResourcesTest, reporter, conte
     unavailable.reset();
     resource.reset();
     resource = sk_sp(resourceCache->findAndRefResource(
-            key, Budgeted::kYes, Shareable::kScratch, &unavailable));
+            key, Budgeted::kYes, Shareable::kScratch, /*label=*/"", &unavailable));
     REPORTER_ASSERT(reporter, resource.get() == resourcePtr);
     // At this point, resourcePtr has a usage ref and should be in the return queue
     REPORTER_ASSERT(reporter, resourceCache->testingInReturnQueue(resourcePtr));
@@ -889,7 +896,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchResourcesTest, reporter, conte
     REPORTER_ASSERT(reporter, resourcePtr->shareable() == Shareable::kNo);
 
     // Returning the scratch resource allows it to be changed to a different shareable type
-    resourcePtr2 = resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes);
+    resourcePtr2 =
+            resourceCache->findAndRefResource(key, Budgeted::kYes, Shareable::kYes, /*label=*/"");
     REPORTER_ASSERT(reporter, resourcePtr2 == resourcePtr);
     REPORTER_ASSERT(reporter, resourcePtr2->shareable() == Shareable::kYes);
     resourcePtr2->unref();
