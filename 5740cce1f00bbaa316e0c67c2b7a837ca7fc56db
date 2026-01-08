@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70cb3c64_03803df2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-08T17:11:52Z",
+      "side": 1,
+      "message": "Interesting/unexpected binary size reduction.\n\nThis will likely need client guards before landing.",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91798f70_dbc41cb2",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-08T17:11:52Z",
+      "side": 1,
+      "message": "I\u0027m not crazy about using a macro, but the alternative involves a lot more noise: https://skia-review.googlesource.com/c/skia/+/1138096\n\nThat\u0027s mostly due to older Bazel toolchains, which blow up along these lines:\n\n```\nsrc/base/SkBezierCurves.cpp:175:25: error: alias template \u0027SkSpan\u0027 requires template arguments; argument deduction only allowed for class templates\n  175 |     SkSpan\u003cdouble\u003e ts \u003d SkSpan(roots,\n      |                         ^\n./include/private/base/SkSpan_impl.h:151:23: note: template is declared here\n  151 | template \u003ctypename T\u003e using SkSpan \u003d std::span\u003cT\u003e;\n      |                       ^\n1 error generated.\n```",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
