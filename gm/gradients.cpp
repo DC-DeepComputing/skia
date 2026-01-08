@@ -393,7 +393,7 @@ class RadialGradientGM : public skiagm::GM {
         const SkScalar pos[] = { 0.0f,
                              0.35f,
                              1.0f };
-        SkColorConverter conv({ 0x7f7f7f7f, 0x7f7f7f7f, 0xb2000000 });
+        SkColorConverter conv({{{0x7f7f7f7f, 0x7f7f7f7f, 0xb2000000}}});
         paint.setShader(SkShaders::RadialGradient(center, radius,
                                               {{conv.colors4f(), pos, SkTileMode::kClamp}, {}}));
         SkRect r = {

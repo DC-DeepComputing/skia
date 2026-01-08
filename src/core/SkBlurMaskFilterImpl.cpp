@@ -30,6 +30,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/base/SkTo.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkBlitter_A8.h"
 #include "src/core/SkBlurMask.h"
@@ -534,7 +535,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
 
     const SkScalar sigma = this->computeXformedSigma(matrix);
     SkTLazy<SkMask> cachedMask;
-    SkSpan<const SkRect> smallRects = SkSpan(smallR, rectCount);
+    SkSpan<const SkRect> smallRects = {smallR, SkToSizeT(rectCount)};
     SkCachedData* cached = find_cached_rects(&cachedMask, sigma, fBlurStyle, smallRects, cache);
     if (!cached) {
         SkMaskBuilder filterM;

@@ -66,18 +66,18 @@ SkSpan<const float> GetPorterDuffBlendConstants(SkBlendMode mode) {
     static constexpr float kXor[]        = {1,  1, -1, -1};
 
     switch (mode) {
-        case SkBlendMode::kClear:      return SkSpan(kClear);
-        case SkBlendMode::kSrc:        return SkSpan(kSrc);
-        case SkBlendMode::kDst:        return SkSpan(kDst);
-        case SkBlendMode::kSrcOver:    return SkSpan(kSrcOver);
-        case SkBlendMode::kDstOver:    return SkSpan(kDstOver);
-        case SkBlendMode::kSrcIn:      return SkSpan(kSrcIn);
-        case SkBlendMode::kDstIn:      return SkSpan(kDstIn);
-        case SkBlendMode::kSrcOut:     return SkSpan(kSrcOut);
-        case SkBlendMode::kDstOut:     return SkSpan(kDstOut);
-        case SkBlendMode::kSrcATop:    return SkSpan(kSrcATop);
-        case SkBlendMode::kDstATop:    return SkSpan(kDstATop);
-        case SkBlendMode::kXor:        return SkSpan(kXor);
+        case SkBlendMode::kClear:      return kClear;
+        case SkBlendMode::kSrc:        return kSrc;
+        case SkBlendMode::kDst:        return kDst;
+        case SkBlendMode::kSrcOver:    return kSrcOver;
+        case SkBlendMode::kDstOver:    return kDstOver;
+        case SkBlendMode::kSrcIn:      return kSrcIn;
+        case SkBlendMode::kDstIn:      return kDstIn;
+        case SkBlendMode::kSrcOut:     return kSrcOut;
+        case SkBlendMode::kDstOut:     return kDstOut;
+        case SkBlendMode::kSrcATop:    return kSrcATop;
+        case SkBlendMode::kDstATop:    return kDstATop;
+        case SkBlendMode::kXor:        return kXor;
         default:                       return {};
     }
 }
@@ -110,16 +110,16 @@ ReducedBlendModeInfo GetReducedBlendModeInfo(SkBlendMode mode) {
         case SkBlendMode::kXor:        return {"blend_porter_duff",
                                                GetPorterDuffBlendConstants(mode)};
 
-        case SkBlendMode::kHue:        return {"blend_hslc", SkSpan(kHue)};
-        case SkBlendMode::kSaturation: return {"blend_hslc", SkSpan(kSaturation)};
-        case SkBlendMode::kColor:      return {"blend_hslc", SkSpan(kColor)};
-        case SkBlendMode::kLuminosity: return {"blend_hslc", SkSpan(kLuminosity)};
+        case SkBlendMode::kHue:        return {"blend_hslc", kHue};
+        case SkBlendMode::kSaturation: return {"blend_hslc", kSaturation};
+        case SkBlendMode::kColor:      return {"blend_hslc", kColor};
+        case SkBlendMode::kLuminosity: return {"blend_hslc", kLuminosity};
 
-        case SkBlendMode::kOverlay:    return {"blend_overlay", SkSpan(kOverlay)};
-        case SkBlendMode::kHardLight:  return {"blend_overlay", SkSpan(kHardLight)};
+        case SkBlendMode::kOverlay:    return {"blend_overlay", kOverlay};
+        case SkBlendMode::kHardLight:  return {"blend_overlay", kHardLight};
 
-        case SkBlendMode::kDarken:     return {"blend_darken", SkSpan(kDarken)};
-        case SkBlendMode::kLighten:    return {"blend_darken", SkSpan(kLighten)};
+        case SkBlendMode::kDarken:     return {"blend_darken", kDarken};
+        case SkBlendMode::kLighten:    return {"blend_darken", kLighten};
 
         default:                       return {BlendFuncName(mode), {}};
     }

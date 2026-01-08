@@ -206,11 +206,11 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
 }
 
 void Transform::EliminateUnreachableCode(Module& module, ProgramUsage* usage) {
-    return eliminate_unreachable_code(SkSpan(module.fElements), usage);
+    return eliminate_unreachable_code(module.fElements, usage);
 }
 
 void Transform::EliminateUnreachableCode(Program& program) {
-    return eliminate_unreachable_code(SkSpan(program.fOwnedElements), program.fUsage.get());
+    return eliminate_unreachable_code(program.fOwnedElements, program.fUsage.get());
 }
 
 }  // namespace SkSL

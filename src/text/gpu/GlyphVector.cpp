@@ -78,7 +78,7 @@ std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
     for (int i = 0; i < glyphCount; i++) {
         variants[i].packedGlyphID = SkPackedGlyphID(buffer.readUInt());
     }
-    return GlyphVector{std::move(promise.value()), SkSpan(variants, glyphCount)};
+    return GlyphVector{std::move(promise.value()), {variants, SkToSizeT(glyphCount)}};
 }
 
 void GlyphVector::flatten(SkWriteBuffer& buffer) const {
@@ -94,7 +94,7 @@ void GlyphVector::flatten(SkWriteBuffer& buffer) const {
 }
 
 SkSpan<const Glyph*> GlyphVector::glyphs() const {
-    return SkSpan(reinterpret_cast<const Glyph**>(fGlyphs.data()), fGlyphs.size());
+    return {reinterpret_cast<const Glyph**>(fGlyphs.data()), fGlyphs.size()};
 }
 
 // packedGlyphIDToGlyph must be run in single-threaded mode.

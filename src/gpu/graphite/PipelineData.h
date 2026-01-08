@@ -15,6 +15,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkTDArray.h"
+#include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
@@ -45,7 +46,7 @@ public:
 
     static UniformDataBlock Make(UniformDataBlock toClone, SkArenaAlloc* arena) {
         const char* copy = arena->makeArrayCopy<char>(toClone.fData);
-        return UniformDataBlock(SkSpan(copy, toClone.size()));
+        return UniformDataBlock({copy, toClone.size()});
     }
 
     // Wraps the finished accumulated uniform data within the manager's underlying storage.
@@ -101,7 +102,7 @@ public:
 
     static TextureDataBlock Make(TextureDataBlock toClone, SkArenaAlloc* arena) {
         SampledTexture* copy = arena->makeArrayCopy<SampledTexture>(toClone.fTextures);
-        return TextureDataBlock(SkSpan(copy, toClone.numTextures()));
+        return TextureDataBlock({copy, SkToSizeT(toClone.numTextures())});
     }
 
     // TODO(b/330864257): Once Device::drawCoverageMask() can keep its texture proxy alive without

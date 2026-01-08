@@ -203,7 +203,7 @@ public:
     const fontations_ffi::BridgeGlyphStyles& getGlyphStyles() const { return *fGlyphStyles; }
     const fontations_ffi::BridgeMappingIndex& getMappingIndex() const { return *fMappingIndex; }
     SkSpan<const SkColor> getPalette() const {
-        return SkSpan(reinterpret_cast<const SkColor*>(fPalette.data()), fPalette.size());
+        return {reinterpret_cast<const SkColor*>(fPalette.data()), fPalette.size()};
     }
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f', 'n', 't', 'a');

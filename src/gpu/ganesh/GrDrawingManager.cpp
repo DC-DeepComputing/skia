@@ -328,7 +328,7 @@ void GrDrawingManager::sortTasks() {
     // We separately sort the ranges around non-reorderable tasks.
     for (size_t i = 0, start = 0, end; start < SkToSizeT(fDAG.size()); ++i, start = end + 1) {
         end = i == fReorderBlockerTaskIndices.size() ? fDAG.size() : fReorderBlockerTaskIndices[i];
-        SkSpan span(fDAG.begin() + start, end - start);
+        SkSpan<sk_sp<GrRenderTask>> span(fDAG.begin() + start, end - start);
 
         SkASSERT(std::none_of(span.begin(), span.end(), [](const auto& t) {
             return t->blocksReordering();
@@ -396,7 +396,7 @@ bool GrDrawingManager::reorderTasks(GrResourceAllocator* resourceAllocator) {
     SkTInternalLList<GrRenderTask> llist;
     for (size_t i = 0, start = 0, end; start < SkToSizeT(fDAG.size()); ++i, start = end + 1) {
         end = i == fReorderBlockerTaskIndices.size() ? fDAG.size() : fReorderBlockerTaskIndices[i];
-        SkSpan span(fDAG.begin() + start, end - start);
+        SkSpan<sk_sp<GrRenderTask>> span(fDAG.begin() + start, end - start);
         SkASSERT(std::none_of(span.begin(), span.end(), [](const auto& t) {
             return t->blocksReordering();
         }));

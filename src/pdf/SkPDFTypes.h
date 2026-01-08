@@ -118,7 +118,7 @@ public:
     void appendRef(SkPDFIndirectReference);
 
 protected:
-    SkSpan<const SkPDFUnion> values() const { return SkSpan(fValues); }
+    SkSpan<const SkPDFUnion> values() const { return fValues; }
 
 private:
     std::vector<SkPDFUnion> fValues;

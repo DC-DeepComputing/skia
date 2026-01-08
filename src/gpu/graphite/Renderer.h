@@ -209,10 +209,10 @@ public:
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
-    SkSpan<const Uniform>   uniforms()         const { return SkSpan(fUniforms);      }
-    SkSpan<const Attribute> staticAttributes() const { return SkSpan(fStaticAttrs);   }
-    SkSpan<const Attribute> appendAttributes() const { return SkSpan(fAppendAttrs);   }
-    SkSpan<const Varying>   varyings()         const { return SkSpan(fVaryings);      }
+    SkSpan<const Uniform>   uniforms()         const { return fUniforms;      }
+    SkSpan<const Attribute> staticAttributes() const { return fStaticAttrs;   }
+    SkSpan<const Attribute> appendAttributes() const { return fAppendAttrs;   }
+    SkSpan<const Varying>   varyings()         const { return fVaryings;      }
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 

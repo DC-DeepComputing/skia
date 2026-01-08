@@ -16,6 +16,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/base/SkTo.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkCachedData.h"
@@ -271,7 +272,7 @@ bool SkMaskFilterBase::filterPath(const SkPathRaw& devRaw,
         rectCount = countNestedRects(devRaw, rects);
     }
     if (rectCount > 0) {
-        switch (this->filterRects(SkSpan(rects, rectCount), matrix, clip, blitter, cache)) {
+        switch (this->filterRects({rects, SkToSizeT(rectCount)}, matrix, clip, blitter, cache)) {
             case FilterReturn::kFalse:
                 return false;
             case FilterReturn::kTrue:

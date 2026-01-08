@@ -202,7 +202,8 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
 
     // Remember, we stored an int for glyph id.
     if (!buffer.validateCanReadN<int>(glyphCount)) { return std::nullopt; }
-    auto idsOrPaths = SkSpan(alloc->makeUniqueArray<IDOrPath>(glyphCount).release(), glyphCount);
+    SkSpan<IDOrPath> idsOrPaths =
+        {alloc->makeUniqueArray<IDOrPath>(glyphCount).release(), SkToSizeT(glyphCount)};
     for (auto& idOrPath : idsOrPaths) {
         idOrPath.fGlyphID = SkTo<SkGlyphID>(buffer.readInt());
     }
@@ -252,7 +253,7 @@ PathOpSubmitter PathOpSubmitter::Make(SkZip<const SkGlyphID, const SkPoint> acce
     return PathOpSubmitter{isAntiAliased,
                            strikeToSourceScale,
                            alloc->makePODSpan(get_positions(accepted)),
-                           SkSpan(rawIDsOrPaths, accepted.size()),
+                           {rawIDsOrPaths, accepted.size()},
                            std::move(strikePromise)};
 }
 
@@ -470,7 +471,7 @@ std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
 
     return DrawableOpSubmitter{strikeToSourceScale,
                                positions,
-                               SkSpan(idsOrDrawables, glyphCount),
+                               {idsOrDrawables, SkToSizeT(glyphCount)},
                                std::move(strikePromise.value())};
 }
 

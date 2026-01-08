@@ -214,7 +214,7 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
                                      std::move(inputFP),
                                      std::move(destColorFP),
                                      std::move(uniforms),
-                                     SkSpan(childFPs));
+                                     childFPs);
     SkASSERT(fp);
     return GrFPSuccess(std::move(fp));
 }

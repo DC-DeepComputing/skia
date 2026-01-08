@@ -11,6 +11,7 @@
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkSpan_impl.h"
+#include "include/private/base/SkTo.h"
 #include "src/base/SkCubics.h"
 #include "src/base/SkQuads.h"
 
@@ -172,8 +173,8 @@ SkBezierCubic::Intersect(double AX, double BX, double CX, double DX,
                          double AY, double BY, double CY, double DY,
                          float toIntersect, float intersectionsStorage[3]) {
     double roots[3];
-    SkSpan<double> ts = SkSpan(roots,
-                               SkCubics::RootsReal(AY, BY, CY, DY - toIntersect, roots));
+    SkSpan<double> ts = {roots,
+                         SkToSizeT(SkCubics::RootsReal(AY, BY, CY, DY - toIntersect, roots))};
 
     size_t intersectionCount = 0;
     for (double t : ts) {

@@ -335,7 +335,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
             glyphIDs[gId - firstGlyphID + 1] = gId;
         }
         SkBulkGlyphMetrics metrics{pdfFont.strike().fPath.fStrikeSpec};
-        auto glyphs = metrics.glyphs(SkSpan(glyphIDs.get(), glyphRangeSize));
+        auto glyphs = metrics.glyphs({glyphIDs.get(), SkToSizeT(glyphRangeSize)});
         for (int i = 0; i < glyphRangeSize; ++i) {
             widths->appendScalar(from_font_units(glyphs[i]->advanceX(), SkToU16(emSize)));
         }

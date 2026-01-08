@@ -11,6 +11,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/base/SkTo.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
@@ -322,7 +323,7 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
 
     fFS.emitFunction(SkSLType::kHalf4,
                      impl.functionName(),
-                     SkSpan(params, numParams),
+                     {params, SkToSizeT(numParams)},
                      fFS.code().c_str());
     fFS.deleteStage();
 }

@@ -125,7 +125,7 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
-    return effect->makeColorFilter(std::move(uniforms), SkSpan(children));
+    return effect->makeColorFilter(std::move(uniforms), children);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

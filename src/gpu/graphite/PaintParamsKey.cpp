@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/PaintParamsKey.h"
 
+#include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/base/SkBase64.h"
@@ -114,7 +115,7 @@ ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
     }
 
     return arena->make<ShaderNode>(entry,
-                                   SkSpan(childArray, entry->fNumChildren),
+                                   SkSpan<ShaderNode*>(childArray, entry->fNumChildren),
                                    id,
                                    index,
                                    dataSpan);
@@ -230,7 +231,7 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     // Copy the accumulated roots into a span stored in the arena
     const ShaderNode** rootSpan = arena->makeArray<const ShaderNode*>(roots.size());
     memcpy(rootSpan, roots.data(), roots.size_bytes());
-    return SkSpan(rootSpan, roots.size());
+    return {rootSpan, SkToSizeT(roots.size())};
 }
 
 static void append_as_base64(SkString* str, SkSpan<const uint32_t> data) {

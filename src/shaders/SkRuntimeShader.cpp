@@ -72,7 +72,7 @@ SkRuntimeEffect::TracedShader SkRuntimeShader::makeTracedClone(const SkIPoint& c
     sk_sp<SkRuntimeEffect> unoptimized = fEffect->makeUnoptimizedClone();
     sk_sp<SkSL::DebugTracePriv> debugTrace = make_debug_trace(unoptimized.get(), coord);
     auto debugShader = sk_make_sp<SkRuntimeShader>(
-            unoptimized, debugTrace, this->uniformData(nullptr), SkSpan(fChildren));
+            unoptimized, debugTrace, this->uniformData(nullptr), fChildren);
 
     return SkRuntimeEffect::TracedShader{std::move(debugShader), std::move(debugTrace)};
 }
@@ -182,5 +182,5 @@ sk_sp<SkFlattenable> SkRuntimeShader::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
-    return effect->makeShader(std::move(uniforms), SkSpan(children), SkOptAddressOrNull(localM));
+    return effect->makeShader(std::move(uniforms), children, SkOptAddressOrNull(localM));
 }

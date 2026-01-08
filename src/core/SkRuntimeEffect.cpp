@@ -283,8 +283,7 @@ SkSpan<const float> SkRuntimeEffectPriv::UniformsAsSpan(
         return {uniformsInAlloc, numFloats};
     }
     // It's safe to return a pointer into existing data.
-    return SkSpan{static_cast<const float*>(originalData->data()),
-                  originalData->size() / sizeof(float)};
+    return {static_cast<const float*>(originalData->data()), originalData->size() / sizeof(float)};
 }
 
 bool RuntimeEffectRPCallbacks::appendShader(int index) {
@@ -835,7 +834,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childShaders[i]);
     }
-    return this->makeShader(std::move(uniforms), SkSpan(children), localMatrix);
+    return this->makeShader(std::move(uniforms), children, localMatrix);
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
@@ -867,7 +866,7 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> unifor
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childColorFilters[i]);
     }
-    return this->makeColorFilter(std::move(uniforms), SkSpan(children));
+    return this->makeColorFilter(std::move(uniforms), children);
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,

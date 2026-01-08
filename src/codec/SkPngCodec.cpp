@@ -271,7 +271,8 @@ std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngCodec::onTry
     }
 
     static_assert(sizeof(png_color) == sizeof(PaletteColorEntry));
-    return SkSpan(reinterpret_cast<const PaletteColorEntry*>(palette), numColors);
+    return SkSpan<const SkPngCodecBase::PaletteColorEntry>(
+        reinterpret_cast<const PaletteColorEntry*>(palette), numColors);
 }
 
 std::optional<SkSpan<const uint8_t>> SkPngCodec::onTryGetTrnsChunk() {
@@ -280,7 +281,7 @@ std::optional<SkSpan<const uint8_t>> SkPngCodec::onTryGetTrnsChunk() {
     if (!png_get_tRNS(fPng_ptr, fInfo_ptr, &alphas, &numColorsWithAlpha, nullptr)) {
         return std::nullopt;
     }
-    return SkSpan(alphas, numColorsWithAlpha);
+    return SkSpan<const uint8_t>(alphas, numColorsWithAlpha);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

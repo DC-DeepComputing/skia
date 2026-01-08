@@ -178,7 +178,7 @@ private:
             // Update uniforms associated with the mesh vertex/fragment program.
             if (mgp.fUniforms) {
                 pdman.setRuntimeEffectUniforms(mgp.fSpec->uniforms(),
-                                               SkSpan(fSpecUniformHandles),
+                                               fSpecUniformHandles,
                                                mgp.fUniforms->data());
             }
             // Recursively update uniforms associated with the mesh child FPs.
@@ -981,9 +981,9 @@ static SkMeshSpecification* make_vertices_spec(bool hasColors, bool hasTex) {
     }
     vs += "v.position = a.pos;\nreturn v;\n}";
     fs += "}";
-    auto [spec, error] = SkMeshSpecification::Make(SkSpan(attributes),
+    auto [spec, error] = SkMeshSpecification::Make(attributes,
                                                    size,
-                                                   SkSpan(varyings),
+                                                   varyings,
                                                    vs,
                                                    fs);
     SkASSERT(spec);
@@ -1093,7 +1093,7 @@ GrGeometryProcessor* MeshOp::makeGP(SkArenaAlloc* arena) {
                         color,
                         fHelper.usesLocalCoords(),
                         fUniforms,
-                        SkSpan(fChildren));
+                        fChildren);
 }
 
 void MeshOp::onCreateProgramInfo(const GrCaps* caps,

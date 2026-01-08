@@ -180,7 +180,7 @@ sk_sp<Image_YUVA> Image_YUVA::WrapImages(const Caps* caps,
         }
     }
 
-    sk_sp<Image_YUVA> image = Make(caps, yuvaInfo, SkSpan(planes), std::move(imageColorSpace));
+    sk_sp<Image_YUVA> image = Make(caps, yuvaInfo, planes, std::move(imageColorSpace));
     if (image) {
         // Unlike the other factories, this YUVA image shares the texture proxies with each plane
         // Image, so if those are linked to Devices, it must inherit those same links.

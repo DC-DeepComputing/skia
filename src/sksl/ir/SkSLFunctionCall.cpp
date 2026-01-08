@@ -1148,7 +1148,9 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             std::string msg =
                     "no match for " + arguments.back()->type().displayName() +
                     "::" + std::string(ref.overloadChain()->name().substr(1)) +
-                    build_argument_type_list(SkSpan(arguments).first(arguments.size() - 1));
+                    build_argument_type_list(
+                        SkSpan<const ExpressionArray::value_type>(arguments)
+                            .first(arguments.size() - 1));
             context.fErrors->error(pos, msg);
             return nullptr;
         }
