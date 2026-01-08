@@ -16,6 +16,23 @@
       "message": "Please take a look, thanks!",
       "revId": "c389a37016c2475187f2548938d720cb5f7af289",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6311e3de_2171d816",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-08T14:40:59Z",
+      "side": 1,
+      "message": "With the goal to remove createBackendTexture entirely, I think we should avoid landing this. I don\u0027t think it\u0027ll take too much time to move Chrome off of that API.",
+      "revId": "c389a37016c2475187f2548938d720cb5f7af289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
