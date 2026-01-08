@@ -59,6 +59,10 @@ struct Location {
 } // namespace
 
 struct SkPDFStructElem {
+    SkPDFStructElem() = default;
+    SkPDFStructElem(const SkPDFStructElem&) = delete;
+    SkPDFStructElem& operator=(const SkPDFStructElem&) = delete;
+
     // Structure elements (/StructElem) may have an element identifier (/ID) which is a byte string.
     // Element identifiers are used by attributes (/StructElem /A) to refer to structure elements.
     // The mapping from element identifier to structure element is emitted in the /IDTree.
