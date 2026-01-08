@@ -80,7 +80,7 @@ DEF_TEST(SkPDF_tagged_table, r) {
     table->fNodeId = 3;
     table->fTypeString = "Table";
     auto& rows = table->fChildVector;
-    table->fAttributes.appendFloatArray("Layout", "BBox", {72, 72, 360, 360});
+    table->fAttributes.appendFloatArray("Layout", "BBox", {{72, 72, 360, 360}});
     table->fAttributes.appendTextString("Table", "Summary", "Fuel efficiency");
 
     for (int rowIndex = 0; rowIndex < kRowCount; rowIndex++) {

@@ -129,6 +129,8 @@ public:
     const T* data() const { return fSpan.data(); }
     size_t size() const { return fSpan.size(); }
 
+    operator SkSpan<const T>() const { return fSpan; }
+
 private:
     SkSpan<T>   fSpan;
     bool        fOwned;
