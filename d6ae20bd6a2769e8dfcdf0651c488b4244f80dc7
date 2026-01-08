@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f5da83d_5f2d4a08",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "562d4cd2_4508a548",
+      "range": {
+        "startLine": 368,
+        "startChar": 90,
+        "endLine": 368,
+        "endChar": 91
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b015146_305d036c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "why is this added? Was this a bug before?",
+      "range": {
+        "startLine": 387,
+        "startChar": 4,
+        "endLine": 387,
+        "endChar": 23
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "295fc4d7_4de27021",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Yes, I think it was a bug or at least risky to tell SkImage_Raster not to copy a possibly mutable bitmap.",
+      "parentUuid": "4b015146_305d036c",
       "range": {
         "startLine": 387,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a099dc_cd328916",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9020a3a_c12747e4",
+      "range": {
+        "startLine": 388,
+        "startChar": 72,
+        "endLine": 388,
+        "endChar": 73
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "749e34df_98b84c8f",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "don\u0027t use auto here be explicit",
+      "range": {
+        "startLine": 142,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 8
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e65078_27f24960",
+        "filename": "src/gpu/ganesh/GrSWMaskHelper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "749e34df_98b84c8f",
       "range": {
         "startLine": 142,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ca1f910_2450612c",
+        "filename": "src/gpu/ganesh/image/GrBitmap.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14dbffbb_e1861f9b",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bbd9669_b0bca243",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "I think this is not a good use of auto. It is in no way obvious from the factory GrBitmap::Make that this is a std::optional. Normally all of our Make factories return either sk_sp or std::unique_ptr types. So this is definitely not expected and should be explicitly declared.",
+      "range": {
+        "startLine": 180,
+        "startChar": 8,
+        "endLine": 180,
+        "endChar": 12
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b506453_53c4ce3d",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bbd9669_b0bca243",
       "range": {
         "startLine": 180,
         "startChar": 8,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "230ad7c2_a7785121",
+        "filename": "src/gpu/ganesh/image/SkImage_RasterPinnable.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "995115a3_a7bc56c9",
+      "range": {
+        "startLine": 81,
+        "startChar": 79,
+        "endLine": 81,
+        "endChar": 86
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "577953a7_560501c3",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "std::move",
+      "range": {
+        "startLine": 204,
+        "startChar": 49,
+        "endLine": 204,
+        "endChar": 53
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65b7a07_619a2ed7",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "577953a7_560501c3",
       "range": {
         "startLine": 204,
         "startChar": 49,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25052d52_cb67d298",
+        "filename": "src/image/SkImage_Raster.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done. It *was* valuable to have the compiler help me identify all possible places mips might be needed, but you are right that we don\u0027t usually need it.",
+      "parentUuid": "44f2b938_d747b87b",
+      "range": {
+        "startLine": 113,
+        "startChar": 76,
+        "endLine": 113,
+        "endChar": 92
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "436b4454_c919a189",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "mips\u003d befroe",
+      "range": {
+        "startLine": 78,
+        "startChar": 75,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be10570b_f135d29c",
+        "filename": "src/image/SkImage_RasterFactories.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "436b4454_c919a189",
       "range": {
         "startLine": 78,
         "startChar": 75,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7b3b953_2d850273",
+        "filename": "src/image/SkSurface_Raster.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54fce3ac_de2dfb8b",
+      "range": {
+        "startLine": 134,
+        "startChar": 55,
+        "endLine": 134,
+        "endChar": 56
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ff70ea4_c012ce37",
@@ -277,6 +541,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b217bf9_fd987e8e",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ff70ea4_c012ce37",
+      "range": {
+        "startLine": 1999,
+        "startChar": 4,
+        "endLine": 1999,
+        "endChar": 48
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecb3799f_9fb37bcd",
@@ -290,6 +578,30 @@
       "writtenOn": "2026-01-07T21:12:09Z",
       "side": 1,
       "message": "std::move or just replace with refMips() call",
+      "range": {
+        "startLine": 2014,
+        "startChar": 80,
+        "endLine": 2014,
+        "endChar": 84
+      },
+      "revId": "d6ae20bd6a2769e8dfcdf0651c488b4244f80dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3bdd247_5777ece0",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecb3799f_9fb37bcd",
       "range": {
         "startLine": 2014,
         "startChar": 80,

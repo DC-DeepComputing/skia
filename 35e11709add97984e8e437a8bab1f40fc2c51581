@@ -16,6 +16,24 @@
       "message": "This change might have been a bit excessive from the Ganesh side. At the outset, it wasn\u0027t clear to me if the functions in SkGr.h needed to take the Bitmap+Mipmap version or just the Bitmap one. GrProxyProvider.h definitely needed to use the Bitmap+Mipmap version. Now having updated all the calls to `GrMakeCachedBitmapProxyView` and `GrMakeUncachedBitmapProxyView`, I don\u0027t think that was necessary. However, I do like the `std::optional` make pattern over the existing pattern of making a Bitmap and calling installPixels and only sometimes validating that, so maybe that was worth it?\n\nFeedback welcome (e.g. reduce the scope, break it into two steps, etc)",
       "revId": "35e11709add97984e8e437a8bab1f40fc2c51581",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09a4791_02359a80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T15:49:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5b74bade_17b79658",
+      "revId": "35e11709add97984e8e437a8bab1f40fc2c51581",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
