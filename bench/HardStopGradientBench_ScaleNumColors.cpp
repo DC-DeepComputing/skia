@@ -18,8 +18,8 @@
 
 class HardStopGradientBench_ScaleNumColors : public Benchmark {
 public:
-    HardStopGradientBench_ScaleNumColors(SkTileMode tilemode, int count) {
-        fName.printf("hardstop_scale_num_colors_%s_%03d_colors",
+    HardStopGradientBench_ScaleNumColors(SkTileMode tilemode, size_t count) {
+        fName.printf("hardstop_scale_num_colors_%s_%03zu_colors",
                      ToolUtils::tilemode_name(tilemode), count);
 
         fTileMode   = tilemode;
@@ -58,7 +58,7 @@ public:
 
         // Alternate between different choices
         SkColor4f  colors[100];
-        for (int i = 0; i < fColorCount; i++) {
+        for (size_t i = 0; i < fColorCount; i++) {
             colors[i] = color_choices[i % kNumColorChoices];
         }
 
@@ -66,7 +66,7 @@ public:
         float positions[100];
         positions[0] = 0.0f;
         positions[1] = 0.0f;
-        for (int i = 2; i < fColorCount; i++) {
+        for (size_t i = 2; i < fColorCount; i++) {
             // Evenly spaced afterwards
             positions[i] = i / (fColorCount - 1.0f);
         }
@@ -89,7 +89,7 @@ private:
 
     SkTileMode  fTileMode;
     SkString    fName;
-    int         fColorCount;
+    size_t      fColorCount;
     SkPaint     fPaint;
 
     using INHERITED = Benchmark;

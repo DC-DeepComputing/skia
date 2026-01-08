@@ -184,8 +184,8 @@ static std::unique_ptr<GrFragmentProcessor> make_dual_interval_colorizer(const S
                            vc2 - threshold * scale[1]};
     return GrSkSLFP::Make(effect, "DualIntervalColorizer", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kNone,
-                          "scale", SkSpan(scale),
-                          "bias", SkSpan(bias),
+                          "scale", SkSpan<const Vec4>(scale),
+                          "bias", SkSpan<const Vec4>(bias),
                           "threshold", threshold);
 }
 

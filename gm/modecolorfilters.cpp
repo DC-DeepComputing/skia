@@ -34,7 +34,7 @@ static sk_sp<SkShader> make_color_shader(SkColor color) {
     constexpr SkPoint kPts[] = {{0, 0}, {1, 1}};
     const SkColor4f c4 = SkColor4f::FromColor(color);
 
-    return SkShaders::LinearGradient(kPts, {{{c4, c4}, {}, SkTileMode::kClamp}, {}});
+    return SkShaders::LinearGradient(kPts, {{{{c4, c4}}, {}, SkTileMode::kClamp}, {}});
 }
 
 static sk_sp<SkShader> make_solid_shader() {
