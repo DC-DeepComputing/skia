@@ -16,6 +16,23 @@
       "message": "Since this landed, we have been dropping all draws in our skp nanobench that use pngs.",
       "revId": "3ae1ab035f66ecb36b8fdd2cbc8ed447506f3da9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "211ec37f_f23c18da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T20:59:04Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to revert this as is - I\u0027m worried other things will break because we\u0027ve had clients *stop* using the guard",
+      "revId": "3ae1ab035f66ecb36b8fdd2cbc8ed447506f3da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
