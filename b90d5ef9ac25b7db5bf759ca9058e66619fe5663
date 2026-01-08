@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c5b72e_3c63c9e1",
+        "filename": "resources/sksl/intrinsics/BitCount.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-08T14:34:35Z",
+      "side": 1,
+      "message": "I updated the source sksl for these bitcount and lsb/msb tests to cover the vector versions, which is why the other versions of output are also modified. The wgsl output is the most important to focus on.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b90d5ef9ac25b7db5bf759ca9058e66619fe5663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f531a6_70205fdd",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3521,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-08T14:34:35Z",
+      "side": 1,
+      "message": "Compare to SkSLMetalCodeGenerator\u0027s `writeOuterProduct`:\n```\nvoid MetalCodeGenerator::writeOuterProduct() {\n    static constexpr char kOuterProduct[] \u003d\n\"template \u003ctypename T, int C, int R\u003e\"\n\"matrix\u003cT, C, R\u003e outerProduct(const vec\u003cT, R\u003e a, const vec\u003cT, C\u003e b) {\"\n  \"matrix\u003cT, C, R\u003e m;\"\n  \"for (int c \u003d 0; c \u003c C; ++c) { m[c] \u003d a * b[c]; }\"\n  \"return m;\"\n\"}\";\n    if (!fWrittenOuterProduct) {\n        fWrittenOuterProduct \u003d true;\n        fExtraFunctions.writeText(kOuterProduct);\n    }\n}\n```",
+      "range": {
+        "startLine": 3510,
+        "startChar": 0,
+        "endLine": 3521,
+        "endChar": 28
+      },
+      "revId": "b90d5ef9ac25b7db5bf759ca9058e66619fe5663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
