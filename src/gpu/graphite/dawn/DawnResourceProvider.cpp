@@ -579,6 +579,7 @@ sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDes
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
                                                             const TextureInfo& info) {
+  //  SkDebugf("I am here in DawnResourceProvider::onCreateBackendTexture\n");
     wgpu::Texture texture = DawnTexture::MakeDawnTexture(this->dawnSharedContext(),
                                                          dimensions,
                                                          info);

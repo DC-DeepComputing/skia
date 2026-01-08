@@ -33,7 +33,7 @@ class VulkanSharedContext;
 class VulkanTexture;
 class VulkanYcbcrConversion;
 
-class VulkanResourceProvider final : public ResourceProvider {
+class VulkanResourceProvider : public ResourceProvider {
 public:
     static constexpr size_t kIntrinsicConstantSize = sizeof(float) * 8; // float4 + 2xfloat2
     // Intrinsic constant rtAdjust value is needed by the vertex shader. Dst copy bounds are needed

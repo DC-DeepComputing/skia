@@ -333,9 +333,15 @@ static VkResult submit_to_queue(const VulkanSharedContext* sharedContext,
     submitInfo.signalSemaphoreCount = signalCount;
     submitInfo.pSignalSemaphores = signalSemaphores;
 
-    VkResult result;
-    VULKAN_CALL_RESULT(sharedContext, result, QueueSubmit(queue, 1, &submitInfo, fence));
-    return result;
+    VulkanSharedContext::QueueSubmitResult qsr = sharedContext->backendQueueSubmit(&submitInfo, &fence);
+    if (qsr == VulkanSharedContext::QueueSubmitResult::kNotSupported) {
+        VkResult result;
+        VULKAN_CALL_RESULT(sharedContext, result, QueueSubmit(queue, 1, &submitInfo, fence));
+        return result;
+    } else {
+        return qsr == VulkanSharedContext::QueueSubmitResult::kSuccess ? VK_SUCCESS : VK_ERROR_DEVICE_LOST;
+    }
+
 }
 
 bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {

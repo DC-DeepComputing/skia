@@ -185,13 +185,14 @@ sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeUnInit(Recorder* recor
     mbet->fContext = recorder->priv().context();
     const skgpu::graphite::Caps* caps = recorder->priv().caps();
 
-    skgpu::graphite::TextureInfo info = caps->getDefaultSampledTextureInfo(ii.colorType(),
+    skgpu::graphite::TextureInfo info = recorder->priv().getDefaultSampledTextureInfo(ii.colorType(),
                                                                            mipmapped,
                                                                            isProtected,
                                                                            renderable);
 
     mbet->fTexture = recorder->createBackendTexture(ii.dimensions(), info);
     if (!mbet->fTexture.isValid()) {
+        SkDebugf("managed backend texture is invalid\n");
         return nullptr;
     }
 

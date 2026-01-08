@@ -1135,6 +1135,7 @@ protected:
             create_YUV(planes, kAYUV_YUVFormat, resultBMs, opaque);
 
             YUVAPlanarConfig planarConfig(kAYUV_YUVFormat, opaque, kTopLeft_SkEncodedOrigin);
+        //    SkDebugf("make images 0\n");
 
             auto yuvaPixmaps = planarConfig.makeYUVAPixmaps(fOriginalBMs[opaque].dimensions(),
                                                             kJPEG_Full_SkYUVColorSpace,
@@ -1144,15 +1145,21 @@ protected:
             int i = 0;
             for (sk_sp<SkColorSpace> cs : {sk_sp<SkColorSpace>(nullptr),
                                            SkColorSpace::MakeSRGB()}) {
+            //                                   SkDebugf("make images 1\n");
                 auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(
                         yuvaPixmaps, skgpu::Mipmapped::kNo, std::move(cs));
+          //                                     SkDebugf("make images 2\n");
 #if defined(SK_GRAPHITE)
                 if (recorder) {
+        //            SkDebugf("make images 3\n");
                     fImages[opaque][i++] = lazyYUV->refImage(
                             recorder, sk_gpu_test::LazyYUVImage::Type::kFromTextures);
+           //         SkDebugf("images: %p\n", fImages[opaque][i-1].get());
+          //          SkDebugf("make images 4\n");
                 } else
 #endif
                 {
+           //         SkDebugf("make images 5\n");
                     fImages[opaque][i++] = lazyYUV->refImage(
                             context, sk_gpu_test::LazyYUVImage::Type::kFromTextures);
                 }

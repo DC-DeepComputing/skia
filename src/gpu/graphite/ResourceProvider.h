@@ -52,6 +52,8 @@ class ResourceProvider {
 public:
     virtual ~ResourceProvider();
 
+    virtual void checkBackends() {}
+
     GraphicsPipelineHandle createGraphicsPipelineHandle(
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
@@ -112,9 +114,9 @@ public:
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
 
+    const SharedContext* sharedContext() { return fSharedContext; }
 #if defined(GPU_TEST_UTILS)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
-    const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
     const Caps* caps() const;
