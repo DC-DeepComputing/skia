@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9282dc6_fdf4f79b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-08T20:49:05Z",
+      "side": 1,
+      "message": "Using `std::to_address` is not \"easy\" and would almost always be the wrong thing to do anyway (just iterate). Unfortunately std::span doesn\u0027t seem to get any love because everyone wants to work on ranges instead.\n\nIf there is a real need for an extent param it could be added to SkSpan, or you could just use std::span for those few cases. That\u0027s fine.\n\nThere is no benefit to any of this change so there should be no detrimental defines or other silly additions to \"support\" it with older toolchains. Since there is no benefit it must be at least neutral.\n\nThis is only accidentally \"enforcing\" size_t discipline because in C++20 std::span still doesn\u0027t have a constructor taking an initializer list (it\u0027s supposed to get one with C++26!). Which is also why the ridiculous number of braces. I\u0027m all for converting more or less all the `int` counts in Skia to `size_t` though.\n\nWe\u0027re not dropping anything that duplicates the STL, since the STL doesn\u0027t do what we want. `std::span` has lots of sharp edges (like T needing to be complete).",
+      "parentUuid": "76787bd3_e1bb7e7b",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91798f70_dbc41cb2",
@@ -89,6 +107,23 @@
         "endLine": 64,
         "endChar": 64
       },
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e72b25b7_e5c2da0e",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-08T20:49:05Z",
+      "side": 1,
+      "message": "Actually, the compiler error is correct (and only being allowed as an extension by some implementations) because `std::span` states `ElementType is required to be a complete object type that is not an abstract class type`. So it is not possible to have a `std::span\u003cEnlosingType\u003e` without undefined behavior. Deleting the implicit copy constructor does \"work around\" this particular implementations UB, but this is still UB with `std::span`. `SkSpan` was written explicitly to allow this. See also https://github.com/llvm/llvm-project/issues/106988 .\n\nThere may be more of these instances elsewhere that we don\u0027t know about.",
       "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
