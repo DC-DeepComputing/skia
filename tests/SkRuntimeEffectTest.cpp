@@ -1773,7 +1773,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrSkSLFP_UniformArray,
         // Render our shader into the fill-context with our various input colors.
         testCtx->fillWithFP(GrSkSLFP::Make(effect, "test_fp", /*inputFP=*/nullptr,
                                            GrSkSLFP::OptFlags::kNone,
-                                           "color", SkSpan(colorArray)));
+                                           "color", SkSpan<const float>(colorArray)));
         // Read our color back and ensure it matches.
         GrColor actual;
         GrPixmap pixmap(info, &actual, sizeof(GrColor));

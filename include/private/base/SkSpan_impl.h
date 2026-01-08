@@ -9,12 +9,6 @@
 #define SkSpan_DEFINED
 
 /*
- *  Define this to keep the bespoke SkSpan implementation, until clients are ready.
- *  When this is not defined, SkSpan becomes just an alias for std::span
- */
-#define SK_USE_LEGACY_SKSPAN
-
-/*
  *  SkSpan handles single POD initialization differently from std::span
  *  This macro allows clients to initialize a span with a single POD that will work with
  *  either implementation of SkSpan.
@@ -151,7 +145,10 @@ SkSpan(Container&&) ->
 
 #include <span>
 
-template <typename T> using SkSpan = std::span<T>;
+// We use a macro to work around some older toolchain limitations, specifically lack of
+// argument deduction support for template aliases (even with -std=c++20).
+// TODO:  remove after client migration,
+#define SkSpan std::span
 
 #endif  // legacy
 
