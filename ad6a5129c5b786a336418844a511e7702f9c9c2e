@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "25edc258_b9de96ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "788bd7d5_eddcbbff",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 51
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0666b4b5_3abdb3ea",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -182,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f9506b8_82907e59",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "de9071d6_9cdb2a43",
+      "range": {
+        "startLine": 505,
+        "startChar": 11,
+        "endLine": 505,
+        "endChar": 15
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f185371_2c859b83",
@@ -219,6 +267,30 @@
       "side": 1,
       "message": "the 0.64, 0.33, etc, correspond to rec709, p3, and rec2020.\n\nIf gain_application_space_chromaticities_flag\u003d3 then it means \"not one of those three, need go write the actual primary values\".",
       "parentUuid": "4f185371_2c859b83",
+      "range": {
+        "startLine": 517,
+        "startChar": 19,
+        "endLine": 517,
+        "endChar": 61
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4f307e_bd966947",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "25fe3374_1d3e814d",
       "range": {
         "startLine": 517,
         "startChar": 19,
@@ -276,6 +348,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d179cf17_a8bc9533",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "71ff810a_bc59db13",
+      "range": {
+        "startLine": 34,
+        "startChar": 55,
+        "endLine": 34,
+        "endChar": 58
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00cd423f_0edc81b6",
@@ -313,6 +409,30 @@
       "side": 1,
       "message": "Put a blanket note at the top (and when this is in a separate struct, it\u0027ll be more clear that the blanket refers to these structures).",
       "parentUuid": "00cd423f_0edc81b6",
+      "range": {
+        "startLine": 88,
+        "startChar": 29,
+        "endLine": 88,
+        "endChar": 49
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5ed789d_f87f879c",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "142ad987_711bd2ad",
       "range": {
         "startLine": 88,
         "startChar": 29,
@@ -370,6 +490,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "046f5c59_3592eeba",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "956eac21_14f8cd15",
+      "range": {
+        "startLine": 93,
+        "startChar": 15,
+        "endLine": 93,
+        "endChar": 32
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7abd3fe2_82483c23",
@@ -407,6 +551,30 @@
       "side": 1,
       "message": "Put this in the blanket statement at the top of the struct (which will be more clear when everything is pulled out).",
       "parentUuid": "7abd3fe2_82483c23",
+      "range": {
+        "startLine": 97,
+        "startChar": 40,
+        "endLine": 97,
+        "endChar": 45
+      },
+      "revId": "ad6a5129c5b786a336418844a511e7702f9c9c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84749e6f_a14a4eed",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T14:03:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8be6f3d3_024417ed",
       "range": {
         "startLine": 97,
         "startChar": 40,
