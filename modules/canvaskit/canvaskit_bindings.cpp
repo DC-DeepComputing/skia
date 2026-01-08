@@ -60,6 +60,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "include/private/base/SkOnce.h"
+#include "include/private/base/SkTo.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
 #include "src/base/SkFloatBits.h"
@@ -71,6 +72,7 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <emscripten/html5.h>
+#include <cstdint>
 #include "modules/canvaskit/WasmCommon.h"
 
 #if defined(CK_ENABLE_WEBGL) || defined(CK_ENABLE_WEBGPU)
@@ -1356,9 +1358,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
                           }
                           SkSamplingOptions sampling(filter, mipmap);
                           self.drawAtlas(atlas.get(),
-                                         {dstXforms, count},
-                                         {srcRects, count},
-                                         {colors, colors ? count : 0},
+                                         {dstXforms, SkToSizeT(count)},
+                                         {srcRects, SkToSizeT(count)},
+                                         {colors, colors ? SkToSizeT(count) : 0},
                                          mode,
                                          sampling,
                                          nullptr,
@@ -1384,9 +1386,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
                           }
                           SkSamplingOptions sampling({B, C});
                           self.drawAtlas(atlas.get(),
-                                         {dstXforms, count},
-                                         {srcRects, count},
-                                         {colors, colors ? count : 0},
+                                         {dstXforms, SkToSizeT(count)},
+                                         {srcRects, SkToSizeT(count)},
+                                         {colors, colors ? SkToSizeT(count) : 0},
                                          mode,
                                          sampling,
                                          nullptr,
@@ -1423,8 +1425,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            float y,
                                            const SkFont& font,
                                            const SkPaint& paint) -> void {
-                          self.drawGlyphs({reinterpret_cast<const uint16_t*>(glyphs), count},
-                                          {reinterpret_cast<const SkPoint*>(positions), count},
+                          self.drawGlyphs({reinterpret_cast<const uint16_t*>(glyphs),
+                                           SkToSizeT(count)},
+                                          {reinterpret_cast<const SkPoint*>(positions),
+                                           SkToSizeT(count)},
                                           {x, y},
                                           font,
                                           paint);
@@ -1574,7 +1578,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            int count,
                                            SkPaint& paint) -> void {
                           const SkPoint* pts = reinterpret_cast<const SkPoint*>(pptr);
-                          self.drawPoints(mode, {pts, count}, paint);
+                          self.drawPoints(mode, {pts, SkToSizeT(count)}, paint);
                       }))
             .function("_drawRRect",
                       optional_override(
@@ -1805,9 +1809,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
                           // ergonomics.
                           SkRect* outputRects = reinterpret_cast<SkRect*>(rPtr);
                           float* outputWidths = reinterpret_cast<float*>(wPtr);
-                          self.getWidthsBounds({glyphs, numGlyphs},
-                                               {outputWidths, outputWidths ? numGlyphs : 0},
-                                               {outputRects, outputRects ? numGlyphs : 0},
+                          const size_t glyphCount = SkToSizeT(numGlyphs);
+                          self.getWidthsBounds({glyphs, glyphCount},
+                                               {outputWidths, outputWidths ? glyphCount : 0},
+                                               {outputRects, outputRects ? glyphCount : 0},
                                                paint);
                       }),
                       allow_raw_pointers())
@@ -1857,7 +1862,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
                               return emscripten::val("Not enough x,y position pairs for glyphs");
                           }
                           auto sects = self.getIntercepts(
-                                  glyphs, {(const SkPoint*)pos.data(), numGlyphs}, top, bottom);
+                                  glyphs, {(const SkPoint*)pos.data(), SkToSizeT(numGlyphs)},
+                                  top, bottom);
                           return MakeTypedArray(sects.size(), (const float*)sects.data());
                       }),
                       allow_raw_pointers())
@@ -2274,7 +2280,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                     optional_override(
                             [](WASMPointerF32 cptr, int count, float phase) -> sk_sp<SkPathEffect> {
                                 const float* intervals = reinterpret_cast<const float*>(cptr);
-                                return SkDashPathEffect::Make({intervals, count}, phase);
+                                return SkDashPathEffect::Make({intervals, SkToSizeT(count)}, phase);
                             }),
                     allow_raw_pointers())
             .class_function("MakeDiscrete", &SkDiscretePathEffect::Make)
@@ -2396,7 +2402,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            int count,
                                            bool close) -> void {
                           const SkPoint* pts = reinterpret_cast<const SkPoint*>(fPtr);
-                          self.addPolygon({pts, count}, close);
+                          self.addPolygon({pts, SkToSizeT(count)}, close);
                       }))
             .function("_addRect",
                       optional_override(

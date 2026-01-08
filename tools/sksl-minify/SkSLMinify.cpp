@@ -249,8 +249,8 @@ static ResultCode process_command(SkSpan<std::string> args) {
     bool isBlender = find_boolean_flag(&args, "--blender");
     bool isMeshFrag = find_boolean_flag(&args, "--meshfrag");
     bool isMeshVert = find_boolean_flag(&args, "--meshvert");
-    if (has_overlapping_flags({isFrag, isVert, isCompute, isShader, isColorFilter,
-                               isBlender, isMeshFrag, isMeshVert})) {
+    if (has_overlapping_flags({{isFrag, isVert, isCompute, isShader, isColorFilter,
+                               isBlender, isMeshFrag, isMeshVert}})) {
         show_usage();
         return ResultCode::kInputError;
     }
