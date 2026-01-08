@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "60f86b7d_5fd96b09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-08T18:06:58Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this is still in progress since it is obvious that std::span is still quite inferior and we aren\u0027t gaining anything from this change (at the API side there is no overhead difference when taking SkSpan and the user passes in a std::span and internally there is no benefit and a lot of awkwardness). At the very least because there is nothing gained then there is no hurry and the bazel toolchains should be updated first if they are an issue, and we can even wait for C++23 to get `begin` and `end` at least.\n\nIn fact if what we want is to have std::span and not SkSpan at the public API level then that is fine. I\u0027d be fine with a change that internalized SkSpan and the API is forced to take std::span and then we just let the (implicit) conversion to SkSpan just take place internally. But it doesn\u0027t make a lot of sense to convert to std::span internally at the moment because it is so deficient to the point that [Chromium technically bans its use](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++-features.md#span_banned).",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "91798f70_dbc41cb2",
         "filename": "include/private/base/SkSpan_impl.h",
         "patchSetId": 10
