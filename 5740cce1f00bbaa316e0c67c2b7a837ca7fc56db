@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "76787bd3_e1bb7e7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-08T19:56:21Z",
+      "side": 1,
+      "message": "What makes std::span inferior?\n\nOne thing that comes to mind is `begin`/`end` not being convertible to raw pointers.  That seems fairly easy to deal with (`std::to_address`).\n\nAnother minor friction point is \"stronger\" typing due to the extra extent param, which can cause some friction when interacting with other types templated on spans.  Also trivial to address by spelling out the dynamic extent version (maybe 3-4 places in the CL).\n\nThe yucky parts all seem related to older toolchain limitations.  Updating the toolchains makes sense, but I\u0027m ambivalent to the order since it\u0027s a larger effort than this change.  If you want to wait just to avoid using a macro and making SkPDFStructElem non-copyable, sure.\n\nThe remaining bits are mostly trivial syntactic updates, plus enforcing size_t discipline instead of hiding the conversion (which should prolly trickle further upstack).\n\nOn the plus side, we\u0027d get to drop functionality that duplicates modern STL, and we\u0027d also get fixed extents (super useful in places where we assume fixed-size spans without enforcing it at the type system level).\n\n\n\u003e we can even wait for C++23 to get `begin` and `end` at least.\n\nIs something coming to help raw pointer conversions, or you mean `cbegin`/`cend`?",
+      "parentUuid": "60f86b7d_5fd96b09",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "91798f70_dbc41cb2",
         "filename": "include/private/base/SkSpan_impl.h",
         "patchSetId": 10
