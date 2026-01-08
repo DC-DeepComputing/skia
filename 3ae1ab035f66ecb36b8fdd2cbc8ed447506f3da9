@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf8670aa_d761e4d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-08T20:24:02Z",
+      "side": 1,
+      "message": "Since this landed, we have been dropping all draws in our skp nanobench that use pngs.",
+      "revId": "3ae1ab035f66ecb36b8fdd2cbc8ed447506f3da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
