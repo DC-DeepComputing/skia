@@ -5,7 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkPngDecoder.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/utils/SkNullCanvas.h"
 #include "src/utils/SkJSONWriter.h"
@@ -47,7 +52,20 @@ int main(int argc, char** argv) {
         SkDebugf("Bad file: '%s'\n", argv[1]);
         return 2;
     }
-    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input);
+    SkDeserialProcs procs;
+    procs.fImageDataProc = [](sk_sp<SkData> data, std::optional<SkAlphaType>, void* ctx) -> sk_sp<SkImage> {
+        if (!SkPngDecoder::IsPng(data->data(), data->size())) {
+            SkDebugf("non-png image serialized in skp\n");
+            return nullptr;
+        }
+        auto codec = SkPngDecoder::Decode(data, nullptr);
+        if (!codec) {
+            SkDebugf("Invalid png data detected\n");
+            return nullptr;
+        }
+        return std::get<0>(codec->getImage());
+    };
+    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input, &procs);
     if (!pic) {
         SkDebugf("Bad skp: '%s'\n", argv[1]);
         return 3;
