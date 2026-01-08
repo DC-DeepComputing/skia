@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90194ec2_094ecad5",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-08T19:15:58Z",
+      "side": 1,
+      "message": "Oops! Fixed.",
+      "parentUuid": "c02a133c_88d373e1",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 27
+      },
+      "revId": "80fcb0d7e7b7e90416ac91bfaba37bfd3bb7eb77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88ed4670_f7335a20",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-08T16:06:31Z",
       "side": 1,
       "message": "Could we get all the AgtmImpl methods near each other, not interspersed with AgtmHelpers things?\n\nUpdate: looks like they might be deleted/moved later? If so, that\u0027s fine, keep them here.",
+      "range": {
+        "startLine": 279,
+        "startChar": 5,
+        "endLine": 279,
+        "endChar": 13
+      },
+      "revId": "80fcb0d7e7b7e90416ac91bfaba37bfd3bb7eb77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef128d13_992e9f77",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-08T19:15:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88ed4670_f7335a20",
       "range": {
         "startLine": 279,
         "startChar": 5,
