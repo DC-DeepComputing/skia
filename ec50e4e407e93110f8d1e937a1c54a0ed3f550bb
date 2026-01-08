@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a5386b7_15513d50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-08T19:22:48Z",
+      "side": 1,
+      "message": "This is the last small cleanup before moving this to be public.\n\nAfter I do that, I\u0027ll be removing Agtm/AgtmImpl and replacing it with a scheme for generating shaders on an skhdr::Metadata directly.",
+      "revId": "ec50e4e407e93110f8d1e937a1c54a0ed3f550bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
