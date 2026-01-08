@@ -16,10 +16,10 @@
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDevice.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Picture.h"
+#include "src/image/SkImage_Raster.h"
 
 #include <functional>
 
@@ -463,7 +463,7 @@ std::tuple<bool, size_t> TiledTextureUtils::DrawAsTiledImageRect(
                     // caching to work. Image subsets always make a copy of the pixels and lose
                     // the association with the original's SkPixelRef.
                     if (SkBitmap subsetBmp; bm.extractSubset(&subsetBmp, iTileR)) {
-                        return SkMakeImageFromRasterBitmap(subsetBmp, kNever_SkCopyPixelsMode);
+                        return SkImage_Raster::MakeFromBitmap(subsetBmp, SkCopyPixelsMode::kNever);
                     }
                     return sk_sp<SkImage>(nullptr);
                 };
