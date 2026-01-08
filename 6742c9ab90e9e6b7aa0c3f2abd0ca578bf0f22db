@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09ff624_fddb53da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-08T19:24:05Z",
+      "side": 1,
+      "message": "If you haven\u0027t, you may want to trigger an Android Canary roll to make sure this doesn\u0027t mess up Android builds. If all is good in Android-land, then this LGTM.",
+      "revId": "6742c9ab90e9e6b7aa0c3f2abd0ca578bf0f22db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
