@@ -33,6 +33,29 @@
       "message": "I\u0027m not crazy about using a macro, but the alternative involves a lot more noise: https://skia-review.googlesource.com/c/skia/+/1138096\n\nThat\u0027s mostly due to older Bazel toolchains, which blow up along these lines:\n\n```\nsrc/base/SkBezierCurves.cpp:175:25: error: alias template \u0027SkSpan\u0027 requires template arguments; argument deduction only allowed for class templates\n  175 |     SkSpan\u003cdouble\u003e ts \u003d SkSpan(roots,\n      |                         ^\n./include/private/base/SkSpan_impl.h:151:23: note: template is declared here\n  151 | template \u003ctypename T\u003e using SkSpan \u003d std::span\u003cT\u003e;\n      |                       ^\n1 error generated.\n```",
       "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e40a1a_2328fb30",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-08T17:30:45Z",
+      "side": 1,
+      "message": "Oh, this is another bazel toolchain wart.  Without, it chokes on incomplete fChildren type definition, while trying to generate an implicit copy ctor (?):\n\n```\nIn file included from src/pdf/SkPDFTag.cpp:8:\nIn file included from ./src/pdf/SkPDFTag.h:11:\nIn file included from ./include/core/SkSpan.h:12:\nIn file included from ./include/private/base/SkSpan_impl.h:146:\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/span:530:28: error: arithmetic on a pointer to an incomplete type \u0027SkPDFStructElem\u0027\n  530 |     return iterator(data() + size());\n      |                     ~~~~~~ ^\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/access.h:134:34: note: in instantiation of member function \u0027std::span\u003cSkPDFStructElem\u003e::end\u0027 requested here\n  134 |     return _LIBCPP_AUTO_CAST(__t.end());\n      |                                  ^\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/concepts.h:49:3: note: in instantiation of function template specialization \u0027std::ranges::__end::__fn::operator()\u003cconst std::span\u003cSkPDFStructElem\u003e \u0026\u003e\u0027 requested here\n   49 |   ranges::end(__t);\n      |   ^\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/concepts.h:49:3: note: in instantiation of requirement here\n   49 |   ranges::end(__t);\n      |   ^~~~~~~~~~~~~~~~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/concepts.h:47:17: note: while substituting template arguments into constraint expression here\n   47 | concept range \u003d requires(_Tp\u0026 __t) {\n      |                 ^~~~~~~~~~~~~~~~~~~~\n   48 |   ranges::begin(__t); // sometimes equality-preserving\n      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n   49 |   ranges::end(__t);\n      |   ~~~~~~~~~~~~~~~~~\n   50 | };\n      | ~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/concepts.h:53:23: note: while checking the satisfaction of concept \u0027range\u003cconst std::span\u003cSkPDFStructElem\u003e \u0026\u003e\u0027 requested here\n   53 | concept input_range \u003d range\u003c_Tp\u003e \u0026\u0026 input_iterator\u003citerator_t\u003c_Tp\u003e\u003e;\n      |                       ^~~~~~~~~~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/__ranges/concepts.h:53:23: note: (skipping 11 contexts in backtrace; use -ftemplate-backtrace-limit\u003d0 to see all)\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/span:442:13: note: while checking the satisfaction of concept \u0027__span_compatible_range\u003cconst std::span\u003cSkPDFStructElem\u003e \u0026, SkPDFStructElem\u003e\u0027 requested here\n  442 |   template \u003c__span_compatible_range\u003celement_type\u003e _Range\u003e\n      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/span:442:13: note: while substituting template arguments into constraint expression here\n  442 |   template \u003c__span_compatible_range\u003celement_type\u003e _Range\u003e\n      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/span:387:28: note: while checking constraint satisfaction for template \u0027span\u003cSkPDFStructElem\u003e\u0027 required here\n  387 | class _LIBCPP_TEMPLATE_VIS span\u003c_Tp, dynamic_extent\u003e {\n      |                            ^~~~\nexternal/+_repo_rules+clang_linux_amd64/include/c++/v1/span:387:28: note: in instantiation of function template specialization \u0027std::span\u003cSkPDFStructElem\u003e::span\u003cconst std::span\u003cSkPDFStructElem\u003e \u0026\u003e\u0027 requested here\nsrc/pdf/SkPDFTag.cpp:61:8: note: while declaring the implicit copy constructor for \u0027SkPDFStructElem\u0027\n   61 | struct SkPDFStructElem {\n      |        ^\nsrc/pdf/SkPDFTag.cpp:61:8: note: definition of \u0027SkPDFStructElem\u0027 is not complete until the closing \u0027}\u0027\n1 error generated.\nTarget //dm:dm failed to build\n```",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 64
+      },
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
