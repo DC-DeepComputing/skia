@@ -33,6 +33,24 @@
       "message": "I don\u0027t think we want to revert this as is - I\u0027m worried other things will break because we\u0027ve had clients *stop* using the guard",
       "revId": "3ae1ab035f66ecb36b8fdd2cbc8ed447506f3da9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da8ac72_b13b2d09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-08T21:52:03Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1138316 is the real fix",
+      "parentUuid": "211ec37f_f23c18da",
+      "revId": "3ae1ab035f66ecb36b8fdd2cbc8ed447506f3da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
