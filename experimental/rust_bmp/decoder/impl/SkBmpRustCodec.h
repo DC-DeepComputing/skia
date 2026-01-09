@@ -8,6 +8,7 @@
 #define SkBmpRustCodec_DEFINED
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "experimental/rust_bmp/ffi/FFI.rs.h"
@@ -49,10 +50,40 @@ private:
                        const Options& options,
                        int* rowsDecoded) override;
 
+    // Incremental decoding support
+    Result onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                   void* dst,
+                                   size_t dstRowBytes,
+                                   const Options&) override;
+
+    Result onIncrementalDecode(int* rowsDecoded) override;
+
     // Helper methods
     Result performFullDecode(const SkImageInfo& dstInfo, void* dst, size_t dstRowStride);
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
+
+    // Internal state for incremental decoding
+    struct DecodingState {
+        // Destination buffer information
+        struct DecodingDstInfo {
+            SkSpan<uint8_t> fDst;
+            size_t fDstRowStride;
+            size_t fDstRowSize;
+        } fDecodingDstInfo;
+
+        // Row tracking for subset decoding
+        int fFirstRow = 0;
+        int fLastRow = 0;
+
+        // Buffer for color transformation (when xformOnDecode() is true)
+        std::unique_ptr<uint32_t[]> fXformBuffer;
+    };
+
+    Result incrementalDecode(DecodingState& state, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& state, int* rowsDecoded);
+
+    std::optional<DecodingState> fIncrementalDecodingState;
 
     rust::Box<rust_bmp::Reader> fReader;
     std::unique_ptr<SkStream> fPrivStream;

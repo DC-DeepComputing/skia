@@ -97,6 +97,36 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
 
     rust::Box<rust_bmp::Reader> reader = resultOfReader->unwrap();
 
+    // Check if metadata has been loaded. In streaming mode, metadata might not
+    // be available yet if the stream doesn't have enough data.
+    if (!reader->metadata_loaded()) {
+        // Metadata not yet loaded - try to load it by attempting a row read
+        // This will trigger metadata loading in streaming mode
+        std::vector<uint8_t> dummyBuffer(4096); // Enough for most BMP rows
+        rust_bmp::DecodingResult metadataResult = reader->try_read_row(
+            rust::Slice<uint8_t>(dummyBuffer.data(), dummyBuffer.size()));
+
+        if (metadataResult == rust_bmp::DecodingResult::IncompleteInput) {
+            // Need more data for metadata
+            *result = kIncompleteInput;
+            return nullptr;
+        } else if (metadataResult != rust_bmp::DecodingResult::Success &&
+                   metadataResult != rust_bmp::DecodingResult::ParameterError) {
+            // Other error during metadata load (ParameterError is OK - buffer might be too small)
+            *result = MapDecodingResult(metadataResult);
+            return nullptr;
+        }
+
+        // Reset decode state after metadata probe
+        reader->reset_decode_state();
+
+        // Verify metadata is now loaded
+        if (!reader->metadata_loaded()) {
+            *result = kErrorInInput;
+            return nullptr;
+        }
+    }
+
     uint32_t width = reader->width();
     uint32_t height = reader->height();
     rust_bmp::BmpColor rustColor = reader->color();
@@ -107,16 +137,21 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
     SkEncodedInfo::Alpha alpha = static_cast<SkEncodedInfo::Alpha>(rustAlpha);
     constexpr int kBitsPerComponent = 8;
 
-    // TODO(crbug.com/452666425): Add ICC profile support for color-managed decoding. BMP files
-    // can embed ICC profiles (BITMAPV5HEADER format). Once rust/icc module
-    // is available, extract profile bytes in Rust FFI, parse with skcms to
-    // create sk_sp<SkData>, and pass to SkEncodedInfo::Make() below.
+    // Extract and parse ICC profile if present
+    std::unique_ptr<SkCodecs::ColorProfile> colorProfile;
+    rust::Vec<uint8_t> profileData = reader->icc_profile();
+    if (!profileData.empty()) {
+        sk_sp<SkData> iccData = SkData::MakeWithCopy(profileData.data(), profileData.size());
+        colorProfile = SkCodecs::ColorProfile::MakeICCProfile(std::move(iccData));
+    }
+
     SkEncodedInfo encodedInfo = SkEncodedInfo::Make(
         width,
         height,
         color,
         alpha,
-        kBitsPerComponent
+        kBitsPerComponent,
+        std::move(colorProfile)
     );
 
     // Pre-calculate srcRowBytes (width * bytesPerPixel) and check for overflow.
@@ -156,6 +191,9 @@ SkBmpRustCodec::SkBmpRustCodec(SkEncodedInfo&& encodedInfo,
 SkBmpRustCodec::~SkBmpRustCodec() = default;
 
 bool SkBmpRustCodec::onRewind() {
+    // Clear any incremental decoding state
+    fIncrementalDecodingState.reset();
+
     if (!fPrivStream->rewind()) {
         return false;
     }
@@ -265,4 +303,127 @@ SkCodec::Result SkBmpRustCodec::performFullDecode(const SkImageInfo& dstInfo,
     }
 
     return kSuccess;
+}
+
+SkCodec::Result SkBmpRustCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                                        void* dst,
+                                                        size_t dstRowBytes,
+                                                        const Options& options) {
+    // Validate and initialize swizzler
+    Result result = this->initializeSwizzler(dstInfo, options);
+    if (result != kSuccess) {
+        return result;
+    }
+
+    // Reset the reader to start decoding from the beginning
+    fReader->reset_decode_state();
+
+    // Initialize decoding state
+    DecodingState state;
+
+    // Set up destination buffer information
+    SkSafeMath safe;
+    size_t dstRowSize = safe.mul(safe.castTo<size_t>(dstInfo.width()),
+                                 safe.castTo<size_t>(dstInfo.bytesPerPixel()));
+    size_t totalDstSize = safe.mul(safe.castTo<size_t>(dstInfo.height()), dstRowBytes);
+    if (!safe.ok()) {
+        return kInternalError;
+    }
+
+    state.fDecodingDstInfo.fDst = SkSpan(static_cast<uint8_t*>(dst), totalDstSize);
+    state.fDecodingDstInfo.fDstRowStride = dstRowBytes;
+    state.fDecodingDstInfo.fDstRowSize = dstRowSize;
+
+    // Handle subset decoding
+    if (options.fSubset) {
+        state.fFirstRow = options.fSubset->top();
+        state.fLastRow = options.fSubset->bottom() - 1;
+    } else {
+        state.fFirstRow = 0;
+        state.fLastRow = dstInfo.height() - 1;
+    }
+
+    // Allocate XForm buffer if color transformation is needed
+    if (this->xformOnDecode()) {
+        state.fXformBuffer.reset(new uint32_t[dstInfo.width()]);
+    }
+
+    // Store state for subsequent incremental decode calls
+    fIncrementalDecodingState = std::move(state);
+
+    return kSuccess;
+}
+
+SkCodec::Result SkBmpRustCodec::onIncrementalDecode(int* rowsDecoded) {
+    if (!fIncrementalDecodingState.has_value()) {
+        return kInvalidParameters;
+    }
+
+    Result result;
+    if (this->xformOnDecode()) {
+        result = this->incrementalDecodeXForm(*fIncrementalDecodingState, rowsDecoded);
+    } else {
+        result = this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
+    }
+
+    // Clean up state when decoding completes or encounters non-recoverable error
+    if (result == kSuccess || result != kIncompleteInput) {
+        fIncrementalDecodingState.reset();
+    }
+
+    return result;
+}
+
+SkCodec::Result SkBmpRustCodec::incrementalDecode(DecodingState& state, int* rowsDecodedPtr) {
+    int rowsDecoded = 0;
+    DecodingState::DecodingDstInfo& dst = state.fDecodingDstInfo;
+
+    // Allocate temporary buffer for one source row
+    std::vector<uint8_t> srcRowBuffer(fSrcRowBytes);
+
+    // Decode rows until we run out of data or reach the end
+    while (fReader->has_more_rows()) {
+        uint32_t currentRow = fReader->current_row_index();
+
+        // Stop if we've decoded all rows in our subset
+        if (static_cast<int>(currentRow) > state.fLastRow) {
+            break;
+        }
+
+        // Try to read the next row
+        rust::Slice<uint8_t> srcRowSlice(srcRowBuffer.data(), fSrcRowBytes);
+        rust_bmp::DecodingResult rustResult = fReader->try_read_row(srcRowSlice);
+
+        if (rustResult == rust_bmp::DecodingResult::IncompleteInput) {
+            // Not enough data available yet - return and let caller retry
+            if (rowsDecodedPtr) {
+                *rowsDecodedPtr = rowsDecoded;
+            }
+            return kIncompleteInput;
+        }
+
+        if (rustResult != rust_bmp::DecodingResult::Success) {
+            return MapDecodingResult(rustResult);
+        }
+
+        // Only swizzle rows within our subset range
+        if (static_cast<int>(currentRow) >= state.fFirstRow) {
+            int dstRowIndex = static_cast<int>(currentRow) - state.fFirstRow;
+            void* dstRow = dst.fDst.data() + (dstRowIndex * dst.fDstRowStride);
+            this->swizzleRow(srcRowBuffer.data(), dstRow);
+            rowsDecoded++;
+        }
+    }
+
+    if (rowsDecodedPtr) {
+        *rowsDecodedPtr = rowsDecoded;
+    }
+
+    return kSuccess;
+}
+
+SkCodec::Result SkBmpRustCodec::incrementalDecodeXForm(DecodingState& state,
+                                                       int* rowsDecodedPtr) {
+    // For BMP, we handle XForm in swizzleRow(), so just use the regular incremental decode
+    return this->incrementalDecode(state, rowsDecodedPtr);
 }
