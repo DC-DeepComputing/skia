@@ -142,8 +142,12 @@ crate.spec(
 crate.spec(
     default_features = False,
     features = ["bmp"],
+    # Temporarily point to PR branch including new streaming API in BMP decoder
+    # This should be replaced before completing this change by main revision after
+    # change is merged or image crate official release including the change.
+    git = "https://github.com/telecos/image.git",
+    rev = "f876562c5c2b6bfa0f0291530a4abfeeb70ae515",
     package = "image",
-    version = "=0.25.9",
 )
 crate.spec(
     package = "moxcms",
