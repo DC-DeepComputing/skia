@@ -679,12 +679,12 @@ Draw::RectType Draw::ComputeRectType(const SkRect& rect,
     return RectType::kPath;
 }
 
-static SkSpan<const SkPoint> rect_points(const SkRect& r) {
+static std::span<const SkPoint> rect_points(const SkRect& r) {
     return {reinterpret_cast<const SkPoint*>(&r), 2};
 }
 
 
-static SkSpan<SkPoint> rect_points(SkRect& r) { return {reinterpret_cast<SkPoint*>(&r), 2}; }
+static std::span<SkPoint> rect_points(SkRect& r) { return {reinterpret_cast<SkPoint*>(&r), 2}; }
 
 static void draw_rect_as_path(const Draw& orig,
                               const SkRect& prePaintRect,

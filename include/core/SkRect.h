@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <cstring>
 #include <optional>
+#include <span>
 
 struct SkRect;
 class SkString;
@@ -850,7 +851,7 @@ struct SK_API SkRect {
 
     // Same as toQuad(), but copies the 4 points into the specified storage
     // which must be at least a size of 4.
-    void copyToQuad(SkSpan<SkPoint> pts, SkPathDirection dir = SkPathDirection::kCW) const {
+    void copyToQuad(std::span<SkPoint> pts, SkPathDirection dir = SkPathDirection::kCW) const {
         SkASSERT(pts.size() >= 4);
         pts[0] = this->TL();
         pts[2] = this->BR();
@@ -909,9 +910,9 @@ struct SK_API SkRect {
      * If the span is empty, returns the empty-rect {0, 0, 0, 0.
      * If the span contains non-finite values (inf or nan), returns {}
      */
-    static std::optional<SkRect> Bounds(SkSpan<const SkPoint> pts);
+    static std::optional<SkRect> Bounds(std::span<const SkPoint> pts);
 
-    static SkRect BoundsOrEmpty(SkSpan<const SkPoint> pts) {
+    static SkRect BoundsOrEmpty(std::span<const SkPoint> pts) {
         if (auto bounds = Bounds(pts)) {
             return bounds.value();
         } else {
@@ -927,7 +928,7 @@ struct SK_API SkRect {
 
         @param pts    SkPoint span
     */
-    void setBounds(SkSpan<const SkPoint> pts) {
+    void setBounds(std::span<const SkPoint> pts) {
         (void)this->setBoundsCheck(pts);
     }
 
@@ -939,7 +940,7 @@ struct SK_API SkRect {
      * @param pts    SkPoint span
      * example: https://fiddle.skia.org/c/@Rect_setBoundsCheck
      */
-    bool setBoundsCheck(SkSpan<const SkPoint> pts);
+    bool setBoundsCheck(std::span<const SkPoint> pts);
 
     /** Sets to bounds of the span of points.
      *
@@ -949,7 +950,7 @@ struct SK_API SkRect {
      * @param pts    SkPoint span
      * example: https://fiddle.skia.org/c/@Rect_setBoundsNoCheck
      */
-    void setBoundsNoCheck(SkSpan<const SkPoint> pts);
+    void setBoundsNoCheck(std::span<const SkPoint> pts);
 
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void setBounds(const SkPoint pts[], int count) {
