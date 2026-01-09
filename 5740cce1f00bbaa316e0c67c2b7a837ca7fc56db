@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1455ce4_1b1ed825",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-09T15:23:56Z",
+      "side": 1,
+      "message": "\u003e Using `std::to_address` is not \"easy\" and would almost always be the wrong thing to do anyway (just iterate).\n\nOf course if we don\u0027t actually need raw pointers we shouldn\u0027t ask for them.  If we do, there\u0027s `to_address`.\n\n\u003e This is only accidentally \"enforcing\" size_t discipline because in C++20 std::span still doesn\u0027t have a constructor taking an initializer list\n\nI don\u0027t see what initializer lists have to do with that.  `std::span` doesn\u0027t offer a signed-integral-size constructor, like skspan, hence all the SkToSizeT casts for count args.\n\n\u003e There is no benefit to any of this change\n\nCode deletion and fixed extent support.\n\nThe define is transitional, and can be removed after client migration.\n\nThe only sticky issue seems to be std::span\u0027s requirement for a complete type.  Since STL is unlikely to change its mind, is that *the* thing to keep us from ever migrating?  It comes up exactly once in the code base, and it takes a whole lot of 10 lines of code to use something [other than a span](https://skia-review.googlesource.com/c/skia/+/1136537/11/src/pdf/SkPDFTag.cpp).\n\nIf STL covers the vast majority of our current uses and it only takes minor adjustments to accommodate the rest, I don\u0027t understand your claim that it doesn\u0027t do what we want.  SkSpan is more polished and has better ergonomics, but it also takes work to maintain and doesn\u0027t have full feature parity.  What are the critical features that, if added to std::span, would make it ok to switch?",
+      "parentUuid": "d9282dc6_fdf4f79b",
+      "revId": "5740cce1f00bbaa316e0c67c2b7a837ca7fc56db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "91798f70_dbc41cb2",
