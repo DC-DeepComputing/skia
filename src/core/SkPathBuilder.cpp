@@ -107,7 +107,7 @@ void SkPathBuilder::incReserve(int extraPtCount, int extraVbCount, int extraCnCo
 std::tuple<SkPoint*, SkScalar*> SkPathBuilder::growForVerbsInPath(const SkPath& path) {
     fSegmentMask |= path.getSegmentMasks();
 
-    const SkSpan<const SkPathVerb> verbs = path.verbs();
+    const std::span<const SkPathVerb> verbs = path.verbs();
     if (!verbs.empty()) {
          // TODO(borenet): If the current builder is empty or JustMoves, we can use the type of the
          // path. If the path is empty, we can keep the current type.
@@ -668,7 +668,7 @@ SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw) {
         }
     }
 
-    auto has_trailing_move = [](SkSpan<const SkPathVerb> vbs) {
+    auto has_trailing_move = [](std::span<const SkPathVerb> vbs) {
         return vbs.size() > 0 && vbs.back() == SkPathVerb::kMove;
     };
 
@@ -742,7 +742,7 @@ SkPathBuilder& SkPathBuilder::addCircle(SkPoint center, float r, SkPathDirection
     return *this;
 }
 
-SkPathBuilder& SkPathBuilder::addPolygon(SkSpan<const SkPoint> pts, bool isClosed) {
+SkPathBuilder& SkPathBuilder::addPolygon(std::span<const SkPoint> pts, bool isClosed) {
     if (pts.empty()) {
         return *this;
     }
@@ -755,7 +755,7 @@ SkPathBuilder& SkPathBuilder::addPolygon(SkSpan<const SkPoint> pts, bool isClose
     return *this;
 }
 
-SkPathBuilder& SkPathBuilder::polylineTo(SkSpan<const SkPoint> pts) {
+SkPathBuilder& SkPathBuilder::polylineTo(std::span<const SkPoint> pts) {
     if (!pts.empty()) {
         this->ensureMove();
 
