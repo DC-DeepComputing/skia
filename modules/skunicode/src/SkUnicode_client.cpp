@@ -49,15 +49,15 @@ public:
              std::vector<SkUnicode::Position> graphemeBreaks,
              std::vector<SkUnicode::LineBreakBefore> lineBreaks)
             : fText8(text)
-            , fText16(SkSpan<const char16_t>(nullptr, 0))
+            , fText16(SkSpan<const char16_t>())
             , fWords(std::move(words))
             , fGraphemeBreaks(std::move(graphemeBreaks))
             , fLineBreaks(std::move(lineBreaks)) {
         }
 
         void reset() {
-            fText8 = SkSpan<const char>(nullptr, 0);
-            fText16 = SkSpan<const char16_t>(nullptr, 0);
+            fText8 = SkSpan<const char>();
+            fText16 = SkSpan<const char16_t>();
             fGraphemeBreaks.clear();
             fLineBreaks.clear();
         }

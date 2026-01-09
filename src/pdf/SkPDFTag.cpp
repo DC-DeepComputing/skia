@@ -72,7 +72,14 @@ struct SkPDFStructElem {
     }
 
     SkPDFStructElem* fParent = nullptr;
-    SkSpan<SkPDFStructElem> fChildren;
+    struct {
+        // Can't use an actual span because it requires a complete type.
+        SkPDFStructElem* fPtr;
+        size_t           fSize;
+
+        SkPDFStructElem* begin() const { return fPtr; }
+        SkPDFStructElem* end() const { return fPtr + fSize; }
+    } fChildren;
     struct MarkedContentInfo {
         Location fLocation;
         int fMcid;
@@ -259,8 +266,9 @@ void SkPDFStructTree::move(SkPDF::StructureElementNode& node,
     structElem->fLang = std::move(node.fLang);
 
     size_t childCount = node.fChildVector.size();
-    structElem->fChildren = SkSpan(fArena.makeArray<SkPDFStructElem>(childCount), childCount);
-    for (auto&& [nodeChild, elemChild] : SkMakeZip(node.fChildVector, structElem->fChildren)) {
+    structElem->fChildren = {fArena.makeArray<SkPDFStructElem>(childCount), childCount};
+    for (auto&& [nodeChild, elemChild] : SkMakeZip(node.fChildVector,
+                                                   SkSpan(structElem->fChildren))) {
         elemChild.fParent = structElem;
         this->move(*nodeChild, &elemChild, wantTitle);
     }
