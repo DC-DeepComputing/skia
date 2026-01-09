@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "344bcd54_04019ff1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-09T13:46:23Z",
+      "side": 1,
+      "message": "After this one, I can go write the HDR metadata serialization on the Chrome side.",
+      "revId": "4be9d9f35596d64618efd59065b2da1b5df7f408",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
