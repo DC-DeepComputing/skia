@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkHdrMetadata.h"
+#include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
 namespace skhdr {
@@ -215,6 +217,83 @@ bool Metadata::operator==(const Metadata& other) const {
     return fContentLightLevelInformation == other.fContentLightLevelInformation &&
            fMasteringDisplayColorVolume == other.fMasteringDisplayColorVolume &&
            SkData::Equals(fAgtm.get(), other.fAgtm.get());
+}
+
+sk_sp<SkColorFilter> Metadata::makeToneMapColorFilter(
+        float targetedHdrHeadroom, const SkColorSpace* inputColorSpace) const {
+    // Extract the value of HDR reference white from `inputColorSpace`.
+    bool inputIsHlgOrPq = false;
+    float inputHdrReferenceWhite = 0.f;
+    if (inputColorSpace) {
+        skcms_TransferFunction trfn;
+        inputColorSpace->transferFn(&trfn);
+        switch (skcms_TransferFunction_getType(&trfn)) {
+            case skcms_TFType_PQ:
+            case skcms_TFType_HLG:
+                inputIsHlgOrPq = true;
+                inputHdrReferenceWhite = trfn.a;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Parse the provided AGTM, if there is any.
+    AdaptiveGlobalToneMap agtm;
+    auto& hatm = agtm.fHeadroomAdaptiveToneMap;
+    bool didParseAgtm = false;
+    if (fAgtm) {
+        didParseAgtm = agtm.parse(fAgtm.get());
+    }
+
+    // If the content isn't HLG or PQ, then early-out, since HDR reference white doesn't
+    // matter and the default tone mapping is to not tone map.
+    if (!inputIsHlgOrPq) {
+        if (!didParseAgtm || !hatm.has_value()) {
+            return nullptr;
+        }
+        return AgtmHelpers::MakeColorFilter(hatm.value(), targetedHdrHeadroom, 1.f);
+    }
+
+    // If no AGTM was specified, populate the HDR reference white value from `inputColorSpace`.
+    if (!didParseAgtm) {
+        agtm.fHdrReferenceWhite = inputHdrReferenceWhite;
+    }
+
+    // If there is no tone mapping specified, then populate it with RWTMO now.
+    if (!hatm.has_value()) {
+        hatm.emplace();
+
+        // Compute a guess at the peak luminance of the input image.
+        const float inputPeakLuminance = [&]() {
+            // Prefer the CLLI peak, since it's based on the content of the image.
+            if (fContentLightLevelInformation.has_value() &&
+                fContentLightLevelInformation->fMaxCLL > 0.f) {
+                return fContentLightLevelInformation->fMaxCLL;
+            }
+            // The MDCV peak is an upper bound on what could be seen during mastering.
+            if (fMasteringDisplayColorVolume.has_value() &&
+                fMasteringDisplayColorVolume->fMaximumDisplayMasteringLuminance > 0.f) {
+                return fMasteringDisplayColorVolume->fMaximumDisplayMasteringLuminance;
+            }
+            // Default to the ITU-R BT.2100 reference display peak.
+            return 1000.f;
+        }();
+
+        // Compute the baseline HDR headroom as the ratio of the peak luminance to the
+        // white luminance.
+        hatm->fBaselineHdrHeadroom = std::log2(inputPeakLuminance / inputHdrReferenceWhite);
+        AgtmHelpers::PopulateUsingRwtmo(hatm.value());
+    }
+
+    // Compute the scale factor to reinterpret the input as having the HDR reference white value
+    // in the AGTM metadata.
+    float scaleFactor = 1.f;
+    if (inputIsHlgOrPq) {
+        scaleFactor = inputHdrReferenceWhite / agtm.fHdrReferenceWhite;
+    }
+
+    return AgtmHelpers::MakeColorFilter(hatm.value(), targetedHdrHeadroom, scaleFactor);
 }
 
 }  // namespace skhdr

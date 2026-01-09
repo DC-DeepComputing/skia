@@ -131,7 +131,7 @@ struct SK_API MasteringDisplayColorVolume {
  * https://github.com/SMPTE/st2094-50
  * WARNING: This specification is still a DRAFT and is subject to change before publication.
  */
-struct AdaptiveGlobalToneMap {
+struct SK_API AdaptiveGlobalToneMap {
     // A GainCurve metadata group.
     struct GainCurve {
         // Structure holding one entry of the GainCurveControlPointX, GainCurveControlPointY, and
@@ -341,6 +341,19 @@ class SK_API Metadata {
      * Return a human-readable description.
      */
     SkString toString() const;
+
+    /**
+     * Return the SkColorFilter to tone map to the specified targeted HDR headroom.
+     *
+     * The `inputColorSpace` parameter is the color space of the input image that will be
+     * used with the image. If it is PQ or HLG, then the color filter will effectively
+     * reinterpret the image as having the HDR reference white parameter indicated in the
+     * metadata.
+     *
+     * If `inputColorSpace` is PQ or HLG, then a default tone mapping will be provided.
+     */
+    sk_sp<SkColorFilter> makeToneMapColorFilter(float targetedHdrHeadroom,
+                                                const SkColorSpace* inputColorSpace) const;
 
     bool operator==(const Metadata& other) const;
     bool operator!=(const Metadata& other) const {

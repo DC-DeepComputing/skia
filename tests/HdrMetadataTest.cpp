@@ -511,7 +511,6 @@ DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
     auto& hatm = agtm.fMetadata.fHeadroomAdaptiveToneMap.emplace();
     hatm.fBaselineHdrHeadroom = 2;
     skhdr::AgtmHelpers::PopulateUsingRwtmo(hatm);
-    agtm.populateGainCurvesXYM();
 
     // We will use the following input pixel values in gain application color space. These include
     // monochrome and non-monochrome values, as well as values that are less than white (less than
@@ -596,7 +595,9 @@ DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
         }
 
         // Apply the tone mapping gain in-place on outputTestColors.
-        agtm.applyGain(SkSpan<SkColor4f>(outputTestColors, kNumTestColors), targetedHdrHeadroom);
+        skhdr::AgtmHelpers::ApplyGain(hatm,
+                                      SkSpan<SkColor4f>(outputTestColors, kNumTestColors),
+                                      targetedHdrHeadroom);
 
         // Verify the result matches expectations.
         for (size_t i = 0; i < kNumTestColors; ++i) {
@@ -619,7 +620,7 @@ DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
         const auto info = SkImageInfo::Make(
             kNumTestColors, 1,
             kRGBA_F32_SkColorType, kPremul_SkAlphaType,
-            agtm.getGainApplicationSpace());
+            skhdr::AgtmHelpers::GetGainApplicationSpace(hatm));
 
         // Create an SkImage that references the inputTestColors array directly.
         sk_sp<SkImage> inputImage = SkImages::RasterFromData(
