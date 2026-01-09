@@ -15,13 +15,14 @@
 #include <array>
 #include <cstddef>
 #include <optional>
+#include <span>
 
 class SK_API SkPathIter {
 public:
     struct Rec {
-        SkSpan<const SkPoint> fPoints;
-        float                 fConicWeight;
-        SkPathVerb            fVerb;
+        std::span<const SkPoint> fPoints;
+        float                    fConicWeight;
+        SkPathVerb               fVerb;
 
         float conicWeight() const {
             SkASSERT(fVerb == SkPathVerb::kConic);
@@ -29,7 +30,8 @@ public:
         }
     };
 
-    SkPathIter(SkSpan<const SkPoint> pts, SkSpan<const SkPathVerb> vbs, SkSpan<const float> cns)
+    SkPathIter(std::span<const SkPoint> pts, std::span<const SkPathVerb> vbs,
+               std::span<const float> cns)
         : pIndex(0), vIndex(0), cIndex(0)
         , fPoints(pts), fVerbs(vbs), fConics(cns)
     {
@@ -59,32 +61,32 @@ public:
     }
 
 private:
-    size_t                   pIndex, vIndex, cIndex;
-    SkSpan<const SkPoint>    fPoints;
-    SkSpan<const SkPathVerb> fVerbs;
-    SkSpan<const float>      fConics;
-    std::array<SkPoint, 2>   fClosePointStorage;
+    size_t                      pIndex, vIndex, cIndex;
+    std::span<const SkPoint>    fPoints;
+    std::span<const SkPathVerb> fVerbs;
+    std::span<const float>      fConics;
+    std::array<SkPoint, 2>      fClosePointStorage;
 };
 
 class SkPathContourIter {
 public:
     struct Rec {
-        SkSpan<const SkPoint>    fPoints;
-        SkSpan<const SkPathVerb> fVerbs;
-        SkSpan<const float>      fConics;
+        std::span<const SkPoint>    fPoints;
+        std::span<const SkPathVerb> fVerbs;
+        std::span<const float>      fConics;
     };
 
-    SkPathContourIter(SkSpan<const SkPoint> pts, SkSpan<const SkPathVerb> vbs,
-                      SkSpan<const float> cns)
+    SkPathContourIter(std::span<const SkPoint> pts, std::span<const SkPathVerb> vbs,
+                      std::span<const float> cns)
         : fPoints(pts), fVerbs(vbs), fConics(cns)
     {}
 
     std::optional<Rec> next();
 
 private:
-    SkSpan<const SkPoint>    fPoints;
-    SkSpan<const SkPathVerb> fVerbs;
-    SkSpan<const float>      fConics;
+    std::span<const SkPoint>    fPoints;
+    std::span<const SkPathVerb> fVerbs;
+    std::span<const float>      fConics;
 };
 
 #endif

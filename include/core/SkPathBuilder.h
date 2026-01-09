@@ -23,6 +23,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <tuple>
 
 class SkPathData;
@@ -385,7 +386,7 @@ public:
         @param pts    span of SkPoint
         @return reference to SkPathBuilder.
     */
-    SkPathBuilder& polylineTo(SkSpan<const SkPoint> pts);
+    SkPathBuilder& polylineTo(std::span<const SkPoint> pts);
 
     // Relative versions of segments, relative to the previous position.
 
@@ -823,7 +824,7 @@ public:
         @param close  true to add line connecting contour end and start
         @return       reference to SkPath
     */
-    SkPathBuilder& addPolygon(SkSpan<const SkPoint> pts, bool close);
+    SkPathBuilder& addPolygon(std::span<const SkPoint> pts, bool close);
 
     /** Appends src to SkPathBuilder, offset by (dx, dy).
 
@@ -986,13 +987,13 @@ public:
     }
 #endif
 
-    SkSpan<const SkPoint> points() const {
+    std::span<const SkPoint> points() const {
         return fPts;
     }
-    SkSpan<const SkPathVerb> verbs() const {
+    std::span<const SkPathVerb> verbs() const {
         return fVerbs;
     }
-    SkSpan<const float> conicWeights() const {
+    std::span<const float> conicWeights() const {
         return fConicWeights;
     }
 
