@@ -33,6 +33,24 @@
       "message": "With the goal to remove createBackendTexture entirely, I think we should avoid landing this. I don\u0027t think it\u0027ll take too much time to move Chrome off of that API.",
       "revId": "c389a37016c2475187f2548938d720cb5f7af289",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "622f14fe_912000c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3878704
+      },
+      "writtenOn": "2026-01-09T09:44:54Z",
+      "side": 1,
+      "message": "Thanks for your information!\n\nI found an issue https://issues.chromium.org/issues/473854528, is that tracking the progression of such change? Currently I don\u0027t have access to the [mentioned chat thread](https://chat.google.com/room/AAAA2HlH94I/wGxfbNC1Z6s/wGxfbNC1Z6s?cls\u003d10), is it possible to grant me the access? How long was this change expected to take?\n\nThanks!",
+      "parentUuid": "6311e3de_2171d816",
+      "revId": "c389a37016c2475187f2548938d720cb5f7af289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
