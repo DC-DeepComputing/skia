@@ -9,7 +9,6 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRRect.h"
-#include "include/core/SkSpan.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
@@ -147,15 +146,15 @@ bool SkPath::conservativelyContainsRect(const SkRect& rect) const {
 }
 
 bool SkPath::isLastContourClosed() const {
-    SkSpan<const SkPathVerb> verbs = this->verbs();
+    std::span<const SkPathVerb> verbs = this->verbs();
     return !verbs.empty() && verbs.back() == SkPathVerb::kClose;
 }
 
 bool SkPath::isLine(SkPoint line[2]) const {
-    SkSpan<const SkPathVerb> verbs = this->verbs();
+    std::span<const SkPathVerb> verbs = this->verbs();
     if (verbs.size() == 2 && verbs[1] == SkPathVerb::kLine) {
         SkASSERT(verbs[0] == SkPathVerb::kMove);
-        SkSpan<const SkPoint> pts = this->points();
+        std::span<const SkPoint> pts = this->points();
         SkASSERT(pts.size() == 2);
         if (line) {
             line[0] = pts[0];
@@ -177,8 +176,8 @@ bool SkPath::isConvex() const {
 
 bool SkPath::isRect(SkRect* rect, bool* isClosed, SkPathDirection* direction) const {
     SkDEBUGCODE(this->validate();)
-    SkSpan<const SkPoint> pts = this->points();
-    SkSpan<const SkPathVerb> vbs = this->verbs();
+    std::span<const SkPoint> pts = this->points();
+    std::span<const SkPathVerb> vbs = this->verbs();
     if (auto rc = SkPathPriv::IsRectContour(pts, vbs, this->getSegmentMasks(), false)) {
         if (rect) {
             *rect = rc->fRect;
@@ -215,9 +214,9 @@ bool SkPath::isRRect(SkRRect* rrect) const {
 }
 
 #ifdef SK_LEGACY_PATH_ACCESSORS
-size_t SkPath::getPoints(SkSpan<SkPoint> dst) const {
+size_t SkPath::getPoints(std::span<SkPoint> dst) const {
     SkDEBUGCODE(this->validate();)
-    SkSpan<const SkPoint> src = this->points();
+    std::span<const SkPoint> src = this->points();
 
     const size_t n = std::min(dst.size(), src.size());
     sk_careful_memcpy(dst.data(), src.data(), n * sizeof(SkPoint));
@@ -225,16 +224,16 @@ size_t SkPath::getPoints(SkSpan<SkPoint> dst) const {
 }
 
 SkPoint SkPath::getPoint(int index) const {
-    SkSpan<const SkPoint> pts = this->points();
-    if ((unsigned)index < (unsigned)pts.size()) {
+    std::span<const SkPoint> pts = this->points();
+    if ((unsigned)index < pts.size()) {
         return pts[index];
     }
     return SkPoint::Make(0, 0);
 }
 
-size_t SkPath::getVerbs(SkSpan<uint8_t> dst) const {
+size_t SkPath::getVerbs(std::span<uint8_t> dst) const {
     SkDEBUGCODE(this->validate();)
-    SkSpan<const SkPathVerb> src = this->verbs();
+    std::span<const SkPathVerb> src = this->verbs();
 
     const size_t n = std::min(dst.size(), src.size());
     sk_careful_memcpy(dst.data(), src.data(), n);
@@ -251,7 +250,7 @@ size_t SkPath::approximateBytesUsed() const {
 
 std::optional<SkPoint> SkPath::getLastPt() const {
     SkDEBUGCODE(this->validate();)
-    SkSpan<const SkPoint> pts = this->points();
+    std::span<const SkPoint> pts = this->points();
     if (!pts.empty()) {
         return pts.back();
     }

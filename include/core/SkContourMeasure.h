@@ -18,6 +18,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <span>
 
 class SkMatrix;
 class SkPath;
@@ -68,9 +69,9 @@ public:
     /** Measurement data for individual verbs.
      */
     struct VerbMeasure {
-        SkScalar              fDistance; // Cumulative distance along the current contour.
-        SkPathVerb            fVerb;     // Verb type.
-        SkSpan<const SkPoint> fPts;      // Verb points.
+        SkScalar                 fDistance; // Cumulative distance along the current contour.
+        SkPathVerb               fVerb;     // Verb type.
+        std::span<const SkPoint> fPts;      // Verb points.
     };
 
 private:
@@ -108,11 +109,11 @@ public:
     private:
         friend class SkContourMeasure;
 
-        ForwardVerbIterator(SkSpan<const Segment> segs, SkSpan<const SkPoint> pts)
+        ForwardVerbIterator(std::span<const Segment> segs, std::span<const SkPoint> pts)
             : fSegments(LastSegForCurrentVerb(segs))
             , fPts(pts) {}
 
-        static SkSpan<const Segment> LastSegForCurrentVerb(const SkSpan<const Segment>& segs) {
+        static std::span<const Segment> LastSegForCurrentVerb(std::span<const Segment> segs) {
             size_t i = 1;
             while (i < segs.size() && segs[0].fPtIndex == segs[i].fPtIndex) {
                 ++i;
@@ -124,17 +125,17 @@ public:
         // Remaining segments for forward iteration. The first segment in the span is
         // adjusted to always point to the last segment of the current verb, such that its distance
         // corresponds to the verb distance.
-        SkSpan<const Segment> fSegments;
+        std::span<const Segment> fSegments;
 
         // All path points (indexed in segments).
-        SkSpan<const SkPoint> fPts;
+        std::span<const SkPoint> fPts;
     };
 
     ForwardVerbIterator begin() const {
         return ForwardVerbIterator(fSegments, fPts);
     }
     ForwardVerbIterator end() const {
-        return ForwardVerbIterator(SkSpan(fSegments.end(), 0), fPts);
+        return ForwardVerbIterator(std::span(fSegments.end(), 0), fPts);
     }
 
 private:
