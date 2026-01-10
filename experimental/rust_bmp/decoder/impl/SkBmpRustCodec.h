@@ -8,6 +8,7 @@
 #define SkBmpRustCodec_DEFINED
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "experimental/rust_bmp/ffi/FFI.rs.h"
@@ -35,11 +36,16 @@ protected:
     SkBmpRustCodec(SkEncodedInfo&&,
                    std::unique_ptr<SkStream>,
                    rust::Box<rust_bmp::Reader>,
-                   size_t srcRowBytes);
+                   size_t srcRowBytes,
+                   bool isBottomUp);
 
     SkEncodedImageFormat onGetEncodedFormat() const override { return SkEncodedImageFormat::kBMP; }
 
     bool onRewind() override;
+
+    bool onGetValidSubset(SkIRect* desiredSubset) const override;
+
+    bool onDimensionsSupported(const SkISize& requested) override;
 
 private:
     // Codec implementation
@@ -49,10 +55,42 @@ private:
                        const Options& options,
                        int* rowsDecoded) override;
 
+    // Incremental decoding support
+    Result onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                   void* dst,
+                                   size_t dstRowBytes,
+                                   const Options&) override;
+
+    Result onIncrementalDecode(int* rowsDecoded) override;
+
     // Helper methods
     Result performFullDecode(const SkImageInfo& dstInfo, void* dst, size_t dstRowStride);
+    Result performSubsetDecode(const SkImageInfo& dstInfo, void* dst, size_t dstRowStride,
+                               const Options& options);
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
+
+    // Internal state for incremental decoding
+    struct DecodingState {
+        // Destination buffer information
+        struct DecodingDstInfo {
+            SkSpan<uint8_t> fDst;
+            size_t fDstRowStride;
+            size_t fDstRowSize;
+        } fDecodingDstInfo;
+
+        // Row tracking for subset decoding
+        int fFirstRow = 0;
+        int fLastRow = 0;
+
+        // Buffer for color transformation (when xformOnDecode() is true)
+        std::unique_ptr<uint32_t[]> fXformBuffer;
+    };
+
+    Result incrementalDecode(DecodingState& state, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& state, int* rowsDecoded);
+
+    std::optional<DecodingState> fIncrementalDecodingState;
 
     rust::Box<rust_bmp::Reader> fReader;
     std::unique_ptr<SkStream> fPrivStream;
@@ -63,6 +101,7 @@ private:
     std::unique_ptr<uint32_t[]> fXformBuffer;
 
     const size_t fSrcRowBytes;
+    const bool fIsBottomUp;  // True for bottom-up BMPs, false for top-down
 };
 
 #endif  // SkBmpRustCodec_DEFINED

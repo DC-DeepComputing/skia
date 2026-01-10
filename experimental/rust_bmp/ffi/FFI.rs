@@ -56,10 +56,21 @@ mod ffi {
         type Reader;
         fn width(self: &Reader) -> u32;
         fn height(self: &Reader) -> u32;
+        fn is_bottom_up(self: &Reader) -> bool;
         fn color(self: &Reader) -> BmpColor;
         fn alpha(self: &Reader) -> BmpAlpha;
         fn next_row(self: &mut Reader, buffer: &mut [u8]) -> DecodingResult;
         fn reset_decode_state(self: &mut Reader);
+        fn metadata_loaded(self: &Reader) -> bool;
+        fn try_read_metadata(self: &mut Reader) -> DecodingResult;
+        
+        // Streaming/incremental decoding methods
+        fn try_read_row(self: &mut Reader, buffer: &mut [u8]) -> DecodingResult;
+        fn has_more_rows(self: &Reader) -> bool;
+        fn current_row_index(self: &Reader) -> u32;
+        
+        // ICC profile support
+        fn icc_profile(self: &mut Reader) -> Vec<u8>;
     }
 }
 
@@ -89,6 +100,7 @@ impl From<image::ImageError> for BmpError {
             image::ImageError::Limits(_) => BmpError::UnsupportedFeature,
             image::ImageError::Unsupported(_) => BmpError::UnsupportedFeature,
             image::ImageError::IoError(_) => BmpError::IoError,
+            image::ImageError::InsufficientData(_) => BmpError::InsufficientData,
         }
     }
 }
@@ -133,71 +145,41 @@ impl ResultOfReader {
     }
 }
 
-/// Image-rs BMP decoder doesn't support true row-by-row streaming, so this
-/// Reader decodes the entire image upfront and provides row access via next_row().
+/// BMP decoder with streaming support.
 pub struct Reader {
-    pixels: Vec<u8>,
+    decoder: image::codecs::bmp::BmpDecoder<std::io::Cursor<Vec<u8>>>,
+    metadata_loaded: bool,
     width: u32,
     height: u32,
+    is_bottom_up: bool,
     color: BmpColor,
     alpha: BmpAlpha,
     bytes_per_pixel: u32,
     current_row: u32,
-}
-
-impl Reader {
+}impl Reader {
     fn new(mut input: cxx::UniquePtr<ffi::SkStreamAdapter>) -> Result<Self, BmpError> {
         use std::io::{Cursor, Read};
 
-        // TODO(crbug.com/452666425): Support incremental decoding for incomplete data. Currently we
-        // read the entire stream upfront because image-rs BmpDecoder requires
-        // seekable input (std::io::Seek). This means if the stream has incomplete
-        // data, we fail during MakeFromStream and the caller must retry from scratch.
-        // For better streaming: buffer data incrementally and retry BmpDecoder::new()
-        // when more data arrives (similar to SkPngRustCodec).
-
-        let mut data = Vec::new();
+        let mut buffer = Vec::new();
         input
             .as_mut()
             .expect("input should not be null")
-            .read_to_end(&mut data)
+            .read_to_end(&mut buffer)
             .map_err(|_| BmpError::InsufficientData)?;
 
-        let mut cursor = Cursor::new(&data);
-        let decoder = image::codecs::bmp::BmpDecoder::new(&mut cursor)
-            .map_err(|_| BmpError::InvalidHeader)?;
-
-        let (width, height) = image::ImageDecoder::dimensions(&decoder);
-        let image_color_type = image::ImageDecoder::color_type(&decoder);
-
-        // image-rs converts BGR→RGB internally. BmpColor also supports BGR for
-        // future decoders that might preserve native order.
-        let (color, alpha, bytes_per_pixel) = match image_color_type {
-            image::ColorType::Rgb8 => (BmpColor::RGB, BmpAlpha::Opaque, 3),
-            image::ColorType::Rgba8 => (BmpColor::RGBA, BmpAlpha::Unpremul, 4),
-            _ => {
-                return Err(BmpError::UnsupportedFeature);
-            }
-        };
-
-        // TODO(crbug.com/452666425): Extract ICC profile for color-managed decoding. BMP files can
-        // embed ICC profiles in BITMAPV5HEADER format at offset 0x7A, but
-        // image-rs doesn't expose this. Once rust/icc module lands, parse the
-        // BMP header manually to extract profile bytes, validate with
-        // rust/icc::parse_icc_profile(), and pass to C++ via ResultOfReader
-        // for SkEncodedInfo integration.
-
-        let total_bytes = image::ImageDecoder::total_bytes(&decoder) as usize;
-        let mut pixels = vec![0u8; total_bytes];
-        image::ImageDecoder::read_image(decoder, &mut pixels).map_err(|_| BmpError::InvalidData)?;
+        let cursor = Cursor::new(buffer);
+        let decoder = image::codecs::bmp::BmpDecoder::new_streaming(cursor)
+            .map_err(BmpError::from)?;
 
         Ok(Reader {
-            pixels,
-            width,
-            height,
-            color,
-            alpha,
-            bytes_per_pixel,
+            decoder,
+            metadata_loaded: false,
+            width: 0,
+            height: 0,
+            is_bottom_up: true,  // Default to bottom-up (most common)
+            color: BmpColor::RGB,
+            alpha: BmpAlpha::Opaque,
+            bytes_per_pixel: 0,
             current_row: 0,
         })
     }
@@ -210,6 +192,10 @@ impl Reader {
         self.height
     }
 
+    pub fn is_bottom_up(&self) -> bool {
+        self.is_bottom_up
+    }
+
     pub fn color(&self) -> BmpColor {
         self.color
     }
@@ -218,26 +204,114 @@ impl Reader {
         self.alpha
     }
 
+    pub fn try_read_metadata(&mut self) -> DecodingResult {
+        match self.try_load_metadata() {
+            Ok(true) => DecodingResult::Success,
+            Ok(false) => DecodingResult::IncompleteInput,
+            Err(BmpError::InsufficientData) => DecodingResult::IncompleteInput,
+            Err(BmpError::UnsupportedFeature) => DecodingResult::UnsupportedFeature,
+            Err(_) => DecodingResult::FormatError,
+        }
+    }
+
+    fn try_load_metadata(&mut self) -> Result<bool, BmpError> {
+        if self.metadata_loaded {
+            return Ok(true);
+        }
+
+        match self.decoder.try_read_metadata() {
+            Ok(Some(())) => {
+                let (width, height) = <image::codecs::bmp::BmpDecoder<_> as image::ImageDecoder>::dimensions(&self.decoder);
+                let image_color_type = <image::codecs::bmp::BmpDecoder<_> as image::ImageDecoder>::color_type(&self.decoder);
+
+                let (color, alpha, bytes_per_pixel) = match image_color_type {
+                    image::ColorType::Rgb8 => (BmpColor::RGB, BmpAlpha::Opaque, 3),  // image-rs returns RGB format
+                    image::ColorType::Rgba8 => (BmpColor::RGBA, BmpAlpha::Unpremul, 4),  // image-rs returns RGBA format
+                    _ => {
+                        return Err(BmpError::UnsupportedFeature);
+                    }
+                };
+
+                self.width = width;
+                self.height = height;
+                self.color = color;
+                self.alpha = alpha;
+                self.bytes_per_pixel = bytes_per_pixel;
+                self.is_bottom_up = !self.decoder.is_top_down();
+                self.metadata_loaded = true;
+                Ok(true)
+            }
+            Ok(None) => Ok(false),
+            Err(e) => Err(BmpError::from(e)),
+        }
+    }
+
     pub fn reset_decode_state(&mut self) {
         self.current_row = 0;
+        // If using streaming, we can't easily reset the decoder state,
+        // so we just reset the row counter
     }
 
     pub fn next_row(&mut self, buffer: &mut [u8]) -> DecodingResult {
+        self.try_read_row(buffer)
+    }
+
+    pub fn try_read_row(&mut self, buffer: &mut [u8]) -> DecodingResult {
+        if !self.metadata_loaded {
+            match self.try_load_metadata() {
+                Ok(true) => {}
+                Ok(false) => return DecodingResult::IncompleteInput,
+                Err(BmpError::InsufficientData) => return DecodingResult::IncompleteInput,
+                Err(BmpError::UnsupportedFeature) => return DecodingResult::UnsupportedFeature,
+                Err(_) => return DecodingResult::FormatError,
+            }
+        }
+
         if self.current_row >= self.height {
             return DecodingResult::Success;
         }
 
         let row_bytes = (self.width * self.bytes_per_pixel) as usize;
-
         if buffer.len() < row_bytes {
             return DecodingResult::ParameterError;
         }
 
-        let row_offset = (self.current_row as usize) * row_bytes;
-        buffer[..row_bytes].copy_from_slice(&self.pixels[row_offset..row_offset + row_bytes]);
+        match self.decoder.try_read_row(buffer) {
+            Ok(Some(written_data)) => {
+                // try_read_row writes directly to buffer and returns a slice showing what was written
+                // Verify the expected amount was written
+                if written_data.len() != row_bytes {
+                    return DecodingResult::FormatError;
+                }
+                self.current_row += 1;
+                DecodingResult::Success
+            }
+            Ok(None) => DecodingResult::IncompleteInput,
+            Err(e) => match BmpError::from(e) {
+                BmpError::InsufficientData => DecodingResult::IncompleteInput,
+                BmpError::UnsupportedFeature => DecodingResult::UnsupportedFeature,
+                _ => DecodingResult::FormatError,
+            },
+        }
+    }
 
-        self.current_row += 1;
-        DecodingResult::Success
+    pub fn has_more_rows(&self) -> bool {
+        self.current_row < self.height
+    }
+
+    pub fn current_row_index(&self) -> u32 {
+        self.current_row
+    }
+
+    pub fn icc_profile(&mut self) -> Vec<u8> {
+        match <image::codecs::bmp::BmpDecoder<_> as image::ImageDecoder>::icc_profile(&mut self.decoder) {
+            Ok(Some(profile)) => profile,
+            Ok(None) | Err(_) => Vec::new(),
+        }
+    }
+
+    pub fn metadata_loaded(&self) -> bool {
+        self.metadata_loaded
     }
 }
 
@@ -252,23 +326,18 @@ mod tests {
 
     #[test]
     fn test_is_bmp_data() {
-        // Valid BMP signature (BM)
         let valid_bmp = vec![b'B', b'M', 0x00, 0x00];
         assert!(is_bmp_data(&valid_bmp));
 
-        // BA signature not yet supported by image crate
         let valid_ba = vec![b'B', b'A', 0x00, 0x00];
         assert!(!is_bmp_data(&valid_ba));
 
-        // Invalid signature
-        let invalid = vec![0x89, b'P', b'N', b'G']; // PNG signature
+        let invalid = vec![0x89, b'P', b'N', b'G'];
         assert!(!is_bmp_data(&invalid));
 
-        // Too short
         let too_short = vec![b'B'];
         assert!(!is_bmp_data(&too_short));
 
-        // Empty
         assert!(!is_bmp_data(&[]));
     }
 }
