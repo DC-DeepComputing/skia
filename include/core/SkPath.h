@@ -25,6 +25,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <tuple>
 
 class SkData;
@@ -80,9 +81,9 @@ public:
      *  with a Move verb, followed by 0 or more segments: Line, Quad, Conic, Cubic, followed
      *  by an optional Close.
      */
-    static SkPath Raw(SkSpan<const SkPoint> pts,
-                      SkSpan<const SkPathVerb> verbs,
-                      SkSpan<const SkScalar> conics,
+    static SkPath Raw(std::span<const SkPoint> pts,
+                      std::span<const SkPathVerb> verbs,
+                      std::span<const SkScalar> conics,
                       SkPathFillType, bool isVolatile = false);
 
     static SkPath Rect(const SkRect&, SkPathFillType, SkPathDirection = SkPathDirection::kDefault,
@@ -100,7 +101,7 @@ public:
     static SkPath RRect(const SkRect& bounds, SkScalar rx, SkScalar ry,
                         SkPathDirection dir = SkPathDirection::kDefault);
 
-    static SkPath Polygon(SkSpan<const SkPoint> pts, bool isClosed,
+    static SkPath Polygon(std::span<const SkPoint> pts, bool isClosed,
                           SkPathFillType fillType = SkPathFillType::kDefault,
                           bool isVolatile = false);
 
@@ -109,9 +110,9 @@ public:
     }
 
     // Deprecated: use Raw()
-    static SkPath Make(SkSpan<const SkPoint> pts,
-                       SkSpan<const uint8_t> verbs,
-                       SkSpan<const SkScalar> conics,
+    static SkPath Make(std::span<const SkPoint> pts,
+                       std::span<const uint8_t> verbs,
+                       std::span<const SkScalar> conics,
                        SkPathFillType fillType,
                        bool isVolatile = false) {
         return Raw(pts, {reinterpret_cast<const SkPathVerb*>(verbs.data()), verbs.size()},
@@ -426,17 +427,17 @@ public:
     /*
      *  Return a read-only view into the path's points.
      */
-    SkSpan<const SkPoint> points() const;
+    std::span<const SkPoint> points() const;
 
     /*
      *  Return a read-only view into the path's verbs.
      */
-    SkSpan<const SkPathVerb> verbs() const;
+    std::span<const SkPathVerb> verbs() const;
 
     /*
      *  Return a read-only view into the path's conic-weights.
      */
-    SkSpan<const float> conicWeights() const;
+    std::span<const float> conicWeights() const;
 
     int countPoints() const { return SkToInt(this->points().size()); }
     int countVerbs() const { return SkToInt(this->verbs().size()); }
@@ -465,7 +466,7 @@ public:
         @param points  span to receive the points. may be empty
         @return the number of points in the path
     */
-    size_t getPoints(SkSpan<SkPoint> points) const;
+    size_t getPoints(std::span<SkPoint> points) const;
 
     /** Returns number of points in SkPath.
         Copies N points from the path into the span, where N = min(#points, span capacity)
@@ -475,7 +476,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Path_getVerbs
     */
-    size_t getVerbs(SkSpan<uint8_t> verbs) const;
+    size_t getVerbs(std::span<uint8_t> verbs) const;
 
     // DEPRECATED
     bool getLastPt(SkPoint* lastPt) const {
@@ -784,9 +785,9 @@ public:
     SkPathIter iter() const;
 
     struct IterRec {
-        SkPathVerb            fVerb;
-        SkSpan<const SkPoint> fPoints;
-        float                 fConicWeight;
+        SkPathVerb               fVerb;
+        std::span<const SkPoint> fPoints;
+        float                    fConicWeight;
 
         float conicWeight() const {
             SkASSERT(fVerb == SkPathVerb::kConic);

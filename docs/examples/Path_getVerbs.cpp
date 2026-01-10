@@ -3,14 +3,15 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_getVerbs, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
-    auto debugster = [](const char* prefix, const SkPath& path, uint8_t* verbs, int max) -> void {
-        int count = path.getVerbs({verbs, max});
-         SkDebugf("%s verb count: %d  ", prefix, count);
-         const char* verbStr[] = { "move", "line", "quad", "conic", "cubic", "close" };
-         for (int i = 0; i < std::min(count, max) && verbs; ++i) {
-             SkDebugf("%s ", verbStr[verbs[i]]);
-         }
-         SkDebugf("\n");
+    auto debugster = [](const char* prefix, const SkPath& path,
+                        uint8_t verbs[], size_t max) -> void {
+        size_t count = path.getVerbs({verbs, max});
+        SkDebugf("%s verb count: %zu  ", prefix, count);
+        const char* verbStr[] = { "move", "line", "quad", "conic", "cubic", "close" };
+        for (size_t i = 0; i < std::min(count, max) && verbs; ++i) {
+            SkDebugf("%s ", verbStr[verbs[i]]);
+        }
+        SkDebugf("\n");
     };
     SkPath path = SkPathBuilder()
                   .lineTo(20, 20)

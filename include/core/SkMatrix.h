@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <cstring>
 #include <optional>
+#include <span>
 
 struct SkRSXform;
 struct SkSize;
@@ -1153,9 +1154,10 @@ public:
      *
      *  example: https://fiddle.skia.org/c/@Matrix_setPolyToPoly
      */
-    static std::optional<SkMatrix> PolyToPoly(SkSpan<const SkPoint> src, SkSpan<const SkPoint> dst);
+    static std::optional<SkMatrix> PolyToPoly(std::span<const SkPoint> src,
+                                              std::span<const SkPoint> dst);
 
-    bool setPolyToPoly(SkSpan<const SkPoint> src, SkSpan<const SkPoint> dst) {
+    bool setPolyToPoly(std::span<const SkPoint> src, std::span<const SkPoint> dst) {
         if (auto mx = PolyToPoly(src, dst)) {
             *this = *mx;
             return true;
@@ -1267,7 +1269,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Matrix_mapPoints
     */
-    void mapPoints(SkSpan<SkPoint> dst, SkSpan<const SkPoint> src) const;
+    void mapPoints(std::span<SkPoint> dst, std::span<const SkPoint> src) const;
 
     /** Maps pts SkPoint array of length count in place. SkPoint are mapped by multiplying
         each SkPoint by SkMatrix. Given:
@@ -1291,7 +1293,7 @@ public:
 
         @param pts    span of points to be transformed in-place
     */
-    void mapPoints(SkSpan<SkPoint> pts) const {
+    void mapPoints(std::span<SkPoint> pts) const {
         this->mapPoints(pts, pts);
     }
 
@@ -1315,7 +1317,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Matrix_mapHomogeneousPoints
     */
-    void mapHomogeneousPoints(SkSpan<SkPoint3> dst, SkSpan<const SkPoint3> src) const;
+    void mapHomogeneousPoints(std::span<SkPoint3> dst, std::span<const SkPoint3> src) const;
 
     SkPoint3 mapHomogeneousPoint(SkPoint3 src) const {
         SkPoint3 dst;
@@ -1329,7 +1331,7 @@ public:
      *  Note: min(dst.size(), src.size()) is the number of points that will be written to dst.
 
      */
-    void mapPointsToHomogeneous(SkSpan<SkPoint3> dst, SkSpan<const SkPoint> src) const;
+    void mapPointsToHomogeneous(std::span<SkPoint3> dst, std::span<const SkPoint> src) const;
 
     SkPoint3 mapPointToHomogeneous(SkPoint src) const {
         SkPoint3 dst;
@@ -1428,7 +1430,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Matrix_mapVectors
     */
-    void mapVectors(SkSpan<SkVector> dst, SkSpan<const SkVector> src) const;
+    void mapVectors(std::span<SkVector> dst, std::span<const SkVector> src) const;
 
     /** Maps vecs vector array of length count in place, multiplying each vector by
         SkMatrix, treating SkMatrix translation as zero. Given:
@@ -1452,7 +1454,7 @@ public:
 
         @param vecs   vectors to transform, and storage for mapped vectors
     */
-    void mapVectors(SkSpan<SkVector> vecs) const {
+    void mapVectors(std::span<SkVector> vecs) const {
         this->mapVectors(vecs, vecs);
     }
 

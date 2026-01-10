@@ -4,7 +4,7 @@
 REG_FIDDLE(Rect_setBoundsCheck, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
     SkPoint points[] = {{3, 4}, {1, 2}, {5, 6}, {SK_ScalarNaN, 8}};
-    for (int count = 0; count <= (int) std::size(points); ++count) {
+    for (size_t count = 0; count <= std::size(points); ++count) {
         SkRect rect;
         bool success = rect.setBoundsCheck({points, count});
         if (count > 0) {
@@ -12,7 +12,7 @@ void draw(SkCanvas* canvas) {
         } else {
             SkDebugf("%14s", " ");
         }
-        SkDebugf("count: %d rect: %g, %g, %g, %g success: %s\n", count,
+        SkDebugf("count: %zu rect: %g, %g, %g, %g success: %s\n", count,
                 rect.fLeft, rect.fTop, rect.fRight, rect.fBottom, success ? "true" : "false");
     }
 }
