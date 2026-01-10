@@ -40,6 +40,7 @@
 #include <cstring>
 #include <memory>
 #include <optional>
+#include <span>
 
 #ifndef SK_SUPPORT_LEGACY_GETTOTALMATRIX
 #define SK_SUPPORT_LEGACY_GETTOTALMATRIX
@@ -688,7 +689,7 @@ public:
     };
 
     using SaveLayerFlags = uint32_t;
-    using FilterSpan = SkSpan<sk_sp<SkImageFilter>>;
+    using FilterSpan = std::span<sk_sp<SkImageFilter>>;
     static constexpr int kMaxFiltersPerLayer = 16;
 
     /** \struct SkCanvas::SaveLayerRec
@@ -1327,7 +1328,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Canvas_drawPoints
     */
-    void drawPoints(PointMode mode, SkSpan<const SkPoint>, const SkPaint& paint);
+    void drawPoints(PointMode mode, std::span<const SkPoint>, const SkPaint& paint);
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void drawPoints(PointMode mode, size_t count, const SkPoint pts[], const SkPaint& paint) {
         this->drawPoints(mode, {pts, count}, paint);
@@ -1912,8 +1913,8 @@ public:
        @param font            typeface, text size and so, used to describe the text
        @param paint           blend, color, and so on, used to draw
     */
-    void drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> positions,
-                    SkSpan<const uint32_t> clusters, SkSpan<const char> utf8text,
+    void drawGlyphs(std::span<const SkGlyphID> glyphs, std::span<const SkPoint> positions,
+                    std::span<const uint32_t> clusters, std::span<const char> utf8text,
                     SkPoint origin, const SkFont& font, const SkPaint& paint);
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
@@ -1945,7 +1946,7 @@ public:
         @param font        typeface, text size and so, used to describe the text
         @param paint       blend, color, and so on, used to draw
     */
-    void drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> positions,
+    void drawGlyphs(std::span<const SkGlyphID> glyphs, std::span<const SkPoint> positions,
                     SkPoint origin, const SkFont& font, const SkPaint& paint);
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
@@ -1973,7 +1974,7 @@ public:
         @param font     typeface, text size and so, used to describe the text
         @param paint    blend, color, and so on, used to draw
     */
-    void drawGlyphsRSXform(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkRSXform> xforms,
+    void drawGlyphsRSXform(std::span<const SkGlyphID> glyphs, std::span<const SkRSXform> xforms,
                            SkPoint origin, const SkFont& font, const SkPaint& paint);
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void drawGlyphs(int count, const SkGlyphID glyphs[], const SkRSXform xforms[],
@@ -2206,8 +2207,8 @@ public:
         @param cullRect  bounds of transformed sprites for efficient clipping; may be nullptr
         @param paint     SkColorFilter, SkImageFilter, SkBlendMode, and so on; may be nullptr
     */
-    void drawAtlas(const SkImage* atlas, SkSpan<const SkRSXform> xform,
-                   SkSpan<const SkRect> tex, SkSpan<const SkColor> colors, SkBlendMode mode,
+    void drawAtlas(const SkImage* atlas, std::span<const SkRSXform> xform,
+                   std::span<const SkRect> tex, std::span<const SkColor> colors, SkBlendMode mode,
                    const SkSamplingOptions& sampling, const SkRect* cullRect, const SkPaint* paint);
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     void drawAtlas(const SkImage* atlas, const SkRSXform xform[], const SkRect tex[],

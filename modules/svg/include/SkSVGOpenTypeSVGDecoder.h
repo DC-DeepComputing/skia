@@ -26,7 +26,7 @@ public:
     static std::unique_ptr<SkOpenTypeSVGDecoder> Make(const uint8_t* svg, size_t svgLength);
     size_t approximateSize() override;
     bool render(SkCanvas&, int upem, SkGlyphID glyphId,
-                SkColor foregroundColor, SkSpan<SkColor> palette) override;
+                SkColor foregroundColor, std::span<SkColor> palette) override;
     ~SkSVGOpenTypeSVGDecoder() override;
 private:
     SkSVGOpenTypeSVGDecoder(sk_sp<SkSVGDOM> skSvg, size_t approximateSize);

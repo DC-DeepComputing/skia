@@ -23,6 +23,7 @@
 #include <atomic>
 #include <cstdint>
 #include <cstring>
+#include <span>
 
 class SkData;
 class SkPaint;
@@ -134,7 +135,7 @@ public:
         @return        new textblob or nullptr
      */
     static sk_sp<SkTextBlob> MakeFromPosTextH(const void* text, size_t byteLength,
-                                              SkSpan<const SkScalar> xpos, SkScalar constY,
+                                              std::span<const SkScalar> xpos, SkScalar constY,
                                               const SkFont& font,
                                               SkTextEncoding encoding = SkTextEncoding::kUTF8);
 
@@ -150,28 +151,28 @@ public:
         @return        new textblob or nullptr
      */
     static sk_sp<SkTextBlob> MakeFromPosText(const void* text, size_t byteLength,
-                                             SkSpan<const SkPoint> pos, const SkFont& font,
+                                             std::span<const SkPoint> pos, const SkFont& font,
                                              SkTextEncoding encoding = SkTextEncoding::kUTF8);
 
     static sk_sp<SkTextBlob> MakeFromRSXform(const void* text, size_t byteLength,
-                                             SkSpan<const SkRSXform> xform, const SkFont& font,
+                                             std::span<const SkRSXform> xform, const SkFont& font,
                                              SkTextEncoding encoding = SkTextEncoding::kUTF8);
 
     // Helpers for glyphs
 
-    static sk_sp<SkTextBlob> MakeFromPosHGlyphs(SkSpan<const SkGlyphID> glyphs,
-                                                SkSpan<const SkScalar> xpos, SkScalar constY,
+    static sk_sp<SkTextBlob> MakeFromPosHGlyphs(std::span<const SkGlyphID> glyphs,
+                                                std::span<const SkScalar> xpos, SkScalar constY,
                                                 const SkFont& font) {
         return MakeFromPosTextH(glyphs.data(), glyphs.size() * sizeof(SkGlyphID), xpos, constY,
                                 font, SkTextEncoding::kGlyphID);
     }
-    static sk_sp<SkTextBlob> MakeFromPosGlyphs(SkSpan<const SkGlyphID> glyphs,
-                                               SkSpan<const SkPoint> pos, const SkFont& font) {
+    static sk_sp<SkTextBlob> MakeFromPosGlyphs(std::span<const SkGlyphID> glyphs,
+                                               std::span<const SkPoint> pos, const SkFont& font) {
         return MakeFromPosText(glyphs.data(), glyphs.size() * sizeof(SkGlyphID), pos, font,
                                SkTextEncoding::kGlyphID);
     }
-    static sk_sp<SkTextBlob> MakeFromRSXformGlyphs(SkSpan<const SkGlyphID> glyphs,
-                                                   SkSpan<const SkRSXform> xform,
+    static sk_sp<SkTextBlob> MakeFromRSXformGlyphs(std::span<const SkGlyphID> glyphs,
+                                                   std::span<const SkRSXform> xform,
                                                    const SkFont& font) {
         return MakeFromRSXform(glyphs.data(), glyphs.size() * sizeof(SkGlyphID), xform, font,
                                SkTextEncoding::kGlyphID);

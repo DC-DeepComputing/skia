@@ -9,7 +9,6 @@
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
-#include "include/core/SkSpan.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
 
@@ -17,6 +16,7 @@
 #include <cmath>
 #include <cstring>
 #include <limits.h>
+#include <span>
 #include <utility>
 
 /*
@@ -111,14 +111,14 @@ void SkPath::validate() const {}
 std::optional<SkPathOvalInfo> SkPath::getOvalInfo() const { return fPathData->asOval(); }
 std::optional<SkPathRRectInfo> SkPath::getRRectInfo() const { return fPathData->asRRect(); }
 
-SkSpan<const SkPoint> SkPath::points() const { return fPathData->points(); }
-SkSpan<const SkPathVerb> SkPath::verbs() const { return fPathData->verbs(); }
-SkSpan<const float> SkPath::conicWeights() const { return fPathData->conics(); }
+std::span<const SkPoint> SkPath::points() const { return fPathData->points(); }
+std::span<const SkPathVerb> SkPath::verbs() const { return fPathData->verbs(); }
+std::span<const float> SkPath::conicWeights() const { return fPathData->conics(); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkPath SkPath::Raw(SkSpan<const SkPoint> pts, SkSpan<const SkPathVerb> vbs,
-                   SkSpan<const float> ws, SkPathFillType ft, bool isVolatile) {
+SkPath SkPath::Raw(std::span<const SkPoint> pts, std::span<const SkPathVerb> vbs,
+                   std::span<const float> ws, SkPathFillType ft, bool isVolatile) {
     return MakeNullCheck(SkPathData::Make(pts, vbs, ws), ft, isVolatile);
 }
 
@@ -152,7 +152,7 @@ SkPath SkPath::RRect(const SkRRect& rr, SkPathDirection dir, unsigned startIndex
     return MakeNullCheck(SkPathData::RRect(rr, dir, newIndex), SkPathFillType::kDefault, false);
 }
 
-SkPath SkPath::Polygon(SkSpan<const SkPoint> pts, bool isClosed,
+SkPath SkPath::Polygon(std::span<const SkPoint> pts, bool isClosed,
                        SkPathFillType ft, bool isVolatile) {
     return MakeNullCheck(SkPathData::Polygon(pts, isClosed), ft, isVolatile);
 }

@@ -1731,7 +1731,7 @@ void SkCanvas::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
     this->onDrawRRect(rrect, paint);
 }
 
-void SkCanvas::drawPoints(PointMode mode, SkSpan<const SkPoint> pts, const SkPaint& paint) {
+void SkCanvas::drawPoints(PointMode mode, std::span<const SkPoint> pts, const SkPaint& paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     if (!pts.empty()) {
         this->onDrawPoints(mode, pts.size(), pts.data(), paint);
@@ -1833,9 +1833,9 @@ void SkCanvas::drawImageLattice(const SkImage* image, const Lattice& lattice, co
     }
 }
 
-void SkCanvas::drawAtlas(const SkImage* atlas, SkSpan<const SkRSXform> xform,
-                         SkSpan<const SkRect> tex, SkSpan<const SkColor> colors, SkBlendMode mode,
-                         const SkSamplingOptions& sampling, const SkRect* cull,
+void SkCanvas::drawAtlas(const SkImage* atlas, std::span<const SkRSXform> xform,
+                         std::span<const SkRect> tex, std::span<const SkColor> colors,
+                         SkBlendMode mode, const SkSamplingOptions& sampling, const SkRect* cull,
                          const SkPaint* paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     RETURN_ON_NULL(atlas);
@@ -2490,8 +2490,8 @@ void SkCanvas::drawSimpleText(const void* text, size_t byteLength, SkTextEncodin
     }
 }
 
-void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> positions,
-                          SkSpan<const uint32_t> clusters, SkSpan<const char> utf8text,
+void SkCanvas::drawGlyphs(std::span<const SkGlyphID> glyphs, std::span<const SkPoint> positions,
+                          std::span<const uint32_t> clusters, std::span<const char> utf8text,
                           SkPoint origin, const SkFont& font, const SkPaint& paint) {
     if (glyphs.empty()) { return; }
 
@@ -2501,7 +2501,7 @@ void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> 
             glyphs,
             utf8text,
             clusters,
-            SkSpan<SkVector>()
+            std::span<SkVector>()
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
@@ -2509,7 +2509,7 @@ void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> 
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
-void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> positions,
+void SkCanvas::drawGlyphs(std::span<const SkGlyphID> glyphs, std::span<const SkPoint> positions,
                           SkPoint origin, const SkFont& font, const SkPaint& paint) {
     if (glyphs.empty()) { return; }
 
@@ -2517,9 +2517,9 @@ void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> 
         font,
         positions,
         glyphs,
-        SkSpan<const char>(),
-        SkSpan<const uint32_t>(),
-        SkSpan<SkVector>()
+        std::span<const char>(),
+        std::span<const uint32_t>(),
+        std::span<SkVector>()
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
@@ -2527,8 +2527,9 @@ void SkCanvas::drawGlyphs(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkPoint> 
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
-void SkCanvas::drawGlyphsRSXform(SkSpan<const SkGlyphID> glyphs, SkSpan<const SkRSXform> xforms,
-                                 SkPoint origin, const SkFont& font, const SkPaint& paint) {
+void SkCanvas::drawGlyphsRSXform(std::span<const SkGlyphID> glyphs,
+                                 std::span<const SkRSXform> xforms, SkPoint origin,
+                                 const SkFont& font, const SkPaint& paint) {
     if (glyphs.empty()) { return; }
 
     auto [positions, rotateScales] =
@@ -2538,8 +2539,8 @@ void SkCanvas::drawGlyphsRSXform(SkSpan<const SkGlyphID> glyphs, SkSpan<const Sk
             font,
             positions,
             glyphs,
-            SkSpan<const char>(),
-            SkSpan<const uint32_t>(),
+            std::span<const char>(),
+            std::span<const uint32_t>(),
             rotateScales
     };
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(

@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <cmath>
 
-template <typename S, typename T> int min_count(SkSpan<S> a, SkSpan<T> b) {
+template <typename S, typename T> int min_count(std::span<S> a, std::span<T> b) {
     return SkToInt(std::min(a.size(), b.size()));
 }
 
@@ -779,7 +779,7 @@ bool SkMatrix::asAffine(SkScalar affine[6]) const {
     return true;
 }
 
-void SkMatrix::mapPoints(SkSpan<SkPoint> dst, SkSpan<const SkPoint> src) const {
+void SkMatrix::mapPoints(std::span<SkPoint> dst, std::span<const SkPoint> src) const {
     const auto count = min_count(dst, src);
     this->getMapPtsProc()(*this, dst.data(), src.data(), count);
 }
@@ -1071,13 +1071,13 @@ void SkMatrixPriv::MapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 d
     }
 }
 
-void SkMatrix::mapHomogeneousPoints(SkSpan<SkPoint3> dst, SkSpan<const SkPoint3> src) const {
+void SkMatrix::mapHomogeneousPoints(std::span<SkPoint3> dst, std::span<const SkPoint3> src) const {
     const auto count = min_count(dst, src);
     SkMatrixPriv::MapHomogeneousPointsWithStride(*this, dst.data(), sizeof(SkPoint3), src.data(),
                                                  sizeof(SkPoint3), count);
 }
 
-void SkMatrix::mapPointsToHomogeneous(SkSpan<SkPoint3> dst, SkSpan<const SkPoint> src) const {
+void SkMatrix::mapPointsToHomogeneous(std::span<SkPoint3> dst, std::span<const SkPoint> src) const {
     const auto count = min_count(dst, src);
 
     if (this->isIdentity()) {
@@ -1105,7 +1105,7 @@ void SkMatrix::mapPointsToHomogeneous(SkSpan<SkPoint3> dst, SkSpan<const SkPoint
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SkMatrix::mapVectors(SkSpan<SkPoint> dst, SkSpan<const SkPoint> src) const {
+void SkMatrix::mapVectors(std::span<SkPoint> dst, std::span<const SkPoint> src) const {
     if (this->hasPerspective()) {
         const SkPoint origin = this->mapPointPerspective({0, 0});
 
@@ -1303,7 +1303,8 @@ typedef bool (*PolyMapProc)(const SkPoint[], SkMatrix*);
 
 /*  Originally adapted from Rob Johnson's original sample code in QuickDraw GX
 */
-std::optional<SkMatrix> SkMatrix::PolyToPoly(SkSpan<const SkPoint> src, SkSpan<const SkPoint> dst) {
+std::optional<SkMatrix> SkMatrix::PolyToPoly(std::span<const SkPoint> src,
+                                             std::span<const SkPoint> dst) {
     if (src.size() != dst.size() || src.size() > 4) {
         return {};
     }
