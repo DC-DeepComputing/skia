@@ -16,6 +16,8 @@
 #include "include/core/SkTileMode.h"
 #include "include/private/base/SkAPI.h"
 
+#include <span>
+
 class SkMatrix;
 
 class SkGradient {
@@ -96,8 +98,8 @@ public:
     class Colors {
     public:
         Colors() {}
-        Colors(SkSpan<const SkColor4f> colors,
-               SkSpan<const float> pos,
+        Colors(std::span<const SkColor4f> colors,
+               std::span<const float> pos,
                SkTileMode mode,
                sk_sp<SkColorSpace> cs = nullptr)
                 : fColors(colors), fPos(pos), fColorSpace(std::move(cs)), fTileMode(mode) {
@@ -109,17 +111,17 @@ public:
             }
         }
 
-        Colors(SkSpan<const SkColor4f> colors, SkTileMode tm, sk_sp<SkColorSpace> cs = nullptr)
+        Colors(std::span<const SkColor4f> colors, SkTileMode tm, sk_sp<SkColorSpace> cs = nullptr)
                 : Colors(colors, {}, tm, std::move(cs)) {}
 
-        SkSpan<const SkColor4f> colors() const { return fColors; }
-        SkSpan<const float> positions() const { return fPos; }
+        std::span<const SkColor4f> colors() const { return fColors; }
+        std::span<const float> positions() const { return fPos; }
         const sk_sp<SkColorSpace>& colorSpace() const { return fColorSpace; }
         SkTileMode tileMode() const { return fTileMode; }
 
     private:
-        SkSpan<const SkColor4f> fColors;
-        SkSpan<const float> fPos;
+        std::span<const SkColor4f> fColors;
+        std::span<const float> fPos;
         sk_sp<SkColorSpace> fColorSpace;
         SkTileMode fTileMode = SkTileMode::kClamp;
     };

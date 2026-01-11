@@ -717,9 +717,9 @@ SkPath MakePathFromVerbsPointsWeights(WASMPointerU8 verbsPtr,
     const SkPoint* pts = reinterpret_cast<const SkPoint*>(ptsPtr);
     const float* weights = reinterpret_cast<const float*>(wtsPtr);
 
-    return SkPath::Raw(SkSpan<const SkPoint>(pts, SkToSizeT(numPts)),
-                       SkSpan<const SkPathVerb>(verbs, SkToSizeT(numVerbs)),
-                       SkSpan<const float>(weights, SkToSizeT(numWts)),
+    return SkPath::Raw({pts, SkToSizeT(numPts)},
+                       {verbs, SkToSizeT(numVerbs)},
+                       {weights, SkToSizeT(numWts)},
                        SkPathFillType::kDefault);
 }
 
@@ -735,9 +735,7 @@ void PathAddVerbsPointsWeights(SkPathBuilder& self,
     const float* weights = reinterpret_cast<const float*>(wtsPtr);
 
     SkPathRaw raw = SkPathRaw{
-        SkSpan<const SkPoint>(pts, SkToSizeT(numPts)),
-        SkSpan<const SkPathVerb>(verbs, SkToSizeT(numVerbs)),
-        SkSpan<const float>(weights, SkToSizeT(numWts)),
+        {pts, SkToSizeT(numPts)}, {verbs, SkToSizeT(numVerbs)}, {weights, SkToSizeT(numWts)},
     };
     self.addRaw(raw);
 }
@@ -1092,7 +1090,7 @@ struct GradientBuilder {
             colors = reinterpret_cast<const SkColor4f*>(cPtr);
         }
 
-        SkSpan<const float> pos;
+        std::span<const float> pos;
         if (positions) {
             pos = {positions, count};
         }
@@ -1343,7 +1341,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerF32 xptr,
                                            WASMPointerF32 rptr,
                                            WASMPointerU32 cptr,
-                                           int count,
+                                           size_t count,
                                            SkBlendMode mode,
                                            SkFilterMode filter,
                                            SkMipmapMode mipmap,
@@ -1371,7 +1369,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerF32 xptr,
                                            WASMPointerF32 rptr,
                                            WASMPointerU32 cptr,
-                                           int count,
+                                           size_t count,
                                            SkBlendMode mode,
                                            float B,
                                            float C,
@@ -1416,7 +1414,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                       }))
             .function("_drawGlyphs",
                       optional_override([](SkCanvas& self,
-                                           int count,
+                                           size_t count,
                                            WASMPointerU16 glyphs,
                                            WASMPointerF32 positions,
                                            float x,
@@ -1571,7 +1569,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                       optional_override([](SkCanvas& self,
                                            SkCanvas::PointMode mode,
                                            WASMPointerF32 pptr,
-                                           int count,
+                                           size_t count,
                                            SkPaint& paint) -> void {
                           const SkPoint* pts = reinterpret_cast<const SkPoint*>(pptr);
                           self.drawPoints(mode, {pts, count}, paint);
@@ -1892,7 +1890,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                             skdatas[i] = SkData::MakeFromMalloc(datas[i], sizes[i]);
                         }
 
-                        return SkFontMgr_New_Custom_Data(SkSpan(skdatas.get(), numFonts));
+                        return SkFontMgr_New_Custom_Data({skdatas.get(), SkToSizeT(numFonts)});
                     }),
                     allow_raw_pointers())
             .function("countFamilies", &SkFontMgr::countFamilies)
@@ -2272,7 +2270,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .class_function(
                     "_MakeDash",
                     optional_override(
-                            [](WASMPointerF32 cptr, int count, float phase) -> sk_sp<SkPathEffect> {
+                            [](WASMPointerF32 cptr, size_t count, float phase) -> sk_sp<SkPathEffect> {
                                 const float* intervals = reinterpret_cast<const float*>(cptr);
                                 return SkDashPathEffect::Make({intervals, count}, phase);
                             }),
@@ -2393,7 +2391,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .function("_addPolygon",
                       optional_override([](SkPathBuilder& self,
                                            WASMPointerF32 fPtr,
-                                           int count,
+                                           size_t count,
                                            bool close) -> void {
                           const SkPoint* pts = reinterpret_cast<const SkPoint*>(fPtr);
                           self.addPolygon({pts, count}, close);
@@ -2571,7 +2569,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          WASMPointerF32 cPtr,
                                          SkColorType colorType,
                                          WASMPointerF32 pPtr,
-                                         int count,
+                                         size_t count,
                                          SkTileMode mode,
                                          uint32_t flags,
                                          WASMPointerF32 mPtr,
@@ -2594,7 +2592,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          WASMPointerF32 cPtr,
                                          SkColorType colorType,
                                          WASMPointerF32 pPtr,
-                                         int count,
+                                         size_t count,
                                          SkTileMode mode,
                                          uint32_t flags,
                                          WASMPointerF32 mPtr,
@@ -2616,7 +2614,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          WASMPointerF32 cPtr,
                                          SkColorType colorType,
                                          WASMPointerF32 pPtr,
-                                         int count,
+                                         size_t count,
                                          SkTileMode mode,
                                          float startAngle,
                                          float endAngle,
@@ -2654,7 +2652,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          WASMPointerF32 cPtr,
                                          SkColorType colorType,
                                          WASMPointerF32 pPtr,
-                                         int count,
+                                         size_t count,
                                          SkTileMode mode,
                                          uint32_t flags,
                                          WASMPointerF32 mPtr,
@@ -2933,7 +2931,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                 // We don't really know how many the client has provided, so we
                                 // claim a worst-case value (from text bytes), knowing the impl will
                                 // only write as many as needed.
-                                SkSpan<const SkRSXform> xforms = {
+                                std::span<const SkRSXform> xforms = {
                                         reinterpret_cast<const SkRSXform*>(xptr), strBytes};
 
                                 return SkTextBlob::MakeFromRSXform(
@@ -2946,9 +2944,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                  WASMPointerF32 xptr,
                                                  const SkFont& font) -> sk_sp<SkTextBlob> {
                                 const size_t numGlyphs = byteLen >> 1;
-                                SkSpan<const SkGlyphID> glyphs = {
+                                std::span<const SkGlyphID> glyphs = {
                                         reinterpret_cast<const SkGlyphID*>(gPtr), numGlyphs};
-                                SkSpan<const SkRSXform> xforms = {
+                                std::span<const SkRSXform> xforms = {
                                         reinterpret_cast<const SkRSXform*>(xptr), numGlyphs};
 
                                 return SkTextBlob::MakeFromRSXformGlyphs(glyphs, xforms, font);
@@ -3019,7 +3017,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            size_t expectedCodePoints,
                                            WASMPointerU16 iPtr) -> int {
                           const char* str = reinterpret_cast<char*>(sptr);
-                          SkSpan<SkGlyphID> glyphIDs = {reinterpret_cast<SkGlyphID*>(iPtr),
+                          std::span<SkGlyphID> glyphIDs = {reinterpret_cast<SkGlyphID*>(iPtr),
                                                         expectedCodePoints};
 
                           return self.textToGlyphs(str, strLen, SkTextEncoding::kUTF8, glyphIDs);

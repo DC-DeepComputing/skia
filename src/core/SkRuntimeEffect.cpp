@@ -158,7 +158,7 @@ SkRuntimeEffect::Child SkRuntimeEffectPriv::VarAsChild(const SkSL::Variable& var
 }
 
 sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
-        SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+        std::span<const SkRuntimeEffect::Uniform> uniforms,
         sk_sp<const SkData> originalData,
         const SkColorSpace* dstCS) {
     if (!dstCS) {
@@ -171,7 +171,7 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
 }
 
 sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
-        SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+        std::span<const SkRuntimeEffect::Uniform> uniforms,
         sk_sp<const SkData> originalData,
         const SkColorSpaceXformSteps& steps) {
     using Flags = SkRuntimeEffect::Uniform::Flags;
@@ -263,8 +263,8 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
     return fRPProgram.get();
 }
 
-SkSpan<const float> SkRuntimeEffectPriv::UniformsAsSpan(
-        SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+std::span<const float> SkRuntimeEffectPriv::UniformsAsSpan(
+        std::span<const SkRuntimeEffect::Uniform> uniforms,
         sk_sp<const SkData> originalData,
         bool alwaysCopyIntoAlloc,
         const SkColorSpace* destColorSpace,
@@ -283,7 +283,7 @@ SkSpan<const float> SkRuntimeEffectPriv::UniformsAsSpan(
         return {uniformsInAlloc, numFloats};
     }
     // It's safe to return a pointer into existing data.
-    return SkSpan{static_cast<const float*>(originalData->data()),
+    return {static_cast<const float*>(originalData->data()),
                   originalData->size() / sizeof(float)};
 }
 
@@ -385,7 +385,7 @@ SkRuntimeEffect::ChildPtr::ChildPtr(sk_sp<SkFlattenable> f) : fChild(std::move(f
 }
 
 static bool verify_child_effects(const std::vector<SkRuntimeEffect::Child>& reflected,
-                                 SkSpan<const SkRuntimeEffect::ChildPtr> effectPtrs) {
+                                 std::span<const SkRuntimeEffect::ChildPtr> effectPtrs) {
     // Verify that the number of passed-in child-effect pointers matches the SkSL code.
     if (reflected.size() != effectPtrs.size()) {
         return false;
@@ -442,7 +442,7 @@ bool SkRuntimeEffectPriv::ReadChildEffects(SkReadBuffer& buffer,
 }
 
 void SkRuntimeEffectPriv::WriteChildEffects(
-        SkWriteBuffer& buffer, SkSpan<const SkRuntimeEffect::ChildPtr> children) {
+        SkWriteBuffer& buffer, std::span<const SkRuntimeEffect::ChildPtr> children) {
     buffer.write32(children.size());
     for (const auto& child : children) {
         buffer.writeFlattenable(child.flattenable());
@@ -809,7 +809,7 @@ const SkRuntimeEffect::Child* SkRuntimeEffect::findChild(std::string_view name) 
 sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
         const SkRuntimeEffect* effect,
         UniformsCallback uniformsCallback,
-        SkSpan<const SkRuntimeEffect::ChildPtr> children,
+        std::span<const SkRuntimeEffect::ChildPtr> children,
         const SkMatrix* localMatrix) {
     if (!effect->allowShader()) {
         return nullptr;
@@ -835,11 +835,11 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childShaders[i]);
     }
-    return this->makeShader(std::move(uniforms), SkSpan(children), localMatrix);
+    return this->makeShader(std::move(uniforms), children, localMatrix);
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
-                                            SkSpan<const ChildPtr> children,
+                                            std::span<const ChildPtr> children,
                                             const SkMatrix* localMatrix) const {
     if (!this->allowShader()) {
         return nullptr;
@@ -867,11 +867,11 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> unifor
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childColorFilters[i]);
     }
-    return this->makeColorFilter(std::move(uniforms), SkSpan(children));
+    return this->makeColorFilter(std::move(uniforms), children);
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,
-                                                      SkSpan<const ChildPtr> children) const {
+                                                      std::span<const ChildPtr> children) const {
     if (!this->allowColorFilter()) {
         return nullptr;
     }
@@ -892,7 +892,7 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> unifor
 }
 
 sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
-                                              SkSpan<const ChildPtr> children) const {
+                                              std::span<const ChildPtr> children) const {
     if (!this->allowBlender()) {
         return nullptr;
     }

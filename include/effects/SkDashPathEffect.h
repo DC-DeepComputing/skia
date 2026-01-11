@@ -14,6 +14,8 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
+#include <span>
+
 class SK_API SkDashPathEffect {
 public:
     /** intervals: array containing an even number of entries (>=2), with
@@ -37,7 +39,7 @@ public:
 
         Note: only affects stroked paths.
     */
-    static sk_sp<SkPathEffect> Make(SkSpan<const SkScalar> intervals, SkScalar phase);
+    static sk_sp<SkPathEffect> Make(std::span<const SkScalar> intervals, SkScalar phase);
 
 #ifdef SK_SUPPORT_UNSPANNED_APIS
     static sk_sp<SkPathEffect> Make(const SkScalar intervals[], int count, SkScalar phase) {

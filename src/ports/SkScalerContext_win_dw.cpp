@@ -21,7 +21,6 @@
 #include "include/core/SkOpenTypeSVGDecoder.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPictureRecorder.h"
-#include "include/core/SkSpan.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTo.h"
@@ -49,6 +48,7 @@
 #include <dwrite.h>
 #include <dwrite_1.h>
 #include <dwrite_3.h>
+#include <span>
 
 namespace {
 static inline const constexpr bool kSkShowTextBlitCoverage = false;
@@ -793,8 +793,8 @@ bool SkScalerContext_DW::drawColorV1Paint(SkCanvas& canvas,
             linePositions,
             SkGradient(
                 SkGradient::Colors(
-                    SkSpan(skColors.get(), stops.size()),
-                    SkSpan(skStops.get(), stops.size()),
+                    {skColors.get(), stops.size()},
+                    {skStops.get(), stops.size()},
                     tileMode),
                 SkGradient::Interpolation{
                     SkGradient::Interpolation::InPremul::kNo,
@@ -990,8 +990,8 @@ bool SkScalerContext_DW::drawColorV1Paint(SkCanvas& canvas,
             start, startRadius, end, endRadius,
             SkGradient(
                 SkGradient::Colors(
-                    SkSpan(skColors.get(), stops.size()),
-                    SkSpan(skStops.get(), stops.size()),
+                    {skColors.get(), stops.size()},
+                    {skStops.get(), stops.size()},
                     tileMode),
                 SkGradient::Interpolation{
                     SkGradient::Interpolation::InPremul::kNo,
@@ -1114,8 +1114,8 @@ bool SkScalerContext_DW::drawColorV1Paint(SkCanvas& canvas,
             center, startAngleScaled, endAngleScaled,
             SkGradient(
                 SkGradient::Colors(
-                    SkSpan(skColors.get(), stops.size()),
-                    SkSpan(skStops.get(), stops.size()),
+                    {skColors.get(), stops.size()},
+                    {skStops.get(), stops.size()},
                     tileMode),
                 SkGradient::Interpolation{
                     SkGradient::Interpolation::InPremul::kNo,
@@ -2320,7 +2320,7 @@ bool SkScalerContext_DW::drawSVGImage(const SkGlyph& glyph, SkCanvas& canvas) {
     canvas.concat(matrix);
 
     return svgDecoder->render(canvas, upem, glyph.getGlyphID(),
-                              fRec.fForegroundColor, SkSpan(palette, paletteEntryCount));
+                              fRec.fForegroundColor, {palette, paletteEntryCount});
 }
 
 bool SkScalerContext_DW::generateSVGImage(const SkGlyph& glyph, void* imageBuffer) {

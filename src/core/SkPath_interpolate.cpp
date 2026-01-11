@@ -6,14 +6,14 @@
  */
 
 #include "include/core/SkPath.h"
-#include "include/core/SkSpan.h"
 
 #include <optional>
+#include <span>
 #include <vector>
 
 namespace {
 
-template <typename T> bool span_equal(SkSpan<T> a, SkSpan<T> b) {
+template <typename T> bool span_equal(std::span<T> a, std::span<T> b) {
     if (a.size() != b.size()) {
         return false;
     }
@@ -73,8 +73,8 @@ std::optional<SkPath> Interpolate(const SkPath& from, const SkPath& to, float t)
     // note, if from and to have different fill-types, that's up to the client to deal with.
     const SkPathFillType fillType = from.getFillType();
 
-    const SkSpan<const SkPoint> fromPts = from.points(),
-                                  toPts = to.points();
+    const std::span<const SkPoint> fromPts = from.points(),
+                                     toPts = to.points();
 
     std::vector<SkPoint> dst(fromPts.size());
 

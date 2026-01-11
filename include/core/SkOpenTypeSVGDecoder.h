@@ -13,6 +13,7 @@
 #include "include/core/SkTypes.h"
 
 #include <memory>
+#include <span>
 
 class SkCanvas;
 
@@ -23,7 +24,7 @@ public:
      */
     virtual size_t approximateSize() = 0;
     virtual bool render(SkCanvas&, int upem, SkGlyphID glyphId,
-                        SkColor foregroundColor, SkSpan<SkColor> palette) = 0;
+                        SkColor foregroundColor, std::span<SkColor> palette) = 0;
     virtual ~SkOpenTypeSVGDecoder() = default;
 };
 

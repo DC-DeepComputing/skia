@@ -47,7 +47,7 @@ void SkIRect::join(const SkIRect& r) {
 
 /////////////////////////////////////////////////////////////////////////////
 
-std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points) {
+std::optional<SkRect> SkRect::Bounds(std::span<const SkPoint> points) {
     if (points.empty()) {
         return SkRect::MakeEmpty();
     }
@@ -118,7 +118,7 @@ std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points) {
     return {};
 }
 
-bool SkRect::setBoundsCheck(SkSpan<const SkPoint> pts) {
+bool SkRect::setBoundsCheck(std::span<const SkPoint> pts) {
     if (auto bounds = Bounds(pts)) {
         *this = bounds.value();
         return true;
@@ -128,7 +128,7 @@ bool SkRect::setBoundsCheck(SkSpan<const SkPoint> pts) {
     }
 }
 
-void SkRect::setBoundsNoCheck(SkSpan<const SkPoint> pts) {
+void SkRect::setBoundsNoCheck(std::span<const SkPoint> pts) {
     if (auto bounds = Bounds(pts)) {
         *this = bounds.value();
     } else {

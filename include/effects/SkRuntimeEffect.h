@@ -31,6 +31,7 @@
 #include <cstring>
 #include <memory>
 #include <optional>
+#include <span>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -217,7 +218,7 @@ public:
                                size_t childCount,
                                const SkMatrix* localMatrix = nullptr) const;
     sk_sp<SkShader> makeShader(sk_sp<const SkData> uniforms,
-                               SkSpan<const ChildPtr> children,
+                               std::span<const ChildPtr> children,
                                const SkMatrix* localMatrix = nullptr) const;
 
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms) const;
@@ -225,10 +226,10 @@ public:
                                          sk_sp<SkColorFilter> children[],
                                          size_t childCount) const;
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms,
-                                         SkSpan<const ChildPtr> children) const;
+                                         std::span<const ChildPtr> children) const;
 
     sk_sp<SkBlender> makeBlender(sk_sp<const SkData> uniforms,
-                                 SkSpan<const ChildPtr> children = {}) const;
+                                 std::span<const ChildPtr> children = {}) const;
 
     /**
      * Creates a new Runtime Effect patterned after an already-existing one. The new shader behaves
@@ -255,8 +256,8 @@ public:
     // provide an SkData of this size, containing values for all of those variables.
     size_t uniformSize() const;
 
-    SkSpan<const Uniform> uniforms() const { return SkSpan(fUniforms); }
-    SkSpan<const Child> children() const { return SkSpan(fChildren); }
+    std::span<const Uniform> uniforms() const { return fUniforms; }
+    std::span<const Child> children() const { return fChildren; }
 
     // Returns pointer to the named uniform variable's description, or nullptr if not found
     const Uniform* findUniform(std::string_view name) const;
@@ -461,7 +462,7 @@ public:
     // Get access to the collated uniforms and children (in the order expected by APIs like
     // makeShader on the effect):
     sk_sp<const SkData> uniforms() const { return fUniforms; }
-    SkSpan<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
+    std::span<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
 
     // Build methods, at this point checks are made to ensure the SkSL entry point `main` is correct
     sk_sp<SkShader> makeShader(const SkMatrix* localMatrix = nullptr) const;

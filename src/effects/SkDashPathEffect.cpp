@@ -28,12 +28,13 @@
 #include <cstdint>
 #include <cstring>
 #include <optional>
+#include <span>
 
 class SkPathBuilder;
 
 using namespace skia_private;
 
-SkDashImpl::SkDashImpl(SkSpan<const SkScalar> intervals, SkScalar phase)
+SkDashImpl::SkDashImpl(std::span<const SkScalar> intervals, SkScalar phase)
         : fIntervals(intervals.size())
         , fPhase(0)
         , fInitialDashLength(-1)
@@ -394,7 +395,7 @@ sk_sp<SkFlattenable> SkDashImpl::CreateProc(SkReadBuffer& buffer) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkPathEffect> SkDashPathEffect::Make(SkSpan<const SkScalar> intervals, SkScalar phase) {
+sk_sp<SkPathEffect> SkDashPathEffect::Make(std::span<const SkScalar> intervals, SkScalar phase) {
     if (!SkDashPath::ValidDashPath(phase, intervals)) {
         return nullptr;
     }
