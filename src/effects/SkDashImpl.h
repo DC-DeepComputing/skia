@@ -8,15 +8,15 @@
 #ifndef SkDashImpl_DEFINED
 #define SkDashImpl_DEFINED
 
-#include "include/core/SkSpan.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkPathEffectBase.h"
 
 #include <optional>
+#include <span>
 
 class SkDashImpl : public SkPathEffectBase {
 public:
-    SkDashImpl(SkSpan<const SkScalar> intervals, SkScalar phase);
+    SkDashImpl(std::span<const SkScalar> intervals, SkScalar phase);
 
 protected:
     void flatten(SkWriteBuffer&) const override;

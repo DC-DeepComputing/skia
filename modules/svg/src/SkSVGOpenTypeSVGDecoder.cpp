@@ -15,7 +15,6 @@
 #include "include/core/SkOpenTypeSVGDecoder.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -31,6 +30,7 @@
 #include <array>
 #include <cstring>
 #include <memory>
+#include <span>
 #include <utility>
 
 using namespace skia_private;
@@ -134,7 +134,7 @@ size_t SkSVGOpenTypeSVGDecoder::approximateSize() {
 }
 
 bool SkSVGOpenTypeSVGDecoder::render(SkCanvas& canvas, int upem, SkGlyphID glyphId,
-                                     SkColor foregroundColor, SkSpan<SkColor> palette) {
+                                     SkColor foregroundColor, std::span<SkColor> palette) {
     SkSize emSize = SkSize::Make(SkScalar(upem), SkScalar(upem));
     fSkSvg->setContainerSize(emSize);
 

@@ -15,7 +15,6 @@
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
-#include "include/private/base/SkSpan_impl.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
@@ -25,6 +24,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <span>
 #include <vector>
 
 #include "include/sksl/SkSLVersion.h"
@@ -64,7 +64,7 @@ public:
     using UniformsCallback = std::function<sk_sp<const SkData>(const UniformsCallbackContext&)>;
     static sk_sp<SkShader> MakeDeferredShader(const SkRuntimeEffect* effect,
                                               UniformsCallback uniformsCallback,
-                                              SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                                              std::span<const SkRuntimeEffect::ChildPtr> children,
                                               const SkMatrix* localMatrix = nullptr);
 
     // Helper function when creating an effect for a GrSkSLFP that verifies an effect will
@@ -136,14 +136,14 @@ public:
 
     // If there are layout(color) uniforms then this performs color space transformation on the
     // color values and returns a new SkData. Otherwise, the original data is returned.
-    static sk_sp<const SkData> TransformUniforms(SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+    static sk_sp<const SkData> TransformUniforms(std::span<const SkRuntimeEffect::Uniform> uniforms,
                                                  sk_sp<const SkData> originalData,
                                                  const SkColorSpaceXformSteps&);
-    static sk_sp<const SkData> TransformUniforms(SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+    static sk_sp<const SkData> TransformUniforms(std::span<const SkRuntimeEffect::Uniform> uniforms,
                                                  sk_sp<const SkData> originalData,
                                                  const SkColorSpace* dstCS);
-    static SkSpan<const float> UniformsAsSpan(
-        SkSpan<const SkRuntimeEffect::Uniform> uniforms,
+    static std::span<const float> UniformsAsSpan(
+        std::span<const SkRuntimeEffect::Uniform> uniforms,
         sk_sp<const SkData> originalData,
         bool alwaysCopyIntoAlloc,
         const SkColorSpace* destColorSpace,
@@ -156,7 +156,7 @@ public:
                                  const SkRuntimeEffect* effect,
                                  skia_private::TArray<SkRuntimeEffect::ChildPtr>* children);
     static void WriteChildEffects(SkWriteBuffer& buffer,
-                                  SkSpan<const SkRuntimeEffect::ChildPtr> children);
+                                  std::span<const SkRuntimeEffect::ChildPtr> children);
 
     static bool UsesColorTransform(const SkRuntimeEffect* effect) {
         return effect->usesColorTransform();
@@ -213,8 +213,8 @@ public:
     // just override the paint color here. See also: SkImageShader::appendStages.
     RuntimeEffectRPCallbacks(const SkStageRec& s,
                              const SkShaders::MatrixRec& m,
-                             SkSpan<const SkRuntimeEffect::ChildPtr> c,
-                             SkSpan<const SkSL::SampleUsage> u)
+                             std::span<const SkRuntimeEffect::ChildPtr> c,
+                             std::span<const SkSL::SampleUsage> u)
             : fStage{s.fPipeline,
                      s.fAlloc,
                      s.fDstColorType,
@@ -241,8 +241,8 @@ private:
 
     const SkStageRec fStage;
     const SkShaders::MatrixRec& fMatrix;
-    SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
-    SkSpan<const SkSL::SampleUsage> fSampleUsages;
+    std::span<const SkRuntimeEffect::ChildPtr> fChildren;
+    std::span<const SkSL::SampleUsage> fSampleUsages;
 };
 
 #endif  // SkRuntimeEffectPriv_DEFINED
