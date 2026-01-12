@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be1f72b_7567e1c3",
+        "filename": "infra/bots/assets/clang_mac_universal/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-01-12T19:14:06Z",
+      "side": 1,
+      "message": "This does not seem to be the case.  I\u0027m working on adding tasks for our new M4 Mac machines[1] and the Vello builds are failing with `Bad CPU type in executable` when running this command: `bazelisk build //third_party/vello:vello_rust --platforms\u003d//bazel/platform:mac_arm64_hermetic --cc_output_directory_tag\u003dmac_arm64 --define\u003dVELLO_MSL_SHADERS\u003dtrue`[2].  Reverting this change makes those builds succeed.\n\n[1] https://skia-review.googlesource.com/c/skia/+/1089936\n[2] https://task-scheduler.skia.org/job/AN4GfCTVxhPZwtgK1",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 45
+      },
+      "revId": "01233f0f12e54e862d151fa1e09c57d1889cce7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
