@@ -19,10 +19,10 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/image/SkImage_Base.h"
 
 #include <cstddef>
@@ -169,31 +169,26 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
     return img;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-sk_sp<SkImage> SkMakeImageFromRasterBitmapPriv(const SkBitmap& bm, SkCopyPixelsMode cpm,
-                                               uint32_t idForCopy) {
-    if (kAlways_SkCopyPixelsMode == cpm || (!bm.isImmutable() && kNever_SkCopyPixelsMode != cpm)) {
-        SkPixmap pmap;
-        if (bm.peekPixels(&pmap)) {
-            return MakeRasterCopyPriv(pmap, idForCopy);
-        } else {
-            return sk_sp<SkImage>();
-        }
-    }
-    return sk_make_sp<SkImage_Raster>(bm, kNever_SkCopyPixelsMode == cpm);
-}
-
-sk_sp<SkImage> SkMakeImageFromRasterBitmap(const SkBitmap& bm, SkCopyPixelsMode cpm) {
+sk_sp<SkImage> SkImage_Raster::MakeFromBitmap(const SkBitmap& bm, SkCopyPixelsMode cpm) {
     if (!SkImageInfoIsValid(bm.info()) || bm.rowBytes() < bm.info().minRowBytes()) {
         return nullptr;
     }
 
-    return SkMakeImageFromRasterBitmapPriv(bm, cpm, kNeedNewImageUniqueID);
+    if (SkCopyPixelsMode::kAlways == cpm ||
+        (!bm.isImmutable() && SkCopyPixelsMode::kNever != cpm)) {
+        SkPixmap pmap;
+        if (bm.peekPixels(&pmap)) {
+            return SkImages::RasterFromPixmapCopy(pmap);
+        } else {
+            return sk_sp<SkImage>();
+        }
+    }
+    return sk_make_sp<SkImage_Raster>(bm, SkCopyPixelsMode::kNever == cpm);
 }
 
-const SkPixelRef* SkBitmapImageGetPixelRef(const SkImage* image) {
-    return ((const SkImage_Raster*)image)->getPixelRef();
+const SkPixelRef* SkImage_Raster::GetPixelRef(const SkImage* image) {
+    SkASSERT(as_IB(image)->type() == SkImage_Base::Type::kRaster);
+    return static_cast<const SkImage_Raster*>(image)->getPixelRef();
 }
 
 bool SkImage_Raster::onAsLegacyBitmap(GrDirectContext*, SkBitmap* bitmap) const {
