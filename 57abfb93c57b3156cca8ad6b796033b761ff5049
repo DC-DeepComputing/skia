@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf625617_c86428b0",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-01-12T20:01:46Z",
+      "side": 1,
+      "message": "This change should not be part of this CL. I used it only to be able to use the streamed decoding API from BMP decoder on image crate but to avoid breaking Chromium I think that we will need to update image crate dependency in a separated CL and also in Chromium Cargo.toml",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 53
+      },
+      "revId": "57abfb93c57b3156cca8ad6b796033b761ff5049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
