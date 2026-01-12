@@ -51,6 +51,24 @@
       "parentUuid": "6311e3de_2171d816",
       "revId": "c389a37016c2475187f2548938d720cb5f7af289",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4444f464_027d6a48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-01-12T15:33:15Z",
+      "side": 1,
+      "message": "That is an internal only chat room unfortunately. Any discussion going forward should be in the bug.\n\nYour Chrome prototype CL can mostly land already. The D3D/Dcomp backings have their wgpu::Texture to set GUID on. It\u0027s just WrappedGraphiteTextureBacking that doesn\u0027t have the wgpu::Texture available in Chrome.\n\nOnce WrappedGraphiteTextureBacking creation is modified to create a wgpu::Texture directly we can add the GUID at the same time. I can try and look at this soon if no one else is working on it.",
+      "parentUuid": "622f14fe_912000c7",
+      "revId": "c389a37016c2475187f2548938d720cb5f7af289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
