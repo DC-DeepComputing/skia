@@ -31,6 +31,7 @@ rust_static_library(
     srcs = [":rs_srcs"],
     crate_root = "FFI.rs",
     edition = "2021",
+    rustc_flags = ["-Dwarnings"],
     visibility = [
         "//experimental/rust_bmp:__subpackages__",
     ],
