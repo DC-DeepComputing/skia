@@ -46,6 +46,30 @@
       },
       "revId": "fdb14eaa58c6c91e042fa0d52907d431bdc63876",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df364e0b_e2ae71eb",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-12T15:16:52Z",
+      "side": 1,
+      "message": "Why not just make this a member function of SkImage_Raster then?",
+      "parentUuid": "3a624f9b_1732d111",
+      "range": {
+        "startLine": 364,
+        "startChar": 27,
+        "endLine": 364,
+        "endChar": 41
+      },
+      "revId": "fdb14eaa58c6c91e042fa0d52907d431bdc63876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
