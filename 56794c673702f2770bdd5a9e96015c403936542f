@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c53b803_5bee27d7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2352,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-12T17:34:55Z",
+      "side": 1,
+      "message": "So I guess there is two options here:\n\n1) use std::tie\n```\nSkRect drawDst;\nSkShader shader;\nstd::tie(drawDst, shader) \u003d SkImageShader::MakeForDrawRect(\n```\n\nor\n\n2) if we think using tie is too \"old c++\" and ugly then we at a minimum need to make the variable name much more explicit of its type. So maybe `drawDstRect`",
+      "parentUuid": "56cf24e3_95d832b3",
+      "range": {
+        "startLine": 2352,
+        "startChar": 8,
+        "endLine": 2352,
+        "endChar": 12
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46673c52_170bf86e",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 7
