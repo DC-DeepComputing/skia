@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24526ca3_06049c7d",
+        "filename": "tests/sksl/intrinsics/BitCount.skrp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-12T15:10:46Z",
+      "side": 1,
+      "message": "Are these errors expected?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "37a20248_ad0af183",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/sksl/intrinsics/BitCount.skrp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 2,
+                "endChar": 0
+              },
+              "replacement": "half4 main() {\n    const int a \u003d 0x12345678;\n    const uint b \u003d 0x87654321u;\n"
+            },
+            {
+              "path": "tests/sksl/intrinsics/BitCount.skrp",
+              "range": {
+                "startLine": 3,
+                "startChar": 0,
+                "endLine": 46,
+                "endChar": 0
+              },
+              "replacement": "    half4 result;\n    result.x    \u003d half(bitCount(a))        + half(bitCount(b));\n    result.xy   \u003d half2(bitCount(int2(a))) + half2(bitCount(uint2(b)));\n    result.xyz  \u003d half3(bitCount(int3(a))) + half3(bitCount(uint3(b)));\n    result.xyzw \u003d half4(bitCount(int4(a))) + half4(bitCount(uint4(b)));\n    return result;\n}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcf6a8f5_f0f9232e",
+        "filename": "tests/sksl/intrinsics/FindMSB.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-12T15:10:46Z",
+      "side": 1,
+      "message": "I think this test (and the original) is wrong? It should be 31 - clz or something like that? \n\nThis is because, unlike HLSL and GLSL, Metal has c-like __clz and __ctz instead of firstbithigh and firstbitlow.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5a38e2ab_9b2c021d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/sksl/intrinsics/FindMSB.metal",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "    _out.sk_FragColor.x \u003d half((_skTemp0 \u003d (_uniforms.a), _skTemp1 \u003d (select(_skTemp0, ~_skTemp0, _skTemp0 \u003c 0)), select(31 - int(clz(_skTemp1)), int(-1), _skTemp1 \u003d\u003d int(0)))) + half((_skTemp2 \u003d (_uniforms.b), select(31 - int(clz(_skTemp2)), int(-1), _skTemp2 \u003d\u003d uint(0))));\n    _out.sk_FragColor.xy \u003d half2((_skTemp3 \u003d (int2(_uniforms.a)), select(31 - int2(clz(_skTemp3)), int2(-1), _skTemp3 \u003d\u003d int2(0)))) + half2((_skTemp4 \u003d (uint2(_uniforms.b)), select(31 - int2(clz(_skTemp4)), int2(-1), _skTemp4 \u003d\u003d uint2(0))));\n    _out.sk_FragColor.xyz \u003d half3((_skTemp5 \u003d (int3(_uniforms.a)), select(31 - int3(clz(_skTemp5)), int3(-1), _skTemp5 \u003d\u003d int3(0)))) + half3((_skTemp6 \u003d (uint3(_uniforms.b)), select(31 - int3(clz(_skTemp6)), int3(-1), _skTemp6 \u003d\u003d uint3(0))));\n    _out.sk_FragColor \u003d half4((_skTemp7 \u003d (int4(_uniforms.a)), select(31 - int4(clz(_skTemp7)), int4(-1), _skTemp7 \u003d\u003d int4(0)))) + half4((_skTemp8 \u003d (uint4(_uniforms.b)), select(31 - int4(clz(_skTemp8)), int4(-1), _skTemp8 \u003d\u003d uint4(0))));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed093692_6c037785",
+        "filename": "tests/sksl/intrinsics/FindMSB.skrp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-12T15:10:46Z",
+      "side": 1,
+      "message": "And here?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 9
+      },
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

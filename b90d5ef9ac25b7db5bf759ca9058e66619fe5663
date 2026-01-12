@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01dc4638_e27820e1",
+        "filename": "resources/sksl/intrinsics/BitCount.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-12T15:10:46Z",
+      "side": 1,
+      "message": "I assume the bit counts are being cast to half so that the results can be visually debugged?",
+      "parentUuid": "61c5b72e_3c63c9e1",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b90d5ef9ac25b7db5bf759ca9058e66619fe5663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94f531a6_70205fdd",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 2
