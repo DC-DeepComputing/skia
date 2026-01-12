@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e683626_f6047d14",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-12T17:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0df77751_a52334a2",
+      "range": {
+        "startLine": 520,
+        "startChar": 9,
+        "endLine": 520,
+        "endChar": 10
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d09e8b2c_cc09ca94",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-12T15:16:52Z",
       "side": 1,
       "message": "lets not use auto here. It is not obvious at all what drawDst is as a return value",
+      "range": {
+        "startLine": 2352,
+        "startChar": 8,
+        "endLine": 2352,
+        "endChar": 12
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56cf24e3_95d832b3",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2352,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-12T17:18:02Z",
+      "side": 1,
+      "message": "How is this? I also tried using `result.first` and `result.second` but that felt more awkward.",
+      "parentUuid": "d09e8b2c_cc09ca94",
       "range": {
         "startLine": 2352,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a0efb0_348edbea",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2755,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-12T17:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46673c52_170bf86e",
+      "range": {
+        "startLine": 2755,
+        "startChar": 12,
+        "endLine": 2755,
+        "endChar": 16
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd8a147b_2c6c90a4",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-01-12T15:16:52Z",
       "side": 1,
       "message": "why make this a static and not a member function? Especially since you\u0027re asserting the image is a Raster image",
+      "range": {
+        "startLine": 117,
+        "startChar": 29,
+        "endLine": 117,
+        "endChar": 40
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea40e2c1_f10fd8d8",
+        "filename": "src/image/SkImage_Raster.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-12T17:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd8a147b_2c6c90a4",
       "range": {
         "startLine": 117,
         "startChar": 29,
