@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dad896a_fb77449f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-01-12T08:59:15Z",
+      "side": 1,
+      "message": "Could we go head to land this change? It\u0027s not just for Dawn/GL but also could benefit Dawn/D3D11 to avoid map\u0027s lock contentions.",
+      "revId": "6a43cb41c2dc8702ea65d33ef6d69fc5a5fc22e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
