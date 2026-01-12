@@ -50,7 +50,6 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixPriv.h"
@@ -61,6 +60,7 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/image/SkSurface_Base.h"
+#include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
 
@@ -2349,14 +2349,15 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
     if (realPaint.getMaskFilter() && this->topDevice()->useDrawCoverageMaskForMaskFilters()) {
         // Route mask-filtered drawImages to drawRect() to use the auto-layer for mask filters,
         // which require all shading to be encoded in the paint.
-        SkRect drawDst = SkModifyPaintAndDstForDrawImageRect(
-                image, sampling, src, dst, constraint == kStrict_SrcRectConstraint, &realPaint);
-        if (drawDst.isEmpty()) {
-            return;
-        } else {
-            this->drawRect(drawDst, realPaint);
+        std::pair<SkRect, sk_sp<SkShader>> result = SkImageShader::MakeForDrawRect(
+                image, realPaint, sampling, src, dst, constraint == kStrict_SrcRectConstraint);
+        auto [drawDst, shader] = result;
+        if (drawDst.isEmpty() || !shader) {
             return;
         }
+        realPaint.setShader(std::move(shader));
+        this->drawRect(drawDst, realPaint);
+        return;
     }
 
     auto layer = this->aboutToDraw(realPaint, &dst,
@@ -2751,14 +2752,18 @@ void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count,
         int dstClipIndex = 0;
         for (int i = 0; i < count; ++i) {
             SkPaint imagePaint = realPaint;
-            SkRect drawDst = SkModifyPaintAndDstForDrawImageRect(
-                                imageSet[i].fImage.get(), sampling,
-                                imageSet[i].fSrcRect, imageSet[i].fDstRect,
-                                constraint == kStrict_SrcRectConstraint, &imagePaint);
-            if (drawDst.isEmpty()) {
+            std::pair<SkRect, sk_sp<SkShader>> result =
+                    SkImageShader::MakeForDrawRect(imageSet[i].fImage.get(),
+                                                   imagePaint,
+                                                   sampling,
+                                                   imageSet[i].fSrcRect,
+                                                   imageSet[i].fDstRect,
+                                                   constraint == kStrict_SrcRectConstraint);
+            auto [drawDst, shader] = result;
+            if (drawDst.isEmpty() || !shader) {
                 return;
             }
-
+            imagePaint.setShader(std::move(shader));
             auto layer = this->aboutToDraw(imagePaint, &drawDst);
             if (layer) {
                 // Since we can't call mapRect to apply any preview matrix and drawEdgeAAQuad
