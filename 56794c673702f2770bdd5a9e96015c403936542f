@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af99664b_23fc65a8",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2352,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-13T15:29:59Z",
+      "side": 1,
+      "message": "Done. I went with the drawDstRect approach. The tie approach felt even more verbose.",
+      "parentUuid": "1c53b803_5bee27d7",
+      "range": {
+        "startLine": 2352,
+        "startChar": 8,
+        "endLine": 2352,
+        "endChar": 12
+      },
+      "revId": "56794c673702f2770bdd5a9e96015c403936542f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46673c52_170bf86e",
