@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e597a0f3_7a1b778c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-13T21:17:39Z",
+      "side": 1,
+      "message": "Note to self: https://github.com/bazelbuild/buildtools/blob/f026de8858b32ab9a8f884197e6309837b8d629f/tables/tables.go#L176 controls the order.",
+      "revId": "87376a936c929b84d39aec1c0fdfb8206d355965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f955cf2_933650b2",
