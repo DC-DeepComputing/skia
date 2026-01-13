@@ -39,6 +39,30 @@
       },
       "revId": "87376a936c929b84d39aec1c0fdfb8206d355965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3792e85_79fe74b2",
+        "filename": "src/pdf/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-13T21:18:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f955cf2_933650b2",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 23
+      },
+      "revId": "87376a936c929b84d39aec1c0fdfb8206d355965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
