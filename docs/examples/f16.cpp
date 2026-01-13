@@ -405,7 +405,7 @@ static SkImageInfo make_f16_info(SkISize size) {
 }
 
 void draw(SkCanvas* canvas) {
-    std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(SkData::MakeWithoutCopy(data0, data0length)));
+    auto codec = SkPngDecoder::Decode(SkData::MakeWithoutCopy(data0, data0length), nullptr);
     if (!codec) {
         return;
     }
