@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb56bd9_a4dfe784",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-13T17:01:26Z",
+      "side": 1,
+      "message": "Only once you are done reviewing https://skia-review.googlesource.com/c/skia/+/1137698 and https://skia-review.googlesource.com/c/skia/+/1089276, TAL at this CL.",
+      "revId": "396e46fe753c3f786382d2e2ea2a31fc7c847693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
