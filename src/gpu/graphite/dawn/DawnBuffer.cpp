@@ -92,7 +92,8 @@ void log_map_error(wgpu::MapAsyncStatus status, wgpu::StringView message) {
 sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                    size_t size,
                                    BufferType type,
-                                   AccessPattern accessPattern) {
+                                   AccessPattern accessPattern,
+                                   std::string_view label) {
     if (size <= 0) {
         return nullptr;
     }
@@ -171,17 +172,19 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         SkASSERT(mappedAtCreationPtr);
     }
 
-    return sk_sp<DawnBuffer>(
-            new DawnBuffer(sharedContext, size, std::move(buffer), mappedAtCreationPtr));
+    return sk_sp<DawnBuffer>(new DawnBuffer(
+            sharedContext, size, std::move(buffer), mappedAtCreationPtr, std::move(label)));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        size_t size,
                        wgpu::Buffer buffer,
-                       void* mappedAtCreationPtr)
+                       void* mappedAtCreationPtr,
+                       std::string_view label)
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
+                 std::move(label),
                  /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
 #if defined(__EMSCRIPTEN__)
                  // prepareForReturnToCache only needs to be called for a buffer that is mappable
