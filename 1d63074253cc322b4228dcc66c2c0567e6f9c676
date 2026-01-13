@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d8b324_66fb9e52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-13T16:51:22Z",
+      "side": 1,
+      "message": "PTAL - the change itself is not that large or complicated, but the commit msg is long in order to explain how this is a step towards enforcing threadsafe label updates and how that is step 1 of consolidating to using 1 global threadsafe resource cache.",
+      "revId": "1d63074253cc322b4228dcc66c2c0567e6f9c676",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
