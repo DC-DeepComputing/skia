@@ -22,6 +22,30 @@
       },
       "revId": "01233f0f12e54e862d151fa1e09c57d1889cce7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7537b365_de40d949",
+        "filename": "infra/bots/assets/clang_mac_universal/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-13T13:27:20Z",
+      "side": 1,
+      "message": "https://applevis.com/forum/macos-mac-apps/using-intel-based-apps-apple-silicon-macs might be what we need to do? AFAICT, M4 Macs should still be compatible with intel binaries",
+      "parentUuid": "5be1f72b_7567e1c3",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 45
+      },
+      "revId": "01233f0f12e54e862d151fa1e09c57d1889cce7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
