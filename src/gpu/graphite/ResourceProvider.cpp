@@ -146,18 +146,12 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
     if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
-        // Shareable resource labels should only be set upon creation.
-        // TODO(b/387505250):  Move this assertion and label update to findAndRefResource(...)
-        // once that method is modified to take in a label and update non-shareable resources.
-        SkASSERT(shareable != Shareable::kYes || resource->getLabel() == label);
-        resource->setLabel(std::move(label));
+                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
-    if (auto tex = this->createTexture(dimensions, info, label)) {
+    if (auto tex = this->createTexture(dimensions, info, std::move(label))) {
         fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
-        tex->setLabel(std::move(label));
         return tex;
     }
 
@@ -190,7 +184,8 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         }
     }
 
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource =
+                fResourceCache->findAndRefResource(key, kBudgeted, kShareable, /*label=*/"")) {
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 
@@ -259,12 +254,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
     }
 
     if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
-        // Shareable resource labels should only be set upon creation.
-        // TODO(b/387505250):  Move this assertion and label update to findAndRefResource(...)
-        // once that method is modified to take in a label and update non-shareable resources.
-        SkASSERT(shareable != Shareable::kYes || resource->getLabel() == label);
-        resource->setLabel(std::move(label));
+            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 
