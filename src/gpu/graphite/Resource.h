@@ -268,21 +268,6 @@ public:
 
     const char* getLabel() const { return fLabel.c_str(); }
 
-    // We allow the label on a Resource to change when used for a different function. For example
-    // when reusing a scratch Texture we can change the label to match callers current use.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
-    }
-
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -316,6 +301,27 @@ protected:
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }
+
+    // We allow the label on a Resource to change when used for a different function (e.g. when
+    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
+    // This method should only be called internally or by the ResourceCache when updating
+    // non-shareable resource labels  when returning them from the cache.
+    //
+    // TODO(b/387505250): Separate the updating of the backend label to adhere to threadsafe label
+    // update model outlined in Resource.h.
+    friend class ResourceCache;
+    void setLabel(std::string_view label) {
+        if (fLabel == label) {
+            return;
+        }
+
+        fLabel = label;
+
+        if (!fLabel.empty()) {
+            const std::string fullLabel = "Skia_" + fLabel;
+            this->setBackendLabel(fullLabel.c_str());
+        }
+    }
 
     // Needs to be protected for DawnBuffer's emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
