@@ -82,9 +82,11 @@ skia_cc_library(
         "//src/utils:clip_stack_utils",
         "//src/utils:float_to_decimal",
         "//modules/skcms",
-        "@zlib",
         # TODO(kjlubick) Remove this dependency after migrating clients
         ":jpeg_helpers",
+    ],
+    implementation_deps = [
+        "@zlib",
     ] +
     # We have this harfbuzz dependency all by itself because we need to turn this into a
     # select statement when rolling into G3.
