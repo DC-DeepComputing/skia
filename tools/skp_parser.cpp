@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkCodec.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/utils/SkNullCanvas.h"
 #include "src/utils/SkJSONWriter.h"
@@ -13,10 +17,17 @@
 #include "tools/debugger/DebugCanvas.h"
 
 #include <iostream>
+#include <memory>
 
 #ifdef SK_BUILD_FOR_WIN
 #include <fcntl.h>
 #include <io.h>
+#endif
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
 #endif
 
 /*
@@ -47,7 +58,22 @@ int main(int argc, char** argv) {
         SkDebugf("Bad file: '%s'\n", argv[1]);
         return 2;
     }
-    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input);
+    SkDeserialProcs procs;
+    procs.fImageDataProc =
+            [](sk_sp<SkData> data, std::optional<SkAlphaType> at, void*) -> sk_sp<SkImage> {
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+        std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+        auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+        auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+#endif
+        if (!codec) {
+            SkDebugf("Invalid png data detected\n");
+            return nullptr;
+        }
+        return SkCodecs::DeferredImage(std::move(codec), at);
+    };
+    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input, &procs);
     if (!pic) {
         SkDebugf("Bad skp: '%s'\n", argv[1]);
         return 3;
