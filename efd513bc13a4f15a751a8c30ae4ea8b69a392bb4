@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a1b128c_eab7d285",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-13T23:15:19Z",
+      "side": 1,
+      "message": "Towards removing the `skhdr::Agtm` interface.",
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
