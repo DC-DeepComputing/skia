@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/vk/VulkanPreferredFeatures.h"
 #include "include/private/base/SkMacros.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "tools/gpu/vk/VkTestMemoryAllocator.h"
@@ -87,8 +88,8 @@ static uint32_t remove_patch_version(uint32_t specVersion) {
 
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
 static int should_include_debug_layer(const char* layerName,
-                                       uint32_t layerCount, VkLayerProperties* layers,
-                                       uint32_t version) {
+                                      uint32_t layerCount, VkLayerProperties* layers,
+                                      uint32_t version) {
     for (uint32_t i = 0; i < layerCount; ++i) {
         if (!strcmp(layerName, layers[i].layerName)) {
             // Since the layers intercept the vulkan calls and forward them on, we need to make sure
@@ -197,37 +198,37 @@ static bool should_include_extension(const char* extensionName) {
             VK_ARM_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
             VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME,
             VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME,
-            VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+            VK_EXT_DEBUG_UTILS_EXTENSION_NAME, // nikipre: add this one
             VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
             VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME,
             VK_EXT_EXTENDED_DYNAMIC_STATE_2_EXTENSION_NAME,
             VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME,
             VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME,
             VK_EXT_HOST_IMAGE_COPY_EXTENSION_NAME,
-            VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
-            VK_EXT_LAYER_SETTINGS_EXTENSION_NAME,
-            VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
+            VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME, // nikipre: ganesh only?
+            VK_EXT_LAYER_SETTINGS_EXTENSION_NAME, // nikipre: add this
+            VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, // nikipre: ganesh only?
             VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME,
             VK_EXT_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
             VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
             VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
+            VK_KHR_BIND_MEMORY_2_EXTENSION_NAME, // nikipre: promoted to 1.1
             VK_KHR_COPY_COMMANDS_2_EXTENSION_NAME,
-            VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME,
+            VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME, // nikipre:  promoted to 1.1
             VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME,
+            VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME, //  promoted to 1.1, remove
+            VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME, //  promoted to 1.1, remove
             VK_KHR_FORMAT_FEATURE_FLAGS_2_EXTENSION_NAME,
-            VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME,
-            VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
-            VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE1_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE2_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE3_EXTENSION_NAME,
+            VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME, // promoted to 1.1, remove
+            VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, //promoted to 1.1
+            VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME, // nikipre: only here / add this. promoted to 1.2.
+            VK_KHR_MAINTENANCE1_EXTENSION_NAME, // promoted 1.1
+            VK_KHR_MAINTENANCE2_EXTENSION_NAME,// promoted 1.1
+            VK_KHR_MAINTENANCE3_EXTENSION_NAME,// promoted 1.1
             VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
             VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME,
-            VK_KHR_SURFACE_EXTENSION_NAME,
-            VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+            VK_KHR_SURFACE_EXTENSION_NAME, // add this
+            VK_KHR_SWAPCHAIN_EXTENSION_NAME, // add this
             // Below are all platform specific extensions. The name macros like we use above are
             // all defined in platform specific vulkan headers. We currently don't include these
             // headers as they are a little bit of a pain (e.g. windows headers requires including
@@ -235,9 +236,10 @@ static bool should_include_extension(const char* extensionName) {
             // just listing the strings these macros are defined to. This really shouldn't cause
             // any long term issues as the chances of the strings connected to the name macros
             // changing is next to zero.
+            // nikipre: add these 3
             "VK_KHR_win32_surface",  // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
             "VK_KHR_xcb_surface",    // VK_KHR_XCB_SURFACE_EXTENSION_NAME,
-            "VK_ANDROID_external_memory_android_hardware_buffer",
+            // "VK_ANDROID_external_memory_android_hardware_buffer", // nikipre: done
             // VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME,
             "VK_KHR_android_surface",  // VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
     };
@@ -788,6 +790,21 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
 
     TArray<VkLayerProperties> deviceLayers;
     TArray<VkExtensionProperties> deviceExtensions;
+
+    // TODO: Just use VulkanPreferredFeatures here.
+    // skgpu::VulkanPreferredFeatures skiaFeatures;
+    // skiaFeatures.init(apiVersion);
+    // // For Skia testing, we do not need to add additional instance extensions to the app.
+    // skiaFeatures.addToInstanceExtensions(...);
+    // // Create the instance, choose physical device, query available extensions, decide on
+    // // device features to query.
+    // skiaFeatures.addFeaturesToQuery(...);
+    // // Query features, decide on extensions and features to enable.
+    // skiaFeatures.addFeaturesToEnable(...);
+    // // create device.
+
+
+
     if (!init_device_extensions_and_layers(getProc, physDeviceVersion,
                                            inst, physDev,
                                            &deviceExtensions,
