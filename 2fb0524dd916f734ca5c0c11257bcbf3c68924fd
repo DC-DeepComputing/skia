@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "906c278c_3a5efe5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-13T16:52:16Z",
+      "side": 1,
+      "message": "Same as the parent CL (https://skia-review.googlesource.com/c/skia/+/1089276), just for Textures rather than Buffers.",
+      "revId": "2fb0524dd916f734ca5c0c11257bcbf3c68924fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
