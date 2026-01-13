@@ -148,32 +148,26 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     if (Resource* resource =
                 fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
         // Shareable resource labels should only be set upon creation.
-        if (shareable == Shareable::kYes) {
-            SkASSERT(resource->getLabel() == label);
-        } else {
-            resource->setLabel(std::move(label));
-        }
+        // TODO(b/387505250):  Move this assertion and label update to findAndRefResource(...)
+        // once that method is modified to take in a label and update non-shareable resources.
+        SkASSERT(shareable != Shareable::kYes || resource->getLabel() == label);
+        resource->setLabel(std::move(label));
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
-    auto tex = this->createTexture(dimensions, info);
-    if (!tex) {
-        return nullptr;
+    if (auto tex = this->createTexture(dimensions, info, label)) {
+        fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
+        tex->setLabel(std::move(label));
+        return tex;
     }
 
-    tex->setLabel(std::move(label));
-    fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
-
-    return tex;
+    return nullptr;
 }
 
 sk_sp<Texture> ResourceProvider::createWrappedTexture(const BackendTexture& backendTexture,
                                                       std::string_view label) {
-    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture);
-    if (texture) {
-        texture->setLabel(std::move(label));
-        SkASSERT(texture->ownership() == Ownership::kWrapped);
-    }
+    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture, std::move(label));
+    SkASSERT(!texture || texture->ownership() == Ownership::kWrapped);
     return texture;
 }
 
@@ -268,8 +262,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
             fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
         // Shareable resource labels should only be set upon creation.
         // TODO(b/387505250):  Move this assertion and label update to findAndRefResource(...)
-        // once that method is modified to take in a label and update non-shareable resources (and
-        // Texture labels are updated to be assigned upon construction like Buffers).
+        // once that method is modified to take in a label and update non-shareable resources.
         SkASSERT(shareable != Shareable::kYes || resource->getLabel() == label);
         resource->setLabel(std::move(label));
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
