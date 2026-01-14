@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ef689ad_1430c4ba",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-14T16:52:56Z",
+      "side": 1,
+      "message": "Any particular reason to avoid lazy?",
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce2e51f1_726a0b30",
         "filename": "modules/canvaskit/canvaskit_bindings.cpp",
         "patchSetId": 1
@@ -31,6 +48,30 @@
       "writtenOn": "2026-01-14T16:30:51Z",
       "side": 1,
       "message": "I wasn\u0027t sure if the copy was necessary or not, so I decided to be careful.",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ff96c0d_3ec45628",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-14T16:52:56Z",
+      "side": 1,
+      "message": "There is a `SkDeserialImageFromDataProc` but no `SkDeserialTypefaceFromDataProc`. Looks like at the moment the copy is needed.",
+      "parentUuid": "ce2e51f1_726a0b30",
       "range": {
         "startLine": 1238,
         "startChar": 50,
