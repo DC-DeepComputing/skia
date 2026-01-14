@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c48edf1_a044f47d",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3280,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-14T18:06:23Z",
+      "side": 1,
+      "message": "I think this is signed/unsigned as well. \n\nhttps://www.w3.org/TR/WGSL/#countOneBits-builtin",
+      "range": {
+        "startLine": 3279,
+        "startChar": 8,
+        "endLine": 3280,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c8368c92_2766a61c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 3279,
+                "startChar": 0,
+                "endLine": 3281,
+                "endChar": 0
+              },
+              "replacement": "        case k_bitCount_IntrinsicKind: {\n            // countOneBits returns a type matching its input, but bitCount in SkSL returns a\n            // signed type. Add a cast if needed.\n            std::string bitCount \u003d this-\u003eassembleSimpleIntrinsic(\"countOneBits\", call);\n            return arguments[0]-\u003etype().componentType().isSigned() ? bitCount :\n                    (to_wgsl_type(fContext, call.type()) + \"(\" + bitCount + \")\");\n        }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "298b61b82210fd33552dba3a142cbc4b2d84597c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
