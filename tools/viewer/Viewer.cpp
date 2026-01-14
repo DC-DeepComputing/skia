@@ -60,6 +60,7 @@
 #include "tools/Resources.h"
 #include "tools/RuntimeBlendUtils.h"
 #include "tools/SkMetaData.h"
+#include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/flags/CommonFlags.h"
 #include "tools/flags/CommonFlagsGanesh.h"
@@ -2046,7 +2047,8 @@ void Viewer::drawSlide(SkSurface* surface) {
         SkSerialProcs sProcs = serial_procs_using_png();
         auto data = picture->serialize(&sProcs);
         slideCanvas = recorderRestoreCanvas;
-        SkDeserialProcs dProcs = deserial_procs_using_png();
+        SkDeserialProcs dProcs;
+        ToolUtils::set_default_skp_deserial_procs(&dProcs);
         slideCanvas->drawPicture(SkPicture::MakeFromData(data.get(), &dProcs));
     }
 
