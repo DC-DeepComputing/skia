@@ -14,6 +14,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/docs/SkMultiPictureDocument.h"
@@ -67,18 +68,19 @@ ImageInfoNoColorspace toImageInfoNoColorspace(const SkImageInfo& ii) {
   return (ImageInfoNoColorspace){ii.width(), ii.height(), ii.colorType(), ii.alphaType()};
 }
 
-static sk_sp<SkImage> deserializeImage(sk_sp<SkData> data, std::optional<SkAlphaType>, void*) {
+static sk_sp<SkImage> deserializeImage(sk_sp<SkData> data, std::optional<SkAlphaType> at, void*) {
   std::unique_ptr<SkCodec> codec = DecodeImageData(std::move(data));
   if (!codec) {
     SkDebugf("Could not decode an image\n");
     return nullptr;
   }
-  sk_sp<SkImage> img = std::get<0>(codec->getImage());
-  if (!img) {
-    SkDebugf("Could not make an image from a codec\n");
-    return nullptr;
-  }
-  return img;
+  // Force the decode to happen instead of returning a lazy image.
+  return SkCodecs::DeferredImage(std::move(codec), at)->makeRasterImage(nullptr);
+}
+
+static sk_sp<SkTypeface> deserializeTypeface(const void* data, size_t length, void*) {
+    auto stream = SkMemoryStream::MakeCopy(data, length);
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), {});
 }
 
 static void register_typeface() {
@@ -403,6 +405,7 @@ class SkpDebugPlayer {
         register_typeface();
         SkDeserialProcs procs;
         procs.fImageDataProc = deserializeImage;
+        procs.fTypefaceProc = deserializeTypeface;
         // note overloaded = operator that actually does a move
         sk_sp<SkPicture> picture = SkPicture::MakeFromStream(stream, &procs);
         if (!picture) {

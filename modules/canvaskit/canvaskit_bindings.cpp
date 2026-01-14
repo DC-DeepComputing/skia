@@ -1221,26 +1221,26 @@ EMSCRIPTEN_BINDINGS(Skia) {
                  });
 #endif
 
-                 SkDeserialProcs dp;
-                 dp.fImageDataProc = [](sk_sp<SkData> bytes,
-                                        std::optional<SkAlphaType> at,
-                                        void* ctx) -> sk_sp<SkImage> {
+                 SkDeserialProcs dProcs;
+                 dProcs.fImageDataProc = [](sk_sp<SkData> bytes,
+                                            std::optional<SkAlphaType> at,
+                                            void*) -> sk_sp<SkImage> {
                      auto codec = DecodeImageData(bytes);
                      if (codec == nullptr) {
                          return nullptr;
                      }
-                     SkImageInfo info = codec->getInfo();
-                     if (at.has_value()) {
-                         info = info.makeAlphaType(*at);
-                     } else if (kUnpremul_SkAlphaType == info.alphaType()) {
-                         // Otherwise, prefer premul over unpremul (this produces better filtering
-                         // in general)
-                         info = info.makeAlphaType(kPremul_SkAlphaType);
-                     }
-                     return std::get<0>(codec->getImage(info));
+                     // Force the decode to happen instead of returning a lazy image.
+                     return SkCodecs::DeferredImage(std::move(codec), at)->makeRasterImage(nullptr);
                  };
 
-                 return SkPicture::MakeFromData(data.get(), nullptr);
+#ifndef CK_NO_FONTS
+                 dProcs.fTypefaceProc = [](const void* data, size_t length, void*) -> sk_sp<SkTypeface> {
+                    auto stream = SkMemoryStream::MakeCopy(data, length);
+                    return SkTypeface_FreeType::MakeFromStream(std::move(stream), {});
+                 };
+#endif
+
+                 return SkPicture::MakeFromData(data.get(), &dProcs);
              }),
              allow_raw_pointers());
 #endif
