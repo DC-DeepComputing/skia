@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf7e6b0_665f38cf",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T17:48:36Z",
+      "side": 1,
+      "message": "It seems less surprising to me to have a fully decoded image produced, but I guess it doesn\u0027t really matter.",
+      "parentUuid": "9ef689ad_1430c4ba",
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce2e51f1_726a0b30",
@@ -120,6 +138,30 @@
       "side": 1,
       "message": "Except SkReadBuffer does this \"right\". Ugh...",
       "parentUuid": "312cb8d6_3a6e0a94",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "163f872a_82fcd58a",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T17:48:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "33cecdf4_79e1e390",
       "range": {
         "startLine": 1238,
         "startChar": 50,
