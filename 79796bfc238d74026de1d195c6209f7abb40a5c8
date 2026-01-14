@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be7d8af_6948df4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:35:47Z",
+      "side": 1,
+      "message": "lgtm modulo comment and also cleaning up the std::move() around string_views like the earlier CL",
+      "revId": "79796bfc238d74026de1d195c6209f7abb40a5c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4d2ee2d_aefa9711",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:35:47Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "79796bfc238d74026de1d195c6209f7abb40a5c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
