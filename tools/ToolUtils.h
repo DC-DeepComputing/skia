@@ -49,6 +49,7 @@ enum SkAlphaType : int;
 enum SkColorType : int;
 enum class SkTextEncoding;
 enum class SkTileMode;
+struct SkDeserialProcs;
 struct SkImageInfo;
 
 namespace ToolUtils {
@@ -353,6 +354,10 @@ using A8CompareProc = std::function<bool(int x, int y, uint8_t pixela, uint8_t p
 // returns true.
 //
 bool A8ComparePaths(const SkPath& a, const SkPath& b, A8CompareProc cmp);
+
+// Returns the default SkDeserialProcs used by Skia's tools when Deserializing Skps. This adds
+// default values for the SkDeserialImageProc and SkDeserialTypefaceProc..
+SkDeserialProcs get_default_skp_deserial_procs();
 
 }  // namespace ToolUtils
 
