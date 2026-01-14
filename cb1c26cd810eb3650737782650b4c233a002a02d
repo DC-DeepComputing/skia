@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4da19c9_f7788178",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T21:09:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56376cb4_cddcdcc2",
+      "range": {
+        "startLine": 1183,
+        "startChar": 10,
+        "endLine": 1183,
+        "endChar": 20
+      },
+      "revId": "cb1c26cd810eb3650737782650b4c233a002a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f49af155_92c46d84",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-14T20:49:51Z",
       "side": 1,
       "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "cb1c26cd810eb3650737782650b4c233a002a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ccd02c6_2d0d84e4",
+        "filename": "tools/DeserialProcsUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T21:09:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f49af155_92c46d84",
       "range": {
         "startLine": 2,
         "startChar": 25,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0979b5a5_1cf99873",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T21:09:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbabc524_b8378273",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "cb1c26cd810eb3650737782650b4c233a002a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3609544_569f2cf5",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c74db1cb_66487d08",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T21:09:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3609544_569f2cf5",
+      "range": {
+        "startLine": 31,
+        "startChar": 23,
+        "endLine": 31,
+        "endChar": 36
+      },
+      "revId": "cb1c26cd810eb3650737782650b4c233a002a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71312846_0f7ee554",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-01-14T20:49:51Z",
       "side": 1,
       "message": "nit: remove",
+      "range": {
+        "startLine": 52,
+        "startChar": 7,
+        "endLine": 52,
+        "endChar": 22
+      },
+      "revId": "cb1c26cd810eb3650737782650b4c233a002a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d575174_05fe7e7d",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T21:09:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71312846_0f7ee554",
       "range": {
         "startLine": 52,
         "startChar": 7,
