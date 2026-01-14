@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/vk/VulkanPreferredFeatures.h"
 #include "include/private/base/SkMacros.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "tools/gpu/vk/VkTestMemoryAllocator.h"
@@ -72,13 +73,13 @@ bool LoadVkLibraryAndGetProcAddrFuncs(PFN_vkGetInstanceProcAddr* instProc) {
 // Helper code to set up Vulkan context objects
 
 #ifdef SK_ENABLE_VK_LAYERS
+// Comment out or include different debugging layers by modifying the array below:
 const char* kDebugLayerNames[] = {
-    // single merged layer
     "VK_LAYER_KHRONOS_validation",
     // not included in standard_validation
-    //"VK_LAYER_LUNARG_api_dump",
-    //"VK_LAYER_LUNARG_vktrace",
-    //"VK_LAYER_LUNARG_screenshot",
+    // "VK_LAYER_LUNARG_api_dump",
+    // "VK_LAYER_LUNARG_vktrace",
+    // "VK_LAYER_LUNARG_screenshot",
 };
 
 static uint32_t remove_patch_version(uint32_t specVersion) {
@@ -87,8 +88,8 @@ static uint32_t remove_patch_version(uint32_t specVersion) {
 
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
 static int should_include_debug_layer(const char* layerName,
-                                       uint32_t layerCount, VkLayerProperties* layers,
-                                       uint32_t version) {
+                                      uint32_t layerCount, VkLayerProperties* layers,
+                                      uint32_t version) {
     for (uint32_t i = 0; i < layerCount; ++i) {
         if (!strcmp(layerName, layers[i].layerName)) {
             // Since the layers intercept the vulkan calls and forward them on, we need to make sure
@@ -190,58 +191,37 @@ DebugUtilsMessenger(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
         }                                                                          \
     } while (0)
 
+#define ACQUIRE_VK_INST_PROC_LOCAL_NOCHECK(name, instance)                         \
+    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name))
+
+const char* kTestInstanceExtensions[] = {
+    VK_KHR_SURFACE_EXTENSION_NAME,
+    VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+    VK_EXT_LAYER_SETTINGS_EXTENSION_NAME,
+    // Platform-specific extensions
+    // The name macros like we use above are all defined in platform-specific vulkan headers, which
+    // we currently do not include since they are a bit of a pain (e.g. windows headers require
+    // including <windows.h>, which causes all sorts of annoyances and problems). Instead, just list
+    // the strings these macros are defined to. This is unlikely to cause long-term issues because
+    // it is *highly* unlikely that the strings connected to the name macros will ever change.
+    "VK_KHR_win32_surface",
+    "VK_KHR_xcb_surface",
+    "VK_KHR_android_surface",
+};
+
+
+const char* kTestDeviceExtensions[] = {
+    VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
+    VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+    VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
+    VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
+    // Extensions currently only used by Ganesh:
+    VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
+    VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
+};
+
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
 static bool should_include_extension(const char* extensionName) {
-    const char* kValidExtensions[] = {
-            // single merged layer
-            VK_ARM_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
-            VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME,
-            VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME,
-            VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
-            VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
-            VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_EXT_EXTENDED_DYNAMIC_STATE_2_EXTENSION_NAME,
-            VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME,
-            VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME,
-            VK_EXT_HOST_IMAGE_COPY_EXTENSION_NAME,
-            VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
-            VK_EXT_LAYER_SETTINGS_EXTENSION_NAME,
-            VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
-            VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME,
-            VK_EXT_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
-            VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
-            VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
-            VK_KHR_COPY_COMMANDS_2_EXTENSION_NAME,
-            VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME,
-            VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME,
-            VK_KHR_FORMAT_FEATURE_FLAGS_2_EXTENSION_NAME,
-            VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME,
-            VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
-            VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE1_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE2_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE3_EXTENSION_NAME,
-            VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
-            VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME,
-            VK_KHR_SURFACE_EXTENSION_NAME,
-            VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-            // Below are all platform specific extensions. The name macros like we use above are
-            // all defined in platform specific vulkan headers. We currently don't include these
-            // headers as they are a little bit of a pain (e.g. windows headers requires including
-            // <windows.h> which causes all sorts of fun annoyances/problems. So instead we are
-            // just listing the strings these macros are defined to. This really shouldn't cause
-            // any long term issues as the chances of the strings connected to the name macros
-            // changing is next to zero.
-            "VK_KHR_win32_surface",  // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
-            "VK_KHR_xcb_surface",    // VK_KHR_XCB_SURFACE_EXTENSION_NAME,
-            "VK_ANDROID_external_memory_android_hardware_buffer",
-            // VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME,
-            "VK_KHR_android_surface",  // VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
-    };
-
     for (size_t i = 0; i < std::size(kValidExtensions); ++i) {
         if (!strcmp(extensionName, kValidExtensions[i])) {
             return true;
@@ -254,28 +234,28 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
                                                 uint32_t specVersion,
                                                 TArray<VkExtensionProperties>* instanceExtensions,
                                                 TArray<VkLayerProperties>* instanceLayers) {
-    if (getInstProc == nullptr) {
-        return false;
-    }
-
+    VkResult result;
+    SkASSERT(getInstProc);
     ACQUIRE_VK_INST_PROC_LOCAL(EnumerateInstanceExtensionProperties, VK_NULL_HANDLE);
     ACQUIRE_VK_INST_PROC_LOCAL(EnumerateInstanceLayerProperties, VK_NULL_HANDLE);
 
-    VkResult res;
+    // Instance layers
     uint32_t layerCount = 0;
 #ifdef SK_ENABLE_VK_LAYERS
-    // instance layers
-    res = grVkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-    if (VK_SUCCESS != res) {
+    // Determine the quantity of instance layer properties available. Then, create and populate an
+    // array of VkLayerProperties.
+    result = grVkEnumerateInstanceLayerProperties(&layerCount, /*pProperties=*/nullptr);
+    if (result != VK_SUCCESS) {
         return false;
     }
     VkLayerProperties* layers = new VkLayerProperties[layerCount];
-    res = grVkEnumerateInstanceLayerProperties(&layerCount, layers);
-    if (VK_SUCCESS != res) {
+    result = grVkEnumerateInstanceLayerProperties(&layerCount, layers);
+    if (result != VK_SUCCESS) {
         delete[] layers;
         return false;
     }
 
+    // Add any debug-specific layers used in testing to the instance layers
     uint32_t nonPatchVersion = remove_patch_version(specVersion);
     for (size_t i = 0; i < std::size(kDebugLayerNames); ++i) {
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
@@ -287,20 +267,27 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
     delete[] layers;
 #endif
 
-    // instance extensions
-    // via Vulkan implementation and implicitly enabled layers
+    // Instance extensions via Vulkan implementation and implicitly-enabled layers
     {
+        // Determine the quantity of instance extension properties available. Then, create and
+        // populate an array of VkExtensionProperties.
         uint32_t extensionCount = 0;
-        res = grVkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-        if (VK_SUCCESS != res) {
+        result = grVkEnumerateInstanceExtensionProperties(
+                /*pLayerName=*/nullptr, &extensionCount, /*pProperties=*/nullptr);
+        if (result != VK_SUCCESS) {
             return false;
         }
         VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
-        res = grVkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions);
-        if (VK_SUCCESS != res) {
+        result = grVkEnumerateInstanceExtensionProperties(
+                /*pLayerName=*/nullptr, &extensionCount, extensions);
+        if (result != VK_SUCCESS) {
             delete[] extensions;
             return false;
         }
+
+        // TODO: Look through extensions for names of layers we care about.
+
+        // Add any additional extensions that are used for testing
         for (uint32_t i = 0; i < extensionCount; ++i) {
             if (should_include_extension(extensions[i].extensionName)) {
                 instanceExtensions->push_back() = extensions[i];
@@ -309,19 +296,21 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
         delete [] extensions;
     }
 
-    // via explicitly enabled layers
+    // Instance extensions via explicitly enabled layers
     layerCount = instanceLayers->size();
+    // For each layer, determine the quantity of instance extension properties available. Then,
+    // create and populate an array of VkExtensionProperties.
     for (uint32_t layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
         uint32_t extensionCount = 0;
-        res = grVkEnumerateInstanceExtensionProperties((*instanceLayers)[layerIndex].layerName,
-                                                       &extensionCount, nullptr);
-        if (VK_SUCCESS != res) {
+        result = grVkEnumerateInstanceExtensionProperties(
+                (*instanceLayers)[layerIndex].layerName, &extensionCount, /*extensions=*/nullptr);
+        if (result != VK_SUCCESS) {
             return false;
         }
         VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
-        res = grVkEnumerateInstanceExtensionProperties((*instanceLayers)[layerIndex].layerName,
-                                                       &extensionCount, extensions);
-        if (VK_SUCCESS != res) {
+        result = grVkEnumerateInstanceExtensionProperties(
+                (*instanceLayers)[layerIndex].layerName, &extensionCount, extensions);
+        if (result != VK_SUCCESS) {
             delete[] extensions;
             return false;
         }
@@ -350,22 +339,21 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
     GET_PROC_LOCAL(EnumerateDeviceExtensionProperties, inst, VK_NULL_HANDLE);
     GET_PROC_LOCAL(EnumerateDeviceLayerProperties, inst, VK_NULL_HANDLE);
 
-    if (!EnumerateDeviceExtensionProperties ||
-        !EnumerateDeviceLayerProperties) {
+    if (!EnumerateDeviceExtensionProperties || !EnumerateDeviceLayerProperties) {
         return false;
     }
 
-    VkResult res;
+    VkResult result;
     // device layers
     uint32_t layerCount = 0;
 #ifdef SK_ENABLE_VK_LAYERS
-    res = EnumerateDeviceLayerProperties(physDev, &layerCount, nullptr);
-    if (VK_SUCCESS != res) {
+    result = EnumerateDeviceLayerProperties(physDev, &layerCount, /*pProperties=*/nullptr);
+    if (result != VK_SUCCESS) {
         return false;
     }
     VkLayerProperties* layers = new VkLayerProperties[layerCount];
-    res = EnumerateDeviceLayerProperties(physDev, &layerCount, layers);
-    if (VK_SUCCESS != res) {
+    result = EnumerateDeviceLayerProperties(physDev, &layerCount, layers);
+    if (result != VK_SUCCESS) {
         delete[] layers;
         return false;
     }
@@ -385,13 +373,15 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
     // via Vulkan implementation and implicitly enabled layers
     {
         uint32_t extensionCount = 0;
-        res = EnumerateDeviceExtensionProperties(physDev, nullptr, &extensionCount, nullptr);
-        if (VK_SUCCESS != res) {
+        result = EnumerateDeviceExtensionProperties(
+                physDev, /*pLayerName=*/nullptr, &extensionCount, /*pProperties=*/nullptr);
+        if (result != VK_SUCCESS) {
             return false;
         }
         VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
-        res = EnumerateDeviceExtensionProperties(physDev, nullptr, &extensionCount, extensions);
-        if (VK_SUCCESS != res) {
+        result = EnumerateDeviceExtensionProperties(
+                physDev, /*pLayerName=*/nullptr, &extensionCount, extensions);
+        if (result != VK_SUCCESS) {
             delete[] extensions;
             return false;
         }
@@ -407,17 +397,18 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
     layerCount = deviceLayers->size();
     for (uint32_t layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
         uint32_t extensionCount = 0;
-        res = EnumerateDeviceExtensionProperties(physDev,
-            (*deviceLayers)[layerIndex].layerName,
-            &extensionCount, nullptr);
-        if (VK_SUCCESS != res) {
+        result = EnumerateDeviceExtensionProperties(physDev,
+                                                    (*deviceLayers)[layerIndex].layerName,
+                                                    &extensionCount,
+                                                    /*pProperties=*/nullptr);
+        if (result != VK_SUCCESS) {
             return false;
         }
         VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
-        res = EnumerateDeviceExtensionProperties(physDev,
+        result = EnumerateDeviceExtensionProperties(physDev,
             (*deviceLayers)[layerIndex].layerName,
             &extensionCount, extensions);
-        if (VK_SUCCESS != res) {
+        if (result != VK_SUCCESS) {
             delete[] extensions;
             return false;
         }
@@ -479,7 +470,7 @@ static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc,
                              bool hasDebugExtension) {
     if (hasDebugExtension && *debugMessenger != VK_NULL_HANDLE) {
         ACQUIRE_VK_INST_PROC_LOCAL(DestroyDebugUtilsMessengerEXT, inst);
-        grVkDestroyDebugUtilsMessengerEXT(inst, *debugMessenger, nullptr);
+        grVkDestroyDebugUtilsMessengerEXT(inst, *debugMessenger, /*pAllocator=*/nullptr);
         *debugMessenger = VK_NULL_HANDLE;
     }
     ACQUIRE_VK_INST_PROC_LOCAL(DestroyInstance, inst);
@@ -532,6 +523,27 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc,
     return true;
 }
 
+static uint32_t get_instance_version(PFN_vkGetInstanceProcAddr getInstProc, uint32_t apiVersion) {
+    if (getInstProc == nullptr) {
+        return 0;
+    }
+
+    ACQUIRE_VK_INST_PROC_LOCAL_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
+    // Vulkan 1.1 is required, so vkEnumerateInstanceVersion should always be available.
+    SkASSERT(grVkEnumerateInstanceVersion != nullptr);
+
+    VkResult result;
+    uint32_t instanceVersion = 0;
+    result = grVkEnumerateInstanceVersion(&instanceVersion);
+    if (result != VK_SUCCESS) {
+        SkDebugf("Failed to enumerate instance version. Err: %d\n", result);
+        return false;
+    }
+    SkASSERT(instanceVersion >= VK_API_VERSION_1_1);
+
+    return std::min(instanceVersion, apiVersion);
+}
+
 bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             skgpu::VulkanBackendContext* ctx,
                             skgpu::VulkanExtensions* extensions,
@@ -540,44 +552,19 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
-    VkResult err;
-
-    ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
-    uint32_t instanceVersion = 0;
-    // Vulkan 1.1 is required, so vkEnumerateInstanceVersion should always be available.
-    SkASSERT(grVkEnumerateInstanceVersion != nullptr);
-    err = grVkEnumerateInstanceVersion(&instanceVersion);
-    if (err) {
-        SkDebugf("failed to enumerate instance version. Err: %d\n", err);
+    if (!getInstProc) {
         return false;
     }
-    SkASSERT(instanceVersion >= VK_API_VERSION_1_1);
+
     // We can set the apiVersion to be whatever the highest api we may use in skia. For now we
     // set it to 1.1 since that is the most common Vulkan version on Android devices.
-    const uint32_t apiVersion = VK_API_VERSION_1_1;
-
-    instanceVersion = std::min(instanceVersion, apiVersion);
-
-    STArray<2, VkPhysicalDevice> physDevs;
-    VkDevice device;
-    VkInstance inst = VK_NULL_HANDLE;
-
-    const VkApplicationInfo app_info = {
-        VK_STRUCTURE_TYPE_APPLICATION_INFO, // sType
-        nullptr,                            // pNext
-        "vktest",                           // pApplicationName
-        0,                                  // applicationVersion
-        "vktest",                           // pEngineName
-        0,                                  // engineVerison
-        apiVersion,                         // apiVersion
-    };
+    static const uint32_t kApiVersion = VK_API_VERSION_1_1;
+    const uint32_t instanceVersion = get_instance_version(getInstProc, kApiVersion);
 
     TArray<VkLayerProperties> instanceLayers;
     TArray<VkExtensionProperties> instanceExtensions;
-
-    if (!init_instance_extensions_and_layers(getInstProc, instanceVersion,
-                                             &instanceExtensions,
-                                             &instanceLayers)) {
+    if (!init_instance_extensions_and_layers(
+                getInstProc, instanceVersion, &instanceExtensions, &instanceLayers)) {
         return false;
     }
 
@@ -590,9 +577,19 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
     }
 
-    testVkFeatures->skiaFeatures.init(apiVersion);
+    testVkFeatures->skiaFeatures.init(kApiVersion);
     testVkFeatures->skiaFeatures.addToInstanceExtensions(
             instanceExtensions.begin(), instanceExtensions.size(), instanceExtensionNames);
+
+    const VkApplicationInfo app_info = {
+        VK_STRUCTURE_TYPE_APPLICATION_INFO, // sType
+        nullptr,                            // pNext
+        "vktest",                           // pApplicationName
+        0,                                  // applicationVersion
+        "vktest",                           // pEngineName
+        0,                                  // engineVerison
+        kApiVersion,                        // apiVersion
+    };
 
     VkInstanceCreateInfo instance_create = {
             VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,   // sType
@@ -658,10 +655,15 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
 #endif
 
+    STArray<2, VkPhysicalDevice> physDevs;
+    VkDevice device;
+    VkInstance inst = VK_NULL_HANDLE;
+
     ACQUIRE_VK_INST_PROC(CreateInstance, VK_NULL_HANDLE);
-    err = grVkCreateInstance(&instance_create, nullptr, &inst);
-    if (err < 0) {
-        SkDebugf("vkCreateInstance failed: %d\n", err);
+    VkResult result;
+    result = grVkCreateInstance(&instance_create, nullptr, &inst);
+    if (result < 0) {
+        SkDebugf("vkCreateInstance failed: %d\n", result);
         return false;
     }
 
@@ -707,9 +709,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ACQUIRE_VK_PROC(DestroyDevice, inst, VK_NULL_HANDLE);
 
     uint32_t gpuCount;
-    err = grVkEnumeratePhysicalDevices(inst, &gpuCount, nullptr);
-    if (err) {
-        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
+    result = grVkEnumeratePhysicalDevices(inst, &gpuCount, nullptr);
+    if (result) {
+        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", result);
         destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
@@ -722,9 +724,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     // the first one, but a bug in RenderDoc (https://github.com/baldurk/renderdoc/issues/2766)
     // will smash the stack if we do that.
     physDevs.resize(gpuCount);
-    err = grVkEnumeratePhysicalDevices(inst, &gpuCount, physDevs.data());
-    if (err) {
-        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
+    result = grVkEnumeratePhysicalDevices(inst, &gpuCount, physDevs.data());
+    if (result) {
+        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", result);
         destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
@@ -734,7 +736,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
 
     VkPhysicalDeviceProperties physDeviceProperties;
     grVkGetPhysicalDeviceProperties(physDev, &physDeviceProperties);
-    uint32_t physDeviceVersion = std::min(physDeviceProperties.apiVersion, apiVersion);
+    uint32_t physDeviceVersion = std::min(physDeviceProperties.apiVersion, kApiVersion);
 
     // query to get the initial queue props size
     uint32_t queueCount;
@@ -788,6 +790,19 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
 
     TArray<VkLayerProperties> deviceLayers;
     TArray<VkExtensionProperties> deviceExtensions;
+
+    // TODO: Just use VulkanPreferredFeatures here.
+    // skgpu::VulkanPreferredFeatures skiaFeatures;
+    // skiaFeatures.init(apiVersion);
+    // // For Skia testing, we do not need to add additional instance extensions to the app.
+    // skiaFeatures.addToInstanceExtensions(...);
+    // // Create the instance, choose physical device, query available extensions, decide on
+    // // device features to query.
+    // skiaFeatures.addFeaturesToQuery(...);
+    // // Query features, decide on extensions and features to enable.
+    // skiaFeatures.addFeaturesToEnable(...);
+    // // create device.
+
     if (!init_device_extensions_and_layers(getProc, physDeviceVersion,
                                            inst, physDev,
                                            &deviceExtensions,
@@ -876,10 +891,10 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         // skbug.com/40040003
         __lsan::ScopedDisabler lsanDisabler;
 #endif
-        err = grVkCreateDevice(physDev, &deviceInfo, nullptr, &device);
+        result = grVkCreateDevice(physDev, &deviceInfo, /*pAllocator=*/nullptr, &device);
     }
-    if (err) {
-        SkDebugf("CreateDevice failed: %d\n", err);
+    if (result) {
+        SkDebugf("CreateDevice failed: %d\n", result);
         destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
@@ -912,7 +927,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fDevice = device;
     ctx->fQueue = queue;
     ctx->fGraphicsQueueIndex = graphicsQueueIndex;
-    ctx->fMaxAPIVersion = apiVersion;
+    ctx->fMaxAPIVersion = kApiVersion;
     ctx->fVkExtensions = extensions;
     ctx->fDeviceFeatures2 = &testVkFeatures->deviceFeatures;
     ctx->fGetProc = getProc;
