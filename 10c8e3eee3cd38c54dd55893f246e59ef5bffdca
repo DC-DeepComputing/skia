@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccc72cad_6304b643",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T16:33:23Z",
+      "side": 0,
+      "message": "whoops",
+      "range": {
+        "startLine": 1243,
+        "startChar": 60,
+        "endLine": 1243,
+        "endChar": 67
+      },
+      "revId": "10c8e3eee3cd38c54dd55893f246e59ef5bffdca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
