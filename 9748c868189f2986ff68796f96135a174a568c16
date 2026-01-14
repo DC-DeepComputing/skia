@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2572295c_e18dcd7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "lls to",
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24526ca3_06049c7d",
@@ -52,6 +69,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "215f2f6a_1e0006e4",
+        "filename": "tests/sksl/intrinsics/BitCount.skrp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "Yes, looking at the old version of the skrp code, it was already failing with `error: 2: variables of type \u0027uint\u0027 may not be uniform`. Since that uniform is referenced in many other expressions, it cascades and we\u0027ve added more references so we\u0027re just getting more failures.",
+      "parentUuid": "24526ca3_06049c7d",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcf6a8f5_f0f9232e",
@@ -95,6 +136,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f966568_d2b7c679",
+        "filename": "tests/sksl/intrinsics/FindMSB.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "Yes, that does look incorrect. I took a careful look at SkSLMetalCodeGenerator and its `findLSB` emulation is correct (i.e. `ctz` plus a special case for 0 -\u003e -1). The `findMSB` emulation correctly handles flipping the sign of negative inputs (e.g. v \u003c 0 matches findMSB(~v)), but it needs to be subtracted from N-1.\n\nThe other issue I noticed was that SkSL types both `findLSB` and `findMSB` to return `$genIType` even if the inputs are `$genUType`. This matches GLSL convention and means the -1 return value is well-defined even if called on an unsigned input. This is not the return type that Metal uses for `clz` or `ctz`.  Our codegen does  a cast in `findMSB` but doesn\u0027t in `findLSB`, which would then generate MSL failures.\n\nI also realized that WGSL code will need to have these same casts because it documents `findTrailingBit` and the unsigned `findLeadingBit` to be `T(-1)` so its return type matches that of its input.",
+      "parentUuid": "fcf6a8f5_f0f9232e",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 16
+      },
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed093692_6c037785",
         "filename": "tests/sksl/intrinsics/FindMSB.skrp",
         "patchSetId": 3
@@ -106,6 +171,30 @@
       "writtenOn": "2026-01-12T15:10:46Z",
       "side": 1,
       "message": "And here?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 9
+      },
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58cbe65c_00947cdd",
+        "filename": "tests/sksl/intrinsics/FindMSB.skrp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "Yep same reason; raster pipeline doesn\u0027t appear to support uint uniforms",
+      "parentUuid": "ed093692_6c037785",
       "range": {
         "startLine": 1,
         "startChar": 0,

@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4676bdcc_3a9487b5",
+        "filename": "resources/sksl/intrinsics/BitCount.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "They are there just as a sink so the operations don\u0027t get removed as dead code. The main way these sksl tests are tested is by manual inspection at the time of check-in, and by running them through the compiler in unit tests and making sure things succeed or fail with an expected error message (embedded in a code comment in the sksl if it\u0027s not meant to succeed).",
+      "parentUuid": "01dc4638_e27820e1",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b90d5ef9ac25b7db5bf759ca9058e66619fe5663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94f531a6_70205fdd",
@@ -61,6 +85,30 @@
       "writtenOn": "2026-01-08T14:34:35Z",
       "side": 1,
       "message": "Compare to SkSLMetalCodeGenerator\u0027s `writeOuterProduct`:\n```\nvoid MetalCodeGenerator::writeOuterProduct() {\n    static constexpr char kOuterProduct[] \u003d\n\"template \u003ctypename T, int C, int R\u003e\"\n\"matrix\u003cT, C, R\u003e outerProduct(const vec\u003cT, R\u003e a, const vec\u003cT, C\u003e b) {\"\n  \"matrix\u003cT, C, R\u003e m;\"\n  \"for (int c \u003d 0; c \u003c C; ++c) { m[c] \u003d a * b[c]; }\"\n  \"return m;\"\n\"}\";\n    if (!fWrittenOuterProduct) {\n        fWrittenOuterProduct \u003d true;\n        fExtraFunctions.writeText(kOuterProduct);\n    }\n}\n```",
+      "range": {
+        "startLine": 3510,
+        "startChar": 0,
+        "endLine": 3521,
+        "endChar": 28
+      },
+      "revId": "b90d5ef9ac25b7db5bf759ca9058e66619fe5663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1365195_562d858e",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3521,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T16:30:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "94f531a6_70205fdd",
       "range": {
         "startLine": 3510,
         "startChar": 0,
