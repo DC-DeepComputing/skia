@@ -22,6 +22,30 @@
       },
       "revId": "792b18dae770e4c1d57f0127c3595f2c0e9ee62a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c70bb545_6362f4eb",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-14T16:40:30Z",
+      "side": 1,
+      "message": "Yeah I started doing that, but then was like well what if someone wanted to set their own other procs first then call this function. This gives the most flexibility. But yeah that really isn\u0027t adding that much value overall. I\u0027m fine with either approach, so whatever people think here is best.",
+      "parentUuid": "9f8dbdf4_a471e008",
+      "range": {
+        "startLine": 361,
+        "startChar": 5,
+        "endLine": 361,
+        "endChar": 35
+      },
+      "revId": "792b18dae770e4c1d57f0127c3595f2c0e9ee62a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
