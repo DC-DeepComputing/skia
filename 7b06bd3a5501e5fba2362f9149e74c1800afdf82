@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e74adb5_eec1ec23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-01-14T17:04:38Z",
+      "side": 1,
+      "message": "I presume this means I can remove the Vello jobs from https://skia-review.googlesource.com/c/skia/+/1089936 as well.",
+      "revId": "7b06bd3a5501e5fba2362f9149e74c1800afdf82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
