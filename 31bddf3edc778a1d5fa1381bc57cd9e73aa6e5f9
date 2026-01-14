@@ -16,6 +16,29 @@
       "message": "I feel like there was a bug for this, but I couldn\u0027t find it.",
       "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce2e51f1_726a0b30",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T16:30:51Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure if the copy was necessary or not, so I decided to be careful.",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
