@@ -40,6 +40,54 @@
       ],
       "revId": "298b61b82210fd33552dba3a142cbc4b2d84597c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1de3a1d_35c93a30",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T20:19:12Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "4c48edf1_a044f47d",
+      "range": {
+        "startLine": 3279,
+        "startChar": 8,
+        "endLine": 3280,
+        "endChar": 71
+      },
+      "revId": "298b61b82210fd33552dba3a142cbc4b2d84597c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2570ca03_7b833173",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T20:19:12Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "4c48edf1_a044f47d",
+      "range": {
+        "startLine": 3279,
+        "startChar": 8,
+        "endLine": 3280,
+        "endChar": 71
+      },
+      "revId": "298b61b82210fd33552dba3a142cbc4b2d84597c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
