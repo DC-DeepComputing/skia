@@ -15,7 +15,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMipmap.h"
 #include "src/image/SkImage_Base.h"
 

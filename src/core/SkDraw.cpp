@@ -44,7 +44,6 @@
 #include "src/core/SkDrawProcs.h"
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixUtils.h"

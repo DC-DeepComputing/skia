@@ -50,7 +50,6 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixPriv.h"

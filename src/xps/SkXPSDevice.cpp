@@ -42,7 +42,6 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGeometry.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRasterClip.h"

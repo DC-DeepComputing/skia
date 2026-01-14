@@ -47,7 +47,6 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
