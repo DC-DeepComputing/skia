@@ -8,7 +8,6 @@
 #include "include/android/SkImageAndroid.h"
 
 #include "include/core/SkBitmap.h"
-#include "src/core/SkImagePriv.h"
 
 namespace SkImages {
 

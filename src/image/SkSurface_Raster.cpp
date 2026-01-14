@@ -23,7 +23,6 @@
 #include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkSurfacePriv.h"
 
 #include <cstdint>

@@ -24,7 +24,6 @@
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMipmapAccessor.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkRasterPipeline.h"

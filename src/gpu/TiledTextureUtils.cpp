@@ -16,7 +16,6 @@
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDevice.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Picture.h"

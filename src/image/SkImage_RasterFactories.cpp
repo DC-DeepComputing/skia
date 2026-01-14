@@ -17,7 +17,6 @@
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
-#include "src/core/SkImagePriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 

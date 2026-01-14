@@ -31,7 +31,6 @@
 #include "include/private/base/SkTo.h"
 #include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDraw.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRasterClip.h"

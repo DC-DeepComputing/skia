@@ -22,7 +22,6 @@
 #include "include/core/SkTypes.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/image/SkImage_Base.h"
 
 #include <cstddef>

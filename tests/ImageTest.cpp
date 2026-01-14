@@ -52,7 +52,6 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkColorSpacePriv.h"
-#include "src/core/SkImagePriv.h"
 #include "src/core/SkMemset.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrCaps.h"
