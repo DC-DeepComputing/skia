@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed2df839_cb0e051f",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-14T20:37:42Z",
+      "side": 1,
+      "message": "nit: return",
+      "range": {
+        "startLine": 1180,
+        "startChar": 70,
+        "endLine": 1180,
+        "endChar": 77
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e73c7318_e006ca9d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+              "range": {
+                "startLine": 1180,
+                "startChar": 0,
+                "endLine": 1181,
+                "endChar": 0
+              },
+              "replacement": "            std::string signedType \u003d this-\u003etypeName(c.type()); // The return type is always signed\n"
+            },
+            {
+              "path": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+              "range": {
+                "startLine": 1210,
+                "startChar": 0,
+                "endLine": 1211,
+                "endChar": 0
+              },
+              "replacement": "            std::string signedType \u003d this-\u003etypeName(c.type()); // The return type is always signed\n"
+            }
+          ]
+        }
+      ],
+      "revId": "057f4f45e8dec17d7c1040e4e355ddab09bc6288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d9e2cc_0f606fde",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-14T20:37:42Z",
+      "side": 1,
+      "message": "nit: and here too",
+      "range": {
+        "startLine": 1210,
+        "startChar": 70,
+        "endLine": 1210,
+        "endChar": 77
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bfc450a7_edee2e17",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+              "range": {
+                "startLine": 1180,
+                "startChar": 0,
+                "endLine": 1181,
+                "endChar": 0
+              },
+              "replacement": "            std::string signedType \u003d this-\u003etypeName(c.type()); // The returned type is always signed\n"
+            },
+            {
+              "path": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+              "range": {
+                "startLine": 1210,
+                "startChar": 0,
+                "endLine": 1211,
+                "endChar": 0
+              },
+              "replacement": "            std::string signedType \u003d this-\u003etypeName(c.type()); // The returned type is always signed\n"
+            }
+          ]
+        }
+      ],
+      "revId": "057f4f45e8dec17d7c1040e4e355ddab09bc6288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
