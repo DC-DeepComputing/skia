@@ -16,6 +16,23 @@
       "message": "lgtm, with one cleanup nit: `std::string_view` is basically a span so it\u0027s always passed around by value. This means we don\u0027t have to use `std::move()` to pass it into other functions (I think the std::move would just be a no-op anyways, but we should remove those to keep it simpler).",
       "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db266ec1_838cfddc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:47:55Z",
+      "side": 1,
+      "message": "Per offline discussion, we have to split out the setBackendLabel() call from within setLabel() so that that isn\u0027t called until after the constructor has completed. This can be a CL that comes before this chain and aligns with the goal of moving all the backend label updates to the context thread anyways.",
+      "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
