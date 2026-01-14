@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "546fd7ff_d5041cb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T14:19:21Z",
+      "side": 1,
+      "message": "If we run into problems where we are breaking the Chromium roll as a result of this, Skia will want to add a C++23 compile job of its own.",
+      "revId": "6c03fac4a98d9434533aa54cb3227fb9149d1fff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
