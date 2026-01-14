@@ -1,6 +1,8 @@
 uniform int a;
 uniform uint b;
 void main() {
-    sk_FragColor.x = half(bitCount(a));
-    sk_FragColor.y = half(bitCount(b));
+    sk_FragColor.x    = half(bitCount(a))        + half(bitCount(b));
+    sk_FragColor.xy   = half2(bitCount(int2(a))) + half2(bitCount(uint2(b)));
+    sk_FragColor.xyz  = half3(bitCount(int3(a))) + half3(bitCount(uint3(b)));
+    sk_FragColor.xyzw = half4(bitCount(int4(a))) + half4(bitCount(uint4(b)));
 }
