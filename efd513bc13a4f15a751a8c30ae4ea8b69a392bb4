@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9062500_a1a69e98",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T15:52:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7a039d88_247d7981",
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a76cbb9_1dbfb032",
@@ -154,6 +172,30 @@
       "side": 1,
       "message": "In the next patch, I\u0027m going to change this to also populate a `scaleFactor` parameter (to deal with the HDR reference white property), and so it felt more natural to treat all the output params as equals.\n\n(I also may consider allowing the output params to be nullptr, to allow a \"quick check if anything is needed\", before creating the output parameters)",
       "parentUuid": "2d00a426_01515012",
+      "range": {
+        "startLine": 85,
+        "startChar": 31,
+        "endLine": 85,
+        "endChar": 52
+      },
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cfe9738_60f8895b",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T15:52:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "db28dd41_6509a90b",
       "range": {
         "startLine": 85,
         "startChar": 31,
