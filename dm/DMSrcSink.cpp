@@ -1177,6 +1177,9 @@ Result SKPSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
     };
 
     SkDeserialProcs procs;
+    ToolUtils::set_default_skp_deserial_procs(&procs);
+
+    // We override the default fImageProc set above
     procs.fImageProc = [](const void* data, size_t size, void* ctx) -> sk_sp<SkImage> {
         sk_sp<SkData> tmpData = SkData::MakeWithoutCopy(data, size);
         sk_sp<SkImage> image = SkImages::DeferredFromEncodedData(std::move(tmpData));
@@ -1193,14 +1196,6 @@ Result SKPSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
         return image;
     };
     procs.fImageCtx = &ctx;
-
-    // SKPs may have typefaces encoded in them (e.g. with FreeType). We can try falling back
-    // to the Test FontMgr (possibly a native one) if we have do not have FreeType built-in.
-    procs.fTypefaceProc = [](const void* data, size_t size, void*) -> sk_sp<SkTypeface> {
-        SkStream** stream = reinterpret_cast<SkStream**>(const_cast<void*>(data));
-        return SkTypeface::MakeDeserialize(*stream, ToolUtils::TestFontMgr());
-    };
-
 
     std::unique_ptr<SkStream> stream = SkStream::MakeFromFile(fPath.c_str());
     if (!stream) {
