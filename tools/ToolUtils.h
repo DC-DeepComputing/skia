@@ -49,6 +49,7 @@ enum SkAlphaType : int;
 enum SkColorType : int;
 enum class SkTextEncoding;
 enum class SkTileMode;
+struct SkDeserialProcs;
 struct SkImageInfo;
 
 namespace ToolUtils {
