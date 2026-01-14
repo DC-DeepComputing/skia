@@ -104,6 +104,30 @@
       },
       "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33cecdf4_79e1e390",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-14T16:59:39Z",
+      "side": 1,
+      "message": "Except SkReadBuffer does this \"right\". Ugh...",
+      "parentUuid": "312cb8d6_3a6e0a94",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
