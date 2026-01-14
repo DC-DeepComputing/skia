@@ -861,20 +861,8 @@ public:
             return nullptr;
         }
         SkDeserialProcs procs;
-        procs.fImageDataProc =
-                [](sk_sp<SkData> data, std::optional<SkAlphaType>, void* ctx) -> sk_sp<SkImage> {
-#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
-            std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
-            auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
-#else
-            auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
-#endif
-            if (!codec) {
-                SkDebugf("Invalid png data detected\n");
-                return nullptr;
-            }
-            return std::get<0>(codec->getImage());
-        };
+        ToolUtils::set_default_skp_deserial_procs(&procs);
+
         return SkPicture::MakeFromStream(stream.get(), &procs);
     }
 
