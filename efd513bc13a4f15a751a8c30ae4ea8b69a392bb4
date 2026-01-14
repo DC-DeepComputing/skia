@@ -18,6 +18,58 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ee6fc0_8079ed12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-14T15:50:10Z",
+      "side": 1,
+      "message": "Thanks, updated!",
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a039d88_247d7981",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-14T15:50:10Z",
+      "side": 1,
+      "message": "Also, BTW, a follow-on here will change the internals to be an `sk_sp\u003cInternals\u003e`, so that this very-often-passed-around structure won\u0027t use too much space.",
+      "fixSuggestions": [
+        {
+          "fixId": "8188d6b1_54e0607e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/private/SkHdrMetadata.h",
+              "range": {
+                "startLine": 376,
+                "startChar": 0,
+                "endLine": 379,
+                "endChar": 0
+              },
+              "replacement": "    struct Internals {\n        std::optional\u003cContentLightLevelInformation\u003e fContentLightLevelInformation;\n        std::optional\u003cMasteringDisplayColorVolume\u003e fMasteringDisplayColorVolume;\n        sk_sp\u003cconst SkData\u003e fAgtm;\n    };\n    sk_sp\u003cInternals\u003e fInternals;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a76cbb9_1dbfb032",
@@ -41,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8137554_cbcb7ffa",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-14T15:50:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a76cbb9_1dbfb032",
+      "range": {
+        "startLine": 81,
+        "startChar": 43,
+        "endLine": 81,
+        "endChar": 50
+      },
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d00a426_01515012",
@@ -54,6 +130,30 @@
       "writtenOn": "2026-01-14T15:33:16Z",
       "side": 1,
       "message": "Could this return a `std::optional\u003cAdaptiveGlobalToneMap\u003e` instead of the bool/out pattern?",
+      "range": {
+        "startLine": 85,
+        "startChar": 31,
+        "endLine": 85,
+        "endChar": 52
+      },
+      "revId": "efd513bc13a4f15a751a8c30ae4ea8b69a392bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db28dd41_6509a90b",
+        "filename": "src/codec/SkHdrAgtmPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-14T15:50:10Z",
+      "side": 1,
+      "message": "In the next patch, I\u0027m going to change this to also populate a `scaleFactor` parameter (to deal with the HDR reference white property), and so it felt more natural to treat all the output params as equals.\n\n(I also may consider allowing the output params to be nullptr, to allow a \"quick check if anything is needed\", before creating the output parameters)",
+      "parentUuid": "2d00a426_01515012",
       "range": {
         "startLine": 85,
         "startChar": 31,
