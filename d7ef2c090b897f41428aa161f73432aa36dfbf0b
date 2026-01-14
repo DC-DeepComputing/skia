@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c90e3b_e00eb5b8",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:48:17Z",
+      "side": 1,
+      "message": "I think we should strengthen this to be that it should only be called by subclasses in their constructor.  If possible, could we update the Resource() constructor to take in the label so it\u0027s responsible for setting the label and then it can be made private instead of protected?",
+      "range": {
+        "startLine": 307,
+        "startChar": 34,
+        "endLine": 307,
+        "endChar": 51
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfc9e6c_c0703980",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:48:17Z",
+      "side": 1,
+      "message": "ResourceCache is already friended, so we can get rid of this line.",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 31
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eebd6acc_e510c371",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T15:48:17Z",
+      "side": 1,
+      "message": "We can have this be `label \u003d {}` so that the call sites for resource types that don\u0027t care about labels can be simplified.",
+      "range": {
+        "startLine": 55,
+        "startChar": 33,
+        "endLine": 55,
+        "endChar": 56
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
