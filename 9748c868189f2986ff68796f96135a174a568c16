@@ -158,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d2bec15_42c538cf",
+        "filename": "tests/sksl/intrinsics/FindMSB.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-14T17:12:03Z",
+      "side": 1,
+      "message": "I\u0027ve updated SkSLMetalCodeGenerator to add a cast for `findLSB` and to subtract `clz` from 31 in its `findMSB` emulation. I updated `SkSLWGSLCodeGenerator` to add casts to signed types when calling `findTrailingBit` and `findLeadingBit` on unsigned inputs.\n\nI also updated `findLSB.sksl` and `findMSB.sksl` to assign their values to signed int variables to expose this (it correctly detected tint compilation failure before I updated the wgsl code gen).",
+      "parentUuid": "9f966568_d2b7c679",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 16
+      },
+      "revId": "9748c868189f2986ff68796f96135a174a568c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed093692_6c037785",
