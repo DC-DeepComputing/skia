@@ -46,6 +46,30 @@
       },
       "revId": "792b18dae770e4c1d57f0127c3595f2c0e9ee62a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f42de93a_6a6b449c",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-14T16:41:32Z",
+      "side": 1,
+      "message": "I\u0027d vote for \"return the SkDeserialProcs\" and if people want to adjust it after, that\u0027s probably for the best.",
+      "parentUuid": "c70bb545_6362f4eb",
+      "range": {
+        "startLine": 361,
+        "startChar": 5,
+        "endLine": 361,
+        "endChar": 35
+      },
+      "revId": "792b18dae770e4c1d57f0127c3595f2c0e9ee62a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
