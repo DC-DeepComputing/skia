@@ -26,6 +26,8 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                    /*gpuMemorySize=*/0)
         , fPipelineInfo(pipelineInfo) {
     this->setLabel(label);
+    // It is always safe to immediately update the label of a freshly-created GPU resource.
+    this->synchronizeBackendLabel();
 }
 
 GraphicsPipeline::~GraphicsPipeline() {
