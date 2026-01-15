@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9634beea_5ec3a668",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-15T16:38:51Z",
+      "side": 1,
+      "message": "While I\u0027m waiting on my Android build, went back to remove std::move usage for string_views after Michael pointed out that doing so doesn\u0027t really offer us any benefits. Even if these moves end up being no-ops, we can remove the move call for conciseness and clarity.",
+      "revId": "ad24392a586d02ea21b002be795735c62a365750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
