@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a9b8378_b43099ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-15T15:20:17Z",
+      "side": 1,
+      "message": "Slowly re-add the operator\u003d\u003d that couldn\u0027t be \u003ddefaulted.",
+      "revId": "48f1d1ba32c567cd29c3fdedfec62455191c386d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
