@@ -45,7 +45,8 @@ struct SkFontArguments {
     SkFontArguments()
             : fCollectionIndex(0)
             , fVariationDesignPosition{nullptr, 0}
-            , fPalette{0, nullptr, 0} {}
+            , fPalette{0, nullptr, 0}
+            , fSimulationsFlags(-1) {}
 
     /** Specify the index of the desired font.
      *
@@ -87,10 +88,27 @@ struct SkFontArguments {
 
     Palette getPalette() const { return fPalette; }
 
+    /** Specify a desired set of flags for font simulations.
+     *
+     * Some fonts systems support simulated fonts, in which case a collection
+     * will contain multiple entries for the same ttc index.
+     *
+     * Setting this argument to -1 (default) will prevent matching any simulated
+     * fonts. Setting it to any other value will only match font faces with a
+     * matching ttc index and simulations flags value.
+     */
+    SkFontArguments& setSimulationsFlags(int simulationsFlags) {
+        fSimulationsFlags = simulationsFlags;
+        return *this;
+    }
+
+    int simulationsFlags() const { return fSimulationsFlags; }
+
 private:
     int fCollectionIndex;
     VariationPosition fVariationDesignPosition;
     Palette fPalette;
+    int fSimulationsFlags;
 };
 
 #endif
