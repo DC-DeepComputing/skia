@@ -170,7 +170,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
 
     sk_sp<TextureProxy> proxy{new TextureProxy(dimensions,
                                                textureInfo,
-                                               std::move(label),
+                                               label,
                                                budgeted)};
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping

@@ -49,7 +49,7 @@ struct DFAState {
 
     DFAState(int id, Label label)
     : fId(id)
-    , fLabel(std::move(label)) {}
+    , fLabel(label) {}
 
     DFAState(const DFAState& other) = delete;
 

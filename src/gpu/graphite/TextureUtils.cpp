@@ -79,7 +79,7 @@ sk_sp<Surface> make_renderable_scratch_surface(
     // be able to be approx-fit and uninstantiated.
     return Surface::MakeScratch(recorder,
                                 info.makeColorType(ct),
-                                std::move(label),
+                                label,
                                 Budgeted::kYes,
                                 Mipmapped::kNo,
                                 backingFit);
@@ -249,7 +249,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
                                                    recorder->priv().resourceProvider(),
                                                    bmpToUpload.dimensions(),
                                                    textureInfo,
-                                                   std::move(label),
+                                                   label,
                                                    budgeted);
     if (!proxy) {
         return {};
@@ -306,7 +306,7 @@ sk_sp<TextureProxy> MakePromiseImageLazyProxy(
     }
 
     PromiseLazyInstantiateCallback callback{std::move(releaseHelper), fulfillProc,
-                                            fulfillContext, textureReleaseProc, std::move(label)};
+                                            fulfillContext, textureReleaseProc, label};
     // Proxies for promise images are assumed to always be destined for a client's SkImage so
     // are never considered budgeted.
     return TextureProxy::MakeLazy(caps, dimensions, textureInfo, Budgeted::kNo, isVolatile,
@@ -326,7 +326,7 @@ sk_sp<SkImage> MakeFromBitmap(Recorder* recorder,
                                           std::move(mipmaps),
                                           mm,
                                           budgeted,
-                                          std::move(label));
+                                          label);
     if (!view) {
         return nullptr;
     }
@@ -380,7 +380,7 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
     // not be budgeted depending on how the copied image is used (or returned to the client).
     sk_sp<Surface> surface = Surface::MakeScratch(recorder,
                                                   dstInfo,
-                                                  std::move(label),
+                                                  label,
                                                   budgeted,
                                                   mipmapped,
                                                   backingFit);

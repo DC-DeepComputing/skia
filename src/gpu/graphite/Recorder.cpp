@@ -722,7 +722,7 @@ sk_sp<TextureProxy> RecorderPriv::CreateCachedProxy(Recorder* recorder,
     }
     return recorder->priv().proxyCache()->findOrCreateCachedProxy(recorder,
                                                                   bitmap,
-                                                                  std::move(label));
+                                                                  label);
 }
 
 size_t RecorderPriv::getResourceCacheLimit() const {
