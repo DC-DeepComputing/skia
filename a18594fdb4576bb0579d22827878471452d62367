@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67b0281_6442fa43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3726077
+      },
+      "writtenOn": "2026-01-15T19:58:05Z",
+      "side": 1,
+      "message": "Hi Ben, could you PTAL at this patch to add simulated fonts support to DWriteTypeface\u0027s MakeFromStream codepaths?\n\nThis means to address https://g-issues.chromium.org/issues/475259106 and I\u0027m working on cleaning up the Chromium side of this change right now.\n\nThanks!",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
