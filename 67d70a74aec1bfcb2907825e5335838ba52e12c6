@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c690f37b_d5ff9c83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20199
+      },
+      "writtenOn": "2026-01-15T15:37:11Z",
+      "side": 1,
+      "message": "For more context see this comment thread:\nhttps://docs.google.com/document/d/1nOEOpbNywfVny7xt7eh6TDMX8IMGEBGSfFF4XCMSsoA/edit?resourcekey\u003d0-Ciud8GANP79-fWAHqTHTCg\u0026disco\u003dAAABueNvUdc",
+      "revId": "67d70a74aec1bfcb2907825e5335838ba52e12c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
