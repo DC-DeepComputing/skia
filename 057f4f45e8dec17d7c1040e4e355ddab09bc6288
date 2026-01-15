@@ -52,6 +52,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abe4c790_aa003803",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-15T13:55:58Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "ed2df839_cb0e051f",
+      "range": {
+        "startLine": 1180,
+        "startChar": 70,
+        "endLine": 1180,
+        "endChar": 77
+      },
+      "revId": "057f4f45e8dec17d7c1040e4e355ddab09bc6288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4d9e2cc_0f606fde",
@@ -99,6 +123,30 @@
           ]
         }
       ],
+      "revId": "057f4f45e8dec17d7c1040e4e355ddab09bc6288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0ea5097_5f83e7b2",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-15T13:55:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4d9e2cc_0f606fde",
+      "range": {
+        "startLine": 1210,
+        "startChar": 70,
+        "endLine": 1210,
+        "endChar": 77
+      },
       "revId": "057f4f45e8dec17d7c1040e4e355ddab09bc6288",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
