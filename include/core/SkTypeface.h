@@ -328,6 +328,15 @@ public:
      */
     SkRect getBounds() const;
 
+    /**
+     * If this typeface is associated with a simulated font, returns the set of flags that
+     * identify with simulations are active. Returns -1 if the concrete typeface type doesn't
+     * support simulations.
+     */
+    int getSimulationsFlags() const {
+        return this->onGetSimulationsFlags();
+    }
+
     // PRIVATE / EXPERIMENTAL -- do not call
     void filterRec(SkScalerContextRec* rec) const {
         this->onFilterRec(rec);
@@ -450,6 +459,8 @@ protected:
     virtual bool onComputeBounds(SkRect*) const;
 
     virtual void* onGetCTFontRef() const { return nullptr; }
+
+    virtual int onGetSimulationsFlags() const { return -1; }
 
 private:
     /** Returns true if the typeface's glyph masks may refer to the foreground
