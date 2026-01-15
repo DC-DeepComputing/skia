@@ -170,6 +170,30 @@
       },
       "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3316d609_c91f2f57",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-15T14:36:01Z",
+      "side": 1,
+      "message": "Lets remember to update this to Ben\u0027s new fTypefaceStreamProc, https://skia-review.googlesource.com/c/skia/+/1141896",
+      "parentUuid": "163f872a_82fcd58a",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
