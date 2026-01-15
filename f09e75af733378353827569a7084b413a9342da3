@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09fe09f_f2fb459f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-15T13:48:51Z",
+      "side": 1,
+      "message": "ptal. There historically were some issues in adding the equality operator for SkColorSpacePrimaries, but I think they are now taken care of. We\u0027ll need to watch carefully for any rolls that break.",
+      "revId": "f09e75af733378353827569a7084b413a9342da3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
