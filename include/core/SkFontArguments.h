@@ -87,10 +87,18 @@ struct SkFontArguments {
 
     Palette getPalette() const { return fPalette; }
 
+    SkFontArguments& setSimulationsFlags(int simulationsFlags) {
+        fSimulationsFlags = simulationsFlags;
+        return *this;
+    }
+
+    int simulationsFlags() const { return fSimulationsFlags; }
+
 private:
     int fCollectionIndex;
     VariationPosition fVariationDesignPosition;
     Palette fPalette;
+    int fSimulationsFlags = -1;
 };
 
 #endif
