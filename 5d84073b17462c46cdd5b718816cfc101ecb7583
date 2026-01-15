@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dee1898_b986ef78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-15T15:30:58Z",
+      "side": 1,
+      "message": "Before this change, tests that declared uniforms that didn\u0027t match wgsl\u0027s layout (or required std140 emulation) wouldn\u0027t work correctly. This led to two behaviors: just using wgsl\u0027s types and it cechnically compiles but isn\u0027t what real sksl would generate (e.g. float2x2 was just being transformed to a mat2 w/o extra alignment padding), or it actually failed to compile in tint.\n\nBecause of the bind/group ordering change, almost every wgsl test output got modified. The benign changes are just those with 1-2 diffed lines.  Many fewer tests actually had the substantial rewrite to apply the amulation.\n\nAt this point, I believe all wgsl files emitted pass tint compilation now.",
+      "revId": "5d84073b17462c46cdd5b718816cfc101ecb7583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
