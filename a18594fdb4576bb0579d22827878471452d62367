@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c12e69e_56218df9",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-15T21:57:49Z",
+      "side": 1,
+      "message": "Note to self: such extended attributes should also be passed through SkFontDescriptor and get serialized and deserialized (with the \"typeface factory tag\" or \"extra format tag\" so that the typeface factories can decide if they can apply the data).\n\nAlso, this is related to the issues around being able to deserialize typeface data properly on the receiving end. Like with the CoreText hvgl format issues (where CoreText will create them as system fonts but not from data) where it becomes necessary to serialize into a different format. In this case the issue is the the format is \"mostly standard\" but with \"extra implementation bits\" on the side.",
+      "parentUuid": "b297d501_fc16631e",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "916a95b7_5957933f",
         "filename": "include/core/SkFontArguments.h",
         "patchSetId": 5
