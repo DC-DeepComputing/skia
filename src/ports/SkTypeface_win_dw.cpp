@@ -553,6 +553,11 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
                                 new Context(lock, fDWriteFontFace.get()));
 }
 
+
+int DWriteFontTypeface::onGetSimulationsFlags() const {
+    return static_cast<int>(fDWriteFont->GetSimulations());
+}
+
 sk_sp<SkTypeface> DWriteFontTypeface::onMakeClone(const SkFontArguments& args) const {
     // Skip if the current face index does not match the ttcIndex
     if (fDWriteFontFace->GetIndex() != SkTo<UINT32>(args.getCollectionIndex())) {
@@ -1123,7 +1128,7 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
     }
 
     SkTScopedComPtr<IDWriteFontFace5> fontFace5_Out;
-    HR(fontResource->CreateFontFace(DWRITE_FONT_SIMULATIONS_NONE,
+    HR(fontResource->CreateFontFace(fontFace->GetSimulations(),
         variation.get(), fontAxisCount,
         &fontFace5_Out));
     fontFace.reset();
@@ -1168,7 +1173,7 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
             HRN(fontFamily->GetFont(fontIndex, &font));
 
             // Skip if the current font is simulated
-            if (font->GetSimulations() != DWRITE_FONT_SIMULATIONS_NONE) {
+            if (args.simulationsFlags() == -1 &&  font->GetSimulations() != DWRITE_FONT_SIMULATIONS_NONE) {
                 continue;
             }
             SkTScopedComPtr<IDWriteFontFace> fontFace;
@@ -1177,7 +1182,7 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
             int ttcIndex = args.getCollectionIndex();
 
             // Skip if the current face index does not match the ttcIndex
-            if (faceIndex != ttcIndex) {
+            if (faceIndex != ttcIndex || (args.simulationsFlags() > -1 && args.simulationsFlags() != font->GetSimulations())) {
                 continue;
             }
 
