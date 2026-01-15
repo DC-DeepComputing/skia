@@ -33,6 +33,57 @@
       "message": "Complementary Chromium change: https://chromium-review.googlesource.com/c/chromium/src/+/7486430",
       "revId": "a18594fdb4576bb0579d22827878471452d62367",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b297d501_fc16631e",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-15T21:32:13Z",
+      "side": 1,
+      "message": "So what is being passed around here isn\u0027t really a \"simulations\" but a \"here is a bunch of information on how to re-create the font I wanted\". CoreText has a similar idea with [flattening the attributes](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/CoreText_Programming/FontOperations/FontOperations.html#//apple_ref/doc/uid/TP40005533-CH4-SW25). In general this would want to be a type with a typeface factory id (or some id so the format of the data is known) and an sk_sp\u003cSkData\u003e.\n\nIf this where all Chromium side I would say land this all and we\u0027ll fix it up later. However, this being on the Skia side I\u0027d like to make sure we get this at least somewhat logically correct first.",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916a95b7_5957933f",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-15T21:32:13Z",
+      "side": 1,
+      "message": "Should probably be std::optional\u003cSomething\u003e (no simulations or a specified match). \n\nIn fact, Palette::index should be a std::optional (if empty use the current or the default) and maybe even the fCollectionIndex (use the current or the default). Though those changes need to be done separately with the related changes to the implementations.",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7297d38_a31f8fa4",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-15T21:32:13Z",
+      "side": 1,
+      "message": "Skia has 100 char wide lines, so no need to wrap so hard here and below.",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
