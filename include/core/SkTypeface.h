@@ -328,6 +328,10 @@ public:
      */
     SkRect getBounds() const;
 
+    int getSimulationsFlags() const {
+        return this->onGetSimulationsFlags();
+    }
+
     // PRIVATE / EXPERIMENTAL -- do not call
     void filterRec(SkScalerContextRec* rec) const {
         this->onFilterRec(rec);
@@ -450,6 +454,8 @@ protected:
     virtual bool onComputeBounds(SkRect*) const;
 
     virtual void* onGetCTFontRef() const { return nullptr; }
+
+    virtual int onGetSimulationsFlags() const { return -1; }
 
 private:
     /** Returns true if the typeface's glyph masks may refer to the foreground

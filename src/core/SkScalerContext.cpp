@@ -45,10 +45,11 @@
 
 #include <algorithm>
 #include <cstring>
+#include <string>
 #include <limits>
 #include <new>
 #include <utility>
-
+#include <iostream>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace {

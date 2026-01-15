@@ -138,6 +138,7 @@ protected:
     int onGetTableTags(SkSpan<SkFontTableTag>) const override;
     size_t onGetTableData(SkFontTableTag, size_t offset, size_t length, void* data) const override;
     sk_sp<SkData> onCopyTableData(SkFontTableTag) const override;
+    int onGetSimulationsFlags() const override;
 
 private:
     mutable sk_sp<Loaders> fLoaders;
