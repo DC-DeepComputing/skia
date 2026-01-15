@@ -194,6 +194,30 @@
       },
       "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ad72aa_8331205e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-15T16:10:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3316d609_c91f2f57",
+      "range": {
+        "startLine": 1238,
+        "startChar": 50,
+        "endLine": 1238,
+        "endChar": 58
+      },
+      "revId": "31bddf3edc778a1d5fa1381bc57cd9e73aa6e5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
