@@ -33,6 +33,47 @@
       "message": "Per offline discussion, we have to split out the setBackendLabel() call from within setLabel() so that that isn\u0027t called until after the constructor has completed. This can be a CL that comes before this chain and aligns with the goal of moving all the backend label updates to the context thread anyways.",
       "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c540aa_ec2efff0",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-15T17:06:37Z",
+      "side": 1,
+      "message": "I think this needs to be called in the inherited class\u0027 constructor not here because it is a virtual function. Can you test this?",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "847918fc_a75f8dbd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Buffer.h",
+              "range": {
+                "startLine": 58,
+                "startChar": 0,
+                "endLine": 61,
+                "endChar": 0
+              },
+              "replacement": "            , fIsProtected(isProtected) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
