@@ -63,7 +63,7 @@ void test_draw(skiatest::Reporter* reporter,
 
     sk_sp<SkImage> image = SkImages::WrapTexture(recorder.get(),
                                                  managedTexture->texture(),
-                                                 kRGBA_8888_SkColorType,
+                                                 /*forceOpaque=*/false,
                                                  kPremul_SkAlphaType,
                                                  /*colorSpace=*/nullptr,
                                                  origin);

@@ -91,7 +91,7 @@ protected:
 
         fYCbCrImage = SkImages::WrapTexture(recorder,
                                             ycbcrHelper->backendTexture(),
-                                            kRGB_888x_SkColorType,
+                                            /*forceOpaque=*/true,
                                             kPremul_SkAlphaType,
                                             /*colorSpace=*/nullptr,
                                             release_ycbcrhelper,

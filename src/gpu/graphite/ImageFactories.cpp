@@ -123,6 +123,85 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
+                           bool forceOpaque,
+                           SkAlphaType at,
+                           sk_sp<SkColorSpace> cs,
+                           skgpu::Origin origin,
+                           GenerateMipmapsFromBase genMipmaps,
+                           TextureReleaseProc releaseP,
+                           ReleaseContext releaseC,
+                           std::string_view label) {
+    auto releaseHelper = skgpu::RefCntedCallback::Make(releaseP, releaseC);
+
+    if (!recorder) {
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkColorType ct = caps->getDefaultColorType(backendTex.info());
+    if (forceOpaque) {
+        at = kOpaque_SkAlphaType;
+        // Some color types have opaque equivalents that we should use instead
+        switch (ct) {
+            case kRGBA_8888_SkColorType:        ct = kRGB_888x_SkColorType; break;
+            case kRGBA_F16_SkColorType:         ct = kRGB_F16F16F16x_SkColorType; break;
+            case kRGBA_1010102_SkColorType:     ct = kRGB_101010x_SkColorType; break;
+            case kBGRA_1010102_SkColorType:     ct = kBGR_101010x_SkColorType; break;
+            case kBGRA_10101010_XR_SkColorType: ct = kBGR_101010x_XR_SkColorType; break;
+            default:
+                // Leave `ct` as-is, we manually fold in the the alpha => 1 swizzle
+                break;
+        }
+        // Any texture format that supports one of the color types that can be forced opaque should
+        // alos be compatible with the X variant.
+        SkASSERT(ct == kUnknown_SkColorType ||
+                 caps->areColorTypeAndTextureInfoCompatible(ct, backendTex.info()));
+    }
+
+    SkColorInfo info(ct, at, std::move(cs));
+    if (!validate_backend_texture(caps, backendTex, info)) {
+        return nullptr;
+    }
+
+    if (label.empty()) {
+        label = "WrappedImage";
+    }
+
+    sk_sp<Texture> texture =
+            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    if (!texture) {
+        SKGPU_LOG_W("Texture creation failed");
+        return nullptr;
+    }
+    texture->setReleaseCallback(std::move(releaseHelper));
+
+    sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
+    SkASSERT(proxy);
+
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
+    if (forceOpaque && !SkColorTypeIsAlwaysOpaque(ct)) {
+        swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
+    }
+    TextureProxyView view(std::move(proxy), swizzle, origin);
+
+    if (genMipmaps == GenerateMipmapsFromBase::kYes) {
+        if (view.proxy()->mipmapped() == skgpu::Mipmapped::kNo) {
+            SKGPU_LOG_W("Failed SkImage:::WrapTexture because asked to generate mipmaps for "
+                        "nonmipmapped texture");
+            return nullptr;
+        }
+        if (!GenerateMipmaps(recorder, /*drawContext=*/nullptr, view.refProxy(), info)) {
+            SKGPU_LOG_W("Failed SkImage::WrapTexture. Could not generate mipmaps.");
+            return nullptr;
+        }
+    }
+
+    return sk_make_sp<skgpu::graphite::Image>(view, info);
+}
+
+sk_sp<SkImage> WrapTexture(Recorder* recorder,
+                           const BackendTexture& backendTex,
                            SkColorType ct,
                            SkAlphaType at,
                            sk_sp<SkColorSpace> cs,
