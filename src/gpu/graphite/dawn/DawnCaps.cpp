@@ -357,6 +357,16 @@ SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
     return colorAttachmentDimensions;
 }
 
+SkColorType DawnCaps::getDefaultColorType(const TextureInfo& textureInfo) const {
+    auto dawnFormat = TextureInfoPriv::Get<DawnTextureInfo>(textureInfo).getViewFormat();
+    if (dawnFormat == wgpu::TextureFormat::Undefined) {
+        return kUnknown_SkColorType;
+    }
+    // Default to the first SkColorType recorded as compatible with this format
+    const FormatInfo& info = this->getFormatInfo(dawnFormat);
+    return info.fColorTypeInfoCount > 0 ? info.fColorTypeInfos[0].fColorType : kUnknown_SkColorType;
+}
+
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
                                                       const TextureInfo& textureInfo) const {
     auto dawnFormat = TextureInfoPriv::Get<DawnTextureInfo>(textureInfo).getViewFormat();

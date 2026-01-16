@@ -145,6 +145,8 @@ public:
                                       RenderPassDesc*,
                                       const RendererProvider*) const { return false; }
 
+    // TODO(b/390473370): Once there's a format table in Caps, this doesn't need to be virtual.
+    virtual SkColorType getDefaultColorType(const TextureInfo&) const = 0;
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
 
     // Tries to return a sample count > 1 if needing MSAA to render into the target specification.

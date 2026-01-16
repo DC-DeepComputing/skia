@@ -875,6 +875,18 @@ TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) cons
     return TextureInfos::MakeVulkan(info);
 }
 
+SkColorType VulkanCaps::getDefaultColorType(const TextureInfo& textureInfo) const {
+    const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo);
+    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+        // An external format still has a color type
+        return fExternalFormatColorTypeInfo.fColorType;
+    }
+
+    // Default to the first SkColorType recorded as compatible with this format
+    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
+    return info.fColorTypeInfoCount > 0 ? info.fColorTypeInfos[0].fColorType : kUnknown_SkColorType;
+}
+
 void VulkanCaps::initShaderCaps(const EnabledFeatures enabledFeatures, const uint32_t vendorID) {
     // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V
     // generation cannot handle mixed array strides being passed into functions.

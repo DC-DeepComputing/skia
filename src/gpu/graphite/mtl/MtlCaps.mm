@@ -939,6 +939,16 @@ TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
     return TextureInfos::MakeMetal(info);
 }
 
+SkColorType MtlCaps::getDefaultColorType(const TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
+    if (mtlFormat == MTLPixelFormatInvalid) {
+        return kUnknown_SkColorType;
+    }
+    // Default to the first SkColorType recorded as compatible with this format
+    const FormatInfo& info = this->getFormatInfo(mtlFormat);
+    return info.fColorTypeInfoCount > 0 ? info.fColorTypeInfos[0].fColorType : kUnknown_SkColorType;
+}
+
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
     MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
