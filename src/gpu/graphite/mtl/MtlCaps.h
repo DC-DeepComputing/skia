@@ -42,6 +42,8 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    SkColorType getDefaultColorType(const TextureInfo&) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;

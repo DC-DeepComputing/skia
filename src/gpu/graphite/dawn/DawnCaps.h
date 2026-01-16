@@ -50,6 +50,9 @@ public:
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
     SkISize getDepthAttachmentDimensions(const TextureInfo&,
                                          const SkISize colorAttachmentDimensions) const override;
+
+    SkColorType getDefaultColorType(const TextureInfo&) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     bool extractGraphicsDescs(const UniqueKey&,
