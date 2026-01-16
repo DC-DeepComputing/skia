@@ -45,23 +45,82 @@ namespace SkImages {
 
 using namespace skgpu::graphite;
 
+static bool validate_texture_info(const Caps* caps,
+                                  const TextureInfo& textureInfo,
+                                  const SkColorInfo& info,
+                                  SkISize dimensions) {
+    if (!textureInfo.isValid() || dimensions.width() <= 0 || dimensions.height() <= 0) {
+        SKGPU_LOG_W("Wrapped texture is invalid (%d) or has invalid dimensions (%d x %d)",
+                    textureInfo.isValid(), dimensions.width(), dimensions.height());
+        return false;
+    }
+    if (!caps->isTexturable(textureInfo)) {
+        SKGPU_LOG_W("Wrapped texture is not supported as sampleable: %s",
+                    textureInfo.toString().c_str());
+        return false;
+    }
+    // Every valid textureInfo that returns true from isTexturable() should also return a valid
+    // SkColorType from Caps::getDefaultColorType() but this can still be false if the alpha
+    // type is unknown.
+    if (!SkColorInfoIsValid(info)) {
+        SKGPU_LOG_W("Wrapped texture has invalid colortype (%d) or alphatype (%d)",
+                    (int) info.colorType(), (int) info.alphaType());
+        return false;
+    }
+    // Once the SkColorType-accepting factories go away, this should be an assert instead.
+    if (!caps->areColorTypeAndTextureInfoCompatible(info.colorType(), textureInfo)) {
+        SKGPU_LOG_W("Wrapped texture format (%s) not compatible with color type (%d)",
+                    textureInfo.toString().c_str(), (int) info.colorType());
+        return false;
+    }
+
+    return true;
+}
+
 static bool validate_backend_texture(const skgpu::graphite::Caps* caps,
                                      const skgpu::graphite::BackendTexture& texture,
                                      const SkColorInfo& info) {
-    if (!texture.isValid() || texture.dimensions().width() <= 0 ||
-        texture.dimensions().height() <= 0) {
-        return false;
+    return validate_texture_info(caps, texture.info(), info, texture.dimensions());
+}
+
+static SkColorInfo get_wrapped_color_info(const skgpu::graphite::Caps* caps,
+                                          const TextureInfo& textureInfo,
+                                          bool forceOpaque,
+                                          SkAlphaType at,
+                                          sk_sp<SkColorSpace> cs) {
+    SkColorType ct = caps->getDefaultColorType(textureInfo);
+    if (forceOpaque) {
+        at = kOpaque_SkAlphaType;
+        // Some color types have opaque equivalents that we should use instead
+        switch (ct) {
+            case kRGBA_8888_SkColorType:        ct = kRGB_888x_SkColorType; break;
+            case kRGBA_F16_SkColorType:         ct = kRGB_F16F16F16x_SkColorType; break;
+            case kRGBA_1010102_SkColorType:     ct = kRGB_101010x_SkColorType; break;
+            case kBGRA_1010102_SkColorType:     ct = kBGR_101010x_SkColorType; break;
+            case kBGRA_10101010_XR_SkColorType: ct = kBGR_101010x_XR_SkColorType; break;
+            default:
+                // Leave `ct` as-is, we manually fold in the the alpha => 1 swizzle
+                break;
+        }
+        // Any texture format that supports one of the color types that can be forced opaque should
+        // alos be compatible with the X variant.
+        SkASSERT(ct == kUnknown_SkColorType ||
+                 caps->areColorTypeAndTextureInfoCompatible(ct, textureInfo));
     }
 
-    if (!SkColorInfoIsValid(info)) {
-        return false;
-    }
+    return SkColorInfo(ct, at, std::move(cs));
+}
 
-    if (!caps->isTexturable(texture.info())) {
-        return false;
+static TextureProxyView get_wrapped_texture_proxy_view(const skgpu::graphite::Caps* caps,
+                                                       sk_sp<TextureProxy> proxy,
+                                                       skgpu::Origin origin,
+                                                       SkColorType ct,
+                                                       bool forceOpaque) {
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, proxy->textureInfo());
+    if (forceOpaque && !SkColorTypeIsAlwaysOpaque(ct)) {
+        swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
     }
-
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    return TextureProxyView(std::move(proxy), swizzle, origin);
 }
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
@@ -139,27 +198,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
     const Caps* caps = recorder->priv().caps();
 
-    SkColorType ct = caps->getDefaultColorType(backendTex.info());
-    if (forceOpaque) {
-        at = kOpaque_SkAlphaType;
-        // Some color types have opaque equivalents that we should use instead
-        switch (ct) {
-            case kRGBA_8888_SkColorType:        ct = kRGB_888x_SkColorType; break;
-            case kRGBA_F16_SkColorType:         ct = kRGB_F16F16F16x_SkColorType; break;
-            case kRGBA_1010102_SkColorType:     ct = kRGB_101010x_SkColorType; break;
-            case kBGRA_1010102_SkColorType:     ct = kBGR_101010x_SkColorType; break;
-            case kBGRA_10101010_XR_SkColorType: ct = kBGR_101010x_XR_SkColorType; break;
-            default:
-                // Leave `ct` as-is, we manually fold in the the alpha => 1 swizzle
-                break;
-        }
-        // Any texture format that supports one of the color types that can be forced opaque should
-        // alos be compatible with the X variant.
-        SkASSERT(ct == kUnknown_SkColorType ||
-                 caps->areColorTypeAndTextureInfoCompatible(ct, backendTex.info()));
-    }
-
-    SkColorInfo info(ct, at, std::move(cs));
+    SkColorInfo info =
+            get_wrapped_color_info(caps, backendTex.info(), forceOpaque, at, std::move(cs));
     if (!validate_backend_texture(caps, backendTex, info)) {
         return nullptr;
     }
@@ -176,14 +216,12 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     }
     texture->setReleaseCallback(std::move(releaseHelper));
 
-    sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
-    SkASSERT(proxy);
-
-    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
-    if (forceOpaque && !SkColorTypeIsAlwaysOpaque(ct)) {
-        swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
-    }
-    TextureProxyView view(std::move(proxy), swizzle, origin);
+    TextureProxyView view = get_wrapped_texture_proxy_view(caps,
+                                                           TextureProxy::Wrap(std::move(texture)),
+                                                           origin,
+                                                           info.colorType(),
+                                                           forceOpaque);
+    SkASSERT(view);
 
     if (genMipmaps == GenerateMipmapsFromBase::kYes) {
         if (view.proxy()->mipmapped() == skgpu::Mipmapped::kNo) {
@@ -264,14 +302,7 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
 
     const Caps* caps = recorder->priv().caps();
 
-    SkImageInfo info = SkImageInfo::Make(dimensions, colorInfo);
-    if (!SkImageInfoIsValid(info)) {
-        SKGPU_LOG_W("Invalid SkImageInfo");
-        return nullptr;
-    }
-
-    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), textureInfo)) {
-        SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
+    if (!validate_texture_info(caps, textureInfo, colorInfo, dimensions)) {
         return nullptr;
     }
 
@@ -292,6 +323,89 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
     skgpu::Swizzle swizzle = caps->getReadSwizzle(colorInfo.colorType(), textureInfo);
     TextureProxyView view(std::move(proxy), swizzle, origin);
     return sk_make_sp<Image>(view, colorInfo);
+}
+
+SK_API sk_sp<SkImage> PromiseTextureFrom(skgpu::graphite::Recorder* recorder,
+                                         SkISize dimensions,
+                                         const skgpu::graphite::TextureInfo& textureInfo,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         skgpu::Origin origin,
+                                         skgpu::graphite::Volatile isVolatile,
+                                         GraphitePromiseTextureFulfillProc fulfillProc,
+                                         GraphitePromiseImageReleaseProc imageReleaseProc,
+                                         GraphitePromiseTextureReleaseProc textureReleaseProc,
+                                         GraphitePromiseImageContext imageContext,
+                                         std::string_view label) {
+    // Our contract is that we will always call the _image_ release proc even on failure.
+    // We use the helper to convey the imageContext, so we need to ensure Make doesn't fail.
+    imageReleaseProc = imageReleaseProc ? imageReleaseProc : [](void*) {};
+    auto releaseHelper = skgpu::RefCntedCallback::Make(imageReleaseProc, imageContext);
+
+    if (!recorder) {
+        SKGPU_LOG_W("Null Recorder");
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkColorInfo colorInfo = get_wrapped_color_info(caps,
+                                                   textureInfo,
+                                                   forceOpaque,
+                                                   alphaType,
+                                                   std::move(colorSpace));
+    if (!validate_texture_info(caps, textureInfo, colorInfo, dimensions)) {
+        return nullptr;
+    }
+
+    // Non-YUVA promise images use the 'imageContext' for both the release proc and fulfill proc.
+    sk_sp<TextureProxy> proxy = MakePromiseImageLazyProxy(caps,
+                                                          dimensions,
+                                                          textureInfo,
+                                                          isVolatile,
+                                                          std::move(releaseHelper),
+                                                          fulfillProc,
+                                                          imageContext,
+                                                          textureReleaseProc,
+                                                          label);
+    TextureProxyView view = get_wrapped_texture_proxy_view(caps,
+                                                           std::move(proxy),
+                                                           origin,
+                                                           colorInfo.colorType(),
+                                                           forceOpaque);
+    if (!view) {
+        return nullptr;
+    }
+
+    return sk_make_sp<Image>(view, colorInfo);
+}
+
+SK_API sk_sp<SkImage> PromiseTextureFrom(skgpu::graphite::Recorder* recorder,
+                                         SkISize dimensions,
+                                         const skgpu::graphite::TextureInfo& textureInfo,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         skgpu::graphite::Volatile isVolatile,
+                                         GraphitePromiseTextureFulfillProc fulfillProc,
+                                         GraphitePromiseImageReleaseProc imageReleaseProc,
+                                         GraphitePromiseTextureReleaseProc textureReleaseProc,
+                                         GraphitePromiseImageContext imageContext,
+                                         std::string_view label) {
+    return PromiseTextureFrom(recorder,
+                              dimensions,
+                              textureInfo,
+                              forceOpaque,
+                              alphaType,
+                              std::move(colorSpace),
+                              skgpu::Origin::kTopLeft,
+                              isVolatile,
+                              fulfillProc,
+                              imageReleaseProc,
+                              textureReleaseProc,
+                              imageContext,
+                              label);
 }
 
 sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,

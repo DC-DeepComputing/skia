@@ -149,7 +149,9 @@ SK_API sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder*,
 /** Create a new SkImage that is very similar to an SkImage created by WrapTexture. The difference
     is that the caller need not have created the backend texture nor populated it with data when
     creating the image. Instead of passing a BackendTexture to the factory the client supplies a
-    description of the texture consisting of dimensions, TextureInfo, SkColorInfo and Volatility.
+    description of the texture consisting of dimensions, TextureInfo, color handling, and
+    Volatility. The color handling parameters (forceOpaque, alphaType, colorSpace) behave
+    equivalently to the parameters of the same name in WrapTexture().
 
     In general, 'fulfill' must return a BackendTexture that matches the properties provided at
     SkImage creation time. The BackendTexture must refer to a valid existing texture in the backend
@@ -181,16 +183,54 @@ SK_API sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder*,
     @param recorder       the recorder that will capture the commands creating the image
     @param dimensions     width & height of promised gpu texture
     @param textureInfo    structural information for the promised gpu texture
-    @param colorInfo      color type, alpha type and colorSpace information for the image
+    @param forceOpaque    If true, sampled alpha values will be forced to 1 (possibly via shader
+                          logic depending on the texture's format)
+    @param alphaType      The nature of alpha channel data provided in the texture, which is ignored
+                          for kOpaque_SkAlphaType if forceOpaque is true.
+    @param colorSpace     This describes the color space of this image's contents, as seen after
+                          sampling. In general, if the format of the backend texture is SRGB, some
+                          linear colorSpace should be supplied (e.g.,
+                          SkColorSpace::MakeSRGBLinear()). If the format of the backend texture is
+                          linear, then the colorSpace should include a description of the transfer
+                          function as well (e.g., SkColorSpace::MakeSRGB()).
     @param origin         Whether the Texture logically treats the origin as TopLeft or BottomLeft
     @param isVolatile     volatility of the promise image
-    @param fulfill        function called to get the actual backend texture,
-                          and the instance for the GraphitePromiseTextureReleaseProc
+    @param fulfill        function called to get the actual backend texture, and the instance for
+                          the GraphitePromiseTextureReleaseProc
     @param imageRelease   function called when any image-centric data can be deleted
     @param textureRelease function called when the backend texture can be deleted
     @param imageContext   state passed to fulfill and imageRelease
     @return               created SkImage, or nullptr
 */
+SK_API sk_sp<SkImage> PromiseTextureFrom(skgpu::graphite::Recorder*,
+                                         SkISize dimensions,
+                                         const skgpu::graphite::TextureInfo&,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         skgpu::Origin origin,
+                                         skgpu::graphite::Volatile,
+                                         GraphitePromiseTextureFulfillProc,
+                                         GraphitePromiseImageReleaseProc,
+                                         GraphitePromiseTextureReleaseProc,
+                                         GraphitePromiseImageContext,
+                                         std::string_view label = {});
+
+SK_API sk_sp<SkImage> PromiseTextureFrom(skgpu::graphite::Recorder*,
+                                         SkISize dimensions,
+                                         const skgpu::graphite::TextureInfo&,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         skgpu::graphite::Volatile,
+                                         GraphitePromiseTextureFulfillProc,
+                                         GraphitePromiseImageReleaseProc,
+                                         GraphitePromiseTextureReleaseProc,
+                                         GraphitePromiseImageContext,
+                                         std::string_view label = {});
+
+// DEPRECATED: Use the variants that take `forceOpaque`, `SkAlphaType`, and `SkColorSpace`
+// as SkColorType is no longer required.
 SK_API sk_sp<SkImage> PromiseTextureFrom(skgpu::graphite::Recorder*,
                                          SkISize dimensions,
                                          const skgpu::graphite::TextureInfo&,

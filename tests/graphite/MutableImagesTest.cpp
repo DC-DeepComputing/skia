@@ -66,10 +66,11 @@ constexpr SkColor4f kMutationColors[kNumMutations] = {
 //    mutate - should change the contents of the SkImage
 class Mutator {
 public:
-    Mutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips)
+    Mutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips, bool forceOpaque)
             : fReporter(reporter)
             , fRecorder(recorder)
-            , fWithMips(withMips) {
+            , fWithMips(withMips)
+            , fForceOpaque(forceOpaque) {
     }
     virtual ~Mutator() = default;
 
@@ -85,6 +86,7 @@ protected:
     skiatest::Reporter* fReporter;
     Recorder* fRecorder;
     bool fWithMips;
+    bool fForceOpaque;
 
     sk_sp<SkImage> fMutatingImg; // needs to be created in the 'init' method
 };
@@ -122,7 +124,8 @@ public:
                      int testcaseID,
                      bool useTwoRecorders,
                      bool withMips,
-                     const SkColor4f& expectedColor) {
+                     bool forceOpaque,
+                     SkColor4f expectedColor) {
 
         fReadbackPM.erase(SkColors::kTransparent);
 
@@ -143,6 +146,13 @@ public:
                 });
 
         static constexpr float kTol[] = {0, 0, 0, 0};
+        if (forceOpaque) {
+            // The backend texture is updated to the expected color by making it premul (pushing
+            // alpha into the RGB channels). `forceOpaque` applies after that during sampling, so
+            // only A should appear equal to 1, RGB still reflect any alpha channel in the orignal
+            // unpremul expected color.
+            expectedColor = expectedColor.premul().makeOpaque().unpremul();
+        }
         CheckSolidPixels(expectedColor, fReadbackPM, kTol, error);
     }
 
@@ -198,12 +208,15 @@ class UpdateBackendTextureMutator : public Mutator {
 public:
     static std::unique_ptr<Mutator> Make(skiatest::Reporter* reporter,
                                          Recorder* recorder,
-                                         bool withMips) {
-        return std::make_unique<UpdateBackendTextureMutator>(reporter, recorder, withMips);
+                                         bool withMips,
+                                         bool forceOpaque) {
+        return std::make_unique<UpdateBackendTextureMutator>(
+                reporter, recorder, withMips, forceOpaque);
     }
 
-    UpdateBackendTextureMutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips)
-            : Mutator(reporter, recorder, withMips) {
+    UpdateBackendTextureMutator(skiatest::Reporter* reporter, Recorder* recorder,
+                                bool withMips, bool forceOpaque)
+            : Mutator(reporter, recorder, withMips, forceOpaque) {
     }
     ~UpdateBackendTextureMutator() override {
         fRecorder->deleteBackendTexture(fBETexture);
@@ -228,7 +241,7 @@ public:
 
         fMutatingImg = SkImages::WrapTexture(fRecorder,
                                              fBETexture,
-                                             /*forceOpaque=*/false,
+                                             fForceOpaque,
                                              kPremul_SkAlphaType,
                                              /* colorSpace= */ nullptr);
         REPORTER_ASSERT(fReporter, fMutatingImg);
@@ -246,6 +259,7 @@ public:
 
 private:
     BackendTexture fBETexture;
+
 };
 
 // case 2 (Volatile Promise Images)
@@ -256,12 +270,15 @@ class VolatilePromiseImageMutator : public Mutator {
 public:
     static std::unique_ptr<Mutator> Make(skiatest::Reporter* reporter,
                                          Recorder* recorder,
-                                         bool withMips) {
-        return std::make_unique<VolatilePromiseImageMutator>(reporter, recorder, withMips);
+                                         bool withMips,
+                                         bool forceOpaque) {
+        return std::make_unique<VolatilePromiseImageMutator>(
+                reporter, recorder, withMips, forceOpaque);
     }
 
-    VolatilePromiseImageMutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips)
-            : Mutator(reporter, recorder, withMips) {
+    VolatilePromiseImageMutator(skiatest::Reporter* reporter, Recorder* recorder,
+                                bool withMips, bool forceOpaque)
+            : Mutator(reporter, recorder, withMips, forceOpaque) {
     }
 
     ~VolatilePromiseImageMutator() override {
@@ -324,9 +341,9 @@ public:
         fMutatingImg = SkImages::PromiseTextureFrom(fRecorder,
                                                     kImageSize,
                                                     info,
-                                                    SkColorInfo(kRGBA_8888_SkColorType,
-                                                                kPremul_SkAlphaType,
-                                                                /* cs= */ nullptr),
+                                                    fForceOpaque,
+                                                    kPremul_SkAlphaType,
+                                                    /*colorSpace=*/nullptr,
                                                     Volatile::kYes,
                                                     fulfill,
                                                     imageRelease,
@@ -415,12 +432,14 @@ class SurfaceMutator : public Mutator {
 public:
     static std::unique_ptr<Mutator> Make(skiatest::Reporter* reporter,
                                          Recorder* recorder,
-                                         bool withMips) {
+                                         bool withMips,
+                                         bool forceOpaque) {
+        SkASSERT(!forceOpaque);
         return std::make_unique<SurfaceMutator>(reporter, recorder, withMips);
     }
 
     SurfaceMutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips)
-            : Mutator(reporter, recorder, withMips) {
+            : Mutator(reporter, recorder, withMips, /*forceOpaque=*/false) {
     }
 
     std::unique_ptr<Recording> init(const Caps* /* caps */) override {
@@ -449,12 +468,14 @@ private:
     sk_sp<SkSurface> fMutatingSurface;
 };
 
-using MutatorFactoryT = std::unique_ptr<Mutator> (*)(skiatest::Reporter*, Recorder*, bool withMips);
+using MutatorFactoryT = std::unique_ptr<Mutator> (*)(skiatest::Reporter*, Recorder*,
+                                                     bool withMips, bool forceOpaque);
 
 void run_test(skiatest::Reporter* reporter,
               Context* context,
               bool useTwoRecorders,
               bool withMips,
+              bool forceOpaque,
               MutatorFactoryT createMutator) {
     const Caps* caps = context->priv().caps();
 
@@ -469,7 +490,8 @@ void run_test(skiatest::Reporter* reporter,
         redrawerRecorder = recorders[1].get();
     }
 
-    std::unique_ptr<Mutator> mutator = createMutator(reporter, mutatorRecorder, withMips);
+    std::unique_ptr<Mutator> mutator = createMutator(reporter, mutatorRecorder,
+                                                     withMips, forceOpaque);
 
     {
         std::unique_ptr<Recording> imgCreationRecording = mutator->init(caps);
@@ -483,7 +505,7 @@ void run_test(skiatest::Reporter* reporter,
 
         REPORTER_ASSERT(reporter, context->insertRecording({ redrawer.imgDrawRecording() }));
         redrawer.checkResult(context, mutator->getCase(),
-                             useTwoRecorders, withMips, kInitialColor);
+                             useTwoRecorders, withMips, forceOpaque, kInitialColor);
 
         for (int i = 0; i < kNumMutations; ++i) {
             {
@@ -496,7 +518,7 @@ void run_test(skiatest::Reporter* reporter,
 
             REPORTER_ASSERT(reporter, context->insertRecording({ redrawer.imgDrawRecording() }));
             redrawer.checkResult(context, mutator->getCase(),
-                                 useTwoRecorders, withMips, kMutationColors[i]);
+                                 useTwoRecorders, withMips, forceOpaque, kMutationColors[i]);
         }
     }
 }
@@ -508,19 +530,21 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MutableImagesTest, reporter, context,
 
     for (bool useTwoRecorders : { false, true }) {
         for (bool withMips : { false, true }) {
-            // case 1 (AHBs)
-            run_test(reporter, context, useTwoRecorders, withMips,
-                     UpdateBackendTextureMutator::Make);
+            for (bool forceOpaque : { false, true }) {
+                // case 1 (AHBs)
+                run_test(reporter, context, useTwoRecorders, withMips, forceOpaque,
+                        UpdateBackendTextureMutator::Make);
 
-            // case 2 (Volatile Promise Images)
-            run_test(reporter, context, useTwoRecorders, withMips,
-                     VolatilePromiseImageMutator::Make);
+                // case 2 (Volatile Promise Images)
+                run_test(reporter, context, useTwoRecorders, withMips, forceOpaque,
+                        VolatilePromiseImageMutator::Make);
 
-            // case 3 (Surface/Image pair)
-            if (!withMips) {
-                // TODO: allow the mipmapped version when we can automatically regenerate mipmaps
-                run_test(reporter, context, useTwoRecorders, withMips,
-                         SurfaceMutator::Make);
+                // case 3 (Surface/Image pair), skip forceOpaque=true as that's only available with
+                // backend textures
+                if (!forceOpaque) {
+                    run_test(reporter, context, useTwoRecorders, withMips, /*forceOpaque=*/false,
+                            SurfaceMutator::Make);
+                }
             }
         }
     }

@@ -7,3 +7,4 @@
    logic) using a `forceOpaque` boolean. This is a no-op for texture formats that do not have an
    alpha channel. This is a more reliable way to sample an opaque texture than trying to use
    kRGB_888x_SkColorType as it will work for any supported texture format.
+* `SkImages::PromiseTextureFrom` (non-YUVA) is also updated to have the same semantics as `WrapTexture`.
