@@ -159,10 +159,12 @@ DEF_TEST(HdrMetadata_Agtm_Mix, r) {
 }
 
 DEF_TEST(HdrMetadata_Agtm_RWTMO, r) {
-    skhdr::AdaptiveGlobalToneMap agtm;
-    auto& hatm = agtm.fHeadroomAdaptiveToneMap.emplace();
-    hatm.fBaselineHdrHeadroom = 1.f;
-
+    skhdr::AdaptiveGlobalToneMap agtm = {
+        .fHeadroomAdaptiveToneMap = {{
+            .fBaselineHdrHeadroom = 1.f,
+        }}
+    };
+    auto& hatm = agtm.fHeadroomAdaptiveToneMap.value();
     skhdr::AgtmHelpers::PopulateUsingRwtmo(hatm);
 
     REPORTER_ASSERT(r, memcmp(&hatm.fGainApplicationSpacePrimaries, &SkNamedPrimaries::kRec2020,
@@ -198,7 +200,8 @@ DEF_TEST(HdrMetadata_Agtm_RWTMO, r) {
 
 DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
     skhdr::AgtmImpl agtm;
-    auto& hatm = agtm.fMetadata.fHeadroomAdaptiveToneMap.emplace();
+    auto& hatm = agtm.fMetadata.fHeadroomAdaptiveToneMap.emplace(
+        skhdr::AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap{});
 
     auto test = [&r, &agtm](const std::string& name,
                             float targetedHdrHeadroom,
@@ -228,8 +231,9 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
 
     // Tests with a baseline and an alternate representation.
     hatm.fBaselineHdrHeadroom = 1.f;
-    hatm.fAlternateImages.resize(1);
-    hatm.fAlternateImages[0].fHdrHeadroom = 0.f;
+    hatm.fAlternateImages = {
+        { .fHdrHeadroom = 0.f },
+    };
 
     test("base-1-alt0, target-0", 0.f,
          {{0, skhdr::AgtmHelpers::Weighting::kInvalidIndex},
@@ -249,9 +253,10 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
 
     // Two alternate representations.
     hatm.fBaselineHdrHeadroom = 1.f;
-    hatm.fAlternateImages.resize(2);
-    hatm.fAlternateImages[0].fHdrHeadroom = 0.f;
-    hatm.fAlternateImages[1].fHdrHeadroom = 2.f;
+    hatm.fAlternateImages = {
+        { .fHdrHeadroom = 0.f },
+        { .fHdrHeadroom = 2.f },
+    };
 
     test("base-1-alt0-alt2, target-0", 0.f,
          {{0, skhdr::AgtmHelpers::Weighting::kInvalidIndex},
@@ -279,9 +284,10 @@ DEF_TEST(HdrMetadata_Agtm_Weighting, r) {
 
     // Two alternate representations again, now mix-able.
     hatm.fBaselineHdrHeadroom = 2.f;
-    hatm.fAlternateImages.resize(2);
-    hatm.fAlternateImages[0].fHdrHeadroom = 0.f;
-    hatm.fAlternateImages[1].fHdrHeadroom = 1.f;
+    hatm.fAlternateImages = {
+      { .fHdrHeadroom = 0.f },
+      { .fHdrHeadroom = 1.f },
+    };
 
     test("base-2-alt0-alt1, target-0.25", 0.25f,
          {{0, 1},
@@ -373,9 +379,10 @@ DEF_TEST(HdrMetadata_Agtm_Serialize, r) {
 
         skhdr::AdaptiveGlobalToneMap agtmIn;
 
-        auto& hatmIn = agtmIn.fHeadroomAdaptiveToneMap.emplace();
-        hatmIn.fBaselineHdrHeadroom = 1.f;
-        skhdr::AgtmHelpers::PopulateUsingRwtmo(hatmIn);
+        auto& hatmIn = agtmIn.fHeadroomAdaptiveToneMap = {{
+            .fBaselineHdrHeadroom = 1.f
+        }};
+        skhdr::AgtmHelpers::PopulateUsingRwtmo(hatmIn.value());
 
         skhdr::AdaptiveGlobalToneMap agtmOut;
         REPORTER_ASSERT(r, agtmOut.parse(agtmIn.serialize().get()));
@@ -431,65 +438,75 @@ DEF_TEST(HdrMetadata_Agtm_Serialize, r) {
     {
         skiatest::ReporterContext ctx(r, "FourAlternates");
 
-        skhdr::AdaptiveGlobalToneMap agtmIn;
-        agtmIn.fHdrReferenceWhite = 400.f;
-
-        auto& hatmIn = agtmIn.fHeadroomAdaptiveToneMap.emplace();
-        hatmIn.fBaselineHdrHeadroom = 2.f;
-        hatmIn.fGainApplicationSpacePrimaries = SkNamedPrimaries::kSMPTE_EG_432_1;
-        hatmIn.fAlternateImages.resize(4);
-        hatmIn.fAlternateImages[0].fHdrHeadroom = 0.f;
-        hatmIn.fAlternateImages[1].fHdrHeadroom = 1.f;
-        hatmIn.fAlternateImages[2].fHdrHeadroom = 3.f;
-        hatmIn.fAlternateImages[3].fHdrHeadroom = 4.f;
-        hatmIn.fAlternateImages[0].fColorGainFunction = {
-            .fComponentMixing = {
-                .fMax = 0.75f,
-                .fMin = 0.25f
-            },
-            .fGainCurve = {
-                .fControlPoints = {
-                    { .fX = 0.f, .fY = 1.f, .fM = 0.f },
+        skhdr::AdaptiveGlobalToneMap agtmIn = {
+            .fHdrReferenceWhite = 400.f,
+            .fHeadroomAdaptiveToneMap = {{
+                .fBaselineHdrHeadroom = 2.f,
+                .fGainApplicationSpacePrimaries = SkNamedPrimaries::kSMPTE_EG_432_1,
+                .fAlternateImages = {
+                    {
+                        .fHdrHeadroom = 0.f,
+                        .fColorGainFunction = {
+                            .fComponentMixing = {
+                                .fMax = 0.75f,
+                                .fMin = 0.25f
+                            },
+                            .fGainCurve = {
+                                .fControlPoints = {
+                                    { .fX = 0.f, .fY = 1.f, .fM = 0.f },
+                                }
+                            }
+                        }
+                    },
+                    {
+                        .fHdrHeadroom = 1.f,
+                        .fColorGainFunction = {
+                            .fComponentMixing = {
+                                .fMax = 1.f,
+                            },
+                            .fGainCurve = {
+                                .fControlPoints = {
+                                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
+                                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
+                                    { .fX = 2.f, .fY = 0.4f, .fM = 0.2f },
+                                    { .fX = 3.f, .fY = 0.3f, .fM = 0.3f },
+                                },
+                            },
+                        },
+                    },
+                    {
+                        .fHdrHeadroom = 3.f,
+                        .fColorGainFunction = {
+                            .fComponentMixing = {
+                                .fComponent = 1.f,
+                            },
+                            .fGainCurve = {
+                                .fControlPoints = {
+                                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
+                                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
+                                },
+                            },
+                        },
+                    },
+                    {
+                        .fHdrHeadroom = 4.f,
+                        .fColorGainFunction = {
+                            .fComponentMixing = {
+                                .fRed   = 0.3f,
+                                .fGreen = 0.6f,
+                                .fBlue  = 0.1f,
+                            },
+                            .fGainCurve = {
+                                .fControlPoints = {
+                                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
+                                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
+                                    { .fX = 2.f, .fY = 0.4f, .fM = 0.5  },
+                                },
+                            },
+                        },
+                    },
                 },
-            },
-        };
-        hatmIn.fAlternateImages[1].fColorGainFunction = {
-            .fComponentMixing = {
-                .fMax = 1.f,
-            },
-            .fGainCurve = {
-                .fControlPoints = {
-                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
-                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
-                    { .fX = 2.f, .fY = 0.4f, .fM = 0.2f },
-                    { .fX = 3.f, .fY = 0.3f, .fM = 0.3f },
-                },
-            },
-        };
-        hatmIn.fAlternateImages[2].fColorGainFunction = {
-            .fComponentMixing = {
-                .fComponent = 1.f,
-            },
-            .fGainCurve = {
-                .fControlPoints = {
-                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
-                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
-                },
-            },
-        };
-        hatmIn.fAlternateImages[3].fColorGainFunction = {
-            .fComponentMixing = {
-                .fRed   = 0.3f,
-                .fGreen = 0.6f,
-                .fBlue  = 0.1f,
-            },
-            .fGainCurve = {
-                .fControlPoints = {
-                    { .fX = 0.f, .fY = 1.f,  .fM = 0.f  },
-                    { .fX = 1.f, .fY = 0.5f, .fM = 0.1f },
-                    { .fX = 2.f, .fY = 0.4f, .fM = 0.5  },
-                },
-            },
+            }},
         };
 
         skhdr::AdaptiveGlobalToneMap agtmOut;
