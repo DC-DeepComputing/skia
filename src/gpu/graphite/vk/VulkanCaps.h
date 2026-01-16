@@ -48,6 +48,8 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    SkColorType getDefaultColorType(const TextureInfo&) const override;
+
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
     DstReadStrategy getDstReadStrategy() const override;
 
