@@ -16,6 +16,52 @@
       "message": "One more patch (subbing you in for kjlubick during OOO).",
       "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e3dbc5a_086847ff",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-16T14:13:02Z",
+      "side": 1,
+      "message": "nit: can we get rid of these extra blocks?",
+      "range": {
+        "startLine": 579,
+        "startChar": 4,
+        "endLine": 579,
+        "endChar": 5
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e96acf7_724b4fd9",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-16T14:13:02Z",
+      "side": 1,
+      "message": "This feels a little clunky, can we do something like:\n\n`hatm \u003d AgtmHelpers::ComputeRwtmo(computed hdr headroom)` where it sets the `fBaselineHdrHeadroom` field and the other parameters in the value it returns?\n\nor could we do something like `hatm \u003d {computed hdr headroom}; PopulateUsingRwtmo(...)\u0027`?",
+      "range": {
+        "startLine": 639,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
