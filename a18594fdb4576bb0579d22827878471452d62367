@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "149fae3e_e44e2207",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3726077
+      },
+      "writtenOn": "2026-01-16T17:17:31Z",
+      "side": 1,
+      "message": "Makes sense, and +1 to doing it right the first time.\n\nI changed the \"simulations flags\" everywhere to instead be a struct that contains the typeface factory ID and an opaque `SkData` blob. The corresponding typeface can create/deserialize it as needed, and it should be extensible if required.\n\nPTAL and let me know if that addresses your concerns!",
+      "parentUuid": "0c12e69e_56218df9",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "916a95b7_5957933f",
         "filename": "include/core/SkFontArguments.h",
         "patchSetId": 5
@@ -83,6 +101,24 @@
       "writtenOn": "2026-01-15T21:32:13Z",
       "side": 1,
       "message": "Should probably be std::optional\u003cSomething\u003e (no simulations or a specified match). \n\nIn fact, Palette::index should be a std::optional (if empty use the current or the default) and maybe even the fCollectionIndex (use the current or the default). Though those changes need to be done separately with the related changes to the implementations.",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5266aa21_2f69f202",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3726077
+      },
+      "writtenOn": "2026-01-16T17:17:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "916a95b7_5957933f",
       "revId": "a18594fdb4576bb0579d22827878471452d62367",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -100,6 +136,24 @@
       "writtenOn": "2026-01-15T21:32:13Z",
       "side": 1,
       "message": "Skia has 100 char wide lines, so no need to wrap so hard here and below.",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dcc2a11_41a6f79d",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 3726077
+      },
+      "writtenOn": "2026-01-16T17:17:31Z",
+      "side": 1,
+      "message": "Ah cool! Done.",
+      "parentUuid": "f7297d38_a31f8fa4",
       "revId": "a18594fdb4576bb0579d22827878471452d62367",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
