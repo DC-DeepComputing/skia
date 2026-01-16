@@ -180,7 +180,7 @@ static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
         if (texture) {
             image = SkImages::WrapTexture(recorder,
                                           texture->texture(),
-                                          skgpu::CompressionTypeToSkColorType(compression),
+                                          /*forceOpaque=*/false,
                                           kPremul_SkAlphaType,
                                           /*colorSpace=*/nullptr);
             if (image) {

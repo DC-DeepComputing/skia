@@ -57,6 +57,10 @@ using GraphitePromiseTextureReleaseProc = void (*)(GraphitePromiseTextureRelease
 
     @param recorder                The recorder
     @param backendTexture          texture residing on GPU
+    @param forceOpaque             If true, sampled alpha values will be forced to 1 (possibly via
+                                   shader logic depending on the texture's format)
+    @param alphaType               The nature of alpha channel data provided in the texture, which
+                                   is ignored for kOpaque_SkAlphaType if forceOpaque is true.
     @param colorSpace              This describes the color space of this image's contents, as
                                    seen after sampling. In general, if the format of the backend
                                    texture is SRGB, some linear colorSpace should be supplied
@@ -74,6 +78,44 @@ using GraphitePromiseTextureReleaseProc = void (*)(GraphitePromiseTextureRelease
                                    valid.
     @return                        created SkImage, or nullptr
 */
+SK_API sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder*,
+                                  const skgpu::graphite::BackendTexture&,
+                                  bool forceOpaque,
+                                  SkAlphaType alphaType,
+                                  sk_sp<SkColorSpace> colorSpace,
+                                  skgpu::Origin origin,
+                                  GenerateMipmapsFromBase genMipmaps,
+                                  TextureReleaseProc = nullptr,
+                                  ReleaseContext = nullptr,
+                                  std::string_view label = {});
+
+SK_API inline sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder* recorder,
+                                         const skgpu::graphite::BackendTexture& backendTex,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         skgpu::Origin origin,
+                                         TextureReleaseProc releaseP = nullptr,
+                                         ReleaseContext releaseC = nullptr,
+                                         std::string_view label = {}) {
+    return WrapTexture(recorder, backendTex, forceOpaque, alphaType, std::move(colorSpace), origin,
+                       GenerateMipmapsFromBase::kNo, releaseP, releaseC, label);
+}
+
+SK_API inline sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder* recorder,
+                                         const skgpu::graphite::BackendTexture& backendTex,
+                                         bool forceOpaque,
+                                         SkAlphaType alphaType,
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         TextureReleaseProc releaseP = nullptr,
+                                         ReleaseContext releaseC = nullptr,
+                                         std::string_view label = {}) {
+    return WrapTexture(recorder, backendTex, forceOpaque, alphaType, std::move(colorSpace),
+                       skgpu::Origin::kTopLeft, releaseP, releaseC, label);
+}
+
+// DEPRECATED: The WrapTexture calls that take an SkColorType are deprecated. Use the new versions
+// that automatically pick a compatible color type from the texture's format.
 SK_API sk_sp<SkImage> WrapTexture(skgpu::graphite::Recorder*,
                                   const skgpu::graphite::BackendTexture&,
                                   SkColorType colorType,
