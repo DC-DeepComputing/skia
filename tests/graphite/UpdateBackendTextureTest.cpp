@@ -113,11 +113,11 @@ BackendTexture create_backend_texture(skiatest::Reporter* reporter,
 sk_sp<SkImage> wrap_backend_texture(skiatest::Reporter* reporter,
                                     Recorder* recorder,
                                     const skgpu::graphite::BackendTexture& backendTex,
-                                    SkColorType ct,
+                                    bool forceOpaque,
                                     bool withMips) {
     sk_sp<SkImage> image = SkImages::WrapTexture(recorder,
                                                  backendTex,
-                                                 ct,
+                                                 forceOpaque,
                                                  kPremul_SkAlphaType,
                                                  /* colorSpace= */ nullptr);
     REPORTER_ASSERT(reporter, image);
@@ -130,6 +130,7 @@ void check_levels(skiatest::Reporter* reporter,
                   Context* context,
                   Recorder* recorder,
                   SkImage* image,
+                  bool forceOpaque,
                   bool withMips,
                   const SkColor4f colors[6]) {
     int numLevels = withMips ? kNumMipLevels : 1;
@@ -178,7 +179,12 @@ void check_levels(skiatest::Reporter* reporter,
         SkString str;
         str.appendf("mip-level %d", i);
 
-        check_solid_pixmap(reporter, colors[i], actual, image->colorType(), str.c_str());
+        // The mipmaps of the backend texture were defined in the test as an unpremul color with
+        // an alpha value, and converted to premul RGBA before uploading to the GPU. It is *after*
+        // that premultiplication that SkImages::WrapTexture's forceOpaque applies so we expect
+        // RGB to match the premul value but have A=1.
+        SkColor4f expected = forceOpaque ? colors[i].premul().makeOpaque().unpremul() : colors[i];
+        check_solid_pixmap(reporter, expected, actual, image->colorType(), str.c_str());
     }
 }
 
@@ -194,39 +200,45 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UpdateImageBackendTextureTest, reporter
     // TODO: test more than just RGBA8
     for (SkColorType ct : { kRGBA_8888_SkColorType }) {
         for (bool withMips : { true, false }) {
-            for (Renderable renderable : { Renderable::kYes, Renderable::kNo }) {
+            for (bool forceOpaque : { false, true }) {
+                for (Renderable renderable : { Renderable::kYes, Renderable::kNo }) {
 
-                BackendTexture backendTex = create_backend_texture(reporter, caps, recorder.get(),
-                                                                   ct, withMips, renderable,
-                                                                   isProtected, kColors);
+                    BackendTexture backendTex = create_backend_texture(reporter,
+                                                                       caps,
+                                                                       recorder.get(),
+                                                                       ct, withMips, renderable,
+                                                                       isProtected, kColors);
 
-                sk_sp<SkImage> image = wrap_backend_texture(reporter, recorder.get(), backendTex,
-                                                            ct, withMips);
-                if (!image) {
-                    continue;
+                    sk_sp<SkImage> image = wrap_backend_texture(reporter, recorder.get(),
+                                                                backendTex, forceOpaque, withMips);
+                    if (!image) {
+                        continue;
+                    }
+
+                    if (isProtected == skgpu::Protected::kNo) {
+                        check_levels(reporter, context, recorder.get(), image.get(),
+                                     forceOpaque, withMips, kColors);
+                    }
+
+                    image.reset();
+
+                    update_backend_texture(recorder.get(), backendTex, ct, withMips, kColorsNew);
+
+                    image = wrap_backend_texture(reporter, recorder.get(),
+                                                 backendTex, forceOpaque, withMips);
+                    if (!image) {
+                        continue;
+                    }
+
+                    if (isProtected == skgpu::Protected::kNo) {
+                        check_levels(reporter, context, recorder.get(), image.get(),
+                                     forceOpaque, withMips, kColorsNew);
+                    }
+
+                    image.reset();
+
+                    recorder->deleteBackendTexture(backendTex);
                 }
-
-                if (isProtected == skgpu::Protected::kNo) {
-                    check_levels(reporter, context, recorder.get(), image.get(), withMips, kColors);
-                }
-
-                image.reset();
-
-                update_backend_texture(recorder.get(), backendTex, ct, withMips, kColorsNew);
-
-                image = wrap_backend_texture(reporter, recorder.get(), backendTex, ct, withMips);
-                if (!image) {
-                    continue;
-                }
-
-                if (isProtected == skgpu::Protected::kNo) {
-                    check_levels(reporter, context, recorder.get(), image.get(), withMips,
-                                 kColorsNew);
-                }
-
-                image.reset();
-
-                recorder->deleteBackendTexture(backendTex);
             }
         }
     }
