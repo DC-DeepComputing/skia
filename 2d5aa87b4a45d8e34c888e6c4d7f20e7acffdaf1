@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26685ef5_b907ee7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-16T21:27:31Z",
+      "side": 1,
+      "message": "This is requisite work for removing colortype handling in RenderEngine: https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/native/+/37959316",
+      "revId": "2d5aa87b4a45d8e34c888e6c4d7f20e7acffdaf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
