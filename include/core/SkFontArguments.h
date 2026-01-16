@@ -9,10 +9,12 @@
 #define SkFontArguments_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkData.h"
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkTypes.h"
 
 #include <cstdint>
+#include <optional>
 
 /** Represents a set of actual arguments for a font. */
 struct SkFontArguments {
@@ -42,10 +44,22 @@ struct SkFontArguments {
         int overrideCount;
     };
 
+    /** Specify some typeface-specific data for the typeface to use when being created from a
+     * stream.
+     *
+     * typefaceFactoryId should be set to the ID of the typeface type that can unpack the data in
+     * the data field.
+     */
+    struct CreationData {
+        SkFourByteTag typefaceFactoryId;
+        sk_sp<SkData> data;
+    };
+
     SkFontArguments()
             : fCollectionIndex(0)
             , fVariationDesignPosition{nullptr, 0}
-            , fPalette{0, nullptr, 0} {}
+            , fPalette{0, nullptr, 0}
+            , fCreationData(std::nullopt) {}
 
     /** Specify the index of the desired font.
      *
@@ -87,10 +101,18 @@ struct SkFontArguments {
 
     Palette getPalette() const { return fPalette; }
 
+    SkFontArguments& setCreationData(std::optional<CreationData> creationData) {
+        fCreationData = creationData;
+        return *this;
+    }
+
+    std::optional<CreationData> creationData() const { return fCreationData; }
+
 private:
     int fCollectionIndex;
     VariationPosition fVariationDesignPosition;
     Palette fPalette;
+    std::optional<CreationData> fCreationData;
 };
 
 #endif

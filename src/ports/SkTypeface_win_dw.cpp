@@ -553,6 +553,22 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
                                 new Context(lock, fDWriteFontFace.get()));
 }
 
+
+std::optional<SkFontArguments::CreationData> DWriteFontTypeface::onGetCreationData() const {
+    // The only supported extra creation data for this typeface type is simulations.
+    if (fDWriteFont->GetSimulations() == DWRITE_FONT_SIMULATIONS_NONE) {
+        return std::nullopt;
+    }
+
+    DWriteCreationData data { fDWriteFont->GetSimulations() };
+    SkFontArguments::CreationData creationData {
+        DWriteFontTypeface::FactoryId,
+        SkData::MakeWithCopy(&data, sizeof(DWriteCreationData))
+    };
+
+    return creationData;
+}
+
 sk_sp<SkTypeface> DWriteFontTypeface::onMakeClone(const SkFontArguments& args) const {
     // Skip if the current face index does not match the ttcIndex
     if (fDWriteFontFace->GetIndex() != SkTo<UINT32>(args.getCollectionIndex())) {
@@ -1123,7 +1139,7 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
     }
 
     SkTScopedComPtr<IDWriteFontFace5> fontFace5_Out;
-    HR(fontResource->CreateFontFace(DWRITE_FONT_SIMULATIONS_NONE,
+    HR(fontResource->CreateFontFace(fontFace->GetSimulations(),
         variation.get(), fontAxisCount,
         &fontFace5_Out));
     fontFace.reset();
@@ -1138,6 +1154,22 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
     IDWriteFactory* factory = sk_get_dwrite_factory();
     if (nullptr == factory) {
         return nullptr;
+    }
+
+    // If there is no extra creation data specified, the request is for a non-simulated font.
+    DWRITE_FONT_SIMULATIONS requestedSimulations = DWRITE_FONT_SIMULATIONS_NONE;
+    auto creationData = args.creationData();
+    if (creationData) {
+        if (creationData->typefaceFactoryId != DWriteFontTypeface::FactoryId) {
+            // Can't create a typeface from arguments that are meant for a different typeface type.
+            return nullptr;
+        }
+        DWriteCreationData unpackedCreationData;
+        if (creationData->data->copyRange(0, sizeof(DWriteCreationData), &unpackedCreationData) != sizeof(DWriteCreationData)) {
+            // Failed to unpack the data.
+            return nullptr;
+        }
+        requestedSimulations = unpackedCreationData.simulations;
     }
 
     SkTScopedComPtr<StreamFontFileLoader> fontFileLoader;
@@ -1167,17 +1199,13 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
             SkTScopedComPtr<IDWriteFont> font;
             HRN(fontFamily->GetFont(fontIndex, &font));
 
-            // Skip if the current font is simulated
-            if (font->GetSimulations() != DWRITE_FONT_SIMULATIONS_NONE) {
-                continue;
-            }
             SkTScopedComPtr<IDWriteFontFace> fontFace;
             HRN(font->CreateFontFace(&fontFace));
             int faceIndex = fontFace->GetIndex();
             int ttcIndex = args.getCollectionIndex();
 
-            // Skip if the current face index does not match the ttcIndex
-            if (faceIndex != ttcIndex) {
+            // Skip if the current face index does not match the ttcIndex and requested simulations.
+            if (faceIndex != ttcIndex || requestedSimulations != font->GetSimulations()) {
                 continue;
             }
 

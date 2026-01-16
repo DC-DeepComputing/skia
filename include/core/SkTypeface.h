@@ -328,6 +328,15 @@ public:
      */
     SkRect getBounds() const;
 
+    /**
+     * If recreating this typeface from a data stream (e.g. makeFromStream) requires supplemental
+     * data beyond the index within a collection, return some typeface type-specific data that
+     * can be used to re-create an equivalent to this typeface. Otherwise, return nullopt.
+     */
+    std::optional<SkFontArguments::CreationData> getCreationData() const {
+        return this->onGetCreationData();
+    }
+
     // PRIVATE / EXPERIMENTAL -- do not call
     void filterRec(SkScalerContextRec* rec) const {
         this->onFilterRec(rec);
@@ -450,6 +459,8 @@ protected:
     virtual bool onComputeBounds(SkRect*) const;
 
     virtual void* onGetCTFontRef() const { return nullptr; }
+
+    virtual std::optional<SkFontArguments::CreationData> onGetCreationData() const { return std::nullopt; }
 
 private:
     /** Returns true if the typeface's glyph masks may refer to the foreground
