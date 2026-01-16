@@ -237,6 +237,10 @@ private:
         // passes.
         void drawClip(Device*);
 
+        void drawClipImmediate(Device*);
+
+        void updateDeferredClipDraw(Device*);
+
         void validate() const;
 
     private:
@@ -268,6 +272,9 @@ private:
         // the save record that invalidated it. This makes it easy to undo when the save record is
         // popped from the stack, and is stable as the current save record is modified.
         int fInvalidatedByIndex;
+
+        DrawParams* fCaptureParams;
+        bool fIsDisjointStencil;
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to
