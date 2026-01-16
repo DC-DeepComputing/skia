@@ -52,6 +52,11 @@
 
 #include <algorithm>
 
+#if defined(SK_ARM_HAS_NEON)
+#include <arm_neon.h>
+#include "src/base/SkUtils.h"
+#endif
+
 class SkDescriptor;
 
 
@@ -410,7 +415,46 @@ static void RGBToA8(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes,
     uint8_t* SK_RESTRICT dst = (uint8_t*)glyphImage;
 
     for (int y = 0; y < height; y++) {
-        for (int i = 0; i < width; ++i) {
+        int i = 0;
+#if defined(SK_ARM_HAS_NEON)
+        if constexpr (!APPLY_PREBLEND) {
+            for (; i <= width - 16; i += 16) {
+                uint8x16x4_t rgba = vld4q_u8((const uint8_t*)(cgPixels + i));
+                // In Little Endian CGRGBPixel: B G R A (memory order)
+                // val[0] = B, val[1] = G, val[2] = R
+                uint8x16_t b = rgba.val[0];
+                uint8x16_t g = rgba.val[1];
+                uint8x16_t r = rgba.val[2];
+
+                uint8x16_t inv = vdupq_n_u8(0xFF);
+                r = vsubq_u8(inv, r);
+                g = vsubq_u8(inv, g);
+                b = vsubq_u8(inv, b);
+
+                // (r * 54 + g * 183 + b * 19) >> 8
+                uint16x8_t r_lo = vmovl_u8(vget_low_u8(r));
+                uint16x8_t r_hi = vmovl_u8(vget_high_u8(r));
+                uint16x8_t g_lo = vmovl_u8(vget_low_u8(g));
+                uint16x8_t g_hi = vmovl_u8(vget_high_u8(g));
+                uint16x8_t b_lo = vmovl_u8(vget_low_u8(b));
+                uint16x8_t b_hi = vmovl_u8(vget_high_u8(b));
+
+                uint16x8_t sum_lo = vmulq_n_u16(r_lo, 54);
+                sum_lo = vmlaq_n_u16(sum_lo, g_lo, 183);
+                sum_lo = vmlaq_n_u16(sum_lo, b_lo, 19);
+
+                uint16x8_t sum_hi = vmulq_n_u16(r_hi, 54);
+                sum_hi = vmlaq_n_u16(sum_hi, g_hi, 183);
+                sum_hi = vmlaq_n_u16(sum_hi, b_hi, 19);
+
+                uint8x8_t lum_lo = vshrn_n_u16(sum_lo, 8);
+                uint8x8_t lum_hi = vshrn_n_u16(sum_hi, 8);
+
+                vst1q_u8(dst + i, vcombine_u8(lum_lo, lum_hi));
+            }
+        }
+#endif
+        for (; i < width; ++i) {
             dst[i] = rgb_to_a8<APPLY_PREBLEND>(cgPixels[i], table8);
         }
         cgPixels = SkTAddOffset<const CGRGBPixel>(cgPixels, cgRowBytes);
@@ -442,7 +486,51 @@ static void RGBToLcd16(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes
     uint16_t* SK_RESTRICT dst = (uint16_t*)glyphImage;
 
     for (int y = 0; y < height; y++) {
-        for (int i = 0; i < width; i++) {
+        int i = 0;
+#if defined(SK_ARM_HAS_NEON)
+        if constexpr (!APPLY_PREBLEND) {
+            for (; i <= width - 16; i += 16) {
+                uint8x16x4_t rgba = vld4q_u8((const uint8_t*)(cgPixels + i));
+                uint8x16_t b = rgba.val[0];
+                uint8x16_t g = rgba.val[1];
+                uint8x16_t r = rgba.val[2];
+
+                uint8x16_t inv = vdupq_n_u8(0xFF);
+                r = vsubq_u8(inv, r);
+                g = vsubq_u8(inv, g);
+                b = vsubq_u8(inv, b);
+
+                // SkPack888ToRGB16:
+                // r_5 = r >> 3; g_6 = g >> 2; b_5 = b >> 3;
+                // packed = (r_5 << 11) | (g_6 << 5) | b_5
+
+                uint16x8_t r_lo = vmovl_u8(vget_low_u8(r));
+                uint16x8_t r_hi = vmovl_u8(vget_high_u8(r));
+                uint16x8_t g_lo = vmovl_u8(vget_low_u8(g));
+                uint16x8_t g_hi = vmovl_u8(vget_high_u8(g));
+                uint16x8_t b_lo = vmovl_u8(vget_low_u8(b));
+                uint16x8_t b_hi = vmovl_u8(vget_high_u8(b));
+
+                // r >> 3
+                r_lo = vshrq_n_u16(r_lo, 3);
+                r_hi = vshrq_n_u16(r_hi, 3);
+                // g >> 2
+                g_lo = vshrq_n_u16(g_lo, 2);
+                g_hi = vshrq_n_u16(g_hi, 2);
+                // b >> 3
+                b_lo = vshrq_n_u16(b_lo, 3);
+                b_hi = vshrq_n_u16(b_hi, 3);
+
+                // pack
+                uint16x8_t lcd_lo = vorrq_u16(vshlq_n_u16(r_lo, 11), vorrq_u16(vshlq_n_u16(g_lo, 5), b_lo));
+                uint16x8_t lcd_hi = vorrq_u16(vshlq_n_u16(r_hi, 11), vorrq_u16(vshlq_n_u16(g_hi, 5), b_hi));
+
+                vst1q_u16(dst + i, lcd_lo);
+                vst1q_u16(dst + i + 8, lcd_hi);
+            }
+        }
+#endif
+        for (; i < width; i++) {
             dst[i] = RGBToLcd16<APPLY_PREBLEND>(cgPixels[i], tableR, tableG, tableB);
         }
         cgPixels = SkTAddOffset<const CGRGBPixel>(cgPixels, cgRowBytes);
