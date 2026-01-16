@@ -16,6 +16,23 @@
       "message": "Just waiting for https://github.com/flutter/flutter/pull/180766 to land...",
       "revId": "9e09f5d5f9886bf5da882ec21d76a3a03cfb88cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f3f0ce4_8b53b239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-16T21:56:01Z",
+      "side": 1,
+      "message": "We also need \nhttps://googleplex-android-review.git.corp.google.com/c/platform/vendor/google_shared/libs/koru/+/37935840\nhttps://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/37883334\n\nI guess the second one is not strictly needed, but it would confirm that it\u0027s safe to land.",
+      "revId": "9e09f5d5f9886bf5da882ec21d76a3a03cfb88cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
