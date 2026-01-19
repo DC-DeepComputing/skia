@@ -10,15 +10,25 @@
 
 if (defined(skia_partition_alloc_dir)) {
   import("${skia_partition_alloc_dir}/partition_alloc.gni")
-} else {
-  enable_backup_ref_ptr_support = false
-}
 
-group("partition_alloc") {
-  if (enable_backup_ref_ptr_support) {
+  group("partition_alloc") {
     public_deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
-  } else {
-    # TODO(351867706): Provide the equivalent of partition_alloc:raw_ptr, but
-    # provided by Skia directly when partition_alloc is missing.
+  }
+  group("raw_ptr") {
+    public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
+  }
+} else {
+  group("partition_alloc") {
+  }
+  source_set("raw_ptr") {
+    public_configs = [ ":public_includes" ]
+    public = [
+      "partition_alloc/pointers/raw_ptr.h",
+      "partition_alloc/pointers/raw_ptr_exclusion.h",
+      "partition_alloc/pointers/raw_ref.h",
+    ]
+  }
+  config("public_includes") {
+    include_dirs = [ "." ]
   }
 }
