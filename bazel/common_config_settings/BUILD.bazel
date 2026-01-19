@@ -1,4 +1,4 @@
-load("//bazel:flags.bzl", "selects")
+load("//bazel:flags.bzl", "bool_flag", "selects")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -86,6 +86,11 @@ config_setting(
     values = {
         "cpu": "wasm",
     },
+)
+
+bool_flag(
+    name = "skia_use_partition_alloc",
+    default = False,
 )
 
 selects.config_setting_group(
