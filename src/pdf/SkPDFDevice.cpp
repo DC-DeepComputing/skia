@@ -598,7 +598,7 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
                                              const SkPath& origPath,
                                              const SkPaint& origPaint) {
     SkASSERT(origPaint.getMaskFilter());
-    SkPathBuilder builder;
+    SkPathBuilder builder(origPath);
     SkTCopyOnFirstWrite<SkPaint> paint(origPaint);
 
     SkStrokeRec::InitStyle initStyle = skpathutils::FillPathWithPaint(origPath, *paint, &builder)
@@ -689,7 +689,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
         if (clipStack.isEmpty(this->bounds())) {
             return;
         }
-        SkPathBuilder builder;
+        SkPathBuilder builder(origPath);
         if (skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder)) {
             set_style(&paint, SkPaint::kFill_Style);
         } else {

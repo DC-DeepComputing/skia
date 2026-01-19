@@ -735,7 +735,7 @@ SkContourMeasure::VerbMeasure SkContourMeasure::ForwardVerbIterator::operator*()
 #ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
 bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
                                   bool startWithMoveTo) const {
-    SkPathBuilder builder;
+    SkPathBuilder builder(*dst);
     if (this->getSegment(startD, stopD, &builder, startWithMoveTo)) {
         *dst = builder.detach();
         return true;

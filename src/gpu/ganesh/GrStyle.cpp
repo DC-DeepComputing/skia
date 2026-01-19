@@ -139,7 +139,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
     // TODO: [skbug.com/40043046] Plumb CTM callers and pass it to filterPath().
     SkASSERT(!fPathEffect->needsCTM());
 
-    SkPathBuilder builder;  // todo: change our api to take builder
+    SkPathBuilder builder(*dst);  // todo: change our api to take builder
 
     if (DashType::kDash == fDashInfo.fType) {
         // We apply the dash ourselves here rather than using the path effect. This is so that
@@ -192,7 +192,7 @@ bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPa
     }
     // todo: change our signature to take pathbuilder, or return an optional<SkPath>
     if (strokeRec.needToApply()) {
-        SkPathBuilder builder;
+        SkPathBuilder builder(*dst);
         if (!strokeRec.applyToPath(&builder, *pathForStrokeRec)) {
             return false;
         }
