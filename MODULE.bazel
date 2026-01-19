@@ -275,6 +275,7 @@ use_repo(
     "libpng",
     "libwebp",
     "libyuv",
+    "partition_alloc",
     "perfetto",
     "piex",
     "spirv_cross",
