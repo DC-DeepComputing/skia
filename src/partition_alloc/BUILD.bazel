@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC.
+# Copyright 2026 Google LLC.
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -27,10 +27,24 @@ skia_cc_library(
     visibility = ["//visibility:public"],
 )
 
+# The PartitionAlloc-based implementation of raw_ptr/raw_ref.
+# This is used when PartitionAlloc is enabled.
+skia_cc_library(
+    name = "raw_ptr_partition_alloc",
+    hdrs = [
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr_exclusion.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ref.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["@partition_alloc//:raw_ptr"],
+)
+
 alias(
     name = "raw_ptr",
-    # TODO(b/352223023) Add bazel support for PartitionAlloc and switch this to
-    # the PartitionAlloc implementation of available at that time.
-    actual = "raw_ptr_noop",
+    actual = select({
+        "//bazel/common_config_settings:skia_use_partition_alloc_true": ":raw_ptr_partition_alloc",
+        "//conditions:default": ":raw_ptr_noop",
+    }),
     visibility = ["//visibility:public"],
 )
