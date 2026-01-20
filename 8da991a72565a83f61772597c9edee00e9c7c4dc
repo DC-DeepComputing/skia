@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334a4241_4df19839",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1241,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-20T14:13:39Z",
+      "side": 1,
+      "message": "Why did you go with this approach instead of just `SkTypeface_FreeType::MakeFromStream`? If the two things are equal, I prefer the slightly more straightforward one that shows us we are Freetype the freetype version. In this one, I was a bit puzzled until I remembered `SkFontMgr_New_Custom_Empty` uses Freetype. Knowing fonts, it\u0027s likely something important happens with `SkTypeface::MakeDeserialize` and I\u0027d like to know the difference.",
+      "range": {
+        "startLine": 1241,
+        "startChar": 39,
+        "endLine": 1241,
+        "endChar": 54
+      },
+      "revId": "8da991a72565a83f61772597c9edee00e9c7c4dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
