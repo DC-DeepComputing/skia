@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc985620_faaab399",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-20T10:00:08Z",
+      "side": 1,
+      "message": "Changed these to `getContentLightLevelInformation`-with-`nullptr` calls (which checks if the metadata is present or not).\n\nI can use the excuse that this way, `clli` doesn\u0027t need to be initialized unless it is present, but it\u0027s actually just I don\u0027t like that `clli` remains in scope after it won\u0027t be used anymore.",
+      "parentUuid": "3e3dbc5a_086847ff",
+      "range": {
+        "startLine": 579,
+        "startChar": 4,
+        "endLine": 579,
+        "endChar": 5
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e96acf7_724b4fd9",
         "filename": "src/codec/SkHdrAgtm.cpp",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2026-01-16T14:13:02Z",
       "side": 1,
       "message": "This feels a little clunky, can we do something like:\n\n`hatm \u003d AgtmHelpers::ComputeRwtmo(computed hdr headroom)` where it sets the `fBaselineHdrHeadroom` field and the other parameters in the value it returns?\n\nor could we do something like `hatm \u003d {computed hdr headroom}; PopulateUsingRwtmo(...)\u0027`?",
+      "range": {
+        "startLine": 639,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b17a354f_4b19a216",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-20T10:00:08Z",
+      "side": 1,
+      "message": "Yes, the second one isn\u0027t an option because I made `AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap` be non-aggregate. I\u0027m fixing that in this follow-on patch:\nhttps://skia-review.googlesource.com/c/skia/+/1142598\n\nI think I may end up changing `PopulateUsingRwtmo` to `ComputeRwtmo` (but I\u0027m trying to keep patch size small).",
+      "parentUuid": "6e96acf7_724b4fd9",
       "range": {
         "startLine": 639,
         "startChar": 8,
