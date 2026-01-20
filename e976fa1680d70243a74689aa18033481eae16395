@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f87e9bb_64071f83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-20T17:35:30Z",
+      "side": 1,
+      "message": "This is a subset of https://skia-review.googlesource.com/c/skia/+/1144736 focusing on restoring public API behavior.",
+      "revId": "e976fa1680d70243a74689aa18033481eae16395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
