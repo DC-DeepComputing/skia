@@ -22,6 +22,30 @@
       },
       "revId": "8da991a72565a83f61772597c9edee00e9c7c4dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3afcb42_52e5d5b4",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1241,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-20T15:35:56Z",
+      "side": 1,
+      "message": "Because they are not equal and do not do the same thing. The default for serializing a typeface (SkTypeface::serialize) in a skp is a descriptor (collection index, variation position, color palette data, etc) followed by some optional font data.",
+      "parentUuid": "334a4241_4df19839",
+      "range": {
+        "startLine": 1241,
+        "startChar": 39,
+        "endLine": 1241,
+        "endChar": 54
+      },
+      "revId": "8da991a72565a83f61772597c9edee00e9c7c4dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
