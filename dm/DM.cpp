@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <iostream>
+
 #include "dm/DMJsonWriter.h"
 #include "dm/DMSrcSink.h"
 #include "include/codec/SkCodec.h"
@@ -40,12 +42,14 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
 #include <memory>
 #include <vector>
+#include <map>
 
 #include <stdlib.h>
 
@@ -1595,8 +1599,39 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
+void InitializePartitionAllocForTesting() {
+    std::map<std::string, std::string> config;
+    std::cout << "Configuring PartitionAlloc with properties:\n";
+    for (int i = 0; i + 1 < FLAGS_properties.size(); i += 2) {
+        config[FLAGS_properties[i]] = FLAGS_properties[i + 1];
+        std::cout << " - " << FLAGS_properties[i] << " = " << FLAGS_properties[i + 1] << "\n";
+    }
+    std::cout << std::flush;
+
+    // Enabling partition_alloc currently causes a 180x slowdown to
+    // Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan.
+    //
+    // This might be due to an nVidia driver issue. Until we can investigate and resolve the issue,
+    // disable PA on this specific bot.
+    //
+    // TODO(351867706): Enable partition_alloc on this bot once the issue is
+    // resolved.
+    if (config["os"] == "Ubuntu24.04" && config["compiler"] == "Clang" &&
+        config["model"] == "Golo" && config["cpu_or_gpu"] == "GPU" &&
+        config["cpu_or_gpu_value"] == "QuadroP400" && config["arch"] == "x86_64" &&
+        config["configuration"] == "Debug" && config["extra_config"] == "Vulkan") {
+        return;
+    }
+
+    skiatest::InitializePartitionAllocForTesting();
+}
+
 int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
+
+    // If available, use PartitionAlloc as the memory allocator for DM. This allows catching
+    // additional memory errors in tests that would otherwise go unnoticed.
+    InitializePartitionAllocForTesting();
 
     initializeEventTracingForTools();
 
