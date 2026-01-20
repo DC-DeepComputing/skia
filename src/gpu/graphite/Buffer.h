@@ -56,8 +56,8 @@ protected:
                        requiresPrepareForReturnToCache)
             , fSize(size)
             , fIsProtected(isProtected) {
-        // TODO(b/387505250): Remove this once Resource is modified to accept a label upon
-        // construction.
+        // TODO(b/387505250): This call can be removed once Resource's constructor is modified to
+        // accept a label.
         this->setLabel(label);
     }
 
