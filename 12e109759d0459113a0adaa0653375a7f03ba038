@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a05cb805_20af95cd",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1934,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-20T15:22:02Z",
+      "side": 1,
+      "message": "For depth and stencil things, I imagine we could actually get away with the SkUNREACHABLE version and should never need the kInvalidFormat. But given that all this code is scheduled to be changed soon, I just left it as two separate functions to preserve possible previous behavior.",
+      "range": {
+        "startLine": 1934,
+        "startChar": 54,
+        "endLine": 1934,
+        "endChar": 79
+      },
+      "revId": "12e109759d0459113a0adaa0653375a7f03ba038",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
