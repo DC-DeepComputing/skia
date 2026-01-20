@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74fe71f_3cb17750",
+        "filename": "src/gpu/ganesh/GrStyle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-20T17:19:43Z",
+      "side": 1,
+      "message": "It\u0027s unclear whether the desired behavior here is to append or replace.  I suspect it\u0027s intended to replace (filter) the input, similar to the `FillPathWithPaint` cases below.  Deferring to GPU owners.",
+      "revId": "2e3a2ff18ca7e321f0b969d95c6a74c062fdf92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "590a5ffb_111e9c60",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-20T17:19:43Z",
+      "side": 1,
+      "message": "While this does restore the original behavior, it doesn\u0027t look right: `FillPathWithPaint` returns an equivalent filled path, so it doesn\u0027t make sense to append to the original - it\u0027s supposed to replace it.",
+      "range": {
+        "startLine": 601,
+        "startChar": 26,
+        "endLine": 601,
+        "endChar": 34
+      },
+      "revId": "2e3a2ff18ca7e321f0b969d95c6a74c062fdf92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3f7535_bad60d59",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-20T17:19:43Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "2e3a2ff18ca7e321f0b969d95c6a74c062fdf92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fbe06ff_a04c7592",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-01-20T17:19:43Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "2e3a2ff18ca7e321f0b969d95c6a74c062fdf92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
