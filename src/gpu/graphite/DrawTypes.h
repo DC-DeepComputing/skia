@@ -181,6 +181,13 @@ enum class BoundsTest {
     kIncompatibleOverlap
 };
 
+enum class BoundsType : uint8_t {
+    kNone    = 0,
+    kStencil = 0b001,
+    kShading = 0b010,
+};
+SK_MAKE_BITMASK_OPS(BoundsType)
+
 enum class DstUsage : uint8_t {
     kNone            = 0,
     kDependsOnDst    = 0b001,
