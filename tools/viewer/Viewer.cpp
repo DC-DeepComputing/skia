@@ -291,17 +291,17 @@ static bool is_graphite_backend_type(sk_app::Window::BackendType type) {
 #if defined(SK_GRAPHITE)
     switch (type) {
 #ifdef SK_DAWN
-        case sk_app::Window::kGraphiteDawnD3D11_BackendType:
-        case sk_app::Window::kGraphiteDawnD3D12_BackendType:
-        case sk_app::Window::kGraphiteDawnMetal_BackendType:
-        case sk_app::Window::kGraphiteDawnOpenGLES_BackendType:
-        case sk_app::Window::kGraphiteDawnVulkan_BackendType:
+        case sk_app::Window::BackendType::kGraphiteDawnD3D11:
+        case sk_app::Window::BackendType::kGraphiteDawnD3D12:
+        case sk_app::Window::BackendType::kGraphiteDawnMetal:
+        case sk_app::Window::BackendType::kGraphiteDawnOpenGLES:
+        case sk_app::Window::BackendType::kGraphiteDawnVulkan:
 #endif
 #ifdef SK_METAL
-        case sk_app::Window::kGraphiteMetal_BackendType:
+        case sk_app::Window::BackendType::kGraphiteMetal:
 #endif
 #ifdef SK_VULKAN
-        case sk_app::Window::kGraphiteVulkan_BackendType:
+        case sk_app::Window::BackendType::kGraphiteVulkan:
 #endif
             return true;
         default:
@@ -365,19 +365,19 @@ static std::optional<skgpu::graphite::PathRendererStrategy> get_path_renderer_st
 
 const char* get_backend_string(sk_app::Window::BackendType type) {
     switch (type) {
-        case sk_app::Window::kNativeGL_BackendType: return "OpenGL";
-        case sk_app::Window::kANGLE_BackendType: return "ANGLE";
-        case sk_app::Window::kGraphiteDawnD3D11_BackendType: return "Dawn D3D11 (Graphite)";
-        case sk_app::Window::kGraphiteDawnD3D12_BackendType: return "Dawn D3D12 (Graphite)";
-        case sk_app::Window::kGraphiteDawnMetal_BackendType: return "Dawn Metal (Graphite)";
-        case sk_app::Window::kGraphiteDawnOpenGLES_BackendType: return "Dawn OpenGLES (Graphite)";
-        case sk_app::Window::kGraphiteDawnVulkan_BackendType: return "Dawn Vulkan (Graphite)";
-        case sk_app::Window::kVulkan_BackendType: return "Vulkan";
-        case sk_app::Window::kGraphiteVulkan_BackendType: return "Vulkan (Graphite)";
-        case sk_app::Window::kMetal_BackendType: return "Metal";
-        case sk_app::Window::kGraphiteMetal_BackendType: return "Metal (Graphite)";
-        case sk_app::Window::kDirect3D_BackendType: return "Direct3D";
-        case sk_app::Window::kRaster_BackendType: return "Raster";
+        case sk_app::Window::BackendType::kNativeGL: return "OpenGL";
+        case sk_app::Window::BackendType::kANGLE: return "ANGLE";
+        case sk_app::Window::BackendType::kGraphiteDawnD3D11: return "Dawn D3D11 (Graphite)";
+        case sk_app::Window::BackendType::kGraphiteDawnD3D12: return "Dawn D3D12 (Graphite)";
+        case sk_app::Window::BackendType::kGraphiteDawnMetal: return "Dawn Metal (Graphite)";
+        case sk_app::Window::BackendType::kGraphiteDawnOpenGLES: return "Dawn OpenGLES (Graphite)";
+        case sk_app::Window::BackendType::kGraphiteDawnVulkan: return "Dawn Vulkan (Graphite)";
+        case sk_app::Window::BackendType::kVulkan: return "Vulkan";
+        case sk_app::Window::BackendType::kGraphiteVulkan: return "Vulkan (Graphite)";
+        case sk_app::Window::BackendType::kMetal: return "Metal";
+        case sk_app::Window::BackendType::kGraphiteMetal: return "Metal (Graphite)";
+        case sk_app::Window::BackendType::kDirect3D: return "Direct3D";
+        case sk_app::Window::BackendType::kRaster: return "Raster";
         default:
             SK_ABORT("unsupported backend type");
     }
@@ -386,31 +386,31 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 
 static sk_app::Window::BackendType get_backend_type(const char* str) {
     if (0 == strcmp(str, "sw")) {
-        return sk_app::Window::kRaster_BackendType;
+        return sk_app::Window::BackendType::kRaster;
     }
 #if defined(SK_DAWN) && defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn_d3d11")) {
-        return sk_app::Window::kGraphiteDawnD3D11_BackendType;
+        return sk_app::Window::BackendType::kGraphiteDawnD3D11;
     } else if (0 == strcmp(str, "grdawn_d3d12")) {
-        return sk_app::Window::kGraphiteDawnD3D12_BackendType;
+        return sk_app::Window::BackendType::kGraphiteDawnD3D12;
     } else if (0 == strcmp(str, "grdawn_metal")) {
-        return sk_app::Window::kGraphiteDawnMetal_BackendType;
+        return sk_app::Window::BackendType::kGraphiteDawnMetal;
     } else if (0 == strcmp(str, "grdawn_gles")) {
-        return sk_app::Window::kGraphiteDawnOpenGLES_BackendType;
+        return sk_app::Window::BackendType::kGraphiteDawnOpenGLES;
     } else if (0 == strcmp(str, "grdawn_vk")) {
-        return sk_app::Window::kGraphiteDawnVulkan_BackendType;
+        return sk_app::Window::BackendType::kGraphiteDawnVulkan;
     } else
 #endif
 
 #if defined(SK_VULKAN)
 #   if defined(SK_GANESH)
     if (0 == strcmp(str, "vk")) {
-        return sk_app::Window::kVulkan_BackendType;
+        return sk_app::Window::BackendType::kVulkan;
     } else
 #   endif
 #   if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grvk")) {
-        return sk_app::Window::kGraphiteVulkan_BackendType;
+        return sk_app::Window::BackendType::kGraphiteVulkan;
     } else
 #   endif
 #endif
@@ -418,34 +418,36 @@ static sk_app::Window::BackendType get_backend_type(const char* str) {
 #if defined(SK_METAL)
 #   if defined(SK_GANESH)
     if (0 == strcmp(str, "mtl")) {
-        return sk_app::Window::kMetal_BackendType;
+        return sk_app::Window::BackendType::kMetal;
     } else
 #   endif
 #   if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grmtl")) {
-        return sk_app::Window::kGraphiteMetal_BackendType;
+        return sk_app::Window::BackendType::kGraphiteMetal;
     } else
 #   endif
 #endif
 
 #if defined(SK_DIRECT3D) && defined(SK_GANESH)
      if (0 == strcmp(str, "d3d")) {
-        return sk_app::Window::kDirect3D_BackendType;
+        return sk_app::Window::BackendType::kDirect3D;
     } else
 #endif
 
 #if defined(SK_GL) && defined(SK_GANESH)
     if (0 == strcmp(str, "gl")) {
-        return sk_app::Window::kNativeGL_BackendType;
+        return sk_app::Window::BackendType::kNativeGL;
+    } else if (0 == strcmp(str, "sw")) {
+        return sk_app::Window::BackendType::kRaster;
     } else
 #   if SK_ANGLE && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
     if (0 == strcmp(str, "angle")) {
-        return sk_app::Window::kANGLE_BackendType;
-    }
+        return sk_app::Window::BackendType::kANGLE;
+    } else
 #   endif
 #endif
     SkDebugf("Unknown backend type, %s, defaulting to sw.", str);
-    return sk_app::Window::kRaster_BackendType;
+    return sk_app::Window::BackendType::kRaster;
 }
 
 static SkColorSpacePrimaries gSrgbPrimaries = {
@@ -509,49 +511,49 @@ static const char kPathRendererStateName[] = "Path renderer";
 
 static const Window::BackendType kSupportedBackends[] = {
 #if defined(SK_GL) && defined(SK_GANESH)
-        sk_app::Window::kNativeGL_BackendType,
+        sk_app::Window::BackendType::kNativeGL,
 #   if SK_ANGLE && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
-        sk_app::Window::kANGLE_BackendType,
+        sk_app::Window::BackendType::kANGLE,
 #   endif
 #endif
 
 #if defined(SK_DAWN) && defined(SK_GRAPHITE)
 #if defined(SK_BUILD_FOR_WIN)
-        sk_app::Window::kGraphiteDawnD3D11_BackendType,
-        sk_app::Window::kGraphiteDawnD3D12_BackendType,
+        sk_app::Window::BackendType::kGraphiteDawnD3D11,
+        sk_app::Window::BackendType::kGraphiteDawnD3D12,
 #endif
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        sk_app::Window::kGraphiteDawnMetal_BackendType,
+        sk_app::Window::BackendType::kGraphiteDawnMetal,
 #endif
 #if defined(SK_BUILD_FOR_UNIX) || defined(SK_BUILD_FOR_ANDROID)
-        sk_app::Window::kGraphiteDawnOpenGLES_BackendType,
-        sk_app::Window::kGraphiteDawnVulkan_BackendType,
+        sk_app::Window::BackendType::kGraphiteDawnOpenGLES,
+        sk_app::Window::BackendType::kGraphiteDawnVulkan,
 #endif
 #endif
 
 #if defined(SK_VULKAN)
 #   if defined(SK_GANESH)
-        sk_app::Window::kVulkan_BackendType,
+        sk_app::Window::BackendType::kVulkan,
 #   endif
 #   if defined(SK_GRAPHITE)
-        sk_app::Window::kGraphiteVulkan_BackendType,
+        sk_app::Window::BackendType::kGraphiteVulkan,
 #   endif
 #endif
 
 #if defined(SK_METAL)
 #   if defined(SK_GANESH)
-        sk_app::Window::kMetal_BackendType,
+        sk_app::Window::BackendType::kMetal,
 #   endif
 #   if defined(SK_GRAPHITE)
-        sk_app::Window::kGraphiteMetal_BackendType,
+        sk_app::Window::BackendType::kGraphiteMetal,
 #   endif
 #endif
 
 #if defined(SK_DIRECT3D) && defined(SK_GANESH)
-        sk_app::Window::kDirect3D_BackendType,
+        sk_app::Window::BackendType::kDirect3D,
 #endif
 
-sk_app::Window::kRaster_BackendType,
+sk_app::Window::BackendType::kRaster,
 };
 
 constexpr size_t kSupportedBackendTypeCount = std::size(kSupportedBackends);
@@ -560,13 +562,13 @@ static Window::BackendType backend_type_for_window(Window::BackendType backendTy
     // In raster mode, we still use GL for the window.
     // This lets us render the GUI faster (and correct).
 #if defined(SK_GANESH) && defined(SK_GL)
-    Window::BackendType windowTypeForRaster = Window::kNativeGL_BackendType;
+    Window::BackendType windowTypeForRaster = Window::BackendType::kNativeGL;
 #else
     // kSupportedBackends will always have at least one entry. Picking the first should
     // usually result in an adequate GPU-backend.
     Window::BackendType windowTypeForRaster = kSupportedBackends[0];
 #endif
-    return Window::kRaster_BackendType == backendType ? windowTypeForRaster : backendType;
+    return Window::BackendType::kRaster == backendType ? windowTypeForRaster : backendType;
 }
 
 #if defined(SK_GRAPHITE)
@@ -601,7 +603,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fZoomWindowLocation{0.0f, 0.0f}
     , fLastImage(nullptr)
     , fZoomUI(false)
-    , fBackendType(sk_app::Window::kNativeGL_BackendType)
+    , fBackendType(sk_app::Window::BackendType::kNativeGL)
     , fColorMode(ColorMode::kLegacy)
     , fColorSpacePrimaries(gSrgbPrimaries)
     // Our UI can only tweak gamma (currently), so start out gamma-only
@@ -1665,7 +1667,7 @@ void Viewer::setBackend(sk_app::Window::BackendType backendType) {
 void Viewer::initGpuTimer() {
     // The explicit raster backend check is here because raster may be presented via a GPU window
     // context which does support GPU timers.
-    if (fBackendType == Window::kRaster_BackendType || !fWindow->supportsGpuTimer()) {
+    if (fBackendType == Window::BackendType::kRaster || !fWindow->supportsGpuTimer()) {
         fStatsLayer.disableGpuTimer();
         return;
     }
@@ -1938,7 +1940,7 @@ void Viewer::drawSlide(SkSurface* surface) {
     if (kPerspective_Fake == fPerspectiveMode ||
         fShowZoomWindow ||
         fShowHistogramWindow ||
-        Window::kRaster_BackendType == fBackendType ||
+        Window::BackendType::kRaster == fBackendType ||
         colorSpace != nullptr ||
         FLAGS_offscreen) {
         SkSurfaceProps props;
@@ -1948,7 +1950,7 @@ void Viewer::drawSlide(SkSurface* surface) {
 
         SkImageInfo info = SkImageInfo::Make(
                 fWindow->width(), fWindow->height(), colorType, kPremul_SkAlphaType, colorSpace);
-        offscreenSurface = Window::kRaster_BackendType == this->fBackendType
+        offscreenSurface = Window::BackendType::kRaster == this->fBackendType
                                    ? SkSurfaces::Raster(info, &props)
                                    : slideCanvas->makeSurface(info, &props);
 
@@ -1981,7 +1983,7 @@ void Viewer::drawSlide(SkSurface* surface) {
 
                 SkImageInfo info = SkImageInfo::Make(
                         tileW, tileH, colorType, kPremul_SkAlphaType, colorSpace);
-                sk_sp<SkSurface> tileSurface = Window::kRaster_BackendType == this->fBackendType
+                sk_sp<SkSurface> tileSurface = Window::BackendType::kRaster == this->fBackendType
                                            ? SkSurfaces::Raster(info, &props)
                                            : slideCanvas->makeSurface(info, &props);
                 SkCanvas* tileCanvas = tileSurface->getCanvas();
@@ -2347,9 +2349,9 @@ void Viewer::drawImGui() {
                          ImGuiWindowFlags_AlwaysVerticalScrollbar)) {
             if (ImGui::CollapsingHeader("Backend")) {
                 int newBackend = static_cast<int>(fBackendType);
-                ImGui::RadioButton("Raster", &newBackend, sk_app::Window::kRaster_BackendType);
+                ImGui::RadioButton("Raster", &newBackend, static_cast<int>(sk_app::Window::BackendType::kRaster));
                 ImGui::SameLine();
-                ImGui::RadioButton("OpenGL", &newBackend, sk_app::Window::kNativeGL_BackendType);
+                ImGui::RadioButton("OpenGL", &newBackend, static_cast<int>(sk_app::Window::BackendType::kNativeGL));
 #if SK_ANGLE && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
                 ImGui::SameLine();
                 ImGui::RadioButton("ANGLE", &newBackend, sk_app::Window::kANGLE_BackendType);
@@ -2406,7 +2408,7 @@ void Viewer::drawImGui() {
                 ImGui::RadioButton("Direct3D", &newBackend, sk_app::Window::kDirect3D_BackendType);
 #endif
 
-                if (newBackend != fBackendType) {
+                if (newBackend != static_cast<int>(fBackendType)) {
                     fDeferredActions.push_back([newBackend, this]() {
                         this->setBackend(static_cast<sk_app::Window::BackendType>(newBackend));
                     });
@@ -2427,7 +2429,7 @@ void Viewer::drawImGui() {
 
                     // Determine the context's max sample count for MSAA radio buttons.
                     int sampleCount = fWindow->sampleCount();
-                    int maxMSAA = (fBackendType != sk_app::Window::kRaster_BackendType) ?
+                    int maxMSAA = (fBackendType != sk_app::Window::BackendType::kRaster) ?
                             ctx->maxSurfaceSampleCountForColorType(kRGBA_8888_SkColorType) :
                             1;
 
@@ -2526,7 +2528,7 @@ void Viewer::drawImGui() {
                     } else
 #endif
 #if defined(SK_GANESH)
-                    if (fBackendType != Window::kRaster_BackendType && ctx) {
+                    if (fBackendType != Window::BackendType::kRaster && ctx) {
                         GrContextOptions grOpts = params->grContextOptions();
                         auto prButton = [&](GpuPathRenderers x) {
                             if (ImGui::RadioButton(gGaneshPathRendererNames[x].c_str(),
@@ -2974,7 +2976,7 @@ void Viewer::drawImGui() {
                 }
 #endif
 
-                const bool isVulkan = fBackendType == sk_app::Window::kVulkan_BackendType;
+                const bool isVulkan = fBackendType == sk_app::Window::BackendType::kVulkan;
 
                 // To re-load shaders from the currently active programs, we flush all
                 // caches on one frame, then set a flag to poll the cache on the next frame.
@@ -3509,7 +3511,7 @@ void Viewer::updateUIState() {
         [this](SkJSONWriter& writer) {
             writer.appendS32(0);
 
-            if (sk_app::Window::kRaster_BackendType == fBackendType) {
+            if (sk_app::Window::BackendType::kRaster == fBackendType) {
                 return;
             }
 
@@ -3586,7 +3588,7 @@ void Viewer::onUIStateChanged(const SkString& stateName, const SkString& stateVa
         for (size_t i = 0; i < kSupportedBackendTypeCount; i++) {
             auto backendType = kSupportedBackends[i];
             if (stateValue.equals(get_backend_string(backendType))) {
-                if (fBackendType != i) {
+                if (fBackendType != backendType) {
                     this->setBackend(backendType);
                 }
                 break;

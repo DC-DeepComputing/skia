@@ -52,32 +52,32 @@ void Window_android::initDisplay(ANativeWindow* window) {
     SkASSERT(window);
     switch (fBackendType) {
 #ifdef SK_GL
-        case kNativeGL_BackendType:
+        case BackendType::kNativeGL:
         default:
             fWindowContext = skwindow::MakeGLForAndroid(window, fRequestedDisplayParams->clone());
             break;
 #else
         default:
 #endif
-        case kRaster_BackendType:
+        case BackendType::kRaster:
             fWindowContext =
                     skwindow::MakeRasterForAndroid(window, fRequestedDisplayParams->clone());
             break;
 #ifdef SK_VULKAN
-        case kVulkan_BackendType:
+        case BackendType::kVulkan:
             fWindowContext =
                     skwindow::MakeVulkanForAndroid(window, fRequestedDisplayParams->clone());
             break;
 #if defined(SK_GRAPHITE)
-        case kGraphiteVulkan_BackendType:
+        case BackendType::kGraphiteVulkan:
             fWindowContext = skwindow::MakeGraphiteVulkanForAndroid(
                     window, fRequestedDisplayParams->clone());
             break;
 #endif
 #endif
 #if defined(SK_GRAPHITE) && defined(SK_DAWN)
-        case kGraphiteDawnOpenGLES_BackendType:
-        case kGraphiteDawnVulkan_BackendType:
+        case BackendType::kGraphiteDawnOpenGLES:
+        case BackendType::kGraphiteDawnVulkan:
             fWindowContext = skwindow::MakeGraphiteDawnForAndroid(
                     window, fRequestedDisplayParams->clone(), fBackendType);
             break;
