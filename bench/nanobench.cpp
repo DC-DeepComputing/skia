@@ -56,6 +56,7 @@
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
@@ -1366,6 +1367,17 @@ class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler 
 };
 
 int main(int argc, char** argv) {
+    // Initialize PartitionAlloc before any other memory allocations occur.
+    //
+    // This is the memory allocator used by Chromium projects. As different memory allocators have
+    // different performance characteristics, it is important to run benchmarks under the same
+    // memory allocator for which they are intended to be used.
+    //
+    // PartitionAlloc improves performance. It also contains several
+    // security features to detect additional types of memory corruption
+    // bugs.
+    skiatest::InitializePartitionAllocForTesting();
+
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
