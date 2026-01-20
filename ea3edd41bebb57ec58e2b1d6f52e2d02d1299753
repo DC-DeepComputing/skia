@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be18eb0_1642c7b6",
+        "filename": "infra/bots/assets/clang_mac_arm/create.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-20T20:40:58Z",
+      "side": 1,
+      "message": "Chrome now does dedicated arm64 builds? Good to know.",
+      "range": {
+        "startLine": 28,
+        "startChar": 75,
+        "endLine": 28,
+        "endChar": 84
+      },
+      "revId": "ea3edd41bebb57ec58e2b1d6f52e2d02d1299753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50187bfc_fd9a92f8",
+        "filename": "infra/bots/assets/clang_mac_intel/create.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-20T20:40:58Z",
+      "side": 1,
+      "message": "Did these stop being Intel and Arm?",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "ea3edd41bebb57ec58e2b1d6f52e2d02d1299753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
