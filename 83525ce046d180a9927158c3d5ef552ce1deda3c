@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a527f3_ce82113b",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-20T12:38:57Z",
+      "side": 1,
+      "message": "This is the change you suggested from earlier. It may be that I\u0027ll change this later to just read\n```\n  hatm \u003d AgtmHelpers::CreateRwtmo(headroom);\n```\n\nBut for now I\u0027m sticking with the separate initialize-then-populate scheme (cause that\u0027s what\u0027s done over in the parsing, and it makes sense there).",
+      "revId": "83525ce046d180a9927158c3d5ef552ce1deda3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
