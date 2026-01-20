@@ -270,6 +270,8 @@ public:
 
     // We allow the label on a Resource to change when used for a different function. For example
     // when reusing a scratch Texture we can change the label to match callers current use.
+    // TODO(b/387505250): Make this method private and selectively grant privileged access only to
+    // trusted callers (like the ResourceCache).
     void setLabel(std::string_view label) {
         if (fLabel == label) {
             return;
@@ -277,10 +279,25 @@ public:
 
         fLabel = label;
 
+        // It is not always safe to immediately update the backend GPU resource label. Mark it
+        // as dirty so it can be updated when appropriate.
+        fBackendLabelDirty = true;
+    }
+
+    // Update the backend GPU resource label to match fLabel. Update fBackendLabelDirty to be false,
+    // whether that's because the update is successful or it's a no-op (which can occur if the label
+    // is empty or a Resource subclass does not override setBackendLabel()).
+    //
+    // TODO(b/387505250): Make this method protected and selectively grant privileged access only to
+    // trusted callers to enforce threadsafe label synchronization. Currently, we rely upon the
+    // ResourceProvider to manage label updates for resources it creates and to only call this
+    // method when it is actually threadsafe to perform the update.
+    void synchronizeBackendLabel() {
         if (!fLabel.empty()) {
             const std::string fullLabel = "Skia_" + fLabel;
             this->setBackendLabel(fullLabel.c_str());
         }
+        fBackendLabelDirty = false;
     }
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
@@ -492,7 +509,7 @@ private:
 #endif
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // The remaining calls are meant to be truely private (including virtuals for subclasses)
+    // The remaining calls are meant to be truly private (including virtuals for subclasses)
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     // Overridden to free GPU resources in the backend API.
@@ -501,7 +518,12 @@ private:
     // Overridden to call any release callbacks, if necessary
     virtual void invokeReleaseProc() {}
 
-    // Overridden to set the label on the underlying GPU resource
+    // Overridden to set the label on the underlying GPU resource. This method is private to help
+    // enforce that backend label updates are performed in a threadsafe manner (i.e. all backend
+    // label updates go through synchronizeBackendLabel()).
+    // Note that Resource currently does not invoke this method directly but that nothing prevents
+    // it from doing so. If Resource is modified to ever directly call this, it will need to
+    // manually update fBackendLabelDirty to be false.
     virtual void setBackendLabel(char const* label) {}
 
     // Overridden to add extra information to the memory dump.
@@ -736,6 +758,9 @@ private:
 
     // String used to describe the current use of this Resource.
     std::string fLabel;
+    // Flag to signal whether this Resource's label has been updated and its backend label is now
+    // out of sync.
+    std::atomic<bool> fBackendLabelDirty;
 };
 
 } // namespace skgpu::graphite
