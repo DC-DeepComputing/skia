@@ -86,6 +86,11 @@ void PipelineManager::startPipelineCreationTask(SharedContext* sharedContext,
         SKGPU_LOG_W("Failed to create GraphicsPipeline!");
     }
 
+    // It is always safe to immediately update the label of a freshly-created GPU resource.
+    // TODO(b/387505250): Remove this once Resource subclasses are responsible for synchronizing
+    // backend labels upon backend GPU object construction.
+    pipeline->synchronizeBackendLabel();
+
     if (!task->fCompleted.exchange(true)) {
         task->fPipeline = pipeline;
         this->removeTask(task.get());
