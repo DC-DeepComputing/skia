@@ -73,25 +73,29 @@ def compile_fn(api, checkout_root, out_dir):
     gl_dir = os.path.join(top_level, 'chromebook_arm64_gles')
     env = {'LD_LIBRARY_PATH': os.path.join(sysroot_dir, 'lib')}
     args['extra_asmflags'] = [
-      '--target=aarch64-linux-gnueabihf',
+      '--target=aarch64-linux-gnu',
       '--sysroot=%s' % sysroot_dir,
       '-march=armv8-a',
       '-mfpu=neon',
       '-mthumb',
+      # TODO(borenet): Is this necessary?
+      '-mno-outline-atomics',
     ]
 
     args['extra_cflags'] = [
-      '--target=aarch64-linux-gnueabihf',
+      '--target=aarch64-linux-gnu',
       '--sysroot=%s' % sysroot_dir,
       '-I%s' % os.path.join(sysroot_dir, 'include'),
       '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12'),
       '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12', 'aarch64-linux-gnu'),
       '-I%s' % os.path.join(gl_dir, 'include'),
       '-U_GLIBCXX_DEBUG',
+      # TODO(borenet): Is this necessary?
+      '-mno-outline-atomics',
     ]
 
     args['extra_ldflags'] = [
-      '--target=aarch64-linux-gnueabihf',
+      '--target=aarch64-linux-gnu',
       '--sysroot=%s' % sysroot_dir,
       '-static-libstdc++', '-static-libgcc',
       '-fuse-ld=%s' % os.path.join(clang_linux, 'bin', 'ld.lld'),
