@@ -45,6 +45,30 @@
       },
       "revId": "ea3edd41bebb57ec58e2b1d6f52e2d02d1299753",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4da654c_1c835b9c",
+        "filename": "infra/bots/assets/clang_mac_intel/create.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-01-20T20:55:21Z",
+      "side": 1,
+      "message": "They are apparently not universal binaries; they don\u0027t work on the M4 machines and `file` only shows x86_64.",
+      "parentUuid": "50187bfc_fd9a92f8",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "ea3edd41bebb57ec58e2b1d6f52e2d02d1299753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
