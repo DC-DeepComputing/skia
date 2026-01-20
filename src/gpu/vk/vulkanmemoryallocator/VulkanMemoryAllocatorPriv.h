@@ -9,7 +9,6 @@
 #define skgpu_VulkanMemoryAllocatorUtil_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 
@@ -18,7 +17,6 @@
 namespace skgpu {
 
 struct VulkanBackendContext;
-class VulkanExtensions;
 class VulkanMemoryAllocator;
 enum class ThreadSafe : bool;
 
