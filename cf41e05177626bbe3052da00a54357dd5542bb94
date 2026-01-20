@@ -74,6 +74,30 @@
       ],
       "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f1513dd_13a8bd81",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-20T19:33:04Z",
+      "side": 1,
+      "message": "Good call - this and a discussion w/ Michael led me to add a CL at the front of this chain which separates out the updating of the label (normal method defined in Resource.h) versus updating the backend label. `synchronizeBackendLabel(...)` is now responsible for calling the virtual `Resource::setBackendLabel(...)`, which will eventually become a private method of Resource. \n\nThis synchronization call occurs within the constructor body of only *final* Resource subclasses, by which point setBackendLabel() should be overridden (or not if it\u0027s determined to be irrelevant for the particular subclass).",
+      "parentUuid": "32c540aa_ec2efff0",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 30
+      },
+      "revId": "cf41e05177626bbe3052da00a54357dd5542bb94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
