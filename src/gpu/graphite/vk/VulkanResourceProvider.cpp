@@ -162,23 +162,21 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern, label);
 }
 
-sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& desc) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion = nullptr;
 
     // Non-zero conversion information means the sampler utilizes a ycbcr conversion.
-    const bool usesYcbcrConversion = samplerDesc.isImmutable();
+    const bool usesYcbcrConversion = desc.isImmutable();
     if (usesYcbcrConversion) {
-        VulkanYcbcrConversionInfo ycbcrInfo = VulkanYcbcrConversion::FromImmutableSamplerInfo(
-                samplerDesc.immutableSamplerInfo());
+        VulkanYcbcrConversionInfo ycbcrInfo =
+                VulkanYcbcrConversion::FromImmutableSamplerInfo(desc.immutableSamplerInfo());
         ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(ycbcrInfo);
         if (!ycbcrConversion) {
             return nullptr;
         }
     }
 
-    return VulkanSampler::Make(this->vulkanSharedContext(),
-                               samplerDesc,
-                               std::move(ycbcrConversion));
+    return VulkanSampler::Make(this->vulkanSharedContext(), desc, std::move(ycbcrConversion));
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -255,9 +253,8 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
     // Search for available descriptor sets by assembling a key based upon the set's structure.
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
-    if (auto descSet = fResourceCache->findAndRefResource(
-                key, skgpu::Budgeted::kYes, Shareable::kNo)) {
-        // A non-null resource pointer indicates we have found an available descriptor set.
+    if (auto descSet =
+                fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes, Shareable::kNo)) {
         return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
     }
 
@@ -411,34 +408,31 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
 }
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
-        const RenderPassDesc& originalRenderPassDesc, bool compatibleOnly) {
+        const RenderPassDesc& providedDesc, bool compatibleOnly) {
     static constexpr Budgeted kBudgeted = Budgeted::kYes;
     static constexpr Shareable kShareable = Shareable::kYes;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    const RenderPassDesc renderPassDesc =
-            compatibleOnly ? MakePipelineCompatibleRenderPass(originalRenderPassDesc)
-                           : originalRenderPassDesc;
-
+    // Decide whether to use the provided RenderPassDesc or a compatible-only one.
+    const RenderPassDesc desc = compatibleOnly ? MakePipelineCompatibleRenderPass(providedDesc)
+                                               : providedDesc;
     GraphiteResourceKey key;
     {
-        GraphiteResourceKey::Builder builder(&key, kType, 1);
-        builder[0] = VulkanRenderPass::GetRenderPassKey(renderPassDesc,
-                                                        /*compatibleForPipelineKey=*/false);
-    }
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
-        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
+        GraphiteResourceKey::Builder builder(&key, kType, /*data32Count=*/1);
+        builder[0] =
+                VulkanRenderPass::GetRenderPassKey(desc, /*compatibleForPipelineKey=*/false);
     }
 
-    sk_sp<VulkanRenderPass> renderPass =
-            VulkanRenderPass::Make(this->vulkanSharedContext(), renderPassDesc);
-    if (!renderPass) {
-        return nullptr;
+    if (auto renderPass = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass));
     }
 
-    fResourceCache->insertResource(renderPass.get(), key, kBudgeted, kShareable);
+    if (auto vulkanRenderPass = VulkanRenderPass::Make(this->vulkanSharedContext(), desc)) {
+        fResourceCache->insertResource(vulkanRenderPass.get(), key, kBudgeted, kShareable);
+        return vulkanRenderPass;
+    }
 
-    return renderPass;
+    return nullptr;
 }
 
 namespace {
@@ -562,7 +556,7 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
         builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
     }
 
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (auto resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
     }
 

@@ -217,8 +217,7 @@ VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
                                              std::optional<VkFilter> requiredFilter)
         : Resource(context,
                    Ownership::kOwned,
-                   /*gpuMemorySize=*/0,
-                   /*reusableRequiresPurgeable=*/false)
+                   /*gpuMemorySize=*/0)
         , fYcbcrConversion(ycbcrConversion)
         , fRequiredFilter(requiredFilter) {}
 
