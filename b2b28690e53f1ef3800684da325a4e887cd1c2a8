@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06bbc214_9e5b5420",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 55
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4508336
+      },
+      "writtenOn": "2026-01-20T15:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa9811e0_3d3b1b62",
+      "revId": "b2b28690e53f1ef3800684da325a4e887cd1c2a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8098ac28_4f909fad",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-01-19T06:55:56Z",
       "side": 1,
       "message": "The current accumulator uses sizeof(SkPoint) for conic weights while the constructor strides by sizeof(float), causing fVerbs to overlap into the conic space.\nThe verbs are currently being placed inside the second half of the over-allocated conic space. Suggesting a fix to unify the stride to sizeof(float).\n```suggestion\n             .addMul(ncns, sizeof(float))\n```",
+      "range": {
+        "startLine": 154,
+        "startChar": 27,
+        "endLine": 154,
+        "endChar": 42
+      },
+      "revId": "b2b28690e53f1ef3800684da325a4e887cd1c2a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d79bcf23_3208ea10",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4508336
+      },
+      "writtenOn": "2026-01-20T15:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8098ac28_4f909fad",
       "range": {
         "startLine": 154,
         "startChar": 27,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6175dc74_e0be8e1b",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 4508336
+      },
+      "writtenOn": "2026-01-20T15:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4944a777_333d273a",
+      "range": {
+        "startLine": 170,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 37
+      },
+      "revId": "b2b28690e53f1ef3800684da325a4e887cd1c2a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c0e996a_0a8e2624",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-01-19T06:55:56Z",
       "side": 1,
       "message": "See the constructor\u0027s comment for details; this should be changed to `sizeof(float)`.\nby using sizeof(SkPoint) in the accumulator but striding by sizeof(float), the code is effectively treating the second half of each reserved \u0027point\u0027 slot as the starting point for the next field (fVerbs)\n\nThere will be no alignment issues. Since SkPoint is composed of floats, its alignment is 4 bytes, meet the requirement of `fConics \u003d {reinterpret_cast\u003cfloat*\u003e(data), ncns};`\n```suggestion\n         .addMul(ncns, sizeof(float))\n```",
+      "range": {
+        "startLine": 185,
+        "startChar": 23,
+        "endLine": 185,
+        "endChar": 38
+      },
+      "revId": "b2b28690e53f1ef3800684da325a4e887cd1c2a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d96fdee_fa261792",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 4508336
+      },
+      "writtenOn": "2026-01-20T15:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c0e996a_0a8e2624",
       "range": {
         "startLine": 185,
         "startChar": 23,
