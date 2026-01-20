@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50df6d8d_eb21f952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-20T12:39:34Z",
+      "side": 1,
+      "message": "ptal -- this is the follow-up that cleans up some of the uglier initialization from the previous patch",
+      "revId": "83525ce046d180a9927158c3d5ef552ce1deda3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74a527f3_ce82113b",
