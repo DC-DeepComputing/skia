@@ -8,34 +8,43 @@
 # 1. Delegated to the `partition_alloc` library.
 # 2. Provided by Skia a simple "no-op" pointer wrapper (in construction).
 
-# TODO(b/352223023): Implement proper conditional logic for skia_partition_alloc_dir
-# For now, we assume skia_partition_alloc_dir is not defined.
+load("//bazel:skia_rules.bzl", "skia_cc_library")
 
-load(
-    "//bazel:skia_rules.bzl",
-    "skia_cc_library",
-)
-
-package(
-    default_applicable_licenses = ["//:license"],
-)
+package(default_applicable_licenses = ["//:license"])
 
 licenses(["notice"])
 
+# A simple no-op implementation of raw_ptr/raw_ref.
+# This is used when PartitionAlloc is not enabled.
 skia_cc_library(
-    name = "partition_alloc",
-    # When skia_partition_alloc_dir is not defined, this is an empty group in BUILD.gn.
-    # In Bazel, an empty cc_library serves a similar purpose if nothing depends on its
-    # implementation.
-)
-
-skia_cc_library(
-    name = "raw_ptr",
+    name = "raw_ptr_noop",
     hdrs = [
         "partition_alloc/pointers/raw_ptr.h",
         "partition_alloc/pointers/raw_ptr_exclusion.h",
         "partition_alloc/pointers/raw_ref.h",
     ],
     includes = ["."],
+    visibility = ["//visibility:public"],
+)
+
+# The PartitionAlloc-based implementation of raw_ptr/raw_ref.
+# This is used when PartitionAlloc is enabled.
+skia_cc_library(
+    name = "raw_ptr_partition_alloc",
+    hdrs = [
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr_exclusion.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ref.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["@partition_alloc//:raw_ptr"],
+)
+
+alias(
+    name = "raw_ptr",
+    actual = select({
+        "//bazel/common_config_settings:skia_use_partition_alloc_true": ":raw_ptr_partition_alloc",
+        "//conditions:default": ":raw_ptr_noop",
+    }),
     visibility = ["//visibility:public"],
 )

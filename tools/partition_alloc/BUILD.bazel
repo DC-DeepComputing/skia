@@ -15,8 +15,13 @@ skia_cc_library(
     testonly = True,
     srcs = ["TestSupport.cpp"],
     hdrs = ["TestSupport.h"],
+    defines = select({
+        "//bazel/common_config_settings:skia_use_partition_alloc_true": ["SKIA_ENABLE_PARTITION_ALLOC"],
+        "//conditions:default": [],
+    }),
     visibility = ["//dm:__pkg__"],
-
-    # TODO(351867706): Add partition_alloc Bazel support. At the moment, the
-    # target builds without using it.
+    deps = select({
+        "//bazel/common_config_settings:skia_use_partition_alloc_true": ["@partition_alloc"],
+        "//conditions:default": [],
+    }),
 )
