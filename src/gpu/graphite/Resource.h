@@ -268,38 +268,6 @@ public:
 
     const char* getLabel() const { return fLabel.c_str(); }
 
-    // We allow the label on a Resource to change when used for a different function. For example
-    // when reusing a scratch Texture we can change the label to match callers current use.
-    // TODO(b/387505250): Make this method protected and selectively grant privileged access only to
-    // trusted callers (such as the ResourceCache).
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        // It is not always safe to immediately update the backend GPU resource label. Mark it
-        // as dirty so it can be updated when appropriate.
-        fBackendLabelDirty = true;
-    }
-
-    // Marks the backend label as clean (i.e. not needing to be updated) either because it is
-    // actually updated or because the update is a no-op (which can occur if the label is empty
-    // or if a Resource subclass does not override setBackendLabel()).
-    //
-    // TODO(b/387505250): Make this method protected and selectively grant privileged access only to
-    // trusted callers to enforce threadsafe label synchronization. Currently, we rely upon creators
-    // of Resources to manage label updates and to only call this method when it is actually
-    // threadsafe to perform the update.
-    void synchronizeBackendLabel() {
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
-            this->setBackendLabel(fullLabel.c_str());
-        }
-        fBackendLabelDirty = false;
-    }
-
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -328,11 +296,24 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
     virtual ~Resource();
 
     const SharedContext* sharedContext() const { return fSharedContext; }
+
+    // Marks the backend label as clean (i.e. not needing to be updated) either because it is
+    // actually updated or because the update is a no-op (which can occur if the label is empty
+    // or if a Resource subclass does not override setBackendLabel()).
+    void synchronizeBackendLabel() {
+        // TODO(nicolettep): Do we want to allow updating backend resources to be an empty string?
+        if (!fLabel.empty()) {
+            const std::string fullLabel = "Skia_" + fLabel;
+            this->setBackendLabel(fullLabel.c_str());
+        }
+        fBackendLabelDirty = false;
+    }
 
     // Needs to be protected for DawnBuffer's emscripten prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
@@ -465,6 +446,22 @@ private:
         return {(origRefs & fReusableRefMask) == RefMask(RefType::kReturnQueue),
                 (origRefs & PurgeableMask()) == 0,
                 next};
+    }
+
+    // We allow the label on a Resource to change when used for a different function (e.g. when
+    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
+    // This method should only be called internally or by the ResourceCache when updating
+    // non-shareable resource labels  when returning them from the cache.
+    void setLabel(std::string_view label) {
+        if (fLabel == label) {
+            return;
+        }
+
+        fLabel = label;
+
+        // It is not always safe to immediately update the backend GPU resource label. Mark it
+        // as dirty so it can be updated when appropriate.
+        fBackendLabelDirty = true;
     }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
@@ -685,10 +682,6 @@ private:
     // See RefIncrement() for how the bits in this field are interpreted.
     mutable std::atomic<uint64_t> fRefs;
 
-    // Flag to signal whether this Resource's label has been updated and its backend label is now
-    // out of sync.
-    std::atomic<bool> fBackendLabelDirty;
-
     // Depending on when the resource can be reused, there are two base values:
     // 1. RefMask(kUsage): reused while there is outstanding GPU work (CB ref count is ignored).
     // 2. RefMask(kUsage) | RefMask(kCB): cannot be reused until it is also purgeable.
@@ -760,8 +753,11 @@ private:
     uint32_t fLastUseToken;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
+    // String used to describe the current use of this Resource
     std::string fLabel;
+    // Flag to signal whether this Resource's label has been updated and its backend label is now
+    // out of sync
+    std::atomic<bool> fBackendLabelDirty;
 };
 
 } // namespace skgpu::graphite

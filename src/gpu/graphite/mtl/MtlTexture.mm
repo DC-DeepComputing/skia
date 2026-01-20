@@ -84,7 +84,7 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                   /*isTransient=*/has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
-                  std::move(label))
+                  label)
         , fTexture(std::move(texture)) {
     // Update the newly-created underlying GPU object's label to match the Resource's
     this->synchronizeBackendLabel();
@@ -103,7 +103,7 @@ sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                          info,
                                          std::move(texture),
                                          Ownership::kOwned,
-                                         std::move(label)));
+                                         label));
 }
 
 sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
@@ -116,7 +116,7 @@ sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
                                          info,
                                          std::move(texture),
                                          Ownership::kWrapped,
-                                         std::move(label)));
+                                         label));
 }
 
 void MtlTexture::freeGpuData() {

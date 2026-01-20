@@ -110,32 +110,6 @@ sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
             dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
 }
 
-namespace {
-// TODO(b/387505250): Remove this helper once threadsafe label management is enforced by other
-// callers as outlined in the threadsafe resource label model outlined in Resource.h. To maintain
-// functionality until then, funnel all manual label update calls the ResourceProvider uses through
-// this helper for easier removal later on.
-void update_and_sync_resource_label(Resource* resource, std::string_view label) {
-    if (!resource) {
-        return;
-    }
-
-    if (resource->shareable() == Shareable::kYes) {
-        // Shareable resource labels should only be set upon creation
-        SkASSERT(resource->getLabel() == label);
-    } else {
-        resource->setLabel(label);
-        // TODO(b/476118698): Only non-shareable resources should be permitted to update their
-        // backend labels when returned from the cache. As it's currently implemented, scratch
-        // resource labels will be synchronized here as well. While this is safe to do while we
-        // do not use one global threadsafe resource cache, scratch resource label management
-        // will need to be implemented per the model outlined in Resource.h before we can
-        // use one threadsafe global cache.
-        resource->synchronizeBackendLabel();
-    }
-}
-} // anonymous
-
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         SkISize dimensions,
         const TextureInfo& info,
@@ -160,8 +134,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
     if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
-        update_and_sync_resource_label(resource, label);
+                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -203,13 +176,12 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 
-    sk_sp<Sampler> sampler = this->createSampler(samplerDesc);
-    if (!sampler) {
-        return nullptr;
+    if (sk_sp<Sampler> sampler = this->createSampler(samplerDesc)) {
+        fResourceCache->insertResource(sampler.get(), key, kBudgeted, kShareable);
+        return sampler;
     }
 
-    fResourceCache->insertResource(sampler.get(), key, kBudgeted, kShareable);
-    return sampler;
+    return nullptr;
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
@@ -268,8 +240,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
     }
 
     if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, unavailable)) {
-        update_and_sync_resource_label(resource, label);
+            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 

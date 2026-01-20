@@ -524,13 +524,13 @@ sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture
                                         texture.dimensions(),
                                         texture.info(),
                                         std::move(dawnTexture),
-                                        std::move(label));
+                                        label);
     } else {
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
                                         std::move(dawnTextureView),
-                                        std::move(label));
+                                        label);
     }
 }
 
@@ -568,7 +568,7 @@ sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
 
 sk_sp<Texture> DawnResourceProvider::createTexture(
         SkISize dimensions, const TextureInfo& info, std::string_view label) {
-    return DawnTexture::Make(this->dawnSharedContext(), dimensions, info, std::move(label));
+    return DawnTexture::Make(this->dawnSharedContext(), dimensions, info, label);
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,

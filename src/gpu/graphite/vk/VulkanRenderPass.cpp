@@ -34,18 +34,19 @@ static constexpr uint32_t kLoadOpMask = 0x3;
 static constexpr uint32_t kStoreOpMask = 0x1;
 static constexpr uint32_t kMSRTTMask = 0x1;
 
-uint32_t VulkanRenderPass::GetRenderPassKey(const RenderPassDesc& originalRenderPassDesc,
+uint32_t VulkanRenderPass::GetRenderPassKey(const RenderPassDesc& providedDesc,
                                             bool compatibleForPipelineKey) {
-    const RenderPassDesc renderPassDesc =
-            compatibleForPipelineKey ? MakePipelineCompatibleRenderPass(originalRenderPassDesc)
-                                     : originalRenderPassDesc;
-    const AttachmentDesc color = renderPassDesc.fColorAttachment;
-    const AttachmentDesc resolve = renderPassDesc.fColorResolveAttachment;
-    const AttachmentDesc depthStencil = renderPassDesc.fDepthStencilAttachment;
+    // Decide whether to use the provided RenderPassDesc or a compatible-only one.
+    const RenderPassDesc desc = compatibleForPipelineKey
+            ? MakePipelineCompatibleRenderPass(providedDesc)
+            : providedDesc;
+
+    const AttachmentDesc color = desc.fColorAttachment;
+    const AttachmentDesc resolve = desc.fColorResolveAttachment;
+    const AttachmentDesc depthStencil = desc.fDepthStencilAttachment;
 
     const bool hasResolveAttachment = resolve.fFormat != TextureFormat::kUnsupported;
-    const bool isMultisampledRenderToSingleSampled =
-            RenderPassDescWillImplicitlyLoadMSAA(renderPassDesc);
+    const bool isMultisampledRenderToSingleSampled = RenderPassDescWillImplicitlyLoadMSAA(desc);
     // Silence warning about unused variable in release builds.
     (void)hasResolveAttachment;
 
@@ -59,8 +60,7 @@ uint32_t VulkanRenderPass::GetRenderPassKey(const RenderPassDesc& originalRender
     SkASSERT(depthStencil.fFormat == TextureFormat::kUnsupported ||
              depthStencil.fStoreOp == StoreOp::kDiscard);
     SkASSERT(!hasResolveAttachment || resolve.fSampleCount == SampleCount::k1);
-    SkASSERT(color.fSampleCount == renderPassDesc.fSampleCount ||
-             isMultisampledRenderToSingleSampled);
+    SkASSERT(color.fSampleCount == desc.fSampleCount || isMultisampledRenderToSingleSampled);
     SkASSERT(!hasResolveAttachment || color.fLoadOp == LoadOp::kDiscard ||
              color.fLoadOp == LoadOp::kClear);
     SkASSERT(!hasResolveAttachment || resolve.fLoadOp == LoadOp::kDiscard ||
@@ -106,7 +106,7 @@ uint32_t VulkanRenderPass::GetRenderPassKey(const RenderPassDesc& originalRender
     const uint32_t key =
             (static_cast<uint32_t>(color.fFormat) << kColorFormatOffset) |
             (static_cast<uint32_t>(depthStencil.fFormat) << kDepthStencilFormatOffset) |
-            (SamplesToKey(renderPassDesc.fSampleCount) << kSampleCountOffset) |
+            (SamplesToKey(desc.fSampleCount) << kSampleCountOffset) |
             (static_cast<uint32_t>(color.fLoadOp) << kColorLoadOpOffset) |
             (static_cast<uint32_t>(color.fStoreOp) << kColorStoreOpOffset) |
             (static_cast<uint32_t>(resolve.fLoadOp) << kResolveLoadOpOffset) |
@@ -525,8 +525,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkExtent2D granularity)
         : Resource(context,
                    Ownership::kOwned,
-                   /*gpuMemorySize=*/0,
-                   /*reusableRequiresPurgeable=*/false)
+                   /*gpuMemorySize=*/0)
         , fSharedContext(context)
         , fRenderPass(renderPass)
         , fGranularity(granularity) {}

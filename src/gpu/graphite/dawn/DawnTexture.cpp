@@ -102,7 +102,7 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                   /*isTransient=*/has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
-                  std::move(label))
+                  label)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
         , fRenderTextureView(std::move(renderTextureView)) {
@@ -176,7 +176,7 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kOwned,
-                                          std::move(label)));
+                                          label));
 }
 
 sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
@@ -197,7 +197,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kWrapped,
-                                          std::move(label)));
+                                          label));
 }
 
 sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
@@ -216,7 +216,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           /*sampleTextureView=*/textureView,
                                           /*renderTextureView=*/textureView,
                                           Ownership::kWrapped,
-                                          std::move(label)));
+                                          label));
 }
 
 void DawnTexture::freeGpuData() {

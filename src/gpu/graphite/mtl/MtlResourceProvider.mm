@@ -65,7 +65,7 @@ sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(
 sk_sp<Texture> MtlResourceProvider::createTexture(SkISize dimensions,
                                                   const TextureInfo& info,
                                                   std::string_view label) {
-    return MtlTexture::Make(this->mtlSharedContext(), dimensions, info, std::move(label));
+    return MtlTexture::Make(this->mtlSharedContext(), dimensions, info, label);
 }
 
 sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
@@ -79,7 +79,7 @@ sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture&
                                    texture.dimensions(),
                                    texture.info(),
                                    std::move(mtlTexture),
-                                   std::move(label));
+                                   label);
 }
 
 sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
