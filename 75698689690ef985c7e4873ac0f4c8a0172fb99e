@@ -16,6 +16,24 @@
       "message": "Maybe a comment like:\n// kSupportedBackends will always have a least one entry. Picking the first should\n// usually result in an adequate GPU-back end\n\n?",
       "revId": "75698689690ef985c7e4873ac0f4c8a0172fb99e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e415bef9_af6de203",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-20T16:23:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "637da937_a6f5e6f6",
+      "revId": "75698689690ef985c7e4873ac0f4c8a0172fb99e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
