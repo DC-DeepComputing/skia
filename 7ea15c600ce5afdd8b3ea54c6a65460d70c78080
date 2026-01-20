@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1395823d_b22fb11b",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-20T14:33:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fc985620_faaab399",
+      "range": {
+        "startLine": 579,
+        "startChar": 4,
+        "endLine": 579,
+        "endChar": 5
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e96acf7_724b4fd9",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Yes, the second one isn\u0027t an option because I made `AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap` be non-aggregate. I\u0027m fixing that in this follow-on patch:\nhttps://skia-review.googlesource.com/c/skia/+/1142598\n\nI think I may end up changing `PopulateUsingRwtmo` to `ComputeRwtmo` (but I\u0027m trying to keep patch size small).",
       "parentUuid": "6e96acf7_724b4fd9",
+      "range": {
+        "startLine": 639,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 54
+      },
+      "revId": "7ea15c600ce5afdd8b3ea54c6a65460d70c78080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e5da48_5a40a0ee",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-20T14:33:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b17a354f_4b19a216",
       "range": {
         "startLine": 639,
         "startChar": 8,
