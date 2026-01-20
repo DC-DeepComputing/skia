@@ -1741,11 +1741,11 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
     // this point.
     DrawOrder order(fCurrentDepth.next());
-    CompressedPaintersOrder clipOrder = fClip.updateClipStateForDraw(
+    auto clipstuff = fClip.updateClipStateForDraw(
             clip, clipElements, fColorDepthBoundsManager.get(), order.depth());
 
     // A draw's order always depends on the clips that must be drawn before it
-    order.dependsOnPaintersOrder(clipOrder);
+    order.dependsOnPaintersOrder(clipstuff.first);
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly.
     if (shading.rendererCoverage() != Coverage::kNone || dstUsage != DstUsage::kNone) {
@@ -1790,20 +1790,20 @@ void Device::drawGeometry(const Transform& localToDevice,
                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                    : renderer,
                             localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), &stroke);
+                            scopedDrawBuilder.gatherer(), &stroke, {}, clipstuff.second);
         } else if (dstUsage == DstUsage::kNone && renderer->useNonAAInnerFill()){
             // Possibly record an additional draw using the non-AA bounds renderer to fill the
             // interior with a renderer that can disable blending entirely.
             Rect innerFillBounds = get_inner_bounds(geometry, localToDevice);
             if (!innerFillBounds.isEmptyNegativeOrNaN()) {
                 DrawOrder orderWithoutCoverage{order.depth()};
-                orderWithoutCoverage.dependsOnPaintersOrder(clipOrder);
+                orderWithoutCoverage.dependsOnPaintersOrder(clipstuff.first);
                 // The regular draw has analytic coverage, so isn't being sorted front to back, but
                 // we do want to sort the inner fill to maximize overdraw reduction
                 orderWithoutCoverage.reverseDepthAsStencil();
                 fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                                 Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                paintID, dstUsage, scopedDrawBuilder.gatherer(), nullptr);
+                                paintID, dstUsage, scopedDrawBuilder.gatherer(), nullptr, {}, clipstuff.second);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
@@ -1813,7 +1813,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
             fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), nullptr);
+                            scopedDrawBuilder.gatherer(), nullptr, {}, clipstuff.second);
         }
     }
 
@@ -1876,6 +1876,57 @@ void Device::drawClipShape(const Transform& localToDevice,
         fCurrentDepth = order.depth();
     }
 }
+
+// records a draw and returns a backpointer to the drawParams of the draw
+bool Device::drawClipShapeImmediate(const Transform& localToDevice,
+                                    const Shape& shape,
+                                    const Clip& clip,
+                                    DrawOrder order,
+                                    DrawParams*& captureParams,
+                                    Layer*& captureLayer) {
+    ScopedDrawBuilder scopedDrawBuilder(fRecorder);
+    auto renderer = this->chooseMSAARenderer(shape,
+                                             DefaultFillStyle(),
+                                             clip.transformedShapeBounds());
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping clip with no supported path renderer.");
+        return false;
+    }
+
+    // We update the disjoint stencil downstream and order downstream!
+    if (localToDevice.type() == Transform::Type::kPerspective) {
+        SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
+        fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, captureParams, captureLayer);
+    } else {
+        fDC->recordDraw(renderer, localToDevice, Geometry(shape), clip, order,
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, captureParams, captureLayer);
+    }
+
+    return
+        (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) != DepthStencilFlags::kNone;
+}
+
+void Device::updateDeferredClip(DrawParams* drawParams, bool isDisjointMSAA) {
+    // 1) Get DrawParams backpointer
+    // 2) If disjoint stencil step, update the order
+    // 3) Update the backpointer
+    // 4) Update device's fCurrentDepth
+    if (isDisjointMSAA) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(drawParams->order().paintOrder(),
+                                                                 drawParams->drawBounds());
+        drawParams->order().dependsOnStencil(setIndex);
+    }
+
+    // This ensures that draws recorded after this clip shape has been popped off the stack will
+    // be unaffected by the Z value the clip shape wrote to the depth attachment.
+    if (drawParams->order().depth() > fCurrentDepth) {
+        fCurrentDepth = drawParams->order().depth();
+    }
+}
+
 
 // TODO: Currently all Renderers are always defined, but with config options and caps that may not
 // be the case, in which case chooseRenderer() will have to go through compatible choices.

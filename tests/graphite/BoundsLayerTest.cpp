@@ -32,10 +32,9 @@ public:
         bool usesStencil;
         bool dependsOnDst;
         PaintersDepth paintersDepth;
-        DrawListLayer::LayerKey key;
+        LayerKey key;
     };
-    using TestMetadataMap =
-            std::unordered_map<const DrawListLayer::RecordedDraw*, DrawTestMetadata>;
+    using TestMetadataMap = std::unordered_map<const RecordedDraw*, DrawTestMetadata>;
 
     static void Run(skiatest::Reporter* reporter, Context* context) {
         std::unique_ptr<Recorder> recorder = context->makeRecorder();
@@ -56,15 +55,12 @@ public:
         constexpr int kCanvasSize = 100;
 
         DrawListLayer drawLayer;
-        using HistoryTuple =
-                std::tuple<int, DrawListLayer::LayerKey, const DrawListLayer::RecordedDraw*>;
+        using HistoryTuple = std::tuple<int, LayerKey, const RecordedDraw*>;
         SkTDArray<HistoryTuple> history;
 
         // Attach the hook into drawLayer
 #if defined(GPU_TEST_UTILS)
-        drawLayer.setDrawObserver([&](int stepID,
-                                      const DrawListLayer::LayerKey& key,
-                                      const DrawListLayer::RecordedDraw* draw) {
+        drawLayer.setDrawObserver([&](int stepID, const LayerKey& key, const RecordedDraw* draw) {
             history.push_back({stepID, key, draw});
         });
 #endif
@@ -156,13 +152,13 @@ public:
     }
 
     static void ValidateBindingList(skiatest::Reporter* reporter,
-                                    const DrawListLayer::BindingList* list,
+                                    const BindingList* list,
                                     const TestMetadataMap& metadataMap) {
         if (!list || list->fDraws.isEmpty()) return;
 
         bool seenDependent = false;
-        const DrawListLayer::RecordedDraw* current = list->fDraws.head();
-        const DrawListLayer::LayerKey listKey = list->fKey;
+        const RecordedDraw* current = list->fDraws.head();
+        const LayerKey listKey = list->fKey;
 
         while (current) {
             auto c = metadataMap.find(current);
@@ -182,7 +178,7 @@ public:
             }
             if (isDependent) seenDependent = true;
 
-            const DrawListLayer::RecordedDraw* previous = list->fDraws.head();
+            const RecordedDraw* previous = list->fDraws.head();
             while (previous != current) {
                 if (previous->fDrawParams.drawBounds().intersects(
                             current->fDrawParams.drawBounds())) {
@@ -216,8 +212,8 @@ public:
     }
 
     struct FlatDrawContext {
-        const DrawListLayer::Layer* layer;
-        const DrawListLayer::RecordedDraw* draw;
+        const Layer* layer;
+        const RecordedDraw* draw;
     };
 
     static void ValidateStencils(skiatest::Reporter* reporter,
@@ -257,9 +253,8 @@ public:
                         // if (startCtx.layer != nextCtx.layer) {
                         //     REPORTER_ASSERT(reporter,
                         //                     false,
-                        //                     "Atomicity Violation: Stencil Step %d (Layer %p) and "
-                        //                     "Step %d (Layer %p) are split!",
-                        //                     startMeta.stepID,
+                        //                     "Atomicity Violation: Stencil Step %d (Layer %p) and
+                        //                     " "Step %d (Layer %p) are split!", startMeta.stepID,
                         //                     startCtx.layer,
                         //                     nextMeta.stepID,
                         //                     nextCtx.layer);
