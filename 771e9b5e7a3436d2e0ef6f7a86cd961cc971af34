@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "070f1dd5_fb034cde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-21T03:29:22Z",
+      "side": 1,
+      "message": "Follow up to https://skia.googlesource.com/skia.git/+show/2e836c59871ce8493c0718b548c5bee950396c15 .",
+      "revId": "771e9b5e7a3436d2e0ef6f7a86cd961cc971af34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
