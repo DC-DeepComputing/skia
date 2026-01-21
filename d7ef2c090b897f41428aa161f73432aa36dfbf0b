@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2601ed79_6e3ee93c",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-21T15:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98c90e3b_e00eb5b8",
+      "range": {
+        "startLine": 307,
+        "startChar": 34,
+        "endLine": 307,
+        "endChar": 51
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bfc9e6c_c0703980",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edacfd76_4fe4723a",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-21T15:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bfc9e6c_c0703980",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 31
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eebd6acc_e510c371",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-01-14T15:48:17Z",
       "side": 1,
       "message": "We can have this be `label \u003d {}` so that the call sites for resource types that don\u0027t care about labels can be simplified.",
+      "range": {
+        "startLine": 55,
+        "startChar": 33,
+        "endLine": 55,
+        "endChar": 56
+      },
+      "revId": "d7ef2c090b897f41428aa161f73432aa36dfbf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2088b88_f8695f26",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-21T15:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eebd6acc_e510c371",
       "range": {
         "startLine": 55,
         "startChar": 33,

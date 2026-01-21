@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a8fa849_11ac9e23",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-21T15:36:15Z",
+      "side": 1,
+      "message": "Could you see any scenario in which we would want to explicitly update a backend resource\u0027s label to be an empty string rather than whatever non-empty value it used to be?",
+      "range": {
+        "startLine": 454,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 9
+      },
+      "revId": "adbb450145c85c99151bfddd38f71290d71ff1d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
