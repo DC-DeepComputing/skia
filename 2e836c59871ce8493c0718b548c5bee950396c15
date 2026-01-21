@@ -52,6 +52,24 @@
       "parentUuid": "e38db920_992caca1",
       "revId": "2e836c59871ce8493c0718b548c5bee950396c15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bcd374e_0e2069e9",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-21T13:54:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6b39d0be_f34904cb",
+      "revId": "2e836c59871ce8493c0718b548c5bee950396c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
