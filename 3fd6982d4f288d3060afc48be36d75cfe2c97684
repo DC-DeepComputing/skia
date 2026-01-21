@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0375c5a_c42a99ff",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-21T15:32:33Z",
+      "side": 1,
+      "message": "Is it technically against our style guide to keep these all as one lines? I liked the compact version personally but am unsure.",
+      "range": {
+        "startLine": 368,
+        "startChar": 0,
+        "endLine": 394,
+        "endChar": 16
+      },
+      "revId": "3fd6982d4f288d3060afc48be36d75cfe2c97684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
