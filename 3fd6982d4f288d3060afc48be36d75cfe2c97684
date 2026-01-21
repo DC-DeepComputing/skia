@@ -22,6 +22,30 @@
       },
       "revId": "3fd6982d4f288d3060afc48be36d75cfe2c97684",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a0d1d02_8fde9690",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-21T15:40:13Z",
+      "side": 1,
+      "message": "I like the compact version too, but `git clang-format` pushed it here and I didn\u0027t feel like fighting it this time.",
+      "parentUuid": "b0375c5a_c42a99ff",
+      "range": {
+        "startLine": 368,
+        "startChar": 0,
+        "endLine": 394,
+        "endChar": 16
+      },
+      "revId": "3fd6982d4f288d3060afc48be36d75cfe2c97684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
