@@ -34,6 +34,24 @@
       "parentUuid": "28bf7a89_c4001f49",
       "revId": "2e836c59871ce8493c0718b548c5bee950396c15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b39d0be_f34904cb",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-21T03:39:38Z",
+      "side": 1,
+      "message": "This also shows up on Skia\u0027s ASAN testers, and is probably also responsible for the out of memory conditions on the 32 bit testers.",
+      "parentUuid": "e38db920_992caca1",
+      "revId": "2e836c59871ce8493c0718b548c5bee950396c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
