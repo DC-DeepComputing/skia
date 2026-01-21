@@ -59,8 +59,8 @@ static constexpr uint32_t kChromaFilterMask =
 static constexpr uint32_t kForceExplicitReconMask =
         ((1 << kForceExplicitReconBits) - 1) << kForceExplicitReconShift;
 static constexpr uint32_t kComponentRMask = ((1 << kComponentBits) - 1) << kComponentRShift;
-static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentGShift;
-static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentBShift;
+static constexpr uint32_t kComponentGMask = ((1 << kComponentBits) - 1) << kComponentGShift;
+static constexpr uint32_t kComponentBMask = ((1 << kComponentBits) - 1) << kComponentBShift;
 static constexpr uint32_t kComponentAMask = ((1 << kComponentBits) - 1) << kComponentAShift;
 static constexpr uint32_t kMatchChromaFilterMask =
         ((1 << kMatchChromaFilterBits) - 1) << kMatchChromaFilterShift;
@@ -132,6 +132,8 @@ ImmutableSamplerInfo VulkanYcbcrConversion::ToImmutableSamplerInfo(
     const bool usesExternalFormat = conversionInfo.hasExternalFormat();
     const bool matchChroma = conversionInfo.fSamplerFilterMustMatchChromaFilter;
     const bool supportsLinear = conversionInfo.fSupportsLinearFilter;
+
+    SkDebugf("0x%x 0x%x 0x%x 0x%x\n", kComponentRMask, kComponentBMask, kComponentGMask, kComponentAMask);
 
     ImmutableSamplerInfo info;
     info.fNonFormatYcbcrConversionInfo =
