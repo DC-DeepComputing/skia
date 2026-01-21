@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe260009_53022e1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-01-21T20:14:04Z",
+      "side": 1,
+      "message": "PS1 is a pure reland, PS2 moves the iOS18 builds back to the old machines.",
+      "revId": "3e7600644d3a1e9a22337269320ee86091a96de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
