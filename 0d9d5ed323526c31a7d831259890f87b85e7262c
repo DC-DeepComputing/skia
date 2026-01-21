@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "26225854_35d56b39",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-21T18:51:20Z",
+      "side": 1,
+      "message": "When I integrated this to Chromium, uploading an F32 texture to the GPU didn\u0027t work (I did\u0027t go so far as to check if it just failed, or if did something like downgrade to N32).",
+      "parentUuid": "2b38017f_5973c97b",
+      "range": {
+        "startLine": 10,
+        "startChar": 43,
+        "endLine": 10,
+        "endChar": 48
+      },
+      "revId": "0d9d5ed323526c31a7d831259890f87b85e7262c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "82e68ce1_39e8c504",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -37,6 +61,23 @@
       "writtenOn": "2026-01-20T23:38:03Z",
       "side": 1,
       "message": "Tried to enable this in Chromium and ... hand to change F16 to F32!",
+      "revId": "0d9d5ed323526c31a7d831259890f87b85e7262c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed6c546d_c455147a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-01-21T18:51:20Z",
+      "side": 1,
+      "message": "Thanks!",
       "revId": "0d9d5ed323526c31a7d831259890f87b85e7262c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
