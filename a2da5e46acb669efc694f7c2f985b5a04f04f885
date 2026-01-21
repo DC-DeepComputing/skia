@@ -16,6 +16,24 @@
       "message": "Graphite\u0027s ContextOptions has\n```\n    /**\n     * If Skia is creating a default VMA allocator for the Vulkan backend this value will be used\n     * for the preferredLargeHeapBlockSize. If the value is not set, then Skia will use an\n     * internally defined default size.\n     *\n     * However, it is highly discouraged to have Skia make a default allocator (and support for\n     * doing so will be removed soon,  b/321962001). Instead clients should create their own\n     * allocator to pass into Skia where they can fine tune this value themeselves.\n     */\n    std::optional\u003cuint64_t\u003e fVulkanVMALargeHeapBlockSize;\n```\n\nIs this still relevant if the legacy behavior is gone?",
       "revId": "a2da5e46acb669efc694f7c2f985b5a04f04f885",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d66d58f7_590bd662",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-21T15:45:19Z",
+      "side": 1,
+      "message": "I forgot to delete that https://skia-review.googlesource.com/c/skia/+/1145796 so I\u0027ve updated https://skia-review.googlesource.com/c/skia/+/1146036 to also get rid of that field.",
+      "parentUuid": "074260e3_be278ae9",
+      "revId": "a2da5e46acb669efc694f7c2f985b5a04f04f885",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
