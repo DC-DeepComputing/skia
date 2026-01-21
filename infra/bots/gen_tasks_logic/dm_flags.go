@@ -592,19 +592,18 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
 					}
 
-					if b.MatchOs("Win11") &&
-						(b.GPU("RTX3060") || b.GPU("GTX1660") || b.GPU("IntelIrisXe")) {
+					if b.MatchOs("Win11") && b.GPU("RTX3060", "GTX1660", "IntelIrisXe", "IntelUHDGraphics770") {
 						// These 3 GPUs are failing this test on Win11 (b/462240488)
 						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
 					}
-					if b.MatchOs("Win11") && b.GPU("IntelIrisXe") {
+					if b.MatchOs("Win11") && b.GPU("IntelIrisXe", "IntelUHDGraphics770") {
 						// skbug.com/470073298
 						skip(ALL, "gm", ALL, "ycbcrimage")
 					}
 				}
 			}
 		} else {
-			if b.GPU("QuadroP400") && b.MatchOs("Ubuntu24.04") {
+			if b.GPU("QuadroP400", "IntelUHDGraphics770") && b.MatchOs("Ubuntu24.04") {
 				if b.ExtraConfig("Vulkan") {
 					// skbug.com/40045530
 					skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler")
