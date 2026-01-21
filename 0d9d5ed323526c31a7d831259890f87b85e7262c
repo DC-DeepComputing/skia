@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b38017f_5973c97b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-21T14:09:28Z",
+      "side": 1,
+      "message": "What failures did you see? I don\u0027t see them described in much detail in here or the linked bug.",
+      "range": {
+        "startLine": 10,
+        "startChar": 43,
+        "endLine": 10,
+        "endChar": 48
+      },
+      "revId": "0d9d5ed323526c31a7d831259890f87b85e7262c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "82e68ce1_39e8c504",
