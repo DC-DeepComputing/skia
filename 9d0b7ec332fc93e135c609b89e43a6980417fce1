@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e97fcb25_d3f9780f",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-22T19:38:41Z",
+      "side": 1,
+      "message": "from offline discussion, this should also be checking `fBackendLabelDirty`.",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 30
+      },
+      "revId": "9d0b7ec332fc93e135c609b89e43a6980417fce1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
