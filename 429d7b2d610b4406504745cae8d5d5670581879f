@@ -16,6 +16,29 @@
       "message": "This needs to land so I may make changes in Chromium before the next stage.",
       "revId": "429d7b2d610b4406504745cae8d5d5670581879f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "395dfebf_31ecc42c",
+        "filename": "include/private/base/SkLogPriority.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-22T20:00:23Z",
+      "side": 1,
+      "message": "Why is this file in include/private if we expect clients to use SkLogPriority enum? Is there something wrong with in being in normal include?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "429d7b2d610b4406504745cae8d5d5670581879f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
