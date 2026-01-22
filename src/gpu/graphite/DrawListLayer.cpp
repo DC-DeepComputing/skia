@@ -18,269 +18,32 @@
 
 namespace skgpu::graphite {
 
-namespace {
-
-// Writes uniform data either to uniform buffers or to shared storage buffers, and tracks when
-// bindings need to change between draws.
-class UniformTracker {
-public:
-    UniformTracker(bool useStorageBuffers) : fUseStorageBuffers(useStorageBuffers) {}
-
-    bool writeUniforms(UniformDataCache& uniformCache,
-                       DrawBufferManager* bufferMgr,
-                       UniformDataCache::Index index) {
-        if (index >= UniformDataCache::kInvalidIndex) {
-            return false;
-        }
-
-        if (index == fLastIndex) {
-            return false;
-        }
-        fLastIndex = index;
-
-        UniformDataCache::Entry& uniformData = uniformCache.lookup(index);
-        const size_t uniformDataSize = uniformData.fCpuData.size();
-
-        // Upload the uniform data if we haven't already.
-        // Alternatively, re-upload the uniform data to avoid a rebind if we're using storage
-        // buffers. This will result in more data uploaded, but the tradeoff seems worthwhile.
-        if (!uniformData.fBufferBinding.fBuffer ||
-            (fUseStorageBuffers && uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer)) {
-            BufferWriter writer;
-            std::tie(writer, uniformData.fBufferBinding) =
-                    fCurrentBuffer.getMappedSubrange(1, uniformDataSize);
-            if (!writer) {
-                // Allocate a new buffer
-                std::tie(writer, uniformData.fBufferBinding, fCurrentBuffer) =
-                        fUseStorageBuffers ? bufferMgr->getMappedStorageBuffer(1, uniformDataSize)
-                                           : bufferMgr->getMappedUniformBuffer(1, uniformDataSize);
-                if (!writer) {
-                    return {}; // Allocation failed so early out
-                }
-            }
-
-            writer.write(uniformData.fCpuData.data(), uniformDataSize);
-
-            if (fUseStorageBuffers) {
-                // When using storage buffers, store the SSBO index in the binding's offset field
-                // and always use the entire buffer's size in the size field.
-                SkASSERT(uniformData.fBufferBinding.fOffset % uniformDataSize == 0);
-                uniformData.fBufferBinding.fOffset /= uniformDataSize;
-                uniformData.fBufferBinding.fSize = uniformData.fBufferBinding.fBuffer->size();
-            } else {
-                // Every new set of uniform data has to be bound, this ensures its aligned correctly
-                fCurrentBuffer.resetForNewBinding();
-            }
-        }
-
-        const bool needsRebind =
-                uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer ||
-                (!fUseStorageBuffers && uniformData.fBufferBinding.fOffset != fLastBinding.fOffset);
-
-        fLastBinding = uniformData.fBufferBinding;
-
-        return needsRebind;
-    }
-
-    void bindUniforms(UniformSlot slot, DrawPassCommands::List* commandList) {
-        BindBufferInfo binding = fLastBinding;
-        if (fUseStorageBuffers) {
-            // Track the SSBO index in fLastBinding, but set offset = 0 in the actual used binding.
-            binding.fOffset = 0;
-        }
-        commandList->bindUniformBuffer(binding, slot);
-    }
-
-    uint32_t ssboIndex() const {
-        // The SSBO index for the last-bound storage buffer is stored in the binding's offset field.
-        return fLastBinding.fOffset;
-    }
-
-private:
-    // The GPU buffer data is being written into; for SSBOs, Graphite will only record a bind
-    // command when this changes. Sub-allocations will be aligned such that they can be randomly
-    // accessed even if the data is heterogenous. UBOs will always have to issue binding commands
-    // when a draw needs to use a different set of uniform values.
-    BufferSubAllocator fCurrentBuffer;
-
-    // Internally track the last binding returned, so that we know whether new uploads or rebindings
-    // are necessary. If we're using SSBOs, this is treated specially -- the fOffset field holds the
-    // index in the storage buffer of the last-written uniforms, and the offsets used for actual
-    // bindings are always zero.
-    BindBufferInfo fLastBinding;
-
-    // This keeps track of the last index used for writing uniforms from a provided uniform cache.
-    // If a provided index matches the last index, the uniforms are assumed to already be written
-    // and no additional uploading is performed. This assumes a UniformTracker will always be
-    // provided with the same uniform cache.
-    UniformDataCache::Index fLastIndex = UniformDataCache::kInvalidIndex;
-
-    const bool fUseStorageBuffers;
-};
-
-// Tracks when to issue BindTexturesAndSamplers commands to a command list and converts
-// TextureDataBlocks to that representation as needed.
-class TextureTracker {
-public:
-    TextureTracker(TextureDataCache* textureCache)
-            : fTextureCache(textureCache) {}
-
-    bool setCurrentTextureBindings(TextureDataCache::Index bindingIndex) {
-        if (bindingIndex < TextureDataCache::kInvalidIndex && fLastIndex != bindingIndex) {
-            fLastIndex = bindingIndex;
-            return true;
-        }
-        // No binding change
-        return false;
-    }
-
-    void bindTextures(DrawPassCommands::List* commandList) {
-        SkASSERT(fLastIndex < TextureDataCache::kInvalidIndex);
-        TextureDataBlock binding = fTextureCache->lookup(fLastIndex);
-
-        auto [textures, samplers] =
-                commandList->bindDeferredTexturesAndSamplers(binding.numTextures());
-
-        for (int i = 0; i < binding.numTextures(); ++i) {
-            auto [t, s] = binding.texture(i);
-            textures[i] = t.get();
-            samplers[i] = s;
-        }
-    }
-
-private:
-    TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
-
-    TextureDataCache* const fTextureCache;
-};
-
-} // anonymous namespace
-
 void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
-    fLoadOp = loadOp;
-    fClearColor = color.premul().array();
+    DrawListBase::reset(loadOp, color);
 
     fStorage.reset();
     fLayers.reset();
-    fTransforms.reset();
-
     fDrawCount = 0;
-    fRenderStepCount = 0;
-    fRequiresMSAA = false;
-    fDepthStencilFlags = DepthStencilFlags::kNone;
-    SkDEBUGCODE(fCoverageMaskShapeDrawCount = 0);
-
-    fDstReadBounds = Rect::InfiniteInverted();
-    fPassBounds = Rect::InfiniteInverted();
-
-    fUniformDataCache.reset();
-    fTextureDataCache.reset();
-    fPipelineCache.reset();
-}
-
-const Transform& DrawListLayer::deduplicateTransform(const Transform& localToDevice) {
-    // TODO: This is a pretty simple deduplication strategy and doesn't take advantage of the stack
-    // knowledge that Device has.
-    if (fTransforms.empty() || fTransforms.back() != localToDevice) {
-        fTransforms.push_back(localToDevice);
-    }
-    return fTransforms.back();
-}
-
-DrawListLayer::BindingList* DrawListLayer::Layer::searchBinding(const LayerKey& key) {
-    for (BindingList* list : fBindings) {
-        if (list->fKey == key) {
-            return list;
-        }
-    }
-    return nullptr;
-}
-
-BoundsTest DrawListLayer::Layer::test(const Rect& drawBounds,
-                                      const LayerKey& key,
-                                      bool disjointStencil) {
-    if (!disjointStencil && fBindings.head() &&
-        fBindings.head() == fBindings.tail() && fBindings.head()->fKey == key) {
-        return BoundsTest::kCompatibleOverlap;
-    }
-
-    bool foundMatch = false;
-
-    for (BindingList* list : fBindings) {
-        if (list->fKey == key) {
-            foundMatch = true;
-            // If we aren't disjoint stencil, we can overlap with ourselves freely, so we skip the
-            // bounds check for this list.
-            if (!disjointStencil) continue;
-        }
-
-        if (list->fBounds.intersects(drawBounds)) {
-            for (const RecordedDraw* d : list->fDraws) {
-                if (d->fDrawParams.drawBounds().intersects(drawBounds)) {
-                    return BoundsTest::kIncompatibleOverlap;
-                }
-            }
-        }
-    }
-
-    return foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint;
-}
-
-void DrawListLayer::Layer::add(SkArenaAllocWithReset* alloc,
-                               BindingList* match,
-                               const LayerKey& key,
-                               const RenderStep* step,
-                               const DrawParams& params,
-                               const BarrierType& barrierBeforeDraws,
-                               bool dependsOnDst) {
-    RecordedDraw* draw = alloc->make<RecordedDraw>(step, params, barrierBeforeDraws);
-    if (match) {
-        if (!dependsOnDst) {
-            match->fDraws.addToHead(draw);
-        } else {
-            match->fDraws.addToTail(draw);
-        }
-        match->fBounds.join(params.drawBounds());
-    } else {
-        BindingList* list = alloc->make<BindingList>();
-        list->fKey = key;
-        list->fBounds = params.drawBounds();
-        list->fDraws.addToHead(draw);
-        fBindings.addToTail(list);
-    }
-
-#ifdef GPU_TEST_UTILS
-    this->fLastDraw = draw;
-    this->fLastKey = key;
-#endif
 }
 
 void DrawListLayer::recordStep(int stepIndex,
+                               bool dependsOnDst,
                                const RenderStep* step,
-                               GraphicsPipelineCache::Index pipelineIndex,
-                               UniformDataCache::Index uniformIndex,
-                               TextureDataCache::Index textureIndex,
+                               const LayerKey& key,
                                const DrawParams& drawParams,
-                               const SkEnumBitMask<DstUsage>& dstUsage,
                                const BarrierType& barrierBeforeDraws) {
-    LayerKey key = {pipelineIndex, uniformIndex, textureIndex};
-
     SkTInternalLList<Layer>::Iter iter;
     Layer* current = iter.init(fLayers, SkTInternalLList<Layer>::Iter::kTail_IterStart);
     Layer* targetLayer = nullptr;
-    BindingList* targetMatch = nullptr;
-
-    bool dependsOnDst = (dstUsage & DstUsage::kDependsOnDst) != DstUsage::kNone;
-    bool disjointStencil =
-            (step->depthStencilFlags() & DepthStencilFlags::kStencil) != DepthStencilFlags::kNone;
+    BindingWrapper* targetMatch = nullptr;
 
     // If we're an easy draw, try the head first.
-    if (!dependsOnDst && !disjointStencil) {
+    if (!dependsOnDst) {
         targetLayer = fLayers.head();
         current = nullptr;
 
         if (targetLayer) {
-            auto result = targetLayer->test(drawParams.drawBounds(), key, disjointStencil);
+            auto result = targetLayer->test(drawParams.drawBounds(), key, false);
             if (result != BoundsTest::kIncompatibleOverlap) {
                 targetMatch = targetLayer->searchBinding(key);
             } else {
@@ -291,9 +54,9 @@ void DrawListLayer::recordStep(int stepIndex,
     }
 
     int limit = kMaxSearchLimit;
-    BindingList* forwardMerge = nullptr;
+    BindingWrapper* forwardMerge = nullptr;
     while (current && limit > 0) {
-        BoundsTest result = current->test(drawParams.drawBounds(), key, disjointStencil);
+        BoundsTest result = current->test(drawParams.drawBounds(), key, false);
 
         if (result == BoundsTest::kIncompatibleOverlap) {
             // If we need to read the dst, we cannot go earlier than this layer.
@@ -305,22 +68,6 @@ void DrawListLayer::recordStep(int stepIndex,
                     targetMatch = targetLayer->searchBinding(key);
                     break;
                 } else {
-                    // We are at the end (Tail), so we need a new layer on top.
-
-                    // Check if we can "forward merge" an existing batch from this layer
-                    // to the new layer to prevent stranding.
-                    BindingList* match = current->searchBinding(key);
-
-                    bool safeToMerge =
-                            match && (!disjointStencil ||
-                                      !match->fBounds.intersects(drawParams.drawBounds()));
-                    if (safeToMerge) {
-                        // Don't leave an empty layer behind!
-                        if (current->fBindings.head() != match ||
-                            current->fBindings.tail() != match) {
-                            forwardMerge = match;
-                        }
-                    }
                     break;
                 }
             }
@@ -357,16 +104,9 @@ void DrawListLayer::recordStep(int stepIndex,
     }
 
     SkASSERT(targetLayer);
-
-    // If we didn't find a match during the search, check the target layer one last time (In case we
-    // settled on a 'Disjoint' layer that actually had the binding but we didn't fetch it yet)
-    if (!targetMatch && targetLayer->test(drawParams.drawBounds(), key, disjointStencil) ==
-                                BoundsTest::kCompatibleOverlap) {
-        targetMatch = targetLayer->searchBinding(key);
-    }
-
-    targetLayer->add(&fStorage, targetMatch, key, step, drawParams, barrierBeforeDraws,
-                     dependsOnDst);
+    DrawParams* recordParams = fStorage.make<DrawParams>(drawParams);
+    SingleDraw* draw = fStorage.make<SingleDraw>(step, recordParams, barrierBeforeDraws);
+    targetLayer->add(&fStorage, targetMatch, key, draw, dependsOnDst, false);
 
 #ifdef GPU_TEST_UTILS
     this->fLastLayer = targetLayer;
@@ -376,6 +116,224 @@ void DrawListLayer::recordStep(int stepIndex,
 #endif
 }
 
+// TODO:
+// Currently, stencils are recorded atomically. However, we should try an alternative scheme similar
+// to recording clipped draws. The first step in a stencil draw stores the layer in which it inserts
+// into. It returns incompatible for other stencil layers, but is notably able to bypass "stencil
+// regions" i.e. regions which are contained between the first and last step of a stencil draw. Once
+// the first step inserts, it records the layer which it inserted into. The child steps begin their
+// search at that layer and progress FORWARDS, they either: 1) Find a layer which can take them 2)
+// traverse until they hit the search limit 3) hit another stencil (which signals the start of
+// another stencil region). If 2 or 3 occur (no match found), we insert a layer immediately after
+// the first step. The layer pointer is updated to the next layer.
+//
+// This obviates the need for chained draws, at the cost of additional layer insertions, and
+// disjointed layers. (i.e. layers will no longer exclusively inserted at the tail of the list).
+void DrawListLayer::recordStencil(int stepIndex,
+                                  bool dependsOnDst,
+                                  const Renderer* renderer,
+                                  const LayerKey& key,
+                                  const DrawParams& drawParams,
+                                  const BarrierType& barrierBeforeDraws) {
+    // Child stencils get a fast path to their parent
+    if (stepIndex > 0) {
+        DrawParams* params = fStorage.make<DrawParams>(drawParams);
+        ChainedDraw* draw = fStorage.make<ChainedDraw>(
+            key, renderer->steps()[stepIndex], params, barrierBeforeDraws);
+        SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
+        fLastRecordedDraw->fChildDraw = draw;
+        fLastRecordedDraw = draw;
+        return;
+    }
+
+    SkTInternalLList<Layer>::Iter iter;
+    Layer* current = iter.init(fLayers, SkTInternalLList<Layer>::Iter::kTail_IterStart);
+    Layer* targetLayer = nullptr;
+    BindingWrapper* targetMatch = nullptr;
+
+    int limit = kMaxSearchLimit;
+    BindingWrapper* forwardMerge = nullptr;
+    while (current && limit > 0) {
+        BoundsTest result = current->test(drawParams.drawBounds(), key, true);
+
+        if (result == BoundsTest::kIncompatibleOverlap) {
+            if (dependsOnDst) {
+                if (current->fNext) {
+                    targetLayer = current->fNext;
+                    targetMatch = targetLayer->searchBinding(key);
+                    break;
+                } else {
+                    // no forward merge
+                    break;
+                }
+            }
+            // If !dependsOnDst, we just keep searching backwards.
+        } else {
+            targetLayer = current;
+            if (result == BoundsTest::kCompatibleOverlap) {
+                targetMatch = current->searchBinding(key);
+                break;
+            }
+        }
+
+        current = iter.prev();
+        limit--;
+    }
+
+    if (!targetLayer) {
+        targetLayer = fStorage.make<Layer>();
+        fLayers.addToTail(targetLayer);
+
+        if (forwardMerge) {
+            SkASSERT(current);
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            targetMatch = forwardMerge;
+        }
+    } else {
+        SkASSERT(!forwardMerge);
+    }
+
+    SkASSERT(targetLayer);
+    DrawParams* params = fStorage.make<DrawParams>(drawParams);
+    ChainedDraw* draw = fStorage.make<ChainedDraw>(
+            key, renderer->steps()[stepIndex], params, barrierBeforeDraws);
+    targetLayer->add(&fStorage, targetMatch, key, draw, dependsOnDst, true);
+    fLastRecordedDraw = draw;
+}
+
+void DrawListLayer::recordDepthOnly(
+        int stepIndex,
+        bool isStencil,
+        bool dependsOnDst,
+        const RenderStep* step,
+        const LayerKey& key,
+        const DrawParams& drawParams,
+        const BarrierType& barrierBeforeDraws,
+        std::optional<std::reference_wrapper<DrawParams*>> captureParams,
+        std::optional<std::reference_wrapper<Layer*>> captureLayer) {
+    if (stepIndex > 0) {
+        SkASSERT(captureParams.has_value());
+        ChainedDraw* deferredDraw =
+                fStorage.make<ChainedDraw>(key, step, captureParams->get(), barrierBeforeDraws);
+        SkASSERT(fLastDeferredDraw && !fLastDeferredDraw->fChildDraw);
+        fLastDeferredDraw->fChildDraw = deferredDraw;
+        fLastDeferredDraw = deferredDraw;
+        return;
+    }
+    SkTInternalLList<Layer>::Iter iter;
+    Layer* current = iter.init(fLayers, SkTInternalLList<Layer>::Iter::kTail_IterStart);
+    Layer* targetLayer = nullptr;
+
+    int limit = kMaxSearchLimit;
+    bool shouldOverwriteLayer = true;
+    while (current && limit > 0) {
+        BoundsTest result = current->depthOnlyTest(drawParams.drawBounds(), key, isStencil);
+        if (captureLayer->get() == current) {
+            shouldOverwriteLayer = false;
+        }
+        if (result == BoundsTest::kIncompatibleOverlap) {
+            if (current->fNext) {
+                targetLayer = current->fNext;
+            } else {
+                // disable forward merging
+            }
+            break;
+        } else {
+            targetLayer = current;
+            if (result == BoundsTest::kCompatibleOverlap) {
+                break;
+            }
+        }
+
+        current = iter.prev();
+        limit--;
+    }
+
+    if (!targetLayer) {
+        targetLayer = fStorage.make<Layer>();
+        fLayers.addToTail(targetLayer);
+        shouldOverwriteLayer = true;
+    }
+    SkASSERT(targetLayer);
+
+    DrawParams* deferredParams = fStorage.make<DrawParams>(drawParams);
+    ChainedDraw* deferredDraw =
+            fStorage.make<ChainedDraw>(key, step, deferredParams, barrierBeforeDraws);
+    targetLayer->addDepthOnlyDraw(&fStorage, deferredDraw, isStencil);
+    fLastDeferredDraw = deferredDraw;
+    captureParams->get() = deferredParams;
+    if (shouldOverwriteLayer) {
+        captureLayer->get() = targetLayer;
+    }
+}
+
+// Re:Michael:
+// Clipped draws must come *after* the depth only draw, and they must come *after* any preceding
+// draws from the same renderstep. To accomodate this:
+//      1) Depth only draws store a pointer to the layer they inserted into.
+//      2) Normal draws that are afffected by the clip---"clipped draws"---use the layer pointer
+//         as the start of the traversal, then proceed FORWARDS until finding a suitable layer.
+//      3) Each clipped draw updates the starting layer *after* the layer that *it* inserted into,
+//         thus preserving the relative ordering between the draws. This is necessary because
+//         bindinglists within a layer have no ordering guarantees, and it is possible to insert
+//         into a matching bindinglist that will be drawn PRIOR to a preceding clipped draw.
+void DrawListLayer::recordClipped(int stepIndex,
+                                  bool isStencil,
+                                  bool dependsOnDst,
+                                  const RenderStep* step,
+                                  const LayerKey& key,
+                                  const DrawParams& drawParams,
+                                  const BarrierType& barrierBeforeDraws,
+                                  std::optional<std::reference_wrapper<Layer*>> startLayer) {
+    // Child stencils get a fast path to their parent
+    if (isStencil && stepIndex > 0) {
+        DrawParams* params = fStorage.make<DrawParams>(drawParams);
+        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, params, barrierBeforeDraws);
+        SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
+        fLastRecordedDraw->fChildDraw = draw;
+        fLastRecordedDraw = draw;
+        return;
+    }
+
+    Layer* current = startLayer->get();
+    Layer* targetLayer = nullptr;
+    BindingWrapper* targetMatch = nullptr;
+
+    int limit = kMaxSearchLimit;
+    while (current && limit > 0) {
+        BoundsTest result = current->test(drawParams.drawBounds(), key, isStencil);
+        if (result != BoundsTest::kIncompatibleOverlap) {
+            targetLayer = current;
+            targetMatch = current->searchBinding(key);
+            break;
+        }
+        current = current->fNext;
+        limit--;
+    }
+
+    if (!targetLayer) {
+        targetLayer = fStorage.make<Layer>();
+        fLayers.addToTail(targetLayer);
+    }
+
+    SkASSERT(targetLayer);
+    DrawParams* recordParams = fStorage.make<DrawParams>(drawParams);
+    if (isStencil) {
+        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, recordParams, barrierBeforeDraws);
+        targetLayer->add(&fStorage, targetMatch, key, draw, dependsOnDst, isStencil);
+        fLastRecordedDraw = draw;
+    } else {
+        SingleDraw* draw = fStorage.make<SingleDraw>(step, recordParams, barrierBeforeDraws);
+        targetLayer->add(&fStorage, targetMatch, key, draw, true, isStencil); //See comment 4 above!
+    }
+    startLayer->get() = targetLayer->fNext;
+}
+
+// Layer has dual purpose here:
+//  1) (Producer) If recording a depth only draw, the pointer is set to the *latest* layer inserted.
+//  2) (Consumer) If recording a clipped draw, the pointer is used as the starting point for a
+//     forward search, and is the earliest possible layer the draw can be inserted into.
 void DrawListLayer::recordDraw(const Renderer* renderer,
                                const Transform& localToDevice,
                                const Geometry& geometry,
@@ -385,37 +343,84 @@ void DrawListLayer::recordDraw(const Renderer* renderer,
                                SkEnumBitMask<DstUsage> dstUsage,
                                BarrierType barrierBeforeDraws,
                                PipelineDataGatherer* gatherer,
-                               const StrokeStyle* stroke) {
+                               const StrokeStyle* stroke,
+                               std::optional<std::reference_wrapper<DrawParams*>> captureParams,
+                               std::optional<std::reference_wrapper<Layer*>> layer) {
     SkASSERT(localToDevice.valid());
     SkASSERT(!geometry.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
     SkASSERT(!(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) ||
-             ordering.stencilIndex() != DrawOrder::kUnassigned);
+             ordering.stencilIndex() != DrawOrder::kUnassigned || captureParams.has_value());
 
-    DrawParams drawParams(this->deduplicateTransform(localToDevice),
-                          geometry, clip, ordering, stroke);
+    // RENDERER not STEP because ATOMIC
+    bool isStencil = (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) !=
+                     DepthStencilFlags::kNone;
+    bool dependsOnDst = (dstUsage & DstUsage::kDependsOnDst) != DstUsage::kNone;
+
+    DrawParams drawParams(
+            this->deduplicateTransform(localToDevice), geometry, clip, ordering, stroke);
 
     fRenderStepCount += renderer->numRenderSteps();
-    // Create a sort key for every render step in this draw
     for (int stepIndex = 0; stepIndex < renderer->numRenderSteps(); ++stepIndex) {
         const RenderStep* const step = renderer->steps()[stepIndex];
+
         gatherer->markOffsetAndAlign(step->performsShading(), step->uniformAlignment());
 
         GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
-                { step->renderStepID(), step->performsShading() ?
-                                        paintID : UniquePaintParamsID::Invalid()});
+                {step->renderStepID(),
+                 step->performsShading() ? paintID : UniquePaintParamsID::Invalid()});
 
         step->writeUniformsAndTextures(drawParams, gatherer);
 
         auto [combinedUniforms, combinedTextures] =
                 gatherer->endCombinedData(step->performsShading());
 
-        UniformDataCache::Index uniformIndex = combinedUniforms ?
-                fUniformDataCache.insert(combinedUniforms) : UniformDataCache::kInvalidIndex;
-        TextureDataCache::Index textureBindingIndex = combinedTextures ?
-                fTextureDataCache.insert(combinedTextures) : TextureDataCache::kInvalidIndex;
+        UniformDataCache::Index uniformIndex = combinedUniforms
+                                                       ? fUniformDataCache.insert(combinedUniforms)
+                                                       : UniformDataCache::kInvalidIndex;
+        TextureDataCache::Index textureBindingIndex =
+                combinedTextures ? fTextureDataCache.insert(combinedTextures)
+                                 : TextureDataCache::kInvalidIndex;
 
-        this->recordStep(stepIndex, step, pipelineIndex, uniformIndex, textureBindingIndex,
-                         drawParams, dstUsage, barrierBeforeDraws);
+        if (captureParams.has_value()) {
+            this->recordDepthOnly(stepIndex,
+                                  isStencil,
+                                  dependsOnDst,
+                                  step,
+                                  LayerKey{pipelineIndex, uniformIndex, textureBindingIndex},
+                                  drawParams,
+                                  barrierBeforeDraws,
+                                  captureParams,
+                                  layer);
+        } else {
+            if (layer.has_value() && layer->get()) {  // Awkward, better signal here. Currently can
+                                                      // pass nullptr when not a clipped draw.
+                SkASSERT(layer->get());
+                this->recordClipped(stepIndex,
+                                    isStencil,
+                                    dependsOnDst,
+                                    step,
+                                    LayerKey{pipelineIndex, uniformIndex, textureBindingIndex},
+                                    drawParams,
+                                    barrierBeforeDraws,
+                                    layer);
+            } else {
+                if (isStencil) {
+                    this->recordStencil(stepIndex,
+                                        dependsOnDst,
+                                        renderer,
+                                        LayerKey{pipelineIndex, uniformIndex, textureBindingIndex},
+                                        drawParams,
+                                        barrierBeforeDraws);
+                } else {
+                    this->recordStep(stepIndex,
+                                     dependsOnDst,
+                                     step,
+                                     LayerKey{pipelineIndex, uniformIndex, textureBindingIndex},
+                                     drawParams,
+                                     barrierBeforeDraws);
+                }
+            }
+        }
         gatherer->rewindForRenderStep();
     }
 
@@ -442,12 +447,13 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       const DstReadStrategy dstReadStrategy) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", fDrawCount);
 
-    // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
-    // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, {fLoadOp, StoreOp::kStore}, fClearColor,
+    std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
+                                                    {fLoadOp, StoreOp::kStore},
+                                                    fClearColor,
                                                     recorder->priv().refFloatStorageManager()));
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
+
     GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
     const SkIRect targetBounds = SkIRect::MakeSize(targetInfo.dimensions());
     SkIRect lastScissor = targetBounds;
@@ -460,128 +466,128 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     const bool useStorageBuffers = caps->storageBufferSupport();
     UniformTracker uniformTracker(useStorageBuffers);
 
-    // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
-    // bound separately from the rest of the textures.
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
-    CompressedPaintersOrder priorDrawPaintOrder {};
+    CompressedPaintersOrder priorDrawPaintOrder{};
 
-    // Accumulate rough pixel area touched by each pipeline as we iterate the SortKeys
+    // Accumulate rough pixel area touched by each pipeline
     drawPass->fPipelineDrawAreas.push_back_n(fPipelineCache.count(), 0.f);
 
     TextureTracker textureBindingTracker(&fTextureDataCache);
-    for (const auto& layer : fLayers) {
-        for (const auto& bindingList : layer->fBindings) {
-            const bool pipelineChange = bindingList->fKey.fPipelineIndex != lastPipeline;
-            const bool uniformBindingChange = uniformTracker.writeUniforms(
-                    fUniformDataCache, bufferMgr, bindingList->fKey.fUniformIndex);
-            // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
-            // dst copy to the texture bind group/descriptor set automatically when processing a
-            // BindTexturesAndSamplers call because they use a single group to contain all textures.
-            // However, from the DrawPass POV, we can run into the scenario where two pipelines have the
-            // same textures+samplers except one requires a dst-copy and the other does not. In this
-            // case we wouldn't necessarily insert a new command when the pipeline changed and then
-            // end up with layout validation errors.
-            const bool textureBindingsChange = textureBindingTracker.setCurrentTextureBindings(
-                    bindingList->fKey.fTextureIndex) ||
+
+    // printf("\n\n\nSNAPPING\n\n\n");
+
+    auto recordDraw = [&](const LayerKey& key,
+                          const RenderStep* renderStep,
+                          const DrawParams& drawParams,
+                          BarrierType barrierBeforeDraws,
+                          bool bindingsAreInvariant) -> bool {
+        SkASSERT(renderStep);
+
+        bool pipelineChange = false;
+        bool uniformBindingChange = false;
+        bool textureBindingsChange = false;
+
+        if (!bindingsAreInvariant) {
+            pipelineChange = key.fPipelineIndex != lastPipeline;
+
+            uniformBindingChange =
+                    uniformTracker.writeUniforms(fUniformDataCache, bufferMgr, key.fUniformIndex);
+
+            textureBindingsChange =
+                    textureBindingTracker.setCurrentTextureBindings(key.fTextureIndex) ||
                     (rebindTexturesOnPipelineChange && pipelineChange &&
-                    bindingList->fKey.fTextureIndex != TextureDataCache::kInvalidIndex);
+                     key.fTextureIndex != TextureDataCache::kInvalidIndex);
+        }
 
-            // The first draw inside the binding list checks per BindingList state changes
-            const DrawListLayer::RecordedDraw* draw = bindingList->fDraws.head();
-            {
-                const RenderStep* renderStep = draw->fStep;
-                SkASSERT(renderStep);
+        drawPass->fPipelineDrawAreas[key.fPipelineIndex] += drawParams.drawBounds().area();
 
-                drawPass->fPipelineDrawAreas[bindingList->fKey.fPipelineIndex] +=
-                    draw->fDrawParams.drawBounds().area();
+        std::optional<SkIRect> newScissor =
+                renderStep->getScissor(drawParams, lastScissor, targetBounds);
 
-                std::optional<SkIRect> newScissor =
-                    renderStep->getScissor(draw->fDrawParams, lastScissor, targetBounds);
+        if (pipelineChange) {
+            drawWriter.newPipelineState(renderStep->primitiveType(),
+                                        renderStep->staticDataStride(),
+                                        renderStep->appendDataStride(),
+                                        renderStep->getRenderStateFlags(),
+                                        barrierBeforeDraws);
+        } else if (uniformBindingChange || textureBindingsChange || newScissor.has_value()) {
+            drawWriter.newDynamicState();
+        } else if (barrierBeforeDraws != BarrierType::kNone &&
+                   priorDrawPaintOrder != drawParams.order().paintOrder()) {
+            drawWriter.flush();
+        }
 
-                // Update DrawWriter *before* we actually change any state so that accumulated draws from
-                // the previous state use the proper state.
-                if (pipelineChange) {
-                    drawWriter.newPipelineState(renderStep->primitiveType(),
-                                                renderStep->staticDataStride(),
-                                                renderStep->appendDataStride(),
-                                                renderStep->getRenderStateFlags(),
-                                                draw->fBarrierBeforeDraws);
-                } else if (uniformBindingChange || textureBindingsChange ||
-                           newScissor.has_value()) {
-                    drawWriter.newDynamicState();
-                } else if (draw->fBarrierBeforeDraws != BarrierType::kNone &&
-                           priorDrawPaintOrder != draw->fDrawParams.order().paintOrder()) {
-                    // TODO can be removed?
-                    //
-                    // Even if there is no pipeline or state change, we must consider whether a
-                    // DrawPassCommand to add barriers must be inserted before any draw commands. If so,
-                    // then determine if the current and prior draws overlap (ie, their PaintOrders are
-                    // unequal). If so, perform a flush() to make sure the draw and add barrier commands are
-                    // appended to the command list in the proper order.
-                    drawWriter.flush();
+        if (pipelineChange) {
+            drawPass->fCommandList.bindGraphicsPipeline(key.fPipelineIndex);
+            lastPipeline = key.fPipelineIndex;
+        }
+        if (uniformBindingChange) {
+            uniformTracker.bindUniforms(UniformSlot::kCombinedUniforms, &drawPass->fCommandList);
+        }
+        if (textureBindingsChange) {
+            textureBindingTracker.bindTextures(&drawPass->fCommandList);
+        }
+        if (newScissor.has_value()) {
+            drawPass->fCommandList.setScissor(*newScissor);
+            lastScissor = *newScissor;
+        }
+
+        uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;
+        renderStep->writeVertices(&drawWriter, drawParams, uniformSsboIndex);
+
+        if (bufferMgr->hasMappingFailed()) {
+            SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
+            return false;
+        }
+
+        priorDrawPaintOrder = drawParams.order().paintOrder();
+        return true;
+    };
+
+    for (const auto& layer : fLayers) {
+        if (layer->fDepthOnlyDraws) {
+            for (ChainedDraw* headDraw : *layer->fDepthOnlyDraws) {
+                ChainedDraw* current = headDraw;
+                while (current) {
+                    if (!recordDraw(current->fKey,
+                                    current->fStep,
+                                    *current->fDrawParams,
+                                    current->fBarrierBeforeDraws,
+                                    false)) {
+                        return nullptr;
+                    }
+                    current = current->fChildDraw;
                 }
-                if (pipelineChange) {
-                    drawPass->fCommandList.bindGraphicsPipeline(bindingList->fKey.fPipelineIndex);
-                    lastPipeline = bindingList->fKey.fPipelineIndex;
-                }
-                if (uniformBindingChange) {
-                    uniformTracker.bindUniforms(UniformSlot::kCombinedUniforms,
-                                                &drawPass->fCommandList);
-                }
-                if (textureBindingsChange) {
-                    textureBindingTracker.bindTextures(&drawPass->fCommandList);
-                }
-                if (newScissor.has_value()) {
-                    drawPass->fCommandList.setScissor(*newScissor);
-                    lastScissor = *newScissor;
-                }
-
-                uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;
-                renderStep->writeVertices(&drawWriter, draw->fDrawParams, uniformSsboIndex);
-
-                if (bufferMgr->hasMappingFailed()) {
-                    SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
-                    return nullptr;
-                }
-
-                priorDrawPaintOrder = draw->fDrawParams.order().paintOrder();
-                draw = draw->fNext;
             }
+        }
 
-            // Our binding list guarantees that all other attributes are invariant,
-            // so only check scissor
-            while (draw) {
-                const RenderStep* renderStep = draw->fStep;
-                SkASSERT(renderStep);
-
-                drawPass->fPipelineDrawAreas[bindingList->fKey.fPipelineIndex] +=
-                    draw->fDrawParams.drawBounds().area();
-
-                std::optional<SkIRect> newScissor =
-                    renderStep->getScissor(draw->fDrawParams, lastScissor, targetBounds);
-
-                if (newScissor.has_value()) {
-                    drawWriter.newDynamicState();
-                } else if (draw->fBarrierBeforeDraws != BarrierType::kNone &&
-                           priorDrawPaintOrder != draw->fDrawParams.order().paintOrder()) {
-                    // TODO can be removed?
-                    drawWriter.flush();
+        for (const BindingWrapper* binding : layer->fBindings) {
+            if (binding->fType == BindingListType::kSingle) {
+                const auto* singleList = static_cast<const BindingList<SingleDraw>*>(binding);
+                for (const SingleDraw* draw : singleList->fDraws) {
+                    if (!recordDraw(binding->fKey,
+                                    draw->fStep,
+                                    *draw->fDrawParams,
+                                    draw->fBarrierBeforeDraws,
+                                    false)) {
+                        return nullptr;
+                    }
                 }
-                if (newScissor.has_value()) {
-                    drawPass->fCommandList.setScissor(*newScissor);
-                    lastScissor = *newScissor;
+            } else {
+                const auto* chainedList = static_cast<const BindingList<ChainedDraw>*>(binding);
+                for (const ChainedDraw* headDraw : chainedList->fDraws) {
+                    const ChainedDraw* current = headDraw;
+                    while (current) {
+                        if (!recordDraw(current->fKey,
+                                        current->fStep,
+                                        *current->fDrawParams,
+                                        current->fBarrierBeforeDraws,
+                                        false)) {
+                            return nullptr;
+                        }
+                        current = current->fChildDraw;
+                    }
                 }
-
-                uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;
-                renderStep->writeVertices(&drawWriter, draw->fDrawParams, uniformSsboIndex);
-
-                if (bufferMgr->hasMappingFailed()) {
-                    SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
-                    return nullptr;
-                }
-
-                priorDrawPaintOrder = draw->fDrawParams.order().paintOrder();
-                draw = draw->fNext;
             }
         }
     }
@@ -589,7 +595,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawWriter.flush();
 
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
-    drawPass->fPipelineDescs   = fPipelineCache.detach();
+    drawPass->fPipelineDescs = fPipelineCache.detach();
     drawPass->fSampledTextures = fTextureDataCache.detachTextures();
 
     TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs.size());
@@ -601,4 +607,4 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     return drawPass;
 }
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
