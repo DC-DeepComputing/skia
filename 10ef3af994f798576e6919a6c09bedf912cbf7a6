@@ -22,6 +22,30 @@
       },
       "revId": "10ef3af994f798576e6919a6c09bedf912cbf7a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7101bdaf_a93c6b36",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-22T21:21:27Z",
+      "side": 1,
+      "message": "I ran the script locally and it worked fine (probably because we use ganesh and graphite or just ganesh, but not just graphite), but I\u0027ll add the second for consistency.",
+      "parentUuid": "1048d2a7_2ea4d78c",
+      "range": {
+        "startLine": 1215,
+        "startChar": 6,
+        "endLine": 1215,
+        "endChar": 13
+      },
+      "revId": "10ef3af994f798576e6919a6c09bedf912cbf7a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
