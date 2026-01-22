@@ -47,7 +47,7 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
                                              extensions,
                                              features,
                                              &debugMessenger,
-                                             nullptr,
+                                             /*presentQueueIndexPtr=*/nullptr,
                                              sk_gpu_test::CanPresentFn(),
                                              createProtectedContext)) {
         delete features;
