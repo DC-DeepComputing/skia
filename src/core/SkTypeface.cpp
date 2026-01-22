@@ -503,6 +503,9 @@ bool SkTypeface::onGetFixedPitch() const {
     return fIsFixedPitch;
 }
 
+bool SkTypeface::onIsSyntheticBold() const { return false; };
+bool SkTypeface::onIsSyntheticOblique() const { return false; };
+
 void SkTypeface::getGlyphToUnicodeMap(SkSpan<SkUnichar> dst) const {
     sk_bzero(dst.data(), dst.size_bytes());
 }
