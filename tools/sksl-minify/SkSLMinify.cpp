@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/base/SkLog.h"
 #include "src/base/SkStringView.h"
 #include "src/core/SkOpts.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -33,10 +34,21 @@ static bool gUnoptimized = false;
 static bool gStringify = false;
 static SkSL::ProgramKind gProgramKind = SkSL::ProgramKind::kFragment;
 
+void vSkLog(SkLogPriority priority, const char format[], va_list args) {
+    vfprintf(stderr, format, args);
+}
+
+void SkLog(SkLogPriority priority, const char format[], ...) {
+    va_list args;
+    va_start(args, format);
+    vSkLog(priority, format, args);
+    va_end(args);
+}
+
 void SkDebugf(const char format[], ...) {
     va_list args;
     va_start(args, format);
-    vfprintf(stderr, format, args);
+    vSkLog(SkLogPriority::kDebug, format, args);
     va_end(args);
 }
 
