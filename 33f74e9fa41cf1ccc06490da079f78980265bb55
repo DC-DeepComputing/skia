@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6836d48c_125316d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2026-01-22T05:11:42Z",
+      "side": 1,
+      "message": "This allows renderengine to correctly compose protected layers. We should land this regardless of other issues (which may or may not be related to ganesh).",
+      "revId": "33f74e9fa41cf1ccc06490da079f78980265bb55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
