@@ -7,17 +7,26 @@
 
 # Generate Android.bp for Skia from GN configuration.
 
-from __future__ import print_function
-
+import argparse
 import os
-import pprint
 import shutil
 import string
-import subprocess
-import tempfile
 
 import skqp_gn_args
 import gn_to_bp_utils
+
+parser = argparse.ArgumentParser(description='Generate Android.bp for Skia.',
+                                 formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 epilog='''
+Example usage:
+  python3 gn/gn_to_bp.py --out /tmp/skia_android_bp
+''')
+parser.add_argument('--gn', default='gn', help='Path to gn executable.')
+parser.add_argument('--out', default='.', help='Output directory.')
+args = parser.parse_args()
+
+def out_path(p):
+  return os.path.join(args.out, p)
 
 # First we start off with a template for Android.bp,
 # with holes for source lists and include directories.
@@ -626,12 +635,12 @@ gn_args_mac   = generate_args('"mac"',     False)
 gn_args_win   = generate_args('"win"',     False)
 gn_args_renderengine  = generate_args('"android"', True, True)
 
-js = gn_to_bp_utils.GenerateJSONFromGN(gn_args)
+js = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args)
 build_dir = js['build_settings']['build_dir']
 
 # Also remove generated files and directories.
 def strip_slashes(lst):
-  return {str(p.lstrip('/')) for p in lst if not p.startswith(build_dir)}
+  return {p.lstrip('/') for p in lst if not p.startswith(build_dir)}
 
 android_srcs    = strip_slashes(js['targets']['//:skia']['sources'])
 cflags          = strip_slashes(js['targets']['//:skia']['cflags'])
@@ -683,19 +692,19 @@ VMA_DEP = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator"
 gn_to_bp_utils.GrabDependentValues(js, '//:skia', 'sources', android_srcs, VMA_DEP)
 android_srcs    = strip_non_srcs(android_srcs)
 
-js_linux        = gn_to_bp_utils.GenerateJSONFromGN(gn_args_linux)
+js_linux        = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args_linux)
 linux_srcs      = strip_slashes(js_linux['targets']['//:skia']['sources'])
 gn_to_bp_utils.GrabDependentValues(js_linux, '//:skia', 'sources', linux_srcs,
                                    None)
 linux_srcs      = strip_non_srcs(linux_srcs)
 
-js_mac          = gn_to_bp_utils.GenerateJSONFromGN(gn_args_mac)
+js_mac          = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args_mac)
 mac_srcs        = strip_slashes(js_mac['targets']['//:skia']['sources'])
 gn_to_bp_utils.GrabDependentValues(js_mac, '//:skia', 'sources', mac_srcs,
                                    None)
 mac_srcs        = strip_non_srcs(mac_srcs)
 
-js_win          = gn_to_bp_utils.GenerateJSONFromGN(gn_args_win)
+js_win          = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args_win)
 win_srcs        = strip_slashes(js_win['targets']['//:skia']['sources'])
 gn_to_bp_utils.GrabDependentValues(js_win, '//:skia', 'sources', win_srcs,
                                    None)
@@ -722,7 +731,7 @@ cflags = gn_to_bp_utils.CleanupCFlags(cflags)
 cflags_cc = gn_to_bp_utils.CleanupCCFlags(cflags_cc)
 
 # Execute GN for specialized RenderEngine target
-js_renderengine   = gn_to_bp_utils.GenerateJSONFromGN(gn_args_renderengine)
+js_renderengine   = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args_renderengine)
 renderengine_srcs = strip_slashes(
     js_renderengine['targets']['//:skia']['sources'])
 gn_to_bp_utils.GrabDependentValues(js_renderengine, '//:skia', 'sources',
@@ -731,7 +740,7 @@ renderengine_srcs = strip_non_srcs(renderengine_srcs)
 
 # Execute GN for specialized SkQP target
 skqp_sdk_version = 26
-js_skqp = gn_to_bp_utils.GenerateJSONFromGN(skqp_gn_args.GetGNArgs(api_level=skqp_sdk_version,
+js_skqp = gn_to_bp_utils.GenerateJSONFromGN(args.gn, skqp_gn_args.GetGNArgs(api_level=skqp_sdk_version,
                                                                    debug=False,
                                                                    is_android_bp=True))
 skqp_srcs      = strip_slashes(js_skqp['targets']['//:libskqp_jni']['sources'])
@@ -771,7 +780,7 @@ here = os.path.dirname(__file__)
 defs = gn_to_bp_utils.GetArchSources(os.path.join(here, 'opts.gni'))
 
 def get_defines(json):
-  defines = {str(d) for d in json['targets']['//:skia']['defines']}
+  defines = {d for d in json['targets']['//:skia']['defines']}
   defines.remove('SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS')
   return defines
 
@@ -782,20 +791,17 @@ win_defines          = get_defines(js_win)
 renderengine_defines = get_defines(js_renderengine)
 renderengine_defines.add('SK_IN_RENDERENGINE')
 
-def mkdir_if_not_exists(path):
-  if not os.path.exists(path):
-    os.makedirs(path)
-mkdir_if_not_exists('android/include/config/')
-mkdir_if_not_exists('linux/include/config/')
-mkdir_if_not_exists('mac/include/config/')
-mkdir_if_not_exists('win/include/config/')
-mkdir_if_not_exists('renderengine/include/config/')
-mkdir_if_not_exists('skqp/include/config/')
-mkdir_if_not_exists('vma_android/include')
+os.makedirs(out_path('android/include/config/'),      exist_ok=True)
+os.makedirs(out_path('linux/include/config/'),        exist_ok=True)
+os.makedirs(out_path('mac/include/config/'),          exist_ok=True)
+os.makedirs(out_path('win/include/config/'),          exist_ok=True)
+os.makedirs(out_path('renderengine/include/config/'), exist_ok=True)
+os.makedirs(out_path('skqp/include/config/'),         exist_ok=True)
+os.makedirs(out_path('vma_android/include'),          exist_ok=True)
 
 shutil.copy('third_party/externals/vulkanmemoryallocator/include/vk_mem_alloc.h',
-            'vma_android/include')
-shutil.copy('third_party/externals/vulkanmemoryallocator/LICENSE.txt', 'vma_android/')
+            out_path('vma_android/include'))
+shutil.copy('third_party/externals/vulkanmemoryallocator/LICENSE.txt', out_path('vma_android/'))
 
 platforms = { 'IOS', 'MAC', 'WIN', 'ANDROID', 'UNIX' }
 
@@ -829,9 +835,9 @@ def write_android_config(config_path, defines, isNDKConfig = False):
     append_to_file(config_path, '''
 #undef SK_BUILD_FOR_ANDROID_FRAMEWORK''')
 
-write_android_config('android/include/config/SkUserConfig.h', android_defines)
-write_android_config('renderengine/include/config/SkUserConfig.h', renderengine_defines)
-write_android_config('skqp/include/config/SkUserConfig.h', skqp_defines, True)
+write_android_config(out_path('android/include/config/SkUserConfig.h'), android_defines)
+write_android_config(out_path('renderengine/include/config/SkUserConfig.h'), renderengine_defines)
+write_android_config(out_path('skqp/include/config/SkUserConfig.h'), skqp_defines, True)
 
 def write_config(config_path, defines, platform):
   gn_to_bp_utils.WriteUserConfig(config_path, defines)
@@ -846,9 +852,9 @@ def write_config(config_path, defines, platform):
 #endif''' % (platform, platform))
   disallow_platforms(config_path, platform)
 
-write_config('linux/include/config/SkUserConfig.h', linux_defines, 'UNIX')
-write_config('mac/include/config/SkUserConfig.h',   mac_defines, 'MAC')
-write_config('win/include/config/SkUserConfig.h',   win_defines, 'WIN')
+write_config(out_path('linux/include/config/SkUserConfig.h'), linux_defines, 'UNIX')
+write_config(out_path('mac/include/config/SkUserConfig.h'),   mac_defines, 'MAC')
+write_config(out_path('win/include/config/SkUserConfig.h'),   win_defines, 'WIN')
 
 # Turn a list of strings into the style bpfmt outputs.
 def bpfmt(indent, lst, sort=True):
@@ -857,7 +863,7 @@ def bpfmt(indent, lst, sort=True):
   return ('\n' + ' '*indent).join('"%s",' % v for v in lst)
 
 # OK!  We have everything to fill in Android.bp...
-with open('Android.bp', 'w') as Android_bp:
+with open(out_path('Android.bp'), 'w') as Android_bp:
   print(bp.substitute({
     'export_includes': bpfmt(8, export_includes),
     'local_includes':  bpfmt(8, local_includes),
