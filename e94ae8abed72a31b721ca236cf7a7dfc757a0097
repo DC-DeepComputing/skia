@@ -51,6 +51,47 @@
       "parentUuid": "042389ec_d4d4584b",
       "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae8fca9e_3e72f7bc",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-23T17:06:02Z",
+      "side": 1,
+      "message": "We have nanobench for performance testing and viewer for a visual look at gms and such, but I think this makes sense for the only place to put this.",
+      "parentUuid": "821bf0de_82774fff",
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac2baac2_1de3ecba",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 93
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-23T17:06:02Z",
+      "side": 1,
+      "message": "gcc10 should support most things in C++20",
+      "range": {
+        "startLine": 271,
+        "startChar": 11,
+        "endLine": 271,
+        "endChar": 12
+      },
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
