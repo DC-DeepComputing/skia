@@ -13,10 +13,12 @@
 #include <partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.h>
 #endif
 
+#include <iostream>
 namespace skiatest {
 
 void InitializePartitionAllocForTesting() {
 #if defined(SKIA_ENABLE_PARTITION_ALLOC)
+    std::cout << "Initializing PartitionAlloc for testing.\n";
     allocator_shim::ConfigurePartitionsForTesting();
     allocator_shim::internal::PartitionAllocMalloc::Allocator()->EnableThreadCacheIfSupported();
 #endif
