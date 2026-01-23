@@ -2179,15 +2179,11 @@ type labelAndSavedOutputDir struct {
 // The reason we need this mapping is because Buildbucket build names cannot have / or : in them.
 // TODO(borenet/kjlubick): Is there a way to generate a mapping using `bazel query`?
 var shorthandToLabel = map[string]labelAndSavedOutputDir{
-	"all_tests":                  {"//tests:linux_rbe_tests", ""},
 	"core":                       {"//:core", ""},
-	"cpu_8888_benchmark_test":    {"//bench:cpu_8888_test", ""},
-	"cpu_gms":                    {"//gm:cpu_gm_tests", ""},
 	"dm":                         {"//dm", ""},
 	"fontations":                 {"//src/ports:fontmgr_fontations_empty", ""},
 	"full_library":               {"//tools:full_build", ""},
 	"ganesh_gl":                  {"//:ganesh_gl", ""},
-	"hello_bazel_world_test":     {"//gm:hello_bazel_world_test", ""},
 	"modules_canvaskit":          {"//modules/canvaskit:canvaskit", ""},
 	"modules_canvaskit_js_tests": {"//modules/canvaskit:canvaskit_js_tests", ""},
 	"skottie_tool_gpu":           {"//modules/skottie:skottie_tool_gpu", ""},
