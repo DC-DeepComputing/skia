@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22968d8c_2eb56b2a",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-23T22:15:38Z",
+      "side": 1,
+      "message": "So for CoreText we would need an opaque bit of data for sure, but after a lot of thinking it seems synthetic bold and oblique should probably be called out directly since in theory FontConfig typefaces can specify synthetic bold and it is possible that other backends could also offer such synthetics. The other existing parameters aren\u0027t really that different, one can specify a bunch of variation axis locations for font data that doesn\u0027t have any axes or even to a backend that doesn\u0027t support them at all.\n\nAlso, we do want this to get plumbed through serialization. And cloning. And some testing. So I went and did https://skia-review.googlesource.com/c/skia/+/1148216 .",
+      "parentUuid": "149fae3e_e44e2207",
+      "revId": "a18594fdb4576bb0579d22827878471452d62367",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "916a95b7_5957933f",
         "filename": "include/core/SkFontArguments.h",
         "patchSetId": 5
