@@ -26,6 +26,117 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38692ab1_395f6b5f",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T20:11:06Z",
+      "side": 1,
+      "message": "The current `fBackendLabelDirty` setup is not threadsafe. The issue is that an update to `fBackendLabelDirty` must be visible to other threads only *after* an update to the label. So, accesses need to be upgraded to atomic.  \n\nIf we can guarantee that only a single thread modifies labels at a time (but the updates to the label need to be coherent among threads), then I think acquire/release semantics should be sufficient guarantee correct ordering.\n\nIf there are many potential writers, then a mutex is necessary to prevent clobbering the label.",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5352b42e_acd2f840",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 275,
+                "startChar": 0,
+                "endLine": 276,
+                "endChar": 0
+              },
+              "replacement": "    void setLabel(std::string_view label) const {\n        SkAutoMutexExclusive lock(fLabelMutex);\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 282,
+                "startChar": 0,
+                "endLine": 285,
+                "endChar": 0
+              },
+              "replacement": "        // It is not always safe to immediately update the backend GPU resource label. Mark\n        // fBackendLabelDirty as true so it can be updated when appropriate. We use\n        // memory_order_release to ensure that the write to fLabel is visible to other threads\n        // before fBackendLabelDirty becomes true.\n        fBackendLabelDirty.store(true, std::memory_order_release);\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 295,
+                "startChar": 0,
+                "endLine": 298,
+                "endChar": 0
+              },
+              "replacement": "    void synchronizeBackendLabel() const {\n        // Use acquire to pair with the release in setLabel, ensuring we see the latest fLabel.\n        if (!fBackendLabelDirty.load(std::memory_order_acquire)) {\n            return; // No update needed\n        }\n\n        std::string currentLabel;\n        {\n            SkAutoMutexExclusive lock(fLabelMutex);\n            currentLabel \u003d fLabel;\n        }\n\n        if (!currentLabel.empty()) {\n            const std::string fullLabel \u003d \"Skia_\" + currentLabel;\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 300,
+                "startChar": 0,
+                "endLine": 301,
+                "endChar": 0
+              },
+              "replacement": "        // Clear the dirty flag. Use release to ensure that the writes to the backend label\n        // are visible before fBackendLabelDirty becomes false.\n        fBackendLabelDirty.store(false, std::memory_order_release);\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 527,
+                "startChar": 0,
+                "endLine": 528,
+                "endChar": 0
+              },
+              "replacement": "    virtual void setBackendLabel(char const* label) const {}\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 759,
+                "startChar": 0,
+                "endLine": 759,
+                "endChar": 0
+              },
+              "replacement": "    // Mutex to guard fLabel.\n    mutable SkMutex fLabelMutex;\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 760,
+                "startChar": 0,
+                "endLine": 761,
+                "endChar": 0
+              },
+              "replacement": "    mutable std::string fLabel SK_GUARDED_BY(fLabelMutex);\n"
+            },
+            {
+              "path": "src/gpu/graphite/Resource.h",
+              "range": {
+                "startLine": 763,
+                "startChar": 0,
+                "endLine": 764,
+                "endChar": 0
+              },
+              "replacement": "    mutable std::atomic\u003cbool\u003e fBackendLabelDirty \u003d false;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c3f0fca_1def82a6",
         "filename": "src/gpu/graphite/Resource.h",
         "patchSetId": 12
