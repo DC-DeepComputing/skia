@@ -271,4 +271,5 @@ if (is_win) {
 #   up to C++17. Disable GCC for now.
 if (current_cpu != "none" && is_clang) {
   skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+  dawn_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
