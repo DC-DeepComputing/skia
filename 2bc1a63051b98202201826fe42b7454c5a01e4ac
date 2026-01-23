@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1d9b35a_e6b7c032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T16:19:03Z",
+      "side": 1,
+      "message": "This is an awkward vestigial parent CL. Because drawListLayer interfaces so heavily with ClipStack, it was impossible to make siloed updates to this CL.",
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
