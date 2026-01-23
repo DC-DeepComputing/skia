@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f3ee35_f126ebb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T16:13:29Z",
+      "side": 1,
+      "message": "GM\u0027s look good; however lifetime management of the drawParams is still an outstanding question. Currently, I make the assumption that a clipStack raw element can never outlive the draw it records. If this is not the case, it is possible for the element to have a dangling pointer. But I have not encountered this so far.\n\nI have cordoned off forward merging, limited fine grain bounds checking, and some other performance improvements. These will be tested and then potentially added in later CLs.\n\nThe bounds layer test will be updated in a separate CL as well I think, as it will require some retooling.",
+      "revId": "29b8362d4ed4432fd695415bd851337fa48e0844",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
