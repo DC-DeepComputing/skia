@@ -134,6 +134,7 @@ CORE_TESTS = [
     "SkStrikeCacheTest.cpp",
     "SkStringViewTest.cpp",
     "SkTBlockListTest.cpp",
+    "SkTInternalSkipListTest.cpp",
     "SkUTFTest.cpp",
     "SkVxTest.cpp",
     "SkXmpTest.cpp",

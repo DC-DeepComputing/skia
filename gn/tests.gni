@@ -242,6 +242,7 @@ tests_sources = [
   "$_tests/SkStrikeTest.cpp",
   "$_tests/SkStringViewTest.cpp",
   "$_tests/SkTBlockListTest.cpp",
+  "$_tests/SkTInternalSkipListTest.cpp",
   "$_tests/SkUTFTest.cpp",
   "$_tests/SkVxTest.cpp",
   "$_tests/SkXmpTest.cpp",

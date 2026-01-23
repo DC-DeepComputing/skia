@@ -240,6 +240,7 @@ skia_core_sources = [
   "$_src/base/SkTDArray.cpp",
   "$_src/base/SkTDPQueue.h",
   "$_src/base/SkTInternalLList.h",
+  "$_src/base/SkTInternalSkipList.h",
   "$_src/base/SkTLazy.h",
   "$_src/base/SkTSearch.cpp",
   "$_src/base/SkTSearch.h",
