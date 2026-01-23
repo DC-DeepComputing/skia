@@ -1,0 +1,103 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e931205_e2519e2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T19:13:16Z",
+      "side": 1,
+      "message": "LGTM modulo some questions",
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73e2dbe_9b1fe0d8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T19:13:16Z",
+      "side": 1,
+      "message": "Question, does the cpu side buffer management support f16? From uniform manager:\n```\n * Regardless of the precision when the shader is executed, std140 and std430 layouts consume\n * \"half\"-based uniforms in full 32-bit precision. Metal consumes \"half\"-based uniforms expecting\n * them to have already been converted to f16. WebGPU has an extension to support f16 types, which\n * behave like this, but we do not currently utilize it.\n *\n * The rules for std430 can be easily extended to f16 by applying N \u003d 2 instead of N \u003d 4 for the\n * base primitive alignment.\n```",
+      "range": {
+        "startLine": 420,
+        "startChar": 3,
+        "endLine": 424,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "382baf99_c826d544",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 425,
+                "startChar": 0,
+                "endLine": 425,
+                "endChar": 0
+              },
+              "replacement": "    //\n    // Regarding f16 support on the CPU side:\n    // -   For std140 and std430 layouts, \"half\"-based uniforms are consumed in full 32-bit\n    //     precision on the CPU side.\n    // -   Metal expects \"half\"-based uniforms to be converted to f16 on the CPU side.\n    // -   WebGPU has an f16 extension, but SkSL does not currently utilize it for uniform buffers,\n    //     so f16 is not used on the CPU side for WebGPU via this codegen.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ccf415_74c27994",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4251,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T19:13:16Z",
+      "side": 1,
+      "message": "As I understand it, `ConstructorArrayCast` only allows type narrowing/widening? If does allow casting between types (i.e. f32-\u003ei32) this will incorrectly return the original type without applying the cast?",
+      "range": {
+        "startLine": 4245,
+        "startChar": 0,
+        "endLine": 4251,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3dffac3b_cf9d1551",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 4245,
+                "startChar": 0,
+                "endLine": 4250,
+                "endChar": 0
+              },
+              "replacement": "    // If the WGSL types of the component types are the same, we don\u0027t need to generate a\n    // per-element cast.\n    if (to_wgsl_type(fContext, ctor.type().componentType()) \u003d\u003d\n        to_wgsl_type(fContext, ctor.argument()-\u003etype().componentType())) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
