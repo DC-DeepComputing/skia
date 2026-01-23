@@ -7,6 +7,7 @@
 
 #include "include/private/base/SkAttributes.h"
 #include "include/private/base/SkDebug.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/testrunners/common/TestRunner.h"
 
 #include <cstdarg>
@@ -86,6 +87,19 @@ extern bool gSkDebugToStdOut;
 #endif
 
 void TestRunner::InitAndLogCmdlineArgs(int argc, char** argv) {
+    // If available, use PartitionAlloc as the memory allocator for tests and benchmark.
+    //
+    // For benchmark, this is important to get results that are closer to what Chromium based
+    // applications would obtain, as they use PartitionAlloc as well.
+    //
+    // For tests, this can be used to help detect memory issues that would otherwise go unnoticed
+    // with other allocators. It can also help detect regressions about new dangling pointers being
+    // introduced in the codebase.
+    //
+    // The `TestRunner::InitAndLogCmdlineArgs` function is expected to be called
+    // close to the beginning of `main()` as possible.
+    skiatest::InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID)
     // If true, sends SkDebugf to stdout as well.
     //

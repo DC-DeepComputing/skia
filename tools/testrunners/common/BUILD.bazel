@@ -21,5 +21,6 @@ skia_cc_library(
     deps = [
         "//:core",
         "//tools/flags:cmd_flags",
+        "//tools/partition_alloc:test_support",
     ],
 )
