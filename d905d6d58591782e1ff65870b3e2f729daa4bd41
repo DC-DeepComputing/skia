@@ -61,6 +61,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eee3ab26_e8fd0d3b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4243,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T19:19:38Z",
+      "side": 1,
+      "message": "nit: !isUnsizedArray()`",
+      "range": {
+        "startLine": 4243,
+        "startChar": 4,
+        "endLine": 4243,
+        "endChar": 84
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f1d3e744_5ffd2f84",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+              "range": {
+                "startLine": 4243,
+                "startChar": 0,
+                "endLine": 4244,
+                "endChar": 0
+              },
+              "replacement": "    SkASSERT(!ctor.type().isUnsizedArray()); // Can\u0027t iterate over unbounded elements\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4ccf415_74c27994",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 8
