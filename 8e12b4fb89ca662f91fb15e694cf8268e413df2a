@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2aae28_afa04089",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-23T17:09:55Z",
+      "side": 1,
+      "message": "Note: The context option is now disabled; the clean run with layering enabled is on patchset 20.",
+      "revId": "8e12b4fb89ca662f91fb15e694cf8268e413df2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
