@@ -1,0 +1,481 @@
+Android Security Assessment Template:
+
+Relevant Source Code:
+    frameworks/base/native/graphics/jni/fuzz/fuzz_imagedecoder.cpp
+    extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+        [...]
+        AImageDecoder* decoder =
+                init(inputBuffer.data(), inputBuffer.size(), dataProvider.ConsumeBool());               <--- 'init()' is called here.
+        [...]
+        while (dataProvider.remaining_bytes()) {
+            auto invokeImageApi = dataProvider.PickValueInArray<const std::function<void()>>({          <--- One of these lambda functions are invoked for each iteration. (A)
+                    [&]() {                                                                             <--- This function is chosen in '(i)th' iteration.
+                        int32_t testHeight =
+                                dataProvider.ConsumeIntegralInRange<int32_t>(kMinDimension,
+                                                                             kMaxDimension);            <--- 'testHeight' is initialized here. For the given PoC, 'testHeight' is '1724'.
+                        int32_t testWidth = dataProvider.ConsumeIntegralInRange<int32_t>(kMinDimension,
+                                                                                         kMaxDimension);<--- 'testWidth' is initialized here. For the given PoC, 'testWidth' is '631'.
+                        int32_t result = AImageDecoder_setTargetSize(decoder, testHeight, testWidth);   <--- 'AImageDecoder_setTargetSize()' is called with 'decoder' as an argument which invokes 'jpeg_core_output_dimensions()' to set 'cinfo->output_width' (alias 'testWidth') to '1891' and 'cinfo->output_height' (alias 'testHeight') to '793'. This also updates 'mDecodeSize' within the 'ImageDecoder' object with updated 'testWidth' and 'testHeight'. (B)
+                        [...]
+                    },
+                    [...]
+                    [&]() {                                                                             <--- This function is chosen in '(i-n)th' iteration and '(i+1)th' iteration.
+                        [...]
+                        AImageDecoder_decodeImage(decoder, pixels.get(), stride, pixelSize);            <--- 'AImageDecoder_decodeImage()' is called here with argument 'decoder' which contain the dimensions ('testWidth' and 'testHeight').
+                    },
+            });
+            invokeImageApi();                                                                           <--- 'invokeImageApi()' is called for every iteration which invokes one of the lambda functions at (A)
+        }
+        [...]
+    }
+    
+    frameworks/base/native/graphics/jni/fuzz/fuzz_imagedecoder.cpp
+    AImageDecoder* init(const uint8_t* data, size_t size, bool useFileDescriptor) {
+        AImageDecoder* decoder = nullptr;                                                               <--- 'decoder' of type 'AImageDecoder*' is defined here.
+        [...]
+        if (useFileDescriptor) {
+            [...]
+        } else {
+            AImageDecoder_createFromBuffer(data, size, &decoder);                                       <--- 'AImageDecoder_createFromBuffer()' is called here which indirectly invokes 'ImageDecoder::ImageDecoder()' with 'decoder' as an argument.
+        }
+        return decoder;                                                                                 <--- 'decoder' is returned from here.
+    }
+    
+    frameworks/base/libs/hwui/hwui/ImageDecoder.cpp
+    ImageDecoder::ImageDecoder(std::unique_ptr<SkAndroidCodec> codec, sk_sp<SkPngChunkReader> peeker,
+                               SkCodec::ZeroInitialized zeroInit)
+        : mCodec(std::move(codec))                                                                      <--- 'mCodec' is assigned with 'codec' (alias 'decoder').
+        [...]
+        , mDecodeSize(mCodec->codec()->dimensions())                                                    <--- Dimensions within 'mCodec' are stored in 'mDecodeSize' of type 'SkISize'.
+        [...]
+    {
+        [...]
+    }
+    
+    frameworks/base/native/graphics/jni/imagedecoder.cpp
+    int AImageDecoder_decodeImage(AImageDecoder* decoder, void* pixels, size_t stride, size_t size) {
+        [...]
+        ImageDecoder* imageDecoder = toDecoder(decoder);                                                <--- 'decoder' is typecasted to 'ImageDecoder*'
+    
+        [...]
+        const auto result = ResultToErrorCode(imageDecoder->decode(pixels, stride));                    <--- 'ImageDecoder::decode()' is called here.
+    
+        [...]
+    }
+    
+    frameworks/base/libs/hwui/hwui/ImageDecoder.cpp
+    SkCodec::Result ImageDecoder::decode(void* pixels, size_t rowBytes) {
+        [...]
+        void* decodePixels = pixels;                                                                    <--- 'decodePixels' is defined here as a 'void*'.
+        [...]
+        const auto decodeInfo = SkImageInfo::Make(mDecodeSize, mOutColorType, getOutAlphaType(),
+                                                  getOutputColorSpace());                               <--- 'SkImageInfo::Make()' is called here, which stores the dimensions within 'mDecodeSize' inside 'decodeInfo' of type 'SkImageInfo'.
+        SkBitmap tmp;                                                                                   <--- 'tmp' of type 'SkBitmap' is declared here.
+        [...]
+        if (scale || handleOrigin || mCropRect) {
+            [...]
+            if (!tmp.setInfo(decodeInfo.makeAlphaType(mUnpremultipliedRequired ? kUnpremul_SkAlphaType
+                                                                               : kPremul_SkAlphaType))) <--- 'SkBitmap::setInfo()' is called here which stores the dimensions obtained from 'decodeInfo'.
+            {
+                [...]
+            }
+            if (!Bitmap::allocateHeapBitmap(&tmp)) {                                                    <--- 'Bitmap::allocateHeapBitmap(SkBitmap*)' is called here.
+                return SkCodec::kInternalError;
+            }
+            decodePixels = tmp.getPixels();                                                             <--- 'decodePixels' is assigned with 'addr' from (C).
+            [...]
+        }
+        [...]
+        auto result = mCodec->getAndroidPixels(decodeInfo, decodePixels, decodeRowBytes, &mOptions);    <--- 'SkAndroidCodec::getAndroidPixels()' is called here with 'decodeInfo' and 'decodePixels' as arguments.
+        [...]
+    }
+    
+    frameworks/base/libs/hwui/hwui/Bitmap.cpp
+    sk_sp<Bitmap> Bitmap::allocateHeapBitmap(SkBitmap* bitmap) {
+        return allocateBitmap(bitmap, &Bitmap::allocateHeapBitmap);                                     <--- 'allocateBitmap()' is called here with a pointer to 'Bitmap::allocateHeapBitmap(size_t, const SkImageInfo&, size_t)'
+    }
+    
+    frameworks/base/libs/hwui/hwui/Bitmap.cpp
+    static sk_sp<Bitmap> allocateBitmap(SkBitmap* bitmap, AllocPixelRef alloc) {
+        [...]
+        auto wrapper = alloc(size, info, rowBytes);                                                     <--- 'alloc' is called here which takes the control flow to 'Bitmap::allocateHeapBitmap(size_t, const SkImageInfo&, size_t)'.
+        if (wrapper) {
+            wrapper->getSkBitmap(bitmap);                                                               <--- 'Bitmap::getSkBitmap()' is called here.
+        }
+        [...]
+    }
+    
+    frameworks/base/libs/hwui/hwui/Bitmap.cpp
+    sk_sp<Bitmap> Bitmap::allocateHeapBitmap(size_t size, const SkImageInfo& info, size_t rowBytes) {
+        void* addr = calloc(size, 1);                                                                   <--- Memory of 'size' bytes is allocated and the address is returned to 'addr' here. (C)
+        if (!addr) {
+            return nullptr;
+        }
+        return sk_sp<Bitmap>(new Bitmap(addr, size, info, rowBytes));                                   <--- 'Bitmap' object is created with 'addr'. (D)
+    }
+    
+    frameworks/base/libs/hwui/hwui/Bitmap.cpp
+    void Bitmap::getSkBitmap(SkBitmap* outBitmap) {
+        [...]
+        outBitmap->setPixelRef(sk_ref_sp(this), 0, 0);                                                  <--- 'tmp' now references to the newly created 'Bitmap' object at (D).
+    }
+    
+    external/skia/src/codec/SkAndroidCodec.cpp
+    SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
+            void* requestPixels, size_t requestRowBytes, const AndroidOptions* options) {
+        [...]
+        return this->onGetAndroidPixels(requestInfo, requestPixels, requestRowBytes, *options);         <--- 'SkSampledCodec::onGetAndroidPixels()' is called here with 'requestInfo' (alias 'decodeInfo') and 'requestPixels' (alias 'decodePixels') as arguments.
+    }
+    
+    external/skia/src/codec/SkSampledCodec.cpp
+    SkCodec::Result SkSampledCodec::onGetAndroidPixels(const SkImageInfo& info, void* pixels,
+            size_t rowBytes, const AndroidOptions& options) {
+        const SkIRect* subset = options.fSubset;
+        if (!subset || subset->size() == this->codec()->dimensions()) {
+            if (this->codec()->dimensionsSupported(info.dimensions())) {
+                return this->codec()->getPixels(info, pixels, rowBytes, &options);                      <--- 'SkCodec::getPixels()' is called here in the '(i+1)th' iteration (from (A)).
+            }
+            return this->sampledDecode(info, pixels, rowBytes, options);                                <--- 'SkSampledCodec::sampledDecode()' is called here in the '(i-n)th' iteration (from (A)).
+        }
+        [...]
+    }
+    
+    external/skia/src/codec/SkSampledCodec.cpp
+    SkCodec::Result SkSampledCodec::sampledDecode(const SkImageInfo& info, void* pixels,
+            size_t rowBytes, const AndroidOptions& options) {
+        [...]
+        SkCodec::Result result = this->codec()->startScanlineDecode(nativeInfo,                         <--- 'SkCodec::startScanlineDecode()' is called here.
+                &sampledOptions);
+        [...]
+    }
+    
+    external/skia/src/codec/SkCodec.cpp
+    SkCodec::Result SkCodec::startScanlineDecode(const SkImageInfo& info,
+            const SkCodec::Options* options) {
+        [...]
+        const Result result = this->onStartScanlineDecode(info, *options);                              <--- 'SkJpegCodec::onStartScanlineDecode()' is called here.
+        [...]
+    }
+    
+    external/skia/src/codec/SkJpegCodec.cpp
+    SkCodec::Result SkJpegCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
+            const Options& options) {
+        // Set the jump location for libjpeg errors
+        skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());                                  <--- For the current PoC, 'fDecoderMgr->errorMgr()' points to 'skjpeg_err_exit'. Whenever 'libjpeg'
+                                                                                                             detects an error, the control flow goes to (J).
+        if (setjmp(jmp)) {                                                                              <--- Jump location is set here for 'longjmp'. The control flow returns from here after setting the
+                                                                                                             'longjmp'. (E)
+            SkCodecPrintf("setjmp: Error from libjpeg\n");                                              <--- Control flow reaches here after the jump.
+            return kInvalidInput;                                                                       <--- Control flow returns from here and starts clearing the stack.
+        }
+        [...]
+    }
+    
+    external/skia/src/codec/SkCodec.cpp
+    SkCodec::Result SkCodec::getPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
+                                       const Options* options) {
+        [...]
+        const Result result = this->onGetPixels(info, pixels, rowBytes, *options, &rowsDecoded);        <--- 'SkJpegCodec::onGetPixels()' is called here.
+        [...]
+    }
+    
+    external/skia/src/codec/SkJpegCodec.cpp
+    SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
+                                             void* dst, size_t dstRowBytes,
+                                             const Options& options,
+                                             int* rowsDecoded) {
+        [...]
+        jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();                                           <--- 'dinfo' is assigned with 'fDecoderMgr->dinfo()'.
+        [...]
+        if (isProgressive) {
+            [...]
+        } else if (!jpeg_start_decompress(dinfo)) {                                        <--- 'jpeg_start_decompress()' is called with 'dinfo' which eventually invokes 'jpeg_core_output_dimensions()'
+                                                                                                 and sets 'dinfo->output_width' to '3792' and 'dinfo->output_height' to '1566'. (F)
+            return fDecoderMgr->returnFailure("startDecompress", kInvalidInput);
+        }
+        [...]
+        if (isProgressive) {
+          [...]
+          if (last_scan_completed >  0) {
+            [...]
+             SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
+                                                         dstInfo.height(), options, &rows);             <--- 'SkJpegCodec::readRows()' is called here.
+             [...]
+          }
+          [...]
+        }
+        [...]
+    }
+    
+    external/skia/src/codec/SkJpegCodec.cpp
+    SkCodec::Result SkJpegCodec::readRows(const SkImageInfo& dstInfo,
+                                          void* dst,
+                                          size_t rowBytes,
+                                          int count,
+                                          const Options& opts,
+                                          int* rowsDecoded) {
+        [...]
+        JSAMPLE* decodeDst = (JSAMPLE*) dst;
+        [...]
+        for (int y = 0; y < count; y++) {
+            uint32_t lines = jpeg_read_scanlines(fDecoderMgr->dinfo(), &decodeDst, 1);        <--- 'jpeg_read_scanlines()' is invoked with 'decodeDst' (alias 'decodePixels') and
+                                                                                                   'fDecoderMgr->dInfo(). For the current PoC, the 'dstInfo.width()' is '1891', which
+                                                                                                    represents the buffer width allocated by the caller at (B). This value is smaller
+                                                                                                    than the 'fDecoderMgr->dinfo()->output_width', which is '3782'; this is the width
+                                                                                                    'libjpeg-turbo' is configured to write for each 'scanline' at (F). Consequently,
+                                                                                                    the pointer performs an out-of-bounds write that corrupts the heap and triggers
+                                                                                                    the observed memory corruption error.
+            [...]
+        }
+        [...]
+    }
+    
+    external/libjpeg-turbo/jdmainct.c
+    start_pass_main(j_decompress_ptr cinfo, J_BUF_MODE pass_mode)                                       <--- This function is reached as part of the code flow.
+    {
+      [...]
+      switch (pass_mode) {
+      case JBUF_PASS_THRU:
+        if (cinfo->upsample->need_context_rows) {
+          main_ptr->pub.process_data = process_data_context_main;                                       <--- 'process_data' points to 'process_data_context_main' here. (G)
+          [...]
+        }
+        [...]
+      [...]
+      }
+    }
+    
+    external/libjpeg-turbo/jdapistd.c
+    jpeg_read_scanlines(j_decompress_ptr cinfo, JSAMPARRAY scanlines,
+                        JDIMENSION max_lines)
+    {
+      [...]
+      row_ctr = 0;
+      (*cinfo->main->process_data) (cinfo, scanlines, &row_ctr, max_lines);                             <--- For the given PoC, 'process_data' points to 'process_data_context_main' at (G). Hence, 'process_data_context_main()' is called here with 'scanlines', containing the pointer, as an argument.
+      [...]
+    }
+    
+    external/libjpeg-turbo/jdsample.c
+    jinit_upsampler(j_decompress_ptr cinfo)                                                             <--- This function is reached as part of the code flow.
+    {
+      [...]
+      if (!cinfo->master->jinit_upsampler_no_alloc) {
+        [...]
+        upsample->pub.upsample = sep_upsample;                                                          <--- 'upsample' points to 'sep_upsample' here.
+        [...]
+      }
+      [...]
+    }
+    
+    external/libjpeg-turbo/jdpostct.c
+    start_pass_dpost(j_decompress_ptr cinfo, J_BUF_MODE pass_mode)                                      <--- This function is reached as part of the code flow.
+    {
+      [...]
+      switch (pass_mode) {
+      case JBUF_PASS_THRU:
+        if (cinfo->quantize_colors) {
+          [...]
+        } else {
+          post->pub.post_process_data = cinfo->upsample->upsample;                                      <--- 'post_process_data' points to 'upsample' here which points to 'sep_upsample'. (H)
+        }
+        break;
+      [...]
+      }
+      [...]
+    }
+    
+    external/libjpeg-turbo/jdmainct.c
+    process_data_context_main(j_decompress_ptr cinfo, JSAMPARRAY output_buf,
+                              JDIMENSION *out_row_ctr, JDIMENSION out_rows_avail)
+    {
+      [...]
+      switch (main_ptr->context_state) {
+      case CTX_POSTPONED_ROW:
+        /* Call postprocessor using previously set pointers for postponed row */
+        (*cinfo->post->post_process_data) (cinfo,
+                                           main_ptr->xbuffer[main_ptr->whichptr],
+                                           &main_ptr->rowgroup_ctr,
+                                           main_ptr->rowgroups_avail, output_buf,
+                                           out_row_ctr, out_rows_avail);                                <--- For the given PoC, 'post_process_data' indirectly points to 'sep_upsample' at (H). Hence, 'sep_upsample()' is called here with argument 'output_buf' (alias 'scanlines').
+      [...]
+      }
+    }
+    
+    external/libjpeg-turbo/jdcolor.c
+    jinit_color_deconverter(j_decompress_ptr cinfo)                                                     <--- This function is reached as part of the code flow.
+    {
+      [...]
+      switch (cinfo->out_color_space) {
+      [...]
+      case JCS_EXT_ARGB:
+        [...]
+        if (cinfo->jpeg_color_space == JCS_YCbCr) {
+          if (jsimd_can_ycc_rgb())
+            cconvert->pub.color_convert = jsimd_ycc_rgb_convert;                                        <--- 'color_convert' points to 'jsimd_ycc_rgb_convert()' here. (I)
+          [...]
+        }
+        [...]
+      [...]
+      }
+      [...]
+    }
+    
+    external/libjpeg-turbo/jdsample.c
+    sep_upsample(j_decompress_ptr cinfo, JSAMPIMAGE input_buf,
+                 JDIMENSION *in_row_group_ctr, JDIMENSION in_row_groups_avail,
+                 JSAMPARRAY output_buf, JDIMENSION *out_row_ctr,
+                 JDIMENSION out_rows_avail)
+    {
+      [...]
+      (*cinfo->cconvert->color_convert) (cinfo, upsample->color_buf,
+                                         (JDIMENSION)upsample->next_row_out,
+                                         output_buf + *out_row_ctr, (int)num_rows);                     <--- For the given PoC, 'color_convert' points to 'jsimd_ycc_rgb_convert' at (I). Hence, 'jsimd_ycc_rgb_convert()' is called here.
+      [...]
+    }
+    
+    external/libjpeg-turbo/simd/x86_64/jsimd.c
+    jsimd_ycc_rgb_convert(j_decompress_ptr cinfo, JSAMPIMAGE input_buf,
+                          JDIMENSION input_row, JSAMPARRAY output_buf,
+                          int num_rows)
+    {
+      void (*avx2fct) (JDIMENSION, JSAMPIMAGE, JDIMENSION, JSAMPARRAY, int);
+      [...]
+      switch (cinfo->out_color_space) {
+      [...]
+      case JCS_EXT_BGRA:
+        avx2fct = jsimd_ycc_extbgrx_convert_avx2;                                                       <--- For the current PoC, the control flow reaches here and 'avx2fct' points to 'jsimd_ycc_extbgrx_convert_avx2'.
+        [...]
+      [...]
+      }
+      if (simd_support & JSIMD_AVX2)
+        avx2fct(cinfo->output_width, input_buf, input_row, output_buf, num_rows);                       <--- For the current PoC, 'avx2fct' points to 'jsimd_ycc_extbgrx_convert_avx2'. Hence, 'jsimd_ycc_extbgrx_convert_avx2()' is called here.
+      [...]
+    }
+    
+    external/libjpeg-turbo/simd/i386/jdcolor-avx2.asm
+    [...]
+    %define jsimd_ycc_rgb_convert_avx2  jsimd_ycc_extbgrx_convert_avx2                                  <--- 'jsimd_ycc_extbgrx_convert_avx2' is defined as 'jsimd_ycc_rgb_convert_avx2' here.
+    [...]
+    
+    prebuilts/vndk/v32/x86/include/external/libjpeg-turbo/simd/nasm/jsimdext.inc
+    [...]
+    %define SIZEOF_YMMWORD  SIZEOF_YWORD    ; sizeof(YMMWORD)                                           <--- 'SIZEOF_YMMWORD' is defined as 'SIZEOF_YWORD' here.
+    [...]
+    %define SIZEOF_YWORD  32                ; sizeof(yword)                                             <--- Constant 'SIZEOF_YWORD' is defined here with value '32'.
+    [...]
+    
+    external/libjpeg-turbo/simd/i386/jdcolext-avx2.asm
+    [...]
+    %define out_width(b)   (b) + 8          ; JDIMENSION out_width                                      <--- 'out_width' contains the full image width ('3782') used for the loop counter.
+    [...]
+    %define output_buf(b)  (b) + 20         ; JSAMPARRAY output_buf                                     <--- 'output_buf' points to the destination buffer allocated for only '1891' pixels per row.
+    [...]
+    %define original_ebp   ebp + 0                                                                      <--- 'ebp' is defined here;
+    [...]
+        align       32
+        GLOBAL_FUNCTION(jsimd_ycc_rgb_convert_avx2)
+    EXTN(jsimd_ycc_rgb_convert_avx2):
+        [...]
+        mov         eax, esp                     ; eax = original ebp                                   <--- 'eax' is defined here;
+        [...]
+        mov         ecx, JDIMENSION [out_width(eax)]  ; num_cols                                        <--- 'out_width' with value '3782' is moved to 'ecx'.
+        [...]
+        mov         edi, JSAMPARRAY [output_buf(eax)]                                                   <--- 'output_buf' with value '1891' is moved to 'edi'.
+        [...]
+    
+    .rowloop:
+        [...]
+        mov         edi, JSAMPROW [edi]     ; outptr                                                    <--- 'edi' is dereferenced here to point to the start of the scanline buffer.
+        [...]
+    
+    .columnloop:
+        [...]
+    %else  ; RGB_PIXELSIZE == 4 ; -----------                                                           <--- Processing '4' bytes per pixel (RGB).
+        [...]
+        cmp         ecx, byte SIZEOF_YMMWORD                                                            <--- 'ecx' is compared with 'SIZEOF_YMMWORD' here.
+        [...]
+        vmovntdq    YMMWORD [edi+0*SIZEOF_YMMWORD], ymmA                                                <--- Writes bytes '32' bytes to the buffer. In iteration '60', only 3 pixels (12 bytes) remain in the buffer. Hence, the store writes 20 bytes OOB.
+        vmovntdq    YMMWORD [edi+n*SIZEOF_YMMWORD], ymmD                                                <--- Writes bytes '32' bytes to the buffer. In iteration 60, this entire block is writing OOB.
+        vmovntdq    YMMWORD [edi+2*SIZEOF_YMMWORD], ymmF                                                <--- Writes bytes '32' bytes to the buffer. In iteration 60, this entire block is writing OOB.
+        vmovntdq    YMMWORD [edi+3*SIZEOF_YMMWORD], ymmH                                                <--- Writes bytes '32' bytes to the buffer. In iteration 60, this entire block is writing OOB, corrupting heap metadata.
+        [...]
+        jmp         short .out0                                                                         <--- Jump to '.out0'
+    [...]
+    
+    .out0:
+        add         edi, byte RGB_PIXELSIZE*SIZEOF_YMMWORD  ; outptr                                    <--- Advances 'edi' pointer forward by 'RGB_PIXELSIZE' * 'SIZEOF_YMMWORD' ('128') bytes.
+        sub         ecx, byte SIZEOF_YMMWORD                                                            <--- 'ecx' is decremented by '32'. After '59' iterations, '1888' pixels ('7552' bytes) are processed.
+        [...]
+        jmp         near .columnloop                                                                    <--- The PoC jumps to '.columnloop', hence forming a loop. The loop continues for another ~'58' iterations beyond the '1891' pixel buffer limit, till 'ecx' becomes less than 'SIZEOF_YMMWORD'.
+        [...]
+    
+    external/skia/src/codec/SkJpegUtility.cpp
+    void skjpeg_err_exit(j_common_ptr dinfo) {                                                          <--- As soon as 'libjpeg' library detects any error, this function will be invoked. (J)
+        skjpeg_error_mgr* error = static_cast<skjpeg_error_mgr*>(dinfo->err);
+        [...]
+        longjmp(*error->fStack[0], 1);                                                                  <--- Control Flow jumps to 'setjmp' set at (E).
+    }
+    
+    external/skia/src/core/SkBitmap.cpp
+    SkBitmap::~SkBitmap() {}                                                                            <--- 'SkBitmap' destructor is called as 'tmp' went out of scope. Since 'tmp' points to the
+                                                                                                             'Bitmap' object created at (D), 'Bitmap' destructor will also be called here.
+    
+    frameworks/base/libs/hwui/hwui/Bitmap.cpp
+    Bitmap::~Bitmap() {
+        traceBitmapDelete();
+        switch (mPixelStorageType) {
+            [...]
+            case PixelStorageType::Heap:
+                free(mPixelStorage.heap.address);                                                       <--- Trying to free the address at (C) in the corrupted heap gives us the memory corruption crash.
+            [...]
+        }
+    }
+
+Bulletin Subcomponent: libskia
+Bulletin Technical Details:
+    In jpeg_read_scanlines() of jdapistd.c, there is a possible out of bounds
+    write due to a heap buffer overflow. This could lead to remote escalation of
+    privilege with no additional execution privileges needed. User interaction
+    is not needed for exploitation.
+
+Analysis:
+    Access Vector: Remote
+    Layer: Userland
+    Root Causes: Heap Buffer Overflow,Memory Corruption (Other)
+    SRS Categories: 
+      - Android Security SRS Category: Memory Safety
+    Writeup:
+      'LLVMFuzzerTestOneInput()' in 'fuzz_imagedecoder.cpp' enters a loop at (A)
+      that invokes different lambda functions based on the fuzzer's
+      'dataProvider'. In an initial iteration, the fuzzer calls
+      'AImageDecoder_setTargetSize()'. This eventually updates 'mDecodeSize'
+      within 'ImageDecoder' to scaled-down dimensions of '1891x783'.In a
+      subsequent iteration, the fuzzer calls 'AImageDecoder_decodeImage()'.
+      Inside 'ImageDecoder::decode()', a 'decodeInfo' object is created using
+      the small dimensions stored in 'mDecodeSize'. A destination buffer is then
+      allocated on the heap via 'Bitmap::allocateHeapBitmap()' at (C) based on
+      the scaled-down dimensions. 
+      
+      The vulnerability arises from a scaling state mismatch where 'SkJpegCodec'
+      resets to default '1:1' scaling, ignoring the previously set downscaling
+      dimensions. This causes libjpeg-turbo to output full-width ('3782' pixels)
+      image data into a heap buffer at (C) that was only sized for scaled-down
+      pixels ('1891' pixels). 
+      
+      When 'SkJpegCodec::readRows()' invokes 'jpeg_read_scanlines()', the
+      execution flow reaches the SIMD-optimized 'jsimd_ycc_rgb_convert_avx2()'
+      routine. This routine processes the scanline in a loop, writing data in
+      '32' byte 'YMMWORD' chunks. Because the 'out_width' is set to the full
+      image width, the loop continues past the boundary of the allocated buffer.
+      The overflow begins at the 60th iteration of the '.columnloop', where the
+      SIMD instructions perform an OOB Write that corrupts subsequent heap
+      metadata. 
+      
+      As 'jpeg_read_scanlines()' continues to process the remaining pixels, the
+      library eventually detects a processing error and invokes
+      'skjpeg_err_exit()'. This performs a 'longjmp' back to the recovery point
+      at (E) to begin stack unwinding. However, the heap has already been
+      linearly corrupted. The final crash occurs when the 'SkBitmap' object
+      'tmp' goes out of scope. Its destructor triggers 'Bitmap::~Bitmap()',
+      which calls 'free()' on the corrupted heap address, resulting in a
+      double-free or corruption abort. 
