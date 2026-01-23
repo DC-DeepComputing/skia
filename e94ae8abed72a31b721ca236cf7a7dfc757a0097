@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4607156b_1d9c2985",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 93
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-01-23T15:32:05Z",
+      "side": 1,
+      "message": "Hello @kjlubick@google.com\n\nI am back from my paternity leave!\n\nI am ready to get back to the project to protect Skia from most UAF using MiraclePtr. This was a long time ago ;-)\n\nCould you please take a look?\n\nPlease let me know if we need to discuss the project in general before proceeding further.",
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042389ec_d4d4584b",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-01-23T15:32:05Z",
+      "side": 1,
+      "message": "Sanity check: Is DM still the only \"main\" function running tests?\n\n\nI noticed Bazel uses multiple executable.",
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
