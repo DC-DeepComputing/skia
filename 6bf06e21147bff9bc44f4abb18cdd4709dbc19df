@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "306ed993_b1045706",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-23T20:47:59Z",
+      "side": 1,
+      "message": "See my comment on the declaration for `fBackendLabelDirty`, but right now we do have precisely one thread that will be reading/writing this dirty bit and the label. For non-scratch resources (so non-shareable and regular shareable), these values will only be read/written when the calling thread is the exclusive reference holder so that should be safe.  For scratch resources, Nicolette and I have a more complicated tracking plan external to Resource that will move the more frequent label updates to only ever happen on the Context\u0027s thread.",
+      "parentUuid": "38692ab1_395f6b5f",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 5
+      },
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c3f0fca_1def82a6",
         "filename": "src/gpu/graphite/Resource.h",
         "patchSetId": 12
