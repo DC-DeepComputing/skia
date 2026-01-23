@@ -178,7 +178,12 @@ enum class BarrierType : uint8_t {
 enum class BoundsTest {
     kDisjoint,
     kCompatibleOverlap,
-    kIncompatibleOverlap
+    kIncompatibleOverlap,
+};
+
+enum class BindingListType {
+    kChained,
+    kSingle,
 };
 
 enum class DstUsage : uint8_t {
