@@ -461,11 +461,13 @@ bool AdaptiveGlobalToneMap::parse(const SkData* data) {
         auto& cubic = hatm.fAlternateImages[a].fColorGainFunction.fGainCurve;
         const uint8_t numControlPoints = syntax.gain_curve_num_control_points_minus_1[a] + 1u;
         cubic.fControlPoints.resize(numControlPoints);
+        const float s = syntax.baseline_hdr_headroom < syntax.alternate_hdr_headrooms[a] ?
+                        1.f : -1.f;
         for (uint8_t c = 0; c < numControlPoints; ++c) {
             cubic.fControlPoints[c].fX = uint16_to_float(
                 syntax.gain_curve_control_points_x[a][c], 0u, 64000u, 0u, 1000.f);
-            cubic.fControlPoints[c].fY = uint16_to_float(
-                syntax.gain_curve_control_points_y[a][c], 0u, 48000u, 24000u, 4000.f);
+            cubic.fControlPoints[c].fY = s * uint16_to_float(
+                syntax.gain_curve_control_points_y[a][c], 0u, 60000u, 0, 10000.f);
         }
         if (syntax.gain_curve_use_pchip_slope_flag[a] == 0) {
             for (uint8_t c = 0; c < numControlPoints; ++c) {
@@ -576,7 +578,10 @@ sk_sp<SkData> AdaptiveGlobalToneMap::serialize() const {
         // Semantics from clause C.3.7.
         syntax.has_common_curve_params_flag = 0;
         for (size_t a = 0; a < hatm.fAlternateImages.size(); ++a) {
-            auto& cubic = hatm.fAlternateImages[a].fColorGainFunction.fGainCurve;
+            const auto& alt = hatm.fAlternateImages[a];
+            const float s = hatm.fBaselineHdrHeadroom < alt.fHdrHeadroom ? 1.f : -1.f;
+
+            const auto& cubic = alt.fColorGainFunction.fGainCurve;
             SkASSERT(GainCurve::kMinNumControlPoints <= cubic.fControlPoints.size());
             SkASSERT(cubic.fControlPoints.size() <= GainCurve::kMaxNumControlPoints);
             syntax.gain_curve_num_control_points_minus_1[a] = cubic.fControlPoints.size() - 1u;
@@ -589,7 +594,7 @@ sk_sp<SkData> AdaptiveGlobalToneMap::serialize() const {
             }
             for (size_t c = 0; c < cubic.fControlPoints.size(); ++c) {
                 syntax.gain_curve_control_points_y[a][c] =
-                    float_to_uint16(cubic.fControlPoints[c].fY, 0u, 48000u, 24000u, 4000.f);
+                    float_to_uint16(s * cubic.fControlPoints[c].fY, 0u, 60000u, 0u, 10000.f);
             }
             for (size_t c = 0; c < cubic.fControlPoints.size(); ++c) {
                 float theta = std::atan(cubic.fControlPoints[c].fM);
