@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47ff405d_6276f2e2",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-26T17:28:15Z",
+      "side": 0,
+      "message": "You deleted these because they are redundant due to adding Validate?",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "251269721b717c549aa1b4ca8234f94f475f0942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
