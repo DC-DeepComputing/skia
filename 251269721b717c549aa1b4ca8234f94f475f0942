@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb473407_9e3bbd98",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-26T18:47:49Z",
+      "side": 0,
+      "message": "What fun and subtle way to make removing this difficult. The `DISABLE` doesn\u0027t affect anything except for globally setting `ENABLE`.",
+      "revId": "251269721b717c549aa1b4ca8234f94f475f0942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
