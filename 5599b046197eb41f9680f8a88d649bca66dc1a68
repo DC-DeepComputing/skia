@@ -16,6 +16,23 @@
       "message": "It looks like the canary failed from a flake; none of the layout or pixel tests changed as a result of this CL.",
       "revId": "5599b046197eb41f9680f8a88d649bca66dc1a68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c49fe61_a51ee9ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-26T18:04:20Z",
+      "side": 1,
+      "message": "Question, this CL is not fixing a drawing issue, but instead re-enabling a fast path where the center-ish of a draw could be done through inner fill? (That was inadvertently disabled with the extract early CL)?",
+      "revId": "5599b046197eb41f9680f8a88d649bca66dc1a68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
