@@ -16,6 +16,598 @@
       "message": "This is an awkward vestigial parent CL. Because drawListLayer interfaces so heavily with ClipStack, it was impossible to make siloed updates to this CL.",
       "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ebc7b34_08e3f383",
+        "filename": "src/base/SkArenaAllocList.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "We don\u0027t need to inherit these changes from my benchmark. The ganesh bench code used this SkArenaAllocList, but all the layer code uses the separate SkTInternalLList",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 45
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03574e35_9ecb2775",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deb8fa67_3e9ab29e",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "I\u0027m assuming these trackers are just clones from DrawList?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 22
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f88df8_1912c087",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "WDYT about making this `const` since it\u0027s not setting the binding match internally anymore, and then having it take a out parameter for the binding match (or return a pair?).\n\nThat way I think we can get rid of searchBinding() entirely.",
+      "range": {
+        "startLine": 199,
+        "startChar": 33,
+        "endLine": 199,
+        "endChar": 37
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64b9ec39_98468781",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "nit: {}",
+      "range": {
+        "startLine": 214,
+        "startChar": 34,
+        "endLine": 214,
+        "endChar": 42
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a64ca570_bdd2e59f",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Keep the comment that disjoint + foundMatch isn\u0027t any different from kCompatibleOverlap?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 79
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79fad42a_dd38db9b",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "This function and the others look quite similar to the nanobench experiment, were there any significant changes you had to make other than the LayerKey work?",
+      "range": {
+        "startLine": 258,
+        "startChar": 20,
+        "endLine": 258,
+        "endChar": 30
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "544ef53b_829b0f4c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "I\u0027m assuming that this is changed in the follow up CL where clipping is added, but this will have to be the clip stack\u0027s layer not the base head layer.",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 37
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "079925c8_242d05cb",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Since we\u0027re opaque and don\u0027t use stencil, there shouldn\u0027t be any need to run a test here, these draws can overlap with anything and the per-pixel depth test will resolve painters order and blending correctly.",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 13
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f61567c_e753fa25",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Should we save the targetLayer test result instead of redoing the test call?",
+      "range": {
+        "startLine": 363,
+        "startChar": 24,
+        "endLine": 363,
+        "endChar": 88
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2a1dcfb_ed201b0c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "DrawParams is the biggest part of `RecordedDraw`. If we just allocated/initialized it here in the arena, then `recordStep` could take in the pointer and `RecordDraw` itself wouldn\u0027t need to be arena allocated (it\u0027d just be a couple of pointers).",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 60
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5ea84da_4a2846c7",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f435d96_72199a58",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "This does not apply for the layer list, it can ignore `ordering` entirely, right? (other than getting the draw\u0027s Z value)",
+      "range": {
+        "startLine": 52,
+        "startChar": 40,
+        "endLine": 54,
+        "endChar": 47
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "287dbd71_eea1bc11",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Add a TODO to tune this and the starting allocation size?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecd1f3b8_3b579d3e",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Having an option to derive the allocation size from expected number of draws would be handy. Right now the original DrawList is very big and we see allocation overhead. But a lot of short-lived Devices are expected to only record 1-2 draws so don\u0027t need the same level of preallocation.",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 98
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b634aefa_1e2d7446",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "This can be deleted",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 6
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c05edbc7_91e0b76f",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Each of these will really only hold 16-bit values (since even if we relax the max render step count with this approach, we can\u0027t assume a depth buffer with more than 16-bit precision). \n\nFor now it\u0027s convenient to leave these as loose types as we land these changes, but can we add a TODO to make this as compact as possible? 64-bit seems very achievable.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 93
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9be2495_a99e4b27",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "constexpr and just return a value type instead of a reference?  Since it\u0027s a function it should be named `None()` instead of `kNone()`.",
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac0a17b_9ebefe5b",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Should this just be a pointer to the originating `Draw` that already holds the DrawParams and barrier?",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 46
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1728b9f9_bfb95cd7",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "Can we comment that this is controlled by BindingList?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 58
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6563ccb_0b3cb3b4",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "and RenderStep.",
+      "range": {
+        "startLine": 160,
+        "startChar": 65,
+        "endLine": 160,
+        "endChar": 73
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d113dfb5_86269fba",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "and comment that this is controlled by Layer?",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 57
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e799942_0281dc7b",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "This is overly strict for opaque, non-stencil draws so we should mention that exception.\n\nGiven what I found in https://skia-review.googlesource.com/c/skia/+/1149956, it might make sense to track opaque+non-stencil binding lists separately from others, similarly to how the depth-only draws are separate. Then we could explicitly traverse first depth-only draws, then opaque draws (with binding lists doing their F2B ordering), then all the non-opaque draws (B2F)",
+      "range": {
+        "startLine": 181,
+        "startChar": 34,
+        "endLine": 182,
+        "endChar": 20
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ae35743_1e2adaae",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "It may be simpler to also use `fStorage` for holding the transforms. As we make progress, we can revisit that as well as the trivial destructibility of everything that we put in the arena. \n\nIf we can isolate all the arena objects to be things that don\u0027t require destructors, then we might benefit from having the non-trivial things pulled into separate collections where we don\u0027t have to skip around memory in the arena quite as much when it\u0027s reset.",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 88
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77f8f210_4f95c40d",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "I think this can be an internal detail of DrawListLayer, right?",
+      "range": {
+        "startLine": 178,
+        "startChar": 11,
+        "endLine": 178,
+        "endChar": 21
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2821f507_36a41f27",
+        "filename": "tests/graphite/BoundsLayerTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:18:27Z",
+      "side": 1,
+      "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "2bc1a63051b98202201826fe42b7454c5a01e4ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
