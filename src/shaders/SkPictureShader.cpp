@@ -304,18 +304,3 @@ bool SkPictureShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
     }
     return as_SB(bitmapShader)->appendStages(rec, mRec);
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-SkShaderBase::Context* SkPictureShader::onMakeContext(const ContextRec& rec,
-                                                      SkArenaAlloc* alloc) const {
-    sk_sp<SkShader> bitmapShader = this->rasterShader(
-            rec.fMatrixRec.totalMatrix(), rec.fDstColorType, rec.fDstColorSpace, rec.fProps);
-    if (!bitmapShader) {
-        return nullptr;
-    }
-
-    return as_SB(bitmapShader)->makeContext(rec, alloc);
-}
-#endif

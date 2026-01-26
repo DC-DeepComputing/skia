@@ -728,26 +728,11 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     // And we should be blending with SrcOver
     SkASSERT(paint->asBlendMode() == SkBlendMode::kSrcOver);
 
-    // Legacy blitters keep their shader state on a shader context.
-    SkShaderBase::Context* shaderContext = nullptr;
     if (paint->getShader()) {
-        shaderContext = as_SB(paint->getShader())
-                                ->makeContext({paint->getAlpha(),
-                                               SkShaders::MatrixRec(ctm),
-                                               device.colorType(),
-                                               device.colorSpace(),
-                                               props},
-                                              alloc);
-
-        // Creating the context isn't always possible... try fallbacks before giving up.
-        if (!shaderContext) {
-            return CreateSkRPBlitter();
-        }
+        return CreateSkRPBlitter();
     }
 
-    if (shaderContext) {
-        return alloc->make<SkARGB32_Shader_Blitter>(device, *paint, shaderContext);
-    } else if (paint->getColor() == SK_ColorBLACK) {
+    if (paint->getColor() == SK_ColorBLACK) {
         return alloc->make<SkARGB32_Black_Blitter>(device, *paint);
     } else if (paint->getAlpha() == 0xFF) {
         return alloc->make<SkARGB32_Opaque_Blitter>(device, *paint);
