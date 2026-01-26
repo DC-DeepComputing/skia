@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ace45e12_8b015551",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-26T14:38:46Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "009dcb1b54c2eef2c10700f6ffa293955295ea7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5811442_04a29431",
@@ -31,6 +48,30 @@
       "writtenOn": "2026-01-26T14:32:26Z",
       "side": 1,
       "message": "How were all these generated/calculated?",
+      "range": {
+        "startLine": 552,
+        "startChar": 44,
+        "endLine": 552,
+        "endChar": 48
+      },
+      "revId": "009dcb1b54c2eef2c10700f6ffa293955295ea7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81679860_9ec855f6",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-26T14:38:46Z",
+      "side": 1,
+      "message": "It\u0027s from trom [the notebook](https://colab.research.google.com/drive/1wzVWF_M0goIBxzgGXIoZ-Lej0bittj6_?usp\u003dsharing) used to generate the figures for the spec (I wanted to have a inverse tone map example, and one that used all 32 possible control points).",
+      "parentUuid": "a5811442_04a29431",
       "range": {
         "startLine": 552,
         "startChar": 44,
