@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c93ba7a2_23b1f865",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T17:17:08Z",
+      "side": 1,
+      "message": "It looks like the canary failed from a flake; none of the layout or pixel tests changed as a result of this CL.",
+      "revId": "5599b046197eb41f9680f8a88d649bca66dc1a68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
