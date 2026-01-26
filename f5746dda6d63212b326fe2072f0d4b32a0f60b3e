@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e29a817_5d9a6025",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T14:02:44Z",
+      "side": 1,
+      "message": "nit: Add `[graphite]` here to auto add it as a tag to the CL\n\nand above change-id, add `Bug: 361875202`",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "f5746dda6d63212b326fe2072f0d4b32a0f60b3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07828a89_781e3c17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T14:02:44Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "f5746dda6d63212b326fe2072f0d4b32a0f60b3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
