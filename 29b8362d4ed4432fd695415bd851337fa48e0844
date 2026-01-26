@@ -16,6 +16,24 @@
       "message": "GM\u0027s look good; however lifetime management of the drawParams is still an outstanding question. Currently, I make the assumption that a clipStack raw element can never outlive the draw it records. If this is not the case, it is possible for the element to have a dangling pointer. But I have not encountered this so far.\n\nI have cordoned off forward merging, limited fine grain bounds checking, and some other performance improvements. These will be tested and then potentially added in later CLs.\n\nThe bounds layer test will be updated in a separate CL as well I think, as it will require some retooling.",
       "revId": "29b8362d4ed4432fd695415bd851337fa48e0844",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c0e560_a1c8a623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T17:19:11Z",
+      "side": 1,
+      "message": "It is possible for a RawElement to live past a drawlist. This happens if the number of draws in the list exceeds its limit and we automatically flush, or if we flush for a dst read copy, etc.  In these cases the RawElement remains alive until it\u0027s popped off the clip stack.",
+      "parentUuid": "a0f3ee35_f126ebb4",
+      "revId": "29b8362d4ed4432fd695415bd851337fa48e0844",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
