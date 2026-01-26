@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkCodec.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
@@ -15,10 +18,17 @@
 #include "tools/debugger/DebugCanvas.h"
 
 #include <iostream>
+#include <memory>
 
 #ifdef SK_BUILD_FOR_WIN
 #include <fcntl.h>
 #include <io.h>
+#endif
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
 #endif
 
 /*
