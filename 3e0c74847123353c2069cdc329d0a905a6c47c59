@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "672a943f_08dfd6fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-26T14:52:17Z",
+      "side": 1,
+      "message": "PTAL (some rebasing after SkImagePriv stuff moved around)",
+      "revId": "3e0c74847123353c2069cdc329d0a905a6c47c59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
