@@ -110,20 +110,6 @@ bool SkShaderBase::asLuminanceColor(SkColor4f* colorPtr) const {
     return false;
 }
 
-SkShaderBase::Context* SkShaderBase::makeContext(const ContextRec& rec, SkArenaAlloc* alloc) const {
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-    // We always fall back to raster pipeline when perspective is present.
-    auto totalMatrix = rec.fMatrixRec.totalMatrix();
-    if (totalMatrix.hasPerspective() || !totalMatrix.invert()) {
-        return nullptr;
-    }
-
-    return this->onMakeContext(rec, alloc);
-#else
-    return nullptr;
-#endif
-}
-
 SkShaderBase::Context::Context(const SkShaderBase& shader, const ContextRec& rec)
         : fShader(shader) {
     // We should never use a context with perspective.

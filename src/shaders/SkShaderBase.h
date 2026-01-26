@@ -330,13 +330,6 @@ public:
     };
 
     /**
-     * Make a context using the memory provided by the arena.
-     *
-     * @return pointer to context or nullptr if can't be created
-     */
-    Context* makeContext(const ContextRec&, SkArenaAlloc*) const;
-
-    /**
      *  If the shader can represent its "average" luminance in a single color, return true and
      *  if color is not NULL, return that color. If it cannot, return false and ignore the color
      *  parameter.
@@ -393,16 +386,6 @@ protected:
     SkShaderBase();
 
     void flatten(SkWriteBuffer&) const override;
-
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-    /**
-     * Specialize creating a SkShader context using the supplied allocator.
-     * @return pointer to context owned by the arena allocator.
-     */
-    virtual Context* onMakeContext(const ContextRec&, SkArenaAlloc*) const {
-        return nullptr;
-    }
-#endif
 
     virtual bool onAsLuminanceColor(SkColor4f*) const {
         return false;

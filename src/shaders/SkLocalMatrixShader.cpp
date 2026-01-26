@@ -41,13 +41,6 @@ void SkLocalMatrixShader::flatten(SkWriteBuffer& buffer) const {
     buffer.writeFlattenable(fWrappedShader.get());
 }
 
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-SkShaderBase::Context* SkLocalMatrixShader::onMakeContext(const ContextRec& rec,
-                                                          SkArenaAlloc* alloc) const {
-    return as_SB(fWrappedShader)->makeContext(ContextRec::Concat(rec, fLocalMatrix), alloc);
-}
-#endif
-
 SkImage* SkLocalMatrixShader::onIsAImage(SkMatrix* outMatrix, SkTileMode* mode) const {
     SkMatrix imageMatrix;
     SkImage* image = fWrappedShader->isAImage(&imageMatrix, mode);

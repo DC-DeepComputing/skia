@@ -74,9 +74,6 @@ protected:
     SkPictureShader(SkReadBuffer&);
     void flatten(SkWriteBuffer&) const override;
     bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-    Context* onMakeContext(const ContextRec&, SkArenaAlloc*) const override;
-#endif
 
 private:
     SK_FLATTENABLE_HOOKS(SkPictureShader)
