@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c22e958b_7db0c11d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-26T21:12:42Z",
+      "side": 1,
+      "message": "Unfortunately, there is currently at least one user using `SK_DISABLE_LEGACY_SHADERCONTEXT` which makes it quite difficult for Skia move to properly testing the non-legacy code path. The plan is to land this change, let it roll out, then add `SK_ENABLE_LEGACY_SHADERCONTEXT` to the dependents who need it. Then remove `SK_DISABLE_LEGACY_SHADERCONTEXT` from Skia and the current users of Skia who set it and `SK_ENABLE_LEGACY_SHADERCONTEXT` from the users of Skia while updating them. Then the guarded code can be removed from Skia.",
+      "revId": "70cef5aac767efd8d8a5264cdf37f86ee8ada370",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
