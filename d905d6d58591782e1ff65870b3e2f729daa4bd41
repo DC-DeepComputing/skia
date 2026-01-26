@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea32931_9de0a010",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:35:25Z",
+      "side": 1,
+      "message": "Yes, the UniformManager will need to be updated to handle f16 in these modes. std430 with f16 is pretty trivial; f16 with std140 is slightly more work but it works out to writing 16-bit values into 16-byte aligned chunks when using arrays or matrices (so even more egregiously bad packing).\n\nIn most cases, this won\u0027t really impact graphite\u0027s uniform layout except for a few shaders that are currently declared as `half4[N]`. In Metal, these are dense because they support dense 16-bit packing and in SPIR-V these are dense for std140 or std430 because the uniforms come in as 32-bit values. There are extensions that allow them to be read as directly as f16 which we probably should look into. For wgsl, these end up taking the same space as before but we skip over 8 bytes of padding.\n\nSince DawnCaps never enables the f16 option yet, the UniformManager doesn\u0027t need to be updated with this CL.",
+      "parentUuid": "d73e2dbe_9b1fe0d8",
+      "range": {
+        "startLine": 420,
+        "startChar": 3,
+        "endLine": 424,
+        "endChar": 40
+      },
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eee3ab26_e8fd0d3b",
@@ -100,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb1458ef_70bec6b7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:35:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eee3ab26_e8fd0d3b",
+      "range": {
+        "startLine": 4243,
+        "startChar": 4,
+        "endLine": 4243,
+        "endChar": 84
+      },
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ccf415_74c27994",
@@ -137,6 +185,30 @@
           ]
         }
       ],
+      "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e27eee1_1e903596",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 4251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-26T15:35:25Z",
+      "side": 1,
+      "message": "I checked and sksl doesn\u0027t allow array casts between float and non-float types, so this would be fine currently, but I switched to your check as it\u0027s more robust to future changes to `type_is_low_precision`.",
+      "parentUuid": "a4ccf415_74c27994",
+      "range": {
+        "startLine": 4245,
+        "startChar": 0,
+        "endLine": 4251,
+        "endChar": 5
+      },
       "revId": "d905d6d58591782e1ff65870b3e2f729daa4bd41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
