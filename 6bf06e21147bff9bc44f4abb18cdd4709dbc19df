@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e848f36_109934df",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-26T14:46:35Z",
+      "side": 1,
+      "message": "I did not see that comment!",
+      "parentUuid": "306ed993_b1045706",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 5
+      },
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c3f0fca_1def82a6",
