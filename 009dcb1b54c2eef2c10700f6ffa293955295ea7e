@@ -16,6 +16,29 @@
       "message": "hopefully the last spec change. there is a follow-up change that adds piles more validation",
       "revId": "009dcb1b54c2eef2c10700f6ffa293955295ea7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5811442_04a29431",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-26T14:32:26Z",
+      "side": 1,
+      "message": "How were all these generated/calculated?",
+      "range": {
+        "startLine": 552,
+        "startChar": 44,
+        "endLine": 552,
+        "endChar": 48
+      },
+      "revId": "009dcb1b54c2eef2c10700f6ffa293955295ea7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
