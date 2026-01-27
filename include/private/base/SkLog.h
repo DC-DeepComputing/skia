@@ -9,9 +9,17 @@
 #define SkLog_DEFINED
 
 #include "include/core/SkLogPriority.h"
+#include <cstdarg>
 
-// Ensure SkUserConfig.h is loaded, as clients may define SKIA_LOWEST_ACTIVE_LOG_PRIORITY
-#include "include/core/SkTypes.h" // IWYU pragma: keep
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAttributes.h"
+#include "include/private/base/SkLoadUserConfig.h" // IWYU pragma: keep
+
+#if !defined(SkLog)
+// To be implemented per platform.
+void vSkLog(SkLogPriority priority, const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
+void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LIKE(2, 3);
+#endif
 
 /**
  * TODO (b/469441457): SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY Was the config used to set the log
@@ -37,7 +45,7 @@
                 SK_ABORT("[skia] " fmt, ##__VA_ARGS__);                        \
             }                                                                  \
             else {                                                             \
-                /* TODO: SkLog(priority, "[skia] " fmt "\n", ##__VA_ARGS__); */\
+                SkLog(priority, "[skia] " fmt "\n", ##__VA_ARGS__);            \
             }                                                                  \
         }                                                                      \
     } while (0)
