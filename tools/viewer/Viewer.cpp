@@ -635,6 +635,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
     CodecUtils::RegisterAllAvailable();
+    ToolUtils::RegisterAvailableTypefaceFactories();
 
     SkDebugf("Command line arguments: ");
     for (int i = 1; i < argc; ++i) {

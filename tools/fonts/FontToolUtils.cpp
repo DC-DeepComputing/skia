@@ -266,16 +266,24 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 
 std::unique_ptr<SkFontScanner> TestFontScanner() {
 #if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
-    if (FLAGS_fontations) {
+// If both are compiled in, use the flag to point to fontations or not.
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
+    const bool useFontations = FLAGS_fontations;
+#else
+    const bool useFontations = true;
+#endif
+    if (useFontations) {
         auto result = SkFontScanner_Make_Fontations();
         if (result) {
             return result;
         }
     }
-#endif
+#endif  // defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+
 #if defined(SK_TYPEFACE_FACTORY_FREETYPE)
     return SkFontScanner_Make_FreeType();
 #else
+    SkDEBUGFAIL("No font scanner created - this may cause failures down the line.");
     return nullptr;
 #endif
 }
