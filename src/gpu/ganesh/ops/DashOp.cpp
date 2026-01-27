@@ -280,13 +280,13 @@ private:
 
     DashOpImpl(GrPaint&& paint, const LineData& geometry, SkPaint::Cap cap, AAMode aaMode,
                bool fullDash, const GrUserStencilSettings* stencilSettings)
-            : INHERITED(ClassID())
+            : GrMeshDrawOp(ClassID())
+            , fStencilSettings(stencilSettings)
+            , fProcessorSet(std::move(paint))
             , fColor(paint.getColor4f())
-            , fFullDash(fullDash)
             , fCap(cap)
             , fAAMode(aaMode)
-            , fProcessorSet(std::move(paint))
-            , fStencilSettings(stencilSettings) {
+            , fFullDash(fullDash) {
         fLines.push_back(geometry);
 
         // compute bounds
@@ -730,19 +730,15 @@ private:
     SkPaint::Cap cap() const { return fCap; }
 
     STArray<1, LineData, true> fLines;
-    SkPMColor4f fColor;
-    bool fUsesLocalCoords : 1;
-    bool fFullDash : 1;
-    // We use 3 bits for this 3-value enum because MSVS makes the underlying types signed.
-    SkPaint::Cap fCap : 3;
-    AAMode fAAMode;
-    GrProcessorSet fProcessorSet;
     const GrUserStencilSettings* fStencilSettings;
-
     GrSimpleMesh*  fMesh = nullptr;
     GrProgramInfo* fProgramInfo = nullptr;
-
-    using INHERITED = GrMeshDrawOp;
+    GrProcessorSet fProcessorSet;
+    SkPMColor4f fColor;
+    SkPaint::Cap fCap;
+    AAMode fAAMode;
+    bool fUsesLocalCoords : 1;
+    bool fFullDash : 1;
 };
 
 /*
