@@ -93,6 +93,30 @@
       },
       "revId": "11c86515fa45402ae3e42b7144470e4355c73760",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15a744e2_b83985eb",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-27T16:44:43Z",
+      "side": 1,
+      "message": "Thanks! That\u0027s a bit cleaner.",
+      "parentUuid": "a1f22645_aecd82de",
+      "range": {
+        "startLine": 709,
+        "startChar": 20,
+        "endLine": 709,
+        "endChar": 43
+      },
+      "revId": "11c86515fa45402ae3e42b7144470e4355c73760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
