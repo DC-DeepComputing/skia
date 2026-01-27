@@ -22,6 +22,30 @@
       },
       "revId": "251269721b717c549aa1b4ca8234f94f475f0942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c95414a_08120145",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-27T15:53:00Z",
+      "side": 0,
+      "message": "Yes, exactly.",
+      "parentUuid": "47ff405d_6276f2e2",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "251269721b717c549aa1b4ca8234f94f475f0942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

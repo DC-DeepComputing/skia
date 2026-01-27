@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c2c6fe_ac419bf7",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-27T15:53:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63ac0783_3649b901",
+      "range": {
+        "startLine": 93,
+        "startChar": 29,
+        "endLine": 93,
+        "endChar": 51
+      },
+      "revId": "11c86515fa45402ae3e42b7144470e4355c73760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dda3da5_e37595be",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-26T17:28:15Z",
       "side": 1,
       "message": "I\u0027m generally not a fan of the pattern of tests that have \"if a thing is set, do something differently in the test case\" as I strive to have tests be as easy to read as possible.\n\nCan we break this into two tests? The first is \"we have an agtm, serialize it, make sure the bytes match, deserialize those bytes, make sure the agtm matches\" and the second is \"we have alternate bytes, deserialize those, make sure it matches the agtm\"?  We can have some static variables for the shared agtms to reduce repetition if you like.",
+      "range": {
+        "startLine": 709,
+        "startChar": 20,
+        "endLine": 709,
+        "endChar": 43
+      },
+      "revId": "11c86515fa45402ae3e42b7144470e4355c73760",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f22645_aecd82de",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-27T15:53:00Z",
+      "side": 1,
+      "message": "Yeah, I changed this to have the test have\n- an AGTM\n- a list of \"encodings\"\n  - each encoding can say \"equals the default encoding\"\n\nSo we verify that each encoding re-creates the AGTM, and when an encoding says it\u0027s the default encoding, we can bit-wise compare it with the AGTM\u0027s serialize fucntion.",
+      "parentUuid": "5dda3da5_e37595be",
       "range": {
         "startLine": 709,
         "startChar": 20,
