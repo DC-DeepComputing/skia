@@ -252,14 +252,6 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
     return CreateStringBitmap(w, h, c, x, y, textSize, str).asImage();
 }
 
-#ifndef SK_FONT_FILE_PREFIX
-#  if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-#    define SK_FONT_FILE_PREFIX "/System/Library/Fonts/"
-#  else
-#    define SK_FONT_FILE_PREFIX "/usr/share/fonts/"
-#  endif
-#endif
-
 #if defined(SK_TYPEFACE_FACTORY_FONTATIONS) || defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #define SK_TYPEFACE_SCANNER_AVAILABLE
 #endif
@@ -310,6 +302,13 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #elif defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
             // In particular, this is used on ChromeOS, which is Linux-like but doesn't have
             // FontConfig.
+#ifndef SK_FONT_FILE_PREFIX
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#define SK_FONT_FILE_PREFIX "/System/Library/Fonts/"
+#else
+#define SK_FONT_FILE_PREFIX "/usr/share/fonts/"
+#endif
+#endif
             mgr = SkFontMgr_New_Custom_Directory(SK_FONT_FILE_PREFIX);
 #elif defined(SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE)
             mgr = SkFontMgr_New_Custom_Empty();
