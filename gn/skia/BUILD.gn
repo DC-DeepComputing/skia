@@ -524,7 +524,7 @@ config("warnings") {
       "-Wno-undef",
       "-Wno-unreachable-code-break",
       "-Wno-unreachable-code-return",
-      "-Wno-unused-macros",
+      "-Werror=unused-macros",
       "-Wno-unused-member-function",
       "-Wno-non-c-typedef-for-linkage",  # Dawn, not Skia per se.
 

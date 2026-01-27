@@ -1350,45 +1350,16 @@ sk_sp<SkColorFilter> affect_transparent(SkColor4f color) {
         test_suite_##name(runner);                           \
     }
 #else
-#define DEF_GANESH_TEST_SUITE(name, ctsEnforcement) // do nothing
-#endif
-
-#if defined(SK_GRAPHITE)
-#define DEF_GRAPHITE_TEST_SUITE(name, ctsEnforcement)                            \
-    DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(FilterResult_graphite_##name, \
-                                                   skgpu::IsNativeBackend,       \
-                                                   r,                            \
-                                                   context,                      \
-                                                   testContext,                  \
-                                                   true,                         \
-                                                   ctsEnforcement) {             \
-        using namespace skgpu::graphite;                                         \
-        auto recorder = context->makeRecorder();                                 \
-        TestRunner runner(r, recorder.get());                                    \
-        test_suite_##name(runner);                                               \
-        std::unique_ptr<Recording> recording = recorder->snap();                 \
-        if (!recording) {                                                        \
-            ERRORF(r, "Failed to make recording");                               \
-            return;                                                              \
-        }                                                                        \
-        InsertRecordingInfo insertInfo;                                          \
-        insertInfo.fRecording = recording.get();                                 \
-        context->insertRecording(insertInfo);                                    \
-        testContext->syncedSubmit(context);                                      \
-    }
-#else
-#define DEF_GRAPHITE_TEST_SUITE(name, ctsEnforcement) // do nothing
+#define DEF_GANESH_TEST_SUITE(name, ctsEnforcement)
 #endif
 
 #define DEF_TEST_SUITE(name, runner, ganeshCtsEnforcement, graphiteCtsEnforcement) \
-    static void test_suite_##name(TestRunner&); \
-    /* TODO(b/274901800): Uncomment to enable Graphite test execution. */ \
-    /* DEF_GRAPHITE_TEST_SUITE(name, graphiteCtsEnforcement) */ \
-    DEF_GANESH_TEST_SUITE(name, ganeshCtsEnforcement) \
-    DEF_TEST(FilterResult_raster_##name, reporter) { \
-        TestRunner runner(reporter); \
-        test_suite_##name(runner); \
-    } \
+    static void test_suite_##name(TestRunner&);                                    \
+    DEF_GANESH_TEST_SUITE(name, ganeshCtsEnforcement)                              \
+    DEF_TEST(FilterResult_raster_##name, reporter) {                               \
+        TestRunner runner(reporter);                                               \
+        test_suite_##name(runner);                                                 \
+    }                                                                              \
     void test_suite_##name(TestRunner& runner)
 
 static std::string to_string(SkTileMode tm) {
