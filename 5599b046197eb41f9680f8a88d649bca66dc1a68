@@ -93,6 +93,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "388b751b_a7d8b10f",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-27T14:54:11Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "e5328c9d_a3c8c87d",
+      "range": {
+        "startLine": 188,
+        "startChar": 43,
+        "endLine": 188,
+        "endChar": 50
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4d89fe50_f08f9af4",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawTypes.h",
+              "range": {
+                "startLine": 188,
+                "startChar": 0,
+                "endLine": 189,
+                "endChar": 0
+              },
+              "replacement": "    // to a Coverage::kNone Renderer would result in DstUsage::kNone for the same paint.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5599b046197eb41f9680f8a88d649bca66dc1a68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bc536ef_09c1e58e",
@@ -106,6 +148,30 @@
       "writtenOn": "2026-01-27T13:27:16Z",
       "side": 1,
       "message": "Update comment ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 87
+      },
+      "revId": "5599b046197eb41f9680f8a88d649bca66dc1a68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30aed726_51a3ead5",
+        "filename": "tests/graphite/InnerFillTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-27T14:54:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bc536ef_09c1e58e",
       "range": {
         "startLine": 21,
         "startChar": 0,
