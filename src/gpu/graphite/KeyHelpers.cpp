@@ -1181,20 +1181,33 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);
 
+    SkDebugf("--- %d %d %d %d - ",
+        xformNeedsGamutOrXferFn,
+        swizzleNeedsGamutTransform,
+        skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF),
+        skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv));
+
     // Use a specialized shader if we don't need transfer function or gamut transforms.
     if (!(xformNeedsGamutOrXferFn || swizzleNeedsGamutTransform)) {
+        SkDebugf("---------- %d %d %d %d - ",
+                    SkToBool(keyContext.flags() & KeyGenFlags::kEnableIdentityColorSpaceXform),
+                    data.fReadSwizzle == ReadSwizzle::kRGBA,
+                    !data.fSteps.fFlags.premul,
+                    !data.fSteps.fFlags.unpremul);
         // When enabled, the most specialized is to do nothing at all. To simplify calling code,
         // this adds a passthrough block vs. having callers know how to reconfigure their blocks.
         if (SkToBool(keyContext.flags() & KeyGenFlags::kEnableIdentityColorSpaceXform) &&
             data.fReadSwizzle == ReadSwizzle::kRGBA &&
             !data.fSteps.fFlags.premul && !data.fSteps.fFlags.unpremul) {
             keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+            SkDebugf("passthrough\n");
             return;
         }
 
         add_color_space_uniforms(keyContext, BuiltInCodeSnippetID::kColorSpaceXformPremul,
                                  data.fSteps, data.fReadSwizzle);
         keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kColorSpaceXformPremul);
+        SkDebugf("premul\n");
         return;
     }
 
@@ -1207,6 +1220,7 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
         add_color_space_uniforms(keyContext, BuiltInCodeSnippetID::kColorSpaceXformSRGB,
                                  data.fSteps, data.fReadSwizzle);
         keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kColorSpaceXformSRGB);
+        SkDebugf("srgb\n");
         return;
     }
 
@@ -1214,6 +1228,7 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
     add_color_space_uniforms(keyContext, BuiltInCodeSnippetID::kColorSpaceXformColorFilter,
                              data.fSteps, data.fReadSwizzle);
     keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
+    SkDebugf("complex\n");
 }
 
 //--------------------------------------------------------------------------------------------------

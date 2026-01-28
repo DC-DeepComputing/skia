@@ -81,6 +81,11 @@ KeyContext KeyContext::forRuntimeEffect(const SkRuntimeEffect* effect, int child
     // Runtime effects always disable paint-color colorization of alpha-only image shaders
     SkEnumBitMask<KeyGenFlags> xtraFlags = KeyGenFlags::kDisableAlphaOnlyImageColorization;
 
+    SkDebugf("forRuntimeEffect: %s %d %d 0x%x\n",
+        SkRuntimeEffectPriv::GetName(*effect),
+        child,
+        SkRuntimeEffectPriv::ChildSampleUsage(effect, child).isExplicit(),
+        static_cast<int>(SkRuntimeEffectPriv::ChildSampleUsage(effect, child).kind()));
     if (SkRuntimeEffectPriv::ChildSampleUsage(effect, child).isExplicit()) {
         // Assume explicit sampling as a proxy for either a likely data lookup (e.g. raw shader)
         // or an effect that might sample the child many times. This means it's worth using
