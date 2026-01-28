@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b747df6_1378f8b6",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T13:43:25Z",
+      "side": 1,
+      "message": "nit: year",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "c497e689bf3db5c8efe853dae45dd61867d3363a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59fa5153_7799bbcf",
         "filename": "include/private/base/SkLog.h",
         "patchSetId": 3
