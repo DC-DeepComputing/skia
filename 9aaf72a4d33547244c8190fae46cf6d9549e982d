@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9b3a817_442839c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-01-28T17:59:53Z",
+      "side": 1,
+      "message": "nit: include what this is in the commit message\nhttps://chromium.googlesource.com/chromium/src/+/HEAD/docs/adding_to_third_party.md#update-mechanism",
+      "revId": "9aaf72a4d33547244c8190fae46cf6d9549e982d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
