@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "988d6646_8791f1f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T21:36:41Z",
+      "side": 1,
+      "message": "Very optional, since I believe the \"last change fontmgr\" does kind of the same thing.",
+      "revId": "0deecd98f6c038554d06cfffbdbb0c00c8c177ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
