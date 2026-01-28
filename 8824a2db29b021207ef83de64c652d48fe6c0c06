@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ad105d_ef4be626",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T22:33:35Z",
+      "side": 1,
+      "message": "FreeType seems to be getting around this in `SkFontHost_FreeType_common.h` by just forward declaring everything (so not needing to re-export anything). The others get away with this by their dependencies being system dependencies. This does seem to be the only one that really needs an internal source header that also \"re-exports\" implementation dependencies to other sources in the same target.",
+      "range": {
+        "startLine": 32,
+        "startChar": 44,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "8824a2db29b021207ef83de64c652d48fe6c0c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8891d266_619e120a",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T22:33:35Z",
+      "side": 1,
+      "message": "It is interesting having an `SkTypeface_fontations.h` (external public), an `SkTypeface_fontations_priv.h` (internal source private), and this which is essentially `SkTypeface_fontations_pub.h` (internal source public, though Bazel is by default leaking it to external public unless this is depended on through `implementation_deps`).",
+      "revId": "8824a2db29b021207ef83de64c652d48fe6c0c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
