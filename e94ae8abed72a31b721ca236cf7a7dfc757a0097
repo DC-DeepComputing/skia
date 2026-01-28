@@ -92,6 +92,30 @@
       },
       "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a923a27_f73101f6",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 93
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-01-28T13:00:25Z",
+      "side": 1,
+      "message": "Good to know!\n\nThe problem I had was we are checking the value of `__cplusplus` here:\nhttps://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/src/partition_alloc/partition_alloc_config.h;l\u003d263-264?q\u003dfile:partition_alloc%20__cplusplus\u0026ss\u003dchromium\n\nbut this version of GCC is reporting 201709, despite supporting `--std\u003dc++20`.\n\n[godbolt](https://godbolt.org/z/ozoT4vEdr)\n\nI think I am going to remove this assertion in partition_alloc, and the `\u0026\u0026 is_clang` to solve this for now.",
+      "parentUuid": "ac2baac2_1de3ecba",
+      "range": {
+        "startLine": 271,
+        "startChar": 11,
+        "endLine": 271,
+        "endChar": 12
+      },
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
