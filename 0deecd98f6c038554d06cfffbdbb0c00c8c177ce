@@ -16,6 +16,23 @@
       "message": "Very optional, since I believe the \"last change fontmgr\" does kind of the same thing.",
       "revId": "0deecd98f6c038554d06cfffbdbb0c00c8c177ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ce1d362_ca78b956",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T22:36:51Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer to just let the general fallback happen than register something that isn\u0027t the thing. The general fallback is also picking up CoreText and DirectWrite serialized font data as well, and it would be weird to also register those here as backed by FreeType.",
+      "revId": "0deecd98f6c038554d06cfffbdbb0c00c8c177ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
