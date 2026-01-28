@@ -140,6 +140,30 @@
       },
       "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c80401_d3392d28",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 93
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-01-28T13:41:48Z",
+      "side": 1,
+      "message": "I am going to wait for:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/7526908\nto land tomorrow.",
+      "parentUuid": "2f42f203_13d3522c",
+      "range": {
+        "startLine": 271,
+        "startChar": 11,
+        "endLine": 271,
+        "endChar": 12
+      },
+      "revId": "e94ae8abed72a31b721ca236cf7a7dfc757a0097",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
