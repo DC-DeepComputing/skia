@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476fc223_fa19b9f1",
+        "filename": "example/VulkanBasic.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T19:11:29Z",
+      "side": 1,
+      "message": "The documentation for the `Make` needs to now document that one will get back an error or a non-nullptr sk_sp value. Before the issue was that nullptr could be returned in case of error but it is easy not to check for that. On the other hand, it is still easy not to check for nullptr here because \"it isn\u0027t supposed to happen\" but it still can (the compiler isn\u0027t going to enforce anything like that here).",
+      "revId": "9a3f31ef013e55d1304b55f00e0bd859869c8cad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
