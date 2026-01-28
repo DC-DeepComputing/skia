@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59fa5153_7799bbcf",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T13:43:16Z",
+      "side": 1,
+      "message": "Things in base cannot depend on things in core. It\u0027s unclear to me *why* we want SkLogPriority to be part of the public API? I thought it was a tool for Skia to configure the priority of its internal logging.\n\nIf we do need it to be both in base and part of the public API, look at SkSpan.h for how we do that.",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "c497e689bf3db5c8efe853dae45dd61867d3363a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
