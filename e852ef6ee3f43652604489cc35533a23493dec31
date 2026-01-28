@@ -51,6 +51,24 @@
       "parentUuid": "5060c706_fbf6d8de",
       "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60cfc7af_8619bc72",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-01-28T15:12:24Z",
+      "side": 1,
+      "message": "Thanks!\nThen I will check https://perf.skia.org after merging this patch.\n\n---\n\nIf you are curious about the crash. Here is a [debugging session](https://paste.googleplex.com/6202737308073984). It fails on `rotated_rects_bw_persp_shader_opaque_srcover`, but doesn\u0027t reproduce in isolation.\n\nIt crashes on a bad alloc of 93 Terabyte, due to reading some garbage data.\n\nWith ASAN, we find this is coming from a null dereference:\n```\n../../src/sksl/analysis/SkSLSpecialization.cpp:67:27: runtime error: member call on address 0x50b000019320 which does not point to an object of type \u0027SkSL::FunctionDeclaration\u0027\n0x50b000019320: note: object has invalid vptr\n 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00\n              ^~~~~~~~~~~~~~~~~~~~~~~\n              invalid vptr\n```\n\n\nI can spend some time to debug this if this is useful.\n\nMy checkout starts to be quite old (~28 days), so it is not impossible this has been fixed recently.",
+      "parentUuid": "c256bb0f_68273ffd",
+      "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
