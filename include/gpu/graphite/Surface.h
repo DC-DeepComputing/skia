@@ -76,10 +76,32 @@ SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
  * configuration, then the recorder must support sRGB, and colorSpace must be present. Further,
  * backendTexture's width and height must not exceed the recorder's capabilities, and the
  * recorder must be able to support the back-end texture.
+ *
+ * DEPRECATED: Use WrapBackendTexture that does not take a `colorType`.
  */
 SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
                                            const skgpu::graphite::BackendTexture&,
                                            SkColorType colorType,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* props,
+                                           TextureReleaseProc = nullptr,
+                                           ReleaseContext = nullptr,
+                                           std::string_view label = {});
+/**
+ * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
+ * be required to ensure the texture is valid for the lifetime of the returned SkSurface. The
+ * required lifetimes for the specific apis are:
+ *     Metal: Skia will call retain on the underlying MTLTexture so the caller can drop it once
+ *            this call returns.
+ *
+ * SkSurface is returned if all the parameters are valid. The backendTexture is valid if its
+ * format and dimensions are supported by the context that created the recorder. The color type
+ * reported by the SkSurface's image info is inferred from backend texture's format, matching as
+ * closely as possible when a texture format is not representable exactly as an SkColorType. This
+ * is fine as the SkColorType represents the data layout were the texture to be read to CPU memory.
+ */
+SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
+                                           const skgpu::graphite::BackendTexture&,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* props,
                                            TextureReleaseProc = nullptr,
