@@ -16,6 +16,24 @@
       "message": "PTAL, but note canary chromium did pick up what seems to be some kind of `rawElement` lifetime issue.",
       "revId": "206c5a8c0811fe09c24e9efc2ecff268e9788114",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d801babb_86263e56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-28T22:27:46Z",
+      "side": 1,
+      "message": "canary chromium fixed",
+      "parentUuid": "857c19cd_6a16c244",
+      "revId": "206c5a8c0811fe09c24e9efc2ecff268e9788114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
