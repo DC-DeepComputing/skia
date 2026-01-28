@@ -114,6 +114,8 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontTypes.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_fontations_factory.h"
+
 #ifdef CK_INCLUDE_PARAGRAPH
 #include "modules/skparagraph/include/Paragraph.h"
 #endif  // CK_INCLUDE_PARAGRAPH
@@ -1218,6 +1220,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
                  static SkOnce once;
                  once([] {
                      SkTypeface::Register(SkTypeface_FreeType::FactoryId,
+                                          SkTypeface_FreeType::MakeFromStream);
+                     // Chromium creates skps using fontations. We can't yet compile
+                     // fontations with emsdk, so this says to process fontations fonts w/ FreeType
+                     SkTypeface::Register(SkTypefaces::Fontations::FactoryId,
                                           SkTypeface_FreeType::MakeFromStream);
                  });
 #endif

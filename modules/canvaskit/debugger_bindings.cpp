@@ -24,6 +24,7 @@
 #include "src/base/SkBase64.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/ports/SkTypeface_fontations_factory.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/SkSharingProc.h"
 #include "tools/UrlDataManager.h"
@@ -89,6 +90,10 @@ static void register_typeface() {
   once([] {
     SkTypeface::Register(SkTypeface_FreeType::FactoryId,
                          SkTypeface_FreeType::MakeFromStream );
+     // Chromium creates skps using fontations. We can't yet compile
+     // fontations with emsdk, so this says to process fontations fonts w/ FreeType
+     SkTypeface::Register(SkTypefaces::Fontations::FactoryId,
+                          SkTypeface_FreeType::MakeFromStream);
   });
 }
 

@@ -320,6 +320,7 @@ cc_binary(
             "//:fontmgr_empty_freetype",
             "//modules/skparagraph:skparagraph_harfbuzz_skunicode",
             "//modules/skunicode:skunicode_icu",
+            "//src/ports:fake_fontations_support",
         ],
         ":enable_fonts_false": [],
     }) + select({
