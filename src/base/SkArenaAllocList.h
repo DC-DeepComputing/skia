@@ -45,9 +45,9 @@ public:
         Node* fCurr = nullptr;
     };
 
-    Iter begin() { return Iter(fHead); }
-    Iter end() { return Iter(); }
-    Iter tail() { return Iter(fTail); }
+    Iter begin() const { return Iter(fHead); }
+    Iter end() const { return Iter(); }
+    Iter tail() const { return Iter(fTail); }
 
 private:
     struct Node {
