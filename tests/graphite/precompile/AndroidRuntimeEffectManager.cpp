@@ -134,10 +134,11 @@ RuntimeEffectManager::RuntimeEffectManager() {
     static const SkString kMouriMap_TonemapEffectCode(R"(
         uniform shader image;
         uniform shader lux;
+        uniform float scaleFactor;
         vec4 main(vec2 xy) {
-            float localMax = lux.eval(xy * 0.4).r;
+            float localMax = lux.eval(vec2(.1, .2)).r;
             float4 rgba = image.eval(xy);
-            float3 linear = rgba.rgb * 0.7;
+            float3 linear = rgba.rgb * localMax;
 
             return float4(linear, rgba.a);
         }
