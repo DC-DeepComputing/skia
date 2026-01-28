@@ -33,6 +33,24 @@
       "message": "Hi @kjlubick@chromium.org,\nI am assuming \"nanobench\" cover all the possible Skia Benchmarks when using GN.\n\n---\n\n**Question** Does Skia has some infra measuring the performance impact of a patch? Something similar to pinpoint.\n\nI would be curious to see the impact of this patch. I can try to run `nanobench` locally, but it crashes on origin/main.\n```\n../../src/utils/SkBitSet.h:80: fatal error: \"check(index \u003c fSize)\"\n\nSignal 4 [Illegal instruction]:\n    ./out/Default/nanobench(+0x5b84dc) [0x55d78b54b4dc]\n    /lib/x86_64-linux-gnu/libc.so.6(+0x3fdf0) [0x7f7d16618df0]\n    ./out/Default/nanobench(+0x77bbb4) [0x55d78b70ebb4]\n    ./out/Default/nanobench(+0xd470b2) [0x55d78bcda0b2]\n    ./out/Default/nanobench(+0xd4703c) [0x55d78bcda03c]\n    ./out/Default/nanobench(+0x1039a4f) [0x55d78bfcca4f]\n    ./out/Default/nanobench(+0x103940f) [0x55d78bfcc40f]\n    ./out/Default/nanobench(+0x103a394) [0x55d78bfcd394]\n    ./out/Default/nanobench(+0x103a1f3) [0x55d78bfcd1f3]\n    ./out/Default/nanobench(+0x103d2e5) [0x55d78bfd02e5]\n    ./out/Default/nanobench(+0x103d235) [0x55d78bfd0235]\n    ./out/Default/nanobench(+0x103d1f5) [0x55d78bfd01f5]\n    ./out/Default/nanobench(+0x103d0fd) [0x55d78bfd00fd]\n    ...\n```",
       "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c256bb0f_68273ffd",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T13:46:04Z",
+      "side": 1,
+      "message": "\u003e Question Does Skia has some infra measuring the performance impact of a patch? Something similar to pinpoint.\n\nNot when its on the CQ, but yes. http://perf.skia.org (which I guess re-directs to a new URL)\n\n\u003e I would be curious to see the impact of this patch. I can try to run nanobench locally, but it crashes on origin/main.\n\nIt might be your compilation setup - our test machines build and run nanobench all the time, as do our devs.",
+      "parentUuid": "5060c706_fbf6d8de",
+      "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
