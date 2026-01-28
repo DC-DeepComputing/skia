@@ -204,6 +204,7 @@ PRIVATE_HEADERS = [
     "SkGlyphRunPainter.h",
     "SkKnownRuntimeEffects.h",
     "SkLineClipper.h",
+    "SkLog.h",
     "SkMaskBlurFilter.h",
     "SkMaskCache.h",
     "SkMipmapBuilder.h",
