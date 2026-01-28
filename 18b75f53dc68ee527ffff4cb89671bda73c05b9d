@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55153954_a633e4b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T14:58:08Z",
+      "side": 1,
+      "message": "Noticed this in the bazel build (which I think is using a newer compiler)",
+      "revId": "18b75f53dc68ee527ffff4cb89671bda73c05b9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
