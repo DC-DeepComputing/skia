@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c084e089_2cc8d72d",
+        "filename": "src/gpu/android/AndroidVulkanMemoryAllocator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-28T15:02:45Z",
+      "side": 1,
+      "message": "Do we want to start our return changes 😊? (don\u0027t actually have to here)",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 35
+      },
+      "revId": "d9d18f28c8b312ac10854b8b8cb1b15fd15a494b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
