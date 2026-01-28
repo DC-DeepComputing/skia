@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c0fd4d7_d60bb7b8",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-01-28T16:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b747df6_1378f8b6",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "c497e689bf3db5c8efe853dae45dd61867d3363a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fa5153_7799bbcf",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-28T13:43:16Z",
       "side": 1,
       "message": "Things in base cannot depend on things in core. It\u0027s unclear to me *why* we want SkLogPriority to be part of the public API? I thought it was a tool for Skia to configure the priority of its internal logging.\n\nIf we do need it to be both in base and part of the public API, look at SkSpan.h for how we do that.",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "c497e689bf3db5c8efe853dae45dd61867d3363a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "037dd336_9a058a99",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-01-28T16:35:06Z",
+      "side": 1,
+      "message": "Clients should be able to include SkLogPriority in their SkUserConfig if they want to set a minimum threshold for debug statements. This circular dependency was solved by moving SkLog.h into core/src as a private header (and if that doesn\u0027t work for an unforeseen reason I\u0027ll move it to mirror SkSpan\u0027s model).",
+      "parentUuid": "59fa5153_7799bbcf",
       "range": {
         "startLine": 11,
         "startChar": 18,
