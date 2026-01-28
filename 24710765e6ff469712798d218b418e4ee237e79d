@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea85f40c_a7c4e0ec",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T19:11:36Z",
+      "side": 1,
+      "message": "constexpr?",
+      "revId": "24710765e6ff469712798d218b418e4ee237e79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99770174_58b28874",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-01-28T19:11:36Z",
+      "side": 1,
+      "message": "Need `T\u0026\u0026 value() \u0026\u0026` version or the example will refcount churn. Probably need to consider this in many places.",
+      "revId": "24710765e6ff469712798d218b418e4ee237e79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
