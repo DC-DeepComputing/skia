@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34456a53_385b0a00",
+        "filename": "src/sksl/codegen/BUILD.bazel",
+        "patchSetId": 16
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-28T15:51:03Z",
+      "side": 1,
+      "message": "This is causing an ODR violation because SkShaderUtils.cpp is compiled twice in different libraries. I\u0027ll work on a fix.",
+      "range": {
+        "startLine": 144,
+        "startChar": 21,
+        "endLine": 144,
+        "endChar": 38
+      },
+      "revId": "2ac2476b0bcb6fcb3a8493a96405a6d04becb532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
