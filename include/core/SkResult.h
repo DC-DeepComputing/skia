@@ -7,12 +7,22 @@
 #ifndef SkResult_DEFINED
 #define SkResult_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAssert.h"
 
 #include <variant>
 
-/** A simplified version of C++23's std::expected */
-template <typename T, typename E>
+// Some general purpose errors. Most applications probably don't need
+// their own custom errors, so they can use this.
+enum class SkError {
+    kInvalidInput,
+    kUnsupported,
+    kInternalError,
+    kOutOfMemory,
+};
+
+/** A simplified version of C++23's std::expected. It also draws inspiration from Rust's Result */
+template <typename T, typename E = SkError>
 class SkResult {
 public:
     // We don't want explicit on these, otherwise the syntax to create them
@@ -40,13 +50,7 @@ private:
     std::variant<T, E> storage;
 };
 
-// Some general purpose errors. Most applications probably don't need
-// their own custom errors, so they can use this.
-enum class SkError {
-    kInvalidInput,
-    kUnsupported,
-    kInternalError,
-    kOutOfMemory,
-};
+template <typename T, typename E = SkError>
+using SkResultSP = SkResult<sk_sp<T>, E>;
 
 #endif

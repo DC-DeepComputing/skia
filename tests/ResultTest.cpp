@@ -9,7 +9,7 @@
 #include "include/core/SkResult.h"
 #include "tests/Test.h"
 
-static SkResult<SkBitmap, SkError> get_bitmap(int w, int h) {
+static SkResult<SkBitmap> get_bitmap(int w, int h) {
     if (w < 0 || h < 0) {
         return {SkError::kInvalidInput};
     }
@@ -21,7 +21,7 @@ static SkResult<SkBitmap, SkError> get_bitmap(int w, int h) {
     return {bm};
 }
 
-DEF_TEST(SkResult_WithEnumClass_SuccessCaseReturnsBitmap, reporter) {
+DEF_TEST(SkResult_WithDefaultError_SuccessCaseReturnsBitmap, reporter) {
     auto result = get_bitmap(10, 13);
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, result.has_value());
@@ -31,7 +31,7 @@ DEF_TEST(SkResult_WithEnumClass_SuccessCaseReturnsBitmap, reporter) {
     REPORTER_ASSERT(reporter, result->height() == 13);
 }
 
-DEF_TEST(SkResult_WithEnumClass_ErrorCaseReturnsEnum, reporter) {
+DEF_TEST(SkResult_WithDefaultError_ErrorCaseReturnsEnum, reporter) {
     auto result = get_bitmap(-10, 13);
     REPORTER_ASSERT(reporter, !result);
     REPORTER_ASSERT(reporter, !result.has_value());
@@ -58,7 +58,7 @@ static SkResult<SkBitmap, EnumError> get_bitmap2(int w, int h) {
     return {bm};
 }
 
-DEF_TEST(SkResult_WithEnum_ErrorCaseReturnsEnum, reporter) {
+DEF_TEST(SkResult_WithCustomError_ErrorCaseReturnsEnum, reporter) {
     auto result = get_bitmap2(-10, 13);
     REPORTER_ASSERT(reporter, !result);
     REPORTER_ASSERT(reporter, !result.has_value());
