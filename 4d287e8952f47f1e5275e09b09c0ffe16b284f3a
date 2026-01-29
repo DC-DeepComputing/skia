@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4ccb3e_734d5347",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-01-29T15:00:39Z",
+      "side": 1,
+      "message": "Nit: this is technically correct, but IMO could lead someone skimming commit subjects on e.g. a roll breakage to overlook this commit. Perhaps `Update fiddle examples` or `Update fiddle example docs` ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "4d287e8952f47f1e5275e09b09c0ffe16b284f3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
