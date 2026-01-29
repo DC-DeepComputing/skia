@@ -22,6 +22,30 @@
       },
       "revId": "c874b5e937d55b3972aac0613bb943fe3e5afcf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eff3446_2b2e3a42",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-01-29T17:54:43Z",
+      "side": 1,
+      "message": "Worth noting, my IDE was upset when the include was outside the IWYU pragma. Not sure how VSCode knows how to interpret it (maybe an extension).\nEither way, done.",
+      "parentUuid": "9cc57947_af1cfcb9",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 15
+      },
+      "revId": "c874b5e937d55b3972aac0613bb943fe3e5afcf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
