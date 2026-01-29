@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a049f161_9cc10ee7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:26:02Z",
+      "side": 1,
+      "message": "PTAL, after much discussion I think this is the best path forward for unblocking the 4444 imports into Graphite and moving us towards a more flexible color import system in the future. \n\nThe main downside to this approach is that single-channel formats now are always going to be interpreted to an alpha-only SkColorType. However, from code search, it appears that this is consistent with how Android and Chrome were already wrapping single-channel textures.",
+      "revId": "59ea93d285e1e1403070be1a4c076a1b9eacdc07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
