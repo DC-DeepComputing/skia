@@ -22,7 +22,12 @@
 class SkScalingCodec : public SkCodec {
 protected:
     SkScalingCodec(SkEncodedInfo&& info, XformFormat srcFormat, std::unique_ptr<SkStream> stream,
-                    SkEncodedOrigin origin = kTopLeft_SkEncodedOrigin)
+                   SkEncodedOrigin origin = kTopLeft_SkEncodedOrigin)
+        : SkScalingCodec(std::move(info), Flags::kNone, srcFormat, std::move(stream), origin) {}
+
+    SkScalingCodec(SkEncodedInfo&& info, Flags flags, XformFormat srcFormat,
+                   std::unique_ptr<SkStream> stream,
+                   SkEncodedOrigin origin = kTopLeft_SkEncodedOrigin)
         : SkCodec(std::move(info), srcFormat, std::move(stream), origin) {}
 
     SkISize onGetScaledDimensions(float desiredScale) const override {

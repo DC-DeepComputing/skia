@@ -80,7 +80,10 @@ SkJpegxlCodec::SkJpegxlCodec(std::unique_ptr<SkJpegxlCodecPriv> codec,
                              SkEncodedInfo&& info,
                              std::unique_ptr<SkStream> stream,
                              sk_sp<const SkData> data)
-        : INHERITED(std::move(info), skcms_PixelFormat_RGBA_16161616LE, std::move(stream))
+        : INHERITED(std::move(info),
+                    Flags::kHasIncrementalDecode,
+                    skcms_PixelFormat_RGBA_16161616LE,
+                    std::move(stream))
         , fCodec(std::move(codec))
         , fData(std::move(data)) {}
 

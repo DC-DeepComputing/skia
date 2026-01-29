@@ -257,7 +257,15 @@ SkCodec::SkCodec(SkEncodedInfo&& info,
                  XformFormat srcFormat,
                  std::unique_ptr<SkStream> stream,
                  SkEncodedOrigin origin)
+        : SkCodec(std::move(info), Flags::kNone, srcFormat, std::move(stream), origin) {}
+
+SkCodec::SkCodec(SkEncodedInfo&& info,
+                 Flags flags,
+                 XformFormat srcFormat,
+                 std::unique_ptr<SkStream> stream,
+                 SkEncodedOrigin origin)
         : fEncodedInfo(std::move(info))
+        , fFlags(flags)
         , fSrcXformFormat(srcFormat)
         , fStream(std::move(stream))
         , fOrigin(origin)
