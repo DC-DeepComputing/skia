@@ -61,7 +61,7 @@ static SkResultV<SkBitmap, EnumError> get_bitmap2(int w, int h) {
     return {bm};
 }
 
-DEF_TEST(SkResultV_WithEnum_ErrorCaseReturnsEnum, reporter) {
+DEF_TEST(SkResult_WithCustomError_ErrorCaseReturnsEnum, reporter) {
     auto result = get_bitmap2(-10, 13);
     REPORTER_ASSERT(reporter, !result);
     REPORTER_ASSERT(reporter, !result.has_value());

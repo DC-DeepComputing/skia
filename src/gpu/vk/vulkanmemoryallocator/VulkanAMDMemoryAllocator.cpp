@@ -21,7 +21,7 @@
 
 namespace skgpu {
 
-sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
+SkResultP<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
                                                             VkPhysicalDevice physicalDevice,
                                                             VkDevice device,
                                                             uint32_t physicalDeviceVersion,
@@ -93,7 +93,7 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
     VmaAllocator allocator;
     vmaCreateAllocator(&info, &allocator);
 
-    return sk_sp<VulkanAMDMemoryAllocator>(new VulkanAMDMemoryAllocator(allocator));
+    return {new VulkanAMDMemoryAllocator(allocator)};
 }
 
 VulkanAMDMemoryAllocator::VulkanAMDMemoryAllocator(VmaAllocator allocator)
@@ -274,8 +274,8 @@ std::pair<uint64_t, uint64_t> VulkanAMDMemoryAllocator::totalAllocatedAndUsedMem
 }
 
 namespace VulkanMemoryAllocators {
-sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendContext,
-                                  ThreadSafe threadSafe) {
+SkResultP<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendContext,
+                                       ThreadSafe threadSafe) {
     SkASSERT(backendContext.fInstance != VK_NULL_HANDLE);
     SkASSERT(backendContext.fPhysicalDevice != VK_NULL_HANDLE);
     SkASSERT(backendContext.fDevice != VK_NULL_HANDLE);
@@ -298,16 +298,16 @@ sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendCont
     sk_sp<const skgpu::VulkanInterface> interface =
             skgpu::MakeInterface(backendContext, extensions, &physDevVersion, nullptr);
     if (!interface) {
-        return nullptr;
+        return {SkError::kInternalError};
     }
 
-    return VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
-                                          backendContext.fPhysicalDevice,
-                                          backendContext.fDevice,
-                                          physDevVersion,
-                                          extensions,
-                                          interface.get(),
-                                          threadSafe);
+    return std::move(VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
+                                           backendContext.fPhysicalDevice,
+                                           backendContext.fDevice,
+                                           physDevVersion,
+                                           extensions,
+                                           interface.get(),
+                                           threadSafe));
 }
 
 }  // namespace VulkanMemoryAllocators

@@ -13,6 +13,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.h"
+#include "include/core/SkResult.h"
 
 #include <cstdint>
 #include <optional>
@@ -26,7 +27,7 @@ struct VulkanInterface;
 
 class VulkanAMDMemoryAllocator : public VulkanMemoryAllocator {
 public:
-    static sk_sp<VulkanMemoryAllocator> Make(VkInstance instance,
+    static SkResultP<VulkanMemoryAllocator> Make(VkInstance instance,
                                              VkPhysicalDevice physicalDevice,
                                              VkDevice device,
                                              uint32_t physicalDeviceVersion,
