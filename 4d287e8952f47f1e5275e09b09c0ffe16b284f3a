@@ -46,6 +46,30 @@
       },
       "revId": "4d287e8952f47f1e5275e09b09c0ffe16b284f3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8b4b8d7_587e8971",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-29T15:04:12Z",
+      "side": 1,
+      "message": "(Nobody should be building our fiddles on a roll, but I agree precision is important)",
+      "parentUuid": "9a83f024_3d72fc7b",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "4d287e8952f47f1e5275e09b09c0ffe16b284f3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
