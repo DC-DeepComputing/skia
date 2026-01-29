@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "691a54fe_22c21332",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 1,
+      "message": "One more meaty CL to support f16 layouts beyond just metal\u0027s in Graphite. After this lands, it should just be a matter of opting into f16 in Dawn.",
+      "revId": "7a9413718c64e36290970f1de44b974979412109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0adc54e7_0ac7813f",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 1,
+      "message": "This rewrite I think is clearer now that std140-f16 also has to align to 16 bytes not to vec4. And by having 2b use SkNextPow2, the M\u003d3 case is less awkward to discuss.",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 77
+      },
+      "revId": "7a9413718c64e36290970f1de44b974979412109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

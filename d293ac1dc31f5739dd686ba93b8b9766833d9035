@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7404e7d3_0facfb20",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 0,
+      "message": "alignment shouldn\u0027t be included here, std430 and std140 have align \u003d 4*N and size \u003d 3*N for a vec3 type which is covered by the align rule listed in #3, b. only needs to discuss size.",
+      "range": {
+        "startLine": 134,
+        "startChar": 24,
+        "endLine": 134,
+        "endChar": 33
+      },
+      "revId": "d293ac1dc31f5739dd686ba93b8b9766833d9035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b063a84_221dfd92",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 0,
+      "message": "This was stale and should have been removed when I landed the changes to support substructs a while ago.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 93
+      },
+      "revId": "d293ac1dc31f5739dd686ba93b8b9766833d9035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

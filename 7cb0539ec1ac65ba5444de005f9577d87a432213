@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d6d2f27_1835c405",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 1,
+      "message": "A lot of these changed lines are just intentionally breaking the line length limit so the tables are easier to read.",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 104
+      },
+      "revId": "7cb0539ec1ac65ba5444de005f9577d87a432213",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce0a08c_e05dc8a4",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 1,
+      "message": "There was a fair amount of code duplication between the existing 140 and 430 matrix tests, but those tests didn\u0027t include metal layout or 4x4 matrices. This refactor makes it easier to validate all square matrix types and all layouts now.",
+      "range": {
+        "startLine": 969,
+        "startChar": 12,
+        "endLine": 969,
+        "endChar": 25
+      },
+      "revId": "7cb0539ec1ac65ba5444de005f9577d87a432213",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "179ffb8b_41370edc",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T14:24:01Z",
+      "side": 1,
+      "message": "This is a big shift in how the test expectation data and validation code is written. By defining in terms of 16 bit units, we can easily write for 32-bit values, 16-bit values, and layouts that still treat half floats as 32-bits.\n\nFor the existing float-only test cases, the expectations basically replicate each symbol, e.g. `{1,2,_,_}` becomes `{1,1,2,2,_,_,_,_}` (\"float\" values push their bit pattern into the high and low 16-bit word). For the new half-only test cases, if the layout does not support f16 values, the 32-bit float is differentiated from the full float test by encoding a float value that has the bit pattern in just the low 16-bit word (so instead of `1,1` we\u0027d expect `1,_`). For half-only tests where the layout *does* support f16 values, we can simply expect `1`.",
+      "range": {
+        "startLine": 1170,
+        "startChar": 0,
+        "endLine": 1177,
+        "endChar": 52
+      },
+      "revId": "7cb0539ec1ac65ba5444de005f9577d87a432213",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
