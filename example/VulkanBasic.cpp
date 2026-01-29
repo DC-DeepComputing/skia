@@ -84,8 +84,11 @@ int main(int argc, char** argv) {
     }
     ACQUIRE_INST_VK_PROC(DestroyDevice);
 
-    backendContext.fMemoryAllocator = skgpu::VulkanMemoryAllocators::Make(
-            backendContext, skgpu::ThreadSafe::kNo);
+    if (auto m = skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo)) {
+        backendContext.fMemoryAllocator = m.take();
+    } else {
+        return 1;
+    }
 
     // Create a GrDirectContext with our VulkanBackendContext
     sk_sp<GrDirectContext> context = GrDirectContexts::MakeVulkan(backendContext);

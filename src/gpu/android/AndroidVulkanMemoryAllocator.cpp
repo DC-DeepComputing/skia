@@ -14,7 +14,7 @@
 #include <optional>
 
 namespace SkiaVMA {
-sk_sp<skgpu::VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& ctx, Options opts) {
+SkResultP<skgpu::VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& ctx, Options opts) {
     skgpu::ThreadSafe threadSafe =
             opts.fThreadSafe ? skgpu::ThreadSafe::kYes : skgpu::ThreadSafe::kNo;
     return skgpu::VulkanMemoryAllocators::Make(ctx, threadSafe);
