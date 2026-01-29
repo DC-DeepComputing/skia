@@ -190,6 +190,7 @@ tests_sources = [
   "$_tests/RectTest.cpp",
   "$_tests/RefCntTest.cpp",
   "$_tests/RegionTest.cpp",
+  "$_tests/ResultTest.cpp",
   "$_tests/RoundRectTest.cpp",
   "$_tests/RuntimeBlendTest.cpp",
   "$_tests/SRGBTest.cpp",
