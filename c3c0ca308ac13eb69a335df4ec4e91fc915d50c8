@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66d18ee1_8a2accf9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-01-29T17:53:09Z",
+      "side": 1,
+      "message": "At Rob\u0027s request, I split out the colortypeinfo refactors of Caps into an earlier CL: https://skia-review.googlesource.com/c/skia/+/1153056. Now the main change to Caps is the shared implementation of `getDefaultColorType()`, and re-arranging the A8 colortype info to be the first choice for R8 textures.",
+      "revId": "c3c0ca308ac13eb69a335df4ec4e91fc915d50c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
