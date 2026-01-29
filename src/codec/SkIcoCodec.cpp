@@ -342,6 +342,22 @@ bool SkIcoCodec::onSkipScanlines(int count) {
     return fCurrCodec->skipScanlines(count);
 }
 
+bool SkIcoCodec::onSupportsIncrementalDecode(const SkImageInfo& dstInfo) {
+    int index = 0;
+    while (true) {
+        index = this->chooseCodec(dstInfo.dimensions(), index);
+        if (index < 0) {
+            break;
+        }
+        SkCodec* embeddedCodec = fEmbeddedCodecs->at(index).get();
+        if (embeddedCodec->onSupportsIncrementalDecode(dstInfo)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 SkCodec::Result SkIcoCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
         void* pixels, size_t rowBytes, const SkCodec::Options& options) {
     int index = 0;
