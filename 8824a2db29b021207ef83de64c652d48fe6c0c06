@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cde1d87_89a6120e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-29T14:04:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "02ad105d_ef4be626",
+      "range": {
+        "startLine": 32,
+        "startChar": 44,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "8824a2db29b021207ef83de64c652d48fe6c0c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8891d266_619e120a",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-01-28T22:33:35Z",
       "side": 1,
       "message": "It is interesting having an `SkTypeface_fontations.h` (external public), an `SkTypeface_fontations_priv.h` (internal source private), and this which is essentially `SkTypeface_fontations_pub.h` (internal source public, though Bazel is by default leaking it to external public unless this is depended on through `implementation_deps`).",
+      "revId": "8824a2db29b021207ef83de64c652d48fe6c0c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ade7ce5_de13f942",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-29T14:04:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8891d266_619e120a",
       "revId": "8824a2db29b021207ef83de64c652d48fe6c0c06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
