@@ -52,6 +52,8 @@ PRIVATE_HEADERS = [
     "SkSemaphore.h",
     "SkTDArray.h",
     "SkThreadID.h",
+    "SkLog.h",
+    "SkLogPriority.h",
 ]
 
 skia_filegroup(
