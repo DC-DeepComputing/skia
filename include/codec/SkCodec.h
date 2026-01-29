@@ -28,6 +28,7 @@
 #include <optional>
 #include <string_view>
 #include <tuple>
+#include <type_traits>
 #include <vector>
 
 class SkData;
@@ -853,10 +854,30 @@ protected:
 
     using XformFormat = skcms_PixelFormat;
 
+    enum class Flags : uint8_t {
+        kNone                 = 0,
+        kHasIncrementalDecode = 1 << 0,
+    };
+    friend Flags operator|(Flags f1, Flags f2) {
+        using T = std::underlying_type_t<Flags>;
+        return static_cast<Flags>(static_cast<T>(f1) | static_cast<T>(f2));
+    }
+    friend Flags operator&(Flags f1, Flags f2) {
+        using T = std::underlying_type_t<Flags>;
+        return static_cast<Flags>(static_cast<T>(f1) & static_cast<T>(f2));
+    }
+
+    SkCodec(SkEncodedInfo&& info,
+            XformFormat srcFormat,
+            std::unique_ptr<SkStream> stream,
+            SkEncodedOrigin origin = kTopLeft_SkEncodedOrigin);
     SkCodec(SkEncodedInfo&&,
+            Flags,
             XformFormat srcFormat,
             std::unique_ptr<SkStream>,
             SkEncodedOrigin = kTopLeft_SkEncodedOrigin);
+
+    bool hasFlags(Flags flags) const { return (fFlags & flags) == flags; }
 
     virtual bool onGetGainmapCodec(SkGainmapInfo*, std::unique_ptr<SkCodec>*) { return false; }
     virtual bool onGetGainmapInfo(SkGainmapInfo*) { return false; }
@@ -999,6 +1020,7 @@ protected:
 
 private:
     const SkEncodedInfo                fEncodedInfo;
+    const Flags                        fFlags;
     XformFormat                        fSrcXformFormat;
     std::unique_ptr<SkStream>          fStream;
     bool fNeedsRewind = false;
