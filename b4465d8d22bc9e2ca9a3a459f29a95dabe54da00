@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd4a4c0_b99d6276",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-01-29T14:05:35Z",
+      "side": 1,
+      "message": "ptal -- I\u0027m switching us to using the R8/R16 stuff (at long last) for YUV images. This format was missed.",
+      "revId": "b4465d8d22bc9e2ca9a3a459f29a95dabe54da00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
