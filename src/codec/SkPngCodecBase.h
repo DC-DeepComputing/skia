@@ -36,7 +36,7 @@ public:
     static bool isCompatibleColorProfileAndType(const SkCodecs::ColorProfile* profile,
                                                 SkEncodedInfo::Color color);
 protected:
-    SkPngCodecBase(SkEncodedInfo&&, std::unique_ptr<SkStream>, SkEncodedOrigin origin);
+    SkPngCodecBase(SkEncodedInfo&&, Flags, std::unique_ptr<SkStream>, SkEncodedOrigin origin);
 
     // Initialize most fields needed by `applyXformRow`.
     //

@@ -388,6 +388,7 @@ SkWuffsCodec::SkWuffsCodec(SkEncodedInfo&& encodedInfo,
                            wuffs_base__image_config imgcfg,
                            wuffs_base__io_buffer iobuf)
         : INHERITED(std::move(encodedInfo),
+                    Flags::kHasIncrementalDecode,
                     skcms_PixelFormat_RGBA_8888,
                     // Pass a nullptr SkStream to the SkCodec constructor. We
                     // manage the stream ourselves, as the default SkCodec behavior

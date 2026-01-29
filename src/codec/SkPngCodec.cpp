@@ -931,7 +931,10 @@ SkPngCodec::SkPngCodec(SkEncodedInfo&& encodedInfo,
                        void* info_ptr,
                        std::unique_ptr<SkStream> gainmapStream,
                        std::optional<SkGainmapInfo> gainmapInfo)
-        : SkPngCodecBase(std::move(encodedInfo), std::move(stream), kDefaultEncodedOrigin)
+        : SkPngCodecBase(std::move(encodedInfo),
+                         Flags::kHasIncrementalDecode,
+                         std::move(stream),
+                         kDefaultEncodedOrigin)
         , fPngChunkReader(std::move(chunkReader))
         , fPng_ptr(png_ptr)
         , fInfo_ptr(info_ptr)

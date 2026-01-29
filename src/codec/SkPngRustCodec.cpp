@@ -451,6 +451,7 @@ SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
                                rust::Box<rust_png::Reader> reader)
         : SkPngCodecBase(std::move(encodedInfo),
+                         Flags::kHasIncrementalDecode,
                          // TODO(https://crbug.com/370522089): If/when `SkCodec` can
                          // avoid unnecessary rewinding, then stop "hiding" our stream
                          // from it.

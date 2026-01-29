@@ -218,7 +218,10 @@ SkIcoCodec::SkIcoCodec(SkEncodedInfo&& info,
                        std::unique_ptr<TArray<std::unique_ptr<SkCodec>>> codecs)
         // The source skcms_PixelFormat will not be used. The embedded
         // codec's will be used instead.
-        : INHERITED(std::move(info), skcms_PixelFormat(), std::move(stream))
+        : INHERITED(std::move(info),
+                    Flags::kHasIncrementalDecode,
+                    skcms_PixelFormat(),
+                    std::move(stream))
         , fEmbeddedCodecs(std::move(codecs))
         , fCurrCodec(nullptr) {}
 
