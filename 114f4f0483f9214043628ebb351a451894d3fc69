@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe13ea7_1bc52ea4",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-30T14:46:38Z",
+      "side": 1,
+      "message": "driveby: `if constexpr` here and below to make sure it\u0027s a compile-time setting?",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 10
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
