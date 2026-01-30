@@ -67,36 +67,21 @@ public:
     void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
-    template <bool kIsStencil>
-    void recordBackwards(int stepIndex,
-                         bool dependsOnDst,
+    void recordBackwards(bool dependsOnDst,
+                         bool disjointStencil,
                          const RenderStep* step,
                          const LayerKey& key,
                          const DrawParams* drawParams,
-                         const BarrierType& barrierBeforeDraws);
+                         const BarrierType& barrierBeforeDraws,
+                         const Layer* stopLayer,
+                         Layer*& captureLayer);
 
-    void recordStep(int stepIndex,
-                    bool dependsOnDst,
-                    const RenderStep* step,
-                    const LayerKey& key,
-                    const DrawParams* drawParams,
-                    const BarrierType& barrierBeforeDraws);
-
-    void recordStencil(int stepIndex,
-                       bool dependsOnDst,
-                       const RenderStep* step,
-                       const LayerKey& key,
-                       const DrawParams* drawParams,
-                       const BarrierType& barrierBeforeDraws);
-
-    void recordClipped(int stepIndex,
-                       bool isStencil,
-                       bool dependsOnDst,
-                       const RenderStep* step,
-                       const LayerKey& key,
-                       const DrawParams* drawParams,
-                       const BarrierType& barrierBeforeDraws,
-                       std::optional<std::reference_wrapper<Layer*>> startLayer);
+    void recordForwards(bool disjointStencil,
+                        const RenderStep* step,
+                        const LayerKey& key,
+                        const DrawParams* drawParams,
+                        const BarrierType& barrierBeforeDraws,
+                        Layer*& startLayer);
 
     void recordDepthOnly(int stepIndex,
                          bool isStencil,
@@ -119,8 +104,7 @@ private:
     SkTInternalLList<Layer> fLayers;
 
     int fDrawCount = 0;
-    ChainedDraw* fLastDeferredDraw = nullptr;
-    ChainedDraw* fLastRecordedDraw = nullptr;
+    DeferredDraw* fLastDeferredDraw = nullptr;
 };
 
 } // namespace skgpu::graphite

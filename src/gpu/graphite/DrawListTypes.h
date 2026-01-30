@@ -60,23 +60,25 @@ namespace skgpu::graphite {
         bool operator!=(const LayerKey& other) const { return !(*this == other); }
     };
 
-    struct SingleDraw {
-        SingleDraw(const RenderStep* step, const DrawParams* params,
-                   const BarrierType& barrierBeforeDraws)
+    struct RecordedDraw {
+        RecordedDraw(const RenderStep* step, const DrawParams* params,
+                     const BarrierType& barrierBeforeDraws)
             : fStep(step)
             , fDrawParams(params)
             , fBarrierBeforeDraws(barrierBeforeDraws) {}
 
-        const RenderStep*   fStep;
-        const DrawParams*   fDrawParams;
-        const BarrierType   fBarrierBeforeDraws;
+        const RenderStep* fStep;
+        const DrawParams* fDrawParams;
+        const BarrierType fBarrierBeforeDraws;
 
-        SK_DECLARE_INTERNAL_LLIST_INTERFACE(SingleDraw);
+        SK_DECLARE_INTERNAL_LLIST_INTERFACE(RecordedDraw);
     };
 
-    struct ChainedDraw {
-        ChainedDraw(const LayerKey& key, const RenderStep* step, const DrawParams* drawParams,
-                    const BarrierType& barrierBeforeDraws)
+    struct DeferredDraw {
+        DeferredDraw(const LayerKey& key,
+                     const RenderStep* step,
+                     const DrawParams* drawParams,
+                     const BarrierType& barrierBeforeDraws)
                 : fKey(key)
                 , fStep(step)
                 , fDrawParams(drawParams)
@@ -84,74 +86,44 @@ namespace skgpu::graphite {
                 , fChildDraw(nullptr) {
         }
 
-        const LayerKey    fKey;
+        const LayerKey fKey;
         const RenderStep* fStep;
         const DrawParams* fDrawParams;
         const BarrierType fBarrierBeforeDraws;
-        ChainedDraw*     fChildDraw;
-
-        SK_DECLARE_INTERNAL_LLIST_INTERFACE(ChainedDraw);
+        DeferredDraw* fChildDraw;
     };
 
-    struct BindingWrapper {
-        BindingListType fType;
+    struct BindingList {
+        BindingList(bool disjointStencil)
+        : fContainsStencil(disjointStencil) {}
+
         LayerKey fKey;
         Rect fBounds = Rect::InfiniteInverted();
-        bool fContainsStencil = false;
+        SkTInternalLList<RecordedDraw> fDraws;
+        bool fContainsStencil;
 
-        SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingWrapper);
-
-        BindingWrapper(BindingListType type) : fType(type) {}
-    };
-
-    template <typename T>
-    struct BindingList : public BindingWrapper {
-        using DrawType = T;
-        SkTInternalLList<T> fDraws;
-        BindingList(BindingListType type) : BindingWrapper(type) {}
+        SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingList);
     };
 
     struct Layer {
-        // TODO Replace with BindingList? Likely a little more overhead.
         Rect fDepthOnlyBounds = Rect::InfiniteInverted();
-        skia_private::TArray<ChainedDraw*>* fDepthOnlyDraws = nullptr;
+        skia_private::TArray<DeferredDraw*>* fDepthOnlyDraws = nullptr;
         bool fDepthOnlyStencil = false;
 
-        SkTInternalLList<BindingWrapper> fBindings;
+        SkTInternalLList<BindingList> fBindings;
 
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
-        BindingWrapper* searchBinding(const LayerKey& key);
+        BindingList* searchBinding(const LayerKey& key);
 
         BoundsTest test(const Rect& drawBounds, const LayerKey& key, bool disjointStencil);
         BoundsTest depthOnlyTest(const Rect& drawBounds, const LayerKey& key, bool disjointStencil);
 
-        void addDepthOnlyDraw(SkArenaAllocWithReset* alloc, ChainedDraw* deferredDraw,
-                              bool disjointStencil);
+         void add(SkArenaAllocWithReset* alloc, BindingList* match, const LayerKey& key,
+                  RecordedDraw* draw, bool dependsOnDst, bool disjointStencil);
 
-        template<typename T>
-        void add(SkArenaAllocWithReset* alloc, BindingWrapper* match, const LayerKey& key, T* draw,
-                 bool dependsOnDst, bool disjointStencil) {
-            if (match) {
-                auto* typedMatch = static_cast<BindingList<T>*>(match);
-                if (!dependsOnDst) {
-                    typedMatch->fDraws.addToHead(draw);
-                } else {
-                    typedMatch->fDraws.addToTail(draw);
-                }
-                typedMatch->fBounds.join(draw->fDrawParams->drawBounds());
-                typedMatch->fContainsStencil |= disjointStencil;
-            } else {
-                BindingListType type = std::is_same_v<T, SingleDraw> ? BindingListType::kSingle
-                                                                     : BindingListType::kChained;
-                BindingList<T>* list = alloc->make<BindingList<T>>(type);
-                list->fKey = key;
-                list->fBounds = draw->fDrawParams->drawBounds();
-                list->fDraws.addToHead(draw);
-                list->fContainsStencil = disjointStencil;
-                fBindings.addToTail(list);
-            }
-        }
+        void addDepthOnlyDraw(SkArenaAllocWithReset* alloc, DeferredDraw* deferredDraw,
+                              bool disjointStencil);
     };
 } // namespace skgpu::graphite
 
