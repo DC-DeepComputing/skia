@@ -1618,6 +1618,8 @@ void Device::drawGeometry(const Transform& localToDevice,
     //         child of the current draw. See "Layer" tests in NotifyInUseTest.cpp.
     DstReadStrategy dstReadStrategy = shading.dstReadRequired() ?
                                       fDC->dstReadStrategy() : DstReadStrategy::kNoneRequired;
+    // TODO (thomsmit): Since clip are draws are now recorded immediately, is it necessary to use
+    // use the conservative max clip draws here? I think the answer is still yes. ..
     const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
     if (needsFlush) {
         if (pathAtlas != nullptr) {
@@ -1749,8 +1751,12 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
     // this point.
     DrawOrder order(fCurrentDepth.next());
-    CompressedPaintersOrder clipOrder = fClip.updateClipStateForDraw(
+    auto [clipOrder, clipDrawLayer] = fClip.updateClipStateForDraw(
             clip, clipElements, fColorDepthBoundsManager.get(), order.depth());
+    std::optional<std::reference_wrapper<Layer*>> targetLayer = std::nullopt;
+    if (clipDrawLayer.has_value()) {
+        targetLayer = std::ref(*clipDrawLayer);
+    }
 
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
@@ -1788,7 +1794,8 @@ void Device::drawGeometry(const Transform& localToDevice,
         SkASSERT(atlasMask.has_value());
         auto [mask, origin] = *atlasMask;
         fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
-                        order, paintID, dstUsage, scopedDrawBuilder.gatherer(), nullptr);
+                        order, paintID, dstUsage, scopedDrawBuilder.gatherer(), nullptr, {},
+                        targetLayer);
     } else {
         if (styleType != SkStrokeRec::kFill_Style) {
             // For stroke-and-fill, 'renderer' is used for the fill and we always use the
@@ -1798,7 +1805,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                    : renderer,
                             localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), &stroke);
+                            scopedDrawBuilder.gatherer(), &stroke, {}, targetLayer);
         } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
             // Possibly record an additional draw using the non-AA bounds renderer to fill the
             // interior with a renderer that can disable blending entirely.
@@ -1811,7 +1818,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                 orderWithoutCoverage.reverseDepthAsStencil();
                 fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                                 Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                paintID, DstUsage::kNone, scopedDrawBuilder.gatherer(), nullptr);
+                                paintID, DstUsage::kNone, scopedDrawBuilder.gatherer(), nullptr, {},
+                                targetLayer);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
@@ -1821,7 +1829,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
             fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), nullptr);
+                            scopedDrawBuilder.gatherer(), nullptr, {}, targetLayer);
         }
     }
 
@@ -1882,6 +1890,52 @@ void Device::drawClipShape(const Transform& localToDevice,
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
     if (order.depth() > fCurrentDepth) {
         fCurrentDepth = order.depth();
+    }
+}
+
+// records a draw and returns a backpointer to the drawParams of the draw
+bool Device::drawClipShapeImmediate(const Transform& localToDevice,
+                                    const Shape& shape,
+                                    const Clip& clip,
+                                    DrawOrder order,
+                                    DrawParams*& captureParams,
+                                    Layer*& captureLayer) {
+    ScopedDrawBuilder scopedDrawBuilder(fRecorder);
+    auto renderer = this->chooseMSAARenderer(shape,
+                                             DefaultFillStyle(),
+                                             clip.transformedShapeBounds());
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping clip with no supported path renderer.");
+        return false;
+    }
+
+    // We update the disjoint stencil downstream and order downstream!
+    if (localToDevice.type() == Transform::Type::kPerspective) {
+        SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
+        fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, captureParams, captureLayer);
+    } else {
+        fDC->recordDraw(renderer, localToDevice, Geometry(shape), clip, order,
+                        UniquePaintParamsID::Invalid(), DstUsage::kNone,
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, captureParams, captureLayer);
+    }
+
+    return
+        (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) != DepthStencilFlags::kNone;
+}
+
+void Device::updateStencilSet(DrawParams* params) {
+    DisjointStencilIndex setIndex = fDisjointStencilSet->add(params->order().paintOrder(),
+                                                             params->drawBounds());
+    params->order().dependsOnStencil(setIndex);
+}
+
+void Device::updateDepth(PaintersDepth depth) {
+    // This ensures that draws recorded after this clip shape has been popped off the stack will
+    // be unaffected by the Z value the clip shape wrote to the depth attachment.
+    if (depth > fCurrentDepth) {
+        fCurrentDepth = depth;
     }
 }
 
