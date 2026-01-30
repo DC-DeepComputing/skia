@@ -1027,6 +1027,8 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
                 // `Caps::areColorTypeAndTextureInfoCompatible` consults the fColorType field, so
                 // make sure it aligns with the color type we expect to see for AHardwareBuffers
                 // that use AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM (kExternalFormatColorType).
+                // KEEP IN SYNC with AHardwareBufferUtils::kExternalFormatColorType.
+                static constexpr SkColorType kExternalFormatColorType = kRGBA_8888_SkColorType;
                 ctInfo.fColorType = kExternalFormatColorType;
                 // fTransferColorType is currently not referenced, but the actual color type
                 // (e.g. for readbacks) should be kBGRA_8888_SkColorType so use that here. Simply
@@ -1952,7 +1954,18 @@ SkSpan<const Caps::ColorTypeInfo> VulkanCaps::getColorTypeInfos(
         // If VkFormat is undefined but there is a valid YCbCr conversion associated with the
         // texture, then we know we are using an external format and can return color type
         // info representative of external format color information.
-        return vkInfo.fYcbcrConversionInfo.isValid() ? SkSpan(&fExternalFormatColorTypeInfo, 1)
+        static const ColorTypeInfo kExternalColorTypeInfos[2] = {
+                {/*fColorType=*/kRGBA_8888_SkColorType,
+                 /*fTransferColorType=*/kUnknown_SkColorType,
+                 /*fFlags=*/0,
+                 /*fReadSwizzle=*/Swizzle::RGBA(),
+                 /*fWriteSwizzle=*/{}},
+                {/*fColorType=*/kRGB_888x_SkColorType,
+                 /*fTransferColorType=*/kUnknown_SkColorType,
+                 /*fFlags=*/0,
+                 /*fReadSwizzle=*/Swizzle::RGB1(),
+                 /*fWriteSwizzle=*/{}}};
+        return vkInfo.fYcbcrConversionInfo.isValid() ? SkSpan(kExternalColorTypeInfos, 2)
                                                      : SkSpan<const ColorTypeInfo>();
     }
 
