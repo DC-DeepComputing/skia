@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5ba8c24_a88e235a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-30T15:50:49Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "f45cc36d41ce70f2d9647749dd5dcd08e3cbe30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a2624d_2b7610a2",
+        "filename": "tests/graphite/precompile/PrecompileTestUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-30T15:50:49Z",
+      "side": 1,
+      "message": "Nit: should these be outside of the anonymous namespace?",
+      "range": {
+        "startLine": 310,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "372098e2_98ba5c0b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/graphite/precompile/PrecompileTestUtils.cpp",
+              "range": {
+                "startLine": 310,
+                "startChar": 0,
+                "endLine": 333,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "f45cc36d41ce70f2d9647749dd5dcd08e3cbe30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
