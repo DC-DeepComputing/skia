@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3986007_f14e0168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-30T21:11:41Z",
+      "side": 1,
+      "message": "Quick once-over +1 w/ one nit",
+      "revId": "6f5a6c7ed9737c585c0429cd92e5ce4894c7d252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "403c407b_b22c5ec3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-01-30T21:11:41Z",
+      "side": 1,
+      "message": "nit: Edit comment to say something more like \"It is imperative that this stays in sync with AHardwareBufferUtils::kExternalFormatColorType\", maybe briefly outlining what happens if it doesn\u0027t.\nCould that be statically asserted somewhere?",
+      "range": {
+        "startLine": 1030,
+        "startChar": 19,
+        "endLine": 1030,
+        "endChar": 31
+      },
+      "revId": "6f5a6c7ed9737c585c0429cd92e5ce4894c7d252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
