@@ -182,7 +182,7 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
-                 /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
+                 /*reusableRequiresPurgeable=*/true,
 #if defined(__EMSCRIPTEN__)
                  // prepareForReturnToCache only needs to be called for a buffer that is mappable
                  // for writing
