@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c83ecf_9fb35c76",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-01-30T14:50:04Z",
+      "side": 0,
+      "message": "Thanks for the fix. This is breaking G3",
+      "range": {
+        "startLine": 14,
+        "startChar": 23,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "91402f9526e61ecf4d39f1a30b75f5dcc58e5577",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
