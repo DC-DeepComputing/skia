@@ -1822,6 +1822,7 @@ skia_source_set("core") {
     ":fontmgr_win_gdi",
     ":png_decode_libpng",
     ":png_encode_libpng",
+    "src/partition_alloc:raw_ptr",
   ]
   deps = [ ":typeface_fontations" ]
 }
@@ -2841,6 +2842,7 @@ if (skia_enable_tools) {
           "modules/skottie:utils",
           "modules/skshaper",
           "modules/skunicode",
+          "tools/partition_alloc:test_support",
         ]
         if (skia_use_libpng_decode) {
           deps += [ "modules/svg" ]
@@ -2908,6 +2910,7 @@ if (skia_enable_tools) {
         "modules/skshaper",
         "modules/skunicode",
         "modules/svg",
+        "tools/partition_alloc:test_support",
       ]
       if (skia_enable_graphite) {
         deps += [ ":common_flags_graphite" ]

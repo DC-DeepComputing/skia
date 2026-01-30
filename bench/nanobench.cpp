@@ -56,6 +56,7 @@
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
@@ -1359,6 +1360,11 @@ class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler 
 };
 
 int main(int argc, char** argv) {
+    // To achieve benchmark results closers to what Chromium based applications would obtain, the
+    // benchmark are run with PartitionAlloc enabled. This is the memory allocator used by Chromium
+    // based applications.
+    skiatest::InitializePartitionAllocForTesting();
+
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
