@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93152dde_f94b353a",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-30T15:09:30Z",
+      "side": 1,
+      "message": "What are we gaining from having these two functions? It seems like in the implementations of vSkLog when comparing it to SkDebugf they are just replacing a va_start call with a va_copy call. Is it really cleaner to have the extra indirection to do the va_start in one place, but still need to add the extra copy call in vSkLog?",
+      "range": {
+        "startLine": 20,
+        "startChar": 13,
+        "endLine": 20,
+        "endChar": 69
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61bf8b09_42830bff",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-30T15:09:30Z",
+      "side": 1,
+      "message": "Where does this naming pattern come from? My quick search in Skia for where we use this two function pattern uses the names SkFoof and SkFooVAList. So if we followed that here we\u0027d name these SkLogf and SkLogVAList. IMO just having a v in front of the name is not very clear what the function does.",
+      "range": {
+        "startLine": 20,
+        "startChar": 5,
+        "endLine": 20,
+        "endChar": 11
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebe13ea7_1bc52ea4",
         "filename": "include/private/base/SkLog.h",
         "patchSetId": 13
@@ -19,6 +65,29 @@
         "startChar": 8,
         "endLine": 43,
         "endChar": 10
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ac00c16_4a5355cf",
+        "filename": "src/ports/SkDebug_android.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-01-30T15:09:30Z",
+      "side": 1,
+      "message": "All these files are called SkDebug_foo.cpp. That is because they are the implementations for SkDebugf. Do we not need these implementations anymore?\n\nRegardless we should either make new files or renames these to be SkLog_foo.cpp",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
       },
       "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
