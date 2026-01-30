@@ -81,15 +81,22 @@ private:
     SkSampler* getSampler(bool createIfNecessary) override;
 
     /*
-     * Searches fEmbeddedCodecs for a codec that matches requestedSize.
-     * The search starts at startIndex and ends when an appropriate codec
-     * is found, or we have reached the end of the array.
+     * Invokes the callback function for each codec in fEmbeddedCodecs that matches
+     * requestedSize.
      *
-     * @return the index of the matching codec or -1 if there is no
-     *         matching codec between startIndex and the end of
-     *         the array.
+     * The callback is expected to return a boolean: for true we continue iterating,
+     * false breaks out early.
      */
-    int chooseCodec(const SkISize& requestedSize, int startIndex);
+    template <typename Func>
+    void forEachCodecMatching(const SkISize& requestedSize, Func fn) {
+        for (const auto& codec : *fEmbeddedCodecs) {
+            if (codec->dimensions() == requestedSize) {
+                if (!fn(codec.get())) {
+                    break;
+                }
+            }
+        }
+    }
 
     /*
      * Constructor called by NewFromStream

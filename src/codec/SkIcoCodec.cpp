@@ -250,21 +250,13 @@ SkISize SkIcoCodec::onGetScaledDimensions(float desiredScale) const {
     return fEmbeddedCodecs->at(minIndex)->dimensions();
 }
 
-int SkIcoCodec::chooseCodec(const SkISize& requestedSize, int startIndex) {
-    SkASSERT(startIndex >= 0);
-
-    // FIXME: Cache the index from onGetScaledDimensions?
-    for (int i = startIndex; i < fEmbeddedCodecs->size(); i++) {
-        if (fEmbeddedCodecs->at(i)->dimensions() == requestedSize) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 bool SkIcoCodec::onDimensionsSupported(const SkISize& dim) {
-    return this->chooseCodec(dim, 0) >= 0;
+    bool result = false;
+    this->forEachCodecMatching(dim, [&](SkCodec*) {
+        result = true;
+        return false; // break outer iterator
+    });
+    return result;
 }
 
 /*
@@ -279,56 +271,46 @@ SkCodec::Result SkIcoCodec::onGetPixels(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    int index = 0;
-    SkCodec::Result result = kInvalidScale;
-    while (true) {
-        index = this->chooseCodec(dstInfo.dimensions(), index);
-        if (index < 0) {
-            break;
-        }
+    Result result = kInvalidScale;
 
-        SkCodec* embeddedCodec = fEmbeddedCodecs->at(index).get();
-        result = embeddedCodec->getPixels(dstInfo, dst, dstRowBytes, &opts);
-        switch (result) {
+    this->forEachCodecMatching(dstInfo.dimensions(), [&](SkCodec* codec) {
+        result = codec->getPixels(dstInfo, dst, dstRowBytes, &opts);
+        switch(result) {
             case kSuccess:
             case kIncompleteInput:
                 // The embedded codec will handle filling incomplete images, so we will indicate
                 // that all of the rows are initialized.
                 *rowsDecoded = dstInfo.height();
-                return result;
+                return false; // break outer iterator
             default:
                 // Continue trying to find a valid embedded codec on a failed decode.
-                break;
+                return true;
         }
+    });
 
-        index++;
+    if (result != kSuccess) {
+        SkCodecPrintf("Error: No matching candidate image in ico.\n");
     }
-
-    SkCodecPrintf("Error: No matching candidate image in ico.\n");
     return result;
 }
 
 SkCodec::Result SkIcoCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
-        const SkCodec::Options& options) {
-    int index = 0;
-    SkCodec::Result result = kInvalidScale;
-    while (true) {
-        index = this->chooseCodec(dstInfo.dimensions(), index);
-        if (index < 0) {
-            break;
-        }
+                                                  const SkCodec::Options& options) {
+    Result result = kInvalidScale;
 
-        SkCodec* embeddedCodec = fEmbeddedCodecs->at(index).get();
-        result = embeddedCodec->startScanlineDecode(dstInfo, &options);
-        if (kSuccess == result) {
-            fCurrCodec = embeddedCodec;
-            return result;
+    this->forEachCodecMatching(dstInfo.dimensions(), [&](SkCodec* codec) {
+        result = codec->startScanlineDecode(dstInfo, &options);
+        if (result == kSuccess) {
+            fCurrCodec = codec;
+            return false; // break outer iterator
         }
+        return true; // continue
+    });
 
-        index++;
+    if (result != kSuccess) {
+        SkCodecPrintf("Error: No matching candidate image in ico.\n");
     }
 
-    SkCodecPrintf("Error: No matching candidate image in ico.\n");
     return result;
 }
 
@@ -343,43 +325,37 @@ bool SkIcoCodec::onSkipScanlines(int count) {
 }
 
 bool SkIcoCodec::onSupportsIncrementalDecode(const SkImageInfo& dstInfo) {
-    for (int i = 0; ;++i) {
-        i = this->chooseCodec(dstInfo.dimensions(), i);
-        if (i < 0) {
-            break;
-        }
-        SkASSERT(i < fEmbeddedCodecs->size());
-        if ((*fEmbeddedCodecs)[i]->onSupportsIncrementalDecode(dstInfo)) {
-            return true;
-        }
-    }
+    bool result = false;
 
-    return false;
+    this->forEachCodecMatching(dstInfo.dimensions(), [&](SkCodec* codec) {
+        result = codec->onSupportsIncrementalDecode(dstInfo);
+        return !result;  // break outer iterator if supported
+    });
+
+    return result;
 }
 
 SkCodec::Result SkIcoCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
                                                      void* pixels,
                                                      size_t rowBytes,
                                                      const SkCodec::Options& options) {
-    int index = 0;
-    while (true) {
-        index = this->chooseCodec(dstInfo.dimensions(), index);
-        if (index < 0) {
-            break;
+    Result result = kInvalidScale;
+
+    this->forEachCodecMatching(dstInfo.dimensions(), [&](SkCodec* codec) {
+        result = codec->startIncrementalDecode(dstInfo, pixels, rowBytes, &options);
+        if (result == kSuccess) {
+            fCurrCodec = codec;
+            return false; // break outer iterator
         }
 
-        SkCodec* embeddedCodec = fEmbeddedCodecs->at(index).get();
-        if (embeddedCodec->
-                startIncrementalDecode(dstInfo, pixels, rowBytes, &options) == kSuccess) {
-            fCurrCodec = embeddedCodec;
-            return kSuccess;
-        }
+        return true; // continue
+    });
 
-        index++;
+    if (result != kSuccess) {
+        SkCodecPrintf("Error: No matching candidate image in ico.\n");
     }
 
-    SkCodecPrintf("Error: No matching candidate image in ico.\n");
-    return kInvalidScale;
+    return result;
 }
 
 SkCodec::Result SkIcoCodec::onIncrementalDecode(int* rowsDecoded) {
