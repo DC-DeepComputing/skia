@@ -211,7 +211,7 @@ SkCodec::Result SkSampledCodec::sampledDecode(const SkImageInfo& info, void* pix
 
     const SkImageInfo nativeInfo = info.makeDimensions(nativeSize);
 
-    {
+    if (this->codec()->onSupportsIncrementalDecode(nativeInfo)) {
         // Although startScanlineDecode expects the bottom and top to match the
         // SkImageInfo, startIncrementalDecode uses them to determine which rows to
         // decode.
@@ -255,9 +255,10 @@ SkCodec::Result SkSampledCodec::sampledDecode(const SkImageInfo& info, void* pix
         } else if (startResult == SkCodec::kIncompleteInput
                 || startResult == SkCodec::kErrorInInput) {
             return SkCodec::kInvalidInput;
-        } else if (startResult != SkCodec::kUnimplemented) {
-            return startResult;
-        } // kUnimplemented means use the old method.
+        }
+
+        SkASSERT(startResult != SkCodec::kUnimplemented);
+        return startResult;
     }
 
     // Start the scanline decode.
