@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cdd4c5d_386f6ffd",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-30T16:46:16Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "7404e7d3_0facfb20",
+      "range": {
+        "startLine": 134,
+        "startChar": 24,
+        "endLine": 134,
+        "endChar": 33
+      },
+      "revId": "d293ac1dc31f5739dd686ba93b8b9766833d9035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b063a84_221dfd92",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-29T14:24:01Z",
       "side": 0,
       "message": "This was stale and should have been removed when I landed the changes to support substructs a while ago.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 93
+      },
+      "revId": "d293ac1dc31f5739dd686ba93b8b9766833d9035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37d17a9d_7521a05e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-01-30T16:46:16Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "1b063a84_221dfd92",
       "range": {
         "startLine": 160,
         "startChar": 0,
