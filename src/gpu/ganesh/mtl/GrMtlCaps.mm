@@ -668,7 +668,7 @@ void GrMtlCaps::initFormatTable() {
         info->fColorTypeInfoCount = 3;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
         int ctIdx = 0;
-        // Format: R8Unorm, Surface: kAlpha_8
+        // Format: R8Unorm, Surface: kR_8
         {
             auto& ctInfo = info->fColorTypeInfos[ctIdx++];
             ctInfo.fColorType = GrColorType::kR_8;
@@ -1016,6 +1016,7 @@ void GrMtlCaps::initFormatTable() {
     this->setColorType(GrColorType::kRGBA_8888,         { MTLPixelFormatRGBA8Unorm });
     this->setColorType(GrColorType::kRGBA_8888_SRGB,    { MTLPixelFormatRGBA8Unorm_sRGB });
     this->setColorType(GrColorType::kRGB_888x,          { MTLPixelFormatRGBA8Unorm });
+    this->setColorType(GrColorType::kR_8,               { MTLPixelFormatR8Unorm });
     this->setColorType(GrColorType::kRG_88,             { MTLPixelFormatRG8Unorm });
     this->setColorType(GrColorType::kBGRA_8888,         { MTLPixelFormatBGRA8Unorm });
     this->setColorType(GrColorType::kRGBA_1010102,      { MTLPixelFormatRGB10A2Unorm });
