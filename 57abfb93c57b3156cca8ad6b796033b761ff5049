@@ -22,6 +22,30 @@
       },
       "revId": "57abfb93c57b3156cca8ad6b796033b761ff5049",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9513f128_1abf6b84",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-02T18:01:32Z",
+      "side": 1,
+      "message": "Updated to the last commit bringing resumable BMP decoding support in image crate repo",
+      "parentUuid": "cf625617_c86428b0",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 53
+      },
+      "revId": "57abfb93c57b3156cca8ad6b796033b761ff5049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
