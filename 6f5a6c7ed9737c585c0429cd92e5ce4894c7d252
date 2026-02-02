@@ -39,6 +39,30 @@
       },
       "revId": "6f5a6c7ed9737c585c0429cd92e5ce4894c7d252",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13dd7cd4_ed498fc4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T14:21:16Z",
+      "side": 1,
+      "message": "I ended up reverting my CLs, so this change is just made in the reland instead of being a fix-forward. We can\u0027t really statically assert this because it\u0027s only being redefined here because I wanted to avoid conditionally compiling in the AHB utils header and guarding this rule with defines.\n\nThe whole colortype table system will hopefully be refactored out and this can all go away.",
+      "parentUuid": "403c407b_b22c5ec3",
+      "range": {
+        "startLine": 1030,
+        "startChar": 19,
+        "endLine": 1030,
+        "endChar": 31
+      },
+      "revId": "6f5a6c7ed9737c585c0429cd92e5ce4894c7d252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
