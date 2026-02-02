@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7891f20_d9c09594",
+        "filename": "tests/graphite/precompile/AndroidYCbCrPrecompileTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-02T21:41:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf132624_ef347d71",
+      "range": {
+        "startLine": 163,
+        "startChar": 5,
+        "endLine": 163,
+        "endChar": 16
+      },
+      "revId": "88052abc55d6f3e472b87913c7d85d62a8bc41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76f0fe82_621976eb",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-02T19:49:00Z",
       "side": 1,
       "message": "This is the HDR + tonemapping combination, which seems like it could also be paired with edge extension.  WDYT about having a w/ + w/o tonemapping loop around the base image so we can lift the creation of `linear` and `wrapped` into a shared object that can be reused through other effects that wrap it?",
+      "range": {
+        "startLine": 222,
+        "startChar": 53,
+        "endLine": 223,
+        "endChar": 72
+      },
+      "revId": "88052abc55d6f3e472b87913c7d85d62a8bc41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c145bf4_256c4cb9",
+        "filename": "tests/graphite/precompile/AndroidYCbCrPrecompileTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-02T21:41:36Z",
+      "side": 1,
+      "message": "For whatever reason we\u0027ve never seen a RE_EdgeExtensionEffect wrapping anything but a simple image draw. We have seen RE_EdgeExtensionEffect\u0027s wrapped in a RE_LinearEffect but that is as fancy as it gets.\n\nThat said, I have fused the two uses of the [ RE_LinearEffect [ RE_MouriMap_TonemapEffect [...]]] PrecompileShader into the same helper function.",
+      "parentUuid": "76f0fe82_621976eb",
       "range": {
         "startLine": 222,
         "startChar": 53,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1613adf_13630f41",
+        "filename": "tests/graphite/precompile/AndroidYCbCrPrecompileTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-02T21:41:36Z",
+      "side": 1,
+      "message": "We\u0027re currently seeing it with:\n\nHardwareImage(x247 2020+narrow cos cos linear F rgba cf1lf1)",
+      "parentUuid": "78c570ea_d4e09d64",
+      "range": {
+        "startLine": 239,
+        "startChar": 78,
+        "endLine": 239,
+        "endChar": 84
+      },
+      "revId": "88052abc55d6f3e472b87913c7d85d62a8bc41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "977e64cb_04a6a7f6",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-02T19:49:00Z",
       "side": 1,
       "message": "Hypothetically the rect + rrect intersection may not remain an rrect, but that\u0027s maybe not what is causing the issue in RE.",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 276,
+        "endChar": 98
+      },
+      "revId": "88052abc55d6f3e472b87913c7d85d62a8bc41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffc3d99b_898ebfd5",
+        "filename": "tests/graphite/precompile/AndroidYCbCrPrecompileTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-02T21:41:36Z",
+      "side": 1,
+      "message": "Yep - I\u0027ve changed the comment into a TODO",
+      "parentUuid": "977e64cb_04a6a7f6",
       "range": {
         "startLine": 276,
         "startChar": 0,
