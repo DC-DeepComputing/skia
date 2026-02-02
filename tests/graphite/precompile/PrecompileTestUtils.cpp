@@ -397,6 +397,7 @@ void PrecompileTest(skiatest::Reporter* reporter,
                 }
 
                 if (skip) {
+                    SkDebugf("skip1 %d\n", caps->getDepthStencilFormat(DepthStencilFlags::kDepth));
                     return;
                 }
             }
@@ -414,6 +415,7 @@ void PrecompileTest(skiatest::Reporter* reporter,
             }
 
             if (skip) {
+                SkDebugf("skip2\n");
                 return;
             }
 
