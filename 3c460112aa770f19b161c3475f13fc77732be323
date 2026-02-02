@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6db526ff_8b2e7593",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-02T15:30:29Z",
+      "side": 1,
+      "message": "457568684, added.",
+      "parentUuid": "15e276f0_1fc55cd9",
+      "range": {
+        "startLine": 42,
+        "startChar": 5,
+        "endLine": 42,
+        "endChar": 14
+      },
+      "revId": "3c460112aa770f19b161c3475f13fc77732be323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "4b167fa3_5a797c73",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 14
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d2150d_6f74db0f",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-02T15:30:29Z",
+      "side": 1,
+      "message": "Yeah, its only purpose at the moment is to skip the very first rewind call, which is redundant on a fresh stream.  I think that\u0027s still important, maybe we can think of a way to refactor that logic separately.",
+      "parentUuid": "e13c6799_95388d61",
+      "range": {
+        "startLine": 326,
+        "startChar": 4,
+        "endLine": 326,
+        "endChar": 16
+      },
+      "revId": "3c460112aa770f19b161c3475f13fc77732be323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25d4ef10_4bdf8237",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-02-02T13:18:28Z",
       "side": 1,
       "message": "ubernit: fall back to",
+      "range": {
+        "startLine": 260,
+        "startChar": 40,
+        "endLine": 260,
+        "endChar": 44
+      },
+      "revId": "3c460112aa770f19b161c3475f13fc77732be323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "652c2501_80186624",
+        "filename": "src/codec/SkSampledCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-02T15:30:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25d4ef10_4bdf8237",
       "range": {
         "startLine": 260,
         "startChar": 40,
