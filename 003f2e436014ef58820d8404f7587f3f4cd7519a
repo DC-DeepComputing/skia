@@ -16,6 +16,23 @@
       "message": "See PS1-\u003ePS4 for the fix changes.  Confirmed that this passes the test that failed after rolling in https://android-build.corp.google.com/abtd/run/L32300030071774349/",
       "revId": "003f2e436014ef58820d8404f7587f3f4cd7519a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08ad5fe2_de614eae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T18:51:48Z",
+      "side": 1,
+      "message": "The canaries being red seem to be flakes unrelated to this cl",
+      "revId": "003f2e436014ef58820d8404f7587f3f4cd7519a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
