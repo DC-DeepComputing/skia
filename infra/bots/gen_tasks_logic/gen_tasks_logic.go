@@ -94,6 +94,7 @@ const (
 	// The Bazel cache can grow large (>10GB), so this should be in a partition with enough free
 	// space.
 	bazelCacheDirOnGCELinux = "/home/chrome-bot/bazel_cache"
+	bazelCacheDirOnMac = "/home/chrome-bot/bazel_cache"
 
 	// bazelCacheDirOnSkoloLinux is like bazelCacheDirOnGCELinux for Skolo Linux machines. Unlike GCE
 	// Linux machines, the partition mounted at / on Skolo Linux machines is large enough. While
@@ -2237,6 +2238,7 @@ func (b *jobBuilder) bazelBuild() {
 		bazelCacheDir, ok := map[string]string{
 			// We only run builds in GCE.
 			"linux_x64":   bazelCacheDirOnGCELinux,
+			"mac_arm64":   bazelCacheDirOnMac,
 			"windows_x64": bazelCacheDirOnWindows,
 		}[host]
 		if !ok {
@@ -2278,6 +2280,9 @@ func (b *jobBuilder) bazelBuild() {
 			)
 			b.usesBazel("windows_x64")
 			cmd = append(cmd, "--bazel_arg=--experimental_scale_timeouts=2.0")
+		} else if host == "mac_arm64" {
+			b.usesBazel("mac_arm64")
+			b.dimension("cpu:arm64-64-Apple_M4", "pool:Skia")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
