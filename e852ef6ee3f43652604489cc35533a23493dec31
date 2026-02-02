@@ -69,6 +69,24 @@
       "parentUuid": "c256bb0f_68273ffd",
       "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b705e0_87f8a394",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-02T13:45:20Z",
+      "side": 1,
+      "message": "I wonder if there is an inconsistency between certain headers with the GN rules as you\u0027ve outlined them. I\u0027ve seen a similar odd crash when part of skia was compiled in debug mode and part was compiled in release.",
+      "parentUuid": "60cfc7af_8619bc72",
+      "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
