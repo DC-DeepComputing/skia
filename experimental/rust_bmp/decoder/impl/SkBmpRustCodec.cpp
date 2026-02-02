@@ -7,6 +7,7 @@
 
 #include "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h"
 
+#include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSpan.h"
@@ -97,8 +98,31 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
 
     rust::Box<rust_bmp::Reader> reader = resultOfReader->unwrap();
 
+    // In streaming mode, metadata might not be available yet if the stream
+    // doesn't have enough data. Try to read metadata explicitly.
+    if (!reader->metadata_loaded()) {
+        rust_bmp::DecodingResult metadataResult = reader->read_metadata();
+
+        if (metadataResult == rust_bmp::DecodingResult::IncompleteInput) {
+            // Need more data for metadata
+            *result = kIncompleteInput;
+            return nullptr;
+        } else if (metadataResult != rust_bmp::DecodingResult::Success) {
+            // Error during metadata read
+            *result = MapDecodingResult(metadataResult);
+            return nullptr;
+        }
+
+        // Verify metadata is now loaded
+        if (!reader->metadata_loaded()) {
+            *result = kErrorInInput;
+            return nullptr;
+        }
+    }
+
     uint32_t width = reader->width();
     uint32_t height = reader->height();
+    bool isBottomUp = reader->is_bottom_up();
     rust_bmp::BmpColor rustColor = reader->color();
     rust_bmp::BmpAlpha rustAlpha = reader->alpha();
 
@@ -107,21 +131,40 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
     SkEncodedInfo::Alpha alpha = static_cast<SkEncodedInfo::Alpha>(rustAlpha);
     constexpr int kBitsPerComponent = 8;
 
-    // TODO(crbug.com/452666425): Add ICC profile support for color-managed decoding. BMP files
-    // can embed ICC profiles (BITMAPV5HEADER format). Once rust/icc module
-    // is available, extract profile bytes in Rust FFI, parse with skcms to
-    // create sk_sp<SkData>, and pass to SkEncodedInfo::Make() below.
+    // Extract and parse ICC profile if present
+    std::unique_ptr<SkCodecs::ColorProfile> colorProfile;
+    rust::Vec<uint8_t> profileData = reader->icc_profile();
+    if (!profileData.empty()) {
+        sk_sp<SkData> iccData = SkData::MakeWithCopy(profileData.data(), profileData.size());
+        colorProfile = SkCodecs::ColorProfile::MakeICCProfile(std::move(iccData));
+    }
+
     SkEncodedInfo encodedInfo = SkEncodedInfo::Make(
         width,
         height,
         color,
         alpha,
-        kBitsPerComponent
+        kBitsPerComponent,
+        std::move(colorProfile)
     );
 
     // Pre-calculate srcRowBytes (width * bytesPerPixel) and check for overflow.
     // Also verify that the total image size (height * srcRowBytes) doesn't overflow.
-    size_t bytesPerPixel = (color == SkEncodedInfo::kBGR_Color) ? 3 : 4;
+    size_t bytesPerPixel;
+    switch (color) {
+        case SkEncodedInfo::kRGB_Color:
+        case SkEncodedInfo::kBGR_Color:
+            bytesPerPixel = 3;
+            break;
+        case SkEncodedInfo::kRGBA_Color:
+        case SkEncodedInfo::kBGRA_Color:
+        case SkEncodedInfo::kBGRX_Color:
+            bytesPerPixel = 4;
+            break;
+        default:
+            *result = kInvalidInput;
+            return nullptr;
+    }
     SkSafeMath safe;
     size_t srcRowBytes = safe.mul(safe.castTo<size_t>(width), bytesPerPixel);
     (void)safe.mul(safe.castTo<size_t>(height), srcRowBytes);
@@ -135,27 +178,78 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
         std::move(encodedInfo),
         std::move(stream),
         std::move(reader),
-        srcRowBytes
+        isBottomUp
     ));
 }
 
 SkBmpRustCodec::SkBmpRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
                                rust::Box<rust_bmp::Reader> reader,
-                               size_t srcRowBytes)
-    : SkCodec(std::move(encodedInfo), skcms_PixelFormat_BGR_888,
+                               bool isBottomUp)
+    : SkCodec(std::move(encodedInfo), skcms_PixelFormat_RGB_888,
               // TODO(crbug.com/370522089): Pass stream to SkCodec once SkCodec
               // avoids unnecessary rewinding (which forces re-reading entire stream).
               /* stream = */ nullptr)
     , fReader(std::move(reader))
     , fPrivStream(std::move(stream))
-    , fSrcRowBytes(srcRowBytes) {
+    , fIsBottomUp(isBottomUp) {
     SkASSERT_RELEASE(fPrivStream);
 }
 
 SkBmpRustCodec::~SkBmpRustCodec() = default;
 
+std::unique_ptr<SkStream> SkBmpRustCodec::getEncodedData() const {
+    SkASSERT_RELEASE(fPrivStream);
+    return fPrivStream->duplicate();
+}
+
+bool SkBmpRustCodec::onGetValidSubset(SkIRect* desiredSubset) const {
+    if (!desiredSubset) {
+        return false;
+    }
+
+    // Check that the subset is entirely within the image bounds
+    if (!this->bounds().contains(*desiredSubset)) {
+        return false;
+    }
+
+    // BMP codec supports arbitrary rectangular subsets with no restrictions
+    return true;
+}
+
+bool SkBmpRustCodec::onDimensionsSupported(const SkISize& requested) {
+    // BMP codec supports subset decoding, so any dimensions that fit within
+    // the image bounds are supported. This is needed because when decoding
+    // a subset, the requested dimensions are the subset size, not the full
+    // image size.
+    SkISize dims = this->dimensions();
+    int w = requested.width();
+    int h = requested.height();
+    return 1 <= w && w <= dims.width() && 1 <= h && h <= dims.height();
+}
+
+bool SkBmpRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
+    if (index != 0) {
+        return false;  // BMP images only have one frame
+    }
+    if (info) {
+        // BMP images are single-frame, so set frame metadata accordingly
+        info->fRequiredFrame = SkCodec::kNoFrame;
+        info->fDuration = 0;
+        info->fFullyReceived = true;
+        info->fAlphaType = this->getInfo().alphaType();
+        info->fHasAlphaWithinBounds = info->fAlphaType != kOpaque_SkAlphaType;
+        info->fDisposalMethod = SkCodecAnimation::DisposalMethod::kKeep;
+        info->fBlend = SkCodecAnimation::Blend::kSrc;
+        info->fFrameRect = SkIRect::MakeSize(this->dimensions());
+    }
+    return true;
+}
+
 bool SkBmpRustCodec::onRewind() {
+    // Clear any incremental decoding state
+    fIncrementalDecodingState.reset();
+
     if (!fPrivStream->rewind()) {
         return false;
     }
@@ -169,6 +263,14 @@ bool SkBmpRustCodec::onRewind() {
     }
 
     fReader = resultOfReader->unwrap();
+
+    // Read metadata for the new reader (required before read_image_data can work)
+    if (!fReader->metadata_loaded()) {
+        rust_bmp::DecodingResult metadataResult = fReader->read_metadata();
+        if (metadataResult != rust_bmp::DecodingResult::Success) {
+            return false;
+        }
+    }
 
     return true;
 }
@@ -199,7 +301,8 @@ SkCodec::Result SkBmpRustCodec::initializeSwizzler(const SkImageInfo& dstInfo,
 
 void SkBmpRustCodec::swizzleRow(const uint8_t* srcRow, void* dstRow) {
     if (this->xformOnDecode()) {
-        const int32_t width = this->dimensions().width();
+        // Use swizzler's width, which accounts for subsets
+        const int32_t width = fSwizzler->swizzleWidth();
         fSwizzler->swizzle(fXformBuffer.get(), srcRow);
         this->applyColorXform(dstRow, fXformBuffer.get(), width);
     } else {
@@ -217,6 +320,11 @@ SkCodec::Result SkBmpRustCodec::onGetPixels(const SkImageInfo& info,
         return result;
     }
 
+    // If we have a subset, use incremental decode to efficiently decode only needed rows
+    if (options.fSubset) {
+        return this->performSubsetDecode(info, dst, dstRowStride, options);
+    }
+
     return this->performFullDecode(info, dst, dstRowStride);
 }
 
@@ -226,42 +334,211 @@ SkCodec::Result SkBmpRustCodec::performFullDecode(const SkImageInfo& dstInfo,
     // Reset the reader to start decoding from the beginning.
     fReader->reset_decode_state();
 
-    const int32_t height = this->dimensions().height();
+    // Read all image data into the Rust decoder's internal buffer.
+    // This may return IncompleteInput if not enough data is available.
+    rust_bmp::DecodingResult readResult = fReader->read_image_data();
+    if (readResult == rust_bmp::DecodingResult::IncompleteInput) {
+        return kIncompleteInput;
+    }
+    if (readResult != rust_bmp::DecodingResult::Success) {
+        return MapDecodingResult(readResult);
+    }
 
+    const int32_t height = this->dimensions().height();
+    const size_t srcRowBytes = fReader->row_bytes();
+
+    // Get pointer to entire image buffer - single FFI call instead of per-row calls
+    rust::Slice<const uint8_t> imageData = fReader->get_image_data();
+    if (imageData.empty()) {
+        return kErrorInInput;
+    }
+
+    const uint8_t* srcBase = imageData.data();
+
+    // Optimization: Process rows in memory order to improve cache locality
+    // For bottom-up BMPs (most common), we still need to write to reversed destination rows
+    // but we read source rows sequentially for better cache performance.
+    if (fIsBottomUp) {
+        // Bottom-up: read source rows 0,1,2,... but write to dest rows height-1,height-2,...
+        for (int32_t y = 0; y < height; ++y) {
+            const uint8_t* srcRow = srcBase + (y * srcRowBytes);
+            void* dstRow = SkTAddOffset<void>(dst, (height - 1 - y) * dstRowStride);
+            this->swizzleRow(srcRow, dstRow);
+        }
+    } else {
+        // Top-down: both source and dest are in same order - best cache locality
+        for (int32_t y = 0; y < height; ++y) {
+            const uint8_t* srcRow = srcBase + (y * srcRowBytes);
+            void* dstRow = SkTAddOffset<void>(dst, y * dstRowStride);
+            this->swizzleRow(srcRow, dstRow);
+        }
+    }
+
+    return kSuccess;
+}
+
+SkCodec::Result SkBmpRustCodec::performSubsetDecode(const SkImageInfo& dstInfo,
+                                                     void* dst,
+                                                     size_t dstRowStride,
+                                                     const Options& options) {
+    // Reset decoder state
+    fReader->reset_decode_state();
+
+    // Read all image data into the Rust decoder's internal buffer.
+    rust_bmp::DecodingResult readResult = fReader->read_image_data();
+    if (readResult != rust_bmp::DecodingResult::Success) {
+        return MapDecodingResult(readResult);
+    }
+
+    const int32_t height = this->dimensions().height();
+    const SkIRect* subset = options.fSubset;
+    const size_t srcRowBytes = fReader->row_bytes();
+
+    // Get pointer to entire image buffer - single FFI call
+    rust::Slice<const uint8_t> imageData = fReader->get_image_data();
+    if (imageData.empty()) {
+        return kErrorInInput;
+    }
+
+    const uint8_t* srcBase = imageData.data();
+
+    // Calculate which rows we need to swizzle
+    int32_t firstRow = subset->fTop;
+    int32_t lastRow = subset->fBottom - 1;
+
+    // Process all rows, but only swizzle the ones in our subset
+    for (int32_t row = 0; row < height; ++row) {
+        // Determine which image row this file row corresponds to
+        int32_t imageRow = fIsBottomUp ? (height - 1 - row) : row;
+
+        // Only swizzle if this image row is within our subset
+        if (imageRow >= firstRow && imageRow <= lastRow) {
+            const uint8_t* srcRow = srcBase + (row * srcRowBytes);
+
+            int32_t dstRowIdx = imageRow - firstRow;
+            void* dstRowPtr = SkTAddOffset<void>(dst, dstRowIdx * dstRowStride);
+            this->swizzleRow(srcRow, dstRowPtr);
+        }
+    }
+
+    return kSuccess;
+}
+
+SkCodec::Result SkBmpRustCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
+                                                        void* dst,
+                                                        size_t dstRowBytes,
+                                                        const Options& options) {
+    // Validate and initialize swizzler
+    Result result = this->initializeSwizzler(dstInfo, options);
+    if (result != kSuccess) {
+        return result;
+    }
+
+    // Reset the reader to start decoding from the beginning
+    fReader->reset_decode_state();
+
+    // Initialize decoding state
+    DecodingState state;
+
+    // Handle subset decoding - determine which rows we'll decode
+    int firstRow, lastRow, numRows;
+    if (options.fSubset) {
+        firstRow = options.fSubset->top();
+        lastRow = options.fSubset->bottom() - 1;
+        numRows = lastRow - firstRow + 1;
+    } else {
+        firstRow = 0;
+        lastRow = dstInfo.height() - 1;
+        numRows = dstInfo.height();
+    }
+
+    state.fFirstRow = firstRow;
+    state.fLastRow = lastRow;
+
+    // Set up destination buffer information
+    // Note: When decoding a subset, dst points to the first row of the subset in the
+    // destination bitmap, so we calculate buffer size based on the number of rows we'll decode
     SkSafeMath safe;
-    size_t totalSize = safe.mul(fSrcRowBytes, safe.castTo<size_t>(height));
+    size_t totalDstSize = safe.mul(safe.castTo<size_t>(numRows), dstRowBytes);
     if (!safe.ok()) {
         return kInternalError;
     }
 
-    std::vector<uint8_t> decodedData(totalSize);
-    SkSpan<uint8_t> decodedImage = SkSpan(decodedData);
+    state.fDecodingDstInfo.fDst = SkSpan(static_cast<uint8_t*>(dst), totalDstSize);
+    state.fDecodingDstInfo.fDstRowStride = dstRowBytes;
 
-    // Decode all rows from the Rust decoder
-    for (int32_t y = 0; y < height; ++y) {
-        SkSpan<uint8_t> rowSpan = decodedImage.first(fSrcRowBytes);
-        rust::Slice<uint8_t> rowSlice(rowSpan.data(), fSrcRowBytes);
+    // Store state for subsequent incremental decode calls
+    fIncrementalDecodingState = std::move(state);
 
-        rust_bmp::DecodingResult result = fReader->next_row(rowSlice);
-        if (result == rust_bmp::DecodingResult::IncompleteInput) {
-            return kIncompleteInput;
-        }
-        if (result != rust_bmp::DecodingResult::Success) {
-            return kErrorInInput;
-        }
+    return kSuccess;
+}
 
-        decodedImage = decodedImage.subspan(fSrcRowBytes);
+SkCodec::Result SkBmpRustCodec::onIncrementalDecode(int* rowsDecoded) {
+    if (!fIncrementalDecodingState.has_value()) {
+        return kInvalidParameters;
     }
 
-    // Now swizzle all rows to the destination
-    SkSpan<const uint8_t> srcImage = SkSpan(decodedData);
-    for (int32_t y = 0; y < height; ++y) {
-        SkSpan<const uint8_t> srcRow = srcImage.first(fSrcRowBytes);
-        void* dstRow = SkTAddOffset<void>(dst, y * dstRowStride);
+    Result result = this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
 
-        this->swizzleRow(srcRow.data(), dstRow);
+    // Clean up state when decoding completes or encounters non-recoverable error
+    if (result == kSuccess || result != kIncompleteInput) {
+        fIncrementalDecodingState.reset();
+    }
 
-        srcImage = srcImage.subspan(fSrcRowBytes);
+    return result;
+}
+
+SkCodec::Result SkBmpRustCodec::incrementalDecode(DecodingState& state, int* rowsDecodedPtr) {
+    int rowsDecoded = 0;
+    DecodingState::DecodingDstInfo& dst = state.fDecodingDstInfo;
+
+    // Attempt to read all image data if not already loaded.
+    // This will return IncompleteInput if the stream doesn't have enough data yet.
+    if (!fReader->image_data_loaded()) {
+        rust_bmp::DecodingResult readResult = fReader->read_image_data();
+
+        if (readResult == rust_bmp::DecodingResult::IncompleteInput) {
+            // Not enough data available yet - return and let caller retry
+            if (rowsDecodedPtr) {
+                *rowsDecodedPtr = 0;
+            }
+            return kIncompleteInput;
+        }
+
+        if (readResult != rust_bmp::DecodingResult::Success) {
+            return MapDecodingResult(readResult);
+        }
+    }
+
+    // All data is now loaded - swizzle all rows in our subset
+    const int32_t height = this->dimensions().height();
+    const size_t srcRowBytes = fReader->row_bytes();
+
+    // Get pointer to entire image buffer - single FFI call
+    rust::Slice<const uint8_t> imageData = fReader->get_image_data();
+    if (imageData.empty()) {
+        return kErrorInInput;
+    }
+
+    const uint8_t* srcBase = imageData.data();
+
+    for (int32_t fileRow = 0; fileRow < height; ++fileRow) {
+        // Determine which image row this file row corresponds to
+        int32_t imageRow = fIsBottomUp ? (height - 1 - fileRow) : fileRow;
+
+        // Only swizzle rows within our subset range
+        if (imageRow >= state.fFirstRow && imageRow <= state.fLastRow) {
+            const uint8_t* srcRow = srcBase + (fileRow * srcRowBytes);
+
+            int dstRowIndex = imageRow - state.fFirstRow;
+            void* dstRow = dst.fDst.data() + (dstRowIndex * dst.fDstRowStride);
+            this->swizzleRow(srcRow, dstRow);
+            rowsDecoded++;
+        }
+    }
+
+    if (rowsDecodedPtr) {
+        *rowsDecodedPtr = rowsDecoded;
     }
 
     return kSuccess;
