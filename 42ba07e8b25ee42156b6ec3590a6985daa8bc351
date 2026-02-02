@@ -1,0 +1,711 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94f1d955_6b10b081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "I\u0027ve done pretty extensive reviews of everything except for DrawListLayer.cpp, but that is hopefully pretty self-contained",
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ff8675_e4717c0c",
+        "filename": "src/base/SkArenaAllocList.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "nit: we can discard these changes just to reduce the size of this CL",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb01672_660f933a",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Before landing, this should be set to false.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ff7841b_09c10eac",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Nothing sets fUpdated to true, so we should remove it?\n\n`drawClip` is also already only called at most once for a renderpass and resets its tracking state. If `updateDeferredClipDraw` also resets its deferred layer and draw params pointer then we can get rid of the separate `resetClipDraw`",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 627,
+        "endChar": 30
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b548824a_2bf59e21",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Can we have a helper function that calculates the scissor and draw bounds for RawElement that\u0027s used by both draw list approaches?",
+      "range": {
+        "startLine": 731,
+        "startChar": 4,
+        "endLine": 743,
+        "endChar": 98
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0c4afc3_42002975",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "The drawlist layer doesn\u0027t need to use the stencil bit to order the draws into disjoint sets, it already maintains that property in its binding lists. \n\nThis appears to be the only use of `fIsDisjointStencil`, so I think we can remove storing it on RawElement?",
+      "range": {
+        "startLine": 772,
+        "startChar": 0,
+        "endLine": 772,
+        "endChar": 53
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667157d7_a52f0f5d",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Normally (except for the perspective issue above), transform, geometry, and transformed shape bounds should be known and not changing after drawClipImmediate is called.\n\nWe don\u0027t want to pre-apply the perspective transform to the fields in RawElement because it very well may never actually impact a draw. However, if we are inside drawClipImmediate, we know that we\u0027ll need to render it. We should be able to still transform the Shape and adjust the Transform inside `Device::drawClipShapeImmediate` since it\u0027ll then be persisted by DrawListLayer.",
+      "range": {
+        "startLine": 774,
+        "startChar": 8,
+        "endLine": 779,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0543ecf8_0e240ef2",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Unlike the regular codepath where we just skip recording a draw if it ends up being a no-op (very unlikely scenario), I think we want to set the scissor to empty here to make sure that nothing gets rasterized, or somehow otherwise flag it as skippable when traversing the draw list.",
+      "range": {
+        "startLine": 781,
+        "startChar": 4,
+        "endLine": 781,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "852c754a_19619b31",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "We should also reset `fCaptureParams` and `fDeferredLayer` to nullptr here.",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 791,
+        "endChar": 35
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c82d9144_c6b39aff",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "See note in drawClip, but I think this can go away. We just need to reset all of this state during the update call instead (and reset the other base properties like MaxZ and usage bounds).",
+      "range": {
+        "startLine": 986,
+        "startChar": 28,
+        "endLine": 986,
+        "endChar": 41
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35d505f9_44ee3e7b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "WDYT about triggering this inside `updateForDraw` when it sees it\u0027s the first draw to use the element?  It already tracks that with the usageBounds emptiness, and then we don\u0027t need the `fDrawn` field on RawElement",
+      "range": {
+        "startLine": 2003,
+        "startChar": 0,
+        "endLine": 2003,
+        "endChar": 94
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e6b5c9_80607e83",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 2024,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "If `drawClip()` is calling `updateDeferredClipDraw()`, then we can just keep this loop the same for both cases. The original code comment applies for the non-layer case, and a new comment along the lines of \"while the draws were positioned in the correct layer lists, their depth value and scissor must be updated now that we know the extent of draws that they impact\"",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2024,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4409fab9_bd334351",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "there\u0027s no real reason to wrap a pointer type in optional, you can just return nullptr when it\u0027s not available.",
+      "range": {
+        "startLine": 116,
+        "startChar": 41,
+        "endLine": 116,
+        "endChar": 61
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4cd4b1e_7d0ed246",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "This should be a private function since it\u0027s only called from `drawClip()`",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5616bc67_6422152b",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "See various notes, but these 3 fields should be able to go away.",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 32
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef7c3877_3a913863",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1622,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "We have to use the conservative number of new rendersteps for this draw, but inside `needsFlushBeforeDraw`, we also add the number of pending clip draw elements. These would not be necessary with the layer system.",
+      "range": {
+        "startLine": 1621,
+        "startChar": 6,
+        "endLine": 1622,
+        "endChar": 84
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2307a38_e04cf05b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "If we have recordDraw return the draw params and layer, then I think this gets simpler because we can just pass in `clipDrawLayer` as the earliest allowed layer.\n\nThis signature is semi complex because this earliest layer value is conceptually defining the same thing as the CompressedPaintersOrder that is stored on the DrawOrder object but once the SortKey approach goes away, DrawOrder can be updated to be just the Layer* and z value.",
+      "range": {
+        "startLine": 1756,
+        "startChar": 0,
+        "endLine": 1759,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d79d6e_e67ba146",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "all of this work should be skipped if we are using the layering system.",
+      "range": {
+        "startLine": 1762,
+        "startChar": 0,
+        "endLine": 1787,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a519c4cb_0a685d05",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1837,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "We should only record the draw in the bounds manager if we are not using layering.",
+      "range": {
+        "startLine": 1837,
+        "startChar": 0,
+        "endLine": 1837,
+        "endChar": 80
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca7c48d_b6c8b786",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "nit: maybe updateNextDepthForClipping? or updateNextDepthFromClipStack?",
+      "range": {
+        "startLine": 305,
+        "startChar": 9,
+        "endLine": 305,
+        "endChar": 20
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae5b141_880899d3",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Yeah, that makes having it be an optional seem unnecessary.",
+      "range": {
+        "startLine": 166,
+        "startChar": 14,
+        "endLine": 166,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f06c863_cce99367",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "I think we should split the definition of `DrawListBase` and refactoring the shared code out of `DrawList` into a CL that comes before the addition of `DrawListLayer`. It\u0027ll make sure that nothing changed from that refactor and measure any potential overhead in becoming virtual (unlikely).",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 20
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e80f0bed_01fb7f5a",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Add a TODO that once we remove the original DrawList, that this number can be increased.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25848369_09d63156",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "WDYT about having this return `std::pair\u003cDrawParams*, Layer*\u003e` and the current `DrawList` just returns `{nullptr, nullptr}`?\n\nOtherwise, we should update these to just be `DrawParams**` and `Layer**` to match Skia\u0027s conventions for optional output parameters.",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 51,
+        "endChar": 16
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eb23548_2f31d40b",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "This should be in `DrawList`?",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 6
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a8a6cf_b1b3627d",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "I was torn on suggesting that these definitions move to a cpp file. But since it can all eventually move back into the layer list\u0027s CPP file once we stop being bifurcated, keeping it in this header will make the follow-up refactor easier.",
+      "range": {
+        "startLine": 160,
+        "startChar": 13,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "377c7df4_37b1246f",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "I believe it was 50 in my prototype that was tuned carefully, but I agree we should re-tune since all the memory accesses will be different with real drawing data being recorded.",
+      "range": {
+        "startLine": 113,
+        "startChar": 50,
+        "endLine": 113,
+        "endChar": 51
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4159f01e_4c3e8166",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "arenas grow with a fibonacci sequence multiplier on the size, so we want to start with a value small enough to handle 1-2 draws.",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 63
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f7dfe69_ee84cc1c",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "We can also explore using `SkSTArenaAllocWithReset` that has the first storage block stored inline so it\u0027s embedded in the DrawListLayer object.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2521b3_e776fc19",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Since these types are only used in DrawListLayer.cpp, we should be able to forward declare `Layer` as a child type of `DrawListLayer` and then hide all of this inside `DrawListLayer.cpp` for better encapsulation.\n\n*minor edit* after looking at the ClipStack, Device, and DrawListBase API, they do need to have Layer be a publicly declared type. But they don\u0027t need to access anything about it except an address, so we can forward declare `class Layer` in `DrawListBase` and leave it at that.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b45d13_f3910b93",
+        "filename": "src/gpu/graphite/DrawParams.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-02T15:51:17Z",
+      "side": 1,
+      "message": "Do we need this to be stored by value here?\n\nTransform is a pretty big object (~144bytes?) and hypothetically can be shared quite a bit between recorded DrawParams as long as the SkCanvas transform isn\u0027t being manipulated between them. This does add complexity to the current `DrawList`, detecting duplicates and storing them separately in a different block list.\n\nIf we *need* Transform to be stored inline, we should do it as a separate CL to measure the impact on the existing DrawList and go through and clean up the deduplication logic entirely. Otherwise, we should be able to have DrawListLayer save the Transforms in the arena as well (edit, I see you\u0027ve made that same comment and are currently using DrawListBase to hold de-duplicated Transforms, which makes me think that this can go back to const Transform\u0026).",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 174,
+        "endChar": 25
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
