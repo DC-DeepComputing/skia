@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea767981_051f0d38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "You\u0027ve already mentioned in your email that before landing this CL we will need to land a Chromium-side CL that brings new `image` crates APIs.  I just wanted to point out that https://chromium.googlesource.com/chromium/src/+/main/third_party/rust/chromium_crates_io/patches/README.md has some instructions that may help with creating such a Chromium CL without waiting for a release of a new version of the `image` crate.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 66
+      },
+      "revId": "5c167061ee077b141aa0db7a717c7cdd4e71328e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

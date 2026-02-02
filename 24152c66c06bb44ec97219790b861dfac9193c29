@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccfafd0e_6f2742b7",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Can that be an `SkASSERT_RELEASE`?  If `metadataResult \u003d\u003d rust_bmp::DecodingResult::Success` then `reader-\u003emetadata_loaded()` should be true, unless there are bugs in the `image` crate or in our FFI glue, right?",
+      "range": {
+        "startLine": 117,
+        "startChar": 13,
+        "endLine": 117,
+        "endChar": 38
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92101255_72293262",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Somewhat lower priority maybe, but I wonder if you could help with double-checking that this is covered by tests?  Either:\n\n* Add a test that fails without the `MakeICCProfile` change, but passes with this change?  (Maybe this requires the test to specify a specific destination profile when calling `SkCodec` APIs to start decoding.)\n* Or, confirm that Blink tests will cover this.",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed722af4_0fdf3840",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "I think `fFullyReceived` may be false for a partially-received/streaming input, right?  See also calls into `markFrameAsFullyReceived` and `markAsFullyReceived` in `SkPngRustCodec.cpp`.",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 36
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c5efd4c_e8437fae",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Can those two `if` statements be combined?\n\nIn other words - do we need to special-case `IncompleteInput` here?  Can `MapDecodingResult` translate it as needed?",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e5df3f7_ed3819e6",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Could you please use `SkSpan srcRow` to view into `rust::Slice... imageData`?  `base::span` has more checks, but even `SkSpan` has some `SkUNREACHABLE` assertions.  And in general, operating on ptr+size together seems nice and more robust than operating on ptr and size somewhat separately.\n\nThis may also mean that we don\u0027t need `y` multiplication (e.g. `y * dstRowStride`) and therefore don\u0027t even need to think about whether this multiplication could possibly overflow (I think it can\u0027t, but not thinking about it would be even nicer).\n\n------------------------------\n\n`dst` is a raw pointer in some public APIs of `SkCodec`, but we do store it as `SkSpan` in `state.fDecodingDstInfo.fDst`, so I think it would also be nice to represent `dstRow` as `SkSpan`.",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 365,
+        "endChar": 84
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c89f8b8_fa2009b6",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "I expected that when Rust decodes N first rows, then those rows would be \"immediately\" available to the Skia client (e.g. swizzled + reported via `rowsDecodedPtr`).\n\nAs-is, it seems that the full BMP needs to be received before *any* pixels can be rendered.  Maybe I missed something?\n\nPS. Thank you for adding the `Codec_Bmp_Rust_IncrementalDecode_ProgressiveStream` test.  I think this test should verify the initial rows when `incrementalDecode` returns `kIncompleteInput` (around new line 530-568 in `SkBmpRustDecoderTest.cpp`).",
+      "range": {
+        "startLine": 499,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 9
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae12a7e9_adbcf0b7",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Not sure how much work it would be, but I wonder if there is an option for splitting this CL into 1) subset support and 2) incremental decoding support.  In general, smaller CL are easier to understand and review.\n\nCan you also please help me understand why subset support is required for this project?  `SkPngRustCodec` doesn\u0027t override `onDimensionsSupported` nor `onGetValidSubset`, so it seems that Chromium/Blink do not depend on this functionality.  Therefore maybe we can/should treat this as a lower priority for now?  On one hand you\u0027ve already implemented it in this CL (and landing probably won\u0027t require much extra effort).  OTOH, supporting subset does introduce some extra complexity - maybe removing this extra complexity (I.e. reducing moving parts) would make it easier to ship the project.",
+      "range": {
+        "startLine": 51,
+        "startChar": 64,
+        "endLine": 51,
+        "endChar": 65
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ac777d_11ae44ad",
+        "filename": "experimental/rust_bmp/ffi/BUILD.bazel",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Can you help me understand why this is needed?\n\nCan individual warnings be fixed and/or suppressed instead?\n\nMaybe it would be best if `rustc` version update (and addressing the resulting new warnings) would be done in a separate CL?",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 32
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e2f59c3_cffed222",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 18
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Not blocking comment / not for this CL (just something to think about):\n\nOne possible optimization here would be to only store a single row of pixels.  This can in theory reduce memory usage + improve memory cache access patterns.  OTOH, I am not sure how important it is to optimize this aspect of BMP decoding (e.g. how much it matters in the end-to-end measurements).  Still, something to think about.",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 24
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9851f7_37f0b82f",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 18
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "I think this may need to take `SkCodec::Options::fZeroInitialized` into account.  It\u0027s possible that some bytes will remain uninitialized if `IncompleteInput`.",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 9
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b245b2d0_056320bc",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "I wonder if it would be possible (and not too much work) to add verification that setting `SkCodec::OPtions::fZeroInitialized` to `kNo_ZeroInitialized` will result in not-yet-decoded/not-yet-streamed pixels being set to a sensible default (black/opaque?).  IIUC `fZeroInitialized` is irrelevant when decoding a full stream / all pixels, but may impact the results in streaming/incremental decodes.",
+      "range": {
+        "startLine": 491,
+        "startChar": 66,
+        "endLine": 491,
+        "endChar": 68
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0244cd2a_bd843604",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-02T23:24:25Z",
+      "side": 1,
+      "message": "Is this specific retry loop needed given that we expect that `initialBytes` should be sufficient to parse the headers?",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
