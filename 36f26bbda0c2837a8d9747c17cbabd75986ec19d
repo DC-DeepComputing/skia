@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd9f1bd2_20254f3a",
+        "filename": "whitespace.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-03T15:47:43Z",
+      "side": 1,
+      "message": "We prefer CamelCase, not all uppercase. For example, `kBruh` for a constant. or BruhSki for a class. Or, if this is a public header, SkBruh.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 4
+      },
+      "revId": "36f26bbda0c2837a8d9747c17cbabd75986ec19d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
