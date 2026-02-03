@@ -21,7 +21,7 @@ use crate::{
         variation_position, BridgeFontRef, BridgeMappingIndex, BridgeNormalizedCoords,
         BridgeOutlineCollection,
     },
-    bitmap::{bitmap_glyph, bitmap_metrics, has_bitmap_glyph, png_data, BridgeBitmapGlyph},
+    bitmap::{bitmap_glyph, bitmap_metrics, bgra_data, has_bitmap_glyph, is_alpha_mask_bitmap, is_bgra_bitmap, is_png_bitmap, png_data, BridgeBitmapGlyph},
     colr::{
         draw_colr_glyph, get_colrv1_clip_box, has_colrv0_glyph, has_colrv1_glyph, next_color_stop,
         num_color_stops, resolve_palette, BridgeColorStops,
@@ -160,6 +160,9 @@ pub mod ffi {
         inner_bearing_y: f32,
         // Some, but not all, bitmap glyphs have a special bitmap advance
         advance: f32,
+        // Bitmap dimensions in pixels (for non-PNG formats)
+        width: u32,
+        height: u32,
     }
 
     pub enum AutoHintingControl {
@@ -292,15 +295,19 @@ pub mod ffi {
             clip_box: &mut ClipBox,
         ) -> bool;
 
-        type BridgeBitmapGlyph<'a>;
+        type BridgeBitmapGlyph;
         fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
-        unsafe fn bitmap_glyph<'a>(
-            font_ref: &'a BridgeFontRef,
+        unsafe fn bitmap_glyph(
+            font_ref: &BridgeFontRef,
             glyph_id: u16,
             font_size: f32,
-        ) -> Box<BridgeBitmapGlyph<'a>>;
-        unsafe fn png_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8];
-        unsafe fn bitmap_metrics<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a BitmapMetrics;
+        ) -> Box<BridgeBitmapGlyph>;
+        unsafe fn png_data(bitmap_glyph: &BridgeBitmapGlyph) -> &[u8];
+        unsafe fn bgra_data(bitmap_glyph: &BridgeBitmapGlyph) -> &[u8];
+        fn is_png_bitmap(bitmap_glyph: &BridgeBitmapGlyph) -> bool;
+        fn is_bgra_bitmap(bitmap_glyph: &BridgeBitmapGlyph) -> bool;
+        fn is_alpha_mask_bitmap(bitmap_glyph: &BridgeBitmapGlyph) -> bool;
+        unsafe fn bitmap_metrics(bitmap_glyph: &BridgeBitmapGlyph) -> &BitmapMetrics;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
