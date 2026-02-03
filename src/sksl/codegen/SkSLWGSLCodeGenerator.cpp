@@ -60,6 +60,7 @@
 #include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLModifierFlags.h"
+#include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLModifiersDeclaration.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
@@ -168,6 +169,10 @@ public:
                       PrettyPrint pp,
                       IncludeSyntheticCode isc)
             : CodeGenerator(context, caps, program, out)
+            , fWrittenInverse({false, false, false})
+            , fWrittenOuterProduct({std::array{false, false, false},
+                                    std::array{false, false, false},
+                                    std::array{false, false, false}})
             , fPrettyPrint(pp)
             , fGenSyntheticCode(isc) {}
 
@@ -294,6 +299,7 @@ private:
                                                                   const Expression& sampler,
                                                                   const Expression& coords);
     std::string assembleInversePolyfill(const FunctionCall& call);
+    std::string assembleOuterProductPolyfill(const FunctionCall& call);
     std::string assembleComponentwiseMatrixBinary(const Type& leftType,
                                                   const Type& rightType,
                                                   const std::string& left,
@@ -349,6 +355,8 @@ private:
     bool needsStageOutputStruct() const;
     void writeStageOutputStruct();
     void writeUniformsAndBuffers();
+    void writeInterfaceBlock(const InterfaceBlock& ib);
+
     void prepareUniformPolyfillsForInterfaceBlock(const InterfaceBlock* interfaceBlock,
                                                   std::string_view instanceName,
                                                   MemoryLayout::Standard nativeLayout);
@@ -392,16 +400,16 @@ private:
     skia_private::TArray<const Variable*> fPipelineOutputs;
 
     // These fields track whether we have written the polyfill for `inverse()` for a given matrix
-    // type.
-    bool fWrittenInverse2 = false;
-    bool fWrittenInverse3 = false;
-    bool fWrittenInverse4 = false;
+    // type. Indexed by row or column count - 2, i.e. [2,3,4] -> idx [0,1,2]
+    std::array<bool, 3> fWrittenInverse;
+    std::array<std::array<bool, 3>, 3> fWrittenOuterProduct;
+
     PrettyPrint fPrettyPrint;
     IncludeSyntheticCode fGenSyntheticCode;
 
     // These fields control uniform polyfill support in cases where WGSL and std140 disagree.
-    // In std140 layout, matrices need to be represented as arrays of @size(16)-aligned vectors, and
-    // array elements are wrapped in a struct containing a single @size(16)-aligned element. Arrays
+    // In std140 layout, matrices need to be represented as arrays of @align(16) vectors, and
+    // array elements are wrapped in a struct containing a single @align(16) element. Arrays
     // of matrices combine both wrappers. These wrapper structs are unpacked into natively-typed
     // globals at the shader entrypoint.
     struct FieldPolyfillInfo {
@@ -413,6 +421,8 @@ private:
     };
     using FieldPolyfillMap = skia_private::THashMap<const Field*, FieldPolyfillInfo>;
     FieldPolyfillMap fFieldPolyfillMap;
+
+    std::unique_ptr<InterfaceBlock> fSyntheticGlobalUniformsBlock;
 
     // Output processing state.
     int fIndentation = 0;
@@ -1140,8 +1150,8 @@ void collect_pipeline_io_vars(const Program* program,
 }
 
 bool is_in_global_uniforms(const Variable& var) {
-    SkASSERT(var.storage() == VariableStorage::kGlobal);
-    return  var.modifierFlags().isUniform() &&
+    return  var.storage() == VariableStorage::kGlobal &&
+            var.modifierFlags().isUniform() &&
            !var.type().isOpaque() &&
            !var.interfaceBlock();
 }
@@ -1468,7 +1478,7 @@ void WGSLCodeGenerator::writeUniformPolyfills() {
                     this->writeLine(std::to_string(fieldType->rows()));
                 } else {
                     // Create a struct representing the array with extra padding between elements.
-                    this->write("  @size(16) e : ");
+                    this->write("  @align(16) e : ");
                     this->writeLine(to_wgsl_type(fContext, *fieldType, fieldLayout));
                 }
                 this->writeLine("};");
@@ -1487,7 +1497,7 @@ void WGSLCodeGenerator::writeUniformPolyfills() {
                 this->write("struct _skRow");
                 this->write(std::to_string(r));
                 this->writeLine(" {");
-                this->write("  @size(16) r : vec");
+                this->write("  @align(16) r : vec");
                 this->write(std::to_string(r));
                 this->write("<");
                 this->write(to_wgsl_type(fContext, fieldType->componentType(), fieldLayout));
@@ -1902,6 +1912,14 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     SkASSERT(main.declaration().isMain());
     const ProgramKind programKind = fProgram.fConfig->fKind;
 
+    bool initPolyfill = false;
+    for (const auto& [field, info] : fFieldPolyfillMap) {
+        if (info.fWasAccessed) {
+            initPolyfill = true;
+            break;
+        }
+    }
+
     if (fGenSyntheticCode == IncludeSyntheticCode::kYes &&
         ProgramConfig::IsRuntimeShader(programKind)) {
         // Synthesize a basic entrypoint which just calls straight through to main.
@@ -1910,6 +1928,9 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
         this->writeLine("@fragment fn main(@location(0) _coords: vec2<f32>) -> "
                                      "@location(0) vec4<f32> {");
         ++fIndentation;
+        if (initPolyfill) {
+            this->writeLine("_skInitializePolyfilledUniforms();");
+        }
         this->writeLine("return _skslMain(_coords);");
         --fIndentation;
         this->writeLine("}");
@@ -1954,12 +1975,10 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     }
     // Initialize polyfilled matrix uniforms if any were used.
     fIndentation++;
-    for (const auto& [field, info] : fFieldPolyfillMap) {
-        if (info.fWasAccessed) {
-            this->writeLine("_skInitializePolyfilledUniforms();");
-            break;
-        }
+    if (initPolyfill) {
+        this->writeLine("_skInitializePolyfilledUniforms();");
     }
+
     // Declare the stage output struct.
     if (this->needsStageOutputStruct()) {
         this->write("var _stageOut: ");
@@ -3188,6 +3207,9 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
         case k_inverse_IntrinsicKind:
             return this->assembleInversePolyfill(call);
 
+        case k_outerProduct_IntrinsicKind:
+            return this->assembleOuterProductPolyfill(call);
+
         case k_inversesqrt_IntrinsicKind:
             return this->assembleSimpleIntrinsic("inverseSqrt", call);
 
@@ -3253,6 +3275,45 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
 
         case k_packUnorm4x8_IntrinsicKind:
             return this->assembleSimpleIntrinsic("pack4x8unorm", call);
+
+        case k_findLSB_IntrinsicKind: {
+            // firstTrailingBit (and firstLeadingBit) return a type matching their input, but
+            // findLSB and findMSB in SkSL return signed types. Add a cast if needed.
+            std::string lsb = this->assembleSimpleIntrinsic("firstTrailingBit", call);
+            return arguments[0]->type().componentType().isSigned() ? lsb :
+                    (to_wgsl_type(fContext, call.type()) + "(" + lsb + ")");
+        }
+
+        case k_findMSB_IntrinsicKind: {
+            std::string msb = this->assembleSimpleIntrinsic("firstLeadingBit", call);
+            return arguments[0]->type().componentType().isSigned() ? msb :
+                    (to_wgsl_type(fContext, call.type()) + "(" + msb + ")");
+        }
+
+        case k_bitCount_IntrinsicKind: {
+            // countOneBits returns a type matching its input, but bitCount in SkSL returns a
+            // signed type. Add a cast if needed.
+            std::string bitCount = this->assembleSimpleIntrinsic("countOneBits", call);
+            return arguments[0]->type().componentType().isSigned() ? bitCount :
+                    (to_wgsl_type(fContext, call.type()) + "(" + bitCount + ")");
+        }
+
+        case k_floatBitsToInt_IntrinsicKind:
+        case k_floatBitsToUint_IntrinsicKind:
+        case k_intBitsToFloat_IntrinsicKind:
+        case k_uintBitsToFloat_IntrinsicKind: {
+            std::string outputType = to_wgsl_type(fContext, call.type());
+            return this->assembleSimpleIntrinsic("bitcast<" + outputType + ">", call);
+        }
+
+        case k_roundEven_IntrinsicKind:
+        case k_round_IntrinsicKind:
+            // WGSL has no built-in roundEven(), but its round() is defined as:
+            //     "When e lies halfway between integers k and k + 1, the result is k when k is
+            //      even, and k + 1 when k is odd."
+            // This is equivalent to GLSL's roundEven(). GLSL's round() is allowed to just match
+            // roundEven().
+            return this->assembleSimpleIntrinsic("round", call);
 
         case k_reflect_IntrinsicKind:
             if (arguments[0]->type().isScalar()) {
@@ -3471,6 +3532,22 @@ static constexpr char kInverse4x4[] =
 "\n" "}"
 "\n";
 
+// Generates outer_product_$Cx$R(vec$R<f32}>, vec$C<f32>) -> mat$Cx$R<f32>
+static std::string gen_outer_product_fn(int c, int r) {
+    return String::printf(
+            "fn outer_product%dx%d(a: vec%d<f32>, b: vec%d<f32>) -> mat%dx%d<f32> {\n"
+                "var m : mat%dx%d<f32>;\n"
+                "for (var c = 0; c < %d; c++) { m[c] = a * b[c]; }\n"
+                "return m;\n"
+            "}\n",
+            /* outer_product$Cx$R */ c, r,
+            /* vec$R */ r,
+            /* vec$C */ c,
+            /* mat$Cx$R */ c, r,
+            /* mat$Cx$R */ c, r,
+            /* c < $C */ c);
+}
+
 std::string WGSLCodeGenerator::assembleInversePolyfill(const FunctionCall& call) {
     const ExpressionArray& arguments = call.arguments();
     const Type& type = arguments.front()->type();
@@ -3482,32 +3559,37 @@ std::string WGSLCodeGenerator::assembleInversePolyfill(const FunctionCall& call)
     SkASSERT(type.isMatrix());
     SkASSERT(type.rows() == type.columns());
 
-    switch (type.slotCount()) {
-        case 4:
-            if (!fWrittenInverse2) {
-                fWrittenInverse2 = true;
-                fHeader.writeText(kInverse2x2);
-            }
-            return this->assembleSimpleIntrinsic("mat2_inverse", call);
-
-        case 9:
-            if (!fWrittenInverse3) {
-                fWrittenInverse3 = true;
-                fHeader.writeText(kInverse3x3);
-            }
-            return this->assembleSimpleIntrinsic("mat3_inverse", call);
-
-        case 16:
-            if (!fWrittenInverse4) {
-                fWrittenInverse4 = true;
-                fHeader.writeText(kInverse4x4);
-            }
-            return this->assembleSimpleIntrinsic("mat4_inverse", call);
-
-        default:
-            // We only support square matrices.
-            SkUNREACHABLE;
+    const int idx = type.rows() - 2;
+    if (!fWrittenInverse[idx]) {
+        static constexpr std::array<const char*, 3> kTemplates{kInverse2x2,
+                                                               kInverse3x3,
+                                                               kInverse4x4};
+        fWrittenInverse[idx] = true;
+        fHeader.writeText(kTemplates[idx]);
     }
+    return this->assembleSimpleIntrinsic(String::printf("mat%d_inverse", type.rows()), call);
+}
+
+std::string WGSLCodeGenerator::assembleOuterProductPolyfill(const FunctionCall& call) {
+    // The outer product should take two vector arguments, with the first type's component count
+    // defining R and the second type's component count defining C.
+    const ExpressionArray& arguments = call.arguments();
+    SkASSERT(arguments.size() == 2);
+    SkASSERT(arguments[0]->type().isVector() && arguments[1]->type().isVector());
+    SkASSERT(call.type().isMatrix());
+
+    const int r = arguments[0]->type().columns();
+    const int c = arguments[1]->type().columns();
+    SkASSERT(r == call.type().rows() && c == call.type().columns());
+
+    const int cIdx = c - 2;
+    const int rIdx = r - 2;
+    if (!fWrittenOuterProduct[cIdx][rIdx]) {
+        fWrittenOuterProduct[cIdx][rIdx] = true;
+        fHeader.writeText(gen_outer_product_fn(c, r).c_str());
+    }
+
+    return this->assembleSimpleIntrinsic(String::printf("outer_product%dx%d", c, r), call);
 }
 
 std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& call,
@@ -3901,6 +3983,30 @@ std::string WGSLCodeGenerator::variableReferenceNameForLValue(const VariableRefe
         // dereference it. We wrap the dereference in parentheses, in case the value is used in an
         // access expression later.
         return "(*" + this->assembleName(v.mangledName()) + ')';
+    }
+
+    if (is_in_global_uniforms(v)) {
+        // Assemble polyfill access (see assembleFieldAccess)
+        SkASSERT(fSyntheticGlobalUniformsBlock);
+        FieldPolyfillInfo* polyfillInfo = nullptr;
+        const Type& globalStruct = fSyntheticGlobalUniformsBlock->var()->type().componentType();
+        for (const Field& f : globalStruct.fields()) {
+            if (f.fName == v.name()) {
+                polyfillInfo = fFieldPolyfillMap.find(&f);
+                SkASSERT(polyfillInfo);
+                break;
+            }
+        }
+
+        if (polyfillInfo) {
+            // We found a global variable declaration that had to be polyfilled, so switch to its
+            // replacement expression. This is simpler than assembleFieldAccess() because we don't
+            // need to worry about index expressions.
+            polyfillInfo->fWasAccessed = true;
+            return polyfillInfo->fReplacementName;
+        }
+
+        // Fall through for a regular global variable access
     }
 
     return this->variablePrefix(v) + this->assembleName(v.mangledName());
@@ -4519,99 +4625,113 @@ void WGSLCodeGenerator::writeUniformsAndBuffers() {
         if (!e->is<InterfaceBlock>()) {
             continue;
         }
-        const InterfaceBlock& ib = e->as<InterfaceBlock>();
-
-        // Determine if this interface block holds uniforms, buffers, or something else (skip it).
-        std::string_view addressSpace;
-        std::string_view accessMode;
-        MemoryLayout::Standard nativeLayout;
-        const bool isPushConstant =
-                static_cast<bool>(ib.var()->layout().fFlags & LayoutFlag::kPushConstant);
-        if (ib.var()->modifierFlags().isUniform()) {
-            if (isPushConstant) {
-                addressSpace = "immediate";
-            } else {
-                addressSpace = "uniform";
-            }
-            nativeLayout = MemoryLayout::Standard::kWGSLUniform_Base;
-        } else if (ib.var()->modifierFlags().isBuffer()) {
-            addressSpace = "storage";
-            nativeLayout = MemoryLayout::Standard::kWGSLStorage_Base;
-            accessMode = ib.var()->modifierFlags().isReadOnly() ? ", read" : ", read_write";
-        } else {
-            continue;
-        }
-
-        // If we have an anonymous interface block, assign a name like `_uniform0` or `_storage1`.
-        std::string instanceName;
-        if (ib.instanceName().empty()) {
-            instanceName = "_" + std::string(addressSpace) + std::to_string(fScratchCount++);
-            fInterfaceBlockNameMap[&ib.var()->type().componentType()] = instanceName;
-        } else {
-            instanceName = std::string(ib.instanceName());
-        }
-
-        this->prepareUniformPolyfillsForInterfaceBlock(&ib, instanceName, nativeLayout);
-
-        // Create a struct to hold all of the fields from this InterfaceBlock.
-        SkASSERT(!ib.typeName().empty());
-        this->write("struct ");
-        this->write(ib.typeName());
-        this->writeLine(" {");
-
-        // Find the struct type and fields used by this interface block.
-        const Type& ibType = ib.var()->type().componentType();
-        SkASSERT(ibType.isStruct());
-
-        SkSpan<const Field> ibFields = ibType.fields();
-        SkASSERT(!ibFields.empty());
-
-        MemoryLayout layout(MemoryLayout::Standard::k140);
-        this->writeFields(ibFields, &layout);
-        this->writeLine("};");
-        if (!isPushConstant) {
-            this->write("@group(");
-            this->write(std::to_string(std::max(0, ib.var()->layout().fSet)));
-            this->write(") @binding(");
-            this->write(std::to_string(std::max(0, ib.var()->layout().fBinding)));
-            this->write(") ");
-        }
-        this->write("var<");
-        this->write(addressSpace);
-        this->write(accessMode);
-        this->write("> ");
-        this->write(instanceName);
-        this->write(" : ");
-        this->write(to_wgsl_type(fContext, ib.var()->type(), &ib.var()->layout()));
-        this->writeLine(";");
+        this->writeInterfaceBlock(e->as<InterfaceBlock>());
     }
 }
 
-void WGSLCodeGenerator::writeNonBlockUniformsForTests() {
-    bool declaredUniformsStruct = false;
+void WGSLCodeGenerator::writeInterfaceBlock(const InterfaceBlock& ib) {
+    // Determine if this interface block holds uniforms, buffers, or something else (skip it).
+    std::string_view addressSpace;
+    std::string_view accessMode;
+    MemoryLayout::Standard nativeLayout;
+    const bool isPushConstant =
+            static_cast<bool>(ib.var()->layout().fFlags & LayoutFlag::kPushConstant);
+    if (ib.var()->modifierFlags().isUniform()) {
+        if (isPushConstant) {
+            addressSpace = "immediate";
+        } else {
+            addressSpace = "uniform";
+        }
+        nativeLayout = MemoryLayout::Standard::kWGSLUniform_Base;
+    } else if (ib.var()->modifierFlags().isBuffer()) {
+        addressSpace = "storage";
+        nativeLayout = MemoryLayout::Standard::kWGSLStorage_Base;
+        accessMode = ib.var()->modifierFlags().isReadOnly() ? ", read" : ", read_write";
+    } else {
+        return;
+    }
 
+    // If we have an anonymous interface block, assign a name like `_uniform0` or `_storage1`.
+    std::string instanceName;
+    if (ib.instanceName().empty()) {
+        instanceName = "_" + std::string(addressSpace) + std::to_string(fScratchCount++);
+        fInterfaceBlockNameMap[&ib.var()->type().componentType()] = instanceName;
+    } else {
+        instanceName = std::string(ib.instanceName());
+    }
+
+    this->prepareUniformPolyfillsForInterfaceBlock(&ib, instanceName, nativeLayout);
+
+    // Create a struct to hold all of the fields from this InterfaceBlock.
+    SkASSERT(!ib.typeName().empty());
+    this->write("struct ");
+    this->write(ib.typeName());
+    this->writeLine(" {");
+
+    // Find the struct type and fields used by this interface block.
+    const Type& ibType = ib.var()->type().componentType();
+    SkASSERT(ibType.isStruct());
+
+    SkSpan<const Field> ibFields = ibType.fields();
+    SkASSERT(!ibFields.empty());
+
+    MemoryLayout layout(MemoryLayout::Standard::k140);
+    this->writeFields(ibFields, &layout);
+    this->writeLine("};");
+    if (!isPushConstant) {
+        this->write("@group(");
+        this->write(std::to_string(std::max(0, ib.var()->layout().fSet)));
+        this->write(") @binding(");
+        this->write(std::to_string(std::max(0, ib.var()->layout().fBinding)));
+        this->write(") ");
+    }
+    this->write("var<");
+    this->write(addressSpace);
+    this->write(accessMode);
+    this->write("> ");
+    this->write(instanceName);
+    this->write(" : ");
+    this->write(to_wgsl_type(fContext, ib.var()->type(), &ib.var()->layout()));
+    this->writeLine(";");
+}
+
+void WGSLCodeGenerator::writeNonBlockUniformsForTests() {
+    TArray<Field> globalVarFields;
+    Position globalVarPos;
     for (const ProgramElement* e : fProgram.elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
             const Variable& var = *decls.varDeclaration().var();
+
             if (is_in_global_uniforms(var)) {
-                if (!declaredUniformsStruct) {
-                    this->write("struct _GlobalUniforms {\n");
-                    declaredUniformsStruct = true;
+                if (globalVarFields.empty()) {
+                    globalVarPos = var.position();
                 }
-                this->write("  ");
-                this->writeVariableDecl(var.layout(), var.type(), var.mangledName(),
-                                        Delimiter::kComma);
+                globalVarFields.push_back(Field(var.position(), var.layout(), ModifierFlag::kNone,
+                                                var.name(), &var.type()));
             }
         }
     }
-    if (declaredUniformsStruct) {
-        int binding = fProgram.fConfig->fSettings.fDefaultUniformBinding;
-        int set = fProgram.fConfig->fSettings.fDefaultUniformSet;
-        this->write("};\n");
-        this->write("@binding(" + std::to_string(binding) + ") ");
-        this->write("@group(" + std::to_string(set) + ") ");
-        this->writeLine("var<uniform> _globalUniforms: _GlobalUniforms;");
+
+    if (!globalVarFields.empty()) {
+        Layout layout{LayoutFlag::kNone, 0, 0, fProgram.fConfig->fSettings.fDefaultUniformBinding, 0,
+                fProgram.fConfig->fSettings.fDefaultUniformSet, 0, 0};
+        Modifiers modifiers{globalVarPos, layout, ModifierFlag::kUniform};
+
+        // Interface blocks (for SkSL) are normally only allowed in fragment, vertex, or compute
+        // programs and not the synthetic SkSL files that are allowed to declare non-block uniforms
+        // Arbitrarily pick kFragment to temporarily override the config kind to pass validations.
+        ProgramKind orig = fContext.fConfig->fKind;
+        fContext.fConfig->fKind = ProgramKind::kFragment;
+        fSyntheticGlobalUniformsBlock = InterfaceBlock::Convert(fContext,
+                                                                globalVarPos,
+                                                                modifiers,
+                                                                "_GlobalUniforms",
+                                                                std::move(globalVarFields),
+                                                                "_globalUniforms",
+                                                                /*arraySize=*/0);
+        this->writeInterfaceBlock(*fSyntheticGlobalUniformsBlock);
+        fContext.fConfig->fKind = orig;
     }
 }
 
