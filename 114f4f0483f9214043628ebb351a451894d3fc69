@@ -49,6 +49,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "991265ad_1e8bf160",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-03T18:36:19Z",
+      "side": 1,
+      "message": "2 functions let us share an implementation while having 2 entry points (legacy SkDebugf and SkLog) while we migrate.\nThe reason why we don\u0027t just have SkDebug forwarding to SkLog is because we accept variable arguments in both SkDebugf and SkLog. The vSkLog function (soon to be called SkLogVAList) assumes that SkDebugf and SkLog have already converted the variable arguments into a va_list with va_start. The va_copy was already there and was needed because we are printing to 2 places that would consume the va_list.",
+      "parentUuid": "93152dde_f94b353a",
+      "range": {
+        "startLine": 20,
+        "startChar": 13,
+        "endLine": 20,
+        "endChar": 69
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8037ca63_97eb819e",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-03T18:36:19Z",
+      "side": 1,
+      "message": "The naming pattern comes from the std library when accepting a va_list directly vs the variadic version (printf -\u003e vprintf). https://cplusplus.com/reference/cstdio/vprintf/\n\nBut if we have another naming convention, I\u0027d much rather switch to it. Done.",
+      "parentUuid": "61bf8b09_42830bff",
+      "range": {
+        "startLine": 20,
+        "startChar": 5,
+        "endLine": 20,
+        "endChar": 11
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebe13ea7_1bc52ea4",
         "filename": "include/private/base/SkLog.h",
         "patchSetId": 13
@@ -60,6 +108,30 @@
       "writtenOn": "2026-01-30T14:46:38Z",
       "side": 1,
       "message": "driveby: `if constexpr` here and below to make sure it\u0027s a compile-time setting?",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 10
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97618f20_440f8159",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-03T18:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebe13ea7_1bc52ea4",
       "range": {
         "startLine": 43,
         "startChar": 8,
@@ -83,6 +155,30 @@
       "writtenOn": "2026-01-30T15:09:30Z",
       "side": 1,
       "message": "All these files are called SkDebug_foo.cpp. That is because they are the implementations for SkDebugf. Do we not need these implementations anymore?\n\nRegardless we should either make new files or renames these to be SkLog_foo.cpp",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "114f4f0483f9214043628ebb351a451894d3fc69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d41a917b_476c7b69",
+        "filename": "src/ports/SkDebug_android.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-03T18:36:19Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "4ac00c16_4a5355cf",
       "range": {
         "startLine": 1,
         "startChar": 0,

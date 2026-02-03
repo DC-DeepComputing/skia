@@ -22,6 +22,30 @@
       },
       "revId": "91402f9526e61ecf4d39f1a30b75f5dcc58e5577",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c97cf22f_e22ff98e",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-03T18:36:19Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "d9c83ecf_9fb35c76",
+      "range": {
+        "startLine": 14,
+        "startChar": 23,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "91402f9526e61ecf4d39f1a30b75f5dcc58e5577",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
