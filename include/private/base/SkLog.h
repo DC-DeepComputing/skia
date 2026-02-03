@@ -10,6 +10,17 @@
 
 #include "include/private/base/SkLoadUserConfig.h"
 #include "include/private/base/SkLogPriority.h"
+#include <cstdarg>
+
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAttributes.h"
+#include "include/private/base/SkLoadUserConfig.h" // IWYU pragma: keep
+
+#if !defined(SkLog)
+// To be implemented per platform.
+void SkLogVAList(SkLogPriority priority, const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
+void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LIKE(2, 3);
+#endif
 
 /**
  * TODO (b/469441457): SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY Was the config used to set the log
@@ -30,12 +41,12 @@
 
 #define SKIA_LOG(priority, fmt, ...)                                           \
     do {                                                                       \
-        if (priority <= SKIA_LOWEST_ACTIVE_LOG_PRIORITY) {                     \
-            if (priority == SkLogPriority::kFatal) {                           \
+        if constexpr (priority <= SKIA_LOWEST_ACTIVE_LOG_PRIORITY) {                     \
+            if constexpr (priority == SkLogPriority::kFatal) {                           \
                 SK_ABORT("[skia] " fmt, ##__VA_ARGS__);                        \
             }                                                                  \
             else {                                                             \
-                /* TODO: SkLog(priority, "[skia] " fmt "\n", ##__VA_ARGS__); */\
+                SkLog(priority, "[skia] " fmt "\n", ##__VA_ARGS__);            \
             }                                                                  \
         }                                                                      \
     } while (0)
