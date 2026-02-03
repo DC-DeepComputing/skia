@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d39ef72_8845f388",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-03T19:52:00Z",
+      "side": 1,
+      "message": "True - I guess I wanted to make explicit that we mark the label as clean regardless of whether there was actually any change or action performed. Removed!",
+      "parentUuid": "c1b7fca8_ab2b1b72",
+      "range": {
+        "startLine": 287,
+        "startChar": 62,
+        "endLine": 289,
+        "endChar": 76
+      },
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38692ab1_395f6b5f",
@@ -206,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8ca5350_13c70817",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-03T19:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c3f0fca_1def82a6",
+      "range": {
+        "startLine": 524,
+        "startChar": 6,
+        "endLine": 526,
+        "endChar": 54
+      },
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fb9da4b_0c105ef7",
@@ -219,6 +267,30 @@
       "writtenOn": "2026-01-22T19:38:41Z",
       "side": 1,
       "message": "Per offline discussion, we should make this a `bool` and comment that it\u0027s only going to be read/written either when the thread has the sole ref to it (e.g. created or inside findAndRef) or from the Context thread during insertRecording (which cannot overlap with the earlier case because there is a usage ref held during the insert).",
+      "range": {
+        "startLine": 763,
+        "startChar": 4,
+        "endLine": 763,
+        "endChar": 21
+      },
+      "revId": "6bf06e21147bff9bc44f4abb18cdd4709dbc19df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5afbfee_dd678bec",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-03T19:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fb9da4b_0c105ef7",
       "range": {
         "startLine": 763,
         "startChar": 4,
