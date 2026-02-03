@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0cb0fef_d380d812",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-03T18:47:30Z",
+      "side": 1,
+      "message": "nit: formatting",
+      "range": {
+        "startLine": 44,
+        "startChar": 79,
+        "endLine": 44,
+        "endChar": 90
+      },
+      "revId": "15b6a6e1325b3fd6cd7670dacc6cf703b69140e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
