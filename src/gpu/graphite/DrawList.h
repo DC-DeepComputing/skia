@@ -15,6 +15,7 @@
 #include "src/base/SkTBlockList.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DrawCommands.h"
+#include "src/gpu/graphite/DrawListTypes.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/PaintParams.h"
@@ -80,7 +81,9 @@ public:
                     SkEnumBitMask<DstUsage> dstUsage,
                     BarrierType barrierBeforeDraws,
                     PipelineDataGatherer* gatherer,
-                    const StrokeStyle* stroke) override;
+                    const StrokeStyle* stroke,
+                    std::optional<std::reference_wrapper<DrawParams*>> captureParams = {},
+                    std::optional<std::reference_wrapper<Layer*>> captureLayer = {}) override;
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
