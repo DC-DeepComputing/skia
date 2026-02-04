@@ -121,7 +121,9 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().caps()->capabilities();
 }
 
-TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
+const TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
+
+TextureProxy* Surface::overwriteBackingTextureProxy() { return fDevice->overwriteTarget(); }
 
 // Note, devices flushed with this method add their tasks to the provided drawContext's task list,
 // but no last task is tracked. If no drawContext is provided, the task is added to the root task

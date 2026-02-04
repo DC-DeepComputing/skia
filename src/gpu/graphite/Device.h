@@ -135,7 +135,8 @@ public:
 
     SkStrikeDeviceInfo strikeDeviceInfo() const override;
 
-    TextureProxy* target();
+    const TextureProxy* target() const;
+    TextureProxy* overwriteTarget();
     // May be null if target is not sampleable.
     TextureProxyView readSurfaceView() const;
     // Can succeed if target is readable but not sampleable. Assumes 'subset' is contained in bounds

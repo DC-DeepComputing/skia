@@ -353,10 +353,11 @@ void Context::asyncRescaleAndReadPixels(const SkSurface* src,
         // no rescaling
         if (src && asConstSB(src)->isGraphiteBacked() &&
             srcRect.size() == dstImageInfo.dimensions()) {
-            TextureProxy* proxy = static_cast<const Surface*>(src)->backingTextureProxy();
-            return this->asyncReadTexture(/*recorder=*/nullptr,
-                                          {proxy, srcRect, dstImageInfo, callback, callbackContext},
-                                          src->imageInfo().colorInfo());
+            const TextureProxy* srcProxy = static_cast<const Surface*>(src)->backingTextureProxy();
+            return this->asyncReadTexture(
+                    /*recorder=*/nullptr,
+                    {srcProxy, srcRect, dstImageInfo, callback, callbackContext},
+                    src->imageInfo().colorInfo());
         }
         // else fall through and let asyncRescaleAndReadPixels() invoke the callback when it detects
         // the null image.
