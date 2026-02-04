@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f3d9d71_8e88e5c5",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccfafd0e_6f2742b7",
+      "range": {
+        "startLine": 117,
+        "startChar": 13,
+        "endLine": 117,
+        "endChar": 38
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92101255_72293262",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "Somewhat lower priority maybe, but I wonder if you could help with double-checking that this is covered by tests?  Either:\n\n* Add a test that fails without the `MakeICCProfile` change, but passes with this change?  (Maybe this requires the test to specify a specific destination profile when calling `SkCodec` APIs to start decoding.)\n* Or, confirm that Blink tests will cover this.",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "719415c5_058c0493",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Added the test in indeed it was catching an issue (image crate was returning the icc profile bytes shifted 14 bytes). I already have a PR with the fix on image crate and validated that it is working fine locally after applying the fix in image crate:\n\nhttps://github.com/image-rs/image/pull/2757",
+      "parentUuid": "92101255_72293262",
       "range": {
         "startLine": 140,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f6bd59_ddb44345",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "True, in this cases as BMP only may have 1 frame, we can use the image_data_loaded() method from FFI assuming that we only know that image has been fully received when we are able to successfully complete its decoding",
+      "parentUuid": "ed722af4_0fdf3840",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 36
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c5efd4c_e8437fae",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "Can those two `if` statements be combined?\n\nIn other words - do we need to special-case `IncompleteInput` here?  Can `MapDecodingResult` translate it as needed?",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "febdea55_cd650ff9",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c5efd4c_e8437fae",
       "range": {
         "startLine": 340,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c539653_2284466e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e5df3f7_ed3819e6",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 365,
+        "endChar": 84
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c89f8b8_fa2009b6",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "I expected that when Rust decodes N first rows, then those rows would be \"immediately\" available to the Skia client (e.g. swizzled + reported via `rowsDecodedPtr`).\n\nAs-is, it seems that the full BMP needs to be received before *any* pixels can be rendered.  Maybe I missed something?\n\nPS. Thank you for adding the `Codec_Bmp_Rust_IncrementalDecode_ProgressiveStream` test.  I think this test should verify the initial rows when `incrementalDecode` returns `kIncompleteInput` (around new line 530-568 in `SkBmpRustDecoderTest.cpp`).",
+      "range": {
+        "startLine": 499,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 9
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b69ddde5_d546c77f",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Currently, it is happenning internally into BMPDecoder from image crate. \n\nThis is how I implemented in my first attempt (Patchset 10) in which I had a `try_read_row` public function in BMPDecoder, but this mixed set of methods was not accepted in image crate. I think that also part of the reason of pushback was due to having a large PR. With current implementation I think that if we expose the number of successfully decoded rows we can then get the when partial decoding due to UnexpectedEof happens. I will try to prepare a PR which should be quite small and hopefully there shouldn\u0027t be much pushback on accepting it.\n\nhttps://github.com/image-rs/image/pull/2758",
+      "parentUuid": "3c89f8b8_fa2009b6",
       "range": {
         "startLine": 499,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da1c6d4f_33ddb9c0",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "I see your point, totally agree to keep CL as simple as possible and also void adding unnecessary functionality. I think that I based on a wrong reference and that\u0027s why I ended implemented these methods, but at the moment there is no use case, so no reason to have code that in practice will not be used, so I will remove from this CL and we can revisit in a separate CL if we see the need of incorporating it.",
+      "parentUuid": "ae12a7e9_adbcf0b7",
+      "range": {
+        "startLine": 51,
+        "startChar": 64,
+        "endLine": 51,
+        "endChar": 65
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86ac777d_11ae44ad",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "Can you help me understand why this is needed?\n\nCan individual warnings be fixed and/or suppressed instead?\n\nMaybe it would be best if `rustc` version update (and addressing the resulting new warnings) would be done in a separate CL?",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 32
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ea68c5b_7079686e",
+        "filename": "experimental/rust_bmp/ffi/BUILD.bazel",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "I think this is probably a leftover from initial implementation, it can be safely removed (as well edition)",
+      "parentUuid": "86ac777d_11ae44ad",
       "range": {
         "startLine": 34,
         "startChar": 31,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "839e9ac5_1397bf41",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 18
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "The limiting issue we have now is that we do not have access to single-row data on currently exposed method, as the only method exposed in image crate is read_image_data. On the first proposal (Patchset 10) we could work this way because we had `try_read_row` method. If/once we move to have bmp as a separated crate it seems we would have more flexibility and can propose this approach.",
+      "parentUuid": "4e2f59c3_cffed222",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 24
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af9851f7_37f0b82f",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "I think this may need to take `SkCodec::Options::fZeroInitialized` into account.  It\u0027s possible that some bytes will remain uninitialized if `IncompleteInput`.",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 9
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6fbe1eb_d7e1043e",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 18
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af9851f7_37f0b82f",
       "range": {
         "startLine": 296,
         "startChar": 0,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df2a7f8f_3c320dff",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b245b2d0_056320bc",
+      "range": {
+        "startLine": 491,
+        "startChar": 66,
+        "endLine": 491,
+        "endChar": 68
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0244cd2a_bd843604",
@@ -267,6 +531,30 @@
       "writtenOn": "2026-02-02T23:24:25Z",
       "side": 1,
       "message": "Is this specific retry loop needed given that we expect that `initialBytes` should be sufficient to parse the headers?",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 5
+      },
+      "revId": "24152c66c06bb44ec97219790b861dfac9193c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8340ae80_31235519",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-04T22:35:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0244cd2a_bd843604",
       "range": {
         "startLine": 492,
         "startChar": 0,
