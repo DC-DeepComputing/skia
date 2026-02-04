@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ComputePathAtlas.h"
 #include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawListLayer.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawPass.h"
@@ -90,7 +91,9 @@ DrawContext::DrawContext(const Caps* caps,
         , fAdvancedBlendsRequireBarrier(caps->blendEquationSupport() ==
                                             Caps::BlendEquationSupport::kAdvancedNoncoherent)
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
-        , fPendingDraws(std::make_unique<DrawList>())
+        , fPendingDraws(caps->useDrawListLayer() ?
+                        std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>()) :
+                        std::unique_ptr<DrawListBase>(std::make_unique<DrawList>()))
         , fPendingUploads(std::make_unique<UploadList>()) {
     // Must determine a valid strategy to use should a dst texture read be required.
     SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
@@ -157,8 +160,11 @@ void DrawContext::recordDraw(const Renderer* renderer,
                              UniquePaintParamsID paintID,
                              SkEnumBitMask<DstUsage> dstUsage,
                              PipelineDataGatherer* gatherer,
-                             const StrokeStyle* stroke) {
-    SkASSERTF(SkIRect::MakeSize(this->imageInfo().dimensions()).contains(clip.scissor()),
+                             const StrokeStyle* stroke,
+                             std::optional<std::reference_wrapper<DrawParams*>> captureParams,
+                             std::optional<std::reference_wrapper<Layer*>> layer) {
+    SkASSERTF(captureParams.has_value() || // TODO bad?
+              SkIRect::MakeSize(this->imageInfo().dimensions()).contains(clip.scissor()),
               "Image %dx%d, scissor %d,%d,%d,%d",
               this->imageInfo().width(), this->imageInfo().height(),
               clip.scissor().left(), clip.scissor().top(),
@@ -178,7 +184,7 @@ void DrawContext::recordDraw(const Renderer* renderer,
     }
 
     fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paintID, dstUsage,
-                              barrierBeforeDraws, gatherer, stroke);
+                              barrierBeforeDraws, gatherer, stroke, captureParams, layer);
 }
 
 bool DrawContext::recordUpload(Recorder* recorder,
