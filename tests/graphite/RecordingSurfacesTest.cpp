@@ -31,6 +31,37 @@ struct Expectation {
     SkColor4f fColor;
 };
 
+void check_expectations(skiatest::Reporter* reporter, SkSurface* surface, const std::vector<Expectation>& expectations) {
+    SkBitmap bitmap;
+    SkPixmap pixmap;
+    bitmap.allocPixels(surface->imageInfo());
+    SkAssertResult(bitmap.peekPixels(&pixmap));
+    if (!surface->readPixels(pixmap, 0, 0)) {
+        ERRORF(reporter, "readPixels failed");
+        return;
+    }
+
+    for (const Expectation& e : expectations) {
+        SkColor4f color = pixmap.getColor4f(e.fX, e.fY);
+#ifdef SK_DEBUG
+        if (color != e.fColor) {
+            SkDebugf("Wrong color at %d, %d\n\texpected: %f %f %f %f\n\tactual: %f %f %f %f",
+                     e.fX,
+                     e.fY,
+                     e.fColor.fR,
+                     e.fColor.fG,
+                     e.fColor.fB,
+                     e.fColor.fA,
+                     color.fR,
+                     color.fG,
+                     color.fB,
+                     color.fA);
+        }
+#endif
+        REPORTER_ASSERT(reporter, color == e.fColor);
+    }
+}
+
 void run_test(skiatest::Reporter* reporter,
               Context* context,
               SkISize surfaceSize,
@@ -71,37 +102,7 @@ void run_test(skiatest::Reporter* reporter,
     }
     context->insertRecording({recording.get(), surface.get(), replayOffset, replayClip});
 
-    // Read pixels.
-    SkBitmap bitmap;
-    SkPixmap pixmap;
-    bitmap.allocPixels(surfaceImageInfo);
-    SkAssertResult(bitmap.peekPixels(&pixmap));
-    if (!surface->readPixels(pixmap, 0, 0)) {
-        ERRORF(reporter, "readPixels failed");
-        return;
-    }
-
-    // Veryify expectations are met and recording is uninstantiated.
-    REPORTER_ASSERT(reporter, !recording->priv().isTargetProxyInstantiated());
-    for (const Expectation& e : expectations) {
-        SkColor4f color = pixmap.getColor4f(e.fX, e.fY);
-#ifdef SK_DEBUG
-        if (color != e.fColor) {
-            SkDebugf("Wrong color at %d, %d\n\texpected: %f %f %f %f\n\tactual: %f %f %f %f",
-                     e.fX,
-                     e.fY,
-                     e.fColor.fR,
-                     e.fColor.fG,
-                     e.fColor.fB,
-                     e.fColor.fA,
-                     color.fR,
-                     color.fG,
-                     color.fB,
-                     color.fA);
-        }
-#endif
-        REPORTER_ASSERT(reporter, color == e.fColor);
-    }
+    check_expectations(reporter, surface.get(), expectations);
 }
 
 // Tests that clear does not clear an entire replayed-to surface if recorded onto a smaller surface.
@@ -497,6 +498,52 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestUnnecessarySurface, repo
             SkSurfaces::RenderTarget(recorder.get(), kImageInfo, skgpu::Mipmapped::kNo);
     std::unique_ptr<Recording> recording = recorder->snap();
     REPORTER_ASSERT(reporter, context->insertRecording({recording.get(), surface.get()}));
+}
+
+
+// Tests that a surface created on one recorder is correctly marked as initialized
+// after having a recording from another recorder played back onto it.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestSurfaceLifecycle, reporter, context,
+                                   CtsEnforcement::kApiLevel_202504) {
+    const SkImageInfo kImageInfo = SkImageInfo::Make(SkISize::Make(8, 8),
+                                                     SkColorType::kRGBA_8888_SkColorType,
+                                                     SkAlphaType::kPremul_SkAlphaType);
+
+    // Create a render target surface on recorder A. This surface will be considered uninitialized and
+    // have its load op set to kClear so that the surface is cleared when it is first used.
+    std::unique_ptr<Recorder> recorderA = context->makeRecorder();
+    sk_sp<SkSurface> surfaceA =
+            SkSurfaces::RenderTarget(recorderA.get(), kImageInfo, skgpu::Mipmapped::kNo);
+
+    // Draw red to a deferred canvas on recorder B. Match the image and texture info of surface A.
+    std::unique_ptr<Recorder> recorderB = context->makeRecorder();
+    auto* graphiteSurfaceA = static_cast<Surface*>(surfaceA.get());
+    const TextureInfo& textureInfo = graphiteSurfaceA->backingTextureProxy()->textureInfo();
+    SkCanvas* canvasB = recorderB->makeDeferredCanvas(kImageInfo, textureInfo);
+
+    SkPaint redPaint;
+    redPaint.setColor(SkColors::kRed);
+    canvasB->drawRect(SkRect::MakeWH(8, 8), redPaint);
+
+    // Snap and insert the recording from B, targeting surface A. This should mark surface A as
+    // initialized.
+    std::unique_ptr<Recording> recordingB = recorderB->snap();
+    InsertRecordingInfo infoB;
+    infoB.fRecording = recordingB.get();
+    infoB.fTargetSurface = surfaceA.get();
+    context->insertRecording(infoB);
+
+    // Now snap an empty recording from A. This should NOT clear the surface since it is now
+    // considered initialized.
+    std::unique_ptr<Recording> recordingA2 = recorderA->snap();
+    InsertRecordingInfo infoA2;
+    infoA2.fRecording = recordingA2.get();
+    infoA2.fTargetSurface = surfaceA.get();
+    context->insertRecording(infoA2);
+
+    // Check that the surface is not cleared and has the red color drawn to the deferred canvas.
+    std::vector<Expectation> expectations = {{0, 0, SkColors::kRed}};
+    check_expectations(reporter, surfaceA.get(), expectations);
 }
 
 }  // namespace skgpu::graphite

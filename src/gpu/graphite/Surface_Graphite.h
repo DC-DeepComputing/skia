@@ -89,7 +89,9 @@ public:
     TextureProxyView readSurfaceView() const;
     sk_sp<Image> asImage() const;
     sk_sp<Image> makeImageCopy(const SkIRect* subset, Mipmapped) const;
-    TextureProxy* backingTextureProxy() const;
+
+    const TextureProxy* backingTextureProxy() const;
+    TextureProxy* overwriteBackingTextureProxy();
 
     void flushToDrawContext(DrawContext*);
 

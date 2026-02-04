@@ -75,8 +75,12 @@ public:
 
     bool readsTexture(const TextureProxy*) const;
 
-    void clear(const SkColor4f& clearColor);
-    void discard();
+    void clear(SkColor4f clearColor) { reset(LoadOp::kClear, clearColor); }
+    void discard() { reset(LoadOp::kDiscard); }
+
+    // Discard all previously recorded draws and set to the requested load op (with optional clear
+    // color).
+    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f});
 
     void recordDraw(const Renderer* renderer,
                     const Transform& localToDevice,
@@ -119,8 +123,6 @@ public:
 
 private:
     DrawContext(const Caps*, sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
-
-    void resetForClearOrDiscard();
 
     sk_sp<TextureProxy> fTarget;
     TextureProxyView fReadView;
