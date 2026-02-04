@@ -55,6 +55,11 @@
         "BazelBuild-viewer-release-linux_x64"
       ]
     },
+    "BazelBuild-viewer-release-mac_arm64": {
+      "tasks": [
+        "BazelBuild-viewer-release-mac_arm64"
+      ]
+    },
     "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
       "tasks": [
         "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64"
@@ -4726,6 +4731,89 @@
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
           "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-viewer-release-mac_arm64": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        },
+        {
+          "name": "xcode",
+          "path": "cache/Xcode.app"
+        }
+      ],
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "version:3@2.51.2.chromium.11"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:808a00437f24bb404c09608ad8bf3847a78de369"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:808a00437f24bb404c09608ad8bf3847a78de369"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:808a00437f24bb404c09608ad8bf3847a78de369"
+        },
+        {
+          "name": "infra/tools/mac_toolchain/${platform}",
+          "path": "mac_toolchain",
+          "version": "git_revision:0cb1e51344de158f72524c384f324465aebbcef2"
+        },
+        {
+          "name": "skia/bots/bazelisk_mac_arm64",
+          "path": "bazelisk_mac_arm64",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/tools/bazel_build/${platform}",
+          "path": "task_drivers",
+          "version": "git_revision:b5d31abb7bc772a69f800de45783768768437675"
+        }
+      ],
+      "command": [
+        "luci-auth",
+        "context",
+        "task_drivers/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-viewer-release-mac_arm64",
+        "--bazel_label=//tools/viewer:viewer",
+        "--bazel_config=release",
+        "--bazel_cache_dir=/Volumes/Work/s/w/bazel_cache",
+        "--workdir=./skia"
+      ],
+      "dimensions": [
+        "cpu:arm64-64-Apple_M4",
+        "pool:Skia"
+      ],
+      "environment": {
+        "USE_BAZEL_FALLBACK_VERSION": "error"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "bazelisk_mac_arm64"
         ]
       },
       "idempotent": true,
