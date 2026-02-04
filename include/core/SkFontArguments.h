@@ -14,6 +14,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <string>
 
 /** Represents a set of actual arguments for a font. */
 struct SkFontArguments {
@@ -46,7 +47,8 @@ struct SkFontArguments {
     SkFontArguments()
             : fCollectionIndex(0)
             , fVariationDesignPosition{nullptr, 0}
-            , fPalette{0, nullptr, 0} {}
+            , fPalette{0, nullptr, 0}
+            , fMatchedFamilyName("") {}
 
     /** Specify the index of the desired font.
      *
@@ -100,12 +102,26 @@ struct SkFontArguments {
     }
     std::optional<bool> getSyntheticOblique() const { return fSyntheticOblique; }
 
+    /** Specify the matched font family name.
+     *  This can be used by font managers to match fonts by name when the collection
+     *  index alone is insufficient (e.g., when system and file collection indices differ).
+     */
+    SkFontArguments& setMatchedFamilyName(const char* familyName) {
+        fMatchedFamilyName = familyName ? std::string(familyName) : std::string();
+        return *this;
+    }
+
+    const std::string& getMatchedFamilyName() const {
+        return fMatchedFamilyName;
+    }
+
 private:
     int fCollectionIndex;
     VariationPosition fVariationDesignPosition;
     Palette fPalette;
     std::optional<bool> fSyntheticBold;
     std::optional<bool> fSyntheticOblique;
+    std::string fMatchedFamilyName;
 };
 
 #endif

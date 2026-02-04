@@ -1238,6 +1238,8 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
     }
     const uint8_t (&actualSimulationDistances)[4] = simulationDistances[simulationRequestIndex];
 
+    const std::string& matchedFamilyName = args.getMatchedFamilyName();
+
     // Find the first non-simulated font which has the given ttc index.
     UINT32 familyCount = fontCollection->GetFontFamilyCount();
     for (UINT32 familyIndex = 0; familyIndex < familyCount; ++familyIndex) {
@@ -1253,6 +1255,29 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
             HRN(font->CreateFontFace(&fontFace));
             int faceIndex = fontFace->GetIndex();
             int ttcIndex = args.getCollectionIndex();
+
+            // For variable fonts, prefer matching by family name to handle TTC index mismatches
+            // between system collection and stream collection (e.g., Segoe UI Variable variants).
+            bool hasVariation = args.getVariationDesignPosition().coordinateCount > 0;
+            if (hasVariation && !matchedFamilyName.empty()) {
+                // Get the family name for matching
+                SkTScopedComPtr<IDWriteLocalizedStrings> familyNames;
+                HRN(fontFamily->GetFamilyNames(&familyNames));
+
+                UINT32 nameLength;
+                HRN(familyNames->GetStringLength(0, &nameLength));
+
+                SkSMallocWCHAR wideFamilyName(nameLength+1);
+                HRN(familyNames->GetString(0, wideFamilyName.get(), nameLength+1));
+
+                SkString actualFamilyName;
+                HRN(sk_wchar_to_skstring(wideFamilyName.get(), nameLength, &actualFamilyName));
+
+                // Skip if family name doesn't match.
+                if (!actualFamilyName.equals(matchedFamilyName.c_str())) {
+                    break;
+                }
+            }
 
             // Skip if the current face index does not match the ttcIndex
             if (faceIndex != ttcIndex) {
