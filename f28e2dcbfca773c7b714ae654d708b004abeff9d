@@ -16,6 +16,46 @@
       "message": "PTAL: Note, verified the GM reproduces the issue, see Gold images on PS2.",
       "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "471647d6_e8855c35",
+        "filename": "gm/crbug_478659067.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-04T16:19:02Z",
+      "side": 1,
+      "message": "// We skew the font in order to prevent glyph reuse. This is needed to overflow the cache page\n\n?",
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4368a0_8867855c",
+        "filename": "gm/crbug_478659067.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-04T16:19:02Z",
+      "side": 1,
+      "message": "We don\u0027t do this anymore",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 109,
+        "endChar": 33
+      },
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
