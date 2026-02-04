@@ -1102,6 +1102,7 @@ bool MtlCaps::isRenderable(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
     }
+    return true;
     TextureFormat format = TextureInfoPriv::ViewFormat(info);
     const auto& mtlInfo = TextureInfoPriv::Get<MtlTextureInfo>(info);
     return (mtlInfo.fUsage & MTLTextureUsageRenderTarget) &&

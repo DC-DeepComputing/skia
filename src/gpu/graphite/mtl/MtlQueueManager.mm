@@ -50,6 +50,7 @@ private:
 };
 
 QueueManager::OutstandingSubmission MtlQueueManager::onSubmitToGpu(const SubmitInfo&) {
+    //SkDebugf("Metal submit to gpu\n");
     SkASSERT(fCurrentCommandBuffer);
     MtlCommandBuffer* mtlCmdBuffer = static_cast<MtlCommandBuffer*>(fCurrentCommandBuffer.get());
     if (!mtlCmdBuffer->commit()) {

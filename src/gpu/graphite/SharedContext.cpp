@@ -67,6 +67,13 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
     return GetPipelineLabel(ctx->caps(), dict, rpDesc, step, gpDesc.paintParamsID());
 }
 
+TextureInfo SharedContext::getDefaultSampledTextureInfo(SkColorType ct,
+                                                       Mipmapped mm,
+                                                       Protected prot,
+                                                       Renderable ren) const {
+    return fCaps->getDefaultSampledTextureInfo(ct, mm, prot, ren);
+}
+
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const UniqueKey& pipelineKey,
@@ -153,5 +160,10 @@ void SharedContext::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeT
 void SharedContext::forceProcessReturnedResources() {
     fThreadSafeResourceProvider->forceProcessReturnedResources();
 }
+
+std::optional<BackendTexture>
+SharedContext::convertBackendTextureIfNeeded(const BackendTexture&) const { return {}; }
+
+std::optional<TextureInfo> SharedContext::convertTextureInfo(const TextureInfo&) const { return {}; }
 
 } // namespace skgpu::graphite
