@@ -18,6 +18,9 @@ wgpu::DawnTogglesDescriptor GetInstanceToggles();
 // Toggles to be passed when creating the wgpu::Adapter.
 wgpu::DawnTogglesDescriptor GetAdapterToggles();
 
+// Appends preferred features that the adapter lists as available
+void AddPreferredFeatures(const wgpu::Adapter& adapter, std::vector<wgpu::FeatureName>& features);
+
 }  // namespace skiatest::graphite
 
 #endif  // skiatest_graphite_GraphiteDawnToggles_DEFINED
