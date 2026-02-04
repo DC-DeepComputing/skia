@@ -33,6 +33,46 @@
       "message": "The .h and .cpp changes lgtm. I\u0027ll defer to Kaylee for the build system changes.",
       "revId": "d239da122c23aad27afa46e70c60d5d2bd99a1ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aa2338d_947be71c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 95
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T18:21:09Z",
+      "side": 1,
+      "message": "Our GCC build is failing:\n```\n/SRC/ccache_linux/bin/ccache g++ -MD -MF obj/third_party/externals/partition_alloc/src/partition_alloc/liballocator_core.gwp_asan_support.o.d -DIS_PARTITION_ALLOC_IMPL -DNDEBUG -I../SRC/skia/third_party/externals/partition_alloc/src -Igen/third_party/externals/partition_alloc/src -Wno-attributes -fPIC -fvisibility\u003dhidden -g -gdwarf-4 -g1 -O1 -DREBUILD_IF_CHANGED_docker_image\u003dgcr.io/skia-public/gcc-debian11@sha256:1117ea368f43e45e0f543f74c8e3bf7ff6932df54ddaa4ba1fe6131209110d3d -fno-strict-aliasing -O3 -fdata-sections -ffunction-sections -fvisibility-inlines-hidden -std\u003dc++20 -fno-exceptions -fno-rtti -c ../SRC/skia/third_party/externals/partition_alloc/src/partition_alloc/gwp_asan_support.cc -o obj/third_party/externals/partition_alloc/src/partition_alloc/liballocator_core.gwp_asan_support.o\nIn file included from ../SRC/skia/third_party/externals/partition_alloc/src/partition_alloc/in_slot_metadata.h:24,\n                 from ../SRC/skia/third_party/externals/partition_alloc/src/partition_alloc/gwp_asan_support.cc:12:\n../SRC/skia/third_party/externals/partition_alloc/src/partition_alloc/slot_start.h: In member function \u0027constexpr partition_alloc::internal::UntaggedSlotStart partition_alloc::internal::SlotStart::Untag() const\u0027:\n../SRC/skia/third_party/externals/partition_alloc/src/partition_alloc/slot_start.h:226:48: error: call to non-\u0027constexpr\u0027 function \u0027uintptr_t partition_alloc::internal::UntagAddr(uintptr_t)\u0027\n  226 |   return UntaggedSlotStart::Unchecked(UntagAddr(address_));\n```\nPossibly something to do with an old libstdc++ or similar where something isn\u0027t `constexpr`",
+      "revId": "d239da122c23aad27afa46e70c60d5d2bd99a1ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9519007_64195129",
+        "filename": "BUILD.gn",
+        "patchSetId": 95
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T18:21:09Z",
+      "side": 1,
+      "message": "I think we are going to want this to be configurable. Add a gn arg to gn/skia.gni so we can turn this on in the places we want to (e.g. not on old GCC builds)",
+      "range": {
+        "startLine": 2844,
+        "startChar": 17,
+        "endLine": 2844,
+        "endChar": 32
+      },
+      "revId": "d239da122c23aad27afa46e70c60d5d2bd99a1ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
