@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f81e18_125dd8d7",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-04T17:48:59Z",
+      "side": 1,
+      "message": "I\u0027m not clear on why we\u0027re using caches under /home in general. Using a Swarming cache seems like a better option.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 58
+      },
+      "revId": "bc468a1714759eef7b6cc977246cab6f9366f90f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
