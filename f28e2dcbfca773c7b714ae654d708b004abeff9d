@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d879b5ad_bbc70b16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-04T16:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d46cab0_f0f3ddc7",
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "471647d6_e8855c35",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ed869e_b00e54b6",
+        "filename": "gm/crbug_478659067.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-04T16:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "471647d6_e8855c35",
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd4368a0_8867855c",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-02-04T16:19:02Z",
       "side": 1,
       "message": "We don\u0027t do this anymore",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 109,
+        "endChar": 33
+      },
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a40f2f5_c25811cc",
+        "filename": "gm/crbug_478659067.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-04T16:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd4368a0_8867855c",
       "range": {
         "startLine": 109,
         "startChar": 1,
