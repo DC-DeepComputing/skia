@@ -17,16 +17,22 @@
 namespace ui {
 
 enum class Dataspace : int32_t {
-    UNKNOWN,
-    SRGB,
-    BT2020,
-    BT2020_ITU_PQ,  // HDR TV - range limited
-    BT2020_HLG,     // HDR TV - range full
-    DISPLAY_P3,
-    V0_SRGB,
+    UNKNOWN = 0,
+    SRGB = 513 /* 0x201 */,
+    BT2020 = 147193856 /* STANDARD_BT2020 | TRANSFER_SMPTE_170M | RANGE_FULL */,
+    BT2020_ITU_PQ = 298188800 /* STANDARD_BT2020 | TRANSFER_ST2084 | RANGE_LIMITED */,
+    BT2020_HLG = 168165376 /* STANDARD_BT2020 | TRANSFER_HLG | RANGE_FULL */,
+    DISPLAY_P3 = 143261696 /* STANDARD_DCI_P3 | TRANSFER_SRGB | RANGE_FULL */,
+    V0_SRGB = 142671872 /* STANDARD_BT709 | TRANSFER_SRGB | RANGE_FULL */,
 };
 
 } // namespace ui
+
+enum class HdrRenderType {
+    SDR,
+    DISPLAY_HDR,
+    GENERIC_HDR
+};
 
 namespace shaders {
 
