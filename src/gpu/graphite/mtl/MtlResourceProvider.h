@@ -20,7 +20,7 @@ namespace skgpu::graphite {
 class CommandBuffer;
 class MtlSharedContext;
 
-class MtlResourceProvider final : public ResourceProvider {
+class MtlResourceProvider : public ResourceProvider {
 public:
     MtlResourceProvider(SharedContext* sharedContext,
                         SingleOwner*,

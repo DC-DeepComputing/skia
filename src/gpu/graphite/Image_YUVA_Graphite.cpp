@@ -83,12 +83,15 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
                                    const SkYUVAInfo& yuvaInfo,
                                    SkSpan<TextureProxyView> planes,
                                    sk_sp<SkColorSpace> imageColorSpace) {
+   // SkDebugf("YUV make 1\n");
     if (!yuvaInfo.isValid()) {
+  //      SkDebugf("YUV make 2\n");
         return nullptr;
     }
     SkImageInfo info = SkImageInfo::Make(
             yuvaInfo.dimensions(), kAssumedColorType, yuva_alpha_type(yuvaInfo), imageColorSpace);
     if (!SkImageInfoIsValid(info)) {
+   //     SkDebugf("YUV make 3\n");
         return nullptr;
     }
 
@@ -101,9 +104,12 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
     uint32_t pixmapChannelmasks[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < numPlanes; ++i) {
         if (!planes[i] || !caps->isTexturable(planes[i].proxy()->textureInfo())) {
+ //          SkDebugf("YUV make 4\n");
             return nullptr;
         }
         if (planes[i].dimensions() != planeDimensions[i]) {
+    //        SkDebugf("YUV make 5\n");
+
             return nullptr;
         }
         pixmapChannelmasks[i] = TextureInfoPriv::ChannelMask(planes[i].proxy()->textureInfo());
@@ -114,24 +120,30 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
     int expectedPlanes;
     if (!SkYUVAInfo::YUVALocation::AreValidLocations(locations, &expectedPlanes) ||
         expectedPlanes != numPlanes) {
+   //     SkDebugf("YUV make 6\n");
+
         return nullptr;
     }
     // Y channel should match the YUVAInfo dimensions
     if (planes[locations[kY].fPlane].dimensions() != yuvaInfo.dimensions()) {
+ //       SkDebugf("YUV make 7\n");
         return nullptr;
     }
     // UV channels should have planes with the same dimensions and subsampling factor.
     if (planes[locations[kU].fPlane].dimensions() != planes[locations[kV].fPlane].dimensions()) {
+   //     SkDebugf("YUV make 8\n");
         return nullptr;
     }
     // If A channel is present, it should match the Y channel
     if (locations[kA].fPlane >= 0 &&
         planes[locations[kA].fPlane].dimensions() != yuvaInfo.dimensions()) {
+  //      SkDebugf("YUV make 9\n");
         return nullptr;
     }
 
     if (yuvaInfo.planeSubsamplingFactors(locations[kU].fPlane) !=
         yuvaInfo.planeSubsamplingFactors(locations[kV].fPlane)) {
+  //      SkDebugf("YUV make 10\n");
         return nullptr;
     }
 
@@ -149,9 +161,11 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
             channelProxies[i] = {};
         } else {
             SKGPU_LOG_W("YUVA channel %d does not have a valid location", i);
+            SkDebugf("YUV make 11\n");
             return nullptr;
         }
     }
+  //  SkDebugf("YUV make 12\n");
 
     return sk_sp<Image_YUVA>(new Image_YUVA(std::move(channelProxies),
                                             yuvaInfo,
