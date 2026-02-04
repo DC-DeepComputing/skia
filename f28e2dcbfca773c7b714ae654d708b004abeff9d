@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d46cab0_f0f3ddc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-04T16:04:24Z",
+      "side": 1,
+      "message": "PTAL: Note, verified the GM reproduces the issue, see Gold images on PS2.",
+      "revId": "f28e2dcbfca773c7b714ae654d708b004abeff9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
