@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "343a7aba_609d0758",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1256,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-04T14:51:44Z",
+      "side": 1,
+      "message": "This CL just replaces Win10 with Win11 for these jobs.  I\u0027m happy to create a followup CL which changes more behavior, but this is currently blocking the CQ and I\u0027d like to get it landed ASAP.",
+      "parentUuid": "89c32b01_9d592522",
+      "range": {
+        "startLine": 1256,
+        "startChar": 24,
+        "endLine": 1256,
+        "endChar": 28
+      },
+      "revId": "a7181910caee83734827eb0a9ca9a5d732ef0ac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9375a93_a3a84bb5",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 1
