@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "288af880_5e71e96a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-04T17:33:32Z",
+      "side": 1,
+      "message": "The Android_Graphite_Native_HWASAN job is perma-red on the tree",
+      "revId": "a39b8b74143508607d77b7fcb21a923765ee0e97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
