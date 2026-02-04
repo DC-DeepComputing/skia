@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ComputePathAtlas.h"
 #include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawListBase.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawPass.h"
@@ -90,7 +91,7 @@ DrawContext::DrawContext(const Caps* caps,
         , fAdvancedBlendsRequireBarrier(caps->blendEquationSupport() ==
                                             Caps::BlendEquationSupport::kAdvancedNoncoherent)
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
-        , fPendingDraws(std::make_unique<DrawList>())
+        , fPendingDraws(std::unique_ptr<DrawListBase>(std::make_unique<DrawList>()))
         , fPendingUploads(std::make_unique<UploadList>()) {
     // Must determine a valid strategy to use should a dst texture read be required.
     SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
