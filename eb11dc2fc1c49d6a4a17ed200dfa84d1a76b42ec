@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "797ea87f_9daca9d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T16:58:43Z",
+      "side": 1,
+      "message": "Both G3 and Android Canary *actually* succeeded",
+      "revId": "eb11dc2fc1c49d6a4a17ed200dfa84d1a76b42ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
