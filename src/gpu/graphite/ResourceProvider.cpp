@@ -287,9 +287,12 @@ bool dimensions_are_valid(const int maxTextureSize, const SkISize& dimensions) {
 }
 
 BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+   // SkDebugf("ResourceProvider::createBackendTexture 1\n");
     if (!dimensions_are_valid(fSharedContext->caps()->maxTextureSize(), dimensions)) {
+   //     SkDebugf("ResourceProvider::createBackendTexture 2\n");
         return {};
     }
+  //  SkDebugf("ResourceProvider::createBackendTexture 3\n");
     return this->onCreateBackendTexture(dimensions, info);
 }
 

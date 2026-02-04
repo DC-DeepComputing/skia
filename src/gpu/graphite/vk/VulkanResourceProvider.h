@@ -33,7 +33,7 @@ class VulkanSharedContext;
 class VulkanTexture;
 class VulkanYcbcrConversion;
 
-class VulkanResourceProvider final : public ResourceProvider {
+class VulkanResourceProvider : public ResourceProvider {
 public:
     static constexpr size_t kIntrinsicConstantSize = sizeof(float) * 8; // float4 + 2xfloat2
     // Intrinsic constant rtAdjust value is needed by the vertex shader. Dst copy bounds are needed
@@ -81,8 +81,13 @@ public:
                                                      const int width,
                                                      const int height);
 
+protected:
+    sk_sp<Texture> internalCreateWrappedTexture(const BackendTexture& texture,
+                                                bool saveOriginalLayout);
+
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
+
     // VulkanSharedContext::pipelineCompileWasRequired() - which drives PipelineCache persistence
     // - modifies the SharedContext so, when creating Pipelines, the ResourceProvider must
     // provide a non-const SharedContext.

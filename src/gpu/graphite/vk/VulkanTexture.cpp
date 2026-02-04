@@ -183,7 +183,10 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                           sk_sp<MutableTextureState> mutableState,
                                           VkImage image,
                                           const VulkanAlloc& alloc,
-                                          sk_sp<VulkanYcbcrConversion> ycbcrConversion) {
+                                          sk_sp<VulkanYcbcrConversion> ycbcrConversion,
+                                          bool saveOriginalLayout) {
+    VkImageLayout layout = skgpu::MutableTextureStates::GetVkImageLayout(mutableState.get());
+    SkDebugf("original wrapped layout: %d\n", layout);
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
                                             info,
@@ -191,7 +194,9 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                             image,
                                             alloc,
                                             Ownership::kWrapped,
-                                            std::move(ycbcrConversion)));
+                                            std::move(ycbcrConversion),
+                                            saveOriginalLayout ? layout
+                                                               : VK_IMAGE_LAYOUT_UNDEFINED));
 }
 
 VulkanTexture::~VulkanTexture() {}
@@ -318,7 +323,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                              VkImage image,
                              const VulkanAlloc& alloc,
                              Ownership ownership,
-                             sk_sp<VulkanYcbcrConversion> ycbcrConversion)
+                             sk_sp<VulkanYcbcrConversion> ycbcrConversion,
+                             VkImageLayout originalWrappedLayout)
         : Texture(sharedContext,
                   dimensions,
                   info,
@@ -327,7 +333,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                   ownership)
         , fImage(image)
         , fMemoryAlloc(alloc)
-        , fYcbcrConversion(std::move(ycbcrConversion)) {
+        , fYcbcrConversion(std::move(ycbcrConversion))
+        , fOriginalWrappedLayout(originalWrappedLayout) {
     SkASSERT(!uses_lazy_memory(fMemoryAlloc) || has_transient_usage(info));
 }
 
