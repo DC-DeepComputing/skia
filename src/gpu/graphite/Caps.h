@@ -311,6 +311,15 @@ public:
     /* Returns whether multisampled render to single sampled is supported. */
     bool msaaRenderToSingleSampledSupport() const { return fMSAARenderToSingleSampledSupport; }
 
+    /**
+     * Returns whether depth/stencil attachment sample count must match the render pass sample
+     * count. This is only relevant when multi-sampled render to single sampled extension is being
+     * used in a render pass.
+     */
+    bool msaaRenderToSingleSampledDepthStencilSamplesMustMatchRenderPass() const {
+        return fMSAARenderToSingleSampledDepthStencilSamplesMustMatchRenderPass;
+    }
+
     /* Returns whether multisampled render to single sampled is supported for a given texture. */
     virtual bool msaaTextureRenderToSingleSampledSupport(const TextureInfo& info) const {
         return this->msaaRenderToSingleSampledSupport();
@@ -509,6 +518,7 @@ protected:
     bool fDrawBufferCanBeMapped = true;
     bool fBufferMapsAreAsync = false;
     bool fMSAARenderToSingleSampledSupport = false;
+    bool fMSAARenderToSingleSampledDepthStencilSamplesMustMatchRenderPass = false;
     bool fDifferentResolveAttachmentSizeSupport = false;
     bool fAvoidMSAA = false;
 

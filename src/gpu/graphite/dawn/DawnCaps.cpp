@@ -485,6 +485,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 
     fMSAARenderToSingleSampledSupport =
             backendContext.fDevice.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled);
+    fMSAARenderToSingleSampledDepthStencilSamplesMustMatchRenderPass = true;
 
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::TransientAttachments)) {
         fSupportedTransientAttachmentUsage = wgpu::TextureUsage::TransientAttachment;

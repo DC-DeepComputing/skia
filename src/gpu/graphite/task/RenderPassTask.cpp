@@ -99,12 +99,6 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                   desc.fSampleCount > SampleCount::k1));
     }
 
-    if (desc.fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported) {
-        // The sample count for any depth/stencil buffer must match the color attachment
-        SkASSERT(TextureFormatIsDepthOrStencil(desc.fDepthStencilAttachment.fFormat));
-        SkASSERT(desc.fDepthStencilAttachment.fSampleCount == desc.fColorAttachment.fSampleCount);
-    }
-
     return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes),
                                                     desc,
                                                     std::move(target),

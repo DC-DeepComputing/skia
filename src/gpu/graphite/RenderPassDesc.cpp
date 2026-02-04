@@ -74,11 +74,14 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     desc.fSampleCount = requiresMSAA ? caps->getCompatibleMSAASampleCount(targetInfo)
                                      : targetInfo.sampleCount();
 
-    // We need to handle MSAA with an extra color attachment if:
+    // We need to handle loading/resolving MSAA for the target if:
+    const bool needsMsaaForSingleSampledTarget =
+            desc.fSampleCount > SampleCount::k1 &&        // using MSAA for the render pass,
+            targetInfo.sampleCount() == SampleCount::k1;  // the target isn't already MSAA'ed,
+    // We need a separate MSAA color attachment if `needsMsaaForSingleSampledTarget` but MSAA render
+    // to single sampled extension isn't available.
     const bool needsMSAAColorAttachment =
-            desc.fSampleCount > SampleCount::k1 &&         // using MSAA for the render pass,
-            targetInfo.sampleCount() == SampleCount::k1 && // the target isn't already MSAA'ed,
-            !msaaRenderToSingleSampledSupport;             // can't use an MSAA->single extension.
+            needsMsaaForSingleSampledTarget && !msaaRenderToSingleSampledSupport;
     if (needsMSAAColorAttachment) {
         // We set the color and resolve attachments up the same regardless of if the backend ends up
         // using msaaRenderToSingleSampledSupport() to skip explicitly creating the MSAA attachment.
@@ -109,12 +112,19 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         }
         TextureFormat dsFormat = caps->getDepthStencilFormat(depthStencilFlags);
         SkASSERT(dsFormat != TextureFormat::kUnsupported);
+
+        const bool samplesMustMatchRenderPass =
+                needsMsaaForSingleSampledTarget && msaaRenderToSingleSampledSupport &&
+                caps->msaaRenderToSingleSampledDepthStencilSamplesMustMatchRenderPass();
+        SampleCount dsSampleCount =
+                samplesMustMatchRenderPass ? desc.fSampleCount : desc.fColorAttachment.fSampleCount;
+
         // Depth and stencil values are currently always cleared and don't need to persist.
         // The sample count should always match the color attachment.
         desc.fDepthStencilAttachment = {dsFormat,
                                         LoadOp::kClear,
                                         StoreOp::kDiscard,
-                                        desc.fColorAttachment.fSampleCount};
+                                        dsSampleCount};
     } else {
         SkASSERT(desc.fDepthStencilAttachment.fFormat == TextureFormat::kUnsupported);
     }
@@ -142,8 +152,6 @@ SkString RenderPassDesc::toPipelineLabel() const {
     SkASSERT(fColorAttachment.fFormat != TextureFormat::kUnsupported);
     SkASSERT(fColorResolveAttachment.fFormat == TextureFormat::kUnsupported ||
              fColorResolveAttachment.fFormat == fColorAttachment.fFormat);
-    SkASSERT(fDepthStencilAttachment.fFormat == TextureFormat::kUnsupported ||
-             fDepthStencilAttachment.fSampleCount == fColorAttachment.fSampleCount);
     SkASSERT(fColorResolveAttachment.fFormat == TextureFormat::kUnsupported ||
              fColorResolveAttachment.fSampleCount == SampleCount::k1);
     SkASSERT(fColorAttachment.fSampleCount == fSampleCount ||
