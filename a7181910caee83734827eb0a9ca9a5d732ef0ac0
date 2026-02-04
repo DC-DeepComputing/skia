@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d2a5f54_0fd5c289",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1256,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-04T15:32:58Z",
+      "side": 1,
+      "message": "Yes, I think we should push for more clang as the preferred compiler. I\u0027ve repeatedly seen significant performance regressions with MSVC, even on the GPU configs where you\u0027d expect less chance for a CPU bottleneck.\n\nGiven that, we should only really be treating MSVC like we do gcc, an FYI make sure we don\u0027t break it, but maybe not really care about performance.",
+      "parentUuid": "ab56b9eb_a0ed8243",
+      "range": {
+        "startLine": 1256,
+        "startChar": 24,
+        "endLine": 1256,
+        "endChar": 28
+      },
+      "revId": "a7181910caee83734827eb0a9ca9a5d732ef0ac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9375a93_a3a84bb5",
