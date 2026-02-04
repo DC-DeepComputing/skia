@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c32b01_9d592522",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1256,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T14:45:37Z",
+      "side": 1,
+      "message": "Given that Chromium compiles with Clang, we\u0027d probably want to have more Clang Perf tasks than MSVC ones. I\u0027d suggest converting all these to Clang. WDYT @michaelludwig@google.com?",
+      "range": {
+        "startLine": 1256,
+        "startChar": 24,
+        "endLine": 1256,
+        "endChar": 28
+      },
+      "revId": "a7181910caee83734827eb0a9ca9a5d732ef0ac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9375a93_a3a84bb5",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2370,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T14:45:37Z",
+      "side": 1,
+      "message": "Similar though here about MSVC vs Clang, although we do probably want *some* MSVC test tasks to make sure we are correct on the non-Chromium compiler.",
+      "range": {
+        "startLine": 2370,
+        "startChar": 24,
+        "endLine": 2370,
+        "endChar": 28
+      },
+      "revId": "a7181910caee83734827eb0a9ca9a5d732ef0ac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
