@@ -88,7 +88,7 @@ static sk_sp<SkData> create_image_data(const SkImageInfo& info) {
 
 static skgpu::graphite::TextureProxy* top_device_graphite_target_proxy(SkCanvas* canvas) {
     if (auto gpuDevice = SkCanvasPriv::TopDevice(canvas)->asGraphiteDevice()) {
-        return gpuDevice->target();
+        return gpuDevice->overwriteTarget();
     }
     return nullptr;
 }
@@ -267,15 +267,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
                         resourceCache->numFindableResources() == 2 + buffersUsedForUpload);
     }
     REPORTER_ASSERT(reporter, surfaceResourcePtr->budgeted() == Budgeted::kNo);
-
-    // The creation of the surface may have added an initial clear to it. Thus if we just reset the
-    // surface it will flush the clean on the device and we don't be dropping all our refs to the
-    // surface. So we force all the work to happen first.
-    recording = recorder->snap();
-    insertInfo.fRecording = recording.get();
-    context->insertRecording(insertInfo);
-    testContext->syncedSubmit(context);
-    recording.reset();
 
     surface.reset();
     resourceCache->forceProcessReturnedResources();

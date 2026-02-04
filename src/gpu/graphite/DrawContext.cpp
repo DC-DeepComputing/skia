@@ -107,17 +107,7 @@ DrawContext::DrawContext(const Caps* caps,
 
 DrawContext::~DrawContext() = default;
 
-void DrawContext::clear(const SkColor4f& clearColor) {
-    this->resetForClearOrDiscard();
-    fPendingDraws->reset(LoadOp::kClear, clearColor);
-}
-
-void DrawContext::discard() {
-    this->resetForClearOrDiscard();
-    fPendingDraws->reset(LoadOp::kDiscard);
-}
-
-void DrawContext::resetForClearOrDiscard() {
+void DrawContext::reset(LoadOp op, SkColor4f clearColor) {
     // Non-loading operations on a fully lazy target can corrupt data beyond the DrawContext's
     // region so should be avoided.
     SkASSERT(!fTarget->isFullyLazy());
@@ -130,6 +120,8 @@ void DrawContext::resetForClearOrDiscard() {
     if (fComputePathAtlas) {
         fComputePathAtlas->reset();
     }
+
+    fPendingDraws->reset(op, clearColor);
 }
 
 bool DrawContext::readsTexture(const TextureProxy* texture) const {

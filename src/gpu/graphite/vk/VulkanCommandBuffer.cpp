@@ -238,8 +238,8 @@ void VulkanCommandBuffer::addSignalSemaphores(size_t numSignalSemaphores,
 
 void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                                        const MutableTextureState* newState) {
-    TextureProxy* textureProxy = static_cast<Surface*>(targetSurface)->backingTextureProxy();
-    VulkanTexture* texture = static_cast<VulkanTexture*>(textureProxy->texture());
+    const TextureProxy* textureProxy = static_cast<Surface*>(targetSurface)->backingTextureProxy();
+    const VulkanTexture* texture = static_cast<const VulkanTexture*>(textureProxy->texture());
 
     // Even though internally we use this helper for getting src access flags and stages they
     // can also be used for general dst flags since we don't know exactly what the client

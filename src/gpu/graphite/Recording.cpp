@@ -157,7 +157,7 @@ const Texture* RecordingPriv::setupDeferredTarget(ResourceProvider* resourceProv
                                                   SkIRect targetClip) {
     SkASSERT(targetSurface && fRecording->fTargetProxyData);
 
-    TextureProxy* surfaceTexture = targetSurface->backingTextureProxy();
+    TextureProxy* surfaceTexture = targetSurface->overwriteBackingTextureProxy();
     SkASSERT(surfaceTexture->isInstantiated());
 
     const TextureProxy* targetProxy = fRecording->fTargetProxyData->lazyProxy();
@@ -196,6 +196,7 @@ const Texture* RecordingPriv::setupDeferredTarget(ResourceProvider* resourceProv
         SKGPU_LOG_E("Could not instantiate deferred texture proxy.");
         return nullptr;
     }
+
     return surfaceTexture->texture();
 }
 

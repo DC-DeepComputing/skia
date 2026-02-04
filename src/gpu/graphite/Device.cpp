@@ -2265,7 +2265,12 @@ sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& s
     return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
 }
 
-TextureProxy* Device::target() { return fDC->target(); }
+const TextureProxy* Device::target() const { return fDC->target(); }
+
+TextureProxy* Device::overwriteTarget() {
+    fDC->reset(LoadOp::kLoad);
+    return fDC->target();
+}
 
 TextureProxyView Device::readSurfaceView() const { return fDC->readSurfaceView(); }
 
