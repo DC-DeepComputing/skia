@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab56b9eb_a0ed8243",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1256,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-04T14:55:16Z",
+      "side": 1,
+      "message": "Ack for now.",
+      "parentUuid": "343a7aba_609d0758",
+      "range": {
+        "startLine": 1256,
+        "startChar": 24,
+        "endLine": 1256,
+        "endChar": 28
+      },
+      "revId": "a7181910caee83734827eb0a9ca9a5d732ef0ac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9375a93_a3a84bb5",
