@@ -129,7 +129,6 @@ struct DeviceExtensions {
     bool fExtendedDynamicState2EXT = false;
     bool fVertexInputDynamicStateEXT = false;
     bool fGraphicsPipelineLibraryEXT = false;
-    bool fSamplerYcbcrConversionKHR = false;
     bool fRGBA10x6FormatsEXT = false;
     bool fSynchronization2KHR = false;
     bool fDynamicRenderingKHR = false;
@@ -185,8 +184,6 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
         exts.fVertexInputDynamicStateEXT = true;
     } else if (strcmp(name, VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME) == 0) {
         exts.fGraphicsPipelineLibraryEXT = true;
-    } else if (strcmp(name, VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME) == 0) {
-        exts.fSamplerYcbcrConversionKHR = true;
     } else if (strcmp(name, VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME) == 0) {
         exts.fRGBA10x6FormatsEXT = true;
     } else if (strcmp(name, VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME) == 0) {
@@ -323,8 +320,6 @@ FeaturesToAdd get_features_to_add(uint32_t apiVersion,
     } else {
         toAdd.fVulkan12 = false;
         toAdd.fVulkan11 = false;
-        // Check for support via individual extensions' feature structs
-        toAdd.fSamplerYcbcrConversion = exts.fSamplerYcbcrConversionKHR;
     }
 
     // Check for support via individual extensions' feature structs (non of which have been promoted
@@ -526,10 +521,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         fVulkan11.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES;
         fVulkan12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
     } else {
-        if (exts.fSamplerYcbcrConversionKHR) {
-            fSamplerYcbcrConversion.sType =
-                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
-        }
+        // if (exts.fSamplerYcbcrConversionKHR) {
+        fSamplerYcbcrConversion.sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+        // }
         if (exts.fDriverPropertiesKHR) {
             fDriverPropertiesExtension = VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME;
         }
@@ -728,10 +723,6 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     if (!exts.fGraphicsPipelineLibraryEXT && toAdd.fGraphicsPipelineLibrary) {
         appExtensions.push_back(VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME);
         exts.fGraphicsPipelineLibraryEXT = true;
-    }
-    if (!exts.fSamplerYcbcrConversionKHR && toAdd.fSamplerYcbcrConversion) {
-        appExtensions.push_back(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME);
-        exts.fSamplerYcbcrConversionKHR = true;
     }
     if (!exts.fRGBA10x6FormatsEXT && toAdd.fRGBA10x6Formats) {
         appExtensions.push_back(VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME);
@@ -1193,14 +1184,9 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
                 // Drop this struct if using the Vulkan 1.1 feature struct
                 if (!hasVulkan11Features) {
                     chain(newChainEnd, pNext);
-
-                    // Enable the main feature
-                    if (exts.fSamplerYcbcrConversionKHR) {
-                        auto* features =
-                                reinterpret_cast<VkPhysicalDeviceSamplerYcbcrConversionFeatures*>(
-                                        pNext);
-                        features->samplerYcbcrConversion = VK_TRUE;
-                    }
+                    auto* features = reinterpret_cast<
+                            VkPhysicalDeviceSamplerYcbcrConversionFeatures*>(pNext);
+                    features->samplerYcbcrConversion = VK_TRUE;
                 }
                 toAdd.fSamplerYcbcrConversion = false;
                 break;
