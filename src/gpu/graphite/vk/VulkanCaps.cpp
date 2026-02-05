@@ -197,8 +197,13 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fMaxStorageBufferRange = deviceLimits.maxStorageBufferRange;
 
 #ifdef SK_BUILD_FOR_ANDROID
+    // VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER technically depends upon
+    // VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION per the Vulkan spec. However, some Adreno devices do
+    // not support it so we don't *explicitly* require it here.
     if (extensions->hasExtension(
-            VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)) {
+                VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)
+        /* && extensions.hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1) */
+    ) {
         fSupportsAHardwareBufferImages = true;
     }
 #endif
