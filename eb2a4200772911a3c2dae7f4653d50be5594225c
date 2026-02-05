@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55aff15_a53c11c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T19:16:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "90661733_61a5731a",
+      "revId": "eb2a4200772911a3c2dae7f4653d50be5594225c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0990def_799118e1",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "You raise valid points `There should be nothing particularly interesting about the \"family\" at this point`. I observed the specific Chromium use case that motivated this change.\n\nThe Issue:\nIn Chromium\u0027s font_cache_skia_win.cc, after creating a typeface, there\u0027s validation logic in `TypefacesMatchesFamily()` that calls `tf-\u003egetFamilyName()` to verify the typeface actually matches the requested family:\n\nThis is used in CreateFontPlatformData() to reject typefaces that don\u0027t match the requested family name - preventing font substitution from going undetected.\n\nWhat is happening for system variable fonts via FontDataService:\n- Browser process matches font (e.g.,\"Segoe UI Variable Display\") and sends variation coordinates + other info.\n- In MakeFromStream, we search the stream collection for a matching font.\n- fontFace is correctly recreated with variations applied via apply_fontargument_variation().\n- But the font/fontFamily objects passed to DWriteFontTypeface::Make() were still from the original search result (based on ttc_index).\n- onGetFamilyName() uses fDWriteFontFamily-\u003eGetFamilyNames(), returning the wrong family in some cases.\n\nWhy GetFontFromFontFace helps:\n- After CreateFontFace() with new axis values, the resulting fontFace corresponds to a specific named instance in the collection.\n- GetFontFromFontFace() finds the IDWriteFont that matches this varied face, which then gives us the correct IDWriteFontFamily with accurate family names.\n\nYou\u0027re right that ideally Chromium shouldn\u0027t rely on family names from data-backed typefaces for matching. However, it seems this validation exists to handle Windows font substitution via registry entries.",
       "parentUuid": "f0990def_799118e1",
+      "revId": "eb2a4200772911a3c2dae7f4653d50be5594225c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e03a22d_dd50097f",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T19:16:52Z",
+      "side": 1,
+      "message": "It is quite unfortunate that only FontConfig exposes a \"strong match\" vs \"weak match\" bit when doing matching. Chromium shouldn\u0027t be doing a check against family names but against the strength of the match when doing the request against the collection.\n\nIn some ways what is being done here would be nice to do as part of the `bestMatch` logic. However, writing that logic out here would be both complex and not necessarily always match the logic used by DirectWrite to pick the \"font\" and \"family\". So this is fine.",
+      "parentUuid": "8881fd7d_481414f4",
       "revId": "eb2a4200772911a3c2dae7f4653d50be5594225c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
