@@ -317,7 +317,7 @@ protected:
 
     const SharedContext* sharedContext() const { return fSharedContext; }
 
-    // Needs to be protected for DawnBuffer's emscripten prepareForReturnToCache
+    // Needs to be protected for DawnBuffer's prepareForReturnToCache
     void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
 
     using TakeRefFunc = void (*)(void* ctx);
