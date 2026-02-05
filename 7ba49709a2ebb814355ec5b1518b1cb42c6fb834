@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "978ba4ad_184a18d4",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-05T23:52:44Z",
+      "side": 1,
+      "message": "I don\u0027t understand why `fIsBottomUp` affects only `dstRow` but not `srcRow`.\n\nAssumption: I assume that the `image::docecs::BmpDecoder` handles top-down-vs-bottom-up internally (because I assume that [`image::ImageDecoder::read_image`](https://docs.rs/image/latest/image/trait.ImageDecoder.html#tymethod.read_image) always reads the pixel the right-side-up).\n\nIf the assumption above is true, then I think that `fIsBottomUp` should affect both `dstRow` and `srcRow`.",
+      "range": {
+        "startLine": 328,
+        "startChar": 23,
+        "endLine": 328,
+        "endChar": 34
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f92a19_c0ba1432",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-05T23:52:44Z",
+      "side": 1,
+      "message": "Here I also don\u0027t understand why `fIsBottomUp` affects only `dstRow` but not `srcRow`.  When `fIsBottomUp` is true and `kIncompleteInput` happens, then I expect that the *last* rows of `srcImage` are populated and can be copied to the *last* rows of `dstImage`.  (And the code in this case seems to copy the *first* [not-populated-yet?] rows of `srcImage` to the *last* rows of `dstImage`.)\n\nIf this is indeed a problem, then would it be possible to add a test that covers a bottom-up image (e.g. verifying pixels in the first and last rows, and expecting them to differ).",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 74
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df6fb1b4_0fb9754c",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-05T23:52:44Z",
+      "side": 1,
+      "message": "It seems that the `is_bottom_up` field will never be set to `true` when reading the image pixels, right?  This seems undesirable, because after `kIncompleteInput` we need to know whether to copy the first N rows vs the last N rows.",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 34
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcabe9e9_dbf3e805",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-05T23:52:44Z",
+      "side": 1,
+      "message": "Thank you for returning a trimmed slice/span - this is nice because it should help catch issues where C++ accesses pixels that haven\u0027t yet been decoded.\n\nOTOH, does that need to take `is_bottom_up` into account?",
+      "range": {
+        "startLine": 367,
+        "startChar": 8,
+        "endLine": 367,
+        "endChar": 39
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
