@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ecc8bec_8a5d1999",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T17:00:54Z",
+      "side": 1,
+      "message": "This tells me what is being done here (it is a summary of the diff) but it does not tell me why this is being done. Is it to get the \"right\" family names? It is to get the right Postscript name? Why does getting the right name off of a font created from data make a difference (since names should only matter for display to the user and for initial collection lookups, neither of which should be operationally important to a font created from data)?",
+      "revId": "eb2a4200772911a3c2dae7f4653d50be5594225c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0990def_799118e1",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T17:00:54Z",
+      "side": 1,
+      "message": "So while it might be a good idea to adjust the family and font after applying the variation, this has never been an issue here because this is simply creating an SkTypeface from data. There should be nothing particularly interesting about the \"family\" at this point. The question I have which does not appear answered elsewhere is \"What does this newly adjusted SkTypeface do differently from the previously un-adjusted SkTypeface that makes a difference?\"\n\nIn particular it appears that the `fDWriteFontFamily` is only ever used to get family names. Is the issue is that Chromium is using SkTypfaces made from data to lookup family names and do matching? That would be strange. In general, there is no really good reason a typeface made from data should really have a family or family names and at the very least they should not be trusted (at the very least the is nothing unique about them, they\u0027re only useful for display to the user).\n\nAs far as `fDWriteFont` it looks like it is only dragged around now to get the PostScript name, but even there we should now be using the font face for that now.",
+      "revId": "eb2a4200772911a3c2dae7f4653d50be5594225c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
