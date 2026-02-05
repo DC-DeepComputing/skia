@@ -34,6 +34,24 @@
       "parentUuid": "02df6c9b_8c9ed61f",
       "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f1a7588_2f702bfa",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T16:02:47Z",
+      "side": 0,
+      "message": "Ah, I see that `loadTypeface` is limited to default font arguments so isn\u0027t super useful.",
+      "parentUuid": "04546358_2315da15",
+      "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
