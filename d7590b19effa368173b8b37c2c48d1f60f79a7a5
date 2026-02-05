@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd6b315_f645d3df",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T19:24:39Z",
+      "side": 1,
+      "message": "Wondering if the same thing should be done here (though it isn\u0027t quite as obvious how since the collection may not be directly available). In theory making a clone (any change of axis poisition) can also change the reported family name. I\u0027ve made a separate change so the PostScript name should only depend on the IDWriteFontFace (instead of the IDWriteFont), but the family name is still sticky after a clone.",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
