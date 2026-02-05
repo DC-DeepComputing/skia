@@ -27,7 +27,9 @@ void DrawList::recordDraw(const Renderer* renderer,
                           SkEnumBitMask<DstUsage> dstUsage,
                           BarrierType barrierBeforeDraws,
                           PipelineDataGatherer* gatherer,
-                          const StrokeStyle* stroke) {
+                          const StrokeStyle* stroke,
+                          DrawParams** captureParams,
+                          Layer** captureLayer) {
     SkASSERT(localToDevice.valid());
     SkASSERT(!geometry.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
     SkASSERT(!(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) ||
