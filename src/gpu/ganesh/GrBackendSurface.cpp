@@ -284,7 +284,7 @@ GrBackendTexture::GrBackendTexture(int width,
         , fMipmapped(skgpu::Mipmapped(d3dInfo.fLevelCount > 1))
         , fBackend(GrBackendApi::kDirect3D)
         , fTextureType(GrTextureType::k2D)
-        , fD3DInfo(d3dInfo, state.release()) {}
+        , fD3DInfo(d3dInfo, std::move(state)) {}
 #endif
 
 GrBackendTexture::GrBackendTexture(int width,
@@ -346,7 +346,7 @@ GrBackendTexture& GrBackendTexture::operator=(const GrBackendTexture& that) {
             break;
 #ifdef SK_DIRECT3D
         case GrBackendApi::kDirect3D:
-            fD3DInfo.assign(that.fD3DInfo, this->isValid());
+            fD3DInfo = that.fD3DInfo;
             break;
 #endif
         case GrBackendApi::kMock:
@@ -510,7 +510,7 @@ GrBackendRenderTarget::GrBackendRenderTarget(int width,
         , fSampleCnt(std::max(1U, d3dInfo.fSampleCount))
         , fStencilBits(0)
         , fBackend(GrBackendApi::kDirect3D)
-        , fD3DInfo(d3dInfo, state.release()) {}
+        , fD3DInfo(d3dInfo, std::move(state)) {}
 #endif
 
 GrBackendRenderTarget::GrBackendRenderTarget(int width,
@@ -571,7 +571,7 @@ GrBackendRenderTarget& GrBackendRenderTarget::operator=(const GrBackendRenderTar
             break;
 #ifdef SK_DIRECT3D
         case GrBackendApi::kDirect3D:
-            fD3DInfo.assign(that.fD3DInfo, this->isValid());
+            fD3DInfo = that.fD3DInfo;
             break;
 #endif
         case GrBackendApi::kMock:

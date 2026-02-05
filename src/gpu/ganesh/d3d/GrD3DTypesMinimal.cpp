@@ -12,26 +12,19 @@
 #include "src/gpu/ganesh/d3d/GrD3DTypesPriv.h"
 
 GrD3DBackendSurfaceInfo::GrD3DBackendSurfaceInfo(const GrD3DTextureResourceInfo& info,
-                                                 GrD3DResourceState* state)
-    : fTextureResourceInfo(new GrD3DTextureResourceInfo(info))
-    , fResourceState(state) {}
+                                                 sk_sp<GrD3DResourceState> state)
+        : fTextureResourceInfo(new GrD3DTextureResourceInfo(info))
+        , fResourceState(std::move(state)) {}
 
 void GrD3DBackendSurfaceInfo::cleanup() {
-    SkSafeUnref(fResourceState);
-    fResourceState = nullptr;
-    delete fTextureResourceInfo;
-    fTextureResourceInfo = nullptr;
+    fResourceState.reset();
+    fTextureResourceInfo.reset();
 }
 
-void GrD3DBackendSurfaceInfo::assign(const GrD3DBackendSurfaceInfo& that, bool isThisValid) {
-    GrD3DTextureResourceInfo* oldInfo = fTextureResourceInfo;
-    GrD3DResourceState* oldLayout = fResourceState;
-    fTextureResourceInfo = new GrD3DTextureResourceInfo(*that.fTextureResourceInfo);
-    fResourceState = SkSafeRef(that.fResourceState);
-    if (isThisValid) {
-        delete oldInfo;
-        SkSafeUnref(oldLayout);
-    }
+GrD3DBackendSurfaceInfo& GrD3DBackendSurfaceInfo::operator=(const GrD3DBackendSurfaceInfo& that) {
+    fTextureResourceInfo.reset(new GrD3DTextureResourceInfo(*that.fTextureResourceInfo));
+    fResourceState = that.fResourceState;
+    return *this;
 }
 
 void GrD3DBackendSurfaceInfo::setResourceState(GrD3DResourceStateEnum resourceState) {
@@ -41,7 +34,7 @@ void GrD3DBackendSurfaceInfo::setResourceState(GrD3DResourceStateEnum resourceSt
 
 sk_sp<GrD3DResourceState> GrD3DBackendSurfaceInfo::getGrD3DResourceState() const {
     SkASSERT(fResourceState);
-    return sk_ref_sp(fResourceState);
+    return fResourceState;
 }
 
 GrD3DTextureResourceInfo GrD3DBackendSurfaceInfo::snapTextureResourceInfo() const {
