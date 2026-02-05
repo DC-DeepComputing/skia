@@ -52,6 +52,24 @@
       "parentUuid": "04546358_2315da15",
       "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d89c387_5925d181",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-05T16:26:37Z",
+      "side": 0,
+      "message": "I was wondering if it\u0027s worth updating the callback api to pass more info and support variable font instances that way too.\n\nThe issue is all I have is a SkFontStyle, and mapping to SkFontArguments seems non trivial: load default instance first, look up variation axes, figure out style -\u003e coordinate mapping and limits, clone with adjusted args?\n\nOr are the weight/width/slant axes standard/stable enough that we could always convert to SkFontArguments upfront, without caring about font specifics?",
+      "parentUuid": "6f1a7588_2f702bfa",
+      "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
