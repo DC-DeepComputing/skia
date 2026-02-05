@@ -16,6 +16,24 @@
       "message": "Is there a reason to remove this? This seems separate from the fontmgr change.",
       "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04546358_2315da15",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-05T15:55:04Z",
+      "side": 0,
+      "message": "Skottie only does a fontmgr font lookup if the resource provider callback fails: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skottie/src/layers/TextLayer.cpp;drc\u003dd541f1aa0c9b3129abd3e4792e5ff6a916b6abb6;l\u003d238\n\nWe want to force the fontmgr path in order to get style-instanced variable fonts (which not supported via loadTypeface).",
+      "parentUuid": "02df6c9b_8c9ed61f",
+      "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
