@@ -51,6 +51,23 @@
       "parentUuid": "7fd6b315_f645d3df",
       "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea9eab74_966c948b",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1190,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T20:56:37Z",
+      "side": 1,
+      "message": "This generally fails. It looks like it may work for an exact match (which it may be for actual named instances) but most of the time will not. Apparently this does not go looking for the \"nearest\", so the \"nearest\" will need to be found with the `bestMatch`. I had been concerned that any such logic would be different from the logic used by DirectWrite for matching, but apparently this call doesn\u0027t do the matching anyway. The distance function will still need to be carefully constructed, but instances will be exact distance zero matches anyway.",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
