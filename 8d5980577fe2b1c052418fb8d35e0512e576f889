@@ -16,6 +16,47 @@
       "message": "PTAL",
       "revId": "8d5980577fe2b1c052418fb8d35e0512e576f889",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c96441_98134cb8",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:37:59Z",
+      "side": 1,
+      "message": "In a separate CL, I put the linked list interface directly onto the draw params, with only mild improvements. Perhaps this could be done in the future if we can improve performance else where.",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5d974514_36f2042c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 69,
+                "startChar": 0,
+                "endLine": 69,
+                "endChar": 0
+              },
+              "replacement": "        // TODO(b/333749288): Consider moving the linked list interface directly onto DrawParams\n        // if performance improvements can be found elsewhere.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8d5980577fe2b1c052418fb8d35e0512e576f889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
