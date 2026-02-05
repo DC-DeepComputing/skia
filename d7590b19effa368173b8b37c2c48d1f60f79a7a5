@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e266a1_c9c6491a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T20:47:05Z",
+      "side": 1,
+      "message": "Don\u0027t land this yet, this does break the `fontscalerdistortable` test (second row).",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fd6b315_f645d3df",
