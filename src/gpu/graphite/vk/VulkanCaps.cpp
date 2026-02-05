@@ -337,7 +337,11 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                     const auto* feature =
                             reinterpret_cast<const VkPhysicalDeviceSamplerYcbcrConversionFeatures*>(
                                     pNext);
-                    enabled.fSamplerYcbcrConversion = feature->samplerYcbcrConversion;
+                    // This may have already been determined via
+                    // VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES. Theoretically, these
+                    // values should align if both structures exist, but use || just in case.
+                    enabled.fSamplerYcbcrConversion = enabled.fSamplerYcbcrConversion ||
+                                                      feature->samplerYcbcrConversion;
                     break;
                 }
                 case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_EXT: {
