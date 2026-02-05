@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe44c0f5_75c658ec",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-05T21:33:46Z",
+      "side": 1,
+      "message": "Yeah I think we are good to remove this after poking around gpuinfo some",
+      "parentUuid": "773bb1ab_ca2ea866",
+      "range": {
+        "startLine": 205,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 87
+      },
+      "revId": "8e469573c6b99d3d2d60193e40a2514907bb41eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c43ec33_4434f20b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-05T20:21:23Z",
       "side": 1,
       "message": "should this be fQueueFamilyForeignEXT \u003d true;?",
+      "range": {
+        "startLine": 235,
+        "startChar": 40,
+        "endLine": 235,
+        "endChar": 41
+      },
+      "revId": "8e469573c6b99d3d2d60193e40a2514907bb41eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c76edf_4040def1",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-05T21:33:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c43ec33_4434f20b",
       "range": {
         "startLine": 235,
         "startChar": 40,
