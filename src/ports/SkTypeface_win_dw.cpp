@@ -1142,7 +1142,11 @@ SK_STDMETHODIMP StreamFontCollectionLoader::CreateEnumeratorFromKey(
     return S_OK;
 }
 
-static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fontFace,
+static HRESULT apply_fontargument_variation(
+    IDWriteFontCollection* fontCollection,
+    SkTScopedComPtr<IDWriteFontFamily>& fontFamily,
+    SkTScopedComPtr<IDWriteFont>& font,
+    SkTScopedComPtr<IDWriteFontFace>& fontFace,
     const SkFontArguments& args)
 {
 #if defined(NTDDI_WIN10_RS3) && NTDDI_VERSION >= NTDDI_WIN10_RS3
@@ -1178,6 +1182,17 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
         &fontFace5_Out));
     fontFace.reset();
     HR(fontFace5_Out->QueryInterface(&fontFace));
+
+    // The fontFace has been recreated with new axis values.
+    // Reverse-lookup the correct font/fontFamily from the collection.
+    SkTScopedComPtr<IDWriteFont> matchedFont;
+    SkTScopedComPtr<IDWriteFontFamily> matchedFamily;
+    HR(fontCollection->GetFontFromFontFace(fontFace.get(), &matchedFont));
+    HR(matchedFont->GetFontFamily(&matchedFamily));
+    font.reset();
+    font = std::move(matchedFont);
+    fontFamily.reset();
+    fontFamily = std::move(matchedFamily);
 #endif
     return S_OK;
 }
@@ -1280,7 +1295,7 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
         SkTScopedComPtr<IDWriteFontFace> fontFace;
         HRN(font->CreateFontFace(&fontFace));
 
-        apply_fontargument_variation(fontFace, args);
+        HRN(apply_fontargument_variation(fontCollection.get(), fontFamily, font, fontFace, args));
 
         return DWriteFontTypeface::Make(
             factory, fontFace.get(), font.get(), fontFamily.get(),
