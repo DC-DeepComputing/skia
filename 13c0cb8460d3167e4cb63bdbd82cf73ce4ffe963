@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0ac268a_002b7b18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T18:13:35Z",
+      "side": 1,
+      "message": "Unfortunately the IDWriteFont still needs to be carried around (for now) for this one backup use to get the PostScript name and for the backup for equality tests. Th IDWriteFontFamily looks like it is only ever used for the family names. The intent is to as consistently as possible to use the IDWriteFontFace.",
+      "revId": "13c0cb8460d3167e4cb63bdbd82cf73ce4ffe963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
