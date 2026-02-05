@@ -48,6 +48,9 @@ struct VulkanExts {
     bool fLoadStoreOpNoneEXT = true;
     bool fLoadStoreOpNoneKHR = true;
     bool fConservativeRasterizationEXT = true;
+#if defined(SK_BUILD_FOR_ANDROID)
+    bool fExternalMemoryAHardwareBufferEXT = true;
+#endif
     bool fPipelineLibraryKHR = true;
     bool fCopyCommands2KHR = true;
     bool fFormatFeatureFlags2KHR = true;
@@ -93,6 +96,7 @@ static std::vector<VkExtensionProperties> get_device_exts(const VulkanExts& conf
     ADD_EXT(fLoadStoreOpNoneEXT, VK_EXT_LOAD_STORE_OP_NONE);
     ADD_EXT(fLoadStoreOpNoneKHR, VK_KHR_LOAD_STORE_OP_NONE);
     ADD_EXT(fConservativeRasterizationEXT, VK_EXT_CONSERVATIVE_RASTERIZATION);
+    ADD_EXT(fExternalMemoryAHardwareBufferEXT, VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER);
     ADD_EXT(fPipelineLibraryKHR, VK_KHR_PIPELINE_LIBRARY);
     ADD_EXT(fCopyCommands2KHR, VK_KHR_COPY_COMMANDS_2);
     ADD_EXT(fFormatFeatureFlags2KHR, VK_KHR_FORMAT_FEATURE_FLAGS_2);
@@ -396,6 +400,9 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan11, reporter) {
     CHECK_EXT_DISABLED(VK_EXT_LOAD_STORE_OP_NONE);
     CHECK_EXT_ENABLED(VK_KHR_LOAD_STORE_OP_NONE);
     CHECK_EXT_ENABLED(VK_EXT_CONSERVATIVE_RASTERIZATION);
+#if defined(SK_BUILD_FOR_ANDROID)
+    CHECK_EXT_ENABLED(VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER);
+#endif
     CHECK_EXT_ENABLED(VK_KHR_PIPELINE_LIBRARY);
     CHECK_EXT_ENABLED(VK_KHR_COPY_COMMANDS_2);
     CHECK_EXT_ENABLED(VK_KHR_FORMAT_FEATURE_FLAGS_2);

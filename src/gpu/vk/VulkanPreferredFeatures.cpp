@@ -142,6 +142,9 @@ struct DeviceExtensions {
     bool fLoadStoreOpNoneEXT = false;
     bool fLoadStoreOpNoneKHR = false;
     bool fConservativeRasterizationEXT = false;
+#if defined(SK_BUILD_FOR_ANDROID)
+    bool fExternalMemoryAHardwareBufferEXT = false;
+#endif
     bool fPipelineLibraryKHR = false;
     bool fCopyCommands2KHR = false;
     bool fFormatFeatureFlags2KHR = false;
@@ -211,6 +214,11 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
         exts.fLoadStoreOpNoneKHR = true;
     } else if (strcmp(name, VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME) == 0) {
         exts.fConservativeRasterizationEXT = true;
+#if defined(SK_BUILD_FOR_ANDROID)
+    } else if (
+            strcmp(name, VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME) == 0) {
+        exts.fExternalMemoryAHardwareBufferEXT = true;
+#endif
     } else if (strcmp(name, VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME) == 0) {
         exts.fPipelineLibraryKHR = true;
     } else if (strcmp(name, VK_KHR_COPY_COMMANDS_2_EXTENSION_NAME) == 0) {
@@ -578,6 +586,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     if (exts.fConservativeRasterizationEXT) {
         fConservativeRasterizationExtension = VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME;
     }
+    if (exts.fExternalMemoryAHardwareBufferEXT) {
+        fExternalMemoryAHardwareBufferExtension =
+                VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME;
+    }
     if (exts.fFrameBoundaryEXT) {
         fFrameBoundary.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT;
     }
@@ -782,6 +794,13 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
         appExtensions.push_back(fConservativeRasterizationExtension);
         exts.fConservativeRasterizationEXT = true;
     }
+#if defined(SK_BUILD_FOR_ANDROID)
+    if (!exts.fExternalMemoryAHardwareBufferEXT &&
+        fExternalMemoryAHardwareBufferExtension != nullptr) {
+        appExtensions.push_back(fExternalMemoryAHardwareBufferExtension);
+        exts.fExternalMemoryAHardwareBufferEXT = true;
+    }
+#endif
     if (!exts.fPipelineLibraryKHR && fPipelineLibraryExtension != nullptr) {
         appExtensions.push_back(fPipelineLibraryExtension);
         exts.fPipelineLibraryKHR = true;
