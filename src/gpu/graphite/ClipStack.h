@@ -13,6 +13,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkTBlockList.h"
+#include "src/gpu/graphite/DrawListTypes.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -112,10 +113,11 @@ public:
     //
     // If the provided `clipState` indicates that the draw will be clipped out, then this method has
     // no effect and returns DrawOrder::kNoIntersection.
-    CompressedPaintersOrder updateClipStateForDraw(const Clip& clip,
-                                                   const ElementList& effectiveElements,
-                                                   const BoundsManager*,
-                                                   PaintersDepth z);
+    std::tuple<CompressedPaintersOrder, Layer*> updateClipStateForDraw(
+            const Clip& clip,
+            const ElementList& effectiveElements,
+            const BoundsManager*,
+            PaintersDepth z);
 
     void recordDeferredClipDraws();
 
@@ -237,8 +239,15 @@ private:
         // passes.
         void drawClip(Device*);
 
+        Layer* drawClipImmediate(Device*, Layer* prevLayer);
+
         void validate() const;
 
+        Layer* deferredLayer() const { return fDeferredLayer; }
+
+        bool hasBeenDrawn() const { return fDrawn; }
+
+        void resetClipDraw();
     private:
         // TODO: Should only combine elements within the same save record, that don't have pending
         // draws already. Otherwise, we're changing the geometry that will be rasterized and it
@@ -246,6 +255,8 @@ private:
         // equivalent. Can't combine with other save records, since they *might* become pending
         // later on.
         bool combine(const RawElement& other, const SaveRecord& current);
+
+        void updateDeferredClipDraw(Device*);
 
         // Device space bounds. These bounds are not snapped to pixels with the assumption that if
         // a relation (intersects, contains, etc.) is true for the bounds it will be true for the
@@ -268,6 +279,11 @@ private:
         // the save record that invalidated it. This makes it easy to undo when the save record is
         // popped from the stack, and is stable as the current save record is modified.
         int fInvalidatedByIndex;
+
+        DrawParams* fCaptureParams;
+        Layer* fDeferredLayer;
+        bool fDrawn;
+        bool fIsDisjointStencil;
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to

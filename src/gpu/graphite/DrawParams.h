@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Rect.h"
+#include "src/gpu/graphite/geom/Transform.h"
 
 #include <algorithm>
 #include <optional>
@@ -168,13 +169,14 @@ public:
     }
 
 private:
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    friend class ClipStack; // For updating clip and order components on depth only draws
 
-    Geometry  fGeometry;
-    Rect      fDrawBounds;
-    Rect      fTransformedShapeBounds;
-    SkIRect   fScissor;
-    DrawOrder fOrder;
+    const Transform& fTransform;
+    Geometry         fGeometry;
+    Rect             fDrawBounds;
+    Rect             fTransformedShapeBounds;
+    SkIRect          fScissor;
+    DrawOrder        fOrder;
 
     std::optional<StrokeStyle> fStroke; // Not present implies fill
 };
