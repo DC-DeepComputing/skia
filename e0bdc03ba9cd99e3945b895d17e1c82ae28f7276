@@ -70,6 +70,24 @@
       "parentUuid": "6f1a7588_2f702bfa",
       "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62d3f00a_a735440f",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-05T18:02:11Z",
+      "side": 0,
+      "message": "Yeah, the `wght`, `wdth`, and `slnt` axes are standard enough that one can do interesting things with them like this. Though that doesn\u0027t really help with other axes and some font files do name things across other axes.",
+      "parentUuid": "0d89c387_5925d181",
+      "revId": "e0bdc03ba9cd99e3945b895d17e1c82ae28f7276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
