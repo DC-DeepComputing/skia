@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "062211d3_4923682c",
+        "filename": "src/base/SkArenaAllocList.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51ff8675_e4717c0c",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fb01672_660f933a",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Before landing, this should be set to false.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1fa9ce1_13e8ecd9",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fb01672_660f933a",
       "range": {
         "startLine": 56,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ba1d01e_2d6c3e3c",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ff7841b_09c10eac",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 627,
+        "endChar": 30
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b548824a_2bf59e21",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Can we have a helper function that calculates the scissor and draw bounds for RawElement that\u0027s used by both draw list approaches?",
+      "range": {
+        "startLine": 731,
+        "startChar": 4,
+        "endLine": 743,
+        "endChar": 98
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a6f1a43_6af16976",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b548824a_2bf59e21",
       "range": {
         "startLine": 731,
         "startChar": 4,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ba171c_2f189730",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0c4afc3_42002975",
+      "range": {
+        "startLine": 772,
+        "startChar": 0,
+        "endLine": 772,
+        "endChar": 53
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "667157d7_a52f0f5d",
@@ -146,6 +266,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Normally (except for the perspective issue above), transform, geometry, and transformed shape bounds should be known and not changing after drawClipImmediate is called.\n\nWe don\u0027t want to pre-apply the perspective transform to the fields in RawElement because it very well may never actually impact a draw. However, if we are inside drawClipImmediate, we know that we\u0027ll need to render it. We should be able to still transform the Shape and adjust the Transform inside `Device::drawClipShapeImmediate` since it\u0027ll then be persisted by DrawListLayer.",
+      "range": {
+        "startLine": 774,
+        "startChar": 8,
+        "endLine": 779,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f7e685_6dab34e1",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "667157d7_a52f0f5d",
       "range": {
         "startLine": 774,
         "startChar": 8,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b18ddbc_f88a55e6",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0543ecf8_0e240ef2",
+      "range": {
+        "startLine": 781,
+        "startChar": 4,
+        "endLine": 781,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "852c754a_19619b31",
@@ -192,6 +360,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "We should also reset `fCaptureParams` and `fDeferredLayer` to nullptr here.",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 791,
+        "endChar": 35
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "416ecb10_d2558e97",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "852c754a_19619b31",
       "range": {
         "startLine": 789,
         "startChar": 0,
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75c43666_8d93c4af",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c82d9144_c6b39aff",
+      "range": {
+        "startLine": 986,
+        "startChar": 28,
+        "endLine": 986,
+        "endChar": 41
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35d505f9_44ee3e7b",
@@ -238,6 +454,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "WDYT about triggering this inside `updateForDraw` when it sees it\u0027s the first draw to use the element?  It already tracks that with the usageBounds emptiness, and then we don\u0027t need the `fDrawn` field on RawElement",
+      "range": {
+        "startLine": 2003,
+        "startChar": 0,
+        "endLine": 2003,
+        "endChar": 94
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d526891c_09da4205",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35d505f9_44ee3e7b",
       "range": {
         "startLine": 2003,
         "startChar": 0,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c8e49b_350dfea5",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 2024,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07e6b5c9_80607e83",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2024,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4409fab9_bd334351",
@@ -284,6 +548,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "there\u0027s no real reason to wrap a pointer type in optional, you can just return nullptr when it\u0027s not available.",
+      "range": {
+        "startLine": 116,
+        "startChar": 41,
+        "endLine": 116,
+        "endChar": 61
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a472a789_01b63dd2",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4409fab9_bd334351",
       "range": {
         "startLine": 116,
         "startChar": 41,
@@ -317,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab42f1bc_b3650500",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4cd4b1e_7d0ed246",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5616bc67_6422152b",
@@ -330,6 +642,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "See various notes, but these 3 fields should be able to go away.",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 32
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dada609d_d787422a",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5616bc67_6422152b",
       "range": {
         "startLine": 285,
         "startChar": 0,
@@ -363,6 +699,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11d1d0f_98524612",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1622,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef7c3877_3a913863",
+      "range": {
+        "startLine": 1621,
+        "startChar": 6,
+        "endLine": 1622,
+        "endChar": 84
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd108cfe_c18260e9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1622,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef7c3877_3a913863",
+      "range": {
+        "startLine": 1621,
+        "startChar": 6,
+        "endLine": 1622,
+        "endChar": 84
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2307a38_e04cf05b",
@@ -376,6 +760,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "If we have recordDraw return the draw params and layer, then I think this gets simpler because we can just pass in `clipDrawLayer` as the earliest allowed layer.\n\nThis signature is semi complex because this earliest layer value is conceptually defining the same thing as the CompressedPaintersOrder that is stored on the DrawOrder object but once the SortKey approach goes away, DrawOrder can be updated to be just the Layer* and z value.",
+      "range": {
+        "startLine": 1756,
+        "startChar": 0,
+        "endLine": 1759,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a233b3_a102394d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2307a38_e04cf05b",
       "range": {
         "startLine": 1756,
         "startChar": 0,
@@ -409,6 +817,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f014856_9f39ebbd",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70d79d6e_e67ba146",
+      "range": {
+        "startLine": 1762,
+        "startChar": 0,
+        "endLine": 1787,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f1a3ee_5ffee2da",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70d79d6e_e67ba146",
+      "range": {
+        "startLine": 1762,
+        "startChar": 0,
+        "endLine": 1787,
+        "endChar": 5
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a519c4cb_0a685d05",
@@ -422,6 +878,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "We should only record the draw in the bounds manager if we are not using layering.",
+      "range": {
+        "startLine": 1837,
+        "startChar": 0,
+        "endLine": 1837,
+        "endChar": 80
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f8f105c_b578492b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 1837,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a519c4cb_0a685d05",
       "range": {
         "startLine": 1837,
         "startChar": 0,
@@ -455,6 +935,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fffe12ed_7fbfbffb",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ca7c48d_b6c8b786",
+      "range": {
+        "startLine": 305,
+        "startChar": 9,
+        "endLine": 305,
+        "endChar": 20
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bae5b141_880899d3",
@@ -468,6 +972,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Yeah, that makes having it be an optional seem unnecessary.",
+      "range": {
+        "startLine": 166,
+        "startChar": 14,
+        "endLine": 166,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57db2de9_6aa09478",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bae5b141_880899d3",
       "range": {
         "startLine": 166,
         "startChar": 14,
@@ -501,6 +1029,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "076ee9ab_f600f51d",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f06c863_cce99367",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 20
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e80f0bed_01fb7f5a",
@@ -514,6 +1066,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Add a TODO that once we remove the original DrawList, that this number can be increased.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a91078d8_8b0d2133",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e80f0bed_01fb7f5a",
       "range": {
         "startLine": 45,
         "startChar": 0,
@@ -570,6 +1146,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4930d4c_5386c156",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eb23548_2f31d40b",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 6
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6a8a6cf_b1b3627d",
@@ -583,6 +1183,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "I was torn on suggesting that these definitions move to a cpp file. But since it can all eventually move back into the layer list\u0027s CPP file once we stop being bifurcated, keeping it in this header will make the follow-up refactor easier.",
+      "range": {
+        "startLine": 160,
+        "startChar": 13,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b787509f_89fa55be",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6a8a6cf_b1b3627d",
       "range": {
         "startLine": 160,
         "startChar": 13,
@@ -618,6 +1242,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19647d4c_fe4ce6b9",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "I have tried with powers of two from 4 to 128, it doesn\u0027t seem to make much of a difference.",
+      "parentUuid": "377c7df4_37b1246f",
+      "range": {
+        "startLine": 113,
+        "startChar": 50,
+        "endLine": 113,
+        "endChar": 51
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4159f01e_4c3e8166",
         "filename": "src/gpu/graphite/DrawListLayer.h",
         "patchSetId": 28
@@ -629,6 +1277,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "arenas grow with a fibonacci sequence multiplier on the size, so we want to start with a value small enough to handle 1-2 draws.",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 63
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caeee9a0_2ef55ceb",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Similarly, I have tried powers of two from 256 to 4096, not much difference either.",
+      "parentUuid": "4159f01e_4c3e8166",
       "range": {
         "startLine": 114,
         "startChar": 0,
@@ -662,6 +1334,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db8cce49_d7f81cac",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f7dfe69_ee84cc1c",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 55
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e2521b3_e776fc19",
@@ -685,6 +1381,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4525e1f3_cdb234d9",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e2521b3_e776fc19",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73b45d13_f3910b93",
@@ -698,6 +1418,30 @@
       "writtenOn": "2026-02-02T15:51:17Z",
       "side": 1,
       "message": "Do we need this to be stored by value here?\n\nTransform is a pretty big object (~144bytes?) and hypothetically can be shared quite a bit between recorded DrawParams as long as the SkCanvas transform isn\u0027t being manipulated between them. This does add complexity to the current `DrawList`, detecting duplicates and storing them separately in a different block list.\n\nIf we *need* Transform to be stored inline, we should do it as a separate CL to measure the impact on the existing DrawList and go through and clean up the deduplication logic entirely. Otherwise, we should be able to have DrawListLayer save the Transforms in the arena as well (edit, I see you\u0027ve made that same comment and are currently using DrawListBase to hold de-duplicated Transforms, which makes me think that this can go back to const Transform\u0026).",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 174,
+        "endChar": 25
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "654bb4a8_81c99626",
+        "filename": "src/gpu/graphite/DrawParams.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-05T22:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73b45d13_f3910b93",
       "range": {
         "startLine": 174,
         "startChar": 4,
