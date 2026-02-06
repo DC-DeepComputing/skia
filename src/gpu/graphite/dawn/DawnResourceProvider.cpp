@@ -217,6 +217,7 @@ public:
         this->purgeBuffersIf(alwaysTrue);
 
         SkASSERT(fIntrinsicBuffersLRU.isEmpty());
+        SkASSERT(fPendingIntrinsicBuffers.isEmpty());
     }
 
     // Find or create a bind buffer info for the given intrinsic values used in the given command
@@ -231,7 +232,24 @@ public:
         this->purgeBuffersIf(bufferNotUsedSince);
     }
 
-    void freeGpuResources() { this->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now()); }
+    void releasePendingIntrinsicBuffers() {
+        using Iter = SkTInternalLList<IntrinsicBuffer>::Iter;
+        Iter iter;
+        auto* curr = iter.init(fPendingIntrinsicBuffers, Iter::kHead_IterStart);
+        while (curr != nullptr) {
+            auto* next = iter.next();
+
+            fPendingIntrinsicBuffers.remove(curr);
+            delete curr;
+
+            curr = next;
+        }
+    }
+
+    void freeGpuResources() {
+        this->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+        this->releasePendingIntrinsicBuffers();
+    }
 
 private:
     // The max number of intrinsic buffers to keep around in the cache.
@@ -248,6 +266,10 @@ private:
     SkTInternalLList<IntrinsicBuffer> fIntrinsicBuffersLRU;
     // The number of intrinsic buffers currently in the cache.
     uint32_t fNumBuffers = 0;
+
+    // Array of instrinsic buffers which have been bumped out of the LRU. Is cleared when the
+    // command buffer is finished.
+    SkTInternalLList<IntrinsicBuffer> fPendingIntrinsicBuffers;
 };
 
 // Find or create a bind buffer info for the given intrinsic values used in the given command
@@ -312,7 +334,7 @@ BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
         if (fNumBuffers > kMaxNumBuffers) {
             auto* tail = fIntrinsicBuffersLRU.tail();
             fIntrinsicBuffersLRU.remove(tail);
-            delete tail;
+            fPendingIntrinsicBuffers.addToHead(tail);
             fNumBuffers--;
         }
     }
@@ -731,6 +753,10 @@ void DawnResourceProvider::onPurgeResourcesNotUsedSince(StdSteadyClock::time_poi
 BindBufferInfo DawnResourceProvider::findOrCreateIntrinsicBindBufferInfo(
         DawnCommandBuffer* cb, UniformDataBlock intrinsicValues) {
     return fIntrinsicConstantsManager->add(cb, intrinsicValues);
+}
+
+void DawnResourceProvider::releasePendingIntrinsicBuffers() {
+    fIntrinsicConstantsManager->releasePendingIntrinsicBuffers();
 }
 
 DawnThreadSafeResourceProvider::DawnThreadSafeResourceProvider(
