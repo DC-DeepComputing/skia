@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0754b8c3_cec29d21",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-02-06T02:05:35Z",
+      "side": 1,
+      "message": "BTW, is there a Skia bug filed for this? I\u0027m also in a situation where I would like to avoid double copying if possible, as I want to feed a font into PDFium and PDFium is going to copy anyway.",
+      "revId": "6a270b7dbcedfdcb1c5149289f761964d042aac4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
