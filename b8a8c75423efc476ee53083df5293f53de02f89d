@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51af65fc_7e1d63fe",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2536,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-06T16:03:09Z",
+      "side": 1,
+      "message": "Is this a typo? The comment says `R16F` and `kR_16F`, and this block is inside `if (r16FTextureSupport)`, but the code uses `GrColorType::kR_16` which is a `unorm` format. Shouldn\u0027t this be `GrColorType::kR_F16`? Also, `setColorTypeFormat` at line 2538 uses `GrGLFormat::kR16`, which corresponds to the non-float type.",
+      "range": {
+        "startLine": 2536,
+        "startChar": 0,
+        "endLine": 2536,
+        "endChar": 0
+      },
+      "revId": "b8a8c75423efc476ee53083df5293f53de02f89d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5856b5aa_b584c26d",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-06T16:03:09Z",
+      "side": 1,
+      "message": "This looks like a typo. `GrColorType` does not seem to have a `kRed_F16` member. Did you mean `kR_F16`? Other parts of this file use `kR_F16`.",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1069,
+        "endChar": 0
+      },
+      "revId": "b8a8c75423efc476ee53083df5293f53de02f89d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
