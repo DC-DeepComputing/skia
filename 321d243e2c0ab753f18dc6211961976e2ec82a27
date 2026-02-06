@@ -39,6 +39,30 @@
       },
       "revId": "321d243e2c0ab753f18dc6211961976e2ec82a27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30304e71_0339e919",
+        "filename": "tools/graphite/dawn/GraphiteDawnToggles.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T17:59:22Z",
+      "side": 1,
+      "message": "I considered that, but I wanted to model this similar to how we handle VulkanPreferredFeatures, which allows the client to add extensions before calling into Skia to add anything we want. That is a public API with real clients, whereas this is just our tools but I opted to keep it in a form that could migrate more easily.",
+      "parentUuid": "00aa2326_75244ffd",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 4
+      },
+      "revId": "321d243e2c0ab753f18dc6211961976e2ec82a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
