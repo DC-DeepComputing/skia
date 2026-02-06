@@ -164,6 +164,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad9335e3_43671809",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T21:22:02Z",
+      "side": 1,
+      "message": "Will remove this as well.",
+      "parentUuid": "37979909_9fe4c4fc",
+      "range": {
+        "startLine": 1761,
+        "startChar": 0,
+        "endLine": 1765,
+        "endChar": 5
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ef44910_7b7a85ca",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 37
@@ -246,6 +270,30 @@
       "side": 1,
       "message": "We should be able to just do\n\n```\nif (!fRecorder-\u003epriv().caps()-\u003euseDrawListLayer()) {\n    fColorDepthBoundsManager-\u003erecordDraw(clip.drawBounds(), order.paintOrder());\n}\n```\n\nNone of the layer finding logic or the clip stack logic for the layer mode actually needs to read the `paintOrder()` value so it can remain the default value.",
       "parentUuid": "d451a7e5_70d2996b",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff753bc_3af5d5fb",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T21:22:02Z",
+      "side": 1,
+      "message": "Oh ok. I was only going off of your previous comments, so I thought some behavior needed to remain.",
+      "parentUuid": "2fefb746_cd16b0c8",
       "range": {
         "startLine": 1835,
         "startChar": 0,
@@ -386,6 +434,30 @@
       "side": 1,
       "message": "Since the perf numbers that have been collected still was doing all the same bounds manager logic as the sorting system, we weren\u0027t removing any much work to compensate for the added work in recordDraw.\n\nWe can keep the ChainedDraw for now, but I do think it has a perf/correctness issue right now by causing us to iterate over the draws multiple times. The no chained setup will also automatically handle the transposed order to minimize pipeline switches, but that can also be accounted for in how the chained draws are iterated over.",
       "parentUuid": "f7ada620_5a95692a",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d747247_d852e8e2",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T21:22:02Z",
+      "side": 1,
+      "message": "Yes exactly! I have about 70% of the transposed-chained draw CL cooking right now. Hopefully benchmarking it tonight versus the no-chained CL.",
+      "parentUuid": "8c41a9f1_092e6b12",
       "range": {
         "startLine": 111,
         "startChar": 0,
