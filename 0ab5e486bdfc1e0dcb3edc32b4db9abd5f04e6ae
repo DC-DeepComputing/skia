@@ -16,6 +16,24 @@
       "message": "Please don\u0027t approve this change or submit it!",
       "revId": "0ab5e486bdfc1e0dcb3edc32b4db9abd5f04e6ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd58c82a_c117a27d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-02-06T22:14:35Z",
+      "side": 1,
+      "message": "Okay now it\u0027s safe to approve/submit.",
+      "parentUuid": "3b81dfa9_92bd7cc3",
+      "revId": "0ab5e486bdfc1e0dcb3edc32b4db9abd5f04e6ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
