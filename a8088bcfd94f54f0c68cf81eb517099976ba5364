@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "848a25f8_484c9815",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:32:33Z",
+      "side": 1,
+      "message": "There is likely only ever going to be 1 async map at a time, so we can change this to `STArray\u003c1, AutoCallback\u003e` to avoid any allocations when pushing the first AutoCallback.",
+      "range": {
+        "startLine": 56,
+        "startChar": 18,
+        "endLine": 56,
+        "endChar": 24
+      },
+      "revId": "a8088bcfd94f54f0c68cf81eb517099976ba5364",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
