@@ -43,7 +43,7 @@ struct GrD3DBackendSurfaceInfo {
 
     void setResourceState(GrD3DResourceStateEnum state);
 
-    sk_sp<GrD3DResourceState> getGrD3DResourceState() const;
+    sk_sp<GrD3DResourceState> getResourceState() const;
 
     GrD3DTextureResourceInfo snapTextureResourceInfo() const;
 

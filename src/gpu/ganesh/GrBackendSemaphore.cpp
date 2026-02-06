@@ -37,4 +37,3 @@ GrBackendSemaphore& GrBackendSemaphore::operator=(const GrBackendSemaphore& that
     }
     return *this;
 }
-
