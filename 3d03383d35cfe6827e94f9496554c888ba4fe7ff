@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f78271f2_2161135b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-02-06T19:36:16Z",
+      "side": 1,
+      "message": "I updated both functions, hopefully that is sufficient, I didn\u0027t see any other references to depth/stencil sampleCount in that file.",
+      "parentUuid": "a5874539_34395a8b",
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77bfdd28_2417a19e",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e438886_435e2e74",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-02-06T19:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77bfdd28_2417a19e",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 81
+      },
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19aad46a_1c8c4bb0",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-02-06T16:06:42Z",
       "side": 1,
       "message": "I think this can just just be `desc.fSampleCount`. If we are single-sampled, that will be 1x. If we are MSAA\u0027ed but not MSRTSS, desc.fSampleCount and desc.fColorAttachment.fSampleCount will be the same value.  If we are MSRTSS, desc.fSampleCount will be what we want.",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 120,
+        "endChar": 81
+      },
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "affb966a_d8c4c1f0",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-02-06T19:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19aad46a_1c8c4bb0",
       "range": {
         "startLine": 114,
         "startChar": 8,
