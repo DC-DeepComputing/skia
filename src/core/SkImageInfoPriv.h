@@ -42,6 +42,7 @@ static inline uint32_t SkColorTypeChannelFlags(SkColorType ct) {
         case kR16G16B16A16_unorm_SkColorType: return kRGBA_SkColorChannelFlags;
         case kSRGBA_8888_SkColorType:         return kRGBA_SkColorChannelFlags;
         case kR8_unorm_SkColorType:           return kRed_SkColorChannelFlag;
+        case kR16_float_SkColorType:          return kRed_SkColorChannelFlag;
     }
     SkUNREACHABLE;
 }
@@ -101,6 +102,7 @@ static int SkColorTypeShiftPerPixel(SkColorType ct) {
         case kR16G16B16A16_unorm_SkColorType: return 3;
         case kSRGBA_8888_SkColorType:         return 2;
         case kR8_unorm_SkColorType:           return 0;
+        case kR16_float_SkColorType:          return 1;
     }
     SkUNREACHABLE;
 }
@@ -154,6 +156,7 @@ static inline bool SkColorTypeIsNormalized(SkColorType ct) {
         case kRGBA_F16_SkColorType:
         case kRGBA_F32_SkColorType:
         case kR16G16_float_SkColorType:
+        case kR16_float_SkColorType:
             return false;
     }
     SkUNREACHABLE;
@@ -198,6 +201,7 @@ static inline int SkColorTypeMaxBitsPerChannel(SkColorType ct) {
         case kRGBA_F16_SkColorType:
         case kRGB_F16F16F16x_SkColorType:
         case kR16G16_float_SkColorType:
+        case kR16_float_SkColorType:
             return 16;
 
         case kRGBA_F32_SkColorType:

@@ -1521,6 +1521,7 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
     this->setColorType(ct::kRGB_101010x_SkColorType,        { VK_FORMAT_A2B10G10R10_UNORM_PACK32 });
     this->setColorType(ct::kGray_8_SkColorType,             { VK_FORMAT_R8_UNORM                 });
     this->setColorType(ct::kA16_float_SkColorType,          { VK_FORMAT_R16_SFLOAT               });
+    this->setColorType(ct::kR16_float_SkColorType,          { VK_FORMAT_R16_SFLOAT               });
     this->setColorType(ct::kRGBA_F16_SkColorType,           { VK_FORMAT_R16G16B16A16_SFLOAT      });
     this->setColorType(ct::kRGB_F16F16F16x_SkColorType,     { VK_FORMAT_R16G16B16A16_SFLOAT      });
     this->setColorType(ct::kA16_unorm_SkColorType,          { VK_FORMAT_R16_UNORM                });

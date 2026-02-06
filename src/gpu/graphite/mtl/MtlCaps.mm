@@ -763,6 +763,7 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
     // kRGBA_F32_SkColorType
     this->setColorType(kR8G8_unorm_SkColorType,        { MTLPixelFormatRG8Unorm        });
     this->setColorType(kA16_float_SkColorType,         { MTLPixelFormatR16Float        });
+    this->setColorType(kR16_float_SkColorType,         { MTLPixelFormatR16Float        });
     this->setColorType(kR16G16_float_SkColorType,      { MTLPixelFormatRG16Float       });
     this->setColorType(kA16_unorm_SkColorType,         { MTLPixelFormatR16Unorm        });
     this->setColorType(kR16_unorm_SkColorType,         { MTLPixelFormatR16Unorm        });

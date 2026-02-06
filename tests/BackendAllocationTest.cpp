@@ -642,6 +642,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
         { kR16G16_float_SkColorType,      { .25f, .75f, 0, 1 }     },
         { kR16G16B16A16_unorm_SkColorType,{ .25f, .5f, .75f, 1 }   },
         { kR8_unorm_SkColorType,          { .25f, 0, 0, 1 }        },
+        { kR16_float_SkColorType,         { .25f, 0, 0, 1 }        },
     };
 
     static_assert(kLastEnum_SkColorType == std::size(combinations));

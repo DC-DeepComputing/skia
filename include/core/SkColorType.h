@@ -139,8 +139,12 @@ enum SkColorType : int {
     // opaque.
     //    Bits: [R:7..0]
     kR8_unorm_SkColorType,
+    // Single channel data (16-bit half-float) interpreted as red. G and B are forced to 0, alpha is
+    // forced to opaque.
+    //    Bits: [R:15..0]
+    kR16_float_SkColorType,
 
-    kLastEnum_SkColorType     = kR8_unorm_SkColorType, //!< last valid value
+    kLastEnum_SkColorType     = kR16_float_SkColorType, //!< last valid value
 
 #if SK_PMCOLOR_BYTE_ORDER(B,G,R,A)
     kN32_SkColorType          = kBGRA_8888_SkColorType,//!< native 32-bit BGRA encoding

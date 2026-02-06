@@ -2493,8 +2493,8 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         }
 
         if (r16FTextureSupport) {
-            // Format: R16F, Surface: kAlpha_F16
-            info.fColorTypeInfoCount = 1;
+            // Format: R16F, Surface: kAlpha_F16, kR_F16
+            info.fColorTypeInfoCount = 2;
             info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
             int ctIdx = 0;
             {
@@ -2528,6 +2528,28 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
                     ioFormat.fExternalType = GR_GL_FLOAT;
                     ioFormat.fExternalTexImageFormat = 0;
                     ioFormat.fExternalReadFormat = GR_GL_RGBA;
+                }
+            }
+            {
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = GrColorType::kR_F16;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+                this->setColorTypeFormat(GrColorType::kR_F16, GrGLFormat::kR16F);
+
+                // External IO ColorTypes:
+                ctInfo.fExternalIOFormatCount = 1;
+                ctInfo.fExternalIOFormats = std::make_unique<ColorTypeInfo::ExternalIOFormats[]>(
+                        ctInfo.fExternalIOFormatCount);
+                int ioIdx = 0;
+                // Format: R16F, Surface: kR_F16, Data: kR_F16
+                {
+                    auto& ioFormat = ctInfo.fExternalIOFormats[ioIdx++];
+                    ioFormat.fColorType = GrColorType::kR_F16;
+                    ioFormat.fExternalType = halfFloatType;
+                    ioFormat.fExternalTexImageFormat = GR_GL_RED;
+                    ioFormat.fExternalReadFormat = GR_GL_RED;
+                    // Not guaranteed by ES/WebGL.
+                    ioFormat.fRequiresImplementationReadQuery = !GR_IS_GR_GL(standard);
                 }
             }
         }

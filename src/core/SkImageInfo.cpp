@@ -43,6 +43,7 @@ int SkColorTypeBytesPerPixel(SkColorType ct) {
         case kR16G16B16A16_unorm_SkColorType: return 8;
         case kSRGBA_8888_SkColorType:         return 4;
         case kR8_unorm_SkColorType:           return 1;
+        case kR16_float_SkColorType:          return 2;
     }
     SkUNREACHABLE;
 }
@@ -276,6 +277,7 @@ bool SkColorTypeValidateAlphaType(SkColorType colorType, SkAlphaType alphaType,
         case kBGR_101010x_XR_SkColorType:
         case kRGB_F16F16F16x_SkColorType:
         case kR8_unorm_SkColorType:
+        case kR16_float_SkColorType:
             alphaType = kOpaque_SkAlphaType;
             break;
     }
