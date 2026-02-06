@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b87ea2e9_d1aaefcb",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T21:48:33Z",
+      "side": 1,
+      "message": "nit: Skia style uses `this-\u003e`",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 38
+      },
+      "revId": "c3d751c630d5972e8c8a9c398a2a88b3c054165d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba7daedd_6474bf6f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T21:48:33Z",
+      "side": 1,
+      "message": "It\u0027s a bit more coding in the shrinking of the LRU cache and in the impl of `releasePendingIntrinsicBuffers`, but I think we can having `fPendingIntrinsicBuffers` be another `SkTInternalLList\u003cIntrinsicBuffer\u003e`. When it is removed from the LRU, it\u0027s added to `fPendingIntrinsicBuffers`. Then in the `releasePendingIntrinsicBuffers()`, we iterate the LL, remove the node, and delete the IntrinsicBuffer object (which will then unref the Buffer object that its holding on to with a usage ref).",
+      "range": {
+        "startLine": 258,
+        "startChar": 4,
+        "endLine": 264,
+        "endChar": 67
+      },
+      "revId": "c3d751c630d5972e8c8a9c398a2a88b3c054165d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
