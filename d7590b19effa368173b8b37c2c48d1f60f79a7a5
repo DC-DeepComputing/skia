@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd5a3804_6125fbba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3924380
+      },
+      "writtenOn": "2026-02-06T06:05:23Z",
+      "side": 1,
+      "message": "Thank you so much for reviewing this and putting everything in the right place.",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fd6b315_f645d3df",
@@ -53,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af33ae3_22ec7c0d",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 3924380
+      },
+      "writtenOn": "2026-02-06T06:05:23Z",
+      "side": 1,
+      "message": "Thanks for pointing this out, I agree on weird bit of DWrite API structuring.\n\nI also checked `DWriteFontTypeface::onMakeClone()`, which is used in web variable font, and postscript name is not correct it seems.",
+      "parentUuid": "7103cadc_303b2103",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea9eab74_966c948b",
@@ -84,6 +119,24 @@
       "side": 1,
       "message": "I think https://skia-review.googlesource.com/c/skia/+/1158836 may end up effectively fixing this, since it means only using the font or the font family as backups on very old versions of DirectWrite (before variable font support I think, so probably won\u0027t make a difference there).",
       "parentUuid": "ea9eab74_966c948b",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edeccac4_6704472e",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1190,
+      "author": {
+        "id": 3924380
+      },
+      "writtenOn": "2026-02-06T06:05:23Z",
+      "side": 1,
+      "message": "yes, my change is very specific to exact (named instances) match. And new change you merged fixes the issue. Also, it fixes the PostScript name in case of Web variable font - https://skia-review.googlesource.com/c/skia/+/1158496/comment/7fd6b315_f645d3df/",
+      "parentUuid": "0cd03575_4a5e1bb7",
       "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
