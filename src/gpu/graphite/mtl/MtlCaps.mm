@@ -535,6 +535,13 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
             ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
             ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
         }
+        // Format: R16Float, Surface: kR16_float
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kR16_float_SkColorType;
+            ctInfo.fTransferColorType = kR16_float_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
     }
 
     // Format: RG8Unorm
@@ -763,6 +770,7 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
     // kRGBA_F32_SkColorType
     this->setColorType(kR8G8_unorm_SkColorType,        { MTLPixelFormatRG8Unorm        });
     this->setColorType(kA16_float_SkColorType,         { MTLPixelFormatR16Float        });
+    this->setColorType(kR16_float_SkColorType,         { MTLPixelFormatR16Float        });
     this->setColorType(kR16G16_float_SkColorType,      { MTLPixelFormatRG16Float       });
     this->setColorType(kA16_unorm_SkColorType,         { MTLPixelFormatR16Unorm        });
     this->setColorType(kR16_unorm_SkColorType,         { MTLPixelFormatR16Unorm        });
