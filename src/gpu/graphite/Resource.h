@@ -751,7 +751,7 @@ private:
     skgpu::StdSteadyClock::time_point fLastAccess;
 
     // String used to describe the current use of this Resource.
-    std::string fLabel;
+    std::string fLabel = "";
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe
     // because labels will only ever be read from or written to when either:
@@ -759,7 +759,7 @@ private:
     //    findAndRefResource())
     // B) Inserting a recording on the Context thread, which cannot overlap with A) because there is
     //    a usage ref held during insertion.
-    bool fBackendLabelDirty;
+    bool fBackendLabelDirty = false;
 };
 
 } // namespace skgpu::graphite
