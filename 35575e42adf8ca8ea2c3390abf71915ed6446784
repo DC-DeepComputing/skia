@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91c24bfc_ea4dd731",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-06T18:13:42Z",
+      "side": 1,
+      "message": "This change is causing\n\n```\nCaught exception 3221225477 EXCEPTION_ACCESS_VIOLATION, was running:\n\td3d gm  yuv_make_color_space\n```\n\non `Test-Win11-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Direct3D` (and the `Debug` variant). Locally reproduced this exception and reverting this change causes the exception to go away.",
+      "revId": "35575e42adf8ca8ea2c3390abf71915ed6446784",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
