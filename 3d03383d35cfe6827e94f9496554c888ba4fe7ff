@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5874539_34395a8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T16:06:42Z",
+      "side": 1,
+      "message": "There are some asserts and functions in VulkanRenderPass::GetRenderPassKey and ExtractRenderPassDesc that have to be updated to assume the pass\u0027s sample count for the depth/stencil attachment. Dawn\u0027s pipeline key serialization explicitly encodes the depht/stencil sample count so it doesn\u0027t need to have the MSRTSS assumption updated.",
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bfdd28_2417a19e",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T16:06:42Z",
+      "side": 1,
+      "message": "Assuming we simplify the ds sample count choice, this can be reverted.",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 81
+      },
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19aad46a_1c8c4bb0",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T16:06:42Z",
+      "side": 1,
+      "message": "I think this can just just be `desc.fSampleCount`. If we are single-sampled, that will be 1x. If we are MSAA\u0027ed but not MSRTSS, desc.fSampleCount and desc.fColorAttachment.fSampleCount will be the same value.  If we are MSRTSS, desc.fSampleCount will be what we want.",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 120,
+        "endChar": 81
+      },
+      "revId": "3d03383d35cfe6827e94f9496554c888ba4fe7ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
