@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98d5787f_133b2cb2",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-06T16:07:10Z",
+      "side": 1,
+      "message": "This one you might want to initialize? It seems the behavior of this class is that if `lastUseToken` is called before `setLastUseToken` then the token bits are undefined. Not sure if there is a general \"oldest\" token bit pattern (if there isn\u0027t there should at least be some debug assert tracking around this).",
+      "range": {
+        "startLine": 750,
+        "startChar": 13,
+        "endLine": 750,
+        "endChar": 26
+      },
+      "revId": "49ee298c5c5b3695d972731d5bdfc87670ac2372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "298dbea5_52853f79",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-06T16:07:10Z",
+      "side": 1,
+      "message": "This isn\u0027t needed, `std::string` already has a default constructor.",
+      "range": {
+        "startLine": 754,
+        "startChar": 22,
+        "endLine": 754,
+        "endChar": 27
+      },
+      "revId": "49ee298c5c5b3695d972731d5bdfc87670ac2372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
