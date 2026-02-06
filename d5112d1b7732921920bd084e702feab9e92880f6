@@ -164,6 +164,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d451a7e5_70d2996b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T20:03:13Z",
+      "side": 1,
+      "message": "I think this would require refactoring recordDraw to expose a drawBounds only path?",
+      "parentUuid": "fb625c5f_ee92392a",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "513de99e_742ef990",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 37
@@ -244,6 +268,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "WDYT about having `recordBackwards` return the Layer that it found, and then for subsequent RenderSteps we iterate forwards from that Layer to insert the remaining steps? Then we effectively produce the transposed iteration order over the path rendering steps and we don\u0027t have to have separate classes for SingleDraw and ChainedDraw.\n\nIn this model, we can start with treating `dependsOnDst` based on the aggregate Renderer instead of trying to move the non-shading stencil steps really early. This will minimize how many forward layers you search through for the remaining steps since the first layer would have been valid for the shading step anyways. The current sortkey system operates this way because the CompressedPaintersOrder is determined by the Renderer, not for each RenderStep. Later it would be interesting to explore being able to spread out the non-shading stencil steps farther from the shading steps.",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7ada620_5a95692a",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T20:03:13Z",
+      "side": 1,
+      "message": "This is effectively the \"no chained\" setup I had here:\nhttps://skia-review.googlesource.com/c/skia/+/1153336\n\nThe performance was middling (see sheet \"comparison\", collumn \"No Chain\"), I suspect because it introduces additional Layers:\nhttps://docs.google.com/spreadsheets/d/1cHC_yPNJIvjyYyMfHHNs7D_sDNLkEIAYKd0VEI-u-D4/edit?usp\u003dsharing\n\nI will rebase that patch and try it after more fixes here.",
+      "parentUuid": "018b3ed5_07833b4d",
       "range": {
         "startLine": 111,
         "startChar": 0,
@@ -658,6 +706,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "Static casts are free",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 92
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1dd29b_7cfa6704",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T20:03:13Z",
+      "side": 1,
+      "message": "Requires branching on the type to do the cast :/",
+      "parentUuid": "55d62937_1806ac7e",
       "range": {
         "startLine": 107,
         "startChar": 0,
