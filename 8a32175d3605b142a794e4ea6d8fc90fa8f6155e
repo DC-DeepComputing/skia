@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4828f96f_39bea288",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-06T15:45:06Z",
+      "side": 1,
+      "message": "Note: I removed stencil tracking from lists. This ends up causing issues because we treat stencil renderers atomically, so lists containing stencils are not necessarily pure stencils, and may still shade, meaning that bounds checks cannot be skipped by non-stencil draws.\n\nprintfs will be removed when I flip the caps flag off.",
+      "revId": "8a32175d3605b142a794e4ea6d8fc90fa8f6155e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
