@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13c0153b_e3bffe15",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-06T17:06:52Z",
+      "side": 1,
+      "message": "note: Per feedback on https://skia-review.googlesource.com/c/skia/+/1159476, removed default assignment here since this should be OK w/ std::string\u0027s default ctor. Added initial value for `fBackendLabelDirty` and for `fLastUseToken` while I\u0027m at it - not sure why there were no complaints on that.",
+      "range": {
+        "startLine": 754,
+        "startChar": 4,
+        "endLine": 754,
+        "endChar": 23
+      },
+      "revId": "dd543c10642a388e479df34ea89f17475a2fd85d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
