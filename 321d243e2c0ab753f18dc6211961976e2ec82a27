@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01e20e2a_d6ee8179",
+        "filename": "tools/graphite/dawn/GraphiteDawnToggles.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-06T14:29:18Z",
+      "side": 1,
+      "message": "nit: `#include \u003cvector\u003e`",
+      "revId": "321d243e2c0ab753f18dc6211961976e2ec82a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00aa2326_75244ffd",
+        "filename": "tools/graphite/dawn/GraphiteDawnToggles.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-06T14:29:18Z",
+      "side": 1,
+      "message": "Both callers of this pass in an empty vector. Could we just create and return said empty vector? Then we don\u0027t have to have the \"make sure we don\u0027t add something twice\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 4
+      },
+      "revId": "321d243e2c0ab753f18dc6211961976e2ec82a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
