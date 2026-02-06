@@ -1,0 +1,740 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dd19311_819d1c68",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 37
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This part needs to be updated to reflect CL split",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 66
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f27ba470_39181b14",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This should be able to be moved into `drawClipShapeImmediate`, so we consolidate the lack of perspective support in the tessellating path renderers to Device\u0027s logic.",
+      "range": {
+        "startLine": 702,
+        "startChar": 16,
+        "endLine": 705,
+        "endChar": 17
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094de043_7f0557ad",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Given that all of this is just to effectively have a branch on `useDrawListLayer()` inside `handleClipDraw`, I think we should have that if inside `handleClipDraw` and either call `device-\u003edrawClipShape()` or sync the `fCaptureParams`.",
+      "range": {
+        "startLine": 677,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 1
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2332250_6930c7e5",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 893,
+        "startChar": 28,
+        "endLine": 893,
+        "endChar": 45
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a43710a_84bbd0e4",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1942,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "While all of these elements affect the draw, each element does not necessarily have any relationship with each other, so passing in `prevLayer` that was set to one Element\u0027s deferred layer does not necessarily give the right starting layer for another element.\n\nI think the deferred layers for each element need to start with a null deferred layer and be set to what `drawClipShapeImmediate` returns with a regular backwards search from the most recent draw.\n\nThe `prevLayer` that we return from `updateClipStateForDraw` needs to be the latest/most-recent deferred layer across all of the clip element\u0027s layers that influence the draw.",
+      "range": {
+        "startLine": 1942,
+        "startChar": 76,
+        "endLine": 1942,
+        "endChar": 85
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd19c31_5f577523",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "nit: pair",
+      "range": {
+        "startLine": 116,
+        "startChar": 9,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb625c5f_ee92392a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This is a significant performance hotspot when using the sortkey system, so perf numbers aren\u0027t representative until we skip this work for layers.",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513de99e_742ef990",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "I think this is causing us to record a lot of redundant draws+steps when doing chained drawing. For every renderstep inside `recordDraw`, we call `recordBackwards`. While the first render step skips this code, the subsequent steps hit this code and add a new `ChainedDraw`. For something with 2-3 rendersteps, we record 2-3 ChainedDraws per draw and then when we iterate over them when snapping a DrawPass we process the rendersteps multiple times.\n\nWe likely aren\u0027t seeing any visible GM differences because these extra recorded draws will have the same Z value and then fail their depth test, but we\u0027ll still have a lot of CPU overhead writing out the extra instances and performing the vertex shader work before it gets to the fragment work.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 9
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814d4046_2bfaed5e",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This should be `stopLayer`, unless that\u0027s null then it can be fLayers.head().",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b0298e5_67b94704",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "If we have compatibleOverlap, we had already iterated over the BindingLists during `test` so having to do it it again for `searchBinding` adds overhead.  We could change `test` to return a pair for \"overlap(yes/no),match\". If the match is non-null it was a compatible overlap and otherwise it wasn\u0027t compatible.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 58
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "018b3ed5_07833b4d",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "WDYT about having `recordBackwards` return the Layer that it found, and then for subsequent RenderSteps we iterate forwards from that Layer to insert the remaining steps? Then we effectively produce the transposed iteration order over the path rendering steps and we don\u0027t have to have separate classes for SingleDraw and ChainedDraw.\n\nIn this model, we can start with treating `dependsOnDst` based on the aggregate Renderer instead of trying to move the non-shading stencil steps really early. This will minimize how many forward layers you search through for the remaining steps since the first layer would have been valid for the shading step anyways. The current sortkey system operates this way because the CompressedPaintersOrder is determined by the Renderer, not for each RenderStep. Later it would be interesting to explore being able to spread out the non-shading stencil steps farther from the shading steps.",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a2c5c40_5d3bd228",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This can be enforced automatically in `recordBackwards` by using the `stopLayer`, the clip stack returns the stop layer and then we record up to that point. Then we dont\u0027 need this separate logic.",
+      "range": {
+        "startLine": 182,
+        "startChar": 27,
+        "endLine": 182,
+        "endChar": 54
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67e4429_0dd48d81",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Normal draws that depend on dst still need to record backwards. Normal draws that don\u0027t depend on the dst can jump right to the `stopLayer` and be added. There\u0027s no need to worry about incompatible overlaps as long as the draw doesn\u0027t use the stencil. We\u0027d only ever search forwards from the stopLayer to spread out multiple rendersteps that use stencil.",
+      "range": {
+        "startLine": 185,
+        "startChar": 11,
+        "endLine": 186,
+        "endChar": 95
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "961a00fe_9801a40d",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "still has to be a backwards search, but is the earliest possible layer to insert into. But can insert directly into it if we don\u0027t depend on dst.",
+      "range": {
+        "startLine": 247,
+        "startChar": 7,
+        "endLine": 247,
+        "endChar": 21
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f838e527_71e09954",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "nit: `SkToBool(renderer-\u003edepthStencilFlags() \u0026 DepthStencilFlags::kStencil)`",
+      "range": {
+        "startLine": 269,
+        "startChar": 21,
+        "endLine": 270,
+        "endChar": 46
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cc141a9_4dd54b42",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "nit: This can just be `SkToBool(dstUsage \u0026 DstUsage::kDependsOnDst)`",
+      "range": {
+        "startLine": 271,
+        "startChar": 24,
+        "endLine": 271,
+        "endChar": 79
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e7bf5ee_d8d25b38",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "I hinted in a comment in DrawLayerType\u0027s Layer::test function, but we should be able to have this be the same as `recordBackwards` with dependsOnDst\u003dtrue.",
+      "range": {
+        "startLine": 305,
+        "startChar": 18,
+        "endLine": 305,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a71b56_3764cef6",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "captureParams only has to be set once, not inside the loop over the render steps.",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 40
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff8fd89_d437e260",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Even if we aren\u0027t returning the `captureLayer` to the caller, we want to remember the layers we found from the first step so that subsequent rendersteps can start from there and search forwards.",
+      "range": {
+        "startLine": 337,
+        "startChar": 16,
+        "endLine": 344,
+        "endChar": 47
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae38bf1_194b6bc9",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "While we have to wait until we\u0027re inside this loop in order to insert something into a Layer\u0027s BindingList (post collecting uniforms/textures), are we reporting the chosen Layer for subsequent steps? They would share the same draw bounds as the first step, so we can reuse the first step\u0027s layer and search forwards without worrying about overlaps.",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 13
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520bfe7e_a27a3e68",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "We\u0027re only passing in false to `bindingsAreInvariant` here, but I\u0027m guessing that was from needed after removing the uniform index in the LayerKey. While we do need to call `writeUniforms` per draw, we could always treat the texture binding and the pipeline binding as invariant and do that when starting a binding list instead of as part of `recordDraw`",
+      "range": {
+        "startLine": 416,
+        "startChar": 13,
+        "endLine": 416,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "930ef53c_de70fdc9",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "We shouldn\u0027t rely on the CompressedPaintOrder value here so that we can avoid querying the BoundsManager at all when using layers. Instead, we can take advantage of the fact that a layer that allows overlaps in binding lists and draws will not depend on dst (so there\u0027s no barrier required) or the layer will keep draws disjoint. In order for the latter to always be true, we need to disable compatibleOverlap shortcuts when the draw requires a barrier. This will be worth it because it reduces the barriers we need to issue to when we change layers.",
+      "range": {
+        "startLine": 443,
+        "startChar": 19,
+        "endLine": 443,
+        "endChar": 73
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a77117_e69005db",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "We can reduce the amount of work performed inside `recordDraw` by moving the pipeline, uniform and texture binding changes to happen when looping over the binding lists. *edit* scratch that for the uniform binding since that is calling writeUniforms per draw still.  Probably best to leave it as-is but think about re-arranging the work in a follow up if possible.",
+      "range": {
+        "startLine": 477,
+        "startChar": 0,
+        "endLine": 477,
+        "endChar": 48
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f567bd0b_662981ed",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Since all of these functions are only going to be used in `DrawListLayer.cpp`, it\u0027s okay to define them there. This will help the compiler inline them since otherwise being in separate compilation units that\u0027s unlikely to happen w/o LTO (which Skia doesn\u0027t build with for our own tooling).",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76268e36_94534ddd",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "There are three things going on that require us to check for bounds intersections in a layer:\n1. The draw does shading and it depends on the dst, so if we overlap a prior regular draw, we have to be added to a later layer.\n2. The draw is a depth-only clip draw, so if we overlap a prior regular draw we have to be added to a later layer.\n3. The draw uses the stencil buffer, so if we overlap anything that also uses the stencil, we have to be in a *different* layer (could move earlier if 1 or 2 don\u0027t force it to be a later layer). \n\nThe other overlap scenarios that don\u0027t really matter (assuming no stencil use) are:\n1. The draw does shading and we overlap a depth-only clip draw. There are two subcases here. \n\n  Firstly, if the clip draw belongs to an active clip element, then we\u0027ll have encountered this layer when visiting the clip stack so this layer must be the most recent deferred layer that will influence the draw. We already won\u0027t go earlier than that layer, and we can be put into this layer since the depth draws are drawn first.\n\n  Secondly, if the clip draw belongs to an inactive clip element, that means the clip has already updated its max Z value because it was popped off the clip stack, and this draw will have a max Z value greater than the clip\u0027s. If the draw doesn\u0027t depend on dst, we can go earlier than this layer still because its pixels won\u0027t be occluded by the clip and can occlude any of the other later draws. If we do depend on the dst, either we\u0027re blocked naturally from also intersecting some of the draws that were clipped by this clip draw, or we don\u0027t intersect any of those draws (just the clip area influencing them). That means we can still go earlier because any pixels the draw would block for this inactive clip draw won\u0027t be pixels that actually have to participate in clipping any of its influenced draws (since this draw doesn\u0027t intersect any of those draws). \n  \n2. The draw is a depth-only clip draw and overlaps a depth-only draw, which has two similar subcases:\n \n   Firstly, the other depth draw is also an active clip element. There are three subsubcases to think about:\n   \n      a. The two depth-only draws are in the same stack frame of the clip stack. This means that they are allowed to affect the same set of draws so can have the same max Z value. If the don\u0027t end up with the same max Z value, it\u0027s because the maximal set of affected draws had disparate overlaps with each element. In the area of overlap between the two elements, it doesn\u0027t matter which shape wins the depth test as either will clip the relevant shaded pixels.\n      \n      b. The other draw is shallower in the clip stack than this draw. That means all the draws affected by the other clip element can also be affected by this limit. Because we\u0027re only adding this deeper element now means none of those draws would be influenced by this clip. Any region where the two clips overlap then fall into the same scenario as a), or the other clip will be popped off the stack and a new draw will come in that increases this draw\u0027s max Z. That\u0027s okay because it\u0027ll still be clipping everything it should.\n      \n      c. The other draw is deeper in the clip stack than this draw, which is the reverse scenario as b). We can move this clip draw earlier because both clip draws can influence any regular draws that get recorded later until this draw is popped off the clip stack. Once that happens, the other clip draw could continue to influence new draws and increase its max Z value and overwrites any shared pixels.\n      \n   Secondly, if it is overlapping with an inactive clip element\u0027s depth draw, then assuming we aren\u0027t blocked from going earlier by overlapping any previous draws, we know we aren\u0027t going to damage the inactive clip\u0027s pixels that are used for clipping those previous draws (just like the above 1\u0027s secondary case).\n\n\nThese ordering behaviors are handled in the sort drawList code based on how the BoundsManager and DisjointStencilSet intersection tree\u0027s are updated.\n- The ClipStack\u0027s element walking ensures all affected draws sort after the clip draws\n- The BoundsManager query in drawGeometry() ensures the affected draws sort after other regular draws.\n- The BoundsManager query in the updateForDraw() ensures the clip element sorts after regular draws.\n- Only regular draws write into the BoundsManager.\n- drawGeometry() and drawClipShape() update the intersection tree set if the draws use stencil to keep things disjoint (but doesn\u0027t otherwise enforce an ordering on the draws).\n\nFor the layering approach, most of the layer test checks don\u0027t really care about whether or not it\u0027s a depth-only draw because the behaviors we need to enforce exactly match what we do for a regular draw that depends on dst. We just need to know whether or not to enforce painters order on overlap, and whether or not to keep disjoint for stencil. The depth-only part comes in for making sure we have that binding list walked first for a given layer.",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "444a4667_de9f15c6",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "A depth-only draw cannot overlap with any other draw in the layer, just as if it had `dependsOnDst \u003d true` for a shading draw because it needs to be drawn after any previous shaded draw that it overlaps. \n\nAt that point, this function isn\u0027t behaviorally any different from `test`.",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c158565c_2df72b18",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "This is just storing the TArray\u0027s base fields in the arena, but that\u0027s just the count and pointer to the memory. It\u0027ll still do a regular heap allocation for its own storage outside of the arena.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 77
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b50a3c77_cbb05f23",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "I think we will want to do two different checks here, one when we have SSBOs and one where we don\u0027t.  With SSBOs then we don\u0027t care about the uniform index in the key. If we have UBOs, we do care about the index but it should be a lower priority than the stencil grouping.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d62937_1806ac7e",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Static casts are free",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 92
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252eae94_91b08f1a",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "If every allowed `T` defines a `static constexpr BindingListType kListType \u003d Foo`, then we can drop the ctor argument from `BindingList` and pass it up to `BindingWrapper` automatically.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 67
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d5d00e1_1a7ab95c",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "If we need a separate list for depth-only draws, can it remain a linked list? Otherwise every depth draw list in a layer will add extra heap allocations from the TArray.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aec1fb76_88bbc080",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T19:34:23Z",
+      "side": 1,
+      "message": "Can this just be another BindingList?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 44
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
