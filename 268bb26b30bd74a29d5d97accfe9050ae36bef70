@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17cd4a46_9bddc05d",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:58:24Z",
+      "side": 1,
+      "message": "Do we need this? I would have expected std::unique_ptr\u003cDrawList\u003e to be implicitly assignable to std::unique_ptr\u003cDrawListBase\u003e",
+      "range": {
+        "startLine": 94,
+        "startChar": 24,
+        "endLine": 94,
+        "endChar": 59
+      },
+      "revId": "268bb26b30bd74a29d5d97accfe9050ae36bef70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b64ba9d2_bae6ca70",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:58:24Z",
+      "side": 1,
+      "message": "minor nit: but since fDraws depends on values reset by DrawListBase, it\u0027s good practice to reset them first so we don\u0027t have any dangling references for even a very short period of time.",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 22
+      },
+      "revId": "268bb26b30bd74a29d5d97accfe9050ae36bef70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa011e0_a104eaa7",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:58:24Z",
+      "side": 1,
+      "message": "nit: DstReadStrategy doesn\u0027t need to be `const` since it\u0027s just an enum value.",
+      "range": {
+        "startLine": 88,
+        "startChar": 43,
+        "endLine": 88,
+        "endChar": 64
+      },
+      "revId": "268bb26b30bd74a29d5d97accfe9050ae36bef70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "078316ea_27ee42aa",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:58:24Z",
+      "side": 1,
+      "message": "See note in DrawList, but we can drop the const here.",
+      "range": {
+        "startLine": 67,
+        "startChar": 56,
+        "endLine": 67,
+        "endChar": 57
+      },
+      "revId": "268bb26b30bd74a29d5d97accfe9050ae36bef70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
