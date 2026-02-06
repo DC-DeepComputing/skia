@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c1abfb7_e35ff7f4",
+        "filename": "src/sksl/codegen/SkSLWGSLValidator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T14:25:47Z",
+      "side": 1,
+      "message": "The last frag color built in comes from this extension, which we add under normal compilation for wgsl, but without it here, we were having LastFragColor.wgsl fail inside tint.",
+      "range": {
+        "startLine": 26,
+        "startChar": 50,
+        "endLine": 26,
+        "endChar": 87
+      },
+      "revId": "9493317977d79aed8c653750c82411c2cb91ba9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
