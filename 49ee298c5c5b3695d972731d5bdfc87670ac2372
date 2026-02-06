@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4da7d60_9e9198ac",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-06T17:04:47Z",
+      "side": 1,
+      "message": "Yeah I wondered why nothing was complaining about this. Remedied.",
+      "parentUuid": "98d5787f_133b2cb2",
+      "range": {
+        "startLine": 750,
+        "startChar": 13,
+        "endLine": 750,
+        "endChar": 26
+      },
+      "revId": "49ee298c5c5b3695d972731d5bdfc87670ac2372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "298dbea5_52853f79",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-06T16:07:10Z",
       "side": 1,
       "message": "This isn\u0027t needed, `std::string` already has a default constructor.",
+      "range": {
+        "startLine": 754,
+        "startChar": 22,
+        "endLine": 754,
+        "endChar": 27
+      },
+      "revId": "49ee298c5c5b3695d972731d5bdfc87670ac2372",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a2ec425_5012ae10",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-06T17:04:47Z",
+      "side": 1,
+      "message": "I was being heavy-handed with my fix in an attempt to fix-forward - removed and simply initialized the bool and int32.",
+      "parentUuid": "298dbea5_52853f79",
       "range": {
         "startLine": 754,
         "startChar": 22,
