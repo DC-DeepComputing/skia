@@ -102,23 +102,23 @@ std::string stitch_csv(SkSpan<const std::string> args) {
 // If 'args' is null, the generated list is assumed to be for parameter declarations. If it's non
 // null, it is assumed to be the expressions to invoke the default signature.
 void append_defaults(TArray<std::string>* list,
-                     const ShaderNode* node,
+                     SkEnumBitMask<SnippetRequirementFlags> requiredFlags,
                      const ShaderSnippet::Args* args) {
     // Use the node's aggregate required flags so that the provided dynamic variables propagate
     // to the child nodes that require them.
-    if (node->requiredFlags() & SnippetRequirementFlags::kPriorStageOutput) {
+    if (requiredFlags & SnippetRequirementFlags::kPriorStageOutput) {
         list->push_back(args ? args->fPriorStageOutput.c_str() : "half4 inColor");
     }
-    if (node->requiredFlags() & SnippetRequirementFlags::kBlenderDstColor) {
+    if (requiredFlags & SnippetRequirementFlags::kBlenderDstColor) {
         list->push_back(args ? args->fBlenderDstColor.c_str() : "half4 destColor");
     }
-    if (node->requiredFlags() & SnippetRequirementFlags::kLocalCoords) {
+    if (requiredFlags & SnippetRequirementFlags::kLocalCoords) {
         list->push_back(args ? args->fFragCoord.c_str() : "float2 pos");
     }
 
     // Special variables and/or "global" scope variables that have to propagate
     // through the node tree.
-    if (node->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
+    if (requiredFlags & SnippetRequirementFlags::kPrimitiveColor) {
         list->push_back(args ? "primitiveColor" : "half4 primitiveColor");
     }
 }
@@ -174,13 +174,13 @@ std::string invoke_node(const ShaderInfo& shaderInfo,
         // We didn't generate a helper function in the preamble, so add uniforms to the parameter
         // list and call the static function directly.
         fnName = node->entry()->fStaticFunctionName;
-        append_defaults(&params, node, &args);
+        append_defaults(&params, node->requiredFlags(), &args);
         append_uniforms(&params, shaderInfo, node, /*childOutputs=*/{});
     } else {
         // Invoke the generated helper function added to the preamble, which will handle invoking
         // any children and appending their values to the rest of the static fn's arguments.
         fnName = get_mangled_name(node->entry()->fName, node->keyIndex());
-        append_defaults(&params, node, &args);
+        append_defaults(&params, node->requiredFlags(), &args);
     }
 
     return SkSL::String::printf("%s(%s)", fnName.c_str(), stitch_csv(params).c_str());
@@ -194,7 +194,7 @@ std::string emit_helper_declaration(const ShaderNode* node) {
     std::string helperFnName = get_mangled_name(entry->fName, node->keyIndex());
 
     STArray<3, std::string> params;
-    append_defaults(&params, node, /*args=*/nullptr); // null args emits declarations
+    append_defaults(&params, node->requiredFlags(), /*args=*/nullptr); // null args emits declarations
 
     return SkSL::String::printf("half4 %s(%s)", helperFnName.c_str(), stitch_csv(params).c_str());
 }
@@ -236,7 +236,7 @@ std::string ShaderNode::generateDefaultPreamble(const ShaderInfo& shaderInfo) co
 
     // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
     STArray<3, std::string> params;
-    append_defaults(&params, this, &ShaderSnippet::kDefaultArgs);
+    append_defaults(&params, fEntry->fSnippetRequirementFlags, &ShaderSnippet::kDefaultArgs);
     append_uniforms(&params, shaderInfo, this, childOutputVarNames);
 
     SkSL::String::appendf(&code,
@@ -786,9 +786,9 @@ ShaderSnippet ShaderCodeDictionary::convertRuntimeEffect(const SkRuntimeEffect* 
         // shader are sampled with modified coords, or whether coordinates are required at all. For
         // now we assume all runtime shaders need coordinates, and if any children are sampled with
         // modified coords, we assume they all are.
-        snippetFlags |= SnippetRequirementFlags::kLocalCoords;
-        if (all_sample_usages_are_passthrough(effect)) {
-            snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+        if (!all_sample_usages_are_passthrough(effect)) {
+            snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+            // snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
         }
     } else if (effect->allowColorFilter()) {
         snippetFlags |= SnippetRequirementFlags::kPriorStageOutput;
@@ -959,6 +959,24 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             SnippetRequirementFlags::kPriorStageOutput,
             /*uniforms=*/{}
     };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPaintAlpha] = {
+            /*name=*/"PaintAlpha",
+            /*staticFn=*/"sk_mul_paint_alpha",
+            SnippetRequirementFlags::kNone,
+            /*uniforms=*/{{ Uniform::PaintColor() }},
+            /*texturesAndSamplers=*/{},
+            nullptr, // default preamble generator?
+            /*numChildren=*/1
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kIgnorePaintAlpha] = {
+            /*name=*/"IgnorePaintAlpha",
+            /*staticFn=*/"sk_ignore_paint_alpha",
+            SnippetRequirementFlags::kNone,
+            /*uniforms=*/{{ Uniform::PaintColor() }},
+            /*texturesAndSamplers=*/{},
+            nullptr, // default preamble generator?
+            /*numChildren=*/1
+    };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSolidColorShader] = {
             /*name=*/"SolidColor",
             /*staticFn=*/nullptr,
@@ -974,12 +992,6 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRGBPaintColor] = {
             /*name=*/"RGBPaintColor",
             /*staticFn=*/"sk_rgb_opaque",
-            SnippetRequirementFlags::kNone,
-            /*uniforms=*/{{ Uniform::PaintColor() }}
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kAlphaOnlyPaintColor] = {
-            /*name=*/"AlphaOnlyPaintColor",
-            /*staticFn=*/"sk_alpha_only",
             SnippetRequirementFlags::kNone,
             /*uniforms=*/{{ Uniform::PaintColor() }}
     };
@@ -1446,7 +1458,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             /*name=*/"Compose",
             /*staticFn=*/nullptr,
-            SnippetRequirementFlags::kPassthroughLocalCoords,
+            SnippetRequirementFlags::kNone,
             /*uniforms=*/{},
             /*texturesAndSamplers=*/{},
             GenerateComposePreamble,
@@ -1455,7 +1467,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendCompose] = {
             /*name=*/"BlendCompose",
             /*staticFn=*/nullptr,
-            SnippetRequirementFlags::kPassthroughLocalCoords,
+            SnippetRequirementFlags::kNone,
             /*uniforms=*/{},
             /*texturesAndSamplers=*/{},
             GenerateComposePreamble,

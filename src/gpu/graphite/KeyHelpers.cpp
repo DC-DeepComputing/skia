@@ -136,28 +136,20 @@ void SolidColorShaderBlock::AddBlock(const KeyContext& keyContext, const SkPMCol
 
 //--------------------------------------------------------------------------------------------------
 
-namespace {
-
-void add_rgb_paint_color_uniform_data(const KeyContext& keyContext) {
+void RGBPaintColorBlock::AddBlock(const KeyContext& keyContext) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kRGBPaintColor)
     keyContext.pipelineDataGatherer()->writePaintColor(keyContext.paintColor());
-}
-
-void add_alpha_only_paint_color_uniform_data(const KeyContext& keyContext) {
-    BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAlphaOnlyPaintColor)
-    keyContext.pipelineDataGatherer()->writePaintColor(keyContext.paintColor());
-}
-
-} // anonymous namespace
-
-void RGBPaintColorBlock::AddBlock(const KeyContext& keyContext) {
-    add_rgb_paint_color_uniform_data(keyContext);
     keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kRGBPaintColor);
 }
 
-void AlphaOnlyPaintColorBlock::AddBlock(const KeyContext& keyContext) {
-    add_alpha_only_paint_color_uniform_data(keyContext);
-    keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kAlphaOnlyPaintColor);
+void PaintAlphaBlock::BeginBlock(const KeyContext& keyContext, bool ignoreAlpha) {
+    BuiltInCodeSnippetID snippet = ignoreAlpha ? BuiltInCodeSnippetID::kIgnorePaintAlpha
+                                               : BuiltInCodeSnippetID::kPaintAlpha;
+    // We still write the uniform so that the emitted uniforms and values are identical when
+    // not ignoring paint alpha.
+    BEGIN_WRITE_UNIFORMS(keyContext, snippet)
+    keyContext.pipelineDataGatherer()->writePaintColor(keyContext.paintColor());
+    keyContext.paintParamsKeyBuilder()->beginBlock(snippet);
 }
 
 //--------------------------------------------------------------------------------------------------

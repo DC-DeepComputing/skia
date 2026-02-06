@@ -49,15 +49,15 @@ enum class ReadSwizzle;
  * as parent-child relationships.
  */
 
+ struct PaintAlphaBlock {
+    static void BeginBlock(const KeyContext&, bool ignoreAlpha);
+ };
+
 struct SolidColorShaderBlock {
     static void AddBlock(const KeyContext&, const SkPMColor4f&);
 };
 
 struct RGBPaintColorBlock {
-    static void AddBlock(const KeyContext&);
-};
-
-struct AlphaOnlyPaintColorBlock {
     static void AddBlock(const KeyContext&);
 };
 

@@ -137,20 +137,14 @@ void PaintOption::handlePaintAlpha(const KeyContext& keyContext) const {
         return;
     }
 
-    if (!fOpaquePaintColor) {
-        Blend(keyContext,
-              /* addBlendToKey= */ [&] () -> void {
-                  AddFixedBlendMode(keyContext, SkBlendMode::kSrcIn);
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->handlePrimitiveColor(keyContext);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  AlphaOnlyPaintColorBlock::AddBlock(keyContext);
-              });
-    } else {
-        this->handlePrimitiveColor(keyContext);
-    }
+    const bool includePaintAlpha =
+            !fOpaquePaintColor ||
+            fRendererCoverage != Coverage::kNone ||
+            fFinalBlender.first; // FIXME how to check src given combinatorics?
+
+    PaintAlphaBlock::BeginBlock(keyContext, /*ignoreAlpha=*/!includePaintAlpha);
+    this->handlePrimitiveColor(keyContext);
+    keyContext.paintParamsKeyBuilder()->endBlock();
 }
 
 void PaintOption::handleColorFilter(const KeyContext& keyContext) const {

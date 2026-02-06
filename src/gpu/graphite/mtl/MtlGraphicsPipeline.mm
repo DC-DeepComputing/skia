@@ -324,8 +324,16 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     auto fsLibrary = MtlCompileShaderLibrary(
             sharedContext, shaderInfo->fsLabel(), fsMSL.fText, errorHandler);
 
+    const bool needsDepthWrite = !paintID.isValid() ||
+            (BlendShouldDisable(shaderInfo->blendInfo().fEquation,
+                                shaderInfo->blendInfo().fSrcBlend,
+                                shaderInfo->blendInfo().fDstBlend) &&
+             shaderInfo->dstReadStrategy() == DstReadStrategy::kNoneRequired);
+    DepthStencilSettings depthSettings = step->depthStencilSettings();
+    depthSettings.fDepthWriteEnabled &= needsDepthWrite;
+
     sk_cfp<id<MTLDepthStencilState>> dss =
-            sharedContext->getCompatibleDepthStencilState(step->depthStencilSettings());
+            sharedContext->getCompatibleDepthStencilState(depthSettings);
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
                                pipelineKey.hash(), compilationID };
@@ -344,7 +352,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                step->appendAttributes(),
                {fsLibrary.get(), "fragmentMain"},
                std::move(dss),
-               step->depthStencilSettings().fStencilReferenceValue,
+               depthSettings.fStencilReferenceValue,
                blendInfo,
                renderPassDesc);
 }

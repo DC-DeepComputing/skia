@@ -456,7 +456,14 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     descriptor.fragment = &fragment;
 
     // Depth stencil state
-    const auto& depthStencilSettings = step->depthStencilSettings();
+    const bool needsDepthWrite = !hasFragmentSkSL ||
+            (BlendShouldDisable(shaderInfo->blendInfo().fEquation,
+                                shaderInfo->blendInfo().fSrcBlend,
+                                shaderInfo->blendInfo().fDstBlend) &&
+             shaderInfo->dstReadStrategy() == DstReadStrategy::kNoneRequired);
+    DepthStencilSettings depthStencilSettings = step->depthStencilSettings();
+    depthStencilSettings.fDepthWriteEnabled &= needsDepthWrite;
+
     SkASSERT(depthStencilSettings.fDepthTestEnabled ||
              depthStencilSettings.fDepthCompareOp == CompareOp::kAlways);
     TextureFormat dsFormat = renderPassDesc.fDepthStencilAttachment.fFormat;

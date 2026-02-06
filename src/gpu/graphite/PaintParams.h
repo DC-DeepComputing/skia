@@ -89,6 +89,9 @@ public:
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
+    // Creates a new PaintParams that is opaque and won't depend on the dst
+    static PaintParams MakeOpaque(const PaintParams& paint);
+
 private:
     PaintParams(const SkPaint&,
                 const SimpleImage* imageOverride,
@@ -133,6 +136,8 @@ public:
     using Result = std::tuple<UniquePaintParamsID, SkEnumBitMask<DstUsage>>;
     std::optional<Result> toKey(const KeyContext&) const;
 
+    UniquePaintParamsID optimizeForOpacity(const KeyContext&, UniquePaintParamsID origPaint) const;
+
 private:
     bool addPaintColorToKey(const KeyContext&) const;
     bool handlePrimitiveColor(const KeyContext&) const;
@@ -152,6 +157,7 @@ private:
     // Used for asserts
     SkDEBUGCODE(const SkEnumBitMask<DstUsage> fDstUsageNoCoverage;)
     SkDEBUGCODE(const Coverage fRendererCoverage;)
+    SkDEBUGCODE(const TextureFormat fTargetFormat;)
 };
 
 } // namespace skgpu::graphite

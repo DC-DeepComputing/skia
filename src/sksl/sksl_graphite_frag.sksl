@@ -36,6 +36,14 @@ $pure half4 sk_alpha_only(float4 colorParam) {
     return half4(0.0, 0.0, 0.0, colorParam.a);
 }
 
+$pure half4 sk_mul_paint_alpha(float4 paintColor, half4 childColor) {
+    return childColor * half(paintColor.a);
+}
+
+$pure half4 sk_ignore_paint_alpha(float4 paintColor, half4 childColor) {
+    return childColor;
+}
+
 $pure float3 $apply_srgb_xfer_fn(float3 x, float4 gabc, float3 def) {
     return mix(pow(gabc[1] * x + gabc[2], float3(gabc[0])) + def[1],
                (gabc[3] * x) + def[2],

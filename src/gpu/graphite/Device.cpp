@@ -335,8 +335,10 @@ public:
 
     ~ScopedDrawBuilder() {
         SkASSERT(fKeyAndDataBuilder && fRecorder);
-        // The PipelineDataGatherer must be reset before being returned to the pool for reuse.
+        // The PipelineDataGatherer and builder must be reset before being returned to the pool for
+        // reuse.
         this->gatherer()->resetForDraw();
+        this->builder()->resetForDraw();
         fRecorder->priv().pushKeyAndDataBuilder(std::move(fKeyAndDataBuilder));
     }
 
@@ -1809,9 +1811,11 @@ void Device::drawGeometry(const Transform& localToDevice,
                 // The regular draw has analytic coverage, so isn't being sorted front to back, but
                 // we do want to sort the inner fill to maximize overdraw reduction
                 orderWithoutCoverage.reverseDepthAsStencil();
+
+                UniquePaintParamsID opaqueID = shading.optimizeForOpacity(keyContext, paintID);
                 fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                                 Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                paintID, DstUsage::kNone, scopedDrawBuilder.gatherer(), nullptr);
+                                opaqueID, DstUsage::kNone, scopedDrawBuilder.gatherer(), nullptr);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());

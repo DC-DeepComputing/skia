@@ -34,16 +34,19 @@ enum class KeyGenFlags : uint8_t {
     kDefault = 0b0,
     // By default, linear sampling can be optimized to nearest when it's visually equivalent.
     // This flag disables this behavior.
-    kDisableSamplingOptimization       = 0b001,
+    kDisableSamplingOptimization       = 0b0001,
     // By default, identity color conversions map to ColorSpaceTransformPremul as a reasonably
     // performant baseline that avoids shader combinatorics. However, in certain contexts (such as
     // image filters or runtime effects) that sample an image many times *and* perform up front
     // work to ensure there doesn't need to be any color conversion, skipping color space conversion
     // in the shader produces meaningful performance improvements.
-    kEnableIdentityColorSpaceXform     = 0b010,
+    kEnableIdentityColorSpaceXform     = 0b0010,
     // By default, alpha-only image shaders are colorized by the paint's color. In the context of
     // a runtime effect this is disabled.
-    kDisableAlphaOnlyImageColorization = 0b100,
+    kDisableAlphaOnlyImageColorization = 0b0100,
+    // By default, pipelines will assume the paint alpha may be < 1; this enables generating a
+    // distinct pipeline when the alpha is opaque.
+    kEnableOpaquePaintOptimization     = 0b1000,
 };
 SK_MAKE_BITMASK_OPS(KeyGenFlags)
 

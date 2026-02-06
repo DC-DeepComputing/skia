@@ -205,6 +205,13 @@ public:
             fRequiredFlags |= (child->requiredFlags() & ~mask);
         }
 
+        if ((fRequiredFlags & SnippetRequirementFlags::kLocalCoords) &&
+            !(snippet->fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords)) {
+            // If this node requires local coords but doesn't explicitly require it
+            // it's just passing it through to a child.
+            fRequiredFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+        }
+
         // Data should only be provided if the snippet has the kStoresSamplerDescData flag.
         SkASSERT(fData.empty() || snippet->storesSamplerDescData());
     }

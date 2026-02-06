@@ -960,6 +960,14 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         return nullptr;
     }
 
+    const bool needsDepthWrite = !hasFragmentSkSL ||
+            (BlendShouldDisable(shaderInfo->blendInfo().fEquation,
+                                shaderInfo->blendInfo().fSrcBlend,
+                                shaderInfo->blendInfo().fDstBlend) &&
+             shaderInfo->dstReadStrategy() == DstReadStrategy::kNoneRequired);
+    DepthStencilSettings depthSettings = step->depthStencilSettings();
+    depthSettings.fDepthWriteEnabled &= needsDepthWrite;
+
     // This pipeline factory is for regular pipelines that run in the main subpass. Depending on
     // if there will be a load-MSAA subpass, the index changes. Ideally with
     // VK_dynamic_rendering_local_read, we can reuse pipelines across subpasses for layer elision.
@@ -977,7 +985,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
             step->appendAttributes(),
             vertexBindingDescriptions,
             vertexAttributeDescriptions,
-            step->depthStencilSettings(),
+            depthSettings,
             shaderInfo->blendInfo(),
             renderPassDesc,
             &shadersPipeline);
@@ -1002,7 +1010,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                            std::move(immutableSamplers),
                                            step->renderStepID(),
                                            step->primitiveType(),
-                                           step->depthStencilSettings(),
+                                           depthSettings,
                                            std::move(vertexBindingDescriptions),
                                            std::move(vertexAttributeDescriptions)));
     }

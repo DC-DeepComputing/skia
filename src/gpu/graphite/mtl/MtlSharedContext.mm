@@ -71,14 +71,16 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
 
     static constexpr DepthStencilSettings kIgnoreDSS;
 
-    for (const DepthStencilSettings& dss : { kDirectDepthLessPass,
-                                             kDirectDepthLEqualPass,
-                                             kWindingStencilPass,
-                                             kEvenOddStencilPass,
-                                             kRegularCoverPass,
-                                             kInverseCoverPass,
-                                             kIgnoreDSS }) {
-        this->createCompatibleDepthStencilState(dss);
+    for (auto dss : std::initializer_list<std::pair<const DepthStencilSettings&, const char*>>{
+              { kDirectDepthLessPass,   "direct-depth-less"   },
+              { kDirectDepthLEqualPass, "direct-depth-lequal" },
+              { kWindingStencilPass,    "winding-stencil"     },
+              { kEvenOddStencilPass,    "evenodd-stencil"     },
+              { kRegularCoverPass,      "regular-cover"       },
+              { kInverseCoverPass,      "inverse-cover"       },
+              { kIgnoreDSS,             "ignore"              },
+            }) {
+        this->createCompatibleDepthStencilState(dss.first, dss.second);
     }
 }
 
@@ -175,7 +177,8 @@ sk_cfp<id<MTLDepthStencilState>> MtlSharedContext::getCompatibleDepthStencilStat
 }
 
 void MtlSharedContext::createCompatibleDepthStencilState(
-                const DepthStencilSettings& depthStencilSettings) {
+                const DepthStencilSettings& depthStencilSettings,
+                const char* label) {
 
     MTLDepthStencilDescriptor* desc = [[MTLDepthStencilDescriptor alloc] init];
     SkASSERT(depthStencilSettings.fDepthTestEnabled ||
@@ -188,11 +191,20 @@ void MtlSharedContext::createCompatibleDepthStencilState(
         desc.frontFaceStencil = stencil_face_to_mtl(depthStencilSettings.fFrontStencil);
         desc.backFaceStencil = stencil_face_to_mtl(depthStencilSettings.fBackStencil);
     }
+    desc.label = [NSString stringWithFormat:@"%@(write:%d)",
+                                            [NSString stringWithUTF8String:label], // FIXME GC?
+                                            depthStencilSettings.fDepthWriteEnabled];
 
     sk_cfp<id<MTLDepthStencilState>> dss(
             [this->device() newDepthStencilStateWithDescriptor: desc]);
 
     fDepthStencilStates.set(depthStencilSettings, std::move(dss));
+
+    if (depthStencilSettings.fDepthWriteEnabled) {
+        DepthStencilSettings writeDisabled = depthStencilSettings;
+        writeDisabled.fDepthWriteEnabled = false;
+        this->createCompatibleDepthStencilState(writeDisabled, label);
+    }
 }
 
 sk_sp<GraphicsPipeline> MtlSharedContext::createGraphicsPipeline(

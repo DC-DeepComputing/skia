@@ -197,6 +197,13 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+PaintParams PaintParams::MakeOpaque(const PaintParams& paint) {
+    PaintParams opaque = paint;
+    opaque.fFinalBlend = {nullptr, SkBlendMode::kSrc};
+    opaque.fColor = opaque.fColor.makeOpaque();
+    return opaque;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ShadingParams::ShadingParams(const Caps* caps,
@@ -213,6 +220,7 @@ ShadingParams::ShadingParams(const Caps* caps,
         , fDstUsageNoCoverage(get_dst_usage(caps, targetFormat, paint,
                                             Coverage::kNone, fClipShader, fNonMSAAClip))
         , fRendererCoverage(coverage)
+        , fTargetFormat(targetFormat)
 #endif
         {}
 
@@ -303,28 +311,23 @@ bool ShadingParams::handlePaintAlpha(const KeyContext& keyContext) const {
     if (!fPaint.shader() && !fPaint.imageShader() && !fPaint.primitiveBlender()) {
         // If there is no shader and no primitive blending the input to the colorFilter stage
         // is just the premultiplied paint color.
+        // This is the same pipeline generation regardless of kEnableOpaquePaintOptimization
         SkPMColor4f paintColor = PaintParams::Color4fPrepForDst(fPaint.color(),
                                                                 keyContext.dstColorInfo()).premul();
         SolidColorShaderBlock::AddBlock(keyContext, paintColor);
         return fPaint.color().isOpaque();
     }
 
-    if (!fPaint.color().isOpaque()) {
-        Blend(keyContext,
-              /* addBlendToKey= */ [&] () -> void {
-                  AddFixedBlendMode(keyContext, SkBlendMode::kSrcIn);
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->handlePrimitiveColor(keyContext);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  AlphaOnlyPaintColorBlock::AddBlock(keyContext);
-              });
-        // The result is guaranteed to be non-opaque because we're blending with fColor's alpha.
-        return false;
-    } else {
-        return this->handlePrimitiveColor(keyContext);
-    }
+    const bool ignorePaintAlpha =
+            fPaint.color().isOpaque();// &&
+            // fDstUsage == DstUsage::kNone &&
+            // !fPaint.finalBlender() &&
+            // fPaint.finalBlendMode() == SkBlendMode::kSrc;
+
+    PaintAlphaBlock::BeginBlock(keyContext, ignorePaintAlpha);
+    bool opaque = this->handlePrimitiveColor(keyContext);
+    keyContext.paintParamsKeyBuilder()->endBlock();
+    return fPaint.color().isOpaque() && opaque;
 }
 
 bool ShadingParams::handleColorFilter(const KeyContext& keyContext) const {
@@ -487,6 +490,67 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
     } else {
         return Result{paintID, dstUsage};
     }
+}
+
+UniquePaintParamsID ShadingParams::optimizeForOpacity(const KeyContext& keyContext,
+                                                      UniquePaintParamsID origPaint) const {
+    // The builder should be starting from the exactly the same state toKey() ended in.
+    PaintParamsKeyBuilder* builder = keyContext.paintParamsKeyBuilder();
+    SkASSERT(*builder == keyContext.recorder()->priv().shaderCodeDictionary()->lookup(origPaint));
+
+    // We only support optimizing opacity when our dst usage is none and the final blend mode can
+    // be switched to kSrc. This requires that there is no analytic clipping that adds a 3rd render
+    // node, or an SkBlender that may have child blocks. With these conditions, we can simply
+    // replace the last block ID with kSrc.
+    builder->replaceLastBlock(BuiltInCodeSnippetID::kFixedBlend_Src);
+
+    // And if there were any PaintAlpha blocks, we can optimize those instructions away
+    builder->replaceBlocks(BuiltInCodeSnippetID::kPaintAlpha,
+                           BuiltInCodeSnippetID::kIgnorePaintAlpha);
+
+    UniquePaintParamsID opaqueID =
+            keyContext.recorder()->priv().shaderCodeDictionary()->findOrCreate(builder);
+#if defined(SK_DEBUG)
+    // Validate that the modified paint ID matches what we would have reached with a ShadingParams
+    // and PaintParams adjusted to use kSrc blending and have no renderer coverage. These extracted
+    // uniforms should match what was originally extracted as well.
+    PaintParams opaquePaint = PaintParams::MakeOpaque(fPaint);
+    ShadingParams opaqueShading{keyContext.recorder()->priv().caps(),
+                                opaquePaint,
+                                /*nonMSAAClip=*/{},
+                                /*clipShader=*/nullptr,
+                                Coverage::kNone,
+                                fTargetFormat}; // FIXME can get this from the keycontext
+
+    // Create a new KeyContext that writes to a differentkey builder and pipeline data gatherer.
+    // We have to use the original FloatStorageManager since its global state impacts the other
+    // extracted uniforms, but everything will be a cache hit in the second call to toKey(), so it
+    // shouldn't change size.
+    const int fsmSize = keyContext.floatStorageManager()->size();
+
+    PaintParamsKeyBuilder opaqueBuilder{keyContext.dict()};
+    PipelineDataGatherer opaqueGatherer{keyContext.pipelineDataGatherer()->uniformManager()->layout()};
+    KeyContext opaqueContext{keyContext.recorder(),
+                             keyContext.drawContext(),
+                             keyContext.floatStorageManager(),
+                             &opaqueBuilder,
+                             &opaqueGatherer,
+                             keyContext.local2Dev(),
+                             keyContext.dstColorInfo(),
+                             keyContext.flags(),
+                             opaqueShading.fPaint.color()};
+
+    auto result = opaqueShading.toKey(opaqueContext);
+    SkASSERT(result.has_value());
+    SkASSERT(keyContext.floatStorageManager()->size() == fsmSize);
+
+    auto [actualOpaqueID, actualDstUsage] = *result;
+    SkASSERT(opaqueID == actualOpaqueID);
+    SkASSERT(actualDstUsage == DstUsage::kNone);
+    opaqueGatherer.checkEquivalent(keyContext.pipelineDataGatherer());
+#endif
+
+    return opaqueID;
 }
 
 } // namespace skgpu::graphite

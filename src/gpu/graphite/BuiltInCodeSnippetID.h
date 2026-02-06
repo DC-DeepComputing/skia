@@ -21,10 +21,14 @@ enum class BuiltInCodeSnippetID : int32_t {
     // Snippet that passes through prior stage output
     kPriorOutput,
 
+    // Paint alpha handling. These must have the same uniforms and appear only once within the
+    // first root node of a pipeline in order to generate opaque-optimized paint keys.
+    kPaintAlpha,
+    kIgnorePaintAlpha,
+
     // SkShader code snippets
     kSolidColorShader,
     kRGBPaintColor,
-    kAlphaOnlyPaintColor,
     kLinearGradientShader4,
     kLinearGradientShader8,
     kLinearGradientShaderTexture,

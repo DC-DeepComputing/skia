@@ -166,9 +166,14 @@ public:
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
+    bool operator==(const PaintParamsKey& that) const {
+        // Don't need to lock and unlock the builder because this PaintParamsKey goes out of scope.
+        return PaintParamsKey(fData) == that;
+    }
+    bool operator!=(const PaintParamsKey& that) const { return !(*this == that); }
+
     void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<int32_t>(id)); }
     void beginBlock(int32_t codeSnippetID) {
-        SkASSERT(!fLocked);
         SkDEBUGCODE(this->pushStack(codeSnippetID);)
         fData.push_back(codeSnippetID);
     }
@@ -213,6 +218,38 @@ public:
         }
     }
 
+    // Reset to an empty key
+    void resetForDraw() {
+        SkASSERT(!fLocked);
+        fData.clear();
+        fHasError = false;
+
+        // SkDEBUGCODE(fLocked = false;)
+        SkDEBUGCODE(fStack.clear();)
+        SkDEBUGCODE(this->checkReset();)
+    }
+
+    void replaceLastBlock(BuiltInCodeSnippetID newID) {
+        // Since a valid replacement requires no children and no data for both the old and new ID,
+        // replacing the last index value is sufficient.
+        int index = fData.size() - 1;
+        SkASSERT(index >= 0);
+        SkDEBUGCODE(this->validateReplacement(fData[index], (int32_t) newID);)
+        fData[index] = static_cast<uint32_t>(newID);
+    }
+    void replaceBlocks(BuiltInCodeSnippetID oldID, BuiltInCodeSnippetID newID) {
+        SkDEBUGCODE(this->validateReplacement((int32_t) oldID, (int32_t) newID);)
+        for (int i = 0; i < fData.size(); ++i) {
+            // FIXME what happens if embedded data is equal to OLDID?
+            // we don't want to. Might need to use the shader code dictionary to skip data,
+            // or is there another way we can encode the data length block to signal that N follow
+            // it should be skipped? -> should be possible since no other code ID will be negative.
+            if (fData[i] == static_cast<uint32_t>(oldID)) {
+                fData[i] = static_cast<uint32_t>(newID);
+            }
+        }
+    }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
@@ -230,15 +267,10 @@ private:
     // Invalidates any PaintParamsKey returned by lockAsKey() unless it has been cloned.
     void unlock() {
         SkASSERT(fLocked);
-        fData.clear();
-        fHasError = false;
-
         SkDEBUGCODE(fLocked = false;)
-        SkDEBUGCODE(fStack.clear();)
-        SkDEBUGCODE(this->checkReset();)
     }
 
-    // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
+    // The data array uses clear() on reset so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
     bool fHasError = false; // if true, fData may not encode a valid/complete ShaderNode tree.
@@ -247,6 +279,7 @@ private:
 #ifdef SK_DEBUG
     void pushStack(int32_t codeSnippetID);
     void validateData(size_t dataSize);
+    void validateReplacement(int32_t oldCodeSnippetID, int32_t newCodeSnippetID);
     void popStack();
 
     // Information about the current block being written
