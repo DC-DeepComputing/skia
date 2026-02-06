@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd2b01d8_c0eeba10",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2536,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-06T16:05:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51af65fc_7e1d63fe",
+      "range": {
+        "startLine": 2536,
+        "startChar": 0,
+        "endLine": 2536,
+        "endChar": 0
+      },
+      "revId": "b8a8c75423efc476ee53083df5293f53de02f89d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5856b5aa_b584c26d",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-06T16:03:09Z",
       "side": 1,
       "message": "This looks like a typo. `GrColorType` does not seem to have a `kRed_F16` member. Did you mean `kR_F16`? Other parts of this file use `kR_F16`.",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1069,
+        "endChar": 0
+      },
+      "revId": "b8a8c75423efc476ee53083df5293f53de02f89d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27fa0a73_463a473b",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-06T16:05:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5856b5aa_b584c26d",
       "range": {
         "startLine": 1069,
         "startChar": 0,
