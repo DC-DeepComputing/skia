@@ -32,8 +32,8 @@ namespace skgpu::graphite {
     };
 
     enum class BindingListType {
-        kChained,
         kSingle,
+        kStencil,
     };
 
     struct LayerKey {
@@ -68,22 +68,15 @@ namespace skgpu::graphite {
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(SingleDraw);
     };
 
-    struct ChainedDraw {
-        ChainedDraw(const LayerKey& key, const RenderStep* step, const DrawParams* drawParams,
-                    const UniformDataCache::Index uniformIndex)
-                : fKey(key)
-                , fStep(step)
-                , fDrawParams(drawParams)
-                , fChildDraw(nullptr)
-                , fUniformIndex(uniformIndex) {}
+    struct StencilDraws {
+        StencilDraws(const LayerKey& key, const RenderStep* step)
+        : fDraws()
+        , fKey(key)
+        , fStep(step) {}
 
-        const LayerKey    fKey;
+        skia_private::TArray<SingleDraw*> fDraws;
+        const LayerKey fKey;
         const RenderStep* fStep;
-        const DrawParams* fDrawParams;
-        ChainedDraw*     fChildDraw;
-        const UniformDataCache::Index fUniformIndex;
-
-        SK_DECLARE_INTERNAL_LLIST_INTERFACE(ChainedDraw);
     };
 
     struct DepthDraw {
@@ -102,20 +95,22 @@ namespace skgpu::graphite {
 
     struct BindingWrapper {
         BindingWrapper(BindingListType type) : fType(type) {}
-
         const BindingListType fType;
-        LayerKey fKey;        // Duplicated for chained, but saves static casting otherwise?
-        RenderStep* fStep;    // ``
         Rect fBounds = Rect::InfiniteInverted();
-
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingWrapper);
     };
 
-    template <typename T>
-    struct BindingList : public BindingWrapper {
-        using DrawType = T;
-        SkTInternalLList<T> fDraws;
-        BindingList(BindingListType type) : BindingWrapper(type) {}
+    struct SingleDrawList : public BindingWrapper {
+        SingleDrawList(BindingListType type) : BindingWrapper(type) {}
+        SkTInternalLList<SingleDraw> fDraws;
+        LayerKey fKey;
+        RenderStep* fStep;
+    };
+
+    struct StencilDrawList : public BindingWrapper {
+        StencilDrawList(BindingListType type) : BindingWrapper(type) {}
+        //TODO (thomsmit): maxRenderSteps
+        std::array<StencilDraws*, /*kMaxRenderSteps*/4> fStencilDraws;
     };
 
     struct DepthDrawInfo {
@@ -125,13 +120,14 @@ namespace skgpu::graphite {
     };
 
     struct Layer {
-        DepthDrawInfo* fDepthInfo = nullptr;
+        DepthDrawInfo*  fDepthInfo = nullptr;
         BindingWrapper* fLastMatch = nullptr;
+        LayerKey*       fLastKey   = nullptr; // Scuffed? yes!
 
         SkTInternalLList<BindingWrapper> fBindings;
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
-        BindingWrapper* searchBinding(const LayerKey& key);
+        BindingWrapper* searchBinding(const LayerKey& key, bool disjointStencil);
 
         BoundsTest test(const Rect& drawBounds, const LayerKey& key, bool disjointStencil);
         BoundsTest depthOnlyTest(const Rect& drawBounds, const LayerKey& key, bool disjointStencil);
@@ -139,33 +135,15 @@ namespace skgpu::graphite {
         void addDepthOnlyDraw(SkArenaAllocWithReset* alloc, DepthDraw* deferredDraw,
                               bool disjointStencil);
 
-        template<typename T> SK_ALWAYS_INLINE
-        void add(SkArenaAllocWithReset* alloc, BindingWrapper* match, const LayerKey& key, T* draw,
-                 const RenderStep* step, bool dependsOnDst) {
-            if (match) {
-                //printf("match\n");
-                auto* typedMatch = static_cast<BindingList<T>*>(match);
-                if (!dependsOnDst) {
-                    typedMatch->fDraws.addToHead(draw);
-                } else {
-                    typedMatch->fDraws.addToTail(draw);
-                }
-                typedMatch->fBounds.join(draw->fDrawParams->drawBounds());
-            } else {
-                //printf("no match %u %u %u\n", key.fPipelineIndex, key.fTextureIndex, key.fUniformIndex);
-                bool isSingle = std::is_same_v<T, SingleDraw>;
-                BindingListType type = isSingle ? BindingListType::kSingle
-                                                : BindingListType::kChained;
-                BindingList<T>* list = alloc->make<BindingList<T>>(type);
-                list->fKey = key;
-                if (isSingle) {
-                    list->fStep = const_cast<RenderStep*>(step); //TODO
-                }
-                list->fBounds = draw->fDrawParams->drawBounds();
-                list->fDraws.addToHead(draw);
-                fBindings.addToTail(list);
-            }
-        }
+
+        void add(SkArenaAllocWithReset* alloc,
+                 BindingWrapper*& match,
+                 const LayerKey& key,
+                 SingleDraw* draw,
+                 const RenderStep* step,
+                 bool dependsOnDst,
+                 bool disjointStencil,
+                 int stepIndex);
     };
 } // namespace skgpu::graphite
 

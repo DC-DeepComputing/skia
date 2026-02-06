@@ -117,8 +117,9 @@ private:
     SkTInternalLList<Layer> fLayers;
 
     int fDrawCount = 0;
-    ChainedDraw* fLastRecordedDraw = nullptr;
     Layer* fParentDepthLayer = nullptr;
+    Layer* fStencilLayer = nullptr;
+    BindingWrapper* fStencilWrapper = nullptr;
 
     uint32_t fPipelineChanges = 0;
     uint32_t fStencilLists = 0;
