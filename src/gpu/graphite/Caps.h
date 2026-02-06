@@ -169,6 +169,8 @@ public:
         return fAvoidMSAA || fMaxInternalSampleCount == SampleCount::k1;
     }
 
+    bool useDrawListLayer() const { return fDrawListLayer; }
+
     /**
      * Returns the maximum number of varyings allowed in a render pipeline. Note that this is the
      * number of varying variables, not the total number of varying scalars.
@@ -511,6 +513,7 @@ protected:
     bool fMSAARenderToSingleSampledSupport = false;
     bool fDifferentResolveAttachmentSizeSupport = false;
     bool fAvoidMSAA = false;
+    bool fDrawListLayer = false;
 
     bool fComputeSupport = false;
     bool fSupportsAHardwareBufferImages = false;
