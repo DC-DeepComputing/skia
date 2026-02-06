@@ -22,11 +22,13 @@ public:
     MtlQueueManager(sk_cfp<id<MTLCommandQueue>> queue, const SharedContext*);
     ~MtlQueueManager() override {}
 
+protected:
+    OutstandingSubmission onSubmitToGpu(const SubmitInfo&) override;
+
 private:
     const MtlSharedContext* mtlSharedContext() const;
 
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) override;
-    OutstandingSubmission onSubmitToGpu(const SubmitInfo&) override;
 
 #if defined(GPU_TEST_UTILS)
     void startCapture() override;

@@ -242,7 +242,7 @@ sk_sp<SkSurface> RenderTarget(Recorder* recorder,
 }
 
 sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
-                                    const BackendTexture& backendTex,
+                                    const BackendTexture& inBackendTex,
                                     SkColorType ct,
                                     sk_sp<SkColorSpace> cs,
                                     const SkSurfaceProps* props,
@@ -255,13 +255,20 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
         return nullptr;
     }
 
+    const BackendTexture* backendTex = &inBackendTex;
+    std::optional<BackendTexture> optBETex =
+        recorder->priv().convertBackendTextureIfNeeded(inBackendTex);
+    if (optBETex) {
+        backendTex = &optBETex.value();
+    }
+
     const Caps* caps = recorder->priv().caps();
 
     SkColorInfo info(ct, kPremul_SkAlphaType, std::move(cs));
 
-    if (!validate_backend_texture(caps, backendTex, info)) {
+    if (!validate_backend_texture(caps, *backendTex, info)) {
         SKGPU_LOG_E("validate_backend_texture failed: backendTex.info = %s; colorType = %d",
-                    backendTex.info().toString().c_str(),
+                    backendTex->info().toString().c_str(),
                     info.colorType());
         return nullptr;
     }
@@ -271,7 +278,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     }
 
     sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+            recorder->priv().resourceProvider()->createWrappedTexture(*backendTex, label);
     if (!texture) {
         return nullptr;
     }
