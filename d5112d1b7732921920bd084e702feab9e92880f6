@@ -141,6 +141,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37979909_9fe4c4fc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T20:52:38Z",
+      "side": 1,
+      "message": "I missed this before, but we can skip this query for the layering approach as well (this is also a perf hotspot).",
+      "range": {
+        "startLine": 1761,
+        "startChar": 0,
+        "endLine": 1765,
+        "endChar": 5
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef44910_7b7a85ca",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1823,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T20:52:38Z",
+      "side": 1,
+      "message": "Here, `targetLayer` represents the stop layer determined by the clip stack. This first call to recordDraw() can then be a fast direct append into that layer. Since we push it into the layer lists, when we call `recordDraw` a second time below for the regular dependsOnDst draw, it will automatically go in a later layer (either hitting a different draw later in the layer list, or intersecting the just recorded draw\u0027s bounds.",
+      "range": {
+        "startLine": 1812,
+        "startChar": 0,
+        "endLine": 1823,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb625c5f_ee92392a",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 37
@@ -176,6 +222,30 @@
       "side": 1,
       "message": "I think this would require refactoring recordDraw to expose a drawBounds only path?",
       "parentUuid": "fb625c5f_ee92392a",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fefb746_cd16b0c8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T20:52:38Z",
+      "side": 1,
+      "message": "We should be able to just do\n\n```\nif (!fRecorder-\u003epriv().caps()-\u003euseDrawListLayer()) {\n    fColorDepthBoundsManager-\u003erecordDraw(clip.drawBounds(), order.paintOrder());\n}\n```\n\nNone of the layer finding logic or the clip stack logic for the layer mode actually needs to read the `paintOrder()` value so it can remain the default value.",
+      "parentUuid": "d451a7e5_70d2996b",
       "range": {
         "startLine": 1835,
         "startChar": 0,
@@ -292,6 +362,30 @@
       "side": 1,
       "message": "This is effectively the \"no chained\" setup I had here:\nhttps://skia-review.googlesource.com/c/skia/+/1153336\n\nThe performance was middling (see sheet \"comparison\", collumn \"No Chain\"), I suspect because it introduces additional Layers:\nhttps://docs.google.com/spreadsheets/d/1cHC_yPNJIvjyYyMfHHNs7D_sDNLkEIAYKd0VEI-u-D4/edit?usp\u003dsharing\n\nI will rebase that patch and try it after more fixes here.",
       "parentUuid": "018b3ed5_07833b4d",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c41a9f1_092e6b12",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-06T20:52:38Z",
+      "side": 1,
+      "message": "Since the perf numbers that have been collected still was doing all the same bounds manager logic as the sorting system, we weren\u0027t removing any much work to compensate for the added work in recordDraw.\n\nWe can keep the ChainedDraw for now, but I do think it has a perf/correctness issue right now by causing us to iterate over the draws multiple times. The no chained setup will also automatically handle the transposed order to minimize pipeline switches, but that can also be accounted for in how the chained draws are iterated over.",
+      "parentUuid": "f7ada620_5a95692a",
       "range": {
         "startLine": 111,
         "startChar": 0,
