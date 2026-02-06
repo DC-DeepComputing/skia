@@ -16,6 +16,24 @@
       "message": "BTW, is there a Skia bug filed for this? I\u0027m also in a situation where I would like to avoid double copying if possible, as I want to feed a font into PDFium and PDFium is going to copy anyway.",
       "revId": "6a270b7dbcedfdcb1c5149289f761964d042aac4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bece8726_096a762c",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-02-06T09:06:03Z",
+      "side": 1,
+      "message": "I am not aware of one and I placed the TODO here after discussions with Ben about APIs for conversions between `SkStreamAsset` and `SkData`. Over time, `SkData` has gained more useful constructors to convert other forms of contiguous data into `SkData` without copying, but none for `SkStreamAsset` subclasses yet that lend themselves well to zero-copy conversions. \n\nI now filed b/482060888 to track this.",
+      "parentUuid": "0754b8c3_cec29d21",
+      "revId": "6a270b7dbcedfdcb1c5149289f761964d042aac4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
