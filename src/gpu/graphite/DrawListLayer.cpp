@@ -37,11 +37,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
     // Child stencils get a fast path to their parent
     if (isStencil) {
         if (stepIndex > 0) {
-            ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-            SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
-            fLastRecordedDraw->fChildDraw = draw;
-            fLastRecordedDraw = draw;
+            SkASSERT(fStencilLayer);
+            SkASSERT(fStencilList);
+            SkASSERT(fStencilWrapper);
+            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
+            fStencilLayer->addStencil(&fStorage, fStencilWrapper, key, draw, step, &fStencilList);
             return;
+        } else {
+            fStencilList = nullptr;
         }
     }
 
@@ -51,11 +54,8 @@ void DrawListLayer::recordBackwards(int stepIndex,
 
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     Layer* current;
-    if (!isStencil && !dependsOnDst) {
-        targetLayer = fLayers.head();
-        if (targetLayer) {
-            targetMatch = targetLayer->searchBinding(key);
-        }
+    if (!isStencil && !dependsOnDst && fLayers.head() && fLayers.head() != stopLayer) {
+        targetMatch = fLayers.head()->searchBinding(key, isStencil);
         current = const_cast<Layer*>(stopLayer);
     } else {
         current = iter.init(fLayers, SkTInternalLList<Layer>::Iter::kTail_IterStart);
@@ -67,7 +67,9 @@ void DrawListLayer::recordBackwards(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
-        BoundsTest result = current->test(drawParams->drawBounds(), key, isStencil);
+        BoundsTest result = isStencil
+                            ? current->test<true>(drawParams->drawBounds(), key)
+                            : current->test<false>(drawParams->drawBounds(), key);
 
         if (result == BoundsTest::kIncompatibleOverlap) {
             // If we need to read the dst, we cannot go earlier than this layer.
@@ -76,7 +78,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
                     targetLayer = current->fNext;
 
                     // We found our target layer, grab the binding if it exists
-                    targetMatch = targetLayer->searchBinding(key);
+                    targetMatch = targetLayer->searchBinding(key, isStencil);
                     break;
                 } else {
                     // TODO (thomsmit): Test performance of forward merging
@@ -90,7 +92,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
 
             // If it was compatible, we expect a match. If disjoint, match is nullptr.
             if (result == BoundsTest::kCompatibleOverlap) {
-                targetMatch = current->searchBinding(key);
+                targetMatch = current->searchBinding(key, isStencil);
                 break;
             }
             // If Disjoint, we can theoretically stay here, but we keep searching backwards
@@ -105,27 +107,26 @@ void DrawListLayer::recordBackwards(int stepIndex,
         targetLayer = fStorage.make<Layer>();
         fLayers.addToTail(targetLayer);
     }
-    SkASSERT(targetLayer);
 
+    SkASSERT(targetLayer);
+    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
     if (isStencil) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        targetLayer->add(&fStorage, targetMatch, key, draw, step, dependsOnDst);
-        fLastRecordedDraw = draw;
+        targetLayer->addStencil(&fStorage, targetMatch, key, draw, step, &fStencilList);
+        fStencilLayer = targetLayer;
+        fStencilWrapper = targetMatch;
     } else {
-        SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
         targetLayer->add(&fStorage, targetMatch, key, draw, step, dependsOnDst);
     }
 }
 
-void DrawListLayer::recordDepthOnly(
-        int stepIndex,
-        bool isStencil,
-        bool dependsOnDst,
-        const RenderStep* step,
-        const UniformDataCache::Index& uniformIndex,
-        const LayerKey& key,
-        const DrawParams* drawParams,
-        Layer** captureLayer) {
+void DrawListLayer::recordDepthOnly(int stepIndex,
+                                    bool isStencil,
+                                    bool dependsOnDst,
+                                    const RenderStep* step,
+                                    const UniformDataCache::Index& uniformIndex,
+                                    const LayerKey& key,
+                                    const DrawParams* drawParams,
+                                    Layer** captureLayer) {
     if (stepIndex > 0) {
         SkASSERT(fParentDepthLayer);
         DepthDraw* deferredDraw = fStorage.make<DepthDraw>(key, step, drawParams, uniformIndex);
@@ -142,7 +143,9 @@ void DrawListLayer::recordDepthOnly(
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
-        BoundsTest result = current->depthOnlyTest(drawParams->drawBounds(), key, isStencil);
+        BoundsTest result = isStencil
+                            ? current->test<true>(drawParams->drawBounds(), key)
+                            : current->test<false>(drawParams->drawBounds(), key);
         if (*captureLayer == current) {
             shouldOverwriteLayer = false;
         }
@@ -197,12 +200,17 @@ void DrawListLayer::recordClipped(int stepIndex,
                                   const DrawParams* drawParams,
                                   Layer** startLayer) {
     // Child stencils get a fast path to their parent
-    if (isStencil && stepIndex > 0) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
-        fLastRecordedDraw->fChildDraw = draw;
-        fLastRecordedDraw = draw;
-        return;
+    if (isStencil) {
+        if (stepIndex > 0) {
+            SkASSERT(fStencilLayer);
+            SkASSERT(fStencilList);
+            SkASSERT(fStencilWrapper);
+            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
+            fStencilLayer->addStencil(&fStorage, fStencilWrapper, key, draw, step, &fStencilList);
+            return;
+        } else {
+            fStencilList = nullptr;
+        }
     }
 
     Layer* current = *startLayer;
@@ -214,10 +222,12 @@ void DrawListLayer::recordClipped(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fNext);
 #endif
-        BoundsTest result = current->test(drawParams->drawBounds(), key, isStencil);
+        BoundsTest result = isStencil
+                            ? current->test<true>(drawParams->drawBounds(), key)
+                            : current->test<false>(drawParams->drawBounds(), key);
         if (result != BoundsTest::kIncompatibleOverlap) {
             targetLayer = current;
-            targetMatch = current->searchBinding(key);
+            targetMatch = current->searchBinding(key, isStencil);
             break;
         }
         current = current->fNext;
@@ -230,15 +240,15 @@ void DrawListLayer::recordClipped(int stepIndex,
     }
 
     SkASSERT(targetLayer);
+    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
     if (isStencil) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        targetLayer->add(&fStorage, targetMatch, key, draw, step, dependsOnDst);
-        fLastRecordedDraw = draw;
+        targetLayer->addStencil(&fStorage, targetMatch, key, draw, step, &fStencilList);
+        fStencilLayer = targetLayer;
+        fStencilWrapper = targetMatch;
     } else {
-        SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
         targetLayer->add(&fStorage, targetMatch, key, draw, step, dependsOnDst);
     }
-    *startLayer = targetLayer; //->fNext is strictly necessary for correctness. Currently does not break anything
+    *startLayer = targetLayer;
 }
 
 // Layer has dual purpose here:
@@ -276,8 +286,11 @@ void DrawListLayer::recordDraw(const Renderer* renderer,
     // render steps. We should test whether it is faster for each step to hold a copy of the params
     // except in the case of clipped draws (which must share a copy because they are mutated later).
     DrawParams* drawParams = fStorage.make<DrawParams>(this->deduplicateTransform(localToDevice),
-                                                       geometry, clip, ordering, stroke, barrierBeforeDraws);
-
+                                                       geometry,
+                                                       clip,
+                                                       ordering,
+                                                       stroke,
+                                                       barrierBeforeDraws);
 
     fRenderStepCount += renderer->numRenderSteps();
     for (int stepIndex = 0; stepIndex < renderer->numRenderSteps(); ++stepIndex) {
@@ -312,36 +325,24 @@ void DrawListLayer::recordDraw(const Renderer* renderer,
                                   captureLayer);
             *captureParams = drawParams;
         } else {
-            if (captureLayer) {
-                // Note it is possible to have a nullptr at this point.
-                if (!dependsOnDst) {
-                    this->recordClipped(stepIndex,
-                                        isStencil,
-                                        false,
-                                        step,
-                                        uniformIndex,
-                                        LayerKey{pipelineIndex, textureBindingIndex},
-                                        drawParams,
-                                        captureLayer);
-                } else {
-                    this->recordBackwards(stepIndex,
+            if (captureLayer && !dependsOnDst) {
+                this->recordClipped(stepIndex,
+                                    isStencil,
+                                    false,
+                                    step,
+                                    uniformIndex,
+                                    LayerKey{pipelineIndex, textureBindingIndex},
+                                    drawParams,
+                                    captureLayer);
+            } else {
+                this->recordBackwards(stepIndex,
                                           isStencil,
                                           dependsOnDst,
                                           step,
                                           uniformIndex,
                                           LayerKey{pipelineIndex, textureBindingIndex},
                                           drawParams,
-                                          *captureLayer);
-                }
-            } else {
-                this->recordBackwards(stepIndex,
-                                      isStencil,
-                                      dependsOnDst,
-                                      step,
-                                      uniformIndex,
-                                      LayerKey{pipelineIndex, textureBindingIndex},
-                                      drawParams,
-                                      nullptr);
+                                          captureLayer ? *captureLayer : nullptr);
             }
         }
         gatherer->rewindForRenderStep();
@@ -364,7 +365,8 @@ void DrawListLayer::recordDraw(const Renderer* renderer,
 #endif
 
     auto endRecordDraw = std::chrono::high_resolution_clock::now();
-    fTotalRecordDrawTime += std::chrono::duration<double, std::milli>(endRecordDraw - startRecordDraw).count();
+    fTotalRecordDrawTime +=
+            std::chrono::duration<double, std::milli>(endRecordDraw - startRecordDraw).count();
 }
 
 std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
@@ -422,7 +424,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         }
 
         bool uniformBindingChange =
-                    uniformTracker.writeUniforms(fUniformDataCache, bufferMgr, uniformIndex);
+                uniformTracker.writeUniforms(fUniformDataCache, bufferMgr, uniformIndex);
 
         drawPass->fPipelineDrawAreas[key.fPipelineIndex] += drawParams.drawBounds().area();
 
@@ -472,6 +474,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     for (Layer* layer : fLayers) {
         if (layer->fDepthInfo) {
+            fDepthLists++;
             const DepthDraw* current = layer->fDepthInfo->fDraws.head();
             while (current) {
                 if (!recordDraw(current->fKey,
@@ -481,18 +484,22 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 false)) {
                     return nullptr;
                 }
+                fDepthDraws++;
                 current = current->fNext;
             }
         }
 
         for (const BindingWrapper* binding : layer->fBindings) {
             if (binding->fType == BindingListType::kSingle) {
-                const auto* singleList = static_cast<const BindingList<SingleDraw>*>(binding);
+                const auto* singleList = static_cast<const SingleDrawList*>(binding);
                 SkASSERT(!singleList->fDraws.isEmpty());
+
                 const SingleDraw* current = singleList->fDraws.head();
-                if (!recordDraw(binding->fKey,
+
+                // First draw in the list initiates the pipeline bind (last arg = false)
+                if (!recordDraw(singleList->fKey,
                                 current->fUniformIndex,
-                                binding->fStep,
+                                singleList->fStep,
                                 *current->fDrawParams,
                                 false)) {
                     return nullptr;
@@ -500,9 +507,10 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
                 current = current->fNext;
                 while (current) {
-                    if (!recordDraw(binding->fKey,
+                    // Subsequent draws are merged/instanced (last arg = true)
+                    if (!recordDraw(singleList->fKey,
                                     current->fUniformIndex,
-                                    binding->fStep,
+                                    singleList->fStep,
                                     *current->fDrawParams,
                                     true)) {
                         return nullptr;
@@ -511,19 +519,31 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                 }
             } else {
                 fStencilLists++;
-                // TODO Test the performance of transposed traversal of stencil draws!
-                const auto* chainedList = static_cast<const BindingList<ChainedDraw>*>(binding);
-                for (const ChainedDraw* headDraw : chainedList->fDraws) {
-                    const ChainedDraw* current = headDraw;
-                    while (current) {
-                        if (!recordDraw(current->fKey,
+                const auto* stencilList = static_cast<const StencilDrawList*>(binding);
+                for (const StencilDraws* sd : stencilList->fStencilDraws) {
+                    if (!sd || sd->fDraws.isEmpty()) {
+                        continue;
+                    }
+
+                    const SingleDraw* first = sd->fDraws.head();
+                    if (!recordDraw(sd->fKey,
+                                    first->fUniformIndex,
+                                    sd->fStep,
+                                    *first->fDrawParams,
+                                    false)) {
+                        return nullptr;
+                    }
+                    fStencilDraws++;
+
+                    for (const SingleDraw* current = first->fNext; current;
+                         current = current->fNext) {
+                        if (!recordDraw(sd->fKey,
                                         current->fUniformIndex,
-                                        current->fStep,
+                                        sd->fStep,
                                         *current->fDrawParams,
-                                        false)) {
+                                        true)) {
                             return nullptr;
                         }
-                        current = current->fChildDraw;
                         fStencilDraws++;
                     }
                 }
@@ -544,7 +564,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     this->reset(LoadOp::kLoad);
 
     auto endSnapPass = std::chrono::high_resolution_clock::now();
-    fTotalSnapDrawPassTime += std::chrono::duration<double, std::milli>(endSnapPass - startSnapPass).count();
+    fTotalSnapDrawPassTime +=
+            std::chrono::duration<double, std::milli>(endSnapPass - startSnapPass).count();
 
     return drawPass;
 }

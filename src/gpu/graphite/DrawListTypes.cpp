@@ -9,52 +9,39 @@
 
 namespace skgpu::graphite {
 
-// TODO (thomsmit) Test bounded fine grain intersection checking performance
-BindingWrapper* Layer::searchBinding(const LayerKey& key) {
-    if (fLastMatch && fLastMatch->fKey == key) {
+namespace {}
+
+BindingWrapper* Layer::searchBinding(const LayerKey& key, bool disjointStencil) {
+    if (fLastMatch && *fLastKey == key) {
         return fLastMatch;
     }
 
+    auto updateMatch = [&](BindingWrapper* list, const LayerKey* foundKey) {
+        fLastMatch = list;
+        fLastKey = const_cast<LayerKey*>(foundKey);
+        return list;
+    };
+
     for (BindingWrapper* list : fBindings) {
-        if (list->fKey == key) {
-            fLastMatch = list;
-            return list;
+        if (disjointStencil) {
+            if (list->fType == BindingListType::kStencil) {
+                StencilDrawList* stencil = static_cast<StencilDrawList*>(list);
+                for (StencilDraws* s = stencil->fStencilDraws.head(); s; s = s->fNext) {
+                    if (s->fKey == key) {
+                        return updateMatch(list, &s->fKey);
+                    }
+                }
+            }
+        } else {
+            if (list->fType == BindingListType::kSingle) {
+                SingleDrawList* single = static_cast<SingleDrawList*>(list);
+                if (single->fKey == key) {
+                    return updateMatch(list, &single->fKey);
+                }
+            }
         }
     }
     return nullptr;
-}
-
-BoundsTest Layer::test(const Rect& drawBounds, const LayerKey& key, bool disjointStencil) {
-    if (!disjointStencil && fBindings.head() &&
-        fBindings.head() == fBindings.tail() && fBindings.head()->fKey == key) {
-        fLastMatch = fBindings.head();
-        return BoundsTest::kCompatibleOverlap;
-    }
-
-    // If this is a stencil, then we must check if the deferred draws are stencil, and if so, check
-    // the bounds as well.
-    if (disjointStencil && fDepthInfo && fDepthInfo->fIsStencil) {
-        if (fDepthInfo->fBounds.intersects(drawBounds)) {
-            return BoundsTest::kIncompatibleOverlap;
-        }
-    }
-
-    bool foundMatch = false;
-    for (BindingWrapper* list : fBindings) {
-        if (list->fKey == key) {
-            foundMatch = true;
-            // If we aren't disjoint stencil, we can overlap with ourselves freely, so we skip the
-            // bounds check for this list.
-            if (!disjointStencil) continue;
-        }
-
-        if (list->fBounds.intersects(drawBounds)) {
-            return BoundsTest::kIncompatibleOverlap;
-        }
-    }
-
-    // Note, !foundMatch, but kDisjoint is functionally the same as a kCompatibleOverlap
-    return foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint;
 }
 
 BoundsTest Layer::depthOnlyTest(const Rect& drawBounds, const LayerKey& key, bool disjointStencil) {
@@ -73,7 +60,8 @@ BoundsTest Layer::depthOnlyTest(const Rect& drawBounds, const LayerKey& key, boo
     return BoundsTest::kCompatibleOverlap;
 }
 
-void Layer::addDepthOnlyDraw(SkArenaAllocWithReset* alloc, DepthDraw* deferredDraw,
+void Layer::addDepthOnlyDraw(SkArenaAllocWithReset* alloc,
+                             DepthDraw* deferredDraw,
                              bool disjointStencil) {
     if (!fDepthInfo) {
         fDepthInfo = alloc->make<DepthDrawList>();
@@ -82,4 +70,66 @@ void Layer::addDepthOnlyDraw(SkArenaAllocWithReset* alloc, DepthDraw* deferredDr
     fDepthInfo->fBounds.join(deferredDraw->fDrawParams->drawBounds());
 }
 
-} // namespace skgpu::graphite
+void Layer::add(SkArenaAllocWithReset* alloc,
+                BindingWrapper* match,
+                const LayerKey& key,
+                SingleDraw* draw,
+                const RenderStep* step,
+                bool dependsOnDst) {
+    SingleDrawList* single;
+    if (match) {
+        single = static_cast<SingleDrawList*>(match);
+        single->fBounds.join(draw->fDrawParams->drawBounds());
+    } else {
+        single = alloc->make<SingleDrawList>(BindingListType::kSingle);
+        single->fKey = key;
+        single->fStep = const_cast<RenderStep*>(step);
+        single->fBounds = draw->fDrawParams->drawBounds();
+        fBindings.addToTail(single);
+    }
+
+    if (!dependsOnDst) {
+        single->fDraws.addToHead(draw);
+    } else {
+        single->fDraws.addToTail(draw);
+    }
+}
+
+void Layer::addStencil(SkArenaAllocWithReset* alloc,
+                       BindingWrapper*& match,
+                       const LayerKey& key,
+                       SingleDraw* draw,
+                       const RenderStep* step,
+                       StencilDraws** startList) {
+    StencilDrawList* stencil;
+    StencilDraws* searchStart = nullptr;
+
+    if (match) {
+        stencil = static_cast<StencilDrawList*>(match);
+        stencil->fBounds.join(draw->fDrawParams->drawBounds());
+        searchStart = (*startList) ? (*startList)->fNext : stencil->fStencilDraws.head();
+    } else {
+        stencil = alloc->make<StencilDrawList>(BindingListType::kStencil);
+        stencil->fBounds = draw->fDrawParams->drawBounds();
+        fBindings.addToTail(stencil);
+        match = stencil;
+    }
+
+    StencilDraws* sd = nullptr;
+    for (StencilDraws* curr = searchStart; curr; curr = curr->fNext) {
+        if (curr->fKey == key) {
+            sd = curr;
+            break;
+        }
+    }
+
+    if (!sd) {
+        sd = alloc->make<StencilDraws>(key, step);
+        stencil->fStencilDraws.addToTail(sd);
+    }
+
+    sd->fDraws.addToTail(draw);
+    *startList = sd;
+}
+
+}  // namespace skgpu::graphite
