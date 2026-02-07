@@ -159,7 +159,7 @@ struct Layer {
                               const LayerKey& key,
                               SingleDraw* draw,
                               const RenderStep* step,
-                              bool dependsOnDst) {
+                              bool insertBefore) {
         SingleDrawList* single;
         if (match) {
             single = static_cast<SingleDrawList*>(match);
@@ -176,7 +176,7 @@ struct Layer {
             }
         }
 
-        if (!dependsOnDst) {
+        if (insertBefore) {
             single->fDraws.addToHead(draw);
         } else {
             single->fDraws.addToTail(draw);
