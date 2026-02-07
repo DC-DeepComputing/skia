@@ -32,8 +32,8 @@ enum class BoundsTest {
 };
 
 enum class BindingListType {
-    kChained,
     kSingle,
+    kStencil,
 };
 
 struct LayerKey {
@@ -65,24 +65,13 @@ struct SingleDraw {
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(SingleDraw);
 };
 
-struct ChainedDraw {
-    ChainedDraw(const LayerKey& key,
-                const RenderStep* step,
-                const DrawParams* drawParams,
-                const UniformDataCache::Index uniformIndex)
-            : fKey(key)
-            , fStep(step)
-            , fDrawParams(drawParams)
-            , fChildDraw(nullptr)
-            , fUniformIndex(uniformIndex) {}
+struct StencilDraws {
+    StencilDraws(const LayerKey& key, const RenderStep* step) : fKey(key), fStep(step) {}
 
+    SkTInternalLList<SingleDraw> fDraws;
     const LayerKey fKey;
     const RenderStep* fStep;
-    const DrawParams* fDrawParams;
-    ChainedDraw* fChildDraw;
-    const UniformDataCache::Index fUniformIndex;
-
-    SK_DECLARE_INTERNAL_LLIST_INTERFACE(ChainedDraw);
+    SK_DECLARE_INTERNAL_LLIST_INTERFACE(StencilDraws);
 };
 
 struct DepthDraw {
@@ -102,19 +91,21 @@ struct DepthDraw {
 
 struct BindingWrapper {
     BindingWrapper(BindingListType type) : fType(type) {}
-
     const BindingListType fType;
-    LayerKey fKey;      // Duplicated for chained, but saves static casting otherwise?
-    RenderStep* fStep;  // ``
     Rect fBounds = Rect::InfiniteInverted();
-
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingWrapper);
 };
 
-template <typename T> struct BindingList : public BindingWrapper {
-    using DrawType = T;
-    SkTInternalLList<T> fDraws;
-    BindingList(BindingListType type) : BindingWrapper(type) {}
+struct SingleDrawList : public BindingWrapper {
+    SingleDrawList(BindingListType type) : BindingWrapper(type) {}
+    SkTInternalLList<SingleDraw> fDraws;
+    LayerKey fKey;
+    RenderStep* fStep;
+};
+
+struct StencilDrawList : public BindingWrapper {
+    StencilDrawList(BindingListType type) : BindingWrapper(type) {}
+    SkTInternalLList<StencilDraws> fStencilDraws;
 };
 
 struct DepthDrawList {
@@ -128,48 +119,27 @@ struct Layer {
     SkTInternalLList<BindingWrapper> fBindings;
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
-    SK_ALWAYS_INLINE
-    BindingWrapper* searchBinding(const LayerKey& key) {
+    BindingWrapper* searchBinding(const LayerKey& key, bool disjointStencil) {
         for (BindingWrapper* list : fBindings) {
-            if (list->fKey == key) {
-                return list;
+            if (disjointStencil) {
+                if (list->fType == BindingListType::kStencil) {
+                    StencilDrawList* stencil = static_cast<StencilDrawList*>(list);
+                    for (StencilDraws* s = stencil->fStencilDraws.head(); s; s = s->fNext) {
+                        if (s->fKey == key) {
+                            return list;
+                        }
+                    }
+                }
+            } else {
+                if (list->fType == BindingListType::kSingle) {
+                    SingleDrawList* single = static_cast<SingleDrawList*>(list);
+                    if (single->fKey == key) {
+                        return list;
+                    }
+                }
             }
         }
         return nullptr;
-    }
-
-    std::pair<BoundsTest, BindingWrapper*> test(const Rect& drawBounds,
-                                                const LayerKey& key,
-                                                bool disjointStencil) {
-        if (!disjointStencil && fBindings.head() && fBindings.head() == fBindings.tail() &&
-            fBindings.head()->fKey == key) {
-            return {BoundsTest::kCompatibleOverlap, fBindings.head()};
-        }
-
-        // If this is a stencil, then we must check if the deferred draws are stencil, and if so,
-        // check the bounds as well.
-        if (disjointStencil && fDepthInfo && fDepthInfo->fIsStencil) {
-            if (fDepthInfo->fBounds.intersects(drawBounds)) {
-                return {BoundsTest::kIncompatibleOverlap, nullptr};
-            }
-        }
-
-        BindingWrapper* foundMatch = nullptr;
-        for (BindingWrapper* list : fBindings) {
-            if (list->fKey == key) {
-                foundMatch = list;
-                // If we aren't disjoint stencil, we can overlap with ourselves freely, so we skip
-                // the bounds check for this list.
-                if (!disjointStencil) continue;
-            }
-
-            if (list->fBounds.intersects(drawBounds)) {
-                return {BoundsTest::kIncompatibleOverlap, nullptr};
-            }
-        }
-
-        // Note, !foundMatch, but kDisjoint is functionally the same as a kCompatibleOverlap
-        return {foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint, foundMatch};
     }
 
     BoundsTest depthOnlyTest(const Rect& drawBounds, const LayerKey& key, bool disjointStencil) {
@@ -188,6 +158,60 @@ struct Layer {
         return BoundsTest::kCompatibleOverlap;
     }
 
+    template <bool kIsStencil>
+    std::pair<BoundsTest, BindingWrapper*> test(const Rect& drawBounds, const LayerKey& key) {
+        if constexpr (!kIsStencil) {
+            if (fBindings.head() && fBindings.head() == fBindings.tail()) {
+                if (fBindings.head()->fType == BindingListType::kSingle) {
+                    SingleDrawList* single = static_cast<SingleDrawList*>(fBindings.head());
+                    if (single->fKey == key) {
+                        return {BoundsTest::kCompatibleOverlap, fBindings.head()};
+                    }
+                }
+            }
+        }
+
+        BindingWrapper* foundMatch = nullptr;
+        if constexpr (kIsStencil) {
+            if (fDepthInfo && fDepthInfo->fIsStencil) {
+                if (fDepthInfo->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                }
+            }
+
+            for (BindingWrapper* list : fBindings) {
+                if (list->fType == BindingListType::kStencil) {
+                    StencilDrawList* stencil = static_cast<StencilDrawList*>(list);
+                    for (StencilDraws* s = stencil->fStencilDraws.head(); s; s = s->fNext) {
+                        if (s->fKey == key) {
+                            foundMatch = list;
+                            break;
+                        }
+                    }
+                }
+                if (list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, nullptr};
+                }
+            }
+        } else {
+            for (BindingWrapper* list : fBindings) {
+                if (list->fType == BindingListType::kSingle) {
+                    SingleDrawList* single = static_cast<SingleDrawList*>(list);
+                    if (single->fKey == key) {
+                        foundMatch = list;
+                        continue;
+                    }
+                }
+                if (list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, nullptr};
+                }
+            }
+        }
+
+        // Note, !foundMatch, but kDisjoint is functionally the same as a kCompatibleOverlap
+        return {foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint, foundMatch};
+    }
+
     void addDepthOnlyDraw(SkArenaAllocWithReset* alloc,
                           DepthDraw* deferredDraw,
                           bool disjointStencil) {
@@ -198,35 +222,69 @@ struct Layer {
         fDepthInfo->fBounds.join(deferredDraw->fDrawParams->drawBounds());
     }
 
-    template <typename T>
-    SK_ALWAYS_INLINE void add(SkArenaAllocWithReset* alloc,
-                              BindingWrapper* match,
-                              const LayerKey& key,
-                              T* draw,
-                              const RenderStep* step,
-                              bool dependsOnDst) {
+    void add(SkArenaAllocWithReset* alloc,
+             BindingWrapper* match,
+             const LayerKey& key,
+             SingleDraw* draw,
+             const RenderStep* step,
+             bool dependsOnDst) {
+        SingleDrawList* single;
         if (match) {
-            auto* typedMatch = static_cast<BindingList<T>*>(match);
-            if (!dependsOnDst) {
-                typedMatch->fDraws.addToHead(draw);
-            } else {
-                typedMatch->fDraws.addToTail(draw);
-            }
-            typedMatch->fBounds.join(draw->fDrawParams->drawBounds());
+            single = static_cast<SingleDrawList*>(match);
+            single->fBounds.join(draw->fDrawParams->drawBounds());
         } else {
-            bool isSingle = std::is_same_v<T, SingleDraw>;
-            BindingListType type = isSingle ? BindingListType::kSingle : BindingListType::kChained;
-            BindingList<T>* list = alloc->make<BindingList<T>>(type);
-            list->fKey = key;
-            if (isSingle) {
-                list->fStep = const_cast<RenderStep*>(step);  // TODO
-            }
-            list->fBounds = draw->fDrawParams->drawBounds();
-            list->fDraws.addToHead(draw);
-            fBindings.addToTail(list);
+            single = alloc->make<SingleDrawList>(BindingListType::kSingle);
+            single->fKey = key;
+            single->fStep = const_cast<RenderStep*>(step);
+            single->fBounds = draw->fDrawParams->drawBounds();
+            fBindings.addToTail(single);
+        }
+
+        if (!dependsOnDst) {
+            single->fDraws.addToHead(draw);
+        } else {
+            single->fDraws.addToTail(draw);
         }
     }
+
+    void addStencil(SkArenaAllocWithReset* alloc,
+                    BindingWrapper*& match,
+                    const LayerKey& key,
+                    SingleDraw* draw,
+                    const RenderStep* step,
+                    StencilDraws** startList) {
+        StencilDrawList* stencil;
+        StencilDraws* searchStart = nullptr;
+
+        if (match) {
+            stencil = static_cast<StencilDrawList*>(match);
+            stencil->fBounds.join(draw->fDrawParams->drawBounds());
+            searchStart = (*startList) ? (*startList)->fNext : stencil->fStencilDraws.head();
+        } else {
+            stencil = alloc->make<StencilDrawList>(BindingListType::kStencil);
+            stencil->fBounds = draw->fDrawParams->drawBounds();
+            fBindings.addToTail(stencil);
+            match = stencil;
+        }
+
+        StencilDraws* sd = nullptr;
+        for (StencilDraws* curr = searchStart; curr; curr = curr->fNext) {
+            if (curr->fKey == key) {
+                sd = curr;
+                break;
+            }
+        }
+
+        if (!sd) {
+            sd = alloc->make<StencilDraws>(key, step);
+            stencil->fStencilDraws.addToTail(sd);
+        }
+
+        sd->fDraws.addToTail(draw);
+        *startList = sd;
+    }
 };
+
 }  // namespace skgpu::graphite
 
 #endif  // skgpu_graphite_DrawListTypes_DEFINED
