@@ -41,13 +41,13 @@ public:
     DrawListLayer() : DrawListBase() {}
 
     ~DrawListLayer() override {
-        printf("Total recordDraw time: %f ms\n", fTotalRecordDrawTime);
-        printf("Total snapDrawPass time: %f ms\n", fTotalSnapDrawPassTime);
-        printf("Pipeline changes %u\n", fPipelineChanges);
-        printf("Stencil lists %u\n", fStencilLists);
-        printf("Average stencil steps per list %f\n", ((float)fStencilDraws) / ((float)fStencilLists));
-        printf("Depth Lists %u\n", fDepthLists);
-        printf("Average depth steps per list %f\n", ((float)fDepthDraws) / ((float)fDepthLists));
+        // printf("Total recordDraw time: %f ms\n", fTotalRecordDrawTime);
+        // printf("Total snapDrawPass time: %f ms\n", fTotalSnapDrawPassTime);
+        // printf("Pipeline changes %u\n", fPipelineChanges);
+        // printf("Stencil lists %u\n", fStencilLists);
+        // printf("Average stencil steps per list %f\n", ((float)fStencilDraws) / ((float)fStencilLists));
+        // printf("Depth Lists %u\n", fDepthLists);
+        // printf("Average depth steps per list %f\n", ((float)fDepthDraws) / ((float)fDepthLists));
     }
 
     // DrawList requires that all Transforms be valid and asserts as much; invalid transforms should
