@@ -41,6 +41,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
     if (options.fOptionsPriv) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
+        //fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
     }
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;
@@ -52,6 +53,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fSupportBilerpFromGlyphAtlas = options.fSupportBilerpFromGlyphAtlas;
     fRequireOrderedRecordings = options.fRequireOrderedRecordings;
     fSetBackendLabels = options.fSetBackendLabels;
+    fDrawListLayer = true;
 }
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }

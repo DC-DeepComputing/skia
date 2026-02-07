@@ -86,7 +86,9 @@ public:
                     UniquePaintParamsID paintID,
                     SkEnumBitMask<DstUsage> dstUsage,
                     PipelineDataGatherer* gatherer,
-                    const StrokeStyle* stroke);
+                    const StrokeStyle* stroke,
+                    DrawParams** captureParams = {},
+                    Layer** layer = {});
 
     bool recordUpload(Recorder* recorder,
                       sk_sp<TextureProxy> targetProxy,
