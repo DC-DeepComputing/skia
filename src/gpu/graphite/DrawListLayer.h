@@ -78,6 +78,7 @@ public:
     void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
+    template<bool kIsDepthOnly>
     void recordBackwards(int stepIndex,
                          bool isStencil,
                          bool dependsOnDst,
@@ -85,7 +86,8 @@ private:
                          const UniformDataCache::Index& uniformIndex,
                          const LayerKey& key,
                          const DrawParams* drawParams,
-                         const Layer* stopLayer);
+                         const Layer* stopLayer,
+                         Layer** captureLayer);
 
     void recordClipped(int stepIndex,
                        bool isStencil,
@@ -95,15 +97,6 @@ private:
                        const LayerKey& key,
                        const DrawParams* drawParams,
                        Layer** startLayer);
-
-    void recordDepthOnly(int stepIndex,
-                         bool isStencil,
-                         bool dependsOnDst,
-                         const RenderStep* step,
-                         const UniformDataCache::Index& uniformIndex,
-                         const LayerKey& key,
-                         const DrawParams* drawParams,
-                         Layer** captureLayer);
 
     friend class DrawPass;
 
