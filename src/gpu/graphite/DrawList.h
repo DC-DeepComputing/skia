@@ -67,6 +67,10 @@ public:
     // Add a constructor to prevent default zero initialization of SkTBlockList members' storage.
     DrawList() {}
 
+    ~DrawList() override {
+        printf("PipelineChanges %u\n", fPipelineChanges);
+    }
+
     // DrawList requires that all Transforms be valid and asserts as much; invalid transforms should
     // be detected at the Device level or similar. The provided Renderer must be compatible with the
     // 'shape' and 'stroke' parameters. If the renderer uses coverage AA, 'ordering' must have a
@@ -220,6 +224,8 @@ private:
     SkTBlockList<Draw, 4> fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
 
     std::vector<SortKey> fSortKeys;
+
+    uint32_t fPipelineChanges = 0;
 };
 
 } // namespace skgpu::graphite

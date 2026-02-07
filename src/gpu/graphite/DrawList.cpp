@@ -200,6 +200,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         if (pipelineChange) {
             drawPass->fCommandList.bindGraphicsPipeline(key.pipelineIndex());
             lastPipeline = key.pipelineIndex();
+            fPipelineChanges++;
         }
         if (stateChange) {
             if (uniformBindingChange) {
