@@ -33,6 +33,29 @@
       "message": "adding egdaniel for public includes",
       "revId": "ce8de9d593fd8b84d5e99b5ea17b3888d43075f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b2f67f_6ef93f75",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2552,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-09T18:11:43Z",
+      "side": 1,
+      "message": "Do we see any reason or benefit to conditionally including this support if it *is* available on ES/WebGL? I kind of doubt it, but wanted to pose the question. Otherwise, this LGTM.",
+      "range": {
+        "startLine": 2552,
+        "startChar": 0,
+        "endLine": 2552,
+        "endChar": 50
+      },
+      "revId": "ce8de9d593fd8b84d5e99b5ea17b3888d43075f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
