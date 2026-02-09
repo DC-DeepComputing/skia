@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d7ff3fd_9a597ec9",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-09T02:45:41Z",
+      "side": 1,
+      "message": "When in dawn-native, we should attempt this AllowSpontaneous callback in prepareForReturnToCache before we call takeRef().  If the spontaneous callback succeeds in mapping it, then we can return false and avoid a round trip through the ResourceCache\u0027s return queue.\n\nI was also wondering what it would look like if we wrote `onAsyncMap()` to only worry about the MapMode::Read case because we should be able to handle all MapWrite cases with either mapped at creation, or ensuring its mapped as part of prepareForReturnToCache. This will make write maps faster because there\u0027s no need to go through storing the async callback in `fAsyncMapCallbacks` or acquiring `fAsyncMutex`, we know it\u0027s already exclusively held as its going back to the cache.",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 15
+      },
+      "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
