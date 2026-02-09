@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdd9c71c_acdc5b38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-09T18:44:46Z",
+      "side": 1,
+      "message": "Instead of trying to re-create a Font and FontFamily (which may not exist), [Prefer IDWriteFontFace to IDWriteFont](https://skia.googlesource.com/skia/+/079d092f49e6144295b35542b7c37b55b86d6121) and [Prefer IDWriteFontFace to IDWriteFontFamily](https://skia.googlesource.com/skia/+/36f48d81b2f465e95e62383964a63c5097e5bba3) instead move to using the FontFace directly for names. These names are the only reason the Font and FontFamily were used to begin with, so the Font and FontFamily are now only needed as backups to get names on old versions of DirectWrite (before Windows 10).",
+      "revId": "d7590b19effa368173b8b37c2c48d1f60f79a7a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fd6b315_f645d3df",
         "filename": "src/ports/SkTypeface_win_dw.cpp",
         "patchSetId": 4
