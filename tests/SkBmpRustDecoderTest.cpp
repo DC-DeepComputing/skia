@@ -10,9 +10,11 @@
 #include <memory>
 #include <utility>
 
+#include "include/codec/SkBmpDecoder.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
@@ -20,7 +22,9 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
+#include "modules/skcms/skcms.h"
 #include "tests/ComparePixels.h"
+#include "tests/FakeStreams.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
@@ -299,3 +303,463 @@ DEF_TEST(RustBmpCodec_explicit_rewind, r) {
                     "Pixel data should match after rewind");
 }
 
+
+// Test incremental decoding
+DEF_TEST(Codec_Bmp_Rust_IncrementalDecode, r) {
+    const char* path = "images/randPixels.bmp";
+    sk_sp<SkData> data = GetResourceAsData(path);
+    REPORTER_ASSERT(r, data, "Missing test image: %s", path);
+    if (!data) {
+        return;
+    }
+
+    // Decode with standard BMP decoder for reference
+    std::unique_ptr<SkCodec> stdCodec = SkBmpDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, stdCodec, "Failed to create standard BMP codec for %s", path);
+    if (!stdCodec) {
+        return;
+    }
+
+    SkBitmap reference;
+    reference.allocPixels(stdCodec->getInfo());
+    SkCodec::Result result = stdCodec->getPixels(reference.pixmap());
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+
+    // Now decode using Rust BMP decoder with incremental decode
+    std::unique_ptr<SkCodec> rustCodec = SkBmpRustDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, rustCodec, "Failed to create Rust BMP codec for %s", path);
+    if (!rustCodec) {
+        return;
+    }
+    SkBitmap incremental;
+    incremental.allocPixels(rustCodec->getInfo());
+
+    result = rustCodec->startIncrementalDecode(incremental.info(),
+                                          incremental.getPixels(),
+                                          incremental.rowBytes());
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+
+    // Decode all rows incrementally
+    // For BMP with all data available, this should complete in one call
+    result = rustCodec->incrementalDecode();
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+
+    // Verify that Rust incremental decode produces the same output as standard BMP decoder
+    REPORTER_ASSERT(r, reference.dimensions() == incremental.dimensions(),
+                    "Dimensions should match");
+    REPORTER_ASSERT(r, reference.computeByteSize() == incremental.computeByteSize(),
+                    "Byte sizes should match");
+
+    // Compare pixel data
+    const uint8_t* refPixels = static_cast<const uint8_t*>(reference.getPixels());
+    const uint8_t* incPixels = static_cast<const uint8_t*>(incremental.getPixels());
+    size_t byteSize = reference.computeByteSize();
+
+    bool pixelsMatch = memcmp(refPixels, incPixels, byteSize) == 0;
+    REPORTER_ASSERT(r, pixelsMatch,
+                    "Rust incremental decode should produce identical output to standard BMP decoder");
+}
+
+// Test incremental decode with progressively available data.
+// Simulates a streaming scenario where data arrives in chunks (like over a network).
+// This tests true resumability: starting with partial data, getting kIncompleteInput,
+// adding more data, and resuming until complete.
+DEF_TEST(Codec_Bmp_Rust_IncrementalDecode_ProgressiveStream, r) {
+    const char* path = "images/32bpp-topdown-320x240.bmp";
+    sk_sp<SkData> data = GetResourceAsData(path);
+    REPORTER_ASSERT(r, data, "Missing test image: %s", path);
+    if (!data) {
+        return;
+    }
+
+    const size_t fullSize = data->size();
+
+    // First, decode the full image for comparison
+    std::unique_ptr<SkCodec> referenceCodec =
+        SkBmpRustDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, referenceCodec, "Failed to create reference codec");
+    if (!referenceCodec) {
+        return;
+    }
+    SkBitmap reference;
+    reference.allocPixels(referenceCodec->getInfo());
+    SkCodec::Result refResult = referenceCodec->getPixels(reference.pixmap());
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, refResult);
+
+    // Create a HaltingStream that starts with enough data for the BMP header.
+    // BMP header is typically 54 bytes (14 byte file header + 40 byte DIB header),
+    // so 128 bytes should always be sufficient for metadata parsing.
+    const size_t initialBytes = std::min(size_t{128}, fullSize);
+    const size_t chunkSize = 8 * 1024;  // Add 8KB at a time
+
+    // Create stream and retain raw pointer before moving to codec
+    auto haltingStream = std::make_unique<HaltingStream>(data, initialBytes);
+    HaltingStream* streamPtr = haltingStream.get();
+
+    // Create codec - 128 bytes should be enough for header parsing
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+        SkBmpRustDecoder::Decode(std::move(haltingStream), &result);
+
+    REPORTER_ASSERT(r, codec, "Failed to create codec with %zu bytes, result: %s",
+                    initialBytes, SkCodec::ResultToString(result));
+    if (!codec) {
+        return;
+    }
+
+    SkBitmap bitmap;
+    bitmap.allocPixels(codec->getInfo());
+    // Fill with non-zero pattern to verify the decoder properly writes all pixels
+    // even when the buffer is not zero-initialized (fZeroInitialized = kNo_ZeroInitialized)
+    memset(bitmap.getPixels(), 0xAB, bitmap.computeByteSize());
+
+    SkCodec::Options options;
+    options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    result = codec->startIncrementalDecode(
+        bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), &options);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+
+    // Now do the actual resumable decode loop
+    int totalRowsDecoded = 0;
+    int iterations = 0;
+    const int maxIterations = 1000;  // Safety limit
+    bool sawProgressiveRows = false;  // Track if we saw partial row decoding
+    bool verifiedDecodedRows = false;  // Track if we verified decoded rows are correct
+
+    while (iterations < maxIterations) {
+        iterations++;
+        int rowsDecoded = 0;
+        result = codec->incrementalDecode(&rowsDecoded);
+
+        if (result == SkCodec::kSuccess) {
+            // Decoding complete - rowsDecoded should be total height
+            totalRowsDecoded = rowsDecoded;
+            break;
+        } else if (result == SkCodec::kIncompleteInput) {
+            // Track if we got partial rows (progressive rendering)
+            if (rowsDecoded > 0 && rowsDecoded < codec->getInfo().height()) {
+                sawProgressiveRows = true;
+
+                // Verify that decoded rows match the reference image.
+                // This confirms the decoder properly writes pixels even when the
+                // destination buffer was initialized with garbage (0xAB).
+                // Only check once to avoid slowing down the test.
+                if (!verifiedDecodedRows) {
+                    verifiedDecodedRows = true;
+                    const size_t rowBytes = bitmap.rowBytes();
+                    const uint8_t* bitmapPixels = static_cast<const uint8_t*>(bitmap.getPixels());
+                    const uint8_t* refPixels = static_cast<const uint8_t*>(reference.getPixels());
+
+                    // Check that decoded rows match the reference (not garbage 0xAB)
+                    // For this top-down image, decoded rows are at the top
+                    bool decodedRowsMatch = true;
+                    for (int y = 0; y < rowsDecoded && decodedRowsMatch; ++y) {
+                        if (memcmp(bitmapPixels + y * rowBytes,
+                                   refPixels + y * rowBytes, rowBytes) != 0) {
+                            decodedRowsMatch = false;
+                            ERRORF(r, "Decoded row %d doesn't match reference", y);
+                        }
+                    }
+                    REPORTER_ASSERT(r, decodedRowsMatch,
+                        "Decoded rows should match reference, not contain garbage");
+                }
+            }
+            totalRowsDecoded = rowsDecoded;
+
+            // Need more data - simulate receiving more from network
+            if (streamPtr->isAllDataReceived()) {
+                // All data available but still incomplete - unexpected
+                ERRORF(r, "Got kIncompleteInput with all data available after %d rows",
+                       totalRowsDecoded);
+                break;
+            }
+            streamPtr->addNewData(chunkSize);
+        } else {
+            ERRORF(r, "Unexpected result during incremental decode: %s",
+                   SkCodec::ResultToString(result));
+            break;
+        }
+    }
+
+    REPORTER_ASSERT(r, iterations < maxIterations, "Decode loop exceeded max iterations");
+    REPORTER_ASSERT(r, result == SkCodec::kSuccess,
+                    "Should complete successfully, got %s after %d iterations",
+                    SkCodec::ResultToString(result), iterations);
+    REPORTER_ASSERT(r, totalRowsDecoded == codec->getInfo().height(),
+                    "Should decode all %d rows, decoded %d",
+                    codec->getInfo().height(), totalRowsDecoded);
+
+    // Verify progressive rendering occurred - we should have seen partial rows
+    // during the decode process since we're using a small chunk size
+    REPORTER_ASSERT(r, sawProgressiveRows,
+                    "Should see progressive row decoding with small chunk sizes");
+
+    // Verify we checked decoded rows during partial decode
+    REPORTER_ASSERT(r, verifiedDecodedRows,
+                    "Should have verified decoded rows during partial decode");
+
+    // Verify the progressively decoded image matches the reference
+    REPORTER_ASSERT(r, bitmap.dimensions() == reference.dimensions(),
+                    "Dimensions should match reference");
+
+    bool pixelsMatch = memcmp(bitmap.getPixels(), reference.getPixels(),
+                              bitmap.computeByteSize()) == 0;
+    REPORTER_ASSERT(r, pixelsMatch,
+                    "Progressive decode should produce identical output to full decode");
+}
+
+// Test progressive decoding with a bottom-up BMP (most common format).
+// This verifies that both progressive rendering during partial decode AND
+// the final fully decoded image are correct for bottom-up images.
+// Crucially, we compare against the STANDARD BMP decoder (not Rust decoder)
+// to ensure correctness.
+DEF_TEST(Codec_Bmp_Rust_IncrementalDecode_BottomUp, r) {
+    // randPixels.bmp is a standard bottom-up BMP (8x8, 24-bit)
+    const char* path = "images/randPixels.bmp";
+    sk_sp<SkData> data = GetResourceAsData(path);
+    REPORTER_ASSERT(r, data, "Missing test image: %s", path);
+    if (!data) {
+        return;
+    }
+
+    const size_t fullSize = data->size();
+
+    // Create the Rust codec first to get its info (the target format we'll decode to)
+    std::unique_ptr<SkCodec> rustCodecForInfo =
+        SkBmpRustDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, rustCodecForInfo, "Failed to create Rust BMP codec for info");
+    if (!rustCodecForInfo) {
+        return;
+    }
+    const SkImageInfo targetInfo = rustCodecForInfo->getInfo();
+    const int height = targetInfo.height();
+    rustCodecForInfo.reset();  // Release, we'll create a new one for streaming
+
+    // Decode with STANDARD BMP decoder for reference - this is the ground truth.
+    // Decode into the SAME format as the Rust decoder to ensure comparable output.
+    std::unique_ptr<SkCodec> stdCodec =
+        SkBmpDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, stdCodec, "Failed to create standard BMP codec");
+    if (!stdCodec) {
+        return;
+    }
+    SkBitmap reference;
+    reference.allocPixels(targetInfo);
+    SkCodec::Result refResult = stdCodec->getPixels(
+        targetInfo, reference.getPixels(), reference.rowBytes());
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, refResult);
+
+    // Create a HaltingStream with enough data for the header
+    const size_t initialBytes = std::min(size_t{64}, fullSize);
+    const size_t chunkSize = 32;  // Small chunks to force multiple iterations
+
+    auto haltingStream = std::make_unique<HaltingStream>(data, initialBytes);
+    HaltingStream* streamPtr = haltingStream.get();
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+        SkBmpRustDecoder::Decode(std::move(haltingStream), &result);
+
+    REPORTER_ASSERT(r, codec, "Failed to create codec");
+    if (!codec) {
+        return;
+    }
+
+    SkBitmap bitmap;
+    bitmap.allocPixels(targetInfo);
+    // Initialize with a pattern to verify correct pixel placement
+    memset(bitmap.getPixels(), 0xCD, bitmap.computeByteSize());
+
+    SkCodec::Options options;
+    options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    result = codec->startIncrementalDecode(
+        targetInfo, bitmap.getPixels(), bitmap.rowBytes(), &options);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+
+    // Incremental decode loop
+    int iterations = 0;
+    const int maxIterations = 100;
+    bool sawProgressiveRows = false;
+
+    while (iterations < maxIterations) {
+        iterations++;
+        int rowsDecoded = 0;
+        result = codec->incrementalDecode(&rowsDecoded);
+
+        if (result == SkCodec::kSuccess) {
+            break;
+        } else if (result == SkCodec::kIncompleteInput) {
+            // Track progressive decoding
+            if (rowsDecoded > 0 && rowsDecoded < height) {
+                sawProgressiveRows = true;
+                // Note: We don't compare intermediate rows against SkBmpCodec here because:
+                // - Rust decoder converts bottom-up to top-down during decode (rows placed at top)
+                // - SkBmpCodec preserves native bottom-up ordering during incremental decode
+                // The final images will match, but intermediate row positions differ by design.
+            }
+
+            if (streamPtr->isAllDataReceived()) {
+                ERRORF(r, "Got kIncompleteInput with all data available");
+                break;
+            }
+            streamPtr->addNewData(chunkSize);
+        } else {
+            ERRORF(r, "Unexpected result: %s", SkCodec::ResultToString(result));
+            break;
+        }
+    }
+
+    REPORTER_ASSERT(r, iterations < maxIterations, "Decode loop exceeded max iterations");
+    REPORTER_ASSERT(r, result == SkCodec::kSuccess, "Should complete successfully");
+
+    // Verify we saw progressive decoding (not just one-shot completion)
+    REPORTER_ASSERT(r, sawProgressiveRows,
+                    "Should see progressive row decoding with small chunk sizes");
+
+    // Verify the final image matches the STANDARD decoder reference.
+    // This is the key correctness check - both decoders should produce identical final output,
+    // even though intermediate row placement differs (Rust flips during decode, SkBmpCodec doesn't).
+    bool pixelsMatch = memcmp(bitmap.getPixels(), reference.getPixels(),
+                              bitmap.computeByteSize()) == 0;
+    REPORTER_ASSERT(r, pixelsMatch,
+                    "Bottom-up progressive decode should produce identical output to standard BMP decoder");
+
+    // Additional check: verify specific pixels to catch row-flip bugs
+    SkPixmap bmpPixmap = bitmap.pixmap();
+    SkPixmap refPixmap = reference.pixmap();
+
+    // Check corners
+    REPORTER_ASSERT(r, bmpPixmap.getColor(0, 0) == refPixmap.getColor(0, 0),
+                    "Top-left pixel mismatch");
+    REPORTER_ASSERT(r, bmpPixmap.getColor(7, 0) == refPixmap.getColor(7, 0),
+                    "Top-right pixel mismatch");
+    REPORTER_ASSERT(r, bmpPixmap.getColor(0, 7) == refPixmap.getColor(0, 7),
+                    "Bottom-left pixel mismatch");
+    REPORTER_ASSERT(r, bmpPixmap.getColor(7, 7) == refPixmap.getColor(7, 7),
+                    "Bottom-right pixel mismatch");
+}
+
+// Test incomplete metadata - stream with partial BMP header
+DEF_TEST(Codec_Bmp_Rust_IncompleteMetadata_PartialHeader, r) {
+    // Load a valid BMP
+    sk_sp<SkData> data = GetResourceAsData("images/randPixels.bmp");
+    if (!data) {
+        ERRORF(r, "Failed to load test image");
+        return;
+    }
+
+    // Create stream with only partial header (30 bytes of 54-byte header)
+    size_t partialSize = 30;
+    sk_sp<SkData> partialData = SkData::MakeSubset(data.get(), 0, partialSize);
+    std::unique_ptr<SkStream> partialStream = SkMemoryStream::Make(partialData);
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+        SkBmpRustDecoder::Decode(std::move(partialStream), &result);
+
+    // Should fail with incomplete input (not enough for metadata)
+    REPORTER_ASSERT(r, codec == nullptr,
+                   "Should not create codec with incomplete metadata");
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput,
+                   "Should return kIncompleteInput, got %d", result);
+}
+
+// Test incomplete row data - stream with partial pixel data
+DEF_TEST(Codec_Bmp_Rust_IncompleteRowData, r) {
+    // Load a valid BMP
+    sk_sp<SkData> data = GetResourceAsData("images/randPixels.bmp");
+    if (!data) {
+        ERRORF(r, "Failed to load test image");
+        return;
+    }
+
+    // Get codec to determine dimensions
+    std::unique_ptr<SkCodec> fullCodec =
+        SkBmpRustDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    if (!fullCodec) {
+        ERRORF(r, "Failed to create codec from full data");
+        return;
+    }
+
+    SkImageInfo info = fullCodec->getInfo();
+
+    // BMP header is 54 bytes, calculate size for header + half of first row
+    size_t headerSize = 54;
+    size_t rowBytes = info.width() * 3; // Assuming 24-bit RGB
+    rowBytes = ((rowBytes + 3) / 4) * 4; // Row padding to 4-byte boundary
+    size_t partialSize = headerSize + (rowBytes / 2);
+
+    // Ensure we don't exceed data size
+    if (partialSize >= data->size()) {
+        ERRORF(r, "Image too small for this test");
+        return;
+    }
+
+    sk_sp<SkData> partialData = SkData::MakeSubset(data.get(), 0, partialSize);
+    std::unique_ptr<SkStream> partialStream = SkMemoryStream::Make(partialData);
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+        SkBmpRustDecoder::Decode(std::move(partialStream), &result);
+
+    // With streaming support, incomplete pixel data should either:
+    // 1. Fail to create codec with kIncompleteInput, or
+    // 2. Create codec but fail/return incomplete during pixel decode
+    if (codec) {
+        // Codec created with partial data - try to decode
+        SkBitmap bitmap;
+        bitmap.allocPixels(info);
+        SkCodec::Result decodeResult = codec->getPixels(info, bitmap.getPixels(),
+                                                        bitmap.rowBytes());
+
+        // Should fail or return incomplete since we don't have all pixel data
+        REPORTER_ASSERT(r, decodeResult != SkCodec::kSuccess || info.height() == 0,
+                       "Should not successfully decode with incomplete pixel data, got %s",
+                       SkCodec::ResultToString(decodeResult));
+    }
+}
+
+// Test that embedded ICC profiles in BMP V5 headers are correctly extracted and applied.
+// This uses rgb24prof.bmp from the image-rs test suite, which contains an embedded ICC profile.
+DEF_TEST(Codec_Bmp_Rust_ICCProfile, r) {
+    const char* path = "images/rgb24prof.bmp";
+    sk_sp<SkData> data = GetResourceAsData(path);
+    REPORTER_ASSERT(r, data, "Missing test image: %s", path);
+    if (!data) {
+        return;
+    }
+
+    std::unique_ptr<SkCodec> codec =
+            SkBmpRustDecoder::Decode(SkMemoryStream::Make(data), nullptr);
+    REPORTER_ASSERT(r, codec, "Failed to create Rust BMP codec");
+    if (!codec) {
+        return;
+    }
+
+    // Verify that the codec extracted an ICC profile
+    const skcms_ICCProfile* profile = codec->getICCProfile();
+    REPORTER_ASSERT(r, profile, "BMP with embedded ICC profile should have getICCProfile() != null");
+    if (!profile) {
+        return;
+    }
+
+    // Verify the profile can be used to create a color space
+    sk_sp<SkColorSpace> colorSpace = SkColorSpace::Make(*profile);
+    REPORTER_ASSERT(r, colorSpace, "ICC profile should be valid and create a color space");
+    if (!colorSpace) {
+        return;
+    }
+
+    // Verify the color space from getInfo() matches
+    SkImageInfo info = codec->getInfo();
+    REPORTER_ASSERT(r, info.colorSpace(), "getInfo() should have a color space");
+    if (info.colorSpace()) {
+        REPORTER_ASSERT(r, SkColorSpace::Equals(info.colorSpace(), colorSpace.get()),
+                        "Color space from getInfo() should match ICC profile");
+    }
+
+    // Verify decoding works with the ICC profile
+    auto [image, result] = codec->getImage();
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, image, "Should be able to decode BMP with ICC profile");
+}
