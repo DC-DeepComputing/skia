@@ -174,6 +174,16 @@ bool Context::finishInitialization() {
         return false;
     }
 
+#if defined(GPU_TEST_UTILS)
+    auto pathRendererStrategy = fSharedContext->caps()->requestedPathRendererStrategy();
+    if (pathRendererStrategy.has_value() &&
+        pathRendererStrategy.value() == PathRendererStrategy::kCPUSparseStripsMSAA8) {
+        if (!fSharedContext->globalCache()->initializeMSAA8MaskLUT()) {
+            return false;
+        }
+    }
+#endif
+
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};

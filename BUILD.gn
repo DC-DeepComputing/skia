@@ -1159,6 +1159,7 @@ optional("graphite") {
   public = skia_graphite_public
   sources = skia_graphite_sources
   sources += skia_sksl_graphite_modules_sources
+  sources += skia_graphite_sparse_strips_sources
 
   if (is_android) {
     sources += skia_graphite_android_private
