@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e430164_d877900f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-09T21:31:38Z",
+      "side": 1,
+      "message": "This lgtm and makes my intermediate work easier because now all the alpha-only SkColorTypes have equivalent red color types.",
+      "parentUuid": "d45cc021_4bcfe267",
+      "revId": "ce8de9d593fd8b84d5e99b5ea17b3888d43075f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80b2f67f_6ef93f75",
