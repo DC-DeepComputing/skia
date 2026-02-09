@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d27612_5d3630f2",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-09T03:03:41Z",
+      "side": 1,
+      "message": "Also didn\u0027t realize, but there\u0027s a similar lifecycle possibility where a client has started a command buffer but then destroys the Context before calling submit(). In this case, the CommandBuffer object is just deleted without calling `finishEncoding()`, since nothing actually is going to use it. In that case, the right thing to do would be to just to delete anything in `fPendingIntrinsicBuffers`, so instead of asserting here, I think we just have to call `releasePendingIntrinsicBuffers()`.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 53
+      },
+      "revId": "81ba90716613650618599c2ed657cd7929359941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d403a654_2636ce28",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-09T03:03:41Z",
+      "side": 1,
+      "message": "I didn\u0027t realize this the first go around, but it is unlikely, but technically possible for a client to trigger a resource cleanup (via the public Context API), while they are still building a CommandBuffer. I think we shouldn\u0027t call releasePendingIntrinsicBuffers() here.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 47
+      },
+      "revId": "81ba90716613650618599c2ed657cd7929359941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
