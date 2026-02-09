@@ -132,6 +132,9 @@ struct ParagraphStyle {
     bool getApplyRoundingHack() const { return fApplyRoundingHack; }
     void setApplyRoundingHack(bool value) { fApplyRoundingHack = value; }
 
+    void setAllowSpacingScriptLanguages(bool v) { fAllowSpacingScriptLanguages = v; }
+    bool getAllowSpacingScriptLanguages() const { return fAllowSpacingScriptLanguages; }
+
 private:
     StrutStyle fStrutStyle;
     TextStyle fDefaultTextStyle;
@@ -146,6 +149,7 @@ private:
     bool fReplaceTabCharacters;
     bool fFakeMissingFontStyles;
     bool fApplyRoundingHack = true;
+    bool fAllowSpacingScriptLanguages = false;
 };
 }  // namespace textlayout
 }  // namespace skia

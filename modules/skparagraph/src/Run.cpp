@@ -19,6 +19,7 @@ Run::Run(ParagraphImpl* owner,
          size_t firstChar,
          SkScalar heightMultiplier,
          bool useHalfLeading,
+         bool  allowSpacingScriptLanguages,
          SkScalar baselineShift,
          size_t index,
          SkScalar offsetX)
@@ -34,6 +35,7 @@ Run::Run(ParagraphImpl* owner,
     , fClusterIndexes(fGlyphData->clusterIndexes)
     , fHeightMultiplier(heightMultiplier)
     , fUseHalfLeading(useHalfLeading)
+    , fAllowSpacingScriptLanguages(allowSpacingScriptLanguages)
     , fBaselineShift(baselineShift)
 {
     fBidiLevel = info.fBidiLevel;
@@ -171,7 +173,7 @@ void Run::addSpacesAtTheEnd(SkScalar space, Cluster* cluster) {
 }
 
 SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
-    if (this->isCursiveScript()) {
+    if (this->isCursiveScript() && !fAllowSpacingScriptLanguages) {
         // Do not apply letter spacing for script languages
         return 0.0;
     }
@@ -186,7 +188,7 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
 }
 
 SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
-    if (this->isCursiveScript()) {
+    if (this->isCursiveScript() && !fAllowSpacingScriptLanguages) {
         // Do not apply letter spacing for script languages
         return 0.0;
     }

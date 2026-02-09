@@ -213,6 +213,7 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
                     run->fClusterStart,
                     height,
                     block.fStyle.getHalfLeading(),
+                    this->fParagraph->paragraphStyle().getAllowSpacingScriptLanguages(),
                     block.fStyle.getBaselineShift(),
                     this->fParagraph->fRuns.size(),
                     advanceX
@@ -612,6 +613,7 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
                                        placeholder.fRange.start,
                                        0.0f,
                                        0.0f,
+                                       false,
                                        false,
                                        fParagraph->fRuns.size(),
                                        advanceX);
