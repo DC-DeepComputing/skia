@@ -1377,6 +1377,16 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
                 }
                 break;
             }
+            case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES: {
+                if (hasVulkan11Features) {
+                    auto* features =
+                            reinterpret_cast<VkPhysicalDeviceProtectedMemoryFeatures*>(pNext);
+                    DUP_INTO(fVulkan11, samplerYcbcrConversion);
+                } else {
+                    chain(newChainEnd, pNext);
+                }
+                break;
+            }
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_DRAW_PARAMETERS_FEATURES: {
                 if (hasVulkan11Features) {
                     auto* features =
