@@ -8,8 +8,11 @@ licenses(["notice"])
 
 SPARSE_STRIPS_FILES = [
     "MSAA_LUT.h",
+    "SparseStripTypes.h",
     "StripGenerator.cpp",
     "StripGenerator.h",
+    "Tiler.cpp",
+    "Tiler.h",
 ]
 
 split_srcs_and_hdrs(
