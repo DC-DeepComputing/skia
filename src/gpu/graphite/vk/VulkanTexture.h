@@ -54,7 +54,8 @@ public:
                                       sk_sp<MutableTextureState>,
                                       VkImage,
                                       const VulkanAlloc&,
-                                      sk_sp<VulkanYcbcrConversion>);
+                                      sk_sp<VulkanYcbcrConversion>,
+                                      bool saveOriginalLayout);
 
     ~VulkanTexture() override;
 
@@ -106,6 +107,14 @@ public:
     // layout.
     bool uploadDataOnHost(const UploadSource& source, const SkIRect& dstRect) override;
 
+    bool hasOriginalWrappedLayout() const {
+        return fOriginalWrappedLayout != VK_IMAGE_LAYOUT_UNDEFINED;
+    }
+
+    VkImageLayout originalWrappedLayout() const {
+        return fOriginalWrappedLayout;
+    }
+
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
@@ -114,7 +123,8 @@ private:
                   VkImage,
                   const VulkanAlloc&,
                   Ownership,
-                  sk_sp<VulkanYcbcrConversion>);
+                  sk_sp<VulkanYcbcrConversion>,
+                  VkImageLayout originalWrappedLayout = VK_IMAGE_LAYOUT_UNDEFINED);
 
     void freeGpuData() override;
 
@@ -130,6 +140,8 @@ private:
     mutable skia_private::STArray<3, CachedTextureDescSet> fCachedSingleTextureDescSets;
 
     skia_private::STArray<3, sk_sp<VulkanFramebuffer>> fCachedFramebuffers;
+
+    VkImageLayout fOriginalWrappedLayout;
 };
 
 } // namespace skgpu::graphite

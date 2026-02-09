@@ -282,8 +282,14 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
         return nullptr;
     }
 
+    const TextureInfo* texInfoPtr = &textureInfo;
+    std::optional<TextureInfo> optInfo = fSharedContext->convertTextureInfo(textureInfo);
+    if (optInfo) {
+        texInfoPtr = &optInfo.value();
+    }
+
     fTargetProxyData = std::make_unique<Recording::LazyProxyData>(
-            this->priv().caps(), imageInfo.dimensions(), textureInfo);
+            this->priv().caps(), imageInfo.dimensions(), *texInfoPtr);
     // Use kLoad for the initial load op since the purpose of a deferred canvas is to draw on top
     // of an existing, late-bound texture.
     fTargetProxyDevice = Device::Make(this,
@@ -337,10 +343,14 @@ int Recorder::maxTextureSize() const {
 
 BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
     ASSERT_SINGLE_OWNER
+   // SkDebugf("create backend texture 1\n");
 
-    if (!info.isValid() || info.backend() != this->backend()) {
+   // SkDebugf("info backend %d, this backend: %d\n", info.backend(), this->backend());
+    if (!info.isValid() /*|| info.backend() != this->backend()*/) {
+    //    SkDebugf("create backend texture 2\n");
         return {};
     }
+   // SkDebugf("create backend texture 3\n");
     return fResourceProvider->createBackendTexture(dimensions, info);
 }
 
@@ -365,7 +375,7 @@ BackendTexture Recorder::createBackendTexture(AHardwareBuffer* hardwareBuffer,
 
 #endif // SK_BUILD_FOR_ANDROID
 
-bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
+bool Recorder::updateBackendTexture(const BackendTexture& inBackendTex,
                                     const SkPixmap srcData[],
                                     int numLevels,
                                     GpuFinishedProc finishedProc,
@@ -374,7 +384,14 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     auto releaseHelper = skgpu::RefCntedCallback::Make(finishedProc, finishedContext);
 
-    if (!backendTex.isValid() || backendTex.backend() != this->backend()) {
+    const BackendTexture* backendTex = &inBackendTex;
+    std::optional<BackendTexture> optBETex =
+        fSharedContext->convertBackendTextureIfNeeded(inBackendTex);
+    if (optBETex) {
+        backendTex = &optBETex.value();
+    }
+
+    if (!backendTex->isValid() || backendTex->backend() != this->backend()) {
         return false;
     }
 
@@ -384,8 +401,8 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     // If the texture has MIP levels then we require that the full set is overwritten.
     int numExpectedLevels = 1;
-    if (backendTex.info().mipmapped() == Mipmapped::kYes) {
-        numExpectedLevels = SkMipmap::ComputeLevelCount(backendTex.dimensions()) + 1;
+    if (backendTex->info().mipmapped() == Mipmapped::kYes) {
+        numExpectedLevels = SkMipmap::ComputeLevelCount(backendTex->dimensions()) + 1;
     }
     if (numLevels != numExpectedLevels) {
         return false;
@@ -393,11 +410,11 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     SkColorType ct = srcData[0].colorType();
 
-    if (!this->priv().caps()->areColorTypeAndTextureInfoCompatible(ct, backendTex.info())) {
+    if (!this->priv().caps()->areColorTypeAndTextureInfoCompatible(ct, backendTex->info())) {
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(*backendTex, "");
     if (!texture) {
         return false;
     }
@@ -419,7 +436,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     // Src and dst colorInfo are the same
     const SkColorInfo& colorInfo = srcData[0].info().colorInfo();
 
-    const SkIRect dimensions = SkIRect::MakeSize(backendTex.dimensions());
+    const SkIRect dimensions = SkIRect::MakeSize(backendTex->dimensions());
     UploadSource uploadSource = UploadSource::Make(
             this->priv().caps(), *proxy, colorInfo, colorInfo, mipLevels, dimensions);
     if (!uploadSource.isValid()) {
@@ -455,7 +472,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     return true;
 }
 
-bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
+bool Recorder::updateCompressedBackendTexture(const BackendTexture& inBackendTex,
                                               const void* data,
                                               size_t dataSize,
                                               GpuFinishedProc finishedProc,
@@ -464,7 +481,14 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
 
     auto releaseHelper = skgpu::RefCntedCallback::Make(finishedProc, finishedContext);
 
-    if (!backendTex.isValid() || backendTex.backend() != this->backend()) {
+    const BackendTexture* backendTex = &inBackendTex;
+    std::optional<BackendTexture> optBETex =
+        fSharedContext->convertBackendTextureIfNeeded(inBackendTex);
+    if (optBETex) {
+        backendTex = &optBETex.value();
+    }
+
+    if (!backendTex->isValid() || backendTex->backend() != this->backend()) {
         return false;
     }
 
@@ -472,7 +496,7 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(*backendTex, "");
     if (!texture) {
         return false;
     }
@@ -725,6 +749,17 @@ sk_sp<TextureProxy> RecorderPriv::CreateCachedProxy(Recorder* recorder,
 
 size_t RecorderPriv::getResourceCacheLimit() const {
     return fRecorder->fResourceProvider->getResourceCacheLimit();
+}
+
+TextureInfo RecorderPriv::getDefaultSampledTextureInfo(SkColorType ct,
+                                                       Mipmapped mm,
+                                                       Protected prot,
+                                                       Renderable ren) const {
+    return fRecorder->fSharedContext->getDefaultSampledTextureInfo(ct, mm, prot, ren);
+}
+
+std::optional<BackendTexture> RecorderPriv::convertBackendTextureIfNeeded(const BackendTexture& beTex) {
+    return fRecorder->fSharedContext->convertBackendTextureIfNeeded(beTex);
 }
 
 #if defined(GPU_TEST_UTILS)
