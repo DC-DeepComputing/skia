@@ -37,7 +37,7 @@ static const GrD3DBackendSemaphoreData* get_and_cast_data(const GrBackendSemapho
 }
 
 namespace GrBackendSemaphores {
-GrBackendSemaphore MakeD3D(const GrD3DFenceInfo& info) {
+ GrBackendSemaphore MakeD3D(const GrD3DFenceInfo& info) {
     GrD3DBackendSemaphoreData data(info);
     return GrBackendSemaphorePriv::MakeGrBackendSemaphore(GrBackendApi::kDirect3D, data);
 }

@@ -11,19 +11,16 @@
 #include "src/gpu/ganesh/d3d/GrD3DResourceState.h"
 #include "src/gpu/ganesh/d3d/GrD3DTypesPriv.h"
 
-GrD3DBackendSurfaceInfo::GrD3DBackendSurfaceInfo()
-        : fTextureResourceInfo(nullptr), fResourceState(nullptr) {}
-
 GrD3DBackendSurfaceInfo::GrD3DBackendSurfaceInfo(const GrD3DTextureResourceInfo& info,
                                                  sk_sp<GrD3DResourceState> state)
-        : fTextureResourceInfo(new GrD3DTextureResourceInfo(info))
-        , fResourceState(std::move(state)) {}
+    : fTextureResourceInfo(new GrD3DTextureResourceInfo(info))
+    , fResourceState(std::move(state)) {}
 
 GrD3DBackendSurfaceInfo::~GrD3DBackendSurfaceInfo() = default;
 
 GrD3DBackendSurfaceInfo::GrD3DBackendSurfaceInfo(const GrD3DBackendSurfaceInfo& that)
-        : fTextureResourceInfo(new GrD3DTextureResourceInfo(*that.fTextureResourceInfo))
-        , fResourceState(that.fResourceState) {}
+    : fTextureResourceInfo(new GrD3DTextureResourceInfo(*that.fTextureResourceInfo))
+    , fResourceState(that.fResourceState) {}
 
 GrD3DBackendSurfaceInfo& GrD3DBackendSurfaceInfo::operator=(const GrD3DBackendSurfaceInfo& that) {
     if (this != &that) {
@@ -41,7 +38,7 @@ void GrD3DBackendSurfaceInfo::setResourceState(GrD3DResourceStateEnum resourceSt
     fResourceState->setResourceState(static_cast<D3D12_RESOURCE_STATES>(resourceState));
 }
 
-sk_sp<GrD3DResourceState> GrD3DBackendSurfaceInfo::getGrD3DResourceState() const {
+sk_sp<GrD3DResourceState> GrD3DBackendSurfaceInfo::getResourceState() const {
     SkASSERT(fResourceState);
     return fResourceState;
 }
