@@ -123,6 +123,63 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
+                           SkAlphaType at,
+                           sk_sp<SkColorSpace> cs,
+                           skgpu::Origin origin,
+                           GenerateMipmapsFromBase genMipmaps,
+                           TextureReleaseProc releaseP,
+                           ReleaseContext releaseC,
+                           std::string_view label) {
+    auto releaseHelper = skgpu::RefCntedCallback::Make(releaseP, releaseC);
+
+    if (!recorder) {
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkColorType ct = caps->getDefaultColorType(backendTex.info(), at);
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
+    if (at == kUnknown_SkAlphaType && !SkColorTypeIsAlwaysOpaque(ct)) {
+        at = kOpaque_SkAlphaType;
+        swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
+    }
+
+    SkColorInfo info(ct, at, std::move(cs));
+    if (!validate_backend_texture(caps, backendTex, info)) {
+        return nullptr;
+    }
+
+    if (label.empty()) {
+        label = "WrappedImage";
+    }
+
+    sk_sp<Texture> texture =
+            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    if (!texture) {
+        SKGPU_LOG_W("Texture creation failed");
+        return nullptr;
+    }
+    texture->setReleaseCallback(std::move(releaseHelper));
+
+    TextureProxyView view(TextureProxy::Wrap(std::move(texture)), swizzle, origin);
+    if (genMipmaps == GenerateMipmapsFromBase::kYes) {
+        if (view.proxy()->mipmapped() == skgpu::Mipmapped::kNo) {
+            SKGPU_LOG_W("Failed SkImage:::WrapTexture because asked to generate mipmaps for "
+                        "nonmipmapped texture");
+            return nullptr;
+        }
+        if (!GenerateMipmaps(recorder, /*drawContext=*/nullptr, view.refProxy(), info)) {
+            SKGPU_LOG_W("Failed SkImage::WrapTexture. Could not generate mipmaps.");
+            return nullptr;
+        }
+    }
+
+    return sk_make_sp<skgpu::graphite::Image>(view, info);
+}
+
+sk_sp<SkImage> WrapTexture(Recorder* recorder,
+                           const BackendTexture& backendTex,
                            SkColorType ct,
                            SkAlphaType at,
                            sk_sp<SkColorSpace> cs,
