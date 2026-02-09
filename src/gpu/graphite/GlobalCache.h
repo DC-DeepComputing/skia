@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 
 #include <functional>
 
@@ -136,6 +137,23 @@ public:
         return fDynamicSamplers[desc.desc()];
     }
 
+    // Retrieve the static MSAA 8x mask lookup table.
+    const SkTDArray<uint8_t>* getMSAA8MaskLUT() SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{fSpinLock};
+        SkASSERT(!fMSAAMaskLUT.empty());
+        return &fMSAAMaskLUT;
+    }
+
+    // Initialize the MSAA 8x mask lookup table.
+    bool initializeMSAA8MaskLUT() SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{fSpinLock};
+        if (!fMSAAMaskLUT.empty()) {
+            return false;
+        }
+        fMSAAMaskLUT = GenerateMSAALUT<uint8_t>();
+        return !fMSAAMaskLUT.empty();
+    }
+
     bool initializeDynamicSamplers(ResourceProvider*, const Caps*) SK_EXCLUDES(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
@@ -184,6 +202,9 @@ private:
     ComputePipelineCache  fComputePipelineCache  SK_GUARDED_BY(fSpinLock);
 
     skia_private::TArray<sk_sp<Resource>> fStaticResource SK_GUARDED_BY(fSpinLock);
+
+    // Static MSAA mask lookup table.
+    SkTDArray<uint8_t> fMSAAMaskLUT SK_GUARDED_BY(fSpinLock);
 
     PipelineCallbackContext fPipelineCallbackContext = nullptr;
 
