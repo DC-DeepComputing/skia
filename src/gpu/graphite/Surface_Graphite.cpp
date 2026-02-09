@@ -250,7 +250,8 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
                                     std::string_view label) {
     // TODO(476410476): When the SkColorType-taking WrapBackendTexture goes away, we can move its
     // function body here and construct the SkColorInfo from this getDefaultColorType call.
-    SkColorType colorType = recorder->priv().caps()->getDefaultColorType(backendTex.info());
+    SkColorType colorType = recorder->priv().caps()->getDefaultColorType(backendTex.info(),
+                                                                         kPremul_SkAlphaType);
     return WrapBackendTexture(recorder, backendTex, colorType, std::move(cs), props,
                               releaseP, releaseC, label);
 }
