@@ -59,6 +59,7 @@ public:
         size_t firstChar,
         SkScalar heightMultiplier,
         bool useHalfLeading,
+        bool allowSpacingScriptLanguages,
         SkScalar baselineShift,
         size_t index,
         SkScalar shiftX);
@@ -98,6 +99,7 @@ public:
     size_t index() const { return fIndex; }
     SkScalar heightMultiplier() const { return fHeightMultiplier; }
     bool useHalfLeading() const { return fUseHalfLeading; }
+    bool  allowSpacingScriptLanguages() const { return fAllowSpacingScriptLanguages; }
     SkScalar baselineShift() const { return fBaselineShift; }
     PlaceholderStyle* placeholderStyle() const;
     bool isPlaceholder() const { return fPlaceholderIndex != std::numeric_limits<size_t>::max(); }
@@ -207,6 +209,7 @@ private:
     SkFontMetrics fFontMetrics;
     const SkScalar fHeightMultiplier;
     const bool fUseHalfLeading;
+    const bool fAllowSpacingScriptLanguages;
     const SkScalar fBaselineShift;
     SkScalar fCorrectAscent;
     SkScalar fCorrectDescent;

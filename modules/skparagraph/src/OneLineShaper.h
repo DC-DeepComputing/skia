@@ -94,6 +94,7 @@ private:
                                            fCurrentText.start,
                                            fHeight,
                                            fUseHalfLeading,
+                                           fParagraph->paragraphStyle().getAllowSpacingScriptLanguages(),
                                            fBaselineShift,
                                            ++fUniqueRunId,
                                            fAdvance.fX);

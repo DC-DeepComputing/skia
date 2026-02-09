@@ -8476,7 +8476,7 @@ UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiFontResolution, reporter) {
 UNIX_ONLY_TEST(SkParagraph_ArabicMeansNoLetterSpacing, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
-    TestCanvas canvas("SkParagraph_ArabicParagraph.png");
+    TestCanvas canvas("SkParagraph_NoSpacesArabicParagraph.png");
     const char* arabic = "سلام";
     const char* english = "Hello";
 
@@ -8494,7 +8494,9 @@ UNIX_ONLY_TEST(SkParagraph_ArabicMeansNoLetterSpacing, reporter) {
         builder.pop();
 
         auto paragraph = builder.Build();
-        paragraph->layout(SK_ScalarInfinity);
+        paragraph->layout(TestCanvasWidth);
+        paragraph->paint(canvas.get(), 20, 0);
+        canvas.get()->translate(0, paragraph->getHeight() + 20);
         return paragraph->getLongestLine();
     };
 
@@ -8508,6 +8510,47 @@ UNIX_ONLY_TEST(SkParagraph_ArabicMeansNoLetterSpacing, reporter) {
         auto noLetterSpacing = layout("Roboto", english, 0.0);
         auto withLetterSpacing = layout("Roboto", english, 100.0);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual((withLetterSpacing - noLetterSpacing), 100.0 * strlen(english), EPSILON1000));
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_ArabicWithLetterSpacing, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    TestCanvas canvas("SkParagraph_SpacedArabicParagraph.png");
+    const char* arabic = "سلام";
+    const char* english = "Hello";
+
+    ParagraphStyle paragraph_style;
+    paragraph_style.setAllowSpacingScriptLanguages(true);
+    TextStyle text_style;
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+
+    auto layout = [&](const char* familyName, const char* text, double letterSpacing) -> double {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+        text_style.setLetterSpacing(letterSpacing);
+        text_style.setFontFamilies({SkString(familyName)});
+        builder.pushStyle(text_style);
+        builder.addText(text, strlen(text));
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        paragraph->paint(canvas.get(), 20, 0);
+        canvas.get()->translate(0, paragraph->getHeight() + 20);
+        return paragraph->getLongestLine();
+    };
+
+    {   // Letter spacing works for Arabic with override
+        auto noLetterSpacing = layout("Katibeh", arabic, 0.0);
+        auto withLetterSpacing = layout("Katibeh", arabic, 100.0);
+        REPORTER_ASSERT(reporter, withLetterSpacing - noLetterSpacing > 100.0);
+    }
+    {
+        // Letter spacing affects English text (number of letter * letter spacing)
+        auto noLetterSpacing = layout("Roboto", english, 0.0);
+        auto withLetterSpacing = layout("Roboto", english, 100.0);
+        REPORTER_ASSERT(reporter, withLetterSpacing - noLetterSpacing > 100.0);
     }
 }
 
