@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b74ea622_aea95e91",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-09T22:36:00Z",
+      "side": 1,
+      "message": "Good catch, the bottom up handling was in a mixed-inconsistent state. I have refactored it to make it consistent and encapsulated on the rust code, so from C++ there is no need to know if it is bottom up or top down. Mainly:\n- BMPDecoder in image crate will be reversing rows to adjust to be top down orientation. This means that a fully decoded image will be already top down orientation. When partial decoding, then rows_decoded will return the number of rows and the orientation\n- FFI will return the full image when fully decoded or the trimmed rows. There will be an auxiliary method returning the start row and the number of rows of the decoded image (so if it is top down it will be from 0 to n - 1; if it is bottom up it will be from height - n to height - 1)\n- SkBmpRustCodec will just copy the range of rows to the given position, or the full image if it is fully decoded.\n\nWith this, only BMPDecoder is keeping internally the top_down boolean; the FFI will get it as required on responses to rows_decoded but it will not store it internally, and SkBmpRustCodec will not have knowledge about top_down boolean.",
+      "parentUuid": "978ba4ad_184a18d4",
+      "range": {
+        "startLine": 328,
+        "startChar": 23,
+        "endLine": 328,
+        "endChar": 34
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29f92a19_c0ba1432",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-05T23:52:44Z",
       "side": 1,
       "message": "Here I also don\u0027t understand why `fIsBottomUp` affects only `dstRow` but not `srcRow`.  When `fIsBottomUp` is true and `kIncompleteInput` happens, then I expect that the *last* rows of `srcImage` are populated and can be copied to the *last* rows of `dstImage`.  (And the code in this case seems to copy the *first* [not-populated-yet?] rows of `srcImage` to the *last* rows of `dstImage`.)\n\nIf this is indeed a problem, then would it be possible to add a test that covers a bottom-up image (e.g. verifying pixels in the first and last rows, and expecting them to differ).",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 74
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e034af13_50177d30",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-09T22:36:00Z",
+      "side": 1,
+      "message": "Good catch. I explain new implementation in previuous comment",
+      "parentUuid": "29f92a19_c0ba1432",
       "range": {
         "startLine": 407,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e50b9315_6f65fc46",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-09T22:36:00Z",
+      "side": 1,
+      "message": "Thanks for pointing to this, I had in my pending list but totally forgot. The issue was that the field is not exposed so I created a PR for exposing it:\n\nhttps://github.com/image-rs/image/pull/2760\n\nAs explained in previous comment response, the new way of handling this makes that it will not be require to store bottom_up info as it will be applied on the returned rows and they will be properly sorted for C++",
+      "parentUuid": "df6fb1b4_0fb9754c",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 34
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcabe9e9_dbf3e805",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-05T23:52:44Z",
       "side": 1,
       "message": "Thank you for returning a trimmed slice/span - this is nice because it should help catch issues where C++ accesses pixels that haven\u0027t yet been decoded.\n\nOTOH, does that need to take `is_bottom_up` into account?",
+      "range": {
+        "startLine": 367,
+        "startChar": 8,
+        "endLine": 367,
+        "endChar": 39
+      },
+      "revId": "7ba49709a2ebb814355ec5b1518b1cb42c6fb834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0354c3df_9b24b1dc",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 21
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-09T22:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcabe9e9_dbf3e805",
       "range": {
         "startLine": 367,
         "startChar": 8,
