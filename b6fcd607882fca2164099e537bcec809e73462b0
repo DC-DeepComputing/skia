@@ -22,6 +22,30 @@
       },
       "revId": "b6fcd607882fca2164099e537bcec809e73462b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "992102d6_72f686a6",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBackendSemaphore.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-09T20:08:07Z",
+      "side": 1,
+      "message": "Done. Be advised I had to specify the template param anyway, so it\u0027s not as concise as I would have liked it.",
+      "parentUuid": "8151c30b_16661fd2",
+      "range": {
+        "startLine": 42,
+        "startChar": 83,
+        "endLine": 42,
+        "endChar": 87
+      },
+      "revId": "b6fcd607882fca2164099e537bcec809e73462b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
