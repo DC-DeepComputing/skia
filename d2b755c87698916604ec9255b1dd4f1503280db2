@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c47fe58_782bdff7",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "nit: copypasta (2026 Google LLC)",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efa4a55a_4eb4d9b1",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "I don\u0027t think this is necessary. Same for the SkTArray #include",
+      "range": {
+        "startLine": 22,
+        "startChar": 16,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca2c5ca_36f3a810",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "All of these are closed contours - we want some examples that are just unclosed lines (where the caps should be different)",
+      "range": {
+        "startLine": 36,
+        "startChar": 81,
+        "endLine": 36,
+        "endChar": 86
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f11ff4cf_1943b62c",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "This seems to be the same as the previous one.",
+      "range": {
+        "startLine": 44,
+        "startChar": 54,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c38871f0_68dcab79",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "I think it would be helpful to have a zoomed in version below each of the lines so it\u0027s more clear what the caps are like in the given situation. Something like the ZoomInSlide.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9c1563_5236e9bb",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T18:16:38Z",
+      "side": 1,
+      "message": "For this test, I thought we wanted to focus only on antialiased hairlines, right?",
+      "range": {
+        "startLine": 53,
+        "startChar": 15,
+        "endLine": 54,
+        "endChar": 53
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
