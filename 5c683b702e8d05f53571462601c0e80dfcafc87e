@@ -50,6 +50,30 @@
       ],
       "revId": "5c683b702e8d05f53571462601c0e80dfcafc87e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef9fe1e1_6294f0bb",
+        "filename": "RELEASE_NOTES.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4637933
+      },
+      "writtenOn": "2026-02-10T16:34:52Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "17d02cb9_909cb9dc",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "5c683b702e8d05f53571462601c0e80dfcafc87e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
