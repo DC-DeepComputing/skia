@@ -358,3 +358,35 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
     }
 #endif
 }
+
+#if defined(SK_VULKAN)
+DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(GrVkBackendSemaphoreTest,
+                                   reporter,
+                                   ctxInfo,
+                                   CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    GrBackendSemaphore sema;
+    REPORTER_ASSERT(reporter, !sema.isInitialized());
+
+    GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
+    VkDevice device = gpu->device();
+
+    VkSemaphore vkSem;
+    VkSemaphoreCreateInfo createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createInfo.pNext = nullptr;
+    createInfo.flags = 0;
+    GR_VK_CALL_ERRCHECK(gpu, CreateSemaphore(device, &createInfo, nullptr, &vkSem));
+    // Test assignment operator
+    sema = GrBackendSemaphores::MakeVk(vkSem);
+
+    REPORTER_ASSERT(reporter, sema.isInitialized());
+
+    // Test copy constructor (which had been buggy at one point)
+    GrBackendSemaphore copy(sema);
+    REPORTER_ASSERT(reporter, copy.isInitialized());
+
+    // Cleanup
+    GR_VK_CALL(gpu->vkInterface(), DestroySemaphore(device, vkSem, nullptr));
+}
+#endif
