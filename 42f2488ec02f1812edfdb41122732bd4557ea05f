@@ -22,6 +22,23 @@
       },
       "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "899699af_833f88d6",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-10T18:44:17Z",
+      "side": 1,
+      "message": "If makeClone fails and returns null, do we want to keep the original typeface?",
+      "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
