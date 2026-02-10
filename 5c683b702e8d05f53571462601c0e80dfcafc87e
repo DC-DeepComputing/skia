@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17d02cb9_909cb9dc",
+        "filename": "RELEASE_NOTES.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-10T15:43:55Z",
+      "side": 1,
+      "message": "Let\u0027s remove the extra asterisks here.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "39e4b056_20b3ef9b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "RELEASE_NOTES.md",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": "  * `SkSurfaces::WrapBackendTexture` no longer requires providing an `SkColorType`. A closest\n"
+            },
+            {
+              "path": "RELEASE_NOTES.md",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "  * Graphite\u0027s InsertStatus now has an additional kOutOfOrderRecording to differentiate this\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5c683b702e8d05f53571462601c0e80dfcafc87e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
