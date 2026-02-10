@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c85a51f4_77586cd8",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-10T19:59:21Z",
+      "side": 1,
+      "message": "Good catch, I had a length check and lost it in the update.\n\nIf we range-check per css rules first, it should be fine to index (plain ascii), right?\n\nUpdated.",
+      "parentUuid": "a1541ea5_9899d0a0",
+      "range": {
+        "startLine": 124,
+        "startChar": 66,
+        "endLine": 124,
+        "endChar": 72
+      },
+      "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "899699af_833f88d6",
         "filename": "modules/skottie/src/layers/TextLayer.cpp",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2026-02-10T18:44:17Z",
       "side": 1,
       "message": "If makeClone fails and returns null, do we want to keep the original typeface?",
+      "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34ed6d2d_4b1f46ce",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-10T19:59:21Z",
+      "side": 1,
+      "message": "Good point, done.",
+      "parentUuid": "899699af_833f88d6",
       "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
