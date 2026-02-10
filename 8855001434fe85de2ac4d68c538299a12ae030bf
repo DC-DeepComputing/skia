@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e3b5645_46e0cef7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T20:29:06Z",
+      "side": 1,
+      "message": "Thanks! Rob and I were looking for a Graphite only GM macro, but didn\u0027t find one. I\u0027ll keep this in mind next time I need to make a graphite only GM.",
+      "revId": "8855001434fe85de2ac4d68c538299a12ae030bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
