@@ -72,26 +72,22 @@ void DrawListLayer::recordBackwards(int stepIndex,
         }
     }
 
-    SkTInternalLList<Layer>::Iter iter;
+    Layer* current = nullptr;
     Layer* targetLayer = nullptr;
     BindingWrapper* targetMatch = nullptr;
-
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
-    Layer* current;
     if (!isStencil && !dependsOnDst) {
-        targetLayer = stopLayer ? stopLayer->fNext : fLayers.head();
+        targetLayer = stopLayer ? const_cast<Layer*>(stopLayer) : fLayers.head();
         if (targetLayer) {
             targetMatch = fLayers.head()->searchBinding(key);
         }
         current = const_cast<Layer*>(stopLayer);
     } else {
-        current = iter.init(fLayers, SkTInternalLList<Layer>::Iter::kTail_IterStart);
+        current = fLayers.tail();
     }
 
     bool shouldOverwriteLayer = true;
-    int limit = kMaxSearchLimit;
-    // When stopLayer == nullptr this is effectively while(current)
-    while (current != stopLayer && limit > 0) {
+    for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stopLayer; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
@@ -123,8 +119,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
             // to see if there is a 'Compatible' layer further back to batch with.
         }
 
-        current = iter.prev();
-        limit--;
+        current = current->fPrev;
     }
 
     if (!targetLayer) {
@@ -143,7 +138,9 @@ void DrawListLayer::recordBackwards(int stepIndex,
         fStencilLayer = targetLayer;
         fStencilWrapper = targetMatch;
     } else {
-        targetLayer->add<kIsDepthOnly>(&fStorage, targetMatch, key, draw, step, !dependsOnDst);
+        bool notStopLayer = !stopLayer || targetLayer != stopLayer;
+        targetLayer->add<kIsDepthOnly>(
+                &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer);
     }
 
     if constexpr (kIsDepthOnly) {
@@ -181,9 +178,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     Layer* current = *startLayer;
     Layer* targetLayer = nullptr;
     BindingWrapper* targetMatch = nullptr;
-
-    int limit = kMaxSearchLimit;
-    while (current && limit > 0) {
+    for (uint32_t limit = 0; limit < kMaxSearchLimit && current; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fNext);
 #endif
@@ -195,7 +190,6 @@ void DrawListLayer::recordForwards(int stepIndex,
             break;
         }
         current = current->fNext;
-        limit--;
     }
 
     if (!targetLayer) {
