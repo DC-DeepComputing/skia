@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1541ea5_9899d0a0",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-10T18:33:00Z",
+      "side": 1,
+      "message": "Seems like there should be a check here somewhere that the string is at least 4 CharT long? Also, it appears this string is UTF-8 so direct indexing like this isn\u0027t really valid? Should the code points be decoded and checked to be in range? Should probably match what CSS does, https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variation-settings#string_number .",
+      "range": {
+        "startLine": 124,
+        "startChar": 66,
+        "endLine": 124,
+        "endChar": 72
+      },
+      "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
