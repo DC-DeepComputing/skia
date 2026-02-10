@@ -51,6 +51,42 @@
       "message": "1. I think the font variations should be animatable. So do something similar do we do with other animatable properties.\n\n2. Also should we float this by the spec committee? I don\u0027t expect to get this standardized (especially until fonts are generally in), but some early feedback may be useful to reduce future churn risk.",
       "revId": "c1f4f851370e61e66132607780beced8a681d020",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "071b187e_930d45f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-10T17:28:13Z",
+      "side": 1,
+      "message": "Awesome, let\u0027s try that then.  Updated.",
+      "parentUuid": "5ffd0802_0756cb25",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68b8bd1_a6827987",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-10T17:28:13Z",
+      "side": 1,
+      "message": "\u003e 1. I think the font variations should be animatable. So do something similar do we do with other animatable properties.\n\nYeah, I assume we\u0027ll want to support animating variations eventually.  Those would have to live in the text layer scope though, where there\u0027s a timeline to evaluate against.\n\nThese are defined per font asset, as a way to tweak variation params at initial font load time.  Like all other font asset properties they are not animatable, but they should compose seamlessly with layer-scoped animating counterparts when we get to add them (applying new variation coords to these initially-adjusted typefaces should work just fine).\n\n\n\u003e \n\u003e 2. Also should we float this by the spec committee? I don\u0027t expect to get this standardized (especially until fonts are generally in), but some early feedback may be useful to reduce future churn risk.\n\nSounds good.  We can hold off landing until next meeting, or we can always update based on their feedback.",
+      "parentUuid": "004fb16f_7dd52ae9",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
