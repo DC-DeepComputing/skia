@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6cf7d59_d77d3600",
+        "filename": "gn/gm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-10T17:59:29Z",
+      "side": 1,
+      "message": "This name doesn\u0027t match with the new file",
+      "range": {
+        "startLine": 360,
+        "startChar": 8,
+        "endLine": 360,
+        "endChar": 29
+      },
+      "revId": "4e3e1dbfe8d5972094caac4e38b92deb7f894fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
