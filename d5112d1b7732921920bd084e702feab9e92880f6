@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a004512c_c0cd0177",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f27ba470_39181b14",
+      "range": {
+        "startLine": 702,
+        "startChar": 16,
+        "endLine": 705,
+        "endChar": 17
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "094de043_7f0557ad",
@@ -70,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71c7847f_d2d0703d",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "094de043_7f0557ad",
+      "range": {
+        "startLine": 677,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 1
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2332250_6930c7e5",
@@ -83,6 +131,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 893,
+        "startChar": 28,
+        "endLine": 893,
+        "endChar": 45
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9adab99_57883ce0",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2332250_6930c7e5",
       "range": {
         "startLine": 893,
         "startChar": 28,
@@ -118,6 +190,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d4100a5_db5d8ba9",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1942,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "I think you may have gotten `recordDepthOnly` confused with `recordForwards. \n\nSee the new comment for details.",
+      "parentUuid": "1a43710a_84bbd0e4",
+      "range": {
+        "startLine": 1942,
+        "startChar": 76,
+        "endLine": 1942,
+        "endChar": 85
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1bd19c31_5f577523",
         "filename": "src/gpu/graphite/ClipStack.h",
         "patchSetId": 37
@@ -129,6 +225,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "nit: pair",
+      "range": {
+        "startLine": 116,
+        "startChar": 9,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "767e10f5_51925cec",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bd19c31_5f577523",
       "range": {
         "startLine": 116,
         "startChar": 9,
@@ -186,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a23fafe_48584f21",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad9335e3_43671809",
+      "range": {
+        "startLine": 1761,
+        "startChar": 0,
+        "endLine": 1765,
+        "endChar": 5
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ef44910_7b7a85ca",
@@ -199,6 +343,30 @@
       "writtenOn": "2026-02-06T20:52:38Z",
       "side": 1,
       "message": "Here, `targetLayer` represents the stop layer determined by the clip stack. This first call to recordDraw() can then be a fast direct append into that layer. Since we push it into the layer lists, when we call `recordDraw` a second time below for the regular dependsOnDst draw, it will automatically go in a later layer (either hitting a different draw later in the layer list, or intersecting the just recorded draw\u0027s bounds.",
+      "range": {
+        "startLine": 1812,
+        "startChar": 0,
+        "endLine": 1823,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1230d3d6_ee635dc1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1823,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ef44910_7b7a85ca",
       "range": {
         "startLine": 1812,
         "startChar": 0,
@@ -304,6 +472,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9bdb1d1_7770461f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aff753bc_3af5d5fb",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 80
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "513de99e_742ef990",
@@ -317,6 +509,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "I think this is causing us to record a lot of redundant draws+steps when doing chained drawing. For every renderstep inside `recordDraw`, we call `recordBackwards`. While the first render step skips this code, the subsequent steps hit this code and add a new `ChainedDraw`. For something with 2-3 rendersteps, we record 2-3 ChainedDraws per draw and then when we iterate over them when snapping a DrawPass we process the rendersteps multiple times.\n\nWe likely aren\u0027t seeing any visible GM differences because these extra recorded draws will have the same Z value and then fail their depth test, but we\u0027ll still have a lot of CPU overhead writing out the extra instances and performing the vertex shader work before it gets to the fragment work.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 9
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdd1c48b_5cf74948",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "I have tested and confirmed that this is not producing extra draws. Note: we are not adding layers here, we append the draw directly to its parent. Regardless, this behavior is effectively removed in the stencil transpose CL.",
+      "parentUuid": "513de99e_742ef990",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -352,6 +568,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd2d36f7_a0b001ad",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "The logic in this CL is not robust enough to handle `stopLayer` insertion. So instead, we insert into stopLayer-\u003enext.\n\n`stopLayer` insertion robustness is added in a downstream CL.",
+      "parentUuid": "814d4046_2bfaed5e",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b0298e5_67b94704",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 37
@@ -363,6 +603,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "If we have compatibleOverlap, we had already iterated over the BindingLists during `test` so having to do it it again for `searchBinding` adds overhead.  We could change `test` to return a pair for \"overlap(yes/no),match\". If the match is non-null it was a compatible overlap and otherwise it wasn\u0027t compatible.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 58
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0c7a99_bbb2ed88",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b0298e5_67b94704",
       "range": {
         "startLine": 93,
         "startChar": 0,
@@ -468,6 +732,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c2e99d8_860b869c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "6d747247_d852e8e2",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a2c5c40_5d3bd228",
@@ -481,6 +769,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "This can be enforced automatically in `recordBackwards` by using the `stopLayer`, the clip stack returns the stop layer and then we record up to that point. Then we dont\u0027 need this separate logic.",
+      "range": {
+        "startLine": 182,
+        "startChar": 27,
+        "endLine": 182,
+        "endChar": 54
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "635b80d4_6a0fbd57",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a2c5c40_5d3bd228",
       "range": {
         "startLine": 182,
         "startChar": 27,
@@ -516,6 +828,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "620bc048_8cc8367f",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "This comment was out of sync with the code, we explicitly do not allow forward walks when we dependOnDst.\n\nThat being said, the code still allows stencilDraws that !dependOnDst to take the forward path because the atomic property guarantees that inserting a stencil does not interfere with another stencil. (And stencils are still not allowed to overlap)",
+      "parentUuid": "e67e4429_0dd48d81",
+      "range": {
+        "startLine": 185,
+        "startChar": 11,
+        "endLine": 186,
+        "endChar": 95
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "961a00fe_9801a40d",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 37
@@ -527,6 +863,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "still has to be a backwards search, but is the earliest possible layer to insert into. But can insert directly into it if we don\u0027t depend on dst.",
+      "range": {
+        "startLine": 247,
+        "startChar": 7,
+        "endLine": 247,
+        "endChar": 21
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32cdb01c_87a60a6c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "961a00fe_9801a40d",
       "range": {
         "startLine": 247,
         "startChar": 7,
@@ -560,6 +920,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bedbd46_58685284",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f838e527_71e09954",
+      "range": {
+        "startLine": 269,
+        "startChar": 21,
+        "endLine": 270,
+        "endChar": 46
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cc141a9_4dd54b42",
@@ -573,6 +957,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "nit: This can just be `SkToBool(dstUsage \u0026 DstUsage::kDependsOnDst)`",
+      "range": {
+        "startLine": 271,
+        "startChar": 24,
+        "endLine": 271,
+        "endChar": 79
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "833d83d9_ed70a358",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cc141a9_4dd54b42",
       "range": {
         "startLine": 271,
         "startChar": 24,
@@ -608,6 +1016,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f75ac2a9_1c4cf2fd",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "This behavior is added in a downstream CL \"fold depth only draws into the general case.\"",
+      "parentUuid": "7e7bf5ee_d8d25b38",
+      "range": {
+        "startLine": 305,
+        "startChar": 18,
+        "endLine": 305,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5a71b56_3764cef6",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 37
@@ -619,6 +1051,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "captureParams only has to be set once, not inside the loop over the render steps.",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 40
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2647a42a_2e403e05",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5a71b56_3764cef6",
       "range": {
         "startLine": 313,
         "startChar": 0,
@@ -654,6 +1110,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cde7f16_209e1094",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "This will be tested/added in a downstream CL called \"Pilot Draws\"",
+      "parentUuid": "4ff8fd89_d437e260",
+      "range": {
+        "startLine": 337,
+        "startChar": 16,
+        "endLine": 344,
+        "endChar": 47
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ae38bf1_194b6bc9",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 37
@@ -665,6 +1145,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "While we have to wait until we\u0027re inside this loop in order to insert something into a Layer\u0027s BindingList (post collecting uniforms/textures), are we reporting the chosen Layer for subsequent steps? They would share the same draw bounds as the first step, so we can reuse the first step\u0027s layer and search forwards without worrying about overlaps.",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 13
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "879ca4e0_7bbe1c21",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "This will be tested/added in a downstream CL called \"Pilot Draws\"",
+      "parentUuid": "5ae38bf1_194b6bc9",
       "range": {
         "startLine": 304,
         "startChar": 0,
@@ -698,6 +1202,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7002f68_0abc2f64",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "520bfe7e_a27a3e68",
+      "range": {
+        "startLine": 416,
+        "startChar": 13,
+        "endLine": 416,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "930ef53c_de70fdc9",
@@ -711,6 +1239,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "We shouldn\u0027t rely on the CompressedPaintOrder value here so that we can avoid querying the BoundsManager at all when using layers. Instead, we can take advantage of the fact that a layer that allows overlaps in binding lists and draws will not depend on dst (so there\u0027s no barrier required) or the layer will keep draws disjoint. In order for the latter to always be true, we need to disable compatibleOverlap shortcuts when the draw requires a barrier. This will be worth it because it reduces the barriers we need to issue to when we change layers.",
+      "range": {
+        "startLine": 443,
+        "startChar": 19,
+        "endLine": 443,
+        "endChar": 73
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a5c69c5_5a14566f",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "930ef53c_de70fdc9",
       "range": {
         "startLine": 443,
         "startChar": 19,
@@ -744,6 +1296,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93ac5e3f_74a9e996",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1a77117_e69005db",
+      "range": {
+        "startLine": 477,
+        "startChar": 0,
+        "endLine": 477,
+        "endChar": 48
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f567bd0b_662981ed",
@@ -757,6 +1333,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "Since all of these functions are only going to be used in `DrawListLayer.cpp`, it\u0027s okay to define them there. This will help the compiler inline them since otherwise being in separate compilation units that\u0027s unlikely to happen w/o LTO (which Skia doesn\u0027t build with for our own tooling).",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01f6fb97_d8ba3a9e",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f567bd0b_662981ed",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -836,6 +1436,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b83aee6_0266a067",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c158565c_2df72b18",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 77
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b50a3c77_cbb05f23",
@@ -849,6 +1473,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "I think we will want to do two different checks here, one when we have SSBOs and one where we don\u0027t.  With SSBOs then we don\u0027t care about the uniform index in the key. If we have UBOs, we do care about the index but it should be a lower priority than the stencil grouping.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948b6f01_e424afda",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "As discussed, this will probably be a separate CL. Breaking up the key risks combinatorial explosion of layers, which, given that we are directly iterating through layers (as opposed to some O(log n) data structure), could result in extremely bad performance in pathological cases.\n\nThat being said, I think applying some sort of bounded limit would solve this issue.",
+      "parentUuid": "b50a3c77_cbb05f23",
       "range": {
         "startLine": 50,
         "startChar": 0,
@@ -929,6 +1577,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1a603c_f9c9edd8",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "I actually did not know that I could this. (and not have every draw instance carry the type on it!)",
+      "parentUuid": "252eae94_91b08f1a",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 67
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d5d00e1_1a7ab95c",
@@ -952,6 +1624,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec0e89f_eede0091",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d5d00e1_1a7ab95c",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aec1fb76_88bbc080",
@@ -965,6 +1661,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "Can this just be another BindingList?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 44
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34c144d2_42d9f6e2",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aec1fb76_88bbc080",
       "range": {
         "startLine": 129,
         "startChar": 0,

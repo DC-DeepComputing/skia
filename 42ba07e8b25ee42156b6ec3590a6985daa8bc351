@@ -1288,6 +1288,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b54cb131_17464493",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19647d4c_fe4ce6b9",
+      "range": {
+        "startLine": 113,
+        "startChar": 50,
+        "endLine": 113,
+        "endChar": 51
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4159f01e_4c3e8166",
@@ -1325,6 +1349,30 @@
       "side": 1,
       "message": "Similarly, I have tried powers of two from 256 to 4096, not much difference either.",
       "parentUuid": "4159f01e_4c3e8166",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 63
+      },
+      "revId": "42ba07e8b25ee42156b6ec3590a6985daa8bc351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a08c004b_26f91685",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-10T16:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "caeee9a0_2ef55ceb",
       "range": {
         "startLine": 114,
         "startChar": 0,
