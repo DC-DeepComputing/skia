@@ -50,6 +50,30 @@
       ],
       "revId": "ac9965e435a4a68ad64ba8ac201d297d79ac7282",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a00368_4b2a8b39",
+        "filename": "RELEASE_NOTES.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-10T16:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdd329ad_2212d5b2",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "ac9965e435a4a68ad64ba8ac201d297d79ac7282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
