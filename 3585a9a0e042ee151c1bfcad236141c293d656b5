@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c4b0c54_97f87331",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-10T15:39:17Z",
+      "side": 1,
+      "message": "I\u0027m not an owner for this file, so I can\u0027t stamp it.",
+      "revId": "3585a9a0e042ee151c1bfcad236141c293d656b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
