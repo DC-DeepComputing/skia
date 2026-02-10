@@ -86,6 +86,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
         current = fLayers.tail();
     }
 
+    BindingWrapper* forwardMerge = nullptr;
     bool shouldOverwriteLayer = true;
     for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stopLayer; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
@@ -102,7 +103,17 @@ void DrawListLayer::recordBackwards(int stepIndex,
         if (result.first == BoundsTest::kIncompatibleOverlap) {
             // If we need to read the dst, we cannot go earlier than this layer.
             if (dependsOnDst) {
-                // TODO (thomsmit): Test performance of forward merging
+                // Cannot forward merge depth only draws due to risk of pulling a depth draw after
+                // an already inserted clipped draw.
+                if constexpr (!kIsDepthOnly) {
+                    if (result.second &&
+                        current->fBindings.head()->fNext != current->fBindings.tail()->fPrev) {
+                        if (!isStencil ||
+                            !result.second->fBounds.intersects(drawParams->drawBounds())) {
+                            forwardMerge = result.second;
+                        }
+                    }
+                }
                 break;
             }
             // If !dependsOnDst, we just keep searching backwards.
@@ -124,7 +135,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
 
     if (!targetLayer) {
         targetLayer = fStorage.make<Layer>();
-        fLayers.addToTail(targetLayer);
+        if (forwardMerge) {
+            SkASSERT(current);
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            fLayers.addAfter(targetLayer, current);
+        } else {
+            fLayers.addToTail(targetLayer);
+        }
         if constexpr (kIsDepthOnly) {
             shouldOverwriteLayer = true;
         }
