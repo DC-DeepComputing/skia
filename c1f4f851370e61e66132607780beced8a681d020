@@ -87,6 +87,24 @@
       "parentUuid": "004fb16f_7dd52ae9",
       "revId": "c1f4f851370e61e66132607780beced8a681d020",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed99e2c_a1cfd584",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2026-02-10T19:38:42Z",
+      "side": 1,
+      "message": "Ah yeah, that\u0027s right that the animations are on the layer, not the asset.\n\nI don\u0027t mind landing now, as long as whoever starts using it understands the risks (or if we may need to support multiple approaches for handling this in the event of change).",
+      "parentUuid": "a68b8bd1_a6827987",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
