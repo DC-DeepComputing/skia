@@ -2682,6 +2682,7 @@ if (skia_enable_tools) {
       }
       if (skia_enable_graphite) {
         sources += graphite_tests_sources
+        sources += sparse_strips_test_sources
         if (skia_use_dawn) {
           sources += graphite_dawn_tests_sources
         }
