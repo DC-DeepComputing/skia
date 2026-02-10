@@ -11,13 +11,16 @@
 #include "include/private/base/SkDebug.h"
 #include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
 
-GrBackendSemaphore::GrBackendSemaphore() : fBackend(GrBackendApi::kUnsupported) {}
+GrBackendSemaphore::GrBackendSemaphore()
+        : fBackend(GrBackendApi::kUnsupported) {}
 
 GrBackendSemaphoreData::~GrBackendSemaphoreData() = default;
 
 GrBackendSemaphore::~GrBackendSemaphore() = default;
 
-GrBackendSemaphore::GrBackendSemaphore(const GrBackendSemaphore& that) { *this = that; }
+GrBackendSemaphore::GrBackendSemaphore(const GrBackendSemaphore& that) {
+    *this = that;
+}
 
 GrBackendSemaphore& GrBackendSemaphore::operator=(const GrBackendSemaphore& that) {
     SkASSERT(fBackend == GrBackendApi::kUnsupported || fBackend == that.fBackend);
