@@ -46,6 +46,8 @@ public:
         // printf("Pipeline changes %u\n", fPipelineChanges);
         // printf("Stencil lists %u\n", fStencilLists);
         // printf("Average stencil steps per list %f\n", ((float)fStencilDraws) / ((float)fStencilLists));
+        // printf("Depth Lists %u\n", fDepthLists);
+        // printf("Average depth steps per list %f\n", ((float)fDepthDraws) / ((float)fDepthLists));
     }
 
     // DrawList requires that all Transforms be valid and asserts as much; invalid transforms should
@@ -119,12 +121,16 @@ private:
     SkTInternalLList<Layer> fLayers;
 
     int fDrawCount = 0;
-    ChainedDraw* fLastRecordedDraw = nullptr;
     Layer* fParentDepthLayer = nullptr;
+    Layer* fStencilLayer = nullptr;
+    BindingWrapper* fStencilWrapper = nullptr;
+    StencilDraws* fStencilList = nullptr;
 
     uint32_t fPipelineChanges = 0;
     uint32_t fStencilLists = 0;
     uint32_t fStencilDraws = 0;
+    uint32_t fDepthLists = 0;
+    uint32_t fDepthDraws = 0;
     double fTotalRecordDrawTime = 0.0;
     double fTotalSnapDrawPassTime = 0.0;
 };
