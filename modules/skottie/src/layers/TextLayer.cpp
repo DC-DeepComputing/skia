@@ -5,12 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFont.h"
+#include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkTo.h"
 #include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/src/SkottieJson.h"
@@ -25,6 +29,7 @@
 
 #include <string.h>
 #include <memory>
+#include <string_view>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -105,6 +110,34 @@ SkFontStyle FontStyle(const AnimationBuilder* abuilder, const char* style) {
     return SkFontStyle(weight, SkFontStyle::kNormal_Width, slant);
 }
 
+
+AnimationBuilder::FontInfo::VariationInstance ParseVariation(const skjson::ArrayValue* jvars) {
+    AnimationBuilder::FontInfo::VariationInstance var;
+    if (!jvars) {
+        return var;
+    }
+
+    for (const skjson::ObjectValue* jvar : *jvars) {
+        if (!jvar) {
+            continue;
+        }
+
+        const skjson::StringValue* jtag = (*jvar)["t"];
+        const skjson::NumberValue* jval = (*jvar)["v"];
+        if (!jtag || !jval || jtag->size() != 4) {
+            continue;
+        }
+
+        const std::string_view tag = jtag->str();
+        var.push_back({
+            .axis  = SkSetFourByteTag(tag[0], tag[1], tag[2], tag[3]),
+            .value = static_cast<float>(**jval),
+        });
+    }
+
+    return var;
+}
+
 } // namespace
 
 bool AnimationBuilder::FontInfo::matches(const char family[], const char style[]) const {
@@ -156,14 +189,15 @@ void AnimationBuilder::parseFonts(const skjson::ObjectValue* jfonts,
         }
 
         fFonts.set(SkString(jname->begin(), jname->size()),
-                  {
-                      SkString(jfamily->begin(), jfamily->size()),
-                      SkString( jstyle->begin(),  jstyle->size()),
-                      jpath ? SkString(  jpath->begin(),   jpath->size()) : SkString(),
-                      ParseDefault((*jfont)["ascent"] , 0.0f),
-                      nullptr, // placeholder
-                      CustomFont::Builder()
-                  });
+                   {
+                       SkString(jfamily->begin(), jfamily->size()),
+                       SkString( jstyle->begin(),  jstyle->size()),
+                       jpath ? SkString(  jpath->begin(),   jpath->size()) : SkString(),
+                       ParseDefault((*jfont)["ascent"] , 0.0f),
+                       nullptr, // placeholder
+                       CustomFont::Builder(),
+                       ParseVariation((*jfont)["fVariation"]),
+                   });
     }
 
     const auto has_comp_glyphs = [](const skjson::ArrayValue* jchars) {
@@ -252,6 +286,15 @@ bool AnimationBuilder::resolveNativeTypefaces() {
             this->log(Logger::Level::kError, nullptr,
                       "Could not load typeface for %s|%s because no SkFontMgr provided.",
                       finfo->fFamily.c_str(), finfo->fStyle.c_str());
+        }
+
+        if (!finfo->fVariation.empty()) {
+            // Apply optional variation coords.
+            finfo->fTypeface = finfo->fTypeface->makeClone(
+                SkFontArguments().setVariationDesignPosition({
+                    .coordinates     = finfo->fVariation.data(),
+                    .coordinateCount = SkToInt(finfo->fVariation.size()),
+                }));
         }
     });
 
