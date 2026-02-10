@@ -154,7 +154,7 @@ struct Layer {
                 }
             }
             if (list->fBounds.intersects(drawBounds)) {
-                return {BoundsTest::kIncompatibleOverlap, nullptr};
+                return {BoundsTest::kIncompatibleOverlap, foundMatch};
             }
         }
 
