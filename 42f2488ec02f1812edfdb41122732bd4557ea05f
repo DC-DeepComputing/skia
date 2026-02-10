@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eddd1e7e_230187eb",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-10T20:27:45Z",
+      "side": 1,
+      "message": "Yeah, that seems fine.",
+      "parentUuid": "c85a51f4_77586cd8",
+      "range": {
+        "startLine": 124,
+        "startChar": 66,
+        "endLine": 124,
+        "endChar": 72
+      },
+      "revId": "42f2488ec02f1812edfdb41122732bd4557ea05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "899699af_833f88d6",
