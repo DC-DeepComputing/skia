@@ -9,7 +9,7 @@
 #define SkSVGIDMapper_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "src/core/SkTHash.h"
+#include "include/private/base/SkTHashImpl.h"
 
 class SkString;
 class SkSVGNode;
