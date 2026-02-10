@@ -115,6 +115,30 @@
       },
       "revId": "ce8de9d593fd8b84d5e99b5ea17b3888d43075f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65912c9c_35b575c5",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2552,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-10T22:03:00Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "9a9ebd82_040d82bc",
+      "range": {
+        "startLine": 2552,
+        "startChar": 0,
+        "endLine": 2552,
+        "endChar": 50
+      },
+      "revId": "ce8de9d593fd8b84d5e99b5ea17b3888d43075f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
