@@ -1168,6 +1168,11 @@ optional("graphite") {
     sources += skia_graphite_vello_sources
   }
 
+  if (skia_enable_sparse_strips) {
+    sources += skia_graphite_sparse_strips_sources
+    public_defines += [ "SK_ENABLE_SPARSE_STRIPS" ]
+  }
+
   if (skia_use_dawn) {
     public += skia_graphite_dawn_public
     sources += skia_graphite_dawn_sources
