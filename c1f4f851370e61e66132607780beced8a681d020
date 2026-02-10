@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ec7bc26_c7ef26fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-10T14:10:50Z",
+      "side": 1,
+      "message": "It\u0027s very tempting to use the axis tag as a key in a plain dictionary, e.g.\n\n```\n  {\n    \"wght\": 800,\n    \"slnt\":  -5\n  }\n```\n\nbut I suspect that could be problematic for future schema/validation?",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
