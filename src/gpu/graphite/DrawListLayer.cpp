@@ -92,8 +92,8 @@ void DrawListLayer::recordBackwards(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
-        auto result = isStencil ? current->test<true>(drawParams->drawBounds(), key, requiresBarrier)
-                                : current->test<false>(drawParams->drawBounds(), key, requiresBarrier);
+        auto result = isStencil ? current->test<true, kIsDepthOnly>(drawParams->drawBounds(), key, requiresBarrier)
+                                : current->test<false, kIsDepthOnly>(drawParams->drawBounds(), key, requiresBarrier);
         if constexpr (kIsDepthOnly) {
             if (*captureLayer == current) {
                 shouldOverwriteLayer = false;
@@ -200,8 +200,8 @@ void DrawListLayer::recordForwards(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fNext);
 #endif
-        auto result = isStencil ? current->test<true>(drawParams->drawBounds(), key, requiresBarrier)
-                                : current->test<false>(drawParams->drawBounds(), key, requiresBarrier);
+        auto result = isStencil ? current->test<true, false>(drawParams->drawBounds(), key, requiresBarrier)
+                                : current->test<false, false>(drawParams->drawBounds(), key, requiresBarrier);
         if (result.first != BoundsTest::kIncompatibleOverlap) {
             targetLayer = current;
             targetMatch = result.second;

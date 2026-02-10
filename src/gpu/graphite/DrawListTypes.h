@@ -76,23 +76,25 @@ struct StencilDraws {
 };
 
 struct BindingWrapper {
-    BindingWrapper(BindingListType type) : fType(type) {}
+    BindingWrapper(BindingListType type, bool isDepthOnly)
+            : fType(type), fIsDepthOnly(isDepthOnly) {}
 
     const BindingListType fType;
+    const bool fIsDepthOnly;
     Rect fBounds = Rect::InfiniteInverted();
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingWrapper);
 };
 
 struct SingleDrawList : public BindingWrapper {
-    SingleDrawList(BindingListType type) : BindingWrapper(type) {}
+    SingleDrawList(BindingListType type, bool isDepthOnly) : BindingWrapper(type, isDepthOnly) {}
     LayerKey fKey;
     RenderStep* fStep;
     SkTInternalLList<SingleDraw> fDraws;
 };
 
 struct StencilDrawList : public BindingWrapper {
-    StencilDrawList(BindingListType type) : BindingWrapper(type) {}
+    StencilDrawList(BindingListType type, bool isDepthOnly) : BindingWrapper(type, isDepthOnly) {}
     SkTInternalLList<StencilDraws> fStencilDraws;
 };
 
@@ -112,10 +114,11 @@ struct Layer {
         return nullptr;
     }
 
-    template <bool kIsStencil>
+    template <bool kIsStencil, bool kIsDepthOnly>
     SK_ALWAYS_INLINE std::pair<BoundsTest, BindingWrapper*> test(const Rect& drawBounds,
                                                                  const LayerKey& key,
                                                                  bool requiresBarrier) {
+        // TODO (thomsmit): Is this fast path even worthwhile
         if constexpr (!kIsStencil) {
             if (!requiresBarrier && fBindings.head() && fBindings.head() == fBindings.tail()) {
                 if (fBindings.head()->fType == BindingListType::kSingle) {
@@ -148,8 +151,15 @@ struct Layer {
                     }
                 }
             }
-            if (list->fBounds.intersects(drawBounds)) {
-                return {BoundsTest::kIncompatibleOverlap, foundMatch};
+            if constexpr (kIsDepthOnly && !kIsStencil) {
+                // Depth draws are free to intersect with themselves so long as they are not stencil
+                if (!list->fIsDepthOnly && list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                }
+            } else {
+                if (list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                }
             }
         }
 
@@ -169,10 +179,12 @@ struct Layer {
             single = static_cast<SingleDrawList*>(match);
             single->fBounds.join(draw->fDrawParams->drawBounds());
         } else {
-            single = alloc->make<SingleDrawList>(BindingListType::kSingle);
+            single = alloc->make<SingleDrawList>(BindingListType::kSingle, kIsDepthOnly);
             single->fKey = key;
             single->fStep = const_cast<RenderStep*>(step);
             single->fBounds = draw->fDrawParams->drawBounds();
+            // By allowing depth only draws to overlap (and thus, exist in the same layer), are we
+            // creating a hazard where later draws bypass earlier draws? Does this matter?
             if constexpr (kIsDepthOnly) {
                 fBindings.addToHead(single);
             } else {
@@ -180,10 +192,15 @@ struct Layer {
             }
         }
 
-        if (insertBefore) {
-            single->fDraws.addToHead(draw);
-        } else {
+        // TODO: thomsmit, maybe hoist this out into record?
+        if constexpr (kIsDepthOnly) {
             single->fDraws.addToTail(draw);
+        } else {
+            if (insertBefore) {
+                single->fDraws.addToHead(draw);
+            } else {
+                single->fDraws.addToTail(draw);
+            }
         }
     }
 
@@ -202,7 +219,7 @@ struct Layer {
             stencil->fBounds.join(draw->fDrawParams->drawBounds());
             searchStart = (*startList) ? (*startList)->fNext : stencil->fStencilDraws.head();
         } else {
-            stencil = alloc->make<StencilDrawList>(BindingListType::kStencil);
+            stencil = alloc->make<StencilDrawList>(BindingListType::kStencil, kIsDepthOnly);
             stencil->fBounds = draw->fDrawParams->drawBounds();
             if constexpr (kIsDepthOnly) {
                 fBindings.addToHead(stencil);
