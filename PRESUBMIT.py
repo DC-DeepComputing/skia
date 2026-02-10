@@ -574,8 +574,9 @@ def _CheckBannedAPIs(input_api, output_api):
       for (re, replacement, exceptions) in compiled_replacements:
         match = re.search(line)
         if match:
+          norm_path = np(affected_filepath)
           for exc in exceptions:
-            if exc.search(affected_filepath):
+            if exc.search(norm_path):
               break
           else:
             errors.append('%s:%s: Instead of %s, please use %s.' % (
