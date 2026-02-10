@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82cee185_4de08a53",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-10T23:25:55Z",
+      "side": 1,
+      "message": "nit: IIUC this can only happen if there is a bug in Skia or in a bug in the `image` crate, right?  If so, I think we should loudly crash in this case (to hopefully learn about conditions / repro steps leading to the bug).  Can you change this to `SkASSERT_RELEASE` if this makes sense?",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 5
+      },
+      "revId": "dcd2270d73b02b24de41a66c3a558240ad034e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5edd91fe_8f7dec09",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-10T23:25:55Z",
+      "side": 1,
+      "message": "Would changing the type of `rowCount` and `y` to `uint32_t` help to avoid the `static_cast`?",
+      "range": {
+        "startLine": 328,
+        "startChar": 10,
+        "endLine": 328,
+        "endChar": 17
+      },
+      "revId": "dcd2270d73b02b24de41a66c3a558240ad034e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e767b43_0519bd43",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-10T23:25:55Z",
+      "side": 1,
+      "message": "Similar here - would it make sense to change these variables to `uint32_t` to avoid the need to cast from `uint32_t` to `int32_t`?",
+      "range": {
+        "startLine": 403,
+        "startChar": 10,
+        "endLine": 403,
+        "endChar": 17
+      },
+      "revId": "dcd2270d73b02b24de41a66c3a558240ad034e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e31110_63ffce25",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 26
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-02-10T23:25:55Z",
+      "side": 1,
+      "message": "somewhat optional, depending on whether the suggestion below would make the code easier to work with.\n\nIt seems a bit undesirable to always make two coordinated calls together: first to `consume_next_rows` and then to `get_image_data`.  This requires some extra temporary state (`self.pending_range`) and some `assert`s to enforce.\n\nI assume that you\u0027ve split this into two calls/functions, because FFI is quite limited and doesn\u0027t allow returning more complicated things (e.g. tuples).  Still, I wonder if you could try evaluating if the code could be refactored to just use a single `get_image_data` call that somehow returns both `\u0026[u8]` and `DecodedRowsInfo`.  \"somehow\" can be either:\n\n* Using \"out parameters\" (e.g. `buf: \u0026mut \u0026[u8]`, `rows_info: \u0026mut DecodedRowsInfo`).\n* Or maybe adding `buffer` field to `DecodedRowsInfo` and returning it from `get_image_data`.  This may require making `DecodedRowsInfo\u003c\u0027a\u003e` generic wrt lifetime `\u0027a\u0027, but that seems ok (we already return an `\u0027a`-bound `\u0026[u8]`).\n\nWDYT?",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 5
+      },
+      "revId": "dcd2270d73b02b24de41a66c3a558240ad034e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
