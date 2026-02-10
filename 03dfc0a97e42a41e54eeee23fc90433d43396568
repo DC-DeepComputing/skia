@@ -16,6 +16,75 @@
       "message": "This adds a test (and a fix for the buggy copy constructor).",
       "revId": "03dfc0a97e42a41e54eeee23fc90433d43396568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ee5061d_c6b665c4",
+        "filename": "src/gpu/ganesh/GrBackendSemaphore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-10T21:26:30Z",
+      "side": 1,
+      "message": "Is it possible for this to be default initialized in the header and then we can keep the ctor simpler (and also simplify the default ctor)?\n\nThe issue is that we got into operator\u003d without initializing anything, so it seems better to set this critical value in one place.\n\nI take this all back if GrBackendApi is only forward declared.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 67
+      },
+      "revId": "03dfc0a97e42a41e54eeee23fc90433d43396568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d1d3e6_6bcfdb38",
+        "filename": "tests/SurfaceSemaphoreTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-10T21:26:30Z",
+      "side": 1,
+      "message": "nit: this is a bit vague. I\u0027d either leave it off or try and summarize the issue with the copy ctor not initializing something that the assignment operator was dependent on.",
+      "range": {
+        "startLine": 385,
+        "startChar": 0,
+        "endLine": 385,
+        "endChar": 64
+      },
+      "revId": "03dfc0a97e42a41e54eeee23fc90433d43396568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d56b8a_72454ebd",
+        "filename": "tests/SurfaceSemaphoreTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-10T21:26:30Z",
+      "side": 1,
+      "message": "Can we go farther and assert that the copy\u0027s backend api matches sema\u0027s?",
+      "range": {
+        "startLine": 387,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 52
+      },
+      "revId": "03dfc0a97e42a41e54eeee23fc90433d43396568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
