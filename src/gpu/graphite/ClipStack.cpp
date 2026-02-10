@@ -542,7 +542,9 @@ ClipStack::RawElement::RawElement(const Rect& deviceBounds,
         , fUsageBounds{Rect::InfiniteInverted()}
         , fOrder(DrawOrder::kNoIntersection)
         , fMaxZ(DrawOrder::kClearDepth)
-        , fInvalidatedByIndex(-1) {
+        , fInvalidatedByIndex(-1)
+        , fCaptureParams(nullptr)
+        , fDeferredLayer(nullptr) {
     // Discard shapes that don't have any area (including when a transform can't be inverted, since
     // it means the two dimensions are collapsed to 0 or 1 dimension in device space).
     if (fShape.isLine() || !localToDevice.valid()) {
@@ -609,6 +611,57 @@ ClipStack::RawElement::operator ClipStack::TransformedShape() const {
     return {fLocalToDevice, fShape, fOuterBounds, fInnerBounds, fOp};
 }
 
+template <typename Fn>
+void ClipStack::RawElement::handleClipDraw(Device* device, Fn&& onDraw) {
+    SkASSERT(!fUsageBounds.isEmptyNegativeOrNaN());
+
+    // For clip draws, the usage bounds is the scissor.
+    const Rect deviceBounds = Rect::WH(device->width(), device->height());
+    Rect scissor = fUsageBounds; // all joined usage bounds are pre-snapped
+
+    // snappedOuterBounds was the rectangle used in updateForDraw() to query the Z order the clip's
+    // draw will be inserted at. The scissor must enforce that rendering doesn't happen outside of
+    // those bounds.
+    Rect snappedOuterBounds = snap_scissor(fOuterBounds, deviceBounds);
+    scissor.intersect(snappedOuterBounds);
+
+    // But if the overlap is sufficiently large, just rasterize out to the snapped bounds instead of
+    // adding a tight scissor. A factor of 1/2 is used because that corresponds to the area
+    // change caused by a 45-degree rotation.
+    if (0.5f * snappedOuterBounds.area() < scissor.area()) {
+        scissor = snappedOuterBounds;
+    }
+
+    Rect drawBounds = fOp == SkClipOp::kIntersect ? scissor : fOuterBounds.makeIntersect(scissor);
+    if (!drawBounds.isEmptyNegativeOrNaN()) {
+        // Although we are recording this clip draw after all the draws it affects, 'fOrder' was
+        // determined at the first usage, so after sorting by DrawOrder the clip draw will be in the
+        // right place. Unlike regular draws that use their own "Z", by writing (1 + max Z this clip
+        // affects), it will cause those draws to fail either GREATER and GEQUAL depth tests where
+        // they need to be clipped.
+        DrawOrder order{fMaxZ.next(), fOrder};
+
+        // An element's clip op is encoded in the shape's fill type. Inverse fills are intersect ops
+        // and regular fills are difference ops. This means fShape is already in the right state to
+        // draw directly.
+        SkASSERT((fOp == SkClipOp::kDifference && !fShape.inverted()) ||
+                 (fOp == SkClipOp::kIntersect && fShape.inverted()));
+
+        // Execute the specific drawing logic provided by the caller
+        onDraw(drawBounds, scissor, order);
+    }
+
+    // After the clip shape is drawn, reset its state. If the clip element is being popped off the
+    // stack or overwritten because a new clip invalidated it, this won't matter. But if the clips
+    // were drawn because the Device had to flush pending work while the clip stack was not empty,
+    // subsequent draws will still need to be clipped to the elements. In this case, the usage
+    // accumulation process will begin again and automatically use the Device's post-flush Z values
+    // and BoundsManager state.
+    fUsageBounds = Rect::InfiniteInverted();
+    fOrder = DrawOrder::kNoIntersection;
+    fMaxZ = DrawOrder::kClearDepth;
+}
+
 void ClipStack::RawElement::drawClip(Device* device) {
     this->validate();
 
@@ -654,11 +707,21 @@ void ClipStack::RawElement::drawClip(Device* device) {
         // decisions at this point. If that becomes not the case, we can either recompute the
         // shape's device-space bounds (fLocalToDevice.mapRect(fShape.bounds())) or store a fully
         // unclipped shape bounds on the RawElement.
-        device->drawClipShape(fLocalToDevice,
-                              fShape,
-                              Clip{drawBounds, fOuterBounds, scissor.asSkIRect(),
-                                   /* nonMSAAClip= */ {}, /* shader= */ nullptr},
-                              order);
+        if (device->fRecorder->priv().caps()->useDrawListLayer()) {
+            //TODO (thomsmit), rename this function to updateDeferredClip when drawListLayer is used
+            fCaptureParams->fOrder = order;
+            fCaptureParams->fDrawBounds = drawBounds;
+            fCaptureParams->fScissor = scissor.asSkIRect();
+            device->updateNextDepthForClipping(fCaptureParams->fOrder.depth());
+            fCaptureParams = nullptr;
+            fDeferredLayer = nullptr;
+        } else {
+            device->drawClipShape(fLocalToDevice,
+                                  fShape,
+                                  Clip{drawBounds, fOuterBounds, scissor.asSkIRect(),
+                                       /* nonMSAAClip= */ {}, /* shader= */ nullptr},
+                                  order);
+        }
     }
 
     // After the clip shape is drawn, reset its state. If the clip element is being popped off the
@@ -670,6 +733,32 @@ void ClipStack::RawElement::drawClip(Device* device) {
     fUsageBounds = Rect::InfiniteInverted();
     fOrder = DrawOrder::kNoIntersection;
     fMaxZ = DrawOrder::kClearDepth;
+}
+
+Layer* ClipStack::RawElement::drawClipImmediate(Device* device, Layer* prevLayer) {
+    // We can't call validate but we need to make sure we have something to draw here.
+    SkASSERT(!fShape.isEmpty());
+
+    // The previous layer initializes the deferred layer capture. We use this to track the earliest
+    // layer of the clip draw.
+    fDeferredLayer = prevLayer;
+
+    // Note, passing fOuterBounds here may influence the preference for wedges here.
+    device->drawClipShapeImmediate(fLocalToDevice,
+                                   fShape,
+                                   Clip{fOuterBounds,
+                                        fOuterBounds,
+                                        fOuterBounds.asSkIRect(),
+                                        /* nonMSAAClip= */ {},
+                                        /* shader= */ nullptr},
+                                    {fMaxZ, fOrder},
+                                    fCaptureParams,
+                                    fDeferredLayer);
+
+    SkASSERT(fCaptureParams);
+    SkASSERT(fDeferredLayer);
+
+    return fDeferredLayer;
 }
 
 void ClipStack::RawElement::validate() const {
@@ -778,10 +867,12 @@ ClipStack::DrawInfluence ClipStack::RawElement::testForDraw(const TransformedSha
     return SimplifyForDraw(*this, draw);
 }
 
-CompressedPaintersOrder ClipStack::RawElement::updateForDraw(const BoundsManager* boundsManager,
+CompressedPaintersOrder ClipStack::RawElement::updateForDraw(Device* device,
+                                                             const BoundsManager* boundsManager,
                                                              const Rect& deviceBounds,
                                                              const Rect& drawBounds,
-                                                             PaintersDepth drawZ) {
+                                                             PaintersDepth drawZ,
+                                                             Layer*& deferredLayer) {
     SkASSERT(!this->isInvalid());
     SkASSERT(!drawBounds.isEmptyNegativeOrNaN());
 
@@ -818,6 +909,10 @@ CompressedPaintersOrder ClipStack::RawElement::updateForDraw(const BoundsManager
         fOrder = boundsManager->getMostRecentDraw(snappedOuterBounds).next();
         fUsageBounds = snappedDrawBounds;
         fMaxZ = drawZ;
+
+        if (device->fRecorder->priv().caps()->useDrawListLayer()) {
+            deferredLayer = this->drawClipImmediate(device, deferredLayer);
+        }
     } else {
         // Earlier draws have already used this element so we cannot change where the
         // depth-only draw will be sorted to, but we need to ensure we cover the new draw's
@@ -826,6 +921,7 @@ CompressedPaintersOrder ClipStack::RawElement::updateForDraw(const BoundsManager
         if (drawZ > fMaxZ) {
             fMaxZ = drawZ;
         }
+        deferredLayer = fDeferredLayer;
     }
 
     return fOrder;
@@ -1799,7 +1895,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                         continue;
                     }
                 }
-                // // Third try to handle the clip analytically in the shader
+                // Third try to handle the clip analytically in the shader
                 if (nonMSAAClip.fAnalyticClip.isEmpty()) {
                     nonMSAAClip.fAnalyticClip = can_apply_analytic_clip(e.shape(),
                                                                         e.localToDevice());
@@ -1807,6 +1903,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                         continue;
                     }
                 }
+
                 // Fourth, remember the element for later, either to be a depth-only draw or to be
                 // flattened into a clip mask.
                 // Otherwise, accumulate it for later. Depending on how many elements are collected
@@ -1842,17 +1939,40 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     return draw.toClip(geometry, nonMSAAClip, cs.shader());
 }
 
-CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
-                                                          const ElementList& effectiveElements,
-                                                          const BoundsManager* boundsManager,
-                                                          PaintersDepth z) {
+std::pair<CompressedPaintersOrder, Layer*> ClipStack::updateClipStateForDraw(
+        const Clip& clip,
+        const ElementList& effectiveElements,
+        const BoundsManager* boundsManager,
+        PaintersDepth z) {
     if (clip.isClippedOut()) {
-        return DrawOrder::kNoIntersection;
+        return {DrawOrder::kNoIntersection, nullptr};
     }
 
     SkDEBUGCODE(const SaveRecord& cs = this->currentSaveRecord();)
     SkASSERT(cs.state() != ClipState::kEmpty);
 
+    // In the drawListLayer approach, each clipped draw needs to know the *latest* layer inserted
+    // into across the depth only draws that affect it. (This is the layer pointer returned by this
+    // function).
+    //
+    // To achieve this, recordDepthOnly performs a standard backward traversal to find the insertion
+    // point. If we encounter the incoming layer (prevLayer) during this search, it implies the new
+    // draw is being inserted *before* the prevLayer; consequently, prevLayer remains the latest and
+    // is not overwritten. Conversely, if we do not encounter prevLayer, the new insertion layer is
+    // the latest, so we update the pointer.
+    //
+    // If all clip elements are undrawn, this "threads" the layer pointer through the sequence,
+    // guaranteeing it tracks the most recent draw.
+    //
+    // If there is a mixture of drawn and undrawn elements, the result remains valid based on the
+    // stack property: a drawn element cannot be pushed onto the clip stack after an undrawn
+    // element. While an already-drawn element will overwrite the pointer with its stored (older)
+    // layer, the subsequent undrawn element—which necessarily generates a later layer—will
+    // overwrite it again, ensuring the returned pointer always represents the latest layer.
+    //
+    // If all clip elements are drawn, traversing the stored layers effectively recreates the
+    // original threading, naturally reproducing the latest layer.
+    Layer* prevLayer = nullptr;
     Rect deviceBounds = this->deviceBounds();
     CompressedPaintersOrder maxClipOrder = DrawOrder::kNoIntersection;
     for (int i = 0; i < effectiveElements.size(); ++i) {
@@ -1862,20 +1982,15 @@ CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
         // its element pointers become dangling and assert validity here.
         const RawElement* e = static_cast<const RawElement*>(effectiveElements[i]);
         CompressedPaintersOrder order =  const_cast<RawElement*>(e)->updateForDraw(
-                boundsManager, deviceBounds, clip.drawBounds(), z);
+                fDevice, boundsManager, deviceBounds, clip.drawBounds(), z, prevLayer);
         maxClipOrder = std::max(order, maxClipOrder);
     }
 
-    return maxClipOrder;
+    return {maxClipOrder, prevLayer};
 }
 
 void ClipStack::recordDeferredClipDraws() {
     for (auto& e : fElements.items()) {
-        // When a Device requires all clip elements to be recorded, we have to iterate all elements,
-        // and will draw clip shapes for elements that are still marked as invalid from the clip
-        // stack, including those that are older than the current save record's oldest valid index,
-        // because they could have accumulated draw usage prior to being invalidated, but weren't
-        // flushed when they were invalidated because of an intervening save.
         e.drawClip(fDevice);
     }
 }
