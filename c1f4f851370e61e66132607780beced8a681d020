@@ -16,6 +16,41 @@
       "message": "It\u0027s very tempting to use the axis tag as a key in a plain dictionary, e.g.\n\n```\n  {\n    \"wght\": 800,\n    \"slnt\":  -5\n  }\n```\n\nbut I suspect that could be problematic for future schema/validation?",
       "revId": "c1f4f851370e61e66132607780beced8a681d020",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ffd0802_0756cb25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2026-02-10T15:15:34Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure that you can apply a schema to arbitrary values and don\u0027t necessarily need to match to a specific key, so this would be fine. We would want to make sure these are all under their own key to avoid conflicts. eg:\n\n```\n...\n fVarations: {\n    \"wght\": 800,\n    \"slnt\":  -5\n  }\n```",
+      "parentUuid": "6ec7bc26_c7ef26fb",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "004fb16f_7dd52ae9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2026-02-10T15:15:34Z",
+      "side": 1,
+      "message": "1. I think the font variations should be animatable. So do something similar do we do with other animatable properties.\n\n2. Also should we float this by the spec committee? I don\u0027t expect to get this standardized (especially until fonts are generally in), but some early feedback may be useful to reduce future churn risk.",
+      "revId": "c1f4f851370e61e66132607780beced8a681d020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
