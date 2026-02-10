@@ -298,6 +298,11 @@ private:
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
     void drawClipShape(const Transform&, const Shape&, const Clip&, DrawOrder);
 
+    void drawClipShapeImmediate(const Transform&, const Shape&, const Clip&, DrawOrder,
+                                DrawParams*& captureParams, Layer*& captureLayer);
+
+    void updateNextDepthForClipping(PaintersDepth depth);
+
     sktext::gpu::AtlasDrawDelegate atlasDelegate();
     // Handles primitive processing for atlas-based text
     void drawAtlasSubRun(const sktext::gpu::AtlasSubRun*,
@@ -357,6 +362,7 @@ private:
     // (i.e. depth-based clipping, and transparent blending)
     std::unique_ptr<BoundsManager> fColorDepthBoundsManager;
     // Tracks disjoint stencil indices for all recordered draws
+    // TODO (thomsmit): remove when layering is added
     std::unique_ptr<IntersectionTreeSet> fDisjointStencilSet;
 
     // Lazily updated Transform constructed from localToDevice()'s SkM44
