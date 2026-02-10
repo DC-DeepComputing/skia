@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "100f554d_9f6d6e84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-02-10T17:32:57Z",
+      "side": 1,
+      "message": "Trying to make script languages users more or less happy",
+      "revId": "267324d1c9c1b0ca0443f12c54d365631e4323e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
