@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "127c7f4a_a640bd17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T20:21:20Z",
+      "side": 1,
+      "message": "PTAL. Not sure this is exactly what you had in mind. The previous code in DMSrcSink overwrites the private context options not because the options are untrusted, but because there is potentially a dangling pointer. \n\nNow that the private context options live on TestOptions, this was removed.",
+      "revId": "d8b9d26c3ac1353f64c6b038b18a8e760386a87f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
