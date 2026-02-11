@@ -367,66 +367,6 @@ private:
     using INHERITED = Benchmark;
 };
 
-class CLZBench : public Benchmark {
-    enum {
-        ARRAY = 1000,
-    };
-    uint32_t fData[ARRAY];
-    bool fUsePortable;
-
-public:
-    CLZBench(bool usePortable) : fUsePortable(usePortable) {
-
-        SkRandom rand;
-        for (int i = 0; i < ARRAY; ++i) {
-            fData[i] = rand.nextU();
-        }
-
-        if (fUsePortable) {
-            fName = "clz_portable";
-        } else {
-            fName = "clz_intrinsic";
-        }
-    }
-
-    bool isSuitableFor(Backend backend) override {
-        return backend == Backend::kNonRendering;
-    }
-
-    // just so the compiler doesn't remove our loops
-    virtual void process(int) {}
-
-protected:
-    void onDraw(int loops, SkCanvas*) override {
-        int accum = 0;
-
-        if (fUsePortable) {
-            for (int j = 0; j < loops; ++j) {
-                for (int i = 0; i < ARRAY; ++i) {
-                    accum += SkCLZ_portable(fData[i]);
-                }
-                this->process(accum);
-            }
-        } else {
-            for (int j = 0; j < loops; ++j) {
-                for (int i = 0; i < ARRAY; ++i) {
-                    accum += SkCLZ(fData[i]);
-                }
-                this->process(accum);
-            }
-        }
-    }
-
-    const char* onGetName() override {
-        return fName;
-    }
-
-private:
-    const char* fName;
-
-    using INHERITED = Benchmark;
-};
-
 class CTZBench : public Benchmark {
     enum {
         ARRAY = 1000,
@@ -596,8 +536,6 @@ DEF_BENCH( return new IsFiniteBench(3); )
 DEF_BENCH( return new FloorBench(false); )
 DEF_BENCH( return new FloorBench(true); )
 
-DEF_BENCH( return new CLZBench(false); )
-DEF_BENCH( return new CLZBench(true); )
 DEF_BENCH( return new CTZBench(false); )
 DEF_BENCH( return new CTZBench(true); )
 
