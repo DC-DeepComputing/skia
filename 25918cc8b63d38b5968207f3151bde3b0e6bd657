@@ -16,6 +16,23 @@
       "message": "Running with the fix + canary. This should address the roller break.",
       "revId": "25918cc8b63d38b5968207f3151bde3b0e6bd657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8852911d_9ad82a06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-11T15:36:25Z",
+      "side": 1,
+      "message": "LGTM assuming canary passes",
+      "revId": "25918cc8b63d38b5968207f3151bde3b0e6bd657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
