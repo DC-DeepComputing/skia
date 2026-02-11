@@ -175,6 +175,9 @@ int GrContextThreadSafeProxy::maxSurfaceSampleCountForColorType(SkColorType colo
 
     GrBackendFormat format = fCaps->getDefaultBackendFormat(SkColorTypeToGrColorType(colorType),
                                                             GrRenderable::kYes);
+    if (!format.isValid()) {
+        return 0;
+    }
     return fCaps->maxRenderTargetSampleCount(format);
 }
 
