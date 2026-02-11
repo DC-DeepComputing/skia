@@ -56,10 +56,36 @@ void Caps::finishInitialization(const ContextOptions& options) {
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }
 
-SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
-                                           const SkISize colorAttachmentDimensions) const {
-    return colorAttachmentDimensions;
+TextureInfo Caps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
+                                                  Protected isProtected,
+                                                  Discardable isDiscardable) const {
+    return this->getDefaultTextureInfo(desc.fFormat,
+                                       Mipmapped::kNo,
+                                       desc.fSampleCount,
+                                       FormatSupport::kRender,
+                                       isProtected,
+                                       isDiscardable);
 }
+
+TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
+                                               Mipmapped isMipmapped,
+                                               Protected isProtected,
+                                               Renderable isRenderable) const {
+    TextureFormat format = this->getDefaultFormatFromColorType(colorType);
+    // FIXME conditionally do isRenderable
+    // FIXME who is responsible for handling the copySrc and copyDst?
+    return this->getDefaultTextureInfo(format, isMipmapped, SampleCount::k1,
+        FormatSupport::kSample | FormatSupport::kRender, isProtected, Discardable::kNo);
+}
+
+TextureInfo getTextureInfoForSampledCopy(const TextureInfo&,
+                                            Mipmapped) const;
+
+TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
+                                            Mipmapped,
+                                            Protected) const;
+
+TextureInfo getDefaultStorageTextureInfo(SkColorType) const;
 
 bool Caps::isTexturable(const TextureInfo& info) const {
     if (info.sampleCount() > SampleCount::k1) {

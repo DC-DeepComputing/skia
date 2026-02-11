@@ -9,7 +9,9 @@
 #define skgpu_graphite_TextureFormat_DEFINED
 
 #include "include/core/SkTextureCompressionType.h"
-
+#include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/base/SkEnumBitMask.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include <stddef.h>
 #include <cstdint>
 
@@ -130,6 +132,101 @@ enum class TextureFormat : uint8_t {
     kLast = kD32F_S8
 };
 static constexpr int kTextureFormatCount = static_cast<int>(TextureFormat::kLast) + 1;
+
+// Actions that can be performed on textures of a particular format; a given texture object of
+// that format may have more restricted actions.
+// FIXME name something like Usage? and move to ResourceTypes?
+enum class FormatSupport : uint8_t {
+    kRender  = 0x01, // Format can be used as a rendering attachment
+    kMSAA    = 0x02, // Format can be rendered with MSAA
+    kSample  = 0x04, // Format can be sampled within a shader
+    kCopySrc = 0x08, // Format can be copied into another texture or buffer
+    kCopyDst = 0x10, // Format can be the copy target of another texture or buffer
+    kStorage = 0x20, // Format can be read and written to in a compute pipeline
+};
+
+// Metal MSAA never supports MSRTSS, and if a format supports MSAA, it supports all available sample counts
+// Dawn  if renderable, format supports all sample counts and always supports MSRTSS (if extension present)
+// Vulkan if renderable, has sample counts that can be queried per format. If MSRTSS extension available,
+//   its interaction with the format is baked into the format's supported sample counts
+//   however, we also need the texture's usage flags to have a bit too
+
+// so there's no point in putting MSAA into the Usage/FormatSupport
+// we could include a MSRTSS usage bit
+
+// what about host image copy?
+   // per-format enablement and per-usage enablement, so it should probably be included
+
+SK_MAKE_BITMASK_OPS(FormatSupport)
+
+// How the texture memory is tiled, which can impact what is supported.
+enum class TextureTiling : uint8_t {
+    kOptimal,
+    kLinear
+};
+
+/**
+ * The FormatInfo table stored on Caps defines behavior for how core Graphite interprets or works
+ * with TextureFormats, such as compatible SkColorTypes, what swizzle to use when reading or writing
+ * data during shading, and what data transforms are needed before uploading or after a readback.
+ *
+ * Some of this is determined independent of each backend (such as SkColorType mapping and swizzles)
+ * but each backend Caps marks which operations are supported on the current hardware for each
+ * TextureFormat during initialization. This is separate and must be combined with the usage
+ * capabilities of a specific texture. As such, TextureFormatInfos are not created directly but are
+ * provided by Caps.
+ */
+class TextureFormatInfo {
+public:
+    using TilingSupport = std::pair<SkEnumBitMask<FormatSupport>, SkEnumBitMask<SampleCount>>;
+
+    // FIXME optimal only ctor?
+    TextureFormatInfo() : TextureFormatInfo(TextureFormat::kUnsupported, {{}, {}}, {{}, {}}) {}
+    TextureFormatInfo(TextureFormat format,
+                      TilingSupport optimalSupport,
+                      TilingSupport linearSupport)
+            : fFormat(format)
+            , fTilingSupport({optimalSupport, linearSupport}) {}
+
+    bool isValid() const { return fFormat != TextureFormat::kUnsupported; }
+
+    SkEnumBitMask<FormatSupport> supportedOperations(TextureTiling tiling) const {
+        return fTilingSupport[(int) tiling].first;
+    }
+    // SkEnumBitMask<FormatSupport> supportedOperations(TextureTiling, SkColorType) const;
+
+    SkEnumBitMask<SampleCount> supportedSampleCounts(TextureTiling tiling) const {
+        return fTilingSupport[(int) tiling].second;
+    }
+
+    // Assumes kTexture and/or kRender are supported operations for the color type and tiling of the
+    // actual texture.
+    // Swizzle getReadSwizzle(SkColorType) const;
+    // Swizzle getWriteSwizzle(SkColorType) const;
+
+    // Returns a function that copy data from the source buffer to destination buffer, for either
+    // upload to the GPU or readback from the GPU. For uploads, `cpuSrcType` is the actual format of
+    // the source buffer data to be uploaded, and `gpuDstType` is the compatible SkColorType that
+    // the texture format will be interpreted with. The destination buffer can be a GPU mapped
+    // buffer.
+    //
+    // For readback, `gpuSrcType` is how the texture format is to be interpreted before conversion
+    // to the `cpuDstType`, which is final format data will be written as into the destinatio
+    // buffer. The source buffer can be a GPU mapped buffer.
+    //
+    // This also returns a flag indicating that the transfer operations is the identity conversion,
+    // allowing the transfer to be skipped if the source buffer can otherwise be provided to the
+    // client.
+    using DataTransferFn = void;
+    // DataTransferFn getUploadTransferFn(SkColorType cpuSrcType, SkColorType gpuDstType) const;
+    // DataTransferFn getReadbackTransferFn(SkColorType gpuSrcType, SkColorType cpuDstType) const;
+
+private:
+    TextureFormat fFormat = TextureFormat::kUnsupported;
+
+    // Indexed by tiling value
+    std::array<TilingSupport, 2> fTilingSupport;
+};
 
 const char* TextureFormatName(TextureFormat);
 

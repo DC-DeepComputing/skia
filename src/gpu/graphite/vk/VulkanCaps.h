@@ -28,26 +28,6 @@ public:
                Protected);
     ~VulkanCaps() override;
 
-    bool isSampleCountSupported(TextureFormat, SampleCount requestedSampleCount) const override;
-    TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const override;
-
-    TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
-                                                Protected,
-                                                Discardable) const override;
-
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
-                                             Mipmapped,
-                                             Protected,
-                                             Renderable) const override;
-
-    TextureInfo getTextureInfoForSampledCopy(const TextureInfo&, Mipmapped) const override;
-
-    TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
-                                                Mipmapped,
-                                                Protected) const override;
-
-    TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
-
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
     DstReadStrategy getDstReadStrategy() const override;
 
@@ -61,16 +41,6 @@ public:
                               RenderPassDesc*,
                               const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
-
-
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
-
-    bool isFormatSupported(VkFormat) const;
-    bool isTexturable(const VulkanTextureInfo&) const;
-    bool isRenderable(const VulkanTextureInfo&) const;
-    bool isTransferSrc(const VulkanTextureInfo&) const;
-    bool isTransferDst(const VulkanTextureInfo&) const;
 
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
@@ -187,22 +157,6 @@ private:
 
     void initShaderCaps(const EnabledFeatures, const uint32_t vendorID);
 
-    void initFormatTable(const skgpu::VulkanInterface*,
-                         VkPhysicalDevice,
-                         const VkPhysicalDeviceProperties&,
-                         const EnabledFeatures&);
-
-    void initDepthStencilFormatTable(const skgpu::VulkanInterface*,
-                                     VkPhysicalDevice,
-                                     const VkPhysicalDeviceProperties&);
-
-    SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
-
-    bool onIsTexturable(const TextureInfo&) const override;
-
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
-
     /*
      * Whether the texture supports multisampled-render-to-single-sampled.  When
      * VK_EXT_multisampled_render_to_single_sampled is supported, all textures created by Graphite
@@ -212,98 +166,57 @@ private:
      */
     bool msaaTextureRenderToSingleSampledSupport(const TextureInfo&) const override;
 
-    // Struct that determines and stores which sample count quantities a VkFormat supports.
-    struct SupportedSampleCounts {
-        void initSampleCounts(const skgpu::VulkanInterface*,
-                              const VulkanCaps&,
-                              VkPhysicalDevice,
-                              VkFormat,
-                              VkImageUsageFlags);
+    TextureFormatInfo getFormatInfo(TextureFormat) const override;
+    SkEnumBitMask<FormatSupport> supportedOperations(const TextureInfo&) const override;
 
-        bool isSampleCountSupported(SampleCount requestedCount) const;
-
-        VkSampleCountFlags fSampleCounts = 0;
-    };
 
     // Struct that determines and stores useful information about VkFormats.
-    struct FormatInfo {
-        uint32_t colorTypeFlags(SkColorType colorType) const {
-            for (int i = 0; i < fColorTypeInfoCount; ++i) {
-                if (fColorTypeInfos[i].fColorType == colorType) {
-                    return fColorTypeInfos[i].fFlags;
-                }
-            }
-            return 0;
-        }
+    // struct FormatInfo {
+    //     uint32_t colorTypeFlags(SkColorType colorType) const {
+    //         for (int i = 0; i < fColorTypeInfoCount; ++i) {
+    //             if (fColorTypeInfos[i].fColorType == colorType) {
+    //                 return fColorTypeInfos[i].fFlags;
+    //             }
+    //         }
+    //         return 0;
+    //     }
 
-        void init(const skgpu::VulkanInterface*, const VulkanCaps&, VkPhysicalDevice, VkFormat);
+    //     void init(const skgpu::VulkanInterface*, const VulkanCaps&, VkPhysicalDevice, VkFormat);
 
-        bool isTexturable(VkImageTiling) const;
-        bool isRenderable(VkImageTiling, SampleCount sampleCount) const;
-        bool isStorage(VkImageTiling) const;
-        bool isTransferSrc(VkImageTiling) const;
-        bool isTransferDst(VkImageTiling) const;
-        bool isEfficientWithHostImageCopy(VkImageTiling, Protected) const;
+    //     bool isTexturable(VkImageTiling) const;
+    //     bool isRenderable(VkImageTiling, SampleCount sampleCount) const;
+    //     bool isStorage(VkImageTiling) const;
+    //     bool isTransferSrc(VkImageTiling) const;
+    //     bool isTransferDst(VkImageTiling) const;
+    //     bool isEfficientWithHostImageCopy(VkImageTiling, Protected) const;
 
-        std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
-        int fColorTypeInfoCount = 0;
+    //     std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
+    //     int fColorTypeInfoCount = 0;
 
-        VkFormatProperties fFormatProperties = {};
-        SupportedSampleCounts fSupportedSampleCounts;
-        /*
-         * The VK_IMAGE_USAGE_HOST_TRANSFER_BIT flag may cause the image to be put in a suboptimal
-         * physical layout.  In practice, images that could have had framebuffer compression end up
-         * with framebuffer compression disabled.  Using `VkHostImageCopyDevicePerformanceQuery`, we
-         * can determine if the layout is going to be suboptimal and avoid this flag.
-         *
-         * `fIsEfficientWithHostImageCopy` indicates whether the VK_IMAGE_USAGE_HOST_TRANSFER_BIT is
-         * efficient for this format with the following assumptions:
-         *
-         * - Image tiling is VK_IMAGE_TILING_OPTIMAL (note that VK_IMAGE_TILING_LINEAR is always
-         *   efficient for host image copy).
-         * - Image type is 2D.
-         * - Image create flags is 0.
-         * - Image usage flags is a subset of VK_IMAGE_USAGE_SAMPLED_BIT |
-         *                                    VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-         *                                    VK_IMAGE_USAGE_TRANSFER_DST_BIT
-         */
-        bool fIsEfficientWithHostImageCopy = false;
+    //     VkFormatProperties fFormatProperties = {};
+    //     SupportedSampleCounts fSupportedSampleCounts;
+    //     /*
+    //      * The VK_IMAGE_USAGE_HOST_TRANSFER_BIT flag may cause the image to be put in a suboptimal
+    //      * physical layout.  In practice, images that could have had framebuffer compression end up
+    //      * with framebuffer compression disabled.  Using `VkHostImageCopyDevicePerformanceQuery`, we
+    //      * can determine if the layout is going to be suboptimal and avoid this flag.
+    //      *
+    //      * `fIsEfficientWithHostImageCopy` indicates whether the VK_IMAGE_USAGE_HOST_TRANSFER_BIT is
+    //      * efficient for this format with the following assumptions:
+    //      *
+    //      * - Image tiling is VK_IMAGE_TILING_OPTIMAL (note that VK_IMAGE_TILING_LINEAR is always
+    //      *   efficient for host image copy).
+    //      * - Image type is 2D.
+    //      * - Image create flags is 0.
+    //      * - Image usage flags is a subset of VK_IMAGE_USAGE_SAMPLED_BIT |
+    //      *                                    VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+    //      *                                    VK_IMAGE_USAGE_TRANSFER_DST_BIT
+    //      */
+    //     bool fIsEfficientWithHostImageCopy = false;
 
-        // Indicates that a format is only supported if we are wrapping a texture with it.
-        SkDEBUGCODE(bool fIsWrappedOnly = false;)
-    };
-
-    // Map SkColorType to VkFormat.
-    VkFormat fColorTypeToFormatTable[kSkColorTypeCnt];
-    void setColorType(SkColorType, std::initializer_list<VkFormat> formats);
-    VkFormat getFormatFromColorType(SkColorType) const;
-
-    // Map VkFormat to FormatInfo.
-    static const size_t kNumVkFormats = 24;
-    FormatInfo fFormatTable[kNumVkFormats];
-
-    FormatInfo& getFormatInfoForInit(VkFormat);
-    const FormatInfo& getFormatInfo(VkFormat) const;
-
-    // A more lightweight equivalent to FormatInfo for depth/stencil VkFormats.
-    struct DepthStencilFormatInfo {
-        void init(const skgpu::VulkanInterface*, const VulkanCaps&, VkPhysicalDevice, VkFormat);
-        bool isDepthStencilSupported() const;
-
-        VkFormatProperties fFormatProperties = {};
-        SupportedSampleCounts fSupportedSampleCounts;
-    };
-
-    // Map DepthStencilFlags to VkFormat.
-    static const size_t kNumDepthStencilFlags = 4;
-    VkFormat fDepthStencilFlagsToFormatTable[kNumDepthStencilFlags];
-
-    // Map depth/stencil VkFormats to DepthStencilFormatInfo.
-    static const size_t kNumDepthStencilVkFormats = 5;
-    DepthStencilFormatInfo fDepthStencilFormatTable[kNumDepthStencilVkFormats];
-
-    DepthStencilFormatInfo& getDepthStencilFormatInfoForInit(VkFormat);
-    const DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat) const;
+    //     // Indicates that a format is only supported if we are wrapping a texture with it.
+    //     SkDEBUGCODE(bool fIsWrappedOnly = false;)
+    // }
 
     uint32_t fMaxVertexAttributes;
     uint64_t fMaxUniformBufferRange;

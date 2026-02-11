@@ -10,6 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/ports/SkCFObject.h"
+#include "src/gpu/graphite/TextureFormat.h"
 
 class SkStream;
 class SkWStream;
@@ -59,6 +60,8 @@ sk_cfp<id<MTLLibrary>> MtlCompileShaderLibrary(const MtlSharedContext* sharedCon
 
 TextureFormat MTLPixelFormatToTextureFormat(MTLPixelFormat);
 MTLPixelFormat TextureFormatToMTLPixelFormat(TextureFormat);
+
+SkEnumBitMask<FormatSupport> MTLPixelFormatSupport(MTLGPUFamily, MTLPixelFormat);
 
 }  // namespace skgpu::graphite
 
