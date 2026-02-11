@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "164329a8_1ed21721",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-11T14:11:45Z",
+      "side": 1,
+      "message": "This change appears to be causing `Test-Win11-*-ANGLE` to fail `ColorTypeBackendAllocationTest`.",
+      "revId": "a4ed47c242090876f7e894f45442cb3f7f0503d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
