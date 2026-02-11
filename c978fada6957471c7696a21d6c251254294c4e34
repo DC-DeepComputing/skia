@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda0082a_20869cd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-11T18:51:21Z",
+      "side": 1,
+      "message": "Here\u0027s another crack at SkResult. I added a case for pointers (SkResultP) and one for just values (SkResultV). The pointer type cannot be initialized with nullptr explicitly (although one could still slip in and get caught by an assert), so that might help with avoiding someone having to do\nif result \u0026\u0026 result.value() !\u003d nullptr\nor whatever.",
+      "revId": "c978fada6957471c7696a21d6c251254294c4e34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88409949_60ec8919",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-11T18:51:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea85f40c_a7c4e0ec",
+      "revId": "24710765e6ff469712798d218b418e4ee237e79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99770174_58b28874",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "959e3c87_35297119",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-11T18:51:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99770174_58b28874",
+      "revId": "24710765e6ff469712798d218b418e4ee237e79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89220a0c_7e5b0f08",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-01-28T20:06:12Z",
       "side": 1,
       "message": "Also, if using `std::variant` (which in general seems to be a headache, though the little bit used here is fine) this should be `\u003c0\u003e` and use `\u003c1\u003e` for error below, unless it really is the case that it shouldn\u0027t be allowed for `T` and `E` to be the same type.",
+      "range": {
+        "startLine": 28,
+        "startChar": 23,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "24710765e6ff469712798d218b418e4ee237e79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2869258a_7e0834a5",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-11T18:51:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89220a0c_7e5b0f08",
       "range": {
         "startLine": 28,
         "startChar": 23,
