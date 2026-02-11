@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28448671_5778f00f",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d893f34_4abe28ed",
+      "range": {
+        "startLine": 668,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 37
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d6ceaf2_43dc1880",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-11T14:54:33Z",
       "side": 1,
       "message": "nit: Skia style uses pointers for out-parameters typically; the exception is when the out-parameter is a collection that is just being modified vs. something that is getting assigned entirely, so this would be `Layer**`",
+      "range": {
+        "startLine": 827,
+        "startChar": 61,
+        "endLine": 827,
+        "endChar": 69
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81f82195_27e4381b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d6ceaf2_43dc1880",
       "range": {
         "startLine": 827,
         "startChar": 61,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "360e806f_e247665a",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "471ad7e3_86d33f81",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 31
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9578abc_295e3f96",
@@ -135,6 +207,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e4e3c97_70a4b12d",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "I agree it makes the signature simpler, but it makes calling the function awkward. Right now we rely on the outer pointer being non-null to signal what type of draw we have, i.e. when `captureParams` is not null, then it is depthOnly.\n\nTo do this with the new signature, we would have to create empty `DrawParams` and `Layers` so that we can pass in a non-null ptr, and then overwrite those. \n\nNow if there is a way to get around this? Is there such a thing as an empty but not null ptr? Alternatively we could just pass or template bools in lol.",
+      "parentUuid": "d9578abc_295e3f96",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 43
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a7fedcc_270f55c2",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 48
@@ -146,6 +242,30 @@
       "writtenOn": "2026-02-11T14:54:33Z",
       "side": 1,
       "message": "What layer were you using for `addAfter`?",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 17
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56882fad_24088679",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "```\nif (*startLayer) {\n            fLayers.addAfter(targetLayer, *startLayer);\n} else {\n            fLayers.addToTail(targetLayer);\n}\n```\n\nNote: the bug only starts to show up in the CL where depth draws are added to the general case. I\u0027m still not sure why this happens.",
+      "parentUuid": "0a7fedcc_270f55c2",
       "range": {
         "startLine": 230,
         "startChar": 0,

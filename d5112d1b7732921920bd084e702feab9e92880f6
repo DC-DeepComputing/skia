@@ -1086,6 +1086,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec36e96b_6141b55c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f75ac2a9_1c4cf2fd",
+      "range": {
+        "startLine": 305,
+        "startChar": 18,
+        "endLine": 305,
+        "endChar": 33
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5a71b56_3764cef6",
@@ -1486,6 +1510,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b311258d_b72f7a0f",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "76268e36_94534ddd",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "444a4667_de9f15c6",
@@ -1499,6 +1547,30 @@
       "writtenOn": "2026-02-06T19:34:23Z",
       "side": 1,
       "message": "A depth-only draw cannot overlap with any other draw in the layer, just as if it had `dependsOnDst \u003d true` for a shading draw because it needs to be drawn after any previous shaded draw that it overlaps. \n\nAt that point, this function isn\u0027t behaviorally any different from `test`.",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 59
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "deda7856_0b515887",
+        "filename": "src/gpu/graphite/DrawListTypes.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-11T16:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "444a4667_de9f15c6",
       "range": {
         "startLine": 64,
         "startChar": 12,
