@@ -9,6 +9,7 @@
 #define AndroidVulkanMemoryAllocator_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkResult.h"
 #include "include/private/base/SkAPI.h"
 
 namespace skgpu {
@@ -24,7 +25,7 @@ struct Options {
 
 // Returns a concrete implementation of a memory allocator using some hard-coded settings.
 // If Android Framework ever wants to make their own, they can stop using this.
-sk_sp<skgpu::VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext&, Options);
+SkResultP<skgpu::VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext&, Options);
 
 }  // namespace SkiaVMA
 

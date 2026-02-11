@@ -160,9 +160,9 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const skgpu::VulkanBackendContext& backendC
 #if defined(SK_USE_VMA)
     if (!memoryAllocator) {
         // We were not given a memory allocator at creation
-        memoryAllocator =
-                skgpu::VulkanMemoryAllocators::Make(backendContext,
-                                                    skgpu::ThreadSafe::kNo);
+        if (auto m = skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo)) {
+            memoryAllocator = m.take();
+        }
     }
 #endif
     if (!memoryAllocator) {
