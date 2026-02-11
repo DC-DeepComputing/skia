@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c051cf_b34e3b31",
+        "filename": "relnotes/logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-11T20:00:04Z",
+      "side": 1,
+      "message": "This feels like a technical detail that user\u0027s shouldn\u0027t care about. Maybe something like \"Priority-based log filtering is ...\" ?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "5c2278924736b6c98bacbc2c18315c049dfd4024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f14a570_38b5b1eb",
+        "filename": "relnotes/logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-11T20:00:04Z",
+      "side": 1,
+      "message": "Nit: `Graphite`",
+      "range": {
+        "startLine": 2,
+        "startChar": 7,
+        "endLine": 2,
+        "endChar": 15
+      },
+      "revId": "5c2278924736b6c98bacbc2c18315c049dfd4024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
