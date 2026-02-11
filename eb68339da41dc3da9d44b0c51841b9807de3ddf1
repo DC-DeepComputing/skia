@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd036508_8ea53225",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-11T19:13:30Z",
+      "side": 1,
+      "message": "Per linked bug, it seems we can end up with a null verbs pointer and a non-null verbs stop pointer.\n\n\nAdd some extra asserts to see if they catch anything.",
+      "revId": "eb68339da41dc3da9d44b0c51841b9807de3ddf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
