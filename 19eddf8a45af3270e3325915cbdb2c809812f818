@@ -46,6 +46,30 @@
       },
       "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57460afa_c18a91a8",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:05:45Z",
+      "side": 1,
+      "message": "For map errors in `prepareForReturnToCache`, I think if the spontaneous one fails with a transient error status (not sure if that\u0027s a possibility), we would just fall through to try the real async map. The real async map would then setDeleteASAP if it failed.\n\nIf we saw an unrecoverable map error on the first spontaneous async map, we could call setDeleteASAP and return without trying the real async map. That should instruct the ResourceCache to just delete the DawnBuffer instead of recycling it, which is what we want since it won\u0027t be mapped for the next use.\n\nI suspect that we don\u0027t need a mutex for `fAsyncMapCallbacks`. For the write case (which I\u0027d still like to remove as a possibility), there would only be one async callback added when it went back to the cache (held by a single thread), and would remove that callback before it became reusable in the cache. For the read case, I think we only have one callback as well so by the time the asyncMap completes, it shouldn\u0027t have to be worrying about anyone adding another callback.\n\nThe only complication is whether or not some of our unit tests (particularly around compute) map the buffers for reading in a pattern that is different from the regular asyncReadback flow.",
+      "parentUuid": "7784326d_d8fe616a",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 15
+      },
+      "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
