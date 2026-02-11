@@ -120,6 +120,12 @@
       "remote": "https://chromium.googlesource.com/libyuv/libyuv.git"
     },
     {
+      "build_file": "//bazel/external/partition_alloc:BUILD.bazel",
+      "commit": "b5258e200dc8fc3ea0a3c02730258fda7633a9e4",
+      "name": "partition_alloc",
+      "remote": "https://chromium.googlesource.com/chromium/src/base/allocator/partition_allocator.git"
+    },
+    {
       "build_file": "//bazel/external/perfetto:BUILD.bazel",
       "commit": "93885509be1c9240bc55fa515ceb34811e54a394",
       "name": "perfetto",
