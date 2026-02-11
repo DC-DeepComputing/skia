@@ -600,7 +600,10 @@ if (skia_compile_modules) {
     sources += skia_sksl_core_sources
     sources += skia_sksl_codegen_sources
     include_dirs = [ "." ]
-    deps = [ ":run_sksllex" ]
+    deps = [
+      ":run_sksllex",
+      "//src/partition_alloc:raw_ptr",
+    ]
   }
 
   sksl_minify_path = "$root_out_dir/"
@@ -734,6 +737,7 @@ if (skia_compile_sksl_tests) {
     include_dirs = [ "." ]
     deps = [
       ":run_sksllex",
+      "//src/partition_alloc:raw_ptr",
       "//third_party/dawn:tint",
       "//third_party/externals/spirv-tools:spvtools",
       "//third_party/externals/spirv-tools:spvtools_val",
@@ -1851,6 +1855,7 @@ skia_component("skia") {
     ":wuffs",
     ":xml",
     "modules/skcms",
+    "//src/partition_alloc:raw_ptr",
   ]
 
   public = []
@@ -2831,6 +2836,7 @@ if (skia_enable_tools) {
           "modules/skottie:utils",
           "modules/skshaper",
           "modules/skunicode",
+          "tools/partition_alloc:test_support",
         ]
         if (skia_use_libpng_decode) {
           deps += [ "modules/svg" ]
@@ -2898,6 +2904,7 @@ if (skia_enable_tools) {
         "modules/skshaper",
         "modules/skunicode",
         "modules/svg",
+        "tools/partition_alloc:test_support",
       ]
       if (skia_enable_graphite) {
         deps += [ ":common_flags_graphite" ]
