@@ -72,6 +72,7 @@ var depsOverrides = map[string]depConfig{
 	"libwebp":                  {needsBazelFile: true},
 	"libyuv":                   {needsBazelFile: true},
 	"spirv-cross":              {bazelNameOverride: "spirv_cross", needsBazelFile: true},
+	"partition_alloc":          {needsBazelFile: true},
 	"perfetto":                 {needsBazelFile: true},
 	"piex":                     {needsBazelFile: true},
 	"vello":                    {needsBazelFile: true},
