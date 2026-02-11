@@ -22,6 +22,30 @@
       },
       "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7784326d_d8fe616a",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-11T07:34:24Z",
+      "side": 1,
+      "message": "The map call triggered by `prepareForReturnToCache` has a special handling for error: it will call `setDeleteASAP`. Should we call `setDeleteASAP` after an error regardless of whether it\u0027s by `prepareForReturnToCache` or normal `asyncMap`?\n\nAlso do we really need a mutex for the `fAsyncMapCallbacks`? I don\u0027t know whether we really call `asyncMap` concurrently.",
+      "parentUuid": "8d7ff3fd_9a597ec9",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 15
+      },
+      "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
