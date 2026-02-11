@@ -2533,11 +2533,7 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     {
         TestOptions options = fOptions;
-        // If we've copied context options from an external source we can't trust that the
-        // priv pointer is still in scope, so assume it should be NULL and set our own up.
         SkASSERT(!options.fContextOptions.fOptionsPriv);
-        ContextOptionsPriv optionsPriv;
-        options.fContextOptions.fOptionsPriv = &optionsPriv;
 
         // We don't expect the src to mess with the more esoteric options
         SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentPipelineStorage);
