@@ -8,23 +8,43 @@
 # 1. Delegated to the `partition_alloc` library.
 # 2. Provided by Skia a simple "no-op" pointer wrapper (in construction).
 
+load("//bazel:flags.bzl", "bool_flag")
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 
 package(default_applicable_licenses = ["//:license"])
 
 licenses(["notice"])
 
+# Flag to enable/disable PartitionAlloc-based raw_ptr/raw_ref.
+#
+# Usage: --//src/partition_alloc:enabled=true
+bool_flag(
+    name = "enabled",
+    default = False,
+)
+
 skia_cc_library(
     name = "raw_ptr",
-    srcs = [
-        "noop/raw_ptr.h",
-        "noop/raw_ptr_exclusion.h",
-        "noop/raw_ref.h",
-    ],
+    srcs = select({
+        ":enabled_true": [],
+        "//conditions:default": [
+            "noop/raw_ptr.h",
+            "noop/raw_ptr_exclusion.h",
+            "noop/raw_ref.h",
+        ],
+    }),
     hdrs = [
         "raw_ptr.h",
         "raw_ptr_exclusion.h",
         "raw_ref.h",
     ],
+    defines = select({
+        ":enabled_true": ["SK_USE_PARTITION_ALLOC"],
+        "//conditions:default": [],
+    }),
     visibility = ["//:__subpackages__"],
+    deps = select({
+        ":enabled_true": ["@partition_alloc//:raw_ptr"],
+        "//conditions:default": [],
+    }),
 )
