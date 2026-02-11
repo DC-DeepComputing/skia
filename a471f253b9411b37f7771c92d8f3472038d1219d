@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad607ef3_d4fd59f9",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2535,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-11T20:29:08Z",
+      "side": 0,
+      "message": "We should also fix this over in GraphiteSink::draw",
+      "revId": "a471f253b9411b37f7771c92d8f3472038d1219d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
