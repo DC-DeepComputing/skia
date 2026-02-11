@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dca4eb9_e325d695",
+        "filename": "src/gpu/graphite/DrawParams.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 0,
+      "message": "We shouldn\u0027t lose this comment",
+      "range": {
+        "startLine": 171,
+        "startChar": 32,
+        "endLine": 173,
+        "endChar": 0
+      },
+      "revId": "a471f253b9411b37f7771c92d8f3472038d1219d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

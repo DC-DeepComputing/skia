@@ -590,6 +590,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8cac0cc_d440585b",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dd2d36f7_a0b001ad",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b0298e5_67b94704",
@@ -840,6 +864,30 @@
       "side": 1,
       "message": "This comment was out of sync with the code, we explicitly do not allow forward walks when we dependOnDst.\n\nThat being said, the code still allows stencilDraws that !dependOnDst to take the forward path because the atomic property guarantees that inserting a stencil does not interfere with another stencil. (And stencils are still not allowed to overlap)",
       "parentUuid": "e67e4429_0dd48d81",
+      "range": {
+        "startLine": 185,
+        "startChar": 11,
+        "endLine": 186,
+        "endChar": 95
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0688d61f_776df078",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "620bc048_8cc8367f",
       "range": {
         "startLine": 185,
         "startChar": 11,
@@ -1132,6 +1180,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3edcfa_c3352d44",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0cde7f16_209e1094",
+      "range": {
+        "startLine": 337,
+        "startChar": 16,
+        "endLine": 344,
+        "endChar": 47
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ae38bf1_194b6bc9",
@@ -1169,6 +1241,30 @@
       "side": 1,
       "message": "This will be tested/added in a downstream CL called \"Pilot Draws\"",
       "parentUuid": "5ae38bf1_194b6bc9",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 13
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3a554b_0dabe1e7",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "879ca4e0_7bbe1c21",
       "range": {
         "startLine": 304,
         "startChar": 0,

@@ -16,6 +16,213 @@
       "message": "PTAL. Ignore the CL description for now! The comments in the code should also be up to date.\n\nNote a lot of the improvements we have discussed are in the downstream patches.",
       "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d893f34_4abe28ed",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "nit: Even though it\u0027s redundant for the sortkey path, I\u0027d keep these resets below with the other state resets.",
+      "range": {
+        "startLine": 668,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 37
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6ceaf2_43dc1880",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "nit: Skia style uses pointers for out-parameters typically; the exception is when the out-parameter is a collection that is just being modified vs. something that is getting assigned entirely, so this would be `Layer**`",
+      "range": {
+        "startLine": 827,
+        "startChar": 61,
+        "endLine": 827,
+        "endChar": 69
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503dc9d0_9bed768d",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "We can skip this work when `useDrawListLayer()` is true, just like we do in `Device::drawGeometry()`",
+      "range": {
+        "startLine": 861,
+        "startChar": 0,
+        "endLine": 861,
+        "endChar": 77
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "471ad7e3_86d33f81",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "I\u0027m assuming this is a not to remove this from `Draw` since it\u0027s on `DrawParams` now?",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 31
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9578abc_295e3f96",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "WDYT about having `recordDraw` return `std::pair\u003cDrawParams*, Layer*\u003e`? That will be a nicer signature when we are just in the layer system and the sort key system can just ignore the return values",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 43
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a7fedcc_270f55c2",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "What layer were you using for `addAfter`?",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 17
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88da2f3_09f4e930",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "I think we should require that `captureLayer` is always provided, even if the address it points to is set to `nullptr`. That will simplify this if block.",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 31
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4547743_f7c5260d",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "As a note for performance testing, calling `now()` for clock time is a surprisingly heavy function, so since this is being called for every `recordDraw()` call, it\u0027ll be a positive shift when it\u0027s removed.",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 385,
+        "endChar": 95
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4efdd14_9a4c65c3",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:54:33Z",
+      "side": 1,
+      "message": "I understand now why I thought that steps were being double recorded; this loop over the steps of a chained draw iterates over `fChildDraw` and the atomic steps in a multstep draw are appended there.  They are *not* also added to the base `fDraws` of the `chainedList`",
+      "range": {
+        "startLine": 535,
+        "startChar": 20,
+        "endLine": 545,
+        "endChar": 21
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
