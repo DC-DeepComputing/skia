@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fbc0d75_4c7784fd",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-11T14:58:47Z",
+      "side": 1,
+      "message": "add and addToStencil are now identical functions except for the type of `draw`, so that could be added to the template parameter.\n\nIt also probably won\u0027t hurt performance for `isDepthOnly` to be a function parameter instead of a template parameter, since it only happens if in the case of a binding miss.",
+      "range": {
+        "startLine": 166,
+        "startChar": 26,
+        "endLine": 166,
+        "endChar": 29
+      },
+      "revId": "688565d5358e0eda70952fb5702bb494c8e248cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
