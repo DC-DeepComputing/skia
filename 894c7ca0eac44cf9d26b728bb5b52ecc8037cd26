@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2311244c_4b67dbdd",
+        "filename": "include/private/base/SkChecksum_impl.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-11T20:37:22Z",
+      "side": 1,
+      "message": "Base may not depend on core. This is breaking the sandboxed bazel builds (like g3).",
+      "revId": "894c7ca0eac44cf9d26b728bb5b52ecc8037cd26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
