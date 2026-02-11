@@ -102,10 +102,6 @@ std::unique_ptr<skgpu::graphite::Context> VulkanTestContext::makeContext(
         const TestOptions& options) {
     SkASSERT(!options.hasDawnOptions());
     skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
-    skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
-    if (!options.fContextOptions.fOptionsPriv) {
-        revisedContextOptions.fOptionsPriv = &contextOptionsPriv;
-    }
     // Needed to make synchronous readPixels work
     revisedContextOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
     SkASSERT(fVulkan.fMemoryAllocator);

@@ -163,10 +163,6 @@ skgpu::ContextType DawnTestContext::contextType() {
 
 std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext(const TestOptions& options) {
     skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
-    skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
-    if (!options.fContextOptions.fOptionsPriv) {
-        revisedContextOptions.fOptionsPriv = &contextOptionsPriv;
-    }
     // Needed to make synchronous readPixels work
     revisedContextOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
 
