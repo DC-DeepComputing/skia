@@ -1132,7 +1132,7 @@ bool MtlCaps::isStorage(const TextureInfo& info) const {
            SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
-bool MtlCaps::supportsWritePixels(const TextureInfo& texInfo) const {
+bool MtlCaps::isCopyableDst(const TextureInfo& texInfo) const {
     if (!texInfo.isValid()) {
         return false;
     }
@@ -1148,7 +1148,7 @@ bool MtlCaps::supportsWritePixels(const TextureInfo& texInfo) const {
     return true;
 }
 
-bool MtlCaps::supportsReadPixels(const TextureInfo& texInfo) const {
+bool MtlCaps::isCopyableSrc(const TextureInfo& texInfo) const {
     if (!texInfo.isValid()) {
         return false;
     }

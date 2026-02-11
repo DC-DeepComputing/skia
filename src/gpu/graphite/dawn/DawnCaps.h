@@ -83,16 +83,11 @@ public:
     // that can resolve a MSAA texture to a resolve texture with different size.
     bool emulateLoadStoreResolve() const { return fEmulateLoadStoreResolve; }
 
-    // Check whether the texture is texturable, ignoring its sample count. This is needed
-    // instead of isTextureable() because graphite frontend treats multisampled textures as
-    // non-textureable.
-    bool isTexturableIgnoreSampleCount(const TextureInfo& info) const;
-
 private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
     bool onIsTexturable(const TextureInfo&) const override;
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
+    bool isCopyableDst(const TextureInfo&) const override;
+    bool isCopyableSrc(const TextureInfo&) const override;
     std::pair<SkColorType, bool /*isRGBFormat*/> supportedWritePixelsColorType(
             SkColorType dstColorType,
             const TextureInfo& dstTextureInfo,
