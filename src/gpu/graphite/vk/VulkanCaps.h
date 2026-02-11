@@ -62,15 +62,11 @@ public:
                               const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
 
-
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
-
-    bool isFormatSupported(VkFormat) const;
-    bool isTexturable(const VulkanTextureInfo&) const;
-    bool isRenderable(const VulkanTextureInfo&) const;
-    bool isTransferSrc(const VulkanTextureInfo&) const;
-    bool isTransferDst(const VulkanTextureInfo&) const;
+    // bool isFormatSupported(VkFormat) const;
+    // bool isTexturable(const VulkanTextureInfo&) const;
+    // bool isRenderable(const VulkanTextureInfo&) const;
+    // bool isTransferSrc(const VulkanTextureInfo&) const;
+    // bool isTransferDst(const VulkanTextureInfo&) const;
 
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
@@ -197,11 +193,8 @@ private:
                                      const VkPhysicalDeviceProperties&);
 
     SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
-
-    bool onIsTexturable(const TextureInfo&) const override;
-
-    bool isCopyableDst(const TextureInfo&) const override;
-    bool isCopyableSrc(const TextureInfo&) const override;
+    SkEnumBitMask<TextureUsage> getSupportedUsage(TextureFormat format, Tiling) const;
+    std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(const TextureInfo&) const;
 
     /*
      * Whether the texture supports multisampled-render-to-single-sampled.  When

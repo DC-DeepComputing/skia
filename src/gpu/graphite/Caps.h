@@ -189,15 +189,15 @@ public:
     // shader code not exposed in SkSL).
     bool isTexturable(const TextureInfo&, bool allowMSAA=false) const;
     // If true, the texture can be rasterized and/or resolved to (possibly with MSAA)
-    virtual bool isRenderable(const TextureInfo&) const = 0;
+    bool isRenderable(const TextureInfo&) const;
     // If true, the texture can be the source of data copied to another texture or to a buffer.
     // If false, the texture can only be copied via drawing (which requires isTexturable()).
-    virtual bool isCopyableSrc(const TextureInfo&) const = 0;
+    bool isCopyableSrc(const TextureInfo&) const;
     // If true, the texture can be the destination of data copied from another texture or buffer.
     // If false, the texture can only be updated by drawing (which requires isRenderable()).
-    virtual bool isCopyableDst(const TextureInfo&) const = 0;
+    bool isCopyableDst(const TextureInfo&) const;
     // If true, the texture can be used as a storage texture in compute shaders.
-    virtual bool isStorage(const TextureInfo&) const = 0;
+    bool isStorage(const TextureInfo&) const;
 
      /**
      * Backends can optionally override this method to return meaningful sampler conversion info.
@@ -571,10 +571,19 @@ protected:
     bool fSetBackendLabels = false;
 
 private:
-    virtual bool onIsTexturable(const TextureInfo&) const = 0;
+    // TODO(michaelludwig): Remove these functions as Caps takes a more TextureFormat/Usage oriented
+    // approach to textures and color types.
+    const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const;
     virtual SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const = 0;
 
-    const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const;
+    virtual std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> getTextureSupport(
+            TextureFormat format, Tiling) const = 0;
+
+    virtual std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(
+            const TextureInfo&) const = 0;
+
+    bool isSupported(const TextureInfo&, SkEnumBitMask<TextureUsage> test,
+                     bool allowMSAA, bool allowExternal, bool allowCompressed, bool allowProtected) const;
 
     sk_sp<SkCapabilities> fCapabilities;
 };

@@ -61,15 +61,76 @@ SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
     return colorAttachmentDimensions;
 }
 
-bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA) const {
-    if (info.sampleCount() > SampleCount::k1) {
-        if (allowMSAA) {
-            return this->onIsTexturable(TextureInfoPriv::ReplaceSampleCount(info, SampleCount::k1));
-        } else {
-            return false;
-        }
+
+bool Caps::isSupported(const TextureInfo& info,
+                       SkEnumBitMask<TextureUsage> test,
+                       bool allowMSAA,
+                       bool allowExternal,
+                       bool allowCompressed,
+                       bool allowProtected) {
+    TextureFormat format = TextureInfoPriv::ViewFormat(info);
+    if (format == TextureFormat::kUndefined ||
+        !this->isSampleCountSupported(format, info.sampleCount())) {
+        return false;
     }
-    return this->onIsTexturable(info);
+
+    auto [textureUsage, tiling] = this->getTextureUsage(info);
+    textureUsage &= this->getSupportedUsage(format, tiling);
+
+    if (supports & test == test) {
+        // Basic rules that should be reflected in the supported operations bit masks
+        // FIXME: allowMSAA would need to be passed into supportedOperations() to correctly mask out
+        // the kSample bit when we want to externally enforce only single-sampled texturing.
+        SkASSERT((allowProtected  || info.isProtected() == Protected::kNo) &&
+                 (allowMSAA       || info.numSamples() == 1) &&
+                 (allowCompressed || TextureFormatCompressionType(format) ==
+                                            SkTextureCompressionType::kNone) &&
+                 (allowExternal   || format != TextureFormat::kExternal));
+        SkASSERT(formatInfo.supportedSampleCounts(kTiling) & info.numSamples()); // FIXME store SampleCount on TextureInfo?
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA) const {
+    return this->isSupported(info, TextureUsage::kSample,
+                             allowMSAA,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/true,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isRenderable(const TextureInfo& info) const {
+    return this->isSupported(info, TextureUsage::kRender,
+                             /*allowMSAA=*/true,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isCopyableSrc(const TextureInfo& info) const {
+    return this->isSupported(info, TextureUsage::kCopySrc,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/false);
+}
+
+bool Caps::isCopyableDst(const TextureInfo& info) const {
+    return this->isSupported(info, TextureUsage::kCopyDst,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/true,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isStorage(const TextureInfo& info) const {
+    return this->isSupported(info, TextureUsage::kStorage,
+                             /*allowMSAA=*/false,
+                             /*allowExternal=*/false,
+                             /*allowCompressed=*/false,
+                             /*allowProtected=*/false);
 }
 
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {

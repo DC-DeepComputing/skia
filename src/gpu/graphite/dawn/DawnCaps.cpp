@@ -98,6 +98,57 @@ DawnCaps::DawnCaps(const DawnBackendContext& backendContext, const ContextOption
 
 DawnCaps::~DawnCaps() = default;
 
+std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> getTextureSupport(
+        TextureFormat format, Tiling tiling) const {
+    // TODO(michaelludwig): Define supported usage by porting the table from
+    // https://gpuweb.github.io/gpuweb/#plain-color-formats to C++
+    const FormatInfo& formatInfo = this->getFormatInfo(format);
+    if (tiling == Tiling::kLinear || formatInfo.fFlags == 0) {
+        return {{}, {}}; // Not supported or unavailable in WebGPU
+    }
+
+    // At this point, we can claim at least 1 sample are supported
+    SkEnumBitMask<SampleCount> sampleCounts = SampleCount::k1;
+    SkEnumBitMask<TextureUsage> supported;
+
+    if (formatInfo.fFlags & kTexturable_Flag) {
+        supported |= TextureUsage::kSample;
+    }
+
+    if (formatInfo.fFlags & kRenderable_Flag) {
+        supported |= TextureUsage::kRender;
+
+        uint16_t msaaFlag = kMSAA_Flag;
+        if (!TextureFormatIsDepthOrStencil(format)) {
+            // We never resolve depth/stencil, but we assume we can resolve color formats
+            msaaFlag |= kResolve_Flag;
+        }
+        if ((formatInfo.fFlags & msaaFlag) == msaaFlag) {
+            // WebGPU only supports 1x and 4x MSAA
+            sampleCounts |= SampleCount::k4;
+        }
+    }
+
+    if (formatInfo.fFlags & kStorage_Flag) {
+        supported |= TextureUsage::kStorage;
+    }
+
+    if (TextureFormatCompressionType(format) != SkTextureCompressionType::kNone) {
+        // Compressed textures can be copied into, but disallow copying out
+        supported |= TextureUsage::kCopyDst;
+    } else if (format != TextureFormat::kExternal) {
+        // Plain textures can be copied into and out of
+        supported |= TextureUsage::kCopySrc | TextureUsage::kCopyDst;
+    } // else no copying for external texture formats
+
+    return {supported, sampleCounts};
+}
+
+std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(const TextureInfo& texInfo) const {
+    const auto& dawnInfo = TextureInfoPriv::Get<DawnTextureInfo>(info);
+
+}
+
 bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
