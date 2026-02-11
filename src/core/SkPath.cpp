@@ -414,8 +414,14 @@ SkPath::Iter::Iter(const SkPath& path, bool forceClose) {
 
 void SkPath::Iter::setPath(const SkPath& path, bool forceClose) {
     fPts = path.points().data();
-    fVerbs = path.verbs().data();
-    fVerbStop = fVerbs + path.verbs().size();
+
+    const auto vbs = path.verbs();
+    // For empty paths we receive an empty span.
+    SkASSERT(vbs.begin() || vbs.size() == 0);
+    fVerbs = vbs.begin();
+    fVerbStop = vbs.end();
+    SkASSERT(!!fVerbs == !!fVerbStop);
+
     fConicWeights = path.conicWeights().data();
     if (fConicWeights) {
       fConicWeights -= 1;  // begin one behind
@@ -477,6 +483,7 @@ SkPathVerb SkPath::Iter::autoClose(SkPoint pts[2]) {
 
 SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
     SkASSERT(ptsParam);
+    SkASSERT(!!fVerbs == !!fVerbStop);
 
     if (fVerbs == fVerbStop) {
         // Close the curve if requested and if there is some curve to close
