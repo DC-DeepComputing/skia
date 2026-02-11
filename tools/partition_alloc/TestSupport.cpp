@@ -13,6 +13,7 @@
 #include <partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.h>
 #endif
 
+#include <iostream>
 namespace skiatest {
 
 void InitializePartitionAllocForTesting() {

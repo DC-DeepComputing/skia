@@ -8,6 +8,7 @@
 # 1. Delegated to the `partition_alloc` library.
 # 2. Provided by Skia a simple "no-op" pointer wrapper (in construction).
 
+load("//bazel:flags.bzl", "bool_flag")
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 
 package(default_applicable_licenses = ["//:license"])
@@ -27,12 +28,32 @@ skia_cc_library(
     visibility = ["//visibility:public"],
 )
 
+# The PartitionAlloc-based implementation of raw_ptr/raw_ref.
+# This is used when PartitionAlloc is enabled.
+skia_cc_library(
+    name = "raw_ptr_partition_alloc",
+    hdrs = [
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ptr_exclusion.h",
+        "@partition_alloc//:src/partition_alloc/pointers/raw_ref.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["@partition_alloc//:raw_ptr"],
+)
+
+# Flag to enable/disable PartitionAlloc-based raw_ptr/raw_ref.
+#
+# Usage: --//src/partition_alloc:enabled=true
+bool_flag(
+    name = "enabled",
+    default = False,
+)
+
 alias(
     name = "raw_ptr",
-    # TODO(b/352223023) Add bazel support for PartitionAlloc and select the
-    # right implementation based on the configuration. For now, since
-    # PartitionAlloc is not yet supported in Bazel so the "raw_ptr_noop" is
-    # always used.
-    actual = "raw_ptr_noop",
+    actual = select({
+        ":enabled_true": ":raw_ptr_partition_alloc",
+        ":enabled_false": ":raw_ptr_noop",
+    }),
     visibility = ["//visibility:public"],
 )
