@@ -328,7 +328,7 @@ bool GrCaps::validateSurfaceParams(const SkISize& dimensions, const GrBackendFor
                                    GrRenderable renderable, int renderTargetSampleCnt,
                                    skgpu::Mipmapped mipped, GrTextureType textureType) const {
     if (textureType != GrTextureType::kNone) {
-        if (!this->isFormatTexturable(format, textureType)) {
+        if (!format.isValid() || !this->isFormatTexturable(format, textureType)) {
             return false;
         }
     }
@@ -342,7 +342,7 @@ bool GrCaps::validateSurfaceParams(const SkISize& dimensions, const GrBackendFor
     }
 
     if (renderable == GrRenderable::kYes) {
-        if (!this->isFormatRenderable(format, renderTargetSampleCnt)) {
+        if (!format.isValid() || !this->isFormatRenderable(format, renderTargetSampleCnt)) {
             return false;
         }
         int maxRTSize = this->maxRenderTargetSize();
@@ -405,7 +405,7 @@ GrBackendFormat GrCaps::getDefaultBackendFormat(GrColorType colorType,
     }
 
     auto format = this->onGetDefaultBackendFormat(colorType);
-    if (!this->isFormatTexturable(format, GrTextureType::k2D)) {
+    if (!format.isValid() || !this->isFormatTexturable(format, GrTextureType::k2D)) {
         return {};
     }
     if (!this->areColorTypeAndFormatCompatible(colorType, format)) {
