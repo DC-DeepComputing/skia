@@ -10,10 +10,18 @@
 
 #include "include/gpu/graphite/ContextOptions.h"
 
+#if defined(GPU_TEST_UTILS)
+#include "src/gpu/graphite/ContextOptionsPriv.h"
+#endif
+
 namespace skiatest::graphite {
 
 struct TestOptions {
-    TestOptions() = default;
+    TestOptions() {
+#if defined(GPU_TEST_UTILS)
+    fContextOptions.fOptionsPriv = &fOptionsPriv;
+#endif
+    }
     TestOptions(const TestOptions&) = default;
     TestOptions(TestOptions&&) = default;
     TestOptions& operator=(const TestOptions&) = default;
@@ -35,6 +43,10 @@ struct TestOptions {
     bool fDisableTintSymbolRenaming = false;
     bool fNeverYieldToWebGPU = false;
     bool fUseWGPUTextureView = false;
+#endif
+
+#if defined(GPU_TEST_UTILS)
+    skgpu::graphite::ContextOptionsPriv fOptionsPriv;
 #endif
 };
 
