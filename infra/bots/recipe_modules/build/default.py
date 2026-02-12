@@ -316,6 +316,9 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
   if 'AVIF' in extra_tokens:
     args['skia_use_libavif'] = 'true'
 
+  if 'StandaloneWasm' in extra_tokens:
+    args['is_standalone_wasm'] = 'true'
+
   for (k,v) in {
     'cc':  cc,
     'cxx': cxx,
