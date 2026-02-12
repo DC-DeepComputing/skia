@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b146f7f_7b89fb8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 95
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T11:00:53Z",
+      "side": 1,
+      "message": "I’ve updated PartitionAlloc with several adjustments and additional warnings to get a full GCC support.\n\nThat being said, we should treat GCC compatibility as a \u0027nice-to-have\u0027 rather than a priority. Assuming Skia try-bots coverage with Clang is greater or equal to GCC, please feel empowered to disable the GCC build if it becomes a maintenance burden in the future.  (e.g. make `skia_use_partition_alloc` to depend on `is_clang`).",
+      "parentUuid": "7aa2338d_947be71c",
+      "revId": "d239da122c23aad27afa46e70c60d5d2bd99a1ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9519007_64195129",
