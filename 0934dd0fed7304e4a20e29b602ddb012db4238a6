@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "62bc7f5b_f779b396",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "Right now I think CanvasKit just sets `target_cpu\u003d\"wasm\"` as the main build flag to turn on the WASM build. Are you thinking that we should define `is_wasm \u003d skia_build_canvaskit` instead of `is_wasm \u003d target_cpu \u003d\u003d \"wasm\"`?",
+      "parentUuid": "f4e24daf_1ec73254",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4bd0a0e9_edc31380",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2ed25c_880f0160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "Thanks for this heads up! Do you know if they are just using our flag or are they using the CanvasKit build too?",
+      "parentUuid": "00347c0d_e8e22503",
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd7deedb_55f0da62",
@@ -71,6 +113,30 @@
       "writtenOn": "2025-12-23T18:18:18Z",
       "side": 1,
       "message": "`!is_any_wasm`?",
+      "range": {
+        "startLine": 2236,
+        "startChar": 25,
+        "endLine": 2236,
+        "endChar": 34
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d5ca80_1bfbb768",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2236,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "This is confusing but intentional:\n\n- `target_cpu \u003d\u003d \"wasm\"` used to be equivalent to `is_wasm`, but now it is equivalent to `is_any_wasm`.\n- CanvasKit defines its own GL test context in modules/canvaskit/gm_bindings.cpp (`WasmWebGlTestContext`), which is (I believe) why it was excluded from this block before.\n- In a subsequent CL, I\u0027ll be adding a webgl test context implementation for `is_standalone_wasm` builds - and therefore we need `is_standalone_wasm` to be able to enter this block. So, now the guard becomes `!is_wasm` which excludes CanvasKit-WASM but not standalone WASM.\n\nLMK if that makes sense!",
+      "parentUuid": "cd7deedb_55f0da62",
       "range": {
         "startLine": 2236,
         "startChar": 25,
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c82d0904_79861326",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "Definitely can do that, although it seems that this BUILDCONFIG.gn file is where \"downstream\" flags are kept (i.e. flags that are set depending on skia_use_* args). WDYT?",
+      "parentUuid": "86f0a941_c44e38a5",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c6bb0a3_d4f5fa65",
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dbc300d_8508044f",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "Things have come a long way! Threads back on to web workers in the browser (and host threads under WASI).",
+      "parentUuid": "3c6bb0a3_d4f5fa65",
+      "range": {
+        "startLine": 777,
+        "startChar": 8,
+        "endLine": 777,
+        "endChar": 15
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99a5b21b_f1b75f9c",
@@ -140,6 +254,24 @@
       "writtenOn": "2025-12-19T20:01:42Z",
       "side": 1,
       "message": "Should we define `SK_BUILD_FOR_WASM` instead?  It fits the pattern and may come in handy in the future.",
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa4ab261_6886d3b5",
+        "filename": "include/private/base/SkFeatures.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T19:51:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99a5b21b_f1b75f9c",
       "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
