@@ -22,6 +22,30 @@
       },
       "revId": "d22e924e7b1b5bb14f931543898db0cc7be766fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1424cd49_5df04595",
+        "filename": "src/base/SkMathPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-12T17:58:49Z",
+      "side": 1,
+      "message": "Just a small one ...\n- *if* we were ever passing a value that could be extended to 64bits, SkCLZ would definitely truncate that to 32 first -- but just std::countl_zero is a template, that will happily take a 64bit value\n\nThat said, if there is a strong/moderate push to use it directly, I can do that.",
+      "parentUuid": "a556c0cc_4b52ff03",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 1
+      },
+      "revId": "d22e924e7b1b5bb14f931543898db0cc7be766fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
