@@ -110,6 +110,30 @@
       },
       "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0680c334_3073ddea",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T21:41:44Z",
+      "side": 1,
+      "message": "Can you point me to those APIs? In a other places in Skia we used to have factories that returned bare pointers and required all the callers to adopt them, and have moved towards the factory returning the smart pointer so the caller can\u0027t goof up ownership.\n\nFor types in Skia, the way `T` is declared generally defines whether or not it should be used with `std::unique_ptr` or with `sk_sp` since that requires the ref/unref functions or extending SkRefCnt, etc.\n\nFor something that could return a cached object, that suggests ownership is moving with the returned object, so then I\u0027d expect an `SkResult\u003cT*\u003e` to be what the function would declare as its return type.",
+      "parentUuid": "aa2fa614_1570a4c6",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
