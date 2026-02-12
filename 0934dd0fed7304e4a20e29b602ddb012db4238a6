@@ -100,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c86e255c_33241a2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T21:21:55Z",
+      "side": 1,
+      "message": "They build CanvasKit from scratch using .... I think their own BUILD.gn files, but I\u0027m not 100% sure.",
+      "parentUuid": "0a2ed25c_880f0160",
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd7deedb_55f0da62",
@@ -184,6 +202,30 @@
       "side": 1,
       "message": "Definitely can do that, although it seems that this BUILDCONFIG.gn file is where \"downstream\" flags are kept (i.e. flags that are set depending on skia_use_* args). WDYT?",
       "parentUuid": "86f0a941_c44e38a5",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65a41465_658e4523",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T21:21:55Z",
+      "side": 1,
+      "message": "We can have flags that depend on skia_use_* in gn/skia.gni also, they just have to go in later declare_args blocks (e.g. https://github.com/google/skia/blob/d05a87d8c21873125ea76fa723a47739d230b701/gn/skia.gni#L141-L144)",
+      "parentUuid": "c82d0904_79861326",
       "range": {
         "startLine": 81,
         "startChar": 0,
