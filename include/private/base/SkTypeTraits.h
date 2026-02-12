@@ -30,4 +30,12 @@ struct sk_is_trivially_relocatable<std::unique_ptr<T>> : std::true_type {};
 template <typename T>
 inline constexpr bool sk_is_trivially_relocatable_v = sk_is_trivially_relocatable<T>::value;
 
+// By default things are not smart pointers...
+template <typename T, typename = void>
+struct sk_is_smart_pointer : std::false_type {};
+
+// But if they have an element_type (like sk_sp and std::unique_ptr do), then we say they are.
+template <typename T>
+struct sk_is_smart_pointer<T, std::void_t<typename T::element_type>> : std::true_type {};
+
 #endif  // SkTypeTraits_DEFINED

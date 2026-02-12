@@ -9,6 +9,7 @@
 #define skgpu_VulkanAMDMemoryAllocator_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkResult.h"
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -26,13 +27,13 @@ struct VulkanInterface;
 
 class VulkanAMDMemoryAllocator : public VulkanMemoryAllocator {
 public:
-    static sk_sp<VulkanMemoryAllocator> Make(VkInstance instance,
-                                             VkPhysicalDevice physicalDevice,
-                                             VkDevice device,
-                                             uint32_t physicalDeviceVersion,
-                                             const VulkanExtensions* extensions,
-                                             const VulkanInterface* interface,
-                                             ThreadSafe);
+    static SkResultP<VulkanMemoryAllocator> Make(VkInstance instance,
+                                                 VkPhysicalDevice physicalDevice,
+                                                 VkDevice device,
+                                                 uint32_t physicalDeviceVersion,
+                                                 const VulkanExtensions* extensions,
+                                                 const VulkanInterface* interface,
+                                                 ThreadSafe);
 
     ~VulkanAMDMemoryAllocator() override;
 
