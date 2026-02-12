@@ -16,6 +16,24 @@
       "message": "Should we highlight the optional -\u003e required status in release notes?",
       "revId": "646444429764620fb70a85e57e2aee35a204d9cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe970a6_1f1ce598",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T16:41:16Z",
+      "side": 1,
+      "message": "That\u0027s probably a good idea; it\u0027s been not optional for a bit now, but it\u0027s a good breadcrumb.",
+      "parentUuid": "f9e3a386_4915ecee",
+      "revId": "646444429764620fb70a85e57e2aee35a204d9cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
