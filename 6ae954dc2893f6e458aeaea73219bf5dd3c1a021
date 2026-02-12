@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6deb9aa7_673742a0",
+        "filename": "bench/MathBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-12T18:22:01Z",
+      "side": 0,
+      "message": "This is still being used in one place, though it doesn\u0027t seem to so anything clever.",
+      "range": {
+        "startLine": 108,
+        "startChar": 21,
+        "endLine": 108,
+        "endChar": 35
+      },
+      "revId": "6ae954dc2893f6e458aeaea73219bf5dd3c1a021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccd4e1b_c1f8c0ce",
+        "filename": "bench/MathBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-12T18:22:01Z",
+      "side": 0,
+      "message": "Hmm, this is kind of interesting in that is shows std::floor is much slower than floor_fast... yet we don\u0027t seem to be using floor_fast anywhere?",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 9
+      },
+      "revId": "6ae954dc2893f6e458aeaea73219bf5dd3c1a021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
