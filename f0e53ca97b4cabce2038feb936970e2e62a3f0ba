@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fb5aa28_1c140cc3",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T23:09:46Z",
+      "side": 1,
+      "message": "Would it be clearer for this to be named \u0027ignoreMSAA\u0027 ?",
+      "range": {
+        "startLine": 64,
+        "startChar": 54,
+        "endLine": 64,
+        "endChar": 63
+      },
+      "revId": "f0e53ca97b4cabce2038feb936970e2e62a3f0ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
