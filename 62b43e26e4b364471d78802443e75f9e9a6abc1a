@@ -134,6 +134,30 @@
       },
       "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb3429e_64f391d5",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T22:06:40Z",
+      "side": 1,
+      "message": "https://review.skia.org/1152056 is where I try using this on a factory for a VulkanMemoryAllocator. I\u0027d imagine this would go well in places like \n`SkPngDecoder::Decode` which is currently returning an SkCodec::Result (via an outpointer) and a unique_ptr to SkCodec.\nhttps://github.com/google/skia/blob/cda3b717d02f2efc6dec6d86aebf8f63cca921c1/include/codec/SkPngDecoder.h#L31-L36",
+      "parentUuid": "0680c334_3073ddea",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
