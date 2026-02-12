@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e3a386_4915ecee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-12T15:41:52Z",
+      "side": 1,
+      "message": "Should we highlight the optional -\u003e required status in release notes?",
+      "revId": "646444429764620fb70a85e57e2aee35a204d9cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
