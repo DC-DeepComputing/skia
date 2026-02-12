@@ -255,6 +255,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df274e06_dd099a95",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "You can use the `paintID` to determine if it\u0027s depth-only, it will be an InvalidID() for depth-only draws and valid for anything else.\n\nThen you can always return the `DrawParams*` result, and the outer context ignores it (drawGeometry) or saves it (ClipStack).\n\nThe only weird thing about this new signature is that we are passing in the stop layer and then updating the stop layer, so it\u0027d look like:\n\n```\nstd::tie(prevLayer, captureParam) \u003d list-\u003erecordDraw(...., prevLayer);\n```\n\nin the case we don\u0027t care about the DrawParams, you should be able to use `std::ignore` in the tie call.",
+      "parentUuid": "7e4e3c97_70a4b12d",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 43
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a7fedcc_270f55c2",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 48
@@ -290,6 +314,30 @@
       "side": 1,
       "message": "```\nif (*startLayer) {\n            fLayers.addAfter(targetLayer, *startLayer);\n} else {\n            fLayers.addToTail(targetLayer);\n}\n```\n\nNote: the bug only starts to show up in the CL where depth draws are added to the general case. I\u0027m still not sure why this happens.",
       "parentUuid": "0a7fedcc_270f55c2",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 17
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a4da22a_250885ac",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "I think this may be because that CL was using `addToHead` to keep all the depth-only draws in front of the shading draws which use `addToTail`. When we switch to `addAfter` here, we start to interleave the depth draws and these shading draws?",
+      "parentUuid": "56882fad_24088679",
       "range": {
         "startLine": 230,
         "startChar": 0,
@@ -384,6 +432,30 @@
       "side": 1,
       "message": "Yes, I also expect a modest further improvement.",
       "parentUuid": "b4547743_f7c5260d",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 385,
+        "endChar": 95
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e68957b_6a00a8af",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d549df7_16a0b856",
       "range": {
         "startLine": 383,
         "startChar": 0,

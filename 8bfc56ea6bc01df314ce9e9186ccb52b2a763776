@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0747bc18_26830f14",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "Can we comment here, or assert that `fDeferredLayer` is null, so that guarantees that post `drawClipShapeImmediate` that `fDeferredLayer` will be the same or more recent than `prevLayer` passed in?",
+      "range": {
+        "startLine": 693,
+        "startChar": 0,
+        "endLine": 696,
+        "endChar": 31
+      },
+      "revId": "8bfc56ea6bc01df314ce9e9186ccb52b2a763776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5043b74c_7e64a66b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "I think we need a layer ordering check here, to only update `deferredLayer` if `fDeferredLayer` is more recent.  `fDeferredLayer` will be more recent than the passed in `deferredLayer` when it was the first use of the clip element, but depending on how different draws overlap with difference clip ops, we could activate a new element in the stack first, then activate an older element on a later draw, creating an inversion of the layer ordering vs. the element ordering.",
+      "range": {
+        "startLine": 876,
+        "startChar": 0,
+        "endLine": 876,
+        "endChar": 40
+      },
+      "revId": "8bfc56ea6bc01df314ce9e9186ccb52b2a763776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41b0f41_c85eca0d",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 1912,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "after?",
+      "range": {
+        "startLine": 1912,
+        "startChar": 31,
+        "endLine": 1912,
+        "endChar": 37
+      },
+      "revId": "8bfc56ea6bc01df314ce9e9186ccb52b2a763776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d15191d_0b9d4c91",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 1923,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T18:19:53Z",
+      "side": 1,
+      "message": "I don\u0027t think we have this guarantee. Consider the following scenario:\n\n1. Push a very large clip A on to the stack\n2. Push another clip B on to the stack.\n3. Draw 1 is fully contained in A but overlaps with B, so we call `updateForDraw` on B and set its `fDeferredLayer`.\n4. Draw 2 is not fully contained in A and is affected by both A and B, so we call `updateForDraw` on both elements, seeing the `fDeferredLayer` from #3 for B and getting a new layer for A.\n5. Depending on the order we are iterating over `effectiveElements`, we might call `updateForDraw` on A first, so `prevLayer` would be null. This is fine, the backwards search should still stop at B\u0027s `fDeferredLayer`. However, then we call `updateForDraw` on B later and currently unconditionally update `prevLayer` to be its layer even though in this scenario it is an earlier layer than A\u0027s.",
+      "range": {
+        "startLine": 1919,
+        "startChar": 0,
+        "endLine": 1923,
+        "endChar": 63
+      },
+      "revId": "8bfc56ea6bc01df314ce9e9186ccb52b2a763776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
