@@ -45,7 +45,7 @@ wasm_defines = [
   "SK_FORCE_8_BYTE_ALIGNMENT",
 ]
 
-if (!is_debug && !skia_canvaskit_force_tracing) {
+if (is_standalone_wasm || (!is_debug && !skia_canvaskit_force_tracing)) {
   wasm_defines += [ "SK_DISABLE_TRACING" ]
 }
 

@@ -82,8 +82,8 @@ declare_args() {
   skia_use_rust_png_encode = false
   skia_use_rust_bmp_decode = false
   skia_use_sfml = false
-  skia_use_webgl = is_wasm
-  skia_use_webgpu = is_wasm
+  skia_use_webgl = is_any_wasm
+  skia_use_webgpu = is_any_wasm
   skia_use_wuffs = true
   skia_use_x11 = is_linux
   skia_use_xps = true
@@ -112,7 +112,7 @@ declare_args() {
     skia_gl_standard = "gl"
   } else if (is_ios) {
     skia_gl_standard = "gles"
-  } else if (is_wasm && skia_enable_ganesh) {
+  } else if (is_any_wasm && skia_enable_ganesh) {
     skia_gl_standard = "webgl"
   } else {
     skia_gl_standard = ""
@@ -148,7 +148,8 @@ declare_args() {
   skia_enable_fontmgr_FontConfigInterface =
       skia_use_freetype && skia_use_fontconfig
   skia_enable_spirv_validation = is_skia_dev_build && is_debug && !skia_use_dawn
-  skia_use_dng_sdk = !is_wasm && skia_use_libjpeg_turbo_decode && skia_use_zlib
+  skia_use_dng_sdk =
+      !is_any_wasm && skia_use_libjpeg_turbo_decode && skia_use_zlib
   skia_enable_vulkan_debug_layers = skia_enable_gpu_debug_layers
   skia_enable_direct3d_debug_layer = skia_enable_gpu_debug_layers
   skia_enable_metal_debug_info = skia_enable_gpu_debug_layers
