@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca825234_6df15502",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-12T20:59:15Z",
+      "side": 1,
+      "message": "This seems cool IMO!",
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b72dd05_62478d9c",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-12T20:59:15Z",
+      "side": 1,
+      "message": "Food for thought: I\u0027m wondering if we might want something here in the future to indicate \"oops a GPU driver call failed\"? Unsure if that would be GPU-specific, or if it could be \"one of our dependencies returned something we didn\u0027t expect, this might or might not be our fault.\"",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 18
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
