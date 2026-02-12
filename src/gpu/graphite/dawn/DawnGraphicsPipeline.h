@@ -66,7 +66,8 @@ public:
 
     ~DawnGraphicsPipeline() override;
 
-    bool didAsyncCompilationFail() const override;
+    // If the compilation failed, this will return an error message.
+    std::optional<std::string> didAsyncCompilationFail() const override;
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }
