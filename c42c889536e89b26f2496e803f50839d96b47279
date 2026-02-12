@@ -16,6 +16,29 @@
       "message": "Hi Kaylee,\nWhat do you think about this patch?",
       "revId": "c42c889536e89b26f2496e803f50839d96b47279",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28a388a2_3883a6c7",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:42:43Z",
+      "side": 1,
+      "message": "Note: This is a single rewrite to confirm this patch is working. I chose this class, because it was easy to verify the pointer isn\u0027t dangling.\n\nLater I will:\n- Enable DanglingPointerDetector in dm.\n- Exclude some selected pointer from the rewrite with RAW_PTR_EXCLUSION. For instance `sk_sp`.\n- Apply an automated rewrite. This would only affect the private source of Skia. Not the public headers. Add \"DanglingUntriaged\" to every pointers dangling in tests. At this point, most UAF in Skia would be mitigated.\n- Resolve a good chunk of the DanglingUntriaged.",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 28
+      },
+      "revId": "c42c889536e89b26f2496e803f50839d96b47279",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
