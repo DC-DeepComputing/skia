@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "276cbc0d_ca6c5ab7",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T21:17:34Z",
+      "side": 1,
+      "message": "Greg mentioned he wanted a nice long list of error codes, so the idea of having something like GPUDriverBorked seems reasonable to me.",
+      "parentUuid": "6b72dd05_62478d9c",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 18
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "706e594c_cf5eaa32",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-12T21:06:01Z",
       "side": 1,
       "message": "It strikes me as brittle to have two different take functions here, that really can only be called specific to how the T was meant to be wrapped.\n\nWould it not be better for the functions to be returning an SkResultV\u003csk_sp\u003cT\u003e\u003e or SkResultV\u003cstd::unique_ptr\u003cT\u003e\u003e to disambiguate them?",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa2fa614_1570a4c6",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T21:17:34Z",
+      "side": 1,
+      "message": "I initially had something like `SkResult\u003csk_sp\u003cT\u003e\u003e` but that felt kind of verbose.\n\nWhen I was designing this, it was for factories who are creating a thing (e.g. a Codec or Image), so in those cases, we are handing the client the object that they alone are referring to and can decide if they want to share it (wrap in sk_sp) or only have one entity hold it (wrap it in a unique_ptr).\n\nThe case you are mentioning (maybe a MakeOrGetCached or just a Get) would be problematic/brittle to maybe have a unique_ptr that\u0027s really a shared pointer. And in that case, maybe the better answer is just having the client return an sk_sp directly. Or we use template magic to disable the takeUnique sometimes.",
+      "parentUuid": "706e594c_cf5eaa32",
       "range": {
         "startLine": 121,
         "startChar": 0,
