@@ -46,6 +46,30 @@
       },
       "revId": "d22e924e7b1b5bb14f931543898db0cc7be766fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b76d93d_6368d959",
+        "filename": "src/base/SkMathPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-12T18:09:07Z",
+      "side": 1,
+      "message": "Keeping sgtm.  We\u0027ll get a better look at the call sites after this lands.",
+      "parentUuid": "1424cd49_5df04595",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 1
+      },
+      "revId": "d22e924e7b1b5bb14f931543898db0cc7be766fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
