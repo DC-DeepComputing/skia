@@ -45,6 +45,30 @@
       },
       "revId": "6ae954dc2893f6e458aeaea73219bf5dd3c1a021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef2ee74a_d0897cfb",
+        "filename": "bench/MathBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-12T18:44:06Z",
+      "side": 0,
+      "message": "agreed\n- we never call it\n- it does not handle inf/nan, so we really can\u0027t",
+      "parentUuid": "1ccd4e1b_c1f8c0ce",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 9
+      },
+      "revId": "6ae954dc2893f6e458aeaea73219bf5dd3c1a021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
