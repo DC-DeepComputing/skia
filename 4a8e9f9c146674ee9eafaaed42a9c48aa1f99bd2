@@ -16,6 +16,24 @@
       "message": "Could we replace the old `is_wasm` with just `target_cpu \u003d\u003d \"wasm\"` instead of introducing `is_any_wasm`? Having come back to this after a few weeks of not thinking about it, I think that\u0027s more clear.\n\nThen we can have an `is_standalone_wasm` and (probably) an `is_canvaskit`. It will probably break Flutter, but I\u0027d rather do that (and have to manually roll) if it means we get a clearer solution.\n\n\nAlternatively, we introduce `is_canvaskit` for the CK specific stuff and make `is_wasm` \"if you are building any WASM at all\" and keep the `is_standalone_wasm` you added (if necessary)",
       "revId": "4a8e9f9c146674ee9eafaaed42a9c48aa1f99bd2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f740677_1de195d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-12T21:40:00Z",
+      "side": 1,
+      "message": "Gotcha, so if I understand correctly:\n\n- `target_cpu \u003d\u003d \"wasm\"` would now mean \"anything targeting WASM architecture\"\n- `is_canvaskit` would be used/required to build the Skia pieces used by the CK build\n- `is_standalone_wasm` would be used to build Skia-WASM in the new standalone fashion\n\nIf that seems right, then I wonder if the more appropriate naming would be `skia_build_canvaskit` and `skia_build_wasm` (similar to your suggestion in another thread).\n\nI\u0027m happy to go any of these directions, lmk what your thoughts are.",
+      "parentUuid": "cd6d1155_fe386cd7",
+      "revId": "4a8e9f9c146674ee9eafaaed42a9c48aa1f99bd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
