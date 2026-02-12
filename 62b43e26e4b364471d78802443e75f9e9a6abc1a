@@ -39,6 +39,29 @@
       },
       "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "706e594c_cf5eaa32",
+        "filename": "include/core/SkResult.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-12T21:06:01Z",
+      "side": 1,
+      "message": "It strikes me as brittle to have two different take functions here, that really can only be called specific to how the T was meant to be wrapped.\n\nWould it not be better for the functions to be returning an SkResultV\u003csk_sp\u003cT\u003e\u003e or SkResultV\u003cstd::unique_ptr\u003cT\u003e\u003e to disambiguate them?",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "62b43e26e4b364471d78802443e75f9e9a6abc1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
