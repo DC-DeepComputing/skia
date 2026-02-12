@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fb55fa0_acfbd934",
+        "filename": ".gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:17:15Z",
+      "side": 1,
+      "message": "This is needed. This overrides the default:\n- Disabled by default for embedders (e.g. gn/skia.gni)\n- Enabled in Skia standalone (e.g. \u003cskia\u003e/.gn) to get a sufficient coverage on Skia CQ: dangling pointers + other memory safety checks, before rolling Skia into Chrome.\n- (Soon) Enabled in Chrome (e.g. \u003cchrome\u003e/.gn) who will set:\n```\n  skia_use_partition_alloc \u003d true\n  skia_partition_alloc_dir \u003d \"base/allocator/partition_allocator/\"\n```\n\nWDYT?\nThis is important not to affect any embedders of Skia.",
+      "parentUuid": "a39a88f2_dfc285b6",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17286b49_76ad94fe",
         "filename": "BUILD.gn",
         "patchSetId": 98
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-12T14:10:00Z",
       "side": 1,
       "message": "It is better to condition this dep on `skia_use_partition_alloc`. Then, tools/partition_alloc/BUILD.gn can be simpler (fewer conditions) and we don\u0027t need to #ifdef tools/partition_alloc/TestSupport.cpp, which is easier for Bazel integration.",
+      "range": {
+        "startLine": 2834,
+        "startChar": 11,
+        "endLine": 2834,
+        "endChar": 16
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "034151b1_75c8cfbd",
+        "filename": "BUILD.gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:17:15Z",
+      "side": 1,
+      "message": "I would like to keep the TestSupport.h includable from everyone. This is similar to what happens in [dawn](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/tests/DawnTest.cpp;l\u003d297-298;drc\u003db3eab4fd06ddbeee84b37224f4cc9d78094fc2f7;bpv\u003d1;bpt\u003d1).\n\nIf I follow this suggestion the drawbacks are:\n- I need to move the `#if defined(...)` from TestSupport to DM. (+ nanobench).\n- I need to import \"partition_alloc.gni\" to know if BackupRefPtr is possible on the CPU/Platform. I prefer to import it from \"test_support\" only to reduce the scope. I would like to avoid leaking its content into your main BUILD.gn file.\n\nWDYT? I will let you decide.",
+      "parentUuid": "17286b49_76ad94fe",
       "range": {
         "startLine": 2834,
         "startChar": 11,
@@ -83,6 +131,54 @@
       "writtenOn": "2026-02-12T14:10:00Z",
       "side": 1,
       "message": "Move this down to be closer to the other partition_alloc flag",
+      "range": {
+        "startLine": 74,
+        "startChar": 2,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7c2581_d486b134",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:17:15Z",
+      "side": 1,
+      "message": "This is already off by default. Only enabled in Skia standalone.\n\nI can try to enable it conditionally on `is_clang` in Skia standalone if this is what you want? I can, but why?",
+      "parentUuid": "39699c61_8b4c775d",
+      "range": {
+        "startLine": 74,
+        "startChar": 29,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93982166_7962a38a",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:17:15Z",
+      "side": 1,
+      "message": "I was trying to follow pre-existing patterns ;-)\nThat makes sense. Done.",
+      "parentUuid": "271a84ac_93adf709",
       "range": {
         "startLine": 74,
         "startChar": 2,
