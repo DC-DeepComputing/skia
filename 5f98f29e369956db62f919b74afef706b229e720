@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e5ac39a_6d36fc38",
+        "filename": ".gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T20:58:49Z",
+      "side": 1,
+      "message": "I\u0027m not *entirely* sure what you mean differentiating Skia standalone vs embedders. From what I understand both skia.gni and \u003cskia\u003e/.gn are used when building on the Skia CQ/CI. We tend to create the flags in gn/skia.gni with a default that most developers would find useful and then set them in our test configurations as appropriate.\n(e.g. https://github.com/google/skia/blob/d05a87d8c21873125ea76fa723a47739d230b701/infra/bots/recipe_modules/build/default.py#L148-L156)\n\nWe rarely set anything in //.gn as a result and I\u0027d like to keep it that way.",
+      "parentUuid": "3fb55fa0_acfbd934",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17286b49_76ad94fe",
         "filename": "BUILD.gn",
         "patchSetId": 98
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I would like to keep the TestSupport.h includable from everyone. This is similar to what happens in [dawn](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/tests/DawnTest.cpp;l\u003d297-298;drc\u003db3eab4fd06ddbeee84b37224f4cc9d78094fc2f7;bpv\u003d1;bpt\u003d1).\n\nIf I follow this suggestion the drawbacks are:\n- I need to move the `#if defined(...)` from TestSupport to DM. (+ nanobench).\n- I need to import \"partition_alloc.gni\" to know if BackupRefPtr is possible on the CPU/Platform. I prefer to import it from \"test_support\" only to reduce the scope. I would like to avoid leaking its content into your main BUILD.gn file.\n\nWDYT? I will let you decide.",
       "parentUuid": "17286b49_76ad94fe",
+      "range": {
+        "startLine": 2834,
+        "startChar": 11,
+        "endLine": 2834,
+        "endChar": 16
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "793e3a8a_0dbc4f3a",
+        "filename": "BUILD.gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T20:58:49Z",
+      "side": 1,
+      "message": "\u003e I would like to keep the TestSupport.h includable from everyone.\n\nI do not want that. This makes it hard to structure and build code with Bazel. Moving the #ifdefs to DM/nanobench is desired.\n\n\u003e I would like to avoid leaking its content into your main BUILD.gn file.\nI\u0027m not sure what you mean here",
+      "parentUuid": "034151b1_75c8cfbd",
       "range": {
         "startLine": 2834,
         "startChar": 11,
@@ -184,6 +232,30 @@
         "startChar": 2,
         "endLine": 74,
         "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cad64bbb_267d0a46",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T20:58:49Z",
+      "side": 1,
+      "message": "You had a previous comment about GCC support being \"nice-to-have\", so let\u0027s turn it off for GCC by default and not worry about it.",
+      "parentUuid": "db7c2581_d486b134",
+      "range": {
+        "startLine": 74,
+        "startChar": 29,
+        "endLine": 74,
+        "endChar": 34
       },
       "revId": "5f98f29e369956db62f919b74afef706b229e720",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
