@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51e118d3_3c7e7640",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:36:21Z",
+      "side": 1,
+      "message": "Hi Kaylee,\nWhat do you think about this patch?",
+      "revId": "c42c889536e89b26f2496e803f50839d96b47279",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
