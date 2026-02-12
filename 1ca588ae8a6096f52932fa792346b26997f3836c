@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3b8e311_051699de",
+        "filename": "tools/graphite/TestOptions.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T13:39:44Z",
+      "side": 1,
+      "message": "Don\u0027t forget that you also need to handle the SK_DAWN member variables too",
+      "revId": "1ca588ae8a6096f52932fa792346b26997f3836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
