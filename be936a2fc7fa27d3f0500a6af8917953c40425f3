@@ -16,6 +16,91 @@
       "message": "PTAL",
       "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a818727d_1063bf23",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T18:43:50Z",
+      "side": 1,
+      "message": "It seems like we want:\n\nTestOptions revisedOptions(options);\n\nRight now this is doing something wonky",
+      "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96413526_0a938874",
+        "filename": "tools/graphite/mtl/GraphiteMtlTestContext.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T18:43:50Z",
+      "side": 1,
+      "message": "Same here",
+      "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f503f76_f7d98d72",
+        "filename": "tools/graphite/vk/GraphiteVulkanTestContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T18:43:50Z",
+      "side": 1,
+      "message": "same here - maybe add that assert to all these locations?",
+      "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2289672_ce8f5e56",
+        "filename": "tools/window/GraphiteDisplayParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T18:43:50Z",
+      "side": 1,
+      "message": "Add a \\n",
+      "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e49fa54d_3b390b5b",
+        "filename": "tools/window/GraphiteDisplayParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T18:43:50Z",
+      "side": 1,
+      "message": "Add a \\n",
+      "revId": "be936a2fc7fa27d3f0500a6af8917953c40425f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
