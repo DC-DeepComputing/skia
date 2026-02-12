@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39a88f2_dfc285b6",
+        "filename": ".gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T14:10:00Z",
+      "side": 1,
+      "message": "We don\u0027t need this here if it\u0027s in gn/skia.gni",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17286b49_76ad94fe",
+        "filename": "BUILD.gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T14:10:00Z",
+      "side": 1,
+      "message": "It is better to condition this dep on `skia_use_partition_alloc`. Then, tools/partition_alloc/BUILD.gn can be simpler (fewer conditions) and we don\u0027t need to #ifdef tools/partition_alloc/TestSupport.cpp, which is easier for Bazel integration.",
+      "range": {
+        "startLine": 2834,
+        "startChar": 11,
+        "endLine": 2834,
+        "endChar": 16
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39699c61_8b4c775d",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T14:10:00Z",
+      "side": 1,
+      "message": "is_clang to have it off for GCC by default",
+      "range": {
+        "startLine": 74,
+        "startChar": 29,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "271a84ac_93adf709",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T14:10:00Z",
+      "side": 1,
+      "message": "Move this down to be closer to the other partition_alloc flag",
+      "range": {
+        "startLine": 74,
+        "startChar": 2,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
