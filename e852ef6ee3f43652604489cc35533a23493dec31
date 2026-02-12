@@ -87,6 +87,24 @@
       "parentUuid": "60cfc7af_8619bc72",
       "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d5e8b5_7248eccb",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-12T15:18:19Z",
+      "side": 1,
+      "message": "Still failing on trunk (without partition_alloc).\n\n\nThat\u0027s a separate issue. I will try to fix it once I really need to run nanobench locally.",
+      "parentUuid": "60cfc7af_8619bc72",
+      "revId": "e852ef6ee3f43652604489cc35533a23493dec31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
