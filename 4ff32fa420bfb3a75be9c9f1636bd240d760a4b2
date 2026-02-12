@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca431b4_cfc91e41",
+        "filename": "infra/bots/assets/svg/create.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-12T20:58:59Z",
+      "side": 0,
+      "message": "`gcloud storage cp is parallel by default. gsutil requires top-level -m flag.`",
+      "range": {
+        "startLine": 67,
+        "startChar": 18,
+        "endLine": 67,
+        "endChar": 22
+      },
+      "revId": "4ff32fa420bfb3a75be9c9f1636bd240d760a4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
