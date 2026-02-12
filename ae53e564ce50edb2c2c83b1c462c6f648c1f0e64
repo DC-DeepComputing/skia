@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "ae53e564ce50edb2c2c83b1c462c6f648c1f0e64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07165293_c8277807",
+        "filename": "tools/graphite/TestOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T19:40:15Z",
+      "side": 1,
+      "message": "rm",
+      "revId": "ae53e564ce50edb2c2c83b1c462c6f648c1f0e64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94ee74c8_e50da4e2",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-12T19:40:15Z",
+      "side": 1,
+      "message": "How is this working? Doesn\u0027t graphiteTestOptions() return a pointer ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 45,
+        "endLine": 178,
+        "endChar": 72
+      },
+      "revId": "ae53e564ce50edb2c2c83b1c462c6f648c1f0e64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
