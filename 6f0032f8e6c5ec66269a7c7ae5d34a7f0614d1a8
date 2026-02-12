@@ -135,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbfcaa79_d87babb2",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-12T16:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "503dc9d0_9bed768d",
+      "range": {
+        "startLine": 861,
+        "startChar": 0,
+        "endLine": 861,
+        "endChar": 77
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "471ad7e3_86d33f81",
@@ -299,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d32bf7_85da8193",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-12T16:37:20Z",
+      "side": 1,
+      "message": "This gets simplified when depth only draws CL.",
+      "parentUuid": "f88da2f3_09f4e930",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 31
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4547743_f7c5260d",
@@ -312,6 +360,30 @@
       "writtenOn": "2026-02-11T14:54:33Z",
       "side": 1,
       "message": "As a note for performance testing, calling `now()` for clock time is a surprisingly heavy function, so since this is being called for every `recordDraw()` call, it\u0027ll be a positive shift when it\u0027s removed.",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 385,
+        "endChar": 95
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d549df7_16a0b856",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-12T16:37:20Z",
+      "side": 1,
+      "message": "Yes, I also expect a modest further improvement.",
+      "parentUuid": "b4547743_f7c5260d",
       "range": {
         "startLine": 383,
         "startChar": 0,
