@@ -97,6 +97,7 @@ skia_core_public = [
   "$_include/core/SkRect.h",
   "$_include/core/SkRefCnt.h",
   "$_include/core/SkRegion.h",
+  "$_include/core/SkResult.h",
   "$_include/core/SkSamplingOptions.h",
   "$_include/core/SkScalar.h",
   "$_include/core/SkSerialProcs.h",

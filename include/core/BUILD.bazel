@@ -78,6 +78,7 @@ PUBLIC_HEADERS = [
     "SkRect.h",
     "SkRefCnt.h",
     "SkRegion.h",
+    "SkResult.h",
     "SkSamplingOptions.h",
     "SkScalar.h",
     "SkSerialProcs.h",
