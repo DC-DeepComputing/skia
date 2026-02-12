@@ -118,8 +118,11 @@ void VulkanWindowContext::initializeContext() {
     GET_DEV_PROC(QueuePresentKHR);
     GET_DEV_PROC(GetDeviceQueue);
 
-    backendContext.fMemoryAllocator =
-            skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo);
+    if (auto m = skgpu::VulkanMemoryAllocators::Make(backendContext, skgpu::ThreadSafe::kNo)) {
+        backendContext.fMemoryAllocator = m.take();
+    } else {
+        return;
+    }
 
     fContext = GrDirectContexts::MakeVulkan(backendContext, fDisplayParams->grContextOptions());
 
