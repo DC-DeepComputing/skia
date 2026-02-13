@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cfe314d_bbd11cef",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-13T06:29:49Z",
+      "side": 1,
+      "message": "It doesn\u0027t work. The compiler seems to have trouble interpreting the comma and thought we pass 4 arguments to `RETURN_FAIL_IF`",
+      "parentUuid": "87b03284_71c1e355",
+      "range": {
+        "startLine": 209,
+        "startChar": 23,
+        "endLine": 209,
+        "endChar": 101
+      },
+      "revId": "5c68080cdc32055bf636161d16ed88a9e90143ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bec7bab5_a6c8f527",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe7818f_d9f066c0",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-13T06:29:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bec7bab5_a6c8f527",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 101
+      },
+      "revId": "5c68080cdc32055bf636161d16ed88a9e90143ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45a49d0e_406c5243",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-02-12T21:16:10Z",
       "side": 1,
       "message": "Can remove the comment since it\u0027s overriding the function that already has this comment",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 68
+      },
+      "revId": "5c68080cdc32055bf636161d16ed88a9e90143ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a41ad9e7_2e15f572",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-13T06:29:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45a49d0e_406c5243",
       "range": {
         "startLine": 69,
         "startChar": 0,
