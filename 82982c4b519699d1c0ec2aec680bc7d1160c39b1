@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3395fc_e31907bd",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T20:53:44Z",
+      "side": 1,
+      "message": "nit: no space",
+      "range": {
+        "startLine": 175,
+        "startChar": 11,
+        "endLine": 175,
+        "endChar": 12
+      },
+      "revId": "82982c4b519699d1c0ec2aec680bc7d1160c39b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
