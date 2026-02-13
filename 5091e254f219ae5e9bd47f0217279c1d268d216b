@@ -16,6 +16,23 @@
       "message": "What do y\u0027all think about this?  Less hermetic, more robust?",
       "revId": "5091e254f219ae5e9bd47f0217279c1d268d216b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a319a130_caef4e36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-13T16:25:15Z",
+      "side": 1,
+      "message": "```\n/Volumes/Work/s/w/bazel_cache/0fdd41a6d572d6e051de5c59b2e6bfd7/external/+_repo_rules2+clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Ruby.framework/Headers/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby/ruby (Too many levels of symbolic links)\n```\n\nFunny, I ran into this and assumed it\u0027s a local installation problem. Apparently not.",
+      "revId": "5091e254f219ae5e9bd47f0217279c1d268d216b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
