@@ -33,6 +33,23 @@
       "message": "ptal",
       "revId": "a4825bc7279810ad6fa4431bf4a627af7b20ce99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f688dac8_af9130f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-13T15:50:06Z",
+      "side": 1,
+      "message": "There are other, more interesting, CL(s) waiting on this one (and its sibling). Are there concerns I should address?",
+      "revId": "a4825bc7279810ad6fa4431bf4a627af7b20ce99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
