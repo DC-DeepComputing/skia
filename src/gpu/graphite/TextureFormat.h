@@ -8,10 +8,13 @@
 #ifndef skgpu_graphite_TextureFormat_DEFINED
 #define skgpu_graphite_TextureFormat_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTextureCompressionType.h"
 
 #include <stddef.h>
 #include <cstdint>
+
+enum SkColorType : int;
 
 namespace skgpu::graphite {
 
@@ -154,6 +157,14 @@ bool TextureFormatIsMultiplanar(TextureFormat);
 bool TextureFormatAutoClamps(TextureFormat);
 
 bool TextureFormatIsFloatingPoint(TextureFormat);
+
+// Formats are ordered from most preferred to least based on the policies described above in
+// TextureFormat. These must still be filtered by support for a given Caps. A TextureFormat that
+// can used with the provided SkColorType is not necessarily included in this list, e.g. we often
+// allow BGR vs RGB mismatches between CPU and GPU layouts if that's what the client provides.
+SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType);
+
+// FIXME span? or just single TF?
 
 } // namespace skgpu::graphite
 

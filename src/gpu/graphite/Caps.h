@@ -568,7 +568,6 @@ private:
     // approach to textures and color types.
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const;
     virtual SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const = 0;
-    virtual TextureFormat getFormatForColorType(SkColorType) const = 0;
 
     // Return a TextureInfo that is configured to support the given usages with the requested format
     // and other properties. This is only called if getTextureSupport() matches for kOptimal tiling.

@@ -253,12 +253,20 @@ TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
         usage |= TextureUsage::kRender;
     }
 
-    return this->getDefaultTextureInfo(usage,
-                                       this->getFormatForColorType(colorType),
-                                       SampleCount::k1,
-                                       mipmapped,
-                                       isProtected,
-                                       Discardable::kNo);
+    for (TextureFormat format : PreferredTextureFormats(colorType)) {
+        auto [support, sampleCounts] = this->getTextureSupport(format, Tiling::kOptimal);
+        if ((support & usage) == usage && SkToBool(sampleCounts & SampleCount::k1)) {
+            return this->getDefaultTextureInfo(usage,
+                                               format,
+                                               SampleCount::k1,
+                                               mipmapped,
+                                               isProtected,
+                                               Discardable::kNo);
+        }
+    }
+
+    // No preferred format is supported
+    return {};
 }
 
 TextureInfo Caps::getTextureInfoForSampledCopy(const TextureInfo& info, Mipmapped mipmapped) const {
@@ -284,14 +292,24 @@ TextureInfo Caps::getDefaultCompressedTextureInfo(SkTextureCompressionType compr
 TextureInfo Caps::getDefaultStorageTextureInfo(SkColorType colorType) const {
     // Storage textures are currently always assumed to be ampleable from a shader and can be copied
     // out of (for unit tests).
-    return this->getDefaultTextureInfo(TextureUsage::kStorage |
-                                       TextureUsage::kSample |
-                                       TextureUsage::kCopySrc,
-                                       this->getFormatForColorType(colorType),
-                                       SampleCount::k1,
-                                       Mipmapped::kNo,
-                                       Protected::kNo,
-                                       Discardable::kNo);
+    static constexpr SkEnumBitMask<TextureUsage> kDefaultStorageUsage =
+            TextureUsage::kStorage | TextureUsage::kSample | TextureUsage::kCopySrc;
+
+    for (TextureFormat format : PreferredTextureFormats(colorType)) {
+        auto [support, sampleCounts] = this->getTextureSupport(format, Tiling::kOptimal);
+        if ((support & kDefaultStorageUsage) == kDefaultStorageUsage &&
+            SkToBool(sampleCounts & SampleCount::k1)) {
+            return this->getDefaultTextureInfo(kDefaultStorageUsage,
+                                               format,
+                                               SampleCount::k1,
+                                               Mipmapped::kNo,
+                                               Protected::kNo,
+                                               Discardable::kNo);
+        }
+    }
+
+    // No preferred format is supported
+    return {};
 }
 
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
