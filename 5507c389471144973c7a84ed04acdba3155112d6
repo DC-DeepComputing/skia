@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4c17f09_1527e86a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-13T22:11:58Z",
+      "side": 1,
+      "message": "Well, naturally I make two CLs that (merge) conflicted with each other...\n\nrebased\nptal",
+      "revId": "5507c389471144973c7a84ed04acdba3155112d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
