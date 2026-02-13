@@ -9,6 +9,7 @@ licenses(["notice"])
 SPARSE_STRIPS_FILES = [
     "MSAA_LUT.h",
     "SparseStripTypes.h",
+    "Strip.h",
     "StripGenerator.cpp",
     "StripGenerator.h",
     "Tiler.h",
