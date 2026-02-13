@@ -277,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c46a138a_f26ab526",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 48
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T15:57:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df274e06_dd099a95",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 43
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a7fedcc_270f55c2",
@@ -338,6 +362,30 @@
       "side": 1,
       "message": "I think this may be because that CL was using `addToHead` to keep all the depth-only draws in front of the shading draws which use `addToTail`. When we switch to `addAfter` here, we start to interleave the depth draws and these shading draws?",
       "parentUuid": "56882fad_24088679",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 17
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0044f8_24945037",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T15:57:11Z",
+      "side": 1,
+      "message": "That shouldn\u0027t be possible. If the draw was affected by later depth draws (and thus causing interleaving i.e. Start at A; A - insert - B) the starting layer must have been incorrect (i.e. the forward walk should have started at B).",
+      "parentUuid": "2a4da22a_250885ac",
       "range": {
         "startLine": 230,
         "startChar": 0,

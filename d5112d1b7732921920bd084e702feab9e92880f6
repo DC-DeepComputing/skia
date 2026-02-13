@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7555dc9d_bfb8a9c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 37
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T15:57:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dd19311_819d1c68",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 66
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f27ba470_39181b14",
@@ -202,6 +226,30 @@
       "side": 1,
       "message": "I think you may have gotten `recordDepthOnly` confused with `recordForwards. \n\nSee the new comment for details.",
       "parentUuid": "1a43710a_84bbd0e4",
+      "range": {
+        "startLine": 1942,
+        "startChar": 76,
+        "endLine": 1942,
+        "endChar": 85
+      },
+      "revId": "d5112d1b7732921920bd084e702feab9e92880f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b973f997_6fc5e2af",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 1942,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T15:57:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d4100a5_db5d8ba9",
       "range": {
         "startLine": 1942,
         "startChar": 76,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19fa4450_fce1fc92",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T15:57:11Z",
+      "side": 1,
+      "message": "I had to revert disabling this line:\n`fOrder \u003d boundsManager-\u003egetMostRecentDraw(snappedOuterBounds).next();`\nNo idea why but disabling this line on drawListLayer breaks the tests.",
+      "revId": "8a5628d431bc22e32977110080df8f8b993c3e07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
