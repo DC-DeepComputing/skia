@@ -22,6 +22,30 @@
       },
       "revId": "f0e53ca97b4cabce2038feb936970e2e62a3f0ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ae138d1_8e6cf4f8",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-13T14:54:10Z",
+      "side": 1,
+      "message": "I think `allowMSAA` is clearer for two reasons:\n1. The way it\u0027s implemented adjusts the supported sample counts more directly in a follow up CL\n2. The final form still requires that the sample count is a supported sample count (a gap in this form, and its historical impl in DawnCaps); `ignoreMSAA` would work in the current impl. but would maybe surprising to still validate sampleCount against what\u0027s supported when we weren\u0027t restricting to just 1x.",
+      "parentUuid": "1fb5aa28_1c140cc3",
+      "range": {
+        "startLine": 64,
+        "startChar": 54,
+        "endLine": 64,
+        "endChar": 63
+      },
+      "revId": "f0e53ca97b4cabce2038feb936970e2e62a3f0ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
