@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "969d2857_164da6e3",
+        "filename": ".gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-13T14:47:36Z",
+      "side": 1,
+      "message": "My goal is to achieve three things simultaneously:\n1. **Noop for Embedders:** No impact on embedders by default.\n2. **Local Dev Experience:** Enabled for Skia developers locally.\n3. **CI Coverage:** Enabled on Skia CQ.\n\nThe distinction here is that `.gn` and `gn/BUILDCONFIG.gn` are specific to Skia\u0027s standalone build definition. When an embedder imports Skia, they define their own `.gn` and never inherit ours.\n\nIf we move this logic entirely to CI recipes, we achieve (1) and (3), but lose (2). This creates a friction point where developers will hit memory safety errors on the CQ that they cannot reproduce locally without manually discovering and setting flags.\n\nI believe using `.gn` is the cleanest way to ensure local builds match CQ without affecting embedders. However, if you feel strongly about keeping `.gn` strict, I can move it to infra, though I\u0027d prefer to avoid the divergence between local and CI environments.\n\n(Note: In PS93, I relied on `skia_partition_alloc_dir` being defined only from Skia BUILDCONFIG to achieve this. That remains another possibility if you prefer.)",
+      "parentUuid": "7e5ac39a_6d36fc38",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17286b49_76ad94fe",
         "filename": "BUILD.gn",
         "patchSetId": 98
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "\u003e I would like to keep the TestSupport.h includable from everyone.\n\nI do not want that. This makes it hard to structure and build code with Bazel. Moving the #ifdefs to DM/nanobench is desired.\n\n\u003e I would like to avoid leaking its content into your main BUILD.gn file.\nI\u0027m not sure what you mean here",
       "parentUuid": "034151b1_75c8cfbd",
+      "range": {
+        "startLine": 2834,
+        "startChar": 11,
+        "endLine": 2834,
+        "endChar": 16
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "654dd55a_0e491eab",
+        "filename": "BUILD.gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-13T14:47:36Z",
+      "side": 1,
+      "message": "\u003e This makes it hard to structure and build code with Bazel.\n\nI don\u0027t understand why.\n\n\u003e \u003e I would like to avoid leaking its content into your main BUILD.gn file.\n\u003eI\u0027m not sure what you mean here\n\n\nI meant including \"partition_alloc.gni\" inside BUILD.gn.\nAnyway, I found a different solution that works without it.",
+      "parentUuid": "793e3a8a_0dbc4f3a",
       "range": {
         "startLine": 2834,
         "startChar": 11,
@@ -251,6 +299,30 @@
       "side": 1,
       "message": "You had a previous comment about GCC support being \"nice-to-have\", so let\u0027s turn it off for GCC by default and not worry about it.",
       "parentUuid": "db7c2581_d486b134",
+      "range": {
+        "startLine": 74,
+        "startChar": 29,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb13d1ff_9e951f15",
+        "filename": "gn/skia.gni",
+        "patchSetId": 98
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-13T14:47:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cad64bbb_267d0a46",
       "range": {
         "startLine": 74,
         "startChar": 29,
