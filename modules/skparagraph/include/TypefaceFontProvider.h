@@ -6,8 +6,8 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/private/SkTHash_impl.h"
 #include "include/private/base/SkTArray.h"
-#include "src/core/SkTHash.h"
 
 #include <string>
 #include <unordered_map>
