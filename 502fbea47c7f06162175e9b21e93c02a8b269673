@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43dfa382_6ce67a25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-13T13:40:53Z",
+      "side": 1,
+      "message": "Are we already shipping gcloud to our CI machines via CIPD?",
+      "revId": "502fbea47c7f06162175e9b21e93c02a8b269673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
