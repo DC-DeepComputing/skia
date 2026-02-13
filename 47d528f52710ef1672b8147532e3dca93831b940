@@ -1,0 +1,464 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07b7e596_97dd413c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Is dstRowStart sometimes really big (e.g. the last row)? Wouldn\u0027t adding rowCount be inaccurate?",
+      "range": {
+        "startLine": 419,
+        "startChar": 43,
+        "endLine": 419,
+        "endChar": 54
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc9bdb6f_52b65c50",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: this can be private. See also https://review.skia.org/1164916",
+      "range": {
+        "startLine": 39,
+        "startChar": 30,
+        "endLine": 39,
+        "endChar": 44
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc563aa8_3f97426e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Do we need to deal with `onGetScanlineOrder` for bottom-up and top-down?",
+      "range": {
+        "startLine": 67,
+        "startChar": 11,
+        "endLine": 67,
+        "endChar": 30
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f662bc9_792a8408",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Why is this a struct with a single internal anonymous field that is also a struct? After simplifying, we could also forward declare this and push it into SkBmpRustCodec.cpp, I think",
+      "range": {
+        "startLine": 75,
+        "startChar": 11,
+        "endLine": 75,
+        "endChar": 24
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10eba9a_b46c1dbb",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Keep naming convention RustBmpCodec_*",
+      "range": {
+        "startLine": 308,
+        "startChar": 9,
+        "endLine": 308,
+        "endChar": 41
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "341c9ac1_595aa5fe",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 329,
+        "startChar": 59,
+        "endLine": 329,
+        "endChar": 65
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a036eed0_5a609c1f",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Can we add an assert for the reported dimensions? I see you have one below for the incremental results, but the reported ones are good to check too",
+      "range": {
+        "startLine": 335,
+        "startChar": 39,
+        "endLine": 335,
+        "endChar": 46
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b40b122_dbae0050",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: line this up with (",
+      "range": {
+        "startLine": 338,
+        "startChar": 42,
+        "endLine": 338,
+        "endChar": 53
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ac9bcf_c92536af",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 360,
+        "startChar": 70,
+        "endLine": 360,
+        "endChar": 76
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bc334a7_3b9a5edf",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "What does \"ProgressiveStream\" mean here?",
+      "range": {
+        "startLine": 367,
+        "startChar": 42,
+        "endLine": 367,
+        "endChar": 59
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "789849d1_1ba6af9e",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Can we also test the other image (bottomdown) with this partial streaming logic?",
+      "range": {
+        "startLine": 368,
+        "startChar": 24,
+        "endLine": 368,
+        "endChar": 30
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b03430c_e60a34d1",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: `constexpr`",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 393,
+        "endChar": 9
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835d1347_a13f8398",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Again, let\u0027s check the dimensions here",
+      "range": {
+        "startLine": 411,
+        "startChar": 30,
+        "endLine": 411,
+        "endChar": 37
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b56211d_7f1de12d",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Is there a way we can check that this number is accurate (and not just above zero)?",
+      "range": {
+        "startLine": 431,
+        "startChar": 12,
+        "endLine": 431,
+        "endChar": 23
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0db49bf4_fc361ddd",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Isn\u0027t this very similar to Codec_Bmp_Rust_IncrementalDecode? Do we need both tests?",
+      "range": {
+        "startLine": 521,
+        "startChar": 17,
+        "endLine": 521,
+        "endChar": 27
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d52ad2c_b1848b51",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: constexpr",
+      "range": {
+        "startLine": 595,
+        "startChar": 4,
+        "endLine": 595,
+        "endChar": 10
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11bc1cf2_ad209732",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: constexpr",
+      "range": {
+        "startLine": 630,
+        "startChar": 4,
+        "endLine": 630,
+        "endChar": 10
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27892af9_8f578c05",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "Our test should be deterministic, right? Why do we need the if?",
+      "range": {
+        "startLine": 651,
+        "startChar": 4,
+        "endLine": 651,
+        "endChar": 16
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64e0adfc_cd2e594c",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "I don\u0027t like asserts with an or in them. Shouldn\u0027t we know which one we get?",
+      "range": {
+        "startLine": 659,
+        "startChar": 60,
+        "endLine": 659,
+        "endChar": 63
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a4dc2f_d67c16e6",
+        "filename": "tests/SkBmpRustDecoderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-13T14:46:43Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 684,
+        "startChar": 42,
+        "endLine": 684,
+        "endChar": 50
+      },
+      "revId": "47d528f52710ef1672b8147532e3dca93831b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
