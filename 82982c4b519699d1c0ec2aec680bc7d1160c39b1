@@ -22,6 +22,30 @@
       },
       "revId": "82982c4b519699d1c0ec2aec680bc7d1160c39b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0082fdd0_be6e3ba8",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-13T20:56:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c3395fc_e31907bd",
+      "range": {
+        "startLine": 175,
+        "startChar": 11,
+        "endLine": 175,
+        "endChar": 12
+      },
+      "revId": "82982c4b519699d1c0ec2aec680bc7d1160c39b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
