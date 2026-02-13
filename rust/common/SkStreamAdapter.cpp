@@ -87,7 +87,8 @@ bool SkStreamAdapter::seek_relative(int64_t requestedOffset, uint64_t& finalPos)
         return false;
     }
 
-    if (!fStream->move(offset)) {
+    // Only move the stream if the offset is non-zero as it should be no-op.
+    if (offset != 0 && !fStream->move(offset)) {
         return false;
     }
 
