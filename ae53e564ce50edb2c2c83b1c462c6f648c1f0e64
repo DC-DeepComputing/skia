@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3359e717_cbaf5b8c",
+        "filename": "tools/graphite/TestOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T17:01:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07165293_c8277807",
+      "revId": "ae53e564ce50edb2c2c83b1c462c6f648c1f0e64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94ee74c8_e50da4e2",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-02-12T19:40:15Z",
       "side": 1,
       "message": "How is this working? Doesn\u0027t graphiteTestOptions() return a pointer ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 45,
+        "endLine": 178,
+        "endChar": 72
+      },
+      "revId": "ae53e564ce50edb2c2c83b1c462c6f648c1f0e64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec315fe_4d31583c",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-13T17:01:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94ee74c8_e50da4e2",
       "range": {
         "startLine": 178,
         "startChar": 45,
