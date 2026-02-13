@@ -128,44 +128,10 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-# Any framework that Skia depends on directly or indirectly needs to be listed here.
+# Any framework that Skia depends on directly or indirectly needs to be included here.
+# Since the transitive set is SDK/release dependent, we grab everything.
 FRAMEWORK_GLOB = [
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/_LocationEssentials.framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/AppKit.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/ApplicationServices.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/AVFAudio.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/AVFoundation.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/AVRouting.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Carbon.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CFNetwork.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CloudKit.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Cocoa.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/ColorSync.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreData.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreAudio.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreAudioTypes.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreFoundation.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreGraphics.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreImage.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreLocation.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreMedia.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreMIDI.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreServices.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreText.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/CoreVideo.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/DiskArbitration.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Foundation.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/ImageIO.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/IOKit.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/IOSurface.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Metal.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/MetalKit.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/ModelIO.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/OpenGL.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/QuartzCore.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Security.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/Symbols.Framework/**",
-    "symlinks/xcode/MacSDK/System/Library/Frameworks/UniformTypeIdentifiers.framework/**",
+    "symlinks/xcode/MacSDK/System/Library/Frameworks/*.framework/**",
 ]
 
 filegroup(
@@ -179,8 +145,6 @@ filegroup(
         ],
         allow_empty = False,
     ) + glob(
-        # Frameworks are SDK-dependent, and can vary between releases.
-        # We attempt to capture a super-set.
         include = FRAMEWORK_GLOB,
         allow_empty = True,
     ),
@@ -200,8 +164,6 @@ filegroup(
         ],
         allow_empty = False,
     ) + glob(
-        # Frameworks are SDK-dependent, and can vary between releases.
-        # We attempt to capture a super-set.
         include = FRAMEWORK_GLOB,
         allow_empty = True,
     ),
