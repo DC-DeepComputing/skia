@@ -1896,6 +1896,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     SkASSERT(renderers);
     SkStrokeRec::Style type = style.getStyle();
 
+    return {renderers->sparseStrips(), nullptr};
+
     if (geometry.isSubRun()) {
         sktext::gpu::RendererData rendererData = geometry.subRunData().rendererData();
         if (!rendererData.isSDF) {

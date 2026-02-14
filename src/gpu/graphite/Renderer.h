@@ -61,10 +61,12 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
         M2(BitmapText,       Mask)                  \
         M2(BitmapText,       LCD)                   \
         M2(BitmapText,       Color)                 \
+        M1(EndCap)                                  \
         M2(MiddleOutFan,     EvenOdd)               \
         M2(MiddleOutFan,     Winding)               \
         M1(SDFTextLCD)                              \
         M1(SDFText)                                 \
+        M1(Strip)                                   \
         M2(TessellateCurves, EvenOdd)               \
         M2(TessellateCurves, Winding)               \
         M1(TessellateStrokes)                       \
@@ -223,7 +225,7 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
-    static const int kRenderStepIDVersion = 1;
+    static const int kRenderStepIDVersion = 3;
 
 #define ENUM1(BaseName) k##BaseName,
 #define ENUM2(BaseName, VariantName) k##BaseName##_##VariantName,

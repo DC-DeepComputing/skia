@@ -34,6 +34,9 @@
 #include "src/gpu/graphite/compute/VelloRenderer.h"
 #endif
 
+#include "src/gpu/graphite/render/EndCapRenderStep.h"
+#include "src/gpu/graphite/render/StripRenderStep.h"
+
 namespace skgpu::graphite {
 
 bool RendererProvider::IsSupported(PathRendererStrategy strategy, const Caps* caps) {
@@ -244,6 +247,18 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 
     this->assumeOwnership(std::move(coverInverse));
     this->assumeOwnership(std::move(coverFill));
+
+    {
+        auto strip = std::make_unique<StripRenderStep>(layout);
+        auto cap = std::make_unique<EndCapRenderStep>(layout);
+        this->initRenderer(&fSparseStrips,
+                            "SparseStrips",
+                            DrawTypeFlags::kNonSimpleShape,
+                            strip.get(),
+                            cap.get());
+        this->assumeOwnership(std::move(strip));
+        this->assumeOwnership(std::move(cap));
+    }
 
 #ifdef SK_ENABLE_VELLO_SHADERS
     // Don't initialize Vello if the strategy wouldn't use it.
