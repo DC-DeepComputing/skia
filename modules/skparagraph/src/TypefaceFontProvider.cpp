@@ -6,25 +6,45 @@
 #include "include/core/SkTypeface.h"
 #include "src/core/SkFontDescriptor.h"
 
+#if 0
+namespace std {
+    template <> struct hash<SkString> {
+        size_t operator()(const SkString& str) const {
+            return 0;
+        }
+    };
+}
+#endif
+
 namespace skia {
 namespace textlayout {
 
-int TypefaceFontProvider::onCountFamilies() const { return fRegisteredFamilies.count(); }
+int TypefaceFontProvider::onCountFamilies() const { return fRegisteredFamilies.size(); }
 
 void TypefaceFontProvider::onGetFamilyName(int index, SkString* familyName) const {
-    SkASSERT(index < fRegisteredFamilies.count());
+    SkASSERT((unsigned)index < fRegisteredFamilies.size());
     familyName->set(fFamilyNames[index]);
 }
 
 sk_sp<SkFontStyleSet> TypefaceFontProvider::onMatchFamily(const char familyName[]) const {
-    auto found = fRegisteredFamilies.find(SkString(familyName));
-    return found ? *found : nullptr;
+    auto found = fRegisteredFamilies.find(familyName);
+    if (found != fRegisteredFamilies.end()) {
+        return found->second;
+    } else {
+        return nullptr;
+    }
+//    return found ? *found : nullptr;
 }
 
 sk_sp<SkFontStyleSet> TypefaceFontProvider::onCreateStyleSet(int index) const {
-    SkASSERT(index < fRegisteredFamilies.count());
+    SkASSERT((unsigned)index < fRegisteredFamilies.size());
     auto found = fRegisteredFamilies.find(fFamilyNames[index]);
-    return found ? *found : nullptr;
+    if (found != fRegisteredFamilies.end()) {
+        return found->second;
+    } else {
+        return nullptr;
+    }
+//    return found ? *found : nullptr;
 }
 
 sk_sp<SkTypeface> TypefaceFontProvider::onMatchFamilyStyle(const char familyName[], const SkFontStyle& pattern) const {
@@ -52,13 +72,23 @@ size_t TypefaceFontProvider::registerTypeface(sk_sp<SkTypeface> typeface, const 
         return 0;
     }
 
-    auto found = fRegisteredFamilies.find(familyName);
+    auto fname(familyName.c_str());
+    auto found = fRegisteredFamilies.find(fname);
+#if 1
+    if (found == fRegisteredFamilies.end()) {
+        auto val = fRegisteredFamilies[fname] = sk_make_sp<TypefaceFontStyleSet>(familyName);
+        fFamilyNames.emplace_back(fname);
+        val->appendTypeface(std::move(typeface));
+    } else {
+        found->second->appendTypeface(std::move(typeface));
+    }
+#else
     if (found == nullptr) {
         found = fRegisteredFamilies.set(familyName, sk_make_sp<TypefaceFontStyleSet>(familyName));
         fFamilyNames.emplace_back(familyName);
     }
-
     (*found)->appendTypeface(std::move(typeface));
+#endif
 
     return 1;
 }
