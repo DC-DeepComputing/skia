@@ -1,0 +1,239 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7409ff99_dc7aa324",
+        "filename": "experimental/rust_ico/decoder/impl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "You need to run buildifier tool on bazel files to have them formatted\n\nhttps://github.com/bazelbuild/buildtools/blob/main/buildifier/README.md",
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c06ac5dd_bf1239d7",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "You should try to use SkStreamAdapter along with io_traits_ffi class from rust/common. It was extracted from rust/png for it\u0027s reuse in all the rustified codecs as a common way to transform from skia streams to rust streams implementing Read and Seek",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 5
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb87b22_e7b4d278",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "This should receive a SkStreamAdapter instance instead",
+      "range": {
+        "startLine": 80,
+        "startChar": 85,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c5937a6_72406c73",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "I think `onGetScaledDimensions` and `onDimensionsSupported` are not required for Chromium integration",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 0
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "653e47b0_84f40dcb",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "I think `onStartScanlineDecode`, `onGetScanlline` and `onSkipScanlines` are not required for Chromium integration",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 45
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c2f481_33c37119",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "Import SkStreamAdapter:\n\n```\n    unsafe extern \"C++\" {\n        include!(\"rust/common/SkStreamAdapter.h\");\n\n        #[namespace \u003d \"rust::stream\"]\n        type SkStreamAdapter \u003d skia_rust_common::SkStreamAdapter;\n    }\n```",
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd217c9f_0510c655",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "Pass UniquePtr\u003cSkStreamAdapter\u003e instead of raw byte slice",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 0
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17974286_da8802f2",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "Not needed for Chromium",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 1
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "698175e1_af7e827b",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "Not needed for Chromium I think",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 1
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1199595d_d8a816d4",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "This one seems redundant with previous test",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 1
+      },
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c10589_807adbc5",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-16T10:02:24Z",
+      "side": 1,
+      "message": "Here we should add some test for incremental decoding based on HaltingStream (i.e. only partial data from file available on first call, then additional data arrives to stream and second call completes). Reference RustBmpCodec_IncrementalDecode_PartialStreaming from SkBmpRustDecoderTest, currently in CL: https://skia-review.googlesource.com/c/skia/+/1138796",
+      "revId": "e0887dbebafb5740b12f21edb4abe40d6f449056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
