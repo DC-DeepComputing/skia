@@ -16,6 +16,23 @@
       "message": "Well, naturally I make two CLs that (merge) conflicted with each other...\n\nrebased\nptal",
       "revId": "5507c389471144973c7a84ed04acdba3155112d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3c923af_7157f1d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-16T19:51:43Z",
+      "side": 1,
+      "message": "ptal",
+      "revId": "5507c389471144973c7a84ed04acdba3155112d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
