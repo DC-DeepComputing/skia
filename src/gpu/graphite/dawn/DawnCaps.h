@@ -34,18 +34,6 @@ public:
     }
     bool supportsPartialLoadResolve() const { return fSupportsPartialLoadResolve; }
 
-    TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
-                                                Protected,
-                                                Discardable) const override;
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
-                                             Mipmapped,
-                                             Protected,
-                                             Renderable) const override;
-    TextureInfo getTextureInfoForSampledCopy(const TextureInfo&, Mipmapped) const override;
-    TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
-                                                Mipmapped,
-                                                Protected) const override;
-    TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
     SkISize getDepthAttachmentDimensions(const TextureInfo&,
                                          const SkISize colorAttachmentDimensions) const override;
 
@@ -81,6 +69,13 @@ public:
 
 private:
     SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
+    TextureFormat getFormatForColorType(SkColorType) const override;
+    TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
+                                        TextureFormat,
+                                        SampleCount,
+                                        Mipmapped,
+                                        Protected,
+                                        Discardable) const override;
     std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> getTextureSupport(
             TextureFormat format, Tiling) const override;
     std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(
