@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71d949b4_6f9fc2be",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c47fe58_782bdff7",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efa4a55a_4eb4d9b1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-10T18:16:38Z",
       "side": 1,
       "message": "I don\u0027t think this is necessary. Same for the SkTArray #include",
+      "range": {
+        "startLine": 22,
+        "startChar": 16,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42acf0f4_0859b997",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efa4a55a_4eb4d9b1",
       "range": {
         "startLine": 22,
         "startChar": 16,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c53538_74fee762",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "Added open contours. The new open contours are essentially the same as the closed ones but without the close verb. Let me know if you\u0027d like a different set of contours.",
+      "parentUuid": "9ca2c5ca_36f3a810",
+      "range": {
+        "startLine": 36,
+        "startChar": 81,
+        "endLine": 36,
+        "endChar": 86
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f11ff4cf_1943b62c",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-10T18:16:38Z",
       "side": 1,
       "message": "This seems to be the same as the previous one.",
+      "range": {
+        "startLine": 44,
+        "startChar": 54,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d28ca3e_1893373f",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "f11ff4cf_1943b62c",
       "range": {
         "startLine": 44,
         "startChar": 54,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c837a0_46794005",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "c38871f0_68dcab79",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b9c1563_5236e9bb",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-02-10T18:16:38Z",
       "side": 1,
       "message": "For this test, I thought we wanted to focus only on antialiased hairlines, right?",
+      "range": {
+        "startLine": 53,
+        "startChar": 15,
+        "endLine": 54,
+        "endChar": 53
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5e46269_dacb56cf",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T15:02:40Z",
+      "side": 1,
+      "message": "You\u0027re so right! thanks 🙏",
+      "parentUuid": "5b9c1563_5236e9bb",
       "range": {
         "startLine": 53,
         "startChar": 15,
