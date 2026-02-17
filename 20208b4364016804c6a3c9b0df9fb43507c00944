@@ -68,6 +68,78 @@
       },
       "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45ead491_592a6d75",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T20:53:12Z",
+      "side": 1,
+      "message": "fixed",
+      "parentUuid": "ad79a997_a2d8884c",
+      "range": {
+        "startLine": 78,
+        "startChar": 23,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c103a76_2295591c",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T20:53:12Z",
+      "side": 1,
+      "message": "fixed",
+      "parentUuid": "8f105fc4_16cdc022",
+      "range": {
+        "startLine": 78,
+        "startChar": 67,
+        "endLine": 78,
+        "endChar": 75
+      },
+      "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66254e1_ae02c87e",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-17T20:53:12Z",
+      "side": 1,
+      "message": "converted to simple gm",
+      "parentUuid": "354903f7_a66ad130",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
