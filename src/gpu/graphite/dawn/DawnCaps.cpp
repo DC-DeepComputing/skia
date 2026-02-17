@@ -57,17 +57,33 @@ static constexpr wgpu::TextureFormat kFormats[] = {
         wgpu::TextureFormat::RG8Unorm,
 #if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::RG16Unorm,
+        wgpu::TextureFormat::RGBA16Unorm,
 #endif
         wgpu::TextureFormat::RGB10A2Unorm,
         wgpu::TextureFormat::RG16Float,
+
+        wgpu::TextureFormat::R32Float,
+        wgpu::TextureFormat::RG32Float,
+        wgpu::TextureFormat::RGBA32Float,
+
+        wgpu::TextureFormat::RGBA8UnormSrgb,
+        wgpu::TextureFormat::BGRA8UnormSrgb,
 
         wgpu::TextureFormat::Stencil8,
         wgpu::TextureFormat::Depth16Unorm,
         wgpu::TextureFormat::Depth32Float,
         wgpu::TextureFormat::Depth24PlusStencil8,
+        wgpu::TextureFormat::Depth32FloatStencil8,
 
         wgpu::TextureFormat::BC1RGBAUnorm,
+        wgpu::TextureFormat::BC1RGBAUnormSrgb,
         wgpu::TextureFormat::ETC2RGB8Unorm,
+        wgpu::TextureFormat::ETC2RGB8UnormSrgb,
+        wgpu::TextureFormat::ETC2RGBA8Unorm,
+        wgpu::TextureFormat::ETC2RGBA8UnormSrgb,
+
+        wgpu::TextureFormat::R8BG8Biplanar420Unorm,
+        wgpu::TextureFormat::R10X6BG10X6Biplanar420Unorm,
 
 #if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::External,
@@ -291,7 +307,6 @@ SkSpan<const Caps::ColorTypeInfo> DawnCaps::getColorTypeInfos(
         const TextureInfo& textureInfo) const {
     auto dawnFormat = TextureInfoPriv::Get<DawnTextureInfo>(textureInfo).getViewFormat();
     if (dawnFormat == wgpu::TextureFormat::Undefined) {
-        SkASSERT(false);
         return {};
     }
 
@@ -616,6 +631,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             // SkConvertPixels to force alpha to opaque when kRGB_888x is either the src or dst type
             ctInfo.fTransferColorType = kBGRA_8888_SkColorType;
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+            ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
         }
     }
 
@@ -623,7 +639,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGBA16Float)];
         info->fFlags = FormatInfo::kAllFlags;
-        info->fColorTypeInfoCount = 2;
+        info->fColorTypeInfoCount = 3;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
         int ctIdx = 0;
         // Format: RGBA16Float, Surface: RGBA_F16
@@ -631,6 +647,13 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             auto& ctInfo = info->fColorTypeInfos[ctIdx++];
             ctInfo.fColorType = kRGBA_F16_SkColorType;
             ctInfo.fTransferColorType = kRGBA_F16_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+        // Format: RGBA16Float, Surface: RGBA_F16Norm
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kRGBA_F16Norm_SkColorType;
+            ctInfo.fTransferColorType = kRGBA_F16Norm_SkColorType;
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
         // Format: RGBA16Float, Surface: RGB_F16F16F16x
@@ -723,6 +746,38 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
+    // Format RGBA32Float
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGBA32Float)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+        int ctIdx = 0;
+        // Format: RGBA32Float, Surface: kRGBA_F32
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kRGBA_F32_SkColorType;
+            ctInfo.fTransferColorType = kRGBA_F32_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+    }
+
+    // Format: RGBA8UnormSrgb
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGBA8UnormSrgb)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+        int ctIdx = 0;
+        // Format: RGBA8UnormSrgb, Surface: kSRGBA_8888
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kSRGBA_8888_SkColorType;
+            ctInfo.fTransferColorType = kSRGBA_8888_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+    }
+
     // Format: RG16Float
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG16Float)];
@@ -739,38 +794,104 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
-    // Format: ETC2RGB8Unorm
+    // ETC2
     {
         if (device.HasFeature(wgpu::FeatureName::TextureCompressionETC2)) {
-            info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGB8Unorm)];
-            info->fFlags = FormatInfo::kTexturable_Flag;
-            info->fColorTypeInfoCount = 1;
-            info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
-            int ctIdx = 0;
-            // Format: ETC2RGB8Unorm, Surface: kRGB_888x
+            // Format: ETC2RGB8Unorm
             {
-                auto& ctInfo = info->fColorTypeInfos[ctIdx++];
-                ctInfo.fColorType = kRGB_888x_SkColorType;
-                ctInfo.fTransferColorType = kRGB_888x_SkColorType;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGB8Unorm)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: ETC2RGB8Unorm, Surface: kRGB_888x
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kRGB_888x_SkColorType;
+                    ctInfo.fTransferColorType = kRGB_888x_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
+            }
+            // Format: ETC2RGB8UnormSrgb
+            {
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGB8UnormSrgb)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: ETC2RGB8UnormSrgb, Surface: kSRGBA_8888
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fTransferColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
+            }
+            // Format: ETC2RGBA8Unorm
+            {
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGBA8Unorm)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: ETC2RGBA8Unorm, Surface: kRGBA_8888
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kRGBA_8888_SkColorType;
+                    ctInfo.fTransferColorType = kRGBA_8888_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
+            }
+            // Format: ETC2RGB8UnormSrgb
+            {
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGBA8UnormSrgb)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: ETC2RGBA8UnormSrgb, Surface: kSRGBA_8888
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fTransferColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
             }
         }
     }
 
-    // Format: BC1RGBAUnorm
+    // BC1
     {
         if (device.HasFeature(wgpu::FeatureName::TextureCompressionBC)) {
-            info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::BC1RGBAUnorm)];
-            info->fFlags = FormatInfo::kTexturable_Flag;
-            info->fColorTypeInfoCount = 1;
-            info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
-            int ctIdx = 0;
-            // Format: BC1RGBAUnorm, Surface: kRGBA_8888
+            // Format: BC1RGBAUnorm
             {
-                auto& ctInfo = info->fColorTypeInfos[ctIdx++];
-                ctInfo.fColorType = kRGBA_8888_SkColorType;
-                ctInfo.fTransferColorType = kRGBA_8888_SkColorType;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::BC1RGBAUnorm)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: BC1RGBAUnorm, Surface: kRGBA_8888
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kRGBA_8888_SkColorType;
+                    ctInfo.fTransferColorType = kRGBA_8888_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
+            }
+            // Format: BC1RGBAUnormSrgb
+            {
+                info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::BC1RGBAUnormSrgb)];
+                info->fFlags = FormatInfo::kTexturable_Flag;
+                info->fColorTypeInfoCount = 1;
+                info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
+                int ctIdx = 0;
+                // Format: BC1RGBAUnorm, Surface: kSRGBA_8888
+                {
+                    auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+                    ctInfo.fColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fTransferColorType = kSRGBA_8888_SkColorType;
+                    ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                }
             }
         }
     }
@@ -824,6 +945,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         {
             auto& ctInfo = info->fColorTypeInfos[ctIdx++];
             ctInfo.fColorType = kRGB_888x_SkColorType;
+            ctInfo.fReadSwizzle = Swizzle::RGB1();
         }
     }
 #endif

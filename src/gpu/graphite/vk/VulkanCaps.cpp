@@ -744,8 +744,8 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
     // can be sampled. There is a pedantic argument that this is valid since neither of these types
     // of textures have conventional texels to begin with, but in practice, sampling acts as though
     // its 1x. Include 1x to simplify higher-level support checks.
-    if (!SkToBool(sampleCounts & SampleCount::k1) && SkToBool(usage & TextureUsage::kSample)) {
-        sampleCount |= SampleCount::k1;
+    if (!SkToBool(sampleCounts & SampleCount::k1) && SkToBool(supports & TextureUsage::kSample)) {
+        sampleCounts |= SampleCount::k1;
     }
 
     return {supports, sampleCounts};
