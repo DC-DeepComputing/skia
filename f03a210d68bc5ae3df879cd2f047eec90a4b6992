@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f28e619_7aab51d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-17T13:56:22Z",
+      "side": 1,
+      "message": "To spread out the reviews, Caps is a shared review spot and then perhaps:\n- Rob focuses on MtlCaps\n- Nicolette focuses on VulkanCaps\n- Thomas focuses on DawnCaps",
+      "revId": "f03a210d68bc5ae3df879cd2f047eec90a4b6992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
