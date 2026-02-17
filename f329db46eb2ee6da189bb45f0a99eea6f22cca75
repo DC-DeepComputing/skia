@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05660154_055bc4ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-17T18:48:09Z",
+      "side": 1,
+      "message": "I can confirm that this is working, because I initially had the scopes set incorrectly and got a 403.",
+      "revId": "f329db46eb2ee6da189bb45f0a99eea6f22cca75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
