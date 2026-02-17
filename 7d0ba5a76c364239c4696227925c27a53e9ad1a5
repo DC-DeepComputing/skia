@@ -1,0 +1,349 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ab2d5d_c4ffe44d",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "Why is this included?",
+      "range": {
+        "startLine": 20,
+        "startChar": 23,
+        "endLine": 20,
+        "endChar": 34
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3dcb46c_84cec588",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "nit: we don\u0027t need to put this in the skgm namespace",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24bede30_29429073",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "style: these helper functions should be marked static and we name said functions with snake case, e.g. draw_scaled_path. `drawScaledPath` would be used for methods and `DrawScaledPath` for class functions.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 4
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09708e3_fcd75950",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "I think it would be good to draw the non-zoomed in version and then the blown up version to the right of it.",
+      "range": {
+        "startLine": 38,
+        "startChar": 12,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22284f93_dc445fb5",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "This doesn\u0027t draw anything. It makes a path with several contours. Update the name and add some docs describing why the lines are interesting. We want people who read this GM to be able to understand *why* we chose to draw these specific lines.",
+      "range": {
+        "startLine": 55,
+        "startChar": 14,
+        "endLine": 55,
+        "endChar": 62
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a025abd3_265d86f1",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "All of these have the current buggy edge along the top. Can we have these close calls go in other directions (putting some buggy edges along the sides).",
+      "range": {
+        "startLine": 61,
+        "startChar": 25,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f923c33_7bb0e7b3",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "For simplicity, let\u0027s skip the conicTo (unless you feel it\u0027s important, then add some comments explaining what it should draw. I find conics to be hard to inspect from just looking at the params).",
+      "range": {
+        "startLine": 63,
+        "startChar": 25,
+        "endLine": 63,
+        "endChar": 32
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c9622d4_b298cea2",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "A moveTo followed by no drawing verbs will get mushed into the next moveTo. We can delete it.",
+      "range": {
+        "startLine": 65,
+        "startChar": 7,
+        "endLine": 65,
+        "endChar": 13
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ca2eed_df7ef045",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "Maybe shift this up? right now it is out of alignment with other draws",
+      "range": {
+        "startLine": 67,
+        "startChar": 25,
+        "endLine": 67,
+        "endChar": 31
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5306a6fb_0d6a64d5",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "I think we want some of these to go on the pixel boundaries (not 0.5) so we can see the difference between the caps more clearly.",
+      "range": {
+        "startLine": 69,
+        "startChar": 20,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc5d534_bbc88494",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "If you do keep the conic, don\u0027t make them touch.",
+      "range": {
+        "startLine": 73,
+        "startChar": 26,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3bf7602_c9cc4318",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "Make one gm per width (otherwise things will be really big), assuming we want to do multiple widths at all.",
+      "range": {
+        "startLine": 81,
+        "startChar": 19,
+        "endLine": 81,
+        "endChar": 25
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f99c535_aad8f7f9",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "unused variable",
+      "range": {
+        "startLine": 86,
+        "startChar": 12,
+        "endLine": 86,
+        "endChar": 13
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd057c5d_68f51631",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "Is surface being used?",
+      "range": {
+        "startLine": 88,
+        "startChar": 17,
+        "endLine": 88,
+        "endChar": 24
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7528cb4_5ce1bac5",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "You appear to be drawing all 3 caps on top of each other. That\u0027s not what we want.",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 12
+      },
+      "revId": "7d0ba5a76c364239c4696227925c27a53e9ad1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

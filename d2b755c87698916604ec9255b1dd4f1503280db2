@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff29775d_56d5f956",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "LLC, not an incorporated company",
+      "parentUuid": "71d949b4_6f9fc2be",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "d2b755c87698916604ec9255b1dd4f1503280db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "efa4a55a_4eb4d9b1",
         "filename": "gm/closedcappedhairlines.cpp",
         "patchSetId": 2

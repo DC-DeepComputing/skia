@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f105fc4_16cdc022",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "style: We don\u0027t include test in the name",
+      "range": {
+        "startLine": 78,
+        "startChar": 67,
+        "endLine": 78,
+        "endChar": 75
+      },
+      "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad79a997_a2d8884c",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:21:14Z",
+      "side": 1,
+      "message": "style: We don\u0027t include test in the name",
+      "range": {
+        "startLine": 78,
+        "startChar": 23,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "20208b4364016804c6a3c9b0df9fb43507c00944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
