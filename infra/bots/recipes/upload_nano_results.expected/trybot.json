@@ -20,6 +20,34 @@
   },
   {
     "cmd": [
+      "luci-auth",
+      "token",
+      "-lifetime",
+      "3m"
+    ],
+    "infra_step": true,
+    "name": "get access token for default account"
+  },
+  {
+    "cmd": [
+      "vpython3",
+      "-u",
+      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "extra.secret.token.should.not.be.logged",
+      "[CLEANUP]/tmp_tmp_1/token"
+    ],
+    "infra_step": true,
+    "name": "write token file",
+    "~followup_annotations": [
+      "@@@STEP_LOG_LINE@token@extra.secret.token.should.not.be.logged@@@",
+      "@@@STEP_LOG_END@token@@@"
+    ]
+  },
+  {
+    "cmd": [
       "gcloud",
       "storage",
       "cp",
@@ -27,8 +55,24 @@
       "[START_DIR]/perf/nanobench_abc123.json",
       "gs://skia-perf/trybot/nano-json-v1/2012/05/14/12/Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-All-Debug/456789/12/nanobench_abc123.json"
     ],
+    "env": {
+      "CLOUDSDK_AUTH_ACCESS_TOKEN": "[CLEANUP]/tmp_tmp_1/token"
+    },
     "infra_step": true,
     "name": "upload"
+  },
+  {
+    "cmd": [
+      "vpython3",
+      "-u",
+      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "rmtree",
+      "[CLEANUP]/tmp_tmp_1"
+    ],
+    "infra_step": true,
+    "name": "rm tempdir"
   },
   {
     "name": "$result"

@@ -6,15 +6,33 @@
 # Recipe for uploading nanobench results.
 
 
+from contextlib import contextmanager
+
+
 DEPS = [
   'recipe_engine/context',
   'recipe_engine/file',
   'recipe_engine/path',
   'recipe_engine/properties',
+  'recipe_engine/service_account',
   'recipe_engine/step',
   'recipe_engine/time',
   'vars',
 ]
+
+
+@contextmanager
+def ServiceAccountTokenFile(api):
+  try:
+    token = api.service_account.default().get_access_token()
+    tmpdir = api.path.mkdtemp()
+    tokenfile = tmpdir.joinpath('token')
+    api.file.write_text('write token file', tokenfile, token)
+    with api.context(env={'CLOUDSDK_AUTH_ACCESS_TOKEN': tokenfile}):
+      yield tokenfile
+  finally:
+    api.file.rmtree('rm tempdir', tmpdir)
+
 
 
 def RunSteps(api):
@@ -46,10 +64,11 @@ def RunSteps(api):
   dst = '/'.join((
       'gs://%s' % api.properties['gs_bucket'], gs_path, basename))
 
-  api.step(
-      'upload',
-      cmd=['gcloud', 'storage', 'cp', '--gzip-local=json', src, dst],
-      infra_step=True)
+  with ServiceAccountTokenFile(api):
+    api.step(
+        'upload',
+        cmd=['gcloud', 'storage', 'cp', '--gzip-local=json', src, dst],
+        infra_step=True)
 
 
 def GenTests(api):
