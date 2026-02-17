@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "071cf803_8a6200a7",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-17T16:47:20Z",
+      "side": 1,
+      "message": "tl;dr: This is fine, but raises a couple questions about how to improve on SkLog.\n\nTalked offline about this, but for record keeping: SkLog is ideally not directly called in production. Since dm is a tool and not core Skia, this one use case is fine.\nThis does bring up the question of whether we should:\n1) Expose an \"SK_LOG_ALWAYS\" macro\n2) Not force the [skia] tag on every log (or allow custom tags)\n\nSkLog was primarily developed with clients in mind (Chrome, Android, etc.) that might want to filter out logs based on library/module and priority, but in cases where Skia is all of it, I can see [skia] showing up on each line as too busy.",
+      "revId": "014e27bfe8afb0ef9ea51ea5e8b24df7bfae48ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fddb2902_891f907b",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-17T16:47:20Z",
+      "side": 1,
+      "message": "Add a comment explaining why we use Error here to force print. Feel free to link this to this tracking bug (b/469441457)",
+      "revId": "014e27bfe8afb0ef9ea51ea5e8b24df7bfae48ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
