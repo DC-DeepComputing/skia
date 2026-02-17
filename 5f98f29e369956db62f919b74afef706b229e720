@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4032fb5_62fa5d5d",
+        "filename": ".gn",
+        "patchSetId": 98
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-17T17:53:03Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t think 1) is a constraint we really need. \n\nSimpler!",
+      "parentUuid": "77c6c954_8e47d342",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "5f98f29e369956db62f919b74afef706b229e720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17286b49_76ad94fe",
