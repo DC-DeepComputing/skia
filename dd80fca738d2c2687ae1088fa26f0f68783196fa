@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "970ff980_50060401",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "t\u0027s",
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d847077_3799a5d9",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "We probably have space for another square (below this) that\u0027s on the pixel lines so we can verify it draws grey across two lines)",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 13
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708f30e9_df12ecd3",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "This actually shouldn\u0027t have a sharp close line (see what the butt implementation is doing?) because it\u0027s drawing on the pixel border. Let\u0027s shift this and the next curve off by half a pixel to make it actually be sharp.",
+      "range": {
+        "startLine": 64,
+        "startChar": 17,
+        "endLine": 64,
+        "endChar": 19
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b2c233_7821cf3a",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "By making this be on the half pixel, the caps are inconsistent (it makes it look like the butt caps go out half a pixel on first glance). It\u0027s fine to have both on the pixel and half pixel, but maybe that\u0027s a new line of contours or something.",
+      "range": {
+        "startLine": 71,
+        "startChar": 14,
+        "endLine": 71,
+        "endChar": 17
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77500089_a804ebe8",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "Idea: Can we draw a thin red box around the zoomed-in caps (the drawing would happen in a different function probably) to emphasize to the viewer what\u0027s different about the lines (it\u0027s quite subtle if you don\u0027t know what you are looking for)\n\nSomething like http://screen/V3GffYZyXerqsgE",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 13
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d636a82a_0ae61e36",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "What\u0027s this shape (the bottom right square, right?) adding that the other squares don\u0027t?",
+      "range": {
+        "startLine": 77,
+        "startChar": 26,
+        "endLine": 77,
+        "endChar": 32
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b91d1f7_b5aba8ba",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "Whoops, I had copy-pasta\u0027d a comment. This is the wrong size. The zoomed in view is cut off (and maybe the right size is too big to have all three caps on the same gm).\n\nhttp://screen/95tErtu7Y6myEcF",
+      "range": {
+        "startLine": 82,
+        "startChar": 44,
+        "endLine": 82,
+        "endChar": 52
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dec3fddd_cdfa22f4",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T22:13:50Z",
+      "side": 1,
+      "message": "It feels a little odd to have effectively the same loop twice. Can you condense it into one loop? Maybe through good use of save/restore?\n\nIf we make one GM per cap, the redundancy may go away with judicious use of a helper function.",
+      "range": {
+        "startLine": 86,
+        "startChar": 20,
+        "endLine": 86,
+        "endChar": 24
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
