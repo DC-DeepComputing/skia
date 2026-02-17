@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca929510_ecbab826",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-17T21:50:09Z",
+      "side": 1,
+      "message": "Followup which matches how SKPs were fixed, but now for MSKPs.",
+      "revId": "1a5f0ca84970166358b7754565647d0b10b5ca98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
