@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "7a8e0131417d7ecc2f47733d7ddc1f8ac5ebf4a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2e7dd0d_2441e4ad",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-17T16:15:08Z",
+      "side": 1,
+      "message": "So at one point we had a concerted effort in Skia/Gpu code to remove all these types of checks from higher code and leave the checks where the object is actually used. The main reason being it led to many bugs where we think we validated everything up high, but then would accidentally miss a case that would show up as crashes in Chrome (and on release our debug asserts wouldn\u0027t trigger). By having the code that requires certain state to be valid do the check it made it less brittle.\n\nSo this is moving back to the old way.",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 5
+      },
+      "revId": "7a8e0131417d7ecc2f47733d7ddc1f8ac5ebf4a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
