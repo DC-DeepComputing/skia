@@ -39,6 +39,30 @@
       },
       "revId": "7a8e0131417d7ecc2f47733d7ddc1f8ac5ebf4a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f19856b3_7e7a19e3",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T18:43:42Z",
+      "side": 1,
+      "message": "Acknowledged. Undone.",
+      "parentUuid": "d2e7dd0d_2441e4ad",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 5
+      },
+      "revId": "7a8e0131417d7ecc2f47733d7ddc1f8ac5ebf4a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
