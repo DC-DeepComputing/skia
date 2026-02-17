@@ -308,6 +308,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9934ed5_7aadc558",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-17T16:15:42Z",
+      "side": 1,
+      "message": "Oh, and then in order to build for CK you\u0027d use need both args, i.e. `skia_build_canvaskit\u003dtrue target_cpu\u003d\"wasm\"`. To build standalone wasm you\u0027d use args `skia_build_wasm\u003dtrue target_cpu\u003d\"wasm\"`.",
+      "parentUuid": "8cdfafff_24ae7080",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c6bb0a3_d4f5fa65",
