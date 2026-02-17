@@ -284,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cdfafff_24ae7080",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-17T16:13:13Z",
+      "side": 1,
+      "message": "I think we can go back to defining `is_wasm \u003d current_os \u003d\u003d \"wasm\"` and remove `is_any_wasm`, though I believe we do need a flag in this file control adding `//gn/skia:standalone_wasm` to default_configs. So we could...:\n\n- Keep `is_standalone_wasm\u003dfalse` in this file, used to gate the default_configs addition\n- Remove `is_any_wasm` + keep `is_wasm \u003d current_os\u003d\u003d\"wasm\"`\n- Use `is_wasm` to mean \"any wasm\"\n- Add the two discussed `skia_build_*` flags to skia.gni, and use those everywhere, except where \"any wasm\" is needed.",
+      "parentUuid": "f777e347_72ce911a",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c6bb0a3_d4f5fa65",
