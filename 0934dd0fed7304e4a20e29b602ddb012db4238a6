@@ -260,6 +260,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f777e347_72ce911a",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-17T14:46:01Z",
+      "side": 1,
+      "message": "https://gn.googlesource.com/gn/+/HEAD/docs/reference.md#overall-build-flow for info on BUILDCONFIG.gn (and the rest of the files). We tend to use BUILDCONFIG.gn for general things that clients would have to set if Skia were some other type of C++ library (e.g. a web server) and gn/skia.gni are the settings that are graphics library specific. \n\nIt would seem odd to put skia_build_* flags here. We could keep is_wasm (and only use it in this file) or inline the use of `current_os \u003d\u003d \"wasm\"` for toolchain detection and something else for the `is_clang` detection.",
+      "parentUuid": "d9e74e21_7ad8abfc",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c6bb0a3_d4f5fa65",
