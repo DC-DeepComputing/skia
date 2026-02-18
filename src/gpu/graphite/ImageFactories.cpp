@@ -31,6 +31,7 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
@@ -103,7 +104,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
     SkASSERT(proxy);
 
-    skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
+    skgpu::Swizzle swizzle = ReadSwizzleForColorType(
+            ct, TextureInfoPriv::ViewFormat(texture->textureInfo()));
     TextureProxyView view(std::move(proxy), swizzle, origin);
 
     if (genMipmaps == GenerateMipmapsFromBase::kYes) {
@@ -210,7 +212,8 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
         return nullptr;
     }
 
-    skgpu::Swizzle swizzle = caps->getReadSwizzle(colorInfo.colorType(), textureInfo);
+    const TextureFormat format = TextureInfoPriv::ViewFormat(textureInfo);
+    skgpu::Swizzle swizzle = ReadSwizzleForColorType(colorInfo.colorType(), format);
     TextureProxyView view(std::move(proxy), swizzle, origin);
     return sk_make_sp<Image>(view, colorInfo);
 }

@@ -31,6 +31,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
@@ -69,10 +70,14 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
     if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), target->textureInfo())) {
         return nullptr;
     }
+    auto writeSwizzle = WriteSwizzleForColorType(
+            colorInfo.colorType(), TextureInfoPriv::ViewFormat(target->textureInfo()));
+    if (!writeSwizzle.has_value()) {
+        return nullptr;
+    }
 
     // Accept an approximate-fit texture, but make sure it's at least as large as the device's
     // logical size.
-    // TODO: validate that the alpha type is compatible with the target's info
     SkASSERT(target->isFullyLazy() || (target->dimensions().width() >= deviceSize.width() &&
                                        target->dimensions().height() >= deviceSize.height()));
     SkImageInfo imageInfo = SkImageInfo::Make(deviceSize, colorInfo);
@@ -99,7 +104,8 @@ DrawContext::DrawContext(const Caps* caps,
     if (!caps->isTexturable(fTarget->textureInfo())) {
         fReadView = {}; // Presumably this DrawContext is rendering into a swap chain
     } else {
-        Swizzle swizzle = caps->getReadSwizzle(ii.colorType(), fTarget->textureInfo());
+        Swizzle swizzle = ReadSwizzleForColorType(
+                ii.colorType(), TextureInfoPriv::ViewFormat(fTarget->textureInfo()));
         fReadView = {fTarget, swizzle};
     }
     // TBD - Will probably want DrawLists (and its internal commands) to come from an arena
@@ -301,14 +307,14 @@ void DrawContext::flush(Recorder* recorder) {
 
         const Caps* caps = recorder->priv().caps();
         auto [loadOp, storeOp] = pass->ops();
-        auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
-                                                  fTarget->textureInfo());
-
+        auto writeSwizzle = WriteSwizzleForColorType(
+                this->colorInfo().colorType(), TextureInfoPriv::ViewFormat(fTarget->textureInfo()));
+        SkASSERT(writeSwizzle.has_value()); // checked in Make()
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
                                                    dsFlags,
                                                    pass->clearColor(),
                                                    drawsRequireMSAA,
-                                                   writeSwizzle,
+                                                   *writeSwizzle,
                                                    drawPassDstReadStrategy);
 
         RenderPassTask::DrawPassList passes;
