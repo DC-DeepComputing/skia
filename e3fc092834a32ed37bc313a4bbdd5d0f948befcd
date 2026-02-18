@@ -16,6 +16,259 @@
       "message": "PTAL.",
       "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c3a852f_64c45eec",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: drawListLayer",
+      "range": {
+        "startLine": 643,
+        "startChar": 9,
+        "endLine": 643,
+        "endChar": 20
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f229d9_e276dd97",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "I think we should use the `snappedOuterBounds` that had been calculated in `updateForDraw`. This keeps the bounds checking logic consistent between the layer walking and the bounds manager queries.\n\nIt should also mean that we can keep the assert in `DrawContext::recordDraw` unchanged since `snappedOuterBounds` is intersected with the device bounds automatically.",
+      "range": {
+        "startLine": 698,
+        "startChar": 0,
+        "endLine": 698,
+        "endChar": 84
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b3eb8f2_21e390e0",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: And sets the Z value that the draw will use",
+      "range": {
+        "startLine": 281,
+        "startChar": 76,
+        "endLine": 283,
+        "endChar": 40
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc670d7f_51e7d00e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: this should be named `useDrawListLayer` to match the Caps function and how it\u0027s used in the if conditions.",
+      "range": {
+        "startLine": 1759,
+        "startChar": 9,
+        "endLine": 1759,
+        "endChar": 20
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf65c3cb_344cdfab",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 1761,
+        "startChar": 23,
+        "endLine": 1762,
+        "endChar": 36
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "154f8f9d_979c6cbe",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: comment can be removed",
+      "range": {
+        "startLine": 1835,
+        "startChar": 0,
+        "endLine": 1835,
+        "endChar": 56
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c326863_d7745e5b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1917,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: nullptr",
+      "range": {
+        "startLine": 1917,
+        "startChar": 52,
+        "endLine": 1917,
+        "endChar": 54
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f109db_bc3e80fc",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: Move this up since it applies to both this and the BoundsManager",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 53
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d200ad_393890dd",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "Is this because a depth-only draw is passing in a bounds that hasn\u0027t been intersected with the image dimensions yet?",
+      "range": {
+        "startLine": 167,
+        "startChar": 14,
+        "endLine": 167,
+        "endChar": 58
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310c81b7_fe5a8be9",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "nit: remove this since DrawListLayer handles the coverage ordering internally",
+      "range": {
+        "startLine": 44,
+        "startChar": 40,
+        "endLine": 46,
+        "endChar": 47
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94d1f1d_3db0d38d",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "WDYT about having this be a `CompressedPaintersOrder` since that is what this is conceptually?",
+      "range": {
+        "startLine": 130,
+        "startChar": 10,
+        "endLine": 130,
+        "endChar": 25
+      },
+      "revId": "e3fc092834a32ed37bc313a4bbdd5d0f948befcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

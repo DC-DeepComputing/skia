@@ -396,6 +396,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1692dac6_fd59d375",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T15:48:52Z",
+      "side": 1,
+      "message": "Let\u0027s debug it in follow up CLs; I think it\u0027ll be easier as some of the planned clean up lands.\n\nThat said, now that Layers have an incrementing counter, adding to the tail is probably necessary so that we keep the layer list in the same order as their index values.",
+      "parentUuid": "2f0044f8_24945037",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 17
+      },
+      "revId": "6f0032f8e6c5ec66269a7c7ae5d34a7f0614d1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f88da2f3_09f4e930",
