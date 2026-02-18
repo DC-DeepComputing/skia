@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f381196_92f8e467",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-18T16:57:49Z",
+      "side": 1,
+      "message": "Did we want to adjust release builds to default to Info?",
+      "range": {
+        "startLine": 46,
+        "startChar": 59,
+        "endLine": 46,
+        "endChar": 65
+      },
+      "revId": "f344bccf4bfa84425cdd992c56a4c19ea04b27c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0d7ac4_697bc4a7",
+        "filename": "src/ports/SkLog_android.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-18T16:57:49Z",
+      "side": 1,
+      "message": "driveby: we shouldn\u0027t need to initialize this if we have a switch with a default case, right?",
+      "range": {
+        "startLine": 37,
+        "startChar": 27,
+        "endLine": 37,
+        "endChar": 44
+      },
+      "revId": "f344bccf4bfa84425cdd992c56a4c19ea04b27c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
