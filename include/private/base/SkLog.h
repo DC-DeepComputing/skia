@@ -41,7 +41,7 @@ void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LI
 
 #if !defined(SKIA_LOWEST_ACTIVE_LOG_PRIORITY)
 #ifdef SK_DEBUG
-    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY SkLogPriority::kWarning
+    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY SkLogPriority::kDebug
 #else
     #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY SkLogPriority::kError
 #endif

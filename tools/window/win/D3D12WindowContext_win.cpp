@@ -16,6 +16,7 @@
 #include "tools/window/DisplayParams.h"
 #include "tools/window/WindowContext.h"
 #include "tools/window/win/WindowContextFactory_win.h"
+#include "include/private/base/SkLog.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -260,6 +261,7 @@ std::unique_ptr<WindowContext> MakeD3D12ForWin(HWND hwnd,
                                                std::unique_ptr<const DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new D3D12WindowContext(hwnd, std::move(params)));
     if (!ctx->isValid()) {
+        SKIA_LOG_D("Invalid D3D context for Windows");
         return nullptr;
     }
     return ctx;
