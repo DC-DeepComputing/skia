@@ -168,6 +168,48 @@
   },
   {
     "cmd": [
+      "vpython3",
+      "-u",
+      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "\n@Subdir provisioning_profile_ios\nchrome_internal/ios/provisioning_profiles/org_chromium KLv-ne3BAwSealMhOYbQirJElURrxlwuFVvYg9MaHasC\n",
+      "[START_DIR]/cipd.ensure"
+    ],
+    "infra_step": true,
+    "name": "write cipd.ensure",
+    "~followup_annotations": [
+      "@@@STEP_LOG_LINE@cipd.ensure@@@@",
+      "@@@STEP_LOG_LINE@cipd.ensure@@Subdir provisioning_profile_ios@@@",
+      "@@@STEP_LOG_LINE@cipd.ensure@chrome_internal/ios/provisioning_profiles/org_chromium KLv-ne3BAwSealMhOYbQirJElURrxlwuFVvYg9MaHasC@@@",
+      "@@@STEP_LOG_END@cipd.ensure@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "cipd",
+      "ensure",
+      "-root",
+      "[START_DIR]",
+      "-ensure-file",
+      "[START_DIR]/cipd.ensure",
+      "-max-threads",
+      "0",
+      "-json-output",
+      "/path/to/tmp/json"
+    ],
+    "infra_step": true,
+    "name": "ensure_installed",
+    "~followup_annotations": [
+      "@@@STEP_LOG_LINE@json.output@{@@@",
+      "@@@STEP_LOG_LINE@json.output@  \"result\": {}@@@",
+      "@@@STEP_LOG_LINE@json.output@}@@@",
+      "@@@STEP_LOG_END@json.output@@@"
+    ]
+  },
+  {
+    "cmd": [
       "[START_DIR]/cache/work/skia/bin/gn",
       "gen",
       "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Debug-iOS/Debug",

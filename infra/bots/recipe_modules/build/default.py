@@ -359,6 +359,13 @@ def compile_fn(api, checkout_root, out_dir):
 
   if api.vars.builder_cfg.get('os', '') in ('Mac'):
     api.xcode.install()
+    if 'iOS' in extra_tokens:
+      ensure_file_path = api.path.start_dir.joinpath('cipd.ensure')
+      api.run.writefile(ensure_file_path, '''
+@Subdir provisioning_profile_ios
+chrome_internal/ios/provisioning_profiles/org_chromium KLv-ne3BAwSealMhOYbQirJElURrxlwuFVvYg9MaHasC
+''')
+      api.cipd.ensure(api.path.start_dir, ensure_file_path)
 
   workdir = api.path.start_dir
   args, env, ccache = get_compile_flags(api, checkout_root, out_dir, workdir)
