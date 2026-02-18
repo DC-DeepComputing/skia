@@ -432,7 +432,8 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 
 #if !defined(__EMSCRIPTEN__)
     // We need 32 bytes push constant for 2 vectors worth of intrinsic data.
-    fResourceBindingReqs.fUsePushConstantsForIntrinsicConstants =
+    // TODO(crbug.com/485493199): fix GLES immediates
+    fResourceBindingReqs.fUsePushConstantsForIntrinsicConstants = info.backendType != wgpu::BackendType::OpenGLES &&
             limits.maxImmediateSize >= DawnGraphicsPipeline::kIntrinsicUniformSize;
 #endif
 
