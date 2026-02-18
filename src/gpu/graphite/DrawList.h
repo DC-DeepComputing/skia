@@ -205,12 +205,18 @@ private:
         // Backpointer to the draw that produced the sort key
         const Draw* fDraw;
 
+        // Clang's static range analysis is too clever.
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wtautological-value-range-compare"
+
         static_assert(ColorDepthOrderField::kBits >= sizeof(CompressedPaintersOrder));
         static_assert(StencilIndexField::kBits    >= sizeof(DisjointStencilIndex));
         static_assert(RenderStepField::kBits      >= SkNextLog2_portable(Renderer::kMaxRenderSteps));
         static_assert(PipelineField::kBits        >= SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
         static_assert(UniformField::kBits         >= 1+SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
         static_assert(TextureBindingsField::kBits >= 1+SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
+
+        #pragma clang diagnostic pop
     };
 
     SkTBlockList<Draw, 4> fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
