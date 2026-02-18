@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "375e8da2_176fbb60",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "Maybe supportsUsages, supportedUsages, usages? Although I don\u0027t really like the raw \u0027usages\u0027 one?\n\nI guess we call it formatSupport later on.",
+      "range": {
+        "startLine": 61,
+        "startChar": 10,
+        "endLine": 61,
+        "endChar": 18
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d56e60dc_5cf97f10",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "Is this always guaranteed to be supported?",
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1644d3a1_4f4a47cb",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "is ?",
+      "range": {
+        "startLine": 138,
+        "startChar": 53,
+        "endLine": 138,
+        "endChar": 56
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "300177c2_9371fb64",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "is ?",
+      "range": {
+        "startLine": 785,
+        "startChar": 56,
+        "endLine": 785,
+        "endChar": 57
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09da49f_22198b4f",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "This might be more useful on line 819",
+      "range": {
+        "startLine": 816,
+        "startChar": 0,
+        "endLine": 816,
+        "endChar": 53
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2e14f3f_a4d0a925",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T19:40:51Z",
+      "side": 1,
+      "message": "Should this really be nested?",
+      "range": {
+        "startLine": 837,
+        "startChar": 0,
+        "endLine": 840,
+        "endChar": 13
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
