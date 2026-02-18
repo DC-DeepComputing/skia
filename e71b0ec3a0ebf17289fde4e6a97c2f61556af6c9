@@ -16,6 +16,29 @@
       "message": "This change is likely wrong in some ways, but it is less wrong and more useful than before.",
       "revId": "e71b0ec3a0ebf17289fde4e6a97c2f61556af6c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9c8c94_d1baf284",
+        "filename": "tools/MSKPPlayer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-18T21:10:13Z",
+      "side": 1,
+      "message": "Is `SkCanvasVirtualEnforcer` out of date, or we intentionally exclude state-related virtuals?",
+      "range": {
+        "startLine": 126,
+        "startChar": 43,
+        "endLine": 126,
+        "endChar": 66
+      },
+      "revId": "e71b0ec3a0ebf17289fde4e6a97c2f61556af6c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
