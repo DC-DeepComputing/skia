@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c6475d_402074ed",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "I set it to `formatSupport`",
+      "parentUuid": "375e8da2_176fbb60",
+      "range": {
+        "startLine": 61,
+        "startChar": 10,
+        "endLine": 61,
+        "endChar": 18
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d56e60dc_5cf97f10",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2318c9_d9972954",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "I think it\u0027s quite likely, but it doesn\u0027t really matter. There\u0027s no other fallback option at that point, and even if we return a TextureFormat here, that\u0027s just the requested format. Actual TextureInfo creation/validation would reject it and the RenderPassTask would fail.",
+      "parentUuid": "d56e60dc_5cf97f10",
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1644d3a1_4f4a47cb",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-02-18T19:40:51Z",
       "side": 1,
       "message": "is ?",
+      "range": {
+        "startLine": 138,
+        "startChar": 53,
+        "endLine": 138,
+        "endChar": 56
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ab6494_802394bb",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1644d3a1_4f4a47cb",
       "range": {
         "startLine": 138,
         "startChar": 53,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f66bb4f_24901c27",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "300177c2_9371fb64",
+      "range": {
+        "startLine": 785,
+        "startChar": 56,
+        "endLine": 785,
+        "endChar": 57
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e09da49f_22198b4f",
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e81f6ee_4faaa912",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "Oops that was meant to be a plain else so the assert was doing something...",
+      "parentUuid": "e09da49f_22198b4f",
+      "range": {
+        "startLine": 816,
+        "startChar": 0,
+        "endLine": 816,
+        "endChar": 53
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2e14f3f_a4d0a925",
@@ -123,6 +237,30 @@
       "writtenOn": "2026-02-18T19:40:51Z",
       "side": 1,
       "message": "Should this really be nested?",
+      "range": {
+        "startLine": 837,
+        "startChar": 0,
+        "endLine": 840,
+        "endChar": 13
+      },
+      "revId": "a9ecbce3deb2ccfd910bea971283c6f75b3297d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34a13ebc_556e9444",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-18T19:54:48Z",
+      "side": 1,
+      "message": "Yes, the high-level Storage usage assumes being able to read and write to the texture. Other backends aren\u0027t nested because they just have usages that reflect binding as a storage attachment and sampling (which isn\u0027t a necessary feature for compute, on those backends texel reads are generally implicitly available).",
+      "parentUuid": "a2e14f3f_a4d0a925",
       "range": {
         "startLine": 837,
         "startChar": 0,
