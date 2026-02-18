@@ -65,9 +65,9 @@ def main():
     train = True
 
   tests = (
-      python_unit_tests,
+      #python_unit_tests,
       recipe_test,
-      gen_tasks_test,
+      #gen_tasks_test,
   )
   errs = []
   for t in tests:

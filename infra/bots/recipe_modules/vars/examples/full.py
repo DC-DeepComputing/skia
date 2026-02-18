@@ -42,7 +42,7 @@ def RunSteps(api):
 
 
 TEST_BUILDERS = [
-  'Build-Debian10-Clang-x86_64-Release-SKNX_NO_SIMD',
+  'Build-Debian10-Clang-x86_64-Release-SK_USE_DISCARDABLE_SCALEDIMAGECACHE',
   'Housekeeper-Weekly-RecreateSKPs',
 ]
 

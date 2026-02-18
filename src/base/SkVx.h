@@ -20,6 +20,7 @@
 // (Ideally we'd only align to T, but that tanks ARMv7 NEON codegen.)
 
 #include "include/private/base/SkFeatures.h"
+#include "include/private/base/SkLoadUserConfig.h"
 #include "src/base/SkUtils.h"
 #include <algorithm>         // std::min, std::max
 #include <cassert>           // assert()
@@ -30,14 +31,13 @@
 #include <type_traits>
 #include <utility>           // std::index_sequence
 
-// Users may disable SIMD with SKNX_NO_SIMD, which may be set via compiler flags.
-// The gn build has no option which sets SKNX_NO_SIMD.
-// Use SKVX_USE_SIMD internally to avoid confusing double negation.
-// Do not use 'defined' in a macro expansion.
-#if !defined(SKNX_NO_SIMD)
+#if defined(SKVK_USE_SIMD) && (SKVK_USE_SIMD != 0 && SKVK_USE_SIMD != 1)
+    #error "Please define SKVK_USE_SIMD to 0 or 1 to explicitly enable or disable SIMD"
+#endif
+
+// Default to using SIMD
+#if !defined(SKVK_USE_SIMD)
     #define SKVX_USE_SIMD 1
-#else
-    #define SKVX_USE_SIMD 0
 #endif
 
 #if SKVX_USE_SIMD
@@ -333,7 +333,7 @@ SINT Vec<2*N,T> join(const Vec<N,T>& lo, const Vec<N,T>& hi) {
 
 #else
 
-    // Either SKNX_NO_SIMD is defined, or Clang/GCC vector extensions are not available.
+    // Either SKVK_USE_SIMD=0 or Clang/GCC vector extensions are not available.
     // We'll implement things portably with N==1 scalar implementations and recursion onto them.
 
     // N == 1 scalar implementations.

@@ -198,6 +198,9 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
   elif api.vars.is_linux and compiler == 'Clang':
     extra_ldflags.append('-L' + clang_linux + '/lib')
 
+  if 'DisableSIMD' in extra_tokens:
+    extra_cflags.append('-DSKVK_USE_SIMD=0')
+
   if configuration != 'Debug':
     args['is_debug'] = 'false'
   if 'Dawn' in extra_tokens:
