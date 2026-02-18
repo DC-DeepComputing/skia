@@ -271,10 +271,6 @@ TextureInfo DawnCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
     return TextureInfos::MakeDawn(info);
 }
 
-TextureFormat DawnCaps::getFormatForColorType(SkColorType colorType) const {
-    return DawnFormatToTextureFormat(this->getFormatFromColorType(colorType));
-}
-
 SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
                                                const SkISize colorAttachmentDimensions) const {
 #if !defined(__EMSCRIPTEN__)
@@ -978,35 +974,6 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 #endif
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Map SkColorTypes (used for creating SkSurfaces) to wgpu::TextureFormat.
-    // The order in which the formats are passed into the setColorType function
-    // indicates the priority in selecting which format we use for a given
-    // SkColorType.
-
-    std::fill_n(fColorTypeToFormatTable, kSkColorTypeCnt, wgpu::TextureFormat::Undefined);
-
-    this->setColorType(kAlpha_8_SkColorType,          { wgpu::TextureFormat::R8Unorm      });
-    this->setColorType(kRGBA_8888_SkColorType,        { wgpu::TextureFormat::RGBA8Unorm   });
-    this->setColorType(kRGB_888x_SkColorType,         { wgpu::TextureFormat::RGBA8Unorm,
-                                                        wgpu::TextureFormat::BGRA8Unorm   });
-    this->setColorType(kBGRA_8888_SkColorType,        { wgpu::TextureFormat::BGRA8Unorm   });
-    this->setColorType(kGray_8_SkColorType,           { wgpu::TextureFormat::R8Unorm      });
-    this->setColorType(kR8_unorm_SkColorType,         { wgpu::TextureFormat::R8Unorm      });
-    this->setColorType(kRGBA_F16_SkColorType,         { wgpu::TextureFormat::RGBA16Float  });
-    this->setColorType(kRGB_F16F16F16x_SkColorType,   { wgpu::TextureFormat::RGBA16Float  });
-    this->setColorType(kA16_float_SkColorType,        { wgpu::TextureFormat::R16Float     });
-    this->setColorType(kR8G8_unorm_SkColorType,       { wgpu::TextureFormat::RG8Unorm     });
-    this->setColorType(kRGBA_1010102_SkColorType,     { wgpu::TextureFormat::RGB10A2Unorm });
-    this->setColorType(kRGB_101010x_SkColorType,      { wgpu::TextureFormat::RGB10A2Unorm });
-    this->setColorType(kR16G16_float_SkColorType,     { wgpu::TextureFormat::RG16Float    });
-
-#if !defined(__EMSCRIPTEN__)
-    this->setColorType(kA16_unorm_SkColorType,        { wgpu::TextureFormat::R16Unorm     });
-    this->setColorType(kR16_unorm_SkColorType,        { wgpu::TextureFormat::R16Unorm     });
-    this->setColorType(kR16G16_unorm_SkColorType,     { wgpu::TextureFormat::RG16Unorm    });
-#endif
 }
 
 // static
@@ -1018,22 +985,6 @@ size_t DawnCaps::GetFormatIndex(wgpu::TextureFormat format) {
     }
     SkDEBUGFAILF("Unsupported wgpu::TextureFormat: 0x%08X\n", static_cast<uint32_t>(format));
     return 0;
-}
-
-void DawnCaps::setColorType(SkColorType colorType,
-                            std::initializer_list<wgpu::TextureFormat> formats) {
-    static_assert(std::size(kFormats) <= kFormatCount,
-                  "Size is not compatible for DawnCaps::fFormatTable and kFormats");
-    int idx = static_cast<int>(colorType);
-    for (auto it = formats.begin(); it != formats.end(); ++it) {
-        const auto& info = this->getFormatInfo(*it);
-        for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-            if (info.fColorTypeInfos[i].fColorType == colorType) {
-                fColorTypeToFormatTable[idx] = *it;
-                return;
-            }
-        }
-    }
 }
 
 // TextureFormat is backed by a uint8_t, so 8 bits are always sufficient (including using
