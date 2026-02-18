@@ -11,6 +11,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/gpu/ganesh/d3d/GrD3DBackendContext.h"
+#include "include/gpu/ganesh/d3d/GrD3DDirectContext.h"
 #include "include/gpu/ganesh/d3d/GrD3DBackendSurface.h"
 #include "tools/ganesh/d3d/D3DTestUtils.h"
 #include "tools/window/DisplayParams.h"
@@ -88,7 +89,7 @@ void D3D12WindowContext::initializeContext() {
     fDevice = backendContext.fDevice;
     fQueue = backendContext.fQueue;
 
-    fContext = GrDirectContext::MakeDirect3D(backendContext, fDisplayParams->grContextOptions());
+    fContext = GrDirectContexts::MakeD3D(backendContext, fDisplayParams->grContextOptions());
     SkASSERT(fContext);
 
     // Make the swapchain
