@@ -130,4 +130,11 @@
  */
 // #define SK_DNG_VERSION 0x01040000
 
+/*
+ * By default, Skia uses SIMD operations for many internal calculations, especially
+ * for the CPU backend. If it is desired to disable SIMD, this define can be
+ * set to 1 to achieve that.
+ */
+// #define SKVK_DISABLE_SIMD 1
+
 #endif
