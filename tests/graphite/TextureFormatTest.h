@@ -84,16 +84,14 @@ static const FormatExpectation kExpectations[] {
               /*isFloatingPoint=*/false,
               {}),
 
-    // TODO(michaelludwig): Right now the alpha-only color types are the expected defaults for
-    // red formats. In the future this will be changed to red-only color type.
     MakeColor(TextureFormat::kR8,
               /*bytesPerBlock=*/1,
               kRed_SkColorChannelFlag,
               /*multiplanar=*/false,
               /*autoClamps=*/true,
               /*isFloatingPoint=*/false,
-              {{kAlpha_8_SkColorType, Swizzle("000r"), Swizzle("a000")},
-               {kR8_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
+              {{kR8_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
+               {kAlpha_8_SkColorType, Swizzle("000r"), Swizzle("a000")},
                {kGray_8_SkColorType, Swizzle("rrra"), std::nullopt}}),
 
     MakeColor(TextureFormat::kR16,
@@ -102,8 +100,8 @@ static const FormatExpectation kExpectations[] {
               /*multiplanar=*/false,
               /*autoClamps=*/true,
               /*isFloatingPoint=*/false,
-              {{kA16_unorm_SkColorType, Swizzle("000r"), Swizzle("a000")},
-               {kR16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}),
+              {{kR16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
+               {kA16_unorm_SkColorType, Swizzle("000r"), Swizzle("a000")}}),
 
     MakeColor(TextureFormat::kR16F,
               /*bytesPerBlock=*/2,
@@ -119,7 +117,7 @@ static const FormatExpectation kExpectations[] {
               /*multiplanar=*/false,
               /*autoClamps=*/false,
               /*isFloatingPoint=*/true,
-              {{kRGBA_F32_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}),
+              {{kA16_float_SkColorType, Swizzle("000r"), Swizzle("a000")}}),
 
     MakeColor(TextureFormat::kA8,
               /*bytesPerBlock=*/1,
@@ -159,7 +157,7 @@ static const FormatExpectation kExpectations[] {
               /*multiplanar=*/false,
               /*autoClamps=*/false,
               /*isFloatingPoint=*/true,
-              {{kRGBA_F32_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}),
+              {{kR16G16_float_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}),
 
     MakeColor(TextureFormat::kRGB8,
               /*bytesPerBlock=*/3,
@@ -373,7 +371,8 @@ static const FormatExpectation kExpectations[] {
                    SkTextureCompressionType::kBC1_RGBA8_UNORM,
                    /*bytesPerBlock=*/8,
                    kRGBA_SkColorChannelFlags,
-                   {{kRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt}}),
+                   {{kRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt},
+                    {kRGB_888x_SkColorType, Swizzle::RGB1(), std::nullopt}}),
 
     MakeCompressed(TextureFormat::kRGBA8_BC1_sRGB,
                    SkTextureCompressionType::kBC1_RGBA8_UNORM,
@@ -488,7 +487,7 @@ void RunTextureFormatTest(skiatest::Reporter* r,
         // Verify compatible color types
         TextureInfo texInfo = texInfoFactory(format);
 
-        SkColorType baseColorType = caps->getDefaultColorType(texInfo);
+        auto [baseColorType, _] = TextureFormatColorTypeInfo(format);
         if (baseColorType == kUnknown_SkColorType) {
             // TODO(michaelludwig): Caps excludes color type infos for formats that aren't
             // supported, so we could see kUnknown on a given device. When compatibility is
@@ -540,15 +539,14 @@ void RunTextureFormatTest(skiatest::Reporter* r,
                         if (renderableCT == ct) {
                             // This is a proxy for "the format can represent CT, and there are some
                             // formats that can render CT, but this format does not render w/ CT".
-                            REPORTER_ASSERT(r, ct != caps->getDefaultColorType(texInfo) ||
-                                               !caps->isRenderable(texInfo));
+                            REPORTER_ASSERT(r, ct != baseColorType || !caps->isRenderable(texInfo));
                         } // else `ct` isn't renderable at all, as expected
                     }
                 }
             }
 
             // If we found an expectation, it should be detected as compatible (and false otherwise)
-            const bool actualCompatible = caps->areColorTypeAndTextureInfoCompatible(ct, texInfo);
+            const bool actualCompatible = AreColorTypeAndFormatCompatible(ct, format);
             REPORTER_ASSERT(r, foundColorExpectation == actualCompatible,
                             "actual (%d) vs expected (%d)", actualCompatible, foundExpectation);
         }

@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 
 namespace skgpu::graphite {
 
@@ -196,7 +197,8 @@ bool validate_backend_texture(const Caps* caps,
         return false;
     }
 
-    return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
+    return AreColorTypeAndFormatCompatible(info.colorType(),
+                                           TextureInfoPriv::ViewFormat(texture.info()));
 }
 
 } // anonymous namespace
@@ -250,7 +252,18 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
                                     std::string_view label) {
     // TODO(476410476): When the SkColorType-taking WrapBackendTexture goes away, we can move its
     // function body here and construct the SkColorInfo from this getDefaultColorType call.
-    SkColorType colorType = recorder->priv().caps()->getDefaultColorType(backendTex.info());
+    auto [colorType, _] =
+            TextureFormatColorTypeInfo(TextureInfoPriv::ViewFormat(backendTex.info()));
+
+    // Force single-channel red colortypes to their alpha equivalent, which is the semantic
+    // behavior expected of single-channel textures with kPremul_SkAlphaType. Currently
+    // WrapBackendTexture assumes kPremul_SkAlphaType.
+    // TODO(michaelludwig): Add alpha type to select between opaque (red) vs premul (alpha-only).
+    switch(colorType) {
+        case kR8_unorm_SkColorType:  colorType = kAlpha_8_SkColorType;   break;
+        case kR16_unorm_SkColorType: colorType = kA16_unorm_SkColorType; break;
+        default: break;
+    }
     return WrapBackendTexture(recorder, backendTex, colorType, std::move(cs), props,
                               releaseP, releaseC, label);
 }

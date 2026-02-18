@@ -48,6 +48,7 @@
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/task/Task.h"
@@ -393,7 +394,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     SkColorType ct = srcData[0].colorType();
 
-    if (!this->priv().caps()->areColorTypeAndTextureInfoCompatible(ct, backendTex.info())) {
+    if (!AreColorTypeAndFormatCompatible(ct, TextureInfoPriv::ViewFormat(backendTex.info()))) {
         return false;
     }
 

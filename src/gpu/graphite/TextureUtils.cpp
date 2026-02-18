@@ -250,7 +250,9 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
     if (!proxy) {
         return {};
     }
-    SkASSERT(caps->areColorTypeAndTextureInfoCompatible(ct, proxy->textureInfo()));
+
+    const TextureFormat format = TextureInfoPriv::ViewFormat(proxy->textureInfo());
+    SkASSERT(AreColorTypeAndFormatCompatible(ct, format));
     SkASSERT(mipmapped == Mipmapped::kNo || proxy->mipmapped() == Mipmapped::kYes);
 
     // Src and dst colorInfo are the same
@@ -276,8 +278,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
         return {};
     }
 
-    Swizzle swizzle =
-             ReadSwizzleForColorType(ct, TextureInfoPriv::ViewFormat(proxy->textureInfo()));
+    Swizzle swizzle = ReadSwizzleForColorType(ct, format);
     // If the color type is alpha-only, propagate the alpha value to the other channels.
     if (SkColorTypeIsAlphaOnly(colorInfo.colorType())) {
         swizzle = Swizzle::Concat(swizzle, Swizzle("aaaa"));
@@ -534,7 +535,8 @@ bool GenerateMipmaps(Recorder* recorder, DrawContext* drawContext, sk_sp<Texture
     // filtering shader that sampled the base level several times with nearest filtering, convert
     // each sample to linear+premul space, average them, and then convert that to the source color
     // space and alpha type.
-    SkColorType colorType = recorder->priv().caps()->getDefaultColorType(texture->textureInfo());
+    auto [colorType, _] =
+            TextureFormatColorTypeInfo(TextureInfoPriv::ViewFormat(texture->textureInfo()));
     SkColorInfo colorInfo{colorType, kOpaque_SkAlphaType, /*cs=*/nullptr};
 
     // Configure swizzle for the initial image to match what happens in Surface::asImage()

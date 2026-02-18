@@ -302,13 +302,6 @@ TextureInfo Caps::getDefaultStorageTextureInfo(SkColorType colorType) const {
                                        Discardable::kNo);
 }
 
-bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkTextureCompressionType handling
-    // (can be handled by setting up the colorTypeInfo instead?)
-
-    return SkToBool(this->getColorTypeInfo(ct, info));
-}
-
 static inline SkColorType color_type_fallback(SkColorType ct) {
     switch (ct) {
         // kRGBA_8888 is our default fallback for many color types that may not have renderable
@@ -344,20 +337,6 @@ const Caps::ColorTypeInfo* Caps::getColorTypeInfo(SkColorType ct, const TextureI
         }
     }
     return nullptr;
-}
-
-SkColorType Caps::getDefaultColorType(const TextureInfo& info) const {
-    if (!info.isValid()) {
-        return kUnknown_SkColorType;
-    }
-
-    const bool isRenderable = this->isRenderable(info);
-    for (const ColorTypeInfo& colorInfo : this->getColorTypeInfos(info)) {
-        if (!isRenderable || (colorInfo.fFlags & ColorTypeInfo::kRenderable_Flag)) {
-            return colorInfo.fColorType;
-        }
-    }
-    return kUnknown_SkColorType;
 }
 
 SkColorType Caps::getRenderableColorType(SkColorType ct) const {
