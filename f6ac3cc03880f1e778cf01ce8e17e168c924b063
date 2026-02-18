@@ -34,6 +34,24 @@
       "parentUuid": "641075f1_863f74f3",
       "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ecdcd7e_d1758fdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-18T16:09:07Z",
+      "side": 1,
+      "message": "I haven\u0027t verified that it actually works, just assuming static_assert is not completely borked on clang/win :)\n\n\n```\n  static_assert(1 \u003c\u003c RenderStepField::kBits \u003e Renderer::kMaxRenderSteps)\n```\n\ndoesn\u0027t seem too bad.\n\nOr we could disable the warning locally with #pragma.\n\nI can look into cleaning up separately.",
+      "parentUuid": "c8d6cb8c_325f2d81",
+      "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
