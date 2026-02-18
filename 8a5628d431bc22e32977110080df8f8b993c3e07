@@ -34,6 +34,24 @@
       "parentUuid": "19fa4450_fce1fc92",
       "revId": "8a5628d431bc22e32977110080df8f8b993c3e07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08649ed7_31b531f4",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-18T22:25:46Z",
+      "side": 1,
+      "message": "Upon further inspection, `hasPendingDraws()` (which is used for early exiting out of `updateForDraw` and `drawClip`), is defined as `fOrder !\u003d DrawOrder::kNoIntersection`. So when you skip this line, no order is assigned, and the leaving `fOrder` as the constructor assigned `DrawOrder::kNoIntersection`, breaking everything downstream. We can fix this simply by assigning a \"non-zero\" drawOrder.",
+      "parentUuid": "d45cadca_2829578f",
+      "revId": "8a5628d431bc22e32977110080df8f8b993c3e07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
