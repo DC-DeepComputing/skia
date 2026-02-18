@@ -16,6 +16,23 @@
       "message": "@kjlubick@google.com, @robertphillips@google.com\nIf you don\u0027t have any comments anymore, can we merge this patch?",
       "revId": "555be0ffd62c39b0b8d61d261ffa022ed532deea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f32e1082_cd777380",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 102
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-18T14:53:26Z",
+      "side": 1,
+      "message": "Thanks a lot for the review!",
+      "revId": "555be0ffd62c39b0b8d61d261ffa022ed532deea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
