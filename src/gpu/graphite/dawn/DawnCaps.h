@@ -116,7 +116,7 @@ private:
         int fColorTypeInfoCount = 0;
     };
     // Size here must be at least the size of kFormats in DawnCaps.cpp.
-    static constexpr size_t kFormatCount = 18;
+    static constexpr size_t kFormatCount = 31;
     std::array<FormatInfo, kFormatCount> fFormatTable;
 
     static size_t GetFormatIndex(wgpu::TextureFormat format);
