@@ -220,18 +220,6 @@ public:
             const TextureInfo& textureInfo) const;
 
     /**
-     * Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
-     * passed in SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
-
-    /**
-     * Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
-     * SkColorType and TextureInfo.
-     */
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
-
-    /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
      * back. If not, provides an alternative (perhaps lower bit depth and/or unorm instead of float)
      * color type that is supported or kUnknown if there no renderable fallback format.

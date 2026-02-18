@@ -5,10 +5,11 @@
  * found in the LICENSE file.
  */
 
- #include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureFormat.h"
 
- #include "include/core/SkColor.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
+#include "src/core/SkImageInfoPriv.h"
 
 namespace skgpu::graphite {
 
@@ -319,6 +320,84 @@ bool TextureFormatIsMultiplanar(TextureFormat format) {
 
 // Supporting implementation details for TextureFormat and SkColorType conversions
 // ------------------------------------------------------------------------------------------------
+
+Swizzle ReadSwizzleForColorType(SkColorType ct, TextureFormat format) {
+    uint32_t colorChannels = SkColorTypeChannelFlags(ct);
+    uint32_t formatChannels = TextureFormatChannelMask(format);
+
+    // Read swizzles only have to handle a few semantics around the sampled values, as any sort of
+    // channel ordering for RGB vs BGR is handled by hardware. All we have to handle is mapping to
+    // "gray", red-vs-alpha, and forcing to opaque.
+    if (SkColorTypeIsAlphaOnly(ct)) {
+        // If the format isn't just an alpha channel (e.g. TextureFormat::kA8), we need to adjust
+        if (formatChannels != kAlpha_SkColorChannelFlag) {
+            // If the format has an alpha channel, mask every other channel to 0
+            if (formatChannels & kAlpha_SkColorChannelFlag) {
+                return Swizzle("000a");
+            } else {
+                // Otherwise move the red channel to alpha
+                SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+                return Swizzle("000r");
+            }
+        } else {
+            // otherwise leave as "rgba" and let hardware do the right thing
+            return Swizzle::RGBA();
+        }
+    } else {
+        // First map gray to rrra; if this is just gray and not gray+alpha, it will also be forced
+        // to opaque below and become rrr1.
+        Swizzle swizzle;
+        if (colorChannels & kGray_SkColorChannelFlag) {
+            SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+            swizzle = Swizzle::RRRA();
+        } else {
+            swizzle = Swizzle::RGBA();
+        }
+
+        // Last, force the alpha to opaque if the color type masks it off but is present in the
+        // texture format.
+        if (!(colorChannels & kAlpha_SkColorChannelFlag) &&
+             (formatChannels & kAlpha_SkColorChannelFlag)) {
+            swizzle = Swizzle::Concat(swizzle, Swizzle::RGB1());
+        }
+
+        return swizzle;
+    }
+}
+
+skgpu::Swizzle WriteSwizzleForColorType(SkColorType ct, TextureFormat format) {
+    uint32_t colorChannels = SkColorTypeChannelFlags(ct);
+    uint32_t formatChannels = TextureFormatChannelMask(format);
+
+    // Write swizzles only have to handle a few semantics around the sampled values, as any sort of
+    // channel ordering for RGB vs BGR is handled by hardware. This reduces to just handling red
+    // vs alpha. The other cases for read swizzles do not apply:
+    //   - We disallow gray since computing luminance is beyond a swizzle.
+    //   - We disallow forcing to opaque since in all cases where we'd do that we have no guarantee
+    //     of what the dst pixel's alpha was. In the future, we could support forced-opaque
+    //     rendering by always using shader-based blending or by guaranteeing a one-time initialize
+    //     draw that forced any alpha channel to 1.
+    if (SkColorTypeIsAlphaOnly(ct)) {
+        // If the format isn't just an alpha channel (e.g. TextureFormat::kA8), we need to adjust
+        if (formatChannels != kAlpha_SkColorChannelFlag) {
+            // If the format has an alpha channel, mask every other channel to 0
+            if (formatChannels & kAlpha_SkColorChannelFlag) {
+                return Swizzle("000a");
+            } else {
+                // Otherwise move the alpha channel to red
+                SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+                return Swizzle("a000");
+            }
+        } else {
+            // otherwise leave as "rgba" and let hardware do the right thing
+            return Swizzle::RGBA();
+        }
+    } else {
+        SkASSERT(!(colorChannels & kGray_8_SkColorType));
+        SkASSERT(colorChannels == formatChannels);
+        return Swizzle::RGBA();
+    }
+}
 
 SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType ct) {
 
