@@ -41,8 +41,10 @@ void Caps::finishInitialization(const ContextOptions& options) {
     if (options.fOptionsPriv) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
+        fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
     }
 #endif
+    fDrawListLayer = true;
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;
     fMinMSAAPathSize = options.fMinimumPathSizeForMSAA;
     fMinDistanceFieldFontSize = options.fMinDistanceFieldFontSize;
