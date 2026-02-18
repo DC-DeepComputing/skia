@@ -39,6 +39,26 @@ class SkPaint;
 using namespace skia_private;
 
 namespace skottie {
+
+namespace internal {
+
+#if defined(SK_BUILD_FOR_MAC)
+// TextShaperMac.mm
+bool ValidateLinebreaks(const SkString&, const Shaper::Result&);
+
+uint32_t AutoSizeFlags(uint32_t flags) {
+    return flags | Shaper::Flags::kClusters | Shaper::Flags::kFragmentGlyphs;
+}
+
+#else
+bool ValidateLinebreaks(const SkString&, const Shaper::Result&) { return true; }
+
+uint32_t AutoSizeFlags(uint32_t flags) { return flags; }
+
+#endif
+
+} // namespace internal
+
 namespace {
 static bool is_whitespace(char c) {
     // TODO: we've been getting away with this simple heuristic,
@@ -533,7 +553,7 @@ Shaper::Result ShapeImpl(const SkString& txt, const Shaper::TextDesc& desc,
     return rbuilder.finalize(shaped_size);
 }
 
-bool result_fits(const Shaper::Result& res, const SkSize& res_size,
+bool result_fits(const SkString& txt, const Shaper::Result& res, const SkSize& res_size,
                  const SkRect& box, const Shaper::TextDesc& desc) {
     // optional max line count constraint
     if (desc.fMaxLines) {
@@ -543,6 +563,11 @@ bool result_fits(const Shaper::Result& res, const SkSize& res_size,
         if (line_count > desc.fMaxLines) {
             return false;
         }
+    }
+
+    // linebreak constraints
+    if (!internal::ValidateLinebreaks(txt, res)) {
+        return false;
     }
 
     // geometric constraint
@@ -559,6 +584,7 @@ Shaper::Result ShapeToFit(const SkString& txt, const Shaper::TextDesc& orig_desc
     }
 
     auto desc = orig_desc;
+    desc.fFlags = internal::AutoSizeFlags(desc.fFlags);
 
     const auto min_scale = std::max(desc.fMinTextSize / desc.fTextSize, 0.0f),
                max_scale = std::max(desc.fMaxTextSize / desc.fTextSize, min_scale);
@@ -584,7 +610,7 @@ Shaper::Result ShapeToFit(const SkString& txt, const Shaper::TextDesc& orig_desc
         auto res = ShapeImpl(txt, desc, box, fontmgr, shapingFactory, &res_size);
 
         const auto prev_scale = try_scale;
-        if (!result_fits(res, res_size, box, desc)) {
+        if (!result_fits(txt, res, res_size, box, desc)) {
             out_scale = try_scale;
             try_scale = (in_scale == min_scale)
                     // initial in_scale not found yet - search exponentially
@@ -659,12 +685,15 @@ Shaper::Result Shaper::Shape(const SkString& text, const TextDesc& desc, const S
     case ResizePolicy::kScaleToFit:
         return ShapeToFit(adjText, desc, box, fontmgr, shapingFactory);
     case ResizePolicy::kDownscaleToFit: {
-        SkSize size;
-        auto result = ShapeImpl(adjText, desc, box, fontmgr, shapingFactory, &size);
+        TextDesc adjDesc = desc;
+        adjDesc.fFlags = internal::AutoSizeFlags(adjDesc.fFlags);
 
-        return result_fits(result, size, box, desc)
+        SkSize size;
+        auto result = ShapeImpl(adjText, adjDesc, box, fontmgr, shapingFactory, &size);
+
+        return result_fits(text, result, size, box, desc)
                 ? result
-                : ShapeToFit(adjText, desc, box, fontmgr, shapingFactory);
+                : ShapeToFit(adjText, adjDesc, box, fontmgr, shapingFactory);
     }
     }
 

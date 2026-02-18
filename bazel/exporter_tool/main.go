@@ -921,6 +921,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//modules/skottie/src/text:text_srcs",
 				"//modules/skottie/src/text:text_shaper_srcs",
 			}},
+		{Var: "skia_skottie_objc_sources",
+			Rules: []string{"//modules/skottie/src/text:text_shaper_objc_srcs"}},
 	}},
 	{GNI: "modules/skcms/skcms.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skcms_public_headers",
