@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "207c4852_a5374d26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-18T16:35:17Z",
+      "side": 1,
+      "message": "Interesting. I notice that https://skia-review.googlesource.com/c/skia/+/1165478 still doesn\u0027t work but this does. I assume the early cipd steps and the later recipe steps are run with different accounts and permissions?",
+      "revId": "2ad09242ee06383b9fdbed86b66a9f200d8f0e92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
