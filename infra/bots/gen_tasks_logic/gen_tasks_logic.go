@@ -1345,7 +1345,11 @@ func (b *jobBuilder) compile() string {
 				// b.asset("ccache_mac")
 				// b.usesCCache()
 				if b.MatchExtraConfig("iOS.*") {
-					b.asset("provisioning_profile_ios")
+					b.cipd(&specs.CipdPackage{
+						Name:    "chrome_internal/ios/provisioning_profiles/org_chromium",
+						Version: "KLv-ne3BAwSealMhOYbQirJElURrxlwuFVvYg9MaHasC",
+						Path:    "provisioning_profile_ios",
+					})
 				}
 				if b.shellsOutToBazel() {
 					// All of our current Mac compile machines are arm64 Mac only.
