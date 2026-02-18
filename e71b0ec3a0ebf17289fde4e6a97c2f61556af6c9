@@ -39,6 +39,30 @@
       },
       "revId": "e71b0ec3a0ebf17289fde4e6a97c2f61556af6c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a9f2e7_badf8a33",
+        "filename": "tools/MSKPPlayer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-18T21:22:32Z",
+      "side": 1,
+      "message": "I was kinda wondering that too. There seem to be other things missing like onDrawMesh as well.",
+      "parentUuid": "7f9c8c94_d1baf284",
+      "range": {
+        "startLine": 126,
+        "startChar": 43,
+        "endLine": 126,
+        "endChar": 66
+      },
+      "revId": "e71b0ec3a0ebf17289fde4e6a97c2f61556af6c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
