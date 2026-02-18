@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_cc_binary", "skia_cc_library")
+load("//bazel:skia_rules.bzl", "skia_cc_binary", "skia_cc_library", "skia_objc_library")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -151,5 +151,22 @@ skia_cc_library(
         "//modules/skunicode:skunicode_core",
         "//src/base",
         "//src/core:core_priv",
+    ] + select({
+        "@platforms//os:macos": [":textshaper_objc"],
+        "@platforms//os:ios": [":textshaper_objc"],
+        "//conditions:default": [],
+    }),
+)
+
+skia_objc_library(
+    name = "textshaper_objc",
+    srcs = ["//modules/skottie/src/text:text_shaper_objc_srcs"],
+    hdrs = ["//modules/skottie/include:text_shaper_hdrs"],
+    features = ["layering_check"],
+    sdk_frameworks = ["Foundation"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        "//:core",
+        "//modules/skunicode:skunicode_core",
     ],
 )
