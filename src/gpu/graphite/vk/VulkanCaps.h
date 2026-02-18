@@ -167,7 +167,6 @@ private:
                                      const VkPhysicalDeviceProperties&);
 
     SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
-    TextureFormat getFormatForColorType(SkColorType) const override;
     TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
                                         TextureFormat,
                                         SampleCount,
@@ -237,11 +236,6 @@ private:
         // Indicates that a format is only supported if we are wrapping a texture with it.
         SkDEBUGCODE(bool fIsWrappedOnly = false;)
     };
-
-    // Map SkColorType to VkFormat.
-    VkFormat fColorTypeToFormatTable[kSkColorTypeCnt];
-    void setColorType(SkColorType, std::initializer_list<VkFormat> formats);
-    VkFormat getFormatFromColorType(SkColorType) const;
 
     // Map VkFormat to FormatInfo.
     static const size_t kNumVkFormats = 24;
