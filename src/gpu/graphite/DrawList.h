@@ -7,6 +7,7 @@
 #ifndef skgpu_graphite_DrawList_DEFINED
 #define skgpu_graphite_DrawList_DEFINED
 
+#include "include/private/base/SkTo.h"
 #include "src/gpu/graphite/DrawListBase.h"
 
 #include "include/private/base/SkDebug.h"
@@ -207,10 +208,10 @@ private:
 
         static_assert(ColorDepthOrderField::kBits >= sizeof(CompressedPaintersOrder));
         static_assert(StencilIndexField::kBits    >= sizeof(DisjointStencilIndex));
-        static_assert(RenderStepField::kBits      >= SkNextLog2_portable(Renderer::kMaxRenderSteps));
-        static_assert(PipelineField::kBits        >= SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
-        static_assert(UniformField::kBits         >= 1+SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
-        static_assert(TextureBindingsField::kBits >= 1+SkNextLog2_portable(DrawListBase::kMaxRenderSteps));
+        static_assert(RenderStepField::kBits      >= SkToU64(SkNextLog2(Renderer::kMaxRenderSteps)));
+        static_assert(PipelineField::kBits        >= SkToU64(SkNextLog2(DrawListBase::kMaxRenderSteps)));
+        static_assert(UniformField::kBits         >= SkToU64(1+SkNextLog2(DrawListBase::kMaxRenderSteps)));
+        static_assert(TextureBindingsField::kBits >= SkToU64(1+SkNextLog2(DrawListBase::kMaxRenderSteps)));
     };
 
     SkTBlockList<Draw, 4> fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
