@@ -50,3 +50,11 @@ skia_filegroup(
     ],
     visibility = ["//modules/skottie:__pkg__"],
 )
+
+skia_filegroup(
+    name = "text_shaper_objc_srcs",
+    srcs = [
+        "TextShaperMac.mm",
+    ],
+    visibility = ["//modules/skottie:__pkg__"],
+)
