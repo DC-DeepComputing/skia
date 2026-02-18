@@ -491,5 +491,59 @@ DEF_TEST(Skottie_Shaper_breakiter, r) {
     check({1, 5, 9}, {1, 5, 7, 9},   {1, 5, 9});
 }
 
-#endif
+#endif  // SK_SHAPER_HARFBUZZ_AVAILABLE && !SK_BUILD_FOR_WIN
 
+#if defined(SK_BUILD_FOR_MAC)
+
+namespace skottie::internal { bool ValidateLinebreaks(const SkString&, const Shaper::Result&); }
+
+DEF_TEST(Skottie_Shaper_macbreaks, r) {
+    const SkString txt("foo bar");
+    static const struct {
+        std::vector<uint32_t> line_map;
+        bool                  is_valid;
+    } tsts[] = {
+        {{}, true},
+
+        {{0, 0, 0, 0, 0, 0, 0}, true },
+        {{0, 0, 0, 0, 0, 0, 1}, false},
+        {{0, 0, 0, 0, 0, 1, 1}, false},
+        {{0, 0, 0, 0, 1, 1, 1}, true },
+        {{0, 0, 0, 1, 1, 1, 1}, true },
+        {{0, 0, 1, 1, 1, 1, 1}, false},
+        {{0, 1, 1, 1, 1, 1, 1}, false},
+
+        {{0, 0, 0, 1, 2, 2, 2}, true },
+    };
+
+    const auto make_result = [](const std::vector<uint32_t>& line_map) {
+        std::vector<Shaper::Fragment> frags;
+        for (size_t i = 0; i < line_map.size(); ++i) {
+            frags.push_back({
+                .fGlyphs = {
+                    .fRuns     = {},
+                    .fGlyphIDs = {1},
+                    .fGlyphPos = {{0,0}},
+                    .fClusters = {i},
+                },
+                .fOrigin       = {0, 0},
+                .fAdvance      = 0,
+                .fAscent       = 0,
+                .fLineIndex    = line_map[i],
+                .fIsWhitespace = false,
+            });
+        }
+        return Shaper::Result{
+            .fFragments         = std::move(frags),
+            .fMissingGlyphCount = 0,
+            .fScale             = 1,
+        };
+    };
+
+    for (const auto& tst : tsts) {
+        REPORTER_ASSERT(r,
+            skottie::internal::ValidateLinebreaks(txt, make_result(tst.line_map)) == tst.is_valid);
+    }
+}
+
+#endif  // SK_BUILD_FOR_MAC
