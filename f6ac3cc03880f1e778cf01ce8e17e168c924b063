@@ -52,6 +52,29 @@
       "parentUuid": "c8d6cb8c_325f2d81",
       "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0998526_b7effd1d",
+        "filename": "src/base/SkMathPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-18T18:00:30Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 31,
+        "startChar": 56,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
