@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02d1d604_127b298a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-18T22:52:53Z",
+      "side": 1,
+      "message": "There needs to be a better way to write a wrapping canvas for real.",
+      "revId": "199b448be8963f4e5b3faef40ab678fb7c0636c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
