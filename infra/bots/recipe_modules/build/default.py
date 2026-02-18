@@ -347,6 +347,7 @@ def finalize_gn_flags(args):
 def compile_fn(api, checkout_root, out_dir):
   skia_dir      = checkout_root.joinpath('skia')
   extra_tokens  = api.vars.extra_tokens
+  workdir       = api.path.start_dir
 
   with api.context(cwd=skia_dir):
     api.run(api.step, 'fetch-gn',
@@ -359,8 +360,15 @@ def compile_fn(api, checkout_root, out_dir):
 
   if api.vars.builder_cfg.get('os', '') in ('Mac'):
     api.xcode.install()
+    if 'iOS' in extra_tokens:
+      with api.step.nest('download provisioning profile'):
+        ensure_file_path = workdir.joinpath('cipd.ensure')
+        api.run.writefile(ensure_file_path, '''
+@Subdir provisioning_profile_ios
+chrome_internal/ios/provisioning_profiles/org_chromium KLv-ne3BAwSealMhOYbQirJElURrxlwuFVvYg9MaHasC
+''')
+        api.cipd.ensure(workdir, ensure_file_path)
 
-  workdir = api.path.start_dir
   args, env, ccache = get_compile_flags(api, checkout_root, out_dir, workdir)
   gn_args = finalize_gn_flags(args)
   gn = skia_dir.joinpath('bin', 'gn')
