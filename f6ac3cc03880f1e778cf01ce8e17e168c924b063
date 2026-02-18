@@ -16,6 +16,24 @@
       "message": "If it\u0027s just the static asserts in DraList.h, could those be refactored to avoid nextlog2?\n\n```\n  static_assert(RenderStepField::kBits \u003e\u003d SkNextLog2_portable(Renderer::kMaxRenderSteps));\n```\n\n```\n  static_assert(Renderer::kMaxRenderSteps \u0026 ((1 \u003c\u003c RenderStepField::kBits) - 1) \u003d\u003d Renderer::kMaxRenderSteps);\n```\n\nor similar?",
       "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d6cb8c_325f2d81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-02-18T14:58:42Z",
+      "side": 1,
+      "message": "oof, not nearly as readable (for intent) but interesting that it works",
+      "parentUuid": "641075f1_863f74f3",
+      "revId": "f6ac3cc03880f1e778cf01ce8e17e168c924b063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
