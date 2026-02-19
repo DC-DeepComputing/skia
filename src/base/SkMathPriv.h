@@ -16,12 +16,25 @@
 #include <cstddef>
 #include <cstdint>
 
+/**
+ * Return the number of leading zero bits.
+ */
 constexpr int SkCLZ(uint32_t x) {
     return std::countl_zero<uint32_t>(x);
 }
 
+/**
+ * Return the number of trailing zero bits.
+ */
 constexpr int SkCTZ(uint32_t x) {
     return std::countr_zero<uint32_t>(x);
+}
+
+/*
+ * Return the number of set bits (i.e., the population count) in the provided uint32_t.
+ */
+constexpr int SkPopCount(uint32_t x) {
+    return std::popcount<uint32_t>(x);
 }
 
 /**
@@ -130,21 +143,6 @@ static inline unsigned SkDiv255Round(unsigned prod) {
     static inline uint32_t SkBSwap32(uint32_t v) { return _byteswap_ulong(v); }
 #else
     static inline uint32_t SkBSwap32(uint32_t v) { return __builtin_bswap32(v); }
-#endif
-
-/*
- * Return the number of set bits (i.e., the population count) in the provided uint32_t.
- */
-int SkPopCount_portable(uint32_t n);
-
-#if defined(__GNUC__) || defined(__clang__)
-    static inline int SkPopCount(uint32_t n) {
-        return __builtin_popcount(n);
-    }
-#else
-    static inline int SkPopCount(uint32_t n) {
-        return SkPopCount_portable(n);
-    }
 #endif
 
 /**
