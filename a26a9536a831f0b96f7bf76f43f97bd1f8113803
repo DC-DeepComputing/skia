@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e268e0cf_80673252",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-19T18:13:47Z",
+      "side": 1,
+      "message": "nit: const (the other stuff is const and this can also be const to line up and not look out of place)",
+      "range": {
+        "startLine": 643,
+        "startChar": 4,
+        "endLine": 643,
+        "endChar": 12
+      },
+      "revId": "a26a9536a831f0b96f7bf76f43f97bd1f8113803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
