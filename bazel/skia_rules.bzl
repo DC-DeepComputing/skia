@@ -269,3 +269,44 @@ def split_srcs_and_hdrs(name, files, visibility = None):
         srcs = hdrs,
         visibility = visibility,
     )
+
+def skia_cc_library_with_testutil(name, srcs, hdrs, defines, deps, visibility, priv_visibility, features):
+    allowed_names = set(["ganesh"])
+
+    rewrite_deps = {
+        "//src/gpu/ganesh": "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    }
+
+    if name not in allowed_names:
+        fail("Was not registered to re-write " + name)
+
+    if "GPU_TEST_UTILS" in defines:
+        fail("You shouldn't put GPU_TEST_UTILS in the defines")
+
+    skia_cc_library(
+        name = name,
+        srcs = srcs,
+        hdrs = hdrs,
+        defines = defines,
+        deps = deps,
+        features = features,
+        visibility = visibility,
+    )
+
+    rewritten_deps = []
+    for dep in deps:
+        if dep in rewrite_deps:
+            rewritten_deps.append(rewrite_deps[dep])
+        else:
+            rewritten_deps.append(dep)
+
+    skia_cc_library(
+        name = name + "_TEST_UTIL",
+        testonly = True,
+        srcs = srcs,
+        hdrs = hdrs,
+        features = features,
+        defines = defines + ["GPU_TEST_UTILS"],
+        visibility = visibility + priv_visibility,
+        deps = rewritten_deps,
+    )
