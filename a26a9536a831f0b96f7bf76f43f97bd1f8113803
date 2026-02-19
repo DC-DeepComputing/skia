@@ -39,6 +39,30 @@
       },
       "revId": "a26a9536a831f0b96f7bf76f43f97bd1f8113803",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9af366_5ce58259",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-19T21:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e268e0cf_80673252",
+      "range": {
+        "startLine": 643,
+        "startChar": 4,
+        "endLine": 643,
+        "endChar": 12
+      },
+      "revId": "a26a9536a831f0b96f7bf76f43f97bd1f8113803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
