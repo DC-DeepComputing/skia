@@ -338,8 +338,11 @@ FeaturesToAdd get_features_to_add(uint32_t apiVersion,
     } else {
         toAdd.fVulkan12 = false;
         toAdd.fVulkan11 = false;
-        // Check for support via individual extensions' feature structs
-        toAdd.fSamplerYcbcrConversion = exts.fSamplerYcbcrConversionKHR;
+        // Always query for the main YCbCr conversion feature for Vulkan 1.1. If the device
+        // indicates support for the VK_KHR_sampler_ycbcr_conversion, then YCbCr conversion
+        // feature support is guaranteed. However, the inverse is not necessarily true.
+        // https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_sampler_ycbcr_conversion.html#_promotion_to_vulkan_1_1
+        toAdd.fSamplerYcbcrConversion = true;
     }
     // Check for support via individual extensions' feature structs (none of which have been
     // promoted to core).
@@ -471,6 +474,7 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     exts.fPipelineLibraryKHR = false;
     exts.fGraphicsPipelineLibraryEXT = false;
 #endif
+    exts.fSamplerYcbcrConversionKHR = false;
     exts.fSynchronization2KHR = false;
     exts.fDynamicRenderingKHR = false;
     exts.fDynamicRenderingLocalReadKHR = false;
@@ -540,10 +544,13 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         fVulkan11.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES;
         fVulkan12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
     } else {
-        if (exts.fSamplerYcbcrConversionKHR) {
-            fSamplerYcbcrConversion.sType =
-                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
-        }
+        // Always query for the main YCbCr conversion feature. If the device indicates support for
+        // VK_KHR_sampler_ycbcr_conversion, that guarantees YCbCr conversion capabilitity. However,
+        // the inverse is not necessarily true so we should still query for feature support.
+        // https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_sampler_ycbcr_conversion.html#_promotion_to_vulkan_1_1
+        fSamplerYcbcrConversion.sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+
         if (exts.fDriverPropertiesKHR) {
             fDriverPropertiesExtension = VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME;
         }
@@ -649,6 +656,9 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     }
     if (toAdd.fSamplerYcbcrConversion) {
         SkASSERT(fSamplerYcbcrConversion.sType != 0);
+        if (exts.fSamplerYcbcrConversionKHR) {
+            fSamplerYcbcrConversion.samplerYcbcrConversion = VK_TRUE;
+        }
         AddToPNextChain(&appFeatures, &fSamplerYcbcrConversion);
     }
     if (toAdd.fRGBA10x6Formats) {
@@ -838,8 +848,10 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     //   is required to be supported when the extension is present, that feature is enabled.
     //   If an optional feature is supported but disabled by the app, Skia has no visibility into it
     //   right now, but no such feature is used by Skia currently.
-    // - A struct is included byFeaturesToQuery: In this case, if there are features that Skia
+    //
+    // - A struct is included by addFeaturesToQuery: In this case, if there are features that Skia
     //   doesn't need, they are disabled since the app wasn't relying on those features.
+    //
     // - If a Vulkan1X feature struct needs to be chained, then the individual feature structs that
     //   it subsumes are removed from the chain and their features are enabled in the Vulkan1X
     //   struct instead.
