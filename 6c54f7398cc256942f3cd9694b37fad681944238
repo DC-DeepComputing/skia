@@ -22,6 +22,30 @@
       },
       "revId": "6c54f7398cc256942f3cd9694b37fad681944238",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc19dfd_ce202f4d",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-19T15:22:03Z",
+      "side": 1,
+      "message": "Tried casting, doesn\u0027t seem to help (also SkNextLog2 is already declared to return an int).\n\nI think what\u0027s going on is not that the compiler is changing the return type, but the static analyzer now gets more information regarding the possible value range and for some reason decides to apply that to a static_assert... which seems like a bug, because tautological conditions are kinda the point of static_assert.",
+      "parentUuid": "93ccadd3_c983523f",
+      "range": {
+        "startLine": 216,
+        "startChar": 53,
+        "endLine": 216,
+        "endChar": 63
+      },
+      "revId": "6c54f7398cc256942f3cd9694b37fad681944238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
