@@ -123,8 +123,8 @@ public:
     bool isCursiveScript() const;
 
     void addSpacesAtTheEnd(SkScalar space, Cluster* cluster);
-    SkScalar addLetterSpacesEvenly(SkScalar space, Cluster* cluster);
-    SkScalar addLetterSpacesEvenly(SkScalar space);
+    SkScalar addLetterSpacesEvenly(SkScalar space, Cluster* cluster, bool letterSpacingByCSSSpec);
+    SkScalar addAllLetterSpacesEvenly(SkScalar space, bool hasWhitespaces, bool letterSpacingByCSSSpec);
     void shift(const Cluster* cluster, SkScalar offset);
     void extend(const Cluster* cluster, SkScalar offset);
 

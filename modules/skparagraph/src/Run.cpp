@@ -170,23 +170,28 @@ void Run::addSpacesAtTheEnd(SkScalar space, Cluster* cluster) {
     cluster->space(space);
 }
 
-SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
-    if (this->isCursiveScript()) {
-        // Do not apply letter spacing for script languages
+// This is the optimized case: one paragraph - one style
+SkScalar Run::addAllLetterSpacesEvenly(SkScalar space,
+                                       bool hasWhitespaces,
+                                       bool letterSpacingByCSSSpec) {
+    if (this->isCursiveScript() && (!hasWhitespaces || !letterSpacingByCSSSpec)) {
+        // Do not apply letter spacing for script languages if there are no whitespaces
         return 0.0;
     }
+
     SkScalar shift = 0;
-    for (size_t i = 0; i < this->size(); ++i) {
-        fPositions[i].fX += shift;
-        shift += space;
-    }
-    fPositions[this->size()].fX += shift;
-    fAdvance.fX += shift;
+    this->iterateThroughClusters([this, &shift, space, letterSpacingByCSSSpec](Cluster* cluster) {
+        // Shift the cluster (shift collected from the previous clusters)
+        this->shift(cluster, shift);
+
+        // Do not apply letter spacing for script languages clusters other than whitespaces
+        shift += this->addLetterSpacesEvenly(space, cluster, letterSpacingByCSSSpec);
+    });
     return shift;
 }
 
-SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
-    if (this->isCursiveScript()) {
+SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster, bool letterSpacingByCSSSpec) {
+    if (this->isCursiveScript() && (!cluster->isWhitespaceBreak() || !letterSpacingByCSSSpec)) {
         // Do not apply letter spacing for script languages
         return 0.0;
     }
