@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ccadd3_c983523f",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-19T15:07:22Z",
+      "side": 1,
+      "message": "Just so I understand the warning:\n`error: result of comparison of 30 \u003e\u003d 4-bit unsigned value is always true`\nmeans the SkNextLog2 is returning a 4-bit unsigned value (not an [8 bit] int as per the function call signature)? Is the compiler seeing the result (log_2(4096) \u003d 12) and saying \"oh, I can store this in a 4 bit unsigned\" and then \"oh hey, 15 (max for 4 bits) will always be less than 30?\n\nCould we cast the result instead of pushing the diagnostic?",
+      "range": {
+        "startLine": 216,
+        "startChar": 53,
+        "endLine": 216,
+        "endChar": 63
+      },
+      "revId": "6c54f7398cc256942f3cd9694b37fad681944238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
