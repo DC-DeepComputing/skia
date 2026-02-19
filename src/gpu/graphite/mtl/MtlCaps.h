@@ -65,7 +65,7 @@ private:
     }
 
     SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
-    TextureFormat getFormatForColorType(SkColorType) const override;
+    TextureFormat getFormatForColorType(SkColorType, Renderable) const override;
     TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
                                         TextureFormat,
                                         SampleCount,
