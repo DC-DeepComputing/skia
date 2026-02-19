@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf8b4412_6575d945",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-19T15:41:21Z",
+      "side": 1,
+      "message": "nit: This link doesn\u0027t work for me.",
+      "revId": "2279b518eea8e488535ec92328a82853906173c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
