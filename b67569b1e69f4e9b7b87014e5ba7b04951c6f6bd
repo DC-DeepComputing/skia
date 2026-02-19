@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9db89bf_c9c1e470",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-19T14:26:55Z",
+      "side": 1,
+      "message": "SKVX_DISABLE_SIMD, and can we just have it be valueless?",
+      "range": {
+        "startLine": 44,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 20
+      },
+      "revId": "b67569b1e69f4e9b7b87014e5ba7b04951c6f6bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
