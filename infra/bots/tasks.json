@@ -95546,7 +95546,6 @@
       ]
     },
     "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan": {},
-    "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan": {},
     "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All": {},
     "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Native_Vulkan_TestPrecompile": {
       "location_regexes": [
