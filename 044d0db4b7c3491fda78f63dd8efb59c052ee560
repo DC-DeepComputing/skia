@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d486184_d3652696",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-02-19T19:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4f9b6cd_813cfde4",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 105
+      },
+      "revId": "044d0db4b7c3491fda78f63dd8efb59c052ee560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4925c282_201e853b",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-19T17:03:02Z",
       "side": 1,
       "message": "without?",
+      "range": {
+        "startLine": 51,
+        "startChar": 69,
+        "endLine": 51,
+        "endChar": 73
+      },
+      "revId": "044d0db4b7c3491fda78f63dd8efb59c052ee560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a35fcc0_9e470edc",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-02-19T19:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4925c282_201e853b",
       "range": {
         "startLine": 51,
         "startChar": 69,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2d0fe77_5f1bbd36",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-02-19T19:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2e8f5a1_6ddb6e79",
+      "range": {
+        "startLine": 56,
+        "startChar": 99,
+        "endLine": 56,
+        "endChar": 105
+      },
+      "revId": "044d0db4b7c3491fda78f63dd8efb59c052ee560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee36f820_0a13484f",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-02-19T17:03:02Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 105
+      },
+      "revId": "044d0db4b7c3491fda78f63dd8efb59c052ee560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "881f1315_09c39bc4",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-02-19T19:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee36f820_0a13484f",
       "range": {
         "startLine": 64,
         "startChar": 0,
