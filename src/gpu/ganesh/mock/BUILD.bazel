@@ -8,6 +8,7 @@ licenses(["notice"])
 
 MOCK_FILES = [
     "GrMockAttachment.h",
+    "GrMockBackendSurface.cpp",
     "GrMockBuffer.h",
     "GrMockCaps.cpp",
     "GrMockCaps.h",

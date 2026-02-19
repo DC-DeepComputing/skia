@@ -18,12 +18,10 @@ SkTextureCompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
     switch (format.backend()) {
         case GrBackendApi::kDirect3D: [[fallthrough]];
         case GrBackendApi::kMetal:    [[fallthrough]];
+        case GrBackendApi::kMock:     [[fallthrough]];
         case GrBackendApi::kOpenGL:   [[fallthrough]];
         case GrBackendApi::kVulkan:
             return GrBackendSurfacePriv::GetBackendData(format)->compressionType();
-        case GrBackendApi::kMock: {
-            return format.asMockCompressionType();
-        }
         case GrBackendApi::kUnsupported: {
             break;
         }
@@ -35,19 +33,10 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kDirect3D: [[fallthrough]];
         case GrBackendApi::kMetal:    [[fallthrough]];
+        case GrBackendApi::kMock:     [[fallthrough]];
         case GrBackendApi::kOpenGL:   [[fallthrough]];
         case GrBackendApi::kVulkan:
             return GrBackendSurfacePriv::GetBackendData(format)->bytesPerBlock();
-        case GrBackendApi::kMock: {
-            SkTextureCompressionType compression = format.asMockCompressionType();
-            if (compression != SkTextureCompressionType::kNone) {
-                return skgpu::CompressedRowBytes(compression, 1);
-            } else if (format.isMockStencilFormat()) {
-                static constexpr int kMockStencilSize = 4;
-                return kMockStencilSize;
-            }
-            return GrColorTypeBytesPerPixel(format.asMockColorType());
-        }
         case GrBackendApi::kUnsupported: {
             break;
         }
@@ -66,16 +55,10 @@ int GrBackendFormatStencilBits(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kDirect3D: [[fallthrough]];
         case GrBackendApi::kMetal:    [[fallthrough]];
+        case GrBackendApi::kMock:     [[fallthrough]];
         case GrBackendApi::kOpenGL:   [[fallthrough]];
         case GrBackendApi::kVulkan:
             return GrBackendSurfacePriv::GetBackendData(format)->stencilBits();
-        case GrBackendApi::kMock: {
-            if (format.isMockStencilFormat()) {
-                static constexpr int kMockStencilBits = 8;
-                return kMockStencilBits;
-            }
-            break;
-        }
         case GrBackendApi::kUnsupported: {
             break;
         }
