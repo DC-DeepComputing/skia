@@ -50,6 +50,24 @@
       "message": "I checked:\nhttps://status.skia.org/?filter\u003dInteresting\u0026repo\u003dskia\n\nI see some bugs failing:\n```\n    start unit test  GrAHardwareBuffer_ImportAsSurface\n../../../../../skia/third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.h(134) PA_NOTREACHED() hit.\nTrap\n```\n\nI am going to submit a patch to turn it off for now, the time to fix it.",
       "revId": "113b70d38f39f2ac581a4784eb3e05dbd2af4cd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d36b592_fda7c96a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 103
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-19T11:29:04Z",
+      "side": 1,
+      "message": "Disabling PA: https://skia-review.googlesource.com/c/skia/+/1169378",
+      "parentUuid": "5660adfe_c634ea05",
+      "revId": "113b70d38f39f2ac581a4784eb3e05dbd2af4cd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
