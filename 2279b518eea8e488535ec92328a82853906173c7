@@ -16,6 +16,24 @@
       "message": "nit: This link doesn\u0027t work for me.",
       "revId": "2279b518eea8e488535ec92328a82853906173c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb4b3b9_5e92cf81",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-19T15:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf8b4412_6575d945",
+      "revId": "2279b518eea8e488535ec92328a82853906173c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
