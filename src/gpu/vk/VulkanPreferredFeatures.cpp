@@ -601,6 +601,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     if (exts.fFrameBoundaryEXT) {
         fFrameBoundary.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT;
     }
+    if (exts.fSamplerYcbcrConversionKHR) {
+        fSamplerYcbcrConversion.sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+    }
 
     // Inspect the list of features the app has already included and decide on which features to
     // add.
@@ -838,8 +842,10 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     //   is required to be supported when the extension is present, that feature is enabled.
     //   If an optional feature is supported but disabled by the app, Skia has no visibility into it
     //   right now, but no such feature is used by Skia currently.
-    // - A struct is included byFeaturesToQuery: In this case, if there are features that Skia
+    //
+    // - A struct is included by addFeaturesToQuery: In this case, if there are features that Skia
     //   doesn't need, they are disabled since the app wasn't relying on those features.
+    //
     // - If a Vulkan1X feature struct needs to be chained, then the individual feature structs that
     //   it subsumes are removed from the chain and their features are enabled in the Vulkan1X
     //   struct instead.
