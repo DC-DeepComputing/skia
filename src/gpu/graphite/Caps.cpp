@@ -254,7 +254,7 @@ TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
     }
 
     return this->getDefaultTextureInfo(usage,
-                                       this->getFormatForColorType(colorType),
+                                       this->getFormatForColorType(colorType, renderable),
                                        SampleCount::k1,
                                        mipmapped,
                                        isProtected,
@@ -288,7 +288,7 @@ TextureInfo Caps::getDefaultStorageTextureInfo(SkColorType colorType) const {
     return this->getDefaultTextureInfo(TextureUsage::kStorage |
                                        TextureUsage::kSample |
                                        TextureUsage::kCopySrc,
-                                       this->getFormatForColorType(colorType),
+                                       this->getFormatForColorType(colorType, Renderable::kNo),
                                        SampleCount::k1,
                                        Mipmapped::kNo,
                                        Protected::kNo,
