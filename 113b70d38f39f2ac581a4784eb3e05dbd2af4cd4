@@ -33,6 +33,23 @@
       "message": "I think I    start unit test  GrAHardwareBuffer_ImportAsSurface\n../../../../../skia/third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.h(134) PA_NOTREACHED() hit.\nTrap",
       "revId": "113b70d38f39f2ac581a4784eb3e05dbd2af4cd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5660adfe_c634ea05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 103
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-02-19T11:01:26Z",
+      "side": 1,
+      "message": "I checked:\nhttps://status.skia.org/?filter\u003dInteresting\u0026repo\u003dskia\n\nI see some bugs failing:\n```\n    start unit test  GrAHardwareBuffer_ImportAsSurface\n../../../../../skia/third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.h(134) PA_NOTREACHED() hit.\nTrap\n```\n\nI am going to submit a patch to turn it off for now, the time to fix it.",
+      "revId": "113b70d38f39f2ac581a4784eb3e05dbd2af4cd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
