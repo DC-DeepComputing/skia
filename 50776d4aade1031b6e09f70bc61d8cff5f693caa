@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8178770_a5e64cab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-19T18:18:42Z",
+      "side": 1,
+      "message": "After having just implemented all the missing bits, remove them all and just use SkNWayCanvas to handle all the forwarding.",
+      "revId": "50776d4aade1031b6e09f70bc61d8cff5f693caa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
