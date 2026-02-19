@@ -22,6 +22,30 @@
       },
       "revId": "b67569b1e69f4e9b7b87014e5ba7b04951c6f6bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "428c77ae_7ba3d6db",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-19T16:29:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9db89bf_c9c1e470",
+      "range": {
+        "startLine": 44,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 20
+      },
+      "revId": "b67569b1e69f4e9b7b87014e5ba7b04951c6f6bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
