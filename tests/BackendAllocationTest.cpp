@@ -83,6 +83,8 @@
 #include "include/private/gpu/ganesh/GrD3DTypesMinimal.h"
 #endif
 
+#include "include/gpu/ganesh/mock/GrMockBackendSurface.h"
+
 #if defined(SK_VULKAN)
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/ganesh/vk/GrVkTypes.h"
@@ -210,12 +212,12 @@ static bool isBGRA8(const GrBackendFormat& format) {
 #endif
         }
         case GrBackendApi::kMock: {
-            SkTextureCompressionType compression = format.asMockCompressionType();
+            SkTextureCompressionType compression = GrBackendFormats::AsMockCompressionType(format);
             if (compression != SkTextureCompressionType::kNone) {
                 return false; // No compressed formats are BGRA
             }
 
-            return format.asMockColorType() == GrColorType::kBGRA_8888;
+            return GrBackendFormats::AsMockColorType(format) == GrColorType::kBGRA_8888;
         }
         case GrBackendApi::kUnsupported: {
             return false;
@@ -246,7 +248,7 @@ static bool isRGB(const GrBackendFormat& format) {
         case GrBackendApi::kDirect3D:
             return false;  // Not supported in Direct3D 12
         case GrBackendApi::kMock:
-            return format.asMockColorType() == GrColorType::kRGB_888;
+            return GrBackendFormats::AsMockColorType(format) == GrColorType::kRGB_888;
         case GrBackendApi::kUnsupported:
             return false;
     }
