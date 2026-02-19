@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc0c70a_1f0ec698",
+        "filename": "src/text/gpu/Glyph.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-19T19:56:03Z",
+      "side": 0,
+      "message": "my guess is the build errors are coming from StrikeCache.h no longer include Glyph.h. Which included AtlasTypes.h which included SkTInternalLList.h.",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 31
+      },
+      "revId": "7cfab2b7d44e5cfa31f24f277fbe9a8e6cc3a1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
