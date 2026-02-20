@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fa96975_93b6d845",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-20T13:22:07Z",
+      "side": 1,
+      "message": "I just copy/pasted the jobs from Galaxy S24. Should any of these change?",
+      "revId": "1e982ca45c848310b5b731b0f884b2f7a491b76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
