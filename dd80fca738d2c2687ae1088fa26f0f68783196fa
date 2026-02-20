@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00ffe8b9_c5f9ae55",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "I added a row for on pixel lines and a row for off pixel lines to",
+      "parentUuid": "1d847077_3799a5d9",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 13
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "708f30e9_df12ecd3",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-17T22:13:50Z",
       "side": 1,
       "message": "This actually shouldn\u0027t have a sharp close line (see what the butt implementation is doing?) because it\u0027s drawing on the pixel border. Let\u0027s shift this and the next curve off by half a pixel to make it actually be sharp.",
+      "range": {
+        "startLine": 64,
+        "startChar": 17,
+        "endLine": 64,
+        "endChar": 19
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef1db18d_5e318c8d",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "fixed docs and added lines for pixel offset and on line",
+      "parentUuid": "708f30e9_df12ecd3",
       "range": {
         "startLine": 64,
         "startChar": 17,
@@ -110,6 +158,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abde8f5d_a44e5048",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "made the half pixel offset and on pixel on two separate lines",
+      "parentUuid": "b2b2c233_7821cf3a",
+      "range": {
+        "startLine": 71,
+        "startChar": 14,
+        "endLine": 71,
+        "endChar": 17
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7efeb81_ee480ccc",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "implemented",
+      "parentUuid": "77500089_a804ebe8",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 13
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d636a82a_0ae61e36",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-02-17T22:13:50Z",
       "side": 1,
       "message": "What\u0027s this shape (the bottom right square, right?) adding that the other squares don\u0027t?",
+      "range": {
+        "startLine": 77,
+        "startChar": 26,
+        "endLine": 77,
+        "endChar": 32
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "979d9353_536e58d5",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "removed the square, the original intention was that it had the problematic line on the bottom (thus showing the issue happens from all sides) but that was redundant/",
+      "parentUuid": "d636a82a_0ae61e36",
       "range": {
         "startLine": 77,
         "startChar": 26,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0677f913_b481558a",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "separated the gm into three gms",
+      "parentUuid": "9b91d1f7_b5aba8ba",
+      "range": {
+        "startLine": 82,
+        "startChar": 44,
+        "endLine": 82,
+        "endChar": 52
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dec3fddd_cdfa22f4",
@@ -169,6 +313,30 @@
       "writtenOn": "2026-02-17T22:13:50Z",
       "side": 1,
       "message": "It feels a little odd to have effectively the same loop twice. Can you condense it into one loop? Maybe through good use of save/restore?\n\nIf we make one GM per cap, the redundancy may go away with judicious use of a helper function.",
+      "range": {
+        "startLine": 86,
+        "startChar": 20,
+        "endLine": 86,
+        "endChar": 24
+      },
+      "revId": "dd80fca738d2c2687ae1088fa26f0f68783196fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "140067e9_5fa7edff",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-20T15:16:11Z",
+      "side": 1,
+      "message": "I condensed the loop with save and restore and also separated the gm into separate gms.",
+      "parentUuid": "dec3fddd_cdfa22f4",
       "range": {
         "startLine": 86,
         "startChar": 20,
