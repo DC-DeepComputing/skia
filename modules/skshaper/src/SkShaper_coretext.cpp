@@ -6,6 +6,7 @@
  */
 
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_coretext.h"
 
 #ifdef SK_BUILD_FOR_MAC
 #import <ApplicationServices/ApplicationServices.h>
@@ -32,7 +33,8 @@ using namespace skia_private;
 
 class SkShaper_CoreText : public SkShaper {
 public:
-    SkShaper_CoreText() {}
+    explicit SkShaper_CoreText(SkShapers::CT::LineBreakMode lbm) : fLineBreakMode(lbm) {}
+
 private:
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
     void shape(const char* utf8, size_t utf8Bytes,
@@ -58,26 +60,69 @@ private:
                const Feature*, size_t featureSize,
                SkScalar width,
                RunHandler*) const override;
+
+    const SkShapers::CT::LineBreakMode fLineBreakMode;
 };
 
 // CTFramesetter/CTFrame can do this, but require version 10.14
 class LineBreakIter {
-    CTTypesetterRef fTypesetter;
-    double          fWidth;
-    CFIndex         fStart;
+    const CTTypesetterRef fTypesetter;
+    const double          fWidth;
+    CFIndex               fStart = 0;
+    const SkUniqueCFRef<CFStringTokenizerRef> fWordTokenizer;
 
-public:
-    LineBreakIter(CTTypesetterRef ts, SkScalar width) : fTypesetter(ts), fWidth(width) {
-        fStart = 0;
+    static SkUniqueCFRef<CFStringTokenizerRef> MakeWordTokenizer(CFStringRef txt) {
+        // TODO: plumb a locale arg for more accurate results with complex scripts?
+        SkUniqueCFRef<CFLocaleRef> locale(CFLocaleCopyCurrent());
+
+        CFRange full_range = CFRangeMake(0, CFStringGetLength(txt));
+        return SkUniqueCFRef<CFStringTokenizerRef>(
+            CFStringTokenizerCreate(kCFAllocatorDefault, txt,
+                                    full_range, kCFStringTokenizerUnitWord, locale.get()));
     }
 
+    bool validLineBreak(CFRange line_range) {
+        if (!fWordTokenizer) {
+            return true;
+        }
+
+        // Advance to the first word starting within the current line.
+        CFRange word_range = CFStringTokenizerGetCurrentTokenRange(fWordTokenizer.get());
+        while (word_range.location < line_range.location) {
+            if (CFStringTokenizerAdvanceToNextToken(fWordTokenizer.get()) ==
+                kCFStringTokenizerTokenNone) {
+                // If we could not find a word start, the line must be splitting the last word.
+                return false;
+            }
+            word_range = CFStringTokenizerGetCurrentTokenRange(fWordTokenizer.get());
+        }
+
+        // We have a valid break if the word is fully contained within the current line.
+        return word_range.location + word_range.length <= line_range.location + line_range.length;
+    }
+
+public:
+    LineBreakIter(CFStringRef txt, CTTypesetterRef ts, SkScalar width)
+        : fTypesetter(ts), fWidth(width), fWordTokenizer(MakeWordTokenizer(txt)) {}
+
     SkUniqueCFRef<CTLineRef> nextLine() {
-        CFRange stringRange {fStart, CTTypesetterSuggestLineBreak(fTypesetter, fStart, fWidth)};
-        if (stringRange.length == 0) {
+        CFRange line_range {fStart, 0};
+
+        do {
+            CFRange extra_range {fStart, CTTypesetterSuggestLineBreak(fTypesetter, fStart, fWidth)};
+            if (!extra_range.length) {
+                break;
+            }
+
+            fStart += extra_range.length;
+            line_range.length += extra_range.length;
+        } while (!validLineBreak(line_range));
+
+        if (!line_range.length) {
             return nullptr;
         }
-        fStart += stringRange.length;
-        return SkUniqueCFRef<CTLineRef>(CTTypesetterCreateLine(fTypesetter, stringRange));
+
+        return SkUniqueCFRef<CTLineRef>(CTTypesetterCreateLine(fTypesetter, line_range));
     }
 };
 
@@ -244,7 +289,7 @@ void SkShaper_CoreText::shape(const char* utf8,
     std::vector<SkFont> fontStorage;
     std::vector<SkShaper::RunHandler::RunInfo> infos;
 
-    LineBreakIter iter(typesetter.get(), width);
+    LineBreakIter iter(textString.get(), typesetter.get(), width);
     while (SkUniqueCFRef<CTLineRef> line = iter.nextLine()) {
         CFArrayRef run_array = CTLineGetGlyphRuns(line.get());
         CFIndex runCount = CFArrayGetCount(run_array);
@@ -325,5 +370,7 @@ void SkShaper_CoreText::shape(const char* utf8,
 }
 
 namespace SkShapers::CT {
-std::unique_ptr<SkShaper> CoreText() { return std::make_unique<SkShaper_CoreText>(); }
+std::unique_ptr<SkShaper> CoreText(LineBreakMode lbm) {
+    return std::make_unique<SkShaper_CoreText>(lbm);
+}
 }  // namespace SkShapers::CT
