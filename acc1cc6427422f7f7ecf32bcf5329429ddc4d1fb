@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ceb9fb5_907fbe49",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-20T21:40:16Z",
+      "side": 0,
+      "message": "Note: maybe this was doing something that only sometimes passed mips across?\n\nIf we are now *always* passing mips, that might impact SkImageShader::onMakeContext\nhttps://github.com/google/skia/blob/f494c6151552e73663b3373a409abdcfb9eb1754/src/shaders/SkImageShader.cpp#L215-L280",
+      "range": {
+        "startLine": 425,
+        "startChar": 8,
+        "endLine": 425,
+        "endChar": 53
+      },
+      "revId": "acc1cc6427422f7f7ecf32bcf5329429ddc4d1fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
