@@ -89,6 +89,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
         current = fLayers.tail();
     }
 
+    BindingWrapper* forwardMerge = nullptr;
     auto processLayer = [&](BindingWrapper* boundary) -> bool {
         auto result = isStencil ? current->test<true, kIsDepthOnly, false>(
                                           drawParams->drawBounds(), key, requiresBarrier, boundary)
@@ -98,7 +99,16 @@ void DrawListLayer::recordBackwards(int stepIndex,
         if (result.first == BoundsTest::kIncompatibleOverlap) {
             // If we need to read the dst, we cannot go earlier than this layer.
             if (dependsOnDst) {
-                // TODO (thomsmit): Test performance of forward merging
+                // Cannot forward merge depth only draws due to risk of pulling a depth draw after
+                // an already inserted clipped draw.
+                if constexpr (!kIsDepthOnly) {
+                    if (result.second && current->fBindings.head() != current->fBindings.tail()) {
+                        if (!isStencil ||
+                            !result.second->fBounds.intersects(drawParams->drawBounds())) {
+                            forwardMerge = result.second;
+                        }
+                    }
+                }
                 return true;
             }
             // If !dependsOnDst, we just keep searching backwards.
@@ -132,7 +142,15 @@ void DrawListLayer::recordBackwards(int stepIndex,
     if (!targetLayer) {
         fOrderCounter = fOrderCounter.next();
         targetLayer = fStorage.make<Layer>(fOrderCounter);
-        fLayers.addToTail(targetLayer);
+        if (forwardMerge) {
+            SkASSERT(current);
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            forwardMerge->fOrder = CompressedPaintersOrder::First();
+            fLayers.addAfter(targetLayer, current);
+        } else {
+            fLayers.addToTail(targetLayer);
+        }
     }
 
     SkASSERT(targetLayer);
