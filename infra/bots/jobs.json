@@ -3,13 +3,6 @@
     "name": "BazelBuild-core-release-linux_x64"
   },
   {
-    "name": "BazelBuild-dm-debug-linux_x64",
-    "cq_config": {}
-  },
-  {
-    "name": "BazelBuild-dm-release-linux_x64"
-  },
-  {
     "name": "BazelBuild-fontations-release-linux_x64"
   },
   {
@@ -337,11 +330,11 @@
     "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Graphite_Dawn_Vulkan"
   },
   {
-    "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Graphite_Native_HWASAN"
-  },
-  {
     "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Graphite_Native_Vulkan",
     "cq_config": {}
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Graphite_Native_Vulkan_HWASAN"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_HWASAN"
@@ -537,7 +530,7 @@
     "name": "Build-Ubuntu24.04-Clang-x86_64-Release-NoDEPS"
   },
   {
-    "name": "Build-Ubuntu24.04-Clang-x86_64-Release-SKNX_NO_SIMD"
+    "name": "Build-Ubuntu24.04-Clang-x86_64-Release-SKVX_DISABLE_SIMD"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x86_64-Release-SK_CPU_LIMIT_SSE2"
@@ -1145,15 +1138,6 @@
     "name": "Perf-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Dawn_D3D12"
   },
   {
-    "name": "Perf-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Dawn_Vulkan"
-  },
-  {
-    "name": "Perf-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Native_Vulkan"
-  },
-  {
-    "name": "Perf-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Vulkan"
-  },
-  {
     "name": "Perf-Win11-Clang-GCE-CPU-AVX2-x86_64-Release-All"
   },
   {
@@ -1457,7 +1441,7 @@
     "name": "Test-Android-Clang-Pixel4a-CPU-Snapdragon730G-arm64-Debug-All-Android_HWASAN"
   },
   {
-    "name": "Test-Android-Clang-Pixel4a-GPU-Adreno618-arm64-Debug-All-Android_Graphite_Native_HWASAN"
+    "name": "Test-Android-Clang-Pixel4a-GPU-Adreno618-arm64-Debug-All-Android_Graphite_Native_Vulkan_HWASAN"
   },
   {
     "name": "Test-Android-Clang-Pixel4a-GPU-Adreno618-arm64-Debug-All-Android_HWASAN"
@@ -1890,7 +1874,7 @@
     "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-MSAN"
   },
   {
-    "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-SKNX_NO_SIMD"
+    "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-SKVX_DISABLE_SIMD"
   },
   {
     "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-SK_CPU_LIMIT_SSE2"
@@ -1958,15 +1942,11 @@
     "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-PreAbandonGpuContext"
   },
   {
-    "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan",
-    "cq_config": {}
+    "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan"
   },
   {
     "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All",
     "cq_config": {}
-  },
-  {
-    "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-DDL3_TSAN"
   },
   {
     "name": "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Native_Vulkan"
@@ -1997,9 +1977,6 @@
     "name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All"
   },
   {
-    "name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All-ASAN_Vulkan"
-  },
-  {
     "name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All-DDL3_ASAN_Vulkan"
   },
   {
@@ -2013,9 +1990,6 @@
   },
   {
     "name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan"
-  },
-  {
-    "name": "Test-Ubuntu24.04-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan"
   },
   {
     "name": "Test-Ubuntu24.04-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Debug-All"
@@ -2061,28 +2035,10 @@
     "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Graphite_Dawn_D3D11"
   },
   {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Graphite_Dawn_Vulkan"
-  },
-  {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Graphite_Native_Vulkan"
-  },
-  {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Vulkan"
-  },
-  {
     "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-ANGLE"
   },
   {
     "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Dawn_D3D11"
-  },
-  {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Dawn_Vulkan"
-  },
-  {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Graphite_Native_Vulkan"
-  },
-  {
-    "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Vulkan"
   },
   {
     "name": "Test-Win11-Clang-Dell3930-GPU-GTX1660-x86_64-Debug-All-ANGLE"

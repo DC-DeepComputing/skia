@@ -59,11 +59,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
     // Child stencils get a fast path to their parent
     if (isStencil) {
         if (stepIndex > 0) {
-            ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-            SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
-            fLastRecordedDraw->fChildDraw = draw;
-            fLastRecordedDraw = draw;
+            SkASSERT(fStencilLayer);
+            SkASSERT(fStencilList);
+            SkASSERT(fStencilWrapper);
+            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
+            fStencilLayer->addStencil(&fStorage, fStencilWrapper, key, draw, step, &fStencilList);
             return;
+        } else {
+            fStencilList = nullptr;
         }
     }
 
@@ -76,7 +79,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     if (!isStencil && !dependsOnDst) {
         targetLayer = stopLayer ? stopLayer->fNext : fLayers.head();
         if (targetLayer) {
-            targetMatch = targetLayer->searchBinding(key);
+            targetMatch = fLayers.head()->searchBinding(key);
         }
         current = const_cast<Layer*>(stopLayer);
     } else {
@@ -89,7 +92,9 @@ void DrawListLayer::recordBackwards(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
-        auto result = current->test(drawParams->drawBounds(), key, isStencil, requiresBarrier);
+        auto result = isStencil
+                      ? current->test<true>(drawParams->drawBounds(), key, requiresBarrier)
+                      : current->test<false>(drawParams->drawBounds(), key, requiresBarrier);
 
         if (result.first == BoundsTest::kIncompatibleOverlap) {
             // If we need to read the dst, we cannot go earlier than this layer.
@@ -120,14 +125,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
         targetLayer = fStorage.make<Layer>(fOrderCounter);
         fLayers.addToTail(targetLayer);
     }
-    SkASSERT(targetLayer);
 
+    SkASSERT(targetLayer);
+    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
     if (isStencil) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        targetLayer->add(&fStorage, targetMatch, key, draw, step, !dependsOnDst);
-        fLastRecordedDraw = draw;
+        targetLayer->addStencil(&fStorage, targetMatch, key, draw, step, &fStencilList);
+        fStencilLayer = targetLayer;
+        fStencilWrapper = targetMatch;
     } else {
-        SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
         targetLayer->add(&fStorage, targetMatch, key, draw, step, !dependsOnDst);
     }
 }
@@ -156,14 +161,16 @@ void DrawListLayer::recordDepthOnly(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fPrev);
 #endif
-        BoundsTest result = current->depthOnlyTest(drawParams->drawBounds(), key, isStencil,
+        auto result = isStencil
+                            ? current->test<true>(drawParams->drawBounds(), key, requiresBarrier)
+                            : current->test<false>(drawParams->drawBounds(), key,
                                                    requiresBarrier);
-        if (result == BoundsTest::kIncompatibleOverlap) {
+        if (result.first == BoundsTest::kIncompatibleOverlap) {
             // TODO (thomsmit): Test performance of forward merging
             break;
         } else {
             targetLayer = current;
-            if (result == BoundsTest::kCompatibleOverlap) {
+            if (result.first == BoundsTest::kCompatibleOverlap) {
                 break;
             }
         }
@@ -197,12 +204,17 @@ void DrawListLayer::recordForwards(int stepIndex,
                                    const DrawParams* drawParams,
                                    const Layer* startLayer) {
     // Child stencils get a fast path to their parent
-    if (isStencil && stepIndex > 0) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        SkASSERT(fLastRecordedDraw && !fLastRecordedDraw->fChildDraw);
-        fLastRecordedDraw->fChildDraw = draw;
-        fLastRecordedDraw = draw;
-        return;
+    if (isStencil) {
+        if (stepIndex > 0) {
+            SkASSERT(fStencilLayer);
+            SkASSERT(fStencilList);
+            SkASSERT(fStencilWrapper);
+            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
+            fStencilLayer->addStencil(&fStorage, fStencilWrapper, key, draw, step, &fStencilList);
+            return;
+        } else {
+            fStencilList = nullptr;
+        }
     }
 
     Layer* current = const_cast<Layer*>(startLayer);
@@ -214,7 +226,9 @@ void DrawListLayer::recordForwards(int stepIndex,
 #if defined(__GNUC__) || defined(__clang__)
         __builtin_prefetch(current->fNext);
 #endif
-        auto result = current->test(drawParams->drawBounds(), key, isStencil, requiresBarrier);
+        auto result = isStencil
+                      ? current->test<true>(drawParams->drawBounds(), key, requiresBarrier)
+                      : current->test<false>(drawParams->drawBounds(), key, requiresBarrier);
         if (result.first != BoundsTest::kIncompatibleOverlap) {
             targetLayer = current;
             targetMatch = result.second;
@@ -235,12 +249,12 @@ void DrawListLayer::recordForwards(int stepIndex,
     }
 
     SkASSERT(targetLayer);
+    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
     if (isStencil) {
-        ChainedDraw* draw = fStorage.make<ChainedDraw>(key, step, drawParams, uniformIndex);
-        targetLayer->add(&fStorage, targetMatch, key, draw, step, !dependsOnDst);
-        fLastRecordedDraw = draw;
+        targetLayer->addStencil(&fStorage, targetMatch, key, draw, step, &fStencilList);
+        fStencilLayer = targetLayer;
+        fStencilWrapper = targetMatch;
     } else {
-        SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
         bool notStartLayer = targetLayer != startLayer;
         targetLayer->add(&fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer);
     }
@@ -479,12 +493,13 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
         for (const BindingWrapper* binding : layer->fBindings) {
             if (binding->fType == BindingListType::kSingle) {
-                const auto* singleList = static_cast<const BindingList<SingleDraw>*>(binding);
+                const auto* singleList = static_cast<const SingleDrawList*>(binding);
                 SkASSERT(!singleList->fDraws.isEmpty());
+
                 const SingleDraw* current = singleList->fDraws.head();
-                if (!recordDraw(binding->fKey,
+                if (!recordDraw(singleList->fKey,
                                 current->fUniformIndex,
-                                binding->fStep,
+                                singleList->fStep,
                                 *current->fDrawParams,
                                 false)) {
                     return nullptr;
@@ -492,9 +507,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
                 current = current->fNext;
                 while (current) {
-                    if (!recordDraw(binding->fKey,
+                    if (!recordDraw(singleList->fKey,
                                     current->fUniformIndex,
-                                    binding->fStep,
+                                    singleList->fStep,
                                     *current->fDrawParams,
                                     true)) {
                         return nullptr;
@@ -502,19 +517,30 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                     current = current->fNext;
                 }
             } else {
-                // TODO Test the performance of transposed traversal of stencil draws!
-                const auto* chainedList = static_cast<const BindingList<ChainedDraw>*>(binding);
-                for (const ChainedDraw* headDraw : chainedList->fDraws) {
-                    const ChainedDraw* current = headDraw;
-                    while (current) {
-                        if (!recordDraw(current->fKey,
+                const auto* stencilList = static_cast<const StencilDrawList*>(binding);
+                for (const StencilDraws* sd : stencilList->fStencilDraws) {
+                    if (!sd || sd->fDraws.isEmpty()) {
+                        continue;
+                    }
+
+                    const SingleDraw* first = sd->fDraws.head();
+                    if (!recordDraw(sd->fKey,
+                                    first->fUniformIndex,
+                                    sd->fStep,
+                                    *first->fDrawParams,
+                                    false)) {
+                        return nullptr;
+                    }
+
+                    for (const SingleDraw* current = first->fNext; current;
+                         current = current->fNext) {
+                        if (!recordDraw(sd->fKey,
                                         current->fUniformIndex,
-                                        current->fStep,
+                                        sd->fStep,
                                         *current->fDrawParams,
-                                        false)) {
+                                        true)) {
                             return nullptr;
                         }
-                        current = current->fChildDraw;
                     }
                 }
             }
