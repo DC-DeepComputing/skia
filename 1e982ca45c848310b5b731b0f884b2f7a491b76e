@@ -16,6 +16,41 @@
       "message": "I just copy/pasted the jobs from Galaxy S24. Should any of these change?",
       "revId": "1e982ca45c848310b5b731b0f884b2f7a491b76e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26eba131_d2f99441",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-20T17:57:44Z",
+      "side": 1,
+      "message": "I think this is good for now.",
+      "parentUuid": "9fa96975_93b6d845",
+      "revId": "1e982ca45c848310b5b731b0f884b2f7a491b76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "300d0759_f947a245",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-20T17:57:44Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "1e982ca45c848310b5b731b0f884b2f7a491b76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
