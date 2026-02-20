@@ -6313,7 +6313,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6399,7 +6399,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6485,7 +6485,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6599,7 +6599,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6686,7 +6686,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6768,7 +6768,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6882,7 +6882,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -6997,7 +6997,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7112,7 +7112,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7199,7 +7199,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7285,7 +7285,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7371,7 +7371,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7457,7 +7457,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7543,7 +7543,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -7629,9 +7629,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -7716,9 +7715,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -7803,9 +7801,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -7890,9 +7887,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -7977,9 +7973,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -8064,7 +8059,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8150,7 +8145,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8264,7 +8259,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8351,7 +8346,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8437,7 +8432,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8551,7 +8546,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8638,7 +8633,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -8724,9 +8719,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -8811,9 +8805,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -8898,9 +8891,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -8985,9 +8977,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -9072,9 +9063,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -9159,9 +9149,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
+        "mac_model:Mac16,11",
+        "os:Mac-15.7",
         "pool:Skia"
       ],
       "environment": {
@@ -9246,7 +9235,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9332,7 +9321,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9418,7 +9407,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9532,7 +9521,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9619,7 +9608,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9737,7 +9726,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9852,7 +9841,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -9939,7 +9928,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10025,7 +10014,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10111,7 +10100,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10197,7 +10186,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10311,7 +10300,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10398,7 +10387,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10484,7 +10473,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10570,7 +10559,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],
@@ -10656,7 +10645,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "mac_model:Mac16,10",
+        "mac_model:Mac16,11",
         "os:Mac-15.7",
         "pool:Skia"
       ],

@@ -1162,18 +1162,8 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			// Use many-core machines for Build tasks.
 			d["machine_type"] = MACHINE_TYPE_LARGE
 		} else if d["os"] == DEFAULT_OS_MAC {
-			if b.MatchExtraConfig("iOS") {
-				// TODO(borenet): Remove this special case (and the associated
-				// machines) once the new machines have the certs needed to
-				// build for iOS.
-				d["os"] = "Mac-14.5"
-				d["cpu"] = "x86-64"
-				d["cores"] = "12"
-				delete(d, "gpu")
-			} else {
-				d["mac_model"] = "Mac16,10"
-				delete(d, "gpu")
-			}
+			d["mac_model"] = "Mac16,11"
+			delete(d, "gpu")
 		}
 	}
 
