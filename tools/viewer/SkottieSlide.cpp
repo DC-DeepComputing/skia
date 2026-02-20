@@ -22,6 +22,7 @@
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skottie/utils/TextEditor.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/include/SkShaper_coretext.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/base/SkTime.h"
 #include "src/core/SkOSFile.h"
@@ -174,7 +175,7 @@ private:
 sk_sp<SkShapers::Factory> make_shapers_factory(bool prefer_coretext) {
 #if defined(SK_SHAPER_CORETEXT_AVAILABLE)
     if (prefer_coretext) {
-        return sk_make_sp<SkShapers::CoreTextFactory>();
+        return sk_make_sp<SkShapers::CoreTextFactory>(SkShapers::CT::LineBreakMode::kStrict);
     }
 #endif
 #if defined(SK_SHAPER_UNICODE_AVAILABLE)
