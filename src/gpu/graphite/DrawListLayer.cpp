@@ -45,8 +45,6 @@ void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
 //         the stopLayer is treated exclusively, a sucessor renderstep stops its traversal before
 //         the stopLayer, thus preserving the relative ordering between the draws. (Note: will be
 //         changed in future CL, so kind of stub comment)
-//
-// STENCIL stub comment: Removed by pilot draws in the future, so this will not be filled out.
 template <bool kIsDepthOnly>
 void DrawListLayer::recordBackwards(int stepIndex,
                                     bool isStencil,
@@ -336,17 +334,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                                         /*stop=*/{},
                                         &stepInsertion);
         } else {
-            if (latestInsertion.layer && !dependsOnDst) {
-                this->recordForwards(stepIndex,
-                                     isStencil,
-                                     false,
-                                     requiresBarrier,
-                                     step,
-                                     uniformIndex,
-                                     LayerKey{pipelineIndex, textureBindingIndex},
-                                     drawParams,
-                                     latestInsertion);
-            } else {
+            if (stepIndex == 0) {
                 this->recordBackwards<false>(stepIndex,
                                              isStencil,
                                              dependsOnDst,
@@ -356,7 +344,17 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                                              LayerKey{pipelineIndex, textureBindingIndex},
                                              drawParams,
                                              latestInsertion,
-                                             nullptr);
+                                             &stepInsertion);
+            } else {
+                this->recordForwards(stepIndex,
+                                     isStencil,
+                                     false,
+                                     requiresBarrier,
+                                     step,
+                                     uniformIndex,
+                                     LayerKey{pipelineIndex, textureBindingIndex},
+                                     drawParams,
+                                     stepInsertion);
             }
         }
         gatherer->rewindForRenderStep();
