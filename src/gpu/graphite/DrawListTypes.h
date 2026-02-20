@@ -76,27 +76,28 @@ struct StencilDraws {
 };
 
 struct BindingWrapper {
-    BindingWrapper(BindingListType type, const CompressedPaintersOrder& order)
-            : fType(type), fOrder(order) {}
+    BindingWrapper(BindingListType type, const CompressedPaintersOrder& order, bool isDepthOnly)
+            : fType(type), fOrder(order), fIsDepthOnly(isDepthOnly) {}
 
     const BindingListType fType;
     CompressedPaintersOrder fOrder;
+    const bool fIsDepthOnly;
     Rect fBounds = Rect::InfiniteInverted();
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingWrapper);
 };
 
 struct SingleDrawList : public BindingWrapper {
-    SingleDrawList(BindingListType type, const CompressedPaintersOrder& order)
-            : BindingWrapper(type, order) {}
+    SingleDrawList(BindingListType type, const CompressedPaintersOrder& order, bool isDepthOnly)
+            : BindingWrapper(type, order, isDepthOnly) {}
     LayerKey fKey;
     RenderStep* fStep;
     SkTInternalLList<SingleDraw> fDraws;
 };
 
 struct StencilDrawList : public BindingWrapper {
-    StencilDrawList(BindingListType type, const CompressedPaintersOrder& order)
-            : BindingWrapper(type, order) {}
+    StencilDrawList(BindingListType type, const CompressedPaintersOrder& order, bool isDepthOnly)
+            : BindingWrapper(type, order, isDepthOnly) {}
     SkTInternalLList<StencilDraws> fStencilDraws;
 };
 
@@ -164,8 +165,15 @@ struct Layer {
                     }
                 }
             }
-            if (list->fBounds.intersects(drawBounds)) {
-                return {BoundsTest::kIncompatibleOverlap, foundMatch};
+            if constexpr (kIsDepthOnly && !kIsStencil) {
+                // Depth draws are free to intersect with themselves so long as they are not stencil
+                if (!list->fIsDepthOnly && list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                }
+            } else {
+                if (list->fBounds.intersects(drawBounds)) {
+                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                }
             }
         }
 
@@ -186,7 +194,7 @@ struct Layer {
             single->fBounds.join(draw->fDrawParams->drawBounds());
         } else {
             fListOrder = fListOrder.next();
-            single = alloc->make<SingleDrawList>(BindingListType::kSingle, fListOrder);
+            single = alloc->make<SingleDrawList>(BindingListType::kSingle, fListOrder, kIsDepthOnly);
             single->fKey = key;
             single->fStep = const_cast<RenderStep*>(step);
             single->fBounds = draw->fDrawParams->drawBounds();
@@ -222,7 +230,7 @@ struct Layer {
             searchStart = (*startList) ? (*startList)->fNext : stencil->fStencilDraws.head();
         } else {
             fListOrder = fListOrder.next();
-            stencil = alloc->make<StencilDrawList>(BindingListType::kStencil, fListOrder);
+            stencil = alloc->make<StencilDrawList>(BindingListType::kStencil, fListOrder, kIsDepthOnly);
             stencil->fBounds = draw->fDrawParams->drawBounds();
             if constexpr (kIsDepthOnly) {
                 fBindings.addToHead(stencil);
