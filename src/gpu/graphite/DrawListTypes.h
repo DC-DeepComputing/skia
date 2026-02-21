@@ -66,14 +66,31 @@ struct Draw {
 struct BindingList {
     BindingList(const CompressedPaintersOrder& order, bool isDepthOnly)
             : fOrder(order), fIsDepthOnly(isDepthOnly) {}
+    static constexpr uint32_t kCoarseBoundsThreshold = 32;
 
     CompressedPaintersOrder fOrder;
     const bool fIsDepthOnly;
     LayerKey fKey;
     RenderStep* fStep;
+    uint32_t fDrawCount = 0;
     Rect fBounds = Rect::InfiniteInverted();
     SkTInternalLList<Draw> fDraws;
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingList);
+
+    bool intersects(const Rect& drawBounds) const {
+        if (!fBounds.intersects(drawBounds)) {
+            return false;
+        }
+        if (fDrawCount > kCoarseBoundsThreshold) {
+            return true;
+        }
+        for (const Draw* d = fDraws.head(); d; d = d->fNext) {
+            if (d->fDrawParams->drawBounds().intersects(drawBounds)) {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 struct Layer {
@@ -124,11 +141,11 @@ struct Layer {
             }
             if constexpr (kIsDepthOnly && !kIsStencil) {
                 // Depth draws are free to intersect with themselves so long as they are not stencil
-                if (!list->fIsDepthOnly && list->fBounds.intersects(drawBounds)) {
+                if (!list->fIsDepthOnly && list->intersects(drawBounds)) {
                     return {BoundsTest::kIncompatibleOverlap, foundMatch};
                 }
             } else {
-                if (list->fBounds.intersects(drawBounds)) {
+                if (list->intersects(drawBounds)) {
                     return {BoundsTest::kIncompatibleOverlap, foundMatch};
                 }
             }
@@ -165,6 +182,8 @@ struct Layer {
         } else {
             list->fDraws.addToTail(draw);
         }
+
+        list->fDrawCount++;
 
         return list;
     }
