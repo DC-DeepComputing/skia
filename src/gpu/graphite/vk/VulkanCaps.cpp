@@ -1379,7 +1379,7 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         if (fSupportsYcbcrConversion) {
             info.init(interface, *this, physDev, format);
         }
-        if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
+        if (fSupportsYcbcrConversion && info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
             info.fColorTypeInfoCount = 1;
             info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
             int ctIdx = 0;
@@ -1401,7 +1401,7 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
         if (fSupportsYcbcrConversion) {
             info.init(interface, *this, physDev, format);
         }
-        if (info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
+        if (fSupportsYcbcrConversion && info.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
             info.fColorTypeInfoCount = 1;
             info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
             int ctIdx = 0;
