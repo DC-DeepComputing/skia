@@ -101,9 +101,6 @@ private:
 
     int fDrawCount = 0;
     CompressedPaintersOrder fOrderCounter = CompressedPaintersOrder::First();
-    Layer* fStencilLayer = nullptr;
-    BindingWrapper* fStencilWrapper = nullptr;
-    StencilDraws* fStencilList = nullptr;
 };
 
 } // namespace skgpu::graphite
