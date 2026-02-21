@@ -45,8 +45,6 @@ void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
 //         the stopLayer is treated exclusively, a sucessor renderstep stops its traversal before
 //         the stopLayer, thus preserving the relative ordering between the draws. (Note: will be
 //         changed in future CL, so kind of stub comment)
-//
-// STENCIL stub comment: Removed by pilot draws in the future, so this will not be filled out.
 template <bool kIsDepthOnly>
 void DrawListLayer::recordBackwards(int stepIndex,
                                     bool isStencil,
@@ -58,39 +56,24 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                     const DrawParams* drawParams,
                                     const Insertion& stop,
                                     Insertion* capture) {
-    // Child stencils get a fast path to their parent
-    if (isStencil) {
-        if (stepIndex > 0) {
-            SkASSERT(fStencilLayer);
-            SkASSERT(fStencilList);
-            SkASSERT(fStencilWrapper);
-            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
-            fStencilLayer->addStencil<kIsDepthOnly>(
-                    &fStorage, fStencilWrapper, key, draw, step, &fStencilList);
-            return;
-        } else {
-            fStencilList = nullptr;
-        }
-    }
-
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
-    BindingWrapper* targetMatch = nullptr;
+    BindingList* targetMatch = nullptr;
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     if (!isStencil && !dependsOnDst) {
         // A valid stopLayer will never be null, because the depth draw will always return the layer
         // it drew into.
         targetLayer = stop.layer ? stop.layer : fLayers.head();
         if (targetLayer) {
-            targetMatch = targetLayer->searchBinding(key, stop.wrapper);
+            targetMatch = targetLayer->searchBinding(key, stop.list);
         }
         current = stop.layer;
     } else {
         current = fLayers.tail();
     }
 
-    BindingWrapper* forwardMerge = nullptr;
-    auto processLayer = [&](BindingWrapper* boundary) -> bool {
+    BindingList* forwardMerge = nullptr;
+    auto processLayer = [&](BindingList* boundary) -> bool {
         auto result = isStencil ? current->test<true, kIsDepthOnly, false>(
                                           drawParams->drawBounds(), key, requiresBarrier, boundary)
                                 : current->test<false, kIsDepthOnly, false>(
@@ -136,7 +119,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
         current = current->fPrev;
     }
     if (current && current == stop.layer) {
-        processLayer(stop.wrapper);
+        processLayer(stop.list);
     }
 
     if (!targetLayer) {
@@ -154,35 +137,25 @@ void DrawListLayer::recordBackwards(int stepIndex,
     }
 
     SkASSERT(targetLayer);
-    BindingWrapper* inserted;
-    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
-    if (isStencil) {
-        inserted = targetLayer->addStencil<kIsDepthOnly>(
-                &fStorage, targetMatch, key, draw, step, &fStencilList);
-        fStencilLayer = targetLayer;
-        fStencilWrapper = targetMatch;
-    } else {
-        bool notStopLayer = targetLayer != stop.layer;
-        inserted = targetLayer->add<kIsDepthOnly>(
-                &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer);
-    }
+    Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
+    bool notStopLayer = targetLayer != stop.layer;
+    BindingList* inserted = targetLayer->add<kIsDepthOnly>(
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer);
 
-    if constexpr (kIsDepthOnly) {
-        SkASSERT(inserted);
-        if (stepIndex > 0) {
-            if (targetLayer->fOrder > capture->layer->fOrder) {
-                capture->layer = targetLayer;
-                capture->wrapper = inserted;
-            } else if (targetLayer->fOrder == capture->layer->fOrder) {
-                if (inserted->fOrder > capture->wrapper->fOrder) {
-                    capture->layer = targetLayer;
-                    capture->wrapper = inserted;
-                }
-            }
-        } else {
+    SkASSERT(inserted);
+    if (stepIndex > 0) {
+        if (targetLayer->fOrder > capture->layer->fOrder) {
             capture->layer = targetLayer;
-            capture->wrapper = inserted;
+            capture->list = inserted;
+        } else if (targetLayer->fOrder == capture->layer->fOrder) {
+            if (inserted->fOrder > capture->list->fOrder) {
+                capture->layer = targetLayer;
+                capture->list = inserted;
+            }
         }
+    } else {
+        capture->layer = targetLayer;
+        capture->list = inserted;
     }
 }
 
@@ -195,25 +168,10 @@ void DrawListLayer::recordForwards(int stepIndex,
                                    const LayerKey& key,
                                    const DrawParams* drawParams,
                                    const Insertion& start) {
-    // Child stencils get a fast path to their parent
-    if (isStencil) {
-        if (stepIndex > 0) {
-            SkASSERT(fStencilLayer);
-            SkASSERT(fStencilList);
-            SkASSERT(fStencilWrapper);
-            SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
-            fStencilLayer->addStencil<false>(
-                    &fStorage, fStencilWrapper, key, draw, step, &fStencilList);
-            return;
-        } else {
-            fStencilList = nullptr;
-        }
-    }
-
     Layer* current = const_cast<Layer*>(start.layer);
     Layer* targetLayer = nullptr;
-    BindingWrapper* targetMatch = nullptr;
-    auto processLayer = [&](BindingWrapper* boundary) -> bool {
+    BindingList* targetMatch = nullptr;
+    auto processLayer = [&](BindingList* boundary) -> bool {
         auto result = isStencil ? current->test<true, false, true>(
                                           drawParams->drawBounds(), key, requiresBarrier, boundary)
                                 : current->test<false, false, true>(
@@ -227,7 +185,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     };
 
     if (current) {
-        if (!processLayer(start.wrapper)) {
+        if (!processLayer(start.list)) {
             current = current->fNext;
             for (uint32_t limit = 0; limit < kMaxSearchLimit && current; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
@@ -252,16 +210,10 @@ void DrawListLayer::recordForwards(int stepIndex,
     }
 
     SkASSERT(targetLayer);
-    SingleDraw* draw = fStorage.make<SingleDraw>(drawParams, uniformIndex);
-    if (isStencil) {
-        targetLayer->addStencil<false>(&fStorage, targetMatch, key, draw, step, &fStencilList);
-        fStencilLayer = targetLayer;
-        fStencilWrapper = targetMatch;
-    } else {
-        bool notStartLayer = targetLayer != start.layer;
-        targetLayer->add<false>(
-                &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer);
-    }
+    Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
+    bool notStartLayer = targetLayer != start.layer;
+    targetLayer->add<false>(
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer);
 }
 
 // Layer has dual purpose here:
@@ -336,17 +288,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                                         /*stop=*/{},
                                         &stepInsertion);
         } else {
-            if (latestInsertion.layer && !dependsOnDst) {
-                this->recordForwards(stepIndex,
-                                     isStencil,
-                                     false,
-                                     requiresBarrier,
-                                     step,
-                                     uniformIndex,
-                                     LayerKey{pipelineIndex, textureBindingIndex},
-                                     drawParams,
-                                     latestInsertion);
-            } else {
+            if (stepIndex == 0) {
                 this->recordBackwards<false>(stepIndex,
                                              isStencil,
                                              dependsOnDst,
@@ -356,7 +298,17 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                                              LayerKey{pipelineIndex, textureBindingIndex},
                                              drawParams,
                                              latestInsertion,
-                                             nullptr);
+                                             &stepInsertion);
+            } else {
+                this->recordForwards(stepIndex,
+                                     isStencil,
+                                     false,
+                                     requiresBarrier,
+                                     step,
+                                     uniformIndex,
+                                     LayerKey{pipelineIndex, textureBindingIndex},
+                                     drawParams,
+                                     stepInsertion);
             }
         }
         gatherer->rewindForRenderStep();
@@ -481,58 +433,28 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     };
 
     for (Layer* layer : fLayers) {
-        for (const BindingWrapper* binding : layer->fBindings) {
-            if (binding->fType == BindingListType::kSingle) {
-                const auto* singleList = static_cast<const SingleDrawList*>(binding);
-                SkASSERT(!singleList->fDraws.isEmpty());
+        for (const BindingList* list : layer->fBindings) {
+            SkASSERT(!list->fDraws.isEmpty());
+            const Draw* current = list->fDraws.head();
 
-                const SingleDraw* current = singleList->fDraws.head();
-                if (!recordDraw(singleList->fKey,
+            if (!recordDraw(list->fKey,
+                            current->fUniformIndex,
+                            list->fStep,
+                            *current->fDrawParams,
+                            false)) {
+                return nullptr;
+            }
+            current = current->fNext;
+
+            while (current) {
+                if (!recordDraw(list->fKey,
                                 current->fUniformIndex,
-                                singleList->fStep,
+                                list->fStep,
                                 *current->fDrawParams,
-                                false)) {
+                                true)) {
                     return nullptr;
                 }
-
                 current = current->fNext;
-                while (current) {
-                    if (!recordDraw(singleList->fKey,
-                                    current->fUniformIndex,
-                                    singleList->fStep,
-                                    *current->fDrawParams,
-                                    true)) {
-                        return nullptr;
-                    }
-                    current = current->fNext;
-                }
-            } else {
-                const auto* stencilList = static_cast<const StencilDrawList*>(binding);
-                for (const StencilDraws* sd : stencilList->fStencilDraws) {
-                    if (!sd || sd->fDraws.isEmpty()) {
-                        continue;
-                    }
-
-                    const SingleDraw* first = sd->fDraws.head();
-                    if (!recordDraw(sd->fKey,
-                                    first->fUniformIndex,
-                                    sd->fStep,
-                                    *first->fDrawParams,
-                                    false)) {
-                        return nullptr;
-                    }
-
-                    for (const SingleDraw* current = first->fNext; current;
-                         current = current->fNext) {
-                        if (!recordDraw(sd->fKey,
-                                        current->fUniformIndex,
-                                        sd->fStep,
-                                        *current->fDrawParams,
-                                        true)) {
-                            return nullptr;
-                        }
-                    }
-                }
             }
         }
     }
