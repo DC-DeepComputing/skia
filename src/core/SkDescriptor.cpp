@@ -71,7 +71,7 @@ const void* SkDescriptor::findEntry(uint32_t tag, uint32_t* length) const {
 
 std::unique_ptr<SkDescriptor> SkDescriptor::copy() const {
     std::unique_ptr<SkDescriptor> desc = SkDescriptor::Alloc(fLength);
-    memcpy(desc.get(), this, fLength);
+    memcpy(desc.get(), static_cast<const void*>(this), fLength);
     return desc;
 }
 
@@ -217,7 +217,7 @@ void SkAutoDescriptor::reset(size_t size) {
 void SkAutoDescriptor::reset(const SkDescriptor& desc) {
     size_t size = desc.getLength();
     this->reset(size);
-    memcpy(fDesc, &desc, size);
+    memcpy(fDesc, static_cast<const void*>(&desc), size);
 }
 
 void SkAutoDescriptor::free() {
