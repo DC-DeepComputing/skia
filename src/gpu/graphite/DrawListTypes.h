@@ -32,13 +32,20 @@ enum class BoundsTest {
 };
 
 struct LayerKey {
+    static constexpr uint32_t kPipelineMatchBit = 4;
+    static constexpr uint32_t kTextureMatchBit  = 2;
+    static constexpr uint32_t kExactMatchMask   = kPipelineMatchBit | kTextureMatchBit;
+
     GraphicsPipelineCache::Index fPipelineIndex;
     TextureDataCache::Index fTextureIndex;
 
     static constexpr LayerKey None() {
-        constexpr LayerKey kInvalid = {GraphicsPipelineCache::kInvalidIndex,
-                                       TextureDataCache::kInvalidIndex};
-        return kInvalid;
+        return {GraphicsPipelineCache::kInvalidIndex, TextureDataCache::kInvalidIndex};
+    }
+
+    uint8_t matchMask(const LayerKey& other) const {
+        return (fPipelineIndex == other.fPipelineIndex ? kPipelineMatchBit : 0) |
+               (fTextureIndex  == other.fTextureIndex  ? kTextureMatchBit  : 0);
     }
 
     // NOTE: removing the uniform index on this check decreases stencil lists on desk_samoa
@@ -48,6 +55,10 @@ struct LayerKey {
     }
 
     bool operator!=(const LayerKey& other) const { return !(*this == other); }
+
+    static bool isExactMatch(uint8_t mask) {
+        return mask == kExactMatchMask;
+    }
 };
 
 struct Draw {
@@ -110,11 +121,13 @@ struct Layer {
     }
 
     template <bool kIsStencil, bool kIsDepthOnly, bool kForwards>
-    SK_ALWAYS_INLINE std::pair<BoundsTest, BindingList*> test(const Rect& drawBounds,
-                                                              const LayerKey& key,
-                                                              bool requiresBarrier,
-                                                              BindingList* startList) {
-        BindingList* foundMatch = nullptr;
+    SK_ALWAYS_INLINE std::tuple<BoundsTest, BindingList*, uint8_t> test(const Rect& drawBounds,
+                                                                        const LayerKey& key,
+                                                                        bool requiresBarrier,
+                                                                        BindingList* startList) {
+        BindingList* bestMatch = nullptr;
+        uint8_t bestMatchMask = 0;
+
         BindingList* list;
         BindingList* end;
         if constexpr (kForwards) {
@@ -126,8 +139,10 @@ struct Layer {
         }
         // Advancement is also constexpr
         for (; list != end; list = kForwards ? list->fNext : list->fPrev) {
-            if (list->fKey == key) {
-                foundMatch = list;
+            uint8_t matchMask = key.matchMask(list->fKey);
+            if (LayerKey::isExactMatch(matchMask)) {
+                bestMatchMask = matchMask;
+                bestMatch = list;
                 // If it's a depth only draw, it's ok to overlap with itself, and will ignore
                 // the below intersection check. If it's a stencil draw it is never ok to overlap
                 // with itself.
@@ -145,7 +160,7 @@ struct Layer {
                 // out of order would corrupt the occlusion and depth-test results for those shading
                 // draws, breaking the painter's algorithm.
                 if (list->fIsShading && list->intersects(drawBounds)) {
-                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                    return {BoundsTest::kIncompatibleOverlap, bestMatch, 0};
                 }
             } else {
                 // If it is a stencil draw, it can still be shading or non-shading, this is because
@@ -154,56 +169,72 @@ struct Layer {
                 if (key.fTextureIndex == TextureDataCache::kInvalidIndex) { // Implies non-shading
                     // If the draw is non-shading, it is free to intersect with any non-stencil draw
                     if (list->fIsStencil && list->intersects(drawBounds)) {
-                        return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                        return {BoundsTest::kIncompatibleOverlap, bestMatch, 0};
                     }
                 } else {
                     // If the draw is shading, it may intersect with any non-shading and non-stencil
                     // draw.
                     if ((list->fIsShading || list->fIsStencil) && list->intersects(drawBounds)) {
-                        return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                        return {BoundsTest::kIncompatibleOverlap, bestMatch, 0};
                     }
                 }
+            }
+
+            if (matchMask > bestMatchMask) {
+                bestMatchMask = matchMask;
+                bestMatch = list;
             }
         }
 
         // Note, !foundMatch, but kDisjoint is functionally the same as a kCompatibleOverlap
-        return {foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint, foundMatch};
+        return {bestMatchMask == LayerKey::kExactMatchMask ? BoundsTest::kCompatibleOverlap
+                                                           : BoundsTest::kDisjoint,
+                bestMatch,
+                bestMatchMask};
     }
 
     template <bool kIsDepthOnly>
     SK_ALWAYS_INLINE BindingList* add(SkArenaAllocWithReset* alloc,
-                                      BindingList* list,
+                                      BindingList* match,
                                       const LayerKey& key,
                                       Draw* draw,
                                       const RenderStep* step,
                                       bool insertBefore,
-                                      bool isStencil) {
-        if (list) {
-            list->fBounds.join(draw->fDrawParams->drawBounds());
-        } else {
+                                      bool isStencil,
+                                      uint8_t matchMask) {
+        if (!LayerKey::isExactMatch(matchMask)) {
             fListOrder = fListOrder.next();
-            list = alloc->make<BindingList>(fListOrder,
+            BindingList* list = alloc->make<BindingList>(fListOrder,
                                             key.fTextureIndex != TextureDataCache::kInvalidIndex,
                                             isStencil);
             list->fKey = key;
             list->fStep = const_cast<RenderStep*>(step);
             list->fBounds = draw->fDrawParams->drawBounds();
-            if constexpr (kIsDepthOnly) {
-                fBindings.addToHead(list);
+            if (matchMask != 0) {
+                SkASSERT(match);
+                fBindings.addAfter(list, match);
             } else {
-                fBindings.addToTail(list);
+                SkASSERT(!match);
+                if constexpr (kIsDepthOnly) {
+                    fBindings.addToHead(list);
+                } else {
+                    fBindings.addToTail(list);
+                }
             }
+            match = list;
         }
+
+        match->fBounds.join(draw->fDrawParams->drawBounds());
 
         if (insertBefore) {
-            list->fDraws.addToHead(draw);
+            match->fDraws.addToHead(draw);
         } else {
-            list->fDraws.addToTail(draw);
+            match->fDraws.addToTail(draw);
         }
 
-        list->fDrawCount++;
+        match->fDrawCount++;
 
-        return list;
+        return match;
     }
 };
 

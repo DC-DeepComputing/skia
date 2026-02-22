@@ -56,6 +56,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                     const DrawParams* drawParams,
                                     const Insertion& stop,
                                     Insertion* capture) {
+    uint8_t bestMatchMask = 0;
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
@@ -71,23 +72,23 @@ void DrawListLayer::recordBackwards(int stepIndex,
     } else {
         current = fLayers.tail();
         auto processLayer = [&](BindingList* boundary) -> bool {
-            auto result =
+            auto [overlapType, match, matchMask] =
                     isStencil ? current->test<true, kIsDepthOnly, false>(
                                         drawParams->drawBounds(), key, requiresBarrier, boundary)
                               : current->test<false, kIsDepthOnly, false>(
                                         drawParams->drawBounds(), key, requiresBarrier, boundary);
 
-            if (result.first == BoundsTest::kIncompatibleOverlap) {
+            if (overlapType == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
                     // Cannot forward merge depth only draws due to risk of pulling a depth draw
                     // after an already inserted clipped draw.
                     if constexpr (!kIsDepthOnly) {
-                        if (result.second &&
+                        if (LayerKey::isExactMatch(matchMask) &&
                             current->fBindings.head() != current->fBindings.tail()) {
                             if (!isStencil ||
-                                !result.second->fBounds.intersects(drawParams->drawBounds())) {
-                                forwardMerge = result.second;
+                                !match->fBounds.intersects(drawParams->drawBounds())) {
+                                forwardMerge = match;
                                 targetMatch = forwardMerge;
                             }
                         }
@@ -99,11 +100,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
                 }
             } else {
                 // Found a valid layer (Compatible or Disjoint)
-                targetLayer = current;
-                targetMatch = result.second;
+                if (matchMask > bestMatchMask) {
+                    targetLayer = current;
+                    targetMatch = match;
+                    bestMatchMask = matchMask;
+                }
 
                 // If it was compatible, we expect a match. If disjoint, match is nullptr.
-                return result.first == BoundsTest::kCompatibleOverlap;
+                return overlapType == BoundsTest::kCompatibleOverlap;
             }
             SkUNREACHABLE;
         };
@@ -141,7 +145,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
     bool notStopLayer = targetLayer != stop.layer;
     BindingList* inserted = targetLayer->add<kIsDepthOnly>(
-            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer, isStencil);
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer, isStencil, bestMatchMask);
 
     SkASSERT(inserted);
     if (stepIndex > 0) {
@@ -170,17 +174,21 @@ void DrawListLayer::recordForwards(int stepIndex,
                                    const DrawParams* drawParams,
                                    const Insertion& start) {
     Layer* current = const_cast<Layer*>(start.layer);
+    uint8_t bestMatchMask = 0;
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
     auto processLayer = [&](BindingList* boundary) -> bool {
-        auto result = isStencil ? current->test<true, false, true>(
+        auto [overlapType, match, matchMask] = isStencil ? current->test<true, false, true>(
                                           drawParams->drawBounds(), key, requiresBarrier, boundary)
                                 : current->test<false, false, true>(
                                           drawParams->drawBounds(), key, requiresBarrier, boundary);
-        if (result.first != BoundsTest::kIncompatibleOverlap) {
-            targetLayer = current;
-            targetMatch = result.second;
-            return true;
+        if (overlapType != BoundsTest::kIncompatibleOverlap) {
+            if (matchMask > bestMatchMask) {
+                targetLayer = current;
+                targetMatch = match;
+                bestMatchMask = matchMask;
+            }
+            return overlapType == BoundsTest::kCompatibleOverlap;
         } else {
             return isStencil;
         }
@@ -216,7 +224,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
     bool notStartLayer = targetLayer != start.layer;
     targetLayer->add<false>(
-            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer, isStencil);
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer, isStencil, bestMatchMask);
 }
 
 // Layer has dual purpose here:
