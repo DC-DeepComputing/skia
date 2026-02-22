@@ -12,74 +12,16 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkShader.h"
-#include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkImageInfoPriv.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 
 #include <cmath>
 #include <cstdint>
 
-static constexpr char gGainmapSKSL[] =
-        "uniform shader base;"
-        "uniform shader gainmap;"
-        "uniform half4 logRatioMin;"
-        "uniform half4 logRatioMax;"
-        "uniform half4 gainmapGamma;"
-        "uniform half4 epsilonBase;"
-        "uniform half4 epsilonOther;"
-        "uniform half W;"
-        "uniform int gainmapIsAlpha;"
-        "uniform int gainmapIsRed;"
-        "uniform int singleChannel;"
-        "uniform int noGamma;"
-        "uniform int isApple;"
-        "uniform half appleG;"
-        "uniform half appleH;"
-        ""
-        "half4 main(float2 coord) {"
-            "half4 S = base.eval(coord);"
-            "half4 G = gainmap.eval(coord);"
-            "if (gainmapIsAlpha == 1) {"
-                "G = half4(G.a, G.a, G.a, 1.0);"
-            "}"
-            "if (gainmapIsRed == 1) {"
-                "G = half4(G.r, G.r, G.r, 1.0);"
-            "}"
-            "if (singleChannel == 1) {"
-                "half L;"
-                "if (isApple == 1) {"
-                    "L = pow(G.r, appleG);"
-                    "L = log(1.0 + (appleH - 1.0) * pow(G.r, appleG));"
-                "} else if (noGamma == 1) {"
-                    "L = mix(logRatioMin.r, logRatioMax.r, G.r);"
-                "} else {"
-                    "L = mix(logRatioMin.r, logRatioMax.r, pow(G.r, gainmapGamma.r));"
-                "}"
-                "half3 H = (S.rgb + epsilonBase.rgb) * exp(L * W) - epsilonOther.rgb;"
-                "return half4(H.r, H.g, H.b, S.a);"
-            "} else {"
-                "half3 L;"
-                "if (isApple == 1) {"
-                    "L = pow(G.rgb, half3(appleG));"
-                    "L = log(half3(1.0) + (appleH - 1.0) * L);"
-                "} else if (noGamma == 1) {"
-                    "L = mix(logRatioMin.rgb, logRatioMax.rgb, G.rgb);"
-                "} else {"
-                    "L = mix(logRatioMin.rgb, logRatioMax.rgb, pow(G.rgb, gainmapGamma.rgb));"
-                "}"
-                "half3 H = (S.rgb + epsilonBase.rgb) * exp(L * W) - epsilonOther.rgb;"
-                "return half4(H.r, H.g, H.b, S.a);"
-            "}"
-        "}";
-
-static sk_sp<SkRuntimeEffect> gainmap_apply_effect() {
-    static const SkRuntimeEffect* effect =
-            SkRuntimeEffect::MakeForShader(SkString(gGainmapSKSL), {}).effect.release();
-    SkASSERT(effect);
-    return sk_ref_sp(effect);
-}
+using namespace SkKnownRuntimeEffects;
 
 static bool all_channels_equal(const SkColor4f& c) {
     return c.fR == c.fG && c.fR == c.fB;
@@ -153,7 +95,7 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
     // Create the shader to apply the gainmap in the gain application color space.
     sk_sp<SkShader> gainmapMathShader;
     {
-        SkRuntimeShaderBuilder builder(gainmap_apply_effect());
+        SkRuntimeShaderBuilder builder(sk_ref_sp(GetKnownRuntimeEffect(StableKey::kGainMap)));
         const SkColor4f logRatioMin({std::log(gainmapInfo.fGainmapRatioMin.fR),
                                      std::log(gainmapInfo.fGainmapRatioMin.fG),
                                      std::log(gainmapInfo.fGainmapRatioMin.fB),

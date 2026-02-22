@@ -11,7 +11,9 @@
 #include "include/private/SkHdrMetadata.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkHdrAgtmPriv.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 
+using namespace SkKnownRuntimeEffects;
 namespace {
 
 // The maximum and minimum HDR headroom values allowed by the specification.
@@ -23,120 +25,6 @@ static constexpr float kMaxLinearHdrHeadroom = 64.f;
 
 static bool in_unit_interval(float x) {
   return x >= 0.f && x <= 1.f;
-}
-
-// AGTM tone mapping shader.
-static constexpr char gAgtmSKSL[] =
-    "uniform half scale_factor;"       // The scale to apply in linear space
-    "uniform shader curve_xym;"        // The texture containing control points.
-    "uniform half weight_i;"           // The weight of gain curve "i"
-    "uniform half4 mix_rgbx_i;"        // The red,green,blue mixing coefficients.
-    "uniform half4 mix_Mmcx_i;"        // The max,min,component mixing coefficients.
-    "uniform half curve_texcoord_y_i;" // The y texture coordinate at which to sample curve_xym.
-    "uniform half curve_N_cp_i;"       // The number of control points.
-    "uniform half weight_j;"           // All the same parameters, for gain curve "j"
-    "uniform half4 mix_rgbx_j;"
-    "uniform half4 mix_Mmcx_j;"
-    "uniform half curve_texcoord_y_j;"
-    "uniform half curve_N_cp_j;"
-
-     // Shader equivalent of AgtmHelpers::EvaluateComponentMixingFunction.
-    "half3 EvalComponentMixing(half3 color, half4 rgbx, half4 Mmcx) {"
-      "half common = dot(rgbx.rgb, color) +"
-                    "Mmcx[0] * max(max(color.r, color.g), color.b) +"
-                    "Mmcx[1] * min(min(color.r, color.g), color.b);"
-      "return Mmcx[2] * color + half3(common);"
-    "}"
-
-     // Shader equivalent of AgtmHelpers::EvaluateGainCurve.
-    "half EvalGainCurve(half x, half curve_texcoord_y, half curve_N_cp) {"
-       // Handle points to the left of the first control point.
-      "half c_min = 0.0;"
-      "half4 xym_min = curve_xym.eval(half2(c_min + 0.5, curve_texcoord_y));"
-      "if (x <= xym_min.x) {"
-        "return xym_min.y;"
-      "}"
-       // Handle points after the last control point.
-      "half c_max = curve_N_cp - 1.0;"
-      "half4 xym_max = curve_xym.eval(half2(c_max + 0.5, curve_texcoord_y));"
-      "if (x >= xym_max.x) {"
-        "return xym_max.y + log2(xym_max.x / x);"
-      "}"
-       // Binary search for the interval containing x. This will require sampling at most
-       // log2(32)=5 more control points.
-      "for (int step = 0; step < 5; ++step) {"
-         // Early-out if we've already found the interval.
-        "if (c_max - c_min <= 1.0) {"
-          "break;"
-        "}"
-         // Test the midpoint and replace one of the endpoints with it.
-        "half c_mid = ceil(0.5 * (c_min + c_max));"
-        "half4 xym_mid = curve_xym.eval(half2(c_mid + 0.5, curve_texcoord_y));"
-        "if (x == xym_mid.x) {"
-           // If we hit a control point exactly, then just return.
-          "return xym_mid.y;"
-        "} else if (x < xym_mid.x) {"
-        "c_max = c_mid;"
-          "xym_max = xym_mid;"
-        "} else {"
-        "c_min = c_mid;"
-          "xym_min = xym_mid;"
-        "}"
-      "}"
-       // Evaluate the cubic.
-      "half h = xym_max.x - xym_min.x;"
-      "half mHat_min = xym_min.z * h;"
-      "half mHat_max = xym_max.z * h;"
-      "half c3 =  2.0 * xym_min.y + mHat_min - 2.0 * xym_max.y + mHat_max;"
-      "half c2 = -3.0 * xym_min.y + 3.0 * xym_max.y - 2.0 * mHat_min - mHat_max;"
-      "half c1 = mHat_min;"
-      "half c0 = xym_min.y;"
-      "half t = (x - xym_min.x) / h;"
-      "return ((c3*t + c2)*t + c1)*t + c0;"
-    "}"
-
-     // Shader equivalent of AgtmHelpers::EvaluateColorGainFunction.
-    "half3 EvalColorGainFunction(half3 color,"
-                                "half4 mix_rgbx, half4 mix_Mmcx,"
-                                "float curve_texcoord_y, float curve_N_cp) {"
-      "half3 M = EvalComponentMixing(color, mix_rgbx, mix_Mmcx);"
-      "if (mix_Mmcx.b == 0.0) {"
-         // If the kComponent coefficient is zero, only evalute the curve once.
-        "return half3(EvalGainCurve(M.r, curve_texcoord_y, curve_N_cp));"
-      "}"
-      "return half3(EvalGainCurve(M.r, curve_texcoord_y, curve_N_cp),"
-                   "EvalGainCurve(M.g, curve_texcoord_y, curve_N_cp),"
-                   "EvalGainCurve(M.b, curve_texcoord_y, curve_N_cp));"
-    "}"
-
-     // Shader equivalent of AgtmHelpers::ApplyGain.
-    "half4 main(half4 color) {"
-      "color.rgb *= scale_factor;"
-      "if (weight_i > 0.0) {"
-         // Unpremultiply alpha is needed.
-        "float a_inv = (color.a == 0.0) ? 1.0 : 1.0 / color.a;"
-        "half3 G = half3(0.0);"
-        "G += weight_i * EvalColorGainFunction(color.rgb * a_inv,"
-                                              "mix_rgbx_i, mix_Mmcx_i,"
-                                              "curve_texcoord_y_i, curve_N_cp_i);"
-        "if (weight_j > 0.0) {"
-          "G += weight_j * EvalColorGainFunction(color.rgb * a_inv,"
-                                                "mix_rgbx_j, mix_Mmcx_j,"
-                                                "curve_texcoord_y_j, curve_N_cp_j);"
-        "}"
-        "color.rgb *= exp2(G);"
-      "}"
-      "return color;"
-    "}";
-
-static sk_sp<SkRuntimeEffect> agtm_runtime_effect() {
-    auto init_lambda = []() {
-        auto result = SkRuntimeEffect::MakeForColorFilter(SkString(gAgtmSKSL), {});
-        SkASSERTF(result.effect, "Agtm shader log:\n%s\n", result.errorText.c_str());
-        return result.effect.release();
-    };
-    static SkRuntimeEffect* effect = init_lambda();
-    return sk_ref_sp(effect);
 }
 
 }  // namespace
@@ -504,11 +392,9 @@ sk_sp<SkColorFilter> MakeColorFilter(
         float scaleFactor) {
     const auto weighting = ComputeWeighting(hatm, targetedHdrHeadroom);
 
-    auto effect = agtm_runtime_effect();
-    if (!effect) {
-        return nullptr;
-    }
-    SkRuntimeShaderBuilder builder(effect);
+    const SkRuntimeEffect* effect = GetKnownRuntimeEffect(StableKey::kAGTM);
+
+    SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.uniform("scale_factor") = scaleFactor;
     for (size_t a = 0; a < 2; ++a) {
         const char* weight_str[2] = {"weight_i", "weight_j"};
@@ -798,4 +684,3 @@ SkString AdaptiveGlobalToneMap::toString() const {
 }
 
 }  // namespace skhdr
-

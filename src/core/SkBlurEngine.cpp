@@ -1523,14 +1523,14 @@ static SkKnownRuntimeEffects::StableKey to_stablekey(int kernelWidth, uint32_t b
 const SkRuntimeEffect* SkShaderBlurAlgorithm::GetLinearBlur1DEffect(int radius) {
     return GetKnownRuntimeEffect(
             to_stablekey(LinearKernelWidth(radius),
-                         static_cast<uint32_t>(SkKnownRuntimeEffects::StableKey::k1DBlurBase)));
+                         static_cast<uint32_t>(SkKnownRuntimeEffects::StableKey::k1DBlur4)));
 }
 
 const SkRuntimeEffect* SkShaderBlurAlgorithm::GetBlur2DEffect(const SkISize& radii) {
     int kernelArea = KernelWidth(radii.width()) * KernelWidth(radii.height());
     return GetKnownRuntimeEffect(
             to_stablekey(kernelArea,
-                         static_cast<uint32_t>(SkKnownRuntimeEffects::StableKey::k2DBlurBase)));
+                         static_cast<uint32_t>(SkKnownRuntimeEffects::StableKey::k2DBlur4)));
 }
 
 sk_sp<SkSpecialImage> SkShaderBlurAlgorithm::renderBlur(SkRuntimeShaderBuilder* blurEffectBuilder,

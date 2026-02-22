@@ -33,16 +33,16 @@ half4 sk_displacement(shader displMap,
 half4 sk_magnifier(shader src, float2 coord, float4 lensBounds, float4 zoomXform,
                    float2 invInset) {
     float2 zoomCoord = zoomXform.xy + zoomXform.zw*coord;
-    // edgeInset is the smallest distance to the lens bounds edges, in units of "insets".
+    // edgeInset is the smallest distance to the lens bounds edges, in units of insets.
     float2 edgeInset = min(coord - lensBounds.xy, lensBounds.zw - coord) * invInset;
 
     // The equations for 'weight' ensure that it is 0 along the outside of
     // lensBounds so it seams with any un-zoomed, un-filtered content. The zoomed
-    // content fills a rounded rectangle that is 1 "inset" in from lensBounds with
+    // content fills a rounded rectangle that is 1 inset in from lensBounds with
     // circular corners with radii equal to the inset distance. Outside of this
     // region, there is a non-linear weighting to compress the un-zoomed content
     // to the zoomed content. The critical zone about each corner is limited
-    // to 2x"inset" square.
+    // to 2xinset square.
     float weight = all(lessThan(edgeInset, float2(2.0)))
         // Circular distortion weighted by distance to inset corner
         ? (2.0 - length(2.0 - edgeInset))
@@ -230,4 +230,155 @@ half4 sk_overdraw(half  alpha,  half4 color0, half4 color1, half4 color2,
         : alpha < (3.5 / 255.) ? color3
         : alpha < (4.5 / 255.) ? color4
                                : color5;
+}
+
+//--- GainMap ----------------------------------------------------------------------
+
+// TODO(michaelludwig): Pack uniforms and avoid branches if possible
+half4 sk_gainmap(float2 coord, shader base, shader gainmap,
+                 half4 logRatioMin, half4 logRatioMax, half4 gainmapGamma, half4 epsilonBase,
+                 half4 epsilonOther, half W, int gainmapIsAlpha, int gainmapIsRed,
+                 int singleChannel, int noGamma, int isApple, half appleG, half appleH) {
+    half4 S = base.eval(coord);
+    half4 G = gainmap.eval(coord);
+    if (gainmapIsAlpha == 1) {
+        G = half4(G.a, G.a, G.a, 1.0);
+    }
+    if (gainmapIsRed == 1) {
+        G = half4(G.r, G.r, G.r, 1.0);
+    }
+    if (singleChannel == 1) {
+        half L;
+        if (isApple == 1) {
+            L = pow(G.r, appleG);
+            L = log(1.0 + (appleH - 1.0) * pow(G.r, appleG));
+        } else if (noGamma == 1) {
+            L = mix(logRatioMin.r, logRatioMax.r, G.r);
+        } else {
+            L = mix(logRatioMin.r, logRatioMax.r, pow(G.r, gainmapGamma.r));
+        }
+        half3 H = (S.rgb + epsilonBase.rgb) * exp(L * W) - epsilonOther.rgb;
+        return half4(H.r, H.g, H.b, S.a);
+    } else {
+        half3 L;
+        if (isApple == 1) {
+            L = pow(G.rgb, half3(appleG));
+            L = log(half3(1.0) + (appleH - 1.0) * L);
+        } else if (noGamma == 1) {
+            L = mix(logRatioMin.rgb, logRatioMax.rgb, G.rgb);
+        } else {
+            L = mix(logRatioMin.rgb, logRatioMax.rgb, pow(G.rgb, gainmapGamma.rgb));
+        }
+        half3 H = (S.rgb + epsilonBase.rgb) * exp(L * W) - epsilonOther.rgb;
+        return half4(H.r, H.g, H.b, S.a);
+    }
+}
+
+//--- AGTM -------------------------------------------------------------------------
+
+// TODO(michaelludwig): Pack uniforms and reduce branching and sampling
+
+// Shader equivalent of AgtmHelpers::EvaluateComponentMixingFunction.
+$pure half3 $eval_component_mixing(half3 color, half4 rgbx, half4 Mmcx) {
+    half common = dot(rgbx.rgb, color) +
+                Mmcx[0] * max(max(color.r, color.g), color.b) +
+                Mmcx[1] * min(min(color.r, color.g), color.b);
+    return Mmcx[2] * color + half3(common);
+}
+
+// Shader equivalent of AgtmHelpers::EvaluateGainCurve.
+$pure half $eval_gain_curve(shader curve_xym,
+                            half x,
+                            half curve_texcoord_y,
+                            half curve_N_cp) {
+    // Handle points to the left of the first control point.
+    half c_min = 0.0;
+    half4 xym_min = curve_xym.eval(half2(c_min + 0.5, curve_texcoord_y));
+    if (x <= xym_min.x) {
+        return xym_min.y;
+    }
+    // Handle points after the last control point.
+    half c_max = curve_N_cp - 1.0;
+    half4 xym_max = curve_xym.eval(half2(c_max + 0.5, curve_texcoord_y));
+    if (x >= xym_max.x) {
+        return xym_max.y + log2(xym_max.x / x);
+    }
+    // Binary search for the interval containing x. This will require sampling at most
+    // log2(32)=5 more control points.
+    for (int step = 0; step < 5; ++step) {
+        // Early-out if we've already found the interval.
+        if (c_max - c_min <= 1.0) {
+            break;
+        }
+        // Test the midpoint and replace one of the endpoints with it.
+        half c_mid = ceil(0.5 * (c_min + c_max));
+        half4 xym_mid = curve_xym.eval(half2(c_mid + 0.5, curve_texcoord_y));
+        if (x == xym_mid.x) {
+            // If we hit a control point exactly, then just return.
+            return xym_mid.y;
+        } else if (x < xym_mid.x) {
+            c_max = c_mid;
+            xym_max = xym_mid;
+        } else {
+            c_min = c_mid;
+            xym_min = xym_mid;
+        }
+    }
+    // Evaluate the cubic.
+    half h = xym_max.x - xym_min.x;
+    half mHat_min = xym_min.z * h;
+    half mHat_max = xym_max.z * h;
+    half c3 =  2.0 * xym_min.y + mHat_min - 2.0 * xym_max.y + mHat_max;
+    half c2 = -3.0 * xym_min.y + 3.0 * xym_max.y - 2.0 * mHat_min - mHat_max;
+    half c1 = mHat_min;
+    half c0 = xym_min.y;
+    half t = (x - xym_min.x) / h;
+    return ((c3*t + c2)*t + c1)*t + c0;
+}
+
+// Shader equivalent of AgtmHelpers::EvaluateColorGainFunction.
+$pure half3 $eval_color_gain_function(
+        shader curve_xym,
+        half3 color, half4 mix_rgbx, half4 mix_Mmcx,
+        half curve_texcoord_y, half curve_N_cp) {
+    half3 M = $eval_component_mixing(color, mix_rgbx, mix_Mmcx);
+    if (mix_Mmcx.b == 0.0) {
+        // If the kComponent coefficient is zero, only evalute the curve once.
+        return half3($eval_gain_curve(curve_xym, M.r, curve_texcoord_y, curve_N_cp));
+    }
+    return half3($eval_gain_curve(curve_xym, M.r, curve_texcoord_y, curve_N_cp),
+                 $eval_gain_curve(curve_xym, M.g, curve_texcoord_y, curve_N_cp),
+                 $eval_gain_curve(curve_xym, M.b, curve_texcoord_y, curve_N_cp));
+}
+
+// Shader equivalent of AgtmHelpers::ApplyGain.
+half4 sk_agtm(half4 color,
+              half scale_factor,       // The scale to apply in linear space
+              shader curve_xym,        // The texture containing control points.
+              half weight_i,           // The weight of gain curve i
+              half4 mix_rgbx_i,        // The red,green,blue mixing coefficients.
+              half4 mix_Mmcx_i,        // The max,min,component mixing coefficients.
+              half curve_texcoord_y_i, // The y texture coordinate at which to sample curve_xym.
+              half curve_N_cp_i,       // The number of control points.
+              half weight_j,           // All the same parameters, for gain curve j
+              half4 mix_rgbx_j,
+              half4 mix_Mmcx_j,
+              half curve_texcoord_y_j,
+              half curve_N_cp_j) {
+    color.rgb *= scale_factor;
+    if (weight_i > 0.0) {
+        // Unpremultiply alpha is needed.
+        half a_inv = (color.a == 0.0) ? 1.0 : 1.0 / color.a;
+        half3 G = half3(0.0);
+        G += weight_i * $eval_color_gain_function(curve_xym, color.rgb * a_inv,
+                                                  mix_rgbx_i, mix_Mmcx_i,
+                                                  curve_texcoord_y_i, curve_N_cp_i);
+        if (weight_j > 0.0) {
+            G += weight_j * $eval_color_gain_function(curve_xym, color.rgb * a_inv,
+                                                      mix_rgbx_j, mix_Mmcx_j,
+                                                      curve_texcoord_y_j, curve_N_cp_j);
+        }
+        color.rgb *= exp2(G);
+    }
+    return color;
 }

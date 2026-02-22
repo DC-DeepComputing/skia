@@ -35,12 +35,9 @@ namespace {
 
 const char* get_known_rte_name(StableKey key) {
     switch (key) {
+        case StableKey::kInvalid: return "Invalid";
 #define M(type) case StableKey::k##type : return "KnownRuntimeEffect_" #type;
-#define M1(type)
-#define M2(type, initializer) case StableKey::k##type : return "KnownRuntimeEffect_" #type;
-        SK_ALL_STABLEKEYS(M, M1, M2)
-#undef M2
-#undef M1
+        SK_ALL_STABLEKEYS(M)
 #undef M
     }
 
