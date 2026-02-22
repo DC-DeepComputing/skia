@@ -31,11 +31,6 @@ enum class BoundsTest {
     kIncompatibleOverlap,
 };
 
-enum class BindingListType {
-    kSingle,
-    kStencil,
-};
-
 struct LayerKey {
     GraphicsPipelineCache::Index fPipelineIndex;
     TextureDataCache::Index fTextureIndex;
@@ -64,12 +59,13 @@ struct Draw {
 };
 
 struct BindingList {
-    BindingList(const CompressedPaintersOrder& order, bool isDepthOnly)
-            : fOrder(order), fIsDepthOnly(isDepthOnly) {}
+    BindingList(const CompressedPaintersOrder& order, bool isShading, bool isStencil)
+            : fOrder(order), fIsShading(isShading), fIsStencil(isStencil) {}
     static constexpr uint32_t kCoarseBoundsThreshold = 32;
 
     CompressedPaintersOrder fOrder;
-    const bool fIsDepthOnly;
+    const bool fIsShading; // TODO (thomsmit): an extra byte but saves masking?
+    const bool fIsStencil; // worth?
     LayerKey fKey;
     RenderStep* fStep;
     uint32_t fDrawCount = 0;
@@ -115,9 +111,9 @@ struct Layer {
 
     template <bool kIsStencil, bool kIsDepthOnly, bool kForwards>
     SK_ALWAYS_INLINE std::pair<BoundsTest, BindingList*> test(const Rect& drawBounds,
-                                                                 const LayerKey& key,
-                                                                 bool requiresBarrier,
-                                                                 BindingList* startList) {
+                                                              const LayerKey& key,
+                                                              bool requiresBarrier,
+                                                              BindingList* startList) {
         BindingList* foundMatch = nullptr;
         BindingList* list;
         BindingList* end;
@@ -139,7 +135,7 @@ struct Layer {
                     if (!requiresBarrier) continue;
                 }
             }
-            // Stencil draws always check for intersection.
+
             if constexpr (!kIsStencil) {
                 // If it's not a stencil draw, it is either a shading or depth-only draw. Both are
                 // allowed to intersect freely with existing depth-only draws. Clipped shading draws
@@ -148,12 +144,24 @@ struct Layer {
                 // not bypass shading draws they intersect with, because modifying the depth buffer
                 // out of order would corrupt the occlusion and depth-test results for those shading
                 // draws, breaking the painter's algorithm.
-                if (!list->fIsDepthOnly && list->intersects(drawBounds)) {
+                if (list->fIsShading && list->intersects(drawBounds)) {
                     return {BoundsTest::kIncompatibleOverlap, foundMatch};
                 }
             } else {
-                if (list->intersects(drawBounds)) {
-                    return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                // If it is a stencil draw, it can still be shading or non-shading, this is because
+                // we treat both the stencil and the cover step as shading. Furthermore, this
+                // could also be the shading step of a depth only draw.
+                if (key.fTextureIndex == TextureDataCache::kInvalidIndex) { // Implies non-shading
+                    // If the draw is non-shading, it is free to intersect with any non-stencil draw
+                    if (list->fIsStencil && list->intersects(drawBounds)) {
+                        return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                    }
+                } else {
+                    // If the draw is shading, it may intersect with any non-shading and non-stencil
+                    // draw.
+                    if ((list->fIsShading || list->fIsStencil) && list->intersects(drawBounds)) {
+                        return {BoundsTest::kIncompatibleOverlap, foundMatch};
+                    }
                 }
             }
         }
@@ -168,12 +176,15 @@ struct Layer {
                                       const LayerKey& key,
                                       Draw* draw,
                                       const RenderStep* step,
-                                      bool insertBefore) {
+                                      bool insertBefore,
+                                      bool isStencil) {
         if (list) {
             list->fBounds.join(draw->fDrawParams->drawBounds());
         } else {
             fListOrder = fListOrder.next();
-            list = alloc->make<BindingList>(fListOrder, kIsDepthOnly);
+            list = alloc->make<BindingList>(fListOrder,
+                                            key.fTextureIndex != TextureDataCache::kInvalidIndex,
+                                            isStencil);
             list->fKey = key;
             list->fStep = const_cast<RenderStep*>(step);
             list->fBounds = draw->fDrawParams->drawBounds();
