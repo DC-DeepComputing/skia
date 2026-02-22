@@ -691,7 +691,7 @@ void ClipStack::RawElement::drawClipImmediate(Device* device, const Rect& snappe
     SkASSERT(!fShape.isEmpty());
 
     // We shouldn't be drawing if we already drew this clip element
-    SkASSERT(!fInsertion.layer && !fInsertion.wrapper);
+    SkASSERT(!fInsertion.layer && !fInsertion.list);
     SkASSERT(!fCaptureParams);
 
     // Note, passing fOuterBounds here may influence the preference for wedges here.
@@ -705,7 +705,7 @@ void ClipStack::RawElement::drawClipImmediate(Device* device, const Rect& snappe
                                                 /* shader= */ nullptr},
                                            {fMaxZ, fOrder});
 
-    SkASSERT(fInsertion.layer && fInsertion.wrapper);
+    SkASSERT(fInsertion.layer && fInsertion.list);
     SkASSERT(fCaptureParams);
 }
 
@@ -1920,12 +1920,12 @@ std::pair<CompressedPaintersOrder, Insertion> ClipStack::updateClipStateForDraw(
         auto [order, insertion] =  const_cast<RawElement*>(e)->updateForDraw(
                 fDevice, boundsManager, deviceBounds, clip.drawBounds(), z);
         maxClipOrder = std::max(order, maxClipOrder);
-        SkASSERT(insertion.layer && insertion.wrapper);
+        SkASSERT(insertion.layer && insertion.list);
         if (latestInsertion.layer) {
             if (insertion.layer->fOrder > latestInsertion.layer->fOrder) {
                 latestInsertion = insertion;
             } else if (insertion.layer->fOrder == latestInsertion.layer->fOrder) {
-                if (insertion.wrapper->fOrder > latestInsertion.wrapper->fOrder) {
+                if (insertion.list->fOrder > latestInsertion.list->fOrder) {
                     latestInsertion = insertion;
                 }
             }
