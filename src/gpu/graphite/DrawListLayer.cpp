@@ -76,6 +76,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
     BindingWrapper* targetMatch = nullptr;
+    BindingWrapper* forwardMerge = nullptr;
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     if (!isStencil && !dependsOnDst) {
         // A valid stopLayer will never be null, because the depth draw will always return the layer
@@ -96,7 +97,18 @@ void DrawListLayer::recordBackwards(int stepIndex,
             if (result.first == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
-                    // TODO (thomsmit): Test performance of forward merging
+                    // Cannot forward merge depth only draws due to risk of pulling a depth draw
+                    // after an already inserted clipped draw.
+                    if constexpr (!kIsDepthOnly) {
+                        if (result.second &&
+                            current->fBindings.head() != current->fBindings.tail()) {
+                            if (!isStencil ||
+                                !result.second->fBounds.intersects(drawParams->drawBounds())) {
+                                forwardMerge = result.second;
+                                targetMatch = forwardMerge;
+                            }
+                        }
+                    }
                     return true;
                 } else {
                     // If !dependsOnDst, we just keep searching backwards.
@@ -131,7 +143,15 @@ void DrawListLayer::recordBackwards(int stepIndex,
     if (!targetLayer) {
         fOrderCounter = fOrderCounter.next();
         targetLayer = fStorage.make<Layer>(fOrderCounter);
-        fLayers.addToTail(targetLayer);
+        if (forwardMerge) {
+            SkASSERT(current);
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            forwardMerge->fOrder = CompressedPaintersOrder::First();
+            fLayers.addAfter(targetLayer, current);
+        } else {
+            fLayers.addToTail(targetLayer);
+        }
     }
 
     SkASSERT(targetLayer);
