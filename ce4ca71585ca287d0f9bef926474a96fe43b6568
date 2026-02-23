@@ -52,6 +52,24 @@
       "parentUuid": "5aaef1b3_f042b6c6",
       "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45823d2_9c36f69f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-23T21:01:24Z",
+      "side": 1,
+      "message": "I do wonder how the non-Rust path manages to not crash (maybe just luck the that the skia `ColorProfile` lives longer than the blink `ColorProfile`).\n\nThis seems like a good fix then. It\u0027s likely that I will want to move `SkCodecs::ColorProfile` into `include/private` so that Chromium can use it directly. But that\u0027s for another day.",
+      "parentUuid": "b044422f_bef55cba",
+      "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
