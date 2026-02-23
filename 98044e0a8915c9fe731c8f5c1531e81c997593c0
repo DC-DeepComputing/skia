@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b11a2b8_8f1944e3",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-23T19:31:35Z",
+      "side": 1,
+      "message": "This was caught by the new unit tests, and I believe it was also a problem with the previous implementation of `getDefaultSampledTextureInfo(Renderable::kYes)`. Basically if the first format that was supported for a color type happened to be renderable, then that format would be used for all of its color types even if some of the color type info rules intended to disable the renderable flag (e.g. Gray8 isn\u0027t a renderable color type, but it backs on the R8 format, and R8 format is renderable with A8 or R8 color types so requesting a kGray8 CT renderable::kYes texture info was still returning an R8 texture).",
+      "range": {
+        "startLine": 937,
+        "startChar": 4,
+        "endLine": 950,
+        "endChar": 5
+      },
+      "revId": "98044e0a8915c9fe731c8f5c1531e81c997593c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
