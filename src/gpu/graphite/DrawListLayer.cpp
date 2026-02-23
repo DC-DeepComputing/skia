@@ -142,7 +142,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
     bool notStopLayer = targetLayer != stop.layer;
     BindingList* inserted = targetLayer->add<kIsDepthOnly>(
-            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer);
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer, isStencil);
 
     SkASSERT(inserted);
     if (stepIndex > 0) {
@@ -217,7 +217,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
     bool notStartLayer = targetLayer != start.layer;
     targetLayer->add<false>(
-            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer);
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStartLayer, isStencil);
 }
 
 // Layer has dual purpose here:
