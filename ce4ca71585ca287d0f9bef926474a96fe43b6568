@@ -34,6 +34,24 @@
       "parentUuid": "9a28808b_e283ce99",
       "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b044422f_bef55cba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-23T17:50:38Z",
+      "side": 1,
+      "message": "I think that we don\u0027t have any known bug in this area for non-rust path. To set some context: rust_icc is not yet enabled for build in Chromium (I was planning to work on this after starting rust BMP field trial, which is close to happen). At the moment we only have the validation on unit tests from skia comparing rust_icc parsed content from moxcms with skcms_parse.\n\nSo I went one step further and created a draft CL to check potential issues of rust_icc when used from chromium:\n\nhttps://chromium-review.googlesource.com/c/chromium/src/+/7130444\n\nThere we had several test failures, one of them seeming related to the use-after-free issue mentioned (as some of the values in the grid_16 array were having modified values). I was able to fix that the issue is fixed when using the change on this CL.",
+      "parentUuid": "5aaef1b3_f042b6c6",
+      "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
