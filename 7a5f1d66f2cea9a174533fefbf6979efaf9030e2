@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50fcec19_1ef75e87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-23T19:01:16Z",
+      "side": 1,
+      "message": "This CL addresses an issue where devices using Vulkan 1.1 (aka, those lacking the Vulkan11Features struct which came with Vulkan 1.2) would not correctly identify that YCbCr conversion is supported by the device when the extension is available.\n\nWe now query the device for YCbCr conversion support only when the extension is *not* available. If it is, then we now enable the main feature when the extension is supported.",
+      "revId": "7a5f1d66f2cea9a174533fefbf6979efaf9030e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
