@@ -70,6 +70,24 @@
       "parentUuid": "b044422f_bef55cba",
       "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6de82845_9da061b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-02-23T22:37:57Z",
+      "side": 1,
+      "message": "I think that the reason why non-rust manages to not crash is because the blink\u0027s `SkiaImageDecoderBase` class stores a unique_ptr to the [SkCodec](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.h;l\u003d84) as a class member which tights it\u0027s lifetime to `SkiaImageDecoderBase` instance (except on failure paths).",
+      "parentUuid": "a45823d2_9c36f69f",
+      "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
