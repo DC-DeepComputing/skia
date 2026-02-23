@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25c654fb_f79dd9d9",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-23T14:59:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "52114fce_e4ebf256",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 38
+      },
+      "revId": "c9ab0c157c24a26cf45a3009ebbc8e6450a69696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88a064c6_eff17aa5",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-18T20:00:34Z",
       "side": 1,
       "message": "This keeps VulkanCaps getTextureSupport() behavior consistent with the other backends, discovered it in this change when I was accidentially requiring CopySrc usage for compressed texture formats and saw gold image diffs.",
+      "range": {
+        "startLine": 724,
+        "startChar": 0,
+        "endLine": 728,
+        "endChar": 0
+      },
+      "revId": "c9ab0c157c24a26cf45a3009ebbc8e6450a69696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aeaed6b_4685b6df",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-23T14:59:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88a064c6_eff17aa5",
       "range": {
         "startLine": 724,
         "startChar": 0,
