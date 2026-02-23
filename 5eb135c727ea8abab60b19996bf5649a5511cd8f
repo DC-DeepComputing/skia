@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1c87c2e_8c4b0158",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-23T20:14:58Z",
+      "side": 1,
+      "message": "nit: `return matchingTypeface`;",
+      "range": {
+        "startLine": 406,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 27
+      },
+      "revId": "5eb135c727ea8abab60b19996bf5649a5511cd8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
