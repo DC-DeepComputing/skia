@@ -22,6 +22,30 @@
       },
       "revId": "5eb135c727ea8abab60b19996bf5649a5511cd8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b81910f_7d20b014",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-23T21:54:38Z",
+      "side": 1,
+      "message": "Yeah, I kept going back and forth on that. On the one hand this last one doesn\u0027t even need to do the assignment, it can just return. On the other hand it is nice for humans to have the pattern continue and then explicitly note that if nothing matched that nullptr is being returned on purpose (and not just as a side effect of the last place we looked not having what we\u0027re looking for). In the end it probably all compiles to the same thing, so I\u0027m just going to leave this as it is for now.",
+      "parentUuid": "d1c87c2e_8c4b0158",
+      "range": {
+        "startLine": 406,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 27
+      },
+      "revId": "5eb135c727ea8abab60b19996bf5649a5511cd8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
