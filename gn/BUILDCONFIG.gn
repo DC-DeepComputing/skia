@@ -68,8 +68,8 @@ is_ios = current_os == "ios" || current_os == "tvos"
 is_tvos = current_os == "tvos"
 is_linux = current_os == "linux"
 is_mac = current_os == "mac"
-is_wasm = current_os == "wasm"
 is_win = current_os == "win"
+is_wasm = current_os == "wasm"
 
 # Dawn has references to fuchsia, but Skia's GN rules do not
 is_fuchsia = false
@@ -196,6 +196,9 @@ if (is_trivial_abi) {
 }
 if (!is_official_build) {
   default_configs += [ "//gn/skia:debug_symbols" ]
+}
+if (is_wasm) {
+  default_configs += [ "//gn/skia:wasm" ]
 }
 default_configs += [ "//gn/skia:extra_flags" ]
 
