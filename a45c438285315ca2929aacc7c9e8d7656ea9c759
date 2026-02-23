@@ -16,6 +16,69 @@
       "message": "Thank you for all the feedback and reviewing my CL",
       "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4e05152_d9db0a3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-23T15:26:51Z",
+      "side": 1,
+      "message": "Overall, this GM is structured in a way that is a bit too verbose. I\u0027ll send some comments via DM for how to make this more concise while maintaining readibility.",
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "971853dc_e38649bc",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-23T15:26:51Z",
+      "side": 1,
+      "message": "nit: not used",
+      "range": {
+        "startLine": 36,
+        "startChar": 30,
+        "endLine": 36,
+        "endChar": 34
+      },
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "171a2f49_4dbd7d76",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-23T15:26:51Z",
+      "side": 1,
+      "message": "nit: don\u0027t need this semicolon",
+      "range": {
+        "startLine": 111,
+        "startChar": 1,
+        "endLine": 111,
+        "endChar": 2
+      },
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
