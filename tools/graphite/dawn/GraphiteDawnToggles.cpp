@@ -69,7 +69,6 @@ void AddPreferredFeatures(const wgpu::Adapter& adapter, std::vector<wgpu::Featur
     addFeature(wgpu::FeatureName::TextureFormatsTier1);
     addFeature(wgpu::FeatureName::TimestampQuery);
     addFeature(wgpu::FeatureName::TransientAttachments);
-    addFeature(wgpu::FeatureName::Unorm16TextureFormats);
 }
 
 

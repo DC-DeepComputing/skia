@@ -46,16 +46,12 @@ skgpu::UniqueKey::Domain get_pipeline_domain() {
 static constexpr wgpu::TextureFormat kFormats[] = {
         wgpu::TextureFormat::RGBA8Unorm,
         wgpu::TextureFormat::R8Unorm,
-#if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::R16Unorm,
-#endif
         wgpu::TextureFormat::BGRA8Unorm,
         wgpu::TextureFormat::RGBA16Float,
         wgpu::TextureFormat::R16Float,
         wgpu::TextureFormat::RG8Unorm,
-#if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::RG16Unorm,
-#endif
         wgpu::TextureFormat::RGB10A2Unorm,
         wgpu::TextureFormat::RG16Float,
 
@@ -636,8 +632,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
-#if !defined(__EMSCRIPTEN__)
-    const bool supportUnorm16 = device.HasFeature(wgpu::FeatureName::Unorm16TextureFormats);
+    const bool supportUnorm16 = device.HasFeature(wgpu::FeatureName::TextureFormatsTier1);
     // TODO(crbug.com/dawn/1856): Support storage binding for compute shader in Dawn.
     // Format: R16Unorm
     {
@@ -665,7 +660,6 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             }
         }
     }
-#endif
 
     // Format: BGRA8Unorm
     {
@@ -751,7 +745,6 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
-#if !defined(__EMSCRIPTEN__)
     // TODO(crbug.com/dawn/1856): Support storage binding for compute shader in Dawn.
     // Format: RG16Unorm
     {
@@ -770,7 +763,6 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             }
         }
     }
-#endif
 
     // Format: RGB10A2Unorm
     {
@@ -924,11 +916,9 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     this->setColorType(kRGB_101010x_SkColorType,      { wgpu::TextureFormat::RGB10A2Unorm });
     this->setColorType(kR16G16_float_SkColorType,     { wgpu::TextureFormat::RG16Float    });
 
-#if !defined(__EMSCRIPTEN__)
     this->setColorType(kA16_unorm_SkColorType,        { wgpu::TextureFormat::R16Unorm     });
     this->setColorType(kR16_unorm_SkColorType,        { wgpu::TextureFormat::R16Unorm     });
     this->setColorType(kR16G16_unorm_SkColorType,     { wgpu::TextureFormat::RG16Unorm    });
-#endif
 }
 
 // static
