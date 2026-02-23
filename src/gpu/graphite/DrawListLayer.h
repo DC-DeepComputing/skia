@@ -74,7 +74,7 @@ private:
                          const UniformDataCache::Index& uniformIndex,
                          const LayerKey& key,
                          const DrawParams* drawParams,
-                         const Insertion& stop,
+                         Insertion boundary,
                          Insertion* capture);
 
     void recordForwards(int stepIndex,

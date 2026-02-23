@@ -54,7 +54,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                     const UniformDataCache::Index& uniformIndex,
                                     const LayerKey& key,
                                     const DrawParams* drawParams,
-                                    const Insertion& stop,
+                                    Insertion boundary,
                                     Insertion* capture) {
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
@@ -62,20 +62,33 @@ void DrawListLayer::recordBackwards(int stepIndex,
     BindingList* forwardMerge = nullptr;
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     if (!isStencil && !dependsOnDst) {
-        // A valid stopLayer will never be null, because the depth draw will always return the layer
-        // it drew into.
-        targetLayer = stop.layer ? stop.layer : fLayers.head();
+        // A valid boundary will never be null, because DepthOnly draws never take this path, they
+        // are always marked dependOnDst and will always pass the layer it drew into to its clipped
+        // draws.
+        //
+        // No special handling for starting the search here is necesary because again, DepthOnly
+        // draws never take this fast path.
+        targetLayer = boundary.layer ? boundary.layer : fLayers.head();
         if (targetLayer) {
-            targetMatch = targetLayer->searchBinding(key, stop.list);
+            targetMatch = targetLayer->searchBinding(key, boundary.list);
         }
     } else {
-        current = fLayers.tail();
-        auto processLayer = [&](BindingList* boundary) -> bool {
+
+        Layer* end;
+        if constexpr (kIsDepthOnly) {
+            current = boundary.layer ? boundary.layer : fLayers.tail();
+            end = nullptr;
+        } else {
+            current = fLayers.tail();
+            end = boundary.layer;
+        }
+
+        auto processLayer = [&](BindingList* bound) -> bool {
             auto result =
                     isStencil ? current->test<true, kIsDepthOnly, false>(
-                                        drawParams->drawBounds(), key, requiresBarrier, boundary)
+                                        drawParams->drawBounds(), key, requiresBarrier, bound)
                               : current->test<false, kIsDepthOnly, false>(
-                                        drawParams->drawBounds(), key, requiresBarrier, boundary);
+                                        drawParams->drawBounds(), key, requiresBarrier, bound);
 
             if (result.first == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
@@ -109,8 +122,16 @@ void DrawListLayer::recordBackwards(int stepIndex,
             SkUNREACHABLE;
         };
 
-        // Check current here for safety?
-        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stop.layer; ++limit) {
+        if constexpr (kIsDepthOnly) {
+            if (boundary.layer) { // If the boundary layer is provided, the layers are non-empty
+                if (processLayer(boundary.list)) {
+                    current = end;
+                } else {
+                    current = current->fPrev;
+                }
+            }
+        }
+        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != end; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
             __builtin_prefetch(current->fPrev);
 #endif
@@ -119,8 +140,10 @@ void DrawListLayer::recordBackwards(int stepIndex,
             }
             current = current->fPrev;
         }
-        if (current && current == stop.layer) {
-            processLayer(stop.list);
+        if constexpr (!kIsDepthOnly) {
+            if (current && current == boundary.layer) {
+                processLayer(boundary.list);
+            }
         }
     }
 
@@ -134,15 +157,23 @@ void DrawListLayer::recordBackwards(int stepIndex,
             forwardMerge->fOrder = CompressedPaintersOrder::First();
             fLayers.addAfter(targetLayer, current);
         } else {
-            fLayers.addToTail(targetLayer);
+            if constexpr (kIsDepthOnly) {
+                if (boundary.layer) {
+                    fLayers.addBefore(boundary.layer, targetLayer);
+                } else {
+                    fLayers.addToTail(targetLayer);
+                }
+            } else {
+                fLayers.addToTail(targetLayer);
+            }
         }
     }
 
     SkASSERT(targetLayer);
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
-    bool notStopLayer = targetLayer != stop.layer;
+    bool notBoundaryLayer = targetLayer != boundary.layer;
     BindingList* inserted = targetLayer->add<kIsDepthOnly>(
-            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notStopLayer, isStencil);
+            &fStorage, targetMatch, key, draw, step, !dependsOnDst && notBoundaryLayer, isStencil);
 
     SkASSERT(inserted);
     if (stepIndex > 0) {

@@ -113,17 +113,32 @@ struct Layer {
     SK_ALWAYS_INLINE std::pair<BoundsTest, BindingList*> test(const Rect& drawBounds,
                                                               const LayerKey& key,
                                                               bool requiresBarrier,
-                                                              BindingList* startList) {
+                                                              BindingList* boundList) {
         BindingList* foundMatch = nullptr;
         BindingList* list;
         BindingList* end;
         if constexpr (kForwards) {
-            list = startList ? startList : fBindings.head();
+            list = boundList ? boundList : fBindings.head();
             end = nullptr;
         } else {
-            list = fBindings.tail();
-            end = startList ? startList->fPrev : nullptr;
+            if (boundList) {
+                // DepthOnly draws 1) always walk backwards 2) Never have a stop layer. Thus, if a
+                // boundary layer is present, it must be the starting point for a backwards walk.
+                // The walk is inclusive, as we guarantee that depth only draws come before shading
+                // ones.
+                if constexpr (kIsDepthOnly) {
+                    list = boundList;
+                    end = nullptr;
+                } else {
+                    list = fBindings.tail();
+                    end = boundList->fPrev;
+                }
+            } else {
+                list = fBindings.tail();
+                end = nullptr;
+            }
         }
+
         // Advancement is also constexpr
         for (; list != end; list = kForwards ? list->fNext : list->fPrev) {
             if (list->fKey == key) {
