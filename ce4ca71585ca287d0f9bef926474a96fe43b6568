@@ -16,6 +16,24 @@
       "message": "I think I want to yield and defer to @ccameron on this CL.  At the same time (maybe unfairly, since I am yielding :-P) let me share two notes:\n\n* This CL reminds me a little bit of https://review.skia.org/917191 where a similar UaF had to be fixed in Rust PNG decoder.  The fix in this other CL was different - it seemed that `SkEncodedInfo::ICCProfile::Make` requires a long-lived/owning `SkData`.  I wonder if a similar API requirement may exist around the APIs touched by this CL.\n* I note that `std::shared_ptr\u003cT\u003e` is currently [banned](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++-features.md#std_shared_ptr-banned) in Chromium, but maybe this doesn\u0027t matter because 1) this is Skia and 2) IIUC Chromium doesn\u0027t have any specific reason to ban (other than consistency + cost to migrate).",
       "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aaef1b3_f042b6c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-02-23T16:34:56Z",
+      "side": 1,
+      "message": "Is there a pre-existing bug (also in the non-Rust path) when this gets pulled out in [SkiaImageDecoderBase::OnSetData](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d101;drc\u003d8b3cdb2cec78482a46337fc2a53db52974a2920a). That seems to just copy the `skcms_ICCProfile` object directly into the `blink::ColorProfile`, with all of the pointers still dangling.\n\nIf that\u0027s the case, then we probably need to find a solution that fixes that as well. I might be inclined to create a bigger \"color profile object\" that includes the ICC profile, any \"guts\" needed for its pointers, and the HDR metadata all together. But maybe there\u0027s a better solution out there.",
+      "parentUuid": "9a28808b_e283ce99",
+      "revId": "ce4ca71585ca287d0f9bef926474a96fe43b6568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
