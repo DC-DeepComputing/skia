@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88ea60aa_b0211328",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-23T13:24:54Z",
+      "side": 1,
+      "message": "Breaking the g3 roll: http://shortn/_SUtox78Q07\n\nI guess we need to roll manually.",
+      "revId": "6a692956838abcca67c8bd88532d41293e581c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
