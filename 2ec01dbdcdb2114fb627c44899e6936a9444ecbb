@@ -16,6 +16,23 @@
       "message": "this change generates the following diff in Android tree: https://paste.googleplex.com/4714021719769088",
       "revId": "2ec01dbdcdb2114fb627c44899e6936a9444ecbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0026097b_98f74f18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-24T21:49:05Z",
+      "side": 1,
+      "message": "Discussed very briefly with @bungeman@google.com, and he had some pretty strong reservations about this. Additionally, the understanding of the font system described in b/481706652 seems to contain hallucinations.\n\nDeferring to other folks while OOO, but please do not land this without agreement from bungeman@. Thanks!",
+      "revId": "2ec01dbdcdb2114fb627c44899e6936a9444ecbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
