@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa081a3f_9eeab568",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-24T20:09:04Z",
+      "side": 1,
+      "message": "Does this default matter? It looks like we manually set it to either true or false in the code below always. So I don\u0027t think this needs a specific default value and explanation why.",
+      "range": {
+        "startLine": 286,
+        "startChar": 35,
+        "endLine": 286,
+        "endChar": 40
+      },
+      "revId": "995433d5003070591b960a49422a0e651cf14e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "941d3b41_dc1ca309",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-24T20:09:04Z",
+      "side": 1,
+      "message": "I think we can just delete everything from here to the end of the function. And I don\u0027t think we need appFeatures to be passed in as a param anymore either.",
+      "range": {
+        "startLine": 843,
+        "startChar": 7,
+        "endLine": 843,
+        "endChar": 70
+      },
+      "revId": "995433d5003070591b960a49422a0e651cf14e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
