@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "89c62344_03baf2c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-24T14:38:49Z",
+      "side": 1,
+      "message": "Added `is_canvaskit\u003dtrue` build arg, which should address this comment.",
+      "parentUuid": "62bc7f5b_f779b396",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "4bd0a0e9_edc31380",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -155,6 +179,30 @@
       "side": 1,
       "message": "This is confusing but intentional:\n\n- `target_cpu \u003d\u003d \"wasm\"` used to be equivalent to `is_wasm`, but now it is equivalent to `is_any_wasm`.\n- CanvasKit defines its own GL test context in modules/canvaskit/gm_bindings.cpp (`WasmWebGlTestContext`), which is (I believe) why it was excluded from this block before.\n- In a subsequent CL, I\u0027ll be adding a webgl test context implementation for `is_standalone_wasm` builds - and therefore we need `is_standalone_wasm` to be able to enter this block. So, now the guard becomes `!is_wasm` which excludes CanvasKit-WASM but not standalone WASM.\n\nLMK if that makes sense!",
       "parentUuid": "cd7deedb_55f0da62",
+      "range": {
+        "startLine": 2236,
+        "startChar": 25,
+        "endLine": 2236,
+        "endChar": 34
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a37c4ee8_e8ba06bc",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2236,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-24T14:38:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4d5ca80_1bfbb768",
       "range": {
         "startLine": 2236,
         "startChar": 25,
@@ -322,6 +370,30 @@
       "side": 1,
       "message": "Oh, and then in order to build for CK you\u0027d use need both args, i.e. `skia_build_canvaskit\u003dtrue target_cpu\u003d\"wasm\"`. To build standalone wasm you\u0027d use args `skia_build_wasm\u003dtrue target_cpu\u003d\"wasm\"`.",
       "parentUuid": "8cdfafff_24ae7080",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "0934dd0fed7304e4a20e29b602ddb012db4238a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e463d54_28bdb8b1",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-24T14:38:49Z",
+      "side": 1,
+      "message": "Ok, PS 11 has what I think resolves this discussion:\n\n- `is_wasm` now means \"is any wasm\"\n- CanvasKit builds now also require `is_canvaskit\u003dtrue` in addition to `target_cpu\u003d\"wasm\"`\n\nPTAL!",
+      "parentUuid": "e9934ed5_7aadc558",
       "range": {
         "startLine": 81,
         "startChar": 0,
