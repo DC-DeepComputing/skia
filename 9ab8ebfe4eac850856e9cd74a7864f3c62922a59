@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d897ab8_4cd91558",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-24T19:15:29Z",
+      "side": 1,
+      "message": "Sorry, what is different about this CL from the original reland? Wanting to verify whatever issue was caused by this CL is now resolved before relanding.",
+      "revId": "9ab8ebfe4eac850856e9cd74a7864f3c62922a59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
