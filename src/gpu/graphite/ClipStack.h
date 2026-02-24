@@ -102,7 +102,9 @@ public:
     Clip visitClipStackForDraw(const Transform&,
                                Geometry*,
                                const SkStrokeRec&,
-                               ElementList* outEffectiveElements) const;
+                               ElementList* outEffectiveElements,
+                               ElementList* skippedEffectiveElements,
+                               bool useDrawListLayer) const;
 
     // Update the per-clip element state for later rendering using pre-computed clip state data for
     // a particular draw. The provided 'z' value is the depth value that the draw will use if it's
@@ -118,6 +120,8 @@ public:
             const ElementList& effectiveElements,
             const BoundsManager*,
             PaintersDepth z);
+
+    void updateSkippedClips(const ElementList& skippedClips, Insertion earliestInsertion);
 
     void recordDeferredClipDraws();
 
@@ -167,6 +171,14 @@ private:
     // Wraps the geometric Element data with logic for containment and bounds testing.
     class RawElement : public Element {
     public:
+        // RawElements begin in state kUndrawn. States transition strictly forward direction
+        // kUndrawn->kSkipped->kDrawn and cannot revert.
+        //
+        // TODO do some consolidation with hasPendingDraw or something
+        enum class InsertionState {
+            kUndrawn, kSkipped, kDrawn,
+        };
+
         using Stack = SkTBlockList<RawElement, 1>;
 
         RawElement(const Rect& deviceBounds,
@@ -244,6 +256,9 @@ private:
         void drawClipImmediate(Device*, const Rect& snappedOuterBounds);
 
         void validate() const;
+
+        // TODO move this, setters getters
+        InsertionState fInState = InsertionState::kUndrawn;
     private:
         // TODO: Should only combine elements within the same save record, that don't have pending
         // draws already. Otherwise, we're changing the geometry that will be rasterized and it
@@ -284,6 +299,8 @@ private:
         //             must be inserted after the into or after the latest layer+list across all
         //             their dependcy depth draws.
         DrawParams* fCaptureParams;
+    // TODO BAD!
+    public:
         Insertion fInsertion;
     };
 

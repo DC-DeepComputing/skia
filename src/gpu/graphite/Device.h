@@ -301,7 +301,8 @@ private:
     std::pair<DrawParams*, Insertion> drawClipShapeImmediate(const Transform&,
                                                              const Shape&,
                                                              const Clip&,
-                                                             DrawOrder);
+                                                             DrawOrder,
+                                                             Insertion);
 
     void updateNextDepthForClipping(PaintersDepth depth);
 
