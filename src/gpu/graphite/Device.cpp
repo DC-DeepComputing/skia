@@ -1550,11 +1550,15 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // Calculate the clipped bounds of the draw and determine the clip elements that affect the
     // draw without updating the clip stack.
+    bool useDrawListLayer = fRecorder->priv().caps()->useDrawListLayer();
     ClipStack::ElementList clipElements;
+    ClipStack::ElementList skippedClips;
     Clip clip = fClip.visitClipStackForDraw(localToDevice,
                                             &geometry,
                                             style,
-                                            &clipElements);
+                                            &clipElements,
+                                            &skippedClips,
+                                            useDrawListLayer);
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
         return;
@@ -1756,7 +1760,6 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
-    bool useDrawListLayer = fRecorder->priv().caps()->useDrawListLayer();
     if (!useDrawListLayer) {
         // If a draw is not opaque, it must be drawn after the most recent draw it intersects with
         // in order to blend correctly.
@@ -1788,23 +1791,24 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If an atlas path renderer was chosen, then record a single CoverageMaskShape draw.
     // The shape will be scheduled to be rendered or uploaded into the atlas during the
     // next invocation of flushPendingWork().
+    std::pair<DrawParams*, Insertion> result;
     if (pathAtlas != nullptr) {
         // Record the draw as a fill since stroking is handled by the atlas render/upload.
         SkASSERT(atlasMask.has_value());
         auto [mask, origin] = *atlasMask;
-        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
-                        order, paintID, dstUsage, scopedDrawBuilder.gatherer(), /*stroke=*/nullptr,
-                        latestInsertion);
+        result = fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY),
+                                 Geometry(mask), clip, order, paintID, dstUsage,
+                                 scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, latestInsertion);
     } else {
         if (styleType != SkStrokeRec::kFill_Style) {
             // For stroke-and-fill, 'renderer' is used for the fill and we always use the
             // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
             StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-            fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
-                                   ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
-                                   : renderer,
-                            localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
+            result = fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
+                                     ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
+                                     : renderer,
+                                     localToDevice, geometry, clip, order, paintID, dstUsage,
+                                     scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
         } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
             // Possibly record an additional draw using the non-AA bounds renderer to fill the
             // interior with a renderer that can disable blending entirely.
@@ -1815,10 +1819,11 @@ void Device::drawGeometry(const Transform& localToDevice,
                 // The regular draw has analytic coverage, so isn't being sorted front to back, but
                 // we do want to sort the inner fill to maximize overdraw reduction
                 orderWithoutCoverage.reverseDepthAsStencil();
-                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
-                                Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                                paintID, DstUsage::kNone, scopedDrawBuilder.gatherer(),
-                                /*stroke=*/nullptr, latestInsertion);
+                result = fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(),
+                                         localToDevice, Geometry(Shape(innerFillBounds)), clip,
+                                         orderWithoutCoverage, paintID, DstUsage::kNone,
+                                         scopedDrawBuilder.gatherer(), /*stroke=*/nullptr,
+                                         latestInsertion);
                 // Force the coverage draw to come after the non-AA draw in order to benefit from
                 // early depth testing.
                 order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
@@ -1827,13 +1832,19 @@ void Device::drawGeometry(const Transform& localToDevice,
 
         if (styleType == SkStrokeRec::kFill_Style ||
             styleType == SkStrokeRec::kStrokeAndFill_Style) {
-            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                            scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, latestInsertion);
+            auto res = fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID,
+                                       dstUsage, scopedDrawBuilder.gatherer(), /*stroke=*/nullptr,
+                                       latestInsertion);
+            if (!result.second.layer) {
+                result = res;
+            }
         }
     }
 
     if (!useDrawListLayer) {
         fColorDepthBoundsManager->recordDraw(clip.drawBounds(), order.paintOrder());
+    } else {
+        fClip.updateSkippedClips(skippedClips, result.second);
     }
     fCurrentDepth = order.depth();
 
@@ -1898,7 +1909,8 @@ void Device::drawClipShape(const Transform& localToDevice,
 std::pair<DrawParams*, Insertion> Device::drawClipShapeImmediate(const Transform& localToDevice,
                                                                  const Shape& shape,
                                                                  const Clip& clip,
-                                                                 DrawOrder order) {
+                                                                 DrawOrder order,
+                                                                 Insertion earliestInsertion) {
     ScopedDrawBuilder scopedDrawBuilder(fRecorder);
     auto renderer = this->chooseMSAARenderer(shape,
                                              DefaultFillStyle(),
@@ -1912,11 +1924,11 @@ std::pair<DrawParams*, Insertion> Device::drawClipShapeImmediate(const Transform
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
         return fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip,
                                order, UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, /*latestInsertion=*/{});
+                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, earliestInsertion);
     } else {
         return fDC->recordDraw(renderer, localToDevice, Geometry(shape), clip, order,
                                UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, /*latestInsertion=*/{});
+                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, earliestInsertion);
     }
 }
 

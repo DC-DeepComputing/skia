@@ -690,8 +690,9 @@ void ClipStack::RawElement::drawClipImmediate(Device* device, const Rect& snappe
     // We can't call validate but we need to make sure we have something to draw here.
     SkASSERT(!fShape.isEmpty());
 
-    // We shouldn't be drawing if we already drew this clip element
-    SkASSERT(!fInsertion.layer && !fInsertion.list);
+    // Either it's skipped and has the back pointer to the earlist draw, or it's undrawn and has
+    // neither.
+    SkASSERT((fInState == InsertionState::kSkipped) == (fInsertion.layer && fInsertion.list));
     SkASSERT(!fCaptureParams);
 
     // Note, passing fOuterBounds here may influence the preference for wedges here.
@@ -703,8 +704,9 @@ void ClipStack::RawElement::drawClipImmediate(Device* device, const Rect& snappe
                                                 snappedOuterBounds.asSkIRect(),
                                                 /* nonMSAAClip= */ {},
                                                 /* shader= */ nullptr},
-                                           {fMaxZ, fOrder});
-
+                                           {fMaxZ, fOrder},
+                                           fInsertion);
+    fInState = InsertionState::kDrawn;
     SkASSERT(fInsertion.layer && fInsertion.list);
     SkASSERT(fCaptureParams);
 }
@@ -1746,7 +1748,9 @@ AnalyticClip can_apply_analytic_clip(const Shape& shape, const Transform& localT
 Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       Geometry* geometry,
                                       const SkStrokeRec& style,
-                                      ClipStack::ElementList* outEffectiveElements) const {
+                                      ClipStack::ElementList* outEffectiveElements,
+                                      ClipStack::ElementList* skippedEffectiveElements,
+                                      bool useDrawListLayer) const {
     static const Clip kClippedOut = {
             Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(),
             /* nonMSAAClip= */ {}, /* shader= */ nullptr};
@@ -1776,91 +1780,177 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     draw.applyScissor(cs.op() == SkClipOp::kIntersect ? snap_scissor(cs.outerBounds(), deviceBounds)
                                                       : deviceBounds);
 
-    switch (cs.testForDraw(draw)) {
-        case DrawInfluence::kClipsOutDraw:
-            // The draw is offscreen or clipped out, so there is no need to visit the clip elements.
-            return kClippedOut;
-
-        case DrawInfluence::kNone:
-            // The draw is unaffected by the clip stack (except possibly `scissor`), and there's no
-            // need to visit each clip element.
-            return draw.toClip(geometry, {}, cs.shader());
-
-        case DrawInfluence::kReplacesDraw:
-            // The draw covers the clip entirely. Replace the shape with a flood fill, which can
-            // intersect with shapes efficiently.
-            draw.resetToFloodFill();
-            [[fallthrough]];
-
-        case DrawInfluence::kComplexInteraction:
-            // Check each element's influence on the draw below
-            break;
-    }
-
-    SkASSERT(outEffectiveElements);
-    SkASSERT(outEffectiveElements->empty());
+    SkASSERT(skippedEffectiveElements->empty());
     int i = fElements.count();
     NonMSAAClip nonMSAAClip;
-    for (const RawElement& e : fElements.ritems()) {
-        --i;
-        if (i < cs.oldestElementIndex()) {
-            // All earlier elements have been invalidated by elements already processed so the draw
-            // can't be affected by them and cannot contribute to their usage bounds.
-            break;
-        }
-
-        switch (e.testForDraw(draw)) {
+    if (useDrawListLayer) {
+        switch (cs.testForDraw(draw)) {
             case DrawInfluence::kClipsOutDraw:
-                // Per-element check was able to completely reject the draw.
-                outEffectiveElements->clear();
                 return kClippedOut;
 
             case DrawInfluence::kNone:
-                // This element does not interact, so continue to the next
-                continue;
+                for (const RawElement& e : fElements.ritems()) {
+                    --i;
+                    if (i < cs.oldestElementIndex()) {
+                        break;
+                    }
+                    if (e.fInState == RawElement::InsertionState::kUndrawn) {
+                        skippedEffectiveElements->push_back(&e);
+                    }
+                }
+                return draw.toClip(geometry, {}, cs.shader());
 
             case DrawInfluence::kReplacesDraw:
-                // This element is covered entirely by the draw, so the draw's geometry can be
-                // replaced assuming the coordinate spaces are compatible. To facilitate this, we
-                // switch the drawn geometry to a flood fill and then fall through to intersection.
-                // Even if the coordinate spaces aren't in alignment, this eliminates the draw's
-                // source of analytic coverage.
                 draw.resetToFloodFill();
-
                 [[fallthrough]];
 
             case DrawInfluence::kComplexInteraction:
-                // First try to handle the clip geometrically
-                if (e.op() == SkClipOp::kIntersect && draw.intersectClipElement(e)) {
-                    continue;
-                }
-                // Second try to tighten the scissor, which is lighter weight than adding an
-                // analytic clip pipeline variation or triggering MSAA.
-                if (e.clipType() == ClipState::kDeviceRect) {
-                    Rect scissor = e.shape().rect().makeRound();
-                    if (e.shape().rect().nearlyEquals(scissor, Shape::kDefaultPixelTolerance)) {
-                        // Pass in `scissor` since these need to be integral values while
-                        // nearlyEquals allows the original rect coordinates to be slightly
-                        // different (causing problems later with asSkIRect()).
-                        draw.applyScissor(scissor);
-                        continue;
-                    }
-                }
-                // Third try to handle the clip analytically in the shader
-                if (nonMSAAClip.fAnalyticClip.isEmpty()) {
-                    nonMSAAClip.fAnalyticClip = can_apply_analytic_clip(e.shape(),
-                                                                        e.localToDevice());
-                    if (!nonMSAAClip.fAnalyticClip.isEmpty()) {
-                        continue;
-                    }
-                }
-
-                // Fourth, remember the element for later, either to be a depth-only draw or to be
-                // flattened into a clip mask.
-                // Otherwise, accumulate it for later. Depending on how many elements are collected
-                // we may use the scissor, analytic clip, or MSAA/atlas.
-                outEffectiveElements->push_back(&e);
                 break;
+        }
+
+        SkASSERT(outEffectiveElements);
+        SkASSERT(outEffectiveElements->empty());
+        for (const RawElement& e : fElements.ritems()) {
+            --i;
+            if (i < cs.oldestElementIndex()) {
+                break;
+            }
+
+            switch (e.testForDraw(draw)) {
+                case DrawInfluence::kClipsOutDraw:
+                    outEffectiveElements->clear();
+                    skippedEffectiveElements->clear();
+                    return kClippedOut;
+
+                case DrawInfluence::kNone:
+                    if (e.fInState == RawElement::InsertionState::kUndrawn) {
+                        skippedEffectiveElements->push_back(&e);
+                    }
+                    continue;
+
+                case DrawInfluence::kReplacesDraw:
+                    draw.resetToFloodFill();
+
+                    [[fallthrough]];
+
+                case DrawInfluence::kComplexInteraction:
+                    if (e.op() == SkClipOp::kIntersect && draw.intersectClipElement(e)) {
+                        if (e.fInState == RawElement::InsertionState::kUndrawn) {
+                            skippedEffectiveElements->push_back(&e);
+                        }
+                        continue;
+                    }
+                    if (e.clipType() == ClipState::kDeviceRect) {
+                        Rect scissor = e.shape().rect().makeRound();
+                        if (e.shape().rect().nearlyEquals(scissor, Shape::kDefaultPixelTolerance)) {
+                            draw.applyScissor(scissor);
+                            if (e.fInState == RawElement::InsertionState::kUndrawn) {
+                                skippedEffectiveElements->push_back(&e);
+                            }
+                            continue;
+                        }
+                    }
+                    if (nonMSAAClip.fAnalyticClip.isEmpty()) {
+                        nonMSAAClip.fAnalyticClip =
+                                can_apply_analytic_clip(e.shape(), e.localToDevice());
+                        if (!nonMSAAClip.fAnalyticClip.isEmpty()) {
+                            if (e.fInState == RawElement::InsertionState::kUndrawn) {
+                                skippedEffectiveElements->push_back(&e);
+                            }
+                            continue;
+                        }
+                    }
+
+                    outEffectiveElements->push_back(&e);
+                    break;
+            }
+        }
+    } else {
+        switch (cs.testForDraw(draw)) {
+            case DrawInfluence::kClipsOutDraw:
+                // The draw is offscreen or clipped out, so there is no need to visit the clip
+                // elements.
+                return kClippedOut;
+
+            case DrawInfluence::kNone:
+                // The draw is unaffected by the clip stack (except possibly `scissor`), and there's
+                // no need to visit each clip element.
+                return draw.toClip(geometry, {}, cs.shader());
+
+            case DrawInfluence::kReplacesDraw:
+                // The draw covers the clip entirely. Replace the shape with a flood fill, which can
+                // intersect with shapes efficiently.
+                draw.resetToFloodFill();
+                [[fallthrough]];
+
+            case DrawInfluence::kComplexInteraction:
+                // Check each element's influence on the draw below
+                break;
+        }
+
+        SkASSERT(outEffectiveElements);
+        SkASSERT(outEffectiveElements->empty());
+        for (const RawElement& e : fElements.ritems()) {
+            --i;
+            if (i < cs.oldestElementIndex()) {
+                // All earlier elements have been invalidated by elements already processed so the
+                // draw can't be affected by them and cannot contribute to their usage bounds.
+                break;
+            }
+
+            switch (e.testForDraw(draw)) {
+                case DrawInfluence::kClipsOutDraw:
+                    // Per-element check was able to completely reject the draw.
+                    outEffectiveElements->clear();
+                    return kClippedOut;
+
+                case DrawInfluence::kNone:
+                    // This element does not interact, so continue to the next
+                    continue;
+
+                case DrawInfluence::kReplacesDraw:
+                    // This element is covered entirely by the draw, so the draw's geometry can be
+                    // replaced assuming the coordinate spaces are compatible. To facilitate this,
+                    // we switch the drawn geometry to a flood fill and then fall through to
+                    // intersection. Even if the coordinate spaces aren't in alignment, this
+                    // eliminates the draw's source of analytic coverage.
+                    draw.resetToFloodFill();
+
+                    [[fallthrough]];
+
+                case DrawInfluence::kComplexInteraction:
+                    // First try to handle the clip geometrically
+                    if (e.op() == SkClipOp::kIntersect && draw.intersectClipElement(e)) {
+                        continue;
+                    }
+                    // Second try to tighten the scissor, which is lighter weight than adding an
+                    // analytic clip pipeline variation or triggering MSAA.
+                    if (e.clipType() == ClipState::kDeviceRect) {
+                        Rect scissor = e.shape().rect().makeRound();
+                        if (e.shape().rect().nearlyEquals(scissor, Shape::kDefaultPixelTolerance)) {
+                            // Pass in `scissor` since these need to be integral values while
+                            // nearlyEquals allows the original rect coordinates to be slightly
+                            // different (causing problems later with asSkIRect()).
+                            draw.applyScissor(scissor);
+                            continue;
+                        }
+                    }
+                    // Third try to handle the clip analytically in the shader
+                    if (nonMSAAClip.fAnalyticClip.isEmpty()) {
+                        nonMSAAClip.fAnalyticClip =
+                                can_apply_analytic_clip(e.shape(), e.localToDevice());
+                        if (!nonMSAAClip.fAnalyticClip.isEmpty()) {
+                            continue;
+                        }
+                    }
+
+                    // Fourth, remember the element for later, either to be a depth-only draw or to
+                    // be flattened into a clip mask. Otherwise, accumulate it for later. Depending
+                    // on how many elements are collected we may use the scissor, analytic clip, or
+                    // MSAA/atlas.
+                    outEffectiveElements->push_back(&e);
+                    break;
+            }
         }
     }
 
@@ -1911,30 +2001,50 @@ std::pair<CompressedPaintersOrder, Insertion> ClipStack::updateClipStateForDraw(
     Insertion latestInsertion = {nullptr, nullptr};
     Rect deviceBounds = this->deviceBounds();
     CompressedPaintersOrder maxClipOrder = DrawOrder::kNoIntersection;
-    for (int i = 0; i < effectiveElements.size(); ++i) {
+    if (fDevice->fRecorder->priv().caps()->useDrawListLayer()) {
+        for (int i = 0; i < effectiveElements.size(); ++i) {
+            const RawElement* e = static_cast<const RawElement*>(effectiveElements[i]);
+            // Undrawn elements should be drawn.
+            // Skipped elements should be drawn using the insertion backpointer.
+            // Drawn elements should be skipped, but the insertion needs to be threaded.
+            auto [order, insertion] = const_cast<RawElement*>(e)->updateForDraw(
+                fDevice, boundsManager, deviceBounds, clip.drawBounds(), z);
+            maxClipOrder = std::max(order, maxClipOrder);
+            SkASSERT(insertion.layer && insertion.list);
+            if (latestInsertion.layer) {
+                if (insertion.layer->fOrder > latestInsertion.layer->fOrder) {
+                    latestInsertion = insertion;
+                } else if (insertion.layer->fOrder == latestInsertion.layer->fOrder) {
+                    if (insertion.list->fOrder > latestInsertion.list->fOrder) {
+                        latestInsertion = insertion;
+                    }
+                }
+            } else {
+                latestInsertion = insertion;
+            }
+        }
+    } else {
         // ClipStack owns the elements in the `clipState` so it's OK to downcast and cast away
         // const.
         // TODO: Enforce the ownership? In debug builds we could invalidate a `ClipStateForDraw` if
         // its element pointers become dangling and assert validity here.
-        const RawElement* e = static_cast<const RawElement*>(effectiveElements[i]);
-        auto [order, insertion] =  const_cast<RawElement*>(e)->updateForDraw(
-                fDevice, boundsManager, deviceBounds, clip.drawBounds(), z);
-        maxClipOrder = std::max(order, maxClipOrder);
-        SkASSERT(insertion.layer && insertion.list);
-        if (latestInsertion.layer) {
-            if (insertion.layer->fOrder > latestInsertion.layer->fOrder) {
-                latestInsertion = insertion;
-            } else if (insertion.layer->fOrder == latestInsertion.layer->fOrder) {
-                if (insertion.list->fOrder > latestInsertion.list->fOrder) {
-                    latestInsertion = insertion;
-                }
-            }
-        } else {
-            latestInsertion = insertion;
+        for (int i = 0; i < effectiveElements.size(); ++i) {
+            const RawElement* e = static_cast<const RawElement*>(effectiveElements[i]);
+            auto [order, insertion] = const_cast<RawElement*>(e)->updateForDraw(
+                    fDevice, boundsManager, deviceBounds, clip.drawBounds(), z);
+            maxClipOrder = std::max(order, maxClipOrder);
         }
     }
 
     return {maxClipOrder, latestInsertion};
+}
+
+void ClipStack::updateSkippedClips(const ElementList& skippedClips, Insertion earliestInsertion) {
+    for (int i = 0; i < skippedClips.size(); ++i) {
+        const RawElement* e = static_cast<const RawElement*>(skippedClips[i]);
+        const_cast<RawElement*>(e)->fInState = RawElement::InsertionState::kSkipped;
+        const_cast<RawElement*>(e)->fInsertion = earliestInsertion;
+    }
 }
 
 void ClipStack::recordDeferredClipDraws() {
