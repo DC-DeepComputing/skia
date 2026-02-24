@@ -112,6 +112,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "144e2fc3_1e622c67",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T16:37:28Z",
+      "side": 1,
+      "message": "Yes it can, I found the for loop to be more succinct and easier to read?",
+      "parentUuid": "74c7040b_81090e6c",
+      "range": {
+        "startLine": 528,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50639b03_4b4d87e3",
         "filename": "src/gpu/graphite/DrawListTypes.h",
         "patchSetId": 15
@@ -135,6 +159,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c80b461_8f676616",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T16:37:28Z",
+      "side": 1,
+      "message": "Yes, although stencils are not allowed to self intersect (and thus every draw within the same list will be disjoint), we still want to be checking for matches. \n\nThis is because stencilLists contain a mixture of the shading and non-shading steps, so we need to match on that to get the transposing behavior we want.",
+      "parentUuid": "50639b03_4b4d87e3",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db7f76e4_e6e48cc1",
         "filename": "src/gpu/graphite/DrawListTypes.h",
         "patchSetId": 15
@@ -146,6 +194,30 @@
       "writtenOn": "2026-02-24T16:09:52Z",
       "side": 1,
       "message": "For `requiresBarrier` single draws, do we still need to be checking the stencil draw list bounds in case we overlap a previous shading stencil cover draw?",
+      "range": {
+        "startLine": 196,
+        "startChar": 1,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62a3bffe_1d9b184c",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T16:37:28Z",
+      "side": 1,
+      "message": "If my understanding is correct, `requiresBarrier` means that self intersection is no longer allowed. \n\nSo, we only make the `requiresBarrier` check if we would have been able to self intersect. Stencils may never self intersect so we only make this check on the singleDraw path.\n\n\nRegardless of the list type, except in the case of compatibly overlapping singleDraws, we always check for intersection. The type of the list does not affect this except as a convenient quick reject for matching. i.e. Single draws should not match with stencils, and vice versa.",
+      "parentUuid": "db7f76e4_e6e48cc1",
       "range": {
         "startLine": 196,
         "startChar": 1,
