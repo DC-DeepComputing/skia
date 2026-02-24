@@ -16,6 +16,144 @@
       "message": "Clean run on PS13, will disable caps in next patch.",
       "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d7c101_83b8241e",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "nit: to be removed before landing",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c58fc25_fb731a07",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "Given that we have to branch here, I\u0027m not sure how much the template on `kIsStencil` buys us, and branch prediction inside `test` probably makes the extra checks there moot.",
+      "range": {
+        "startLine": 97,
+        "startChar": 21,
+        "endLine": 99,
+        "endChar": 93
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bc0028_d033539b",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "asserts?",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74c7040b_81090e6c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "Can this just be:\n```\nconst SingleDraw* current \u003d sd-\u003efDraws.head();\nwhile(current) {\n    if (!recordDraw(...)) { return nullptr; }\n    current \u003d current-\u003efNext;\n}",
+      "range": {
+        "startLine": 528,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50639b03_4b4d87e3",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to track `foundMatch` for stencils since they can\u0027t really have compatible overlaps as they would damage each other stencil content.\n\n*edit* or is this meant to return the oldest binding wrapper before we had an intersection, so it\u0027s really the kDisjoint case? If that\u0027s the case, then I don\u0027t think need match on the key?",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7f76e4_e6e48cc1",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T16:09:52Z",
+      "side": 1,
+      "message": "For `requiresBarrier` single draws, do we still need to be checking the stencil draw list bounds in case we overlap a previous shading stencil cover draw?",
+      "range": {
+        "startLine": 196,
+        "startChar": 1,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
