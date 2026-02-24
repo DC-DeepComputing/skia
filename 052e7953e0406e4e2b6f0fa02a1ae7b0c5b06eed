@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "414eab27_5e7762e4",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 11
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-24T21:48:52Z",
+      "side": 1,
+      "message": "I tried a local flutter roll and things seemed to build fine with this CL patched in. Possibly their canvaskit build is custom enough that it just needs the `is_wasm` value to be correct. I started a canary run though, and we can see what happens.",
+      "parentUuid": "e79ff2c9_094da52d",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3abaa728_b5ce18c8",
         "filename": "third_party/dawn/BUILD.gn",
         "patchSetId": 11
