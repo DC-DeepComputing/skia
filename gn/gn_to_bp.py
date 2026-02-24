@@ -307,6 +307,8 @@ cc_defaults {
         "liblog",
         "libpng",
         "libz",
+        "libexpat",
+        "libft2",
     ],
     static_libs: [
         "libarect",
@@ -622,10 +624,12 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     d['skia_use_libwebp_encode'] = 'false'
     d['skia_use_wuffs'] = 'false'
     d['skia_enable_pdf'] = 'false'
-    d['skia_use_freetype'] = 'false'
+    d['skia_use_freetype'] = 'true'
     d['skia_use_fixed_gamma_text'] = 'false'
-    d['skia_use_expat'] = 'false'
+    d['skia_use_expat'] = 'true'
     d['skia_enable_fontmgr_custom_empty'] = 'false'
+    if target_os == '"android"':
+        d['skia_enable_fontmgr_android'] = 'true'
   else:
     d['skia_enable_android_utils'] = 'true'
     d['skia_use_freetype'] = 'true'
@@ -795,10 +799,13 @@ def main():
 
   # Execute GN for specialized RenderEngine target
   js_renderengine   = gn_to_bp_utils.GenerateJSONFromGN(args.gn, gn_args_renderengine)
-  renderengine_srcs = strip_slashes(
-      js_renderengine['targets']['//:skia']['sources'])
-  gn_to_bp_utils.GrabDependentValues(js_renderengine, '//:skia', 'sources',
-                                     renderengine_srcs, VMA_DEP)
+  renderengine_targets = ['//:skia', '//:typeface_freetype']
+  renderengine_srcs = set()
+  for target in renderengine_targets:
+    target_srcs = strip_slashes(js_renderengine['targets'][target]['sources'])
+    gn_to_bp_utils.GrabDependentValues(js_renderengine, target, 'sources',
+                                      target_srcs, VMA_DEP)
+    renderengine_srcs.update(target_srcs)
   renderengine_srcs = strip_non_srcs(renderengine_srcs)
 
   # Execute GN for specialized SkQP target
