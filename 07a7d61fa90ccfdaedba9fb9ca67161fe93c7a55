@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b77c28e0_a5b15671",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T20:46:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b6d7c101_83b8241e",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c58fc25_fb731a07",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f85947e0_4d35a0db",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T20:46:26Z",
+      "side": 1,
+      "message": "Quick testing on my M4 shows that the templated version hovers around 3.4ms on motionmarksuitsclips versus 3.6ms for non-templated.",
+      "parentUuid": "2c58fc25_fb731a07",
+      "range": {
+        "startLine": 97,
+        "startChar": 21,
+        "endLine": 99,
+        "endChar": 93
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f1bc0028_d033539b",
         "filename": "src/gpu/graphite/DrawListLayer.cpp",
         "patchSetId": 15
@@ -77,6 +125,30 @@
       "writtenOn": "2026-02-24T16:09:52Z",
       "side": 1,
       "message": "asserts?",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e4f5a20_90296f48",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T20:46:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1bc0028_d033539b",
       "range": {
         "startLine": 524,
         "startChar": 0,
@@ -148,6 +220,30 @@
       "side": 1,
       "message": "The for loop is fine, but it should consolidate the first and remaining into a single structure",
       "parentUuid": "144e2fc3_1e622c67",
+      "range": {
+        "startLine": 528,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "597b07c6_e439ed70",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T20:46:26Z",
+      "side": 1,
+      "message": "Oh I see what you\u0027re saying now. The first draw gets hoisted because it needs to do the binding change check. The rest are `bindingInvariant \u003d true`.",
+      "parentUuid": "392f5e3c_c7f9c546",
       "range": {
         "startLine": 528,
         "startChar": 0,
