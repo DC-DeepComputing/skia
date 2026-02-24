@@ -151,7 +151,7 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
     }
 
     const RenderPassProperties kProps = { DepthStencilFlags::kDepth,
-                                          kBGRA_8888_SkColorType,
+                                          kRGBA_8888_SkColorType,
                                           /* dstColorSpace= */ nullptr,
                                           /* requiresMSAA= */ false };
 
@@ -272,7 +272,7 @@ void compile_gradients(std::unique_ptr<Recorder> recorder,
     sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromText(text, strlen(text), font);
 
     SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                       kBGRA_8888_SkColorType,
+                                       kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType);
 
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder.get(), ii,
