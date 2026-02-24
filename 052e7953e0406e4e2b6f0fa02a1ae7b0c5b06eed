@@ -16,6 +16,52 @@
       "message": "New build flag approach, PTAL",
       "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79ff2c9_094da52d",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 11
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-24T18:15:14Z",
+      "side": 1,
+      "message": "Of note, we\u0027ll have to land a fix in Flutter to set this flag since they use our .gni files (including this one, I think). `TODO(kjlubick) Does it make sense for them to consume this?`\n\nLet\u0027s add that flag before landing this to hopefully make it a seamless roll.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3abaa728_b5ce18c8",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-24T18:15:14Z",
+      "side": 1,
+      "message": "This seems more wasm-specific than CK specific. Was it causing problems?",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
