@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9461238_0ab0c23d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2026-02-24T21:22:20Z",
+      "side": 1,
+      "message": "this change generates the following diff in Android tree: https://paste.googleplex.com/4714021719769088",
+      "revId": "2ec01dbdcdb2114fb627c44899e6936a9444ecbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
