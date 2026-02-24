@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "976f0d04_d8af3b96",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-24T19:16:00Z",
+      "side": 1,
+      "message": "note: Added this so it\u0027s more clear that this doesn\u0027t necessarily mark which devices we want to support, or which are already enabled; it just marks ones that are passed in.",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 66
+      },
+      "revId": "a2321b1555103618b531d966b7b9fb442bdccf87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
