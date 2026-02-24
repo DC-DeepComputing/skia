@@ -22,6 +22,30 @@
       },
       "revId": "7cfab2b7d44e5cfa31f24f277fbe9a8e6cc3a1cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f74aae4c_8af0e904",
+        "filename": "src/text/gpu/Glyph.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-02-24T17:05:37Z",
+      "side": 0,
+      "message": "Oh, I fixed this here but forgot to wait for that to land before kicking off the bots.\n\nhttps://skia-review.googlesource.com/c/skia/+/1170297",
+      "parentUuid": "cdc0c70a_1f0ec698",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 31
+      },
+      "revId": "7cfab2b7d44e5cfa31f24f277fbe9a8e6cc3a1cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
