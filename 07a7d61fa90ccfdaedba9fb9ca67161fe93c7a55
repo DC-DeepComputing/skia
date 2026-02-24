@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fbdaeb1_6adf32c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-02-24T16:07:48Z",
+      "side": 1,
+      "message": "Clean run on PS13, will disable caps in next patch.",
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
