@@ -33,6 +33,29 @@
       "message": "Passes initial local testing with RE-Graphite, but deferring to GPU folks for LGTM.",
       "revId": "01c191f38ff459f8749a39d217a709b2a3617591",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3733e7b2_24c274c3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-24T21:02:16Z",
+      "side": 1,
+      "message": "sampleCounts\u0027 ?",
+      "range": {
+        "startLine": 716,
+        "startChar": 15,
+        "endLine": 716,
+        "endChar": 37
+      },
+      "revId": "01c191f38ff459f8749a39d217a709b2a3617591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
