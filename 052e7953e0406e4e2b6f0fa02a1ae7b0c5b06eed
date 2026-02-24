@@ -62,6 +62,30 @@
       },
       "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3089358_e1b931f4",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-24T19:24:36Z",
+      "side": 1,
+      "message": "Good point, it does seem relevant to both WASMs.\n\nThis change was the effect of just doing a global `is_wasm -\u003e is_canvaskit` rewrite, since that\u0027s what `is_wasm` used to mean. I\u0027m not sure yet what the story will be for webgpu support in standalone wasm, so it seemed best to just keep the old behavior and change it when/if necessary. WDYT?",
+      "parentUuid": "3abaa728_b5ce18c8",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
