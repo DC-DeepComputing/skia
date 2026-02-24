@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9e3c870_0d815363",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T19:46:53Z",
+      "side": 1,
+      "message": "Are you thinking of the tests like `ImageAsyncReadPixelsGraphite` that are disabled on grvk right now? I think these will be easier to review after my other format changes also land since the way the tests are written right now depend so heavily on SkColorType as well.",
+      "parentUuid": "8e5af33e_face479b",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 55
+      },
+      "revId": "a78ab9fc6b0d39f6dd329ee314a998fa3a33d930",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d576cef_c2e53a59",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-24T19:19:05Z",
       "side": 1,
       "message": "nit: \"type. We would also...\"\njust to avoid one huge sentence w/ tons of commas :P",
+      "range": {
+        "startLine": 532,
+        "startChar": 54,
+        "endLine": 532,
+        "endChar": 60
+      },
+      "revId": "a78ab9fc6b0d39f6dd329ee314a998fa3a33d930",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5df4c7f7_24e49774",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T19:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d576cef_c2e53a59",
       "range": {
         "startLine": 532,
         "startChar": 54,
