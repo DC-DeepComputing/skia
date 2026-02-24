@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc97177f_921a8579",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-24T16:58:30Z",
+      "side": 1,
+      "message": "Thanks for the feedback! I benefited a lot from your help, let me know if this looks good",
+      "parentUuid": "a4e05152_d9db0a3a",
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "971853dc_e38649bc",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a68089b_039bc42f",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-24T16:58:30Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "971853dc_e38649bc",
+      "range": {
+        "startLine": 36,
+        "startChar": 30,
+        "endLine": 36,
+        "endChar": 34
+      },
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "171a2f49_4dbd7d76",
@@ -71,6 +113,30 @@
       "writtenOn": "2026-02-23T15:26:51Z",
       "side": 1,
       "message": "nit: don\u0027t need this semicolon",
+      "range": {
+        "startLine": 111,
+        "startChar": 1,
+        "endLine": 111,
+        "endChar": 2
+      },
+      "revId": "a45c438285315ca2929aacc7c9e8d7656ea9c759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "532ca27f_87a6b309",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-24T16:58:30Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "171a2f49_4dbd7d76",
       "range": {
         "startLine": 111,
         "startChar": 1,
