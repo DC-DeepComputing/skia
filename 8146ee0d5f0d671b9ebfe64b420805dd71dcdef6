@@ -16,6 +16,24 @@
       "message": "`supportedSampleCounts` is left as `nullptr` in this case",
       "revId": "8146ee0d5f0d671b9ebfe64b420805dd71dcdef6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c84ee0a_7cd587c7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-24T20:17:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e68a7cc_facf7560",
+      "revId": "8146ee0d5f0d671b9ebfe64b420805dd71dcdef6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
