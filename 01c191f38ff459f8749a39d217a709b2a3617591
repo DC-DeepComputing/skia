@@ -16,6 +16,23 @@
       "message": "Should be ready for review, Noelle has confirmed that some of the failing tests from the last go around are passing now.",
       "revId": "01c191f38ff459f8749a39d217a709b2a3617591",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca2c5cd_45c53f59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-02-24T20:20:36Z",
+      "side": 1,
+      "message": "Passes initial local testing with RE-Graphite, but deferring to GPU folks for LGTM.",
+      "revId": "01c191f38ff459f8749a39d217a709b2a3617591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
