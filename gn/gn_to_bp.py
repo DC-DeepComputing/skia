@@ -307,6 +307,7 @@ cc_defaults {
         "liblog",
         "libpng",
         "libz",
+        "libft2"
     ],
     static_libs: [
         "libarect",
@@ -622,10 +623,12 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     d['skia_use_libwebp_encode'] = 'false'
     d['skia_use_wuffs'] = 'false'
     d['skia_enable_pdf'] = 'false'
-    d['skia_use_freetype'] = 'false'
+    d['skia_use_freetype'] = 'true'
     d['skia_use_fixed_gamma_text'] = 'false'
     d['skia_use_expat'] = 'false'
     d['skia_enable_fontmgr_custom_empty'] = 'false'
+    if target_os == '"android"':
+        d['skia_enable_fontmgr_custom_directory'] = 'true'
   else:
     d['skia_enable_android_utils'] = 'true'
     d['skia_use_freetype'] = 'true'
