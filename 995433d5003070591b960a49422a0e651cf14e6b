@@ -93,6 +93,30 @@
       },
       "revId": "995433d5003070591b960a49422a0e651cf14e6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f48e6f9_9b16e094",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-25T17:37:20Z",
+      "side": 1,
+      "message": "After talking offline this seemed alright with you. Resolving comment",
+      "parentUuid": "7749077f_27fc9ddb",
+      "range": {
+        "startLine": 843,
+        "startChar": 7,
+        "endLine": 843,
+        "endChar": 70
+      },
+      "revId": "995433d5003070591b960a49422a0e651cf14e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
