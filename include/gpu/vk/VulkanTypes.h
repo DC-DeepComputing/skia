@@ -34,7 +34,14 @@ using VulkanGetProc = std::function<PFN_vkVoidFunction(
         VkInstance,  // instance or VK_NULL_HANDLE
         VkDevice     // device or VK_NULL_HANDLE
         )>;
+// using VulkanGetProcNameOnly = std::function<PFN_vkVoidFunction(
+//         const char* // function name
+// )>;
 
+// using VulkanGetProcInstOnly = std::function<PFN_vkVoidFunction(
+//         const char*, // function name
+//         VkInstance  // instance or VK_NULL_HANDLE
+// )>;
 typedef intptr_t VulkanBackendMemory;
 
 /**
