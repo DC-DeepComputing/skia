@@ -94,6 +94,30 @@
       },
       "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f9ef83_809ce34e",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:16:37Z",
+      "side": 1,
+      "message": "I see, so `AllowSpontaneous` does not fail if spontaneous callbacks are possible, it may just change to a regular async callback invocation. I will try and work with Corentin to see if we can revise the native mapping API to be lighter weight in the future so we can avoid calling `takeRef()` in most cases that spontaneous mapping would succeed.",
+      "parentUuid": "f8f02cc6_9804b046",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 15
+      },
+      "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

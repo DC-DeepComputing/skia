@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830e4c0f_346de45d",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:16:37Z",
+      "side": 0,
+      "message": "While isPurgeable() is private, we now have a public `isTextureBusyOnGPU` function. The dependent work for resource ref tracking is almost finished, so when @nbilling@google.com\u0027s changes land we can finish renaming it to `isBusyOnGPU()` and bring back this assert/comment by using the new function instead.",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 212,
+        "endChar": 34
+      },
+      "revId": "f11d4761c41531a19cb98bf038f2a48d1127b5c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
