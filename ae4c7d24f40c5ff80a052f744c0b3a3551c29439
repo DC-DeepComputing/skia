@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6224a4f6_446a4edd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-25T14:24:14Z",
+      "side": 1,
+      "message": "IIRC you have to put this as separate BUG lines to show up as links and possible auto post in the bugs when this CL lands",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "ae4c7d24f40c5ff80a052f744c0b3a3551c29439",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d775250f_d3cf99af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-25T14:24:14Z",
+      "side": 1,
+      "message": "This change of machines looks fine to me",
+      "revId": "ae4c7d24f40c5ff80a052f744c0b3a3551c29439",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
