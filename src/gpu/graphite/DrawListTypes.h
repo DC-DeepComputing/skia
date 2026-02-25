@@ -122,9 +122,10 @@ struct Layer {
     //
     // This was implemented in https://skia-review.git.corp.google.com/c/skia/+/1171836 and slightly
     // regresses performance due to the overhead it introduces.
-    template <bool kIsStencil, bool kIsDepthOnly, bool kForwards>
+    template <bool kIsStencil, bool kForwards>
     SK_ALWAYS_INLINE std::pair<BoundsTest, BindingList*> test(const Rect& drawBounds,
                                                                  const LayerKey& key,
+                                                                 bool isDepthOnly,
                                                                  bool requiresBarrier,
                                                                  BindingList* startList) {
         BindingList* foundMatch = nullptr;
@@ -144,7 +145,7 @@ struct Layer {
                 // If it's a depth only draw, it's ok to overlap with itself, and will ignore
                 // the below intersection check. If it's a stencil draw it is never ok to overlap
                 // with itself.
-                if constexpr (!kIsDepthOnly && !kIsStencil) {
+                if (!isDepthOnly && !kIsStencil) {
                     if (!requiresBarrier) continue;
                 }
             }
@@ -171,34 +172,24 @@ struct Layer {
         return {foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint, foundMatch};
     }
 
-    template <bool kIsDepthOnly>
     SK_ALWAYS_INLINE BindingList* add(SkArenaAllocWithReset* alloc,
                                       BindingList* list,
                                       const LayerKey& key,
                                       Draw* draw,
                                       const RenderStep* step,
-                                      bool insertBefore) {
+                                      bool isDepthOnly) {
         if (list) {
             list->fBounds.join(draw->fDrawParams->drawBounds());
         } else {
             fListOrder = fListOrder.next();
-            list = alloc->make<BindingList>(fListOrder, kIsDepthOnly);
+            list = alloc->make<BindingList>(fListOrder, isDepthOnly);
             list->fKey = key;
             list->fStep = const_cast<RenderStep*>(step);
             list->fBounds = draw->fDrawParams->drawBounds();
-            if constexpr (kIsDepthOnly) {
-                fBindings.addToHead(list);
-            } else {
-                fBindings.addToTail(list);
-            }
+            fBindings.addToTail(list);
         }
 
-        if (insertBefore) {
-            list->fDraws.addToHead(draw);
-        } else {
-            list->fDraws.addToTail(draw);
-        }
-
+        list->fDraws.addToTail(draw);
         list->fDrawCount++;
 
         return list;
