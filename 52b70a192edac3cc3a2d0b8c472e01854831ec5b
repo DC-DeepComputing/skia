@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5839c40_8fa9049d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T17:55:56Z",
+      "side": 1,
+      "message": "https://android-build.corp.google.com/abtd/run/L62700030081227014/ passed so presuming this will avoid surprises.",
+      "revId": "52b70a192edac3cc3a2d0b8c472e01854831ec5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
