@@ -50,6 +50,24 @@
       "message": "Looks like you may need to sign the license agreement and add your name to the AUTHORS file. See https://skia.org/docs/dev/contrib/",
       "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3327a7c4_aa9813ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4595360
+      },
+      "writtenOn": "2026-02-25T14:33:40Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nI didn\u0027t do it because I thought Collabora had signed the CLA. Could you please check if that\u0027s correct?",
+      "parentUuid": "12faf53f_7543a03a",
+      "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
