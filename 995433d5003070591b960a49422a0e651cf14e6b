@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4011f93_d755898a",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-25T15:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa081a3f_9eeab568",
+      "range": {
+        "startLine": 286,
+        "startChar": 35,
+        "endLine": 286,
+        "endChar": 40
+      },
+      "revId": "995433d5003070591b960a49422a0e651cf14e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "941d3b41_dc1ca309",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-24T20:09:04Z",
       "side": 1,
       "message": "I think we can just delete everything from here to the end of the function. And I don\u0027t think we need appFeatures to be passed in as a param anymore either.",
+      "range": {
+        "startLine": 843,
+        "startChar": 7,
+        "endLine": 843,
+        "endChar": 70
+      },
+      "revId": "995433d5003070591b960a49422a0e651cf14e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7749077f_27fc9ddb",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-25T15:15:18Z",
+      "side": 1,
+      "message": "I agree, but if it\u0027s alright with you, I\u0027d prefer to separate that change into a different CL as it\u0027s more of an overall pivot as opposed to a focus on ycbcr + cosmetic changes.",
+      "parentUuid": "941d3b41_dc1ca309",
       "range": {
         "startLine": 843,
         "startChar": 7,
