@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c58a2a86_113d2d37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:02:11Z",
+      "side": 1,
+      "message": "Confirmed from client that this fixes their issues when running Graphite in WASM.",
+      "revId": "ba7caf6123a08546e7fa8fc61368a33763c12a39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
