@@ -33076,8 +33076,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -33169,8 +33169,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -50856,8 +50856,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -50956,8 +50956,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -51056,8 +51056,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -51156,8 +51156,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -51256,8 +51256,8 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
-        "pool:Skia"
+        "os:Mac-14",
+        "pool:chromium.tests.gpu"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",

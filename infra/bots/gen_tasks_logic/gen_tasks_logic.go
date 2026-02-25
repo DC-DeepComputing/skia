@@ -1176,6 +1176,20 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 		}
 	}
 
+	// b/485636422, b/486147856, for MacOS tests, target chromium.tests.gpu as the pool
+	// but only for the pools where we have permission to temporarily run skia load.
+	//
+	// - 2013 Mac Pro running Mac 12.7 and an AMD Radeon HD 7800
+	// - 2019 Macbook Pro 16" running Mac 14.4.1 and an AMD Radeon Pro 5300M
+	// - 2019 Macbook Pro 15" running Mac 14.4.1 and an AMD Radeon Pro 555X
+	if b.Role("Test", "Perf") {
+		// This is almost certainly not right and needs more checks, but it's a start.
+		if b.MatchOs("Mac11") {
+			d["os"] = "Mac-14"
+			d["pool"] = "chromium.tests.gpu"
+		}
+	}
+
 	dims := make([]string, 0, len(d))
 	for k, v := range d {
 		dims = append(dims, fmt.Sprintf("%s:%s", k, v))
