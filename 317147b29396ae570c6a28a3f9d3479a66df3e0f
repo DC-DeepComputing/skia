@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fb0d31_ceb74aba",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-02-25T14:34:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is going to work.  The task scheduler would need to start polling the swarming bots from this pool, and it assumes that it\u0027s the only thing scheduling tasks within the pool.  Any way these can be moved to the Skia pool?",
+      "range": {
+        "startLine": 1100,
+        "startChar": 17,
+        "endLine": 1100,
+        "endChar": 37
+      },
+      "revId": "317147b29396ae570c6a28a3f9d3479a66df3e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
