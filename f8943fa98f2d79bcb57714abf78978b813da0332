@@ -16,6 +16,24 @@
       "message": "HarfBuzz recently introduced `hb_face_set_get_table_tags_func` and `hb_get_table_tags_func_t` to allow this to work generally. See https://github.com/harfbuzz/harfbuzz/pull/4825 .",
       "revId": "f8943fa98f2d79bcb57714abf78978b813da0332",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c02325_05543247",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-25T22:46:36Z",
+      "side": 1,
+      "message": "`hb_face_set_get_table_tags_func` landed in HarfBuzz 10. Unfortunately, there are still a number of LTS distributions with versions in [3 , 10). (The subsetter API used here was introduced in version 3.)",
+      "parentUuid": "ff204fad_18a07a6e",
+      "revId": "f8943fa98f2d79bcb57714abf78978b813da0332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
