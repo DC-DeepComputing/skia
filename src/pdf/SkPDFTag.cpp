@@ -436,6 +436,19 @@ void SkPDFStructTree::addStructElemTitle(int elemId, SkSpan<const char> title) {
     }
 }
 
+bool SkPDFStructTree::hasElemId(int elemId) {
+    if (!fRoot) {
+        return false;
+    }
+    SkPDFStructElem** structElemPtr = fStructElemForElemId.find(elemId);
+    if (!structElemPtr) {
+        return false;
+    }
+    SkPDFStructElem* structElem = *structElemPtr;
+    SkASSERT(structElem);
+    return true;
+}
+
 SkPDFIndirectReference SkPDFStructTree::emitStructTreeRoot(SkPDFDocument* doc) const {
     if (!fRoot || !fRoot->fUsed) {
         return SkPDFIndirectReference();

@@ -66,6 +66,7 @@ public:
                                        unsigned pageIndex);
 
     void addStructElemTitle(int elemId, SkSpan<const char>);
+    bool hasElemId(int elemId);
     SkPDFIndirectReference emitStructTreeRoot(SkPDFDocument* doc) const;
     SkPDFIndirectReference makeOutline(SkPDFDocument* doc) const;
     SkString getRootLanguage();

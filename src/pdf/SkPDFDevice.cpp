@@ -101,17 +101,20 @@ SkPDFDevice::MarkedContentManager::MarkedContentManager(SkPDFDocument* document,
     : fDoc(document)
     , fOut(out)
     , fCurrentlyActiveMark()
-    , fNextMarksElemId(0)
-    , fCurrentMarksElemId(0)
+    , fNextMarksElemId(SkPDF::NodeID::Nothing)
+    , fCurrentMarksElemId(SkPDF::NodeID::Nothing)
     , fMadeMarks(false)
 {}
 
 SkPDFDevice::MarkedContentManager::~MarkedContentManager() {
     // This does not close the last open mark, that is done in SkPDFDevice::content.
-    SkASSERT(fNextMarksElemId == 0);
+    SkASSERT(fNextMarksElemId == SkPDF::NodeID::Nothing);
 }
 
 void SkPDFDevice::MarkedContentManager::setNextMarksElemId(int nextMarksElemId) {
+    if (nextMarksElemId > 0 && !fDoc->hasElemId(nextMarksElemId)) {
+        nextMarksElemId = SkPDF::NodeID::OtherArtifact;
+    }
     fNextMarksElemId = nextMarksElemId;
 }
 int SkPDFDevice::MarkedContentManager::elemId() const { return fNextMarksElemId; }
@@ -124,48 +127,51 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         // End this mark
         fOut->writeText("EMC\n");
         fCurrentlyActiveMark = SkPDFStructTree::Mark();
-        fCurrentMarksElemId = 0;
+        fCurrentMarksElemId = SkPDF::NodeID::Nothing;
     }
-    if (fNextMarksElemId) {
-        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
-        if (fCurrentlyActiveMark) {
-            // Begin this mark
-            SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
-            fOut->writeText(" <</MCID ");
-            fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
-            fOut->writeText(" >>BDC\n");
-            fCurrentMarksElemId = fCurrentlyActiveMark.elemId();
-            fMadeMarks = true;
-        } else if (SkPDF::NodeID::BackgroundArtifact <= fNextMarksElemId &&
-                   fNextMarksElemId <= SkPDF::NodeID::OtherArtifact &&
-                   fDoc->hasCurrentPage())
+    if (fNextMarksElemId == SkPDF::NodeID::Nothing) {
+        return;
+    }
+    fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+    if (fCurrentlyActiveMark) {
+        // Begin this mark
+        SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
+        fOut->writeText(" <</MCID ");
+        fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
+        fOut->writeText(" >>BDC\n");
+        fCurrentMarksElemId = fCurrentlyActiveMark.elemId();
+        fMadeMarks = true;
+        return;
+    }
+    if (SkPDF::NodeID::BackgroundArtifact <= fNextMarksElemId &&
+        fNextMarksElemId <= SkPDF::NodeID::OtherArtifact &&
+        fDoc->hasCurrentPage())
+    {
+        fOut->writeText("/Artifact");
+        if (fNextMarksElemId == SkPDF::NodeID::OtherArtifact) {
+            fOut->writeText(" BMC\n");
+        } else if (fNextMarksElemId == SkPDF::NodeID::PaginationArtifact ||
+                   fNextMarksElemId == SkPDF::NodeID::PaginationHeaderArtifact ||
+                   fNextMarksElemId == SkPDF::NodeID::PaginationFooterArtifact ||
+                   fNextMarksElemId == SkPDF::NodeID::PaginationWatermarkArtifact)
         {
-            fOut->writeText("/Artifact");
-            if (fNextMarksElemId == SkPDF::NodeID::OtherArtifact) {
-                fOut->writeText(" BMC\n");
-            } else if (fNextMarksElemId == SkPDF::NodeID::PaginationArtifact ||
-                       fNextMarksElemId == SkPDF::NodeID::PaginationHeaderArtifact ||
-                       fNextMarksElemId == SkPDF::NodeID::PaginationFooterArtifact ||
-                       fNextMarksElemId == SkPDF::NodeID::PaginationWatermarkArtifact)
-            {
-                fOut->writeText(" <</Type /Pagination");
-                if (fNextMarksElemId == SkPDF::NodeID::PaginationHeaderArtifact) {
-                    fOut->writeText(" /Subtype /Header");
-                } else if  (fNextMarksElemId == SkPDF::NodeID::PaginationFooterArtifact) {
-                    fOut->writeText(" /Subtype /Footer");
-                } else if (fNextMarksElemId == SkPDF::NodeID::PaginationWatermarkArtifact) {
-                    fOut->writeText(" /Subtype /Watermark");
-                }
-                fOut->writeText(" >>BDC\n");
-            } else if (fNextMarksElemId == SkPDF::NodeID::LayoutArtifact) {
-                fOut->writeText(" <</Type /Layout >>BDC\n");
-            } else if (fNextMarksElemId == SkPDF::NodeID::PageArtifact) {
-                fOut->writeText(" <</Type /Page >>BDC\n");
-            } else if (fNextMarksElemId == SkPDF::NodeID::BackgroundArtifact) {
-                fOut->writeText(" <</Type /Background >>BDC\n");
+            fOut->writeText(" <</Type /Pagination");
+            if (fNextMarksElemId == SkPDF::NodeID::PaginationHeaderArtifact) {
+                fOut->writeText(" /Subtype /Header");
+            } else if  (fNextMarksElemId == SkPDF::NodeID::PaginationFooterArtifact) {
+                fOut->writeText(" /Subtype /Footer");
+            } else if (fNextMarksElemId == SkPDF::NodeID::PaginationWatermarkArtifact) {
+                fOut->writeText(" /Subtype /Watermark");
             }
-            fCurrentMarksElemId = fNextMarksElemId;
+            fOut->writeText(" >>BDC\n");
+        } else if (fNextMarksElemId == SkPDF::NodeID::LayoutArtifact) {
+            fOut->writeText(" <</Type /Layout >>BDC\n");
+        } else if (fNextMarksElemId == SkPDF::NodeID::PageArtifact) {
+            fOut->writeText(" <</Type /Page >>BDC\n");
+        } else if (fNextMarksElemId == SkPDF::NodeID::BackgroundArtifact) {
+            fOut->writeText(" <</Type /Background >>BDC\n");
         }
+        fCurrentMarksElemId = fNextMarksElemId;
     }
 }
 
@@ -1183,7 +1189,7 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
 
     // Implicitly close any still active marked-content sequence.
     // Must do this before fContent is written to buffer.
-    fMarkManager.setNextMarksElemId(0);
+    fMarkManager.setNextMarksElemId(SkPDF::NodeID::Nothing);
     fMarkManager.beginMark();
 
     SkDynamicMemoryWStream buffer;
@@ -1904,7 +1910,7 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
     // If it does have its own marks we need to pause the current mark and then re-set it after.
     int currentStructElemId = fMarkManager.elemId();
     if (pdfDevice->fMarkManager.madeMarks()) {
-        fMarkManager.setNextMarksElemId(0);
+        fMarkManager.setNextMarksElemId(SkPDF::NodeID::Nothing);
         fMarkManager.beginMark();
     }
     this->drawFormXObject(pdfDevice->makeFormXObjectFromDevice(), content.stream(), &shape);

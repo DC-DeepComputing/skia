@@ -147,6 +147,8 @@ public:
 
     void addStructElemTitle(int elemId, SkSpan<const char>);
 
+    bool hasElemId(int elemId);
+
     std::unique_ptr<SkPDFArray> getAnnotations();
 
     // Every reference returned by this method must be passed to `emit` exactly once.

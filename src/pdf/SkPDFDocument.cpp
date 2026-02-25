@@ -569,6 +569,10 @@ void SkPDFDocument::addStructElemTitle(int elemId, SkSpan<const char> title) {
     fStructTree.addStructElemTitle(elemId, std::move(title));
 }
 
+bool SkPDFDocument::hasElemId(int elemId) {
+    return fStructTree.hasElemId(elemId);
+}
+
 int SkPDFDocument::createStructParentKeyForElemId(int elemId, SkPDFIndirectReference contentItem) {
     // Structure elements are tied to pages, so don't emit one if not on a page.
     if (!this->hasCurrentPage()) {
