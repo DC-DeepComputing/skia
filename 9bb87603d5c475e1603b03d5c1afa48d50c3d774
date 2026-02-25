@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f32bc51_9bc5befd",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:48:27Z",
+      "side": 1,
+      "message": "`STArray` extends `TArray`, so this can be written to have `out` be a `TArray\u003cconst Expression*\u003e*`.",
+      "range": {
+        "startLine": 2185,
+        "startChar": 38,
+        "endLine": 2185,
+        "endChar": 70
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dafd9b84_15ca267c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:48:27Z",
+      "side": 1,
+      "message": "Should be `STArray\u003c1, const Expression*\u003e` since there will probably be at most 1 next expression",
+      "range": {
+        "startLine": 2229,
+        "startChar": 8,
+        "endLine": 2229,
+        "endChar": 39
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e011f7_60197934",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2256,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:48:27Z",
+      "side": 1,
+      "message": "`assembleExpression` can sometimes produce scratch let variables, although since this isn\u0027t overriding the mode, it will only happen if the expression has a child that would trigger it (e.g. in some matrix or function polyfill).\n\nThis puts the scratch let right before the for loop starts, which is fine so long as none of the variables in it reference the loop variable. A good test would be something like in SkSL:\n\n```\nfor (float a \u003d 12.0; a \u003e mod(sqrt(a), 5.0); a \u003d reflect(a, sqrt(a), 0.0)) {\n    ...\n}\n```\n\nThis should produce extra statements for both `cond` and `nextExprs` to see how these get converted to wgsl.",
+      "range": {
+        "startLine": 2256,
+        "startChar": 0,
+        "endLine": 2256,
+        "endChar": 83
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff19259_3f3f58f1",
+        "filename": "tests/sksl/shared/ForLoopMultipleInitES3.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:48:27Z",
+      "side": 1,
+      "message": "If the for loop has a `continue` statement, appending extra next expressions at the end of the loop body gets tricky. Does WGSL support labels and gotos? We could use that to patch the continue to jump to the extra next section.",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c3511c2_2f8e8e7b",
+        "filename": "tests/sksl/shared/ForLoopShadowing.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:48:27Z",
+      "side": 1,
+      "message": "Another complexity around moving multiple next expressions into the loop body is if the expression has shadowed variables. If we moved this expression into the loop body, we\u0027d pick up the deeper `increment` variable set to 10. I think if we have more than 1 next expression, we need to keep it in a separate scope from the regular loop body.",
+      "range": {
+        "startLine": 18,
+        "startChar": 19,
+        "endLine": 18,
+        "endChar": 38
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
