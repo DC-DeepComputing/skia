@@ -33,6 +33,23 @@
       "message": "ahh sorry didn\u0027t realize we were waiting on the second +1 here",
       "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12faf53f_7543a03a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-02-25T14:01:26Z",
+      "side": 1,
+      "message": "Looks like you may need to sign the license agreement and add your name to the AUTHORS file. See https://skia.org/docs/dev/contrib/",
+      "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
