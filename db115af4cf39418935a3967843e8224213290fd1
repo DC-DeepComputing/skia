@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e77c86_c2e79260",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5260e3f_d4a2c3d4",
+      "range": {
+        "startLine": 20,
+        "startChar": 23,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51b7cb35_78389262",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-25T17:00:37Z",
       "side": 1,
       "message": "It\u0027s important this has \u003c\u003e, e.g. `#include \u003cstring\u003e`\n\nThen also put this after the skia \"quoted\" includes",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc230503_d77e5526",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "removed because wasn\u0027t used anymore",
+      "parentUuid": "51b7cb35_78389262",
       "range": {
         "startLine": 22,
         "startChar": 10,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef3e8bb8_0836bd01",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "307e4080_90c651e2",
+      "range": {
+        "startLine": 31,
+        "startChar": 21,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dcba395_e93cc96c",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-25T17:00:37Z",
       "side": 1,
       "message": "nit: highlight_box",
+      "range": {
+        "startLine": 48,
+        "startChar": 14,
+        "endLine": 48,
+        "endChar": 26
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c399e97_78220612",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dcba395_e93cc96c",
       "range": {
         "startLine": 48,
         "startChar": 14,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95a478cf_15e85199",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea042271_eff15585",
+      "range": {
+        "startLine": 53,
+        "startChar": 12,
+        "endLine": 53,
+        "endChar": 27
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "253f0163_b437c564",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-02-25T17:00:37Z",
       "side": 1,
       "message": "up to half a pixel",
+      "range": {
+        "startLine": 68,
+        "startChar": 6,
+        "endLine": 68,
+        "endChar": 11
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abba43b5_509ef938",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "253f0163_b437c564",
       "range": {
         "startLine": 68,
         "startChar": 6,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce45d2d_55e0d3b9",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5ea2505_aa2dcc6d",
+      "range": {
+        "startLine": 72,
+        "startChar": 36,
+        "endLine": 72,
+        "endChar": 44
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77a3ac96_bfd50740",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-02-25T17:00:37Z",
       "side": 1,
       "message": "this can probably be kGridWidth and then WIDTH and HEIGHT can either go away or be right above the DEF_GMS",
+      "range": {
+        "startLine": 84,
+        "startChar": 69,
+        "endLine": 84,
+        "endChar": 74
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "834f36ce_9f2b82b7",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77a3ac96_bfd50740",
       "range": {
         "startLine": 84,
         "startChar": 69,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b197bd76_62aed839",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "changed it to separate the verbs per line, let me know if that works",
+      "parentUuid": "787c40d2_2e7932a7",
+      "range": {
+        "startLine": 92,
+        "startChar": 76,
+        "endLine": 92,
+        "endChar": 86
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c988c51_46896d91",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-02-25T17:00:37Z",
       "side": 1,
       "message": "Let\u0027s tweak the name. Maybe hairlines_buttcap and similar (It\u0027s not longer just closed, for example)",
+      "range": {
+        "startLine": 136,
+        "startChar": 14,
+        "endLine": 136,
+        "endChar": 41
+      },
+      "revId": "db115af4cf39418935a3967843e8224213290fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e820e86_4445d599",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-02-25T22:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c988c51_46896d91",
       "range": {
         "startLine": 136,
         "startChar": 14,
