@@ -70,6 +70,30 @@
       },
       "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f02cc6_9804b046",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-25T07:29:22Z",
+      "side": 1,
+      "message": "Unfortunately, Dawn currently doesn\u0027t support multiple `MapAsync` calls.\nIf the 1st call is not complete, we cannot retry by calling asyncMap again. We have to wait for the 1st map\u0027s callback to trigger.\n\nanw, I have removed the mutex from `fAsyncMapCallbacks`. I have added a `SingleOwner` flag instead to verify we don\u0027t call `asyncMap` concurrently. So `asyncMap` should be cheaper now when we call for the write case.",
+      "parentUuid": "57460afa_c18a91a8",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 15
+      },
+      "revId": "19eddf8a45af3270e3325915cbdb2c809812f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
