@@ -1084,7 +1084,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 					"IntelIris5100":       "8086:0a2e",
 					"IntelIrisPlus":       "8086:8a53",
 					"IntelUHDGraphics630": "8086:3e9b",
-					"RadeonHD8870M":       "1002:6821-4.0.20-3.2.8",
+					"RadeonHD7800":        "1002:679e-4.0.11-3.2.8",
 				}[b.Parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Mac GPU mapping.", b.Parts["cpu_or_gpu_value"])
@@ -1095,52 +1095,25 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				} else {
 					d["gpu"] = gpu
 				}
-				// We have two different types of MacMini7,1 with the same GPU but different CPUs.
-				if b.GPU("IntelIris5100") {
-					if b.ExtraConfig("i5") {
-						// If we say "i5", run on our MacMini7,1s in the Skolo:
-						d["cpu"] = "x86-64-i5-4278U"
-					} else {
-						// Otherwise, run on Golo machines, just because that's
-						// where those jobs have always run. Plus, some of them
-						// are Perf jobs, which we want to keep consistent.
-						d["cpu"] = "x86-64-i7-4578U"
-					}
+				// These machines are being shared with us
+				if b.Parts["cpu_or_gpu_value"] == "RadeonHD7800" {
+					d["pool"] = "chromium.tests.gpu"
 				}
 			} else {
 				log.Fatalf("Unknown GPU mapping for OS %q.", b.Parts["os"])
 			}
 		}
 		if b.MatchOs("Mac") {
-			// TODO(borenet): Remove empty and nested entries after all Macs
-			// are migrated to the new lab.
-			if macModel, ok := map[string]interface{}{
-				"MacBookAir7.2":  "",
+			if macModel, ok := map[string]string{
 				"MacBookPro11.5": "MacBookPro11,5",
 				"MacBookPro15.1": "MacBookPro15,1",
 				"MacBookPro15.3": "Mac15,3",
-				"MacBookPro16.2": "",
-				"MacMini7.1":     "",
 				"MacMini8.1":     "Macmini8,1",
-				"MacMini9.1": map[string]string{
-					"Mac12": "",
-					"Mac13": "",
-					"Mac14": "Macmini9,1",
-				},
-				"MacMini16.10": "Mac16,10",
-				// TODO(borenet): This is currently resolving to multiple
-				// different actual device types.
-				"VMware7.1": "",
+				"MacMini9.1":     "Macmini9,1",
+				"MacMini16.10":   "Mac16,10",
+				"MacPro6.1":      "MacPro6,1",
 			}[b.Parts["model"]]; ok {
-				if macModel != "" {
-					macModelDim, ok := macModel.(string)
-					if !ok {
-						macModelDim = macModel.(map[string]string)[b.Parts["os"]]
-					}
-					if macModelDim != "" {
-						d["mac_model"] = macModelDim
-					}
-				}
+				d["mac_model"] = macModel
 			} else {
 				log.Fatalf("No mac_model found for %q", b.Parts["model"])
 			}
