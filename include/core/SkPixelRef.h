@@ -8,6 +8,7 @@
 #ifndef SkPixelRef_DEFINED
 #define SkPixelRef_DEFINED
 
+#include "include/core/SkPixelData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/SkIDChangeListener.h"
@@ -25,16 +26,20 @@ class SkDiscardableMemory;
     This class is the smart container for pixel memory, and is used with SkBitmap.
     This class can be shared/accessed between multiple threads.
 */
-class SK_API SkPixelRef : public SkRefCnt {
+class SK_API SkPixelRef : public SkPixelData {
 public:
     SkPixelRef(int width, int height, void* addr, size_t rowBytes);
     ~SkPixelRef() override;
+
+    Type type() const override;
 
     SkISize dimensions() const { return {fWidth, fHeight}; }
     int width() const { return fWidth; }
     int height() const { return fHeight; }
     void* pixels() const { return fPixels; }
     size_t rowBytes() const { return fRowBytes; }
+
+    uint32_t getId() const { return fId; }
 
     /** Returns a non-zero, unique value corresponding to the pixels in this
         pixelref. Each time the pixels are changed (and notifyPixelsChanged is
@@ -102,6 +107,8 @@ private:
         kTemporarilyImmutable,  // Considered immutable, but can revert to mutable.
         kImmutable,             // Once set to this state, it never leaves.
     } fMutability : 8;          // easily fits inside a byte
+
+    uint32_t fId;
 
     void needsNewGenID();
     void callGenIDChangeListeners();

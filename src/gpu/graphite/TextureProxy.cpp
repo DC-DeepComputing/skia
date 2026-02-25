@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkPixelData.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Caps.h"
@@ -22,21 +23,25 @@ TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
                            std::string_view label,
                            skgpu::Budgeted budgeted)
-        : fDimensions(dimensions)
+        : SkPixelData()
+        , fDimensions(dimensions)
         , fInfo(info)
         , fLabel(label)
         , fBudgeted(budgeted)
-        , fVolatile(Volatile::kNo) {
+        , fVolatile(Volatile::kNo)
+        , fId(this->SkPixelData::getId()) {
     SkASSERT(fInfo.isValid());
 }
 
 TextureProxy::TextureProxy(sk_sp<Texture> texture)
-        : fDimensions(texture->dimensions())
+        : SkPixelData()
+        , fDimensions(texture->dimensions())
         , fInfo(texture->textureInfo())
         , fLabel(texture->getLabel())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
-        , fTexture(std::move(texture)) {
+        , fTexture(std::move(texture))
+        , fId(this->SkPixelData::getId()) {
     SkASSERT(fInfo.isValid());
 }
 
@@ -45,16 +50,22 @@ TextureProxy::TextureProxy(SkISize dimensions,
                            skgpu::Budgeted budgeted,
                            Volatile isVolatile,
                            LazyInstantiateCallback&& callback)
-        : fDimensions(dimensions)
+        : SkPixelData()
+        , fDimensions(dimensions)
         , fInfo(textureInfo)
         , fBudgeted(budgeted)
         , fVolatile(isVolatile)
-        , fLazyInstantiateCallback(std::move(callback)) {
+        , fLazyInstantiateCallback(std::move(callback))
+        , fId(this->SkPixelData::getId()) {
     SkASSERT(fInfo.isValid());
     SkASSERT(fLazyInstantiateCallback);
 }
 
 TextureProxy::~TextureProxy() {}
+
+SkPixelData::Type TextureProxy::type() const {
+    return SkPixelData::Type::kTextureProxy;
+}
 
 SkISize TextureProxy::dimensions() const {
     SkASSERT(!this->isFullyLazy() || this->isInstantiated());

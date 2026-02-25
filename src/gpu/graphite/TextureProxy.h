@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_TextureProxy_DEFINED
 #define skgpu_graphite_TextureProxy_DEFINED
 
+#include "include/core/SkPixelData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -25,11 +26,15 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 
-class TextureProxy : public SkRefCnt {
+class TextureProxy : public SkPixelData {
 public:
     TextureProxy() = delete;
 
     ~TextureProxy() override;
+
+    Type type() const override;
+
+    uint32_t getId() const { return fId; }
 
     SampleCount sampleCount() const { return fInfo.sampleCount(); }
     Mipmapped mipmapped() const { return fInfo.mipmapped(); }
@@ -136,6 +141,8 @@ private:
     sk_sp<Texture> fTexture;
 
     const LazyInstantiateCallback fLazyInstantiateCallback;
+
+    uint32_t fId;
 };
 
 // Volatile texture proxy that deinstantiates itself on destruction.
