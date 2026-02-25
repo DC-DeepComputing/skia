@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6bbd7c7_091d4c67",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 11
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-02-25T14:20:46Z",
+      "side": 1,
+      "message": "The canary failed due to what looks like unrelated test failures. And, some of their CanvasKit jobs did pass. So I think I\u0027ll go ahead and try landing this, and I\u0027ll keep an eye on the roller(s) today.",
+      "parentUuid": "414eab27_5e7762e4",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "052e7953e0406e4e2b6f0fa02a1ae7b0c5b06eed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3abaa728_b5ce18c8",
