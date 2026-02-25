@@ -17,19 +17,16 @@ fn test3x3_b() -> bool {
     var vec: vec3<f32>;
     {
       var c: i32 = 0;
-      loop {
+      while (c < 3) {
         {
           {
             var r: i32 = 0;
-            loop {
+            while (r < 3) {
               {
                 let _skTemp0 = vec3<i32>(2, 1, 0)[r];
                 vec[_skTemp0] = _globalUniforms.testMatrix3x3[c][r];
               }
-              continuing {
-                r = r + i32(1);
-                break if r >= 3;
-              }
+              r = r + i32(1);
             }
           }
           if any(vec != expected) {
@@ -39,10 +36,7 @@ fn test3x3_b() -> bool {
           }
           expected = expected + 3.0;
         }
-        continuing {
-          c = c + i32(1);
-          break if c >= 3;
-        }
+        c = c + i32(1);
       }
     }
     return true;
@@ -54,19 +48,16 @@ fn test4x4_b() -> bool {
     var vec: vec4<f32>;
     {
       var c: i32 = 0;
-      loop {
+      while (c < 4) {
         {
           {
             var r: i32 = 0;
-            loop {
+            while (r < 4) {
               {
                 let _skTemp1 = vec4<i32>(3, 2, 1, 0)[r];
                 vec[_skTemp1] = _globalUniforms.testMatrix4x4[c][r];
               }
-              continuing {
-                r = r + i32(1);
-                break if r >= 4;
-              }
+              r = r + i32(1);
             }
           }
           if any(vec != expected) {
@@ -76,10 +67,7 @@ fn test4x4_b() -> bool {
           }
           expected = expected + 4.0;
         }
-        continuing {
-          c = c + i32(1);
-          break if c >= 4;
-        }
+        c = c + i32(1);
       }
     }
     return true;

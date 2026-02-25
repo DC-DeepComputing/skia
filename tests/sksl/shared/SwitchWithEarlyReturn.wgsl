@@ -187,15 +187,12 @@ fn fallthrough_with_loop_break_bi(x: i32) -> bool {
         if x == 1 {
           {
             var i: i32 = 0;
-            loop {
+            while (i < 5) {
               {
                 val = val + i32(1);
                 break;
               }
-              continuing {
-                i = i + i32(1);
-                break if i >= 5;
-              }
+              i = i + i32(1);
             }
           }
           _skTemp0 = true;  }
@@ -216,15 +213,12 @@ fn fallthrough_with_loop_continue_bi(x: i32) -> bool {
         if x == 1 {
           {
             var i: i32 = 0;
-            loop {
+            while (i < 5) {
               {
                 val = val + i32(1);
                 continue;
               }
-              continuing {
-                i = i + i32(1);
-                break if i >= 5;
-              }
+              i = i + i32(1);
             }
           }
           _skTemp1 = true;  }

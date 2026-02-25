@@ -17,7 +17,7 @@ fn test3x3_b() -> bool {
     var expected: vec3<f32> = vec3<f32>(1.0, 2.0, 3.0);
     {
       var index: i32 = 0;
-      loop {
+      while (index < 3) {
         {
           if any(matrix[index] != expected) {
             {
@@ -26,10 +26,7 @@ fn test3x3_b() -> bool {
           }
           expected = expected + 3.0;
         }
-        continuing {
-          index = index + i32(1);
-          break if index >= 3;
-        }
+        index = index + i32(1);
       }
     }
     return true;
@@ -41,7 +38,7 @@ fn test4x4_b() -> bool {
     var expected: vec4<f32> = vec4<f32>(1.0, 2.0, 3.0, 4.0);
     {
       var index: i32 = 0;
-      loop {
+      while (index < 4) {
         {
           if any(matrix[index] != expected) {
             {
@@ -50,10 +47,7 @@ fn test4x4_b() -> bool {
           }
           expected = expected + 4.0;
         }
-        continuing {
-          index = index + i32(1);
-          break if index >= 4;
-        }
+        index = index + i32(1);
       }
     }
     return true;

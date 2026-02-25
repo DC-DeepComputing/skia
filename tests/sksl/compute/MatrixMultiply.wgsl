@@ -27,19 +27,13 @@ fn _skslMain(_stageIn: CSIn) {
     var result: f32 = 0.0;
     {
       var i: i32 = 0;
-      loop {
-        if i < _storage0.sizes[0].y {
-          {
-            let a: i32 = i + resultCell.x * _storage0.sizes[0].y;
-            let b: i32 = resultCell.y + i * _storage0.sizes[1].y;
-            result = result + _storage1.data1[a] * _storage2.data2[b];
-          }
-        } else {
-          break;
+      while (i < _storage0.sizes[0].y) {
+        {
+          let a: i32 = i + resultCell.x * _storage0.sizes[0].y;
+          let b: i32 = resultCell.y + i * _storage0.sizes[1].y;
+          result = result + _storage1.data1[a] * _storage2.data2[b];
         }
-        continuing {
-          i = i + i32(1);
-        }
+        i = i + i32(1);
       }
     }
     let index: i32 = resultCell.y + resultCell.x * _storage0.sizes[1].y;

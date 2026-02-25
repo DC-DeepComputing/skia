@@ -16,19 +16,13 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     {
       var a: f16 = 0.0h;
       var b: f16 = 10.0h;
-      loop {
-        if (a < 10.0h) && (b > 0.0h) {
-          {
-            sumA = sumA + a;
-            sumB = sumB + b;
-          }
-        } else {
-          break;
+      while ((a < 10.0h) && (b > 0.0h)) {
+        {
+          sumA = sumA + a;
+          sumB = sumB + b;
         }
-        continuing {
-          a = a + f16(1);
-          b = b - f16(1);
-        }
+        a = a + f16(1);
+        b = b - f16(1);
       }
     }
     if (sumA != 45.0h) || (sumB != 55.0h) {
@@ -39,17 +33,11 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var sumC: i32 = 0;
     {
       var c: i32 = 0;
-      loop {
-        if c < 10 {
-          {
-            sumC = sumC + c;
-          }
-        } else {
-          break;
+      while (c < 10) {
+        {
+          sumC = sumC + c;
         }
-        continuing {
-          c = c + i32(1);
-        }
+        c = c + i32(1);
       }
     }
     if sumC != 45 {
@@ -61,17 +49,11 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     {
       var d: array<f32, 2> = array<f32, 2>(0.0, 10.0);
       const e: array<f32, 4> = array<f32, 4>(1.0, 2.0, 3.0, 4.0);
-      loop {
-        if d[0] < d[1] {
-          {
-            sumE = sumE + f32(f16(e[0]));
-          }
-        } else {
-          break;
+      while (d[0] < d[1]) {
+        {
+          sumE = sumE + f32(f16(e[0]));
         }
-        continuing {
-          d[0] = d[0] + f32(1);
-        }
+        d[0] = d[0] + f32(1);
       }
     }
     if sumE != 10.0 {
@@ -86,7 +68,6 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     }
     {
       ;
-
       loop {
         return _globalUniforms.colorGreen;
       }

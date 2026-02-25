@@ -48,7 +48,7 @@ fn test_loop_if_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
+      while (x <= 1) {
         {
           if _globalUniforms.colorGreen.y == 0.0h {
             {
@@ -60,10 +60,7 @@ fn test_loop_if_b() -> bool {
             }
           }
         }
-        continuing {
-          x = x + i32(1);
-          break if x > 1;
-        }
+        x = x + i32(1);
       }
     }
     scratchVar = scratchVar + i32(1);

@@ -17,16 +17,13 @@ fn test4x4_b() -> bool {
     var values: vec4<f32> = vec4<f32>(4.0, 3.0, 2.0, 1.0);
     {
       var index: i32 = 0;
-      loop {
+      while (index < 4) {
         {
           matrix[index] = vec4<f32>((values.xw), matrix[index].yz).yzwx;
           matrix[index] = vec4<f32>(matrix[index].xw, (values.yz)).xwzy;
           values = values + 4.0;
         }
-        continuing {
-          index = index + i32(1);
-          break if index >= 4;
-        }
+        index = index + i32(1);
       }
     }
     return (all(matrix[0] == _globalUniforms.testMatrix4x4[0]) && all(matrix[1] == _globalUniforms.testMatrix4x4[1]) && all(matrix[2] == _globalUniforms.testMatrix4x4[2]) && all(matrix[3] == _globalUniforms.testMatrix4x4[3]));
@@ -38,16 +35,13 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var _1_values: vec3<f32> = vec3<f32>(3.0, 2.0, 1.0);
     {
       var _2_index: i32 = 0;
-      loop {
+      while (_2_index < 3) {
         {
           _0_matrix[_2_index] = vec3<f32>((_1_values.xz), _0_matrix[_2_index].y).yzx;
           _0_matrix[_2_index].y = _1_values.y;
           _1_values = _1_values + 3.0;
         }
-        continuing {
-          _2_index = _2_index + i32(1);
-          break if _2_index >= 3;
-        }
+        _2_index = _2_index + i32(1);
       }
     }
     var _skTemp0: vec4<f16>;
