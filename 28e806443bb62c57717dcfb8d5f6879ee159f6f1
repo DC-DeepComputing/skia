@@ -16,6 +16,24 @@
       "message": "Just pointing this out, the logic here is definitely wrong, but I think I\u0027m in the right place.",
       "revId": "28e806443bb62c57717dcfb8d5f6879ee159f6f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09872df1_417d0ad9",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-02-25T14:17:28Z",
+      "side": 1,
+      "message": "I\u0027ve made the changes to align with how we organize our jobs.",
+      "parentUuid": "a4e5df87_291ac494",
+      "revId": "28e806443bb62c57717dcfb8d5f6879ee159f6f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
