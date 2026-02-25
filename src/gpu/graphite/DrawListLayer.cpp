@@ -69,6 +69,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
         }
     } else {
         current = fLayers.tail();
+        uint32_t limit = 0;
         auto processLayer = [&](BindingList* boundary) -> bool {
             auto [overlapType, match] =
                     isStencil ? current->test<true, false>(drawParams->drawBounds(),
@@ -91,15 +92,20 @@ void DrawListLayer::recordBackwards(int stepIndex,
                 // Found a valid layer (Compatible or Disjoint)
                 targetLayer = current;
                 targetMatch = match;
-
-                // If it was compatible, we expect a match. If disjoint, match is nullptr.
-                return overlapType == BoundsTest::kCompatibleOverlap;
+                if (overlapType == BoundsTest::kCompatibleOverlap) {
+                    if (isStencil || requiresBarrier) {
+                        limit += kMaxSearchLimit >> 1;
+                    } else {
+                        return true;
+                    }
+                }
+                return false;
             }
             SkUNREACHABLE;
         };
 
         // Check current here for safety?
-        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stop.layer; ++limit) {
+        for (; limit < kMaxSearchLimit && current != stop.layer; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
             __builtin_prefetch(current->fPrev);
 #endif
