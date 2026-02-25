@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10916864_6cff74d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-25T15:06:37Z",
+      "side": 1,
+      "message": "Chrome canary test failures appear to be unrelated flakes, and chrome canary\u0027s golden images are also probably flakes since I don\u0027t think Ash is configured to render with Graphite yet. Android canary passed but had a warning of preexisting failures, which is why it\u0027s flagged as red.",
+      "revId": "10194e864779068ab4005d0268c9de8032c6a33a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
