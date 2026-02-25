@@ -194,38 +194,12 @@ DebugUtilsMessenger(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 static bool should_include_extension(const char* extensionName) {
     const char* kValidExtensions[] = {
             // single merged layer
-            VK_ARM_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
-            VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME,
-            VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME,
             VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
             VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
-            VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_EXT_EXTENDED_DYNAMIC_STATE_2_EXTENSION_NAME,
-            VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME,
-            VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME,
-            VK_EXT_HOST_IMAGE_COPY_EXTENSION_NAME,
             VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
             VK_EXT_LAYER_SETTINGS_EXTENSION_NAME,
             VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
-            VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME,
-            VK_EXT_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
-            VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
-            VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
-            VK_KHR_COPY_COMMANDS_2_EXTENSION_NAME,
-            VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME,
-            VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME,
-            VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME,
-            VK_KHR_FORMAT_FEATURE_FLAGS_2_EXTENSION_NAME,
-            VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME,
-            VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
             VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE1_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE2_EXTENSION_NAME,
-            VK_KHR_MAINTENANCE3_EXTENSION_NAME,
-            VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
-            VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME,
             VK_KHR_SURFACE_EXTENSION_NAME,
             VK_KHR_SWAPCHAIN_EXTENSION_NAME,
             // Below are all platform specific extensions. The name macros like we use above are
@@ -237,8 +211,6 @@ static bool should_include_extension(const char* extensionName) {
             // changing is next to zero.
             "VK_KHR_win32_surface",  // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
             "VK_KHR_xcb_surface",    // VK_KHR_XCB_SURFACE_EXTENSION_NAME,
-            "VK_ANDROID_external_memory_android_hardware_buffer",
-            // VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME,
             "VK_KHR_android_surface",  // VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
     };
 
@@ -557,6 +529,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     const uint32_t apiVersion = VK_API_VERSION_1_1;
 
     instanceVersion = std::min(instanceVersion, apiVersion);
+
+    // Initialize VulkanPreferredFeatures
+    testVkFeatures->skiaFeatures.init(instanceVersion);
 
     STArray<2, VkPhysicalDevice> physDevs;
     VkDevice device;
