@@ -2181,121 +2181,111 @@ void WGSLCodeGenerator::writeDoStatement(const DoStatement& s) {
     --fConditionalScopeDepth;
 }
 
+static void collect_comma_expressions(const Expression& expr,
+                                      std::vector<const Expression*>& out) {
+    if (expr.kind() == Expression::Kind::kBinary) {
+        const BinaryExpression& b = expr.as<BinaryExpression>();
+        if (b.getOperator().kind() == OperatorKind::COMMA) {
+            collect_comma_expressions(*b.left(), out);
+            collect_comma_expressions(*b.right(), out);
+            return;
+        }
+    }
+    out.push_back(&expr);
+}
+
 void WGSLCodeGenerator::writeForStatement(const ForStatement& s) {
-    // Generate a loop structure wrapped in an extra scope:
+    // Emit for-loops in this form:
+    //
     //   {
-    //     initializer-statement;
-    //     loop;
+    //       init;
+    //       for (; cond; first_next) {
+    //           body
+    //           rest_of_next...
+    //       }
     //   }
-    // The outer scope is necessary to prevent the initializer-variable from leaking out into the
-    // rest of the code. In practice, the generated code actually tends to be scoped even more
-    // deeply, as the body-statement almost always contributes an extra block.
+    //
+    // The outer block scopes any init variable declarations. When the next expression is a
+    // comma expression (e.g. ++a, --b), the first sub-expression goes in the for-update slot
+    // (with its trailing semicolon stripped) and any remaining sub-expressions are appended
+    // at the end of the loop body.
 
     ++fConditionalScopeDepth;
 
+    // If there is an initializer, wrap in an outer block to scope any variable declarations.
+    // This must be emitted regardless of unroll count.
     if (s.initializer()) {
         this->writeLine("{");
         fIndentation++;
         this->writeStatement(*s.initializer());
-        this->writeLine();
+        this->finishLine();
     }
 
-    this->writeLine("loop {");
-    fIndentation++;
-
-    if (s.unrollInfo()) {
-        if (s.unrollInfo()->fCount <= 0) {
-            // Loops which are known to never execute don't need to be emitted at all.
-            // (However, the front end should have already replaced this loop with a Nop.)
-        } else {
-            // Loops which are known to execute at least once can use this form:
-            //
-            //     loop {
-            //         body-statement;
-            //         continuing {
-            //             next-expression;
-            //             break if inverted-test-expression;
-            //         }
-            //     }
-
-            this->writeStatement(*s.statement());
-            this->finishLine();
-            this->writeLine("continuing {");
-            ++fIndentation;
-
-            if (s.next()) {
-                this->writeExpressionStatement(*s.next());
-                this->finishLine();
-            }
-
-            if (s.test()) {
-                std::unique_ptr<Expression> invertedTestExpr = PrefixExpression::Make(
-                        fContext, s.test()->fPosition, OperatorKind::LOGICALNOT, s.test()->clone());
-
-                std::string breakIfExpr =
-                        this->assembleExpression(*invertedTestExpr, Precedence::kExpression);
-                this->write("break if ");
-                this->write(breakIfExpr);
-                this->writeLine(";");
-            }
-
-            --fIndentation;
-            this->writeLine("}");
-        }
+    if (s.unrollInfo() && s.unrollInfo()->fCount <= 0) {
+        // Loops which are known to never execute don't need to be emitted at all.
+        // (However, the front end should have already replaced this loop with a Nop.)
     } else {
-        // Loops without a known execution count are emitted in this form:
-        //
-        //     loop {
-        //         if test-expression {
-        //             body-statement;
-        //         } else {
-        //             break;
-        //         }
-        //         continuing {
-        //             next-expression;
-        //         }
-        //     }
-
-        if (s.test()) {
-            std::string testExpr = this->assembleExpression(*s.test(), Precedence::kExpression);
-            this->write("if ");
-            this->write(testExpr);
-            this->writeLine(" {");
-
-            fIndentation++;
-            this->writeStatement(*s.statement());
-            this->finishLine();
-            fIndentation--;
-
-            this->writeLine("} else {");
-
-            fIndentation++;
-            this->writeLine("break;");
-            fIndentation--;
-
-            this->writeLine("}");
-        }
-        else {
-            this->writeStatement(*s.statement());
-            this->finishLine();
-        }
-
+        // Collect all comma-separated next expressions by flattening any comma expression tree.
+        std::vector<const Expression*> nextExprs;
         if (s.next()) {
-            this->writeLine("continuing {");
-            fIndentation++;
-            this->writeExpressionStatement(*s.next());
-            this->finishLine();
-            fIndentation--;
-            this->writeLine("}");
+            collect_comma_expressions(*s.next(), nextExprs);
         }
-    }
 
-    // This matches an open-brace at the top of the loop.
-    fIndentation--;
-    this->writeLine("}");
+        // Capture a statement into a string, stripping the trailing ';' and newline, for use
+        // in the for-update slot.
+        auto captureAsForUpdate = [&](auto writeFn) -> std::string {
+            StringStream buf;
+            {
+                AutoOutputStream redirect(this, &buf, &fIndentation);
+                writeFn();
+            }
+            std::string result = buf.str();
+            while (!result.empty() && (result.back() == '\n' || result.back() == '\r')) {
+                result.pop_back();
+            }
+            if (!result.empty() && result.back() == ';') {
+                result.pop_back();
+            }
+            return result;
+        };
+
+        // Assemble the condition before writing the for-header, in case assembleExpression
+        // emits preparatory statements to fOut.
+        std::string condStr;
+        if (s.test()) {
+            condStr = this->assembleExpression(*s.test(), Precedence::kExpression);
+        }
+
+        // Capture only the first next expression for the for-update slot.
+        std::string updateStr;
+        if (!nextExprs.empty()) {
+            updateStr = captureAsForUpdate([&] {
+                (void)this->assembleExpression(*nextExprs[0], Precedence::kStatement);
+            });
+        }
+
+        this->write("for (;");
+        if (!condStr.empty()) {
+            this->write(" ");
+            this->write(condStr);
+        }
+        this->write("; ");
+        this->write(updateStr);
+        this->writeLine(") {");
+
+        fIndentation++;
+        this->writeStatement(*s.statement());
+        this->finishLine();
+        // Append any remaining next expressions (from a comma expression) at the end of the body.
+        for (size_t i = 1; i < nextExprs.size(); ++i) {
+            this->writeExpressionStatement(*nextExprs[i]);
+            this->finishLine();
+        }
+        fIndentation--;
+        this->writeLine("}");
+    }
 
     if (s.initializer()) {
-        // This matches an open-brace before the initializer-statement.
         fIndentation--;
         this->writeLine("}");
     }
