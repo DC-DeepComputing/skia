@@ -70,6 +70,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
         }
     } else {
         current = fLayers.tail();
+        uint32_t limit = 0;
         auto processLayer = [&](BindingList* boundary) -> bool {
             auto result = isStencil ? current->test<true, false>(drawParams->drawBounds(),
                                                                  key,
@@ -92,14 +93,16 @@ void DrawListLayer::recordBackwards(int stepIndex,
                 targetLayer = current;
                 targetMatch = result.second;
 
-                // If it was compatible, we expect a match. If disjoint, match is nullptr.
-                return result.first == BoundsTest::kCompatibleOverlap;
+                if (result.first == BoundsTest::kCompatibleOverlap) {
+                    limit += kMaxSearchLimit >> 1;
+                }
+                return false;
             }
             SkUNREACHABLE;
         };
 
         // Check current here for safety?
-        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stop.layer; ++limit) {
+        for (; limit < kMaxSearchLimit && current != stop.layer; ++limit) {
 #if defined(__GNUC__) || defined(__clang__)
             __builtin_prefetch(current->fPrev);
 #endif
@@ -402,6 +405,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                         renderStep->appendDataStride(),
                                         renderStep->getRenderStateFlags(),
                                         drawParams.barrierBeforeDraws());
+            fPipelineChanges++;
         } else if (uniformBindingChange || textureBindingsChange || newScissor.has_value()) {
             drawWriter.newDynamicState();
         } else if (drawParams.barrierBeforeDraws() != BarrierType::kNone) {
