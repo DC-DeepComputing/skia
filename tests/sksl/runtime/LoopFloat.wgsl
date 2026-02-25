@@ -11,7 +11,7 @@ fn return_loop_ff(five: f32) -> f32 {
   {
     {
       var i: f32 = kZero;
-      loop {
+      for (; i < 10.0; ) {
         {
           if i == five {
             {
@@ -19,10 +19,7 @@ fn return_loop_ff(five: f32) -> f32 {
             }
           }
         }
-        continuing {
-          i = i + f32(1);
-          break if i >= 10.0;
-        }
+        i = i + f32(1);
       }
     }
     return 0.0;
@@ -34,7 +31,7 @@ fn continue_loop_ff(five: f32) -> f32 {
     var sum: f32 = 0.0;
     {
       var i: f32 = 0.0;
-      loop {
+      for (; i < kTen; ) {
         {
           if i < five {
             {
@@ -43,10 +40,7 @@ fn continue_loop_ff(five: f32) -> f32 {
           }
           sum = sum + i;
         }
-        continuing {
-          i = i + f32(1);
-          break if i >= kTen;
-        }
+        i = i + f32(1);
       }
     }
     return sum;
@@ -58,7 +52,7 @@ fn break_loop_ff(five: f32) -> f32 {
     const kOne: f32 = 1.0;
     {
       var i: f32 = 0.0;
-      loop {
+      for (; i < 10.0; ) {
         {
           if i > five {
             {
@@ -67,10 +61,7 @@ fn break_loop_ff(five: f32) -> f32 {
           }
           sum = sum + i;
         }
-        continuing {
-          i = i + kOne;
-          break if i >= 10.0;
-        }
+        i = i + kOne;
       }
     }
     return sum;
@@ -81,14 +72,11 @@ fn float_loop_f() -> f32 {
     var sum: f32 = 0.0;
     {
       var i: f32 = 0.123;
-      loop {
+      for (; i < 0.6; ) {
         {
           sum = sum + i;
         }
-        continuing {
-          i = i + 0.111;
-          break if i >= 0.6;
-        }
+        i = i + 0.111;
       }
     }
     return sum - 1.725;
@@ -99,14 +87,11 @@ fn loop_operator_le_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 1.0;
-      loop {
+      for (; i <= 3.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i + f32(1);
-          break if i > 3.0;
-        }
+        i = i + f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 1.0, 2.0, 3.0));
@@ -117,14 +102,11 @@ fn loop_operator_lt_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 1.0;
-      loop {
+      for (; i < 4.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i + f32(1);
-          break if i >= 4.0;
-        }
+        i = i + f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 1.0, 2.0, 3.0));
@@ -135,14 +117,11 @@ fn loop_operator_ge_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 3.0;
-      loop {
+      for (; i >= 1.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i - f32(1);
-          break if i < 1.0;
-        }
+        i = i - f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 3.0, 2.0, 1.0));
@@ -153,14 +132,11 @@ fn loop_operator_gt_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 3.0;
-      loop {
+      for (; i > 0.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i - f32(1);
-          break if i <= 0.0;
-        }
+        i = i - f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 3.0, 2.0, 1.0));
@@ -171,14 +147,11 @@ fn loop_operator_ne_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 1.0;
-      loop {
+      for (; i < 4.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i + f32(1);
-          break if i >= 4.0;
-        }
+        i = i + f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 1.0, 2.0, 3.0));
@@ -189,14 +162,11 @@ fn loop_operator_eq_b() -> bool {
     var result: vec4<f32> = vec4<f32>(9.0);
     {
       var i: f32 = 1.0;
-      loop {
+      for (; i == 1.0; ) {
         {
           result = vec4<f32>(result.yzw, i);
         }
-        continuing {
-          i = i + f32(1);
-          break if i != 1.0;
-        }
+        i = i + f32(1);
       }
     }
     return all(result == vec4<f32>(9.0, 9.0, 9.0, 1.0));

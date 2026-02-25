@@ -18,15 +18,12 @@ fn switch_with_continue_in_loop_bi(x: i32) -> bool {
         if x == 1 {
           {
             var i: i32 = 0;
-            loop {
+            for (; i < 10; ) {
               {
                 val = val + i32(1);
                 continue;
               }
-              continuing {
-                i = i + i32(1);
-                break if i >= 10;
-              }
+              i = i + i32(1);
             }
           }
         }
@@ -41,7 +38,7 @@ fn loop_with_break_in_switch_bi(x: i32) -> bool {
     var val: i32 = 0;
     {
       var i: i32 = 0;
-      loop {
+      for (; i < 10; ) {
         {
           switch x {
             case 1 {
@@ -54,10 +51,7 @@ fn loop_with_break_in_switch_bi(x: i32) -> bool {
           }
           val = val + i32(1);
         }
-        continuing {
-          i = i + i32(1);
-          break if i >= 10;
-        }
+        i = i + i32(1);
       }
     }
     return val == 20;
@@ -73,15 +67,12 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
         if x == 1 {
           {
             var _1_i: i32 = 0;
-            loop {
+            for (; _1_i < 10; ) {
               {
                 _0_val = _0_val + i32(1);
                 break;
               }
-              continuing {
-                _1_i = _1_i + i32(1);
-                break if _1_i >= 10;
-              }
+              _1_i = _1_i + i32(1);
             }
           }
         }

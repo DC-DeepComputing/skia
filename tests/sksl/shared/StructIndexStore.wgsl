@@ -26,37 +26,28 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
     var values: vec3<f32> = vec3<f32>(0.0);
     {
       var i: i32 = 0;
-      loop {
+      for (; i < 3; ) {
         {
           {
             var j: i32 = 0;
-            loop {
+            for (; j < 3; ) {
               {
                 values = values + vec3<f32>(1.0, 10.0, 100.0);
                 {
                   var k: i32 = 0;
-                  loop {
+                  for (; k < 3; ) {
                     {
                       data.outer[i].inner[j].values[k] = values[k];
                     }
-                    continuing {
-                      k = k + i32(1);
-                      break if k >= 3;
-                    }
+                    k = k + i32(1);
                   }
                 }
               }
-              continuing {
-                j = j + i32(1);
-                break if j >= 3;
-              }
+              j = j + i32(1);
             }
           }
         }
-        continuing {
-          i = i + i32(1);
-          break if i >= 3;
-        }
+        i = i + i32(1);
       }
     }
     let ok: bool = (((((((((data.valueAtRoot == 1234) && all(data.outer[0].inner[0].values == vec3<f32>(1.0, 10.0, 100.0))) && all(data.outer[0].inner[1].values == vec3<f32>(2.0, 20.0, 200.0))) && all(data.outer[0].inner[2].values == vec3<f32>(3.0, 30.0, 300.0))) && all(data.outer[1].inner[0].values == vec3<f32>(4.0, 40.0, 400.0))) && all(data.outer[1].inner[1].values == vec3<f32>(5.0, 50.0, 500.0))) && all(data.outer[1].inner[2].values == vec3<f32>(6.0, 60.0, 600.0))) && all(data.outer[2].inner[0].values == vec3<f32>(7.0, 70.0, 700.0))) && all(data.outer[2].inner[1].values == vec3<f32>(8.0, 80.0, 800.0))) && all(data.outer[2].inner[2].values == vec3<f32>(9.0, 90.0, 900.0));

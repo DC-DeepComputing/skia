@@ -15,7 +15,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
     const increment: i32 = 1;
     {
       var i: i32 = 0;
-      loop {
+      for (; i < 10; ) {
         {
           const increment: i32 = 10;
           if i == 0 {
@@ -25,10 +25,7 @@ fn _skslMain(_skParam0: vec2<f32>) -> vec4<f16> {
           }
           counter = counter + increment;
         }
-        continuing {
-          i = i + increment;
-          break if i >= 10;
-        }
+        i = i + increment;
       }
     }
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(counter == 90));

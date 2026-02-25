@@ -2182,120 +2182,61 @@ void WGSLCodeGenerator::writeDoStatement(const DoStatement& s) {
 }
 
 void WGSLCodeGenerator::writeForStatement(const ForStatement& s) {
-    // Generate a loop structure wrapped in an extra scope:
+    // Emit for-loops in this form:
+    //
     //   {
-    //     initializer-statement;
-    //     loop;
+    //       init;
+    //       for (; cond; ) {
+    //           body
+    //           next;
+    //       }
     //   }
-    // The outer scope is necessary to prevent the initializer-variable from leaking out into the
-    // rest of the code. In practice, the generated code actually tends to be scoped even more
-    // deeply, as the body-statement almost always contributes an extra block.
+    //
+    // The outer block scopes any init variable declarations. The next expression is placed at
+    // the end of the body; writeExpressionStatement handles comma expressions correctly by
+    // emitting each sub-expression as a separate statement.
 
     ++fConditionalScopeDepth;
 
+    // If there is an initializer, wrap in an outer block to scope any variable declarations.
+    // This must be emitted regardless of unroll count.
     if (s.initializer()) {
         this->writeLine("{");
         fIndentation++;
         this->writeStatement(*s.initializer());
-        this->writeLine();
+        this->finishLine();
     }
 
-    this->writeLine("loop {");
-    fIndentation++;
-
-    if (s.unrollInfo()) {
-        if (s.unrollInfo()->fCount <= 0) {
-            // Loops which are known to never execute don't need to be emitted at all.
-            // (However, the front end should have already replaced this loop with a Nop.)
-        } else {
-            // Loops which are known to execute at least once can use this form:
-            //
-            //     loop {
-            //         body-statement;
-            //         continuing {
-            //             next-expression;
-            //             break if inverted-test-expression;
-            //         }
-            //     }
-
-            this->writeStatement(*s.statement());
-            this->finishLine();
-            this->writeLine("continuing {");
-            ++fIndentation;
-
-            if (s.next()) {
-                this->writeExpressionStatement(*s.next());
-                this->finishLine();
-            }
-
-            if (s.test()) {
-                std::unique_ptr<Expression> invertedTestExpr = PrefixExpression::Make(
-                        fContext, s.test()->fPosition, OperatorKind::LOGICALNOT, s.test()->clone());
-
-                std::string breakIfExpr =
-                        this->assembleExpression(*invertedTestExpr, Precedence::kExpression);
-                this->write("break if ");
-                this->write(breakIfExpr);
-                this->writeLine(";");
-            }
-
-            --fIndentation;
-            this->writeLine("}");
-        }
+    if (s.unrollInfo() && s.unrollInfo()->fCount <= 0) {
+        // Loops which are known to never execute don't need to be emitted at all.
+        // (However, the front end should have already replaced this loop with a Nop.)
     } else {
-        // Loops without a known execution count are emitted in this form:
-        //
-        //     loop {
-        //         if test-expression {
-        //             body-statement;
-        //         } else {
-        //             break;
-        //         }
-        //         continuing {
-        //             next-expression;
-        //         }
-        //     }
-
+        // Assemble the condition before writing the loop header, in case assembleExpression
+        // emits preparatory statements to fOut.
+        std::string condStr;
         if (s.test()) {
-            std::string testExpr = this->assembleExpression(*s.test(), Precedence::kExpression);
-            this->write("if ");
-            this->write(testExpr);
-            this->writeLine(" {");
-
-            fIndentation++;
-            this->writeStatement(*s.statement());
-            this->finishLine();
-            fIndentation--;
-
-            this->writeLine("} else {");
-
-            fIndentation++;
-            this->writeLine("break;");
-            fIndentation--;
-
-            this->writeLine("}");
-        }
-        else {
-            this->writeStatement(*s.statement());
-            this->finishLine();
+            condStr = this->assembleExpression(*s.test(), Precedence::kExpression);
         }
 
+        this->write("for (;");
+        if (!condStr.empty()) {
+            this->write(" ");
+            this->write(condStr);
+        }
+        this->writeLine("; ) {");
+
+        fIndentation++;
+        this->writeStatement(*s.statement());
+        this->finishLine();
         if (s.next()) {
-            this->writeLine("continuing {");
-            fIndentation++;
             this->writeExpressionStatement(*s.next());
             this->finishLine();
-            fIndentation--;
-            this->writeLine("}");
         }
+        fIndentation--;
+        this->writeLine("}");
     }
 
-    // This matches an open-brace at the top of the loop.
-    fIndentation--;
-    this->writeLine("}");
-
     if (s.initializer()) {
-        // This matches an open-brace before the initializer-statement.
         fIndentation--;
         this->writeLine("}");
     }

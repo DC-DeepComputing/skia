@@ -11,33 +11,19 @@ fn fill_texture_vTT(passedInTexRGBA: texture_storage_2d<rgba8unorm, write>, pass
     var coords: vec2<u32>;
     {
       coords.y = 0u;
-
-      loop {
-        if coords.y < sizeY {
+      for (; coords.y < sizeY; ) {
+        {
           {
-            {
-              coords.x = 0u;
-
-              loop {
-                if coords.x < sizeX {
-                  {
-                    textureStore(passedInTexRGBA, coords, vec4<f32>(red));
-                  }
-                } else {
-                  break;
-                }
-                continuing {
-                  coords.x = coords.x + u32(1);
-                }
+            coords.x = 0u;
+            for (; coords.x < sizeX; ) {
+              {
+                textureStore(passedInTexRGBA, coords, vec4<f32>(red));
               }
+              coords.x = coords.x + u32(1);
             }
           }
-        } else {
-          break;
         }
-        continuing {
-          coords.y = coords.y + u32(1);
-        }
+        coords.y = coords.y + u32(1);
       }
     }
   }

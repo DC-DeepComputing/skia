@@ -24,14 +24,11 @@ fn for_inside_body_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
+      for (; x <= 10; ) {
         {
           return true;
         }
-        continuing {
-          x = x + i32(1);
-          break if x > 10;
-        }
+        x = x + i32(1);
       }
     }
   }
@@ -41,13 +38,10 @@ fn after_for_body_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
+      for (; x <= 10; ) {
         {
         }
-        continuing {
-          x = x + i32(1);
-          break if x > 10;
-        }
+        x = x + i32(1);
       }
     }
     return true;
@@ -57,7 +51,7 @@ fn for_with_double_sided_conditional_return_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
+      for (; x <= 10; ) {
         {
           if _globalUniforms.unknownInput == 1.0h {
             return true;
@@ -65,10 +59,7 @@ fn for_with_double_sided_conditional_return_b() -> bool {
             return true;
           }
         }
-        continuing {
-          x = x + i32(1);
-          break if x > 10;
-        }
+        x = x + i32(1);
       }
     }
   }
