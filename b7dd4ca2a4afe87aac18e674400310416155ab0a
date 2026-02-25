@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f914dbea_c23c65ba",
+        "filename": "tests/graphite/TextureFormatTest.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-25T20:37:48Z",
+      "side": 1,
+      "message": "relies on ?",
+      "revId": "b7dd4ca2a4afe87aac18e674400310416155ab0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "020590bf_9c4d3555",
+        "filename": "tests/graphite/TextureFormatTest_vk.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-25T20:37:48Z",
+      "side": 1,
+      "message": "Line this guy up ?",
+      "revId": "b7dd4ca2a4afe87aac18e674400310416155ab0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -22,6 +22,30 @@
       },
       "revId": "98044e0a8915c9fe731c8f5c1531e81c997593c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c244bad_1cd02baf",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-25T20:37:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1b11a2b8_8f1944e3",
+      "range": {
+        "startLine": 937,
+        "startChar": 4,
+        "endLine": 950,
+        "endChar": 5
+      },
+      "revId": "98044e0a8915c9fe731c8f5c1531e81c997593c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
