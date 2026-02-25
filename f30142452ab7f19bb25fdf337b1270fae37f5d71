@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54cef089_7903138b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-25T19:39:04Z",
+      "side": 1,
+      "message": "This probably isn\u0027t something Skia should really be doing as the user should be deciding this. This hides from validators what wasn\u0027t properly marked (they report unmarked content, but cannot know \"fake artifacts\" from \"real artifacts\"). The only real reason to consider this is that Chromium needs a lot of plumbing to make the right decisions (both on the AX side and the layout side) and this somewhat puts that plumbing Skia side.",
+      "revId": "f30142452ab7f19bb25fdf337b1270fae37f5d71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
