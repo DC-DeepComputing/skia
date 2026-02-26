@@ -515,123 +515,120 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
-    VkResult err;
-
-    ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
-    uint32_t instanceVersion = 0;
-    // Vulkan 1.1 is required, so vkEnumerateInstanceVersion should always be available.
-    SkASSERT(grVkEnumerateInstanceVersion != nullptr);
-    err = grVkEnumerateInstanceVersion(&instanceVersion);
-    if (err) {
-        SkDebugf("failed to enumerate instance version. Err: %d\n", err);
+    if (!getInstProc) {
         return false;
     }
-    SkASSERT(instanceVersion >= VK_API_VERSION_1_1);
 
     // We could set the Vulkan API version to be the newest version supported by Skia, but for now,
     // set it to 1.1 (the most common Vulkan version on Android devices).
     static const uint32_t kApiVersion = VK_API_VERSION_1_1;
+
+    // Figure out the instance version
+    ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
+    // Vulkan 1.1 is required, so vkEnumerateInstanceVersion should always be available.
+    SkASSERT(grVkEnumerateInstanceVersion != nullptr);
+    VkResult result;
+    uint32_t instanceVersion = 0;
+    result = grVkEnumerateInstanceVersion(&instanceVersion);
+    if (result != VK_SUCCESS) {
+        SkDebugf("Failed to enumerate instance version. Err: %d\n", result);
+        return false;
+    }
+    SkASSERT(instanceVersion >= VK_API_VERSION_1_1);
     instanceVersion = std::min(instanceVersion, kApiVersion);
 
     STArray<2, VkPhysicalDevice> physDevs;
     VkDevice device;
     VkInstance inst = VK_NULL_HANDLE;
 
-    const VkApplicationInfo app_info = {
-        VK_STRUCTURE_TYPE_APPLICATION_INFO, // sType
-        nullptr,                            // pNext
-        "vktest",                           // pApplicationName
-        0,                                  // applicationVersion
-        "vktest",                           // pEngineName
-        0,                                  // engineVerison
-        kApiVersion,                        // apiVersion
-    };
+    static const VkApplicationInfo appInfo = { VK_STRUCTURE_TYPE_APPLICATION_INFO,
+                                               /*pNext=*/nullptr,
+                                               "vkTestApp",
+                                               /*applicationVersion=*/0,
+                                               "vkTestEngine",
+                                               /*engineVerison=*/0,
+                                               kApiVersion };
     // Initialize VulkanPreferredFeatures using whatever API value matches that of the version
-    // assigned to VkApplicationInfo. based on API value passed in to VkApplicationInfo (apiVersion)
+    // assigned to VkApplicationInfo.
     testVkFeatures->skiaFeatures.init(kApiVersion);
 
-    TArray<VkLayerProperties> instanceLayers;
-    TArray<VkExtensionProperties> instanceExtensions;
-
-    if (!init_instance_extensions_and_layers(getInstProc, instanceVersion,
-                                             &instanceExtensions,
-                                             &instanceLayers)) {
+    TArray<VkLayerProperties> instLayers;
+    TArray<VkExtensionProperties> instExtensions;
+    if (!init_instance_extensions_and_layers(getInstProc,
+                                             instanceVersion,
+                                             &instExtensions,
+                                             &instLayers)) {
         return false;
     }
 
-    TArray<const char*> instanceLayerNames;
-    std::vector<const char*> instanceExtensionNames;
+    TArray<const char*> instLayers;
+    std::vector<const char*> instExtNames;
     for (int i = 0; i < instanceLayers.size(); ++i) {
-        instanceLayerNames.push_back(instanceLayers[i].layerName);
+        instLayerNames.push_back(instLayers[i].layerName);
     }
-    for (int i = 0; i < instanceExtensions.size(); ++i) {
-        instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
+    for (int i = 0; i < instExtensions.size(); ++i) {
+        instExtNames.push_back(instExtensions[i].extensionName);
     }
 
     testVkFeatures->skiaFeatures.addToInstanceExtensions(
-            instanceExtensions.begin(), instanceExtensions.size(), instanceExtensionNames);
+            instExtensions.begin(), instExtensions.size(), instExtNames);
 
-    VkInstanceCreateInfo instance_create = {
-            VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,   // sType
-            nullptr,                                  // pNext
-            0,                                        // flags
-            &app_info,                                // pApplicationInfo
-            (uint32_t)instanceLayerNames.size(),      // enabledLayerNameCount
-            instanceLayerNames.begin(),               // ppEnabledLayerNames
-            (uint32_t)instanceExtensionNames.size(),  // enabledExtensionNameCount
-            instanceExtensionNames.data(),            // ppEnabledExtensionNames
-    };
+    VkInstanceCreateInfo instCreateInfo = { VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+                                            /*pNext=*/nullptr,
+                                            /*flags=*/0,
+                                            &appInfo,
+                                            (uint32_t)instLayerNames.size(),
+                                            instLayerNames.begin(),
+                                            (uint32_t)instExtNames.size(),
+                                            instExtNames.data() };
+    bool hasDebugExt = false;
 
-    bool hasDebugExtension = false;
     *debugMessenger = VK_NULL_HANDLE;
-
 #ifdef SK_ENABLE_VK_LAYERS
     bool hasLayerSettingsExt = false;
-    for (size_t i = 0; i < instanceExtensionNames.size()
-                       && !hasDebugExtension && !hasLayerSettingsExt; ++i) {
-        if (!strcmp(instanceExtensionNames[i], VK_EXT_DEBUG_UTILS_EXTENSION_NAME)) {
-            hasDebugExtension = true;
-        } else if (!strcmp(instanceExtensionNames[i], VK_EXT_LAYER_SETTINGS_EXTENSION_NAME)) {
+
+    // Determine whether we can use VK_EXT_DEBUG_UTILS and VK_EXT_LAYER_SETTINGS
+    for (size_t i = 0; i < instExtNames.size() && !hasDebugExt && !hasLayerSettingsExt; ++i) {
+        if (!strcmp(instExtNames[i], VK_EXT_DEBUG_UTILS_EXTENSION_NAME)) {
+            hasDebugExt = true;
+        } else if (!strcmp(instExtNames[i], VK_EXT_LAYER_SETTINGS_EXTENSION_NAME)) {
             hasLayerSettingsExt = true;
         }
     }
 
     // Fine grain control of validation layer features
-    const char* name = "VK_LAYER_KHRONOS_validation";
-    const VkBool32 settingValidateCore = VK_TRUE;
+    const VkBool32 coreValidation = VK_TRUE;
     // Syncval is disabled for now, but would be useful to enable eventually.
-    const VkBool32 settingValidateSync = VK_FALSE;
-    const VkBool32 settingThreadSafety = VK_TRUE;
+    const VkBool32 syncValidation = VK_FALSE;
+    const VkBool32 threadSafetyValidation = VK_TRUE;
     // Shader validation could be useful (previously broken on Android, might already be fixed:
     // http://anglebug.com/42265520).
-    const VkBool32 settingCheckShaders = VK_FALSE;
+    const VkBool32 shaderValidation = VK_FALSE;
     // If syncval is enabled, submit time validation could stay disabled due to performance issues:
     // https://github.com/KhronosGroup/Vulkan-ValidationLayers/issues/7285
-    const VkBool32 settingSyncvalSubmitTimeValidation = VK_FALSE;
+    const VkBool32 syncValSubmitTime = VK_FALSE;
     // Extra properties in syncval make it easier to filter the messages.
-    const VkBool32 settingSyncvalMessageExtraProperties = VK_TRUE;
+    const VkBool32 syncValExtraMessage = VK_TRUE;
+
+    // Utility variables for conciseness
+    static const char* kLayerName = "VK_LAYER_KHRONOS_validation";
+    static const uint8_t kCount = 1;
+    static const VkLayerSettingTypeEXT kType = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
     const VkLayerSettingEXT layerSettings[] = {
-            {name, "validate_core", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingValidateCore},
-            {name, "validate_sync", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingValidateSync},
-            {name, "thread_safety", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingThreadSafety},
-            {name, "check_shaders", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingCheckShaders},
-            {name,
-             "syncval_submit_time_validation",
-             VK_LAYER_SETTING_TYPE_BOOL32_EXT,
-             1,
-             &settingSyncvalSubmitTimeValidation},
-            {name,
-             "syncval_message_extra_properties",
-             VK_LAYER_SETTING_TYPE_BOOL32_EXT,
-             1,
-             &settingSyncvalMessageExtraProperties},
+            {kLayerName, "validate_core", kType, kCount, &settingValidateCore},
+            {kLayerName, "validate_sync", kType, kCount, &settingValidateSync},
+            {kLayerName, "thread_safety", kType, kCount, &settingThreadSafety},
+            {kLayerName, "check_shaders", kType, kCount, &settingCheckShaders},
+            {kLayerName, "syncval_submit_time_validation",   kType, kCount, &syncValSubmitTime  };
+            {kLayerName, "syncval_message_extra_properties", kType, kCount, &syncValExtraMessage};
     };
+
     VkLayerSettingsCreateInfoEXT layerSettingsCreateInfo = {};
     layerSettingsCreateInfo.sType = VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT;
     layerSettingsCreateInfo.settingCount = static_cast<uint32_t>(std::size(layerSettings));
     layerSettingsCreateInfo.pSettings = layerSettings;
     if (hasDebugExtension && hasLayerSettingsExt) {
-        instance_create.pNext = &layerSettingsCreateInfo;
+        instCreateInfo.pNext = &layerSettingsCreateInfo;
     }
 #endif
 
@@ -805,47 +802,42 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     extensions->init(getProc,
                      inst,
                      physDev,
-                     (uint32_t)instanceExtensionNames.size(),
-                     instanceExtensionNames.data(),
-                     (uint32_t)deviceExtensionNames.size(),
-                     deviceExtensionNames.data());
+                     (uint32_t)instExtNames.size(),
+                     instExtNames.data(),
+                     (uint32_t)devExtNames.size(),
+                     devExtNames.data());
 
+    // Create the VkDeviceQueues. We assume no need for swapchain queue - if one is needed, the
+    // client will need its own setup code.
     VkDeviceQueueCreateFlags flags = isProtected ? VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT : 0;
-    float queuePriorities[1] = { 0.0 };
-    // Here we assume no need for swapchain queue
-    // If one is needed, the client will need its own setup code
+    static constexpr float queuePriorities[1] = { 0.0 };
     const VkDeviceQueueCreateInfo queueInfo[2] = {
-        {
-            VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO, // sType
-            nullptr,                                    // pNext
-            flags,                                      // VkDeviceQueueCreateFlags
-            graphicsQueueIndex,                         // queueFamilyIndex
-            1,                                          // queueCount
-            queuePriorities,                            // pQueuePriorities
-
-        },
-        {
-            VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO, // sType
-            nullptr,                                    // pNext
-            0,                                          // VkDeviceQueueCreateFlags
-            presentQueueIndex,                          // queueFamilyIndex
-            1,                                          // queueCount
-            queuePriorities,                            // pQueuePriorities
-        }
+            { VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+              /*pNext=*/nullptr,
+              flags,
+              graphicsQueueIndex,
+              /*queueCount=*/1,
+              queuePriorities },
+            { VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+              /*pNext=*/nullptr,
+              /*flags=*/0,
+              presentQueueIndex,
+              /*queueCount*/1,
+              queuePriorities}
     };
     uint32_t queueInfoCount = (presentQueueIndex != graphicsQueueIndex) ? 2 : 1;
 
     const VkDeviceCreateInfo deviceInfo = {
-        VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,        // sType
-        &testVkFeatures->deviceFeatures,             // pNext
-        0,                                           // VkDeviceCreateFlags
-        queueInfoCount,                              // queueCreateInfoCount
-        queueInfo,                                   // pQueueCreateInfos
-        (uint32_t) deviceLayerNames.size(),          // layerCount
-        deviceLayerNames.begin(),                    // ppEnabledLayerNames
-        (uint32_t) deviceExtensionNames.size(),      // extensionCount
-        deviceExtensionNames.data(),                 // ppEnabledExtensionNames
-        nullptr,                                     // ppEnabledFeatures
+        VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        &testVkFeatures->deviceFeatures,
+        /*flags=*/0,
+        queueCreateInfoCount,
+        queueInfo,
+        (uint32_t) devLayerNames.size(),
+        devLayerNames.begin(),
+        (uint32_t) devExtNames.size(),
+        devExtNames.data(),
+        /*ppEnabledFeatures=*/nullptr
     };
 
     {
@@ -864,17 +856,15 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     VkQueue queue;
     if (isProtected) {
         ACQUIRE_VK_PROC(GetDeviceQueue2, inst, device);
-        SkASSERT(grVkGetDeviceQueue2 != nullptr);
-        VkDeviceQueueInfo2 queue_info2 = {
-            VK_STRUCTURE_TYPE_DEVICE_QUEUE_INFO_2,          // sType
-            nullptr,                                        // pNext
-            VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT,           // flags
-            graphicsQueueIndex,                             // queueFamilyIndex
-            0                                               // queueIndex
-        };
-        grVkGetDeviceQueue2(device, &queue_info2, &queue);
+        VkDeviceQueueInfo2 queueInfo2 = { VK_STRUCTURE_TYPE_DEVICE_QUEUE_INFO_2,
+                                         /*pNext=*/nullptr,
+                                         VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT,
+                                         graphicsQueueIndex,
+                                         /*queueIndex=*/0 };
+        grVkGetDeviceQueue2(device, &queueInfo2, &queue);
     } else {
-        grVkGetDeviceQueue(device, graphicsQueueIndex, 0, &queue);
+        ACQUIRE_VK_PROC(GetDeviceQueue, inst, /*device=*/VK_NULL_HANDLE);
+        grVkGetDeviceQueue(device, graphicsQueueIndex, /*queueIndex=*/0, &queue);
     }
 
     skgpu::VulkanInterface interface = skgpu::VulkanInterface(
