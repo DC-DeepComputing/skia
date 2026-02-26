@@ -525,8 +525,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkExtent2D granularity)
         : Resource(context,
                    Ownership::kOwned,
-                   /*gpuMemorySize=*/0,
-                   /*reusableRequiresPurgeable=*/false)
+                   /*gpuMemorySize=*/0)
         , fSharedContext(context)
         , fRenderPass(renderPass)
         , fGranularity(granularity) {}
