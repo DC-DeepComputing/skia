@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "547de691_fb2f1bef",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2185,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-26T11:33:11Z",
+      "side": 1,
+      "message": "I don\u0027t need this function anymore.",
+      "parentUuid": "2f32bc51_9bc5befd",
+      "range": {
+        "startLine": 2185,
+        "startChar": 38,
+        "endLine": 2185,
+        "endChar": 70
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dafd9b84_15ca267c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-25T15:48:27Z",
       "side": 1,
       "message": "Should be `STArray\u003c1, const Expression*\u003e` since there will probably be at most 1 next expression",
+      "range": {
+        "startLine": 2229,
+        "startChar": 8,
+        "endLine": 2229,
+        "endChar": 39
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6809e63a_3b3ee4b0",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2229,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-26T11:33:11Z",
+      "side": 1,
+      "message": "Not needed anymore.",
+      "parentUuid": "dafd9b84_15ca267c",
       "range": {
         "startLine": 2229,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c0773d3_49bb15fb",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2256,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-26T11:33:11Z",
+      "side": 1,
+      "message": "Good catch. I have reverted to use `loop` statement for complex conditions and updates that require scratch variables. The simple loops will use `for` statement.",
+      "parentUuid": "a1e011f7_60197934",
+      "range": {
+        "startLine": 2256,
+        "startChar": 0,
+        "endLine": 2256,
+        "endChar": 83
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ff19259_3f3f58f1",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "373b7441_55f4361f",
+        "filename": "tests/sksl/shared/ForLoopMultipleInitES3.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-26T11:33:11Z",
+      "side": 1,
+      "message": "WGSL doesn\u0027t have label and gotos. I decided to keep using `loop` for multiple next expressions.",
+      "parentUuid": "8ff19259_3f3f58f1",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c3511c2_2f8e8e7b",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-02-25T15:48:27Z",
       "side": 1,
       "message": "Another complexity around moving multiple next expressions into the loop body is if the expression has shadowed variables. If we moved this expression into the loop body, we\u0027d pick up the deeper `increment` variable set to 10. I think if we have more than 1 next expression, we need to keep it in a separate scope from the regular loop body.",
+      "range": {
+        "startLine": 18,
+        "startChar": 19,
+        "endLine": 18,
+        "endChar": 38
+      },
+      "revId": "9bb87603d5c475e1603b03d5c1afa48d50c3d774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a24aa1ec_ac46af6c",
+        "filename": "tests/sksl/shared/ForLoopShadowing.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-26T11:33:11Z",
+      "side": 1,
+      "message": "Done. Multiple next expressions will use `loop` instead of `for` for now.",
+      "parentUuid": "0c3511c2_2f8e8e7b",
       "range": {
         "startLine": 18,
         "startChar": 19,
