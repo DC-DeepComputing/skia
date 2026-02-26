@@ -34,6 +34,24 @@
       "parentUuid": "ff204fad_18a07a6e",
       "revId": "f8943fa98f2d79bcb57714abf78978b813da0332",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76aaec4b_f88707d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-26T18:26:37Z",
+      "side": 1,
+      "message": "The fix for subsetting to use a list of all known table tags landed in HarfBuzz 4.4.0. If one can depend on that it might be fine to make this change and only use `hb_face_set_get_table_tags_func` when compiling with HarfBuzz 10 or later headers. However, it appears there was one distro that still \"supports\" HarfBuzz 3.2 on which this code will always produce an empty hb_font.\n\nFor the time being it will be necessary to have an old and new code path, selected based on the HarfBuzz header version at compile time.",
+      "parentUuid": "31c02325_05543247",
+      "revId": "f8943fa98f2d79bcb57714abf78978b813da0332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
