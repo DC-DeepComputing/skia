@@ -10,7 +10,7 @@
 #include "tools/gpu/vk/VkTestMemoryAllocator.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
-#ifdef SK_VULKAN
+#if defined (SK_VULKAN)
 
 #ifndef SK_GPU_TOOLS_VK_LIBRARY_NAME
     #if defined _WIN32
@@ -68,27 +68,86 @@ bool LoadVkLibraryAndGetProcAddrFuncs(PFN_vkGetInstanceProcAddr* instProc) {
     return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Helper code to set up Vulkan context objects
+/**************************************************************************************************/
+/***************************     Macros to make Vulkan driver calls     ***************************/
+/**************************************************************************************************/
+namespace {
+#define ACQUIRE_VK_INST_PROC_LOCAL(name, instance)                                 \
+    PFN_vk##name grVk##name =                                                      \
+        reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name));         \
+    do {                                                                           \
+        if (grVk##name == nullptr) {                                               \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);      \
+            return false;                                                          \
+        }                                                                          \
+    } while (0)
 
-#ifdef SK_ENABLE_VK_LAYERS
+#define GET_PROC_LOCAL(F, inst, device) PFN_vk ## F F = (PFN_vk ## F) getProc("vk" #F, inst, device)
+
+#define ACQUIRE_VK_INST_PROC_NOCHECK(name, instance) \
+    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name))
+
+#define ACQUIRE_VK_INST_PROC(name, instance)                                                     \
+    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name)); \
+    do {                                                                                         \
+        if (grVk##name == nullptr) {                                                             \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);                    \
+            if (inst != VK_NULL_HANDLE) {                                                        \
+                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);          \
+            }                                                                                    \
+            return false;                                                                        \
+        }                                                                                        \
+    } while (0)
+
+#define ACQUIRE_VK_PROC_NOCHECK(name, instance, device) \
+    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device))
+
+#define ACQUIRE_VK_PROC(name, instance, device)                                         \
+    PFN_vk##name grVk##name =                                                           \
+            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device));      \
+    do {                                                                                \
+        if (grVk##name == nullptr) {                                                    \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);           \
+            if (inst != VK_NULL_HANDLE) {                                               \
+                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension); \
+            }                                                                           \
+            return false;                                                               \
+        }                                                                               \
+    } while (0)
+
+#define ACQUIRE_VK_PROC_LOCAL(name, instance, device)                              \
+    PFN_vk##name grVk##name =                                                      \
+            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device)); \
+    do {                                                                           \
+        if (grVk##name == nullptr) {                                               \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);      \
+            return false;                                                          \
+        }                                                                          \
+    } while (0)
+} // anonymous namespace
+
+/**************************************************************************************************/
+/**********************     Helper code to set up Vulkan context objects     **********************/
+/**************************************************************************************************/
+namespace { // anonymous namespace
+#if defined (SK_ENABLE_VK_LAYERS)
+
+uint32_t remove_patch_version(uint32_t specVersion) { return (specVersion >> 12) << 12; }
+
 const char* kDebugLayerNames[] = {
     // single merged layer
     "VK_LAYER_KHRONOS_validation",
     // not included in standard_validation
-    //"VK_LAYER_LUNARG_api_dump",
-    //"VK_LAYER_LUNARG_vktrace",
-    //"VK_LAYER_LUNARG_screenshot",
+    // "VK_LAYER_LUNARG_api_dump",
+    // "VK_LAYER_LUNARG_vktrace",
+    // "VK_LAYER_LUNARG_screenshot",
 };
 
-static uint32_t remove_patch_version(uint32_t specVersion) {
-    return (specVersion >> 12) << 12;
-}
-
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
-static int should_include_debug_layer(const char* layerName,
-                                       uint32_t layerCount, VkLayerProperties* layers,
-                                       uint32_t version) {
+int should_include_debug_layer(const char* layerName,
+                               uint32_t layerCount,
+                               VkLayerProperties* layers,
+                               uint32_t version) {
     for (uint32_t i = 0; i < layerCount; ++i) {
         if (!strcmp(layerName, layers[i].layerName)) {
             // Since the layers intercept the vulkan calls and forward them on, we need to make sure
@@ -104,7 +163,7 @@ static int should_include_debug_layer(const char* layerName,
     return -1;
 }
 
-static void print_backtrace() {
+void print_backtrace() {
 #if defined(__GLIBC__)
     void* stack[64];
     int count = backtrace(stack, std::size(stack));
@@ -178,20 +237,11 @@ DebugUtilsMessenger(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 
     return VK_FALSE;
 }
-#endif
 
-#define ACQUIRE_VK_INST_PROC_LOCAL(name, instance)                                 \
-    PFN_vk##name grVk##name =                                                      \
-        reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name));         \
-    do {                                                                           \
-        if (grVk##name == nullptr) {                                               \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);      \
-            return false;                                                          \
-        }                                                                          \
-    } while (0)
+#endif // SK_ENABLE_VK_LAYERS
 
 // Returns the index into layers array for the layer we want. Returns -1 if not supported.
-static bool should_include_extension(const char* extensionName) {
+bool should_include_extension(const char* extensionName) {
     const char* kValidExtensions[] = {
             VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
             VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
@@ -222,10 +272,10 @@ static bool should_include_extension(const char* extensionName) {
     return false;
 }
 
-static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getInstProc,
-                                                uint32_t specVersion,
-                                                TArray<VkExtensionProperties>* instanceExtensions,
-                                                TArray<VkLayerProperties>* instanceLayers) {
+bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getInstProc,
+                                         uint32_t specVersion,
+                                         TArray<VkExtensionProperties>* instanceExtensions,
+                                         TArray<VkLayerProperties>* instanceLayers) {
     if (getInstProc == nullptr) {
         return false;
     }
@@ -308,13 +358,11 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
     return true;
 }
 
-#define GET_PROC_LOCAL(F, inst, device) PFN_vk ## F F = (PFN_vk ## F) getProc("vk" #F, inst, device)
-
-static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getProc,
-                                              uint32_t specVersion, VkInstance inst,
-                                              VkPhysicalDevice physDev,
-                                              TArray<VkExtensionProperties>* deviceExtensions,
-                                              TArray<VkLayerProperties>* deviceLayers) {
+bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getProc,
+                                       uint32_t specVersion, VkInstance inst,
+                                       VkPhysicalDevice physDev,
+                                       TArray<VkExtensionProperties>* deviceExtensions,
+                                       TArray<VkLayerProperties>* deviceLayers) {
     if (getProc == nullptr) {
         return false;
     }
@@ -404,51 +452,10 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
     return true;
 }
 
-#define ACQUIRE_VK_INST_PROC_NOCHECK(name, instance) \
-    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name))
-
-#define ACQUIRE_VK_INST_PROC(name, instance)                                                     \
-    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name)); \
-    do {                                                                                         \
-        if (grVk##name == nullptr) {                                                             \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);                    \
-            if (inst != VK_NULL_HANDLE) {                                                        \
-                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);          \
-            }                                                                                    \
-            return false;                                                                        \
-        }                                                                                        \
-    } while (0)
-
-#define ACQUIRE_VK_PROC_NOCHECK(name, instance, device) \
-    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device))
-
-#define ACQUIRE_VK_PROC(name, instance, device)                                         \
-    PFN_vk##name grVk##name =                                                           \
-            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device));      \
-    do {                                                                                \
-        if (grVk##name == nullptr) {                                                    \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);           \
-            if (inst != VK_NULL_HANDLE) {                                               \
-                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension); \
-            }                                                                           \
-            return false;                                                               \
-        }                                                                               \
-    } while (0)
-
-#define ACQUIRE_VK_PROC_LOCAL(name, instance, device)                              \
-    PFN_vk##name grVk##name =                                                      \
-            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device)); \
-    do {                                                                           \
-        if (grVk##name == nullptr) {                                               \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);      \
-            return false;                                                          \
-        }                                                                          \
-    } while (0)
-
-static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc,
-                             VkInstance inst,
-                             VkDebugUtilsMessengerEXT* debugMessenger,
-                             bool hasDebugExtension) {
+bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc,
+                      VkInstance inst,
+                      VkDebugUtilsMessengerEXT* debugMessenger,
+                      bool hasDebugExtension) {
     if (hasDebugExtension && *debugMessenger != VK_NULL_HANDLE) {
         ACQUIRE_VK_INST_PROC_LOCAL(DestroyDebugUtilsMessengerEXT, inst);
         grVkDestroyDebugUtilsMessengerEXT(inst, *debugMessenger, nullptr);
@@ -459,13 +466,13 @@ static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc,
     return true;
 }
 
-static bool setup_features(const skgpu::VulkanGetProc& getProc,
-                           VkInstance inst,
-                           VkPhysicalDevice physDev,
-                           uint32_t physDeviceVersion,
-                           const TArray<VkExtensionProperties>& deviceExtensions,
-                           TestVkFeatures& testVkFeatures,
-                           bool isProtected) {
+bool setup_features(const skgpu::VulkanGetProc& getProc,
+                    VkInstance inst,
+                    VkPhysicalDevice physDev,
+                    uint32_t physDeviceVersion,
+                    const TArray<VkExtensionProperties>& deviceExtensions,
+                    TestVkFeatures& testVkFeatures,
+                    bool isProtected) {
     SkASSERT(physDeviceVersion >= VK_API_VERSION_1_1);
 
     testVkFeatures.deviceFeatures = {};
@@ -497,6 +504,8 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc,
 
     return !isProtected || testVkFeatures.protectedMemoryFeatures.protectedMemory;
 }
+
+} // anonymous
 
 bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             skgpu::VulkanBackendContext* ctx,
@@ -892,4 +901,4 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
 
 }  // namespace sk_gpu_test
 
-#endif
+#endif // SK_VULKAN
