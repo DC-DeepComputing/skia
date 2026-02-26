@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include <utility>
@@ -129,6 +130,11 @@ sk_sp<CopyTextureToTextureTask> CopyTextureToTextureTask::Make(sk_sp<TextureProx
                                                                SkIPoint dstPoint,
                                                                int dstLevel) {
     if (!srcProxy || !dstProxy) {
+        return nullptr;
+    }
+    // Texture-to-texture copies do not do format conversions
+    if (TextureInfoPriv::ViewFormat(srcProxy->textureInfo()) !=
+        TextureInfoPriv::ViewFormat(dstProxy->textureInfo())) {
         return nullptr;
     }
     return sk_sp<CopyTextureToTextureTask>(new CopyTextureToTextureTask(std::move(srcProxy),
