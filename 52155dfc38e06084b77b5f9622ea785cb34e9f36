@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "285b9669_2ac0db84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2026-02-26T13:08:13Z",
+      "side": 1,
+      "message": "Hello, we want to replaying skp without cropping. And skpViewportSize option has some disadvantages described in the comment. So please review this CL and very thanks to your advice.",
+      "revId": "52155dfc38e06084b77b5f9622ea785cb34e9f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
