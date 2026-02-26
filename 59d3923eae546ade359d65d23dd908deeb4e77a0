@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3f3aa3_9abb65cb",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-26T16:20:10Z",
+      "side": 0,
+      "message": "Instead, would we perhaps want to add a info or warning level GPU log message? Or is `Undefined` simply a more expected + appropriate value now?",
+      "range": {
+        "startLine": 297,
+        "startChar": 7,
+        "endLine": 297,
+        "endChar": 24
+      },
+      "revId": "59d3923eae546ade359d65d23dd908deeb4e77a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
