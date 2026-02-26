@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b96a7282_c4ec7739",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-02-26T15:45:23Z",
+      "side": 1,
+      "message": "This should fix failures in VkPreferredFeaturesTest introduced by https://skia-review.git.corp.google.com/c/skia/+/1158876",
+      "revId": "a38d5b8c0bda196c9c69e3bae5836662384d920e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
