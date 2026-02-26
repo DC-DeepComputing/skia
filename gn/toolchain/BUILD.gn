@@ -457,5 +457,12 @@ if (is_wasm) {
       cxx = "$skia_emsdk_dir/upstream/emscripten/em++"
     }
     link = cxx
+
+    if (!is_canvaskit) {
+      _source_root_dir = rebase_path("../..", root_build_dir)
+      _skia_bin_dir = "$_source_root_dir/bin"
+      script = "$_skia_bin_dir/activate-emsdk"
+      exec_script(script)
+    }
   }
 }
