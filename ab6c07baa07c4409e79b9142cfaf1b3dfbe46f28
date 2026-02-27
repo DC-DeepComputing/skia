@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a50fd7e_17041ee3",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:19:17Z",
+      "side": 1,
+      "message": "nit: Can we comment that this should only be called by `ResourceCache` or from the constructor of a `Resource` subclass?",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 32
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e695cc1_d558af23",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:19:17Z",
+      "side": 1,
+      "message": "I think the internally case doesn\u0027t happen any more, since its either just via the constructor or via the ResourceCache now.",
+      "range": {
+        "startLine": 454,
+        "startChar": 41,
+        "endLine": 454,
+        "endChar": 51
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd142bb6_cc6ae3d4",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:19:17Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 455,
+        "startChar": 37,
+        "endLine": 455,
+        "endChar": 38
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace46325_61261029",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:19:17Z",
+      "side": 0,
+      "message": "Let\u0027s keep this as not relying on a default value. I think it\u0027s helpful to have these policies be explicit in each resource\u0027s constructor.",
+      "range": {
+        "startLine": 529,
+        "startChar": 18,
+        "endLine": 529,
+        "endChar": 55
+      },
+      "revId": "5d1ef0425ed15f1af346127477d6e88f13385347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2e173ce_8fb7cd27",
+        "filename": "src/gpu/graphite/vk/VulkanYcbcrConversion.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:19:17Z",
+      "side": 0,
+      "message": "same here",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 55
+      },
+      "revId": "5d1ef0425ed15f1af346127477d6e88f13385347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
