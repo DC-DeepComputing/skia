@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8885e9d_acbbf3a0",
+        "filename": "src/gpu/ganesh/GrAtlasTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:23:44Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 322,
+        "startChar": 40,
+        "endLine": 322,
+        "endChar": 51
+      },
+      "revId": "536273aa43f16afcaddc0da9ea148d30aea696c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
