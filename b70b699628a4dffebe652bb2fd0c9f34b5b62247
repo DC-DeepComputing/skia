@@ -16,6 +16,24 @@
       "message": "Hi @bungeman@google.com nona@google.com, pls take a look at revised version of this CL and let me know if it can be accepted.\n\nIn order to use a system font on SurfaceFlinger side i believe it is necessary to depend at least on `SkFontHost_FreeType` and `SkFontMgr_custom`. However that would mean that whenever a new font is used for the first time, it will need to be created on demand. I think this will cause unnecessary jank, therefore I\u0027ve chosen to use SkFontMgr_custom_directory api. That way a font manager providing access to system fonts will be created once at initialization time. Please let me know if my analysis is incorrect and a different way of using system fonts via Skia API exists.",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8e430e_1bb7fa2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2026-02-27T23:20:03Z",
+      "side": 1,
+      "message": "Diff that new version of this CL generates in Android tree: https://paste.googleplex.com/4611672699437056#l\u003d9",
+      "parentUuid": "21768753_ecdd67cd",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
