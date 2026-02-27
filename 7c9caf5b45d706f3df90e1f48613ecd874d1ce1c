@@ -86,6 +86,24 @@
       "parentUuid": "3327a7c4_aa9813ec",
       "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81f2892_ce91d5ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4595360
+      },
+      "writtenOn": "2026-02-27T18:04:09Z",
+      "side": 1,
+      "message": "I\u0027ve just uploaded an updated patchset with an additional commit adding Collabora Ltd to the AUTHORS file.",
+      "parentUuid": "5226e6b2_86411085",
+      "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
