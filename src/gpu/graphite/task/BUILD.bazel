@@ -15,6 +15,7 @@ CORE_FILES = [
     "CopyTask.h",
     "DrawTask.cpp",
     "DrawTask.h",
+    "Polyline.h"
     "RenderPassTask.cpp",
     "RenderPassTask.h",
     "SynchronizeToCpuTask.cpp",
