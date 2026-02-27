@@ -16,6 +16,41 @@
       "message": "I don\u0027t see the comments, what is the actual breakage?\n\nLooks like the Android rolls have been going through.",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705b5e38_77bba727",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-27T14:37:50Z",
+      "side": 1,
+      "message": "Apologies, I thought I fixed the commit message, these bugs are regressing in Android, one is a release blocker. b/480815083",
+      "parentUuid": "4fb9cdbc_987c3744",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b183e2e_9b89c9ee",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-27T14:37:50Z",
+      "side": 1,
+      "message": "Not sure how exactly, but I\u0027m wondering if Android needs SK_ENABLE_LEGACY_SHADERCONTEXT defined through this snippet. This CL mainly serves as a quick fix/test, but if after some more testing the solution is just to define this in SkUserConfig_Manual.h, I can make the change there.",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
