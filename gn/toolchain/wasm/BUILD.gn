@@ -1,0 +1,36 @@
+if (current_toolchain == "//gn/toolchain:$host_toolchain") {
+  action("activate") {
+    _skia_bin_dir = rebase_path("../../../../bin", root_build_dir)
+    script = "$_skia_bin_dir/activate-emsdk"
+    args = []
+    outputs = [ "$target_gen_dir/emsdk_done.stamp" ]
+  }
+}
+
+# Only define the wasm toolchain when the execution context is targeting wasm
+# architectures. This allows us to reference a target in this same file, but in
+# a different toolchain context, without introducing a dependency cycle. In
+# other words, `is_wasm==true` initially when targeting wasm, and when
+# re-executing this BUILD.gn due to deps, `is_wasm==false`.
+if (is_wasm) {
+  import("../gcc_like.gni")
+
+  gcc_like_toolchain("wasm") {
+    cpu = "wasm"
+    os = "wasm"
+    if (host_os == "win") {
+      ar = "$skia_emsdk_dir/upstream/emscripten/emar.bat"
+      cc = "$skia_emsdk_dir/upstream/emscripten/emcc.bat"
+      cxx = "$skia_emsdk_dir/upstream/emscripten/em++.bat"
+    } else {
+      ar = "$skia_emsdk_dir/upstream/emscripten/emar"
+      cc = "$skia_emsdk_dir/upstream/emscripten/emcc"
+      cxx = "$skia_emsdk_dir/upstream/emscripten/em++"
+    }
+    link = cxx
+
+    if (!is_canvaskit) {
+      deps = [ ":activate(//gn/toolchain:$host_toolchain)" ]
+    }
+  }
+}
