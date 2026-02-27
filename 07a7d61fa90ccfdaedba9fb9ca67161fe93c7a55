@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6ea99c_e5e3f57f",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T19:30:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f85947e0_4d35a0db",
+      "range": {
+        "startLine": 97,
+        "startChar": 21,
+        "endLine": 99,
+        "endChar": 93
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1bc0028_d033539b",
@@ -244,6 +268,30 @@
       "side": 1,
       "message": "Oh I see what you\u0027re saying now. The first draw gets hoisted because it needs to do the binding change check. The rest are `bindingInvariant \u003d true`.",
       "parentUuid": "392f5e3c_c7f9c546",
+      "range": {
+        "startLine": 528,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 21
+      },
+      "revId": "07a7d61fa90ccfdaedba9fb9ca67161fe93c7a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9421d27d_4a0e1993",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T19:30:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "597b07c6_e439ed70",
       "range": {
         "startLine": 528,
         "startChar": 0,
