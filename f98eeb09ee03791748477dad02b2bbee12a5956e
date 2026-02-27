@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38452b7a_c888b7bc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T15:21:14Z",
+      "side": 1,
+      "message": "If Android really wants the old behavior (and the old behavior is a bit faster on the CPU side but also less accurate) then they should set `SK_ENABLE_LEGACY_SHADERCONTEXT`. The issue with this old method of setting it was that there was effectively no signal of who actually wanted or needed this define.",
+      "parentUuid": "0ff11846_c1e0c3d4",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b183e2e_9b89c9ee",
         "filename": "include/core/SkTypes.h",
         "patchSetId": 1
