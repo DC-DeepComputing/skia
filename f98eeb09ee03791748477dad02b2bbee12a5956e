@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c0acdb15_4ba6f787",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-27T16:30:59Z",
+      "side": 1,
+      "message": "RE: faster, theres a perf regression that came up with this change. Just an FYI\nb/479634079",
+      "parentUuid": "38452b7a_c888b7bc",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b183e2e_9b89c9ee",
         "filename": "include/core/SkTypes.h",
         "patchSetId": 1
@@ -121,6 +139,24 @@
       "side": 1,
       "message": "Yes, I mentioned this on the other thread, probably should have put that comment here. If Android wants `SK_ENABLE_LEGACY_SHADERCONTEXT` Android should set it. With this bit of stiff in SkTypes.h we didn\u0027t know if a user really wanted it or not.",
       "parentUuid": "4d799990_4e47d0db",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e402142b_881b4f54",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-02-27T16:30:59Z",
+      "side": 1,
+      "message": "Okay, I\u0027ll assume the want legacy behavior to fix the breakages for now and we can worry about switching later in a more stable way. CL incoming.",
+      "parentUuid": "9749e15c_242ef313",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
