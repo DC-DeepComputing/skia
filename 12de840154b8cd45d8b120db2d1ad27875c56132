@@ -33,6 +33,23 @@
       "message": "Similar crash pattern also seen at https://ci.chromium.org/ui/p/chromium/builders/ci/Dawn%20Mac%20x64%20Release%20(Intel)/129823/overview\nhttps://ci.chromium.org/ui/p/chromium/builders/try/mac-dawn-rel/55021/overview\n\nTry approve as Dawn Gardener",
       "revId": "12de840154b8cd45d8b120db2d1ad27875c56132",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8958dec2_fdfea2f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2026-02-27T19:25:56Z",
+      "side": 1,
+      "message": "Nicolette can you approve the revert? Thanks!",
+      "revId": "12de840154b8cd45d8b120db2d1ad27875c56132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
