@@ -1,0 +1,27 @@
+/*
+ * Copyright 2026 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+#ifndef skgpu_graphite_SparseStripTypes_DEFINED
+#define skgpu_graphite_SparseStripTypes_DEFINED
+
+#include "include/core/SkPath.h"
+#include "include/private/base/SkTDArray.h"
+
+namespace skgpu::graphite {
+
+enum class FlattenMode {
+    kScalar,
+    kSimd,
+};
+
+struct Edge {
+    SkPoint p0;
+    SkPoint p1;
+};
+
+} // namespace skgpu::graphite
+
+#endif // skgpu_graphite_SparseStripTypes_DEFINED
