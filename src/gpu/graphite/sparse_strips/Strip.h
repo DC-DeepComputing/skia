@@ -18,7 +18,10 @@ namespace skgpu::graphite {
 
 class Strip : IntersectionBits {
 public:
-    Strip() {}
+    Strip(uint16_t x, uint16_t y, uint32_t alphaIdx, bool shouldFill)
+        : x(x)
+        , y(y)
+        , packedAlphaIdx(alphaIdx | (static_cast<uint32_t>(shouldFill) << FILL_SHIFT)) {}
 
     static SK_ALWAYS_INLINE std::array<Point, 2> clipToTile(
         const Line& line,
@@ -147,6 +150,12 @@ public:
 
         return result;
     }
+private:
+    static constexpr uint32_t FILL_SHIFT = 31;
+
+    const uint16_t x;
+    const uint16_t y;
+    const uint32_t packedAlphaIdx;
 };
 
 } // namespace skgpu::graphite
