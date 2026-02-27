@@ -242,9 +242,9 @@ if (is_win) {
   default_toolchain_name = "msvc"
   host_toolchain = "msvc_host"
 } else if (is_wasm) {
-  set_default_toolchain("//gn/toolchain:wasm")
+  set_default_toolchain("//gn/toolchain/wasm:wasm")
   default_toolchain_name = "wasm"
-  host_toolchain = "wasm"
+  host_toolchain = "gcc_like_host"
 } else {
   # GCC-like toolchains, including Clang.
   set_default_toolchain("//gn/toolchain:gcc_like")
