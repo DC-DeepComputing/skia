@@ -177,6 +177,24 @@
       "parentUuid": "e402142b_881b4f54",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bffc7001_350e05f1",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T19:49:38Z",
+      "side": 1,
+      "message": "Yes this test should be fixed.\n\nHowever, the real issue here is probably the perf changes. There are some code paths that are just really fast (though not very accurate) in the legacy shaders for the common cases. At least when adding the define Android side we can try out the perf diffs now and see what Skia changes might need to be make to not fall off a perf cliff.",
+      "parentUuid": "9f96d771_02c9c34e",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
