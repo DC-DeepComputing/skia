@@ -16,6 +16,23 @@
       "message": "Have to revert since it caused assertions on chromium\u0027s CQ. The reason is that Dawn/Metal calls map\u0027s callback on a background thread which is unexpected for the SingleOwner. Should be easy to fix in the upcoming patch. We only need to protect the `fAsyncMapCallbacks` list. Not the whole `onAsyncMap` function.",
       "revId": "12de840154b8cd45d8b120db2d1ad27875c56132",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06ea8aee_9a018c7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2026-02-27T19:23:23Z",
+      "side": 1,
+      "message": "Similar crash pattern also seen at https://ci.chromium.org/ui/p/chromium/builders/ci/Dawn%20Mac%20x64%20Release%20(Intel)/129823/overview\nhttps://ci.chromium.org/ui/p/chromium/builders/try/mac-dawn-rel/55021/overview\n\nTry approve as Dawn Gardener",
+      "revId": "12de840154b8cd45d8b120db2d1ad27875c56132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
