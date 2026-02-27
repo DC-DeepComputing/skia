@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a6105f_280737ee",
+        "filename": "tests/graphite/TextureFormatTest.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T19:36:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f914dbea_c23c65ba",
+      "revId": "b7dd4ca2a4afe87aac18e674400310416155ab0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "020590bf_9c4d3555",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-02-25T20:37:48Z",
       "side": 1,
       "message": "Line this guy up ?",
+      "revId": "b7dd4ca2a4afe87aac18e674400310416155ab0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "638fa36d_9d11f575",
+        "filename": "tests/graphite/TextureFormatTest_vk.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T19:36:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "020590bf_9c4d3555",
       "revId": "b7dd4ca2a4afe87aac18e674400310416155ab0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
