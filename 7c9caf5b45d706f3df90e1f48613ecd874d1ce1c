@@ -68,6 +68,24 @@
       "parentUuid": "12faf53f_7543a03a",
       "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5226e6b2_86411085",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T16:02:35Z",
+      "side": 1,
+      "message": "I believe you still need to add your specific entry to the `AUTHORS` file.",
+      "parentUuid": "3327a7c4_aa9813ec",
+      "revId": "7c9caf5b45d706f3df90e1f48613ecd874d1ce1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
