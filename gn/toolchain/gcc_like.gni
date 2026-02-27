@@ -1,0 +1,216 @@
+if (is_wasm) {
+  import("wasm.gni")
+}
+
+declare_args() {
+  cc_wrapper = ""
+
+  # dsymutil seems to kill the machine when too many processes are run in
+  # parallel, so we need to use a pool to limit the concurrency when passing
+  # large -j to Ninja (e.g. Goma build). Unfortunately this is also one of the
+  # slowest steps in a build, so we don't want to limit too much. Use the number
+  # of CPUs as a default.
+  dlsymutil_pool_depth = exec_script("num_cpus.py", [], "value")
+
+  # Too many linkers running at once causes issues for some builders. Allow
+  # such builders to limit the number of concurrent link steps.
+  # link_pool_depth < 0 means no pool, 0 means cpu count, > 0 sets pool size.
+  link_pool_depth = -1
+}
+
+# For 'shell' see https://ninja-build.org/manual.html#ref_rule_command
+if (host_os == "win") {
+  shell = "cmd.exe /c "
+  stamp = "$shell echo >"
+} else {
+  shell = ""
+  stamp = "touch"
+}
+
+template("gcc_like_toolchain") {
+  toolchain(target_name) {
+    ar = invoker.ar
+    cc = invoker.cc
+    cxx = invoker.cxx
+    link = invoker.link
+    lib_switch = "-l"
+    lib_dir_switch = "-L"
+
+    if (defined(invoker.deps)) {
+      deps = invoker.deps
+    }
+
+    tool("cc") {
+      depfile = "{{output}}.d"
+      command = "$cc_wrapper $cc -MD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
+      depsformat = "gcc"
+      outputs =
+          [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+      description = "compile {{source}}"
+    }
+
+    tool("cxx") {
+      depfile = "{{output}}.d"
+      command = "$cc_wrapper $cxx -MD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+      depsformat = "gcc"
+      outputs =
+          [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+      description = "compile {{source}}"
+    }
+
+    tool("objc") {
+      depfile = "{{output}}.d"
+      command = "$cc_wrapper $cc -MD -MF $depfile {{defines}} {{include_dirs}} {{framework_dirs}} {{cflags}} {{cflags_objc}} -c {{source}} -o {{output}}"
+      depsformat = "gcc"
+      outputs =
+          [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+      description = "compile {{source}}"
+    }
+
+    tool("objcxx") {
+      depfile = "{{output}}.d"
+      command = "$cc_wrapper $cxx -MD -MF $depfile {{defines}} {{include_dirs}} {{framework_dirs}} {{cflags}} {{cflags_objcc}} -c {{source}} -o {{output}}"
+      depsformat = "gcc"
+      outputs =
+          [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+      description = "compile {{source}}"
+    }
+
+    tool("asm") {
+      depfile = "{{output}}.d"
+      command = "$cc_wrapper $cc -MD -MF $depfile {{defines}} {{include_dirs}} {{asmflags}} -c {{source}} -o {{output}}"
+      depsformat = "gcc"
+      outputs =
+          [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+      description = "assemble {{source}}"
+    }
+
+    if (is_mac || is_ios) {
+      not_needed([ "ar" ])  # We use libtool instead.
+    }
+
+    tool("alink") {
+      if (is_mac || is_ios) {
+        command = "libtool -static -o {{output}} -no_warning_for_no_symbols {{inputs}}"
+      } else {
+        rspfile = "{{output}}.rsp"
+        rspfile_content = "{{inputs}}"
+        rm_py = rebase_path("//gn/rm.py")
+        command = "$shell python3 \"$rm_py\" \"{{output}}\" && $ar rcs {{output}} @$rspfile"
+      }
+
+      outputs =
+          [ "{{root_out_dir}}/{{target_output_name}}{{output_extension}}" ]
+      if (is_wasm && !is_canvaskit) {
+        default_output_extension = ".a.wasm"
+      } else {
+        default_output_extension = ".a"
+      }
+      output_prefix = "lib"
+      description = "link {{output}}"
+      if (0 <= link_pool_depth) {
+        pool = ":link_pool($default_toolchain)"
+      }
+    }
+
+    tool("solink") {
+      soname = "{{target_output_name}}{{output_extension}}"
+
+      rpath = "-Wl,-soname,$soname"
+      if (is_mac || is_ios) {
+        rpath = "-Wl,-install_name,@rpath/$soname"
+      }
+
+      rspfile = "{{output}}.rsp"
+      rspfile_content = "{{inputs}}"
+
+      # --start-group/--end-group let us link multiple .a {{inputs}}
+      # without worrying about their relative order on the link line.
+      #
+      # This is mostly important for traditional linkers like GNU ld and Gold.
+      # The Mac/iOS linker neither needs nor accepts these flags.
+      # LLD doesn't need these flags, but accepts and ignores them.
+      _start_group = "-Wl,--start-group"
+      _end_group = "-Wl,--end-group"
+      if (is_mac || is_ios) {
+        _start_group = ""
+        _end_group = ""
+      }
+
+      command = "$link -shared {{ldflags}} $_start_group @$rspfile {{frameworks}} {{solibs}} $_end_group {{libs}} $rpath -o {{output}}"
+      outputs = [ "{{root_out_dir}}/$soname" ]
+      output_prefix = "lib"
+      if (is_mac || is_ios) {
+        default_output_extension = ".dylib"
+      } else if (is_wasm && !is_canvaskit) {
+        default_output_extension = ".so.wasm"
+      } else {
+        default_output_extension = ".so"
+      }
+      description = "link {{output}}"
+      if (0 <= link_pool_depth) {
+        pool = ":link_pool($default_toolchain)"
+      }
+    }
+
+    tool("link") {
+      exe_name = "{{root_out_dir}}/{{target_output_name}}{{output_extension}}"
+      rspfile = "$exe_name.rsp"
+      rspfile_content = "{{inputs}}"
+
+      # --start-group/--end-group let us link multiple .a {{inputs}}
+      # without worrying about their relative order on the link line.
+      #
+      # This is mostly important for traditional linkers like GNU ld and Gold.
+      # The Mac/iOS linker neither needs nor accepts these flags.
+      # LLD doesn't need these flags, but accepts and ignores them.
+      _start_group = "-Wl,--start-group"
+      _end_group = "-Wl,--end-group"
+      if (is_mac || is_ios) {
+        _start_group = ""
+        _end_group = ""
+      }
+      command = "$link {{ldflags}} $_start_group @$rspfile {{frameworks}} {{solibs}} $_end_group {{libs}} -o $exe_name"
+
+      outputs = [ "$exe_name" ]
+      description = "link {{output}}"
+      if (0 <= link_pool_depth) {
+        pool = ":link_pool($default_toolchain)"
+      }
+
+      if (is_wasm && !is_canvaskit) {
+        # Executables for wasm are run via Emscripten JS hooks. Those hooks will
+        # only be generated when the output extension is .js.
+        default_output_extension = ".js"
+      }
+    }
+
+    tool("stamp") {
+      command = "$stamp {{output}}"
+      description = "stamp {{output}}"
+    }
+
+    tool("copy") {
+      cp_py = rebase_path("//gn/cp.py")
+      command = "python3 \"$cp_py\" {{source}} {{output}}"
+      description = "copy {{source}} {{output}}"
+    }
+
+    tool("copy_bundle_data") {
+      cp_py = rebase_path("//gn/cp.py")
+      command = "python3 \"$cp_py\" {{source}} {{output}}"
+      description = "copy_bundle_data {{source}} {{output}}"
+    }
+
+    # We don't currently have any xcasset files so make this a NOP
+    tool("compile_xcassets") {
+      command = "true"
+      description = "compile_xcassets {{output}}"
+    }
+
+    toolchain_args = {
+      current_cpu = invoker.cpu
+      current_os = invoker.os
+    }
+  }
+}
