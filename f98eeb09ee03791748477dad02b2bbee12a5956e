@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ff11846_c1e0c3d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-27T14:59:20Z",
+      "side": 1,
+      "message": "Wonder if the upper bound here was fine-tuned for the old code path, and now we\u0027re just slightly off: https://cs.android.com/android/platform/superproject/main/+/main:cts/tests/tests/media/misc/src/android/media/misc/cts/ThumbnailUtilsTest.java;drc\u003dcff969e1891e8e8e6bdd5e22b622f60ad0035ee2;l\u003d150\n\nHard to tell without seeing the actual thumbnail images, and AFAICT those are not exactly easy to get.",
+      "parentUuid": "705b5e38_77bba727",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b183e2e_9b89c9ee",
         "filename": "include/core/SkTypes.h",
         "patchSetId": 1
@@ -49,6 +67,24 @@
       "writtenOn": "2026-02-27T14:37:50Z",
       "side": 1,
       "message": "Not sure how exactly, but I\u0027m wondering if Android needs SK_ENABLE_LEGACY_SHADERCONTEXT defined through this snippet. This CL mainly serves as a quick fix/test, but if after some more testing the solution is just to define this in SkUserConfig_Manual.h, I can make the change there.",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d799990_4e47d0db",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-27T14:59:20Z",
+      "side": 1,
+      "message": "Probably easier to land the flag in SkUserConfig_Manual.h, since this no longer reverts cleanly.",
+      "parentUuid": "3b183e2e_9b89c9ee",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
