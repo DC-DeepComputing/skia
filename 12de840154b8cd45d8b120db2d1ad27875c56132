@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faca2357_568e94f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-02-27T17:23:31Z",
+      "side": 1,
+      "message": "Have to revert since it caused assertions on chromium\u0027s CQ. The reason is that Dawn/Metal calls map\u0027s callback on a background thread which is unexpected for the SingleOwner. Should be easy to fix in the upcoming patch. We only need to protect the `fAsyncMapCallbacks` list. Not the whole `onAsyncMap` function.",
+      "revId": "12de840154b8cd45d8b120db2d1ad27875c56132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
