@@ -89,12 +89,15 @@
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
+#include "src/gpu/graphite/geom/EndCap.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/SubRunData.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/gpu/graphite/geom/WideTile.h"
+#include "src/gpu/graphite/sparse_strips/StripGenerator.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/UploadTask.h"
 #include "src/image/SkImage_Base.h"
@@ -484,6 +487,21 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     } // else kLoad is the default initial op for a DrawContext
 
     sk_sp<Device> device{new Device(recorder, std::move(dc))};
+    if (recorder->priv().rendererProvider()->IsSupported(
+                PathRendererStrategy::kCPUSparseStripsMSAA8, caps)) {
+        // SkColorType atlasColor =
+        //         caps->isStorage(caps->getDefaultStorageTextureInfo(kAlpha_8_SkColorType))
+        //         ? kAlpha_8_SkColorType : kRGBA_8888_SkColorType;
+        // TextureInfo info = caps->getDefaultSampledTextureInfo(atlasColor,
+        //                                                       Mipmapped::kNo,
+        //                                                       recorder->priv().isProtected(),
+        //                                                       Renderable::kNo);
+        device->fStripGenerator = new StripGenerator<4, 4>(
+                deviceSize.width(),
+                deviceSize.height(),
+                recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
+                recorder);
+    }
     if (registerWithRecorder) {
         // We don't register the device with the recorder until after the constructor has returned.
         recorder->registerDevice(device);
@@ -1518,7 +1536,31 @@ void Device::drawGeometryWithPathEffect(const Transform& localToDevice,
         // Fallthrough, remaining code assumes the effect has been applied to `geometry` and `style`
     }
 
-    this->drawGeometry(localToDevice, std::move(geometry), paint, style);
+    // In sparse strip rendering, paths are flattenned to polylines, meaning that quads, cubics, and
+    // conics get lowered to lines. The resulting lines then produce tiles, which in turn produce
+    // strips and endcaps. This also means that there is a many to one relationship between paths
+    // and geometry, so if SparseStrips is chosen as the path rendering strategy, we must catch it
+    // here, instead of in draw geometry.
+    //
+    // TODO (thomsmit): some attributes of the path---paintParamsKey---can be
+    // recycled, whereas others like the clip cannot. Figure out how to hoist key creation here,
+    // or push sparse strips into drawGeometry.
+    //
+    // TODO (thomsmit): in this current iteration, each EndCap and Strip will triggers a full
+    // drawGeometry. In the future we will likely want to use the coarse bounding of the entire
+    // path rather than the individual bounds, and have a multidraw insertion into the layering?
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+    if (fRecorder->priv().rendererProvider()->pathRendererStrategy() ==
+        PathRendererStrategy::kCPUSparseStripsMSAA8) {
+        SkASSERT(fStripGenerator);
+        fStripGenerator->processGeometry([&](auto&& geom) {
+            this->drawGeometry(localToDevice, Geometry(std::move(geom)), paint, style);
+        });
+    } else
+#endif
+    {
+        this->drawGeometry(localToDevice, std::move(geometry), paint, style);
+    }
 }
 
 void Device::drawGeometry(const Transform& localToDevice,
@@ -1895,6 +1937,10 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkASSERT(renderers);
     SkStrokeRec::Style type = style.getStyle();
+
+    if (geometry.isWideTile() || geometry.isEndCap()) {
+        return {&renderers->sparseStrips()[geometry.isWideTile()], nullptr};
+    }
 
     if (geometry.isSubRun()) {
         sktext::gpu::RendererData rendererData = geometry.subRunData().rendererData();

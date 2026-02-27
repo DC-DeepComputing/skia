@@ -7,6 +7,7 @@
 #ifndef skgpu_graphite_Strip_DEFINED
 #define skgpu_graphite_Strip_DEFINED
 
+#include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"  // For Tiles class
 
@@ -35,7 +36,24 @@ public:
             std::vector<uint8_t>& alphaBuf,
             FillRule fillRule,
             const std::vector<Line>& lines,
-            const std::vector<uint8_t>& maskLut);
+            const SkTDArray<uint8_t>* maskLut);
+
+private:
+#if defined(GPU_TEST_UTILS)
+    template <uint16_t, uint16_t> friend class ClipTestRunner;
+#endif
+    template<uint16_t, uint16_t> friend class StripGenerator;
+
+    static constexpr uint32_t FILL_SHIFT = 31;
+
+    static constexpr int kNumSubSamples = 8;
+    static constexpr float kPackingScale = 0.5f;
+    static constexpr int kMaskWidth = 64;
+    static constexpr int kMaskHeight = 64;
+    static constexpr float kMaskWidthF = static_cast<float>(kMaskWidth);
+    static constexpr float kMaskHeightF = static_cast<float>(kMaskHeight);
+    static constexpr int kMaskWidthExcl = kMaskWidth - 1;
+    static constexpr int kMaskHeightExcl = kMaskWidth - 1;
 
     static SK_ALWAYS_INLINE std::array<Point, 2> clipToTile(const Line& line,
                                                             const std::array<float, 4>& bounds,
@@ -161,18 +179,6 @@ public:
         return result;
     }
 
-private:
-    static constexpr uint32_t FILL_SHIFT = 31;
-
-    static constexpr int kNumSubSamples = 8;
-    static constexpr float kPackingScale = 0.5f;
-    static constexpr int kMaskWidth = 64;
-    static constexpr int kMaskHeight = 64;
-    static constexpr float kMaskWidthF = static_cast<float>(kMaskWidth);
-    static constexpr float kMaskHeightF = static_cast<float>(kMaskHeight);
-    static constexpr int kMaskWidthExcl = kMaskWidth - 1;
-    static constexpr int kMaskHeightExcl = kMaskWidth - 1;
-
     uint16_t x;
     uint16_t y;
     uint32_t packedAlphaIdx;
@@ -184,7 +190,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                            std::vector<uint8_t>& alphaBuf,
                            FillRule fillRule,
                            const std::vector<Line>& lines,
-                           const std::vector<uint8_t>& maskLut) {
+                           const SkTDArray<uint8_t>* maskLut) {
     const auto& tiles = tileContainer.getTiles();
     if (tiles.empty()) {
         return;
@@ -307,7 +313,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
         std::array<float, 4> bounds = {tileMinX, tileMinY, tileMaxX, tileMaxY};
         std::array<float, 4> derivs = {dx, dy, idx, idy};
 
-        auto clipped = ClipToTile(line,
+        auto clipped = clipToTile(line,
                                   bounds,
                                   derivs,
                                   tile.packedWindingLineIdx & INTERSECTION_MASK,
@@ -377,7 +383,8 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                 uint32_t u = std::min((uint32_t)std::max(0.0f, uf), (uint32_t)kMaskWidthExcl);
                 uint32_t v = std::min((uint32_t)std::max(0.0f, vf), (uint32_t)kMaskHeightExcl);
 
-                uint8_t maskVal = maskLut[v * kMaskWidth + u];
+                SkASSERT(v * kMaskWidth + u < static_cast<uint32_t>((*maskLut).size()));
+                uint8_t maskVal = (*maskLut)[v * kMaskWidth + u];
 
                 // TODO(thomsmit) hoist
                 if (y == startY) {
