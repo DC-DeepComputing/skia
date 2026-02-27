@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "379d660e_111d726b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-02-27T21:17:04Z",
+      "side": 1,
+      "message": "The gold diffs for makecolortypeandspace are expected. Any dawn config should be dropping the 2nd column, which is trying to copy to a 565 format. WebGPU does not have any 565 format and we had been secretly falling back to rgba8 textures for those copies. \n\nAll graphite configs should be dropping the 3rd column (consistent with ganesh) because these are a copy to gray8, which is not renderable. Exposed in the TextureFormat unit test CL (next in chain), what had been happening was we could pick rendering to an R8 format and re-interpret that as gray.  This is fine if the input to the R8 format was a gray image, but drawing an RGB image to it just selects the R channel so the 3rd column that had been rendering before was not actually gray but just the original R channel of the color image splatted out to RRR.\n\nIn that CL, w/o these changes to CopyAsDraw, we stopped going from Gray to Red but then went from Gray to renderable colortype fallback of RGBA8 and would return a regular color image again. While that returned image was not lying about its color type, so was rendering as full color, it seems better to fail to create the image in the first place since we clearly weren\u0027t meeting the intent of the copy request.",
+      "revId": "b68433316e887a79166fc58962dcfedf07cb71cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
