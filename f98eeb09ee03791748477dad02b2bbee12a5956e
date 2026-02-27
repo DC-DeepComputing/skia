@@ -159,6 +159,24 @@
       "parentUuid": "9749e15c_242ef313",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f96d771_02c9c34e",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-02-27T19:06:22Z",
+      "side": 1,
+      "message": "I ran the test locally and we\u0027re just off by one in the blue channel.  A quick fix that would accommodate both versions is to just bump the expected upper bound:\n\n```\n--- a/tests/tests/media/misc/src/android/media/misc/cts/ThumbnailUtilsTest.java\n+++ b/tests/tests/media/misc/src/android/media/misc/cts/ThumbnailUtilsTest.java\n@@ -148,7 +148,7 @@ public class ThumbnailUtilsTest {\n         // EXIF orientations to achieve the same final image, and this verifies that the EXIF\n         // orientation was applied properly.\n         assertColorMostlyInRange(bitmap.getPixel(bitmap.getWidth() / 2, bitmap.getHeight() / 3),\n-                0xFF232323 /* upperBound */, Color.BLACK);\n+                0xFF242424 /* upperBound */, Color.BLACK);\n     }\n\n     @Test\n```",
+      "parentUuid": "e402142b_881b4f54",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
