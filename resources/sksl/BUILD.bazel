@@ -1181,6 +1181,7 @@ skia_filegroup(
         "wgsl/CastVec4ToMat2x2.sksl",
         "wgsl/EntrypointIsWrittenLast.sksl",
         "wgsl/Equality.sksl",
+        "wgsl/ForLoopComplexCondAndNext.sksl",
         "wgsl/FunctionCallDependencies.sksl",
         "wgsl/GlobalUniforms.sksl",
         "wgsl/IfStatement.sksl",
@@ -1189,6 +1190,7 @@ skia_filegroup(
         "wgsl/MainDoesNotHaveFragCoordParameter.sksl",
         "wgsl/MainHasVoidReturn.sksl",
         "wgsl/MatrixConstructorDiagonal.sksl",
+        "wgsl/NoF16Support.sksl",
         "wgsl/OutParams.sksl",
         "wgsl/PixelLocalStorage.sksl",
         "wgsl/PolyfillIntrinsics.sksl",
@@ -1200,5 +1202,6 @@ skia_filegroup(
         "wgsl/UserDefinedPipelineIO.sksl",
         "wgsl/VertexPositionOutputIsAlwaysDeclared.vert",
         "wgsl/WorkgroupSize.compute",
+        "workarounds/LastFragColor.sksl",
     ],
 )

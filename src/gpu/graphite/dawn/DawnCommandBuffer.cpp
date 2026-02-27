@@ -340,7 +340,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
     // Set up color attachment.
 #if !defined(__EMSCRIPTEN__)
-    wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
+    wgpu::DawnRenderPassSampleCount mssaRenderToSingleSampledDesc;
     wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
 #endif
 
@@ -459,9 +459,8 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 SkASSERT(fSharedContext->device().HasFeature(
                         wgpu::FeatureName::MSAARenderToSingleSampled));
 
-                wgpuColorAttachment.nextInChain = &mssaRenderToSingleSampledDesc;
-                mssaRenderToSingleSampledDesc.implicitSampleCount =
-                        (uint8_t) renderPassDesc.fSampleCount;
+                wgpuRenderPass.nextInChain = &mssaRenderToSingleSampledDesc;
+                mssaRenderToSingleSampledDesc.sampleCount = (uint8_t)renderPassDesc.fSampleCount;
             }
 #endif
         }
@@ -615,6 +614,7 @@ bool DawnCommandBuffer::endRenderPass() {
             SampleCount::k1 };
 
     wgpu::RenderPassColorAttachment dawnIntermediateColorAttachment;
+    dawnIntermediateColorAttachment.clearValue = {0.f, 0.f, 0.f, 0.f}; // ignored
     dawnIntermediateColorAttachment.loadOp = wgpu::LoadOp::Load;
     dawnIntermediateColorAttachment.storeOp = wgpu::StoreOp::Store;
     dawnIntermediateColorAttachment.view =

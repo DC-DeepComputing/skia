@@ -72,7 +72,7 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
     SkASSERT(srcView.proxy()->isFullyLazy() ||
             SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(subset));
 
-    if (!recorder->priv().caps()->supportsReadPixels(srcView.proxy()->textureInfo())) {
+    if (!recorder->priv().caps()->isCopyableSrc(srcView.proxy()->textureInfo())) {
         if (!recorder->priv().caps()->isTexturable(srcView.proxy()->textureInfo())) {
             // The texture is not blittable nor texturable so copying cannot be done.
             return nullptr;
@@ -110,7 +110,7 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
     }
 
     if (mipmapped == Mipmapped::kYes) {
-        if (!GenerateMipmaps(recorder, drawContext, dst, srcColorInfo)) {
+        if (!GenerateMipmaps(recorder, drawContext, dst)) {
             SKGPU_LOG_W("Image::Copy failed to generate mipmaps");
             return nullptr;
         }

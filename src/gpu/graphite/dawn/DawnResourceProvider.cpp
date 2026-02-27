@@ -397,10 +397,13 @@ void DawnResourceProvider::BlitWithDrawEncoder::EncodeBlit(
     SkASSERT(std::abs(deltaY) < std::numeric_limits<int16_t>::max());
     int32_t baseInstance = (deltaX & 0xffff) | (deltaY << 16);
 
+    // NOTE(b/457887457): need to cast baseInstance to uint32_t explicitly otherwise it would cause
+    // TypeError in emscripten, because baseInstance value could be negative in signed integer
+    // representation.
     renderEncoder.Draw(/*vertexCount=*/3,
                        /*instanceCount=*/ 1,
                        /*firstVertex=*/0,
-                       /*firstInstance=*/baseInstance);
+                       /*firstInstance=*/static_cast<uint32_t>(baseInstance));
 }
 
 // ----------------------------------------------------------------------------
@@ -508,7 +511,8 @@ DawnResourceProvider::BlitWithDrawEncoder DawnResourceProvider::findOrCreateBlit
     return BlitWithDrawEncoder(std::move(pipeline), srcIsMSAA);
 }
 
-sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
+sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
+                                                            std::string_view label) {
     // Convert to smart pointers. wgpu::Texture* constructor will increment the ref count.
     wgpu::Texture dawnTexture         = BackendTextures::GetDawnTexturePtr(texture);
     wgpu::TextureView dawnTextureView = BackendTextures::GetDawnTextureViewPtr(texture);
@@ -522,12 +526,14 @@ sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTexture));
+                                        std::move(dawnTexture),
+                                        label);
     } else {
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTextureView));
+                                        std::move(dawnTextureView),
+                                        label);
     }
 }
 
@@ -563,14 +569,16 @@ sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
     return DawnComputePipeline::Make(this->dawnSharedContext(), desc);
 }
 
-sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions, const TextureInfo& info) {
-    return DawnTexture::Make(this->dawnSharedContext(), dimensions, info);
+sk_sp<Texture> DawnResourceProvider::createTexture(
+        SkISize dimensions, const TextureInfo& info, std::string_view label) {
+    return DawnTexture::Make(this->dawnSharedContext(), dimensions, info, label);
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
-                                                 AccessPattern accessPattern) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
+                                                 AccessPattern accessPattern,
+                                                 std::string_view label) {
+    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern, label);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {

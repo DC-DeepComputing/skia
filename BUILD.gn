@@ -86,17 +86,14 @@ config("skia_public") {
 config("skia_private") {
   visibility = [ "./*" ]
 
-  defines = [
-    "SK_GAMMA_APPLY_TO_A8",
-    "SK_DISABLE_LEGACY_NONCONST_SERIAL_PROCS",
-  ]
+  defines = [ "SK_GAMMA_APPLY_TO_A8" ]
   if (skia_use_fixed_gamma_text) {
     defines += [
       "SK_GAMMA_EXPONENT=1.4",
       "SK_GAMMA_CONTRAST=0.0",
     ]
   }
-  if (is_skia_dev_build && !is_wasm) {
+  if (is_skia_dev_build && !is_canvaskit) {
     defines += [
       "SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1",
       "GPU_TEST_UTILS=1",
@@ -106,9 +103,6 @@ config("skia_private") {
   lib_dirs = []
   if (skia_use_gl && skia_use_angle) {
     defines += [ "SK_ANGLE" ]
-  }
-  if (skia_use_vma) {
-    defines += [ "SK_USE_VMA" ]
   }
   if (skia_enable_winuwp) {
     defines += [ "SK_WINUWP" ]
@@ -122,6 +116,10 @@ config("skia_private") {
 
   if (skia_dump_tasks) {
     defines += [ "SK_DUMP_TASKS" ]
+  }
+
+  if (skia_use_partition_alloc) {
+    defines += [ "SK_USE_PARTITION_ALLOC" ]
   }
 
   # Temporary staging flag:
@@ -1024,7 +1022,8 @@ optional("gpu") {
   if (skia_use_direct3d) {
     public_defines += [ "SK_DIRECT3D" ]
     deps += [ "//third_party/d3d12allocator" ]
-    sources += skia_direct3d_sources
+    public += skia_ganesh_d3d_public
+    sources += skia_ganesh_d3d_private
     if (skia_enable_direct3d_debug_layer) {
       public_defines += [ "SK_ENABLE_D3D_DEBUG_LAYER" ]
     }
@@ -1155,6 +1154,7 @@ optional("graphite") {
   libs = []
   frameworks = []
   public_defines = []
+  public_configs = []
 
   enabled = skia_enable_graphite
   deps = [
@@ -1292,6 +1292,9 @@ optional("png_decode_libpng") {
     "//third_party/libpng",
   ]
   sources = [ "src/codec/SkIcoCodec.cpp" ] + skia_codec_libpng_srcs
+
+  # Export this so fiddles could decode png using libpng
+  public = skia_codec_libpng_public
 }
 
 optional("png_encode_common") {
@@ -1910,8 +1913,8 @@ skia_component("skia") {
 
   if (is_win) {
     sources += skia_ports_windows_sources + [
-                 "src/ports/SkDebug_win.cpp",
                  "src/ports/SkImageGeneratorWIC.cpp",
+                 "src/ports/SkLog_win.cpp",
                ]
     libs += [
       "Ole32.lib",
@@ -1938,7 +1941,7 @@ skia_component("skia") {
     if (defined(ndk) && ndk != "") {
       deps += [ "//third_party/cpu-features" ]
     }
-    sources += [ "src/ports/SkDebug_android.cpp" ]
+    sources += [ "src/ports/SkLog_android.cpp" ]
     libs += [
       "EGL",
       "GLESv2",
@@ -1947,7 +1950,7 @@ skia_component("skia") {
   }
 
   if (is_linux || is_wasm) {
-    sources += [ "src/ports/SkDebug_stdio.cpp" ]
+    sources += [ "src/ports/SkLog_stdio.cpp" ]
     if (skia_use_egl) {
       libs += [ "GLESv2" ]
     }
@@ -1956,8 +1959,8 @@ skia_component("skia") {
   if (is_mac) {
     public += [ "include/ports/SkCFObject.h" ]
     sources += [
-      "src/ports/SkDebug_stdio.cpp",
       "src/ports/SkImageGeneratorCG.cpp",
+      "src/ports/SkLog_stdio.cpp",
     ]
     frameworks = [
       "ApplicationServices.framework",
@@ -1968,8 +1971,8 @@ skia_component("skia") {
   if (is_ios) {
     public += [ "include/ports/SkCFObject.h" ]
     sources += [
-      "src/ports/SkDebug_stdio.cpp",
       "src/ports/SkImageGeneratorCG.cpp",
+      "src/ports/SkLog_stdio.cpp",
     ]
     frameworks = [
       "CoreFoundation.framework",
@@ -1996,7 +1999,7 @@ skia_component("skia") {
 }
 
 # DebugCanvas used in experimental/wasm-skp-debugger
-if (is_wasm) {
+if (is_canvaskit) {
   skia_static_library("debugcanvas") {
     public_configs = [ ":skia_public" ]
 
@@ -2020,7 +2023,7 @@ group("modules") {
     "modules/svg",
   ]
 
-  if (is_wasm) {
+  if (is_canvaskit) {
     deps += [ "modules/canvaskit" ]
   }
 }
@@ -2291,7 +2294,7 @@ if (skia_enable_tools) {
       libs = []
       frameworks = []
 
-      if (skia_use_gl && target_cpu != "wasm") {
+      if (skia_use_gl && !is_canvaskit) {
         if (is_android || skia_use_egl) {
           sources +=
               [ "tools/ganesh/gl/egl/CreatePlatformGLTestContext_egl.cpp" ]
@@ -2314,6 +2317,10 @@ if (skia_enable_tools) {
           if (target_cpu != "arm64") {
             libs += [ "OpenGL32.lib" ]
           }
+        } else if (is_wasm) {
+          # TODO: replace with webgl test context
+          sources +=
+              [ "tools/ganesh/gl/none/CreatePlatformGLTestContext_none.cpp" ]
         }
       }
 
@@ -2384,8 +2391,10 @@ if (skia_enable_tools) {
           sources += [ "tools/ganesh/mtl/MtlTestContext.mm" ]
         }
         if (skia_use_direct3d) {
-          sources += [ "tools/ganesh/d3d/D3DTestContext.cpp" ]
-          sources += [ "tools/ganesh/d3d/D3DTestUtils.cpp" ]
+          sources += [
+            "tools/ganesh/d3d/D3DTestContext.cpp",
+            "tools/ganesh/d3d/D3DTestUtils.cpp",
+          ]
         }
       }
       if (skia_enable_graphite) {
@@ -2558,7 +2567,7 @@ if (skia_enable_tools) {
       ]
     }
 
-    if (target_cpu != "wasm") {
+    if (!is_canvaskit) {
       sources += [ "tools/CrashHandler.cpp" ]
     }
     libs = []
@@ -2792,7 +2801,7 @@ if (skia_enable_tools) {
       "//third_party/libpng",
     ]
   }
-  if (target_cpu != "wasm") {
+  if (!is_canvaskit) {
     if (skia_enable_tools_that_might_need_ganesh) {
       test_app("convert-to-nia") {
         sources = [ "tools/convert-to-nia.cpp" ]
@@ -2842,6 +2851,9 @@ if (skia_enable_tools) {
         }
         if (skia_enable_ganesh) {
           deps += [ ":common_flags_ganesh" ]
+        }
+        if (skia_use_partition_alloc) {
+          deps += [ "tools/partition_alloc:test_support" ]
         }
       }
     }
@@ -3436,7 +3448,7 @@ if (skia_enable_tools) {
     group("modules_testonly") {
       testonly = true
       deps = []
-      if (is_wasm) {
+      if (is_canvaskit) {
         deps += [ "modules/canvaskit:viewer_wasm" ]
       }
     }
