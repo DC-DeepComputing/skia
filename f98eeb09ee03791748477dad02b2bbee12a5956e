@@ -105,6 +105,24 @@
       "parentUuid": "3b183e2e_9b89c9ee",
       "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9749e15c_242ef313",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T15:23:51Z",
+      "side": 1,
+      "message": "Yes, I mentioned this on the other thread, probably should have put that comment here. If Android wants `SK_ENABLE_LEGACY_SHADERCONTEXT` Android should set it. With this bit of stiff in SkTypes.h we didn\u0027t know if a user really wanted it or not.",
+      "parentUuid": "4d799990_4e47d0db",
+      "revId": "f98eeb09ee03791748477dad02b2bbee12a5956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
