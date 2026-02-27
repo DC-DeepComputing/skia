@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b05fe17_bcfcd8bd",
+        "filename": "modules/skottie/tests/Shaper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T19:43:39Z",
+      "side": 1,
+      "message": "Way more interesting than any of these tests is some interesting CJK, Thai, and at least one RTL like Arabic. Unfortunately, we don\u0027t have any Test font coverage for those. With system fonts you can\u0027t really test where lines will actually end.",
+      "revId": "339046df58fd36a685a56e64b0126ca64a972d8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1bb6b0_b168938e",
+        "filename": "modules/skshaper/include/SkShaper_coretext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T19:43:39Z",
+      "side": 1,
+      "message": "While this isn\u0027t being taken by the other shapers yet, it probably should be. Currently we have a few that allow words to wrap and other which do not, but they should all be able to do both (not that we actually need to implement that yet).\n\nThis particular proposal is nice in that it is high level and implementable. Unfortunately, it is high level and not very general (difficult to allow the user to just muck with the suggested line endings). The more general version of this is to add yet another callback to the shaper interface so that for any line ending found the user can choose to force extend (or maybe contact) it (both of which may make the line longer or shorter, and not necessarily always which way one would expect). So there would be a CoreText version of that extender (which would look like this) and maybe an ICU version, and a do-nothing version. Then the user could pass one of those or their own function in.",
+      "revId": "339046df58fd36a685a56e64b0126ca64a972d8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d9a6e3_2570acb6",
+        "filename": "modules/skshaper/src/SkShaper_coretext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-27T19:43:39Z",
+      "side": 1,
+      "message": "So the idea in general is to take the line break suggestion and if a word straddles the line break, just force the rest of the word back onto the line.",
+      "revId": "339046df58fd36a685a56e64b0126ca64a972d8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
