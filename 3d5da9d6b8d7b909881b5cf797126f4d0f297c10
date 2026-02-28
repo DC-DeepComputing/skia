@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a50b7dd_9c6132eb",
+        "filename": "src/gpu/graphite/task/CopyTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-02-28T14:56:17Z",
+      "side": 1,
+      "message": "I guess we could log a warning or error here",
+      "revId": "3d5da9d6b8d7b909881b5cf797126f4d0f297c10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
