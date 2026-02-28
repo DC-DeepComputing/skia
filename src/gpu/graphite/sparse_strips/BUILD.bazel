@@ -16,6 +16,8 @@ SPARSE_STRIPS_FILES = [
     "StripGenerator.cpp",
     "StripGenerator.h",
     "Tiler.h",
+    "AlphaAtlasManager.cpp",
+    "AlphaAtlasManager.h"
 ]
 
 split_srcs_and_hdrs(

@@ -247,6 +247,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
   "$_src/gpu/graphite/render/CoverageMaskRenderStep.h",
   "$_src/gpu/graphite/render/DynamicInstancesPatchAllocator.h",
+  "$_src/gpu/graphite/render/EndCapRenderStep.cpp",
+  "$_src/gpu/graphite/render/EndCapRenderStep.h",
   "$_src/gpu/graphite/render/GraphiteVertexFiller.cpp",
   "$_src/gpu/graphite/render/MiddleOutFanRenderStep.cpp",
   "$_src/gpu/graphite/render/MiddleOutFanRenderStep.h",
@@ -264,6 +266,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/render/TessellateWedgesRenderStep.h",
   "$_src/gpu/graphite/render/VerticesRenderStep.cpp",
   "$_src/gpu/graphite/render/VerticesRenderStep.h",
+  "$_src/gpu/graphite/render/WideTileRenderStep.cpp",
+  "$_src/gpu/graphite/render/WideTileRenderStep.h",
   "$_src/gpu/graphite/task/ClearBuffersTask.cpp",
   "$_src/gpu/graphite/task/ClearBuffersTask.h",
   "$_src/gpu/graphite/task/ComputeTask.cpp",
@@ -491,6 +495,8 @@ skia_graphite_precompile_sources = [
 #  //src/gpu/graphite/sparse_strips:sparse_strips_hdrs
 #  //src/gpu/graphite/sparse_strips:sparse_strips_srcs
 skia_graphite_sparse_strips_sources = [
+  "$_src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+  "$_src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
   "$_src/gpu/graphite/sparse_strips/Flatten.cpp",
   "$_src/gpu/graphite/sparse_strips/Flatten.h",
   "$_src/gpu/graphite/sparse_strips/MSAA_LUT.h",

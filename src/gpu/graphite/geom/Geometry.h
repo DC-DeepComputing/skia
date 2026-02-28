@@ -14,9 +14,11 @@
 #include "src/gpu/graphite/geom/AnalyticBlurMask.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
+#include "src/gpu/graphite/geom/EndCap.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/SubRunData.h"
+#include "src/gpu/graphite/geom/WideTile.h"
 
 #include <cstdint>
 #include <new>
@@ -25,6 +27,9 @@
 
 namespace skgpu::graphite {
 
+using GeometryWideTile = WideTile<4>;
+using GeometryEndCap = EndCap<4, 4>;
+
 /**
  * Geometry is a container that can house Shapes, SkVertices, text SubRuns, and per-edge AA quads.
  * TODO - Add unit tests for Geometry.
@@ -32,7 +37,15 @@ namespace skgpu::graphite {
 class Geometry {
 public:
     enum class Type : uint8_t {
-        kEmpty, kShape, kVertices, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur
+        kEmpty,
+        kShape,
+        kVertices,
+        kSubRun,
+        kEdgeAAQuad,
+        kCoverageMaskShape,
+        kAnalyticBlur,
+        kWideTile,
+        kEndCap,
     };
 
     Geometry() {}
@@ -45,6 +58,8 @@ public:
     explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad(edgeAAQuad); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
     explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
+    explicit Geometry(const GeometryWideTile& wideTile) { this->setWideTile(wideTile); }
+    explicit Geometry(const GeometryEndCap& endCap) { this->setEndCap(endCap); }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -78,6 +93,14 @@ public:
                     this->setAnalyticBlur(geom.analyticBlurMask());
                     geom.setType(Type::kEmpty);
                     break;
+                case Type::kWideTile:
+                    this->setWideTile(geom.wideTile());
+                    geom.setType(Type::kEmpty);
+                    break;
+                case Type::kEndCap:
+                    this->setEndCap(geom.endCap());
+                    geom.setType(Type::kEmpty);
+                    break;
             }
         }
         return *this;
@@ -92,6 +115,8 @@ public:
             case Type::kCoverageMaskShape:
                     this->setCoverageMaskShape(geom.coverageMaskShape()); break;
             case Type::kAnalyticBlur: this->setAnalyticBlur(geom.analyticBlurMask()); break;
+            case Type::kWideTile: this->setWideTile(geom.wideTile()); break;
+            case Type::kEndCap: this->setEndCap(geom.endCap()); break;
             default: break;
         }
         return *this;
@@ -105,6 +130,8 @@ public:
     bool isEdgeAAQuad() const { return fType == Type::kEdgeAAQuad; }
     bool isCoverageMaskShape() const { return fType == Type::kCoverageMaskShape; }
     bool isAnalyticBlur() const { return fType == Type::kAnalyticBlur; }
+    bool isWideTile() const { return fType == Type::kWideTile; }
+    bool isEndCap() const { return fType == Type::kEndCap; }
     bool isEmpty() const {
         return fType == (Type::kEmpty) || (this->isShape() &&
                                            this->shape().isEmpty() &&
@@ -125,6 +152,8 @@ public:
         SkASSERT(this->isVertices());
         return fVertices;
     }
+    const GeometryWideTile& wideTile() const { SkASSERT(this->isWideTile()); return fWideTile; }
+    const GeometryEndCap& endCap() const { SkASSERT(this->isEndCap()); return fEndCap; }
 
     void setShape(const Shape& shape) {
         if (fType == Type::kShape) {
@@ -178,6 +207,24 @@ public:
         }
     }
 
+    void setWideTile(const GeometryWideTile& wideTile) {
+        if (fType == Type::kWideTile) {
+            fWideTile = wideTile;
+        } else {
+            this->setType(Type::kWideTile);
+            new (&fWideTile) GeometryWideTile(wideTile);
+        }
+    }
+
+    void setEndCap(const GeometryEndCap& endCap) {
+        if (fType == Type::kEndCap) {
+            fEndCap = endCap;
+        } else {
+            this->setType(Type::kEndCap);
+            new (&fEndCap) GeometryEndCap(endCap);
+        }
+    }
+
     Rect bounds() const {
         switch (fType) {
             case Type::kEmpty: return Rect(0, 0, 0, 0);
@@ -187,6 +234,8 @@ public:
             case Type::kEdgeAAQuad: return fEdgeAAQuad.bounds();
             case Type::kCoverageMaskShape: return fCoverageMaskShape.bounds();
             case Type::kAnalyticBlur: return fAnalyticBlurMask.drawBounds();
+            case Type::kWideTile: return fWideTile.bounds();
+            case Type::kEndCap: return fEndCap.bounds();
         }
         SkUNREACHABLE;
     }
@@ -204,6 +253,10 @@ private:
             fCoverageMaskShape.~CoverageMaskShape();
         } else if (this->isAnalyticBlur() && type != Type::kAnalyticBlur) {
             fAnalyticBlurMask.~AnalyticBlurMask();
+        } else if (this->isWideTile() && type != Type::kWideTile) {
+            fWideTile.~GeometryWideTile();
+        } else if (this->isEndCap() && type != Type::kEndCap) {
+            fEndCap.~GeometryEndCap();
         }
         fType = type;
     }
@@ -216,6 +269,8 @@ private:
         EdgeAAQuad fEdgeAAQuad;
         CoverageMaskShape fCoverageMaskShape;
         AnalyticBlurMask fAnalyticBlurMask;
+        GeometryWideTile fWideTile;
+        GeometryEndCap fEndCap;
     };
 };
 
