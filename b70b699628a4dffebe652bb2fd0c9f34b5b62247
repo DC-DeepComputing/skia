@@ -52,6 +52,24 @@
       "parentUuid": "4a8e430e_1bb7fa2d",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c39fa552_77c995db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-02-28T01:26:08Z",
+      "side": 1,
+      "message": "You must not use any SkFontMgr. Which directories do you think you are going to scan with `SkFontMgr_custom_directory`? You do not even have read access to the randomly named font directories for updated fonts. How are you going to do lookup? You must not request fonts by name as you will have no idea what their names actually are, and this is always buggy to begin with. How would that ever handle variable fonts? You do in fact need to serialize the font data and all its parameters (variation position, color palette, collection index, etc) and deserialize them. You will also need some way to keep track of typeface identity to prevent sending all this information for every draw call.\n\nYou may use a SkFontScanner, but you will need to be sure to use the correct one (FreeType or Fontations) based on the system flags.",
+      "parentUuid": "51d935b8_ef8b6d09",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
