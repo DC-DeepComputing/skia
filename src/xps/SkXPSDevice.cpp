@@ -124,7 +124,14 @@ SkXPSDevice::SkXPSDevice(SkISize s, SkXPS::Options opts)
         : SkClipStackDevice(SkImageInfo::MakeUnknown(s.width(), s.height()), SkSurfaceProps())
         , fCurrentPage(0)
         , fTopTypefaces(&fTypefaces)
-        , fOpts(opts) {}
+        , fOpts(opts)
+{
+    if (!opts.pngEncoder) {
+        if (!opts.allowNoPngs) {
+            SK_ABORT("Must set a PNG encoder to make XPS documents");
+        }
+    }
+}
 
 SkXPSDevice::~SkXPSDevice() {}
 
@@ -681,6 +688,7 @@ HRESULT SkXPSDevice::createXpsImageBrush(
         HRM(xpsImageBrush->QueryInterface(xpsBrush), "QI failed.");
     } else {
         //TODO(bungeman): compute how big this really needs to be.
+        //This is the extent of the clamp area (XPS does not support clamp).
         const SkScalar BIG = SkIntToScalar(1000); //SK_ScalarMax;
         const FLOAT BIG_F = SkScalarToFLOAT(BIG);
         const SkScalar bWidth = SkIntToScalar(bitmap.width());
@@ -777,20 +785,20 @@ HRESULT SkXPSDevice::createXpsImageBrush(
         if (SkTileMode::kClamp == xy[0] &&
             SkTileMode::kClamp == xy[1]) {
 
-            bound.x = BIG_F / -2;
-            bound.y = BIG_F / -2;
-            bound.width = BIG_F;
-            bound.height = BIG_F;
+            bound.x = -BIG_F;
+            bound.y = -BIG_F;
+            bound.width = bWidth + 2*BIG_F;
+            bound.height = bHeight + 2*BIG_F;
         } else if (SkTileMode::kClamp == xy[0]) {
-            bound.x = BIG_F / -2;
+            bound.x = -BIG_F;
             bound.y = 0.0f;
-            bound.width = BIG_F;
-            bound.height = static_cast<FLOAT>(bitmap.height());
+            bound.width = bWidth + 2*BIG_F;
+            bound.height = bHeight;
         } else if (SkTileMode::kClamp == xy[1]) {
             bound.x = 0;
-            bound.y = BIG_F / -2;
-            bound.width = static_cast<FLOAT>(bitmap.width());
-            bound.height = BIG_F;
+            bound.y = -BIG_F;
+            bound.width = bWidth;
+            bound.height = bHeight + 2*BIG_F;
         }
         SkTScopedComPtr<IXpsOMVisualBrush> clampBrush;
         HRM(this->fXpsFactory->CreateVisualBrush(&bound, &bound, &clampBrush),
