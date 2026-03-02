@@ -124,6 +124,24 @@
       "parentUuid": "a31cbdca_34247489",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e0ad5ba_dd99db93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-02T17:12:21Z",
+      "side": 1,
+      "message": "That\u0027s fine for a hack to try to explore, just don\u0027t check it in. There is no need for this change in Skia and you do not want an SkFontMgr. You will need to add the font data (and parameter) serialization. You probably want something like https://source.chromium.org/chromium/chromium/src/+/main:printing/common/metafile_utils.cc;l\u003d488;drc\u003da2ac668c57c8c5947e632da0ab0b2793770578fb . You will need a change in Skia to pick up the decoders at https://skia.googlesource.com/skia/+/70d17bc6b34962d0abadaf11e53df9dd1e6f9d25/src/core/SkTypeface.cpp#177 (you will need both FreeType and Fontations).",
+      "parentUuid": "f7dabec5_dc136aa0",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
