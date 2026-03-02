@@ -88,6 +88,24 @@
       "parentUuid": "c39fa552_77c995db",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31cbdca_34247489",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-02T14:40:57Z",
+      "side": 1,
+      "message": "I fail to understand how you would even be specifying fonts or loading them at all with a directory font loader? How would you even do font matching? At what level are you even trying to do this? If you\u0027re doing it at the view level then just depend on Minikin and you don\u0027t need any of this. Otherwise the application is just drawing using some (parameterized) font data and a bunch of positioned glyphs, in which case you don\u0027t have any information about where to look up the font data so you need to send it.\n\nAny yank measurements would be uninformative if not measuring the need to serialize and deserialize the fonts (and parameters) as would be necessary. What is the point in the measurement if not measuring what would need to be done?",
+      "parentUuid": "b34433f7_a3a571ec",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
