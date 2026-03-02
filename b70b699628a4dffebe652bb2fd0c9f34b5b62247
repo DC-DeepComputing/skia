@@ -106,6 +106,24 @@
       "parentUuid": "b34433f7_a3a571ec",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7dabec5_dc136aa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2026-03-02T15:18:41Z",
+      "side": 1,
+      "message": "@bungeman@google.com sure, hopefully i can provide more clarity\n\ncurrent design (see section How to handle text in https://docs.google.com/document/d/1baqwJyYzXLeXlsFVeBHUPQfeXVvF-Dq9kyCzPjWzYI0/edit?usp\u003dsharing) proposes server side (meaning SurfaceFlinger) handling of fonts. The assumption here is that client side (application) will serialize its commands, which will include text drawing commands and send them over IPC channel for SF to execute. SF will deserialize these commands and will submit necessary GPU work.\n\nFirst version of implementation in SF can be found here: ag/38519287. (haven\u0027t linked in a topic as i was planning to link with the automerger\u0027s CL once it generates updated version of Android.bp - or is that not how it\u0027s meant to be done for platform change depending on a skia change?)\n\nIn this implementation\n- a custom directory font manager is created on server side (SurfaceFlinger) that is initialized with all fonts under /system/fonts\n- during serialization of the typeface (client side) it is assumed that IPC clients will only use fonts available to the server and so are serialized using `SkTypeface::SerializeBehavior::kDontIncludeData`\n- during deserialization (server side) `SkTypeface::MakeDeserialize` is used with the blob sent over IPC and the font manager\n- in addition to that serialized/deserialized typeface objects are cached on both client and server side\n\nTest was added that uses a custom font manager with a font loader using a font /system/fonts/Roboto-Regular.ttf, test checks that rendering of a text blob performed via IPC canvas matches a reference image\n\nAre any of the assumptions made for this implementation incorrect? Would you recommend adding more test cases for differently parametrizde text draw operations to be added that will uncover issues with current approach?",
+      "parentUuid": "a31cbdca_34247489",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
