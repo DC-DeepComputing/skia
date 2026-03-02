@@ -16,6 +16,24 @@
       "message": "Without the fallback above, it looks like this could trigger for HB \u003e\u003d 10.",
       "revId": "59c526a085aeea550c9630efe39bac3b3e0eeef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0299b35c_268b9335",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-02T16:30:55Z",
+      "side": 1,
+      "message": "This issue here is keeping the old code path around. For HB \u003e\u003d 10 the only caller of this has already checked `asset-\u003egetMemoryBase()`. This code doesn\u0027t even need to be inside a `#if` (though it is dead code for HB \u003e\u003d 10). The real reason it is inside the `#if` is to make it clear that this should be removed when removing the HB \u003c 10 support in the future.\n\nIn some sense, keeping this assert here is somewhat more important now that the code is made more complicated to read with all this `#if`.\n\nPart of this is that I was concerned about the complexity (and lack of testing) for HB \u003c 4.4.0 and HB \u003c 10.0.0. However, now that I have this all written, it\u0027s probably simpler to just support all of them and do the runtime check instead of this mess of preprocessor directives.",
+      "parentUuid": "0ff9eebd_a1f6e055",
+      "revId": "59c526a085aeea550c9630efe39bac3b3e0eeef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
