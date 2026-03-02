@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1933e96a_336866c2",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T19:33:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de1f71e5_f48c9733",
+      "range": {
+        "startLine": 91,
+        "startChar": 13,
+        "endLine": 91,
+        "endChar": 17
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd912aaf_0c023036",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04bc2775_7c8c8fe6",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T19:33:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd912aaf_0c023036",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 14
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afda8092_0c73cadf",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-02T19:03:24Z",
       "side": 1,
       "message": "to ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 62,
+        "endLine": 94,
+        "endChar": 69
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8834a610_13fb4f90",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T19:33:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afda8092_0c73cadf",
       "range": {
         "startLine": 94,
         "startChar": 62,
