@@ -22,6 +22,30 @@
       },
       "revId": "59d3923eae546ade359d65d23dd908deeb4e77a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "333b2241_0c3ed9fd",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 0,
+      "message": "`Undefined` is just more expected and appropriate now as we\u0027ll get into this function earlier in the format/textureinfo support functions.",
+      "parentUuid": "5a3f3aa3_9abb65cb",
+      "range": {
+        "startLine": 297,
+        "startChar": 7,
+        "endLine": 297,
+        "endChar": 24
+      },
+      "revId": "59d3923eae546ade359d65d23dd908deeb4e77a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

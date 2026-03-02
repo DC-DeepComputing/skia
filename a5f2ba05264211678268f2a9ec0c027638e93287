@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfae7ecf_4313d26f",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b195aad_c270445c",
+      "range": {
+        "startLine": 897,
+        "startChar": 0,
+        "endLine": 897,
+        "endChar": 101
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d7dd99e_c4ec8e2a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-26T16:20:10Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 912,
+        "startChar": 0,
+        "endLine": 912,
+        "endChar": 101
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbed5d7_a752b856",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d7dd99e_c4ec8e2a",
       "range": {
         "startLine": 912,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2f51310_56f39cfe",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06728df7_a6e0aa17",
+      "range": {
+        "startLine": 933,
+        "startChar": 0,
+        "endLine": 933,
+        "endChar": 101
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed3f2ff8_e194a066",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-02-26T16:20:10Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 948,
+        "endChar": 101
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "872498bd_95a467a2",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed3f2ff8_e194a066",
       "range": {
         "startLine": 948,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "759f05a0_0ab9f43a",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "I\u0027m not inclined to make changes here because this is just a stop-gap as colortype-related code moves off of Caps.  This had been quite a simple function originally, but the unit tests exposed the existing issues around `renderable` checking for compatibility so this keeps things passing.\n\nIn the future, there will be 3 separate static functions:\n1. PreferredTextureFormats(SkColorType) -\u003e span\u003cTextureFormat\u003e\n2. ColorTypeInfo(TextureFormat) -\u003e SkColorType\n3. GetWriteSwizzle(TextureFormat, SkColorType) -\u003e std::optiona\u003cSwizzle\u003e\n\nThe SkColorType returned that matches a TextureFormat will always be renderable with that format. The preferred texture formats for a color type have to be filtered by both being a supported format, and having a defined write swizzle for the combination of color type and format.\n\nThe only times a write swizzle is not possible is for a gray colortype, or for RGBx color type rendering to a format that still has an alpha channel. So once these functions are in place, this filtering can move up to `Caps::getDefaultSampleableTextureInfo()` and all the `getFormatForColorType()` functions get to be deleted. This is several CLs away, but this code shouldn\u0027t live for that long.",
+      "parentUuid": "9e44b4ca_327888f5",
+      "range": {
+        "startLine": 937,
+        "startChar": 3,
+        "endLine": 937,
+        "endChar": 71
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab05c7b7_58ef4622",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-02-26T16:20:10Z",
       "side": 1,
       "message": "Perhaps create or reference an existing bug # for this",
+      "range": {
+        "startLine": 1347,
+        "startChar": 24,
+        "endLine": 1347,
+        "endChar": 37
+      },
+      "revId": "a5f2ba05264211678268f2a9ec0c027638e93287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e401fa9_c1d890cf",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab05c7b7_58ef4622",
       "range": {
         "startLine": 1347,
         "startChar": 24,
