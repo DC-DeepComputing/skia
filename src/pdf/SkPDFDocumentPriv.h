@@ -140,6 +140,9 @@ public:
     // Returns a false Mark if if elemId does not refer to a StructElem.
     SkPDFStructTree::Mark createMarkForElemId(int elemId);
 
+    unsigned allocateStructParentsKeyForXObject();
+    SkPDFStructTree::Mark createMarkForXObject(int elemId, unsigned structParentsKey);
+
     // Create a key to use with /StructParent in a content item (usually an annotation) which refers
     // to the structure element (StructElem) with the given element identifier (elemId).
     // Returns -1 if elemId does not refer to a StructElem.

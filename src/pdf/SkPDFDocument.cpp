@@ -565,6 +565,19 @@ SkPDFStructTree::Mark SkPDFDocument::createMarkForElemId(int elemId) {
     return fStructTree.createMarkForElemId(elemId, SkToUInt(this->currentPageIndex()));
 }
 
+unsigned SkPDFDocument::allocateStructParentsKeyForXObject() {
+    return fStructTree.allocateStructParentsKeyForXObject();
+}
+
+SkPDFStructTree::Mark SkPDFDocument::createMarkForXObject(int elemId,
+                                                          unsigned structParentsKey) {
+    if (!this->hasCurrentPage()) {
+        return SkPDFStructTree::Mark();
+    }
+    return fStructTree.createMarkForXObject(elemId, structParentsKey,
+                                            SkToUInt(this->currentPageIndex()));
+}
+
 void SkPDFDocument::addStructElemTitle(int elemId, SkSpan<const char> title) {
     fStructTree.addStructElemTitle(elemId, std::move(title));
 }

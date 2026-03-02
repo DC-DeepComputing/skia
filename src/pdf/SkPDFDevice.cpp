@@ -127,7 +127,15 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         fCurrentMarksElemId = 0;
     }
     if (fNextMarksElemId) {
-        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+        if (fIsXObjectDevice) {
+            if (fXObjectStructParentsKey < 0) {
+                fXObjectStructParentsKey = fDoc->allocateStructParentsKeyForXObject();
+            }
+            fCurrentlyActiveMark = fDoc->createMarkForXObject(
+                    fNextMarksElemId, fXObjectStructParentsKey);
+        } else {
+            fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+        }
         if (fCurrentlyActiveMark) {
             // Begin this mark
             SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
@@ -312,7 +320,9 @@ sk_sp<SkDevice> SkPDFDevice::createDevice(const CreateInfo& cinfo, const SkPaint
         return SkBitmapDevice::Create(cinfo.fInfo,
                                       SkSurfaceProps());
     }
-    return sk_make_sp<SkPDFDevice>(cinfo.fInfo.dimensions(), fDocument);
+    auto device = sk_make_sp<SkPDFDevice>(cinfo.fInfo.dimensions(), fDocument);
+    device->fMarkManager.setIsXObjectDevice();
+    return device;
 }
 
 // A helper class to automatically finish a ContentEntry at the end of a
@@ -1273,7 +1283,8 @@ SkPDFIndirectReference SkPDFDevice::makeFormXObjectFromDevice(SkIRect bounds, bo
         SkPDFMakeFormXObject(fDocument, this->content(),
                              SkPDFMakeArray(bounds.left(), bounds.top(),
                                             bounds.right(), bounds.bottom()),
-                             this->makeResourceDict(), inverseTransform, colorSpace);
+                             this->makeResourceDict(), inverseTransform, colorSpace,
+                             fMarkManager.xObjectStructParentsKey());
     // We always draw the form xobjects that we create back into the device, so
     // we simply preserve the font usage instead of pulling it out and merging
     // it back in later.

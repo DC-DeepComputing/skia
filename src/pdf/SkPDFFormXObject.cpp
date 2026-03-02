@@ -18,7 +18,8 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
                                             std::unique_ptr<SkPDFArray> mediaBox,
                                             std::unique_ptr<SkPDFDict> resourceDict,
                                             const SkMatrix& inverseTransform,
-                                            const char* colorSpace) {
+                                            const char* colorSpace,
+                                            int structParentsKey) {
     std::unique_ptr<SkPDFDict> dict = SkPDFMakeDict();
     dict->insertName("Type", "XObject");
     dict->insertName("Subtype", "Form");
@@ -27,6 +28,9 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
     }
     dict->insertObject("Resources", std::move(resourceDict));
     dict->insertObject("BBox", std::move(mediaBox));
+    if (structParentsKey >= 0) {
+        dict->insertInt("StructParents", structParentsKey);
+    }
 
     // Right now FormXObject is only used for saveLayer, which implies
     // isolated blending.  Do this conditionally if that changes.

@@ -313,6 +313,43 @@ auto SkPDFStructTree::createMarkForElemId(int elemId, unsigned pageIndex) -> Mar
     return Mark(structElem, structElem->fMarkedContent.size() - 1);
 }
 
+unsigned SkPDFStructTree::allocateStructParentsKeyForXObject() {
+    unsigned key = kFirstXObjectStructParentsKey + fXObjectMcidMappings.size();
+    fXObjectMcidMappings.push_back({key, {}});
+    return key;
+}
+
+auto SkPDFStructTree::createMarkForXObject(int elemId,
+                                           unsigned structParentsKey,
+                                           unsigned pageIndex) -> Mark {
+    if (!fRoot) {
+        return Mark();
+    }
+    SkPDFStructElem** structElemPtr = fStructElemForElemId.find(elemId);
+    if (!structElemPtr) {
+        return Mark();
+    }
+    SkPDFStructElem* structElem = *structElemPtr;
+    SkASSERT(structElem);
+
+    structElem->setUsed(fStructElemForElemId);
+
+    XObjectMcidMapping* mapping = nullptr;
+    for (auto& m : fXObjectMcidMappings) {
+        if (m.fStructParentsKey == structParentsKey) {
+            mapping = &m;
+            break;
+        }
+    }
+    SkASSERT(mapping);
+
+    TArray<SkPDFStructElem*>& structElemForMcid = mapping->fStructElemForMcid;
+    int mcid = structElemForMcid.size();
+    structElem->fMarkedContent.push_back({{{SK_ScalarNaN, SK_ScalarNaN}, pageIndex}, mcid});
+    structElemForMcid.push_back(structElem);
+    return Mark(structElem, structElem->fMarkedContent.size() - 1);
+}
+
 int SkPDFStructTree::createStructParentKeyForElemId(int elemId,
                                                     SkPDFIndirectReference contentItemRef,
                                                     unsigned pageIndex) {
@@ -471,6 +508,19 @@ SkPDFIndirectReference SkPDFStructTree::emitStructTreeRoot(SkPDFDocument* doc) c
             structElemForMcidArray.appendRef(structElem->fRef);
         }
         parentTreeNums->appendInt(j); // /Page /StructParents
+        parentTreeNums->appendRef(doc->emit(structElemForMcidArray));
+    }
+
+    for (const XObjectMcidMapping& mapping : fXObjectMcidMappings) {
+        if (mapping.fStructElemForMcid.empty()) {
+            continue;
+        }
+        SkPDFArray structElemForMcidArray;
+        for (SkPDFStructElem* structElem : mapping.fStructElemForMcid) {
+            SkASSERT(structElem->fRef);
+            structElemForMcidArray.appendRef(structElem->fRef);
+        }
+        parentTreeNums->appendInt(mapping.fStructParentsKey); // /XObject /StructParents
         parentTreeNums->appendRef(doc->emit(structElemForMcidArray));
     }
 

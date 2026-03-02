@@ -57,6 +57,11 @@ public:
     // Returns a false Mark if if elemId does not refer to a StructElem.
     SkPDFStructTree::Mark createMarkForElemId(int elemId, unsigned pageIndex);
 
+    unsigned allocateStructParentsKeyForXObject();
+    SkPDFStructTree::Mark createMarkForXObject(int elemId,
+                                               unsigned structParentsKey,
+                                               unsigned pageIndex);
+
     // Create a key to use with /StructParent in a content item (usually an annotation) which refers
     // to the structure element (StructElem) with the given element identifier (elemId).
     // The StructTreeRoot ParentTree will map from this key to the structure element.
@@ -87,6 +92,13 @@ private:
     skia_private::TArray<skia_private::TArray<SkPDFStructElem*>> fStructElemForMcidForPage;
     // fStructElemForContentItem[?::StructParent] -> parent StructElem of content-item
     skia_private::TArray<SkPDFStructElem*> fStructElemForContentItem;
+
+    static constexpr int kFirstXObjectStructParentsKey = 50000;
+    struct XObjectMcidMapping {
+        unsigned fStructParentsKey;
+        skia_private::TArray<SkPDFStructElem*> fStructElemForMcid;
+    };
+    skia_private::TArray<XObjectMcidMapping> fXObjectMcidMappings;
 };
 
 #endif

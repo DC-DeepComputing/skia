@@ -171,6 +171,12 @@ private:
         // Tests if this marked content manager made any marks.
         bool madeMarks() const { return fMadeMarks; }
 
+        void setIsXObjectDevice() { fIsXObjectDevice = true; }
+
+        int xObjectStructParentsKey() const {
+            return fIsXObjectDevice ? fXObjectStructParentsKey : -1;
+        }
+
     private:
         SkPDFDocument* fDoc;
         SkDynamicMemoryWStream* fOut;
@@ -178,6 +184,8 @@ private:
         int fNextMarksElemId;
         int fCurrentMarksElemId;
         bool fMadeMarks;
+        bool fIsXObjectDevice = false;
+        int fXObjectStructParentsKey = -1;  // Lazily allocated.
     } fMarkManager;
 
     SkDynamicMemoryWStream fContent;
