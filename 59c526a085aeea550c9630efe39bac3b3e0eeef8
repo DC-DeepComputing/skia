@@ -34,6 +34,24 @@
       "parentUuid": "0ff9eebd_a1f6e055",
       "revId": "59c526a085aeea550c9630efe39bac3b3e0eeef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5e7b0e_cda2b7fc",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-02T16:33:08Z",
+      "side": 1,
+      "message": "\u003e This issue here is keeping the old code path around. For HB \u003e\u003d 10 the only caller of this has already checked `asset-\u003egetMemoryBase()`.\n\nAh, makes sense.",
+      "parentUuid": "0299b35c_268b9335",
+      "revId": "59c526a085aeea550c9630efe39bac3b3e0eeef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
