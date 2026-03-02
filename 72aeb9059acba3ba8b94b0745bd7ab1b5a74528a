@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de1f71e5_f48c9733",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-02T19:03:24Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 91,
+        "startChar": 13,
+        "endLine": 91,
+        "endChar": 17
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd912aaf_0c023036",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-02T19:03:24Z",
+      "side": 1,
+      "message": "rm these two ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 14
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afda8092_0c73cadf",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-02T19:03:24Z",
+      "side": 1,
+      "message": "to ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 62,
+        "endLine": 94,
+        "endChar": 69
+      },
+      "revId": "72aeb9059acba3ba8b94b0745bd7ab1b5a74528a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
