@@ -7,6 +7,7 @@
 #ifndef skgpu_graphite_Strip_DEFINED
 #define skgpu_graphite_Strip_DEFINED
 
+#include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
@@ -35,7 +36,7 @@ public:
     template <uint16_t TileWidth, uint16_t TileHeight>
     static void MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                                std::vector<Strip>& stripBuf,
-                               std::vector<uint8_t>& alphaBuf,
+                               AlphaAtlasManager* alphaAtlasManager,
                                SkPathFillType fillType,
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>* maskLut
@@ -196,7 +197,7 @@ private:
 template <uint16_t TileWidth, uint16_t TileHeight>
 void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                            std::vector<Strip>& stripBuf,
-                           std::vector<uint8_t>& alphaBuf,
+                           AlphaAtlasManager* alphaAtlasManager,
                            SkPathFillType fillType,
                            const Polyline& polyline,
                            const SkTDArray<uint8_t>* maskLut
@@ -206,6 +207,9 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                            ) {
     const auto& tiles = tileContainer.getTiles();
     if (tiles.empty()) {
+        return;
+    }
+    if (!alphaAtlasManager->initializeTexture()) {
         return;
     }
 
@@ -234,7 +238,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
     Tile<TileWidth, TileHeight> prevTile = tiles[0];
     Strip currentStrip(prevTile.x * TileWidth,
                        prevTile.y * TileHeight,
-                       static_cast<uint32_t>(alphaBuf.size()),
+                       alphaAtlasManager->currentOffset(),
                        false);
 
     float tileMinX = (float)(prevTile.x * TileWidth);
@@ -257,6 +261,9 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
         bool segStart = tileStart && !((tile.y == prevTile.y) && (tile.x == prevTile.x + 1));
 
         if (tileStart) {
+            std::array<uint8_t, TileWidth * TileHeight> tileAlphas;
+            int alphaIdx = 0;
+
             for (int x = 0; x < TileWidth; ++x) {
                 for (int y = 0; y < TileHeight; ++y) {
                     int activeSamples = 0;
@@ -267,8 +274,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                         }
                     }
 
-                    uint8_t alpha = static_cast<uint8_t>((activeSamples * 255 + 4) / 8);
-                    alphaBuf.push_back(alpha);
+                    tileAlphas[alphaIdx++] = static_cast<uint8_t>((activeSamples * 255 + 4) / 8);
 
 #if defined(GPU_TEST_UTILS)
                     if (observer) {
@@ -284,6 +290,11 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                 }
             }
 
+            uint32_t globalIdx = alphaAtlasManager->addAlphas(tileAlphas.data(), tileAlphas.size());
+            if (globalIdx == AlphaAtlasManager::kFull) {
+                return;
+            }
+
             if (!rowStart) {
                 clearMask((int16_t)windingDelta);
             }
@@ -296,7 +307,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                     stripBuf.push_back(Strip(
                             0xFFFF,
                             prevTile.y * TileHeight,
-                            static_cast<uint32_t>(alphaBuf.size()),
+                            alphaAtlasManager->currentOffset(),
                             shouldFill(windingDelta)));
                 }
                 windingDelta = 0;
@@ -306,7 +317,7 @@ void Strip::MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
             if (isSentinel) break;
             currentStrip = Strip(tile.x * TileWidth,
                                  tile.y * TileHeight,
-                                 static_cast<uint32_t>(alphaBuf.size()),
+                                 alphaAtlasManager->currentOffset(),
                                  shouldFill(windingDelta));
         }
 

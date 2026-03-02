@@ -11,6 +11,10 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/AtlasProvider.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
@@ -49,7 +53,8 @@ bool IsInside(SkPoint pt, const Polyline& polyline) {
 
 template <uint16_t TileW, uint16_t TileH> class CoverageTestRunner {
 public:
-    static void runAll(skiatest::Reporter* reporter) {
+    static void runAll(skiatest::Reporter* reporter, Recorder* recorder) {
+        AlphaAtlasManager* atlas = recorder->priv().atlasProvider()->alphaAtlasManager();
         const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
         constexpr int errorLimit = 3;
         std::array<uint32_t, errorLimit> minorErrorCount = {0, 0, 0};
@@ -79,6 +84,8 @@ public:
                 float angle = static_cast<float>(angleDeg);
 
                 for (const SkPoint& alignment : alignments) {
+                    atlas->resetBuffer();
+
                     // Build base path (local space geometry)
                     SkPathBuilder pb;
                     pb.addRect(baseRect);
@@ -119,6 +126,7 @@ public:
                                     alignment.fY);
 
                     if (!RunSingleTest(reporter,
+                                       atlas,
                                        deviceSpacePath,
                                        reqWidth,
                                        reqHeight,
@@ -245,6 +253,7 @@ private:
     }
 
     static bool RunSingleTest(skiatest::Reporter* reporter,
+                              AlphaAtlasManager* atlas,
                               const SkPath& path,
                               uint16_t width,
                               uint16_t height,
@@ -261,13 +270,12 @@ private:
         tiler.sortTiles();
 
         std::vector<Strip> stripBuf;
-        std::vector<uint8_t> alphaBuf;
         std::vector<uint8_t> exactMasks;
 
         auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
 
         Strip::MakeStripsMsaa(
-                tiler, stripBuf, alphaBuf, SkPathFillType::kWinding, polyline, &lut, observer);
+                tiler, stripBuf, atlas, SkPathFillType::kWinding, polyline, &lut, observer);
 
         const auto& tiles = tiler.getTiles();
         size_t alphaIdx = 0;
@@ -302,8 +310,7 @@ private:
                             }
                         }
 
-                        if (alphaIdx < alphaBuf.size()) {
-                            uint8_t actualAlpha = alphaBuf[alphaIdx];
+                        if (alphaIdx < atlas->currentOffset()) {
                             int sampleDiff = 0;
                             int actualSamples = 0;
 
@@ -329,15 +336,14 @@ private:
                                 REPORTER_ASSERT(reporter,
                                                 false,
                                                 "[%s] CRITICAL Fail at tile(%d,%d) local(%d,%d). "
-                                                "Expected %d samples, got %d samples (alpha %d)",
+                                                "Expected %d samples, got %d samples",
                                                 name,
                                                 prevTx,
                                                 prevTy,
                                                 x,
                                                 y,
                                                 expectedSamples,
-                                                actualSamples,
-                                                actualAlpha);
+                                                actualSamples);
                                 return false;
                             } else if (sampleDiff > 0) {
                                 minorErrorCount[sampleDiff - 1]++;
@@ -358,19 +364,21 @@ private:
             }
         }
 
-        bool bufferSizeMatch = (alphaIdx == alphaBuf.size());
+        bool bufferSizeMatch = (alphaIdx == atlas->currentOffset());
         REPORTER_ASSERT(reporter,
                         bufferSizeMatch,
-                        "[%s] Checked %zu alpha bytes but buffer size is %zu",
+                        "[%s] Checked %zu alpha bytes but buffer size is %u",
                         name,
                         alphaIdx,
-                        alphaBuf.size());
+                        atlas->currentOffset());
         return bufferSizeMatch;
     }
 };
 
-DEF_TEST(GraphiteCoverage_4x4, reporter) {
-    skgpu::graphite::CoverageTestRunner<4, 4>::runAll(reporter);
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteCoverage_4x4, reporter, context,
+                                   CtsEnforcement::kNever) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    skgpu::graphite::CoverageTestRunner<4, 4>::runAll(reporter, recorder.get());
 }
 
 }  // namespace skgpu::graphite
