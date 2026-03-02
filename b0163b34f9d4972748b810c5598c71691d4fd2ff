@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f974a9d_1f1100fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-02T19:35:53Z",
+      "side": 1,
+      "message": "Just a note that this will finally be ready to land once https://skia-review.git.corp.google.com/c/skia/+/1176937 lands.  That moves the `makecolortypeandspace` gold changes to that CL as part of the renderable fallback, instead of this change which originally exposed the issue.",
+      "revId": "b0163b34f9d4972748b810c5598c71691d4fd2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
