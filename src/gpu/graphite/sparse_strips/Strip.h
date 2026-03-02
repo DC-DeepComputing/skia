@@ -50,7 +50,7 @@ private:
     template <uint16_t, uint16_t> friend class ClipTestRunner;
     template <uint16_t, uint16_t> friend class CoverageTestRunner;
 #endif
-    friend class StripGenerator;
+    template <uint16_t, uint16_t> friend class StripGenerator;
 
     static constexpr uint32_t FILL_SHIFT = 31;
 
