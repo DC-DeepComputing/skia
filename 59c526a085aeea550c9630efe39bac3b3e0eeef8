@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ff9eebd_a1f6e055",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-02T14:45:58Z",
+      "side": 1,
+      "message": "Without the fallback above, it looks like this could trigger for HB \u003e\u003d 10.",
+      "revId": "59c526a085aeea550c9630efe39bac3b3e0eeef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
