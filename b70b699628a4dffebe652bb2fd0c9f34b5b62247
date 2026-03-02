@@ -70,6 +70,24 @@
       "parentUuid": "51d935b8_ef8b6d09",
       "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b34433f7_a3a571ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2026-03-02T10:45:39Z",
+      "side": 1,
+      "message": "@bungeman@google.com thx for your input, I completely agree that this approach is not future proof and does not scale if scope of this project was to be extended to all apps. At the moment we\u0027re aiming to only trial this for systemui/nexuslauncher, so scope is limited to system fonts only. Therefore any font not preloaded from a known trusted directory (i.e. /system/fonts) will fail to deserialize and corresponding text draw operation will fail - that is expected behaviour at this stage of the project. Should we move to a new stage where scope will be extended to wider group of apps current approach will need to be revised.\n\nWe specifically want to avoid serialization / deserialization of the full font data at this point as goal of first stage of this project is to measure its impact on jank. Serializing/deserializing font data would be a heavy operation that could potentially influence metrics a lot. I recognize that if we were to still need it for a further stage then any measurements will need to be repeated.\n\nDo you think that relying on system fonts being available in one or multiple specific locations is viable for a very limited subset of trusted applications like systemui/nexuslauncher?\n\nWith this acknowledgement, is the current approach viable or are there still concerns on your side? Happy to discuss in further detail",
+      "parentUuid": "c39fa552_77c995db",
+      "revId": "b70b699628a4dffebe652bb2fd0c9f34b5b62247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
