@@ -16,6 +16,115 @@
       "message": "I ended up modifying some GMs to stop using 4444 color types since they have more hit-or-miss support on GPUs and this preserves their rendering behavior without assuming a fallback.\n\nThe rest of the gold diffs are dominated by losing 4444 and 565 on dawn configs, but that is expected. There is one wacky_yuv GM that draws differently with grvk on the Pixel 9 due to reporting missing support for unorm16 formats. However, on my Pixel9 with a newer OS version, the GM renders correctly. I would count this as WAI.",
       "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5e8a555_6641bb1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T15:04:20Z",
+      "side": 1,
+      "message": "Small suggestions but otherwise LGTM!",
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f8fc8f_4e573992",
+        "filename": "gm/coloremoji_blendmodes.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T15:04:20Z",
+      "side": 1,
+      "message": "For my own understanding, is there a reason this is `gData` rather than `kData` which is our usual static variable naming convention?",
+      "range": {
+        "startLine": 38,
+        "startChar": 16,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bffee0e_fe434b87",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T15:04:20Z",
+      "side": 1,
+      "message": "I know this wasn\u0027t from your change, but want to go ahead and take the opportunity to change these static helpers to be defined within anonymous namespaces instead?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 1
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4142747_1a2862ee",
+        "filename": "src/gpu/graphite/ProxyCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T15:04:20Z",
+      "side": 1,
+      "message": "nit: Maybe `/*mipmapsIn\u003d*/nullptr`?",
+      "range": {
+        "startLine": 120,
+        "startChar": 58,
+        "endLine": 120,
+        "endChar": 65
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c63aa7_baa487c1",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T15:04:20Z",
+      "side": 1,
+      "message": "Maybe combine this with the if above?\n```\nif (!textureInfo.isValid() || !SkImageInfoIsValid(bitmap.info())) {...}\n```\nI would only keep them separated if we had different logging for those different invalid cases.",
+      "range": {
+        "startLine": 270,
+        "startChar": 2,
+        "endLine": 270,
+        "endChar": 45
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
