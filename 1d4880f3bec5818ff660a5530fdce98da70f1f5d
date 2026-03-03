@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1624c84_ae2d4219",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-03T22:05:18Z",
+      "side": 1,
+      "message": "What if neither axis is clamping - do we end up with an empty `bound`?\n\nLooks like we could rationalize along these lines:\n\n```\n    XPS_RECT bound \u003d {0, 0, bWidth, bHeight};\n    if (SkTileMode::kClamp \u003d\u003d xy[0]) {\n        bound.x \u003d -BIG_F;\n        bound.width +\u003d 2*BIG_F;\n    }\n    if (SkTileMode::kClamp \u003d\u003d xy[1]) {\n        bound.y \u003d -BIG_F;\n        bound.height +\u003d 2*BIG_F;\n    }\n```",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 802,
+        "endChar": 9
+      },
+      "revId": "1d4880f3bec5818ff660a5530fdce98da70f1f5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
