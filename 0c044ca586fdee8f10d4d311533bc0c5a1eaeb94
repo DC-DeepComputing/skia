@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15d80437_adaadc22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T16:11:26Z",
+      "side": 1,
+      "message": "I agree this enum / file should go. Thank you!",
+      "revId": "0c044ca586fdee8f10d4d311533bc0c5a1eaeb94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2fb40dd_b148b574",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1098,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-03T16:11:26Z",
+      "side": 1,
+      "message": "Perhaps create bug and reference it here to optimize this ? Otherwise we will likely lose track of it forever (even if the bug is very low priority). sorry to be a strickler 😄",
+      "range": {
+        "startLine": 1097,
+        "startChar": 0,
+        "endLine": 1098,
+        "endChar": 96
+      },
+      "revId": "0c044ca586fdee8f10d4d311533bc0c5a1eaeb94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
