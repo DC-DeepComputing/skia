@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac8b91a4_86277fb5",
+        "filename": "gm/coloremoji_blendmodes.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-03T16:03:18Z",
+      "side": 1,
+      "message": "I went to change it thinking it could be made `kData` and `const` and discovered the real reason behind this. It\u0027s passed into `SkBitmap::installPixels`, takes in non-const data to theoretically be able to modify the pixel store. In this case we don\u0027t modify the data, but it technically means that this array is a regular global array and not a constant hence `g` vs. `k`.",
+      "parentUuid": "b7f8fc8f_4e573992",
+      "range": {
+        "startLine": 38,
+        "startChar": 16,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bffee0e_fe434b87",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-03-03T15:04:20Z",
       "side": 1,
       "message": "I know this wasn\u0027t from your change, but want to go ahead and take the opportunity to change these static helpers to be defined within anonymous namespaces instead?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 1
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef0b5c4a_76269aba",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-03T16:03:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bffee0e_fe434b87",
       "range": {
         "startLine": 47,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e95b3d_501d1288",
+        "filename": "src/gpu/graphite/ProxyCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-03T16:03:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4142747_1a2862ee",
+      "range": {
+        "startLine": 120,
+        "startChar": 58,
+        "endLine": 120,
+        "endChar": 65
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77c63aa7_baa487c1",
@@ -117,6 +189,30 @@
       "writtenOn": "2026-03-03T15:04:20Z",
       "side": 1,
       "message": "Maybe combine this with the if above?\n```\nif (!textureInfo.isValid() || !SkImageInfoIsValid(bitmap.info())) {...}\n```\nI would only keep them separated if we had different logging for those different invalid cases.",
+      "range": {
+        "startLine": 270,
+        "startChar": 2,
+        "endLine": 270,
+        "endChar": 45
+      },
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c54ec55_9d888af6",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-03T16:03:18Z",
+      "side": 1,
+      "message": "I anticipate that these will be logged differently, and for now, if they show up in stack traces, the separate lines will make the case differentiable.\n\nBasically the first check is saying the texture/GPU state is invalid while the second check is saying the CPU data state is invalid.",
+      "parentUuid": "77c63aa7_baa487c1",
       "range": {
         "startLine": 270,
         "startChar": 2,
