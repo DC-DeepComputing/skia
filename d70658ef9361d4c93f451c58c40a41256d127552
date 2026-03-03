@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7558204_64df437b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-03T14:49:00Z",
+      "side": 1,
+      "message": "I ended up modifying some GMs to stop using 4444 color types since they have more hit-or-miss support on GPUs and this preserves their rendering behavior without assuming a fallback.\n\nThe rest of the gold diffs are dominated by losing 4444 and 565 on dawn configs, but that is expected. There is one wacky_yuv GM that draws differently with grvk on the Pixel 9 due to reporting missing support for unorm16 formats. However, on my Pixel9 with a newer OS version, the GM renders correctly. I would count this as WAI.",
+      "revId": "d70658ef9361d4c93f451c58c40a41256d127552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
