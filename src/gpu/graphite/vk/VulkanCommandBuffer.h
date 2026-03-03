@@ -13,6 +13,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 
 namespace skgpu::graphite {
@@ -38,15 +39,10 @@ public:
 
     void waitUntilFinished();
 
-    void addBufferMemoryBarrier(const Resource* resource,
-                                VkPipelineStageFlags srcStageMask,
-                                VkPipelineStageFlags dstStageMask,
-                                VkBufferMemoryBarrier* barrier);
     void addBufferMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                 VkPipelineStageFlags dstStageMask,
                                 VkBufferMemoryBarrier* barrier);
-    void addImageMemoryBarrier(const Resource*,
-                               VkPipelineStageFlags srcStageMask,
+    void addImageMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                VkPipelineStageFlags dstStageMask,
                                bool byRegion,
                                VkImageMemoryBarrier* barrier);
@@ -173,8 +169,7 @@ private:
         kBufferMemory_BarrierType,
         kImageMemory_BarrierType
     };
-    void pipelineBarrier(const Resource* resource,
-                         VkPipelineStageFlags srcStageMask,
+    void pipelineBarrier(VkPipelineStageFlags srcStageMask,
                          VkPipelineStageFlags dstStageMask,
                          bool byRegion,
                          PipelineBarrierType barrierType,
@@ -210,7 +205,30 @@ private:
     skia_private::STArray<1, VkSemaphore> fWaitSemaphores;
     skia_private::STArray<1, VkSemaphore> fSignalSemaphores;
 
-    // Tracking of memory barriers so that we can submit them all in a batch together.
+    class TrackedPipelineBarriers {
+    public:
+        TrackedPipelineBarriers() = default;
+
+        void addBarrier(VkPipelineStageFlags srcStageMask,
+                        VkPipelineStageFlags dstStageMask,
+                        bool byRegion,
+                        BarrierType barrierType,
+                        void* barrier);
+
+        bool hasOverlappingImageBarrier(const VkImageMemoryBarrier* barrierPtr);
+
+        void submit();
+
+    private:
+        // Tracking of memory barriers so that we can submit them all in a batch together.
+        skia_private::STArray<1, VkBufferMemoryBarrier> fBufferBarriers;
+        skia_private::STArray<2, VkImageMemoryBarrier> fImageBarriers;
+        bool fBarriersByRegion = false;
+        VkPipelineStageFlags fSrcStageMask = 0;
+        VkPipelineStageFlags fDstStageMask = 0;
+    };
+    TrackedPipelineBarriers fTrackedPipelineBarriers[kPipelineStageCount];
+
     skia_private::STArray<1, VkBufferMemoryBarrier> fBufferBarriers;
     skia_private::STArray<2, VkImageMemoryBarrier> fImageBarriers;
     bool fBarriersByRegion = false;

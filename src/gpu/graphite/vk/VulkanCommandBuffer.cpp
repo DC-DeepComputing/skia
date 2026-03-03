@@ -1734,50 +1734,75 @@ bool VulkanCommandBuffer::onClearBuffer(const Buffer*, size_t offset, size_t siz
     return false;
 }
 
-void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
-                                                 VkPipelineStageFlags srcStageMask,
-                                                 VkPipelineStageFlags dstStageMask,
-                                                 VkBufferMemoryBarrier* barrier) {
-    SkASSERT(resource);
-    this->pipelineBarrier(resource,
-                          srcStageMask,
-                          dstStageMask,
-                          /*byRegion=*/false,
-                          kBufferMemory_BarrierType,
-                          barrier);
-}
-
 void VulkanCommandBuffer::addBufferMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                                  VkPipelineStageFlags dstStageMask,
                                                  VkBufferMemoryBarrier* barrier) {
-    // We don't pass in a resource here to the command buffer. The command buffer only is using it
-    // to hold a ref, but every place where we add a buffer memory barrier we are doing some other
-    // command with the buffer on the command buffer. Thus those other commands will already cause
-    // the command buffer to be holding a ref to the buffer.
-    this->pipelineBarrier(/*resource=*/nullptr,
-                          srcStageMask,
+    this->pipelineBarrier(srcStageMask,
                           dstStageMask,
                           /*byRegion=*/false,
                           kBufferMemory_BarrierType,
                           barrier);
 }
 
-void VulkanCommandBuffer::addImageMemoryBarrier(const Resource* resource,
-                                                VkPipelineStageFlags srcStageMask,
+void VulkanCommandBuffer::addImageMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                                 VkPipelineStageFlags dstStageMask,
                                                 bool byRegion,
                                                 VkImageMemoryBarrier* barrier) {
-    SkASSERT(resource);
-    this->pipelineBarrier(resource,
-                          srcStageMask,
+    this->pipelineBarrier(srcStageMask,
                           dstStageMask,
                           byRegion,
                           kImageMemory_BarrierType,
                           barrier);
 }
 
-void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
-                                          VkPipelineStageFlags srcStageMask,
+void VulkanCommandBuffer::TrackedPipelineBarriers::addBarrier(VkPipelineStageFlags srcStageMask,
+                                                              VkPipelineStageFlags dstStageMask,
+                                                              bool byRegion,
+                                                              BarrierType barrierType,
+                                                              void* barrier) {
+
+    if (barrierType == kBufferMemory_BarrierType) {
+        const VkBufferMemoryBarrier* barrierPtr = static_cast<VkBufferMemoryBarrier*>(barrier);
+        fBufferBarriers.push_back(*barrierPtr);
+    } else {
+        SkASSERT(barrierType == kImageMemory_BarrierType);
+        fBarriersByRegion |= byRegion;
+        fSrcStageMask = fSrcStageMask | srcStageMask;
+        fDstStageMask = fDstStageMask | dstStageMask;
+        const VkImageMemoryBarrier* barrierPtr = static_cast<VkImageMemoryBarrier*>(barrier);
+        fImageBarriers.push_back(*barrierPtr);
+    }
+}
+
+bool VulkanCommandBuffer::TrackedPipelineBarriers::hasOverlappingImageBarrier(
+        const VkImageMemoryBarrier* barrierPtr) {
+
+    for (int i = 0; i < fImageBarriers.size(); ++i) {
+        VkImageMemoryBarrier& currentBarrier = fImageBarriers[i];
+        if (barrierPtr->image == currentBarrier.image) {
+            const VkImageSubresourceRange newRange = barrierPtr->subresourceRange;
+            const VkImageSubresourceRange oldRange = currentBarrier.subresourceRange;
+            SkASSERT(newRange.aspectMask == oldRange.aspectMask);
+            SkASSERT(newRange.baseArrayLayer == oldRange.baseArrayLayer);
+            SkASSERT(newRange.layerCount == oldRange.layerCount);
+            uint32_t newStart = newRange.baseMipLevel;
+            uint32_t newEnd = newRange.baseMipLevel + newRange.levelCount - 1;
+            uint32_t oldStart = oldRange.baseMipLevel;
+            uint32_t oldEnd = oldRange.baseMipLevel + oldRange.levelCount - 1;
+            if (std::max(newStart, oldStart) <= std::min(newEnd, oldEnd)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+void VulkanCommandBuffer::TrackedPipelineBarriers::submit() {
+
+}
+
+void VulkanCommandBuffer::pipelineBarrier(VkPipelineStageFlags srcStageMask,
                                           VkPipelineStageFlags dstStageMask,
                                           bool byRegion,
                                           PipelineBarrierType barrierType,
@@ -1801,6 +1826,7 @@ void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
     SkASSERT(!fActiveRenderPass || isValidSubpassBarrier);
 #endif
 
+#if 0
     if (barrierType == kBufferMemory_BarrierType) {
         const VkBufferMemoryBarrier* barrierPtr = static_cast<VkBufferMemoryBarrier*>(barrier);
         fBufferBarriers.push_back(*barrierPtr);
@@ -1836,7 +1862,22 @@ void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
     fBarriersByRegion |= byRegion;
     fSrcStageMask = fSrcStageMask | srcStageMask;
     fDstStageMask = fDstStageMask | dstStageMask;
+#else
+    if (barrierType == kImageMemory_BarrierType) {
+        const VkImageMemoryBarrier* barrierPtr = static_cast<VkImageMemoryBarrier*>(barrier);
+        // We need to check if we are adding a pipeline barrier that covers part of the same
+        // subresource range as a barrier that is already in current batch. If it does, then we must
+        // submit the first batch because the vulkan spec does not define a specific ordering for
+        // barriers submitted in the same batch.
+        // TODO: Look if we can gain anything by merging barriers together instead of submitting
+        // the old ones.
+        for ()
+    }
 
+
+    fTrackendPipelineBarriers[stageIndex].addBarrier(
+            srcStageMask, dstStageMask, byRegion, barrierType, barrier);
+#endif
     if (fActiveRenderPass) {
         this->submitPipelineBarriers(true);
     }

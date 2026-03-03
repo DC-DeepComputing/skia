@@ -125,6 +125,39 @@ void SetMutableState(BackendTexture*, const skgpu::MutableTextureState&);
 sk_sp<skgpu::MutableTextureState> GetMutableState(const BackendTexture&);
 }  // namespace BackendTextures
 
-} // namespace skgpu::graphite
+// This defines an enum for VkPipelineStageFlagBits so that we can use it to compare and index into
+// an array of separated memory barriers (see pipeline barriers in VulkanCommandBuffer).
+enum class PipelineStage : uint32_t
+{
+    // Bellow are ordered based on Graphics Pipeline Stages
+    kTopOfPipe              = 0,
+    kDrawIndirect           = 1,
+    kVertexInput            = 2,
+    kVertexShader           = 3,
+    kTessellationControl    = 4,
+    kTessellationEvaluation = 5,
+    kGeometryShader         = 6,
+    kTransformFeedback      = 7,
+    kFragmentShadingRate    = 8,
+    kEarlyFragmentTest      = 9,
+    kFragmentShader         = 10,
+    kLateFragmentTest       = 11,
+    kColorAttachmentOutput  = 12,
+
+    // Compute specific pipeline Stage
+    kComputeShader = 13,
+
+    // Transfer specific pipeline Stage
+    kTransfer     = 14,
+    kBottomOfPipe = 15,
+
+    // Host specific pipeline stage
+    kHost = 16,
+
+    kLast = kHost,
+};
+static const int kPipelineStageCount = static_cast<int>(PipelineStage::kLast) + 1;
+
+}  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED
