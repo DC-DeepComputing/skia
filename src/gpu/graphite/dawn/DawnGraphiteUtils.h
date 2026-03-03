@@ -11,6 +11,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextureCompressionType.h"
+#include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
 #include "src/gpu/SkSLToBackend.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -58,6 +59,12 @@ namespace skgpu::graphite {
 
 class DawnSharedContext;
 enum class TextureFormat : uint8_t;
+
+std::unique_ptr<Context> MakeMetalDawn(const DawnBackendContext& backendContext,
+                                       const ContextOptions& options);
+
+std::unique_ptr<Context> MakeVulkanDawn(const DawnBackendContext& backendContext,
+                                        const ContextOptions& options);
 
 bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
                                  const char* label,

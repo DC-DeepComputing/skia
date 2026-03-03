@@ -186,7 +186,10 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                           VkImage image,
                                           const VulkanAlloc& alloc,
                                           sk_sp<VulkanYcbcrConversion> ycbcrConversion,
-                                          std::string_view label) {
+                                          std::string_view label,
+                                          bool saveOriginalLayout) {
+    VkImageLayout layout = skgpu::MutableTextureStates::GetVkImageLayout(mutableState.get());
+    SkDebugf("original wrapped layout: %d\n", layout);
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
                                             info,
@@ -195,7 +198,9 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                             alloc,
                                             Ownership::kWrapped,
                                             std::move(ycbcrConversion),
-                                            label));
+                                            label,
+                                            saveOriginalLayout ? layout
+                                                               : VK_IMAGE_LAYOUT_UNDEFINED));
 }
 
 VulkanTexture::~VulkanTexture() {}
@@ -323,7 +328,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                              const VulkanAlloc& alloc,
                              Ownership ownership,
                              sk_sp<VulkanYcbcrConversion> ycbcrConversion,
-                             std::string_view label)
+                             std::string_view label,
+                             VkImageLayout originalWrappedLayout)
         : Texture(sharedContext,
                   dimensions,
                   info,
@@ -333,7 +339,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                   label)
         , fImage(image)
         , fMemoryAlloc(alloc)
-        , fYcbcrConversion(std::move(ycbcrConversion)) {
+        , fYcbcrConversion(std::move(ycbcrConversion))
+        , fOriginalWrappedLayout(originalWrappedLayout) {
     SkASSERT(!uses_lazy_memory(fMemoryAlloc) || has_transient_usage(info));
     // Update the newly-created underlying GPU object's label to match the Resource's
     this->synchronizeBackendLabel();

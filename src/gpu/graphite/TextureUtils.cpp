@@ -145,7 +145,14 @@ public:
         sk_sp<RefCntedCallback> textureReleaseCB = RefCntedCallback::Make(fTextureReleaseProc,
                                                                           textureReleaseCtx);
 
-        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
+        const BackendTexture* backendTexPtr = &backendTexture;
+        std::optional<BackendTexture> optBETex =
+            resourceProvider->sharedContext()->convertBackendTextureIfNeeded(backendTexture);
+        if (optBETex) {
+            backendTexPtr = &optBETex.value();
+        }
+
+        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(*backendTexPtr,
                                                                         std::move(fLabel));
         if (!texture) {
             SKGPU_LOG_W("Failed to wrap BackendTexture returned by fulfill proc");

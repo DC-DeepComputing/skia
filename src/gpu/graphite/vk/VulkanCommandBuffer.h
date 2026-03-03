@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
@@ -50,6 +51,8 @@ public:
                                VkPipelineStageFlags dstStageMask,
                                bool byRegion,
                                VkImageMemoryBarrier* barrier);
+
+    void addResetTexture(VulkanTexture*);
 
 private:
     VulkanCommandBuffer(VkCommandPool pool,
@@ -231,6 +234,8 @@ private:
     size_t fBoundIndirectBufferOffset = 0;
 
     std::array<float, 4> fCachedBlendConstant;
+
+    skia_private::THashSet<VulkanTexture*> fTexturesToResetLayout;
 };
 
 } // namespace skgpu::graphite

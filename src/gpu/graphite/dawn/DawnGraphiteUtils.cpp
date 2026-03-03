@@ -20,6 +20,18 @@ namespace skgpu::graphite {
 namespace ContextFactory {
 std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
                                   const ContextOptions& options) {
+#if !defined(__EMSCRIPTEN__)
+    wgpu::AdapterInfo info;
+    backendContext.fDevice.GetAdapter().GetInfo(&info);
+    if (info.backendType == wgpu::BackendType::Metal) {
+       // return MakeMetalDawn(backendContext, options);
+    }
+    if (info.backendType == wgpu::BackendType::Vulkan) {
+        return MakeVulkanDawn(backendContext, options);
+    }
+#endif // defined(__EMSCRIPTEN__)
+
+
     sk_sp<SharedContext> sharedContext = DawnSharedContext::Make(backendContext, options);
     if (!sharedContext) {
         return nullptr;

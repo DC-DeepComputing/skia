@@ -31,7 +31,7 @@ public:
     MtlThreadSafeResourceProvider(std::unique_ptr<ResourceProvider>);
 };
 
-class MtlSharedContext final : public SharedContext {
+class MtlSharedContext : public SharedContext {
 public:
     static sk_sp<SharedContext> Make(const MtlBackendContext&, const ContextOptions&);
     ~MtlSharedContext() override;
@@ -51,15 +51,14 @@ public:
     sk_cfp<id<MTLDepthStencilState>> getCompatibleDepthStencilState(
         const DepthStencilSettings&) const;
 
-
-private:
-
+protected:
     MtlSharedContext(sk_cfp<id<MTLDevice>>,
                      sk_sp<skgpu::MtlMemoryAllocator>,
                      std::unique_ptr<const MtlCaps>,
                      SkExecutor*,
                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
+private:
     void createCompatibleDepthStencilState(const DepthStencilSettings&);
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(

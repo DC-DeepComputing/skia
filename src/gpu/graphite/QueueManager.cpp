@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecordingPriv.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/task/Task.h"
@@ -74,6 +75,7 @@ bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider, Protec
         }
     }
     if (!fCurrentCommandBuffer) {
+        resourceProvider->checkBackends();
         fCurrentCommandBuffer = this->getNewCommandBuffer(resourceProvider, isProtected);
     }
     if (!fCurrentCommandBuffer) {
@@ -136,6 +138,7 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
     SIMULATE_FAIL(InsertStatus::kInvalidRecording);
 
     auto resourceProvider = context->priv().resourceProvider();
+    resourceProvider->checkBackends();
     // Technically no commands have been added yet, but if this fails, things are in a bad state
     // so signal the unrecoverable status.
     RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, fSharedContext->isProtected()),

@@ -35,7 +35,7 @@ public:
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
 };
 
-class VulkanSharedContext final : public SharedContext {
+class VulkanSharedContext : public SharedContext {
 public:
     static sk_sp<SharedContext> Make(const VulkanBackendContext&, const ContextOptions&);
     ~VulkanSharedContext() override;
@@ -68,7 +68,17 @@ public:
     void pipelineCompileWasRequired() { fHasNewVkPipelineCacheData = true; }
     void syncPipelineData(PersistentPipelineStorage*, size_t maxSize) override;
 
-private:
+    enum class QueueSubmitResult {
+        kSuccess,
+        kError,
+        kNotSupported,
+    };
+
+    virtual QueueSubmitResult backendQueueSubmit(VkSubmitInfo*, VkFence*) const {
+        return QueueSubmitResult::kNotSupported;
+    }
+
+protected:
     VulkanSharedContext(const VulkanBackendContext&,
                         sk_sp<const skgpu::VulkanInterface>,
                         sk_sp<skgpu::VulkanMemoryAllocator>,
@@ -77,6 +87,7 @@ private:
                         PersistentPipelineStorage*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
+private:
     VkPipelineCache createPipelineCache(VkPhysicalDevice, PersistentPipelineStorage*);
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,

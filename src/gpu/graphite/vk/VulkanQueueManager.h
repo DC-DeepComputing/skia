@@ -16,16 +16,18 @@ namespace skgpu::graphite {
 
 class VulkanSharedContext;
 
-class VulkanQueueManager final : public QueueManager {
+class VulkanQueueManager : public QueueManager {
 public:
     VulkanQueueManager(VkQueue queue, const SharedContext*);
     ~VulkanQueueManager() override {}
+
+protected:
+    OutstandingSubmission onSubmitToGpu(const SubmitInfo& submitInfo) override;
 
 private:
     const VulkanSharedContext* vkSharedContext() const;
 
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) override;
-    OutstandingSubmission onSubmitToGpu(const SubmitInfo& submitInfo) override;
 
 #if defined(GPU_TEST_UTILS)
     // TODO: Implement these
