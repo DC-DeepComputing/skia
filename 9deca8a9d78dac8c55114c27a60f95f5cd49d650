@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd3ddc92_1bf4b12c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "Thanks for putting this together!",
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d95c870e_efe063c8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "nit: Should also be a TArray",
+      "range": {
+        "startLine": 227,
+        "startChar": 13,
+        "endLine": 227,
+        "endChar": 19
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7e013c_ae2da1f8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "Following https://docs.vulkan.org/samples/latest/samples/api/timestamp_queries/README.html, we should also check that `fTimestampPeriod` is not 0 before enabling this stat.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 79
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ccdda0_e386a072",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "nit: Can you remove the unused SkTDArray.h header, and replace with \"include/private/base/SkTArray.h\"? This is our preferred type instead of `\u003cvector\u003e`",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8df3dc6e_ab9bae04",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "This would be `skia_private::TArray\u003cuint32_t\u003e`",
+      "range": {
+        "startLine": 297,
+        "startChar": 4,
+        "endLine": 297,
+        "endChar": 25
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb9d0f2_f84b7cc8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "Just a note for posterity, the current state of the GpuStats API only really works if a client submits GPU work after a single `insertRecording()` call. \n\nThe Dawn implementation of start/end timer queries already may just time the entire command buffer, and not a specific chunk of Recording work. This implementation for Vulkan resets the query pool each time we start the timer query, so if there were multiple Recordings inserted, then we\u0027d only be reporting the times of the last block of render passes.\n\nI think this is fine for now, but the API should be updated to either enforce that it\u0027s command buffer-level timing, or to have `endTimerQuery()` return some object that can compute the timing for just its query range and report those GpuStats to the specific callbacks (vs. one GpuStats shared by all callbacks).",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 85
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdc073d9_cac37cd7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:35:37Z",
+      "side": 1,
+      "message": "From https://docs.vulkan.org/samples/latest/samples/api/timestamp_queries/README.html, it sounds like a given queue may not support timestamps (if validBits comes back as 0), so we should maybe check that before we record the start timer query commands.",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
