@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e4f7a1b_b4bc0534",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T17:00:08Z",
+      "side": 1,
+      "message": "There is still an open question about how to resolve the chrome canary RGBX test failure (stemming from now detecting that there isn\u0027t a valid write swizzle for RGBX in webgpu and returning a null DrawContext).\n\nWe could either relax the unit test in chrome, or we could relax the change in DrawContext to instead do a `SkDEBUGFAIL(writeSwizzle.has_value())` and fallback to RGBA in release builds (preserving prior behavior). Given that the intended use cases for rendering into an RGBx surface are usually render as RGBA and then ignore the alpha channel with content that won\u0027t really be impacted by alpha blending, maybe this is the best short term solution.",
+      "revId": "bf83e31346bea66e8347532e0d93aa9b33edd096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff7da888_73741ba7",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T17:00:08Z",
+      "side": 1,
+      "message": "This special case is just for backwards compatibility until transfers are updated, and then the read/write swizzle code will be much based solely on channel mask comparisons.",
+      "range": {
+        "startLine": 385,
+        "startChar": 0,
+        "endLine": 390,
+        "endChar": 5
+      },
+      "revId": "bf83e31346bea66e8347532e0d93aa9b33edd096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
