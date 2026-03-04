@@ -22,6 +22,30 @@
       },
       "revId": "76e2f3e4000f02f066dceee76828ee9156317148",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6153a9_0fe9eadd",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-04T15:54:55Z",
+      "side": 1,
+      "message": "Done. I have moved both null fCurrentCommandBuffer check and hasWork check to hasPendingGPUWork",
+      "parentUuid": "7a58710e_03e03619",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 89
+      },
+      "revId": "76e2f3e4000f02f066dceee76828ee9156317148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
