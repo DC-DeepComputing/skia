@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkPixelData.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Caps.h"
@@ -22,7 +23,8 @@ TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
                            std::string_view label,
                            skgpu::Budgeted budgeted)
-        : fDimensions(dimensions)
+        : SkPixelData()
+        , fDimensions(dimensions)
         , fInfo(info)
         , fLabel(label)
         , fBudgeted(budgeted)
@@ -31,7 +33,8 @@ TextureProxy::TextureProxy(SkISize dimensions,
 }
 
 TextureProxy::TextureProxy(sk_sp<Texture> texture)
-        : fDimensions(texture->dimensions())
+        : SkPixelData()
+        , fDimensions(texture->dimensions())
         , fInfo(texture->textureInfo())
         , fLabel(texture->getLabel())
         , fBudgeted(texture->budgeted())
@@ -45,7 +48,8 @@ TextureProxy::TextureProxy(SkISize dimensions,
                            skgpu::Budgeted budgeted,
                            Volatile isVolatile,
                            LazyInstantiateCallback&& callback)
-        : fDimensions(dimensions)
+        : SkPixelData()
+        , fDimensions(dimensions)
         , fInfo(textureInfo)
         , fBudgeted(budgeted)
         , fVolatile(isVolatile)
@@ -55,6 +59,10 @@ TextureProxy::TextureProxy(SkISize dimensions,
 }
 
 TextureProxy::~TextureProxy() {}
+
+SkPixelData::Type TextureProxy::type() const {
+    return SkPixelData::Type::kTextureProxy;
+}
 
 SkISize TextureProxy::dimensions() const {
     SkASSERT(!this->isFullyLazy() || this->isInstantiated());
