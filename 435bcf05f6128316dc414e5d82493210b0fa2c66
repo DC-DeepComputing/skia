@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c30d11c_cd702abc",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-04T16:43:08Z",
+      "side": 1,
+      "message": "Can we remove these SK_DEBUG guards here and around the `hasWork()` function so that `hasPendingGpuWork()` is just `return fCurrentCommandBuffer \u0026\u0026 fCurrentCommandBuffer-\u003ehasWork()`?  The `SkDEBUGCODE(fHasWork \u003d true;)` statements in CommandBuffer will just need to change to regular `fHasWork \u003d true;`.",
+      "range": {
+        "startLine": 310,
+        "startChar": 0,
+        "endLine": 314,
+        "endChar": 6
+      },
+      "revId": "435bcf05f6128316dc414e5d82493210b0fa2c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
