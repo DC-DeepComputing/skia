@@ -124,7 +124,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
                 DestroyCommandPool(fSharedContext->device(), fPool, nullptr));
 }
 
-bool VulkanCommandBuffer::startTimerQuery() {
+bool VulkanCommandBuffer::startStatsQuery(GpuStatsFlags) {
     if (fTimestampQueryPool == VK_NULL_HANDLE) {
         VkQueryPoolCreateInfo info = {};
         info.sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
@@ -153,7 +153,7 @@ bool VulkanCommandBuffer::startTimerQuery() {
     return true;
 }
 
-void VulkanCommandBuffer::endTimerQuery() {
+void VulkanCommandBuffer::endStatsQuery(GpuStatsFlags) {
     VULKAN_CALL(fSharedContext->interface(),
                 CmdWriteTimestamp(fPrimaryCommandBuffer,
                                   VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
