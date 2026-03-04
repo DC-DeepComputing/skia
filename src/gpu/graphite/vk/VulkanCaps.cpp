@@ -31,6 +31,8 @@
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include <vector>
+
 #ifdef SK_BUILD_FOR_ANDROID
 #include <sys/system_properties.h>
 #endif
@@ -216,6 +218,25 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
                 : BlendEquationSupport::kAdvancedNoncoherent;
         fShaderCaps->fAdvBlendEqInteraction =
                 SkSL::ShaderCaps::AdvBlendEqInteraction::kAutomatic_AdvBlendEqInteraction;
+    }
+
+    uint32_t queueFamilyCount = 0;
+    VULKAN_CALL(vkInterface,
+                GetPhysicalDeviceQueueFamilyProperties(physDev, &queueFamilyCount, nullptr));
+    if (queueFamilyCount > 0) {
+        std::vector<VkQueueFamilyProperties> queueProps(queueFamilyCount);
+        VULKAN_CALL(vkInterface,
+                    GetPhysicalDeviceQueueFamilyProperties(
+                            physDev, &queueFamilyCount, queueProps.data()));
+        fQueueFamilyTimestampValidBits.reserve(queueFamilyCount);
+        for (uint32_t i = 0; i < queueFamilyCount; ++i) {
+            fQueueFamilyTimestampValidBits.push_back(queueProps[i].timestampValidBits);
+        }
+    }
+    fTimestampPeriod = deviceProperties.fBase.properties.limits.timestampPeriod;
+
+    if (deviceProperties.fBase.properties.limits.timestampComputeAndGraphics) {
+        fSupportedGpuStats |= GpuStatsFlags::kElapsedTime;
     }
 
     // Note: ARM GPUs have always been coherent, do not add a subpass self-dependency even if the

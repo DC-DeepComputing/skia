@@ -13,6 +13,8 @@
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
+#include <vector>
+
 namespace skgpu::graphite {
 struct ContextOptions;
 class VulkanTextureInfo;
@@ -94,6 +96,12 @@ public:
     bool supportsPipelineCreationCacheControl() const {
         return fSupportsPipelineCreationCacheControl;
     }
+
+    uint32_t timestampValidBits(uint32_t queueIndex) const {
+        return fQueueFamilyTimestampValidBits[queueIndex];
+    }
+
+    float timestampPeriod() const { return fTimestampPeriod; }
 
 private:
     void init(const ContextOptions&,
@@ -285,6 +293,9 @@ private:
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;
+
+    std::vector<uint32_t> fQueueFamilyTimestampValidBits;
+    float fTimestampPeriod = 1.0f;
 };
 
 } // namespace skgpu::graphite
