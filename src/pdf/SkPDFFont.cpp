@@ -762,12 +762,12 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
         SkDrawable* drawable = drawableGlyph->drawable();
         SkDynamicMemoryWStream content;
         if (drawable && !drawable->getBounds().isEmpty()) {
-            sk_sp<SkPDFDevice> glyphDevice = sk_make_sp<SkPDFDevice>(glyphBBox.size(), doc);
+            sk_sp<SkPDFDevice> glyphDevice = sk_make_sp<SkPDFDevice>(glyphBBox.size(), doc, SkPDFIndirectReference());
             SkCanvas canvas(glyphDevice);
             canvas.translate(-glyphBBox.fLeft, -glyphBBox.fTop);
             canvas.drawDrawable(drawable);
             SkPDFIndirectReference xobject = SkPDFMakeFormXObject(
-                    doc, glyphDevice->content(),
+                    doc, glyphDevice->content(), SkPDFIndirectReference(), SkPDFParentTreeKey(),
                     SkPDFMakeArray(0, 0, glyphBBox.width(), glyphBBox.height()),
                     glyphDevice->makeResourceDict(),
                     SkMatrix::Translate(glyphBBox.fLeft, glyphBBox.fTop), nullptr);
@@ -849,11 +849,11 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
 
                 // Draw image into a Form XObject
                 const SkISize imageSize = pimg.fImage->dimensions();
-                sk_sp<SkPDFDevice> glyphDevice = sk_sp(new SkPDFDevice(imageSize, doc));
+                sk_sp<SkPDFDevice> glyphDevice = sk_sp(new SkPDFDevice(imageSize, doc, SkPDFIndirectReference()));
                 SkCanvas canvas(glyphDevice);
                 canvas.drawImage(pimg.fImage, 0, 0);
                 SkPDFIndirectReference sMask = SkPDFMakeFormXObject(
-                        doc, glyphDevice->content(),
+                        doc, glyphDevice->content(), SkPDFIndirectReference(), SkPDFParentTreeKey(),
                         SkPDFMakeArray(0, 0, pimg.fImage->width(), pimg.fImage->height()),
                         glyphDevice->makeResourceDict(),
                         SkMatrix(), "DeviceGray");

@@ -112,7 +112,7 @@ static SkPDFIndirectReference make_image_shader(SkPDFDocument* doc,
 
     SkISize patternDeviceSize = {SkScalarCeilToInt(deviceBounds.width()),
                                  SkScalarCeilToInt(deviceBounds.height())};
-    auto patternDevice = sk_make_sp<SkPDFDevice>(patternDeviceSize, doc);
+    auto patternDevice = sk_make_sp<SkPDFDevice>(patternDeviceSize, doc, SkPDFIndirectReference());
     SkCanvas canvas(patternDevice);
 
     SkRect patternBBox = SkRect::MakeSize(SkSize::Make(image->dimensions()));

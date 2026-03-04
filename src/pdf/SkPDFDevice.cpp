@@ -97,13 +97,15 @@ class SkVertices;
 using namespace skia_private;
 
 SkPDFDevice::MarkedContentManager::MarkedContentManager(SkPDFDocument* document,
+                                                        SkPDFIndirectReference stream,
                                                         SkDynamicMemoryWStream* out)
     : fDoc(document)
     , fOut(out)
     , fCurrentlyActiveMark()
     , fNextMarksElemId(0)
     , fCurrentMarksElemId(0)
-    , fMadeMarks(false)
+    , fContentStreamRef(stream)
+    , fStructParentsKey()
 {}
 
 SkPDFDevice::MarkedContentManager::~MarkedContentManager() {
@@ -127,7 +129,8 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         fCurrentMarksElemId = 0;
     }
     if (fNextMarksElemId) {
-        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId, fContentStreamRef,
+                                                         fStructParentsKey);
         if (fCurrentlyActiveMark) {
             // Begin this mark
             SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
@@ -135,7 +138,6 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
             fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
             fOut->writeText(" >>BDC\n");
             fCurrentMarksElemId = fCurrentlyActiveMark.elemId();
-            fMadeMarks = true;
         } else if (SkPDF::NodeID::BackgroundArtifact <= fNextMarksElemId &&
                    fNextMarksElemId <= SkPDF::NodeID::OtherArtifact &&
                    fDoc->hasCurrentPage())
@@ -312,7 +314,9 @@ sk_sp<SkDevice> SkPDFDevice::createDevice(const CreateInfo& cinfo, const SkPaint
         return SkBitmapDevice::Create(cinfo.fInfo,
                                       SkSurfaceProps());
     }
-    return sk_make_sp<SkPDFDevice>(cinfo.fInfo.dimensions(), fDocument);
+    // This reference must eventually be emitted!
+    SkPDFIndirectReference xobjectContentStreamRef = fDocument->reserveRef();
+    return sk_make_sp<SkPDFDevice>(cinfo.fInfo.dimensions(), fDocument, xobjectContentStreamRef);
 }
 
 // A helper class to automatically finish a ContentEntry at the end of a
@@ -397,14 +401,19 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-SkPDFDevice::SkPDFDevice(SkISize pageSize, SkPDFDocument* doc, const SkMatrix& transform)
+SkPDFDevice::SkPDFDevice(SkISize pageSize, SkPDFDocument* doc,
+                         SkPDFIndirectReference contentStreamRef, const SkMatrix& transform)
         : SkClipStackDevice(SkImageInfo::MakeUnknown(pageSize.width(), pageSize.height()),
                             SkSurfaceProps(SkSurfaceProps::kPreservesTransparentDraws_Flag,
                                            kUnknown_SkPixelGeometry))
         , fInitialTransform(transform)
-        , fMarkManager(doc, &fContent)
+        , fMarkManager(doc, contentStreamRef, &fContent)
         , fDocument(doc) {
     SkASSERT(!pageSize.isEmpty());
+}
+
+sk_sp<SkPDFDevice> SkPDFDevice::makeCongruentDevice() {
+    return sk_make_sp<SkPDFDevice>(this->size(), fDocument, SkPDFIndirectReference());
 }
 
 SkPDFDevice::~SkPDFDevice() = default;
@@ -1271,6 +1280,8 @@ SkPDFIndirectReference SkPDFDevice::makeFormXObjectFromDevice(SkIRect bounds, bo
 
     SkPDFIndirectReference xobject =
         SkPDFMakeFormXObject(fDocument, this->content(),
+                             fMarkManager.contentStreamRef(),
+                             fMarkManager.structParentsKey(),
                              SkPDFMakeArray(bounds.left(), bounds.top(),
                                             bounds.right(), bounds.bottom()),
                              this->makeResourceDict(), inverseTransform, colorSpace);
@@ -1527,7 +1538,7 @@ void SkPDFDevice::finishContentEntry(const SkClipStack* clipStack,
             filledPaint.setColor(SK_ColorBLACK);
             filledPaint.setStyle(SkPaint::kFill_Style);
             SkClipStack empty;
-            SkPDFDevice shapeDev(this->size(), fDocument, fInitialTransform);
+            SkPDFDevice shapeDev(this->size(), fDocument, SkPDFIndirectReference(), fInitialTransform);
             shapeDev.internalDrawPath(clipStack ? *clipStack : empty,
                                       SkMatrix::I(), *shape, filledPaint, true);
             this->drawFormXObjectWithMask(dst, shapeDev.makeFormXObjectFromDevice(),
@@ -1901,9 +1912,10 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
         return;
     }
     // This XObject may contain its own marks, which are hidden if emitted inside an outer mark.
-    // If it does have its own marks we need to pause the current mark and then re-set it after.
+    // If it does have its own marks any current mark is paused and then re-set after.
+    // If it does not have its own marks it will be part of the content of the current mark.
     int currentStructElemId = fMarkManager.elemId();
-    if (pdfDevice->fMarkManager.madeMarks()) {
+    if (pdfDevice->fMarkManager.structParentsKey()) {
         fMarkManager.setNextMarksElemId(0);
         fMarkManager.beginMark();
     }

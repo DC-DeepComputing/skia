@@ -69,14 +69,13 @@ public:
      *         de-duplicating across pages (via the SkPDFDocument) and
      *         for early serializing of large immutable objects, such
      *         as images (via SkPDFDocument::serialize()).
+     *  @param contentStreamRef Reference to the stream object this content will end up in.
+     *         Must be an invalid reference for Page content.
+     *         Used to specify where structure element marks are found.
      *  @param initialTransform Transform to be applied to the entire page.
      */
-    SkPDFDevice(SkISize pageSize, SkPDFDocument* document,
+    SkPDFDevice(SkISize pageSize, SkPDFDocument* document, SkPDFIndirectReference contentStreamRef,
                 const SkMatrix& initialTransform = SkMatrix::I());
-
-    sk_sp<SkPDFDevice> makeCongruentDevice() {
-        return sk_make_sp<SkPDFDevice>(this->size(), fDocument);
-    }
 
     ~SkPDFDevice() override;
 
@@ -124,6 +123,8 @@ public:
 
     const SkMatrix& initialTransform() const { return fInitialTransform; }
 
+    SkPDFParentTreeKey structParentsKey() const { return fMarkManager.structParentsKey(); }
+
     SkRecorder* baseRecorder() const override {
         // TODO(kjlubick) the creation of this should likely involve a CPU context.
         return skcpu::Recorder::TODO();
@@ -143,7 +144,9 @@ private:
 
     class MarkedContentManager {
     public:
-        MarkedContentManager(SkPDFDocument* document, SkDynamicMemoryWStream* out);
+        MarkedContentManager(SkPDFDocument* document,
+                             SkPDFIndirectReference fContentStreamRef,
+                             SkDynamicMemoryWStream* out);
         ~MarkedContentManager();
 
         // Sets the current element identifier. Associate future draws with the structure element
@@ -168,8 +171,11 @@ private:
         // and so is y-up. Only use if this.hasActiveMark()
         void accumulate(const SkPoint& p);
 
-        // Tests if this marked content manager made any marks.
-        bool madeMarks() const { return fMadeMarks; }
+        // Returns an indirect reference to the content stream.
+        SkPDFIndirectReference contentStreamRef() const { return fContentStreamRef; }
+
+        // Returns the key (index) into the ParentsTree. Will be true if marks were made.
+        SkPDFParentTreeKey structParentsKey() const { return fStructParentsKey; }
 
     private:
         SkPDFDocument* fDoc;
@@ -177,7 +183,8 @@ private:
         SkPDFStructTree::Mark fCurrentlyActiveMark;
         int fNextMarksElemId;
         int fCurrentMarksElemId;
-        bool fMadeMarks;
+        SkPDFIndirectReference fContentStreamRef;
+        SkPDFParentTreeKey fStructParentsKey;
     } fMarkManager;
 
     SkDynamicMemoryWStream fContent;
@@ -241,6 +248,9 @@ private:
     void drawFormXObject(SkPDFIndirectReference xObject, SkDynamicMemoryWStream*, SkPath* shape);
 
     bool hasEmptyClip() const { return this->cs().isEmpty(this->bounds()); }
+
+    // Create internal temporary for FormXObjects which will not contain marked content.
+    sk_sp<SkPDFDevice> makeCongruentDevice();
 
     void reset();
 };

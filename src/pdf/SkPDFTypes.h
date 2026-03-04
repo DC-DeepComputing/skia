@@ -48,6 +48,19 @@ struct SkPDFIndirectReference {
     }
 };
 
+struct SkPDFParentTreeKey {
+    int fValue = -1;
+    explicit operator bool() const { return fValue >= 0; }
+
+    bool operator==(SkPDFIndirectReference v) const {
+        return fValue == v.fValue;
+    }
+
+    bool operator!=(SkPDFIndirectReference v) const {
+        return fValue != v.fValue;
+    }
+};
+
 /** \class SkPDFObject
 
     A PDF Object is the base class for primitive elements in a PDF file.  A
@@ -224,5 +237,6 @@ SkPDFIndirectReference SkPDFStreamOut(
     std::unique_ptr<SkPDFDict> dict,
     std::unique_ptr<SkStreamAsset> stream,
     SkPDFDocument* doc,
-    SkPDFSteamCompressionEnabled compress = SkPDFSteamCompressionEnabled::Yes);
+    SkPDFSteamCompressionEnabled compress = SkPDFSteamCompressionEnabled::Yes,
+    SkPDFIndirectReference = SkPDFIndirectReference());
 #endif

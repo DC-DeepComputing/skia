@@ -299,7 +299,7 @@ SkCanvas* SkPDFDocument::onBeginPage(SkScalar width, SkScalar height) {
     // bottom left. This matrix corrects for that, as well as the raster scale.
     initialTransform.setScaleTranslate(fInverseRasterScale, -fInverseRasterScale,
                                        0, fInverseRasterScale * pageSize.height());
-    fPageDevice = sk_make_sp<SkPDFDevice>(pageSize, this, initialTransform);
+    fPageDevice = sk_make_sp<SkPDFDevice>(pageSize, this, SkPDFIndirectReference(), initialTransform);
     reset_object(&fCanvas, fPageDevice);
     fCanvas.scale(fRasterScale, fRasterScale);
     fPageRefs.push_back(this->reserveRef());
@@ -359,9 +359,10 @@ std::unique_ptr<SkPDFArray> SkPDFDocument::getAnnotations() {
 
         SkPDFIndirectReference annotationRef = this->reserveRef();
         if (link->fElemId) {
-            int structParentKey = this->createStructParentKeyForElemId(link->fElemId, annotationRef);
-            if (structParentKey != -1) {
-                annotation.insertInt("StructParent", structParentKey);
+            SkPDFParentTreeKey structParentKey =
+                    this->createStructParentKeyForElemId(link->fElemId, annotationRef);
+            if (structParentKey) {
+                annotation.insertInt("StructParent", structParentKey.fValue);
             }
         }
 
@@ -392,9 +393,9 @@ void SkPDFDocument::onEndPage() {
     }
 
     page->insertRef("Contents", SkPDFStreamOut(nullptr, std::move(pageContent), this));
-    // The StructParents unique identifier for each page is just its
-    // 0-based page index.
-    page->insertInt("StructParents", SkToInt(this->currentPageIndex()));
+    if (fPageDevice->structParentsKey()) {
+        page->insertInt("StructParents", fPageDevice->structParentsKey().fValue);
+    }
 
     // Tabs is PDF 1.5, but setting it checks an accessibility box.
     page->insertName("Tabs", "S");
@@ -556,26 +557,33 @@ const SkMatrix& SkPDFDocument::currentPageTransform() const {
     return fPageDevice->initialTransform();
 }
 
-SkPDFStructTree::Mark SkPDFDocument::createMarkForElemId(int elemId) {
+SkPDFStructTree::Mark SkPDFDocument::createMarkForElemId(int elemId,
+                                                         SkPDFIndirectReference contentStreamRef,
+                                                         SkPDFParentTreeKey& structParentsKey)
+{
     // If the mark isn't on a page (like when emitting a Type3 glyph)
     // return a temporary mark not attached to the page or a structure element.
     if (!this->hasCurrentPage()) {
         return SkPDFStructTree::Mark();
     }
-    return fStructTree.createMarkForElemId(elemId, SkToUInt(this->currentPageIndex()));
+    return fStructTree.createMarkForElemId(elemId, SkToUInt(this->currentPageIndex()),
+                                           contentStreamRef, structParentsKey);
 }
 
 void SkPDFDocument::addStructElemTitle(int elemId, SkSpan<const char> title) {
     fStructTree.addStructElemTitle(elemId, std::move(title));
 }
 
-int SkPDFDocument::createStructParentKeyForElemId(int elemId, SkPDFIndirectReference contentItem) {
+SkPDFParentTreeKey SkPDFDocument::createStructParentKeyForElemId(
+        int elemId,
+        SkPDFIndirectReference contentItemRef)
+{
     // Structure elements are tied to pages, so don't emit one if not on a page.
     if (!this->hasCurrentPage()) {
-        return -1;
+        return SkPDFParentTreeKey();
     }
-    return fStructTree.createStructParentKeyForElemId(elemId, contentItem,
-                                                      SkToUInt(this->currentPageIndex()));
+    return fStructTree.createStructParentKeyForElemId(elemId, SkToUInt(this->currentPageIndex()),
+                                                      contentItemRef);
 }
 
 static std::vector<const SkPDFFont*> get_fonts(const SkPDFDocument& canon) {
