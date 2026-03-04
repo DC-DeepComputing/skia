@@ -16,6 +16,57 @@
       "message": "Hi Ben, could you help shepherd this patch from Helmut?",
       "revId": "1b9d59ea70862f36217d49246ae4b36c12b074ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1800b45f_9c210fe1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-04T22:01:48Z",
+      "side": 1,
+      "message": "This does point out the current deficiency in Skia of not properly emitting structure element child references to marked content ids not in a page stream. It turns out it is also less code to fix the hack around page indexing and treat all streams the same, so I\u0027ve done that with https://skia-review.googlesource.com/c/skia/+/1180256.",
+      "revId": "1b9d59ea70862f36217d49246ae4b36c12b074ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8a5ed74_01e590d1",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-04T22:01:48Z",
+      "side": 1,
+      "message": "Currently the assumption is that all marks are on Page streams. It appears the purpose of this change is to also properly export marks on FormXObject streams. However, this means that the mark needs to remember where it came from (currently this is by recording the page number) and emit something like\n```\n\u003c\u003c/Type /MCR\n/Pg 2 0 R %optional, overrides outer /Pg\n/Stm 4 0 R %Stream containing marked-content sequence (eg, FormXObject)\n/MCID 0 %Marked-content identifier (in the Stm)\n\u003e\u003e\n```\nin order to point the structure element at the right child marks. See ISO 32000-2:2020﻿ 14.7.5.2 Marked-content sequences as content items Example 5.",
+      "revId": "1b9d59ea70862f36217d49246ae4b36c12b074ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07c31bd_bcc45527",
+        "filename": "src/pdf/SkPDFTag.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-04T22:01:48Z",
+      "side": 1,
+      "message": "Really need to fix this \"reserve\" hack.",
+      "revId": "1b9d59ea70862f36217d49246ae4b36c12b074ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
