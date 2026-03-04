@@ -50,7 +50,7 @@ public:
     virtual ~CommandBuffer();
 
 #ifdef SK_DEBUG
-    bool hasWork() { return fHasWork; }
+    bool hasWork() const { return fHasWork; }
 #endif
 
     // Takes a CommandBuffer ref on the Resource that will be released when the command buffer has
