@@ -97,6 +97,8 @@ public:
         return fSupportsPipelineCreationCacheControl;
     }
 
+    bool occlusionQueryPrecise() const { return fOcclusionQueryPrecise; }
+
     uint32_t timestampValidBits(uint32_t queueIndex) const {
         return fQueueFamilyTimestampValidBits[queueIndex];
     }
@@ -115,6 +117,7 @@ private:
     struct EnabledFeatures {
         // VkPhysicalDeviceFeatures
         bool fDualSrcBlend = false;
+        bool fOcclusionQueryPrecise = false;
         // From VkPhysicalDeviceSamplerYcbcrConversionFeatures or VkPhysicalDeviceVulkan11Features:
         bool fSamplerYcbcrConversion = false;
         // From VkPhysicalDeviceFaultFeaturesEXT:
@@ -290,6 +293,7 @@ private:
     bool fIsInputAttachmentReadCoherent = false;
     bool fSupportsFrameBoundary = false;
     bool fSupportsPipelineCreationCacheControl = false;
+    bool fOcclusionQueryPrecise = false;
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;

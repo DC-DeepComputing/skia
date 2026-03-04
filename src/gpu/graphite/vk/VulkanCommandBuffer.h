@@ -237,6 +237,7 @@ private:
     std::array<float, 4> fCachedBlendConstant;
 
     VkQueryPool fTimestampQueryPool = VK_NULL_HANDLE;
+    VkQueryPool fOcclusionQueryPool = VK_NULL_HANDLE;
 };
 
 } // namespace skgpu::graphite
