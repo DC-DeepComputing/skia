@@ -591,8 +591,11 @@ static void serialize_stream(SkPDFDict* origDict,
 SkPDFIndirectReference SkPDFStreamOut(std::unique_ptr<SkPDFDict> dict,
                                       std::unique_ptr<SkStreamAsset> content,
                                       SkPDFDocument* doc,
-                                      SkPDFSteamCompressionEnabled compress) {
-    SkPDFIndirectReference ref = doc->reserveRef();
+                                      SkPDFSteamCompressionEnabled compress,
+                                      SkPDFIndirectReference ref) {
+    if (!ref) {
+        ref = doc->reserveRef();
+    }
     if (SkExecutor* executor = doc->executor()) {
         SkPDFDict* dictPtr = dict.release();
         SkStreamAsset* contentPtr = content.release();
