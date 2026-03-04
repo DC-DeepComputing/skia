@@ -101,9 +101,9 @@ SkPDFDevice::MarkedContentManager::MarkedContentManager(SkPDFDocument* document,
     : fDoc(document)
     , fOut(out)
     , fCurrentlyActiveMark()
-    , fNextMarksElemId(0)
     , fCurrentMarksElemId(0)
-    , fMadeMarks(false)
+    , fNextMarksElemId(0)
+    , fStructParentsKey()
 {}
 
 SkPDFDevice::MarkedContentManager::~MarkedContentManager() {
@@ -127,7 +127,7 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         fCurrentMarksElemId = 0;
     }
     if (fNextMarksElemId) {
-        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId, fStructParentsKey);
         if (fCurrentlyActiveMark) {
             // Begin this mark
             SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
@@ -135,7 +135,6 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
             fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
             fOut->writeText(" >>BDC\n");
             fCurrentMarksElemId = fCurrentlyActiveMark.elemId();
-            fMadeMarks = true;
         } else if (SkPDF::NodeID::BackgroundArtifact <= fNextMarksElemId &&
                    fNextMarksElemId <= SkPDF::NodeID::OtherArtifact &&
                    fDoc->hasCurrentPage())
@@ -407,6 +406,10 @@ SkPDFDevice::SkPDFDevice(SkISize pageSize, SkPDFDocument* doc, const SkMatrix& t
     SkASSERT(!pageSize.isEmpty());
 }
 
+sk_sp<SkPDFDevice> SkPDFDevice::makeCongruentDevice() {
+    return sk_make_sp<SkPDFDevice>(this->size(), fDocument);
+}
+
 SkPDFDevice::~SkPDFDevice() = default;
 
 void SkPDFDevice::reset() {
@@ -414,6 +417,7 @@ void SkPDFDevice::reset() {
     fXObjectResources.reset();
     fShaderResources.reset();
     fFontResources.reset();
+    fMarkManager.reset();
     fContent.reset();
     fActiveStackState = SkPDFGraphicStackState();
 }
@@ -1183,6 +1187,7 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
 
     // Implicitly close any still active marked-content sequence.
     // Must do this before fContent is written to buffer.
+    int elemId = fMarkManager.elemId();
     fMarkManager.setNextMarksElemId(0);
     fMarkManager.beginMark();
 
@@ -1198,6 +1203,10 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
         buffer.writeText("Q\n");
     }
     fNeedsExtraSave = false;
+
+    // Subsequent use of this SkPDFDevice is still associated with the current structure element.
+    fMarkManager.setNextMarksElemId(elemId);
+
     return std::unique_ptr<SkStreamAsset>(buffer.detachAsStream());
 }
 
@@ -1271,6 +1280,7 @@ SkPDFIndirectReference SkPDFDevice::makeFormXObjectFromDevice(SkIRect bounds, bo
 
     SkPDFIndirectReference xobject =
         SkPDFMakeFormXObject(fDocument, this->content(),
+                             fMarkManager.structParentsKey(),
                              SkPDFMakeArray(bounds.left(), bounds.top(),
                                             bounds.right(), bounds.bottom()),
                              this->makeResourceDict(), inverseTransform, colorSpace);
@@ -1901,9 +1911,10 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
         return;
     }
     // This XObject may contain its own marks, which are hidden if emitted inside an outer mark.
-    // If it does have its own marks we need to pause the current mark and then re-set it after.
+    // If it does have its own marks any current mark is paused and then re-set after.
+    // If it does not have its own marks it will be part of the content of the current mark.
     int currentStructElemId = fMarkManager.elemId();
-    if (pdfDevice->fMarkManager.madeMarks()) {
+    if (pdfDevice->fMarkManager.structParentsKey()) {
         fMarkManager.setNextMarksElemId(0);
         fMarkManager.beginMark();
     }
