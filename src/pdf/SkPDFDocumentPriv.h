@@ -138,7 +138,10 @@ public:
     // Create a new marked-content identifier (MCID) to be used with a marked-content sequence
     // parented by the structure element (StructElem) with the given element identifier (elemId).
     // Returns a false Mark if if elemId does not refer to a StructElem.
-    SkPDFStructTree::Mark createMarkForElemId(int elemId);
+    //
+    // If a true Mark is returned and structParentsKey < 0, the Mark will be added to a new
+    // StructParents and structParentsKey will be updated to reference the StructParents entry.
+    SkPDFStructTree::Mark createMarkForElemId(int elemId, int& structElemKey);
 
     // Create a key to use with /StructParent in a content item (usually an annotation) which refers
     // to the structure element (StructElem) with the given element identifier (elemId).

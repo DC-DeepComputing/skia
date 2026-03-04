@@ -224,5 +224,6 @@ SkPDFIndirectReference SkPDFStreamOut(
     std::unique_ptr<SkPDFDict> dict,
     std::unique_ptr<SkStreamAsset> stream,
     SkPDFDocument* doc,
-    SkPDFSteamCompressionEnabled compress = SkPDFSteamCompressionEnabled::Yes);
+    SkPDFSteamCompressionEnabled compress = SkPDFSteamCompressionEnabled::Yes,
+    SkPDFIndirectReference = SkPDFIndirectReference());
 #endif
