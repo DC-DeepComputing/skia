@@ -105,9 +105,12 @@ int SkPDFOffsetMap::emitCrossReferenceTable(SkWStream* s) const {
     s->writeDecAsText(this->objectCount());
     s->writeText("\n0000000000 65535 f \n");
     for (int offset : fOffsets) {
-        SkASSERT(offset > 0);  // Offset was set.
         s->writeBigDecAsText(offset, 10);
-        s->writeText(" 00000 n \n");
+        if (offset > 0) {
+            s->writeText(" 00000 n \n");
+        } else {
+            s->writeText(" 00001 f \n");
+        }
     }
     return xRefFileOffset;
 }
