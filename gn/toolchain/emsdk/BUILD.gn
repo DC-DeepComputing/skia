@@ -1,0 +1,11 @@
+if (current_toolchain == "//gn/toolchain:$host_toolchain") {
+  action("activate") {
+    _skia_bin_dir = rebase_path("../../../../bin", root_build_dir)
+
+    # _skia_bin_dir = rebase_path("//skia/bin/")
+    # _skia_bin_dir = get_path_info("/b/s/w/ir/skia/bin", "abspath")
+    script = "$_skia_bin_dir/activate-emsdk"
+    args = []
+    outputs = [ "$target_gen_dir/emsdk_done.stamp" ]
+  }
+}
