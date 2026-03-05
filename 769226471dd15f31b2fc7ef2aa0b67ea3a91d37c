@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796e0387_959e6b0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-05T14:08:06Z",
+      "side": 1,
+      "message": "This is the start of an evolution throughout forthcoming functional changes towards making DrawAtlas more abstract and reduce visibility into its internal organization. In this change we hide the Plot and PlotList as details of DrawAtlas. No substantive code changes occur in this change, just a reorg.",
+      "revId": "769226471dd15f31b2fc7ef2aa0b67ea3a91d37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "020efe41_69ba7c02",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-05T14:08:06Z",
+      "side": 1,
+      "message": "Since this is private to DrawAtlas it could be moved to another header that might only be needed in DrawAtlas.cpp.\n\ninternalSetLastUseToken would need to move there, too, or be made non-inline.",
+      "revId": "769226471dd15f31b2fc7ef2aa0b67ea3a91d37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
