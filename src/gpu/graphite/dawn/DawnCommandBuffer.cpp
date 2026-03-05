@@ -343,6 +343,15 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 #if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassSampleCount mssaRenderToSingleSampledDesc;
     wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
+    wgpu::RenderPassRenderAreaRect wgpuRenderPassBounds = {};
+
+    if (fSharedContext->dawnCaps()->supportsRenderPassRenderArea()) {
+        wgpuRenderPassBounds.x = renderPassBounds.x();
+        wgpuRenderPassBounds.y = renderPassBounds.y();
+        wgpuRenderPassBounds.width = renderPassBounds.width();
+        wgpuRenderPassBounds.height = renderPassBounds.height();
+        wgpuRenderPass.nextInChain = &wgpuRenderPassBounds;
+    }
 #endif
 
 #if WGPU_TIMESTAMP_WRITES_DEFINED
@@ -435,6 +444,9 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                     wgpuPartialRect.resolveOffsetY = resolveArea.y();
                     wgpuPartialRect.width = resolveArea.width();
                     wgpuPartialRect.height = resolveArea.height();
+                    if (wgpuRenderPass.nextInChain) {
+                      wgpuPartialRect.nextInChain = wgpuRenderPass.nextInChain;
+                    }
                     wgpuRenderPass.nextInChain = &wgpuPartialRect;
                 } else
 #endif
@@ -460,12 +472,16 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 SkASSERT(fSharedContext->device().HasFeature(
                         wgpu::FeatureName::MSAARenderToSingleSampled));
 
+                if (wgpuRenderPass.nextInChain) {
+                    mssaRenderToSingleSampledDesc.nextInChain = wgpuRenderPass.nextInChain;
+                }
                 wgpuRenderPass.nextInChain = &mssaRenderToSingleSampledDesc;
                 mssaRenderToSingleSampledDesc.sampleCount = (uint8_t)renderPassDesc.fSampleCount;
             }
 #endif
         }
     }
+
 
     // Set up stencil/depth attachment
     if (depthStencilTexture) {

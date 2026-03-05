@@ -470,6 +470,9 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
                 backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
         fDifferentResolveAttachmentSizeSupport = fSupportsPartialLoadResolve;
     }
+
+    fSupportsRenderPassRenderArea =
+            backendContext.fDevice.HasFeature(wgpu::FeatureName::RenderPassRenderArea);
 #endif
 
     if (!fSupportsPartialLoadResolve &&
