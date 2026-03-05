@@ -33,6 +33,24 @@
       "message": "Since this is private to DrawAtlas it could be moved to another header that might only be needed in DrawAtlas.cpp.\n\ninternalSetLastUseToken would need to move there, too, or be made non-inline.",
       "revId": "769226471dd15f31b2fc7ef2aa0b67ea3a91d37c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24d75fdd_5efa92ff",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T15:01:02Z",
+      "side": 1,
+      "message": "I think it\u0027s fine for now. We\u0027d want to measure the perf loss from inlining. Maybe it wouldn\u0027t be so bad if we move the `setLastUseTokenBulk` function to the same compilation unit, but that would still mean not having an inlined version of the use token for AtlasLocator and I\u0027m not familiar enough to know how often that gets called.",
+      "parentUuid": "020efe41_69ba7c02",
+      "revId": "769226471dd15f31b2fc7ef2aa0b67ea3a91d37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
