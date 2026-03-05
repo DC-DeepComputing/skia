@@ -41,6 +41,78 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8b809fa_8b88ffe8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d95c870e_efe063c8",
+      "range": {
+        "startLine": 227,
+        "startChar": 13,
+        "endLine": 227,
+        "endChar": 19
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62a1dc5b_f83165c4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d95c870e_efe063c8",
+      "range": {
+        "startLine": 227,
+        "startChar": 13,
+        "endLine": 227,
+        "endChar": 19
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "963446d0_c14a9103",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d95c870e_efe063c8",
+      "range": {
+        "startLine": 227,
+        "startChar": 13,
+        "endLine": 227,
+        "endChar": 19
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c7e013c_ae2da1f8",
@@ -54,6 +126,30 @@
       "writtenOn": "2026-03-04T16:35:37Z",
       "side": 1,
       "message": "Following https://docs.vulkan.org/samples/latest/samples/api/timestamp_queries/README.html, we should also check that `fTimestampPeriod` is not 0 before enabling this stat.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 79
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f717f53d_6ddebd38",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c7e013c_ae2da1f8",
       "range": {
         "startLine": 238,
         "startChar": 0,
@@ -87,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e40e1df0_eefad58d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9ccdda0_e386a072",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8df3dc6e_ab9bae04",
@@ -100,6 +220,30 @@
       "writtenOn": "2026-03-04T16:35:37Z",
       "side": 1,
       "message": "This would be `skia_private::TArray\u003cuint32_t\u003e`",
+      "range": {
+        "startLine": 297,
+        "startChar": 4,
+        "endLine": 297,
+        "endChar": 25
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e094f540_f018410e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8df3dc6e_ab9bae04",
       "range": {
         "startLine": 297,
         "startChar": 4,
@@ -135,6 +279,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4536799e_9f00fc1f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "I\u0027m gonna add a check and warn in the next CL. LMK if you think it\u0027s sufficient.",
+      "parentUuid": "edb9d0f2_f84b7cc8",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 85
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fdc073d9_cac37cd7",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 1
@@ -146,6 +314,30 @@
       "writtenOn": "2026-03-04T16:35:37Z",
       "side": 1,
       "message": "From https://docs.vulkan.org/samples/latest/samples/api/timestamp_queries/README.html, it sounds like a given queue may not support timestamps (if validBits comes back as 0), so we should maybe check that before we record the start timer query commands.",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "9deca8a9d78dac8c55114c27a60f95f5cd49d650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50e6d00e_fe007f0e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-05T12:01:20Z",
+      "side": 1,
+      "message": "We check for timestampComputeAndGraphics which guarantees ValidBits \u003e\u003d 36 on GRAPHICS. Added a comment to clarify.",
+      "parentUuid": "fdc073d9_cac37cd7",
       "range": {
         "startLine": 186,
         "startChar": 0,
