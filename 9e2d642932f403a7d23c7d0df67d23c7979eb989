@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7701ebb_ca32a8b0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-05T16:33:43Z",
+      "side": 1,
+      "message": "Should we have some kind of log messaging if there\u0027s an attempt to allocate more than the max number of sets so we cap the quantity?",
+      "range": {
+        "startLine": 282,
+        "startChar": 12,
+        "endLine": 282,
+        "endChar": 53
+      },
+      "revId": "9e2d642932f403a7d23c7d0df67d23c7979eb989",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
