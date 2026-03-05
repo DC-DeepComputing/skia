@@ -206,6 +206,7 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
     } else if (strcmp(name, VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME) == 0) {
         exts.fPipelineCreationCacheControlEXT = true;
     } else if (strcmp(name, VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME) == 0) {
+        SkDebugf("Device extension driver properties found. Assigning exts.fDriverPropertiesKHR to true \n");
         exts.fDriverPropertiesKHR = true;
     } else if (strcmp(name, VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME) == 0) {
         exts.fCreateRenderpass2KHR = true;
@@ -255,9 +256,11 @@ DeviceExtensions get_supported_device_extensions(const VkExtensionProperties* de
                                                  size_t deviceExtensionCount) {
     DeviceExtensions supportedExts;
 
+    SkDebugf("Marking supported device extensions...\n");
     for (size_t i = 0; i < deviceExtensionCount; ++i) {
         mark_device_extensions(supportedExts, deviceExtensions[i].extensionName);
     }
+    SkDebugf("...Done marking supported device extensions\n");
 
     return supportedExts;
 }
@@ -459,6 +462,7 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
                                                  size_t deviceExtensionCount,
                                                  VkPhysicalDeviceFeatures2& appFeatures) {
     // First, inspect the list of device extensions and note which are available.
+    SkDebugf("VulkanPreferredFeatures::addFeaturesToQuery()\n");
     DeviceExtensions exts =
             get_supported_device_extensions(deviceExtensions, deviceExtensionCount);
 
@@ -545,6 +549,7 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         fSamplerYcbcrConversion.sType =
                 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
         if (exts.fDriverPropertiesKHR) {
+            SkDebugf("exts.fDriverPropertiesKHR = true. assigning ext name. 1.1\n");
             fDriverPropertiesExtension = VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME;
         }
         if (exts.fCreateRenderpass2KHR) {
@@ -723,9 +728,11 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
 
     // Check which extensions are already enabled by the application.
     DeviceExtensions appEnabledExts;
+    SkDebugf("Marking extensions already enabled by application...\n");
     for (const char* name : appExtensions) {
         mark_device_extensions(appEnabledExts, name);
     }
+    SkDebugf("...Done marking extensions already enabled by application\n");
 
     // Add extensions that are not enabled by the app.
     {
@@ -790,6 +797,7 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
             appEnabledExts.fFrameBoundaryEXT = true;
         }
         if (!appEnabledExts.fDriverPropertiesKHR && fDriverPropertiesExtension != nullptr) {
+            SkDebugf("app doesn't enable prop ext, but we have it. add extension to app's.\n");
             appExtensions.push_back(fDriverPropertiesExtension);
             appEnabledExts.fDriverPropertiesKHR = true;
         }

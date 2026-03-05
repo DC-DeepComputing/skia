@@ -142,6 +142,7 @@ private:
     struct PhysicalDeviceProperties {
         VkPhysicalDeviceProperties2 fBase;
         VkPhysicalDeviceDriverProperties fDriver;
+        // If in Vulkan 1.1, then VkPhysicalDeviceDriverPropertiesKHR?
         VkPhysicalDeviceGraphicsPipelineLibraryPropertiesEXT fGpl;
         VkPhysicalDeviceHostImageCopyPropertiesEXT fHic;
         bool fHicHasShaderReadOnlyDstLayout = false;
