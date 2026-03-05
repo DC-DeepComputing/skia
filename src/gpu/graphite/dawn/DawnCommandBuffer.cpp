@@ -67,7 +67,7 @@ DawnCommandBuffer::DawnCommandBuffer(const DawnSharedContext* sharedContext,
 
 DawnCommandBuffer::~DawnCommandBuffer() {}
 
-bool DawnCommandBuffer::startTimerQuery() {
+bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     SkASSERT(!fHasTimerQuery);
     wgpu::QuerySet querySet = std::move(fTimestampQuerySet);
 
@@ -125,7 +125,7 @@ bool DawnCommandBuffer::startTimerQuery() {
     return true;
 }
 
-void DawnCommandBuffer::endTimerQuery() {
+void DawnCommandBuffer::endStatsQuery(GpuStatsFlags) {
     SkASSERT(fHasTimerQuery);
     SkASSERT(fTimestampQuerySet);
     SkASSERT(fTimestampQueryBuffer);
