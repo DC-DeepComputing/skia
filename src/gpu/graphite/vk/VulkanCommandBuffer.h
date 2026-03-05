@@ -236,6 +236,7 @@ private:
 
     std::array<float, 4> fCachedBlendConstant;
 
+    bool fHasTimerQuery = false;
     VkQueryPool fTimestampQueryPool = VK_NULL_HANDLE;
 };
 

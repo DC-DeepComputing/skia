@@ -125,6 +125,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
 }
 
 bool VulkanCommandBuffer::startTimerQuery() {
+    SkASSERT(!fHasTimerQuery);
     if (fTimestampQueryPool == VK_NULL_HANDLE) {
         VkQueryPoolCreateInfo info = {};
         info.sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
@@ -150,10 +151,12 @@ bool VulkanCommandBuffer::startTimerQuery() {
                                   VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
                                   fTimestampQueryPool,
                                   0));
+    fHasTimerQuery = true;
     return true;
 }
 
 void VulkanCommandBuffer::endTimerQuery() {
+    SkASSERT(fHasTimerQuery);
     VULKAN_CALL(fSharedContext->interface(),
                 CmdWriteTimestamp(fPrimaryCommandBuffer,
                                   VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
@@ -206,6 +209,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     for (int i = 0; i < 4; ++i) {
         fCachedBlendConstant[i] = -1.0;
     }
+    fHasTimerQuery = false;
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
