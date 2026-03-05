@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cf805bf_290b3f15",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T16:49:18Z",
+      "side": 1,
+      "message": "Yep, added b/489785214 to the comment.",
+      "parentUuid": "a7667b40_7bd22694",
+      "range": {
+        "startLine": 400,
+        "startChar": 46,
+        "endLine": 402,
+        "endChar": 50
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fed1577_8802acc4",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a49a1e_5c075ecc",
+        "filename": "src/gpu/graphite/TextureFormat.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T16:49:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fed1577_8802acc4",
+      "range": {
+        "startLine": 171,
+        "startChar": 89,
+        "endLine": 171,
+        "endChar": 99
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a85abb46_d6af8970",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-05T13:45:53Z",
       "side": 1,
       "message": "Do we actually need this prefix and the following one ?",
+      "range": {
+        "startLine": 771,
+        "startChar": 33,
+        "endLine": 771,
+        "endChar": 50
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a359d25c_ba2b3b2f",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T16:49:18Z",
+      "side": 1,
+      "message": "Yes, all of this code is inside the `skif` namespace and not the `skgpu::graphite` namespace.",
+      "parentUuid": "a85abb46_d6af8970",
       "range": {
         "startLine": 771,
         "startChar": 33,
