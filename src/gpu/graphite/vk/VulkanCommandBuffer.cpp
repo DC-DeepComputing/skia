@@ -124,7 +124,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
                 DestroyCommandPool(fSharedContext->device(), fPool, nullptr));
 }
 
-bool VulkanCommandBuffer::startTimerQuery() {
+bool VulkanCommandBuffer::startStatsQuery(GpuStatsFlags) {
     SkASSERT(!fHasTimerQuery);
     if (fTimestampQueryPool == VK_NULL_HANDLE) {
         VkQueryPoolCreateInfo info = {};
@@ -155,7 +155,7 @@ bool VulkanCommandBuffer::startTimerQuery() {
     return true;
 }
 
-void VulkanCommandBuffer::endTimerQuery() {
+void VulkanCommandBuffer::endStatsQuery(GpuStatsFlags) {
     SkASSERT(fHasTimerQuery);
     VULKAN_CALL(fSharedContext->interface(),
                 CmdWriteTimestamp(fPrimaryCommandBuffer,
