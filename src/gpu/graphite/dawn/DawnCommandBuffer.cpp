@@ -68,6 +68,7 @@ DawnCommandBuffer::DawnCommandBuffer(const DawnSharedContext* sharedContext,
 DawnCommandBuffer::~DawnCommandBuffer() {}
 
 bool DawnCommandBuffer::startTimerQuery() {
+    SkASSERT(!fHasTimerQuery);
     wgpu::QuerySet querySet = std::move(fTimestampQuerySet);
 
     auto buffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
@@ -120,10 +121,12 @@ bool DawnCommandBuffer::startTimerQuery() {
         fWroteFirstPassTimestamps = false;
     }
 
+    fHasTimerQuery = true;
     return true;
 }
 
 void DawnCommandBuffer::endTimerQuery() {
+    SkASSERT(fHasTimerQuery);
     SkASSERT(fTimestampQuerySet);
     SkASSERT(fTimestampQueryBuffer);
     if (fSharedContext->dawnCaps()->supportsCommandBufferTimestamps()) {
@@ -205,6 +208,7 @@ void DawnCommandBuffer::onResetCommandBuffer() {
     fTimestampQueryBuffer = {};
     fTimestampQueryXferBuffer = {};
     fWroteFirstPassTimestamps = false;
+    fHasTimerQuery = false;
 }
 
 bool DawnCommandBuffer::setNewCommandBufferResources() {
