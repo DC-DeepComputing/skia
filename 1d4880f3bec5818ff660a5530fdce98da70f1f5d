@@ -22,6 +22,30 @@
       },
       "revId": "1d4880f3bec5818ff660a5530fdce98da70f1f5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e58b8902_f566a45d",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-05T15:13:58Z",
+      "side": 1,
+      "message": "If neither bound is clamping we don\u0027t get here. That being said, it does make some sense to start the `bound` this way and then adjust it in the above cases where the expansion is actually being done.",
+      "parentUuid": "d1624c84_ae2d4219",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 802,
+        "endChar": 9
+      },
+      "revId": "1d4880f3bec5818ff660a5530fdce98da70f1f5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
