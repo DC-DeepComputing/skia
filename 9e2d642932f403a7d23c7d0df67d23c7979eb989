@@ -22,6 +22,30 @@
       },
       "revId": "9e2d642932f403a7d23c7d0df67d23c7979eb989",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43b774c4_5edad35f",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-05T17:45:13Z",
+      "side": 1,
+      "message": "If we saw some random usage that was triggering us to use more than 512 of a specific descriptor type, I\u0027m not sure we would actually take any action on it. Like this should be a very rare number to hit in general and things will continue to work fine if it is hit. So I guess I lean towards not needing any sort of log warning here.",
+      "parentUuid": "f7701ebb_ca32a8b0",
+      "range": {
+        "startLine": 282,
+        "startChar": 12,
+        "endLine": 282,
+        "endChar": 53
+      },
+      "revId": "9e2d642932f403a7d23c7d0df67d23c7979eb989",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
