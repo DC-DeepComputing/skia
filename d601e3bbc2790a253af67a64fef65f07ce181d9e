@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7667b40_7bd22694",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-05T13:45:53Z",
+      "side": 1,
+      "message": "Do we have a bug/issue for this?",
+      "range": {
+        "startLine": 400,
+        "startChar": 46,
+        "endLine": 402,
+        "endChar": 50
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fed1577_8802acc4",
+        "filename": "src/gpu/graphite/TextureFormat.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-05T13:45:53Z",
+      "side": 1,
+      "message": "SkColorType",
+      "range": {
+        "startLine": 171,
+        "startChar": 89,
+        "endLine": 171,
+        "endChar": 99
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85abb46_d6af8970",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-05T13:45:53Z",
+      "side": 1,
+      "message": "Do we actually need this prefix and the following one ?",
+      "range": {
+        "startLine": 771,
+        "startChar": 33,
+        "endLine": 771,
+        "endChar": 50
+      },
+      "revId": "d601e3bbc2790a253af67a64fef65f07ce181d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
