@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d69e871_d4ec8cd5",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T16:57:44Z",
+      "side": 1,
+      "message": "Not all backends had wired up all formats to colortypes regarding bgra vs rgba swizzle. This meant we were not testing more valid configurations in the ImageAsyncReadPixelsGraphite test than before. Depending on whether or not the format was supported we would fall into thinking we needed to perform conversion.\n\nThis had been skipped before hand due to support checks, but if we were rgba vs bgra now with an unknown alpha type, we\u0027d enter SkConvertPixels and it would complain.  We just need to copy the alpha channel unmodified, so switching to opaque achieves that result. In later CLs, we\u0027ll remove the need for SkColorType aware conversion on readback and this hack can go away.",
+      "range": {
+        "startLine": 796,
+        "startChar": 4,
+        "endLine": 802,
+        "endChar": 5
+      },
+      "revId": "269e7d2f286ed629bafe14d2d752f898a0565a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a08b297f_203f410f",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T16:57:44Z",
+      "side": 1,
+      "message": "See comment in Context\u0027s async readback.",
+      "range": {
+        "startLine": 245,
+        "startChar": 2,
+        "endLine": 255,
+        "endChar": 5
+      },
+      "revId": "269e7d2f286ed629bafe14d2d752f898a0565a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
