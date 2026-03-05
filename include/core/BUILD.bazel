@@ -67,6 +67,7 @@ PUBLIC_HEADERS = [
     "SkPathUtils.h",
     "SkPicture.h",
     "SkPictureRecorder.h",
+    "SkPixelData.h",
     "SkPixelRef.h",
     "SkPixmap.h",
     "SkPoint.h",
