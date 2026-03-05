@@ -46,6 +46,30 @@
       },
       "revId": "9e2d642932f403a7d23c7d0df67d23c7979eb989",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0235faa2_f822ffbc",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-05T17:49:56Z",
+      "side": 1,
+      "message": "Limiting to a max size is also consistent with how we grow buffer sizes for vertices and uniforms. All that means is we\u0027ll move on to another pool of 512 if we need even more.",
+      "parentUuid": "43b774c4_5edad35f",
+      "range": {
+        "startLine": 282,
+        "startChar": 12,
+        "endLine": 282,
+        "endChar": 53
+      },
+      "revId": "9e2d642932f403a7d23c7d0df67d23c7979eb989",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
