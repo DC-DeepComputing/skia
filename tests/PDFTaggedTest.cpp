@@ -224,4 +224,86 @@ DEF_TEST(SkPDF_structelem_header_outline_doc_noheader, r) {
                               EmitHeader::No);
 }
 
+// Test that structure tagging is preserved inside saveLayer (FormXObject).
+DEF_TEST(SkPDF_tagged_saveLayer, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_tagged_saveLayer, r);
+
+    SkPDF::Metadata metadata;
+    metadata.fTitle = "Tagged SaveLayer Test";
+    metadata.fCreator = "Skia";
+    metadata.jpegDecoder = SkPDF::JPEG::Decode;
+    metadata.jpegEncoder = SkPDF::JPEG::Encode;
+
+    auto root = std::make_unique<PDFTag>();
+    root->fNodeId = 1;
+    root->fTypeString = "Document";
+
+    auto p1 = std::make_unique<PDFTag>();
+    p1->fNodeId = 2;
+    p1->fTypeString = "P";
+    root->fChildVector.push_back(std::move(p1));
+
+    auto p2 = std::make_unique<PDFTag>();
+    p2->fNodeId = 3;
+    p2->fTypeString = "P";
+    root->fChildVector.push_back(std::move(p2));
+
+    metadata.fStructureElementTreeRoot = root.get();
+
+    SkDynamicMemoryWStream outputStream;
+    sk_sp<SkDocument> document = SkPDF::MakeDocument(&outputStream, metadata);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    SkFont font(ToolUtils::DefaultTypeface(), 14);
+    SkCanvas* canvas =
+            document->beginPage(SkSize::Make(612, 792).width(), SkSize::Make(612, 792).height());
+
+    SkPDF::SetNodeId(canvas, 2);
+    canvas->drawString("Before saveLayer", 72, 72, font, paint);
+
+    SkPaint layerPaint;
+    layerPaint.setAlphaf(0.8f);
+    canvas->saveLayer(nullptr, &layerPaint);
+    SkPDF::SetNodeId(canvas, 3);
+    canvas->drawString("Inside saveLayer", 72, 144, font, paint);
+    canvas->restore();
+
+    document->endPage();
+    document->close();
+
+    sk_sp<SkData> pdfData = outputStream.detachAsData();
+    const char* data = static_cast<const char*>(pdfData->data());
+    size_t size = pdfData->size();
+
+    auto binaryContains = [](const char* haystack, size_t len, const char* needle) -> bool {
+        size_t nlen = strlen(needle);
+        if (nlen > len) return false;
+        for (size_t i = 0; i <= len - nlen; ++i) {
+            if (memcmp(haystack + i, needle, nlen) == 0) return true;
+        }
+        return false;
+    };
+    auto binaryCount = [](const char* haystack, size_t len, const char* needle) -> int {
+        size_t nlen = strlen(needle);
+        if (nlen > len) {
+            return 0;
+        }
+        int count = 0;
+        for (size_t i = 0; i <= len - nlen; ++i) {
+            if (memcmp(haystack + i, needle, nlen) == 0) {
+                ++count;
+            }
+        }
+        return count;
+    };
+
+    // Expect both a page stream and a FormXObject stream carrying marked content.
+    REPORTER_ASSERT(r, binaryCount(data, size, "/StructParents ") >= 2);
+
+    // Marks in the FormXObject stream should be referenced from the structure tree with /Stm.
+    REPORTER_ASSERT(r, binaryContains(data, size, "/Type /MCR"));
+    REPORTER_ASSERT(r, binaryContains(data, size, "/Stm "));
+}
+
 #endif

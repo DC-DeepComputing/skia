@@ -22,15 +22,8 @@
 
 using namespace skia_private;
 
-// The /StructTreeRoot /ParentTree is a number tree which consists of one entry for each page
-// (Page::StructParents -> StructElemRef[mcid]) and entries for individual content items
-// (?::StructParent -> StructElemRef).
-//
-// This is implemented with page entries getting consecutive keys starting at 0. Since the total
-// number of pages in the document is not known when content items are processed, start the key for
-// content items with a large number, which effectively becomes the maximum number of pages in a
-// PDF we can handle.
-const int kFirstContentItemStructParentKey = 100000;
+// The /StructTreeRoot /ParentTree is emitted from fParentTree. Each key maps either to
+// /StructParents (stream entry, indexed by MCID) or /StructParent (single content item).
 
 namespace {
 struct Location {
@@ -76,6 +69,7 @@ struct SkPDFStructElem {
     struct MarkedContentInfo {
         Location fLocation;
         int fMcid;
+        int fStructParentsKey;
     };
     TArray<MarkedContentInfo> fMarkedContent;
     int fElemId = 0;
@@ -120,6 +114,7 @@ struct SkPDFStructElem {
 
     SkPDFIndirectReference emitStructElem(SkPDFIndirectReference parent,
                                           std::vector<SkPDFStructTree::IDTreeEntry>* idTree,
+                                          const SkPDFStructTree* structTree,
                                           SkPDFDocument* doc);
 };
 
@@ -288,7 +283,7 @@ void SkPDFStructTree::Mark::accumulate(SkPoint point) {
     return location.accumulate({{point}, location.fPageIndex});
 }
 
-auto SkPDFStructTree::createMarkForElemId(int elemId, unsigned pageIndex) -> Mark {
+auto SkPDFStructTree::createMarkForElemId(int elemId, int& structParentsKey, unsigned pageIndex) -> Mark {
     if (!fRoot) {
         return Mark();
     }
@@ -299,16 +294,26 @@ auto SkPDFStructTree::createMarkForElemId(int elemId, unsigned pageIndex) -> Mar
     SkPDFStructElem* structElem = *structElemPtr;
     SkASSERT(structElem);
 
+    if (structParentsKey < 0) {
+        structParentsKey = fParentTree.size();
+        fParentTree.push_back(Stream());
+    }
+    if (fParentTree.size() <= structParentsKey) {
+        return Mark();
+    }
+    ParentTreeEntry& entry = fParentTree[structParentsKey];
+    if (!std::holds_alternative<Stream>(entry)) {
+        return Mark();
+    }
+
     structElem->setUsed(fStructElemForElemId);
 
-    while (SkToUInt(fStructElemForMcidForPage.size()) < pageIndex + 1) {
-        fStructElemForMcidForPage.push_back();
-    }
-    TArray<SkPDFStructElem*>& structElemForMcid = fStructElemForMcidForPage[pageIndex];
+    TArray<SkPDFStructElem*>& structElemForMcid = std::get<Stream>(entry).fChildren;
     int mcid = structElemForMcid.size();
     SkASSERT(structElem->fMarkedContent.empty() ||
              structElem->fMarkedContent.back().fLocation.fPageIndex <= pageIndex);
-    structElem->fMarkedContent.push_back({{{SK_ScalarNaN, SK_ScalarNaN}, pageIndex}, mcid});
+    structElem->fMarkedContent.push_back(
+            {{{SK_ScalarNaN, SK_ScalarNaN}, pageIndex}, mcid, structParentsKey});
     structElemForMcid.push_back(structElem);
     return Mark(structElem, structElem->fMarkedContent.size() - 1);
 }
@@ -331,14 +336,38 @@ int SkPDFStructTree::createStructParentKeyForElemId(int elemId,
     SkPDFStructElem::ContentItemInfo contentItemInfo = {pageIndex, contentItemRef};
     structElem->fContentItems.push_back(contentItemInfo);
 
-    int structParentKey = kFirstContentItemStructParentKey + fStructElemForContentItem.size();
-    fStructElemForContentItem.push_back(structElem);
+    int structParentKey = fParentTree.size();
+    fParentTree.emplace_back(Item{structElem});
     return structParentKey;
+}
+
+void SkPDFStructTree::setRefForStructParentsKey(int structParentsKey,
+                                                SkPDFIndirectReference streamRef) {
+    if (structParentsKey < 0 || fParentTree.size() <= structParentsKey) {
+        return;
+    }
+    ParentTreeEntry& entry = fParentTree[structParentsKey];
+    if (!std::holds_alternative<Stream>(entry)) {
+        return;
+    }
+    std::get<Stream>(entry).fRef = streamRef;
+}
+
+SkPDFIndirectReference SkPDFStructTree::streamRefForStructParentsKey(int structParentsKey) const {
+    if (structParentsKey < 0 || fParentTree.size() <= structParentsKey) {
+        return SkPDFIndirectReference();
+    }
+    const ParentTreeEntry& entry = fParentTree[structParentsKey];
+    if (!std::holds_alternative<Stream>(entry)) {
+        return SkPDFIndirectReference();
+    }
+    return std::get<Stream>(entry).fRef;
 }
 
 SkPDFIndirectReference SkPDFStructElem::emitStructElem(
         SkPDFIndirectReference parent,
         std::vector<SkPDFStructTree::IDTreeEntry>* idTree,
+        const SkPDFStructTree* structTree,
         SkPDFDocument* doc)
 {
     fRef = doc->reserveRef();
@@ -358,41 +387,22 @@ SkPDFIndirectReference SkPDFStructElem::emitStructElem(
         std::unique_ptr<SkPDFArray> kids(new SkPDFOptionalArray());
         for (auto&& child : fChildren) {
             if (child.fUsed) {
-                kids->appendRef(child.emitStructElem(fRef, idTree, doc));
+                kids->appendRef(child.emitStructElem(fRef, idTree, structTree, doc));
             }
         }
         if (!fMarkedContent.empty()) {
-            // Use the mode page as /Pg and use integer mcid for marks on that page.
-            // SkPDFStructElem::fMarkedContent is already sorted by page, since it is append only in
-            // createMarkForElemId where pageIndex is the monotonically increasing current page.
-            size_t longestRun = 0;
-            unsigned longestPage = 0;
-            size_t currentRun = 0;
-            unsigned currentPage = 0;
+            // Always emit each mark as an MCR dictionary so marks in non-page streams can include
+            // /Stm to identify the stream that owns the MCID.
             for (const SkPDFStructElem::MarkedContentInfo& info : fMarkedContent) {
-                unsigned thisPage = info.fLocation.fPageIndex;
-                if (currentPage != thisPage) {
-                    SkASSERT(currentPage < thisPage);
-                    currentPage = thisPage;
-                    currentRun = 0;
+                std::unique_ptr<SkPDFDict> mcr = SkPDFMakeDict("MCR");
+                mcr->insertRef("Pg", doc->getPage(info.fLocation.fPageIndex));
+                if (SkPDFIndirectReference streamRef =
+                            structTree->streamRefForStructParentsKey(info.fStructParentsKey)) {
+                    mcr->insertRef("Stm", streamRef);
                 }
-                ++currentRun;
-                if (longestRun < currentRun) {
-                    longestRun = currentRun;
-                    longestPage = currentPage;
-                }
+                mcr->insertInt("MCID", info.fMcid);
+                kids->appendObject(std::move(mcr));
             }
-            for (const SkPDFStructElem::MarkedContentInfo& info : fMarkedContent) {
-                if (info.fLocation.fPageIndex == longestPage) {
-                    kids->appendInt(info.fMcid);
-                } else {
-                    std::unique_ptr<SkPDFDict> mcr = SkPDFMakeDict("MCR");
-                    mcr->insertRef("Pg", doc->getPage(info.fLocation.fPageIndex));
-                    mcr->insertInt("MCID", info.fMcid);
-                    kids->appendObject(std::move(mcr));
-                }
-            }
-            dict.insertRef("Pg", doc->getPage(longestPage));
         }
         for (const SkPDFStructElem::ContentItemInfo& contentItemInfo : fContentItems) {
             std::unique_ptr<SkPDFDict> contentItemDict = SkPDFMakeDict("OBJR");
@@ -443,17 +453,15 @@ SkPDFIndirectReference SkPDFStructTree::emitStructTreeRoot(SkPDFDocument* doc) c
 
     SkPDFIndirectReference structTreeRootRef = doc->reserveRef();
 
-    unsigned pageCount = SkToUInt(doc->pageCount());
-
     // Build the StructTreeRoot.
     SkPDFDict structTreeRoot("StructTreeRoot");
     std::vector<IDTreeEntry> idTree;
-    structTreeRoot.insertRef("K", fRoot->emitStructElem(structTreeRootRef, &idTree, doc));
-    structTreeRoot.insertInt("ParentTreeNextKey", SkToInt(pageCount));
+    structTreeRoot.insertRef("K", fRoot->emitStructElem(structTreeRootRef, &idTree, this, doc));
+    structTreeRoot.insertInt("ParentTreeNextKey", fParentTree.size());
 
     // Build the parent tree, a number tree which consists of two things:
-    // For each page:
-    //   key: Page::StructParents
+    // For each Page or FormXObject with marked content:
+    //   key: ?::StructParents
     //   value: array of structure element ref indexed by the page's marked-content identifiers
     // For each content item (usually an annotation)
     //   key: ?::StructParent
@@ -461,25 +469,20 @@ SkPDFIndirectReference SkPDFStructTree::emitStructTreeRoot(SkPDFDocument* doc) c
     SkPDFDict parentTree("ParentTree");
     auto parentTreeNums = SkPDFMakeArray();
 
-    // First, one entry per page.
-    SkASSERT(SkToUInt(fStructElemForMcidForPage.size()) <= pageCount);
-    for (int j = 0; j < fStructElemForMcidForPage.size(); ++j) {
-        const TArray<SkPDFStructElem*>& structElemForMcid = fStructElemForMcidForPage[j];
-        SkPDFArray structElemForMcidArray;
-        for (SkPDFStructElem* structElem : structElemForMcid) {
-            SkASSERT(structElem->fRef);
-            structElemForMcidArray.appendRef(structElem->fRef);
+    for (int structParentKey = 0; structParentKey < fParentTree.size(); ++structParentKey) {
+        const ParentTreeEntry& entry = fParentTree[structParentKey];
+        if (std::holds_alternative<Item>(entry)) {
+            parentTreeNums->appendInt(structParentKey); // /StructParent
+            parentTreeNums->appendRef(std::get<Item>(entry).fStructElem->fRef);
+        } else {
+            SkPDFArray structElemForMcidArray;
+            for (const SkPDFStructElem* structElem : std::get<Stream>(entry).fChildren) {
+                SkASSERT(structElem->fRef);
+                structElemForMcidArray.appendRef(structElem->fRef);
+            }
+            parentTreeNums->appendInt(structParentKey); // /StructParents
+            parentTreeNums->appendRef(doc->emit(structElemForMcidArray));
         }
-        parentTreeNums->appendInt(j); // /Page /StructParents
-        parentTreeNums->appendRef(doc->emit(structElemForMcidArray));
-    }
-
-    // Then, one entry per content item.
-    for (int j = 0; j < fStructElemForContentItem.size(); ++j) {
-        int structParentKey = kFirstContentItemStructParentKey + j;
-        SkPDFStructElem* structElem = fStructElemForContentItem[j];
-        parentTreeNums->appendInt(structParentKey); // /<content-item> /StructParent
-        parentTreeNums->appendRef(structElem->fRef);
     }
 
     parentTree.insertObject("Nums", std::move(parentTreeNums));

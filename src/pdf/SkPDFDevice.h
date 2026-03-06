@@ -124,6 +124,8 @@ public:
 
     const SkMatrix& initialTransform() const { return fInitialTransform; }
 
+    int structParentsKey() const { return fMarkManager.structParentsKey(); }
+
     SkRecorder* baseRecorder() const override {
         // TODO(kjlubick) the creation of this should likely involve a CPU context.
         return skcpu::Recorder::TODO();
@@ -168,8 +170,11 @@ private:
         // and so is y-up. Only use if this.hasActiveMark()
         void accumulate(const SkPoint& p);
 
-        // Tests if this marked content manager made any marks.
-        bool madeMarks() const { return fMadeMarks; }
+        // Returns the index into the ParentsTree. If no marks were made this is negative.
+        int structParentsKey() const { return fStructParentsKey; }
+
+        // Start a new stream identity for future marks.
+        void resetStructParentsKey() { fStructParentsKey = -1; }
 
     private:
         SkPDFDocument* fDoc;
@@ -177,7 +182,7 @@ private:
         SkPDFStructTree::Mark fCurrentlyActiveMark;
         int fNextMarksElemId;
         int fCurrentMarksElemId;
-        bool fMadeMarks;
+        int fStructParentsKey;
     } fMarkManager;
 
     SkDynamicMemoryWStream fContent;

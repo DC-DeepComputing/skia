@@ -392,9 +392,9 @@ void SkPDFDocument::onEndPage() {
     }
 
     page->insertRef("Contents", SkPDFStreamOut(nullptr, std::move(pageContent), this));
-    // The StructParents unique identifier for each page is just its
-    // 0-based page index.
-    page->insertInt("StructParents", SkToInt(this->currentPageIndex()));
+    if (fPageDevice->structParentsKey() >= 0) {
+        page->insertInt("StructParents", SkToInt(fPageDevice->structParentsKey()));
+    }
 
     // Tabs is PDF 1.5, but setting it checks an accessibility box.
     page->insertName("Tabs", "S");
@@ -556,13 +556,18 @@ const SkMatrix& SkPDFDocument::currentPageTransform() const {
     return fPageDevice->initialTransform();
 }
 
-SkPDFStructTree::Mark SkPDFDocument::createMarkForElemId(int elemId) {
+SkPDFStructTree::Mark SkPDFDocument::createMarkForElemId(int elemId, int& structElemKey) {
     // If the mark isn't on a page (like when emitting a Type3 glyph)
     // return a temporary mark not attached to the page or a structure element.
     if (!this->hasCurrentPage()) {
         return SkPDFStructTree::Mark();
     }
-    return fStructTree.createMarkForElemId(elemId, SkToUInt(this->currentPageIndex()));
+    return fStructTree.createMarkForElemId(elemId, structElemKey, SkToUInt(this->currentPageIndex()));
+}
+
+void SkPDFDocument::setRefForStructParentsKey(int structParentsKey,
+                                              SkPDFIndirectReference streamRef) {
+    fStructTree.setRefForStructParentsKey(structParentsKey, streamRef);
 }
 
 void SkPDFDocument::addStructElemTitle(int elemId, SkSpan<const char> title) {
