@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dcf21e3_3f17ded5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-06T17:01:24Z",
+      "side": 1,
+      "message": "This is ready to review. I have changed `hasPendingGPUWork` API to only check `fActiveCommandBuffer`. @michaelludwig@google.com PTAL.",
+      "revId": "12308d5e1b50187a377e977ccbe064be9158bf3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
