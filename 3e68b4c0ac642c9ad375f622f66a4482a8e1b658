@@ -46,6 +46,30 @@
       },
       "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a906e29e_c9aed23c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-06T17:27:27Z",
+      "side": 1,
+      "message": "Yes, it would basically be a `FinishedGpuSubmission` or similar name that returns true from `onIsFinished()` and does nothing in `onWaitUntilFinished()`. That way, it is just a marker in the outstanding submissions queue and triggers the callbacks in the right spot in the timeline.\n\nUnderlying GPU command buffers aren\u0027t trivial objects so while we are currently getting away with it, it seems a bit wasteful.",
+      "parentUuid": "98fd5011_76bce0b3",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
