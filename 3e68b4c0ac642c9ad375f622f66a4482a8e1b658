@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f96d288b_a7411650",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-06T17:05:31Z",
+      "side": 1,
+      "message": "Do we need to submit an empty command buffer here? Or should we just register an OutstandingSubmission that will invoke the finish procs?",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
