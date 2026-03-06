@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2351617c_3891462f",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1411,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-06T20:34:06Z",
+      "side": 1,
+      "message": "As pointed out by running `imagefilters_xfermodes` this change suffers from the fact that SkPDFDevices can be \"reused\". (See uses of `this-\u003emakeFormXObjectFromDevice` which dump the current content into a form xobject so that it can be re-used as an element of subsequent content.) This means that it isn\u0027t generally possible to know the actual content stream reference up front like is tried here. For example this may have started out looking like Page content, but it got pulled out into a form xobject randomly, so when making the marks we don\u0027t know which content stream reference they will end up in.\n\nAs a result, the content stream reference will need to be made when actually emitting the stream (as is currently done). However, the structural parent tree stream entry and key can be made with the marks (as is done in this patch set) so it can be updated later with a ref to the content stream (when it actually exists). This means the marks don\u0027t need to each hold on to the content stream ref (which they cannot know anyway as they are being created as they don\u0027t know which content stream ref they will end up in) but they will need to hold onto the struct parents key so that later they can find the reference to the content stream. One will need to be careful to reset the structure parent key then the device is reset (but keep the current active structure element).\n\nAlso one will need to be careful that while a valid ParentTree Stream ref does mean that it is in a non-page stream, an invalid one no longer implies a page stream. It is possible that marks were made and a key created, but the content stream subsequently was dropped. These should be excluded from the /StructElem /K entries (as the marks don\u0027t really exist) and the ParentTree can just not emit the index. So there should be a signal to the ParentTree Stream entries that they have been emitted (and if to a non-page content stream its ref).",
+      "revId": "4d245a7129d3d83f5bde59d7c3c61c887c0cc5a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

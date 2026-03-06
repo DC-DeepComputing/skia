@@ -34,6 +34,24 @@
       "parentUuid": "9ea8d411_dde9ca30",
       "revId": "3b4f82ce22633f4d39d68d72e0a855f7ebc79254",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c3e9f2_94b938bf",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1898,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-06T20:34:06Z",
+      "side": 1,
+      "message": "After taking a look at the test output (like the output of `imagefilters_xfermodes`) on this patch set, it became obvious that beyond the \"simple\" issue of not emitting all the references reserved this change also relies on the idea that SkPDFDevices are used once. But sometimes the current content of the device is moved into a form xobject content stream with the content then referenced from the page and the device continues to be used. https://skia-review.googlesource.com/c/skia/+/1177977/3 does get around this (by adding one more layer of indirection, the solution to all our problems) but there are still a few more things that need to be cleaned up.",
+      "parentUuid": "f9cdbece_ee2cc9dd",
+      "revId": "3b4f82ce22633f4d39d68d72e0a855f7ebc79254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
