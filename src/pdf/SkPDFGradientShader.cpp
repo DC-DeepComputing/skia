@@ -987,7 +987,7 @@ static SkPDFIndirectReference create_smask_graphic_state(SkPDFDocument* doc,
                                                             SkPDFIndirectReference());
     SkRect bbox = SkRect::Make(state.fBBox);
     SkPDFIndirectReference alphaMask =
-            SkPDFMakeFormXObject(doc,
+            SkPDFMakeFormXObject(doc, -1, -1,
                                  create_pattern_fill_content(-1, luminosityShader.fValue, bbox),
                                  SkPDFUtils::RectToArray(bbox),
                                  std::move(resources),

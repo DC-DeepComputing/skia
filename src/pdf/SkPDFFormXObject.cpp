@@ -9,11 +9,12 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStream.h"
+#include "src/pdf/SkPDFDocumentPriv.h"
 #include "src/pdf/SkPDFUtils.h"
 
 #include <utility>
 
-SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
+SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc, int structParentsKey, int elemId,
                                             std::unique_ptr<SkStreamAsset> content,
                                             std::unique_ptr<SkPDFArray> mediaBox,
                                             std::unique_ptr<SkPDFDict> resourceDict,
@@ -28,6 +29,17 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
     dict->insertObject("Resources", std::move(resourceDict));
     dict->insertObject("BBox", std::move(mediaBox));
 
+    SkPDFIndirectReference xobject;
+    if (structParentsKey >= 0) {
+        dict->insertInt("StructParents", structParentsKey);
+    } else if (elemId > 0) {
+        xobject = doc->reserveRef();
+        int structParentKey = doc->createStructParentKeyForElemId(elemId, xobject);
+        if (structParentKey >= 0) {
+            dict->insertInt("StructParent", structParentKey);
+        }
+    }
+
     // Right now FormXObject is only used for saveLayer, which implies
     // isolated blending.  Do this conditionally if that changes.
     // TODO(halcanary): Is this comment obsolete, since we use it for
@@ -39,5 +51,5 @@ SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
     }
     group->insertBool("I", true);  // Isolated.
     dict->insertObject("Group", std::move(group));
-    return SkPDFStreamOut(std::move(dict), std::move(content), doc);
+    return SkPDFStreamOut(std::move(dict), std::move(content), doc, SkPDFSteamCompressionEnabled::Yes, xobject);
 }

@@ -103,7 +103,7 @@ SkPDFDevice::MarkedContentManager::MarkedContentManager(SkPDFDocument* document,
     , fCurrentlyActiveMark()
     , fNextMarksElemId(0)
     , fCurrentMarksElemId(0)
-    , fMadeMarks(false)
+    , fStructParentsKey(-1)
 {}
 
 SkPDFDevice::MarkedContentManager::~MarkedContentManager() {
@@ -127,7 +127,7 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
         fCurrentMarksElemId = 0;
     }
     if (fNextMarksElemId) {
-        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId);
+        fCurrentlyActiveMark = fDoc->createMarkForElemId(fNextMarksElemId, fStructParentsKey);
         if (fCurrentlyActiveMark) {
             // Begin this mark
             SkPDFUnion::Name(fCurrentlyActiveMark.structType()).emitObject(fOut);
@@ -135,7 +135,6 @@ void SkPDFDevice::MarkedContentManager::beginMark() {
             fOut->writeDecAsText(fCurrentlyActiveMark.mcid());
             fOut->writeText(" >>BDC\n");
             fCurrentMarksElemId = fCurrentlyActiveMark.elemId();
-            fMadeMarks = true;
         } else if (SkPDF::NodeID::BackgroundArtifact <= fNextMarksElemId &&
                    fNextMarksElemId <= SkPDF::NodeID::OtherArtifact &&
                    fDoc->hasCurrentPage())
@@ -1270,7 +1269,8 @@ SkPDFIndirectReference SkPDFDevice::makeFormXObjectFromDevice(SkIRect bounds, bo
     const char* colorSpace = alpha ? "DeviceGray" : nullptr;
 
     SkPDFIndirectReference xobject =
-        SkPDFMakeFormXObject(fDocument, this->content(),
+        SkPDFMakeFormXObject(fDocument, fMarkManager.structParentsKey(), fMarkManager.elemId(),
+                             this->content(),
                              SkPDFMakeArray(bounds.left(), bounds.top(),
                                             bounds.right(), bounds.bottom()),
                              this->makeResourceDict(), inverseTransform, colorSpace);
@@ -1903,7 +1903,7 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
     // This XObject may contain its own marks, which are hidden if emitted inside an outer mark.
     // If it does have its own marks we need to pause the current mark and then re-set it after.
     int currentStructElemId = fMarkManager.elemId();
-    if (pdfDevice->fMarkManager.madeMarks()) {
+    if (pdfDevice->fMarkManager.structParentsKey() >= 0) {
         fMarkManager.setNextMarksElemId(0);
         fMarkManager.beginMark();
     }
