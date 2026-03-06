@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be14dfb1_7e113a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-03-06T00:29:25Z",
+      "side": 1,
+      "message": "Looks like approval went away because I\u0027m not a committer. Please help with re-approve, thanks!",
+      "revId": "23d7b814d6489fe56bc6e14af7fbad2466888e4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
