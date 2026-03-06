@@ -22,6 +22,30 @@
       },
       "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fd5011_76bce0b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-06T17:21:07Z",
+      "side": 1,
+      "message": "But currently only `onSubmitToGPU` can return an OutstandingSubmission. Chrome uses an empty recording just to know when all previously submitted command buffer complete. Do you suggest we should add a new implementation of `OutstandingSubmission` that just checks the last submitted command buffer\u0027s status?\n\nI think submitting an empty command buffer is no harm currently (it is already happening). Maybe I can create a TODO?",
+      "parentUuid": "f96d288b_a7411650",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
