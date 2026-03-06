@@ -16,6 +16,24 @@
       "message": "Unfortunately, the current setup requires that every document reference ever created must be emitted. Which means that it isn\u0027t possible to get a ref for the form xobject early and then not emit it here because it is empty (which could be worked around by delaying getting the ref until the first mark is actually made) or the content entry is empty, or it turns out it isn\u0027t needed due to the paint.",
       "revId": "3b4f82ce22633f4d39d68d72e0a855f7ebc79254",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9cdbece_ee2cc9dd",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1898,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-03-06T13:41:58Z",
+      "side": 1,
+      "message": "tried to solve this, reseted my CL to yours (PS2) and put the missing changes on top see: https://skia-review.googlesource.com/c/skia/+/1177977/2..3",
+      "parentUuid": "9ea8d411_dde9ca30",
+      "revId": "3b4f82ce22633f4d39d68d72e0a855f7ebc79254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
