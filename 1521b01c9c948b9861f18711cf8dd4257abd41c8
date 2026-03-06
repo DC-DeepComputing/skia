@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e489589_a837d9c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-06T05:02:49Z",
+      "side": 1,
+      "message": "Unfortunately, in chrome we sometime submit an [empty command buffer](https://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/service/raster_decoder.cc;drc\u003dbca88e538c7c194592df8ddd03239e139ba17476;l\u003d356) just to trigger a finish proc.\n\nSo the submission with empty command should proceed in order for the finish proc to be fired.\n\nHowever, we still want to avoid submitting if there is no active command buffer. @michaelludwig@google.com In the reland, is it ok to return fActiveCommandBuffer only in `hasPendingGPUWork`?",
+      "revId": "1521b01c9c948b9861f18711cf8dd4257abd41c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
