@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fcac58a_d1f4cb68",
+        "filename": "src/pdf/SkPDFFormXObject.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-09T19:45:04Z",
+      "side": 1,
+      "message": "This does fit in better with the current model. The ref to the content stream only needs to go on the parent tree once (as opposed to every mark needing it, though of course now every mark needs the structParentsKey to get at the ref). This also allows delaying creation of the ref until it is actually drawn.",
+      "revId": "fabc7d57c25a73e83ab79f6879e15de9e9d00d67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
