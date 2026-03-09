@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c7bd73_d06ca3a1",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-09T19:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c78986c7_1e8a86d5",
+      "revId": "79b91b6ffc9522c627e37a32232fefa7cbf44ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76a25a69_a1b14c73",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bca15439_1f8f0160",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-09T19:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76a25a69_a1b14c73",
+      "range": {
+        "startLine": 88,
+        "startChar": 25,
+        "endLine": 88,
+        "endChar": 31
+      },
+      "revId": "79b91b6ffc9522c627e37a32232fefa7cbf44ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6543c8fa_a4479e4d",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-03-09T18:23:06Z",
       "side": 1,
       "message": "Not sure I like the look of all these on their own line. Did the autoformatter do this?",
+      "range": {
+        "startLine": 161,
+        "startChar": 24,
+        "endLine": 161,
+        "endChar": 34
+      },
+      "revId": "79b91b6ffc9522c627e37a32232fefa7cbf44ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f40d27a7_07906f45",
+        "filename": "gm/closedcappedhairlines.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-09T19:24:43Z",
+      "side": 1,
+      "message": "naw I did that, I can make em all one line",
+      "parentUuid": "6543c8fa_a4479e4d",
       "range": {
         "startLine": 161,
         "startChar": 24,
