@@ -1693,36 +1693,38 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // If an atlas path renderer was chosen we need to insert the shape into the atlas and schedule
     // it to be drawn.
-    std::optional<PathAtlas::MaskAndOrigin> atlasMask;  // only used if `pathAtlas != nullptr`
+    CoverageMaskShape maskShape;
+    SkIPoint pos;
     if (pathAtlas != nullptr) {
+        PathAtlas::AddShapeResult shapeResult;
         Rect clippedShapeBounds = clip.transformedShapeBounds().makeIntersect(clip.scissor());
         if (clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
             // The clip isn't excluding very much of the original shape, so store the entire path
             // in the atlas to avoid redundant entries with slightly different clips.
             clippedShapeBounds = clip.transformedShapeBounds();
         }
-        std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                            geometry.shape(),
-                                                            localToDevice,
-                                                            style);
+        shapeResult = pathAtlas->addShape(clippedShapeBounds,
+                                          geometry.shape(),
+                                          localToDevice,
+                                          style);
 
         // If there was no space in the atlas and we haven't flushed already, then flush pending
         // work to clear up space in the atlas. If we had already flushed once (which would have
         // cleared the atlas) then the atlas is too small for this shape.
-        if (!atlasMask && !needsFlush) {
+        if (!shapeResult.has_value() && !needsFlush) {
             // We need to flush work for all devices associated with the current Recorder.
             // Otherwise we may end up with outstanding draws that depend on past atlas state.
             fRecorder->priv().flushTrackedDevices(
                     SK_DUMP_TASKS_CODE("Device::drawGeometry Atlas Flush"));
 
             // Try inserting the shape again.
-            std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                                geometry.shape(),
-                                                                localToDevice,
-                                                                style);
+            shapeResult = pathAtlas->addShape(clippedShapeBounds,
+                                              geometry.shape(),
+                                              localToDevice,
+                                              style);
         }
 
-        if (!atlasMask) {
+        if (!shapeResult.has_value()) {
             SKGPU_LOG_E("Failed to add shape to atlas!");
             // TODO(b/285195175): This can happen if the atlas is not large enough or a compatible
             // atlas texture cannot be created. Handle the first case in `chooseRenderer` and make
@@ -1730,6 +1732,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             // texture.
             return;
         }
+        std::tie(maskShape, pos, renderer) = *shapeResult;
         // Since addShape() was successful we should have a valid Renderer now.
         SkASSERT(renderer && renderer->numRenderSteps() == 1 && !renderer->emitsPrimitiveColor());
         fAtlasedPathCount++;
@@ -1794,10 +1797,15 @@ void Device::drawGeometry(const Transform& localToDevice,
     // next invocation of flushPendingWork().
     if (pathAtlas != nullptr) {
         // Record the draw as a fill since stroking is handled by the atlas render/upload.
-        SkASSERT(atlasMask.has_value());
-        auto [mask, origin] = *atlasMask;
-        fDC->recordDraw(renderer, Transform::Translate(origin.fX, origin.fY), Geometry(mask), clip,
-                        order, paintID, dstUsage, scopedDrawBuilder.gatherer(), /*stroke=*/nullptr,
+        fDC->recordDraw(renderer,
+                        Transform::Translate(pos.fX, pos.fY),
+                        Geometry(maskShape),
+                        clip,
+                        order,
+                        paintID,
+                        dstUsage,
+                        scopedDrawBuilder.gatherer(),
+                        /*stroke=*/nullptr,
                         latestDepthLayer);
     } else {
         if (styleType != SkStrokeRec::kFill_Style) {
