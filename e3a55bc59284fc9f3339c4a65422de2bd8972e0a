@@ -16,6 +16,75 @@
       "message": "Clean run on PS10",
       "revId": "e3a55bc59284fc9f3339c4a65422de2bd8972e0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d4621b2_bf9a345d",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-09T19:52:56Z",
+      "side": 1,
+      "message": "nit: line lengths",
+      "range": {
+        "startLine": 100,
+        "startChar": 13,
+        "endLine": 101,
+        "endChar": 117
+      },
+      "revId": "e3a55bc59284fc9f3339c4a65422de2bd8972e0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55e4e83_ff1f04f0",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-09T19:52:56Z",
+      "side": 1,
+      "message": "nit: /*kIsDepthOnly\u003d*/",
+      "range": {
+        "startLine": 167,
+        "startChar": 38,
+        "endLine": 167,
+        "endChar": 43
+      },
+      "revId": "e3a55bc59284fc9f3339c4a65422de2bd8972e0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "945364e0_4b92d157",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-09T19:52:56Z",
+      "side": 1,
+      "message": "nit: line length and maybe document the parameters to the template. Maybe we have kIsDepthOnly default to false?",
+      "range": {
+        "startLine": 184,
+        "startChar": 24,
+        "endLine": 185,
+        "endChar": 110
+      },
+      "revId": "e3a55bc59284fc9f3339c4a65422de2bd8972e0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
