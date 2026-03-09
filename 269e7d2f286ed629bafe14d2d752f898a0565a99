@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b04bd66_ef9e5e09",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-09T13:43:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d69e871_d4ec8cd5",
+      "range": {
+        "startLine": 796,
+        "startChar": 4,
+        "endLine": 802,
+        "endChar": 5
+      },
+      "revId": "269e7d2f286ed629bafe14d2d752f898a0565a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a08b297f_203f410f",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-05T16:57:44Z",
       "side": 1,
       "message": "See comment in Context\u0027s async readback.",
+      "range": {
+        "startLine": 245,
+        "startChar": 2,
+        "endLine": 255,
+        "endChar": 5
+      },
+      "revId": "269e7d2f286ed629bafe14d2d752f898a0565a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c97ac80f_d1fdf70f",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-09T13:43:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a08b297f_203f410f",
       "range": {
         "startLine": 245,
         "startChar": 2,
