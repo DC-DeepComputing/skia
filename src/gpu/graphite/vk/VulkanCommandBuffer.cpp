@@ -456,7 +456,6 @@ void VulkanCommandBuffer::pushConstants(const PushConstantInfo& pushConstantInfo
 }
 
 bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
-                                          SkIRect renderPassBounds,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture,
@@ -489,7 +488,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
     this->setViewport(viewport);
 
     if (!this->beginRenderPass(
-                rpDesc, renderPassBounds, colorTexture, resolveTexture, depthStencilTexture)) {
+                rpDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }
 
@@ -829,7 +828,6 @@ void populate_write_info(VulkanDescriptorSet* set,
 } // anonymous namespace
 
 bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
-                                          SkIRect renderPassBounds,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture) {
@@ -913,7 +911,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
 
     VkRect2D renderArea = get_render_area(useFullBounds ? SkIRect::MakeWH(frameBufferWidth,
                                                                           frameBufferHeight)
-                                                        : renderPassBounds,
+                                                        : fRenderPassBounds,
                                           vulkanRenderPass->granularity(),
                                           frameBufferWidth,
                                           frameBufferHeight);

@@ -235,7 +235,6 @@ const DawnSampler* DawnCommandBuffer::getSampler(
 }
 
 bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
-                                        SkIRect renderPassBounds,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
@@ -243,7 +242,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         SkIRect viewport,
                                         const DrawPassList& drawPasses) {
     // `viewport` has already been translated by the replay translation by the base CommandBuffer
-    if (!SkIRect::Intersects(viewport, fRenderPassBounds)) SK_UNLIKELY {
+    if (!SkIRect::Intersects(viewport, fRenderTargetBounds)) SK_UNLIKELY {
             // The entire pass is offscreen
             return true;
         }
@@ -264,7 +263,6 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 
     if (!this->beginRenderPass(renderPassDesc,
                                resolveOffset,
-                               renderPassBounds,
                                colorTexture,
                                resolveTexture,
                                depthStencilTexture)) SK_UNLIKELY {
@@ -312,7 +310,6 @@ bool DawnCommandBuffer::onAddComputePass(DispatchGroupSpan groups) {
 
 bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                         const SkIPoint& resolveOffset,
-                                        SkIRect renderPassBounds,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture) {
@@ -343,6 +340,15 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 #if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassSampleCount mssaRenderToSingleSampledDesc;
     wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
+    wgpu::RenderPassRenderAreaRect wgpuRenderPassBounds = {};
+
+    if (fSharedContext->dawnCaps()->supportsRenderPassRenderArea()) {
+        wgpuRenderPassBounds.origin.x = fRenderPassBounds.x();
+        wgpuRenderPassBounds.origin.y = fRenderPassBounds.y();
+        wgpuRenderPassBounds.size.width = fRenderPassBounds.width();
+        wgpuRenderPassBounds.size.height = fRenderPassBounds.height();
+        wgpuRenderPass.nextInChain = &wgpuRenderPassBounds;
+    }
 #endif
 
 #if WGPU_TIMESTAMP_WRITES_DEFINED
@@ -421,13 +427,13 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             if (!emulateLoadStoreResolveTexture) {
 #if !defined(__EMSCRIPTEN__)
                 if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
-                    SkIRect msaaArea = renderPassBounds;
+                    SkIRect msaaArea = fRenderPassBounds;
                     SkAssertResult(msaaArea.intersect(SkIRect::MakeSize(
                             colorTexture->dimensions())));
                     wgpuPartialRect.colorOffsetX = msaaArea.x();
                     wgpuPartialRect.colorOffsetY = msaaArea.y();
 
-                    SkIRect resolveArea = renderPassBounds;
+                    SkIRect resolveArea = fRenderPassBounds;
                     resolveArea.offset(resolveOffset);
                     SkAssertResult(resolveArea.intersect(SkIRect::MakeSize(
                             resolveTexture->dimensions())));
@@ -435,6 +441,9 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                     wgpuPartialRect.resolveOffsetY = resolveArea.y();
                     wgpuPartialRect.width = resolveArea.width();
                     wgpuPartialRect.height = resolveArea.height();
+                    if (wgpuRenderPass.nextInChain) {
+                      wgpuPartialRect.nextInChain = wgpuRenderPass.nextInChain;
+                    }
                     wgpuRenderPass.nextInChain = &wgpuPartialRect;
                 } else
 #endif
@@ -460,12 +469,16 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 SkASSERT(fSharedContext->device().HasFeature(
                         wgpu::FeatureName::MSAARenderToSingleSampled));
 
+                if (wgpuRenderPass.nextInChain) {
+                    mssaRenderToSingleSampledDesc.nextInChain = wgpuRenderPass.nextInChain;
+                }
                 wgpuRenderPass.nextInChain = &mssaRenderToSingleSampledDesc;
                 mssaRenderToSingleSampledDesc.sampleCount = (uint8_t)renderPassDesc.fSampleCount;
             }
 #endif
         }
     }
+
 
     // Set up stencil/depth attachment
     if (depthStencilTexture) {
@@ -498,7 +511,6 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                     renderPassDesc,
                     wgpuRenderPass,
                     resolveOffset,
-                    renderPassBounds,
                     static_cast<const DawnTexture*>(colorTexture),
                     static_cast<const DawnTexture*>(resolveTexture))) {
             return false;
@@ -515,7 +527,6 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
         const RenderPassDesc& intendedRenderPassDesc,
         const wgpu::RenderPassDescriptor& intendedDawnRenderPassDesc,
         const SkIPoint& resolveOffset,
-        const SkIRect& renderPassBounds,
         const DawnTexture* msaaTexture,
         const DawnTexture* resolveTexture) {
     SkASSERT(!fActiveRenderPassEncoder);
@@ -549,9 +560,9 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
 
     auto renderPassEncoder = fCommandEncoder.BeginRenderPass(&dawnRenderPassDescWithoutResolve);
 
-    SkIRect msaaArea = renderPassBounds;
+    SkIRect msaaArea = fRenderPassBounds;
     msaaArea.intersect(SkIRect::MakeSize(msaaTexture->dimensions()));
-    SkIRect resolveArea = renderPassBounds;
+    SkIRect resolveArea = fRenderPassBounds;
     resolveArea.offset(resolveOffset);
     resolveArea.intersect(SkIRect::MakeSize(resolveTexture->dimensions()));
 
