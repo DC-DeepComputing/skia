@@ -38,7 +38,9 @@ struct GlyphEntry final {
     explicit GlyphEntry(SkPackedGlyphID id) : fPackedID(id) {}
 
     const SkPackedGlyphID fPackedID;
-    DrawAtlas::AtlasLocator fAtlasLocator;
+    DrawAtlas::Record     fAtlasRecord;
+    DrawAtlas::Rect16     fRect;
+    uint8_t               fPageIdx;
 };
 
 /** Adapts GlyphEntry* to conform to GlyphVector's GlyphType requirements. */
@@ -98,8 +100,8 @@ private:
     GlyphData& operator=(GlyphData&&) = delete;
 
     sk_sp<TextStrike> fTextStrike;
-    uint64_t fAtlasGeneration{DrawAtlas::GenerationCounter::kInvalidGeneration};
-    DrawAtlas::BulkUsePlotUpdater fBulkUseUpdater;
+    DrawAtlas::EvictionCounter fLastKnownGoodEvictionCounter = DrawAtlas::EvictionCounter::kInvalid;
+    DrawAtlas::BulkRecordUseUpdater fBulkUseUpdater;
 };
 
 }  // namespace skgpu::graphite
