@@ -26,24 +26,20 @@ namespace {
 const int kNumPlots = 2;
 const int kPlotSize = 32;
 const int kAtlasSize = kNumPlots * kPlotSize;
-uint32_t gEvictCount = 0;
+int gEvictCount = 0;
 
-class PlotEvictionCounter : public DrawAtlas::PlotEvictionCallback {
+class EvictionCounter : public DrawAtlas::EvictionCallback {
 public:
-    void evict(DrawAtlas::PlotLocator) override { ++gEvictCount; }
+    void evict(const DrawAtlas::RecordVisitor&) override { ++gEvictCount; }
 };
 
-void check(skiatest::Reporter* r, DrawAtlas* atlas,
-           uint32_t expectedActive, uint32_t expectedEvictCount) {
+void check(skiatest::Reporter* r, DrawAtlas* atlas, int expectedActive, int expectedEvictCount) {
     REPORTER_ASSERT(r, atlas->numActivePages() == expectedActive);
     REPORTER_ASSERT(r, gEvictCount == expectedEvictCount);
     REPORTER_ASSERT(r, atlas->maxPages() == DrawAtlas::kMaxMultitexturePages);
 }
 
-bool fill_plot(DrawAtlas* atlas,
-               Recorder* recorder,
-               DrawAtlas::AtlasLocator* atlasLocator,
-               int alpha) {
+bool fill_plot(DrawAtlas* atlas, Recorder* recorder, DrawAtlas::AddResult* addResult, int alpha) {
     SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
 
     SkBitmap data;
@@ -51,9 +47,11 @@ bool fill_plot(DrawAtlas* atlas,
     data.eraseARGB(alpha, 0, 0, 0);
 
     DrawAtlas::ErrorCode code;
-    code = atlas->addToAtlas(recorder, kPlotSize, kPlotSize,
-                             data.getAddr(0, 0), atlasLocator);
-    return DrawAtlas::ErrorCode::kSucceeded == code;
+    code = atlas->addRect(recorder,
+                          {kPlotSize, kPlotSize},
+                          addResult,
+                          static_cast<std::byte*>(data.getAddr(0, 0)));
+    return code == DrawAtlas::ErrorCode::kSucceeded;
 }
 }  // anonymous namespace
 
@@ -67,12 +65,10 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BasicDrawAtlas,
 
     gEvictCount = 0;
     MaskFormat atlasMaskFormat = MaskFormat::kA8;
-    PlotEvictionCounter evictor;
-    DrawAtlas::GenerationCounter counter;
+    EvictionCounter evictor;
     std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(atlasMaskFormat,
                                                        kAtlasSize, kAtlasSize,
                                                        kAtlasSize/kNumPlots, kAtlasSize/kNumPlots,
-                                                       &counter,
                                                        DrawAtlas::AllowMultitexturing::kYes,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
@@ -80,28 +76,30 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BasicDrawAtlas,
     check(reporter, atlas.get(), /*expectedActive=*/0, /*expectedEvictCount=*/0);
 
     // Fill up the first page
-    DrawAtlas::AtlasLocator atlasLocator;
-    DrawAtlas::AtlasLocator testAtlasLocator;
+    DrawAtlas::AddResult addResult;
+    DrawAtlas::Record atlasRecord;
+    DrawAtlas::Record testAtlasRecord;
     for (int i = 0; i < kNumPlots * kNumPlots; ++i) {
-        bool result = fill_plot(atlas.get(), recorder.get(), &atlasLocator, i * 32);
+        bool result = fill_plot(atlas.get(), recorder.get(), &addResult, i * 32);
+        atlasRecord = addResult.fRecord;
         REPORTER_ASSERT(reporter, result);
         // We will check drawing with the first plot.
         if (i == 0) {
-            testAtlasLocator = atlasLocator;
+            testAtlasRecord = atlasRecord;
         }
         check(reporter, atlas.get(), /*expectedActive=*/1, /*expectedEvictCount=*/0);
     }
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 4);
 
     // Force creation of a second page.
-    bool result = fill_plot(atlas.get(), recorder.get(), &atlasLocator, 4 * 32);
+    bool result = fill_plot(atlas.get(), recorder.get(), &addResult, 4 * 32);
     REPORTER_ASSERT(reporter, result);
     check(reporter, atlas.get(), /*expectedActive=*/2, /*expectedEvictCount=*/0);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 5);
 
     // Simulate a lot of draws using only the first plot. The last texture should be compacted.
     for (int i = 0; i < 512; ++i) {
-        atlas->setLastUseToken(testAtlasLocator, recorder->priv().tokenTracker()->nextFlushToken());
+        atlas->setLastUseToken(testAtlasRecord, recorder->priv().tokenTracker()->nextFlushToken());
         recorder->priv().issueFlushToken();
         atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
     }
@@ -120,18 +118,19 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BasicDrawAtlas,
     gEvictCount = 0;
     for (int p = 1; p <= 4; ++p) {
         for (int i = 0; i < kNumPlots * kNumPlots; ++i) {
-            result = fill_plot(atlas.get(), recorder.get(), &atlasLocator, p * i * 16);
-            atlas->setLastUseToken(atlasLocator, recorder->priv().tokenTracker()->nextFlushToken());
+            result = fill_plot(atlas.get(), recorder.get(), &addResult, p * i * 16);
+            atlasRecord = addResult.fRecord;
+            atlas->setLastUseToken(atlasRecord, recorder->priv().tokenTracker()->nextFlushToken());
             // We will check drawing with plot index 2 in the 3rd page
             if (p == 3 && i == 2) {
-                testAtlasLocator = atlasLocator;
+                testAtlasRecord = atlasRecord;
             }
             REPORTER_ASSERT(reporter, result);
         }
         check(reporter, atlas.get(), /*expectedActive=*/p, /*expectedEvictCount=*/0);
     }
     // Try one more, it should fail.
-    result = fill_plot(atlas.get(), recorder.get(), &atlasLocator, 0xff);
+    result = fill_plot(atlas.get(), recorder.get(), &addResult, 0xff);
     REPORTER_ASSERT(reporter, !result);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 16);
 
@@ -145,7 +144,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BasicDrawAtlas,
     atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
 
     // Simulate a draw using only a plot in the 3rd page
-    atlas->setLastUseToken(testAtlasLocator, recorder->priv().tokenTracker()->nextFlushToken());
+    atlas->setLastUseToken(testAtlasRecord, recorder->priv().tokenTracker()->nextFlushToken());
 
     // FreeGpuResources should only remove the 4th page
     atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
@@ -167,8 +166,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ThrashDrawAtlasCache,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
-    PlotEvictionCounter evictor;
-    DrawAtlas::GenerationCounter counter;
+    EvictionCounter evictor;
 
     // Use a 4-page atlas with 4 plots per page (16 total plots)
     constexpr int numPlots = 2;
@@ -182,33 +180,35 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ThrashDrawAtlasCache,
                                                        atlasSize,
                                                        plotSize,
                                                        plotSize,
-                                                       &counter,
                                                        DrawAtlas::AllowMultitexturing::kYes,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
                                                        /*label=*/"ThrashDrawAtlasTest");
-    std::vector<DrawAtlas::AtlasLocator> locators(totalPlots);
+    std::vector<DrawAtlas::Record> records(totalPlots);
     SkASSERT(totalPlots == 16);
 
     // Test kTryAgain failure and recovery
     // Fill the entire atlas and mark all plots as in-use for the current flush
     gEvictCount = 0;
     for (int i = 0; i < totalPlots; ++i) {
-        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &locators[i], i));
-        atlas->setLastUseToken(locators[i], recorder->priv().tokenTracker()->nextFlushToken());
+        DrawAtlas::AddResult addResult;
+        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
+        records[i] = addResult.fRecord;
+        atlas->setLastUseToken(records[i], recorder->priv().tokenTracker()->nextFlushToken());
     }
     check(reporter, atlas.get(), /*expectedActive=*/maxPages, /*expectedEvictCount=*/0);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
 
     // Try to add one more plot. All plots are "in-flight", so this must fail.
-    REPORTER_ASSERT(reporter, !fill_plot(atlas.get(), recorder.get(), &locators[0], 0xff));
+    DrawAtlas::AddResult addResult;
+    REPORTER_ASSERT(reporter, !fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
 
     // Now, simulate a flush. This makes the plots evictable.
     recorder->priv().issueFlushToken();
     atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
 
     // Try adding again. It should succeed by evicting the least recently used plot.
-    REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &locators[0], 0xff));
+    REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
     check(reporter, atlas.get(), /*expectedActive=*/maxPages, /*expectedEvictCount=*/1);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
 
@@ -230,8 +230,9 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ThrashDrawAtlasCache,
     gEvictCount = 0;
     // Refill the atlas
     for (int i = 0; i < totalPlots; ++i) {
-        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &locators[i], i));
-        atlas->setLastUseToken(locators[i], recorder->priv().tokenTracker()->nextFlushToken());
+        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
+        records[i] = addResult.fRecord;
+        atlas->setLastUseToken(records[i], recorder->priv().tokenTracker()->nextFlushToken());
     }
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
     recorder->priv().issueFlushToken();
@@ -240,7 +241,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ThrashDrawAtlasCache,
 
     // Use only one plot on the last page repeatedly, making others on that page stale.
     // The locator for the first plot on the last page is at index (totalPlots - numPlots*numPlots).
-    DrawAtlas::AtlasLocator& lastPagePlot = locators[totalPlots - (numPlots * numPlots)];
+    DrawAtlas::Record& lastPagePlot = records[totalPlots - (numPlots * numPlots)];
 
     // After many flushes, the other 3 plots on the last page should be evicted.
     // We loop one more than kPlotRecentlyUsedCount (32) times to ensure eviction.
@@ -272,15 +273,13 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
                                          CtsEnforcement::kNever) {
     gEvictCount = 0;
     auto recorder = context->makeRecorder();
-    PlotEvictionCounter evictor;
-    DrawAtlas::GenerationCounter counter;
+    EvictionCounter evictor;
     constexpr int plotsOnPage = kNumPlots * kNumPlots;
     std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
                                                        kAtlasSize,
                                                        kAtlasSize,
                                                        kPlotSize,
                                                        kPlotSize,
-                                                       &counter,
                                                        DrawAtlas::AllowMultitexturing::kYes,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
@@ -288,12 +287,14 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
 
     // Fill three pages and collect a shared pointer to each page's TextureProxy.
     std::vector<sk_sp<TextureProxy>> proxies;
-    std::vector<DrawAtlas::AtlasLocator> locators(plotsOnPage * 3);
+    std::vector<DrawAtlas::Record> records(plotsOnPage * 3);
 
     for (int i = 0; i < plotsOnPage * 3; ++i) {
-        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &locators[i], i));
-        if (locators[i].pageIndex() >= proxies.size()) {
-            proxies.push_back(atlas->getProxies()[locators[i].pageIndex()]);
+        DrawAtlas::AddResult addResult;
+        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
+        records[i] = addResult.fRecord;
+        if (addResult.fPageIdx >= SkToInt(proxies.size())) {
+            proxies.push_back(atlas->getProxies()[addResult.fPageIdx]);
         }
     }
 
@@ -309,7 +310,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
     // Simulate many frames where only a plot on the first page (page 0) is ever used. This will
     // make pages 1 and 2 stale and eligible for compaction. Use the first locator we created, which
     // is guaranteed to be on page 0.
-    DrawAtlas::AtlasLocator& firstPageLocator = locators[0];
+    DrawAtlas::Record& firstPageLocator = records[0];
 
     for (int i = 0; i < 50; ++i) {
         atlas->setLastUseToken(firstPageLocator, recorder->priv().tokenTracker()->nextFlushToken());
