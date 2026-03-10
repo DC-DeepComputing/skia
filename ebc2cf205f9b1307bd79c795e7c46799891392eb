@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8665982_3a94254a",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-10T17:16:09Z",
+      "side": 1,
+      "message": "This would prevent UAF for `GetInstance` calls following the execution of the exit handler, but it doesn\u0027t protect against `GetInstance` calls that are racing with the handler - e.g. some thread just called `GetInstance` but is not done using the tracer instance.\n\nI\u0027m not sure how to make this thread safe short of ref counting the instance.\n\nIs the `!leakTracer` behavior actually required?  The easy fix for Chromium would be to just leak the tracer.",
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
