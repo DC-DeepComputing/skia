@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58757894_0aad6a30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-10T17:58:36Z",
+      "side": 1,
+      "message": "Change is bulkier than I’d prefer, but it made sense to go ahead and add non-functional improvements while refactoring for correctness.\n\nTo aid in your journey, here\u0027s a summary of some key changes:\n* `init_[instance/device]_extensions_and_layers` have been updated to report out not just enabled but also available extension names (both are useful and needed for API calls either for Vulkan or Skia).\n* The lists of all *available* device + instance extensions are now used to initialize VulkanExtensions and when making calls into VulkanPreferredFeatures. This is the primary correctness fix.\n* The order of VulkanPreferredFeatures API method calls in relation to relevant driver calls is important. These calls are now performed within the main CreateVkBackendContext function outside of helpers, which are used to perform Vulkan queries for all available extension/layer information.\n\nThe rest should all be small updates (variable naming conventions, const-ness, static helpers vs. helpers within anonymous namespaces, reordering to batch together relevant operations, scoping, comment documentation changes + style, etc).",
+      "revId": "f439a8e7ea48e4d70637cc74c53eb6e5a2701922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
