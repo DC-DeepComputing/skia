@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6d95e2_bc83c6e9",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T20:03:48Z",
+      "side": 1,
+      "message": "nit: \"current render pass, and are undefined outside a call to `addRenderPass`.\"",
+      "range": {
+        "startLine": 148,
+        "startChar": 58,
+        "endLine": 148,
+        "endChar": 75
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c91b34ce_ffd33b77",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T20:03:48Z",
+      "side": 1,
+      "message": "nit: Leave the comment that viewport bounds has been adjusted by replay translation. We should move the stipulation that render area bounds have been translated and intersected to the field now.",
+      "range": {
+        "startLine": 175,
+        "startChar": 1,
+        "endLine": 176,
+        "endChar": 73
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cc0806f_ba2ac392",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T20:03:48Z",
+      "side": 1,
+      "message": "This is so similar to the data being sent as the render area. Do you have any plans to consolidate these extensions?",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 66
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6be4eb8_4b9a7371",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T20:03:48Z",
+      "side": 1,
+      "message": "We should either keep using `fRenderTargetBounds` here or update the `Intersects` check on line 358 to use `fRenderAreaBounds` for consistency.",
+      "range": {
+        "startLine": 607,
+        "startChar": 55,
+        "endLine": 607,
+        "endChar": 72
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
