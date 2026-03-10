@@ -321,8 +321,8 @@ namespace skia_private {
              "^(%s: %s)",                                                          \
              ::skia_private::UnboxPerfettoString(arg1_name),                       \
              ::skia_private::WrapTraceArgInStdString(arg1_val).c_str());           \
-    atrace_begin_body(::skia_private::UnboxPerfettoString(name));                  \
-    atrace_begin_body(SK_PERFETTO_UID(skTraceStrBuf1));
+    ATRACE_BEGIN(::skia_private::UnboxPerfettoString(name));                  \
+    ATRACE_BEGIN(SK_PERFETTO_UID(skTraceStrBuf1));
 
 // WARNING: must always be guarded by an outer call to CC_UNLIKELY(ATRACE_ENABLED())
 #define SK_INTERNAL_ATRACE_ARGS_BEGIN_DANGEROUS_2(                                 \
@@ -339,9 +339,9 @@ namespace skia_private {
             "^(%s: %s)",                                                           \
              ::skia_private::UnboxPerfettoString(arg2_name),                       \
              ::skia_private::WrapTraceArgInStdString(arg2_val).c_str());           \
-    atrace_begin_body(::skia_private::UnboxPerfettoString(name));                  \
-    atrace_begin_body(SK_PERFETTO_UID(skTraceStrBuf1));                            \
-    atrace_begin_body(SK_PERFETTO_UID(skTraceStrBuf2));
+    ATRACE_BEGIN(::skia_private::UnboxPerfettoString(name));                  \
+    ATRACE_BEGIN(SK_PERFETTO_UID(skTraceStrBuf1));                            \
+    ATRACE_BEGIN(SK_PERFETTO_UID(skTraceStrBuf2));
 
 // Will map to either the 0, 1, or 2 argument variant of this macro, which will trigger an
 // ATRACE_BEGIN event for the slice name, and one for each argument <name, value> pair. The caller
@@ -366,18 +366,18 @@ namespace skia_private {
 
 // WARNING: must always be guarded by an outer call to CC_UNLIKELY(ATRACE_ENABLED())
 #define SK_INTERNAL_ATRACE_ARGS_END_DANGEROUS_2(arg1_name, arg1_val, arg2_name, arg2_val, ...)  \
-    atrace_end_body();                                                                          \
-    atrace_end_body();                                                                          \
-    atrace_end_body();
+    ATRACE_END();                                                                          \
+    ATRACE_END();                                                                          \
+    ATRACE_END();
 
 // WARNING: must always be guarded by an outer call to CC_UNLIKELY(ATRACE_ENABLED())
 #define SK_INTERNAL_ATRACE_ARGS_END_DANGEROUS_1(arg1_name, arg1_val)    \
-    atrace_end_body();                                                  \
-    atrace_end_body();
+    ATRACE_END();                                                  \
+    ATRACE_END();
 
 // WARNING: must always be guarded by an outer call to CC_UNLIKELY(ATRACE_ENABLED())
 #define SK_INTERNAL_ATRACE_ARGS_END_DANGEROUS_0() \
-    atrace_end_body();
+    ATRACE_END();
 
 // Will map to either the 0, 1, or 2 argument variant of this macro, which will trigger an
 // ATRACE_END event for the slice name, and one for each argument <name, value> pair. The caller
