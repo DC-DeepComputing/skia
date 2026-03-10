@@ -16,6 +16,29 @@
       "message": "This would prevent UAF for `GetInstance` calls following the execution of the exit handler, but it doesn\u0027t protect against `GetInstance` calls that are racing with the handler - e.g. some thread just called `GetInstance` but is not done using the tracer instance.\n\nI\u0027m not sure how to make this thread safe short of ref counting the instance.\n\nIs the `!leakTracer` behavior actually required?  The easy fix for Chromium would be to just leak the tracer.",
       "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18aaad2f_1d4bbafe",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-10T17:19:05Z",
+      "side": 1,
+      "message": "Someone may have called this and still have a pointer to the tracer which might end up deleted in atexit? Future callers of this will get `nullptr` but there is no ordering between the users of the return value of this method and the atexit?\n\nI suppose this change shortens the race to be only with current short term holders of the return value of this method when atexit is run, instead of the current any current or future callers of this function after atexit is run. However, there does still appear to be a race here.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
