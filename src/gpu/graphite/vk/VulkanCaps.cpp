@@ -98,10 +98,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
                       const VkPhysicalDeviceFeatures2* features,
                       const skgpu::VulkanExtensions* extensions,
                       Protected isProtected) {
-    const EnabledFeatures enabledFeatures =
-            this->getEnabledFeatures(features, physicalDeviceVersion);
+    const EnabledFeatures enabledFeatures = this->getEnabledFeatures(features, physicalDeviceVersion);
 
     PhysicalDeviceProperties deviceProperties;
+    SKGPU_LOG_W("VulkanCaps::init call");
     this->getProperties(vkInterface,
                         physDev,
                         physicalDeviceVersion,
@@ -434,11 +434,13 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
                                const skgpu::VulkanExtensions* extensions,
                                const EnabledFeatures& features,
                                PhysicalDeviceProperties* props) {
+    SKGPU_LOG_W("VulkanCaps::getProperties: Query the physical device properties that Graphite cares about.");
     props->fBase = {};
     props->fBase.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
 
     props->fDriver = {};
     props->fDriver.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DRIVER_PROPERTIES;
+    // VkPhysicalDeviceDriverPropertiesKHR if 1.1?
 
     props->fGpl = {};
     props->fGpl.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_PROPERTIES_EXT;
@@ -450,6 +452,12 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
     VkImageLayout hicCopyDstLayoutStorage[kHicCopyDstLayoutMax] = {};
     props->fHic.copyDstLayoutCount = kHicCopyDstLayoutMax;
     props->fHic.pCopyDstLayouts = hicCopyDstLayoutStorage;
+
+    if (extensions->hasExtension(VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME, 1)) {
+        SKGPU_LOG_W("Has driver prop extension");
+    } else {
+        SKGPU_LOG_W("Does NOT have driver prop extension");
+    }
 
     const bool hasDriverProperties =
             physicalDeviceVersion >= VK_API_VERSION_1_2 ||
