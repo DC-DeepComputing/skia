@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3365767_45395da2",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T17:48:04Z",
+      "side": 1,
+      "message": "I\u0027m following up, but it looks like they ran a Finch experiment to try leaking but then left it as non-leaking.  Maybe that was because there were no changes to UMA metrics so they figured they\u0027d be safe, in which case I think we should go to leaking, but if there were stability issues, then I think we can add a ref-counted thing that wraps the SkEventTracer internally so we don\u0027t impact the public API.",
+      "parentUuid": "a8665982_3a94254a",
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18aaad2f_1d4bbafe",
         "filename": "src/utils/SkEventTracer.cpp",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2026-03-10T17:19:05Z",
       "side": 1,
       "message": "Someone may have called this and still have a pointer to the tracer which might end up deleted in atexit? Future callers of this will get `nullptr` but there is no ordering between the users of the return value of this method and the atexit?\n\nI suppose this change shortens the race to be only with current short term holders of the return value of this method when atexit is run, instead of the current any current or future callers of this function after atexit is run. However, there does still appear to be a race here.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "332b0a0f_45e05dc3",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T17:48:04Z",
+      "side": 1,
+      "message": "Oh silly me, good catch.",
+      "parentUuid": "18aaad2f_1d4bbafe",
       "range": {
         "startLine": 67,
         "startChar": 0,
