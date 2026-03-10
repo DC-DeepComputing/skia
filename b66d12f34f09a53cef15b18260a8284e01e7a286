@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b11d538f_e5ef6296",
+        "filename": "src/gpu/ganesh/text/GlyphData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T18:57:02Z",
+      "side": 1,
+      "message": "We could keep this as just SkPackedGlyphID if we passed in the subrun\u0027s format to `GrAtlasManager::addGlyphToAtlas`, right?\n\nDo you know if there are more bits available in SkPackedGlyphID or GrAtlasLocator to encode the mask format?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "b66d12f34f09a53cef15b18260a8284e01e7a286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
