@@ -94,6 +94,47 @@
       },
       "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dacc074_7c074b0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T13:25:28Z",
+      "side": 1,
+      "message": "Ah good catch, I\u0027d been thinking that `submit(syncToCpu::kYes)` would wait oldest-to-newest so when we reached the newest `FinishedGpuSubmission` it could just return. But `checkForFinishedWork` is written to assume that the GPU\u0027s waiting APIs will trigger in order, so we can just block on the newest submission and then clean up the prior submissions too.\n\nIt does seem wasteful to call `waitUntilFinished()` on all of the outstanding work submissions if we were to restructure the `checkForFinishedWork` but there probably aren\u0027t that many at a time. This could look something like:\n```\ndo {\n    OutstandingSubmission* front \u003d (OutstandingSubmission*)fOutstandingSubmissions.front();\n    if (front \u0026\u0026 sync \u003d\u003d SyncToCpu::kYes) {\n        (*front)-\u003ewaitUntilFinished(fSharedContext);\n    }\n    // For SyncToCPU, isFinished() should return true but this catches\n    // spurious interrupts when waiting on a semaphore.\n    while (front \u0026\u0026 (*front)-\u003eisFinished(fSharedContext)) {\n        fOutstandingSubmissions.pop_front();\n\n        front-\u003e~OutstandingSubmission();\n        front \u003d (OutstandingSubmission*)fOutstandingSubmissions.front();\n    }\n} while (sync \u003d\u003d SyncToCpu::kYes \u0026\u0026 !fOutstandingSubmissions.empty());\n```\n\nAnother option that could work would be that if we have an empty recording insertion, we just append the finished procs to the back outstanding work submission, or run them ASAP if there is no outstanding work.",
+      "parentUuid": "29820854_6202caeb",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24023fc5_692b6de9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T13:25:28Z",
+      "side": 1,
+      "message": "Adding Greg, can you weigh in on the restructuring of checkForFinishedWork()?",
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
