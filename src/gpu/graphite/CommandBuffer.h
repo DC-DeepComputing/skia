@@ -143,7 +143,11 @@ protected:
     CommandBuffer(Protected);
 
     // These are the color attachment bounds, intersected with any clip provided on replay.
-    SkIRect fRenderPassBounds;
+    SkIRect fRenderTargetBounds;
+
+    // These are the bounds of all rendering operations in the render pass.
+    SkIRect fRenderAreaBounds;
+
     // This is also the origin of the logical viewport relative to the target texture's (0,0) pixel.
     SkIVector fReplayTranslation;
 
@@ -171,7 +175,6 @@ private:
     // Renderpass, viewport bounds have already been adjusted by the replay translation. The render
     // pass bounds has been intersected with the color attachment bounds.
     virtual bool onAddRenderPass(const RenderPassDesc&,
-                                 SkIRect renderPassBounds,
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,
