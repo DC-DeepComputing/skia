@@ -53,7 +53,13 @@ bool SkEventTracer::SetInstance(SkEventTracer* tracer, bool leakTracer) {
     // If leaking the tracer is accepted then there is no need to install
     // the atexit.
     if (!leakTracer) {
-        atexit([]() { delete gUserTracer.load(); });
+        atexit([]() {
+            // Set gUserTracer to null in the event that there are other running threads that might
+            // still be executing TRACE_EVENTs; they will switch to using the default tracer but
+            // since we are shutting down that doesn't really matter.
+            auto tracer = gUserTracer.exchange(nullptr);
+            delete tracer;
+        });
     }
     return true;
 }
