@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aa923a4_c8307a70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T19:47:27Z",
+      "side": 1,
+      "message": "Friendly ping, the canary failure was an infra patch on a single bot, I think everything should be fine there.",
+      "revId": "dced751e5e2a6c1068152d807e5a218b2715b96d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
