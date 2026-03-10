@@ -22,6 +22,30 @@
       },
       "revId": "b66d12f34f09a53cef15b18260a8284e01e7a286",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3647e957_d4085abd",
+        "filename": "src/gpu/ganesh/text/GlyphData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-10T19:11:15Z",
+      "side": 1,
+      "message": "After offline discussion, this isn\u0027t a significant performance concern and has its own challenges.",
+      "parentUuid": "b11d538f_e5ef6296",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "b66d12f34f09a53cef15b18260a8284e01e7a286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
