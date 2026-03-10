@@ -308,6 +308,60 @@ describe('Font Behavior', () => {
         typeface.delete();
     });
 
+    it('can get font metrics', () => {
+        const typeface = CanvasKit.Typeface.MakeTypefaceFromData(notoSerifFontBuffer);
+        const fontSizes = [257, 100, 11];
+        // The point of these values is to let us know 1) if font metrics is working
+        // and 2) that measurements don't drastically change. If these change a little bit,
+        // just update them with the new values. For super-accurate readings, one could
+        // run a C++ snippet of code and compare the values, but that is likely unnecessary
+        // unless we suspect a bug with the bindings.
+        const expectedFm = [{
+            ascent: -200,
+            descent: 20,
+            leading: 20,
+            underlineThickness: 20,
+            underlinePosition: 10,
+            strikeoutThickness: 20,
+            strikeoutPosition: 50,
+        },{
+            ascent: -200,
+            descent: 20,
+            leading: 20,
+            underlineThickness: 20,
+            underlinePosition: 10,
+            strikeoutThickness: 20,
+            strikeoutPosition: 50,
+        },{
+            ascent: -200,
+            descent: 20,
+            leading: 20,
+            underlineThickness: 20,
+            underlinePosition: 10,
+            strikeoutThickness: 20,
+            strikeoutPosition: 50,
+        }];
+
+        for (const idx in fontSizes) {
+            const font = new CanvasKit.Font(typeface, fontSizes[idx]);
+            font.setHinting(CanvasKit.FontHinting.None);
+            font.setLinearMetrics(true);
+            font.setSubpixel(true);
+
+            const fm = font.getMetrics();
+            expect(fm.ascent).toBeCloseTo(expectedFm[idx].ascent, 5);
+            expect(fm.descent).toBeCloseTo(expectedFm[idx].descent, 5);
+            expect(fm.leading).toBeCloseTo(expectedFm[idx].leading, 5);
+            expect(fm.underlineThickness).toBeCloseTo(expectedFm[idx].underlineThickness, 5);
+            expect(fm.underlinePosition).toBeCloseTo(expectedFm[idx].underlinePosition, 5);
+            expect(fm.strikeoutThickness).toBeCloseTo(expectedFm[idx].strikeoutThickness, 5);
+            expect(fm.strikeoutPosition).toBeCloseTo(expectedFm[idx].strikeoutPosition, 5);
+            font.delete();
+        }
+
+        typeface.delete();
+    });
+
     gm('font_edging', (canvas) => {
         // Draw a small font scaled up to see the aliasing artifacts.
         canvas.scale(8, 8);
