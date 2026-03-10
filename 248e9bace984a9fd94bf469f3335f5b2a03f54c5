@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d46819c0_9e4a494b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-03-10T14:25:57Z",
+      "side": 1,
+      "message": "\u003e In recent Android versions (Android V+), atrace_begin_body and atrace_end_body have been removed from \u003ccutils/trace.h\u003e.\n\nIt sure looks like they\u0027re [still there](https://cs.android.com/android/platform/superproject/main/+/main:system/core/libcutils/include/cutils/trace.h;l\u003d92-96;drc\u003d0c44d8d68d56c7aecb828d8d87fba7dcb114f3d9) to me?",
+      "revId": "248e9bace984a9fd94bf469f3335f5b2a03f54c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
