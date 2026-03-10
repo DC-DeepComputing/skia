@@ -269,3 +269,111 @@ def split_srcs_and_hdrs(name, files, visibility = None):
         srcs = hdrs,
         visibility = visibility,
     )
+
+def skia_cc_library_with_testutil(
+        name,
+        srcs,
+        hdrs,
+        deps,
+        visibility,
+        priv_visibility,
+        linkopts = None,
+        defines = None,
+        features = None,
+        implementation_deps = None,
+        local_defines = None):
+    """Create a pair of skia_cc_library rules, a normal one and a test-only one with GPU_TEST_UTILS
+
+    This will re-write any deps in the test version to refer to the other TEST_UTIL libraries.
+
+    Args:
+        name: see https://bazel.build/reference/be/c-cpp#cc_library
+        srcs: see https://bazel.build/reference/be/c-cpp#cc_library
+        hdrs: see https://bazel.build/reference/be/c-cpp#cc_library
+        deps: see https://bazel.build/reference/be/c-cpp#cc_library
+        visibility: see https://bazel.build/reference/be/c-cpp#cc_library
+        priv_visibility: the visibility rules that will be used for the test version
+        linkopts: see https://bazel.build/reference/be/c-cpp#cc_library, optional. Only passed
+                  to the test version.
+                  TODO(kjlubick): can we always have these be forwarded? I'm worried about G3.
+        defines: see https://bazel.build/reference/be/c-cpp#cc_library, optional
+        features: see https://bazel.build/reference/be/c-cpp#cc_library, optional
+        features: see https://bazel.build/reference/be/c-cpp#cc_library, optional
+        features: see https://bazel.build/reference/be/c-cpp#cc_library, optional
+    """
+    if not linkopts:
+        linkopts = []
+    if not defines:
+        defines = []
+    if not features:
+        features = []
+    if not implementation_deps:
+        implementation_deps = []
+    if not local_defines:
+        local_defines = []
+
+    allowed_names = set([
+        "ganesh",
+        "ganesh_gl",
+        "ganesh_vulkan",
+        "graphite",
+        "graphite_native_vulkan",
+        "glx_factory",
+        "precompile",
+    ])
+
+    rewrite_deps = {
+        "//:ganesh_gl": "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//:ganesh_vulkan": "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
+        "//:glx_factory": "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
+        "//src/gpu/ganesh": "//src/gpu/ganesh:ganesh_TEST_UTIL",
+        "//src/gpu/ganesh/gl/glx:glx_factory": "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
+        "//src/gpu/ganesh/gl:ganesh_gl": "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
+        "//src/gpu/ganesh/vk:ganesh_vulkan": "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
+        "//src/gpu/graphite": "//src/gpu/graphite:graphite_TEST_UTIL",
+        "//src/gpu/graphite/vk:graphite_native_vulkan": "//src/gpu/graphite/vk:graphite_native_vulkan_TEST_UTIL",
+        "//src/gpu/graphite/precompile": "//src/gpu/graphite/precompile:precompile_TEST_UTIL",
+    }
+
+    if name not in allowed_names:
+        fail("Was not registered to re-write " + name)
+
+    if "GPU_TEST_UTILS" in defines:
+        fail("You shouldn't put GPU_TEST_UTILS in the defines")
+
+    skia_cc_library(
+        name = name,
+        srcs = srcs,
+        hdrs = hdrs,
+        defines = defines,
+        deps = deps,
+        features = features,
+        visibility = visibility,
+        implementation_deps = implementation_deps,
+        local_defines = local_defines,
+    )
+
+    rewritten_deps = []
+    for dep in deps:
+        if dep in rewrite_deps:
+            rewritten_deps.append(rewrite_deps[dep])
+        else:
+            rewritten_deps.append(dep)
+
+    for dep in implementation_deps:
+        if dep in rewrite_deps:
+            fail("not supported")
+
+    skia_cc_library(
+        name = name + "_TEST_UTIL",
+        testonly = True,
+        srcs = srcs,
+        hdrs = hdrs,
+        features = features,
+        defines = defines + ["GPU_TEST_UTILS"],
+        visibility = priv_visibility,
+        deps = rewritten_deps,
+        implementation_deps = implementation_deps,
+        local_defines = local_defines,
+        linkopts = linkopts,
+    )
