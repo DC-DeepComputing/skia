@@ -70,6 +70,30 @@
       },
       "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29820854_6202caeb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-10T12:29:40Z",
+      "side": 1,
+      "message": "if `onWaitUntilFinished()` did nothing, would the `submit(syncToCpu::kYes)` call work incorrectly? The wait would return immediately but the real GPU work wouldn\u0027t complete yet.",
+      "parentUuid": "a906e29e_c9aed23c",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
