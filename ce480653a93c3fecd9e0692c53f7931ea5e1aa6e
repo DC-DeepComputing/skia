@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "878e47d5_095cd6d0",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T19:27:22Z",
+      "side": 1,
+      "message": "Breaking the Chromium roll\nhttps://ci.chromium.org/ui/p/chromium/builders/try/chromeos-arm64-generic-rel/619095/overview\n\n```\n../../third_party/skia/src/gpu/graphite/dawn/DawnCommandBuffer.cpp:353:36: error: use of undeclared identifier \u0027wgpuRenderArea\u0027; did you mean \u0027wgpuRenderPass\u0027?\n  353 |     wgpu::RenderPassRenderAreaRect wgpuRenderArea \u003d {};\n```",
+      "range": {
+        "startLine": 353,
+        "startChar": 4,
+        "endLine": 353,
+        "endChar": 55
+      },
+      "revId": "ce480653a93c3fecd9e0692c53f7931ea5e1aa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
