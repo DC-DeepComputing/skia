@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b3a78a6_8e7755fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T18:53:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3efaf270_05232feb",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cacd8ff2_2e86185d",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-11T17:23:44Z",
       "side": 1,
       "message": "jobs",
+      "range": {
+        "startLine": 14,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 34
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f046852c_3cbdf38e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T18:53:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cacd8ff2_2e86185d",
       "range": {
         "startLine": 14,
         "startChar": 30,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "220d082e_60773f65",
+        "filename": "gn/toolchain/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T18:53:55Z",
+      "side": 1,
+      "message": "Yes, I chose this arbitrarily, mostly because I thought it would easily distinguish wasm vs native artifacts by filename. It\u0027s not actually required AFAIK.\n\nFor example, the libraries in emscripten\u0027s sysroot are all shipped named just `.a`, e.g: `emscripten/cache/sysroot/lib/wasm32-emscripten/libwebgpu.a`. So we could either drop the custom naming entirely, or we could do e.g. `.wasm.a` (which I personally think reads a little better than `.wasma`).",
+      "parentUuid": "73f5cdef_b86f240a",
+      "range": {
+        "startLine": 321,
+        "startChar": 37,
+        "endLine": 321,
+        "endChar": 43
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd64e3d1_afc02591",
         "filename": "gn/toolchain/emsdk/BUILD.gn",
         "patchSetId": 20
@@ -100,6 +172,30 @@
       "writtenOn": "2026-03-11T17:23:44Z",
       "side": 1,
       "message": "Commented out or still needed?",
+      "range": {
+        "startLine": 4,
+        "startChar": 6,
+        "endLine": 4,
+        "endChar": 19
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "099f1d23_f72510e0",
+        "filename": "gn/toolchain/emsdk/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T18:53:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd64e3d1_afc02591",
       "range": {
         "startLine": 4,
         "startChar": 6,
@@ -147,6 +243,30 @@
       "side": 1,
       "message": "Oops, totally forgot about this. I agree, hardcoding is not the way to go. I fought for a while with getting the relative path resolution to work, since that works locally. I think it wasn\u0027t working because the test environment maybe places the build directory in a different directory tree from the source directory.\n\nI\u0027ll spend some time looking in to how better to plumb this through.",
       "parentUuid": "6e6948a2_2610a3dc",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 53
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16efea28_ef3314af",
+        "filename": "gn/toolchain/emsdk/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T18:53:55Z",
+      "side": 1,
+      "message": "Somehow I missed the obvious answer. Fixed",
+      "parentUuid": "b2e1c1d1_5b06805e",
       "range": {
         "startLine": 5,
         "startChar": 35,
