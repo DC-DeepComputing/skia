@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "beff88f1_0946e565",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T13:38:09Z",
+      "side": 1,
+      "message": "I heard back and the reason they didn\u0027t continue with leaking was that it didn\u0027t shift any of the UMA stats at all, so they left it alone. There were no signs of instability or other bad behavior, so we should be able to just switch chromium over to using `leakTracer\u003dtrue`.\n\nOn that note, though, is there ever a reason to not just always leak?  Was the concern that there\u0027d be an SkEventTracer implementation that required the destructor to run in order save something or print something?",
+      "parentUuid": "f3365767_45395da2",
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18aaad2f_1d4bbafe",
         "filename": "src/utils/SkEventTracer.cpp",
         "patchSetId": 1
