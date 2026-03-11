@@ -131,6 +131,30 @@
       },
       "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e1c1d1_5b06805e",
+        "filename": "gn/toolchain/emsdk/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-03-11T17:34:31Z",
+      "side": 1,
+      "message": "Oops, totally forgot about this. I agree, hardcoding is not the way to go. I fought for a while with getting the relative path resolution to work, since that works locally. I think it wasn\u0027t working because the test environment maybe places the build directory in a different directory tree from the source directory.\n\nI\u0027ll spend some time looking in to how better to plumb this through.",
+      "parentUuid": "6e6948a2_2610a3dc",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 53
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
