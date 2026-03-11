@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "244a8b47_dfa7ce7b",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:04:01Z",
+      "side": 0,
+      "message": "Yes, that would be nice to do in a follow-up I think.",
+      "parentUuid": "66ff8214_efc2aa62",
+      "range": {
+        "startLine": 529,
+        "startChar": 18,
+        "endLine": 529,
+        "endChar": 55
+      },
+      "revId": "5d1ef0425ed15f1af346127477d6e88f13385347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2e173ce_8fb7cd27",
