@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81019ad5_b4e32316",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "This might take a bit, but here\u0027s some comments as I work my way through.",
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8fcd12_0c451d0f",
+        "filename": "src/gpu/graphite/ClipAtlasManager.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "WDYT (just to reduce template nesting), using `std::pair\u003csk_sp\u003cTextureProxy\u003e, SkIPoint\u003e` and have the validity of `findOrCreateentry` be determined by whether or not the proxy is null?",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 76
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2748f517_1b8b86e4",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "nit: re-arrange for public first",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 48
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47670481_3430c351",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "nit: re-arrange for public first",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 45
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effe3fb9_5b49b4aa",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "If we return a page index from `entryLocation(Record)` why do we need to return a pageIdx when we add a rect?  Is it just to optimize the case so we don\u0027t immediately call `entryLocation()` on the returned Record?",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 28
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d8d1bed_e739f64e",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "Do we still need this function? It seems nicer if we could just rely on `getProxy(pageIdx)` and then have `Page` store the TextureProxy",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 70
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a5bd7b8_eaf7b7d5",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "We can pack this much tighter. I think it would be reasonable to limit this to uint8_t for the page index, and then fX and fY could be uint8_t or uint8_16.\n\nThe choice for fX and fY depends on how PlotCoord is used. Does it describe the top-left coordinate of each plot in a texture? Or is it a plot-relative pixel location? For plot positions within a texture, I\u0027d think we\u0027re never going to see more than 255x255 plots and could then enforce it when creating the DrawAtlas.\n\nIf it\u0027s a coord within the plot itself, then I think we\u0027d need more bits than 8.",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 25
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2ac24a_990338d3",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T20:24:43Z",
+      "side": 1,
+      "message": "nit: make const?",
+      "range": {
+        "startLine": 373,
+        "startChar": 7,
+        "endLine": 373,
+        "endChar": 8
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
