@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66ff8214_efc2aa62",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-11T13:50:41Z",
+      "side": 0,
+      "message": "I agree - if there\u0027s benefit to each resource explicitly deciding, then I think it would make more sense to remove the default value. WDYT?",
+      "parentUuid": "ace46325_61261029",
+      "range": {
+        "startLine": 529,
+        "startChar": 18,
+        "endLine": 529,
+        "endChar": 55
+      },
+      "revId": "5d1ef0425ed15f1af346127477d6e88f13385347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2e173ce_8fb7cd27",
         "filename": "src/gpu/graphite/vk/VulkanYcbcrConversion.cpp",
         "patchSetId": 13
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-27T16:19:17Z",
       "side": 0,
       "message": "same here",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 55
+      },
+      "revId": "5d1ef0425ed15f1af346127477d6e88f13385347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71309148_e28d40bd",
+        "filename": "src/gpu/graphite/vk/VulkanYcbcrConversion.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-11T13:50:41Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "c2e173ce_8fb7cd27",
       "range": {
         "startLine": 221,
         "startChar": 0,

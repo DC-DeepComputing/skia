@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5b33f1b_bfc3f8e8",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-11T13:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a50fd7e_17041ee3",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 32
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e695cc1_d558af23",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f47d4914_637e4bfb",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-11T13:50:41Z",
+      "side": 1,
+      "message": "Good point; updated (also calls out it can be called on scratch resources upon cache return - at that actual call site, there are comment docs indicating that the actual synchronization logic and label comparison has scratch resource-specific TODOs.",
+      "parentUuid": "6e695cc1_d558af23",
+      "range": {
+        "startLine": 454,
+        "startChar": 41,
+        "endLine": 454,
+        "endChar": 51
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd142bb6_cc6ae3d4",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-02-27T16:19:17Z",
       "side": 1,
       "message": "nit: extra space",
+      "range": {
+        "startLine": 455,
+        "startChar": 37,
+        "endLine": 455,
+        "endChar": 38
+      },
+      "revId": "ab6c07baa07c4409e79b9142cfaf1b3dfbe46f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c2dc313_b203724a",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-11T13:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd142bb6_cc6ae3d4",
       "range": {
         "startLine": 455,
         "startChar": 37,
