@@ -7,7 +7,12 @@
 
 #include "include/utils/SkEventTracer.h"
 
+<<<<<<< HEAD   (d3c6f275e1fbaeb09a06bfd2a0497ba63f3f80f8 [M138-LTS] Validate SkDescriptor length alignment)
 #include "include/private/base/SkOnce.h"
+||||||| BASE   (c6392912bac8b90e897abbba5d74bcc1a981bf94 Roll recipe dependencies (trivial).)
+=======
+#include "include/private/base/SkMacros.h"
+>>>>>>> CHANGE (a7665f11022cb12dc33a6f427e58052e4e99ebb8 SkEventTracer::SetInstance always leaks)
 
 #include <stdlib.h>
 #include <atomic>
@@ -46,17 +51,14 @@ class SkDefaultEventTracer : public SkEventTracer {
 // We prefer gUserTracer if it's been set, otherwise we fall back on a default tracer;
 static std::atomic<SkEventTracer*> gUserTracer{nullptr};
 
-bool SkEventTracer::SetInstance(SkEventTracer* tracer, bool leakTracer) {
+bool SkEventTracer::SetInstance(SkEventTracer* tracer) {
     SkEventTracer* expected = nullptr;
     if (!gUserTracer.compare_exchange_strong(expected, tracer)) {
         delete tracer;
         return false;
     }
-    // If leaking the tracer is accepted then there is no need to install
-    // the atexit.
-    if (!leakTracer) {
-        atexit([]() { delete gUserTracer.load(); });
-    }
+    // Once set, `tracer` remains alive until the process is destroyed.
+    SK_INTENTIONALLY_LEAKED(tracer);
     return true;
 }
 
