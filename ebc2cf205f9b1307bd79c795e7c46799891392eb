@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30fe8ccb_55e34876",
+        "filename": "src/utils/SkEventTracer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T14:53:54Z",
+      "side": 1,
+      "message": "PTAL, I\u0027ve removed the `leakTracer` argument and added a `SK_INTENTIONALLY_LEAKED` macro for it.",
+      "parentUuid": "3b58536f_2ea32952",
+      "revId": "ebc2cf205f9b1307bd79c795e7c46799891392eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18aaad2f_1d4bbafe",
