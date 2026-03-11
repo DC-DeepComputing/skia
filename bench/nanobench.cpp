@@ -87,6 +87,10 @@
 #include "include/codec/SkPngDecoder.h"
 #endif
 
+#if defined(SK_USE_PPROF)
+#include <gperftools/profiler.h>
+#endif
+
 #include <cinttypes>
 #include <memory>
 #include <optional>
@@ -198,6 +202,7 @@ static DEFINE_string2(match, m, nullptr,
 static DEFINE_bool2(quiet, q, false, "if true, don't print status updates.");
 static DEFINE_bool2(verbose, v, false, "enable verbose output from the test driver.");
 
+static DEFINE_string(pprof, "", "If given, write a pprof profile here.");
 
 static DEFINE_string(skps, "skps", "Directory to read skps from.");
 static DEFINE_string(mskps, "mskps", "Directory to read mskps from.");
@@ -1475,6 +1480,12 @@ int main(int argc, char** argv) {
     log.beginObject("results");
     RunSkSLModuleBenchmarks(&log);
 
+#if defined(SK_USE_PPROF)
+    if (!FLAGS_pprof.isEmpty()) {
+        ProfilerStart(FLAGS_pprof[0]);
+    }
+#endif
+
     int runs = 0;
     BenchmarkStream benchStream;
     AutoreleasePool pool;
@@ -1689,6 +1700,12 @@ int main(int argc, char** argv) {
             log.endBench();
         }
     }
+
+#if defined(SK_USE_PPROF)
+    if (!FLAGS_pprof.isEmpty()) {
+        ProfilerStop();
+    }
+#endif
 
     if (FLAGS_dmsaaStatsDump) {
         SkDebugf("<<Total Combined DMSAA Stats>>\n");
