@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3efaf270_05232feb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T17:23:44Z",
+      "side": 1,
+      "message": "The term \"bot\" should be avoided due to its imprecision.\n\nAdd two WASM compile jobs",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cacd8ff2_2e86185d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T17:23:44Z",
+      "side": 1,
+      "message": "jobs",
+      "range": {
+        "startLine": 14,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 34
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "13a1fbf4_db817460",
@@ -14,6 +60,75 @@
       "writtenOn": "2026-03-11T16:27:48Z",
       "side": 1,
       "message": "Ready for initial review",
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73f5cdef_b86f240a",
+        "filename": "gn/toolchain/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T17:23:44Z",
+      "side": 1,
+      "message": "Is this an arbitrary extension? If so, please add a comment. Otherwise, maybe something like .wasma ? (since .wasm is reserved as per the commit message).\n\nSame for .so-wasm below",
+      "range": {
+        "startLine": 321,
+        "startChar": 37,
+        "endLine": 321,
+        "endChar": 43
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd64e3d1_afc02591",
+        "filename": "gn/toolchain/emsdk/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T17:23:44Z",
+      "side": 1,
+      "message": "Commented out or still needed?",
+      "range": {
+        "startLine": 4,
+        "startChar": 6,
+        "endLine": 4,
+        "endChar": 19
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e6948a2_2610a3dc",
+        "filename": "gn/toolchain/emsdk/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T17:23:44Z",
+      "side": 1,
+      "message": "I don\u0027t like hard-coding this path from our test machines. Isn\u0027t there another way we could get this? Maybe as a gn arg?",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 53
+      },
       "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
