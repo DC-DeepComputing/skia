@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccfd9a96_4671fdff",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T13:24:58Z",
+      "side": 1,
+      "message": "Yeah, I suppose it would mean we\u0027d be using the RenderPassRenderArea in addition to the rest of the PartialLoadResolve struct that specifies the color offset. That does feel a little awkward to have to remember to use both extensions together.",
+      "parentUuid": "9df1d281_879ad7a5",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 66
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6be4eb8_4b9a7371",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "I\u0027ll leave it using fRenderTargetBounds to avoid unnecessary changes in this CL. I could also leave the Vulkan backend using fRenderTargetBounds if you like?",
       "parentUuid": "e6be4eb8_4b9a7371",
+      "range": {
+        "startLine": 607,
+        "startChar": 55,
+        "endLine": 607,
+        "endChar": 72
+      },
+      "revId": "fca71b3eca817d1b5183ac324e2d6189fea9b0b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c99460_4ecce70c",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T13:24:58Z",
+      "side": 1,
+      "message": "I think updating the Vulkan backend to use fRenderAreaBounds is more correct, it certainly helps to guard against higher-level bounds checks ever accidentally getting something wrong that would lead to a render area violation due to some bad math in a vertex shader, etc. Since metal doesn\u0027t have that, there\u0027s no real risk there so leaving it as render target bounds is fine.",
+      "parentUuid": "8b4d6203_88e94484",
       "range": {
         "startLine": 607,
         "startChar": 55,
