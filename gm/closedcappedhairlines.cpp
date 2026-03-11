@@ -58,6 +58,19 @@ static void draw_highlights(SkCanvas* canvas, std::initializer_list<SkPath> path
     }
 }
 
+static SkPath make_path_for_red_box_around_a_point(SkPoint pt) {
+    SkPathBuilder pb;
+
+    SkScalar left = pt.x() - (kRedBoxWH / 2);
+    SkScalar top = pt.y() - (kRedBoxWH / 2);
+
+    SkScalar right = pt.x() + (kRedBoxWH / 2);
+    SkScalar bottom = pt.y() + (kRedBoxWH / 2);
+
+    pb.addRect({left, top, right, bottom});
+    return pb.detach();
+};
+
 // We would like to test the ability to draw closed and open contours with
 // capped hairlines. Capped hairlines have interesting behavior because they extend out
 // by up to half a pixel, which has led to unintended effects when closing
@@ -84,6 +97,95 @@ static void draw_hairline_contours_with_caps(SkCanvas* canvas, SkPaint::Cap cap)
 
     // first row
     auto lineOnOpen = SkPathBuilder().lineTo(0, 5).lineTo(5, 5).lineTo(5, 0).detach()
+                        .makeOffset(5, 5);
+    pathCanvas->drawPath(lineOnOpen, paint);
+    auto quadOnOpen = SkPathBuilder().quadTo(15, 5, 0, 10).detach()
+                        .makeOffset(20, 5);
+    pathCanvas->drawPath(quadOnOpen, paint);
+    auto cubicOnOpen = SkPathBuilder().cubicTo(-5, 0, -5, 5, 0, 10).detach()
+                        .makeOffset(40, 5);
+    pathCanvas->drawPath(cubicOnOpen, paint);
+
+    // second row
+    auto lineOffOpen = lineOnOpen
+                        .makeOffset(0.5, 0.5).makeOffset(0, 15);
+    pathCanvas->drawPath(lineOffOpen, paint);
+    auto quadOffOpen = quadOnOpen
+                        .makeOffset(0.5, 0.5).makeOffset(0, 15);
+    pathCanvas->drawPath(quadOffOpen, paint);
+    auto cubicOffOpen = cubicOnOpen
+                        .makeOffset(0.5, 0.5).makeOffset(0, 15);
+    pathCanvas->drawPath(cubicOffOpen, paint);
+
+    // third row
+    auto lineOnClosed = SkPathBuilder(lineOnOpen).close().detach()
+                            .makeOffset(0, 30);
+    pathCanvas->drawPath(lineOnClosed, paint);
+    auto quadOnClosed = SkPathBuilder(quadOnOpen).close().detach()
+                            .makeOffset(0, 30);
+    pathCanvas->drawPath(quadOnClosed, paint);
+    auto cubicOnClosed = SkPathBuilder(cubicOnOpen).close().detach()
+                            .makeOffset(0, 30);
+    pathCanvas->drawPath(cubicOnClosed, paint);
+
+    // forth row
+    auto lineOffClosed = SkPathBuilder(lineOnOpen).close().detach()
+                            .makeOffset(0.5, 0.5).makeOffset(0, 45);
+    pathCanvas->drawPath(lineOffClosed, paint);
+    auto quadOffClosed = SkPathBuilder(quadOnOpen).close().detach()
+                            .makeOffset(0.5, 0.5).makeOffset(0, 45);
+    pathCanvas->drawPath(quadOffClosed, paint);
+    auto cubicOffClosed = SkPathBuilder(cubicOnOpen).close().detach()
+                            .makeOffset(0.5, 0.5).makeOffset(0, 45);
+    pathCanvas->drawPath(cubicOffClosed, paint);
+
+    auto pathImg = pathSurface->makeImageSnapshot();
+    canvas->drawImage(pathImg, 0, 0);
+
+    canvas->scale(kScale, kScale);
+    canvas->drawImage(pathImg, 15, 0);
+    canvas->translate(15, 0);
+
+    draw_grid(canvas);
+
+    draw_highlights(canvas, {lineOnOpen, quadOnOpen, cubicOnOpen, lineOffOpen, quadOffOpen, cubicOffOpen});
+}
+
+#define WIDTH 250
+#define HEIGHT 250
+
+DEF_SIMPLE_GM(hairlines_buttcap, canvas, WIDTH, HEIGHT) {
+    draw_hairline_contours_with_caps(canvas, SkPaint::kButt_Cap);
+}
+
+DEF_SIMPLE_GM(hairlines_roundcap, canvas, WIDTH, HEIGHT) {
+    draw_hairline_contours_with_caps(canvas, SkPaint::kRound_Cap);
+}
+
+DEF_SIMPLE_GM(hairlines_squarecap, canvas, WIDTH, HEIGHT) {
+    draw_hairline_contours_with_caps(canvas, SkPaint::kSquare_Cap);
+}
+
+static void draw_closed_capped_hairline_with_cap_style(SkCanvas* canvas, SkPaint::Cap cap) {
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(0);
+    paint.setColor(SK_ColorBLACK);
+    paint.setAntiAlias(true);
+    paint.setStrokeCap(cap);
+
+    auto pathSurface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(WIDTH, HEIGHT));
+    SkASSERT_RELEASE(pathSurface);
+
+    auto pathCanvas = pathSurface->getCanvas();
+    SkASSERT_RELEASE(pathCanvas);
+
+    // first row
+    auto lineOnOpen = SkPathBuilder()
+                        .lineTo(0, 5)
+                        .lineTo(5, 5)
+                        .lineTo(5, 0)
+                        .detach()
                         .makeOffset(5, 5);
     pathCanvas->drawPath(lineOnOpen, paint);
     auto quadOnOpen = SkPathBuilder().quadTo(15, 5, 0, 10).detach()
