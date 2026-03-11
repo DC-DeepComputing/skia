@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4fbc437_847b018c",
+        "filename": ".bazelversion",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-03-11T11:12:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8377dff9_ced89a97",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 5
+      },
+      "revId": "7cc319349e76a0c36324116dc105816120828e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9dba513_77ccf249",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-03T23:21:25Z",
       "side": 1,
       "message": "Is the `png` feature required here?  `SkPngRustCodec` depends directly on the `png` crate, not on the `image` crate.",
+      "range": {
+        "startLine": 146,
+        "startChar": 9,
+        "endLine": 146,
+        "endChar": 12
+      },
+      "revId": "7cc319349e76a0c36324116dc105816120828e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e150a0a_019b28fb",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-03-11T11:12:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a9dba513_77ccf249",
       "range": {
         "startLine": 146,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90fca457_70829806",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-03-11T11:12:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eedb6575_75a9cbaf",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 45
+      },
+      "revId": "7cc319349e76a0c36324116dc105816120828e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1b173b6_82ce46dd",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-03-03T23:21:25Z",
       "side": 1,
       "message": "I expected that changes in this `.gni` file would be accompanied by corresponding changes under `//base/exporter/...`?  (similarly to how https://review.skia.org/1122476 modifies both `codec.gni` and ``//base/exporter/...``).",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 1
+      },
+      "revId": "7cc319349e76a0c36324116dc105816120828e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ecd498_a95da0c5",
+        "filename": "gn/codec.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-03-11T11:12:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1b173b6_82ce46dd",
       "range": {
         "startLine": 185,
         "startChar": 0,
