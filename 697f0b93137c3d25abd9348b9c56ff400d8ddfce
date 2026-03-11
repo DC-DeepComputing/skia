@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da4eb6c_474b4fdb",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "again. But this obviously gets a little more complicated because of the loop. But you could do reserve(currentSize + availInstLayerExtCount). But then you also need to pass the right pointer into the array (i.e. the end of last used spot). Not sure if that looks cleaner enough or not to avoid the extra mallocs",
+      "range": {
+        "startLine": 355,
+        "startChar": 13,
+        "endLine": 355,
+        "endChar": 31
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "294ddd2a_52c10f61",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "Is protected not added by Skia?",
+      "range": {
+        "startLine": 474,
+        "startChar": 17,
+        "endLine": 474,
+        "endChar": 40
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f17d8d43_625146fc",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "why not have just returned the names from the start instead of the VkExtensionsProperties that we only use here to get the names?",
+      "range": {
+        "startLine": 552,
+        "startChar": 29,
+        "endLine": 552,
+        "endChar": 48
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf703cc_342c31cc",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 556,
+        "startChar": 24,
+        "endLine": 556,
+        "endChar": 45
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ec0029_bcd88587",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "assume all comments I\u0027ve made about setting instance applies to the device code as well",
+      "range": {
+        "startLine": 714,
+        "startChar": 9,
+        "endLine": 714,
+        "endChar": 42
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

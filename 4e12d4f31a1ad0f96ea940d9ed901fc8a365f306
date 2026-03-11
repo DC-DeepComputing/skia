@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1be0e3a_b0093992",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "Why do you need this? Why not just reserve availExtCount on availableInstExts and just pass in the pointer to availableInstExts?",
+      "range": {
+        "startLine": 323,
+        "startChar": 27,
+        "endLine": 323,
+        "endChar": 42
+      },
+      "revId": "4e12d4f31a1ad0f96ea940d9ed901fc8a365f306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e3dde9_05701c8a",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-11T14:45:31Z",
+      "side": 1,
+      "message": "same, is this separate array needed?",
+      "range": {
+        "startLine": 342,
+        "startChar": 23,
+        "endLine": 342,
+        "endChar": 34
+      },
+      "revId": "4e12d4f31a1ad0f96ea940d9ed901fc8a365f306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
