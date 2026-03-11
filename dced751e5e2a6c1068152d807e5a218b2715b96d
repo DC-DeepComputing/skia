@@ -16,6 +16,23 @@
       "message": "Friendly ping, the canary failure was an infra patch on a single bot, I think everything should be fine there.",
       "revId": "dced751e5e2a6c1068152d807e5a218b2715b96d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7288862_4f922066",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-11T14:28:39Z",
+      "side": 1,
+      "message": "Should we have a bug for this?",
+      "revId": "dced751e5e2a6c1068152d807e5a218b2715b96d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
