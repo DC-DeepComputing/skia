@@ -33,6 +33,24 @@
       "message": "Should we have a bug for this?",
       "revId": "dced751e5e2a6c1068152d807e5a218b2715b96d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47242339_ac9bc36b",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-11T18:27:17Z",
+      "side": 1,
+      "message": "I was considering that work to be part of b/476410476",
+      "parentUuid": "a7288862_4f922066",
+      "revId": "dced751e5e2a6c1068152d807e5a218b2715b96d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
