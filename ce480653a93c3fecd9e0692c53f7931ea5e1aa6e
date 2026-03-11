@@ -22,6 +22,30 @@
       },
       "revId": "ce480653a93c3fecd9e0692c53f7931ea5e1aa6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48cc8021_d1722d79",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-03-11T20:18:51Z",
+      "side": 1,
+      "message": "Discussed offline. The Dawn-\u003eChromrium roll is broken and Chromium Dawn version is behind. A revert to fix the Dawn-\u003eChromium roll is in flight which should fix this. Otherwise it\u0027s safe to revert this CL and I can reland.",
+      "parentUuid": "878e47d5_095cd6d0",
+      "range": {
+        "startLine": 353,
+        "startChar": 4,
+        "endLine": 353,
+        "endChar": 55
+      },
+      "revId": "ce480653a93c3fecd9e0692c53f7931ea5e1aa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
