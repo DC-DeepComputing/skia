@@ -276,8 +276,11 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         // edge count of n are fanned by strictly fewer triangles.
         int maxTrianglesInFans = std::max(fTotalCombinedPathVerbCnt - 2, 0);
         int fanTriangleCount = 0;
+        // We want to reserve space for 3*maxTrianglesInFans, but push the 3x into the stride so
+        // that allocation checking for overflow in stride*count effectively catches overflow in
+        // 3*maxTrianglesInFans.
         if (VertexWriter triangleVertexWriter =
-                    vertexAlloc.lockWriter(sizeof(SkPoint), maxTrianglesInFans * 3)) {
+                    vertexAlloc.lockWriter(3 * sizeof(SkPoint), maxTrianglesInFans)) {
             for (auto [pathMatrix, path, color] : *fPathDrawList) {
                 tess::AffineMatrix m(pathMatrix);
                 for (tess::PathMiddleOutFanIter it(path); !it.done();) {
