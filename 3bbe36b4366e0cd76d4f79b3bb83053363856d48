@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b30c7fd0_84e9a307",
+        "filename": "gn/toolchain/BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-11T19:30:30Z",
+      "side": 1,
+      "message": "`.wasm.a` and `.wasm.so` SGTM",
+      "parentUuid": "220d082e_60773f65",
+      "range": {
+        "startLine": 321,
+        "startChar": 37,
+        "endLine": 321,
+        "endChar": 43
+      },
+      "revId": "3bbe36b4366e0cd76d4f79b3bb83053363856d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd64e3d1_afc02591",
         "filename": "gn/toolchain/emsdk/BUILD.gn",
         "patchSetId": 20
