@@ -122,6 +122,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "461da5f2_e92c85eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-12T13:06:57Z",
+      "side": 1,
+      "message": "So coming back to this, we filed https://g-issues.skia.org/issues/491840505 to have a better way to do a lightweight finish proc. Given that, I think we could land this as it maintains the current behavior of empty insert recordings but introduces the `hasPendingWork()` API that will help other aspects of chrome\u0027s submission logic.\n\nWhen the new insert/submitFinsihProc API is completed, we can come back to this and also require that the command buffer actually have commands or semaphores in it.",
+      "parentUuid": "0dacc074_7c074b0e",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "3e68b4c0ac642c9ad375f622f66a4482a8e1b658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "24023fc5_692b6de9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
