@@ -282,7 +282,9 @@ JPEG_DECODE_SRCS = [
 
 skia_cc_library(
     name = "jpeg_decode",
-    srcs = JPEG_DECODE_SRCS,
+    srcs = JPEG_DECODE_SRCS + [
+        "//include/private/chromium:jpeg_decode_chromium_hdrs",
+    ],
     hdrs = JPEG_DECODE_HDRS + [
         "//include/codec:any_codec_hdrs",
         "//include/codec:jpeg_public_hdrs",
@@ -417,7 +419,10 @@ skia_filegroup(
 
 skia_cc_library(
     name = "rust_png_decoder",
-    srcs = [":rust_png_srcs"],
+    srcs = [
+        ":rust_png_srcs",
+        "//include/private/chromium:rust_png_decode_chromium_hdrs",
+    ],
     hdrs = ["//include/codec:rust_png_public_hdrs"],
     defines = ["SK_CODEC_DECODES_PNG_WITH_RUST"],
     features = ["layering_check"],

@@ -45,6 +45,8 @@ public:
      * Takes ownership of the stream
      */
     static std::unique_ptr<SkCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
+    static std::unique_ptr<SkCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*,
+                                                   bool forceSkCMSICCParsing);
 
 protected:
 
@@ -83,7 +85,8 @@ private:
      * Allows SkRawCodec to communicate the color profile from the exif data.
      */
     static std::unique_ptr<SkCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*,
-            std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile);
+            std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile,
+            bool forceSkCMSICCParsing = false);
 
     /*
      * Creates an instance of the decoder

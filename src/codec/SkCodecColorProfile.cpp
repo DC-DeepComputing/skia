@@ -76,6 +76,14 @@ std::unique_ptr<ColorProfile> ColorProfile::MakeICCProfile(
 #endif
 }
 
+std::unique_ptr<ColorProfile> ColorProfile::MakeICCProfile(
+        sk_sp<const SkData> data, bool forceSkCMS) {
+    if (forceSkCMS) {
+        return MakeICCProfileWithSkCMS(data);
+    }
+    return MakeICCProfile(data);
+}
+
 std::unique_ptr<ColorProfile> ColorProfile::Make(sk_sp<SkColorSpace> cs) {
     if (!cs) {
         return nullptr;
