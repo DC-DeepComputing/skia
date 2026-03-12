@@ -281,6 +281,36 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
     return true;
 }
 
+void QueueManager::addFinishProcToActiveGpuWork(GpuFinishedProc proc, GpuFinishedContext context) {
+    sk_sp<RefCntedCallback> callback;
+    if (proc) {
+        callback = RefCntedCallback::Make(proc, context);
+    }
+
+    if (!callback) {
+        return;
+    }
+
+    if (fCurrentCommandBuffer) {
+        // We have a pending command buffer, so attach the callback to it.
+        // It will be invoked when this command buffer is submitted and completes.
+        fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+        return;
+    }
+
+    if (!fOutstandingSubmissions.empty()) {
+        // There is no pending command buffer, but there is outstanding GPU work.
+        // Attach the callback to the most recently submitted command buffer.
+        OutstandingSubmission* back = (OutstandingSubmission*)fOutstandingSubmissions.back();
+        (*back)->addFinishedProc(std::move(callback));
+        return;
+    }
+
+    // There is no pending command buffer and no outstanding GPU work.
+    // The GPU is completely idle, so we can just let the callback go out of scope to invoke it
+    // immediately.
+}
+
 bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 

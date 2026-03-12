@@ -242,6 +242,12 @@ InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     return fQueueManager->addRecording(info, this);
 }
 
+void Context::insertFinishProc(GpuFinishedProc proc, GpuFinishedContext context) {
+    ASSERT_SINGLE_OWNER
+
+    fQueueManager->addFinishProcToActiveGpuWork(proc, context);
+}
+
 bool Context::submit(SubmitInfo submitInfo) {
     ASSERT_SINGLE_OWNER
 
