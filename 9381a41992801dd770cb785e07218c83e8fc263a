@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2993f541_097635b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-12T17:30:26Z",
+      "side": 1,
+      "message": "just a few nits for now",
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d8fcd12_0c451d0f",
@@ -36,6 +53,29 @@
         "startChar": 19,
         "endLine": 41,
         "endChar": 76
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62edcfb5_c150bc5a",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-12T17:30:26Z",
+      "side": 1,
+      "message": "nit: init",
+      "range": {
+        "startLine": 777,
+        "startChar": 28,
+        "endLine": 777,
+        "endChar": 33
       },
       "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -135,6 +175,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70637a16_98e2d927",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-12T17:30:26Z",
+      "side": 1,
+      "message": "occurred",
+      "range": {
+        "startLine": 241,
+        "startChar": 31,
+        "endLine": 241,
+        "endChar": 38
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a5bd7b8_eaf7b7d5",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 9
@@ -174,6 +237,52 @@
         "startChar": 7,
         "endLine": 373,
         "endChar": 8
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5022e25b_55d5a844",
+        "filename": "src/gpu/graphite/text/GlyphData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-12T17:30:26Z",
+      "side": 1,
+      "message": "nit: either align or all use 1 space",
+      "range": {
+        "startLine": 59,
+        "startChar": 24,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb1e6f2_95f641e9",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-12T17:30:26Z",
+      "side": 1,
+      "message": "nit: known",
+      "range": {
+        "startLine": 304,
+        "startChar": 45,
+        "endLine": 304,
+        "endChar": 49
       },
       "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
