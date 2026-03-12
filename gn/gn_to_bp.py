@@ -555,10 +555,11 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     'target_cpu':                           '"none"',
 
     # Use the custom FontMgr, as the framework will handle fonts.
-    'skia_enable_fontmgr_custom_directory': 'false',
-    'skia_enable_fontmgr_custom_embedded':  'false',
     'skia_enable_fontmgr_android':          'false',
     'skia_enable_fontmgr_android_ndk':      'false',
+    'skia_enable_fontmgr_custom_directory': 'false',
+    'skia_enable_fontmgr_custom_embedded':  'false',
+    'skia_enable_fontmgr_fontations_empty': 'false',
     'skia_enable_fontmgr_win':              'false',
     'skia_enable_fontmgr_win_gdi':          'false',
     'skia_use_fonthost_mac':                'false',
@@ -615,14 +616,15 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     d['skia_use_crabbyavif'] = 'false'
 
   if renderengine:
-    d['skia_use_libpng_decode'] = 'false'
+    d['skia_use_libpng_decode'] = 'true'
     d['skia_use_libjpeg_turbo_decode'] = 'false'
     d['skia_use_libjpeg_turbo_encode'] = 'false'
     d['skia_use_libwebp_decode'] = 'false'
     d['skia_use_libwebp_encode'] = 'false'
     d['skia_use_wuffs'] = 'false'
     d['skia_enable_pdf'] = 'false'
-    d['skia_use_freetype'] = 'false'
+    d['skia_use_freetype'] = 'true'
+    d['skia_use_fontations'] = 'true'
     d['skia_use_fixed_gamma_text'] = 'false'
     d['skia_use_expat'] = 'false'
     d['skia_enable_fontmgr_custom_empty'] = 'false'
