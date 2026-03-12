@@ -82,6 +82,13 @@ public:
     std::unique_ptr<PrecompileContext> makePrecompileContext();
 
     InsertStatus insertRecording(const InsertRecordingInfo&);
+
+    /**
+     * Adds a finished proc that is triggered when all currently pending and outstanding GPU work
+     * has finished. If the GPU is already idle, the proc is invoked immediately.
+     */
+    void insertFinishProc(GpuFinishedProc, GpuFinishedContext);
+
     bool submit(SubmitInfo submitInfo = {});
 
     /** Returns true if there is work that was submitted to the GPU that has not finished. */

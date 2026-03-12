@@ -63,6 +63,8 @@ public:
                                      ResourceProvider*,
                                      SkSpan<const sk_sp<Buffer>> buffersToAsyncMap = {});
 
+    void addFinishProcToActiveGpuWork(GpuFinishedProc, GpuFinishedContext);
+
     [[nodiscard]] bool submitToGpu(const SubmitInfo&);
     [[nodiscard]] bool hasUnfinishedGpuWork();
     void checkForFinishedWork(SyncToCpu);
