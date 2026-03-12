@@ -1,0 +1,389 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6df9b5df_0887e03e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Can you please associate this CL with the tracking bug:\n\n```\nBug: 480993677\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 1
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1625332_7ff77550",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "I am sorry, but I haven\u0027t been able to finish reviewing the whole CL today.  Let me send the comments I have so far.  I still haven\u0027t looked at:\n\n* `experimental/rust_ico/decoder/impl/SkIcoEntryCodec.*`\n* `FFI.rs`\n* Tests",
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a0caa9_ad04dabe",
+        "filename": "MODULE.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "nitty nit: Can you please add a trailing comma so that when future changes are made, then they won\u0027t require editing this line?\n\n```suggestion\n        \"ico\",\n```",
+      "range": {
+        "startLine": 145,
+        "startChar": 12,
+        "endLine": 145,
+        "endChar": 13
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6bb402_26ee943d",
+        "filename": "experimental/rust_ico/decoder/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Can some of these dependencies be removed?  AFAIU `experimental/rust_ico/decoder/SkIcoRustDecoder.cpp` (nor the `.h` file) use `skcms` or the `cxx`/FFI stuff.  It may also be worth trying to remove other dependencies (if things continue to build without them).",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a631760_bcb19cc0",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Can this function delegate to `SkIcoRustCodec::IsIco` (also added in this CL) to avoid code duplication?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 1
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1078952b_8f957d64",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "I wonder if this should probably say `ico` (based on the comment at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodec.h;l\u003d1154-1155;drc\u003daf6927a3ff251d63093086932feb8fce181e9b91 and the fact that `SkPngRustDecoder.h` uses `png` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkPngRustDecoder.h;l\u003d26;drc\u003d4a50bc3386e511462806d01f8e6f8be1aa0c1cb7\n\nI think that at the same time we may also want to change `s/ rust_bmp / bmp /` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/experimental/rust_bmp/decoder/SkBmpRustDecoder.h;l\u003d37;drc\u003d7d71b1f65a394a430450347c253f8b4ae9fd8a91 (sorry for not catching this earlier).",
+      "range": {
+        "startLine": 40,
+        "startChar": 14,
+        "endLine": 40,
+        "endChar": 22
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22835cae_5bb4c099",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "I wonder what should/will happen in a scenario where a partial ICO file is received (e.g. with full directory, but only K out of N embedded images).  IIUC the current implementation will claim that it has successfully decoded the whole image when in reality only K out of N embedded images have been decoded.  This seems undesirable, although I haven\u0027t really looked closely at what Blink expects in this case.",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 9
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e31949b_70ec249c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Is `size` potentially redundant wrt `entryStream-\u003eget length()`?  If so, then is it possible to remove this parameter?",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 21
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e05a89e_fbfb394e",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "nit: Just `SkCodec` please (I vaguely recall that I heard from the Skia team that `INHERITED` is a legacy style that is no longer followed in the Skia codebase).",
+      "range": {
+        "startLine": 233,
+        "startChar": 10,
+        "endLine": 233,
+        "endChar": 19
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cc7ea5b_60f6cbae",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "IIUC ICO \"frames\" are independent from each other (can you confirm please?).  If so, then it seems that `kRestoreBGColor` may be more correct and efficient (e.g. by letting the embedder / client code know that it can discard the previous frame).",
+      "range": {
+        "startLine": 282,
+        "startChar": 66,
+        "endLine": 282,
+        "endChar": 71
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80e01f77_08fbf2f6",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "I wonder if we should also consider setting `embeddedOpts.fPriorFrame \u003d kNoFrame`?  I am not sure if this is necessary, but it seems that a frame index that is valid in the \"outer\" codec may become invalid in the \"inner\" codec, so therefore maybe it is better to set `fPriorFrame` to a safe value?",
+      "range": {
+        "startLine": 324,
+        "startChar": 12,
+        "endLine": 324,
+        "endChar": 41
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c096493b_efbbdd48",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "I wonder if we should also check that `rowsDecoded` is non-null (here and in other places where it is dereferenced and written to).  FWIW I see that `SkPngRustCodec.cpp` does such checks and I vaguely remember that I had to add them after running into some errors in tests.",
+      "range": {
+        "startLine": 327,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 67
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416dd422_4a94a31a",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "This snippet seems quite similar to lines 321-329 above.  Can this be deduplicated somehow?  (somehow \u003d maybe just hoisting `embeddedOpts` higher?  but maybe a separate private helper method is also needed?)",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 357,
+        "endChar": 0
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c5814c_f9b64db8",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Inner codec selection (`if` on line 368 + the `chooseCodec` call here) in `onStartIncrementalDecode` seems quite similar to what is done in `onGetPixels`.  Can this be deduplicated into a private helper method?",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 9
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8758747_b599a75f",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "IIRC `third_party/skia/experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h` started by only implementing \"scanline\" decode but AFAICT it has since been refactored and now does *not* implement a \"scanline\" decode and instead implements the \"incremental\" decode API.",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 17
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a12a459_b6172b91",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Can you help me understand the rationale for implementing/providing these 2 methods?\n\nIIUC these 2 methods do not currently have any callers.  Can these methods be removed (together with the `HotSpot` struct, the `fIsCursor` field, and/or possibly other things here or in `SkIcoRustCodec.cpp`)?  (We can add these methods later if/when they are needed, but it seems nice to keep things small and simple for now.)",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d266f27_34323b0e",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-12T00:31:30Z",
+      "side": 1,
+      "message": "Why are these `friend` declarations needed?  IIUC `SkCodec::getEncodedInfo` is a `protected` member, so it should be visible-to/usable-from `SkIcoRustCodec`, right?  `getSampler` is `private`, but it [seems](https://source.chromium.org/search?q\u003df:skia%20%5CbgetSampler%5Cb.*override\u0026sq\u003d\u0026ss\u003dchromium) that somehow is can still be overriden in derived classes.",
+      "range": {
+        "startLine": 1140,
+        "startChar": 4,
+        "endLine": 1140,
+        "endChar": 55
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
