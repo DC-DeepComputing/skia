@@ -20,6 +20,7 @@
 #include "include/core/SkYUVAInfo.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/chromium/SkJpegDecoderChromium.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegConstants.h"
@@ -121,9 +122,16 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> s
     return SkJpegCodec::MakeFromStream(std::move(stream), result, nullptr);
 }
 
+std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
+                                                     Result* result,
+                                                     bool forceSkCMSICCParsing) {
+    return SkJpegCodec::MakeFromStream(std::move(stream), result, nullptr, forceSkCMSICCParsing);
+}
+
 std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(
         std::unique_ptr<SkStream> stream,
-        Result* result, std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile) {
+        Result* result, std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile,
+        bool forceSkCMSICCParsing) {
     SkASSERT(result);
     if (!stream) {
         *result = SkCodec::kInvalidInput;
@@ -150,7 +158,8 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(
 
     std::unique_ptr<SkCodecs::ColorProfile> profile;
     if (auto iccProfileData = metadataDecoder->getICCProfileData(/*copyData=*/true)) {
-        profile = SkCodecs::ColorProfile::MakeICCProfile(std::move(iccProfileData));
+        profile = SkCodecs::ColorProfile::MakeICCProfile(std::move(iccProfileData),
+                                                          forceSkCMSICCParsing);
     }
     if (profile) {
         const auto colorDataSpace = profile->dataSpace();
@@ -1027,6 +1036,17 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
         outResult = &resultStorage;
     }
     return SkJpegCodec::MakeFromStream(std::move(stream), outResult);
+}
+
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
+                                SkCodec::Result* outResult,
+                                SkCodecs::DecodeContext,
+                                bool forceSkCMSICCParsing) {
+    SkCodec::Result resultStorage;
+    if (!outResult) {
+        outResult = &resultStorage;
+    }
+    return SkJpegCodec::MakeFromStream(std::move(stream), outResult, forceSkCMSICCParsing);
 }
 
 std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,

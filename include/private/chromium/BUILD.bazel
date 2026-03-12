@@ -53,3 +53,19 @@ skia_filegroup(
     ],
     visibility = ["//src/core:__pkg__"],
 )
+
+skia_filegroup(
+    name = "jpeg_decode_chromium_hdrs",
+    srcs = [
+        "SkJpegDecoderChromium.h",
+    ],
+    visibility = ["//src/codec:__pkg__"],
+)
+
+skia_filegroup(
+    name = "rust_png_decode_chromium_hdrs",
+    srcs = [
+        "SkPngRustDecoderChromium.h",
+    ],
+    visibility = ["//src/codec:__pkg__"],
+)

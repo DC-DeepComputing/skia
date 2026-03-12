@@ -130,7 +130,8 @@ skhdr::ContentLightLevelInformation ToSkCLLI(const rust_png::ContentLightLevelIn
     return skhdr::ContentLightLevelInformation({clli.fMaxCLL, clli.fMaxFALL});
 }
 
-std::unique_ptr<SkCodecs::ColorProfile> CreateColorProfile(const rust_png::Reader& reader) {
+std::unique_ptr<SkCodecs::ColorProfile> CreateColorProfile(const rust_png::Reader& reader,
+                                                            bool forceSkCMSICCParsing = false) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
     // instead of `libpng`.
@@ -165,7 +166,7 @@ std::unique_ptr<SkCodecs::ColorProfile> CreateColorProfile(const rust_png::Reade
         rust::Slice<const uint8_t> rust_slice = reader.get_iccp_chunk();
         sk_sp<SkData> owned_data = SkData::MakeWithCopy(rust_slice.data(), rust_slice.size());
         std::unique_ptr<SkCodecs::ColorProfile> parsed_data =
-                SkCodecs::ColorProfile::MakeICCProfile(std::move(owned_data));
+                SkCodecs::ColorProfile::MakeICCProfile(std::move(owned_data), forceSkCMSICCParsing);
         if (parsed_data) {
             return parsed_data;
         }
@@ -237,11 +238,12 @@ std::unique_ptr<SkCodecs::ColorProfile> CreateColorProfile(const rust_png::Reade
 }
 
 // Returns `nullopt` when input errors are encountered.
-std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader) {
+std::optional<SkEncodedInfo> CreateEncodedInfo(const rust_png::Reader& reader,
+                                               bool forceSkCMSICCParsing = false) {
     rust_png::ColorType rustColor = reader.output_color_type();
     SkEncodedInfo::Color skColor = ToColor(rustColor, reader);
 
-    std::unique_ptr<SkCodecs::ColorProfile> profile = CreateColorProfile(reader);
+    std::unique_ptr<SkCodecs::ColorProfile> profile = CreateColorProfile(reader, forceSkCMSICCParsing);
     if (!SkPngCodecBase::isCompatibleColorProfileAndType(profile.get(), skColor)) {
         profile = nullptr;
     }
@@ -418,7 +420,8 @@ bool IsValidFctlIfAny(const SkEncodedInfo& imageInfo,
 
 // static
 std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
-                                                               Result* result) {
+                                                               Result* result,
+                                                               bool forceSkCMSICCParsing) {
     SkASSERT_RELEASE(stream);
     SkASSERT_RELEASE(result);
 
@@ -431,7 +434,7 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     }
     rust::Box<rust_png::Reader> reader = resultOfReader->unwrap();
 
-    std::optional<SkEncodedInfo> maybeImageInfo = CreateEncodedInfo(*reader);
+    std::optional<SkEncodedInfo> maybeImageInfo = CreateEncodedInfo(*reader, forceSkCMSICCParsing);
     if (!maybeImageInfo.has_value()) {
         *result = kErrorInInput;
         return nullptr;
@@ -445,6 +448,12 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
 
     return std::make_unique<SkPngRustCodec>(
             std::move(imageInfo), std::move(stream), std::move(reader));
+}
+
+// static
+std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
+                                                               Result* result) {
+    return MakeFromStream(std::move(stream), result, /*forceSkCMSICCParsing=*/false);
 }
 
 SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,

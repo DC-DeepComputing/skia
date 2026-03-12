@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "include/core/SkStream.h"
+#include "include/private/chromium/SkPngRustDecoderChromium.h"
 #include "src/codec/SkPngRustCodec.h"
 
 namespace SkPngRustDecoder {
@@ -32,6 +33,17 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
         result = &resultStorage;
     }
     return SkPngRustCodec::MakeFromStream(std::move(stream), result);
+}
+
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
+                                SkCodec::Result* result,
+                                SkCodecs::DecodeContext,
+                                bool forceSkCMSICCParsing) {
+    SkCodec::Result resultStorage;
+    if (!result) {
+        result = &resultStorage;
+    }
+    return SkPngRustCodec::MakeFromStream(std::move(stream), result, forceSkCMSICCParsing);
 }
 
 }  // namespace SkPngRustDecoder

@@ -40,6 +40,11 @@ public:
     // depending on the build configuration.
     static std::unique_ptr<ColorProfile> MakeICCProfile(sk_sp<const SkData>);
 
+    // Overload that allows forcing skcms ICC parsing at runtime even when the
+    // build is configured to use the Rust parser. When |forceSkCMS| is false
+    // this behaves identically to MakeICCProfile(data).
+    static std::unique_ptr<ColorProfile> MakeICCProfile(sk_sp<const SkData>, bool forceSkCMS);
+
     // Implementation of MakeICCProfile that uses skcms to parse.
     // This should only be called by tests.
     static std::unique_ptr<ColorProfile> MakeICCProfileWithSkCMS(sk_sp<const SkData>);

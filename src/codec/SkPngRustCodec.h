@@ -28,6 +28,8 @@ template <typename T> class SkSpan;
 class SkPngRustCodec final : public SkPngCodecBase {
 public:
     static std::unique_ptr<SkPngRustCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
+    static std::unique_ptr<SkPngRustCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*,
+                                                          bool forceSkCMSICCParsing);
 
     // `public` to support `std::make_unique<SkPngRustCodec>(...)`.
     SkPngRustCodec(SkEncodedInfo&&, std::unique_ptr<SkStream>, rust::Box<rust_png::Reader>);
