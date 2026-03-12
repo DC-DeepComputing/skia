@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_TextureProxy_DEFINED
 #define skgpu_graphite_TextureProxy_DEFINED
 
+#include "include/core/SkPixelStorage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -25,11 +26,13 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 
-class TextureProxy : public SkRefCnt {
+class TextureProxy : public SkPixelStorage, public SkRefCnt {
 public:
     TextureProxy() = delete;
 
     ~TextureProxy() override;
+
+    Type type() const override;
 
     SampleCount sampleCount() const { return fInfo.sampleCount(); }
     Mipmapped mipmapped() const { return fInfo.mipmapped(); }
