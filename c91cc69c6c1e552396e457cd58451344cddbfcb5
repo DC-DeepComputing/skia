@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee2c59f_50c919a3",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-13T13:58:54Z",
+      "side": 1,
+      "message": "Unfortunately, the `mac_model:MacBookPro15,1` are still on 15.3 any jobs on those are no longer running. I suppose the bots could be updated, or the dimensions for them changed back to 15.3, or this could be just 15, or remove this model and run what would have run on these on the newer machines?\n\nAlso, we really need a script or some dashboard thing to check for which entries in tasks.json currently cannot be run (check the dimensions actually exist). It looks like a number of tasks have not run for at least a month.",
+      "range": {
+        "startLine": 898,
+        "startChar": 19,
+        "endLine": 898,
+        "endChar": 27
+      },
+      "revId": "c91cc69c6c1e552396e457cd58451344cddbfcb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e2d3a58_0166198f",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-13T13:58:54Z",
+      "side": 1,
+      "message": "These ones. Not sure about the others here, though after poking about I think these might be the only ones affected?",
+      "revId": "c91cc69c6c1e552396e457cd58451344cddbfcb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
