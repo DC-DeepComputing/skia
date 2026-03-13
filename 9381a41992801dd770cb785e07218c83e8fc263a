@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cc2c12f_54615705",
+        "filename": "src/gpu/graphite/ClipAtlasManager.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d8fcd12_0c451d0f",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 76
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62edcfb5_c150bc5a",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-03-12T17:30:26Z",
       "side": 1,
       "message": "nit: init",
+      "range": {
+        "startLine": 777,
+        "startChar": 28,
+        "endLine": 777,
+        "endChar": 33
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9601b12c_0f88cc30",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62edcfb5_c150bc5a",
       "range": {
         "startLine": 777,
         "startChar": 28,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7328b7e9_1701ad4c",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2748f517_1b8b86e4",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 48
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47670481_3430c351",
@@ -117,6 +189,30 @@
       "writtenOn": "2026-03-11T20:24:43Z",
       "side": 1,
       "message": "nit: re-arrange for public first",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 45
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03df5290_8e04f9c0",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47670481_3430c351",
       "range": {
         "startLine": 105,
         "startChar": 0,
@@ -152,6 +248,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20ae8f91_81f6c2ef",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Exactly, just to avoid doing a hash look up to find the thing we just added (same for fPosition).",
+      "parentUuid": "effe3fb9_5b49b4aa",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 28
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d8d1bed_e739f64e",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 9
@@ -163,6 +283,30 @@
       "writtenOn": "2026-03-11T20:24:43Z",
       "side": 1,
       "message": "Do we still need this function? It seems nicer if we could just rely on `getProxy(pageIdx)` and then have `Page` store the TextureProxy",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 70
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "667cd75d_e7e113e5",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "It winds getting used in various \"writeUniformsAndTextures\" functions. But if we get to the point of removing idea of pages then we won\u0027t need two functions.",
+      "parentUuid": "6d8d1bed_e739f64e",
       "range": {
         "startLine": 232,
         "startChar": 0,
@@ -186,6 +330,30 @@
       "writtenOn": "2026-03-12T17:30:26Z",
       "side": 1,
       "message": "occurred",
+      "range": {
+        "startLine": 241,
+        "startChar": 31,
+        "endLine": 241,
+        "endChar": 38
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b64b0b_df036b51",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70637a16_98e2d927",
       "range": {
         "startLine": 241,
         "startChar": 31,
@@ -221,6 +389,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfc9b025_c8472580",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "x and y are positions of a plot within the grid of plots (added comments).\n\nIs it important to optimize this for storage space? We store one per plot (and once we get rid of pages this is just x/y, no page index) and otherwise use on the stack. There are on the order of 4 to 16 Plots in a page and max 4 pages.",
+      "parentUuid": "1a5bd7b8_eaf7b7d5",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 25
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba2ac24a_990338d3",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 9
@@ -232,6 +424,30 @@
       "writtenOn": "2026-03-11T20:24:43Z",
       "side": 1,
       "message": "nit: make const?",
+      "range": {
+        "startLine": 373,
+        "startChar": 7,
+        "endLine": 373,
+        "endChar": 8
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d5b818b_e4a936d8",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba2ac24a_990338d3",
       "range": {
         "startLine": 373,
         "startChar": 7,
@@ -265,6 +481,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f511e9e4_bf8f888c",
+        "filename": "src/gpu/graphite/text/GlyphData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5022e25b_55d5a844",
+      "range": {
+        "startLine": 59,
+        "startChar": 24,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eb1e6f2_95f641e9",
@@ -278,6 +518,30 @@
       "writtenOn": "2026-03-12T17:30:26Z",
       "side": 1,
       "message": "nit: known",
+      "range": {
+        "startLine": 304,
+        "startChar": 45,
+        "endLine": 304,
+        "endChar": 49
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b140e7c_b157b773",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-13T13:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eb1e6f2_95f641e9",
       "range": {
         "startLine": 304,
         "startChar": 45,
