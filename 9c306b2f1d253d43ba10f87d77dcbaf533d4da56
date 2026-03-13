@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b4bf469_e492a27a",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1482,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-13T17:22:10Z",
+      "side": 1,
+      "message": "I can imagine enabling the build option permanently, and only profiling when needed - so this case would not be unusual.  I think it would be fine to drop warning.",
+      "revId": "9c306b2f1d253d43ba10f87d77dcbaf533d4da56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
