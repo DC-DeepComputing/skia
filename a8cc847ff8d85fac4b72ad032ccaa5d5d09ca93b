@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "377e50f9_08a6d208",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-13T16:41:05Z",
+      "side": 1,
+      "message": "A few additional comments.  I haven\u0027t really done an in-depth review of all the source code, but I think I\u0027ll pause at this point to give as a chance to discuss some of the high-level/design-level questions I asked so far.\n\nI hope this helps.  Please shout if I need to answer or review some additional things.  Thanks for working on this.",
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a226fe_1203d811",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoEntryCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-13T16:41:05Z",
+      "side": 1,
+      "message": "IIUC this code path does **not** use `SkPngRustCodec` nor `SkBmpRustCodec`.  I think that for PNG that is undesirable, because the new code path doesn\u0027t cover some of the functionality provided by `SkPngRustCodec` - e.g.: handling of CIPC, ICCP, GAMA, CHRM and similar chunks (see [`CreateColorProfile`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d133;drc\u003d62b259bab15f5254e61f05fb1f81d47a2acaadc5)), handling of rotation specified in EXIF chunks (see [`GetEncodedOrigin`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d356-366;drc\u003d62b259bab15f5254e61f05fb1f81d47a2acaadc5)).\n\nI am less sure about `SkBmpRustCodec`, because ICO-specific decoding needs to do some things in a subtly different way wrt 1) skipping the header, 2) reinterpreting some metadata like width/height, 3) processing of the \"and mask\" in RGB mode.  Still, maybe `SkBmpRustCodec` can implement and offer an API for doing some of those things?  Probably best to consult with @sergiog@microsoft.com who is much more familiar with `SkBmpRustCodec` than me.",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 78
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0765a402_caf954c2",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-13T16:41:05Z",
+      "side": 1,
+      "message": "This kind of error-returning-snippet is repeated a few times below.  I wonder if it would be possible to introduce a helper function/static-method to shorten this snippet to something like: `DirectoryResult::new(DirectoryParseResult::InsufficientData)`?\n\n```\nimpl DirectoryResult {\n    fn new(err: DirectoryParseResult) -\u003e Box\u003cSelf\u003e { todo!() }\n}\n```\n\n(Based on my earlier feedback maybe the `file_type` parameter/field wouldn\u0027t be needed.  i.e. the `err` parameter may be sufficient.)",
+      "range": {
+        "startLine": 619,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 11
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4966dd8d_eee43de8",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-03-13T16:41:05Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Trailing Whitespace: Please remove the trailing whitespace.\n\nPlease remove the trailing whitespace.",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 8
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
