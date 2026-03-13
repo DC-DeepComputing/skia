@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4cd8702_d50c32d8",
+        "filename": "gn/codec.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-13T12:30:51Z",
+      "side": 1,
+      "message": "We want this in its own separate GNI file group. Otherwise, I\u0027m worried Chromium will run into gn check errors trying to use this \"private\" header",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 20
+      },
+      "revId": "e104ff04f3fac7dcc48675bf06b132d274b5e94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0976df_3273d380",
+        "filename": "include/private/chromium/SkCodecsICCProfileChromium.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-13T12:30:51Z",
+      "side": 1,
+      "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "e104ff04f3fac7dcc48675bf06b132d274b5e94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
