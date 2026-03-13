@@ -33276,7 +33276,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -33369,7 +33369,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -33462,7 +33462,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33555,7 +33555,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33648,7 +33648,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33741,7 +33741,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33834,7 +33834,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -34578,7 +34578,7 @@
       "dimensions": [
         "cpu:x86-64",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -34671,7 +34671,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -34764,7 +34764,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -34857,7 +34857,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -34950,7 +34950,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -51056,7 +51056,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -51156,7 +51156,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -51256,7 +51256,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -51356,7 +51356,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -51456,7 +51456,7 @@
       "dimensions": [
         "gpu:1002:6821-4.0.20-3.2.8",
         "mac_model:MacBookPro11,5",
-        "os:Mac-11",
+        "os:Mac-11.7",
         "pool:Skia"
       ],
       "environment": {
@@ -51556,7 +51556,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -51656,7 +51656,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -51756,7 +51756,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -51856,7 +51856,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -51956,7 +51956,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -52056,7 +52056,7 @@
       "dimensions": [
         "gpu:apple:m3",
         "mac_model:Mac15,3",
-        "os:Mac-13",
+        "os:Mac-13.5",
         "pool:Skia"
       ],
       "environment": {
@@ -54663,7 +54663,7 @@
       "dimensions": [
         "cpu:x86-64",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -54763,7 +54763,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -54863,7 +54863,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -54963,7 +54963,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -55063,7 +55063,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -55163,7 +55163,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
@@ -55263,7 +55263,7 @@
       "dimensions": [
         "gpu:8086:3e9b",
         "mac_model:MacBookPro15,1",
-        "os:Mac-15.7",
+        "os:Mac-15.3",
         "pool:Skia"
       ],
       "environment": {
