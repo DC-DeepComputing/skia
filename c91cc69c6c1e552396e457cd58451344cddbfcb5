@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b36f106_57908087",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-13T14:48:40Z",
+      "side": 1,
+      "message": "Fix coming in https://review.skia.org/1186616\n\nFor posterity, we talked about having capacity stats in Status do some sort of calculation since it seems to have all the data.",
+      "parentUuid": "7ee2c59f_50c919a3",
+      "range": {
+        "startLine": 898,
+        "startChar": 19,
+        "endLine": 898,
+        "endChar": 27
+      },
+      "revId": "c91cc69c6c1e552396e457cd58451344cddbfcb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e2d3a58_0166198f",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-03-13T13:58:54Z",
       "side": 1,
       "message": "These ones. Not sure about the others here, though after poking about I think these might be the only ones affected?",
+      "revId": "c91cc69c6c1e552396e457cd58451344cddbfcb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5b4f7c_6035e231",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-13T14:48:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5e2d3a58_0166198f",
       "revId": "c91cc69c6c1e552396e457cd58451344cddbfcb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
