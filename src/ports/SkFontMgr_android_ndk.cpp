@@ -27,6 +27,15 @@
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+#if defined(SK_BUILD_FOR_ANDROID)
+#include <android/log.h>
+#define ERIC_LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "EricSumSkia", fmt, ##__VA_ARGS__)
+#else
+#define ERIC_LOG(fmt, ...)
+#endif
+
+#include <stdarg.h>
+
 #include <unicode/uchar.h>
 #include <unicode/ustring.h>
 
@@ -63,7 +72,8 @@ using namespace skia_private;
  * AFont_getLocale cannot be used until Android 11 (R, API 30). This is b/139201432 and fixed with
  * "Make AFont_getLocale work" [0]. This change is in Android 11 (API 30) but does not appear to
  * have been cherry-picked into Android 10 (Q, API 29).
- * [0]  https://cs.android.com/android/_/android/platform/frameworks/base/+/01709c7469b59e451f064c266bbe442e9bef0ab4
+ * [0]
+ * https://cs.android.com/android/_/android/platform/frameworks/base/+/01709c7469b59e451f064c266bbe442e9bef0ab4
  *
  * As a result, there is no correct way to use locale information from the Android 10 NDK. So this
  * font manager only works with Android 11 (R, API 30) and above.
@@ -94,10 +104,10 @@ namespace variation {
 using Coordinate = SkFontArguments::VariationPosition::Coordinate;
 using Storage = AutoSTArray<4, Coordinate>;
 
-static constexpr SkFourByteTag wghtTag = SkSetFourByteTag('w','g','h','t');
-static constexpr SkFourByteTag wdthTag = SkSetFourByteTag('w','d','t','h');
-static constexpr SkFourByteTag slntTag = SkSetFourByteTag('s','l','n','t');
-static constexpr SkFourByteTag italTag = SkSetFourByteTag('i','t','a','l');
+static constexpr SkFourByteTag wghtTag = SkSetFourByteTag('w', 'g', 'h', 't');
+static constexpr SkFourByteTag wdthTag = SkSetFourByteTag('w', 'd', 't', 'h');
+static constexpr SkFourByteTag slntTag = SkSetFourByteTag('s', 'l', 'n', 't');
+static constexpr SkFourByteTag italTag = SkSetFourByteTag('i', 't', 'a', 'l');
 
 static bool coordinateLess(const Coordinate& a, const Coordinate& b) {
     return a.axis != b.axis ? a.axis < b.axis : a.value < b.value;
@@ -160,25 +170,27 @@ struct AndroidFontAPI {
 #if __ANDROID_API__ >= SK_ANDROID_NDK_FONT_API_EXISTS
 
     static std::optional<AndroidFontAPI> Make() {
-        static AndroidFontAPI api {
-            ::ASystemFontIterator_open,
-            ::ASystemFontIterator_close,
-            ::ASystemFontIterator_next,
+        static AndroidFontAPI api{
+                ::ASystemFontIterator_open,
+                ::ASystemFontIterator_close,
+                ::ASystemFontIterator_next,
 
-            ::AFont_close,
-            ::AFont_getFontFilePath,
-            ::AFont_getWeight,
-            ::AFont_isItalic,
-            ::AFont_getLocale,
-            ::AFont_getCollectionIndex,
-            ::AFont_getAxisCount,
-            ::AFont_getAxisTag,
-            ::AFont_getAxisValue,
+                ::AFont_close,
+                ::AFont_getFontFilePath,
+                ::AFont_getWeight,
+                ::AFont_isItalic,
+                ::AFont_getLocale,
+                ::AFont_getCollectionIndex,
+                ::AFont_getAxisCount,
+                ::AFont_getAxisTag,
+                ::AFont_getAxisValue,
         };
         if (android_get_device_api_level() < SK_ANDROID_NDK_FONT_API_LOCALE_WORKS) {
             return std::nullopt;
         }
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: GetAndroidFontAPI direct\n"); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: GetAndroidFontAPI direct\n");
+        }
         return api;
     }
 
@@ -187,6 +199,7 @@ struct AndroidFontAPI {
 private:
     AndroidFontAPI() {}
     std::unique_ptr<void, SkFunctionObject<dlclose>> self;
+
 public:
     AndroidFontAPI(const AndroidFontAPI&) = delete;
     AndroidFontAPI& operator=(const AndroidFontAPI&) = delete;
@@ -204,16 +217,16 @@ public:
             return std::nullopt;
         }
 
-#define SK_DLSYM_ANDROID_FONT_API(NAME)                           \
-        do {                                                      \
-            *(void**)(&api.NAME) = dlsym(api.self.get(), #NAME);  \
-            if (!api.NAME) {                                      \
-                if constexpr (kSkFontMgrVerbose) {                \
-                    SkDebugf("SKIA: Failed to load: " #NAME "\n");\
-                }                                                 \
-                return std::nullopt;                              \
-            }                                                     \
-        } while (0)
+#define SK_DLSYM_ANDROID_FONT_API(NAME)                        \
+    do {                                                       \
+        *(void**)(&api.NAME) = dlsym(api.self.get(), #NAME);   \
+        if (!api.NAME) {                                       \
+            if constexpr (kSkFontMgrVerbose) {                 \
+                SkDebugf("SKIA: Failed to load: " #NAME "\n"); \
+            }                                                  \
+            return std::nullopt;                               \
+        }                                                      \
+    } while (0)
 
         SK_DLSYM_ANDROID_FONT_API(ASystemFontIterator_open);
         SK_DLSYM_ANDROID_FONT_API(ASystemFontIterator_close);
@@ -230,7 +243,9 @@ public:
         SK_DLSYM_ANDROID_FONT_API(AFont_getAxisValue);
 #undef SK_DLSYM_ANDROID_FONT_API
 
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: GetAndroidFontAPI dlsym\n"); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: GetAndroidFontAPI dlsym\n");
+        }
         return api;
     }
 
@@ -244,12 +259,24 @@ struct AndroidIcuAPI {
     }
 
 private:
-    int32_t (*u_strFoldCase)(UChar *dest, int32_t destCapacity, const UChar *src, int32_t srcLength,
-                             uint32_t options, UErrorCode *pErrorCode) = nullptr;
-    UChar* (*u_strFromUTF8)(UChar *dest, int32_t destCapacity, int32_t *pDestLength,
-                            const char *src, int32_t srcLength, UErrorCode *pErrorCode) = nullptr;
-    char * (*u_strToUTF8)(char *dest, int32_t destCapacity, int32_t *pDestLength,
-                          const UChar *src, int32_t srcLength, UErrorCode *pErrorCode) = nullptr;
+    int32_t (*u_strFoldCase)(UChar* dest,
+                             int32_t destCapacity,
+                             const UChar* src,
+                             int32_t srcLength,
+                             uint32_t options,
+                             UErrorCode* pErrorCode) = nullptr;
+    UChar* (*u_strFromUTF8)(UChar* dest,
+                            int32_t destCapacity,
+                            int32_t* pDestLength,
+                            const char* src,
+                            int32_t srcLength,
+                            UErrorCode* pErrorCode) = nullptr;
+    char* (*u_strToUTF8)(char* dest,
+                         int32_t destCapacity,
+                         int32_t* pDestLength,
+                         const UChar* src,
+                         int32_t srcLength,
+                         UErrorCode* pErrorCode) = nullptr;
     bool fHasICU = false;
 
     SkString cToWLower(SkSpan<const char> s) const {
@@ -276,7 +303,9 @@ private:
 
         // No change needed
         if (!isDifferent) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: TL \"%s\" unchanged\n", s.data()); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: TL \"%s\" unchanged\n", s.data());
+            }
             return SkString(s.data(), s.size());
         }
 
@@ -315,7 +344,9 @@ private:
             error = U_ZERO_ERROR;
         }
         if (U_FAILURE(error)) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF UTF-16 length\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: CF UTF-16 length\n");
+            }
             return SkString(s.data(), s.size());
         }
         if (SkTo<int32_t>(Storage::kCount) < uStrSize) {
@@ -323,29 +354,39 @@ private:
             int32_t uStrSizePrev = uStrSize;
             this->u_strFromUTF8(uStr, uStrSize, &uStrSize, s.data(), s.size(), &error);
             if (U_FAILURE(error) || uStrSizePrev < uStrSize) {
-                if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF UTF-16 wrong length\n"); }
+                if constexpr (kSkFontMgrVerbose) {
+                    SkDebugf("SKIA: CF UTF-16 wrong length\n");
+                }
                 return SkString(s.data(), s.size());
             }
         }
 
         // Case fold
         Storage uStrFolded(Storage::kCount);
-        int32_t uStrFoldedSize = this->u_strFoldCase(uStrFolded, Storage::kCount, uStr, uStrSize,
-                                                     U_FOLD_CASE_EXCLUDE_SPECIAL_I, &error);
+        int32_t uStrFoldedSize = this->u_strFoldCase(
+                uStrFolded, Storage::kCount, uStr, uStrSize, U_FOLD_CASE_EXCLUDE_SPECIAL_I, &error);
         if (error == U_BUFFER_OVERFLOW_ERROR) {
             error = U_ZERO_ERROR;
         }
         if (U_FAILURE(error)) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF folded length\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: CF folded length\n");
+            }
             return SkString(s.data(), s.size());
         }
         if (SkTo<int32_t>(Storage::kCount) < uStrFoldedSize) {
             uStrFolded.reset(uStrFoldedSize);
             int32_t uStrFoldedSizePrev = uStrFoldedSize;
-            uStrFoldedSize = this->u_strFoldCase(uStrFolded, uStrFoldedSize, uStr, uStrSize,
-                                                 U_FOLD_CASE_EXCLUDE_SPECIAL_I, &error);
+            uStrFoldedSize = this->u_strFoldCase(uStrFolded,
+                                                 uStrFoldedSize,
+                                                 uStr,
+                                                 uStrSize,
+                                                 U_FOLD_CASE_EXCLUDE_SPECIAL_I,
+                                                 &error);
             if (U_FAILURE(error) || uStrFoldedSizePrev < uStrFoldedSize) {
-                if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF folded wrong length\n"); }
+                if constexpr (kSkFontMgrVerbose) {
+                    SkDebugf("SKIA: CF folded wrong length\n");
+                }
                 return SkString(s.data(), s.size());
             }
         }
@@ -358,14 +399,18 @@ private:
             error = U_ZERO_ERROR;
         }
         if (U_FAILURE(error)) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF UTF-8 length\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: CF UTF-8 length\n");
+            }
             return SkString(s.data(), s.size());
         }
         ret.resize(retSize);
         int32_t retSizePrev = retSize;
         this->u_strToUTF8(ret.data(), retSize, &retSize, uStrFolded, uStrFoldedSize, &error);
         if (U_FAILURE(error) || retSizePrev != retSize) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: CF UTF-8 wrong length\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: CF UTF-8 wrong length\n");
+            }
             return SkString(s.data(), s.size());
         }
 
@@ -379,18 +424,20 @@ private:
 #if __ANDROID_API__ >= __ANDROID_API_S__
 public:
     AndroidIcuAPI()
-        : u_strFoldCase(::u_strFoldCase)
-        , u_strFromUTF8(::u_strFromUTF8)
-        , u_strToUTF8(::u_strToUTF8)
-        , fHasICU(true)
-    {
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: GetAndroidIcuAPI direct\n"); }
+            : u_strFoldCase(::u_strFoldCase)
+            , u_strFromUTF8(::u_strFromUTF8)
+            , u_strToUTF8(::u_strToUTF8)
+            , fHasICU(true) {
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: GetAndroidIcuAPI direct\n");
+        }
     }
 
 #else
 
 private:
     std::unique_ptr<void, SkFunctionObject<dlclose>> fSelf;
+
 public:
     AndroidIcuAPI(const AndroidIcuAPI&) = delete;
     AndroidIcuAPI& operator=(const AndroidIcuAPI&) = delete;
@@ -403,16 +450,16 @@ public:
             return;
         }
 
-#define SK_DLSYM_ANDROID_ICU_API(NAME)                            \
-        do {                                                      \
-            *(void**)(&NAME) = dlsym(fSelf.get(), #NAME);         \
-            if (!NAME) {                                          \
-                if constexpr (kSkFontMgrVerbose) {                \
-                    SkDebugf("SKIA: Failed to load: " #NAME "\n");\
-                }                                                 \
-                return;                                           \
-            }                                                     \
-        } while (0)
+#define SK_DLSYM_ANDROID_ICU_API(NAME)                         \
+    do {                                                       \
+        *(void**)(&NAME) = dlsym(fSelf.get(), #NAME);          \
+        if (!NAME) {                                           \
+            if constexpr (kSkFontMgrVerbose) {                 \
+                SkDebugf("SKIA: Failed to load: " #NAME "\n"); \
+            }                                                  \
+            return;                                            \
+        }                                                      \
+    } while (0)
 
         SK_DLSYM_ANDROID_ICU_API(u_strFoldCase);
         SK_DLSYM_ANDROID_ICU_API(u_strFromUTF8);
@@ -420,25 +467,28 @@ public:
 #undef SK_DLSYM_ANDROID_ICU_API
 
         fHasICU = true;
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: GetAndroidIcuAPI dlsym\n"); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: GetAndroidIcuAPI dlsym\n");
+        }
     }
 #endif
 };
 
 // bcp47 is ascii only and only does 1:1 replacements for case folding.
 static void normalizeAsciiCase(SkSpan<char> s) {
-    std::transform(s.begin(), s.end(), s.begin(),
-                   [](char c){ return (c < 'A' || 'Z' < c) ? c : c + 'a' - 'A'; });
+    std::transform(s.begin(), s.end(), s.begin(), [](char c) {
+        return (c < 'A' || 'Z' < c) ? c : c + 'a' - 'A';
+    });
 }
 
 struct SkAFont {
     SkAFont(const AndroidFontAPI& api, AFont* font) : fAPI(api), fFont(font) {}
-    SkAFont(SkAFont&& that) : fAPI(that.fAPI), fFont(that.fFont) {
-        that.fFont = nullptr;
-    }
+    SkAFont(SkAFont&& that) : fAPI(that.fAPI), fFont(that.fFont) { that.fFont = nullptr; }
     ~SkAFont() {
         if (fFont) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: AFont_close\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: AFont_close\n");
+            }
             fAPI.AFont_close(fFont);
         }
     }
@@ -460,14 +510,16 @@ private:
 
 struct SkASystemFontIterator {
     SkASystemFontIterator(const AndroidFontAPI& api)
-        : fAPI(api)
-        , fIterator(fAPI.ASystemFontIterator_open())
-    {
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: ASystemFontIterator_open\n"); }
+            : fAPI(api), fIterator(fAPI.ASystemFontIterator_open()) {
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: ASystemFontIterator_open\n");
+        }
     }
     SkASystemFontIterator(SkASystemFontIterator&&) = default;
     ~SkASystemFontIterator() {
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: ASystemFontIterator_close\n"); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: ASystemFontIterator_close\n");
+        }
         fAPI.ASystemFontIterator_close(fIterator);
     }
     explicit operator bool() { return fIterator; }
@@ -503,7 +555,7 @@ public:
         if (!lessSpecific.fScript.isEmpty()) {
             lessSpecific.fScript = SkString();
             return lessSpecific;
-          }
+        }
 
         if (!lessSpecific.fLanguage.isEmpty()) {
             lessSpecific.fLanguage = SkString();
@@ -512,9 +564,7 @@ public:
         return lessSpecific;
     }
 
-    bool isEmpty() const {
-        return fLanguage.isEmpty() && fScript.isEmpty() && fRegion.isEmpty();
-    }
+    bool isEmpty() const { return fLanguage.isEmpty() && fScript.isEmpty() && fRegion.isEmpty(); }
 
     bool startsWith(const SkALanguage& that) {
         return (that.fLanguage.isEmpty() || fLanguage == that.fLanguage) &&
@@ -526,8 +576,8 @@ public:
     const SkString& getScript() const { return fScript; }
     const SkString& getRegion() const { return fRegion; }
 
-
     using sk_is_trivially_relocatable = std::true_type;
+
 private:
     SkString consumeSubtag(SkSpan<const char>& tag) {
         if (tag.size() == 0) {
@@ -561,10 +611,10 @@ public:
             SkFourByteTag tag;
             int flag;
         } kKnownAxis[] = {
-            { variation::wghtTag, 1 << 0 },
-            { variation::wdthTag, 1 << 1 },
-            { variation::slntTag, 1 << 2 },
-            { variation::italTag, 1 << 3 },
+                {variation::wghtTag, 1 << 0},
+                {variation::wdthTag, 1 << 1},
+                {variation::slntTag, 1 << 2},
+                {variation::italTag, 1 << 3},
         };
 
         AutoAxis() = default;
@@ -580,9 +630,7 @@ public:
             }
         }
 
-        void remove(const AutoAxis& that) {
-            fFlags &= ~that.fFlags;
-        }
+        void remove(const AutoAxis& that) { fFlags &= ~that.fFlags; }
 
         bool weight() const { return SkToBool(fFlags & kKnownAxis[0].flag); }
         bool width() const { return SkToBool(fFlags & kKnownAxis[1].flag); }
@@ -616,16 +664,13 @@ private:
                           TArray<SkString>&& extraFamilyNames,
                           TArray<SkALanguage>&& lang,
                           const AutoAxis& autoAxis)
-        : SkTypeface_proxy(std::move(realTypeface), style, isFixedPitch)
-        , fFamilyName(familyName)
-        , fExtraFamilyNames(std::move(extraFamilyNames))
-        , fLang(std::move(lang))
-        , fAutoAxis(autoAxis)
-    { }
+            : SkTypeface_proxy(std::move(realTypeface), style, isFixedPitch)
+            , fFamilyName(familyName)
+            , fExtraFamilyNames(std::move(extraFamilyNames))
+            , fLang(std::move(lang))
+            , fAutoAxis(autoAxis) {}
 
-    void onGetFamilyName(SkString* familyName) const override {
-        *familyName = fFamilyName;
-    }
+    void onGetFamilyName(SkString* familyName) const override { *familyName = fFamilyName; }
 
     void onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const override {
         SkASSERT(desc);
@@ -643,32 +688,28 @@ private:
         }
         SkFontStyle style = proxy->fontStyle();
         bool fixedPitch = proxy->isFixedPitch();
-        return SkTypeface_AndroidNDK::Make(
-                std::move(proxy),
-                style,
-                fixedPitch,
-                fFamilyName,
-                TArray<SkString>(fExtraFamilyNames),
-                TArray<SkALanguage>(),
-                AutoAxis());
+        return SkTypeface_AndroidNDK::Make(std::move(proxy),
+                                           style,
+                                           fixedPitch,
+                                           fFamilyName,
+                                           TArray<SkString>(fExtraFamilyNames),
+                                           TArray<SkALanguage>(),
+                                           AutoAxis());
     }
 
-    SkFontStyle onGetFontStyle() const override {
-        return SkTypeface::onGetFontStyle();
-    }
+    SkFontStyle onGetFontStyle() const override { return SkTypeface::onGetFontStyle(); }
 
-    bool onGetFixedPitch() const override {
-        return SkTypeface::onGetFixedPitch();
-    }
+    bool onGetFixedPitch() const override { return SkTypeface::onGetFixedPitch(); }
 
     SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const override {
         class ALocalizedStrings : public SkTypeface::LocalizedStrings {
         public:
             ALocalizedStrings(sk_sp<SkTypeface_AndroidNDK> typeface,
                               sk_sp<SkTypeface::LocalizedStrings> base)
-                : fTypeface(std::move(typeface))
-                , fBase(std::move(base))
-                , fExtraFamilyName(nullptr) {}
+                    : fTypeface(std::move(typeface))
+                    , fBase(std::move(base))
+                    , fExtraFamilyName(nullptr) {}
+
         private:
             sk_sp<SkTypeface_AndroidNDK> fTypeface;
             sk_sp<SkTypeface::LocalizedStrings> fBase;
@@ -715,7 +756,10 @@ public:
         bool operator==(const Request& that) const {
             return fId == that.fId && fStyle == that.fStyle;
         }
-        struct Hash { uint32_t operator()(const Request& a) { return a.fHash; } };
+        struct Hash {
+            uint32_t operator()(const Request& a) { return a.fHash; }
+        };
+
     private:
         const SkTypefaceID fId;
         const SkFontStyle fStyle;
@@ -738,9 +782,7 @@ public:
     public:
         /* variation is expected to be normalized and sorted. */
         Match(SkTypefaceID id, variation::Storage&& variation)
-            : fId(id)
-            , fVariation(std::move(variation))
-        {
+                : fId(id), fVariation(std::move(variation)) {
             SkGoodHash hasher;
             fHash = hasher(id);
             for (auto&& coord : fVariation) {
@@ -750,17 +792,22 @@ public:
         }
         Match(const Match&) = delete;
         Match& operator=(const Match&) = delete;
-        Match(Match&& that) : fId(std::move(that.fId))
-                            , fVariation(std::move(that.fVariation))
-                            , fHash(std::move(that.fHash)) {}
+        Match(Match&& that)
+                : fId(std::move(that.fId))
+                , fVariation(std::move(that.fVariation))
+                , fHash(std::move(that.fHash)) {}
         Match& operator=(Match&&) = delete;
         bool operator==(const Match& that) const {
-            return fId == that.fId &&
-                   fVariation.size() == that.fVariation.size() &&
-                   std::equal(fVariation.begin(), fVariation.end(),
-                              that.fVariation.begin(), variation::coordinateEqual);
+            return fId == that.fId && fVariation.size() == that.fVariation.size() &&
+                   std::equal(fVariation.begin(),
+                              fVariation.end(),
+                              that.fVariation.begin(),
+                              variation::coordinateEqual);
         }
-        struct Hash { uint32_t operator()(const Match& a) { return a.fHash; } };
+        struct Hash {
+            uint32_t operator()(const Match& a) { return a.fHash; }
+        };
+
     private:
         static uint32_t FloatBits(float f) {
             static_assert(sizeof(uint32_t) == sizeof(float));
@@ -784,13 +831,15 @@ public:
         SkAutoSharedMutexExclusive lock(fMutex);
         fMatches.insert_or_update(std::move(match), typeface);
     }
+
 private:
     SkLRUCache<Request, sk_sp<SkTypeface>, Request::Hash> fRequests;
     SkLRUCache<Match, sk_sp<SkTypeface>, Match::Hash> fMatches;
     SkSharedMutex fMutex;
 };
 
-sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFontStyle style,
+sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface,
+                                 SkFontStyle style,
                                  TypefaceCache& cache) {
     if (!typeface) {
         return std::move(typeface);
@@ -812,24 +861,24 @@ sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFont
     }
     if (typefaceStyle.slant() != style.slant()) {
         switch (style.slant()) {
-        case SkFontStyle::Slant::kItalic_Slant:
-            if (typeface->fAutoAxis.italic()) {
-                coord[numCoords++] = {variation::italTag, 1.0};
-            }
-            break;
-        case SkFontStyle::Slant::kOblique_Slant:
-            if (typeface->fAutoAxis.slant()) {
-                coord[numCoords++] = {variation::slntTag, -7.0};
-            }
-            break;
-        case SkFontStyle::Slant::kUpright_Slant:
-            if (typeface->fAutoAxis.italic()) {
-                coord[numCoords++] = {variation::italTag, 0.0};
-            }
-            if (typeface->fAutoAxis.slant()) {
-                coord[numCoords++] = {variation::slntTag, 0.0};
-            }
-            break;
+            case SkFontStyle::Slant::kItalic_Slant:
+                if (typeface->fAutoAxis.italic()) {
+                    coord[numCoords++] = {variation::italTag, 1.0};
+                }
+                break;
+            case SkFontStyle::Slant::kOblique_Slant:
+                if (typeface->fAutoAxis.slant()) {
+                    coord[numCoords++] = {variation::slntTag, -7.0};
+                }
+                break;
+            case SkFontStyle::Slant::kUpright_Slant:
+                if (typeface->fAutoAxis.italic()) {
+                    coord[numCoords++] = {variation::italTag, 0.0};
+                }
+                if (typeface->fAutoAxis.slant()) {
+                    coord[numCoords++] = {variation::slntTag, 0.0};
+                }
+                break;
         }
     }
     if (numCoords == 0) {
@@ -843,13 +892,16 @@ sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFont
             typeface->getFamilyName(&familyName);
             SkFontStyle s = cachedTypeface->fontStyle();
             SkDebugf("Cached request of \"%s\" weight:%d width: %d slant %d\n",
-                     familyName.c_str(), s.weight(), s.width(), s.slant());
+                     familyName.c_str(),
+                     s.weight(),
+                     s.width(),
+                     s.slant());
         }
         return cachedTypeface;
     }
 
-    sk_sp<SkTypeface> newTypeface = typeface->makeClone(
-        SkFontArguments().setVariationDesignPosition({coord, numCoords}));
+    sk_sp<SkTypeface> newTypeface =
+            typeface->makeClone(SkFontArguments().setVariationDesignPosition({coord, numCoords}));
     if (!newTypeface) {
         if constexpr (kSkFontMgrVerbose) {
             SkString familyName;
@@ -870,7 +922,10 @@ sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFont
             typeface->getFamilyName(&familyName);
             SkFontStyle s = cachedTypeface->fontStyle();
             SkDebugf("Cached match of \"%s\" weight:%d width: %d slant %d\n",
-                     familyName.c_str(), s.weight(), s.width(), s.slant());
+                     familyName.c_str(),
+                     s.weight(),
+                     s.width(),
+                     s.slant());
         }
         cache.add(std::move(request), cachedTypeface);
         return cachedTypeface;
@@ -881,7 +936,10 @@ sk_sp<SkTypeface> adjustForStyle(sk_sp<SkTypeface_AndroidNDK>&& typeface, SkFont
         typeface->getFamilyName(&familyName);
         SkFontStyle s = newTypeface->fontStyle();
         SkDebugf("New variant of \"%s\" weight:%d width: %d slant %d\n",
-                 familyName.c_str(), s.weight(), s.width(), s.slant());
+                 familyName.c_str(),
+                 s.weight(),
+                 s.width(),
+                 s.slant());
     }
     cache.add(std::move(match), newTypeface);
     cache.add(std::move(request), newTypeface);
@@ -892,9 +950,7 @@ class SkFontStyleSet_AndroidNDK : public SkFontStyleSet {
 public:
     explicit SkFontStyleSet_AndroidNDK(sk_sp<TypefaceCache> cache) : fCache(std::move(cache)) {}
 
-    int count() override {
-        return fStyles.size();
-    }
+    int count() override { return fStyles.size(); }
     void getStyle(int index, SkFontStyle* style, SkString* name) override {
         if (index < 0 || fStyles.size() <= index) {
             return;
@@ -912,9 +968,7 @@ public:
         }
         return fStyles[index];
     }
-    sk_sp<SkTypeface> createTypeface(int index) override {
-        return createATypeface(index);
-    }
+    sk_sp<SkTypeface> createTypeface(int index) override { return createATypeface(index); }
 
     sk_sp<SkTypeface_AndroidNDK> matchAStyle(const SkFontStyle& pattern) {
         sk_sp<SkTypeface> match = this->matchStyleCSS3(pattern);
@@ -926,8 +980,13 @@ public:
             amatch->getResourceName(&resourceName);
             SkFontStyle fontStyle = amatch->fontStyle();
             SkDebugf("SKIA: Search for [%d, %d, %d] matched %s [%d, %d, %d] %s\n",
-                     pattern.weight(), pattern.width(), pattern.slant(),
-                     name.c_str(), fontStyle.weight(), fontStyle.width(), fontStyle.slant(),
+                     pattern.weight(),
+                     pattern.width(),
+                     pattern.slant(),
+                     name.c_str(),
+                     fontStyle.weight(),
+                     fontStyle.width(),
+                     fontStyle.slant(),
                      resourceName.c_str());
         }
         return amatch;
@@ -954,7 +1013,8 @@ struct NameToFamily {
 };
 
 class SkFontMgr_AndroidNDK : public SkFontMgr {
-    void addSystemTypeface(sk_sp<SkTypeface_AndroidNDK> typeface, const SkString& name,
+    void addSystemTypeface(sk_sp<SkTypeface_AndroidNDK> typeface,
+                           const SkString& name,
                            bool isFallback) {
         NameToFamily* nameToFamily = nullptr;
         SkString normalizedName(fICU.casefold({name.data(), name.size()}));
@@ -969,29 +1029,34 @@ class SkFontMgr_AndroidNDK : public SkFontMgr {
         if (!nameToFamily) {
             sk_sp<SkFontStyleSet_AndroidNDK> newSet(new SkFontStyleSet_AndroidNDK(fCache));
             nameToFamily = &fNameToFamilyMap.emplace_back(
-                NameToFamily{name, normalizedName, newSet.get()});
+                    NameToFamily{name, normalizedName, newSet.get()});
             index = fFallbackStyleSets.size();
             fFallbackStyleSets.push_back(nullptr);
             fStyleSets.push_back(std::move(newSet));
         }
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Adding member to %s\n", name.c_str()); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: Adding member to %s\n", name.c_str());
+        }
         if (isFallback) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Adding it to fallback\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Adding it to fallback\n");
+            }
             fFallbackStyleSets[index] = nameToFamily->styleSet;
         }
         nameToFamily->styleSet->fStyles.push_back(std::move(typeface));
     }
 
 public:
-    SkFontMgr_AndroidNDK(AndroidFontAPI&& fontAPI, bool const cacheFontFiles,
+    SkFontMgr_AndroidNDK(AndroidFontAPI&& fontAPI,
+                         bool const cacheFontFiles,
                          std::unique_ptr<SkFontScanner> scanner)
-        : fAPI(std::move(fontAPI))
-        , fScanner(std::move(scanner))
-        , fCache(new TypefaceCache())
-    {
+            : fAPI(std::move(fontAPI)), fScanner(std::move(scanner)), fCache(new TypefaceCache()) {
+        ERIC_LOG("SkFontMgr_AndroidNDK constructor called");
         SkASystemFontIterator fontIter(fAPI);
         if (!fontIter) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: No ASystemFontIterator"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: No ASystemFontIterator");
+            }
             return;
         }
 
@@ -1000,7 +1065,9 @@ public:
 
         skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>> streamForPath;
 
-        if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Iterating over AFonts\n"); }
+        if constexpr (kSkFontMgrVerbose) {
+            SkDebugf("SKIA: Iterating over AFonts\n");
+        }
         while (SkAFont font = fontIter.next()) {
             sk_sp<SkTypeface_AndroidNDK> typeface = this->make(font, xmlFamilies, streamForPath);
             if (!typeface) {
@@ -1009,6 +1076,9 @@ public:
 
             SkString name;
             typeface->getFamilyName(&name);
+            SkFontStyle s = typeface->fontStyle();
+            ERIC_LOG(
+                    "Loaded font: %s [%d, %d, %d]", name.c_str(), s.weight(), s.width(), s.slant());
             this->addSystemTypeface(typeface, name, true);
 
             // A font may have many localized family names.
@@ -1028,7 +1098,9 @@ public:
             if (this->onMatchAFamily("sans-serif")) {
                 return;
             }
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Found no sans-serif matches\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Found no sans-serif matches\n");
+            }
 
             auto&& matchXmlFamily = [&xmlFamilies](std::string_view familyName) -> FontFamily* {
                 for (const std::unique_ptr<FontFamily>& xmlFamily : xmlFamilies) {
@@ -1044,16 +1116,22 @@ public:
             if (!xmlSansSerif) {
                 return;
             }
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Found xml sans-serif\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Found xml sans-serif\n");
+            }
 
             sk_sp<SkFontStyleSet_AndroidNDK> roboto = this->onMatchAFamily("Roboto");
             if (!roboto) {
                 return;
             }
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Found Roboto\n"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Found Roboto\n");
+            }
 
             for (auto&& xmlName : xmlSansSerif->fNames) {
-                if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Alias %s\n", xmlName.c_str()); }
+                if constexpr (kSkFontMgrVerbose) {
+                    SkDebugf("SKIA: Alias %s\n", xmlName.c_str());
+                }
                 SkString normalizedName(fICU.casefold({xmlName.data(), xmlName.size()}));
                 fNameToFamilyMap.emplace_back(NameToFamily{xmlName, normalizedName, roboto.get()});
             }
@@ -1065,11 +1143,14 @@ public:
         fFallbackStyleSets.resize_back(newEnd - fFallbackStyleSets.data());
         if constexpr (kSkFontMgrVerbose) {
             SkDebugf("SKIA: Fallback list size %d out of %d\n",
-                     fFallbackStyleSets.size(), fNameToFamilyMap.size());
+                     fFallbackStyleSets.size(),
+                     fNameToFamilyMap.size());
         }
 
         if (fStyleSets.empty()) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: No fonts!"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: No fonts!");
+            }
         } else {
             this->findDefaultStyleSet();
         }
@@ -1079,9 +1160,7 @@ protected:
     /** Returns not how many families we have, but how many unique names
      *  exist among the families.
      */
-    int onCountFamilies() const override {
-        return fNameToFamilyMap.size();
-    }
+    int onCountFamilies() const override { return fNameToFamilyMap.size(); }
 
     void onGetFamilyName(int index, SkString* familyName) const override {
         if (index < 0 || fNameToFamilyMap.size() <= index) {
@@ -1100,14 +1179,17 @@ protected:
 
     sk_sp<SkFontStyleSet_AndroidNDK> onMatchAFamily(const char familyName[]) const {
         if (!familyName) {
+            ERIC_LOG("onMatchAFamily(nullptr) -> nullptr");
             return nullptr;
         }
         SkString normalizedFamilyName(fICU.casefold({familyName, strlen(familyName)}));
         for (const NameToFamily& nameToFamily : fNameToFamilyMap) {
             if (nameToFamily.normalizedName == normalizedFamilyName) {
+                ERIC_LOG("onMatchAFamily(%s) -> found", familyName);
                 return sk_ref_sp(nameToFamily.styleSet);
             }
         }
+        ERIC_LOG("onMatchAFamily(%s) -> NOT found", familyName);
         return nullptr;
     }
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
@@ -1115,19 +1197,30 @@ protected:
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
-                                         const SkFontStyle& style) const override
-    {
+                                         const SkFontStyle& style) const override {
         sk_sp<SkFontStyleSet_AndroidNDK> sset(this->onMatchAFamily(familyName));
         if (!sset) {
+            ERIC_LOG("onMatchFamilyStyle(%s, [%d, %d, %d]) -> NOT found (no sset)",
+                     familyName ? familyName : "nullptr",
+                     style.weight(),
+                     style.width(),
+                     (int)style.slant());
             return nullptr;
         }
-        return sset->matchStyle(style);
+        sk_sp<SkTypeface> result = sset->matchStyle(style);
+        ERIC_LOG("onMatchFamilyStyle(%s, [%d, %d, %d]) -> %s",
+                 familyName ? familyName : "nullptr",
+                 style.weight(),
+                 style.width(),
+                 (int)style.slant(),
+                 result ? "found" : "NOT found");
+        return result;
     }
 
     static TArray<SkString> GetExtraFamilyNames(
-        const SkAFont& font, const SkTypeface& typeface,
-        const SkSpan<const std::unique_ptr<FontFamily>> xmlFamilies)
-    {
+            const SkAFont& font,
+            const SkTypeface& typeface,
+            const SkSpan<const std::unique_ptr<FontFamily>> xmlFamilies) {
         // The NDK does not report aliases like 'serif', 'sans-serif`, 'monospace', etc.
         // If a font matches an entry in fonts.xml, add the fonts.xml family name as well.
 
@@ -1157,13 +1250,12 @@ protected:
                 }
 
                 if (!xmlFont.fTypeface) {
-                    xmlFont.fTypeface = typeface.makeClone(SkFontArguments()
-                        .setCollectionIndex(xmlFont.fIndex)
-                        .setVariationDesignPosition(SkFontArguments::VariationPosition{
-                            xmlFont.fVariationDesignPosition.data(),
-                            xmlFont.fVariationDesignPosition.size()
-                        })
-                    );
+                    xmlFont.fTypeface = typeface.makeClone(
+                            SkFontArguments()
+                                    .setCollectionIndex(xmlFont.fIndex)
+                                    .setVariationDesignPosition(SkFontArguments::VariationPosition{
+                                            xmlFont.fVariationDesignPosition.data(),
+                                            xmlFont.fVariationDesignPosition.size()}));
                 }
                 if (!xmlFont.fTypeface) {
                     SkDEBUGFAIL("Cannot create clone.");
@@ -1178,9 +1270,10 @@ protected:
                 }
 
                 variation::Sort(variation::Normalize(xmlVariation));
-                if (!std::equal(variation.begin(), variation.end(),
-                                xmlVariation.begin(), variation::coordinateEqual))
-                {
+                if (!std::equal(variation.begin(),
+                                variation.end(),
+                                xmlVariation.begin(),
+                                variation::coordinateEqual)) {
                     continue;
                 }
 
@@ -1197,11 +1290,11 @@ protected:
     }
 
     sk_sp<SkTypeface_AndroidNDK> make(
-        const SkAFont& font,
-        const SkSpan<const std::unique_ptr<FontFamily>> xmlFamilies,
-        skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>>& streamForPath) const
-    {
+            const SkAFont& font,
+            const SkSpan<const std::unique_ptr<FontFamily>> xmlFamilies,
+            skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>>& streamForPath) const {
         SkString filePath(font.getFontFilePath());
+        ERIC_LOG("Loading font file: %s", filePath.c_str());
 
         std::unique_ptr<SkStreamAsset>* streamPtr = streamForPath.find(filePath);
         if (!streamPtr) {
@@ -1226,13 +1319,17 @@ protected:
             SkDebugf("SKIA: Making font from %s#%zu\n", filePath.c_str(), collectionIndex);
         }
         if (!SkTFitsIn<int>(collectionIndex)) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Collection index invalid!"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Collection index invalid!");
+            }
             return nullptr;
         }
 
         size_t requestAxisCount = font.getAxisCount();
         if (!SkTFitsIn<int>(requestAxisCount)) {
-            if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: Axis count unreasonable!"); }
+            if constexpr (kSkFontMgrVerbose) {
+                SkDebugf("SKIA: Axis count unreasonable!");
+            }
             return nullptr;
         }
         variation::Storage requestAxisValues(requestAxisCount);
@@ -1240,21 +1337,20 @@ protected:
         for (size_t i = 0; i < requestAxisCount; ++i) {
             uint32_t tag = font.getAxisTag(i);
             float value = font.getAxisValue(i);
-            requestAxisValues[i] = { tag, value };
+            requestAxisValues[i] = {tag, value};
             if (tag == variation::wdthTag) {
                 // Set the width based on the requested `wdth` axis value.
                 requestedWidth = SkFontDescriptor::SkFontStyleWidthForWidthAxisValue(value);
             }
         }
-        SkFontArguments::VariationPosition requestedPosition = {
-                requestAxisValues.get(), SkTo<int>(requestAxisCount)
-        };
+        SkFontArguments::VariationPosition requestedPosition = {requestAxisValues.get(),
+                                                                SkTo<int>(requestAxisCount)};
         // TODO: this creates the proxy with the given stream, so always cacheFontFiles.
-        auto proxy = fScanner->MakeFromStream(
-                std::move(stream),
-                SkFontArguments()
-                        .setCollectionIndex(collectionIndex)
-                        .setVariationDesignPosition(requestedPosition));
+        auto proxy =
+                fScanner->MakeFromStream(std::move(stream),
+                                         SkFontArguments()
+                                                 .setCollectionIndex(collectionIndex)
+                                                 .setVariationDesignPosition(requestedPosition));
         if (!proxy) {
             if constexpr (kSkFontMgrVerbose) {
                 SkDebugf("SKIA: Font file %s exists, but is not a valid font.\n", filePath.c_str());
@@ -1264,8 +1360,8 @@ protected:
         variation::Storage variationStorage;
         SkSpan<variation::Coordinate> variation = variation::Get(*proxy, variationStorage);
         SkTypeface_AndroidNDK::AutoAxis autoAxis(variation);
-        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates,
-                                                               requestedPosition.coordinateCount)));
+        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(
+                SkSpan(requestedPosition.coordinates, requestedPosition.coordinateCount)));
 
         SkFontStyle style = proxy->fontStyle();
         int weight = SkTo<int>(font.getWeight());
@@ -1292,10 +1388,8 @@ protected:
             // HACK: For backwards compatibility NotoSansSymbols-Regular-Subsetted needs "und-Zsym".
             // Base Android appears to hack this into its fallback list for similar reasons.
             static constexpr char kNotoSansSymbols[] = "NotoSansSymbols-Regular-Subsetted";
-            if (postscriptName.equals(kNotoSansSymbols, std::size(kNotoSansSymbols)-1) &&
-                (!aLangs || aLangs[0] == '\0') &&
-                proxy->unicharToGlyph(0x2603) != 0)
-            {
+            if (postscriptName.equals(kNotoSansSymbols, std::size(kNotoSansSymbols) - 1) &&
+                (!aLangs || aLangs[0] == '\0') && proxy->unicharToGlyph(0x2603) != 0) {
                 if constexpr (kSkFontMgrVerbose) {
                     SkDebugf("SKIA: Hacking in und-Zsym for NotoSansSymbols-Regular-Subsetted\n");
                 }
@@ -1309,14 +1403,14 @@ protected:
             // https://android.googlesource.com/platform/frameworks/base/+/89abe560d722a6f4136b7a05d80f23b269413aad
             static constexpr char kRobotoStatic[] = "RobotoStatic-Regular";
             static constexpr char kRoboto[] = "Roboto";
-            if (postscriptName.equals(kRobotoStatic, std::size(kRobotoStatic)-1) &&
-                std::none_of(extraFamilyNames.begin(), extraFamilyNames.end(),
-                             [](SkString& n){return n.equals(kRoboto, std::size(kRoboto)-1);}))
-            {
+            if (postscriptName.equals(kRobotoStatic, std::size(kRobotoStatic) - 1) &&
+                std::none_of(extraFamilyNames.begin(), extraFamilyNames.end(), [](SkString& n) {
+                    return n.equals(kRoboto, std::size(kRoboto) - 1);
+                })) {
                 if constexpr (kSkFontMgrVerbose) {
                     SkDebugf("SKIA: Hacking in Roboto for RobotoStatic-Regular\n");
                 }
-                extraFamilyNames.push_back(SkString(kRoboto, std::size(kRoboto)-1));
+                extraFamilyNames.push_back(SkString(kRoboto, std::size(kRoboto) - 1));
             }
         }
         if (aLangs) {
@@ -1352,26 +1446,32 @@ protected:
         }
 
         if constexpr (kSkFontMgrVerbose) {
-            SkDebugf("SKIA: New typeface %s [%d %d %d]\n", familyName.c_str(), style.weight(),
-                     style.width(), style.slant());
+            SkDebugf("SKIA: New typeface %s [%d %d %d]\n",
+                     familyName.c_str(),
+                     style.weight(),
+                     style.width(),
+                     style.slant());
         }
 
-        return SkTypeface_AndroidNDK::Make(
-            proxy, style, proxy->isFixedPitch(),
-            familyName, std::move(extraFamilyNames), std::move(skLangs), autoAxis);
+        return SkTypeface_AndroidNDK::Make(proxy,
+                                           style,
+                                           proxy->isFixedPitch(),
+                                           familyName,
+                                           std::move(extraFamilyNames),
+                                           std::move(skLangs),
+                                           autoAxis);
     }
-
 
     static bool has_locale_and_character(SkTypeface_AndroidNDK* face,
                                          const SkALanguage& langTag,
                                          SkUnichar character,
-                                         const char* scope, size_t* step) {
+                                         const char* scope,
+                                         size_t* step) {
         ++*step;
         if (!langTag.isEmpty() &&
             std::none_of(face->fLang.begin(), face->fLang.end(), [&](SkALanguage lang) {
                 return lang.startsWith(langTag);
-            }))
-        {
+            })) {
             return false;
         }
 
@@ -1383,22 +1483,25 @@ protected:
             SkString foundName;
             face->getFamilyName(&foundName);
             using SkUnicharUnsigned = std::make_unsigned_t<decltype(character)>;
-            SkDebugf("SKIA: Found U%c%" PRIx32 " in \"%s\" lang \"%s\" "
+            SkDebugf("SKIA: Found U%c%" PRIx32
+                     " in \"%s\" lang \"%s\" "
                      "script \"%s\" region \"%s\" scope %s step %zu.\n",
-                     "+-"[character < 0], static_cast<SkUnicharUnsigned>(std::abs(character)),
-                     foundName.c_str(), langTag.getLanguage().c_str(), langTag.getScript().c_str(),
-                     langTag.getRegion().c_str(), scope, *step);
-
+                     "+-"[character < 0],
+                     static_cast<SkUnicharUnsigned>(std::abs(character)),
+                     foundName.c_str(),
+                     langTag.getLanguage().c_str(),
+                     langTag.getScript().c_str(),
+                     langTag.getRegion().c_str(),
+                     scope,
+                     *step);
         }
         return true;
     }
 
-    sk_sp<SkTypeface> findByCharacterLocaleFamily(
-        SkTypeface_AndroidNDK* familyFace,
-        const SkFontStyle& style,
-        const SkALanguage& langTag,
-        SkUnichar character) const
-    {
+    sk_sp<SkTypeface> findByCharacterLocaleFamily(SkTypeface_AndroidNDK* familyFace,
+                                                  const SkFontStyle& style,
+                                                  const SkALanguage& langTag,
+                                                  SkUnichar character) const {
         size_t step = 0;
         // First look at the familyFace
         if (familyFace && has_locale_and_character(familyFace, langTag, character, "face", &step)) {
@@ -1441,6 +1544,9 @@ protected:
                                                   const char* bcp47[],
                                                   int bcp47Count,
                                                   SkUnichar character) const override {
+        ERIC_LOG("onMatchFamilyStyleCharacter(%s, char=0x%x)",
+                 familyName ? familyName : "nullptr",
+                 character);
         // If at some point AFontMatcher becomes usable, the code for using it is at
         // https://skia-review.googlesource.com/c/skia/+/585970/13/src/ports/SkFontMgr_android_ndk.cpp#766
 
@@ -1463,8 +1569,9 @@ protected:
             }
             while (!lang.isEmpty()) {
                 sk_sp<SkTypeface> typeface =
-                    findByCharacterLocaleFamily(afamilyFace, style, lang, character);
+                        findByCharacterLocaleFamily(afamilyFace, style, lang, character);
                 if (typeface) {
+                    ERIC_LOG("onMatchFamilyStyleCharacter found");
                     return typeface;
                 }
                 lang = lang.lessSpecific();
@@ -1472,22 +1579,25 @@ protected:
         }
 
         sk_sp<SkTypeface> typeface =
-            findByCharacterLocaleFamily(afamilyFace, style, SkALanguage(), character);
+                findByCharacterLocaleFamily(afamilyFace, style, SkALanguage(), character);
         if (typeface) {
+            ERIC_LOG("onMatchFamilyStyleCharacter found");
             return typeface;
         }
 
+        ERIC_LOG("onMatchFamilyStyleCharacter NOT found");
         if constexpr (kSkFontMgrVerbose) {
             using SkUnicharUnsigned = std::make_unsigned_t<decltype(character)>;
             SkDebugf("SKIA: No font had U%c%" PRIx32 "\n",
-                     "+-"[character < 0], static_cast<SkUnicharUnsigned>(std::abs(character)));
+                     "+-"[character < 0],
+                     static_cast<SkUnicharUnsigned>(std::abs(character)));
         }
         return nullptr;
     }
 
     sk_sp<SkTypeface> onMakeFromData(sk_sp<SkData> data, int ttcIndex) const override {
         return this->makeFromStream(
-            std::unique_ptr<SkStreamAsset>(new SkMemoryStream(std::move(data))), ttcIndex);
+                std::unique_ptr<SkStreamAsset>(new SkMemoryStream(std::move(data))), ttcIndex);
     }
 
     sk_sp<SkTypeface> onMakeFromFile(const char path[], int ttcIndex) const override {
@@ -1507,19 +1617,24 @@ protected:
     }
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char name[], SkFontStyle style) const override {
+        ERIC_LOG("onLegacyMakeTypeface(%s)", name ? name : "nullptr");
+        sk_sp<SkTypeface> result;
         if (name) {
             // On Android, we must return nullptr when we can't find the requested
             // named typeface so that the system/app can provide their own recovery
             // mechanism. On other platforms we'd provide a typeface from the
             // default family instead.
-            return sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+            result = sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+        } else if (fDefaultStyleSet) {
+            result = sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
+        } else {
+            result = nullptr;
         }
-        if (fDefaultStyleSet) {
-            return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
-        }
-        return nullptr;
+        ERIC_LOG("onLegacyMakeTypeface(%s) -> %s",
+                 name ? name : "nullptr",
+                 result ? "found" : "NOT found");
+        return result;
     }
-
 
 private:
     AndroidFontAPI fAPI;
@@ -1536,7 +1651,7 @@ private:
     void findDefaultStyleSet() {
         SkASSERT(!fStyleSets.empty());
 
-        static constexpr const char* kDefaultNames[] = { "sans-serif", "Roboto" };
+        static constexpr const char* kDefaultNames[] = {"sans-serif", "Roboto"};
         for (const char* defaultName : kDefaultNames) {
             fDefaultStyleSet = this->onMatchFamily(defaultName);
             if (fDefaultStyleSet) {
@@ -1553,8 +1668,7 @@ private:
 }  // namespace
 
 sk_sp<SkFontMgr> SkFontMgr_New_AndroidNDK(bool cacheFontFiles,
-                                          std::unique_ptr<SkFontScanner> scanner)
-{
+                                          std::unique_ptr<SkFontScanner> scanner) {
     std::optional<AndroidFontAPI> fontAPI = AndroidFontAPI::Make();
     if (!fontAPI) {
         return nullptr;
