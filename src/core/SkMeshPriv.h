@@ -17,6 +17,33 @@ struct SkMeshSpecificationPriv {
     using Attribute = SkMeshSpecification::Attribute;
     using ColorType = SkMeshSpecification::ColorType;
 
+    using Result = SkMeshSpecification::Result;
+    using Options = SkMeshSpecification::Options;
+
+    static Result Make(SkSpan<const Attribute> attributes,
+                   size_t                  vertexStride,
+                   SkSpan<const Varying>   varyings,
+                   const SkString&         vs,
+                   const SkString&         fs,
+                   const Options&          options);
+
+    static Result Make(SkSpan<const Attribute> attributes,
+                       size_t                  vertexStride,
+                       SkSpan<const Varying>   varyings,
+                       const SkString&         vs,
+                       const SkString&         fs,
+                       sk_sp<SkColorSpace>     cs,
+                       const Options&          options);
+
+    static Result Make(SkSpan<const Attribute> attributes,
+                       size_t                  vertexStride,
+                       SkSpan<const Varying>   varyings,
+                       const SkString&         vs,
+                       const SkString&         fs,
+                       sk_sp<SkColorSpace>     cs,
+                       SkAlphaType             at,
+                       const Options&          options);
+
     static SkSpan<const Varying> Varyings(const SkMeshSpecification& spec) {
         return SkSpan(spec.fVaryings);
     }
