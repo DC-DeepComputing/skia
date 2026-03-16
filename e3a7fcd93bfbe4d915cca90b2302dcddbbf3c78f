@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9c054fc_9ade67db",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fdd7559_6a5e226e",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97546e50_d56f7899",
@@ -81,6 +105,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf56ca5_a0bda1bc",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8043c82_9fba9287",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecab5a5a_aed96745",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97546e50_d56f7899",
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44272125_31cc970c",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-03-16T17:52:36Z",
       "side": 1,
       "message": "REPORTER_ASSERT instead of an if means you can unindent a lot of this.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 15
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c72011_53a66230",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44272125_31cc970c",
       "range": {
         "startLine": 46,
         "startChar": 8,
@@ -121,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be1f0aed_fcdf871d",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb06883f_00041525",
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfdb385e_9fd784c6",
@@ -144,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdfe31d6_3b2973ed",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfdb385e_9fd784c6",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e45d045_a8213624",
@@ -157,6 +289,30 @@
       "writtenOn": "2026-03-16T17:52:36Z",
       "side": 1,
       "message": "Consider `REPORT_FAILURE`",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 78,
+        "endChar": 23
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dde93d3_fbbd8020",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-16T20:49:37Z",
+      "side": 1,
+      "message": "Acknowledged, not applicable now (I think) because replaced if statement with a reporter assert block",
+      "parentUuid": "1e45d045_a8213624",
       "range": {
         "startLine": 78,
         "startChar": 8,
