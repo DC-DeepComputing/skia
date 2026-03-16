@@ -16,6 +16,190 @@
       "message": "PTAL",
       "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa9c936_143eb3cf",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "note to remove",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd8c5fa3_dac95322",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "This is a good candidate for an explicit bool operator on `Insertion` that a) ensures that both layer and wrapper are true or both are false, and b) handles this \u0026\u0026",
+      "range": {
+        "startLine": 694,
+        "startChar": 0,
+        "endLine": 694,
+        "endChar": 55
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ce3c90_8a97c59c",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1934,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "Also could be nice to move this to a `\u003e` operator on Insertion",
+      "range": {
+        "startLine": 1924,
+        "startChar": 0,
+        "endLine": 1934,
+        "endChar": 9
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a83d02_ad6e5416",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "remove these extra words?",
+      "range": {
+        "startLine": 284,
+        "startChar": 39,
+        "endLine": 284,
+        "endChar": 57
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d697d43f_f9f18fc3",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "nit: `startList`, right?",
+      "range": {
+        "startLine": 112,
+        "startChar": 74,
+        "endLine": 112,
+        "endChar": 79
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5307ddee_96159130",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "I am surprised that it lets you compile this, since most other argument lists require items after something with a default value to also have a default value.\n\n`kIsDepthOnly` is doing very little in this function, so maybe we get rid of it?",
+      "range": {
+        "startLine": 127,
+        "startChar": 56,
+        "endLine": 127,
+        "endChar": 73
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61d3f690_936d8f07",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "If we add this list to the head, its `fListOrder` was constructed to be greater than the previous head. Should depth only draws just keep the old head\u0027s list order so we get a block of depth-only lists with the same order at the start, and then it increments for all the other draws in the layer?\n\nAt the same time, is it only depth-only draws that would compare against the wrapper\u0027s list order? That makes me wonder if things are working correctly. I think we may end up drawing the new depth draw before the older ones if they ended up in the same layer. Which is fine I think (have to page back in the overlap rules there), but it makes me think that maybe we don\u0027t need to track the compressed painers order on the binding wrapper?",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 44
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "370538cf_42887a53",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-16T14:34:39Z",
+      "side": 1,
+      "message": "nit: fLayer and maybe change to fBindingList or fDrawList instead of wrapper since wrapper is just the name of the base class.",
+      "range": {
+        "startLine": 256,
+        "startChar": 11,
+        "endLine": 256,
+        "endChar": 16
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
