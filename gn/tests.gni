@@ -324,7 +324,12 @@ graphite_tests_sources = [
   "$_tests/graphite/RecordingSurfacesTest.cpp",
   "$_tests/graphite/RectTest.cpp",
   "$_tests/graphite/ShapeTest.cpp",
+<<<<<<< PATCH SET (9ec039f00d0d81c079f81f35cae911d811b25857 Add Swizzle::invert() function)
+  "$_tests/graphite/SwizzleTest.cpp",
+||||||| BASE      (ae3d36cb9e29a41c0471aca50f809217f07ae85e Roll recipe dependencies (trivial).)
+=======
   "$_tests/graphite/SubmitWithFinishProcTest.cpp",
+>>>>>>> BASE      (dd55fc0254f8ce3a4263cf59f1266aa5010e7e6c Roll vulkan-deps from 7c625f80e8cc to ea5afb3f56cf (5 revisi)
   "$_tests/graphite/TextureFormatTest.cpp",
   "$_tests/graphite/TextureProxyTest.cpp",
   "$_tests/graphite/TransformTest.cpp",
