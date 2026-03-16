@@ -174,6 +174,13 @@ bool Context::finishInitialization() {
         return false;
     }
 
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+    auto pathRendererStrategy = fSharedContext->caps()->requestedPathRendererStrategy();
+    if (pathRendererStrategy.has_value() &&
+        pathRendererStrategy.value() == PathRendererStrategy::kCPUSparseStripsMSAA8) {
+    }
+#endif
+
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
