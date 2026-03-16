@@ -1582,6 +1582,8 @@ bool SkScalerContextFTUtils::drawCOLRv0Glyph(FT_Face face, const SkGlyph& glyph,
         haveLayers = true;
         if (layerColorIndex == 0xFFFF) {
             paint.setColor(fForegroundColor);
+        } else if (layerColorIndex >= palette.size()) {
+            continue;
         } else {
             paint.setColor(palette[layerColorIndex]);
         }
