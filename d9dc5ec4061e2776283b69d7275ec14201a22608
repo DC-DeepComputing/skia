@@ -156,6 +156,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1f7c135_291d0015",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T15:10:00Z",
+      "side": 1,
+      "message": "It compiles because I explicitly wrote out *all* the template arguments when calling the function. `kIsDepthOnly` get\u0027s removed in a downstream patch!",
+      "parentUuid": "5307ddee_96159130",
+      "range": {
+        "startLine": 127,
+        "startChar": 56,
+        "endLine": 127,
+        "endChar": 73
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61d3f690_936d8f07",
@@ -169,6 +193,30 @@
       "writtenOn": "2026-03-16T14:34:39Z",
       "side": 1,
       "message": "If we add this list to the head, its `fListOrder` was constructed to be greater than the previous head. Should depth only draws just keep the old head\u0027s list order so we get a block of depth-only lists with the same order at the start, and then it increments for all the other draws in the layer?\n\nAt the same time, is it only depth-only draws that would compare against the wrapper\u0027s list order? That makes me wonder if things are working correctly. I think we may end up drawing the new depth draw before the older ones if they ended up in the same layer. Which is fine I think (have to page back in the overlap rules there), but it makes me think that maybe we don\u0027t need to track the compressed painers order on the binding wrapper?",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 44
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932a9a32_9c93b79b",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T15:10:00Z",
+      "side": 1,
+      "message": "Re adding to head:\nMy understanding is that the self intersection property also implies that any relative ordering between self-intersecting-allowing draws is also valid, hence why adding to head produces a correct image even though it results in reverse ordering of depth draws within the same layer.\n\nHowever, a depth draw will still exit out if intersects any shading draw in layer, which precludes breaking the draw ordering by adding depth draws to the head.\n\nRe dropping compressed painters order:\nI think you are right. A shading draw will not be able to match with any depth only binding-list, so there is no ordering violation danger by matching early. Then, the partial ordering guarantees mean that if the shading draw does match, it will be earlier than the depth only draws, and if it doesn\u0027t, the new binding-list is added to tail.",
+      "parentUuid": "61d3f690_936d8f07",
       "range": {
         "startLine": 195,
         "startChar": 0,
