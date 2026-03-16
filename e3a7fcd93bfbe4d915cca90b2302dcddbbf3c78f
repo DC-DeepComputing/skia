@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "015cc02c_ad8257ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "Link the bug",
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fdd7559_6a5e226e",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "Google\u0027s been an LLC since 2017",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97546e50_d56f7899",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "nit: newline after last include",
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8043c82_9fba9287",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "Skia doesn\u0027t always adhere to this (especially for old tests), but I like http://engdoc/eng/doc/devguide/testing/unit/best-practices?polyglot\u003dcpp#naming \n\nWe want the test name to give a hint towards any inputs and the expected output.\n\n`DrawAntialiasHairline_SquareCappedHalfPixelOffset_SinglePixelWideOutput` is what I might call this test.\n\nNaming things like this can help point out where we might need more test coverage\n(e.g. do we need one for aliased hairlines, do we need one for a pixel-aligned hairline, etc) and gives a reader a hint as to what the test should be doing. More complicated tests can have comments explaining the test also, but the name should be a good start.",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44272125_31cc970c",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "REPORTER_ASSERT instead of an if means you can unindent a lot of this.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 15
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb06883f_00041525",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "There\u0027s some repeated logic here that we can simplify *and* make more readable with table-based testing\nhttp://go/go-style/decisions#table-driven-tests\nUnlike that link, which has a test struct and then makes an array of structs, and then has a for loop go through them all, I prefer a different approach that I think is easier to read and easier to debug. [example](https://github.com/google/skia/blob/df5f12318313254224cb284b56c979bf55ba2dd7/tests/QuadRootsTest.cpp#L92-L114)\n\n```\n// Psuedocode using a lambda which captures reporter and pixmap for less boilerplate\nauto test \u003d [](std::string name, SkPoint pt, SkColor expected) {\n    skiatest::ReporterContext subtest(reporter, name);\n    SkColor actual \u003d pixmap.getColor(pt.x(), pt.y());\n    REPORTER_ASSERT(reporter, actual \u003d\u003d expected, \"%x !\u003d %x\", actual, expected);  // I used hex to make it more clear what the channels are if they differ\n};\n\ntest(\"above north line\", {5.0, 4.0}, SK_ColorWHITE);\ntest(\"on north line\", {5.0, 5.0}, SK_ColorBLACK);\ntest(\"below north line\", {5.0, 6.0}, SK_ColorWHITE);\n\n... repeat 3x for other borders and maybe for the corners.\n```",
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfdb385e_9fd784c6",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "Do we still need this?",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e45d045_a8213624",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-16T17:52:36Z",
+      "side": 1,
+      "message": "Consider `REPORT_FAILURE`",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 78,
+        "endChar": 23
+      },
+      "revId": "e3a7fcd93bfbe4d915cca90b2302dcddbbf3c78f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
