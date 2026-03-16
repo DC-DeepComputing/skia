@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2e9481b_fac8ab08",
+        "filename": "src/gpu/graphite/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "No. I forgot to delete these, as they are now under the sparse_strips sources.",
+      "parentUuid": "ab3f2b16_06e9c766",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 23
+      },
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73ddca29_d080b807",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-10T13:26:13Z",
       "side": 1,
       "message": "Why do we have this part?",
+      "range": {
+        "startLine": 177,
+        "startChar": 4,
+        "endLine": 177,
+        "endChar": 30
+      },
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af0ac623_71045223",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73ddca29_d080b807",
       "range": {
         "startLine": 177,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb89c5e_e02b4c65",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "You are right: Each context tries to initialize the LUT on their own initialization, meaning each must wait on the spin lock. Once they acquire the lock, the LUT is either uninitialized, and they initialize it, or it is already initialized. So I think it\u0027s safe to drop the lock on the variable itself, and keep it just on the function.",
+      "parentUuid": "c817f032_02dee225",
+      "range": {
+        "startLine": 142,
+        "startChar": 48,
+        "endLine": 142,
+        "endChar": 70
+      },
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "126d2a83_c95f1949",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-02-10T13:26:13Z",
       "side": 1,
       "message": "subX - here and below",
+      "range": {
+        "startLine": 29,
+        "startChar": 40,
+        "endLine": 29,
+        "endChar": 45
+      },
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4b91eab_2053978b",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "126d2a83_c95f1949",
       "range": {
         "startLine": 29,
         "startChar": 40,
@@ -127,6 +223,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bd28318_c7907bb8",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "629f03bf_2942be5e",
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a2fa5d8_4bd2cb63",
@@ -140,6 +254,30 @@
       "writtenOn": "2026-02-10T13:26:13Z",
       "side": 1,
       "message": "Hold off on these ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "21d372aa6c8610a33ec99dc6f51522fd10bfd046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c010f454_5d2d7ee6",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-16T21:12:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a2fa5d8_4bd2cb63",
       "range": {
         "startLine": 10,
         "startChar": 0,
