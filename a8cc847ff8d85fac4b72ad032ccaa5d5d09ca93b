@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5aa3a70d_74114806",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoEntryCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-16T09:09:38Z",
+      "side": 1,
+      "message": "For BMP not using `SkBmpRustCodec` would mean not supporting the embedded ICC color profile. While `BmpDecoder` from image crate supports handling the BMP from a ICO file, currently it is quite coupled with its own ico implementation. However I see that `pub fn read_metadata_in_ico_format(\u0026mut self) -\u003e ImageResult\u003c()\u003e` function is public, so maybe it can be used from rust_bmp FFI to expose handling of ico.",
+      "parentUuid": "c4a226fe_1203d811",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 78
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0765a402_caf954c2",
         "filename": "experimental/rust_ico/ffi/FFI.rs",
         "patchSetId": 11
