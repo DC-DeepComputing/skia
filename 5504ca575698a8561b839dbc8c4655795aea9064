@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93624b3f_64809a46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621595
+      },
+      "writtenOn": "2026-03-16T16:17:21Z",
+      "side": 1,
+      "message": "@bungeman@google.com thx for raising this for checking CQ. i\u0027ve tried this patch in Android tree and after resolving visibility issues i also had to apply this on top of it:\n\n```\ndiff --git a/gn/gn_to_bp.py b/gn/gn_to_bp.py\nindex 1cd34cf70c..9b6c633ec0 100755\n--- a/gn/gn_to_bp.py\n+++ b/gn/gn_to_bp.py\n@@ -164,6 +164,12 @@ cc_library_static {\n     export_include_dirs: [\n         \"renderengine\",\n     ],\n+    generated_headers: [\n+      \"libskia_cxx_bridge_header\",\n+    ],\n+    generated_sources: [\n+      \"libskia_cxx_bridge_code\",\n+    ],\n }\n```\n\nwithout this build would fail to compile SkFontScanner_Fontations.cpp failing to find the generated .cpp include",
+      "revId": "5504ca575698a8561b839dbc8c4655795aea9064",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
