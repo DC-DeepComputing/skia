@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "410d2e78_661a00cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T17:51:41Z",
+      "side": 1,
+      "message": "In the spirit of test-driven-development, you want to write the tests and make sure they *fail* because the fix isn\u0027t in yet. Then you work to make the tests pass.\n\nStarting with tests that pass now mean you are verifying that incorrect behavior is going on and will need to change the tests later, which is a bit questionable, IMO",
+      "parentUuid": "256b1682_933769bc",
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07adea25_448ffd23",
         "filename": "tests/CappedHairlinesTest.cpp",
         "patchSetId": 4
@@ -261,6 +279,30 @@
       "side": 1,
       "message": "thought to cast them explicitly to int (skpoints have float x and y) rather than implicitly through the getColor call (which only takes ints). \n\nNot sure if the implicit cast through getColor is intended; I didn\u0027t receive a warning when it happened so not sure. Not sure if that is just something to do with C++\n\nlet me know what you think",
       "parentUuid": "41b2ec0d_f2a0d574",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a21897b4_e94f90d6",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T17:51:41Z",
+      "side": 1,
+      "message": "Unless there\u0027s a reason to do so (and I don\u0027t see an obvious one), let\u0027s leave it as is.",
+      "parentUuid": "cd883504_c60d92d7",
       "range": {
         "startLine": 43,
         "startChar": 4,
