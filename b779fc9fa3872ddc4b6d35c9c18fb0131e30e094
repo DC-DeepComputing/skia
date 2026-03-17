@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea816b2_7b0c077b",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-17T20:41:17Z",
+      "side": 1,
+      "message": "Per offline, this was intentional to help with legibility in all of the tables of channel structs.",
+      "parentUuid": "a91f6dd6_7a1a1e78",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 46
+      },
+      "revId": "b779fc9fa3872ddc4b6d35c9c18fb0131e30e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96734f27_ad257906",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-17T19:12:26Z",
       "side": 1,
       "message": "Not UNorm?",
+      "range": {
+        "startLine": 432,
+        "startChar": 75,
+        "endLine": 432,
+        "endChar": 79
+      },
+      "revId": "b779fc9fa3872ddc4b6d35c9c18fb0131e30e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64e00cbd_1bc78585",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-17T20:41:17Z",
+      "side": 1,
+      "message": "Oops, yep. I\u0027d missed that one in the follow up CLs because this set of channels isn\u0027t used for data generation because the tests skip compressed and multiplanar formats.",
+      "parentUuid": "96734f27_ad257906",
       "range": {
         "startLine": 432,
         "startChar": 75,
