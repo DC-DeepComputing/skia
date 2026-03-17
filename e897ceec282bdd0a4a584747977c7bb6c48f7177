@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90a58058_51a7b980",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "Do these tests currently pass or fail?",
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07adea25_448ffd23",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "style: static functions are snake_case, not CamelCase",
+      "range": {
+        "startLine": 19,
+        "startChar": 31,
+        "endLine": 19,
+        "endChar": 48
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d701849_3aee31c5",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "inline not needed for tests (and rarely needed elsewhere w/o performance measurement).",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 13
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f549b5_845ac6c9",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "This can probably be more helpful if it describes an important property or two it sets up;\n\n```\nSkPaint paint \u003d hairline_paint();\n```\nor\n```\nSkPaint paint \u003d aa_hairline_paint();\n```",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 37
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cba4fb5_b69e90e4",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "This can also be static",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 4
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b2ec0d_f2a0d574",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "Why are these their own variables? Can we not just inline them below?",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6cd8f4_71294e5e",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "I think OpenContour is more referring to the input, not the output. Put it earlier in the name.",
+      "range": {
+        "startLine": 56,
+        "startChar": 74,
+        "endLine": 56,
+        "endChar": 85
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "129408d1_f8c1f11e",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "Just do `SkAssert(surface);`\nIf we can\u0027t make a surface, crashing is better since we are probably OOM or something.",
+      "range": {
+        "startLine": 59,
+        "startChar": 5,
+        "endLine": 60,
+        "endChar": 25
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4c3508_be2c7c4c",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "If you make this a lambda, you don\u0027t need to pass these in.\n\nIf you want to avoid duplicating the code, you can do something like\n\n```\nauto test \u003d [](const std::string\u0026 name, SkPoint pt, SkColor expected) {\n   InspectPixelColorAtPoint(reporter, pixmap, name, pt, expected);\n};\n\ntest(\"left of top corner\", {4.0, 5.0}, SK_ColorWHITE);\n...\n```",
+      "range": {
+        "startLine": 79,
+        "startChar": 29,
+        "endLine": 79,
+        "endChar": 45
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f72292_0fa36c75",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "Be wary of making too many assertions. It can lead to very brittle tests. Especially when picking a particular shade of a color. I\u0027d recommend sticking to very clear assertions of black/white where we can easily make a case that something should be fully covered or completely empty. I don\u0027t want to have to change this test if I slightly change how we linearly interpolate colors when blending or computing antialias.",
+      "range": {
+        "startLine": 87,
+        "startChar": 79,
+        "endLine": 87,
+        "endChar": 89
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bc67851_670fc2e0",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T13:37:18Z",
+      "side": 1,
+      "message": "Again, these shades of grey are probably too brittle. It might be worthwhile to have a second helper function that just makes sure they are between two colors\n\n`test(\"above UL corner\", {5.0, 4.0}, SK_ColorDKGRAY, SK_ColorBLACK)`",
+      "range": {
+        "startLine": 121,
+        "startChar": 80,
+        "endLine": 121,
+        "endChar": 90
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
