@@ -159,6 +159,9 @@ func (b *jobBuilder) genTasksForJob() {
 		if b.ExtraConfig("WasmGMTests") {
 			b.runWasmGMTests()
 			return
+		} else if b.ExtraConfig("StandaloneWasm") {
+			b.dmStandaloneWasm()
+			return
 		}
 		b.dm()
 		return
