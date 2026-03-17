@@ -2714,6 +2714,10 @@ private:
 */
 class [[nodiscard]] SkAutoCanvasRestore {
 public:
+    SkAutoCanvasRestore(SkAutoCanvasRestore&& other)
+            : fCanvas{other.fCanvas}, fSaveCount{other.fSaveCount} {
+        other.fCanvas = nullptr;
+    }
 
     /** Preserves SkCanvas::save() count. Optionally saves SkCanvas clip and SkCanvas matrix.
 
@@ -2753,7 +2757,6 @@ private:
     SkCanvas*   fCanvas;
     int         fSaveCount;
 
-    SkAutoCanvasRestore(SkAutoCanvasRestore&&) = delete;
     SkAutoCanvasRestore(const SkAutoCanvasRestore&) = delete;
     SkAutoCanvasRestore& operator=(SkAutoCanvasRestore&&) = delete;
     SkAutoCanvasRestore& operator=(const SkAutoCanvasRestore&) = delete;
