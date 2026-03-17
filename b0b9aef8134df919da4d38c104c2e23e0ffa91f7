@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5595d9f3_2be95961",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T20:16:03Z",
+      "side": 1,
+      "message": "updated to add an \"assert color in range\" function\n\ntried closing the range of values (so that it\u0027s a smaller range than between SK_ColorBLACK and SK_ColorGRAY) but it seems the tests only work correctly when the range of values is between  SK_ColorBLACK and SK_ColorGRAY",
+      "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
