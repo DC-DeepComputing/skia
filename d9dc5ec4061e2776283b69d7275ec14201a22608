@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7280c03_77930d99",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-17T14:30:00Z",
+      "side": 1,
+      "message": "Should leave un-resolved until it\u0027s removed",
+      "parentUuid": "20a8e426_dcca0ac6",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "d9dc5ec4061e2776283b69d7275ec14201a22608",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fd8c5fa3_dac95322",
         "filename": "src/gpu/graphite/ClipStack.cpp",
         "patchSetId": 10
