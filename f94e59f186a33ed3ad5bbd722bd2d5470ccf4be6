@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca8fb57_ac39f3df",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-17T20:31:20Z",
+      "side": 1,
+      "message": "I do want to know why this seems necessary when FreeType should already be checking for this at https://source.chromium.org/chromium/chromium/src/+/main:third_party/freetype/src/src/sfnt/ttcolr.c;l\u003d499;drc\u003d45556a19aab9502b91d6f30931e0cb5256f683f8",
+      "revId": "f94e59f186a33ed3ad5bbd722bd2d5470ccf4be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
