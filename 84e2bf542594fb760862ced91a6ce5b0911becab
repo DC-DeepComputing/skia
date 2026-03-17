@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddba3499_77102dfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T15:23:10Z",
+      "side": 1,
+      "message": "suggestion: I like to include the client CLs for reference when doing this clean up (e.g. what CLs in the client let us delete this)",
+      "revId": "84e2bf542594fb760862ced91a6ce5b0911becab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9560f1f3_482b5be6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T15:23:10Z",
+      "side": 1,
+      "message": "Thanks for staging and landing this in Android!",
+      "revId": "84e2bf542594fb760862ced91a6ce5b0911becab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
