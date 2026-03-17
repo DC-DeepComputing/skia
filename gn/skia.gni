@@ -89,6 +89,7 @@ declare_args() {
   skia_use_sfml = false
   skia_use_webgl = is_wasm
   skia_use_webgpu = is_wasm
+  skia_use_sdl2 = false
   skia_use_wuffs = true
   skia_use_x11 = is_linux
   skia_use_xps = true
