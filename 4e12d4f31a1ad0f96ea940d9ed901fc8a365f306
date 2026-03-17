@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "873bf040_fe909c9d",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Good question. As discussed offline, reserving doesn\u0027t actually change the reported size of the TArray, meaning that reserving and then making this driver call leads to the TArray reporting the expected *capacity* but not *size* (i.e. quantity) of elements since it doesn\u0027t know the driver wrote actual entries into the array into the reserved space.\n\nHowever, we can get around this in what is perhaps a cleaner way by pushing back `availExtCount` VkExtensionProperties (default-initialized values) and simply clobbering over those values w/ the Vulkan call. We *could* get away with using reserve() calls and separately tracking the entry quantity, but that gets a little annoying and feels more fragile (e.g. incorrect size value breaks ability to use for/each loops - we *could* pass around and use separate size value, but that feels like more overhead).",
+      "parentUuid": "f1be0e3a_b0093992",
+      "range": {
+        "startLine": 323,
+        "startChar": 27,
+        "endLine": 323,
+        "endChar": 42
+      },
+      "revId": "4e12d4f31a1ad0f96ea940d9ed901fc8a365f306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87e3dde9_05701c8a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-11T14:45:31Z",
       "side": 1,
       "message": "same, is this separate array needed?",
+      "range": {
+        "startLine": 342,
+        "startChar": 23,
+        "endLine": 342,
+        "endChar": 34
+      },
+      "revId": "4e12d4f31a1ad0f96ea940d9ed901fc8a365f306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b84f7c1_e82e269c",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "In the case of *available* layers, I think it makes sense to keep these since we only end up tracking + reporting *enabled* layers, so having the available layer container be temporary seems fine to me.",
+      "parentUuid": "87e3dde9_05701c8a",
       "range": {
         "startLine": 342,
         "startChar": 23,

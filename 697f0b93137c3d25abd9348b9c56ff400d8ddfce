@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa6d027_73b4356b",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Yeah, pros and cons... I like keeping the size attribute up-to-date since it feels less fragile. For example, there\u0027s the direct case of using the size() method of the TArray - even if we don\u0027t leverage that now, it would be reasonable for someone to assume they could in the future. Additionally, having the size value not reflect the actual entry count leads to not being able to use for/each loops... we\u0027d have to pass around more size values and pointers... etc.\n\nFor now, I have gone with the push_back_n approach that the Vulkan driver call can overwrite as it seems simplest in my opinion. I did remove many of the local raw arrays in favor of passing in a ptr to the expected spot in the TArray.",
+      "parentUuid": "6da4eb6c_474b4fdb",
+      "range": {
+        "startLine": 355,
+        "startChar": 13,
+        "endLine": 355,
+        "endChar": 31
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "294ddd2a_52c10f61",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-11T14:45:31Z",
       "side": 1,
       "message": "Is protected not added by Skia?",
+      "range": {
+        "startLine": 474,
+        "startChar": 17,
+        "endLine": 474,
+        "endChar": 40
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e89e1c_942bf42d",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "It do be - removed",
+      "parentUuid": "294ddd2a_52c10f61",
       "range": {
         "startLine": 474,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b2bdec8_8da1f64d",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Wait you\u0027re so right; done (artifact of original approach)",
+      "parentUuid": "f17d8d43_625146fc",
+      "range": {
+        "startLine": 552,
+        "startChar": 29,
+        "endLine": 552,
+        "endChar": 48
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bf703cc_342c31cc",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "100ffb74_316105b2",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf703cc_342c31cc",
+      "range": {
+        "startLine": 556,
+        "startChar": 24,
+        "endLine": 556,
+        "endChar": 45
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5ec0029_bcd88587",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-03-11T14:45:31Z",
       "side": 1,
       "message": "assume all comments I\u0027ve made about setting instance applies to the device code as well",
+      "range": {
+        "startLine": 714,
+        "startChar": 9,
+        "endLine": 714,
+        "endChar": 42
+      },
+      "revId": "697f0b93137c3d25abd9348b9c56ff400d8ddfce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c19e9c1b_c4bb4b77",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a5ec0029_bcd88587",
       "range": {
         "startLine": 714,
         "startChar": 9,

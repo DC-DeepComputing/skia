@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "583b5950_8c381ab0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-17T18:56:46Z",
+      "side": 1,
+      "message": "Addressed feedback; also took a stab at a minor fun direction of defining lambdas to make Vulkan API calls which allow some of the helper utilities to be shared b/w Instance and Device logic. LMKWYT!",
+      "revId": "7b3f0447ffc860d800485b881bf1afc0c39d4b49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
