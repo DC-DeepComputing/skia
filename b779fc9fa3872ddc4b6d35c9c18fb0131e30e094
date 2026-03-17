@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a91f6dd6_7a1a1e78",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-17T19:12:26Z",
+      "side": 1,
+      "message": "Missing k-prefix",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 46
+      },
+      "revId": "b779fc9fa3872ddc4b6d35c9c18fb0131e30e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96734f27_ad257906",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-17T19:12:26Z",
+      "side": 1,
+      "message": "Not UNorm?",
+      "range": {
+        "startLine": 432,
+        "startChar": 75,
+        "endLine": 432,
+        "endChar": 79
+      },
+      "revId": "b779fc9fa3872ddc4b6d35c9c18fb0131e30e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
