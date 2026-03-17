@@ -16,6 +16,92 @@
       "message": "updated to add an \"assert color in range\" function\n\ntried closing the range of values (so that it\u0027s a smaller range than between SK_ColorBLACK and SK_ColorGRAY) but it seems the tests only work correctly when the range of values is between  SK_ColorBLACK and SK_ColorGRAY",
       "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c507c917_4f27b785",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T20:22:31Z",
+      "side": 1,
+      "message": "drop the _impl. Function overloading should help us here.",
+      "range": {
+        "startLine": 37,
+        "startChar": 33,
+        "endLine": 37,
+        "endChar": 38
+      },
+      "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98b2add8_200ad797",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T20:22:31Z",
+      "side": 1,
+      "message": "I don\u0027t think you can compare colors like this - you\u0027d want to do it channel by channel.",
+      "range": {
+        "startLine": 47,
+        "startChar": 20,
+        "endLine": 47,
+        "endChar": 68
+      },
+      "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1136652d_da964b1d",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T20:22:31Z",
+      "side": 1,
+      "message": "It\u0027s probably worth a higher-level comment explaining what these asserts are doing.",
+      "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f010071_12c1dadb",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-17T20:22:31Z",
+      "side": 1,
+      "message": "Move these right below the helper function. Was there a reason you omitted kButt_Cap?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 0
+      },
+      "revId": "b0b9aef8134df919da4d38c104c2e23e0ffa91f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
