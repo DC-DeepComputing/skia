@@ -191,6 +191,14 @@ public:
 private:
     friend struct SkMeshSpecificationPriv;
 
+    struct Options {
+        // TODO(skbug.com/40042585) - Replace this with a promised SkCapabilities?
+        // This flag lifts the ES2 restrictions on Mesh Specifications that are gated by the
+        // `strictES2Mode` check
+        // This is only intended for use by tests.
+        SkSL::Version maxVersionAllowed = SkSL::Version::k100;
+    };
+
     enum class ColorType {
         kNone,
         kHalf4,
@@ -203,7 +211,8 @@ private:
                                             const SkString&         vs,
                                             const SkString&         fs,
                                             sk_sp<SkColorSpace>     cs,
-                                            SkAlphaType             at);
+                                            SkAlphaType             at,
+                                            const Options&          options);
 
     SkMeshSpecification(SkSpan<const Attribute>,
                         size_t,

@@ -391,13 +391,30 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       SkSpan<const Varying> varyings,
                                                       const SkString& vs,
                                                       const SkString& fs) {
+    return SkMeshSpecificationPriv::Make(attributes,
+                                         vertexStride,
+                                         varyings,
+                                         vs,
+                                         fs,
+                                         SkColorSpace::MakeSRGB(),
+                                         kPremul_SkAlphaType,
+                                         SkMeshSpecificationPriv::Options{});
+}
+
+SkMeshSpecification::Result SkMeshSpecificationPriv::Make(SkSpan<const Attribute> attributes,
+                                                          size_t vertexStride,
+                                                          SkSpan<const Varying> varyings,
+                                                          const SkString& vs,
+                                                          const SkString& fs,
+                                                          const Options& options) {
     return Make(attributes,
                 vertexStride,
                 varyings,
                 vs,
                 fs,
                 SkColorSpace::MakeSRGB(),
-                kPremul_SkAlphaType);
+                kPremul_SkAlphaType,
+                options);
 }
 
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
@@ -406,7 +423,30 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       const SkString& vs,
                                                       const SkString& fs,
                                                       sk_sp<SkColorSpace> cs) {
-    return Make(attributes, vertexStride, varyings, vs, fs, std::move(cs), kPremul_SkAlphaType);
+    return SkMeshSpecificationPriv::Make(attributes,
+                                         vertexStride,
+                                         varyings,
+                                         vs,
+                                         fs,
+                                         std::move(cs),
+                                         SkMeshSpecificationPriv::Options{});
+}
+
+SkMeshSpecification::Result SkMeshSpecificationPriv::Make(SkSpan<const Attribute> attributes,
+                                                          size_t vertexStride,
+                                                          SkSpan<const Varying> varyings,
+                                                          const SkString& vs,
+                                                          const SkString& fs,
+                                                          sk_sp<SkColorSpace> cs,
+                                                          const Options& options) {
+    return Make(attributes,
+                vertexStride,
+                varyings,
+                vs,
+                fs,
+                std::move(cs),
+                kPremul_SkAlphaType,
+                options);
 }
 
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
@@ -416,6 +456,24 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       const SkString& fs,
                                                       sk_sp<SkColorSpace> cs,
                                                       SkAlphaType at) {
+    return SkMeshSpecificationPriv::Make(attributes,
+                                         vertexStride,
+                                         varyings,
+                                         vs,
+                                         fs,
+                                         std::move(cs),
+                                         at,
+                                         SkMeshSpecificationPriv::Options{});
+}
+
+SkMeshSpecification::Result SkMeshSpecificationPriv::Make(SkSpan<const Attribute> attributes,
+                                                          size_t vertexStride,
+                                                          SkSpan<const Varying> varyings,
+                                                          const SkString& vs,
+                                                          const SkString& fs,
+                                                          sk_sp<SkColorSpace> cs,
+                                                          SkAlphaType at,
+                                                          const Options& options) {
     SkString attributesStruct("struct Attributes {\n");
     for (const auto& a : attributes) {
         attributesStruct.appendf("  %s %s;\n", attribute_type_string(a.type), a.name.c_str());
@@ -432,6 +490,7 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
         }
     }
 
+    constexpr auto kMaxVaryings = SkMeshSpecification::kMaxVaryings;
     STArray<kMaxVaryings, Varying> tempVaryings;
     if (!userProvidedPositionVarying) {
         // Even though we check the # of varyings in MakeFromSourceWithStructs we check here, too,
@@ -461,13 +520,14 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
     fullFS.append(varyingStruct.c_str());
     fullFS.append(fs.c_str());
 
-    return MakeFromSourceWithStructs(attributes,
-                                     vertexStride,
-                                     varyings,
-                                     fullVS,
-                                     fullFS,
-                                     std::move(cs),
-                                     at);
+    return SkMeshSpecification::MakeFromSourceWithStructs(attributes,
+                                                          vertexStride,
+                                                          varyings,
+                                                          fullVS,
+                                                          fullFS,
+                                                          std::move(cs),
+                                                          at,
+                                                          options);
 }
 
 SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
@@ -477,7 +537,8 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
         const SkString&         vs,
         const SkString&         fs,
         sk_sp<SkColorSpace>     cs,
-        SkAlphaType             at) {
+        SkAlphaType             at,
+        const Options&          options) {
     if (auto [ok, error] = check_vertex_offsets_and_stride(attributes, stride); !ok) {
         return {nullptr, error};
     }
@@ -508,8 +569,8 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     // long-lived mesh specification doesn't waste memory.
     SkSL::ProgramSettings settings;
     settings.fUseMemoryPool = false;
-
     // TODO(skbug.com/40042585): Add SkCapabilities to the API, check against required version.
+    settings.fMaxVersionAllowed = options.maxVersionAllowed;
     std::unique_ptr<SkSL::Program> vsProgram = compiler.convertProgram(
             SkSL::ProgramKind::kMeshVertex,
             std::string(vs.c_str()),
