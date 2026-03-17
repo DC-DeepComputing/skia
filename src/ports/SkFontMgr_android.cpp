@@ -31,6 +31,15 @@
 #include <algorithm>
 #include <limits>
 
+#if defined(SK_BUILD_FOR_ANDROID)
+#include <android/log.h>
+#define ERIC_LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "EricSumSkia", fmt, ##__VA_ARGS__)
+#else
+#define ERIC_LOG(fmt, ...)
+#endif
+
+#include <stdarg.h>
+
 using namespace skia_private;
 
 class SkData;
@@ -125,6 +134,7 @@ public:
 
             SkString pathName(family.fBasePath);
             pathName.append(fontFile.fFileName);
+            ERIC_LOG("Loading font file: %s", pathName.c_str());
 
             std::unique_ptr<SkStreamAsset>* streamPtr = streamForPath.find(pathName);
             if (!streamPtr) {
@@ -240,6 +250,7 @@ public:
     SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom,
                       std::unique_ptr<SkFontScanner> scanner)
         : fScanner(std::move(scanner)) {
+        ERIC_LOG("SkFontMgr_Android constructor called");
         std::vector<std::unique_ptr<FontFamily>> families;
         if (custom && SkFontMgr_Android_CustomFonts::kPreferSystem != custom->fSystemFontUse) {
             SkString base(custom->fBasePath);
@@ -285,27 +296,36 @@ protected:
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
         if (!familyName) {
+            ERIC_LOG("onMatchFamily(nullptr) -> nullptr");
             return nullptr;
         }
         SkAutoAsciiToLC tolc(familyName);
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {
             if (fNameToFamilyMap[i].name.equals(tolc.lc())) {
+                ERIC_LOG("onMatchFamily(%s) -> found", familyName);
                 return sk_ref_sp(fNameToFamilyMap[i].styleSet);
             }
         }
         // TODO: eventually we should not need to name fallback families.
         for (int i = 0; i < fFallbackNameToFamilyMap.size(); ++i) {
             if (fFallbackNameToFamilyMap[i].name.equals(tolc.lc())) {
+                ERIC_LOG("onMatchFamily(%s) -> found in fallback", familyName);
                 return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
             }
         }
+        ERIC_LOG("onMatchFamily(%s) -> NOT found", familyName);
         return nullptr;
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                          const SkFontStyle& style) const override {
         sk_sp<SkFontStyleSet> sset(this->matchFamily(familyName));
-        return sset->matchStyle(style);
+        sk_sp<SkTypeface> result = sset->matchStyle(style);
+        ERIC_LOG("onMatchFamilyStyle(%s, [%d, %d, %d]) -> %s",
+                 familyName ? familyName : "nullptr",
+                 style.weight(), style.width(), (int)style.slant(),
+                 result ? "found" : "not found");
+        return result;
     }
 
     using Matcher = bool (*)(const SkString& familyName, const NameToFamily&);
@@ -346,6 +366,7 @@ protected:
                                                   const char* bcp47[],
                                                   int bcp47Count,
                                                   SkUnichar character) const override {
+        ERIC_LOG("onMatchFamilyStyleCharacter(%s, char=0x%x)", familyName ? familyName : "nullptr", character);
         // The variant 'elegant' is 'not squashed', 'compact' is 'stays in ascent/descent'.
         // The variant 'default' means 'compact and elegant'.
         // As a result, it is not possible to know the variant context from the font alone.
@@ -421,6 +442,7 @@ protected:
                     while (!lang.getTag().isEmpty()) {
                         matchingTypeface = find(currentFamilyName, lang.getTag(), elegant);
                         if (matchingTypeface) {
+                            ERIC_LOG("onMatchFamilyStyleCharacter found");
                             return matchingTypeface;
                         }
 
@@ -429,10 +451,12 @@ protected:
                 }
                 matchingTypeface = find(currentFamilyName, SkString(), elegant);
                 if (matchingTypeface) {
+                    ERIC_LOG("onMatchFamilyStyleCharacter found");
                     return matchingTypeface;
                 }
             }
         }
+        ERIC_LOG("onMatchFamilyStyleCharacter NOT found");
         return nullptr;
     }
 
@@ -458,17 +482,22 @@ protected:
     }
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char familyName[], SkFontStyle style) const override {
+        ERIC_LOG("onLegacyMakeTypeface(%s)", familyName ? familyName : "nullptr");
+        sk_sp<SkTypeface> result;
         if (familyName) {
             // On Android, we must return nullptr when we can't find the requested
             // named typeface so that the system/app can provide their own recovery
             // mechanism. On other platforms we'd provide a typeface from the
             // default family instead.
-            return sk_sp<SkTypeface>(this->onMatchFamilyStyle(familyName, style));
+            result = sk_sp<SkTypeface>(this->onMatchFamilyStyle(familyName, style));
+        } else if (fDefaultStyleSet) {
+            result = sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
+        } else {
+            result = SkTypeface::MakeEmpty();
         }
-        if (fDefaultStyleSet) {
-            return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
-        }
-        return SkTypeface::MakeEmpty();
+        ERIC_LOG("onLegacyMakeTypeface(%s) -> %s", familyName ? familyName : "nullptr",
+                 (result && result->uniqueID() != 0) ? "found" : "not found");
+        return result;
     }
 
 
@@ -503,6 +532,13 @@ private:
 
         for (const SkString& name : family.fNames) {
             nameToFamily->emplace_back(NameToFamily{name, newSet.get()});
+        }
+        for (int i = 0; i < newSet->count(); ++i) {
+            sk_sp<SkTypeface> tf = newSet->createTypeface(i);
+            SkString name;
+            tf->getFamilyName(&name);
+            SkFontStyle s = tf->fontStyle();
+            ERIC_LOG("Loaded font: %s [%d, %d, %d]", name.c_str(), s.weight(), s.width(), s.slant());
         }
         fStyleSets.emplace_back(std::move(newSet));
     }

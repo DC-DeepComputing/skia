@@ -27,6 +27,15 @@
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+#if defined(SK_BUILD_FOR_ANDROID)
+#include <android/log.h>
+#define ERIC_LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "EricSumSkia", fmt, ##__VA_ARGS__)
+#else
+#define ERIC_LOG(fmt, ...)
+#endif
+
+#include <stdarg.h>
+
 #include <unicode/uchar.h>
 #include <unicode/ustring.h>
 
@@ -989,6 +998,7 @@ public:
         , fScanner(std::move(scanner))
         , fCache(new TypefaceCache())
     {
+        ERIC_LOG("SkFontMgr_AndroidNDK constructor called");
         SkASystemFontIterator fontIter(fAPI);
         if (!fontIter) {
             if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: No ASystemFontIterator"); }
@@ -1009,6 +1019,8 @@ public:
 
             SkString name;
             typeface->getFamilyName(&name);
+            SkFontStyle s = typeface->fontStyle();
+            ERIC_LOG("Loaded font: %s [%d, %d, %d]", name.c_str(), s.weight(), s.width(), s.slant());
             this->addSystemTypeface(typeface, name, true);
 
             // A font may have many localized family names.
@@ -1100,14 +1112,17 @@ protected:
 
     sk_sp<SkFontStyleSet_AndroidNDK> onMatchAFamily(const char familyName[]) const {
         if (!familyName) {
+            ERIC_LOG("onMatchAFamily(nullptr) -> nullptr");
             return nullptr;
         }
         SkString normalizedFamilyName(fICU.casefold({familyName, strlen(familyName)}));
         for (const NameToFamily& nameToFamily : fNameToFamilyMap) {
             if (nameToFamily.normalizedName == normalizedFamilyName) {
+                ERIC_LOG("onMatchAFamily(%s) -> found", familyName);
                 return sk_ref_sp(nameToFamily.styleSet);
             }
         }
+        ERIC_LOG("onMatchAFamily(%s) -> NOT found", familyName);
         return nullptr;
     }
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
@@ -1119,9 +1134,17 @@ protected:
     {
         sk_sp<SkFontStyleSet_AndroidNDK> sset(this->onMatchAFamily(familyName));
         if (!sset) {
+            ERIC_LOG("onMatchFamilyStyle(%s, [%d, %d, %d]) -> NOT found (no sset)",
+                     familyName ? familyName : "nullptr",
+                     style.weight(), style.width(), (int)style.slant());
             return nullptr;
         }
-        return sset->matchStyle(style);
+        sk_sp<SkTypeface> result = sset->matchStyle(style);
+        ERIC_LOG("onMatchFamilyStyle(%s, [%d, %d, %d]) -> %s",
+                 familyName ? familyName : "nullptr",
+                 style.weight(), style.width(), (int)style.slant(),
+                 result ? "found" : "NOT found");
+        return result;
     }
 
     static TArray<SkString> GetExtraFamilyNames(
@@ -1202,6 +1225,7 @@ protected:
         skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>>& streamForPath) const
     {
         SkString filePath(font.getFontFilePath());
+        ERIC_LOG("Loading font file: %s", filePath.c_str());
 
         std::unique_ptr<SkStreamAsset>* streamPtr = streamForPath.find(filePath);
         if (!streamPtr) {
@@ -1441,6 +1465,7 @@ protected:
                                                   const char* bcp47[],
                                                   int bcp47Count,
                                                   SkUnichar character) const override {
+        ERIC_LOG("onMatchFamilyStyleCharacter(%s, char=0x%x)", familyName ? familyName : "nullptr", character);
         // If at some point AFontMatcher becomes usable, the code for using it is at
         // https://skia-review.googlesource.com/c/skia/+/585970/13/src/ports/SkFontMgr_android_ndk.cpp#766
 
@@ -1465,6 +1490,7 @@ protected:
                 sk_sp<SkTypeface> typeface =
                     findByCharacterLocaleFamily(afamilyFace, style, lang, character);
                 if (typeface) {
+                    ERIC_LOG("onMatchFamilyStyleCharacter found");
                     return typeface;
                 }
                 lang = lang.lessSpecific();
@@ -1474,9 +1500,11 @@ protected:
         sk_sp<SkTypeface> typeface =
             findByCharacterLocaleFamily(afamilyFace, style, SkALanguage(), character);
         if (typeface) {
+            ERIC_LOG("onMatchFamilyStyleCharacter found");
             return typeface;
         }
 
+        ERIC_LOG("onMatchFamilyStyleCharacter NOT found");
         if constexpr (kSkFontMgrVerbose) {
             using SkUnicharUnsigned = std::make_unsigned_t<decltype(character)>;
             SkDebugf("SKIA: No font had U%c%" PRIx32 "\n",
@@ -1507,17 +1535,22 @@ protected:
     }
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char name[], SkFontStyle style) const override {
+        ERIC_LOG("onLegacyMakeTypeface(%s)", name ? name : "nullptr");
+        sk_sp<SkTypeface> result;
         if (name) {
             // On Android, we must return nullptr when we can't find the requested
             // named typeface so that the system/app can provide their own recovery
             // mechanism. On other platforms we'd provide a typeface from the
             // default family instead.
-            return sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+            result = sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+        } else if (fDefaultStyleSet) {
+            result = sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
+        } else {
+            result = nullptr;
         }
-        if (fDefaultStyleSet) {
-            return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
-        }
-        return nullptr;
+        ERIC_LOG("onLegacyMakeTypeface(%s) -> %s", name ? name : "nullptr",
+                 result ? "found" : "NOT found");
+        return result;
     }
 
 

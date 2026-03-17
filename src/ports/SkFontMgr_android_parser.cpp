@@ -20,6 +20,13 @@
 
 #include <expat.h>
 
+#if defined(SK_BUILD_FOR_ANDROID)
+#include <android/log.h>
+#define ERIC_LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "EricSumSkia", fmt, ##__VA_ARGS__)
+#else
+#define ERIC_LOG(fmt, ...)
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -32,6 +39,7 @@ using namespace skia_private;
 #define OLD_SYSTEM_FONTS_FILE "/system/etc/system_fonts.xml"
 #define FALLBACK_FONTS_FILE "/system/etc/fallback_fonts.xml"
 #define VENDOR_FONTS_FILE "/vendor/etc/fallback_fonts.xml"
+#define PRODUCT_CUSTOMIZATION_FILE "/product/etc/fonts_customization.xml"
 
 #define LOCALE_FALLBACK_FONTS_SYSTEM_DIR "/system/etc"
 #define LOCALE_FALLBACK_FONTS_VENDOR_DIR "/vendor/etc"
@@ -117,6 +125,8 @@ struct FamilyData {
     const SkString& fBasePath;                  // The current base path.
     const bool fIsFallback;                     // The file being parsed is a fallback file
     const char* fFilename;                      // The name of the file currently being parsed.
+
+    SkString fActiveFamilyListName;             // Name from family-list tag
 
     int fDepth;                                 // The current element depth of the parse.
     int fSkip;                                  // The depth to stop skipping, 0 if not skipping.
@@ -275,6 +285,9 @@ static const TagHandler fontHandler = {
     },
     /*end*/[](FamilyData* self, const char* tag) {
         trim_string(&self->fCurrentFontInfo->fFileName);
+        ERIC_LOG("XML found font: %s (basePath: %s)", 
+                 self->fCurrentFontInfo->fFileName.c_str(), 
+                 self->fCurrentFamily->fBasePath.c_str());
     },
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
@@ -297,6 +310,12 @@ static const TagHandler familyHandler = {
         // If there is no name, this is a fallback only font.
         FontFamily* family = new FontFamily(self->fBasePath, true);
         self->fCurrentFamily.reset(family);
+
+        if (!self->fActiveFamilyListName.isEmpty()) {
+            family->fNames.push_back().set(self->fActiveFamilyListName);
+            family->fIsFallbackFont = false;
+        }
+
         for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
             const char* name = attributes[i];
             const char* value = attributes[i+1];
@@ -324,6 +343,31 @@ static const TagHandler familyHandler = {
         size_t len = strlen(tag);
         if (MEMEQ("font", tag, len)) {
             return &fontHandler;
+        }
+        return nullptr;
+    },
+    /*chars*/nullptr,
+};
+
+static const TagHandler familyListHandler = {
+    /*start*/[](FamilyData* self, const char* tag, const char** attributes) {
+        for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
+            const char* name = attributes[i];
+            const char* value = attributes[i+1];
+            size_t nameLen = strlen(name);
+            if (MEMEQ("name", name, nameLen)) {
+                SkAutoAsciiToLC tolc(value);
+                self->fActiveFamilyListName.set(tolc.lc());
+            }
+        }
+    },
+    /*end*/[](FamilyData* self, const char* tag) {
+        self->fActiveFamilyListName.reset();
+    },
+    /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
+        size_t len = strlen(tag);
+        if (MEMEQ("family", tag, len)) {
+            return &familyHandler;
         }
         return nullptr;
     },
@@ -361,7 +405,8 @@ static const TagHandler aliasHandler = {
                 SkAutoAsciiToLC tolc(value);
                 aliasName.set(tolc.lc());
             } else if (MEMEQ("to", name, nameLen)) {
-                to.set(value);
+                SkAutoAsciiToLC tolc(value);
+                to.set(tolc.lc());
             } else if (MEMEQ("weight", name, nameLen)) {
                 if (!parse_non_negative_integer(value, &weight)) {
                     SK_FONTCONFIGPARSER_WARNING("'%s' is an invalid weight", value);
@@ -372,9 +417,11 @@ static const TagHandler aliasHandler = {
         // Assumes that the named family is already declared
         FontFamily* targetFamily = find_family(self, to);
         if (!targetFamily) {
+            ERIC_LOG("Alias target not found: %s", to.c_str());
             SK_FONTCONFIGPARSER_WARNING("'%s' alias target not found", to.c_str());
             return;
         }
+        ERIC_LOG("Alias created: %s -> %s (weight: %d)", aliasName.c_str(), to.c_str(), weight);
 
         if (weight) {
             std::unique_ptr<FontFamily> family(
@@ -403,6 +450,8 @@ static const TagHandler familySetHandler = {
         size_t len = strlen(tag);
         if (MEMEQ("family", tag, len)) {
             return &familyHandler;
+        } else if (MEMEQ("family-list", tag, len)) {
+            return &familyListHandler;
         } else if (MEMEQ("alias", tag, len)) {
             return &aliasHandler;
         }
@@ -559,6 +608,7 @@ static const TagHandler topLevelHandler = {
     /*end*/nullptr,
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
+        ERIC_LOG("XML root tag: %s", tag);
         if (MEMEQ("familyset", tag, len)) {
             // 'version' (non-negative integer) [default 0]
             for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
@@ -574,6 +624,11 @@ static const TagHandler topLevelHandler = {
                 }
             }
             return &jbParser::familySetHandler;
+        } else if (MEMEQ("fonts-modification", tag, len)) {
+            // Modern product customization files use this root tag.
+            // Force the modern parser.
+            self->fVersion = 21;
+            return &lmpParser::familySetHandler;
         }
         return nullptr;
     },
@@ -582,6 +637,7 @@ static const TagHandler topLevelHandler = {
 
 static void XMLCALL start_element_handler(void *data, const char *tag, const char **attributes) {
     FamilyData* self = static_cast<FamilyData*>(data);
+    ERIC_LOG("XML start tag: %s (depth: %d, skip: %d)", tag, self->fDepth, self->fSkip);
 
     if (!self->fSkip) {
         const TagHandler* parent = self->fHandler.back();
@@ -657,7 +713,7 @@ static int parse_config_file(const char* filename,
     // Some of the files we attempt to parse (in particular, /vendor/etc/fallback_fonts.xml)
     // are optional - failure here is okay because one of these optional files may not exist.
     if (!file.isValid()) {
-        SkDebugf(SK_FONTMGR_ANDROID_PARSER_PREFIX "'%s' could not be opened\n", filename);
+        ERIC_LOG("Could not open %s", filename);
         return -1;
     }
 
@@ -702,6 +758,8 @@ static int parse_config_file(const char* filename,
             return -1;
         }
     }
+
+    ERIC_LOG("Finished parsing %s, version: %d", filename, self.fVersion);
     return self.fVersion;
 }
 
@@ -772,6 +830,13 @@ static void append_system_fallback_font_families(
                                              basePath);
 }
 
+static void append_product_customized_font_families(
+    std::vector<std::unique_ptr<FontFamily>>& fontFamilies)
+{
+    ERIC_LOG("Checking for product customization file: %s", PRODUCT_CUSTOMIZATION_FILE);
+    parse_config_file(PRODUCT_CUSTOMIZATION_FILE, fontFamilies, SkString("/product/fonts/"), false);
+}
+
 static void mixin_vendor_fallback_font_families(
         std::vector<std::unique_ptr<FontFamily>>& fallbackFonts,
         const SkString& basePath)
@@ -814,7 +879,16 @@ void SkFontMgr_Android_Parser::GetSystemFontFamilies(
     SkString basePath(getenv("ANDROID_ROOT"));
     basePath.append(kFontFilePrefix);
 
-    if (append_system_font_families(fontFamilies, basePath) >= 21) {
+    int version = append_system_font_families(fontFamilies, basePath);
+    if (version >= 21) {
+        std::vector<std::unique_ptr<FontFamily>> productFamilies;
+        append_product_customized_font_families(productFamilies);
+        if (!productFamilies.empty()) {
+            ERIC_LOG("Prioritizing %zu product families", productFamilies.size());
+            fontFamilies.insert(fontFamilies.begin(),
+                                std::make_move_iterator(productFamilies.begin()),
+                                std::make_move_iterator(productFamilies.end()));
+        }
         return;
     }
 
