@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "256b1682_933769bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "currently pass, did they fail on your end?",
+      "parentUuid": "90a58058_51a7b980",
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07adea25_448ffd23",
@@ -64,6 +82,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d150e02e_7c1116ec",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07adea25_448ffd23",
+      "range": {
+        "startLine": 19,
+        "startChar": 31,
+        "endLine": 19,
+        "endChar": 48
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c528196e_92d4b729",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d701849_3aee31c5",
+      "range": {
+        "startLine": 19,
+        "startChar": 7,
+        "endLine": 19,
+        "endChar": 13
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f549b5_845ac6c9",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf37071d_0ca0f675",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18f549b5_845ac6c9",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 37
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cba4fb5_b69e90e4",
@@ -100,6 +190,30 @@
       "writtenOn": "2026-03-17T13:37:18Z",
       "side": 1,
       "message": "This can also be static",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 4
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f47bcd_b73140f6",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cba4fb5_b69e90e4",
       "range": {
         "startLine": 37,
         "startChar": 0,
@@ -135,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd883504_c60d92d7",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "thought to cast them explicitly to int (skpoints have float x and y) rather than implicitly through the getColor call (which only takes ints). \n\nNot sure if the implicit cast through getColor is intended; I didn\u0027t receive a warning when it happened so not sure. Not sure if that is just something to do with C++\n\nlet me know what you think",
+      "parentUuid": "41b2ec0d_f2a0d574",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d6cd8f4_71294e5e",
         "filename": "tests/CappedHairlinesTest.cpp",
         "patchSetId": 4
@@ -146,6 +284,30 @@
       "writtenOn": "2026-03-17T13:37:18Z",
       "side": 1,
       "message": "I think OpenContour is more referring to the input, not the output. Put it earlier in the name.",
+      "range": {
+        "startLine": 56,
+        "startChar": 74,
+        "endLine": 56,
+        "endChar": 85
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f557781_f0188570",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d6cd8f4_71294e5e",
       "range": {
         "startLine": 56,
         "startChar": 74,
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25fa9fb1_1bd262fc",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "129408d1_f8c1f11e",
+      "range": {
+        "startLine": 59,
+        "startChar": 5,
+        "endLine": 60,
+        "endChar": 25
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa4c3508_be2c7c4c",
@@ -192,6 +378,30 @@
       "writtenOn": "2026-03-17T13:37:18Z",
       "side": 1,
       "message": "If you make this a lambda, you don\u0027t need to pass these in.\n\nIf you want to avoid duplicating the code, you can do something like\n\n```\nauto test \u003d [](const std::string\u0026 name, SkPoint pt, SkColor expected) {\n   InspectPixelColorAtPoint(reporter, pixmap, name, pt, expected);\n};\n\ntest(\"left of top corner\", {4.0, 5.0}, SK_ColorWHITE);\n...\n```",
+      "range": {
+        "startLine": 79,
+        "startChar": 29,
+        "endLine": 79,
+        "endChar": 45
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db1e5579_96577754",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "oh that\u0027s smart! thank you 😊",
+      "parentUuid": "aa4c3508_be2c7c4c",
       "range": {
         "startLine": 79,
         "startChar": 29,
@@ -225,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0eb556c_9ada7ab5",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "I changed the very specific color assertions to an assert color (or assert not color) so that we can check whether a pixel has anything drawn (i.e. not white) or if it\u0027s pure black as expected\n\nI kept the number of assertions the same, but let me know if you still think it should be reduced.",
+      "parentUuid": "45f72292_0fa36c75",
+      "range": {
+        "startLine": 87,
+        "startChar": 79,
+        "endLine": 87,
+        "endChar": 89
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bc67851_670fc2e0",
@@ -238,6 +472,30 @@
       "writtenOn": "2026-03-17T13:37:18Z",
       "side": 1,
       "message": "Again, these shades of grey are probably too brittle. It might be worthwhile to have a second helper function that just makes sure they are between two colors\n\n`test(\"above UL corner\", {5.0, 4.0}, SK_ColorDKGRAY, SK_ColorBLACK)`",
+      "range": {
+        "startLine": 121,
+        "startChar": 80,
+        "endLine": 121,
+        "endChar": 90
+      },
+      "revId": "e897ceec282bdd0a4a584747977c7bb6c48f7177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6231daaa_42e8d731",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-03-17T17:05:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bc67851_670fc2e0",
       "range": {
         "startLine": 121,
         "startChar": 80,
