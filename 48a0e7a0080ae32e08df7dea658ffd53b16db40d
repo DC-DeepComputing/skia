@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62a3866e_3a31d9db",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-17T12:48:28Z",
+      "side": 0,
+      "message": "BTW, I think there is an existing bug here. When we\u0027re in the non-\"usePathKey\" code path in the caller (ClipAtlasManager::findOrCreateEntry() line 118 above on the left) the keyBounds are empty. If we stored a cache entry previously we pushed its keyBounds into the record for the cache entry. SkIRect::contains() returns false if either rect is empty. I didn\u0027t attempt to fix it as part of this refactor.",
+      "revId": "48a0e7a0080ae32e08df7dea658ffd53b16db40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
