@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca28cac9_230cd3c1",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-17T22:20:32Z",
+      "side": 1,
+      "message": "nit: Can we get the name of the dep that is not supported in this fail?",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be1e186_d02dfc19",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-17T22:20:32Z",
+      "side": 1,
+      "message": "Question: Is defines not optional here like in skia_cc_library_with_testutil? Just want to make sure it\u0027s intended to fail if we pass None in.",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ccef06_188d976c",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-17T22:20:32Z",
+      "side": 1,
+      "message": "I think we need to pass forward `sdk_frameworks` here as well. I\u0027m assuming it would fail if we drop Foundation and Metal.",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb76428_fd2483ad",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-17T22:20:32Z",
+      "side": 1,
+      "message": "nit: This loop should probably be a helper function. Maybe list comprehension too, pretty sure in python that performs better, but I can\u0027t speak for starlark. (I think it reads better but that\u0027s subjective)\n\n```\ndef rewrite_deps(deps):\n    if not deps:\n        return []\n    return [_REWRITE_TEST_UTIL_DEPS.get(dep, dep) for dep in deps]\n```\n\nThen\n```\ndeps \u003d rewrite_deps(deps)\n```\n\nand the same above.",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
