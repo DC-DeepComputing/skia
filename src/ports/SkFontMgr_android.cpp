@@ -31,6 +31,9 @@
 #include <algorithm>
 #include <limits>
 
+
+#include <stdarg.h>
+
 using namespace skia_private;
 
 class SkData;
@@ -305,7 +308,8 @@ protected:
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                          const SkFontStyle& style) const override {
         sk_sp<SkFontStyleSet> sset(this->matchFamily(familyName));
-        return sset->matchStyle(style);
+        sk_sp<SkTypeface> result = sset->matchStyle(style);
+        return result;
     }
 
     using Matcher = bool (*)(const SkString& familyName, const NameToFamily&);
@@ -458,17 +462,19 @@ protected:
     }
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char familyName[], SkFontStyle style) const override {
+        sk_sp<SkTypeface> result;
         if (familyName) {
             // On Android, we must return nullptr when we can't find the requested
             // named typeface so that the system/app can provide their own recovery
             // mechanism. On other platforms we'd provide a typeface from the
             // default family instead.
-            return sk_sp<SkTypeface>(this->onMatchFamilyStyle(familyName, style));
+            result = sk_sp<SkTypeface>(this->onMatchFamilyStyle(familyName, style));
+        } else if (fDefaultStyleSet) {
+            result = sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
+        } else {
+            result = SkTypeface::MakeEmpty();
         }
-        if (fDefaultStyleSet) {
-            return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
-        }
-        return SkTypeface::MakeEmpty();
+        return result;
     }
 
 
@@ -503,6 +509,12 @@ private:
 
         for (const SkString& name : family.fNames) {
             nameToFamily->emplace_back(NameToFamily{name, newSet.get()});
+        }
+        for (int i = 0; i < newSet->count(); ++i) {
+            sk_sp<SkTypeface> tf = newSet->createTypeface(i);
+            SkString name;
+            tf->getFamilyName(&name);
+            SkFontStyle s = tf->fontStyle();
         }
         fStyleSets.emplace_back(std::move(newSet));
     }

@@ -27,6 +27,9 @@
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+
+#include <stdarg.h>
+
 #include <unicode/uchar.h>
 #include <unicode/ustring.h>
 
@@ -1009,6 +1012,7 @@ public:
 
             SkString name;
             typeface->getFamilyName(&name);
+            SkFontStyle s = typeface->fontStyle();
             this->addSystemTypeface(typeface, name, true);
 
             // A font may have many localized family names.
@@ -1121,7 +1125,8 @@ protected:
         if (!sset) {
             return nullptr;
         }
-        return sset->matchStyle(style);
+        sk_sp<SkTypeface> result = sset->matchStyle(style);
+        return result;
     }
 
     static TArray<SkString> GetExtraFamilyNames(
@@ -1507,17 +1512,19 @@ protected:
     }
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char name[], SkFontStyle style) const override {
+        sk_sp<SkTypeface> result;
         if (name) {
             // On Android, we must return nullptr when we can't find the requested
             // named typeface so that the system/app can provide their own recovery
             // mechanism. On other platforms we'd provide a typeface from the
             // default family instead.
-            return sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+            result = sk_sp<SkTypeface>(this->onMatchFamilyStyle(name, style));
+        } else if (fDefaultStyleSet) {
+            result = sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
+        } else {
+            result = nullptr;
         }
-        if (fDefaultStyleSet) {
-            return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
-        }
-        return nullptr;
+        return result;
     }
 
 
