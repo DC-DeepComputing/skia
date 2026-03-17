@@ -780,6 +780,9 @@ if (is_wasm) {
         "--sysroot=$skia_emsdk_dir/upstream/emscripten/cache/sysroot",
         "-pthread",
       ]
+      if (skia_use_sdl2) {
+        common += [ "-sUSE_SDL=2" ]
+      }
       cflags = common
       ldflags = common
       ldflags += [
