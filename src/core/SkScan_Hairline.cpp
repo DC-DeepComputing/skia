@@ -642,6 +642,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
     }
 
     SkPoint               pts[4], firstPt, lastPt;
+    SkPoint               cappedPts[4];
     SkAutoConicToQuads    converter;
 
     std::optional<SkPathVerb> prevVerb;
