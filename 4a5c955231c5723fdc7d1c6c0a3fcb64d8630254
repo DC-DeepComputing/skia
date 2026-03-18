@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e1c6403_59bd0034",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T01:03:54Z",
+      "side": 1,
+      "message": "Just to connect this CL back to the issue, but I think the API design that Greg and I landed on would be to have the `SubmitInfo` store a finished proc and context.  If chrome wants to record pending finish procs, it can create an \"insertFinishProc\" like API as part of its graphite context wrapper.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 63
+      },
+      "revId": "4a5c955231c5723fdc7d1c6c0a3fcb64d8630254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
