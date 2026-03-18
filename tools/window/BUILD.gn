@@ -8,6 +8,23 @@ import("../../third_party/dawn/args.gni")
 
 config("public_config") {
   defines = []
+  if (skia_use_dawn && skia_enable_graphite) {
+    if (dawn_enable_d3d11 && is_win) {
+      defines += [ "SK_DAWN_HAS_D3D11" ]
+    }
+    if (dawn_enable_d3d12 && is_win) {
+      defines += [ "SK_DAWN_HAS_D3D12" ]
+    }
+    if (dawn_enable_vulkan && (is_win || is_android || is_linux)) {
+      defines += [ "SK_DAWN_HAS_VULKAN" ]
+    }
+    if (dawn_enable_opengles && (is_android || is_linux)) {
+      defines += [ "SK_DAWN_HAS_OPENGLES" ]
+    }
+    if (dawn_enable_metal && (is_mac || is_ios)) {
+      defines += [ "SK_DAWN_HAS_METAL" ]
+    }
+  }
   include_dirs = [ "." ]
 }
 
@@ -26,6 +43,7 @@ skia_component("window") {
     "WindowContext.h",
   ]
 
+  defines = []
   libs = []
   frameworks = []
 
@@ -197,7 +215,7 @@ skia_component("window") {
         ]
       }
       if (dawn_enable_vulkan) {
-        defines = [ "VK_USE_PLATFORM_XCB_KHR" ]
+        defines += [ "VK_USE_PLATFORM_XCB_KHR" ]
         libs += [ "X11-xcb" ]
       }
     } else if (is_win) {

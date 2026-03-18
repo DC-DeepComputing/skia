@@ -3186,7 +3186,10 @@ if (skia_enable_tools) {
   }
 
   test_lib("sk_app") {
-    public_deps = [ ":skia" ]
+    public_deps = [
+      ":skia",
+      "tools/window",
+    ]
     sources = [
       "tools/sk_app/Application.h",
       "tools/sk_app/CommandSet.cpp",
@@ -3248,10 +3251,7 @@ if (skia_enable_tools) {
       frameworks += [ "QuartzCore.framework" ]
     }
 
-    deps = [
-      ":tool_utils",
-      "tools/window",
-    ]
+    deps = [ ":tool_utils" ]
     if (is_android) {
       deps += [ "//third_party/native_app_glue" ]
     }
