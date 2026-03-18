@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "157fb2e0_4c0da370",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T14:30:18Z",
+      "side": 1,
+      "message": "nit: http://ag/38975924\n\n(We prefer not to have googleplex.+ URLs in commit messages",
+      "range": {
+        "startLine": 11,
+        "startChar": 78,
+        "endLine": 11,
+        "endChar": 88
+      },
+      "revId": "3de5d3b809802ed84ef9230dcb994472443aeda2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92e8517c_a53c7f61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T14:30:18Z",
+      "side": 1,
+      "message": "nit: http://ag/38920053",
+      "range": {
+        "startLine": 24,
+        "startChar": 12,
+        "endLine": 24,
+        "endChar": 22
+      },
+      "revId": "3de5d3b809802ed84ef9230dcb994472443aeda2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
