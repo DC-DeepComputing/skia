@@ -3288,6 +3288,11 @@
         "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit"
       ]
     },
+    "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm": {
+      "tasks": [
+        "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm"
+      ]
+    },
     "Test-Ubuntu24.04-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit": {
       "tasks": [
         "Test-Ubuntu24.04-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit"
@@ -63664,6 +63669,113 @@
       "outputs": [
         "test"
       ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm": {
+      "casSpec": "puppeteer",
+      "cipd_packages": [
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:09ad27bb7a42580550b9063ef8d0a39a5f01a338"
+        },
+        {
+          "name": "skia/bots/node",
+          "path": "node",
+          "version": "version:3"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:557"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        },
+        {
+          "name": "skia/tools/goldctl/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:b2fad5ab18774b86d84aa867287bfb4f2394893b"
+        }
+      ],
+      "command": [
+        "./run_wasm_dm",
+        "--project_id",
+        "skia-swarming-bots",
+        "--task_id",
+        "<(TASK_ID)",
+        "--task_name",
+        "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm",
+        "--test_harness_path",
+        "./tools/run-wasm-gm-tests",
+        "--built_path",
+        "./wasm_out",
+        "--node_bin_path",
+        "./node/node/bin",
+        "--resource_path",
+        "./resources",
+        "--work_path",
+        "./wasm_gm/work",
+        "--gold_ctl_path",
+        "./cipd_bin_packages/goldctl",
+        "--gold_hashes_url",
+        "https://gold.skia.org/json/v1/hashes",
+        "--git_commit",
+        "<(REVISION)",
+        "--changelist_id",
+        "<(ISSUE)",
+        "--patchset_order",
+        "<(PATCHSET)",
+        "--tryjob_id",
+        "<(BUILDBUCKET_BUILD_ID)",
+        "--webgl_version",
+        "2",
+        "--gold_key",
+        "alpha_type:Premul",
+        "--gold_key",
+        "arch:wasm",
+        "--gold_key",
+        "browser:Chrome",
+        "--gold_key",
+        "color_depth:8888",
+        "--gold_key",
+        "config:gles",
+        "--gold_key",
+        "configuration:Release",
+        "--gold_key",
+        "cpu_or_gpu_value:QuadroP400",
+        "--gold_key",
+        "model:Golo",
+        "--gold_key",
+        "os:Ubuntu24.04"
+      ],
+      "dependencies": [
+        "Build-Ubuntu24.04-EMCC-wasm-Release-StandaloneWasm",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "machine_type:n1-standard-16",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "node/node/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 1,
       "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu24.04-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit": {
