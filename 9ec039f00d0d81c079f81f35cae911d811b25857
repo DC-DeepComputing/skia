@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3803d45b_44bb460c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-18T20:37:52Z",
+      "side": 1,
+      "message": "LGTM modulo a question",
+      "revId": "9ec039f00d0d81c079f81f35cae911d811b25857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c09bff_7b246cb5",
+        "filename": "tests/graphite/SwizzleTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-18T20:37:52Z",
+      "side": 1,
+      "message": "Are these all the cases we expect to realistically encounter?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 71
+      },
+      "revId": "9ec039f00d0d81c079f81f35cae911d811b25857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
