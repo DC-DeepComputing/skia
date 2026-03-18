@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b3126b1_56a078ae",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-18T14:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdb2e55e_dd4797b2",
+      "range": {
+        "startLine": 304,
+        "startChar": 56,
+        "endLine": 304,
+        "endChar": 57
+      },
+      "revId": "3db8ad409cc2a394748a4f390b1782b08730398c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bba2449_72a32553",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-18T13:13:26Z",
       "side": 1,
       "message": "I think if there is a callback on `submitInfo` we should skip the SKGPU_LOG_D above since that situation can legitimately arise when submitting lots of scattered GPU work, and then adding one finish proc at the end.",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 9
+      },
+      "revId": "3db8ad409cc2a394748a4f390b1782b08730398c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "619a7f6d_c067099d",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-03-18T14:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bba2449_72a32553",
       "range": {
         "startLine": 305,
         "startChar": 0,
