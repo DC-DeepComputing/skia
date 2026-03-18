@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dfe496a_a9d78355",
+        "filename": "include/core/SkPixelRef.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-18T15:03:01Z",
+      "side": 1,
+      "message": "can you share an example of why we need this type() to differentiate PixelRef vs TextureProxy?",
+      "range": {
+        "startLine": 34,
+        "startChar": 9,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef46d3e_3f223f7a",
+        "filename": "include/core/SkPixelStorage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-18T15:03:01Z",
+      "side": 1,
+      "message": "nit: 100chars",
+      "range": {
+        "startLine": 14,
+        "startChar": 95,
+        "endLine": 14,
+        "endChar": 103
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae0d99c_15474a45",
+        "filename": "include/core/SkPixelStorage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-18T15:03:01Z",
+      "side": 1,
+      "message": "Should we move this to include/private? Type and ID seem like internal implementation details that a client wouldn\u0027t need to know about",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f901aaa4_0d96086d",
+        "filename": "src/core/SkPixelRef.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-18T15:03:01Z",
+      "side": 1,
+      "message": "we don\u0027t have to explicitly call this ctor as it would be called by default regardless. Similar to how we don\u0027t call SkRefCnt() here",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
