@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2481a35e_1c9830f8",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-18T17:12:47Z",
+      "side": 1,
+      "message": "I\u0027m concerned it still worked if we didn\u0027t specify the dependency here. Definately worth investigating since one of the points of Bazel builds is the hermetic nature of it all. Then again, having the user pull in their own Xcode does break that on Mac anyway, but I\u0027d still want it to break if I\u0027m missing a sdk_framework dep.",
+      "parentUuid": "84f209a6_6497cb28",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fb76428_fd2483ad",
