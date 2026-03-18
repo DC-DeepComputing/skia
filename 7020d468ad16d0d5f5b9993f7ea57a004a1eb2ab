@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d45463b_d4275ca3",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T00:43:24Z",
+      "side": 1,
+      "message": "This function, and the print_channel_names/values helper function produces an output like:\n```\nTransfer from GPU format BGRA8_sRGB as SRGBA_8888 to CPU colortype RGB_F16F16F16x:\n          | raw                                              | b(srgb8)                  | g(srgb8)                  | r(srgb8)                  | a(u8)                 \n Input    |  8d 66 49 aa 00 00 00 00 00 00 00 00 00 00 00 00 | 10001101 (0x8d / 0.27)    | 01100110 (0x66 / 0.13)    | 01001001 (0x49 / 0.07)    | 10101010 (0xaa / 0.67)\n          | raw                                              | r(f16)                    | g(f16)                    | b(f16)                    | x(_16)                \n Expected |  43 2c 40 30 43 34 00 00 00 00 00 00 00 00 00 00 | 0010110001000011 (0.0666) | 0011000001000000 (0.1328) | 0011010001000011 (0.2664) | 0000000000000000 (-)  \n Actual   |  43 2c 40 30 42 34 00 3c 00 00 00 00 00 00 00 00 | 0010110001000011 (0.0666) | 0011000001000000 (0.1328) | 0011010001000010 (0.2661) | 0011110000000000 (-)  \n ```",
+      "range": {
+        "startLine": 373,
+        "startChar": 5,
+        "endLine": 373,
+        "endChar": 26
+      },
+      "revId": "7020d468ad16d0d5f5b9993f7ea57a004a1eb2ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
