@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f578d9aa_f90bde17",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T17:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca28cac9_230cd3c1",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3be1e186_d02dfc19",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-03-17T22:20:32Z",
       "side": 1,
       "message": "Question: Is defines not optional here like in skia_cc_library_with_testutil? Just want to make sure it\u0027s intended to fail if we pass None in.",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f693034_5007f5eb",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T17:04:03Z",
+      "side": 1,
+      "message": "There\u0027s only one use of this at the moment, so I\u0027ve made it specific to that use case. If we have to adapt this, we can make some of these optional.",
+      "parentUuid": "3be1e186_d02dfc19",
       "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f209a6_6497cb28",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T17:04:03Z",
+      "side": 1,
+      "message": "Done. Good catch. It\u0027s curious that it still worked (probably by accident) in my local testing. Somebody else must have brought it in.",
+      "parentUuid": "00ccef06_188d976c",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fb76428_fd2483ad",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-03-17T22:20:32Z",
       "side": 1,
       "message": "nit: This loop should probably be a helper function. Maybe list comprehension too, pretty sure in python that performs better, but I can\u0027t speak for starlark. (I think it reads better but that\u0027s subjective)\n\n```\ndef rewrite_deps(deps):\n    if not deps:\n        return []\n    return [_REWRITE_TEST_UTIL_DEPS.get(dep, dep) for dep in deps]\n```\n\nThen\n```\ndeps \u003d rewrite_deps(deps)\n```\n\nand the same above.",
+      "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a91d87_7f47f9ec",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-18T17:04:03Z",
+      "side": 1,
+      "message": "Helper function made.",
+      "parentUuid": "3fb76428_fd2483ad",
       "revId": "3fc6c922196c7a966ae3a8a20b3fe810e70614f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
