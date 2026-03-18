@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0362a7_8695122c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1736,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "Can we do `geometry.setCoverageMaskShape(shapeResult.first)` here? Then we don\u0027t have to have a CoverageMaskShape local variable floating around.",
+      "range": {
+        "startLine": 1736,
+        "startChar": 0,
+        "endLine": 1736,
+        "endChar": 58
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094174f3_d84cf1db",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "nit: Can we keep the type explicit here?",
+      "range": {
+        "startLine": 187,
+        "startChar": 12,
+        "endLine": 187,
+        "endChar": 16
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aaf6959_d4e39114",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "This represents a bit of a code-complexity change from before right? We used to maintain the MRU via linked list, vs. having to shift pointers through the array, if I\u0027m remembering correctly.\n\nDo you think any of that is worth the complexity to maintain a total MRU ordering of plots within a page? Or could we just have a MRU pointer that is set to the last used plot, and if it\u0027s filled up we search through the plots for space?",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 42
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "382651c2_c0e37d2e",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 263,
+        "startChar": 17,
+        "endLine": 263,
+        "endChar": 25
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1927735b_2161515a",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 278,
+        "startChar": 25,
+        "endLine": 278,
+        "endChar": 33
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ec623eb_cae22961",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "If this fails, we could run into trouble with `plot` below (I believe this was an existing issue).",
+      "range": {
+        "startLine": 310,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 44
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5482454_fc8ee76a",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "Maybe use STArray with a small N? I\u0027m not sure how many available plots are typical.",
+      "range": {
+        "startLine": 424,
+        "startChar": 8,
+        "endLine": 424,
+        "endChar": 14
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96813812_6e4edef2",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "just int?",
+      "range": {
+        "startLine": 611,
+        "startChar": 4,
+        "endLine": 611,
+        "endChar": 8
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66343115_f3e5bb1d",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "Do we need this in a cpp? Or should we be using something like SK_ALWAYS_INLINE?",
+      "range": {
+        "startLine": 686,
+        "startChar": 0,
+        "endLine": 686,
+        "endChar": 6
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebab5cb7_d4bdaa9b",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-18T15:03:00Z",
+      "side": 1,
+      "message": "For intentional log messages, we are moving to using `SKGPU_LOG_foo`. I\u0027m inclined to think that this should be a warning level since it indicates something is pretty out of sync, even though the fallback behavior here is pretty trivial.",
+      "range": {
+        "startLine": 223,
+        "startChar": 12,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "affa3e50158acbe72c8ee3f3113eac0566ae3ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
