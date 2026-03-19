@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ae65450_8078d0b7",
+        "filename": "include/core/SkPixelRef.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-19T14:52:28Z",
+      "side": 1,
+      "message": "I was going to consume this during capture as information for replaying captures. The capture can see what type of surface we were drawing to and stay consistent for benchmarking purposes. We can remove it and add it later when we get there though.",
+      "parentUuid": "0dfe496a_a9d78355",
+      "range": {
+        "startLine": 34,
+        "startChar": 9,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ef46d3e_3f223f7a",
         "filename": "include/core/SkPixelStorage.h",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-18T15:03:01Z",
       "side": 1,
       "message": "nit: 100chars",
+      "range": {
+        "startLine": 14,
+        "startChar": 95,
+        "endLine": 14,
+        "endChar": 103
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ad158e_b0aa294a",
+        "filename": "include/core/SkPixelStorage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-19T14:52:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ef46d3e_3f223f7a",
       "range": {
         "startLine": 14,
         "startChar": 95,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd62443_2c3658c8",
+        "filename": "include/core/SkPixelStorage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-19T14:52:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bae0d99c_15474a45",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f901aaa4_0d96086d",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-03-18T15:03:01Z",
       "side": 1,
       "message": "we don\u0027t have to explicitly call this ctor as it would be called by default regardless. Similar to how we don\u0027t call SkRefCnt() here",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be16c3dd_c3ba1afb",
+        "filename": "src/core/SkPixelRef.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-19T14:52:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f901aaa4_0d96086d",
       "range": {
         "startLine": 34,
         "startChar": 6,
