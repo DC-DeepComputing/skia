@@ -20,10 +20,25 @@
 
 #include <functional>
 
+#if defined(BENCHMARK_USE_GBENCH)
+#include "third_party/externals/gbench/include/benchmark/benchmark.h"
+
+#define DEF_BENCH(code, name) \
+    static void BM_##name(benchmark::State& state) { \
+        for (auto _ : state) {                       \
+                                                     \
+        }                                            \
+    }                                                \
+    BENCHMARK(BM_##name);
+
+#else
+
 #define DEF_BENCH3(code, N) \
     static BenchRegistry gBench##N([](void*) -> Benchmark* { code; });
 #define DEF_BENCH2(code, N) DEF_BENCH3(code, N)
 #define DEF_BENCH(code) DEF_BENCH2(code, __COUNTER__)
+
+#endif
 
 /*
  *  With the above macros, you can register benches as follows (at the bottom

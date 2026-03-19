@@ -128,11 +128,11 @@ protected:
     }
 };
 
-DEF_BENCH( return new GeoRectBench_intersect; )
-DEF_BENCH( return new GeoRectBench_intersect_rect; )
-DEF_BENCH( return new GeoRectBench_Intersects; )
+DEF_BENCH( return new GeoRectBench_intersect;, geo_rect_intersect)
+DEF_BENCH( return new GeoRectBench_intersect_rect;, geo_rect_intersect_rect)
+DEF_BENCH( return new GeoRectBench_Intersects;, geo_rect_Intersects)
 
-DEF_BENCH( return new GeoRectBench_sort; )
+DEF_BENCH( return new GeoRectBench_sort;,  geo_rect_sort)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -162,7 +162,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new EvalQuadAt0; )
+DEF_BENCH( return new EvalQuadAt0;, geo_evalquadat0)
 
 class EvalQuadAt1 : public QuadBenchBase {
 public:
@@ -178,7 +178,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new EvalQuadAt1; )
+DEF_BENCH( return new EvalQuadAt1;, geo_evalquadat1)
 
 ////////
 
@@ -196,7 +196,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new EvalQuadTangentAt0; )
+DEF_BENCH( return new EvalQuadTangentAt0;, geo_evalquadtangentat0)
 
 class EvalQuadTangentAt1 : public QuadBenchBase {
 public:
@@ -212,7 +212,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new EvalQuadTangentAt1; )
+DEF_BENCH( return new EvalQuadTangentAt1;, geo_evalquadtangentat1)
 
 ////////
 
@@ -230,7 +230,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new ChopQuadAt; )
+DEF_BENCH( return new ChopQuadAt;, geo_chopquadat)
 
 class ChopCubicAt : public QuadBenchBase {
 public:
@@ -246,7 +246,7 @@ protected:
         }
     }
 };
-DEF_BENCH( return new ChopCubicAt; )
+DEF_BENCH( return new ChopCubicAt;, geo_chopcubicat0)
 
 #include "include/core/SkPath.h"
 
@@ -293,5 +293,5 @@ public:
         path->addRRect(rr);
     }
 };
-DEF_BENCH( return new RRectConvexityBench; )
+DEF_BENCH( return new RRectConvexityBench;, convexity_rrect)
 
