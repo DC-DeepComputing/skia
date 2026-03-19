@@ -108,14 +108,15 @@ VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
                                                        uint32_t allocationPropertyFlags,
                                                        skgpu::VulkanBackendMemory* backendMemory) {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
-    VmaAllocationCreateInfo info;
-    info.flags = 0;
-    info.usage = VMA_MEMORY_USAGE_UNKNOWN;
-    info.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    info.preferredFlags = 0;
-    info.memoryTypeBits = 0;
-    info.pool = VK_NULL_HANDLE;
-    info.pUserData = nullptr;
+    VmaAllocationCreateInfo info{
+            .flags = 0,
+            .usage = VMA_MEMORY_USAGE_UNKNOWN,
+            .requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+            .preferredFlags = 0,
+            .memoryTypeBits = 0,
+            .pool = VK_NULL_HANDLE,
+            .pUserData = nullptr,
+    };
 
     if (kDedicatedAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
         info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
@@ -140,12 +141,13 @@ VkResult VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
                                                         uint32_t allocationPropertyFlags,
                                                         skgpu::VulkanBackendMemory* backendMemory) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
-    VmaAllocationCreateInfo info;
-    info.flags = 0;
-    info.usage = VMA_MEMORY_USAGE_UNKNOWN;
-    info.memoryTypeBits = 0;
-    info.pool = VK_NULL_HANDLE;
-    info.pUserData = nullptr;
+    VmaAllocationCreateInfo info{
+            .flags = 0,
+            .usage = VMA_MEMORY_USAGE_UNKNOWN,
+            .memoryTypeBits = 0,
+            .pool = VK_NULL_HANDLE,
+            .pUserData = nullptr,
+    };
 
     switch (usage) {
         case BufferUsage::kGpuOnly:
