@@ -987,7 +987,8 @@ public:
         return fConicWeights;
     }
 
-    SkPathBuilder& addRaw(const SkPathRaw&);
+    enum class Reserve { kExact, kGrow };
+    SkPathBuilder& addRaw(const SkPathRaw&, Reserve);
 
     SkPathIter iter() const;
 
