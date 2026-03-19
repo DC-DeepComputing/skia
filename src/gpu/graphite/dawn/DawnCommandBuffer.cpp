@@ -550,7 +550,13 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
     dawnColorAttachmentWithoutResolve.resolveTarget = nullptr;
     dawnColorAttachmentWithoutResolve.storeOp = wgpu::StoreOp::Store;
 
-    if (loadResolve) {
+#if defined(__EMSCRIPTEN__)
+    bool msaaIsTransient = false;
+#else
+    bool msaaIsTransient =
+            msaaTexture->dawnTextureInfo().fUsage & wgpu::TextureUsage::TransientAttachment;
+#endif
+    if (loadResolve && !msaaIsTransient) {
         // If we intend to load the resolve texture, then override the loadOp of the MSAA attachment
         // to Load instead of Clear.
         // This path is intended to be used when the device doesn't support transient attachments.
