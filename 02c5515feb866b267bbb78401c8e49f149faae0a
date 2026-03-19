@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f12d4d9_dd94ce2b",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "rm?",
+      "range": {
+        "startLine": 185,
+        "startChar": 56,
+        "endLine": 185,
+        "endChar": 62
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4744ec58_9be1d25d",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 191,
+        "startChar": 41,
+        "endLine": 191,
+        "endChar": 47
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebd7e636_f03fc3be",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "Isn\u0027t this getting fed into a uint32_t parameter ? I would expect this to just be \u0027v\u0027",
+      "range": {
+        "startLine": 230,
+        "startChar": 84,
+        "endLine": 230,
+        "endChar": 92
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "521b0f18_1eacaef5",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "wdyt about a type_name helper that does this but with a SkUNREACHABLE at the end?",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 317,
+        "endChar": 9
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c9f508_626e8e5a",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "This is fine but why not a \"%u\" w/o cast ?",
+      "range": {
+        "startLine": 348,
+        "startChar": 52,
+        "endLine": 348,
+        "endChar": 62
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26d3fe3_f577c97f",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T15:28:14Z",
+      "side": 1,
+      "message": "xtra line ?",
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
