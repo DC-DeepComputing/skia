@@ -987,7 +987,7 @@ public:
         return fConicWeights;
     }
 
-    SkPathBuilder& addRaw(const SkPathRaw&);
+    SkPathBuilder& addRaw(const SkPathRaw&, bool doIncReserve);
 
     SkPathIter iter() const;
 
