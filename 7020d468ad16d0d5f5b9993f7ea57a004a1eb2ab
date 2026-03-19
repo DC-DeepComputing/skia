@@ -22,6 +22,30 @@
       },
       "revId": "7020d468ad16d0d5f5b9993f7ea57a004a1eb2ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaeff748_ae9696ed",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T16:12:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1d45463b_d4275ca3",
+      "range": {
+        "startLine": 373,
+        "startChar": 5,
+        "endLine": 373,
+        "endChar": 26
+      },
+      "revId": "7020d468ad16d0d5f5b9993f7ea57a004a1eb2ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
