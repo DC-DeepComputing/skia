@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efd2bd4f_84e02b45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-03-19T13:27:42Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109c06cd_98f3f6f0",
+        "filename": "bench/PathBench.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1384,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-03-19T13:27:42Z",
+      "side": 1,
+      "message": "might leave a breadcrumb here: like\n\"Since internally we know how to reserve exactly or with growth, might consider exposing that option in these helpers: addREct, addOval, etc.",
+      "range": {
+        "startLine": 1384,
+        "startChar": 6,
+        "endLine": 1384,
+        "endChar": 27
+      },
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "243b62c3_3e233ee7",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2026-03-19T13:27:42Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
