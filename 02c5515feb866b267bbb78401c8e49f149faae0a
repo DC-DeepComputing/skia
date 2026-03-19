@@ -70,6 +70,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc3788e9_653ed4cb",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-19T16:12:05Z",
+      "side": 1,
+      "message": "My bad - for future generations, the channel_to_bits call maps the 0..1 float to a uint32_t before calling channel_to_float.",
+      "parentUuid": "ebd7e636_f03fc3be",
+      "range": {
+        "startLine": 230,
+        "startChar": 84,
+        "endLine": 230,
+        "endChar": 92
+      },
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "521b0f18_1eacaef5",
