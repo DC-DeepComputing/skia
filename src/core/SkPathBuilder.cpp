@@ -75,7 +75,8 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
         return *this;
     }
 
-    this->addRaw(src.fPathData->raw(src.getFillType(), SkResolveConvexity::kYes));
+    this->addRaw(src.fPathData->raw(src.getFillType(), SkResolveConvexity::kYes),
+                 /*doIncReserve=*/ true);
 
     // These are not part of SkPathRaw, so we set them separately
     fLastMoveIndex = SkPathPriv::FindLastMoveToIndex(fVerbs, fPts.size());
@@ -687,8 +688,10 @@ SkPathIter SkPathBuilder::iter() const {
     return SkPathIter(fPts, fVerbs, fConicWeights);
 }
 
-SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw) {
-    this->incReserve(raw.points().size(), raw.verbs().size(), raw.conics().size());
+SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw, bool doIncReserve) {
+    if (doIncReserve) {
+        this->incReserve(raw.points().size(), raw.verbs().size(), raw.conics().size());
+    }
 
     for (auto iter = raw.iter(); auto rec = iter.next();) {
         const auto pts = rec->fPoints;
@@ -717,7 +720,7 @@ SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw) {
 SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, unsigned index) {
     const bool wasEmpty = (fSegmentMask == 0);
 
-    this->addRaw(SkPathRawShapes::Rect(rect, dir, index));
+    this->addRaw(SkPathRawShapes::Rect(rect, dir, index), /*doIncReserve=*/ false);
 
     if (wasEmpty) {
         // now we're a rect
@@ -729,7 +732,7 @@ SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, u
 SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, unsigned index) {
     const bool wasEmpty = (fSegmentMask == 0);
 
-    this->addRaw(SkPathRawShapes::Oval(oval, dir, index));
+    this->addRaw(SkPathRawShapes::Oval(oval, dir, index), /*doIncReserve=*/ false);
 
     if (wasEmpty) {
         fType            = SkPathIsAType::kOval;
@@ -757,7 +760,7 @@ SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir
 
     const bool wasEmpty = (fSegmentMask == 0);
 
-    this->addRaw(SkPathRawShapes::RRect(rrect, dir, index));
+    this->addRaw(SkPathRawShapes::RRect(rrect, dir, index), /*doIncReserve=*/ false);
 
     if (wasEmpty) {
         fType            = SkPathIsAType::kRRect;

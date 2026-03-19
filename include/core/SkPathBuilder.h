@@ -987,8 +987,6 @@ public:
         return fConicWeights;
     }
 
-    SkPathBuilder& addRaw(const SkPathRaw&);
-
     SkPathIter iter() const;
 
     enum class DumpFormat {
@@ -1035,9 +1033,13 @@ private:
 
     std::tuple<SkPoint*, SkScalar*> growForVerbsInPath(const SkPath& path);
 
+    SkPathBuilder& addRaw(const SkPathRaw&, bool doIncReserve);
+
     friend class SkPathPriv;
     friend class SkStroke;
     friend class SkPathStroker;
+    friend class SkPathData;
+    friend class SkPathWriter;
 };
 
 #endif

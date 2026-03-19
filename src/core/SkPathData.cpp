@@ -256,7 +256,7 @@ sk_sp<SkPathData> SkPathData::MakeTransform(const SkPathRaw& src, const SkMatrix
 
     if (mx.hasPerspective()) {
         SkPathBuilder bu;
-        bu.addRaw(src);
+        bu.addRaw(src, /*doIncReserve=*/ true);
         bu.transform(mx);
         return bu.detachData();
     }
