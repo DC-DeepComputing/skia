@@ -81,7 +81,7 @@ static void draw_aa_hairline_path_with_caps_no_offset(skiatest::Reporter* report
     canvas->drawPath(path, paint);
 
     SkPixmap pixmap;
-    REPORTER_ASSERT(reporter, surface->peekPixels(&pixmap));
+    SkASSERT(surface->peekPixels(&pixmap));
 
     auto assert_color =
             [&](const std::string& name, SkPoint pt, SkColor expected_min, SkColor expected_max) {
@@ -154,7 +154,7 @@ static void draw_aa_hairline_path_with_caps_and_offset(skiatest::Reporter* repor
     canvas->drawPath(path, paint);
 
     SkPixmap pixmap;
-    REPORTER_ASSERT(reporter, surface->peekPixels(&pixmap));
+    SkASSERT(surface->peekPixels(&pixmap));
 
     auto assert_exact_color = [&](const std::string& name, SkPoint pt, SkColor exact_color) {
         assert_color_in_range(reporter, pixmap, name, pt, exact_color, exact_color);
