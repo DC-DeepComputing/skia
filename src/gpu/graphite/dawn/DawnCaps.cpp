@@ -175,6 +175,12 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> DawnCaps::get
         if ((formatInfo.fFlags & msaaFlag) == msaaFlag) {
             // WebGPU only supports 1x and 4x MSAA
             sampleCounts |= SampleCount::k4;
+            if (this->msaaRenderToSingleSampledSupport() &&
+                !TextureFormatIsDepthOrStencil(format)) {
+                // If WebGPU exposes the MSRTSS extension, assume that all color formats that
+                // support MSAA can support MSRTSS.
+                supported |= TextureUsage::kMSRTSS;
+            }
         }
     }
 
@@ -254,10 +260,21 @@ TextureInfo DawnCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
         if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
             discardable == Discardable::kYes) {
             dawnUsage |= fSupportedTransientAttachmentUsage;
-        }
-        if (fEmulateLoadStoreResolve && !TextureFormatIsDepthOrStencil(format)) {
-            // When emulating the store, the color attachment is sampled into the resolve so add
-            // this usage even if higher-up Graphite logic wasn't expecting to sample it.
+
+        // When the Dawn backend has to emulate loads and stores in a multisampled renderpass,
+        // either or both of the load or store might sample an attachment (either the MSAA or the
+        // single-sampled, depending on store vs. load). This arises in two situations:
+        // 1. When explicitly opting into emulating every load/store op (when we don't have
+        //    transient memory or partial load/resolve extensions).
+        // 2. When we need to load a transient attachment but don't have the special resolve load
+        //    op extension (in this case we add TextureBinding to the non-transient resolve
+        //    attachment sampled during the load, but we don't add TextureBinding to the transient
+        //    MSAA color attachment that will store automatically).
+        // Neither scenario is possible when MSRTSS is supported because then we won't use separate
+        // color and resolve attachments.
+        } else if (!TextureFormatIsDepthOrStencil(format) &&
+            !this->msaaRenderToSingleSampledSupport() &&
+            (fEmulateLoadStoreResolve || !fSupportedResolveTextureLoadOp.has_value())) {
             dawnUsage |= wgpu::TextureUsage::TextureBinding;
         }
     }
