@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e755c9e2_3b2a5835",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-19T14:25:06Z",
+      "side": 1,
+      "message": "I replicated the performance increase locally. I also ran pprof (with -ms 1000 to make sure enough data was captured) and notice dramatically less time spent in `incReserve`\nbefore: http://pprof/?id\u003dc30ff0a0e3064e61a94e1d32ea18af83\nafter: http://pprof/?id\u003d24a1d1b32040c4d5375e2d3cf2d1ff09",
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "109c06cd_98f3f6f0",
@@ -60,6 +77,52 @@
         "startChar": 6,
         "endLine": 1384,
         "endChar": 27
+      },
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a29100c4_68635079",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-19T14:25:06Z",
+      "side": 1,
+      "message": "I\u0027d like a little bit of commentary about how to choose which one to use here.",
+      "range": {
+        "startLine": 990,
+        "startChar": 15,
+        "endLine": 990,
+        "endChar": 22
+      },
+      "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f6f518b_0186df3d",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-19T14:25:06Z",
+      "side": 1,
+      "message": "driveby nit: put this header first, then a newline before the group",
+      "range": {
+        "startLine": 16,
+        "startChar": 19,
+        "endLine": 16,
+        "endChar": 29
       },
       "revId": "d069307f7cd75b6f264882cd1df3a6dd1f9ee05c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
