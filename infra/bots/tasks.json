@@ -97232,7 +97232,15 @@
     },
     "Test-Android-Clang-Pixel9-GPU-MaliG715-arm64-Release-All-Android_Graphite_Native_Vulkan": {
       "location_regexes": [
+        "tools/gpu/vk/.*",
         "(tests|src/gpu)/graphite/.*",
+        "src/sksl/generated/.*"
+      ]
+    },
+    "Test-Android-Clang-Pixel9-GPU-MaliG715-arm64-Release-All-Android_Vulkan": {
+      "location_regexes": [
+        "tools/gpu/vk/.*",
+        "(tests|src/gpu)/ganesh/.*",
         "src/sksl/generated/.*"
       ]
     },
@@ -97271,6 +97279,12 @@
         "(include|src)/gpu/graphite/.*Precompile.*",
         "(include|src)/gpu/graphite/precompile/.*",
         "(tests|tools)/graphite/precompile/.*"
+      ]
+    },
+    "Test-Ubuntu24.04-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan": {
+      "location_regexes": [
+        "tools/gpu/vk/.*",
+        "tests/ganesh/.*"
       ]
     },
     "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit": {
