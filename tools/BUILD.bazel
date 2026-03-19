@@ -252,6 +252,18 @@ skia_cc_library(
     ],
 )
 
+cc_binary(
+    name = "gbench",
+    srcs = [
+        "gbench/matrix.cpp",
+        "gbench/main.cpp",
+    ],
+    deps = [
+        "//:core",
+        "//third_party/externals/gbench:benchmark",
+    ],
+)
+
 # Regenerate workarounds with `bazel run //tools:generate_workarounds`
 py_binary(
     name = "generate_workarounds",
