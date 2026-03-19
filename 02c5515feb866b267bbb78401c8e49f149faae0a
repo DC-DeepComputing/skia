@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad862adb_b37be586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-19T17:44:08Z",
+      "side": 1,
+      "message": "LGTM !",
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f12d4d9_dd94ce2b",
@@ -153,6 +170,29 @@
       "writtenOn": "2026-03-19T15:28:14Z",
       "side": 1,
       "message": "xtra line ?",
+      "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98ebea40_46ae2b1a",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-19T17:44:08Z",
+      "side": 1,
+      "message": "not to harp on this, but is there a bug for this? related: https://skia-review.git.corp.google.com/c/skia/+/1165337, but that also doesn\u0027t tag a bug ID. Fine to land without this, but just a thought if there is a bug that isn\u0027t being linked in these CLs.",
+      "range": {
+        "startLine": 855,
+        "startChar": 11,
+        "endLine": 855,
+        "endChar": 15
+      },
       "revId": "02c5515feb866b267bbb78401c8e49f149faae0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
