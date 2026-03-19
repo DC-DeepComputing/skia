@@ -10,8 +10,10 @@ skia_filegroup(
     name = "public_hdrs",
     srcs = [
         "DawnBackendContext.h",
-        "DawnGraphiteTypes.h",
         "DawnTypes.h",
         "DawnUtils.h",
+    ],
+    visibility = [
+        "//src/gpu/graphite/dawn:__pkg__",
     ],
 )
