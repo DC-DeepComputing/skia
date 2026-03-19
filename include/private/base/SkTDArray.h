@@ -14,6 +14,7 @@
 #include "include/private/base/SkTo.h"
 
 #include <cstddef>
+#include <cstring>
 #include <initializer_list>
 #include <utility>
 
@@ -108,6 +109,11 @@ public:
     SkTDArray(const T src[], int count) : fStorage{src, count, sizeof(T)} { }
     SkTDArray(const std::initializer_list<T>& list) : SkTDArray(list.begin(), list.size()) {}
 
+    SkTDArray(int count, int byteVal) : fStorage{sizeof(T)} {
+        this->resize(count);
+        this->fill(byteVal);
+    }
+
     // Copy
     SkTDArray(const SkTDArray<T>& src) : SkTDArray(src.data(), src.size()) {}
     SkTDArray<T>& operator=(const SkTDArray<T>& src) {
@@ -174,6 +180,10 @@ public:
 
     void clear() {
         fStorage.clear();
+    }
+
+    void fill(int count, int byteVal) {
+        std::memset(this->data(), byteVal, this->size_bytes());
     }
 
     // Sets the number of elements in the array.
