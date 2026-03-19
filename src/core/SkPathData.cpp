@@ -255,10 +255,10 @@ sk_sp<SkPathData> SkPathData::MakeTransform(const SkPathRaw& src, const SkMatrix
     }
 
     if (mx.hasPerspective()) {
-        SkPathBuilder bu;
-        bu.addRaw(src);
-        bu.transform(mx);
-        return bu.detachData();
+        return SkPathBuilder()
+            .addRaw(src, /*doIncReserve=*/ true)
+            .transform(mx)
+            .detachData();
     }
 
     // Allocate our result, so we can map the new points directly into it
