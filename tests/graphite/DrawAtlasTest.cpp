@@ -31,6 +31,7 @@ int gEvictCount = 0;
 class EvictionCounter : public DrawAtlas::EvictionCallback {
 public:
     void evict(const DrawAtlas::RecordVisitor&) override { ++gEvictCount; }
+    void relocate(int newPageIdx, SkIVector translation, const DrawAtlas::RecordVisitor &visitor) override {}
 };
 
 void check(skiatest::Reporter* r, DrawAtlas* atlas, int expectedActive, int expectedEvictCount) {

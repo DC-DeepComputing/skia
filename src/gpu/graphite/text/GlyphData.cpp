@@ -61,11 +61,11 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
 
         SkBulkGlyphMetricsAndImages metricsAndImages{fTextStrike->strikeSpec()};
 
-        // Update the atlas information in the GrStrike.
+        // Update the atlas information in the GlyphVector.
         int glyphsPlacedInAtlas = 0;
         for (int i = begin; i < end; i++) {
             SkASSERT(glyphs[i].entry().fGlyphEntryKey.fFormat == maskFormat);
-            if (!atlasManager->hasGlyph(maskFormat, glyphs[i].entry())) {
+            if (!atlasManager->updateGlyphEntry(maskFormat, &glyphs[i].entry())) {
                 const SkGlyph& skGlyph = *metricsAndImages.glyph(glyphs[i].packedID());
                 switch (atlasManager->addGlyphToAtlas(skGlyph, &glyphs[i].entry(), srcPadding)) {
                     case TextAtlasManager::AddGlyphResult::kSuccess:
@@ -96,7 +96,7 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
 #if defined(SK_DEBUG)
     for (size_t i = 0; i < glyphs.size(); ++i) {
         const Glyph& gpuGlyph = glyphs[i];
-        SkASSERT(atlasManager->hasGlyph(maskFormat, gpuGlyph.entry()));
+        atlasManager->assertGlyphEntryUpdated(maskFormat, gpuGlyph.entry());
     }
 #endif
 

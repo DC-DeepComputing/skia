@@ -7,6 +7,7 @@
 
 #include "src/gpu/RectanizerSkyline.h"
 
+#include "include/core/SkRect.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkIPoint16.h"
 
@@ -118,6 +119,21 @@ void RectanizerSkyline::addSkylineLevel(int skylineIndex, int x, int y, int widt
             --i;
         }
     }
+}
+
+SkIRect RectanizerSkyline::bounds() const {
+    // The skyline data representation supports a skyline like this __--_ but our builder
+    // always puts the first entry at (0,0). So assume bounds' left value is zero.
+    SkASSERT(fSkyline.size() == 1 || fSkyline[0].fY != 0);
+    int right = 0;
+    int bottom = 0;
+    for (const auto& seg : fSkyline) {
+        if (seg.fY > 0) {
+            right = std::max(right, seg.fX + seg.fWidth);
+            bottom = std::max(bottom, seg.fY);
+        }
+    }
+    return {0, 0, right, bottom};
 }
 
 ///////////////////////////////////////////////////////////////////////////////
