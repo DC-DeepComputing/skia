@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "skia_cc_library", "split_srcs_and_hdrs")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -38,6 +38,29 @@ DAWN_FILES = [
 ]
 
 split_srcs_and_hdrs(
-    name = "_dawn",
+    name = "dawn",
     files = DAWN_FILES,
+)
+
+skia_cc_library(
+    name = "graphite_dawn",
+    srcs = [
+        ":dawn_hdrs",
+        ":dawn_srcs",
+    ],
+    hdrs = [
+        "//include/gpu:shared_gpu_hdrs",
+        "//include/gpu/graphite:public_hdrs",
+        "//include/gpu/graphite/dawn:public_hdrs",
+    ],
+    defines = ["SK_DAWN"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+        "//src/gpu",
+        "//src/gpu/graphite",
+        "@dawn//:dawn_native",
+    ],
 )
