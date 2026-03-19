@@ -39,6 +39,30 @@
       },
       "revId": "9ec039f00d0d81c079f81f35cae911d811b25857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd3323e_57569206",
+        "filename": "tests/graphite/SwizzleTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-19T01:21:04Z",
+      "side": 1,
+      "message": "rr11 is not one I\u0027d expect. `a000` vs. `a001` is a bit of a toss-up but one of them arises regularly with red/alpha handling. The same goes for `rrr1` vs. `rrra` for red/gray handling.  The rgb/bgr comes up in data swizzles but less so for shading swizzles since that re-ordering is handled by the GPU.  `argb` and `abgr` are also valid format channel orders but I don\u0027t think I\u0027d ever really see their inverse.  But I wanted to cover more involved cases and try to find ones where the inverse wasn\u0027t just identical to itself.",
+      "parentUuid": "65c09bff_7b246cb5",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 71
+      },
+      "revId": "9ec039f00d0d81c079f81f35cae911d811b25857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
