@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a77e65e4_60579ecf",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-20T22:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47360daa_a2f68857",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "1b74d7c12a97bf6453e4a0a76839bcfb0eadb5d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69124a9a_e2ac039d",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-20T20:13:19Z",
       "side": 1,
       "message": "nit: 6",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "1b74d7c12a97bf6453e4a0a76839bcfb0eadb5d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9782da6_187b1949",
+        "filename": "src/core/SkPixelStorage.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-03-20T22:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69124a9a_e2ac039d",
       "range": {
         "startLine": 2,
         "startChar": 16,
