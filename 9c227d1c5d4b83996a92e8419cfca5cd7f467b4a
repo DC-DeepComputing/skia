@@ -69,6 +69,54 @@
       },
       "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d9ca75_3883c99e",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-20T21:11:13Z",
+      "side": 1,
+      "message": "See https://review.skia.org/1191357",
+      "parentUuid": "70c56e5b_bc8be9c4",
+      "range": {
+        "startLine": 65,
+        "startChar": 37,
+        "endLine": 65,
+        "endChar": 47
+      },
+      "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf151b3_6a480586",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-20T21:11:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "44182884_6fd44d8e",
+      "range": {
+        "startLine": 65,
+        "startChar": 48,
+        "endLine": 65,
+        "endChar": 58
+      },
+      "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
