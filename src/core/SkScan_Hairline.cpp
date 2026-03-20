@@ -556,8 +556,7 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
         } while (++controls < pts.size());
     }
     if (!nextVerb.has_value() ||
-        nextVerb.value() == SkPathVerb::kMove ||
-        nextVerb.value() == SkPathVerb::kClose)
+        nextVerb.value() == SkPathVerb::kMove)
     {
         SkPoint* last = &pts.back();
         SkPoint* ctrl = last;
@@ -642,6 +641,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
     }
 
     SkPoint               pts[4], firstPt, lastPt;
+    SkPoint               firstLine[2];
     SkAutoConicToQuads    converter;
 
     std::optional<SkPathVerb> prevVerb;
@@ -649,8 +649,16 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
         const SkPoint* srcPts = rec->fPoints.data();
         SkPathVerb verb = rec->fVerb;
         auto nextVerb = iter.peekNextVerb();
+        bool isLastVerb = !nextVerb.has_value();
+
         switch (verb) {
             case SkPathVerb::kMove:
+                if (SkPaint::kButt_Cap != capStyle
+                    && prevVerb >= SkPathVerb::kLine
+                    && prevVerb <= SkPathVerb::kCubic){
+                        // if it wasn't a close then that means it was an open contour
+                }
+
                 firstPt = lastPt = srcPts[0];
                 break;
             case SkPathVerb::kLine:
@@ -658,7 +666,13 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                 if (SkPaint::kButt_Cap != capStyle) {
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 2});
                 }
-                lineproc({pts, 2}, clip, blitter);
+                if (SkPaint::kButt_Cap != capStyle && optional_eq(prevVerb, SkPathVerb::kMove)){
+                    firstLine[0] = pts[0];
+                    firstLine[1] = pts[1];
+                } else {
+                    lineproc({pts, 2}, clip, blitter);
+                }
+                // lineproc({srcPts, 2}, clip, blitter);
                 lastPt = pts[1];
                 break;
             case SkPathVerb::kQuad:
@@ -706,10 +720,26 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
         if (SkPaint::kButt_Cap != capStyle) {
             if (optional_eq(prevVerb, SkPathVerb::kMove) &&
                 verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic) {
-                firstPt = pts[0];  // the curve moved the initial point, so close to it instead
+                // firstPt = pts[0];  // the curve moved the initial point, so close to it instead
+                firstPt = srcPts[0];  // the curve moved the initial point, so close to it instead
+            }
+            if (isLastVerb){
+                    // if it's the last verb, then we must add the half pixel line
+                    // halfPixelLine[0].offset(12, 12);
+                    // halfPixelLine[1].offset(12, 12);
+                    if (verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic){
+                        lineproc({firstLine, 2}, clip, blitter);
+                    } else if (verb == SkPathVerb::kClose){
+                        firstLine[0] = firstPt;
+                        lineproc({firstLine, 2}, clip, blitter);
+                    }
+
+
             }
             prevVerb = verb;
         }
+
+
     }
 }
 
