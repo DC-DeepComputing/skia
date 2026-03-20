@@ -14,6 +14,7 @@
 #include <cstdint>
 
 struct SkIPoint16;
+struct SkIRect;
 
 namespace skgpu {
 
@@ -40,6 +41,8 @@ public:
     float percentFull() const final {
         return fAreaSoFar / ((float)this->width() * this->height());
     }
+
+    SkIRect bounds() const;
 
 private:
     struct SkylineSegment {

@@ -123,21 +123,28 @@ void TextAtlasManager::freeGpuResources() {
     }
 }
 
-bool TextAtlasManager::hasGlyph(MaskFormat format, const GlyphEntry& glyph) {
-    auto result = this->getAtlas(format)->hasRecord(glyph.fAtlasRecord);
-#if defined(SK_DEBUG)
-    if (result) {
-        // Ensure our page and rect data are correct.
-        auto location = this->getAtlas(format)->entryLocation(glyph.fAtlasRecord);
-        SkASSERT(location);
-        auto [pageIdx, rect] = *location;
-        SkASSERT(glyph.fPageIdx == pageIdx);
-        // Containment to account for the possible padding inset in Glyph's rect.
-        SkASSERT(rect.contains(SkIRect(glyph.fRect)));
+bool TextAtlasManager::updateGlyphEntry(MaskFormat format, GlyphEntry* glyph) {
+    auto location = this->getAtlas(format)->entryLocation(glyph->fAtlasRecord);
+    if (!location) {
+        return false;
     }
-#endif
-    return result;
+    auto [page, rect] = *location;
+    rect.inset(glyph->fPadding, glyph->fPadding);
+    SkASSERT(rect.size() == SkIRect(glyph->fRect).size());
+    glyph->fPageIdx = page;
+    glyph->fRect = rect;
+    return true;
 }
+
+#if defined(SK_DEBUG)
+void TextAtlasManager::assertGlyphEntryUpdated(MaskFormat format, const GlyphEntry& glyph) {
+    auto location = this->getAtlas(format)->entryLocation(glyph.fAtlasRecord);
+    SkASSERT(location);
+    auto [page, rect] = *location;
+    SkASSERT(page == glyph.fPageIdx);
+    SkASSERT(rect.makeInset(glyph.fPadding, glyph.fPadding) == SkIRect(glyph.fRect));
+}
+#endif
 
 template <typename INT_TYPE>
 static void expand_bits(INT_TYPE* dst,
@@ -341,6 +348,7 @@ TextAtlasManager::AddGlyphResult TextAtlasManager::addGlyphToAtlas(const SkGlyph
             auto atlasRect  = SkIRect::MakePtSize(addResult.fPosition, {width, height});
             glyph->fRect    = atlasRect.makeInset(srcPadding, srcPadding);
             glyph->fPageIdx = addResult.fPageIdx;
+            glyph->fPadding = srcPadding;
             return AddGlyphResult::kSuccess;
     }
     SkUNREACHABLE;

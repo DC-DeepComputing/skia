@@ -93,6 +93,8 @@ void DrawAtlas::validate() const {
             SkASSERT(!prev || plot->lastUseToken() <= prev->lastUseToken());
             prev = plot;
             ++n;
+            SkASSERT(std::find_if(page.fPlotArray.get(), page.fPlotArray.get() + ppp,
+                     [plot](const auto& p) { return p.get() == plot; }));
         }
         SkASSERT(n == ppp);
     }
@@ -180,6 +182,58 @@ inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, EvictionType typ
     int pageIdx = plot->plotCoord().fPageIdx;
     fPages[pageIdx].fMRUList.remove(plot);
     fPages[pageIdx].fMRUList.addToTail(plot);
+}
+
+void DrawAtlas::relocatePlot(std::unique_ptr<Plot>& plotToMove, std::unique_ptr<Plot>& plotToPurge) {
+    auto oldCoord = plotToMove->plotCoord();
+    auto newCoord = plotToPurge->plotCoord();
+    printf("relocate (%d, %d, %d) -> (%d, %d, %d)!\n", oldCoord.fPageIdx, oldCoord.fX, oldCoord.fY, newCoord.fPageIdx, newCoord.fX, newCoord.fY);
+    SkASSERT(oldCoord != newCoord);
+
+    // Notify of evictions for Records in plotToPurge
+    this->processEvictionAndResetRects(plotToPurge.get(), EvictionType::kReuse_FreeData);
+
+    plotToMove->setPlotCoord(newCoord);
+    plotToPurge->setPlotCoord(oldCoord);
+
+    // Notify of relocations for Records in plotToMove
+    SkIVector translation{fPlotWidth  * (newCoord.fX - oldCoord.fX),
+                          fPlotHeight * (newCoord.fY - oldCoord.fY)};
+    if (!plotToMove->isEmpty()) {
+        const RecordVisitor visitor{plotToMove.get()};
+        for (EvictionCallback* evictor : fEvictionCallbacks) {
+            evictor->relocate(newCoord.fPageIdx, translation, visitor);
+        }
+        fEvictionCounter = NextEvictionCounter(fEvictionCounter);
+    }
+
+    // In the future we'd like to issue a GPU->GPU copy here. For now, we just mark the plot fully dirty in order
+    // to trigger a re-upload.
+    plotToMove->markAllEntriesDirty();
+
+    // Update both MRU lists.
+    auto& oldMruList = fPages[oldCoord.fPageIdx].fMRUList;
+    auto& newMruList = fPages[newCoord.fPageIdx].fMRUList;
+
+    oldMruList.remove(plotToMove.get());
+    newMruList.remove(plotToPurge.get());
+
+    auto insert = [](Plot* plot, auto& list) {
+        Plot* insertBefore = nullptr;
+        for (auto* p : list) {
+            if (plot->lastUseToken() >= p->lastUseToken()) {
+                insertBefore = p;
+                break;
+            }
+        }
+        insertBefore ? list.addBefore(plot, insertBefore)
+                     : list.addToTail(plot);
+    };
+
+    insert(plotToPurge.get(), oldMruList);
+    insert(plotToMove.get(), newMruList);
+
+    std::swap(plotToMove, plotToPurge);
 }
 
 std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToPage(int pageIdx,
@@ -419,7 +473,8 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
     // This is to handle the case where a lot of text or path rendering has occurred but then just
     // a blinking cursor is drawn.
     if (atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
-        STArray<16, Plot*> availablePlots;
+        using PlotRef = std::reference_wrapper<std::unique_ptr<Plot>>;
+        STArray<16, PlotRef> availablePlots;
         int lastPageIndex = fNumActivePages - 1;
 
         // For all pages but the last one, update number of flushes since used, and check to see
@@ -447,7 +502,7 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
                 // Count plots we can potentially upload to in all pages except the last one
                 // (the potential compactee).
                 if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
-                    availablePlots.push_back(plot.get());
+                    availablePlots.push_back(plot);
                 }
             }
 
@@ -503,12 +558,16 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
                     // We need to be somewhat harsh here so that a handful of plots that are
                     // consistently in use don't end up locking the page in memory.
                     if (!availablePlots.empty()) {
-                        // The thinking here is that availablePlot will be available to be populated
-                        // by cache misses that occur because we evicted plot.
-                        this->processEvictionAndResetRects(plot.get(),
-                                                           EvictionType::kReuse_FreeData);
-                        this->processEvictionAndResetRects(availablePlots.back(),
-                                                           EvictionType::kReuse_KeepData);
+                        if ((true)) {
+                            this->relocatePlot(plot, availablePlots.back());
+                        } else {
+                            // The thinking here is that availablePlot will be available to be populated
+                            // by cache misses that occur because we evicted plot.
+                            this->processEvictionAndResetRects(plot.get(),
+                                                               EvictionType::kReuse_FreeData);
+                            this->processEvictionAndResetRects(availablePlots.back().get().get(),
+                                                               EvictionType::kReuse_KeepData);
+                        }
                         availablePlots.pop_back();
                         --usedPlots;
                     }

@@ -225,6 +225,22 @@ void PathAtlas::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visitor) {
     });
 }
 
+void PathAtlas::DrawAtlasMgr::relocate(int newPageIdx, SkIVector translation, const DrawAtlas::RecordVisitor& visitor) {
+    // Remove all entries for this Plot from the ShapeCache
+    visitor.visitRecords([&](DrawAtlas::Record record) {
+        if (auto* key = fAtlasRecordMap.find(record)) {
+            auto shape = fShapeCache.find(*key);
+            if (!shape) {
+                SkDebugf("Evicted entry not in cache!");
+                return;
+            }
+            shape->fPageIdx = newPageIdx;
+            auto newPos = SkIPoint{shape->fAtlasPosition.fX, shape->fAtlasPosition.fY} + translation;
+            shape->fAtlasPosition = {SkToS16(newPos.fX), SkToS16(newPos.fY)};
+        }
+    });
+}
+
 void PathAtlas::DrawAtlasMgr::evictAll() {
     fDrawAtlas->evictAllPlots();
     SkASSERT(fShapeCache.empty());
