@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21369e0c_4cf4d0a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-20T15:23:11Z",
+      "side": 1,
+      "message": "493179864",
+      "revId": "d9b43056b2cba9434daae9cafcd687ec801a0f61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c61be1b_3ac4cee4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-20T15:23:11Z",
+      "side": 1,
+      "message": "I think this is a good change, even if Skrifa ends up checking the values in the future (and it isn\u0027t clear if Skrifa should be doing that or not). While the current bounds checks mean that this isn\u0027t a full security issue it is true that Skia should not be crashing when it is clearly possible to continue.\n\nThat being said, it isn\u0027t correct to return or continue early from these methods. The FreeType COLRv1 implementation was written around the idea of being able to skip drawing subtrees and reporting that back up the stack. However, the Fontations COLRv1 implementation isn\u0027t written that way and does not currently have a way of reporting that back up the stack (and making it do so would be a much larger change). As a result, it makes more sense here for Fontations to simply \"draw the wrong color\" rather than \"skip drawing\".\n\nAlso, you should add yourself to the `AUTHORS` file.",
+      "revId": "d9b43056b2cba9434daae9cafcd687ec801a0f61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8834003_6de879e5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-20T15:23:11Z",
+      "side": 1,
+      "message": "`dest_stops` and `dest_colors` should always be the same size.\n\nOne way to keep that is to move `dest_stops.push_back` down with `dest_colors.push_back`. However, skipping a stop completely is a bit awkward and may lead to other issues.\n\nIt would be better to use some random color here, like `SkColors::kMagenta`. This ensures that all the stops are represented and have an associated color. The use of an out of bounds palette index is already incorrect behavior, so any color will do.",
+      "revId": "d9b43056b2cba9434daae9cafcd687ec801a0f61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5af5740_b79a3294",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-20T15:23:11Z",
+      "side": 1,
+      "message": "Instead of returning here and allowing the `paint` state to continue to be whatever was passed in, the `color` here should be set to a probably incorrect and eye catching color, like `SkColors::kMagenta`. The use of an out of bounds palette is already incorrect behavior, so any color will do.",
+      "revId": "d9b43056b2cba9434daae9cafcd687ec801a0f61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
