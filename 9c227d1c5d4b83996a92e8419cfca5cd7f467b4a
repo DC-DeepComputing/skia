@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0cfab32_62403459",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-03-20T21:03:33Z",
+      "side": 1,
+      "message": "Doesn\u0027t build in Chromium for me. Needs \u003calgorithm\u003e.",
+      "range": {
+        "startLine": 65,
+        "startChar": 37,
+        "endLine": 65,
+        "endChar": 47
+      },
+      "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
