@@ -46,6 +46,29 @@
       },
       "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44182884_6fd44d8e",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-03-20T21:06:41Z",
+      "side": 1,
+      "message": "And \u003ccmath\u003e",
+      "range": {
+        "startLine": 65,
+        "startChar": 48,
+        "endLine": 65,
+        "endChar": 58
+      },
+      "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
