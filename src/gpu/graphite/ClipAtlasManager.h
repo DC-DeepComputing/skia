@@ -69,6 +69,7 @@ private:
                                                        SkIRect maskDeviceBounds);
         bool recordUploads(DrawContext*, Recorder*);
         void evict(const DrawAtlas::RecordVisitor&) override;
+        void relocate(int, SkIVector, const DrawAtlas::RecordVisitor&) override;
         void compact(Recorder*);
         void freeGpuResources(Recorder*);
 

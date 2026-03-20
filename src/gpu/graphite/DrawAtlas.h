@@ -144,6 +144,7 @@ public:
     public:
         virtual ~EvictionCallback() = default;
         virtual void evict(const RecordVisitor& visitor) = 0;
+        virtual void relocate(int newPageIdx, SkIVector translation, const RecordVisitor& visitor) = 0;
     };
 
     class BulkRecordUseUpdater;
@@ -336,13 +337,14 @@ private:
     };
     void processEvictionAndResetRects(Plot*, EvictionType);
 
+    void relocatePlot(std::unique_ptr<Plot>& plotToMove, std::unique_ptr<Plot>& plotToPurge);
+
     MaskFormat fMaskFormat;
     int        fTextureWidth;
     int        fTextureHeight;
     SkISize    fPlotGridDimensions;
     int        fPlotWidth;
     int        fPlotHeight;
-
     UseStorageTextures fUseStorageTextures;
     const std::string  fLabel;
 
@@ -365,7 +367,6 @@ private:
     std::vector<EvictionCallback*> fEvictionCallbacks;
 
     struct Page {
-        // allocated array of Plots, in MRU order.
         std::unique_ptr<std::unique_ptr<Plot>[]> fPlotArray;
         SkTInternalLList<Plot> fMRUList;
     };
@@ -441,7 +442,10 @@ public:
     }
 
     PlotCoord plotCoord() const { return fPlotCoord; }
+    void setPlotCoord(PlotCoord coord) { fPlotCoord = coord; }
+
     PlotID plotID() const { return fPlotID; }
+
 
     size_t bpp() const { return MaskFormatBytesPerPixel(fMaskFormat); }
     size_t rowBytes() const { return fPlotDimensions.width() * this->bpp(); }
@@ -485,6 +489,8 @@ public:
     int flushesSinceLastUsed() { return fFlushesSinceLastUse; }
     void resetFlushesSinceLastUsed() { fFlushesSinceLastUse = 0; }
     void incFlushesSinceLastUsed() { fFlushesSinceLastUse++; }
+
+    void markAllEntriesDirty() { this->dirty(fRectanizer.bounds()); }
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const std::byte*, SkIRect> prepareForUpload();

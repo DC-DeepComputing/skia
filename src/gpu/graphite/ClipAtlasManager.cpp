@@ -333,6 +333,30 @@ void ClipAtlasManager::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visit
     });
 }
 
+void ClipAtlasManager::DrawAtlasMgr::relocate(int newPage,
+                                              SkIVector translation,
+                                              const DrawAtlas::RecordVisitor& visitor) {
+    visitor.visitRecords([&](DrawAtlas::Record record) {
+    auto* maskKey = fAtlasRecordMap.find(record);
+    SkASSERT(maskKey);
+    auto* curr = fMaskCache.find(*maskKey);
+    SkASSERT(curr);
+    while (true) {
+        if (curr->fRecord == record) {
+            SkIPoint newPos = SkIPoint{curr->fAtlasPos.fX, curr->fAtlasPos.fY} + translation;
+            curr->fPageIdx = newPage;
+            curr->fAtlasPos = {SkToS16(newPos.fX), SkToS16(newPos.fY)};
+            break;
+        }
+        curr = curr->fNext;
+        if (!curr) {
+            SkDEBUGFAIL("Could not find AtlasRecord in mask cache");
+            break;
+        }
+    }
+});
+}
+
 void ClipAtlasManager::DrawAtlasMgr::evictAll() {
     fDrawAtlas->evictAllPlots();
     SkASSERT(fMaskCache.empty());
