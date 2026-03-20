@@ -16,6 +16,29 @@
       "message": "ptal -- some cleanup to help with another cleanup",
       "revId": "e82d3788db8beb1b6330d5dd2da26c684d026ec4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2c16f52_bb2ce291",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-20T13:31:55Z",
+      "side": 1,
+      "message": "(Context: I recently had to fix a precision bug when converting from [big] ints to floats)\nWe don\u0027t have any precision issues here because we have at most 16 bits which is less than the 24 bits of mantissa. If that was a risk, I was going to suggest an assert or check, but it\u0027s fine here.",
+      "range": {
+        "startLine": 61,
+        "startChar": 51,
+        "endLine": 61,
+        "endChar": 59
+      },
+      "revId": "e82d3788db8beb1b6330d5dd2da26c684d026ec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
