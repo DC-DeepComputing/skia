@@ -270,6 +270,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a89a6219_118029ec",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-20T15:02:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "20ae8f91_81f6c2ef",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 28
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d8d1bed_e739f64e",
@@ -401,6 +425,30 @@
       "side": 1,
       "message": "x and y are positions of a plot within the grid of plots (added comments).\n\nIs it important to optimize this for storage space? We store one per plot (and once we get rid of pages this is just x/y, no page index) and otherwise use on the stack. There are on the order of 4 to 16 Plots in a page and max 4 pages.",
       "parentUuid": "1a5bd7b8_eaf7b7d5",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 25
+      },
+      "revId": "9381a41992801dd770cb785e07218c83e8fc263a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4348571c_1ddc289a",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-20T15:02:08Z",
+      "side": 1,
+      "message": "You\u0027re right, that doesn\u0027t seem worth trimming the size down.",
+      "parentUuid": "bfc9b025_c8472580",
       "range": {
         "startLine": 275,
         "startChar": 0,

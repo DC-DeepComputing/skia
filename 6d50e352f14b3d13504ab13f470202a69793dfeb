@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "883a19c4_a95f271e",
+        "filename": "src/gpu/graphite/text/GlyphData.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-20T15:02:08Z",
+      "side": 1,
+      "message": "nit: line wrapping is off here",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 45
+      },
+      "revId": "6d50e352f14b3d13504ab13f470202a69793dfeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba912a6d_3835010f",
+        "filename": "src/gpu/graphite/text/GlyphData.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-20T15:02:08Z",
+      "side": 1,
+      "message": "Remove?",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 76
+      },
+      "revId": "6d50e352f14b3d13504ab13f470202a69793dfeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
