@@ -39,6 +39,30 @@
       },
       "revId": "e82d3788db8beb1b6330d5dd2da26c684d026ec4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "809eec48_ad9aa5d1",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-03-20T13:33:12Z",
+      "side": 1,
+      "message": "(yes, very thankful they didn\u0027t do something like 32.32 format)",
+      "parentUuid": "e2c16f52_bb2ce291",
+      "range": {
+        "startLine": 61,
+        "startChar": 51,
+        "endLine": 61,
+        "endChar": 59
+      },
+      "revId": "e82d3788db8beb1b6330d5dd2da26c684d026ec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
