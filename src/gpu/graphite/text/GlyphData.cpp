@@ -52,9 +52,9 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
         return {false, 0};
     }
 
-    uint64_t currentAtlasGen = atlasManager->atlasGeneration(maskFormat);
+    SkSpan<const Glyph> glyphs = glyphVector.accessBackendGlyphs<Glyph>();
 
-    if (fAtlasGeneration != currentAtlasGen) {
+    if (fLastKnownGoodEvictionCounter != atlasManager->evictionCounter(maskFormat)) {
         // Calculate the texture coordinates for the vertexes during first use (fAtlasGeneration
         // is set to kInvalidAtlasGeneration) or the atlas has changed in subsequent calls.
         fBulkUseUpdater.reset();
@@ -63,16 +63,17 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
 
         // Update the atlas information in the GrStrike.
         int glyphsPlacedInAtlas = 0;
-        bool success = true;
-        SkSpan<const Glyph> glyphs = glyphVector.accessBackendGlyphs<Glyph>();
         for (int i = begin; i < end; i++) {
             SkASSERT(glyphs[i].entry().fGlyphEntryKey.fFormat == maskFormat);
             if (!atlasManager->hasGlyph(maskFormat, glyphs[i].entry())) {
                 const SkGlyph& skGlyph = *metricsAndImages.glyph(glyphs[i].packedID());
-                auto code = atlasManager->addGlyphToAtlas(skGlyph, &glyphs[i].entry(), srcPadding);
-                if (code != DrawAtlas::ErrorCode::kSucceeded) {
-                    success = code != DrawAtlas::ErrorCode::kError;
-                    break;
+                switch (atlasManager->addGlyphToAtlas(skGlyph, &glyphs[i].entry(), srcPadding)) {
+                    case TextAtlasManager::AddGlyphResult::kSuccess:
+                        break;
+                    case TextAtlasManager::AddGlyphResult::kFull:
+                        return {true, glyphsPlacedInAtlas};
+                    case TextAtlasManager::AddGlyphResult::kError:
+                        return {false, glyphsPlacedInAtlas};
                 }
             }
             atlasManager->addGlyphToBulkAndSetUseToken(&fBulkUseUpdater,
@@ -82,24 +83,30 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
             glyphsPlacedInAtlas++;
         }
 
-        // Update atlas generation if there are no more glyphs to put in the atlas.
-        if (success && begin + glyphsPlacedInAtlas == glyphVector.glyphCount()) {
-            // Need to get the freshest value of the atlas' generation because
-            // updateTextureCoordinates may have changed it.
-            fAtlasGeneration = atlasManager->atlasGeneration(maskFormat);
-        }
+        SkASSERT(begin + glyphsPlacedInAtlas == SkToInt(glyphs.size()));
 
-        return {success, glyphsPlacedInAtlas};
-    } else {
-        // The atlas hasn't changed, so our texture coordinates are still valid.
-        if (end == glyphVector.glyphCount()) {
-            // The atlas hasn't changed and the texture coordinates are all still valid. Update
-            // all the plots used to the new use token.
-            atlasManager->setUseTokenBulk(
-                    fBulkUseUpdater, tokenTracker->nextFlushToken(), maskFormat);
-        }
-        return {true, end - begin};
+        // Update eviction counter as there are no more glyphs to put in the atlas.
+        // Need to get the freshest value from the atlas because  adding glyphs may
+        // have changed it.
+        fLastKnownGoodEvictionCounter = atlasManager->evictionCounter(maskFormat);
+
+        return {true, glyphsPlacedInAtlas};
     }
+
+#if defined(SK_DEBUG)
+    for (size_t i = 0; i < glyphs.size(); ++i) {
+        const Glyph& gpuGlyph = glyphs[i];
+        SkASSERT(atlasManager->hasGlyph(maskFormat, gpuGlyph.entry()));
+    }
+#endif
+
+    // The atlas hasn't changed, so our texture coordinates are still valid.
+    if (end == glyphVector.glyphCount()) {
+        // The atlas hasn't changed and the texture coordinates are all still valid. Update
+        // all the plots used to the new use token.
+        atlasManager->setUseTokenBulk(fBulkUseUpdater, tokenTracker->nextFlushToken(), maskFormat);
+    }
+    return {true, end - begin};
 }
 
 namespace {
@@ -127,10 +134,14 @@ void GlyphData::fillInstanceData(const sktext::gpu::VertexFiller& vf,
     // pre-transform coords = (s*w*b_x + t_x, s*h*b_y + t_y)
     // where (b_x, b_y) are the vertexID coords
     for (auto [glyph, leftTop] : quadData()) {
-        auto [al, at, ar, ab] = glyph.entry().fAtlasLocator.getUVs();
-        instances.append(1) << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)}
-                            << AtlasPt{uint16_t(al & 0x1fff), at}
-                            << leftTop << /*index=*/uint16_t(al >> 13) << flags
+        uint16_t pageIdx = glyph.entry().fPageIdx;
+        SkIRect r        = glyph.entry().fRect;
+        auto    [w, h]   = r.size();
+        auto    [l, t]   = r.topLeft();
+
+        instances.append(1) << AtlasPt{SkToU16(w), SkToU16(h)}
+                            << AtlasPt{SkToU16(l), SkToU16(t)}
+                            << leftTop << pageIdx << flags
                             << 1.0f
                             << depth << ssboIndex;
     }
