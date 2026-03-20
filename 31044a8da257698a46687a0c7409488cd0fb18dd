@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c6106bf_c6d1dc75",
+        "filename": "include/core/SkPixelRef.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-20T20:13:19Z",
+      "side": 1,
+      "message": "its fine leaving here if you need that differentiation. I just wasn\u0027t sure if and how it was needed.",
+      "parentUuid": "1ae65450_8078d0b7",
+      "range": {
+        "startLine": 34,
+        "startChar": 9,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "31044a8da257698a46687a0c7409488cd0fb18dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ef46d3e_3f223f7a",
