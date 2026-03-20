@@ -22,6 +22,30 @@
       },
       "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70c56e5b_bc8be9c4",
+        "filename": "include/private/SkHdrMetadata.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-03-20T21:04:25Z",
+      "side": 1,
+      "message": "Auto-roller broken: https://crrev.com/c/7686583",
+      "parentUuid": "f0cfab32_62403459",
+      "range": {
+        "startLine": 65,
+        "startChar": 37,
+        "endLine": 65,
+        "endChar": 47
+      },
+      "revId": "9c227d1c5d4b83996a92e8419cfca5cd7f467b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
