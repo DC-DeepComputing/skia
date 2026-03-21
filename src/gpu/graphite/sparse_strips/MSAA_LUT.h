@@ -8,7 +8,6 @@
 #define skgpu_graphite_sparse_strips_MSAA_LUT_DEFINED
 
 #include "include/private/base/SkTDArray.h"
-#include "src/gpu/graphite/sparse_strips/StripGenerator.h"
 
 #include <array>
 #include <cmath>
