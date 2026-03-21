@@ -106,6 +106,7 @@ float SkPixmap::getAlphaf(int x, int y) const {
         case kGray_8_SkColorType:
         case kR8G8_unorm_SkColorType:
         case kR16_unorm_SkColorType:
+        case kR16_float_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGB_565_SkColorType:
@@ -214,6 +215,9 @@ SkColor SkPixmap::getColor(int x, int y) const {
         }
         case kA16_float_SkColorType: {
             return SkColorSetA(0, 255 * SkHalfToFloat(*this->addr16(x, y)));
+        }
+        case kR16_float_SkColorType: {
+            return SkColorSetRGB(255 * SkHalfToFloat(*this->addr16(x, y)), 0, 0);
         }
         case kRGB_565_SkColorType: {
             return SkPixel16ToColor(*this->addr16(x, y));
@@ -427,6 +431,10 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
             float value = *this->addr16(x, y) / 65535.0f;
             return SkColor4f{value, 0.0f, 0.0f, 1.0f};
         }
+        case kR16_float_SkColorType: {
+            float value = *this->addr16(x, y) / 65535.f;
+            return SkColor4f{value, 0.f, 0.f, 1.f};
+        }
         case kR16G16_unorm_SkColorType: {
             uint32_t value = *this->addr32(x, y);
             float r = ((value >>  0) & 0xffff) * (1.0f / 65535.0f),
@@ -611,6 +619,7 @@ bool SkPixmap::computeIsOpaque() const {
         case kGray_8_SkColorType:
         case kR8G8_unorm_SkColorType:
         case kR16_unorm_SkColorType:
+        case kR16_float_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGB_888x_SkColorType:
