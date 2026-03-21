@@ -43,6 +43,8 @@ public:
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>* maskLut,
                                WideTiles<TileHeight>& wides,
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
                                uint16_t viewportWidth,
                                uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -58,6 +60,8 @@ public:
                                                               polyline,
                                                               maskLut,
                                                               wides,
+                                                              isCulled,
+                                                              windingHistogram,
                                                               viewportWidth,
                                                               viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -75,6 +79,8 @@ public:
                                    const Polyline& polyline,
                                    const SkTDArray<uint8_t>* maskLut,
                                    WideTiles<TileHeight>& wides,
+                                   bool isCulled,
+                                   const WindingHistogram& windingHistogram,
                                    uint16_t viewportWidth,
                                    uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -90,6 +96,8 @@ public:
                                                                   polyline,
                                                                   maskLut,
                                                                   wides,
+                                                                  isCulled,
+                                                                  windingHistogram,
                                                                   viewportWidth,
                                                                   viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -133,6 +141,8 @@ private:
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>* maskLut,
                                WideTiles<TileHeight>& wides,
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
                                uint16_t viewportWidth,
                                uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -148,6 +158,8 @@ private:
                                    const Polyline& polyline,
                                    const SkTDArray<uint8_t>* maskLut,
                                    WideTiles<TileHeight>& wides,
+                                   bool isCulled,
+                                   const WindingHistogram& windingHistogram,
                                    uint16_t viewportWidth,
                                    uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -307,6 +319,8 @@ void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                            const Polyline& polyline,
                            const SkTDArray<uint8_t>* maskLut,
                            WideTiles<TileHeight>& wides,
+                           bool isCulled,
+                           const WindingHistogram& windingHistogram,
                            uint16_t viewportWidth,
                            uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
@@ -688,26 +702,14 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>* maskLut,
                                WideTiles<TileHeight>& wides,
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
                                uint16_t viewportWidth,
                                uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
                                , MsaaExactMaskObserver observer
 #endif
 ) {
-    auto emitBackground = [&](uint16_t start, uint16_t end, uint16_t width) {
-        for (uint16_t row = start; row < end; row += TileHeight) {
-            wides.addTile(0, row, width);
-        }
-    };
-
-    const auto& tiles = tileContainer.getTiles();
-    if (tiles.empty()) {
-        if (isInverse) {
-            emitBackground(0, viewportHeight + TileHeight, viewportWidth);
-        }
-        return;
-    }
-
     auto shouldFill = [](int32_t w) {
         if constexpr (kIsWinding) {
             return w != 0;
@@ -715,6 +717,101 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             return (w & 1) != 0;
         }
     };
+
+    auto deltaToMask = [&](int32_t w) {
+        uint8_t w_byte;
+        if constexpr (kIsWinding) {
+            w_byte = 0x80 + static_cast<uint8_t>(static_cast<int8_t>(w));
+        } else {
+            w_byte = static_cast<uint8_t>(w & 1);
+        }
+        return static_cast<uint32_t>(w_byte) * 0x01010101u;
+    };
+
+    auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+        if (startTileY >= endTileY) {
+            return;
+        }
+
+        uint16_t y = startTileY;
+
+        if (isCulled && isInverse) {
+            const auto& activeRows = windingHistogram.activeRows();
+            while (y < endTileY) {
+                int wordIdx = y >> 5;
+                uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                uint32_t mask = activeRows[wordIdx];
+                // 1. Mask out bits BEFORE our current y position
+                mask &= (~0u << (y & 31));
+
+                // 2. Mask out bits AFTER our stopping point (if stopping mid-word)
+                uint32_t endShift = wordEnd & 31;
+                if (endShift != 0) {
+                    mask &= (1u << endShift) - 1;
+                }
+
+                while (mask != 0) {
+                    int bit = std::countr_zero(mask); // Or SkCTZ(mask)
+                    uint16_t nextActiveY = (wordIdx << 5) + bit;
+
+                    // Fast-forward bulk emission for the 0-bits we skipped
+                    for (; y < nextActiveY; ++y) {
+                        wides.addTile(0, y * TileHeight, viewportWidth);
+                    }
+
+                    // y is now precisely at the active row. Check if winding cancels out.
+                    if (!shouldFill(windingHistogram[y])) {
+                        wides.addTile(0, y * TileHeight, viewportWidth);
+                    }
+
+                    y++;              // Advance past the row we just processed
+                    mask &= mask - 1; // Clear the lowest set bit to find the next one
+                }
+
+                // Emit any remaining 0-bits up to the chunk boundary
+                for (; y < wordEnd; ++y) {
+                    wides.addTile(0, y * TileHeight, viewportWidth);
+                }
+            }
+        } else if (isCulled) {
+            const auto& activeRows = windingHistogram.activeRows();
+            while (y < endTileY) {
+                int wordIdx = y >> 5;
+                uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                uint32_t mask = activeRows[wordIdx];
+                mask &= (~0u << (y & 31));
+
+                uint32_t endShift = wordEnd & 31;
+                if (endShift != 0) {
+                    mask &= (1u << endShift) - 1;
+                }
+
+                while (mask != 0) {
+                    int bit = std::countr_zero(mask);
+                    y = (wordIdx << 5) + bit;
+
+                    if (shouldFill(windingHistogram[y])) {
+                        wides.addTile(0, y * TileHeight, viewportWidth);
+                    }
+                    mask &= mask - 1;
+                }
+
+                y = wordEnd;
+            }
+        } else if (isInverse) {
+            for (; y < endTileY; ++y) {
+                wides.addTile(0, y * TileHeight, viewportWidth);
+            }
+        }
+    };
+
+    const auto& tiles = tileContainer.getTiles();
+    if (tiles.empty()) {
+        processEmptyTileRows(0, windingHistogram.size());
+        return;
+    }
 
     size_t totalCount = tiles.size();
     Tile<TileWidth, TileHeight> prevTile = tiles[0];
@@ -755,22 +852,21 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
         }
     };
 
-    const uint32_t kInitialMaskVal = kIsWinding ? 0x80808080u : 0u;
-    resetMask(kInitialMaskVal);
+    int32_t windingDelta = windingHistogram[prevTile.y];
+    resetMask(deltaToMask(windingDelta));
 
-    int32_t windingDelta = 0;
-
-    // Handle Inverse Fill Initial State
-    if (isInverse) {
-        emitBackground(0, prevTile.y * TileHeight, viewportWidth);
+    processEmptyTileRows(0, prevTile.y);
+    bool fillLeftStart = shouldFill(windingDelta) ^ isInverse;
+    if (isInverse || isCulled) {
         // If the first tile isn't flush left, we need a 0-width strip to start filling
-        if (prevTile.x != 0) {
+        if (fillLeftStart) {
             stripBuf.push_back(Strip(0, prevTile.y * TileHeight, localAlphaIdx, false));
         }
     }
 
     Strip currentStrip(
-            prevTile.x * TileWidth, prevTile.y * TileHeight, localAlphaIdx, false ^ isInverse);
+            prevTile.x * TileWidth, prevTile.y * TileHeight, localAlphaIdx, fillLeftStart);
+
 
     float tileMinX = (float)(prevTile.x * TileWidth);
     float tileMinY = (float)(prevTile.y * TileHeight);
@@ -891,21 +987,14 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             }
 
             if (!rowStart) {
-                uint8_t w_byte;
-                if constexpr (kIsWinding) {
-                    w_byte = 0x80 + (uint8_t)(int8_t)windingDelta;
-                } else {
-                    w_byte = (windingDelta & 1) ? 1 : 0;
-                }
-
-                uint32_t w_val = w_byte * 0x01010101u;
-                resetMask(w_val);
+                resetMask(deltaToMask(windingDelta));
             }
         }
 
         if (segStart) {
             stripBuf.push_back(currentStrip);
 
+            bool fillLeftCaptive = false;
             if (rowStart) {
                 if (windingDelta != 0 || isInverse || isSentinel) {
                     stripBuf.push_back(Strip(0xFFFF,
@@ -914,24 +1003,27 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                                              shouldFill(windingDelta) ^ isInverse));
                 }
 
-                windingDelta = 0;
-                resetMask(kInitialMaskVal);
+                if (!isSentinel) {
+                    processEmptyTileRows(prevTile.y + 1, tile.y);
 
-                if (isInverse && !isSentinel) {
-                    emitBackground(
-                            (prevTile.y + 1) * TileHeight, tile.y * TileHeight, viewportWidth);
+                    windingDelta = windingHistogram[tile.y];
+                    resetMask(deltaToMask(windingDelta));
+                    fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+
                     // Start the new row with a 0-width strip if it doesn't flush left
-                    if (tile.x != 0) {
+                    if (fillLeftCaptive) {
                         stripBuf.push_back(Strip(0, tile.y * TileHeight, localAlphaIdx, false));
                     }
                 }
+            } else {
+                fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
             }
 
             if (!isSentinel) {
                 currentStrip = Strip(tile.x * TileWidth,
                                      tile.y * TileHeight,
                                      localAlphaIdx,
-                                     shouldFill(windingDelta) ^ isInverse);
+                                     fillLeftCaptive);
             }
         }
 
@@ -939,7 +1031,7 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             break;
         }
 
-        prevTile = tile;  // Ensures prevTile is a real tile for inverse filling
+        prevTile = tile;
 
         Line line = polyline.getLine(tile.packedWindingLineIdx >> INT_MASK_SHIFT);
         float p0_x = line.p0.fX;
@@ -1239,10 +1331,7 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
     }
 
     alphaBuffer.resize(localAlphaIdx);
-
-    if (isInverse) {
-        emitBackground((prevTile.y + 1) * TileHeight, viewportHeight + TileHeight, viewportWidth);
-    }
+    processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
 }
 
 }  // namespace skgpu::graphite

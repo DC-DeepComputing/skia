@@ -10,6 +10,7 @@
 #include "tests/Test.h"
 
 #include <cmath>
+#include <cstring>
 #include <sstream>
 #include <vector>
 
@@ -68,7 +69,11 @@ void check_tiles_match(skiatest::Reporter* reporter,
     build_polyline_and_mapping(lines, polyline, expectedToActualIdx);
 
     uint16_t viewDim = (uint16_t)(100 * scale);
-    tiles.makeTilesMSAA(polyline, viewDim, viewDim);
+    int32_t numRows = (viewDim + HEIGHT - 1) / HEIGHT;
+    WindingHistogram culled(numRows);
+    culled.resize(numRows);
+    culled.clear();
+    tiles.makeTilesMSAA(polyline, viewDim, viewDim, culled);
 
     const std::vector<TileType>& actual = tiles.getTiles();
 
@@ -205,6 +210,54 @@ void check_sorted(skiatest::Reporter* reporter, const std::vector<TileType>& buf
                 ERRORF(reporter, "Sort Failure [Payload]: Tile[%zu] > Tile[%zu]", i, i + 1);
             }
         }
+    }
+}
+
+template <uint16_t WIDTH, uint16_t HEIGHT>
+void check_culling(skiatest::Reporter* reporter,
+                   Tiles<WIDTH, HEIGHT>& tiles,
+                   const std::vector<Line>& rawLines,
+                   const std::vector<int16_t>& expectedCulled,
+                   const char* testName,
+                   float scale) {
+    tiles.reset();
+
+    Polyline polyline;
+    std::vector<uint32_t> expectedToActualIdx;
+    std::vector<Line> lines = scale_lines(rawLines, scale);
+    build_polyline_and_mapping(lines, polyline, expectedToActualIdx);
+
+    uint16_t viewDim = (uint16_t)(100 * scale);
+    int32_t numRows = (viewDim + HEIGHT - 1) / HEIGHT;
+    WindingHistogram culled(numRows);
+    culled.resize(numRows);
+    culled.clear();
+
+    bool cullingEventOccurred = tiles.makeTilesMSAA(polyline, viewDim, viewDim, culled);
+
+    // If we expected culling data, we should have seen a culling event flag
+    if (!expectedCulled.empty() && !cullingEventOccurred) {
+        ERRORF(reporter, "[%s] Expected culling to occur, but makeTilesMSAA returned false.", testName);
+    }
+
+    for (size_t i = 0; i < expectedCulled.size(); ++i) {
+        REPORTER_ASSERT(reporter,
+                        culled[i] == expectedCulled[i],
+                        "[%s] Row[%zu] Cull mismatch. Want %d, Got %d",
+                        testName,
+                        i,
+                        expectedCulled[i],
+                        culled[i]);
+    }
+
+    // Ensure the rest of the array remains untouched (0)
+    for (size_t i = expectedCulled.size(); i < static_cast<size_t>(numRows); ++i) {
+        REPORTER_ASSERT(reporter,
+                        culled[i] == 0,
+                        "[%s] Row[%zu] Cull mismatch. Want 0, Got %d",
+                        testName,
+                        i,
+                        culled[i]);
     }
 }
 
@@ -807,19 +860,21 @@ public:
         }
 
         {
+            WindingHistogram culled;
             std::vector<Line> lines = {
                     {{22.0f * SCALE, 552.0f * SCALE}, {224.0f * SCALE, 388.0f * SCALE}}};
             tiles.reset();
             tiles.makeTilesMSAA(
-                    make_polyline(lines), (uint16_t)(600 * SCALE), (uint16_t)(600 * SCALE));
+                    make_polyline(lines), (uint16_t)(600 * SCALE), (uint16_t)(600 * SCALE), culled);
 
             lines = {{{59.60001f * SCALE, 40.78f * SCALE}, {520599.6f * SCALE, 100.18f * SCALE}}};
             tiles.reset();
             tiles.makeTilesMSAA(
-                    make_polyline(lines), (uint16_t)(200 * SCALE), (uint16_t)(100 * SCALE));
+                    make_polyline(lines), (uint16_t)(200 * SCALE), (uint16_t)(100 * SCALE), culled);
         }
 
         {
+            WindingHistogram culled;
             Polyline polyline;
             tiles.reset();
 
@@ -838,7 +893,7 @@ public:
                 y -= step;
             }
 
-            tiles.makeTilesMSAA(polyline, VIEW_DIM, VIEW_DIM);
+            tiles.makeTilesMSAA(polyline, VIEW_DIM, VIEW_DIM, culled);
             const auto& buf = tiles.getTiles();
 
             REPORTER_ASSERT(reporter, !buf.empty(), "SortTest produced no tiles");
@@ -849,6 +904,158 @@ public:
 
             tiles.sortTiles();
             check_sorted(reporter, tiles.getTiles());
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, -0.1f}}};
+            std::vector<int16_t> expectedCulled = {};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Vertical_OneTile_AboveViewport", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 0.0f}}};
+            std::vector<int16_t> expectedCulled = {};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Vertical_OneTile_TouchViewport", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 0.1f}}};
+            std::vector<int16_t> expectedCulled = {1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Vertical_SingleTile_CrossingViewport", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 4.0f}}};
+            std::vector<int16_t> expectedCulled = {1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Vertical_OneTile_CrossingViewport", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 8.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Vertical_TwoTile_CrossingViewport", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 8.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_VerticalLeft_TwoTiles_TopTouch", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 3.9f}}};
+            std::vector<int16_t> expectedCulled = {1, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_VerticalLeft_SingleTiles_TopTouch", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 4.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_VerticalLeft_OneTiles_TopTouch", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 8.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_VerticalLeft_TwoTiles_TopTouch", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 3.9f}}};
+            std::vector<int16_t> expectedCulled = {1, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_VerticalLeft_SingleTiles_TopTouch", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-4.0f, 1.0f}, {-1.0f, 9.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 1, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_SlopedLeft_Down_MultiTile", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 9.0f}, {-4.0f, 1.0f}}};
+            std::vector<int16_t> expectedCulled = {0, -1, -1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_SlopedLeft_Up_MultiTile", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-4.0f, 4.0f}, {4.0f, 4.1f}}};
+            std::vector<int16_t> expectedCulled = {0, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_SlopedLeft_OneTile", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 0.0f}, {0.1f, 14.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 1, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Sloped_EnterViewport_Down", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 0.0f}, {0.1f, 14.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 1, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Sloped_EnterViewport_Down", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 0.0f}, {8.0f, 16.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 0, 0};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Sloped_EnterViewport_Down", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 16.0f}, {8.0f, 0.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 0, 0, -1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Sloped_EnterViewport_Up", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-3.88f, 10.95f}, {-0.73f, 10.70f}}};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Cull_GhostWindingRepro_NoYCross", SCALE);
+            check_tiles_match<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Tiles_GhostWindingRepro_NoYCross", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-20.0f, 5.0f}, {-2.0f, 5.0f}}};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Cull_Offscreen_Horizontal", SCALE);
+            check_tiles_match<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Tiles_Offscreen_Horizontal", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{-5.0f, 2.0f}, {-2.0f, 6.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 1};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, expectedCulled, "Cull_OffscreenLeft_YCross", SCALE);
+            check_tiles_match<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Tiles_OffscreenLeft_YCross", SCALE);
+        }
+
+        {
+            std::vector<Line> lines = {{{BASE_V_DIM + 5.0f, 2.0f}, {BASE_V_DIM + 10.0f, 6.0f}}};
+            check_culling<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Cull_OffscreenRight", SCALE);
+            check_tiles_match<WIDTH, HEIGHT>(
+                    reporter, tiles, lines, {}, "Tiles_OffscreenRight", SCALE);
         }
     }
 };
