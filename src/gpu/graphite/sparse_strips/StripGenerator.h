@@ -24,10 +24,12 @@
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <cstring>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -39,8 +41,8 @@ class StripGenerator {
 public:
     StripGenerator(uint16_t viewportWidth, uint16_t viewportHeight, const SkTDArray<uint8_t>* lut,
                    Recorder* recorder)
-        : fViewportWidth(viewportWidth), fViewportHeight(viewportHeight) , fLUT(lut)
-        , fRecorder(recorder) {
+        : fViewportWidth(viewportWidth), fViewportHeight(viewportHeight), fCulled(true),  fLUT(lut)
+        , fRecorder(recorder), fWindingHistogram((fViewportHeight + kTileHeight - 1) / kTileHeight) {
             fAllocations.reserve(4);
         }
 
@@ -55,12 +57,18 @@ public:
         fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fViewportWidth, fViewportHeight,
                                                     fFlattenned);
 
-        fTiles.makeTilesMSAA(fFlattenned, fViewportWidth, fViewportHeight);
+        if (fCulled) {
+            fWindingHistogram.clear();
+        }
+        fWindingHistogram.resize((fViewportHeight + kTileHeight - 1) / kTileHeight);
+        fCulled =
+            fTiles.makeTilesMSAA(fFlattenned, fViewportWidth, fViewportHeight, fWindingHistogram);
         fTiles.sortTiles();
 
         AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
         Strip::MakeStripsMsaaSimd(fTiles, fStrips, manager->getAlphaBuffer(), path.getFillType(),
-                                  fFlattenned, fLUT, fWides, fViewportWidth, fViewportHeight);
+                                  fFlattenned, fLUT, fWides, fCulled, fWindingHistogram,
+                                  fViewportWidth, fViewportHeight);
 
         // Retrieve the mapping of offsets to proxies
         SkASSERT(fRecorder);
@@ -114,6 +122,7 @@ private:
     const uint16_t fViewportWidth;
     const uint16_t fViewportHeight;
 
+    bool fCulled;
     Flatten fFlattener;
     Tiles<kTileWidth, kTileHeight> fTiles;
     Polyline fFlattenned;
@@ -122,6 +131,7 @@ private:
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
     bool fDrawn = false;
     Recorder* fRecorder;
+    WindingHistogram fWindingHistogram;
 
     WideTiles<kTileHeight> fWides;
     EndCaps<kTileHeight> fEnds;

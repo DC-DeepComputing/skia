@@ -14,13 +14,14 @@
 #include "include/utils/SkParsePath.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 namespace skgpu::graphite {
 
 template<uint16_t kTileWidth, uint16_t kTileHeight>
 class TilerBench : public Benchmark {
 public:
-    TilerBench() {
+    TilerBench() : fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
         fName.printf("SparseStrips_TilerBench_%ux%u", kTileWidth, kTileHeight);
     }
 
@@ -46,7 +47,7 @@ protected:
         for (int i = 0; i < loops; ++i) {
             Tiles<kTileWidth, kTileHeight> tiler;
             for (auto& poly : fPolylines) {
-                tiler.makeTilesMSAA(poly, Tiger::kImageWidth, Tiger::kImageHeight);
+                tiler.makeTilesMSAA(poly, Tiger::kImageWidth, Tiger::kImageHeight, fCulled);
             }
         }
     }
@@ -54,13 +55,14 @@ protected:
 private:
 
     SkString fName;
+    WindingHistogram fCulled;
     skia_private::TArray<Polyline> fPolylines;
 };
 
 template<uint16_t kTileWidth, uint16_t kTileHeight>
 class TilerSortBench : public Benchmark {
 public:
-    TilerSortBench() {
+    TilerSortBench() : fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
         fName.printf("SparseStrips_TilerSortBench_%ux%u", kTileWidth, kTileHeight);
     }
 
@@ -86,7 +88,7 @@ protected:
         for (int i = 0; i < loops; ++i) {
             Tiles<kTileWidth, kTileHeight> tiler;
             for (auto& poly : fPolylines) {
-                tiler.makeTilesMSAA(poly, Tiger::kImageWidth, Tiger::kImageHeight);
+                tiler.makeTilesMSAA(poly, Tiger::kImageWidth, Tiger::kImageHeight, fCulled);
                 tiler.sortTiles();
             }
         }
@@ -95,6 +97,7 @@ protected:
 private:
 
     SkString fName;
+    WindingHistogram fCulled;
     skia_private::TArray<Polyline> fPolylines;
 };
 
