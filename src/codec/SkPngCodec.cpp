@@ -681,10 +681,9 @@ private:
 
     Result setUpInterlaceBuffer(int height) {
         fPng_rowbytes = png_get_rowbytes(this->png_ptr(), this->info_ptr());
-        size_t interlaceBufferSize = fPng_rowbytes * height;
         void* interlaceBufferRaw = nullptr;
-        if (interlaceBufferSize) {
-           interlaceBufferRaw = sk_malloc_canfail(interlaceBufferSize, sizeof(png_byte));
+        if (fPng_rowbytes && height > 0) {
+           interlaceBufferRaw = sk_malloc_canfail(fPng_rowbytes, static_cast<size_t>(height));
            if (!interlaceBufferRaw) {
              return kInternalError;
            }
