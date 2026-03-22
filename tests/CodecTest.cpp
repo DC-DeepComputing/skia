@@ -1653,6 +1653,32 @@ DEF_TEST(Codec_InvalidImages, r) {
     test_invalid_images(r, "invalid_images/skbug5887.gif", SkCodec::kSuccess);
 }
 
+// Interlaced PNG where rowbytes * height overflows size_t on 32-bit.
+// Decoding should fail gracefully, not crash.
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+DEF_TEST(Codec_PngInterlacedOverflow, r) {
+    auto data = GetResourceAsData("invalid_images/interlace-overflow.png");
+    if (!data) {
+        return;
+    }
+
+    auto codec = SkCodec::MakeFromData(data);
+    REPORTER_ASSERT(r, codec);
+    if (!codec) {
+        return;
+    }
+
+    auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkBitmap bm;
+    if (!bm.tryAllocPixels(info)) {
+        return;
+    }
+
+    auto result = codec->getPixels(info, bm.getPixels(), bm.rowBytes());
+    REPORTER_ASSERT(r, result != SkCodec::kSuccess);
+}
+#endif  // SK_CODEC_DECODES_PNG_WITH_LIBPNG
+
 static void test_invalid_header(skiatest::Reporter* r, const char* path) {
     auto data = GetResourceAsData(path);
     if (!data) {
