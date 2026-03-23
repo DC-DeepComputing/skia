@@ -39,6 +39,30 @@
       },
       "revId": "b43ae2bddecd623defe746bfe55f4f2bcad4cf65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f8839a_1b514c97",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T19:19:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8af13144_57eac276",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 44
+      },
+      "revId": "b43ae2bddecd623defe746bfe55f4f2bcad4cf65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
