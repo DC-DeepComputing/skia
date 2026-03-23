@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b21ad65_a6052e41",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T20:39:34Z",
+      "side": 1,
+      "message": "Nit: A function pointer will stop the simd from getting inlined. Use a templated functor and pass the function to the row creation function. And then inside `xfer_rows_by_channel`, you can\n\n```\nif (ops \u0026 kDropAlpha) {\n    return create_xfer_row_fn(N, srcBpp, dstBpp, \n           apply_ops_by_channel\u003cCx, N, kDropAlpha, OpaqueAlpha\u003e);\n} else if (ops \u0026 kPadAlpha) {\n    return create_xfer_row_fn(N, srcBpp, dstBpp, \n           apply_ops_by_channel\u003cCx, N, kPadAlpha, OpaqueAlpha\u003e);\n}\n```",
+      "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d075c910_36c80b61",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T20:39:34Z",
+      "side": 1,
+      "message": "MSAN might not like memcpying the uninitialized memory in the dropped alpha case?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 9
+      },
+      "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
