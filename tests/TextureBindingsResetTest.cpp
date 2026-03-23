@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tests/Test.h"
 
 #ifdef SK_GL
@@ -55,6 +57,10 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     GrGpu* gpu = dContext->priv().getGpu();
     GrGLGpu* glGpu = static_cast<GrGLGpu*>(dContext->priv().getGpu());
 
+    GrGLStandard stand = glGpu->glStandard();
+    GrGLVersion glVersion = glGpu->glVersion();
+    SkDebugf("stand %d ver %u %u\n", stand, GR_GL_MAJOR_VER(glVersion), GR_GL_MINOR_VER(glVersion));
+
     struct Target {
         GrGLenum fName;
         GrGLenum fQuery;
@@ -62,13 +68,17 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     SkTDArray<Target> targets;
     targets.push_back({GR_GL_TEXTURE_2D, GR_GL_TEXTURE_BINDING_2D});
     bool supportExternal;
+    SkDebugf("a\n");
     if ((supportExternal = glGpu->glCaps().shaderCaps()->fExternalTextureSupport)) {
         targets.push_back({GR_GL_TEXTURE_EXTERNAL, GR_GL_TEXTURE_BINDING_EXTERNAL});
     }
     bool supportRectangle;
+    SkDebugf("b\n");
     if ((supportRectangle = glGpu->glCaps().rectangleTextureSupport())) {
         targets.push_back({GR_GL_TEXTURE_RECTANGLE, GR_GL_TEXTURE_BINDING_RECTANGLE});
     }
+    SkDebugf("c\n");
+
     GrGLint numUnits = 0;
     GL(GetIntegerv(GR_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &numUnits));
     SkTDArray<GrGLuint> claimedIDs;
