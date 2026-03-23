@@ -16,6 +16,29 @@
       "message": "PTAL!",
       "revId": "b43ae2bddecd623defe746bfe55f4f2bcad4cf65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af13144_57eac276",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-23T18:48:20Z",
+      "side": 1,
+      "message": "It seems like we might as well move this into the next if-block.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 44
+      },
+      "revId": "b43ae2bddecd623defe746bfe55f4f2bcad4cf65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
