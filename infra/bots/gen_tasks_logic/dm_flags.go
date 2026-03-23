@@ -1614,7 +1614,6 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "test", ALL, "ReplaceSurfaceBackendTexture")
 		skip(ALL, "test", ALL, "ResourceCacheStencilBuffers")
 		skip(ALL, "test", ALL, "SurfaceAttachStencil_Gpu")
-		skip(ALL, "test", ALL, "SurfaceClear_Gpu")
 	}
 
 	if b.GPU("PowerVRGX6250") {
