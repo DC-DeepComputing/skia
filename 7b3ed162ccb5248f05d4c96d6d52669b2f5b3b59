@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80805b5b_682a7885",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7923e313_c58cf0ab",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 6
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b2721e9_57350130",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-03-17T19:50:40Z",
       "side": 1,
       "message": "Would it make sense for this to be a \u0027\u0026\u0027 ?",
+      "range": {
+        "startLine": 144,
+        "startChar": 28,
+        "endLine": 144,
+        "endChar": 29
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feeb11b5_4a51e6d9",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b2721e9_57350130",
       "range": {
         "startLine": 144,
         "startChar": 28,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caaa203a_b971ee32",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "deb31632_a043e45f",
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5537fe78_607346b3",
@@ -94,6 +160,24 @@
       "writtenOn": "2026-03-17T19:50:40Z",
       "side": 1,
       "message": "constexpr ? Pull out of loop ?",
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd3ef69f_61e67c6a",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5537fe78_607346b3",
       "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -121,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "455e6450_b610dac9",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e6d85cc_12c547ea",
+      "range": {
+        "startLine": 21,
+        "startChar": 29,
+        "endLine": 21,
+        "endChar": 43
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98cb0b37_bea7e2c6",
@@ -134,6 +242,30 @@
       "writtenOn": "2026-03-17T19:50:40Z",
       "side": 1,
       "message": "compute_naive_mask",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 23,
+        "endChar": 24
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da6d62c5_0a5b3cb7",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98cb0b37_bea7e2c6",
       "range": {
         "startLine": 23,
         "startChar": 8,
@@ -190,6 +322,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3530988_7d80f36a",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2d6363c_f4b09197",
+      "range": {
+        "startLine": 50,
+        "startChar": 42,
+        "endLine": 50,
+        "endChar": 56
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "208b2d60_16afcab7",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "956d6524_4c36ac36",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 17
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1a8ad4a_38135c93",
@@ -230,6 +410,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f73e48_469b81e4",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1a8ad4a_38135c93",
+      "range": {
+        "startLine": 86,
+        "startChar": 15,
+        "endLine": 86,
+        "endChar": 36
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4915f76d_b72478ce",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4b3d57a_1d23d2c9",
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0320a71d_f9f94c21",
@@ -243,6 +465,30 @@
       "writtenOn": "2026-03-17T19:50:40Z",
       "side": 1,
       "message": "test_LUT",
+      "range": {
+        "startLine": 102,
+        "startChar": 5,
+        "endLine": 102,
+        "endChar": 12
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "447e1045_8d3dc1e5",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0320a71d_f9f94c21",
       "range": {
         "startLine": 102,
         "startChar": 5,
@@ -276,6 +522,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28deb6ca_0f34cd9c",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ef44826_aea49e88",
+      "range": {
+        "startLine": 109,
+        "startChar": 18,
+        "endLine": 109,
+        "endChar": 28
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aff9338d_8a494b12",
@@ -289,6 +559,30 @@
       "writtenOn": "2026-03-18T14:30:03Z",
       "side": 1,
       "message": "// Track and report the number of 1,2, and 3 bit errors. These are not reported as errors as some noise is expected. \n\n?",
+      "range": {
+        "startLine": 111,
+        "startChar": 37,
+        "endLine": 111,
+        "endChar": 52
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f270572_71bfae7b",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aff9338d_8a494b12",
       "range": {
         "startLine": 111,
         "startChar": 37,
@@ -322,6 +616,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d644351_05a422b0",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4af8003d_1be0ce3b",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 9
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4d2a250_0d68c81a",
@@ -345,6 +663,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d27d527_d685b260",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4d2a250_0d68c81a",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 9
+      },
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "663c155d_2da173ae",
@@ -358,6 +700,24 @@
       "writtenOn": "2026-03-18T14:30:03Z",
       "side": 1,
       "message": "Is this going to appear in all the jobs logs on the tree? If so we should probably make it optional for local debugging.",
+      "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e99057c0_a64bffc5",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-23T18:22:50Z",
+      "side": 1,
+      "message": "No, the `INFOF` macro only prints with the `--veryVerbose` macro, so it will not print.",
+      "parentUuid": "663c155d_2da173ae",
       "revId": "7b3ed162ccb5248f05d4c96d6d52669b2f5b3b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
