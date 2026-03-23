@@ -1888,6 +1888,7 @@ void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
                                                  VkPipelineStageFlags dstStageMask,
                                                  VkBufferMemoryBarrier* barrier) {
     SkASSERT(resource);
+    SkASSERT(this->isResourceTracked(resource));
     this->pipelineBarrier(resource,
                           srcStageMask,
                           dstStageMask,
@@ -1917,6 +1918,7 @@ void VulkanCommandBuffer::addImageMemoryBarrier(const Resource* resource,
                                                 bool byRegion,
                                                 VkImageMemoryBarrier* barrier) {
     SkASSERT(resource);
+    SkASSERT(this->isResourceTracked(resource));
     this->pipelineBarrier(resource,
                           srcStageMask,
                           dstStageMask,
