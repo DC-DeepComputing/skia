@@ -50,9 +50,19 @@ public:
         this->reset();
     }
 
-    const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> processGeometry(
+public:
+    void reset() {
+        fFlattenned.reset();
+        fTiles.reset();
+        fStrips.clear();
+        fAllocations.clear();
+        fWides.clear();
+        fEnds.clear();
+    }
+
+    const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> processGeometryCPU(
                 const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
-        this->reset();
+        this->reset(); // CPU resets per path
 
         fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, fFlattenned);
 
@@ -68,10 +78,46 @@ public:
                                   fFlattenned, fLUT, fWides, fCulled, fWindingHistogram,
                                   fDeviceSize);
 
-        // Retrieve the mapping of offsets to proxies
+        return this->buildWidesAndEnds();
+    }
+
+    const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> processGeometryGPU(
+                const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+        // NO reset() here.
+
+        // 1. Track where the new tiles will start
+        int priorTileCount = fTiles.count(); // Assuming fTiles has a count() or size()
+
+        fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, fFlattenned);
+
+        if (fCulled) {
+            fWindingHistogram.clear();
+        }
+        fWindingHistogram.resize((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight);
+        fCulled = fTiles.makeTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram);
+
+        // 2. Sort ONLY the newly added tiles
+        // You may need to add a sortTiles(startIndex) to your Tiles class
+        fTiles.sortTiles(priorTileCount);
+
+        // 3. GPU-specific MakeStrips call (accumulating counts in a u32, no atlas manager)
+        // uint32_t alphaCount = 0;
+        // Strip::MakeStripsMsaaGpu(fTiles, fStrips, &alphaCount, path.getFillType(),
+        //                          /* ... other args ... */);
+
+        // 4. Populate fAllocations for the GPU path here if needed,
+        //    before calling the shared bottom-half builder.
+
+        return this->buildWidesAndEnds();
+    }
+
+private:
+    const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> buildWidesAndEnds() {
         SkASSERT(fRecorder);
+        AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
         int32_t globalOffset = manager->getUploadOffset();
         manager->getAssociatedProxies(fAllocations);
+
         constexpr size_t kBytesPerTile = kTileWidth * kTileHeight;
 
         if (fStrips.size() > 1 && !fAllocations.empty()) {
@@ -105,16 +151,6 @@ public:
         }
 
         return {fWides, fEnds};
-    }
-
-private:
-    void reset() {
-        fFlattenned.reset();
-        fTiles.reset();
-        fStrips.clear();
-        fAllocations.clear();
-        fWides.clear();
-        fEnds.clear();
     }
 
     SkIRect fDeviceSize;

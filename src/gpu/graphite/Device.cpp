@@ -1885,7 +1885,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
             SkIRect clipBounds =
                     clip.transformedShapeBounds().makeIntersect(clip.scissor()).asSkIRect();
-            auto [wides, ends] = fStripGenerator->fGenerator.processGeometry(
+            auto [wides, ends] = fStripGenerator->fGenerator.processGeometryCPU(
                     finalPath, localToDevice.matrix().asM33(), clipBounds);
 
             if (!ends.empty()) {
