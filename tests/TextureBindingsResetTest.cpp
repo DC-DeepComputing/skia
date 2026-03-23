@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tests/Test.h"
 
 #ifdef SK_GL
@@ -54,6 +56,10 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     auto dContext = ctxInfo.directContext();
     GrGpu* gpu = dContext->priv().getGpu();
     GrGLGpu* glGpu = static_cast<GrGLGpu*>(dContext->priv().getGpu());
+
+    GrGLStandard stand = glGpu->glStandard();
+    GrGLVersion glVersion = glGpu->glVersion();
+    SkDebugf("stand %d ver %u %u\n", stand, GR_GL_MAJOR_VER(glVersion), GR_GL_MINOR_VER(glVersion));
 
     struct Target {
         GrGLenum fName;
