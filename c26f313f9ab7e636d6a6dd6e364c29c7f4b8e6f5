@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4611488d_fd5c6db2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-23T20:07:56Z",
+      "side": 1,
+      "message": "This was approved to merge to m147. This was the original CL that just removed atexit, which was sufficient to fix the issue in chrome. As such, I don\u0027t think there\u0027s any need to merge the follow up https://skia-review.git.corp.google.com/c/skia/+/1186697",
+      "revId": "c26f313f9ab7e636d6a6dd6e364c29c7f4b8e6f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
