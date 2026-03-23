@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934bc42d_04179bd0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "nit: https://review.skia.org/1165337\n\n(we don\u0027t like .corp.google.com urls in commit messages)",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5bda52_7aa8cd8a",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "Should this use `SkHalfToFloat` like `kA16_float_SkColorType`?\n\nMaybe also put this under the A16_float implementation since those are more similar?",
+      "range": {
+        "startLine": 435,
+        "startChar": 26,
+        "endLine": 435,
+        "endChar": 45
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb2f2a7d_8407ddc6",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "should this be _dst to match the rest?",
+      "range": {
+        "startLine": 420,
+        "startChar": 63,
+        "endLine": 420,
+        "endChar": 72
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cef6add4_03ad808d",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "driveby question: why doesn\u0027t this set `isNormalized \u003d false` also? Aren\u0027t they basically the same just with a different channel?",
+      "range": {
+        "startLine": 100,
+        "startChar": 73,
+        "endLine": 100,
+        "endChar": 82
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3833730_9c4497bf",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2661,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "Why does this need a swizzle but the above ones don\u0027t?",
+      "range": {
+        "startLine": 2661,
+        "startChar": 45,
+        "endLine": 2661,
+        "endChar": 52
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb092bd2_ab4bd37b",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-23T22:00:37Z",
+      "side": 1,
+      "message": "`kR_F16` ?",
+      "range": {
+        "startLine": 1035,
+        "startChar": 36,
+        "endLine": 1035,
+        "endChar": 41
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
