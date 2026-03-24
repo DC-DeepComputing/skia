@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74402aa5_e4601b34",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-24T14:17:06Z",
+      "side": 0,
+      "message": "Is this just no longer true? Or do we just now have this be the case but the renderability of a given colortype is determined/stored elsewhere so we removed this comment here?",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 82
+      },
+      "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

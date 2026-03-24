@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb6908dd_19ba0c9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-24T14:17:06Z",
+      "side": 1,
+      "message": "Quick question for my own understanding, but otherwise LGTM!",
+      "revId": "65f8c5aab027790f9c43581e96b1fe9b82e0cd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
