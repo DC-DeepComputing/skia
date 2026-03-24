@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71a703c0_3818931e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-03-24T20:51:37Z",
+      "side": 1,
+      "message": "Thanks, updated!",
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84c3ce9d_d0f1150f",
@@ -31,6 +48,30 @@
       "writtenOn": "2026-03-24T18:39:27Z",
       "side": 1,
       "message": "`AdaptiveGlobalToneMap::GainCurve::kMaxNumControlPoints`\n\nAlso, do we want a runtime assert to be extra safe?",
+      "range": {
+        "startLine": 237,
+        "startChar": 43,
+        "endLine": 237,
+        "endChar": 45
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03c1fc02_561a5643",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-03-24T20:51:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84c3ce9d_d0f1150f",
       "range": {
         "startLine": 237,
         "startChar": 43,
@@ -66,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81950009_aada3903",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-03-24T20:51:37Z",
+      "side": 1,
+      "message": "s[i-1] and s[i] have the same sign, and h[i] is positive (and all h are non-negative).",
+      "parentUuid": "b618ff9b_42ff562b",
+      "range": {
+        "startLine": 275,
+        "startChar": 34,
+        "endLine": 275,
+        "endChar": 91
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e9fc059_f3cc607a",
         "filename": "tests/HdrMetadataTest.cpp",
         "patchSetId": 3
@@ -77,6 +142,30 @@
       "writtenOn": "2026-03-24T18:39:27Z",
       "side": 1,
       "message": "Do we need a test case for one control point like the linked bug?",
+      "range": {
+        "startLine": 114,
+        "startChar": 10,
+        "endLine": 114,
+        "endChar": 19
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7081cd96_8c29a893",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-03-24T20:51:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e9fc059_f3cc607a",
       "range": {
         "startLine": 114,
         "startChar": 10,
