@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d123d51d_7b7c45ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-03-24T17:54:03Z",
+      "side": 1,
+      "message": "FYI, the section in the spec is this one:\nhttps://doc.smpte-doc.org/st2094-50-private/main/#sec-binary-semantics-pchip\n\nThe implementation should more or less read as it",
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
