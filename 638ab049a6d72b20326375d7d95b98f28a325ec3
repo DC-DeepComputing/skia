@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f18251a_bc1dbd1d",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T19:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fee27cf_77669e6d",
+      "range": {
+        "startLine": 79,
+        "startChar": 57,
+        "endLine": 79,
+        "endChar": 58
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8b1ba62_7d1e2479",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-24T16:12:40Z",
       "side": 1,
       "message": "kA ?",
+      "range": {
+        "startLine": 82,
+        "startChar": 29,
+        "endLine": 82,
+        "endChar": 30
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ce9c5e9_5aa560fc",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T19:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8b1ba62_7d1e2479",
       "range": {
         "startLine": 82,
         "startChar": 29,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a38830c_ac3cae99",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T19:14:40Z",
+      "side": 1,
+      "message": "Let me know what you think; I liked that _ made it seem like we didn\u0027t care about those values, but I like that repeating the last index gets rid of the semi-arbitrary choice for _\u0027s value.",
+      "parentUuid": "8475f36b_14aeb27e",
+      "range": {
+        "startLine": 100,
+        "startChar": 66,
+        "endLine": 100,
+        "endChar": 73
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f9e5d163_9fcd5dc0",
         "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
         "patchSetId": 8
@@ -83,6 +155,30 @@
       "writtenOn": "2026-03-24T16:12:40Z",
       "side": 1,
       "message": "Maybe kFloatBits1 ?",
+      "range": {
+        "startLine": 143,
+        "startChar": 30,
+        "endLine": 143,
+        "endChar": 37
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b4c3c4_cf801a60",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T19:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9e5d163_9fcd5dc0",
       "range": {
         "startLine": 143,
         "startChar": 30,
@@ -106,6 +202,30 @@
       "writtenOn": "2026-03-24T16:12:40Z",
       "side": 1,
       "message": "as ?",
+      "range": {
+        "startLine": 175,
+        "startChar": 70,
+        "endLine": 175,
+        "endChar": 72
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d87942d2_19e22e74",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T19:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f79b914e_8bdb8fc6",
       "range": {
         "startLine": 175,
         "startChar": 70,
