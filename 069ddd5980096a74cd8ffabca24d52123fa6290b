@@ -39,6 +39,30 @@
       },
       "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e16f3aa_cac37641",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T13:20:03Z",
+      "side": 1,
+      "message": "In the dropped alpha case, `width * dstBpp` will be less than the size of `PxVec` (the same is also true for `dstBppN` in the wide copy case), so only the shuffled portion of `PxVec` will be written to `dst`.\n\nBut it\u0027s probably worthwhile to initialize the local `pixel`",
+      "parentUuid": "d075c910_36c80b61",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 9
+      },
+      "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
