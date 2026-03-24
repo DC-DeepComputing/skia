@@ -275,6 +275,8 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         return;
     }
 
+    SkDebugf("EGL version %d.%d\n", majorVersion, minorVersion);
+
     EGLint numConfigs;
     static const EGLint configAttribs[] = {
         EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
@@ -309,7 +311,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
     EGLContext eglShareContext = shareContext ? shareContext->fContext : nullptr;
     fContext = eglCreateContext(fDisplay, surfaceConfig, eglShareContext, contextAttribs.data());
     if (EGL_NO_CONTEXT == fContext) {
-        SkDebugf("Could not create context!");
+        SkDebugf("--------- Could not create context!");
         this->destroyGLContext();
         return;
     }
@@ -330,6 +332,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
     }
 
     sk_sp<const GrGLInterface> gl = sk_gpu_test::CreateANGLEGLInterface();
+    SkDebugf("ANGLE GL interface %p\n", gl.get());
     if (nullptr == gl.get()) {
         SkDebugf("Could not create ANGLE GL interface!\n");
         this->destroyGLContext();
@@ -365,6 +368,11 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         fCreateImage = (PFNEGLCREATEIMAGEKHRPROC)eglGetProcAddress("eglCreateImageKHR");
         fDestroyImage = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
     }
+
+    auto vers = GrGLGetVersion(gl.get());
+    SkDebugf("$$$$ %u %u\n",
+            GR_GL_MAJOR_VER(vers),
+            GR_GL_MINOR_VER(version));
 
     this->init(std::move(gl));
 }
