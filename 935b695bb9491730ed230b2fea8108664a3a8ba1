@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "536f9e15_be723fe2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "934bc42d_04179bd0",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c5bda52_7aa8cd8a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-23T22:00:37Z",
       "side": 1,
       "message": "Should this use `SkHalfToFloat` like `kA16_float_SkColorType`?\n\nMaybe also put this under the A16_float implementation since those are more similar?",
+      "range": {
+        "startLine": 435,
+        "startChar": 26,
+        "endLine": 435,
+        "endChar": 45
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e55230_fb91f2fd",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "Good catch! I re-arranged the cases so that we kept each pair of Red + alpha together",
+      "parentUuid": "3c5bda52_7aa8cd8a",
       "range": {
         "startLine": 435,
         "startChar": 26,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10296cb_6a72b2a0",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "yep...",
+      "parentUuid": "fb2f2a7d_8407ddc6",
+      "range": {
+        "startLine": 420,
+        "startChar": 63,
+        "endLine": 420,
+        "endChar": 72
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cef6add4_03ad808d",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-03-23T22:00:37Z",
       "side": 1,
       "message": "driveby question: why doesn\u0027t this set `isNormalized \u003d false` also? Aren\u0027t they basically the same just with a different channel?",
+      "range": {
+        "startLine": 100,
+        "startChar": 73,
+        "endLine": 100,
+        "endChar": 82
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a391edb_8bb9b1ac",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "I think that that is a tricky question and I don\u0027t necessarily know if the current behavior is \"correct\", but this is to match `SkColorTypeIsNormalized`.  Alpha is presumed to be [0,1] or it doesn\u0027t make sense, whereas R,G,B can have valid negative or wide gamut \u003e 1 values that make sense depending on the color space.  The assumption in `SkColorTypeIsNormalized` is that even if the format can hold these extended range values, that alpha will be in [0,1]. \n\nI said \"correct\" because there\u0027s no real way we enforce that.",
+      "parentUuid": "cef6add4_03ad808d",
       "range": {
         "startLine": 100,
         "startChar": 73,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ee9656_7ba49d8c",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2661,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "It has to do with how the driver interprets the texture format and provides default RGBA values in a `sample()` call. In a red texture format, it implicity is \"r001\". GL_LUMINANCE is more like gray, so it sets its value into r,g, and b so we need wipe that out to act like red.",
+      "parentUuid": "b3833730_9c4497bf",
+      "range": {
+        "startLine": 2661,
+        "startChar": 45,
+        "endLine": 2661,
+        "endChar": 52
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb092bd2_ab4bd37b",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-03-23T22:00:37Z",
       "side": 1,
       "message": "`kR_F16` ?",
+      "range": {
+        "startLine": 1035,
+        "startChar": 36,
+        "endLine": 1035,
+        "endChar": 41
+      },
+      "revId": "935b695bb9491730ed230b2fea8108664a3a8ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c013d16_f64d02fc",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T02:34:40Z",
+      "side": 1,
+      "message": "Yep again",
+      "parentUuid": "fb092bd2_ab4bd37b",
       "range": {
         "startLine": 1035,
         "startChar": 36,
