@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "540f14ac_d38bffbe",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T15:21:47Z",
+      "side": 1,
+      "message": "in practice I\u0027m not sure we need this complexity because we don\u0027t have any single-step stencil-using Renderers.  If we fold !isStencil into `canForwardMerge`, then we can collapse these ifs into a single:\n\n    if (dependsOnDst \u0026\u0026 canForwardMerge \u0026\u0026 result.second \u0026\u0026 current-\u003efBindings.head() !\u003d current-\u003efBindings.tail()) { }",
+      "range": {
+        "startLine": 110,
+        "startChar": 32,
+        "endLine": 110,
+        "endChar": 92
+      },
+      "revId": "051beb9c412e839c001227c08cae2cc5d6359522",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
