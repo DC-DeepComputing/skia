@@ -16,6 +16,75 @@
       "message": "FYI, the section in the spec is this one:\nhttps://doc.smpte-doc.org/st2094-50-private/main/#sec-binary-semantics-pchip\n\nThe implementation should more or less read as it",
       "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c3ce9d_d0f1150f",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-24T18:39:27Z",
+      "side": 1,
+      "message": "`AdaptiveGlobalToneMap::GainCurve::kMaxNumControlPoints`\n\nAlso, do we want a runtime assert to be extra safe?",
+      "range": {
+        "startLine": 237,
+        "startChar": 43,
+        "endLine": 237,
+        "endChar": 45
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b618ff9b_42ff562b",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-24T18:39:27Z",
+      "side": 1,
+      "message": "Is it possible for this to be 0 (and thus trigger a div by 0)?",
+      "range": {
+        "startLine": 275,
+        "startChar": 34,
+        "endLine": 275,
+        "endChar": 91
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e9fc059_f3cc607a",
+        "filename": "tests/HdrMetadataTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-24T18:39:27Z",
+      "side": 1,
+      "message": "Do we need a test case for one control point like the linked bug?",
+      "range": {
+        "startLine": 114,
+        "startChar": 10,
+        "endLine": 114,
+        "endChar": 19
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
