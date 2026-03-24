@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstddef>
 #include <limits>
 #include <string>
 #include <vector>
@@ -81,9 +82,21 @@ template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile : public IntersectionBits
     bool operator==(const Tile& other) const { return toBits() == other.toBits(); }
 };
 
-template <uint16_t WIDTH, uint16_t HEIGHT> class Tiles : public IntersectionBits {
+template <uint16_t WIDTH, uint16_t HEIGHT>
+struct GpuTile : public Tile<WIDTH, HEIGHT> {
+    uint32_t winding;
+    uint32_t padding;
+
+    GpuTile() : Tile<WIDTH, HEIGHT>() {}
+
+    GpuTile(uint16_t x, uint16_t y, uint32_t lineIdx, uint32_t intersectionMask)
+            : Tile<WIDTH, HEIGHT>(x, y, lineIdx, intersectionMask) {}
+};
+
+template <uint16_t WIDTH, uint16_t HEIGHT, typename TileType = Tile<WIDTH, HEIGHT>>
+class Tiles : public IntersectionBits {
 public:
-    using TileType = Tile<WIDTH, HEIGHT>;
+    using value_type = TileType;
 
     Tiles() {}
 

@@ -501,6 +501,10 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                 recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
                 recorder);
     }
+    if (recorder->priv().rendererProvider()->IsSupported(
+                PathRendererStrategy::kHybridSparseStripsMSAA8, caps)) {
+        // TODO GPUStripGeneratorWrapper
+    }
     if (registerWithRecorder) {
         // We don't register the device with the recorder until after the constructor has returned.
         recorder->registerDevice(device);
@@ -2127,6 +2131,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             // Never uses an atlas for rendering, leave it null
             break;
 
+        case PathRendererStrategy::kHybridSparseStripsMSAA8: //TODO dont fall throuugh
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
             return {renderers->sparseStrips(), nullptr};
     }
