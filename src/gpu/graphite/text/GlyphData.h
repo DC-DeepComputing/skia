@@ -59,6 +59,7 @@ struct GlyphEntry {
     DrawAtlas::Record   fAtlasRecord;
     DrawAtlas::Rect16   fRect;
     uint8_t             fPageIdx;
+    uint8_t             fPadding;
 };
 
 /** Adapts GlyphEntry* to conform to GlyphVector's GlyphType requirements. */

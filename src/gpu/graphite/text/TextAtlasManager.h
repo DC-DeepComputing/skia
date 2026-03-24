@@ -75,7 +75,11 @@ public:
 
     void freeGpuResources();
 
-    bool hasGlyph(MaskFormat, const GlyphEntry&);
+    // If the glyph is in the atlas, this ensures our page and tex coord are up to date
+    // and returns true. If the glyph is not in the atlas it returns false.
+    bool updateGlyphEntry(MaskFormat, GlyphEntry*);
+    // Asserts that a glyph is in the atlas and the page and tex coord are up to date.
+    SkDEBUGCODE(void assertGlyphEntryUpdated(MaskFormat, const GlyphEntry&);)
 
     enum class AddGlyphResult {
         kSuccess,  // The Glyph was added to the atlas.
