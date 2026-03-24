@@ -55,8 +55,9 @@ public:
                                const Polyline&,
                                const SkTDArray<uint8_t>&,
                                WideTiles<TileH>&,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight,
+                               bool,
+                               const WindingHistogram&,
+                               const SkIRect&,
                                MsaaExactMaskObserver);
 
     static void RunScalarWinding(const Tiles<TileW, TileH>& tileContainer,
@@ -66,12 +67,13 @@ public:
                                  const Polyline& polyline,
                                  const SkTDArray<uint8_t>& maskLut,
                                  WideTiles<TileH>& wides,
-                                 uint16_t viewportWidth,
-                                 uint16_t viewportHeight,
+                                 bool isCulled,
+                                 const WindingHistogram& windingHistogram,
+                                 const SkIRect& clipRect,
                                  MsaaExactMaskObserver observer) {
         Strip::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true>(
-                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, viewportWidth,
-                viewportHeight, observer);
+                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
+                windingHistogram, clipRect, observer);
     }
 
     static void RunSimdWinding(const Tiles<TileW, TileH>& tileContainer,
@@ -81,12 +83,13 @@ public:
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>& maskLut,
                                WideTiles<TileH>& wides,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight,
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
+                               const SkIRect& clipRect,
                                MsaaExactMaskObserver observer) {
         Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true>(
-                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, viewportWidth,
-                viewportHeight, observer);
+                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
+                windingHistogram, clipRect, observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -155,9 +158,6 @@ public:
 
                     SkPath deviceSpacePath = geom.path.makeTransform(ctm);
 
-                    uint16_t reqWidth = 400;
-                    uint16_t reqHeight = 400;
-
                     SkString testName;
                     testName.printf("%s - %s Rot(%.1f) Align(%.2f,%.2f)",
                                     fImplName,
@@ -168,8 +168,6 @@ public:
 
                     if (!this->runSingleTest(reporter,
                                              deviceSpacePath,
-                                             reqWidth,
-                                             reqHeight,
                                              testName.c_str(),
                                              lut,
                                              minorErrorCount)) {
@@ -191,6 +189,8 @@ public:
     }
 
 private:
+    static constexpr uint16_t kViewDim = 400;
+
     StripFunc fFunc;
     const char* fImplName;
 
@@ -294,18 +294,19 @@ private:
 
     bool runSingleTest(skiatest::Reporter* reporter,
                        const SkPath& path,
-                       uint16_t width,
-                       uint16_t height,
                        const char* name,
                        const SkTDArray<uint8_t>& lut,
                        std::array<uint32_t, 3>& minorErrorCount) {
         Flatten flattener;
         Polyline polyline;
         flattener.processPaths<FlattenMode::kSimd>(
-                path, SkMatrix(), static_cast<float>(width), static_cast<float>(height), polyline);
+                path, SkMatrix(), SkIRect::MakeWH(kViewDim, kViewDim), polyline);
 
+        int32_t numRows = (kViewDim + TileH - 1) / TileH;
+        WindingHistogram culled(numRows);
+        culled.resize(numRows);
         Tiles<TileW, TileH> tiler;
-        tiler.makeTilesMSAA(polyline, width, height);
+        tiler.makeTilesMSAA(polyline, SkIRect::MakeWH(kViewDim, kViewDim), culled);
         tiler.sortTiles();
 
         SkTDArray<Strip> stripBuf;
@@ -314,8 +315,8 @@ private:
         WideTiles<TileH> wides;
         auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
         // Call the configured function pointer (SIMD or Scalar)
-        fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, wides, width, height,
-              observer);
+        fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, wides,
+              /*isCulled=*/false, culled, SkIRect::MakeWH(kViewDim, kViewDim), observer);
 
         if (stripBuf.empty()) {
             bool bufferSizeMatch = alphaBuf.empty();
