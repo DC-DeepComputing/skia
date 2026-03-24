@@ -16,6 +16,23 @@
       "message": "Add support for AVX512 version for skBlitRow_opts and skMemset_opts",
       "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ac6a97_0d185339",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-24T14:26:55Z",
+      "side": 1,
+      "message": "I\u0027m not inclined to land more code for AVX512 given it being disabled on many newer Intel CPUs and activating AVX512 can cause surprising knock-on performance impacts because devices that do support AVX512 might then lower their clock significantly in order to run the 512 instructions, negatively affecting all the other instructions we execute.",
+      "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
