@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d6d0d76_ea743308",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T20:56:34Z",
+      "side": 1,
+      "message": "Do you think there would be any value to making fSrcBpp and fDstBpp const and passing the SkColorTypeBytesPerPixel results into a ctor?",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 58
+      },
+      "revId": "e419bd8f17f3c0c064bfe3fdbf32e0543454beab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b21db5f_84d09835",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T20:56:34Z",
+      "side": 1,
+      "message": "Maybe a RPOps::setStrides(srcRowBytes, dstRowBytes) ?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 68
+      },
+      "revId": "e419bd8f17f3c0c064bfe3fdbf32e0543454beab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
