@@ -1702,11 +1702,15 @@ SpvId SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memo
             this->writeInstruction(SpvOpMemberDecorate, resultId, (SpvId) i, SpvDecorationOffset,
                                    (SpvId) offset, fDecorationBuffer);
         }
-        if (field.fType->isMatrix()) {
+        // Add matrix stride decorations for both matrix types and arrays of matrices
+        if (field.fType->isMatrix() ||
+            (field.fType->isArray() && field.fType->componentType().isMatrix())) {
             this->writeInstruction(SpvOpMemberDecorate, resultId, i, SpvDecorationColMajor,
                                    fDecorationBuffer);
             this->writeInstruction(SpvOpMemberDecorate, resultId, i, SpvDecorationMatrixStride,
-                                   (SpvId) memoryLayout.stride(*field.fType),
+                                   (SpvId) memoryLayout.stride(field.fType->isMatrix() ?
+                                                                 *field.fType :
+                                                                 field.fType->componentType()),
                                    fDecorationBuffer);
         }
         if (!field.fType->highPrecision()) {
