@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fee27cf_77669e6d",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T16:12:40Z",
+      "side": 1,
+      "message": "\u0027+\u0027 ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 57,
+        "endLine": 79,
+        "endChar": 58
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b1ba62_7d1e2479",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T16:12:40Z",
+      "side": 1,
+      "message": "kA ?",
+      "range": {
+        "startLine": 82,
+        "startChar": 29,
+        "endLine": 82,
+        "endChar": 30
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8475f36b_14aeb27e",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T16:12:40Z",
+      "side": 1,
+      "message": "It might be clearer if we just jammed \u002714s\u0027 in these (and \u00276s\u0027 below).",
+      "range": {
+        "startLine": 100,
+        "startChar": 66,
+        "endLine": 100,
+        "endChar": 73
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e5d163_9fcd5dc0",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T16:12:40Z",
+      "side": 1,
+      "message": "Maybe kFloatBits1 ?",
+      "range": {
+        "startLine": 143,
+        "startChar": 30,
+        "endLine": 143,
+        "endChar": 37
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79b914e_8bdb8fc6",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T16:12:40Z",
+      "side": 1,
+      "message": "as ?",
+      "range": {
+        "startLine": 175,
+        "startChar": 70,
+        "endLine": 175,
+        "endChar": 72
+      },
+      "revId": "638ab049a6d72b20326375d7d95b98f28a325ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
