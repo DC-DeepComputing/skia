@@ -4,20 +4,18 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/gpu/graphite/DrawAtlas.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
-#include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTPin.h"
-#include "src/base/SkMathPriv.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/MaskFormat.h"
@@ -37,12 +35,6 @@ enum SkColorType : int;
 using namespace skia_private;
 
 namespace skgpu::graphite {
-
-#if defined(DUMP_ATLAS_DATA)
-static const constexpr bool kDumpAtlasData = true;
-#else
-static const constexpr bool kDumpAtlasData = false;
-#endif
 
 DrawAtlas::Plot* DrawAtlas::findPlot(PlotID id) const {
     if (auto** p = fPlotMap.find(id)) {
@@ -66,45 +58,44 @@ void DrawAtlas::internalSetLastUseToken(Plot* plot, Token token) {
 
 #ifdef SK_DEBUG
 void DrawAtlas::validate() const {
-    SkASSERT(fNumActivePages >= 0 && fNumActivePages <= fMaxPages);
-    auto ppp = this->plotsPerPage();
-    SkASSERT(fPlotMap.count() == ppp * fNumActivePages);
-
-    for (int pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
-        const auto& page = fPages[pageIndex];
-        SkASSERT(fProxies[pageIndex]);
-        SkASSERT(page.fPlotArray);
-        std::vector foundCoord(size_t(ppp), false);
-        for (int plotIndex = 0; plotIndex < ppp; ++plotIndex) {
-            auto* plot = page.fPlotArray[plotIndex].get();
-            SkASSERT(plot);
-            auto coord = plot->plotCoord();
-            int coordIndex = coord.fY * fPlotGridDimensions.width() + coord.fX;
-            SkASSERT(!foundCoord[coordIndex]);
-            foundCoord[coordIndex] = true;
-            SkASSERT(plot->plotCoord() == coord);
-            SkASSERT(plot->plotID() != PlotID::kInvalid);
-            auto* mapEntry = fPlotMap.find(plot->plotID());
-            SkASSERT(mapEntry && *mapEntry == plot);
-        }
-        SkASSERT(std::all_of(foundCoord.begin(), foundCoord.end(), [](bool v) { return v; }));
-        int n = 0;
-        for (Plot* prev = nullptr; Plot* plot : page.fMRUList) {
-            SkASSERT(!prev || plot->lastUseToken() <= prev->lastUseToken());
-            prev = plot;
-            ++n;
-            SkASSERT(std::find_if(page.fPlotArray.get(), page.fPlotArray.get() + ppp,
-                     [plot](const auto& p) { return p.get() == plot; }));
-        }
-        SkASSERT(n == ppp);
+    if (!fPlots) {
+        SkASSERT(fPlotMap.empty());
+        SkASSERT(fPlotMRUList.isEmpty());
+        return;
     }
+
+    SkASSERT(fPlotMap.count() == this->numPlots());
+
+    std::vector foundCoord(size_t(this->numPlots()), false);
+    for (const auto& plot : this->plots()) {
+        SkASSERT(plot);
+        auto coord = plot->plotCoord();
+        int coordIndex = coord.fY * fPlotGridDimensions.width() + coord.fX;
+        SkASSERT(!foundCoord[coordIndex]);
+        foundCoord[coordIndex] = true;
+        SkASSERT(plot->plotCoord() == coord);
+        SkASSERT(plot->plotID() != PlotID::kInvalid);
+        auto* mapEntry = fPlotMap.find(plot->plotID());
+        SkASSERT(mapEntry && *mapEntry == plot.get());
+    }
+    SkASSERT(std::all_of(foundCoord.begin(), foundCoord.end(), [](bool v) { return v; }));
+    int n = 0;
+    for (Plot* prev = nullptr; Plot* plot : fPlotMRUList) {
+        SkASSERT(!prev || plot->lastUseToken() <= prev->lastUseToken());
+        prev = plot;
+        ++n;
+
+        auto isPlot = [plot](const std::unique_ptr<Plot>& p) { return p.get() == plot; };
+        auto end = this->plots().end();
+        SkASSERT(std::find_if(this->plots().begin(), end, isPlot) != end);
+    }
+    SkASSERT(n == this->numPlots());
 }
 #endif
 
 std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
                                            int width, int height,
                                            int plotWidth, int plotHeight,
-                                           AllowMultitexturing allowMultitexturing,
                                            UseStorageTextures useStorageTextures,
                                            EvictionCallback* evictor,
                                            std::string_view label) {
@@ -112,7 +103,7 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
                                                    width, height,
                                                    plotWidth, plotHeight,
 
-                                                   allowMultitexturing,
+
                                                    useStorageTextures,
                                                    label));
 
@@ -128,7 +119,6 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
 DrawAtlas::DrawAtlas(MaskFormat maskFormat,
                      int width, int height,
                      int plotWidth, int plotHeight,
-                     AllowMultitexturing allowMultitexturing,
                      UseStorageTextures useStorageTextures,
                      std::string_view label)
         : fMaskFormat(maskFormat)
@@ -139,9 +129,7 @@ DrawAtlas::DrawAtlas(MaskFormat maskFormat,
         , fUseStorageTextures(useStorageTextures)
         , fLabel(label)
         , fPrevFlushToken(Token::InvalidToken())
-        , fFlushesSinceLastUse(0)
-        , fMaxPages(allowMultitexturing == AllowMultitexturing::kYes ? kMaxMultitexturePages : 1)
-        , fNumActivePages(0) {
+        , fFlushesSinceLastUse(0) {
     fPlotGridDimensions = {width / plotWidth, height / plotHeight};
     SkASSERTF(fPlotWidth * fPlotGridDimensions.width() == fTextureWidth,
               "Invalid DrawAtlas. Plot width: %d, texture width %d",
@@ -179,75 +167,20 @@ inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, EvictionType typ
     }
     plot->recycle(freeData);
     fPlotMap[plot->plotID()] = plot;
-    int pageIdx = plot->plotCoord().fPageIdx;
-    fPages[pageIdx].fMRUList.remove(plot);
-    fPages[pageIdx].fMRUList.addToTail(plot);
+    fPlotMRUList.remove(plot);
+    fPlotMRUList.addToTail(plot);
 }
 
-void DrawAtlas::relocatePlot(std::unique_ptr<Plot>& plotToMove, std::unique_ptr<Plot>& plotToPurge) {
-    auto oldCoord = plotToMove->plotCoord();
-    auto newCoord = plotToPurge->plotCoord();
-    printf("relocate (%d, %d, %d) -> (%d, %d, %d)!\n", oldCoord.fPageIdx, oldCoord.fX, oldCoord.fY, newCoord.fPageIdx, newCoord.fX, newCoord.fY);
-    SkASSERT(oldCoord != newCoord);
-
-    // Notify of evictions for Records in plotToPurge
-    this->processEvictionAndResetRects(plotToPurge.get(), EvictionType::kReuse_FreeData);
-
-    plotToMove->setPlotCoord(newCoord);
-    plotToPurge->setPlotCoord(oldCoord);
-
-    // Notify of relocations for Records in plotToMove
-    SkIVector translation{fPlotWidth  * (newCoord.fX - oldCoord.fX),
-                          fPlotHeight * (newCoord.fY - oldCoord.fY)};
-    if (!plotToMove->isEmpty()) {
-        const RecordVisitor visitor{plotToMove.get()};
-        for (EvictionCallback* evictor : fEvictionCallbacks) {
-            evictor->relocate(newCoord.fPageIdx, translation, visitor);
-        }
-        fEvictionCounter = NextEvictionCounter(fEvictionCounter);
-    }
-
-    // In the future we'd like to issue a GPU->GPU copy here. For now, we just mark the plot fully dirty in order
-    // to trigger a re-upload.
-    plotToMove->markAllEntriesDirty();
-
-    // Update both MRU lists.
-    auto& oldMruList = fPages[oldCoord.fPageIdx].fMRUList;
-    auto& newMruList = fPages[newCoord.fPageIdx].fMRUList;
-
-    oldMruList.remove(plotToMove.get());
-    newMruList.remove(plotToPurge.get());
-
-    auto insert = [](Plot* plot, auto& list) {
-        Plot* insertBefore = nullptr;
-        for (auto* p : list) {
-            if (plot->lastUseToken() >= p->lastUseToken()) {
-                insertBefore = p;
-                break;
-            }
-        }
-        insertBefore ? list.addBefore(plot, insertBefore)
-                     : list.addToTail(plot);
-    };
-
-    insert(plotToPurge.get(), oldMruList);
-    insert(plotToMove.get(), newMruList);
-
-    std::swap(plotToMove, plotToPurge);
-}
-
-std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToPage(int pageIdx,
-                                                             SkISize size,
-                                                             const std::byte* image) {
+std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToAtlas(SkISize size,
+                                                              const std::byte* image) {
     SkASSERT(!size.isEmpty());
-    SkASSERT(fProxies[pageIdx]);
+    SkASSERT(fProxy);
 
     // look through all allocated plots for one we can share, in Most Recently Refed order
-    for (auto* plot : fPages[pageIdx].fMRUList) {
+    for (auto* plot : fPlotMRUList) {
         if (std::optional<Plot::AddResult> addRectResult = plot->addRect(size, image)) {
             this->makeMRU(plot);
             return AddResult{.fRecord   = {plot->plotID(), addRectResult->fEntryID},
-                             .fPageIdx  = pageIdx,
                              .fPosition = addRectResult->fPositionInAtlas};
         }
     }
@@ -255,56 +188,46 @@ std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToPage(int pageIdx,
 }
 
 inline void DrawAtlas::makeMRU(Plot* plot) {
-    int pageIdx = plot->plotCoord().fPageIdx;
-    if (fPages[pageIdx].fMRUList.head() == plot) {
+    if (fPlotMRUList.head() == plot) {
         return;
     }
-    fPages[pageIdx].fMRUList.remove(plot);
-    fPages[pageIdx].fMRUList.addToHead(plot);
-    // No MRU update for pages -- since we will always try to add from
-    // the front and remove from the back there is no need for MRU.
+    fPlotMRUList.remove(plot);
+    fPlotMRUList.addToHead(plot);
 }
 
 bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
-    int numPlots = this->plotsPerPage();
-    for (int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
-        auto* plots = fPages[pageIdx].fPlotArray.get();
-        for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-            Plot* plot = plots[plotIndex].get();
-            if (plot->needsUpload()) {
-                TextureProxy* proxy = fProxies[pageIdx].get();
-                SkASSERT(proxy);
+    if (!fProxy) {
+        return true;
+    }
+    for (const auto& plot : this->plots()) {
+        if (!plot->needsUpload()) {
+            continue;
+        }
 
-                const void* dataPtr;
-                SkIRect dstRect;
-                std::tie(dataPtr, dstRect) = plot->prepareForUpload();
-                if (dstRect.isEmpty()) {
-                    continue;
-                }
+        auto [dataPtr, dstRect] = plot->prepareForUpload();
+        if (dstRect.isEmpty()) {
+            continue;
+        }
 
-                std::vector<MipLevel> levels;
-                levels.push_back({dataPtr, plot->rowBytes()});
+        std::vector<MipLevel> levels;
+        levels.push_back({dataPtr, plot->rowBytes()});
 
-                // Src and dst colorInfo are the same
-                SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat),
-                                      kUnknown_SkAlphaType,
-                                      nullptr);
-                const UploadSource uploadSource = UploadSource::Make(
-                        recorder->priv().caps(), *proxy, colorInfo, colorInfo, levels, dstRect);
-                if (!uploadSource.isValid()) {
-                    return false;
-                }
-                if (!dc->recordUpload(recorder,
-                                      sk_ref_sp(proxy),
-                                      colorInfo,
-                                      colorInfo,
-                                      uploadSource,
-                                      dstRect,
-                                      /*ConditionalUploadContext=*/nullptr)) {
-                    return false;
-                }
-            }
+        // Src and dst colorInfo are the same
+        SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat), kUnknown_SkAlphaType, nullptr);
+        const UploadSource uploadSource = UploadSource::Make(
+                recorder->priv().caps(), *fProxy, colorInfo, colorInfo, levels, dstRect);
+        if (!uploadSource.isValid()) {
+            return false;
+        }
+        if (!dc->recordUpload(recorder,
+                              fProxy,
+                              colorInfo,
+                              colorInfo,
+                              uploadSource,
+                              dstRect,
+                              /*ConditionalUploadContext=*/nullptr)) {
+            return false;
         }
     }
     return true;
@@ -324,25 +247,15 @@ bool DrawAtlas::hasRecord(Record record) const {
 
 void DrawAtlas::setLastUseTokenBulk(const BulkRecordUseUpdater& updater, Token token) {
     updater.foreach([&](PlotID pid) {
-        // it's possible we've added a plot to the updater and subsequently the plot's page
-        // was deleted -- so we check to prevent a crash
+        // it's possible we've added a plot to the updater and subsequently the plot
+        // was recycled -- so we check to prevent a crash
         if (auto* plot = this->findPlot(pid)) {
             this->internalSetLastUseToken(plot, token);
         }
     });
 }
 
-// Number of atlas-related flushes beyond which we consider a plot to no longer be in use.
-//
-// This value is somewhat arbitrary -- the idea is to keep it low enough that
-// a page with unused plots will get removed reasonably quickly, but allow it
-// to hang around for a bit in case it's needed. The assumption is that flushes
-// are rare; i.e., we are not continually refreshing the frame.
-static constexpr auto kPlotRecentlyUsedCount = 32;
-// Number of flushes before we'll try to evict a plot from a sparsely used page.
-static constexpr auto kPlotUsedCountBeforeEvict = 8;
-// Number of flushes beyond which we'll consider the atlas no longer in use.
-static constexpr auto kAtlasRecentlyUsedCount = 128;
+
 DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
                                         SkISize size,
                                         AddResult* result,
@@ -351,73 +264,58 @@ DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
         return ErrorCode::kError;
     }
 
+    if (!fProxy) {
+        if (!activateProxy(recorder)) {
+            return ErrorCode::kError;
+        }
+    }
+
     // We permit zero-sized rects to allow inverse fills in the PathAtlases to work,
     // but we don't want to enter them in the Rectanizer. So we handle this special case here.
     // For text this should be caught at a higher level, but if not the only end result
     // will be rendering a degenerate quad.
     if (size.area() == 0) {
-        if (fNumActivePages == 0) {
-            // Make sure we have a Page for the AtlasLocator to refer to
-            if (!this->activateNewPage(recorder)) {
+        if (!fProxy) {
+            if (!this->activateProxy(recorder)) {
                 return ErrorCode::kError;
             }
         }
-        // Use the MRU Plot from the first Page
-        const Plot* plot = fPages[0].fMRUList.head();
+        // Use the MRU Plot
+        const Plot* plot = fPlotMRUList.head();
         result->fRecord.fEntryID = EntryID::kEmpty;
         result->fRecord.fPlotID = plot->plotID();
         result->fPosition = {0, 0};
         return ErrorCode::kSucceeded;
     }
 
-    // Look through each page to see if we can upload without having to flush
-    // We prioritize this upload to the first pages, not the most recently used, to make it easier
-    // to remove unused pages in reverse page order.
-    for (int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
-        if (auto addRectResult = this->addRectToPage(pageIdx, size, image)) {
-            *result = *addRectResult;
-            return ErrorCode::kSucceeded;
-        }
-    }
-
-    // If the above fails, then see if the least recently used plot per page has already been
-    // queued for upload if we're at max page allocation, or if the plot has aged out otherwise.
-    // We wait until we've grown to the full number of pages to begin evicting already queued
-    // plots so that we can maximize the opportunity for reuse.
-    // As before we prioritize this upload to the first pages, not the most recently used.
-    if (fNumActivePages == this->maxPages()) {
-        for (int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
-            auto* plot = fPages[pageIdx].fMRUList.tail();
-            if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextFlushToken()) {
-                this->processEvictionAndResetRects(plot, EvictionType::kReuse_KeepData);
-                auto addRectResult = plot->addRect(size, image);
-                SkASSERT(addRectResult);
-                result->fRecord = {plot->plotID(), addRectResult->fEntryID};
-                result->fPageIdx = pageIdx;
-                result->fPosition = addRectResult->fPositionInAtlas;
-                this->makeMRU(plot);
-                return ErrorCode::kSucceeded;
-            }
-        }
-        // All plots are currently in use by the current set of draws, so we need to fail. This
-        // gives the Device a chance to snap the current set of uploads and draws, advance the draw
-        // token, and call back into this function. The subsequent call will have plots available
-        // for fresh uploads.
-        return ErrorCode::kTryAgain;
-    }
-
-    // If we haven't activated all the available pages, try to create a new one and add to it
-    if (!this->activateNewPage(recorder)) {
-        return ErrorCode::kError;
-    }
-
-    if (auto addRectResult = this->addRectToPage(fNumActivePages - 1, size, image)) {
+    // See if we can upload without having to flush
+    if (auto addRectResult = this->addRectToAtlas(size, image)) {
         *result = *addRectResult;
         return ErrorCode::kSucceeded;
     }
-    // If we fail to upload to a newly activated page then something has gone terribly
-    // wrong - return an error
-    return ErrorCode::kError;
+
+    // TODO: Try to increase the atlas size here.
+
+    // If the above fails, then see if the least recently used plot has already been
+    // queued for upload or if the plot has aged out otherwise.
+    // We wait until we've filled all the plots before we begin evicting already queued
+    // plots so that we can maximize the opportunity for reuse.
+    auto* plot = fPlotMRUList.tail();
+    if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextFlushToken()) {
+        this->processEvictionAndResetRects(plot, EvictionType::kReuse_KeepData);
+        auto addRectResult = plot->addRect(size, image);
+        SkASSERT(addRectResult);
+        result->fRecord = {plot->plotID(), addRectResult->fEntryID};
+        result->fPosition = addRectResult->fPositionInAtlas;
+        this->makeMRU(plot);
+        return ErrorCode::kSucceeded;
+    }
+
+    // All plots are currently in use by the current set of draws, so we need to fail. This
+    // gives the Device a chance to snap the current set of uploads and draws, advance the draw
+    // token, and call back into this function. The subsequent call will have plots available
+    // for fresh uploads.
+    return ErrorCode::kTryAgain;
 }
 
 std::optional<SkPixmap> DrawAtlas::entryPixmap(Record record,
@@ -429,19 +327,19 @@ std::optional<SkPixmap> DrawAtlas::entryPixmap(Record record,
     return {};
 }
 
-std::optional<std::tuple<int, SkIRect>> DrawAtlas::entryLocation(Record record) const {
+std::optional<SkIRect> DrawAtlas::entryLocation(Record record) const {
     if (auto* plot = findPlot(record.fPlotID)) {
         auto rect = plot->entryAtlasRect(record.fEntryID);
         // Purging is at the plot level. So it shouldn't be possible to have a record that
         // has a valid PlotID for an existing Plot with an EntryID that isn't still valid.
         SkASSERT(rect);
-        return std::make_tuple(plot->plotCoord().fPageIdx, *rect);
+        return *rect;
     }
     return {};
 }
 
 void DrawAtlas::compact(Token startTokenForNextFlush) {
-    if (fNumActivePages < 1) {
+    if (!fProxy) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
     }
@@ -450,15 +348,10 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
 
     // For all plots, reset number of flushes since used if used this frame.
     bool atlasUsedThisFlush = false;
-    auto numPlots = this->plotsPerPage();
-    for (int pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
-        auto* plots = fPages[pageIndex].fPlotArray.get();
-        for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-            auto& plot = plots[plotIndex];
-            if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
-                plot->resetFlushesSinceLastUsed();
-                atlasUsedThisFlush = true;
-            }
+    for (auto& plot : this->plots()) {
+        if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
+            plot->resetFlushesSinceLastUsed();
+            atlasUsedThisFlush = true;
         }
     }
 
@@ -473,119 +366,27 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
     // This is to handle the case where a lot of text or path rendering has occurred but then just
     // a blinking cursor is drawn.
     if (atlasUsedThisFlush || fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
-        using PlotRef = std::reference_wrapper<std::unique_ptr<Plot>>;
-        STArray<16, PlotRef> availablePlots;
-        int lastPageIndex = fNumActivePages - 1;
-
-        // For all pages but the last one, update number of flushes since used, and check to see
-        // if there are any in the first pages that the last page can safely upload to.
-        for (int pageIndex = 0; pageIndex < lastPageIndex; ++pageIndex) {
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("page %d: ", pageIndex);
-            }
-
-            auto* plots = fPages[pageIndex].fPlotArray.get();
-            for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-                auto& plot = plots[plotIndex];
-                // Update number of flushes since plot was last used
-                // We only increment the 'sinceLastUsed' count for flushes where the atlas was used
-                // to avoid deleting everything when we return to text drawing in the blinking
-                // cursor case
-                if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
-                    plot->incFlushesSinceLastUsed();
-                }
-
-                if constexpr (kDumpAtlasData) {
-                    SkDebugf("%d ", plot->flushesSinceLastUsed());
-                }
-
-                // Count plots we can potentially upload to in all pages except the last one
-                // (the potential compactee).
-                if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
-                    availablePlots.push_back(plot);
-                }
-            }
-
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("\n");
-            }
-        }
-
-        // Count recently used plots in the last page and evict any that are no longer in use.
-        // Since we prioritize uploading to the first pages, this will eventually
-        // clear out usage of this page unless we have a large need.
-        int usedPlots = 0;
-        if constexpr (kDumpAtlasData) {
-            SkDebugf("page %d: ", lastPageIndex);
-        }
-        auto* lastPagePlots = fPages[lastPageIndex].fPlotArray.get();
-        for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-            auto& plot = lastPagePlots[plotIndex];
+        int numPlotsRecycled = 0;
+        int numPlotsInUse    = 0;
+        // For all plots update number of flushes since used, and check to see
+        // if there are Plots that can be overwritten.
+        for (auto& plot : this->plots()) {
             // Update number of flushes since plot was last used
             if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
                 plot->incFlushesSinceLastUsed();
             }
-
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("%d ", plot->flushesSinceLastUsed());
-            }
-
-            // If this plot was used recently
-            if (plot->flushesSinceLastUsed() <= kPlotRecentlyUsedCount) {
-                usedPlots++;
-            } else if (plot->lastUseToken() != Token::InvalidToken()) {
-                // otherwise if aged out just evict it.
-                this->processEvictionAndResetRects(plot.get(), EvictionType::kReuse_KeepData);
-            }
-        }
-
-        if constexpr (kDumpAtlasData) {
-            SkDebugf("\n");
-        }
-
-        // If recently used plots in the last page are using less than a quarter of the page, try
-        // to evict them if there's available space in lower index pages. Since we prioritize
-        // uploading to the first pages, this will eventually clear out usage of this page unless
-        // we have a large need.
-        if (!availablePlots.empty() && usedPlots && usedPlots <= this->plotsPerPage() / 4) {
-            for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-                auto& plot = lastPagePlots[plotIndex];
-                // If this plot was used recently
-                int plotFlushes = plot->flushesSinceLastUsed();
-                if (kPlotUsedCountBeforeEvict <= plotFlushes &&
-                    plotFlushes <= kPlotRecentlyUsedCount) {
-                    // See if there's room in a lower index page and if so evict.
-                    // We need to be somewhat harsh here so that a handful of plots that are
-                    // consistently in use don't end up locking the page in memory.
-                    if (!availablePlots.empty()) {
-                        if ((true)) {
-                            this->relocatePlot(plot, availablePlots.back());
-                        } else {
-                            // The thinking here is that availablePlot will be available to be populated
-                            // by cache misses that occur because we evicted plot.
-                            this->processEvictionAndResetRects(plot.get(),
-                                                               EvictionType::kReuse_FreeData);
-                            this->processEvictionAndResetRects(availablePlots.back().get().get(),
-                                                               EvictionType::kReuse_KeepData);
-                        }
-                        availablePlots.pop_back();
-                        --usedPlots;
-                    }
-                    if (usedPlots == 0 || availablePlots.empty()) {
-                        break;
-                    }
+            if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
+                if (!plot.get()->isEmpty()) {
+                    this->processEvictionAndResetRects(plot.get(), EvictionType::kReuse_KeepData);
+                    ++numPlotsRecycled;
                 }
+            } else {
+                ++numPlotsInUse;
             }
         }
-
-        // If none of the plots in the last page have been used recently, delete it.
-        if (usedPlots == 0) {
-            if constexpr (kDumpAtlasData) {
-                SkDebugf("delete %d\n", fNumActivePages - 1);
-            }
-
-            this->deactivateLastPage();
-            fFlushesSinceLastUse = 0;
+        if (numPlotsRecycled > 0) {
+            SKIA_LOG_I("Recycled %d of %d Plots in %s DrawAtlas. %d Plots recently used.",
+                        numPlotsRecycled, this->numPlots(), fLabel.c_str(), numPlotsInUse);
         }
     }
 
@@ -593,109 +394,80 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
     SkDEBUGCODE(this->validate());
 }
 
-bool DrawAtlas::activateNewPage(Recorder* recorder) {
-    SkASSERT(fNumActivePages < this->maxPages());
-    SkASSERT(!fProxies[fNumActivePages]);
-
-    auto ct = MaskFormatToColorType(fMaskFormat);
+bool DrawAtlas::activateProxy(Recorder* recorder) {
+    SkDEBUGCODE(this->validate());
+    SkASSERT(!fProxy);
 
     const Caps* caps = recorder->priv().caps();
+    auto ct          = MaskFormatToColorType(fMaskFormat);
     auto textureInfo = fUseStorageTextures == UseStorageTextures::kYes
                                ? caps->getDefaultStorageTextureInfo(ct)
                                : caps->getDefaultSampledTextureInfo(ct,
                                                                     Mipmapped::kNo,
                                                                     recorder->priv().isProtected(),
                                                                     Renderable::kNo);
-    fProxies[fNumActivePages] = TextureProxy::Make(caps,
-                                                   recorder->priv().resourceProvider(),
-                                                   {fTextureWidth, fTextureHeight},
-                                                   textureInfo,
-                                                   fLabel,
-                                                   skgpu::Budgeted::kYes);
-    if (!fProxies[fNumActivePages]) {
+    fProxy = TextureProxy::Make(caps,
+                                recorder->priv().resourceProvider(),
+                                {fTextureWidth, fTextureHeight},
+                                textureInfo,
+                                fLabel,
+                                Budgeted::kYes);
+    if (!fProxy) {
         return false;
     }
-
-    // set up allocated plots
-    auto numPlots = this->plotsPerPage();
-    fPages[fNumActivePages].fPlotArray = std::make_unique<std::unique_ptr<Plot>[]>(numPlots);
-
-    for (int y = 0; y < fPlotGridDimensions.height(); ++y) {
-        for (int x = 0; x < fPlotGridDimensions.width(); ++x) {
-            PlotCoord coord {
-                .fPageIdx = SkToU8(fNumActivePages),
-                .fX       = SkToU8(x),
-                .fY       = SkToU8(y)
-            };
-
-            int index = y * fPlotGridDimensions.width() + x;
-            auto& plotUP = fPages[fNumActivePages].fPlotArray[index];
-            plotUP = Plot::Make(coord, SkISize{fPlotWidth, fPlotHeight}, fMaskFormat);
-            fPlotMap[plotUP->plotID()] = plotUP.get();
-            // The initial MRU plot will have coord 0, 0.
-            fPages[fNumActivePages].fMRUList.addToTail(plotUP.get());
+    fPlots = std::make_unique<std::unique_ptr<Plot>[]>(this->numPlots());
+    for (int y = 0, index = 0; y < fPlotGridDimensions.height(); ++y) {
+        for (int x = 0; x < fPlotGridDimensions.width(); ++x, ++index) {
+            PlotCoord coord{.fX = x, .fY = y};
+            auto& plot = fPlots[index];
+            plot = Plot::Make(coord, {fPlotWidth, fPlotHeight}, fMaskFormat);
+            fPlotMap[plot->plotID()] = plot.get();
+            fPlotMRUList.addToTail(plot.get());
+            fPlots[y * fPlotGridDimensions.width() + x] = std::move(plot);
         }
     }
 
-    if constexpr (kDumpAtlasData) {
-        SkDebugf("activated page#: %d\n", fNumActivePages);
-    }
-
-    ++fNumActivePages;
     SkDEBUGCODE(this->validate());
+
+    SKIA_LOG_I("Activating %d x %d proxy in DrawAtlas %s.", fTextureWidth, fTextureHeight, fLabel.c_str());
+
     return true;
 }
 
-inline void DrawAtlas::deactivateLastPage() {
-    SkASSERT(fNumActivePages);
+inline void DrawAtlas::deactivateProxy() {
+    SkASSERT(fProxy);
 
-    int lastPageIndex = fNumActivePages - 1;
-
-    auto numPlots = this->plotsPerPage();
-
-    auto* plots = fPages[lastPageIndex].fPlotArray.get();
-    for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-        this->processEvictionAndResetRects(plots[plotIndex].get(), EvictionType::kWillBeRemoved);
+    fPlotMRUList.reset();
+    for (auto& plot : plots()) {
+        this->processEvictionAndResetRects(plot.get(), EvictionType::kWillBeRemoved);
+        plot->resetFlushesSinceLastUsed();
     }
-    fPages[lastPageIndex].fMRUList.reset();
-    fPages[lastPageIndex].fPlotArray = {};
-
+    fPlots.reset();
     // remove ref to the texture proxy
-    fProxies[lastPageIndex].reset();
-    --fNumActivePages;
+    fProxy = {};
 }
 
 void DrawAtlas::markUsedPlotsAsFull() {
-    int numPlots = this->plotsPerPage();
-    for (int pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
-        auto* plots = fPages[pageIndex].fPlotArray.get();
-        for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-            plots[plotIndex]->markFullIfUsed();
-        }
+    for (const auto& plot : this->plots()) {
+        plot->markFullIfUsed();
     }
 }
 
 void DrawAtlas::freeGpuResources(Token token) {
-    for (int pageIndex = fNumActivePages - 1; pageIndex >= 0; --pageIndex) {
-        for (Plot* plot : fPages[pageIndex].fMRUList) {
-            if (plot->lastUseToken().inInterval(fPrevFlushToken, token)) {
-                // This page is in use, and we can only deactivate pages from high index
-                // to low index, so bail.
-                return;
-            }
+    for (Plot* plot : fPlotMRUList) {
+        if (plot->lastUseToken().inInterval(fPrevFlushToken, token)) {
+            return;
         }
-        this->deactivateLastPage();
     }
+    this->deactivateProxy();
 }
 
 void DrawAtlas::evictAllPlots() {
-    int numPlots = this->plotsPerPage();
-    for (int pageIndex = fNumActivePages - 1; pageIndex >= 0; --pageIndex) {
-        auto* plots = fPages[pageIndex].fPlotArray.get();
-        for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-            this->processEvictionAndResetRects(plots[plotIndex].get(),
-                                               EvictionType::kReuse_FreeData);
-        }
+    if (!fProxy) {
+        return;
+    }
+    for (const auto& plot : this->plots()) {
+        this->processEvictionAndResetRects(plot.get(), EvictionType::kReuse_FreeData);
     }
 }
 
@@ -797,11 +569,9 @@ std::optional<SkPixmap> DrawAtlas::Plot::entryPixmap(EntryID id,
                                   kOpaque_SkAlphaType);
     SkPixmap outerPM{info, this->dataAt(rect.topLeft()), this->rowBytes()};
     if (initialColor) {
-#if defined(SK_DEBUG)
         if (*initialColor == 0) {
-            SkDebugf("Plot Data: potential redundant clear of Plot to zero.");
+            SKIA_LOG_W("Plot Data: potential redundant clear of Plot to zero.");
         }
-#endif
         outerPM.erase(*initialColor);
     }
     SkPixmap innerPM;

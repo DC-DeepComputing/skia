@@ -190,9 +190,6 @@ ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
                                  width, height,
                                  plotWidth, plotHeight,
-                                 caps->allowMultipleAtlasTextures()
-                                         ? DrawAtlas::AllowMultitexturing::kYes
-                                         : DrawAtlas::AllowMultitexturing::kNo,
                                  useStorageTextures,
                                  /*evictor=*/this,
                                  label);
@@ -216,8 +213,7 @@ ClipAtlasManager::Result ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
             auto atlasPos = SkIPoint{entry->fAtlasPos.fX, entry->fAtlasPos.fY} + offset;
             fDrawAtlas->setLastUseToken(entry->fRecord,
                                         recorder->priv().tokenTracker()->nextFlushToken());
-            auto proxy = fDrawAtlas->getProxy(entry->fPageIdx);
-            return {proxy, atlasPos};
+            return {fDrawAtlas->getProxy(), atlasPos};
         }
         entry = entry->fNext;
     }
@@ -227,14 +223,14 @@ ClipAtlasManager::Result ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
         return {};
     }
 
-    const auto& [record, pageIdx, pos] = *result;
+    const auto& [record, pos] = *result;
 
     // Look up again (in case this entry got purged during addToAtlas())
     MaskHashEntry* entryList = fMaskCache.find(maskKey);
 
     SkIPoint16 pos16{SkToS16(pos.fX), SkToS16(pos.fY)};
     // Add locator and bounds to MaskCache.
-    MaskHashEntry e{nullptr, record, keyBounds, pos16, SkToU8(pageIdx)};
+    MaskHashEntry e{nullptr, record, keyBounds, pos16};
     if (entryList) {
         // Add new list entry to the end. This will sort them from smallest bounds to largest,
         // so that when we search above we'll pick the one with the smallest bounds that contains
@@ -252,7 +248,7 @@ ClipAtlasManager::Result ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
 
     fAtlasRecordMap.set(record, maskKey);
 
-    return {fDrawAtlas->getProxy(pageIdx), pos};
+    return {fDrawAtlas->getProxy(), pos};
 }
 
 std::optional<DrawAtlas::AddResult>
@@ -333,8 +329,7 @@ void ClipAtlasManager::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visit
     });
 }
 
-void ClipAtlasManager::DrawAtlasMgr::relocate(int newPage,
-                                              SkIVector translation,
+void ClipAtlasManager::DrawAtlasMgr::relocate(SkIVector translation,
                                               const DrawAtlas::RecordVisitor& visitor) {
     visitor.visitRecords([&](DrawAtlas::Record record) {
     auto* maskKey = fAtlasRecordMap.find(record);
@@ -344,7 +339,6 @@ void ClipAtlasManager::DrawAtlasMgr::relocate(int newPage,
     while (true) {
         if (curr->fRecord == record) {
             SkIPoint newPos = SkIPoint{curr->fAtlasPos.fX, curr->fAtlasPos.fY} + translation;
-            curr->fPageIdx = newPage;
             curr->fAtlasPos = {SkToS16(newPos.fX), SkToS16(newPos.fY)};
             break;
         }

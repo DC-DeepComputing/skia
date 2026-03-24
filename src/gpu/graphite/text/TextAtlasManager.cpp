@@ -101,16 +101,7 @@ TextAtlasManager::TextAtlasManager(Recorder* recorder)
         : fRecorder(recorder)
         , fSupportBilerpAtlas{recorder->priv().caps()->supportBilerpFromGlyphAtlas()}
         , fAtlasConfig{recorder->priv().caps()->maxTextureSize(),
-                       recorder->priv().caps()->glyphCacheTextureMaximumBytes()} {
-    if (!recorder->priv().caps()->allowMultipleAtlasTextures() ||
-        // multitexturing supported only if range can represent the index + texcoords fully
-        !(recorder->priv().caps()->shaderCaps()->fFloatIs32Bits ||
-          recorder->priv().caps()->shaderCaps()->fIntegerSupport)) {
-        fAllowMultitexturing = DrawAtlas::AllowMultitexturing::kNo;
-    } else {
-        fAllowMultitexturing = DrawAtlas::AllowMultitexturing::kYes;
-    }
-}
+                       recorder->priv().caps()->glyphCacheTextureMaximumBytes()} {}
 
 TextAtlasManager::~TextAtlasManager() = default;
 
@@ -128,10 +119,9 @@ bool TextAtlasManager::updateGlyphEntry(MaskFormat format, GlyphEntry* glyph) {
     if (!location) {
         return false;
     }
-    auto [page, rect] = *location;
+    SkIRect rect = *location;
     rect.inset(glyph->fPadding, glyph->fPadding);
     SkASSERT(rect.size() == SkIRect(glyph->fRect).size());
-    glyph->fPageIdx = page;
     glyph->fRect = rect;
     return true;
 }
@@ -140,8 +130,7 @@ bool TextAtlasManager::updateGlyphEntry(MaskFormat format, GlyphEntry* glyph) {
 void TextAtlasManager::assertGlyphEntryUpdated(MaskFormat format, const GlyphEntry& glyph) {
     auto location = this->getAtlas(format)->entryLocation(glyph.fAtlasRecord);
     SkASSERT(location);
-    auto [page, rect] = *location;
-    SkASSERT(page == glyph.fPageIdx);
+    SkIRect rect = *location;
     SkASSERT(rect.makeInset(glyph.fPadding, glyph.fPadding) == SkIRect(glyph.fRect));
 }
 #endif
@@ -347,7 +336,6 @@ TextAtlasManager::AddGlyphResult TextAtlasManager::addGlyphToAtlas(const SkGlyph
             // Apply our padding to the rect.
             auto atlasRect  = SkIRect::MakePtSize(addResult.fPosition, {width, height});
             glyph->fRect    = atlasRect.makeInset(srcPadding, srcPadding);
-            glyph->fPageIdx = addResult.fPageIdx;
             glyph->fPadding = srcPadding;
             return AddGlyphResult::kSuccess;
     }
@@ -392,7 +380,6 @@ bool TextAtlasManager::initAtlas(MaskFormat format) {
         fAtlases[index] = DrawAtlas::Make(format,
                                           atlasDimensions.width(), atlasDimensions.height(),
                                           plotDimensions.width(), plotDimensions.height(),
-                                          fAllowMultitexturing,
                                           DrawAtlas::UseStorageTextures::kNo,
                                           /*evictor=*/nullptr,
                                           /*label=*/"TextAtlas");

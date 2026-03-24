@@ -41,13 +41,6 @@
 
 namespace skgpu::graphite {
 
-namespace {
-
-// We are expecting to sample from up to 4 textures
-constexpr int kNumSDFAtlasTextures = 4;
-
-}  // namespace
-
 SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
         : RenderStep(layout,
                      RenderStepID::kSDFTextLCD,
@@ -65,22 +58,20 @@ SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
                      {{{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"xyPos", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                      {"indexAndFlags", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"flags", VertexAttribType::kUInt, SkSLType::kUInt},
                       {"strikeToSourceScale", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}}},
                      /*varyings=*/
                      {{{"unormTexCoords", SkSLType::kFloat2},
-                      {"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kFloat}}}) {}
+                      {"textureCoords", SkSLType::kFloat2}}}) {}
 
 SDFTextLCDRenderStep::~SDFTextLCDRenderStep() {}
 
 std::string SDFTextLCDRenderStep::vertexSkSL() const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
-    return "texIndex = half(indexAndFlags.x);"
-           "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
+    return "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
                                                "subRunDeviceMatrix, "
                                                "deviceToLocal, "
                                                "atlasSizeInv, "
@@ -98,10 +89,8 @@ std::string SDFTextLCDRenderStep::texturesAndSamplersSkSL(
         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
 
-    for (unsigned int i = 0; i < kNumSDFAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D sdf_atlas_%u;\n", i);
-    }
+    result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
+    SkSL::String::appendf(&result, " sampler2D sdf_atlas;\n");
 
     return result;
 }
@@ -115,16 +104,11 @@ const char* SDFTextLCDRenderStep::fragmentCoverageSkSL() const {
     // as that's the most common case.
     // TODO: Need to add 565 support.
     // TODO: Need aliased and possibly sRGB support.
-    static_assert(kNumSDFAtlasTextures == 4);
     return "outputCoverage = sdf_text_lcd_coverage_fn(textureCoords, "
                                                      "pixelGeometryDelta, "
                                                      "gammaParams, "
                                                      "unormTexCoords, "
-                                                     "texIndex, "
-                                                     "sdf_atlas_0, "
-                                                     "sdf_atlas_1, "
-                                                     "sdf_atlas_2, "
-                                                     "sdf_atlas_3);";
+                                                     "sdf_atlas);";
 }
 
 void SDFTextLCDRenderStep::writeVertices(DrawWriter* dw,
@@ -148,26 +132,25 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
     const SubRunData& subRunData = params.geometry().subRunData();
-    unsigned int numProxies;
     Recorder* recorder = subRunData.recorder();
-    const sk_sp<TextureProxy>* proxies =
-            recorder->priv().atlasProvider()->textAtlasManager()->getProxies(
-                    subRunData.subRun()->maskFormat(), &numProxies);
-    SkASSERT(proxies && numProxies > 0);
+    const sk_sp<TextureProxy>& proxy =
+            recorder->priv().atlasProvider()->textAtlasManager()->getProxy(
+                    subRunData.subRun()->maskFormat());
+    SkASSERT(proxy);
 
     // write uniforms
     gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
     gatherer->write(subRunData.deviceToLocal());
-    SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
-                                   1.f/proxies[0]->dimensions().height()};
+    SkV2 atlasDimensionsInverse = {1.f/proxy->dimensions().width(),
+                                   1.f/proxy->dimensions().height()};
     gatherer->write(atlasDimensionsInverse);
 
     // compute and write pixelGeometry vector
     SkV2 pixelGeometryDelta = {0, 0};
     if (SkPixelGeometryIsH(subRunData.pixelGeometry())) {
-        pixelGeometryDelta = {1.f/(3*proxies[0]->dimensions().width()), 0};
+        pixelGeometryDelta = {1.f/(3*proxy->dimensions().width()), 0};
     } else if (SkPixelGeometryIsV(subRunData.pixelGeometry())) {
-        pixelGeometryDelta = {0, 1.f/(3*proxies[0]->dimensions().height())};
+        pixelGeometryDelta = {0, 1.f/(3*proxy->dimensions().height())};
     }
     if (SkPixelGeometryIsBGR(subRunData.pixelGeometry())) {
         pixelGeometryDelta = -pixelGeometryDelta;
@@ -186,14 +169,8 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
                         subRunData.useGammaCorrectDistanceTable() ? 1.f : 0.f};
     gatherer->writeHalf(gammaParams);
 
-    // write textures and samplers
-    for (unsigned int i = 0; i < numProxies; ++i) {
-        gatherer->add(proxies[i], {SkFilterMode::kLinear, SkTileMode::kClamp});
-    }
-    // If the atlas has less than 4 active proxies we still need to set up samplers for the shader.
-    for (unsigned int i = numProxies; i < kNumSDFAtlasTextures; ++i) {
-        gatherer->add(proxies[0], {SkFilterMode::kLinear, SkTileMode::kClamp});
-    }
+    // write texture and sampler
+    gatherer->add(proxy, {SkFilterMode::kLinear, SkTileMode::kClamp});
 }
 
 }  // namespace skgpu::graphite

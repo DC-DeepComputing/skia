@@ -408,7 +408,6 @@ public:
     size_t glyphCacheTextureMaximumBytes() const { return fGlyphCacheTextureMaximumBytes; }
     int maxPathAtlasTextureSize() const { return fMaxPathAtlasTextureSize; }
 
-    bool allowMultipleAtlasTextures() const { return fAllowMultipleAtlasTextures; }
     bool supportBilerpFromGlyphAtlas() const { return fSupportBilerpFromGlyphAtlas; }
 
     bool requireOrderedRecordings() const { return fRequireOrderedRecordings; }
@@ -537,7 +536,6 @@ protected:
 
     int fMaxPathAtlasTextureSize = 8192;
 
-    bool fAllowMultipleAtlasTextures = true;
     bool fSupportBilerpFromGlyphAtlas = false;
 
     bool fRequireOrderedRecordings = false;
