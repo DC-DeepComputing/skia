@@ -186,6 +186,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
     , fType(type)
     , fVersion(version)
     , fOwnsDisplay(false) {
+    SkDebugf("11\n");
 #ifdef SK_BUILD_FOR_WIN
     fWindow = nullptr;
     fDeviceContext = nullptr;
@@ -198,7 +199,11 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         return;
     }
 
+    SkDebugf("22\n");
+
     if (EGL_NO_DISPLAY == fDisplay) {
+        SkDebugf("33\n");
+
         HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(nullptr);
 
         if (!gWC) {
@@ -238,6 +243,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
 
         fDisplay = get_angle_egl_display(fDeviceContext, type);
         fOwnsDisplay = true;
+        SkDebugf("44\n");
     }
 #else
     SkASSERT(EGL_NO_DISPLAY == fDisplay);
@@ -249,14 +255,21 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         return;
     }
 
+    SkDebugf("55\n");
+
     // Add ANGLE platform hooks to connect to Skia's tracing implementation
     angle::GetDisplayPlatformFunc getPlatform = reinterpret_cast<angle::GetDisplayPlatformFunc>(
             eglGetProcAddress("ANGLEGetDisplayPlatform"));
+    SkDebugf("66\n");
+
     if (getPlatform) {
+        SkDebugf("77\n");
+
         fResetPlatform = reinterpret_cast<angle::ResetDisplayPlatformFunc>(
                 eglGetProcAddress("ANGLEResetDisplayPlatform"));
         SkASSERT(fResetPlatform);
 
+        SkDebugf("88\n");
         angle::PlatformMethods* platformMethods = nullptr;
         if (getPlatform(fDisplay, angle::g_PlatformMethodNames, angle::g_NumPlatformMethods,
                         nullptr, &platformMethods)) {
@@ -265,6 +278,8 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
             platformMethods->updateTraceEventDuration    = ANGLE_updateTraceEventDuration;
             platformMethods->monotonicallyIncreasingTime = ANGLE_monotonicallyIncreasingTime;
         }
+
+        SkDebugf("99\n");
     }
 
     EGLint majorVersion;
@@ -274,6 +289,8 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         this->destroyGLContext();
         return;
     }
+
+    SkDebugf("EGL version %d.%d\n", majorVersion, minorVersion);
 
     EGLint numConfigs;
     static const EGLint configAttribs[] = {
@@ -309,7 +326,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
     EGLContext eglShareContext = shareContext ? shareContext->fContext : nullptr;
     fContext = eglCreateContext(fDisplay, surfaceConfig, eglShareContext, contextAttribs.data());
     if (EGL_NO_CONTEXT == fContext) {
-        SkDebugf("Could not create context!");
+        SkDebugf("--------- Could not create context!");
         this->destroyGLContext();
         return;
     }
@@ -330,6 +347,7 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
     }
 
     sk_sp<const GrGLInterface> gl = sk_gpu_test::CreateANGLEGLInterface();
+    SkDebugf("ANGLE GL interface %p\n", gl.get());
     if (nullptr == gl.get()) {
         SkDebugf("Could not create ANGLE GL interface!\n");
         this->destroyGLContext();
@@ -365,6 +383,11 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         fCreateImage = (PFNEGLCREATEIMAGEKHRPROC)eglGetProcAddress("eglCreateImageKHR");
         fDestroyImage = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
     }
+
+    auto vers = GrGLGetVersion(gl.get());
+    SkDebugf("$$$$ %u %u\n",
+            GR_GL_MAJOR_VER(vers),
+            GR_GL_MINOR_VER(version));
 
     this->init(std::move(gl));
 }

@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tests/Test.h"
 
 #ifdef SK_GL
@@ -55,6 +57,10 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     GrGpu* gpu = dContext->priv().getGpu();
     GrGLGpu* glGpu = static_cast<GrGLGpu*>(dContext->priv().getGpu());
 
+    GrGLStandard stand = glGpu->glStandard();
+    GrGLVersion glVersion = glGpu->glVersion();
+    SkDebugf("stand %d ver %u %u\n", stand, GR_GL_MAJOR_VER(glVersion), GR_GL_MINOR_VER(glVersion));
+
     struct Target {
         GrGLenum fName;
         GrGLenum fQuery;
@@ -62,13 +68,17 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     SkTDArray<Target> targets;
     targets.push_back({GR_GL_TEXTURE_2D, GR_GL_TEXTURE_BINDING_2D});
     bool supportExternal;
+    SkDebugf("a\n");
     if ((supportExternal = glGpu->glCaps().shaderCaps()->fExternalTextureSupport)) {
         targets.push_back({GR_GL_TEXTURE_EXTERNAL, GR_GL_TEXTURE_BINDING_EXTERNAL});
     }
     bool supportRectangle;
+    SkDebugf("b\n");
     if ((supportRectangle = glGpu->glCaps().rectangleTextureSupport())) {
         targets.push_back({GR_GL_TEXTURE_RECTANGLE, GR_GL_TEXTURE_BINDING_RECTANGLE});
     }
+    SkDebugf("c\n");
+
     GrGLint numUnits = 0;
     GL(GetIntegerv(GR_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &numUnits));
     SkTDArray<GrGLuint> claimedIDs;
@@ -76,6 +86,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     GL(GenTextures(claimedIDs.size(), claimedIDs.begin()));
 
     auto resetBindings = [&] {
+         SkDebugf("resetBindings in\n");
+
         int i = 0;
         for (int u = 0; u < numUnits; ++u) {
             GL(ActiveTexture(GR_GL_TEXTURE0 + u));
@@ -83,8 +95,12 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
                 GL(BindTexture(target.fName, claimedIDs[i++]));
             }
         }
+        SkDebugf("resetBindings out\n");
+
     };
     auto checkBindings = [&] {
+         SkDebugf("checkBindings in\n");
+
         int i = 0;
         for (int u = 0; u < numUnits; ++u) {
             GL(ActiveTexture(GR_GL_TEXTURE0 + u));
@@ -99,7 +115,11 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
                 ++i;
             }
         }
+         SkDebugf("checkBindings in\n");
+
     };
+
+    SkDebugf("d\n");
 
     // Initialize texture unit/target combo bindings to 0.
     dContext->flushAndSubmit();
@@ -125,6 +145,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     resetBindings();
     dContext->resetContext();
 
+    SkDebugf("e\n");
+
     // Test drawing and then resetting bindings. This should force a MIP regeneration if MIP
     // maps are supported as well.
     auto info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
@@ -142,7 +164,11 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     resetBindings();
     dContext->resetContext();
 
+    SkDebugf("f\n");
+
     if (supportExternal) {
+        SkDebugf("g in\n");
+
         GrBackendTexture texture2D = dContext->createBackendTexture(10,
                                                                     10,
                                                                     kRGBA_8888_SkColorType,
@@ -182,9 +208,13 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
         ctxInfo.glContext()->destroyEGLImage(eglImage);
         dContext->deleteBackendTexture(texture2D);
         dContext->resetContext();
+
+        SkDebugf("g out\n");
     }
 
     if (supportRectangle) {
+        SkDebugf("h in\n");
+
         format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
         GrBackendTexture rectangleTexture = dContext->createBackendTexture(
                 10, 10, format, skgpu::Mipmapped::kNo, GrRenderable::kNo);
@@ -204,9 +234,14 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
             resetBindings();
             dContext->deleteBackendTexture(rectangleTexture);
         }
+        SkDebugf("h out\n");
     }
 
+    SkDebugf("i\n");
+
     GL(DeleteTextures(claimedIDs.size(), claimedIDs.begin()));
+
+    SkDebugf("j\n");
 
 #undef GL
 }

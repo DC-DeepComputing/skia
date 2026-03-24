@@ -172,13 +172,16 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             GLTestContext* glCtx;
             switch (type) {
                 case ContextType::kGL:
+                    SkDebugf("------------------- 1\n");
                     glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext);
                     break;
                 case ContextType::kGLES:
+                    SkDebugf("------------------- 2\n");
                     glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext);
                     break;
 #if SK_ANGLE
                 case ContextType::kANGLE_D3D9_ES2:
+                    SkDebugf("------------------- 3\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kD3D9, ANGLEContextVersion::kES2,
                                                  glShareContext).release();
                     // Chrome will only run on D3D9 with NVIDIA for 2012 and earlier drivers.
@@ -193,26 +196,32 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
                     }
                     break;
                 case ContextType::kANGLE_D3D11_ES2:
+                    SkDebugf("------------------- 4\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kD3D11, ANGLEContextVersion::kES2,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_D3D11_ES3:
+                    SkDebugf("------------------- 5\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kD3D11, ANGLEContextVersion::kES3,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_GL_ES2:
+                    SkDebugf("------------------- 6\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kOpenGL, ANGLEContextVersion::kES2,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_GL_ES3:
+                    SkDebugf("------------------- 7\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kOpenGL, ANGLEContextVersion::kES3,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_Metal_ES2:
+                    SkDebugf("------------------- 8\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kMetal, ANGLEContextVersion::kES2,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_Metal_ES3:
+                    SkDebugf("------------------- 9\n");
                     glCtx = MakeANGLETestContext(ANGLEBackend::kMetal, ANGLEContextVersion::kES3,
                                                  glShareContext).release();
                     break;
