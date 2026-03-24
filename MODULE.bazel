@@ -148,6 +148,10 @@ crate.spec(
     rev = "5d0418d0eff747c829d52738c092581312f775c9",
 )
 crate.spec(
+    package = "kamadak-exif",
+    version = "=0.5.5",
+)
+crate.spec(
     package = "moxcms",
     version = "=0.8.0",
 )
