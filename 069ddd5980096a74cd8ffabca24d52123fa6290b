@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18640fd8_bf8a3c3d",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-24T13:57:08Z",
+      "side": 1,
+      "message": "PxVec ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 7,
+        "endLine": 46,
+        "endChar": 9
+      },
+      "revId": "069ddd5980096a74cd8ffabca24d52123fa6290b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d075c910_36c80b61",
         "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
         "patchSetId": 5
