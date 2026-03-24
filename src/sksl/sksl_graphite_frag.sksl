@@ -1853,3 +1853,55 @@ $pure half4 blur_coverage_fn(float2 coords,
     }
     return half4(0);
 }
+
+$pure half4 endcap_coverage_fn(float2 rectCoord,
+                               float2 atlasSize,
+                               sampler2D alpha_text_0,
+                               sampler2D alpha_text_1,
+                               sampler2D alpha_text_2,
+                               sampler2D alpha_text_3,
+                               uint maskIndex) {
+
+    // Cast the varying width passed from the vertex shader
+    int tileWidth = 8;
+    int tileHeight = 8;
+
+    // Floor and cast the interpolated floating-point local coordinates
+    int dx = int(floor(rectCoord.x));
+    int dy = int(floor(rectCoord.y));
+
+    int tileX = dx / tileWidth;
+    int inTileX = dx % tileWidth;
+    int inTileY = dy;
+
+    int tileArea = tileWidth * tileHeight;
+
+    int linearOffset = (tileX * tileArea) + (inTileY * tileWidth) + inTileX;
+
+    int trueLinearIdx = int(maskIndex) + linearOffset;
+    int atlasLinearIdx = trueLinearIdx & 0xffffff;
+
+    int atlasWidth = int(atlasSize.x);
+    int atlasX = atlasLinearIdx % atlasWidth;
+    int atlasY = atlasLinearIdx / atlasWidth;
+
+    float2 uv = (float2(atlasX, atlasY) + 0.5) / atlasSize;
+    half4 texColor;
+
+    switch (int(trueLinearIdx >> 24)) {
+        case 0:
+            texColor = sample(alpha_text_0, uv);
+            break;
+        case 1:
+            texColor = sample(alpha_text_1, uv);
+            break;
+        case 2:
+            texColor = sample(alpha_text_2, uv);
+            break;
+        default:
+            texColor = sample(alpha_text_3, uv);
+            break;
+    }
+
+    return texColor.rrrr;
+}
