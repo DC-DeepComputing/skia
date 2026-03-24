@@ -315,6 +315,7 @@ static void done(const char* config, const char* src, const char* srcOptions, co
 static void start(const char* config, const char* src, const char* srcOptions, const char* name) {
     SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
     vlog("\tstart %s\n", id.c_str());
+    SkDebugf("---- %s\n", id.c_str());
     SkAutoSpinlock lock(gMutex);
     gRunning->push_back({id,SkGetThreadID()});
 }
@@ -977,6 +978,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         exit(1);
     }
 
+    SkDebugf("--- %s\n", config.getTag().c_str());
     TaggedSink& ts = gSinks->push_back();
     ts.reset(sink.release());  // NOLINT(misc-uniqueptr-reset-release)
     ts.tag = config.getTag();
