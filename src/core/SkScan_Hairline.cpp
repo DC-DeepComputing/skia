@@ -556,7 +556,9 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
         } while (++controls < pts.size());
     }
     if (!nextVerb.has_value() ||
-        nextVerb.value() == SkPathVerb::kMove)
+        nextVerb.value() == SkPathVerb::kMove
+        // || nextVerb.value() == SkPathVerb::kClose
+    )
     {
         SkPoint* last = &pts.back();
         SkPoint* ctrl = last;
@@ -568,7 +570,11 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
         if (tangent.isZero()) {
             tangent.set(-1, 0);
             controls = pts.size() - 1;
-        } else {
+        }
+        // else if(optional_eq(nextVerb, SkPathVerb::kClose)){
+        //     return;
+        // }
+        else {
             tangent.normalize();
         }
         do {
@@ -647,7 +653,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
     SkAutoConicToQuads converter;
 
     auto is_verb_a_line = [&](std::optional<SkPathVerb> v) -> bool {
-        return v >= SkPathVerb::kLine && v <= SkPathVerb::kCubic;
+        return v.has_value() && v >= SkPathVerb::kLine && v <= SkPathVerb::kCubic;
     };
 
     auto draw_conic = [&](const SkPoint* conicPts, float conicWeight) {
@@ -796,7 +802,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
         }
 
         auto draw_first_line = [&]() {
-            SkASSERT(is_verb_a_line(firstLineVerbType));
+            // SkASSERT(is_verb_a_line(firstLineVerbType));
             switch (firstLineVerbType) {
                 case SkPathVerb::kLine:
                     lineproc({firstLine, 2}, clip, blitter);
@@ -827,18 +833,19 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
             }
         };
 
+        // be careful with this because I might be overriding the first line with 1 ONE point because it
+        // was a move
         if (verb == SkPathVerb::kMove && is_verb_a_line(prevVerb) && !isFirstVerb) {
             // if the current verb was a move and the previous verb is a line (i.e. not a close)
             // then that means we drew an open contour, and thus should draw the firstLine we
             // skipped
             draw_first_line();
-        }
-        else if (isLastVerb) {
+        } else if (isLastVerb) {
             // if it's the last verb, then we must determine whether to add the first
             // line back
 
-            if (verb == SkPathVerb::kClose) {
-                // if current verb is a close, then update the firstLine[0] to be
+            if (verb == SkPathVerb::kClose && !optional_eq(prevVerb, SkPathVerb::kMove)) {
+                // if current verb is a close and is not degenerate, then update the firstLine[0] to be
                 // the firstPt. This is because the close should connect to the
                 // "uncapped" firstPt. then draw the firstLine
 

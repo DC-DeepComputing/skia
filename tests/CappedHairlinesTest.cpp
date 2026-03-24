@@ -42,11 +42,13 @@ static bool color_is_lteq(SkColor a, SkColor b) {
 static void assert_color_in_range(skiatest::Reporter* reporter,
                                   const SkPixmap& pixmap,
                                   const std::string& testName,
-                                  SkPoint pt,
+                                  SkIPoint pt,
                                   SkColor expected_min,
                                   SkColor expected_max) {
     skiatest::ReporterContext subtest(reporter, testName);
-    SkColor actual = pixmap.getColor(pt.x(), pt.y());
+    int x = static_cast<int>(pt.x()), y = static_cast<int>(pt.y());
+    SkColor actual = pixmap.getColor(x, y);
+    // SkColor actual = pixmap.getColor(pt.x(), pt.y());
 
     REPORTER_ASSERT(reporter,
                     color_is_lteq(expected_min, actual) && color_is_lteq(actual, expected_max),
@@ -84,11 +86,11 @@ static void draw_aa_hairline_path_with_caps_no_offset(skiatest::Reporter* report
     SkASSERT(surface->peekPixels(&pixmap));
 
     auto assert_color =
-            [&](const std::string& name, SkPoint pt, SkColor expected_min, SkColor expected_max) {
+            [&](const std::string& name, SkIPoint pt, SkColor expected_min, SkColor expected_max) {
                 assert_color_in_range(reporter, pixmap, name, pt, expected_min, expected_max);
             };
 
-    auto assert_exact_color = [&](const std::string& name, SkPoint pt, SkColor exact_color) {
+    auto assert_exact_color = [&](const std::string& name, SkIPoint pt, SkColor exact_color) {
         assert_color_in_range(reporter, pixmap, name, pt, exact_color, exact_color);
     };
 
@@ -96,25 +98,25 @@ static void draw_aa_hairline_path_with_caps_no_offset(skiatest::Reporter* report
     // with double pixel wide gray lines. The inside and outside of the square
     // should be white. This should be the expected behavior across all caps
 
-    assert_exact_color("left of west line", {3.0, 7.0}, SK_ColorWHITE);
-    assert_color("on west line", {4.0, 7.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_color("on west line", {5.0, 7.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_exact_color("right of west line", {6.0, 7.0}, SK_ColorWHITE);
+    assert_exact_color("left of west line", {3, 7}, SK_ColorWHITE);
+    assert_color("on west line", {4, 7}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_color("on west line", {5, 7}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_exact_color("right of west line", {6, 7}, SK_ColorWHITE);
 
-    assert_exact_color("above south line", {7.0, 8.0}, SK_ColorWHITE);
-    assert_color("on south line", {7.0, 9.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_color("on south line", {7.0, 10.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_exact_color("below south line", {7.0, 11.0}, SK_ColorWHITE);
+    assert_exact_color("above south line", {7, 8}, SK_ColorWHITE);
+    assert_color("on south line", {7, 9}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_color("on south line", {7, 10}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_exact_color("below south line", {7, 11}, SK_ColorWHITE);
 
-    assert_exact_color("left of east line", {8.0, 7.0}, SK_ColorWHITE);
-    assert_color("on east line", {9.0, 7.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_color("on east line", {10.0, 7.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_exact_color("right of east line", {11.0, 7.0}, SK_ColorWHITE);
+    assert_exact_color("left of east line", {8, 7}, SK_ColorWHITE);
+    assert_color("on east line", {9, 7}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_color("on east line", {10, 7}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_exact_color("right of east line", {11, 7}, SK_ColorWHITE);
 
-    assert_exact_color("above north line", {7.0, 3.0}, SK_ColorWHITE);
-    assert_color("on north line", {7.0, 4.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_color("on north line", {7.0, 5.0}, SK_ColorBLACK, SK_ColorGRAY);
-    assert_exact_color("below north line", {7.0, 6.0}, SK_ColorWHITE);
+    assert_exact_color("above north line", {7, 3}, SK_ColorWHITE);
+    assert_color("on north line", {7, 4}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_color("on north line", {7, 5}, SK_ColorBLACK, SK_ColorGRAY);
+    assert_exact_color("below north line", {7, 6}, SK_ColorWHITE);
 }
 
 DEF_TEST(DrawAntialiasHairline_SquareCappedNoPixelOffsetClosedContour_DoublePixelWideOutput,
@@ -156,7 +158,7 @@ static void draw_aa_hairline_path_with_caps_and_offset(skiatest::Reporter* repor
     SkPixmap pixmap;
     SkASSERT(surface->peekPixels(&pixmap));
 
-    auto assert_exact_color = [&](const std::string& name, SkPoint pt, SkColor exact_color) {
+    auto assert_exact_color = [&](const std::string& name, SkIPoint pt, SkColor exact_color) {
         assert_color_in_range(reporter, pixmap, name, pt, exact_color, exact_color);
     };
 
@@ -164,21 +166,21 @@ static void draw_aa_hairline_path_with_caps_and_offset(skiatest::Reporter* repor
     // with single pixel wide black lines. The inside and outside of the square
     // should be white. This should be the expected behavior across all caps
 
-    assert_exact_color("left of west line", {4.0, 7.0}, SK_ColorWHITE);
-    assert_exact_color("on west line", {5.0, 7.0}, SK_ColorBLACK);
-    assert_exact_color("right of west line", {6.0, 7.0}, SK_ColorWHITE);
+    assert_exact_color("left of west line", {4, 7}, SK_ColorWHITE);
+    assert_exact_color("on west line", {5, 7}, SK_ColorBLACK);
+    assert_exact_color("right of west line", {6, 7}, SK_ColorWHITE);
 
-    assert_exact_color("above south line", {7.0, 9.0}, SK_ColorWHITE);
-    assert_exact_color("on south line", {7.0, 10.0}, SK_ColorBLACK);
-    assert_exact_color("below south line", {7.0, 11.0}, SK_ColorWHITE);
+    assert_exact_color("above south line", {7, 9}, SK_ColorWHITE);
+    assert_exact_color("on south line", {7, 10}, SK_ColorBLACK);
+    assert_exact_color("below south line", {7, 11}, SK_ColorWHITE);
 
-    assert_exact_color("left of east line", {9.0, 7.0}, SK_ColorWHITE);
-    assert_exact_color("on east line", {10.0, 7.0}, SK_ColorBLACK);
-    assert_exact_color("right of east line", {11.0, 7.0}, SK_ColorWHITE);
+    assert_exact_color("left of east line", {9, 7}, SK_ColorWHITE);
+    assert_exact_color("on east line", {10, 7}, SK_ColorBLACK);
+    assert_exact_color("right of east line", {11, 7}, SK_ColorWHITE);
 
-    assert_exact_color("above north line", {7.0, 4.0}, SK_ColorWHITE);
-    assert_exact_color("on north line", {7.0, 5.0}, SK_ColorBLACK);
-    assert_exact_color("below north line", {7.0, 6.0}, SK_ColorWHITE);
+    assert_exact_color("above north line", {7, 4}, SK_ColorWHITE);
+    assert_exact_color("on north line", {7, 5}, SK_ColorBLACK);
+    assert_exact_color("below north line", {7, 6}, SK_ColorWHITE);
 }
 
 DEF_TEST(DrawAntialiasHairline_SquareCappedHalfPixelOffsetClosedContour_SinglePixelWideOutput,
