@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <span>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -76,8 +77,6 @@ class DrawAtlas final {
     };
 
 public:
-    static constexpr auto kMaxMultitexturePages = 4;
-
     /**
      * This is intended to be a storage-only type for space efficiency. It converts to/from SkIRect
      * for operations. Note that it stores unsigned values and will assert if built from an SkIRect
@@ -144,13 +143,10 @@ public:
     public:
         virtual ~EvictionCallback() = default;
         virtual void evict(const RecordVisitor& visitor) = 0;
-        virtual void relocate(int newPageIdx, SkIVector translation, const RecordVisitor& visitor) = 0;
+        virtual void relocate(SkIVector translation, const RecordVisitor& visitor) = 0;
     };
 
     class BulkRecordUseUpdater;
-
-    /** Is the atlas allowed to use more than one texture? */
-    enum class AllowMultitexturing : bool { kNo, kYes };
 
     /** Should the atlas use storage textures? */
     enum class UseStorageTextures : bool { kNo, kYes };
@@ -162,7 +158,6 @@ public:
      *  @param height              Height in pixels of the atlas.
      *  @param plotWidth           The width of each plot. width/plotWidth should be an integer.
      *  @param plotWidth           The height of each plot. height/plotHeight should be an integer.
-     *  @param allowMultitexturing Can the atlas use more than one texture.
      *  @param useStorageTextures  Should the atlas use storage textures.
      *  @param evictor             A pointer to an eviction callback class.
      *  @param label               Label for texture resources.
@@ -172,7 +167,6 @@ public:
     static std::unique_ptr<DrawAtlas> Make(MaskFormat maskFormat,
                                            int width, int height,
                                            int plotWidth, int plotHeight,
-                                           AllowMultitexturing allowMultitexturing,
                                            UseStorageTextures useStorageTextures,
                                            EvictionCallback* evictor,
                                            std::string_view label);
@@ -206,7 +200,6 @@ public:
 
     struct AddResult {
         Record   fRecord;
-        int      fPageIdx{};
         SkIPoint fPosition{};
     };
 
@@ -228,14 +221,11 @@ public:
      * Gets the current page (texture) index and pixel coordinate rectangle corresponding to a
      * Record.
      */
-    std::optional<std::tuple<int /*pageIndex*/, SkIRect>> entryLocation(Record) const;
+    std::optional<SkIRect> entryLocation(Record) const;
 
     bool recordUploads(DrawContext*, Recorder*);
 
-    const sk_sp<TextureProxy>& getProxy(int pageIdx) { return fProxies[pageIdx]; }
-    const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
-
-    int numActivePages() const { return fNumActivePages; }
+    const sk_sp<TextureProxy>& getProxy() const { return fProxy; }
 
     enum class EvictionCounter : uint64_t { kInvalid = 0 };
 
@@ -267,21 +257,29 @@ public:
 
     void evictAllPlots();
 
-    int maxPages() const { return fMaxPages; }
-
 #if defined(GPU_TEST_UTILS)
     int numAllocatedPlots() const;
     int numNonEmptyPlots() const;
 #endif
 
 private:
+
+    // Number of atlas-related flushes beyond which we consider a plot to no longer be in use.
+    //
+    // This value is somewhat arbitrary -- the idea is to keep it low enough that
+    // a page with unused plots will get removed reasonably quickly, but allow it
+    // to hang around for a bit in case it's needed. The assumption is that flushes
+    // are rare; i.e., we are not continually refreshing the frame.
+    static constexpr auto kPlotRecentlyUsedCount = 32;
+    // Number of flushes beyond which we'll consider the atlas no longer in use.
+    static constexpr auto kAtlasRecentlyUsedCount = 128;
+
+    friend struct DrawAtlasTest;
+
     struct PlotCoord {
-        int fPageIdx = 0;
         int fX       = 0;  // x position in grid of plots
         int fY       = 0;  // y position in grid of plots
-        bool operator==(const PlotCoord& other) const {
-            return fPageIdx == other.fPageIdx && fX == other.fX && fY == other.fY;
-        }
+        bool operator==(const PlotCoord& other) const { return fX == other.fX && fY == other.fY; }
         bool operator!=(const PlotCoord& other) const { return !(*this == other); }
     };
 
@@ -292,14 +290,23 @@ private:
               int height,
               int plotWidth,
               int plotHeight,
-              AllowMultitexturing allowMultitexturing,
               UseStorageTextures useStorageTextures,
               std::string_view label);
 
-    int plotsPerPage() const { return fPlotGridDimensions.area(); }
+    std::span<const std::unique_ptr<Plot>> plots() const {
+        SkASSERT(fPlots);
+        return {fPlots.get(), SkToSizeT(this->numPlots())};
+    }
+
+    std::span<std::unique_ptr<Plot>> plots() {
+        SkASSERT(fPlots);
+        return {fPlots.get(), SkToSizeT(this->numPlots())};
+    }
+
+    int numPlots() const { return fPlotGridDimensions.area(); }
     SkISize plotSize() const { return {fPlotWidth, fPlotHeight}; }
 
-    std::optional<AddResult> addRectToPage(int pageIdx, SkISize size, const std::byte* image);
+    std::optional<AddResult> addRectToAtlas(SkISize size, const std::byte* image);
 
     void makeMRU(Plot* plot);
 
@@ -309,18 +316,18 @@ private:
 
     void internalSetLastUseToken(Plot* plot, Token token);
 
-    [[nodiscard]] bool activateNewPage(Recorder*);
-    void deactivateLastPage();
+    [[nodiscard]] bool activateProxy(Recorder*);
+    void deactivateProxy();
 
 #if defined(GPU_TEST_UTILS)
     template <std::predicate<const Plot*> F> int iteratePlots(F&& func) const {
+        if (!fPlots) {
+            return 0;
+        }
         int count = 0;
-        int numPlots = this->plotsPerPage();
-        for (int pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
-            for (int plotIndex = 0; plotIndex < numPlots; ++plotIndex) {
-                if (func(fPages[pageIndex].fPlotArray[plotIndex].get())) {
-                    ++count;
-                }
+        for (const auto& p : plots()) {
+            if (func(p.get())) {
+                ++count;
             }
         }
         return count;
@@ -336,8 +343,6 @@ private:
         kReuse_KeepData,
     };
     void processEvictionAndResetRects(Plot*, EvictionType);
-
-    void relocatePlot(std::unique_ptr<Plot>& plotToMove, std::unique_ptr<Plot>& plotToPurge);
 
     MaskFormat fMaskFormat;
     int        fTextureWidth;
@@ -366,18 +371,11 @@ private:
 
     std::vector<EvictionCallback*> fEvictionCallbacks;
 
-    struct Page {
-        std::unique_ptr<std::unique_ptr<Plot>[]> fPlotArray;
-        SkTInternalLList<Plot> fMRUList;
-    };
+    std::unique_ptr<std::unique_ptr<Plot>[]> fPlots;
+    SkTInternalLList<Plot> fPlotMRUList;
     skia_private::THashMap<PlotID, Plot*> fPlotMap;
 
-    // proxies kept separate to make it easier to pass them up to client
-    sk_sp<TextureProxy> fProxies[kMaxMultitexturePages];
-    Page fPages[kMaxMultitexturePages];
-    const int fMaxPages;
-
-    int fNumActivePages;
+    sk_sp<TextureProxy> fProxy;
 
     SkDEBUGCODE(void validate() const;)
 };
@@ -510,8 +508,8 @@ private:
     SkISize dimensions() const { return SkISize(fPlotDimensions); }
 
     SkIPoint topLeftInAtlas() const {
-        auto [w, h]    = fPlotDimensions;
-        auto [_, x, y] = fPlotCoord;
+        auto [w, h] = fPlotDimensions;
+        auto [x, y] = fPlotCoord;
         return {x * w, y * h};
     }
 

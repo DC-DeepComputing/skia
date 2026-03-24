@@ -46,11 +46,8 @@ public:
         SkISize plotDimensions(MaskFormat type) const;
 
     private:
-        // On some systems texture coordinates are represented using half-precision floating point
-        // with 11 significant bits, which limits the largest atlas dimensions to 2048x2048.
-        // For simplicity we'll use this constraint for all of our atlas textures.
-        // This can be revisited later if we need larger atlases.
-        inline static constexpr int kMaxAtlasDim = 2048;
+        // Minimum maximum texture size for webgpu. TODO: Make this be runtime determined.
+        inline static constexpr int kMaxAtlasDim = 1 << 13;
 
         SkISize fARGBDimensions;
         int fMaxTextureSize;
@@ -59,18 +56,18 @@ public:
     TextAtlasManager(Recorder*);
     ~TextAtlasManager();
 
+    bool readyAtlas(MaskFormat format) {
+        format = this->resolveMaskFormat(format);
+        return fAtlases[MaskFormatToAtlasIndex(format)] || this->initAtlas(format);
+    }
+
     // If getProxies returns nullptr, the client must not try to use other functions on the
     // StrikeCache which use the atlas.  This function *must* be called first, before other
     // functions which use the atlas.
-    const sk_sp<TextureProxy>* getProxies(MaskFormat format,
-                                          unsigned int* numActiveProxies) {
+    sk_sp<TextureProxy> getProxy(MaskFormat format) {
         format = this->resolveMaskFormat(format);
-        if (this->initAtlas(format)) {
-            *numActiveProxies = this->getAtlas(format)->numActivePages();
-            return this->getAtlas(format)->getProxies();
-        }
-        *numActiveProxies = 0;
-        return nullptr;
+        SkASSERT(this->getAtlas(format));
+        return this->getAtlas(format)->getProxy();
     }
 
     void freeGpuResources();
@@ -153,7 +150,6 @@ private:
     }
 
     Recorder* fRecorder;
-    DrawAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<DrawAtlas> fAtlases[kMaskFormatCount];
     static_assert(kMaskFormatCount == 3);
     bool fSupportBilerpAtlas;

@@ -41,9 +41,6 @@ namespace skgpu::graphite {
 
 namespace {
 
-// We are expecting to sample from up to 4 textures
-constexpr int kNumTextAtlasTextures = 4;
-
 RenderStep::RenderStepID variant_id(skgpu::MaskFormat variant) {
     switch (variant) {
         case skgpu::MaskFormat::kA8:   return RenderStep::RenderStepID::kBitmapText_Mask;
@@ -70,13 +67,12 @@ BitmapTextRenderStep::BitmapTextRenderStep(Layout layout, skgpu::MaskFormat vari
                      {{{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"xyPos", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                      {"indexAndFlags", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"flags", VertexAttribType::kUInt, SkSLType::kUInt},
                       {"strikeToSourceScale", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}}},
                      /*varyings=*/
                      {{{"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kHalf},
                       {"maskFormat", SkSLType::kHalf}}}) {}
 
 BitmapTextRenderStep::~BitmapTextRenderStep() {}
@@ -98,8 +94,7 @@ SkEnumBitMask<RenderStep::Flags> BitmapTextRenderStep::Flags(skgpu::MaskFormat v
 std::string BitmapTextRenderStep::vertexSkSL() const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
-    return "texIndex = half(indexAndFlags.x);"
-           "maskFormat = half(indexAndFlags.y);"
+    return "maskFormat = half(flags);"
            "float2 unormTexCoords;"
            "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
                                                "subRunDeviceMatrix, "
@@ -119,37 +114,19 @@ std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
 
-    for (unsigned int i = 0; i < kNumTextAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D text_atlas_%u;\n", i);
-    }
+    result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
+    SkSL::String::appendf(&result, " sampler2D text_atlas;\n");
 
     return result;
 }
 
 
 const char* BitmapTextRenderStep::fragmentColorSkSL() const {
-    // The returned SkSL must write its color into a 'half4 primitiveColor' variable
-    // (defined in the calling code).
-    static_assert(kNumTextAtlasTextures == 4);
-    return "primitiveColor = sample_indexed_atlas(textureCoords, "
-                                                 "int(texIndex), "
-                                                 "text_atlas_0, "
-                                                 "text_atlas_1, "
-                                                 "text_atlas_2, "
-                                                 "text_atlas_3);";
+    return "primitiveColor = sample(text_atlas, textureCoords);";
 }
 
 const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
-    // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
-    // the calling code) with the actual coverage splatted out into all four channels.
-    static_assert(kNumTextAtlasTextures == 4);
-    return "outputCoverage = bitmap_text_coverage_fn(sample_indexed_atlas(textureCoords, "
-                                                                         "int(texIndex), "
-                                                                         "text_atlas_0, "
-                                                                         "text_atlas_1, "
-                                                                         "text_atlas_2, "
-                                                                         "text_atlas_3), "
+    return "outputCoverage = bitmap_text_coverage_fn(sample(text_atlas, textureCoords), "
                                                     "int(maskFormat));";
 }
 
@@ -176,28 +153,21 @@ void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
     const SubRunData& subRunData = params.geometry().subRunData();
-    unsigned int numProxies;
     Recorder* recorder = subRunData.recorder();
-    const sk_sp<TextureProxy>* proxies =
-            recorder->priv().atlasProvider()->textAtlasManager()->getProxies(
-                    subRunData.subRun()->maskFormat(), &numProxies);
-    SkASSERT(proxies && numProxies > 0);
+    const sk_sp<TextureProxy>& proxy =
+            recorder->priv().atlasProvider()->textAtlasManager()->getProxy(
+                    subRunData.subRun()->maskFormat());
+    SkASSERT(proxy);
 
     // write uniforms
     gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
     gatherer->write(subRunData.deviceToLocal());
-    SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
-                                   1.f/proxies[0]->dimensions().height()};
+    SkV2 atlasDimensionsInverse = {1.f/proxy->dimensions().width(),
+                                   1.f/proxy->dimensions().height()};
     gatherer->write(atlasDimensionsInverse);
 
-    // write textures and samplers
-    for (unsigned int i = 0; i < numProxies; ++i) {
-        gatherer->add(proxies[i], {SkFilterMode::kNearest, SkTileMode::kClamp});
-    }
-    // If the atlas has less than 4 active proxies we still need to set up samplers for the shader.
-    for (unsigned int i = numProxies; i < kNumTextAtlasTextures; ++i) {
-        gatherer->add(proxies[0], {SkFilterMode::kNearest, SkTileMode::kClamp});
-    }
+    // write texture and sampler
+    gatherer->add(proxy, {SkFilterMode::kNearest, SkTileMode::kClamp});
 }
 
 }  // namespace skgpu::graphite

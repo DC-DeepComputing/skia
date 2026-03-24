@@ -69,7 +69,7 @@ private:
                                                        SkIRect maskDeviceBounds);
         bool recordUploads(DrawContext*, Recorder*);
         void evict(const DrawAtlas::RecordVisitor&) override;
-        void relocate(int, SkIVector, const DrawAtlas::RecordVisitor&) override;
+        void relocate(SkIVector, const DrawAtlas::RecordVisitor&) override;
         void compact(Recorder*);
         void freeGpuResources(Recorder*);
 
@@ -84,7 +84,6 @@ private:
             DrawAtlas::Record fRecord;
             DrawAtlas::Rect16 fMaskRelativeBounds;
             SkIPoint16 fAtlasPos{0, 0};
-            uint8_t fPageIdx = 0;
         };
         struct UniqueKeyHash {
             uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
