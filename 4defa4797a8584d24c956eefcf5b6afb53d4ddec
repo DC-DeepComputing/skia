@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50543ebb_186c151a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4727287
+      },
+      "writtenOn": "2026-03-24T14:05:04Z",
+      "side": 1,
+      "message": "Add support for AVX512 version for skBlitRow_opts and skMemset_opts",
+      "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
