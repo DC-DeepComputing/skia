@@ -48,7 +48,13 @@ void SkTypeface_Custom::onGetFontDescriptor(SkFontDescriptor* desc, bool* isLoca
 int SkTypeface_Custom::getIndex() const { return fIndex; }
 
 
-SkTypeface_Empty::SkTypeface_Empty() : INHERITED(SkFontStyle(), false, true, SkString(), 0) {}
+SkTypeface_Empty::SkTypeface_Empty() : INHERITED(SkFontStyle(SkFontStyle::kNormal_Weight,
+                                                             SkFontStyle::kNormal_Width,
+                                                             SkFontStyle::kUpright_Slant,
+                                                             SkFontStyle::kNo_Synthetic,
+                                                             SkFontStyle::kNo_Synthetic),
+                                                 false, true, SkString(), 0)
+{ }
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Empty::onOpenStream(int*) const { return nullptr; }
 

@@ -116,6 +116,8 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
     SkScalar width = SkFontStyle::kNormal_Width;
     SkScalar slant = 0;
     SkScalar italic = 0;
+    SkFontStyle::Synthetic syntheticBold = SkFontStyle::kNo_Synthetic;
+    SkFontStyle::Synthetic syntheticOblique = SkFontStyle::kNo_Synthetic;
 
     size_t styleBits;
     if (!stream->readPackedUInt(&styleBits)) { return false; }
@@ -196,10 +198,10 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                 }
                 break;
             case kSyntheticBold:
-                result->fSyntheticBold = true;
+                syntheticBold = SkFontStyle::kYes_Synthetic;
                 break;
             case kSyntheticOblique:
-                result->fSyntheticOblique = true;
+                syntheticOblique = SkFontStyle::kYes_Synthetic;
                 break;
             case kFactoryId:
                 if (!stream->readPackedUInt(&factoryId)) { return false; }
@@ -216,7 +218,8 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
     if (slant != 0) { slantEnum = SkFontStyle::kOblique_Slant; }
     if (0 < italic) { slantEnum = SkFontStyle::kItalic_Slant; }
     SkFontStyle::Width widthEnum = SkFontStyleWidthForWidthAxisValue(width);
-    result->fStyle = SkFontStyle(SkScalarRoundToInt(weight), widthEnum, slantEnum);
+    result->fStyle = SkFontStyle(SkScalarRoundToInt(weight), widthEnum, slantEnum,
+                                 syntheticBold, syntheticOblique);
 
     size_t length;
     if (!stream->readPackedUInt(&length)) { return false; }
@@ -269,10 +272,10 @@ bool SkFontDescriptor::serialize(SkWStream* stream) const {
             if (!stream->write32(fPaletteEntryOverrides[i].color)) { return false; }
         }
     }
-    if (fSyntheticBold) {
+    if (fStyle.syntheticBold() == SkFontStyle::kYes_Synthetic) {
         if (!write_id(stream, kSyntheticBold)) { return false; }
     }
-    if (fSyntheticOblique) {
+    if (fStyle.syntheticOblique() == SkFontStyle::kYes_Synthetic) {
         if (!write_id(stream, kSyntheticOblique)) { return false; }
     }
 

@@ -154,7 +154,9 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
             if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
                 *style = SkFontStyle(fontStyle.weight,
                                      fontStyle.width,
-                                     static_cast<SkFontStyle::Slant>(fontStyle.slant));
+                                     static_cast<SkFontStyle::Slant>(fontStyle.slant),
+                                     SkFontStyle::kNo_Synthetic,
+                                     SkFontStyle::kNo_Synthetic);
             }
         } else {
             const std::optional<const VariationPosition>& variationPosition = getInstancePosition();
@@ -166,7 +168,9 @@ bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
                 if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
                     *style = SkFontStyle(fontStyle.weight,
                                          fontStyle.width,
-                                         static_cast<SkFontStyle::Slant>(fontStyle.slant));
+                                         static_cast<SkFontStyle::Slant>(fontStyle.slant),
+                                         SkFontStyle::kNo_Synthetic,
+                                         SkFontStyle::kNo_Synthetic);
                 }
             }
         }

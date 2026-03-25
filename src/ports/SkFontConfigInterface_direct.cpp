@@ -95,7 +95,8 @@ size_t SkFontConfigInterface::FontIdentity::readFromMemory(const void* addr,
     uint8_t u8;
     (void)buffer.readU8(&u8);
     SkFontStyle::Slant slant = (SkFontStyle::Slant)u8;
-    fStyle = SkFontStyle(weight, width, slant);
+    fStyle = SkFontStyle(weight, width, slant,
+                         SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
     fString.resize(strLen);
     (void)buffer.read(fString.data(), strLen);
     buffer.skipToAlign4();
@@ -108,7 +109,8 @@ static void make_iden(SkFontConfigInterface::FontIdentity* iden) {
     iden->fID = 10;
     iden->fTTCIndex = 2;
     iden->fString.set("Hello world");
-    iden->fStyle = SkFontStyle(300, 6, SkFontStyle::kItalic_Slant);
+    iden->fStyle = SkFontStyle(300, 6, SkFontStyle::kItalic_Slant,
+                               SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 }
 
 static void test_writeToMemory(const SkFontConfigInterface::FontIdentity& iden0,
@@ -440,7 +442,8 @@ static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
         default: SkASSERT(false); break;
     }
 
-    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant);
+    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant,
+                       SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 }
 
 static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {

@@ -178,7 +178,8 @@ public:
                 case FontFileInfo::Style::kItalic: slant = SkFontStyle::kItalic_Slant; break;
                 default: SkASSERT(false); break;
             }
-            fontStyle = SkFontStyle(weight, fontStyle.width(), slant);
+            fontStyle = SkFontStyle(weight, fontStyle.width(), slant,
+                                    SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 
             fStyles.push_back(
                 SkTypeface_AndroidSystem::Make(proxy,

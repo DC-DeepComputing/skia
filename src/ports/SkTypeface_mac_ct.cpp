@@ -369,7 +369,9 @@ SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool from
     return SkFontStyle(ct_weight_to_fontstyle(weight, fromDataProvider),
                        ct_width_to_fontstyle(width),
                        slant ? SkFontStyle::kItalic_Slant
-                             : SkFontStyle::kUpright_Slant);
+                             : SkFontStyle::kUpright_Slant,
+                       SkFontStyle::kNo_Synthetic,
+                       SkFontStyle::kNo_Synthetic);
 }
 
 

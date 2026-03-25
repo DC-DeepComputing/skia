@@ -47,13 +47,26 @@ public:
         kOblique_Slant,
     };
 
-    constexpr SkFontStyle(int weight, int width, Slant slant) : fValue(
+    enum Synthetic : uint8_t {
+        kAllowed_Synthetic, // On request allow synthetics for better match, on report means unknown
+        kNo_Synthetic, // On request no synthetics if possible, on report means not synthetic
+        kYes_Synthetic, // On request prefer synthetic (usually to match), on report means synthetic
+    };
+
+    constexpr SkFontStyle(int weight, int width, Slant slant)
+        : SkFontStyle(weight, width, slant, kAllowed_Synthetic, kAllowed_Synthetic)
+    { }
+
+    constexpr SkFontStyle(int weight, int width, Slant slant, Synthetic bold, Synthetic oblique)
+    : fValue(
         (SkTPin<int>(weight, kInvisible_Weight, kExtraBlack_Weight)) +
         (SkTPin<int>(width, kUltraCondensed_Width, kUltraExpanded_Width) << 16) +
-        (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24)
+        (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24) +
+        (SkTPin<int>(bold, kAllowed_Synthetic, kYes_Synthetic) << 28) +
+        (SkTPin<int>(oblique, kAllowed_Synthetic, kYes_Synthetic) << 30)
      ) { }
 
-    constexpr SkFontStyle() : SkFontStyle{kNormal_Weight, kNormal_Width, kUpright_Slant} { }
+    constexpr SkFontStyle() : SkFontStyle(kNormal_Weight, kNormal_Width, kUpright_Slant) { }
 
     bool operator==(const SkFontStyle& rhs) const {
         return fValue == rhs.fValue;
@@ -61,7 +74,9 @@ public:
 
     int weight() const { return fValue & 0xFFFF; }
     int width() const { return (fValue >> 16) & 0xFF; }
-    Slant slant() const { return (Slant)((fValue >> 24) & 0xFF); }
+    Slant slant() const { return (Slant)((fValue >> 24) & 0xF); }
+    Synthetic syntheticBold() const { return (Synthetic)(fValue >> 28 & 0x7); }
+    Synthetic syntheticOblique() const { return (Synthetic)(fValue >> 30 & 0x7); }
 
     static constexpr SkFontStyle Normal() {
         return SkFontStyle(kNormal_Weight, kNormal_Width, kUpright_Slant);
