@@ -53,6 +53,14 @@ public:
         (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24)
      ) { }
 
+    constexpr SkFontStyle(int weight, int width, Slant slant, bool syntheticBold, bool syntheticOblique) : fValue(
+        (SkTPin<int>(weight, kInvisible_Weight, kExtraBlack_Weight)) +
+        (SkTPin<int>(width, kUltraCondensed_Width, kUltraExpanded_Width) << 16) +
+        (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24) +
+        (syntheticBold ? 1 << 28 : 0) +
+        (syntheticOblique ? 1 << 29 : 0)
+     ) { }
+
     constexpr SkFontStyle() : SkFontStyle{kNormal_Weight, kNormal_Width, kUpright_Slant} { }
 
     bool operator==(const SkFontStyle& rhs) const {
@@ -61,7 +69,9 @@ public:
 
     int weight() const { return fValue & 0xFFFF; }
     int width() const { return (fValue >> 16) & 0xFF; }
-    Slant slant() const { return (Slant)((fValue >> 24) & 0xFF); }
+    Slant slant() const { return (Slant)((fValue >> 24) & 0xF); }
+    bool syntheticBold() const { return fValue & (1 << 28); }
+    bool syntheticOblique() const { return fValue & (1 << 29); }
 
     static constexpr SkFontStyle Normal() {
         return SkFontStyle(kNormal_Weight, kNormal_Width, kUpright_Slant);

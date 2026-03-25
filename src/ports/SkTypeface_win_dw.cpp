@@ -37,6 +37,7 @@
 using namespace skia_private;
 
 SkFontStyle DWriteFontTypeface::GetStyle(IDWriteFont* font, IDWriteFontFace* fontFace) {
+    // TODO: IDWriteFontFace3 has weight, stretch, style
     int weight = font->GetWeight();
     int width = font->GetStretch();
     SkFontStyle::Slant slant = SkFontStyle::kUpright_Slant;
@@ -46,6 +47,10 @@ SkFontStyle DWriteFontTypeface::GetStyle(IDWriteFont* font, IDWriteFontFace* fon
         case DWRITE_FONT_STYLE_ITALIC: slant = SkFontStyle::kItalic_Slant; break;
         default: SkASSERT(false); break;
     }
+
+    DWRITE_FONT_SIMULATIONS simulations = fontFace->GetSimulations();
+    bool syntheticBold = simulations & DWRITE_FONT_SIMULATIONS_BOLD;
+    bool syntheticOblique = simulations & DWRITE_FONT_SIMULATIONS_OBLIQUE;
 
     [&weight, &width, &slant, fontFace]() -> void {
         SkTScopedComPtr<IDWriteFontFace5> fontFace5;
@@ -81,7 +86,7 @@ SkFontStyle DWriteFontTypeface::GetStyle(IDWriteFont* font, IDWriteFontFace* fon
             }
         }
     }();
-    return SkFontStyle(weight, width, slant);
+    return SkFontStyle(weight, width, slant, syntheticBold, syntheticOblique);
 }
 
 sk_sp<DWriteFontTypeface> DWriteFontTypeface::Make(
@@ -343,9 +348,6 @@ void DWriteFontTypeface::onGetFontDescriptor(SkFontDescriptor* desc,
                       fRequestedPalette.overrides,
                       fRequestedPalette.overrideCount * sizeof(fRequestedPalette.overrides[0]));
 
-    desc->setSyntheticBold(this->isSyntheticBold());
-    desc->setSyntheticOblique(this->isSyntheticOblique());
-
     desc->setFactoryId(FactoryId);
     *serialize = SkToBool(fLoaders);
 }
@@ -518,11 +520,11 @@ int DWriteFontTypeface::onGetVariationDesignParameters(
 }
 
 bool DWriteFontTypeface::onIsSyntheticBold() const {
-    return fDWriteFontFace->GetSimulations() & DWRITE_FONT_SIMULATIONS_BOLD;
+    return this->fontStyle().syntheticBold();
 }
 
 bool DWriteFontTypeface::onIsSyntheticOblique() const {
-    return fDWriteFontFace->GetSimulations() & DWRITE_FONT_SIMULATIONS_OBLIQUE;
+    return this->fontStyle().syntheticOblique();
 }
 
 int DWriteFontTypeface::onGetTableTags(SkSpan<SkFontTableTag> tags) const {
