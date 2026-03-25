@@ -37,6 +37,115 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c987951_6930a4ab",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T15:19:57Z",
+      "side": 1,
+      "message": "Can we have unit tests for estimateSubdiv and determineSubdivT ?",
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e18b42ac_9d376bb0",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T15:19:57Z",
+      "side": 1,
+      "message": "estimateSubdiv ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 7,
+        "endLine": 40,
+        "endChar": 22
+      },
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b252a49_e477e0fc",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T15:19:57Z",
+      "side": 1,
+      "message": "??",
+      "range": {
+        "startLine": 47,
+        "startChar": 27,
+        "endLine": 47,
+        "endChar": 28
+      },
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b082209a_916248ea",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T15:19:57Z",
+      "side": 1,
+      "message": "determineSubdivT ?",
+      "range": {
+        "startLine": 47,
+        "startChar": 7,
+        "endLine": 47,
+        "endChar": 25
+      },
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97325432_63bb1410",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T15:19:57Z",
+      "side": 1,
+      "message": "This comment seems a bit wonky",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 82
+      },
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e8a5ff4_2ba5cc72",
         "filename": "src/gpu/graphite/sparse_strips/Polyline.h",
         "patchSetId": 14
