@@ -33,6 +33,46 @@
       "message": "PTAL!",
       "revId": "0e994c695209541559c17391628207deb19be479",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e8a5ff4_2ba5cc72",
+        "filename": "src/gpu/graphite/sparse_strips/Polyline.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T13:20:52Z",
+      "side": 1,
+      "message": "Add a comment about why we need this and how it is used",
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e852fdf_4809fa39",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-25T13:20:52Z",
+      "side": 1,
+      "message": "It doesn\u0027t seem like we actually need these here",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "0e994c695209541559c17391628207deb19be479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
