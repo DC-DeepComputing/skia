@@ -39,6 +39,30 @@
       },
       "revId": "16957057006ddcb9e414f6e266d06de711f78864",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe0eb1f_2e60e99a",
+        "filename": "tests/RustExifTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T22:28:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2835cbce_ec3e5bc8",
+      "range": {
+        "startLine": 205,
+        "startChar": 4,
+        "endLine": 205,
+        "endChar": 9
+      },
+      "revId": "16957057006ddcb9e414f6e266d06de711f78864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
