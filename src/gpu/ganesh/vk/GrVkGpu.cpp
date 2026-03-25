@@ -2644,6 +2644,7 @@ bool GrVkGpu::checkVkResult(VkResult result) {
             if (!fDeviceIsLost) {
                 // Callback should only be invoked once, and device should be marked as lost first.
                 fDeviceIsLost = true;
+                // Herein lies the rub
                 skgpu::InvokeDeviceLostCallback(vkInterface(),
                                                 device(),
                                                 fDeviceLostContext,
