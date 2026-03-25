@@ -42,8 +42,11 @@ protected:
         Polyline polyline;
         for (int i = 0; i < loops; ++i) {
             for (auto& path : fPaths) {
-                flattener.processPaths<kMode>(path, SkMatrix(), Tiger::kImageWidthF,
-                                              Tiger::kImageHeightF, polyline);
+                flattener.processPaths<kMode>(path,
+                                              SkMatrix(),
+                                              SkIRect::MakeWH(Tiger::kImageWidth,
+                                                              Tiger::kImageHeight),
+                                              polyline);
             }
         }
     }

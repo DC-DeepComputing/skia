@@ -64,14 +64,13 @@ public:
     template <FlattenMode Mode>
     SK_ALWAYS_INLINE void processPaths(const SkPath& path,
                                        const SkMatrix& ctm,
-                                       float width,
-                                       float height,
+                                       const SkIRect clip,
                                        Polyline& polyline) {
         SkASSERT(!ctm.hasPerspective());
         if constexpr (Mode == FlattenMode::kSimd) {
-            this->processPathsSimd(path, ctm, width, height, polyline);
+            this->processPathsSimd(path, ctm, clip, polyline);
         } else {
-            this->processPathsScalar(path, ctm, width, height, polyline);
+            this->processPathsScalar(path, ctm, clip, polyline);
         }
     }
 
@@ -94,9 +93,9 @@ private:
         SkTDArray<SkPoint> fFlattenedCubics;
     };
 
-    void processPathsSimd(const SkPath& path, const SkMatrix& ctm, float width, float height,
+    void processPathsSimd(const SkPath& path, const SkMatrix& ctm, SkIRect clip,
                           Polyline& polyline);
-    void processPathsScalar(const SkPath& path, const SkMatrix& ctm, float width, float height,
+    void processPathsScalar(const SkPath& path, const SkMatrix& ctm, SkIRect clip,
                             Polyline& polyline);
 
     void flattenQuad(const SkPoint pts[3], Polyline& polyline);
