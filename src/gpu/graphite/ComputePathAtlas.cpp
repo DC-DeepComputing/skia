@@ -7,8 +7,10 @@
 #include "src/gpu/graphite/ComputePathAtlas.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/base/SkMath.h"
 #include "src/core/SkIPoint16.h"
 #include "src/gpu/graphite/AtlasProvider.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -46,9 +48,20 @@ constexpr float kCoordinateThreshold = 1e10;
 
 }  // namespace
 
+static constexpr int kMinAtlasTextureSize = 512;
+
+static SkISize compute_atlas_dimension(const Caps* caps) {
+    int maxTextureSize = std::max(caps->maxPathAtlasTextureSize(), kMinAtlasTextureSize);
+    maxTextureSize = std::min(maxTextureSize, caps->maxTextureSize());
+    int dim = SkPrevPow2(std::min<int>(kComputeAtlasDim, maxTextureSize));
+    return {dim, dim};
+}
+
 ComputePathAtlas::ComputePathAtlas(Recorder* recorder)
-    : PathAtlas(recorder, kComputeAtlasDim, kComputeAtlasDim)
-    , fRectanizer(this->width(), this->height()) {}
+    : PathAtlas(recorder)
+    , fWidth(compute_atlas_dimension(recorder->priv().caps()).width())
+    , fHeight(compute_atlas_dimension(recorder->priv().caps()).height())
+    , fRectanizer(fWidth, fHeight) {}
 
 bool ComputePathAtlas::initializeTextureIfNeeded() {
     if (!fTexture) {
@@ -149,10 +162,11 @@ private:
 
     class VelloAtlasMgr : public PathAtlas::DrawAtlasMgr {
     public:
-        VelloAtlasMgr(size_t width, size_t height, const Caps* caps)
-            : PathAtlas::DrawAtlasMgr(width, height, width, height,
-                                      DrawAtlas::UseStorageTextures::kYes,
-                                      /*label=*/"VelloPathAtlas", caps) {}
+        VelloAtlasMgr(int width, int height, const Caps* caps)
+                : PathAtlas::DrawAtlasMgr({.fPlotSize = {width, height}, .fMinPlotGridDims{1, 1}},
+                                          DrawAtlas::UseStorageTextures::kYes,
+                                          /*label=*/"VelloPathAtlas",
+                                          caps) {}
 
         bool recordDispatches(Recorder* recorder, ComputeTask::DispatchGroupList* dispatches) const;
 

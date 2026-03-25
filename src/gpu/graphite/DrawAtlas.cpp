@@ -61,10 +61,14 @@ void DrawAtlas::validate() const {
     if (!fPlots) {
         SkASSERT(fPlotMap.empty());
         SkASSERT(fPlotMRUList.isEmpty());
+        SkASSERT(!fProxy);
         return;
     }
 
+    SkASSERT(fProxy);
     SkASSERT(fPlotMap.count() == this->numPlots());
+    SkASSERT(fPlotSize.width()  * fPlotGridDimensions.width()  == fProxy->dimensions().width());
+    SkASSERT(fPlotSize.height() * fPlotGridDimensions.height() == fProxy->dimensions().height());
 
     std::vector foundCoord(size_t(this->numPlots()), false);
     for (const auto& plot : this->plots()) {
@@ -93,17 +97,48 @@ void DrawAtlas::validate() const {
 }
 #endif
 
-std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
-                                           int width, int height,
-                                           int plotWidth, int plotHeight,
+SkISize DrawAtlas::MinPlotGridDimsForMaxBytes(size_t maxBytes,
+                                              SkISize plotSize,
+                                              MaskFormat format) {
+    size_t  bpp          = MaskFormatBytesPerPixel(format);
+    size_t  bytesPerPlot = plotSize.area() * bpp;
+    int     maxPlots     = std::max<size_t>(1, maxBytes / bytesPerPlot);
+    SkISize grid         = {1, 1};
+    while (grid.area() * 2 <= maxPlots) {
+        grid = NextLargerPlotGridDims(grid, plotSize);
+    }
+    return grid;
+}
+
+std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat         maskFormat,
+                                           const Config&      config,
+                                           int                maxTextureSize,
                                            UseStorageTextures useStorageTextures,
-                                           EvictionCallback* evictor,
-                                           std::string_view label) {
+                                           EvictionCallback*  evictor,
+                                           std::string_view   label) {
+    SkISize plotSize = config.fPlotSize;
+    if (plotSize.width() > maxTextureSize || plotSize.height() > maxTextureSize) {
+        return nullptr;
+    }
+    SkISize minGrid = config.fMinPlotGridDims;
+    if (minGrid.width() < 1 || minGrid.height() < 1) {
+        return nullptr;
+    }
+    minGrid.fWidth  = std::min(minGrid.fWidth,  maxTextureSize / plotSize.width());
+    minGrid.fHeight = std::min(minGrid.fHeight, maxTextureSize / plotSize.height());
+
+    // Compute max grid dims by applying allowed doublings then clamping to max texture size.
+    SkISize maxGrid = minGrid;
+    for (int i = 0; i < config.fAllowedDoublings; i++) {
+        maxGrid = NextLargerPlotGridDims(maxGrid, plotSize);
+    }
+    maxGrid.fWidth  = std::min(maxGrid.fWidth,  maxTextureSize / plotSize.width());
+    maxGrid.fHeight = std::min(maxGrid.fHeight, maxTextureSize / plotSize.height());
+
     std::unique_ptr<DrawAtlas> atlas(new DrawAtlas(maskFormat,
-                                                   width, height,
-                                                   plotWidth, plotHeight,
-
-
+                                                   plotSize,
+                                                   minGrid,
+                                                   maxGrid,
                                                    useStorageTextures,
                                                    label));
 
@@ -116,30 +151,19 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-DrawAtlas::DrawAtlas(MaskFormat maskFormat,
-                     int width, int height,
-                     int plotWidth, int plotHeight,
+DrawAtlas::DrawAtlas(MaskFormat         maskFormat,
+                     SkISize            plotSize,
+                     SkISize            minPlotGridDimensions,
+                     SkISize            maxPlotGridDimensions,
                      UseStorageTextures useStorageTextures,
-                     std::string_view label)
+                     std::string_view   label)
         : fMaskFormat(maskFormat)
-        , fTextureWidth(width)
-        , fTextureHeight(height)
-        , fPlotWidth(plotWidth)
-        , fPlotHeight(plotHeight)
+        , fPlotSize(plotSize)
+        , fMinPlotGridDimensions(minPlotGridDimensions)
+        , fMaxPlotGridDimensions(maxPlotGridDimensions)
         , fUseStorageTextures(useStorageTextures)
         , fLabel(label)
-        , fPrevFlushToken(Token::InvalidToken())
-        , fFlushesSinceLastUse(0) {
-    fPlotGridDimensions = {width / plotWidth, height / plotHeight};
-    SkASSERTF(fPlotWidth * fPlotGridDimensions.width() == fTextureWidth,
-              "Invalid DrawAtlas. Plot width: %d, texture width %d",
-              fPlotWidth,
-              fTextureWidth);
-    SkASSERTF(fPlotHeight * fPlotGridDimensions.height() == fTextureHeight,
-              "Invalid DrawAtlas. Plot height: %d, texture height %d",
-              fPlotHeight,
-              fTextureHeight);
-}
+        , fPrevFlushToken(Token::InvalidToken()) {}
 
 inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, EvictionType type) {
     SkASSERT(plot);
@@ -174,7 +198,7 @@ inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, EvictionType typ
 std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToAtlas(SkISize size,
                                                               const std::byte* image) {
     SkASSERT(!size.isEmpty());
-    SkASSERT(fProxy);
+    SkASSERT(fProxy || fPlotMRUList.isEmpty());
 
     // look through all allocated plots for one we can share, in Most Recently Refed order
     for (auto* plot : fPlotMRUList) {
@@ -197,6 +221,45 @@ inline void DrawAtlas::makeMRU(Plot* plot) {
 
 bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    auto process = [&](sk_sp<TextureProxy> proxy,
+                       const std::byte*    dataPtr,
+                       size_t              rowBytes,
+                       SkIRect             dstRect) {
+        if (dstRect.isEmpty()) {
+            return true;
+        }
+
+        std::vector<MipLevel> levels;
+        levels.push_back({dataPtr, rowBytes});
+
+        // Src and dst colorInfo are the same
+        SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat), kUnknown_SkAlphaType, nullptr);
+        const UploadSource uploadSource = UploadSource::Make(
+                recorder->priv().caps(), *proxy, colorInfo, colorInfo, levels, dstRect);
+        if (!uploadSource.isValid()) {
+            return false;
+        }
+        if (!dc->recordUpload(recorder,
+                              std::move(proxy),
+                              colorInfo,
+                              colorInfo,
+                              uploadSource,
+                              dstRect,
+                              /*ConditionalUploadContext=*/nullptr)) {
+            return false;
+        }
+        return true;
+    };
+
+    for (const auto& opu : fOldProxyUploads) {
+        for (const auto& u : opu.fUploads) {
+            if (!process(opu.fProxy, u.fDataPtr, u.fRowBytes, u.fDstRect)) {
+                return false;
+            }
+        }
+    }
+    fOldProxyUploads = {};
+
     if (!fProxy) {
         return true;
     }
@@ -206,27 +269,7 @@ bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
         }
 
         auto [dataPtr, dstRect] = plot->prepareForUpload();
-        if (dstRect.isEmpty()) {
-            continue;
-        }
-
-        std::vector<MipLevel> levels;
-        levels.push_back({dataPtr, plot->rowBytes()});
-
-        // Src and dst colorInfo are the same
-        SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat), kUnknown_SkAlphaType, nullptr);
-        const UploadSource uploadSource = UploadSource::Make(
-                recorder->priv().caps(), *fProxy, colorInfo, colorInfo, levels, dstRect);
-        if (!uploadSource.isValid()) {
-            return false;
-        }
-        if (!dc->recordUpload(recorder,
-                              fProxy,
-                              colorInfo,
-                              colorInfo,
-                              uploadSource,
-                              dstRect,
-                              /*ConditionalUploadContext=*/nullptr)) {
+        if (!process(fProxy, dataPtr, plot->rowBytes(), dstRect)) {
             return false;
         }
     }
@@ -255,19 +298,12 @@ void DrawAtlas::setLastUseTokenBulk(const BulkRecordUseUpdater& updater, Token t
     });
 }
 
-
 DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
                                         SkISize size,
                                         AddResult* result,
                                         const std::byte* image) {
-    if (size.width() > fPlotWidth || size.height() > fPlotHeight || size.isEmpty()) {
+    if (size.width() > fPlotSize.width() || size.height() > fPlotSize.height() || size.isEmpty()) {
         return ErrorCode::kError;
-    }
-
-    if (!fProxy) {
-        if (!activateProxy(recorder)) {
-            return ErrorCode::kError;
-        }
     }
 
     // We permit zero-sized rects to allow inverse fills in the PathAtlases to work,
@@ -276,7 +312,7 @@ DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
     // will be rendering a degenerate quad.
     if (size.area() == 0) {
         if (!fProxy) {
-            if (!this->activateProxy(recorder)) {
+            if (!this->increaseProxySize(recorder, fMinPlotGridDimensions)) {
                 return ErrorCode::kError;
             }
         }
@@ -294,28 +330,44 @@ DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
         return ErrorCode::kSucceeded;
     }
 
-    // TODO: Try to increase the atlas size here.
-
-    // If the above fails, then see if the least recently used plot has already been
-    // queued for upload or if the plot has aged out otherwise.
-    // We wait until we've filled all the plots before we begin evicting already queued
-    // plots so that we can maximize the opportunity for reuse.
-    auto* plot = fPlotMRUList.tail();
-    if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextFlushToken()) {
-        this->processEvictionAndResetRects(plot, EvictionType::kReuse_KeepData);
-        auto addRectResult = plot->addRect(size, image);
-        SkASSERT(addRectResult);
-        result->fRecord = {plot->plotID(), addRectResult->fEntryID};
-        result->fPosition = addRectResult->fPositionInAtlas;
-        this->makeMRU(plot);
-        return ErrorCode::kSucceeded;
+    // If we're already at the maximum size, try evicting the LRU plot as a last resort.
+    if (fPlotGridDimensions == fMaxPlotGridDimensions) {
+        auto* plot = fPlotMRUList.tail();
+        if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextFlushToken()) {
+            this->processEvictionAndResetRects(plot, EvictionType::kReuse_KeepData);
+            auto addRectResult = plot->addRect(size, image);
+            SkASSERT(addRectResult);
+            result->fRecord = {plot->plotID(), addRectResult->fEntryID};
+            result->fPosition = addRectResult->fPositionInAtlas;
+            this->makeMRU(plot);
+            return ErrorCode::kSucceeded;
+        }
+        // All plots are currently in use by the current set of draws, so we need to fail. This
+        // gives the Device a chance to snap the current set of uploads and draws, advance the draw
+        // token, and call back into this function. The subsequent call will have plots available
+        // for fresh uploads.
+        return ErrorCode::kTryAgain;
     }
 
-    // All plots are currently in use by the current set of draws, so we need to fail. This
-    // gives the Device a chance to snap the current set of uploads and draws, advance the draw
-    // token, and call back into this function. The subsequent call will have plots available
-    // for fresh uploads.
-    return ErrorCode::kTryAgain;
+    SkISize newProxyPlotGridDims;
+    if (!fProxy) {
+        newProxyPlotGridDims = fMinPlotGridDimensions;
+    } else {
+        newProxyPlotGridDims = this->nextLargerPlotGridDims(fPlotGridDimensions);
+        if (newProxyPlotGridDims.width()  > fMaxPlotGridDimensions.width() ||
+            newProxyPlotGridDims.height() > fMaxPlotGridDimensions.height()) {
+            return ErrorCode::kTryAgain;
+        }
+    }
+
+    if (!this->increaseProxySize(recorder, newProxyPlotGridDims)) {
+        return ErrorCode::kError;
+    }
+
+    auto addRectResult = this->addRectToAtlas(size, image);
+    SkASSERT(addRectResult);
+    *result = *addRectResult;
+    return ErrorCode::kSucceeded;
 }
 
 std::optional<SkPixmap> DrawAtlas::entryPixmap(Record record,
@@ -338,7 +390,9 @@ std::optional<SkIRect> DrawAtlas::entryLocation(Record record) const {
     return {};
 }
 
-void DrawAtlas::compact(Token startTokenForNextFlush) {
+void DrawAtlas::compact(Recorder* recorder) {
+    Token startTokenForNextFlush = recorder->priv().tokenTracker()->nextFlushToken();
+
     if (!fProxy) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
@@ -388,54 +442,211 @@ void DrawAtlas::compact(Token startTokenForNextFlush) {
             SKIA_LOG_I("Recycled %d of %d Plots in %s DrawAtlas. %d Plots recently used.",
                         numPlotsRecycled, this->numPlots(), fLabel.c_str(), numPlotsInUse);
         }
+        if (numPlotsInUse == 0 && fFlushesSinceLastUse > kAtlasRecentlyUsedCount) {
+            deactivateProxy();
+            fFirstCompactibleToken = Token::InvalidToken();
+        } else if (numPlotsInUse < this->numPlots() / 2 &&
+                   fPlotGridDimensions.area() > fMinPlotGridDimensions.area()) {
+            // We would still have at least one unused plot if we compacted to a smaller
+            // texture.
+            int numCompactibleFlushes = 0;
+            if (fFirstCompactibleToken == Token::InvalidToken()) {
+                fFirstCompactibleToken = startTokenForNextFlush;
+            } else {
+                numCompactibleFlushes =
+                        startTokenForNextFlush.value() - fFirstCompactibleToken.value();
+            }
+            if (numCompactibleFlushes > kCompactionRecentlyUsedCount) {
+                auto newPlotGridDims = this->nextSmallerPlotGridDims(fPlotGridDimensions);
+                this->decreaseProxySize(recorder, newPlotGridDims);
+                fFirstCompactibleToken = Token::InvalidToken();
+            }
+        }
     }
 
     fPrevFlushToken = startTokenForNextFlush;
     SkDEBUGCODE(this->validate());
 }
 
-bool DrawAtlas::activateProxy(Recorder* recorder) {
+bool DrawAtlas::increaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
     SkDEBUGCODE(this->validate());
-    SkASSERT(!fProxy);
+    SkASSERT(newPlotGridDims.width() >= fPlotGridDimensions.width());
+    SkASSERT(newPlotGridDims.height() >= fPlotGridDimensions.height());
+    SkASSERT(newPlotGridDims.area() > fPlotGridDimensions.area());
 
-    const Caps* caps = recorder->priv().caps();
-    auto ct          = MaskFormatToColorType(fMaskFormat);
-    auto textureInfo = fUseStorageTextures == UseStorageTextures::kYes
+    int textureWidth  = newPlotGridDims.width()*fPlotSize.width();
+    int textureHeight = newPlotGridDims.height()*fPlotSize.height();
+    const Caps* caps  = recorder->priv().caps();
+    auto ct           = MaskFormatToColorType(fMaskFormat);
+    auto textureInfo  = fUseStorageTextures == UseStorageTextures::kYes
                                ? caps->getDefaultStorageTextureInfo(ct)
                                : caps->getDefaultSampledTextureInfo(ct,
                                                                     Mipmapped::kNo,
                                                                     recorder->priv().isProtected(),
                                                                     Renderable::kNo);
-    fProxy = TextureProxy::Make(caps,
-                                recorder->priv().resourceProvider(),
-                                {fTextureWidth, fTextureHeight},
-                                textureInfo,
-                                fLabel,
-                                Budgeted::kYes);
-    if (!fProxy) {
+    auto newProxy     = TextureProxy::Make(caps,
+                                           recorder->priv().resourceProvider(),
+                                           {textureWidth, textureHeight},
+                                           textureInfo,
+                                           fLabel,
+                                           Budgeted::kYes);
+    if (!newProxy) {
         return false;
     }
-    fPlots = std::make_unique<std::unique_ptr<Plot>[]>(this->numPlots());
-    for (int y = 0, index = 0; y < fPlotGridDimensions.height(); ++y) {
-        for (int x = 0; x < fPlotGridDimensions.width(); ++x, ++index) {
-            PlotCoord coord{.fX = x, .fY = y};
-            auto& plot = fPlots[index];
-            plot = Plot::Make(coord, {fPlotWidth, fPlotHeight}, fMaskFormat);
-            fPlotMap[plot->plotID()] = plot.get();
-            fPlotMRUList.addToTail(plot.get());
-            fPlots[y * fPlotGridDimensions.width() + x] = std::move(plot);
+
+    OldProxyUploads oldUploads;
+    oldUploads.fProxy = fProxy;
+
+    auto newPlotArray = std::make_unique<std::unique_ptr<Plot>[]>(newPlotGridDims.area());
+    for (PlotCoord c{}; c.fY < newPlotGridDims.height(); ++c.fY) {
+        for (c.fX = 0; c.fX < newPlotGridDims.width(); ++c.fX) {
+            auto newIndex = c.fY * newPlotGridDims.width() + c.fX;
+            if (c.fX < fPlotGridDimensions.width() && c.fY < fPlotGridDimensions.height()) {
+                auto oldIndex = c.fY * fPlotGridDimensions.width() + c.fX;
+                newPlotArray[newIndex] = std::move(fPlots[oldIndex]);
+                // In the future we'd like to issue a GPU->GPU copy here. For now, we just mark the
+                // plot fully dirty in order to trigger a re-upload.
+                if (newPlotArray[newIndex]->needsUpload()) {
+                    auto [dataPtr, dstRect] = newPlotArray[newIndex]->prepareForUpload();
+                    if (!dstRect.isEmpty()) {
+                        OldProxyUploads::Upload upload{
+                            .fDataPtr  = dataPtr,
+                            .fRowBytes = newPlotArray[newIndex]->rowBytes(),
+                            .fDstRect  = dstRect
+                        };
+                        oldUploads.fUploads.push_back(upload);
+                    }
+                }
+                newPlotArray[newIndex]->markAllEntriesDirty();
+            } else {
+                newPlotArray[newIndex] = Plot::Make(c, fPlotSize, fMaskFormat);
+                fPlotMRUList.addToTail(newPlotArray[newIndex].get());
+                fPlotMap[newPlotArray[newIndex]->plotID()] = newPlotArray[newIndex].get();
+            }
+        }
+    }
+    fPlotGridDimensions = newPlotGridDims;
+    fPlots = std::move(newPlotArray);
+    fProxy = std::move(newProxy);
+    if (!oldUploads.fUploads.empty()) {
+        fOldProxyUploads.push_back(std::move(oldUploads));
+    }
+    SkDEBUGCODE(this->validate());
+    SKIA_LOG_I("Increased %s DrawAtlas size to %d x %d",
+               fLabel.c_str(),
+               fProxy->dimensions().width(),
+               fProxy->dimensions().height());
+    return true;
+}
+
+void DrawAtlas::decreaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
+    SkDEBUGCODE(this->validate());
+    SkASSERT(newPlotGridDims.width() <= fPlotGridDimensions.width());
+    SkASSERT(newPlotGridDims.height() <= fPlotGridDimensions.height());
+    SkASSERT(newPlotGridDims.area() < fPlotGridDimensions.area());
+
+    int textureWidth  = newPlotGridDims.width()*fPlotSize.width();
+    int textureHeight = newPlotGridDims.height()*fPlotSize.height();
+    const Caps* caps  = recorder->priv().caps();
+    auto ct           = MaskFormatToColorType(fMaskFormat);
+    auto textureInfo  = fUseStorageTextures == UseStorageTextures::kYes
+                               ? caps->getDefaultStorageTextureInfo(ct)
+                               : caps->getDefaultSampledTextureInfo(ct,
+                                                                    Mipmapped::kNo,
+                                                                    recorder->priv().isProtected(),
+                                                                    Renderable::kNo);
+    auto newProxy     = TextureProxy::Make(caps,
+                                           recorder->priv().resourceProvider(),
+                                           {textureWidth, textureHeight},
+                                           textureInfo,
+                                           fLabel,
+                                           Budgeted::kYes);
+    if (!newProxy) {
+        return;
+    }
+
+    OldProxyUploads oldUploads;
+    oldUploads.fProxy = fProxy;
+
+    int numNewPlots = newPlotGridDims.area();
+    auto newPlotArray = std::make_unique<std::unique_ptr<Plot>[]>(numNewPlots);
+    TArray<std::unique_ptr<Plot>> scratchPlots;
+    PlotCoord newCoord = {0, 0};
+    int currNewPlotIdx = 0;
+    auto advanceCoord = [&] {
+        ++newCoord.fX;
+        if (newCoord.fX == newPlotGridDims.width()) {
+            ++newCoord.fY;
+            newCoord.fX = 0;
+            SkASSERT(newCoord.fX == 0 || newCoord.fY < newPlotGridDims.height());
+        }
+    };
+    for (auto& plot : this->plots()) {
+        // Here we're assuming that compact() has already recycled plots that shouldn't
+        // be moved to the smaller texture.
+        if (!plot->isEmpty()) {
+            PlotCoord oldCoord = plot->plotCoord();
+            plot->setPlotCoord(newCoord);
+            SkIVector translation{fPlotSize.width()  * (newCoord.fX - oldCoord.fX),
+                                  fPlotSize.height() * (newCoord.fY - oldCoord.fY)};
+            const RecordVisitor visitor{plot.get()};
+            for (EvictionCallback* evictor : fEvictionCallbacks) {
+                evictor->relocate(translation, visitor);
+            }
+            fEvictionCounter = NextEvictionCounter(fEvictionCounter);
+            // We'd have to use the same "old uploads" strategy as in increaseProxySize()
+            // if there were could be draws referring to the old proxy/coord.
+            // However, we are assuming those have all been flushed before compact() is
+            // called.
+            SkASSERT(!plot->needsUpload());
+            plot->markAllEntriesDirty();
+            newPlotArray[currNewPlotIdx++] = std::move(plot);
+            advanceCoord();
+        } else if (plot->hasAllocation()) {
+            fPlotMRUList.remove(plot.get());
+            scratchPlots.push_back(std::move(plot));
+        } else {
+            fPlotMap.remove(plot->plotID());
+            fPlotMRUList.remove(plot.get());
         }
     }
 
+    while (currNewPlotIdx < numNewPlots) {
+        std::unique_ptr<Plot> plot;
+        if (scratchPlots.empty()) {
+            plot = Plot::Make(newCoord, fPlotSize, fMaskFormat);
+            fPlotMap[plot->plotID()] = plot.get();
+        } else {
+            plot = std::move(scratchPlots.back());
+            plot->setPlotCoord(newCoord);
+            scratchPlots.pop_back();
+        }
+        fPlotMRUList.addToTail(plot.get());
+        newPlotArray[currNewPlotIdx++] = std::move(plot);
+        advanceCoord();
+    }
+    SkASSERT(newCoord.fX == 0 && newCoord.fY == newPlotGridDims.height());
+
+    for (auto& extraPlot : scratchPlots) {
+        fPlotMap.remove(extraPlot->plotID());
+    }
+
+    fPlotGridDimensions = newPlotGridDims;
+    fPlots = std::move(newPlotArray);
+    fProxy = std::move(newProxy);
+
     SkDEBUGCODE(this->validate());
-
-    SKIA_LOG_I("Activating %d x %d proxy in DrawAtlas %s.", fTextureWidth, fTextureHeight, fLabel.c_str());
-
-    return true;
+    SKIA_LOG_I("Decreased %s DrawAtlas size to %d x %d",
+               fLabel.c_str(),
+               fProxy->dimensions().width(),
+               fProxy->dimensions().height());
 }
 
 inline void DrawAtlas::deactivateProxy() {
     SkASSERT(fProxy);
+    // Old proxy uploads contain data pointers into Plot data that will be destroyed below,
+    // so discard them. Any draws referencing old proxies are also being discarded.
+    fOldProxyUploads = {};
 
     fPlotMRUList.reset();
     for (auto& plot : plots()) {
@@ -445,6 +656,8 @@ inline void DrawAtlas::deactivateProxy() {
     fPlots.reset();
     // remove ref to the texture proxy
     fProxy = {};
+    fPlotGridDimensions = {0, 0};
+    SkDEBUGCODE(this->validate());
 }
 
 void DrawAtlas::markUsedPlotsAsFull() {
@@ -482,6 +695,15 @@ int DrawAtlas::numNonEmptyPlots() const {
     return this->iteratePlots([](const Plot* plot) {
         return !plot->isEmpty();
     });
+}
+
+void DrawAtlas::clearPendingUploads() {
+    fOldProxyUploads = {};
+    for (const auto& plot : this->plots()) {
+        if (plot->needsUpload()) {
+            plot->prepareForUpload();
+        }
+    }
 }
 #endif
 

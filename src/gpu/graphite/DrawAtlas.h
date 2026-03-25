@@ -146,13 +146,17 @@ public:
     /** Should the atlas use storage textures? */
     enum class UseStorageTextures : bool { kNo, kYes };
 
+    /** Size-related configuration for a DrawAtlas. */
+    struct Config {
+        SkISize fPlotSize;
+        SkISize fMinPlotGridDims;
+        int     fAllowedDoublings = 2;  // The old page-based system supported 4 textures.
+    };
+
     /**
      * Returns a DrawAtlas.
      *  @param maskFormat          The maskFormat which this atlas will store.
-     *  @param width               Width in pixels of the atlas.
-     *  @param height              Height in pixels of the atlas.
-     *  @param plotWidth           The width of each plot. width/plotWidth should be an integer.
-     *  @param plotWidth           The height of each plot. height/plotHeight should be an integer.
+     *  @param config              Controls size and growth of the atlas texture.
      *  @param useStorageTextures  Should the atlas use storage textures.
      *  @param evictor             A pointer to an eviction callback class.
      *  @param label               Label for texture resources.
@@ -160,11 +164,16 @@ public:
      *  @return                    An initialized DrawAtlas, or nullptr if creation fails.
      */
     static std::unique_ptr<DrawAtlas> Make(MaskFormat maskFormat,
-                                           int width, int height,
-                                           int plotWidth, int plotHeight,
+                                           const Config&,
+                                           int maxTextureSize,
                                            UseStorageTextures useStorageTextures,
                                            EvictionCallback* evictor,
                                            std::string_view label);
+
+    /**
+     * Convenience helper: converts a byte budget into a roughly square initial plot grid.
+     */
+    static SkISize MinPlotGridDimsForMaxBytes(size_t maxBytes, SkISize plotSize, MaskFormat format);
 
     /**
      * Adds a width x height subimage to the atlas. Upon success it returns 'kSucceeded' and returns
@@ -239,7 +248,7 @@ public:
 
     void setLastUseTokenBulk(const BulkRecordUseUpdater& updater, Token token);
 
-    void compact(Token startTokenForNextFlush);
+    void compact(Recorder*);
 
     // Mark all plots with any content as full. Used only with Vello because it can't do
     // new renders to a texture without a clear.
@@ -254,6 +263,9 @@ public:
 #if defined(GPU_TEST_UTILS)
     int numAllocatedPlots() const;
     int numNonEmptyPlots() const;
+    // Clears pending upload state without actually recording uploads. Tests use this to
+    // simulate the effect of recordUploads() without needing a DrawContext.
+    void clearPendingUploads();
 #endif
 
 private:
@@ -265,6 +277,8 @@ private:
     // around for a bit in case it's needed. The assumption is that flushes
     // are rare; i.e., we are not continually refreshing the frame.
     static constexpr auto kPlotRecentlyUsedCount = 32;
+    // Number of flushes beyond which we'll consider compacting the atlas
+    static constexpr auto kCompactionRecentlyUsedCount = 64;
     // Number of flushes beyond which we'll consider the atlas no longer in use.
     // We avoid Plot purges for this many flushes that have no atlas usage.
     static constexpr auto kAtlasRecentlyUsedCount = 128;
@@ -281,10 +295,9 @@ private:
     static EntryID NextEntryID(DrawAtlas::EntryID);
 
     DrawAtlas(MaskFormat,
-              int width,
-              int height,
-              int plotWidth,
-              int plotHeight,
+              SkISize plotSize,
+              SkISize minPlotGridDimensions,
+              SkISize maxPlotGridDimensions,
               UseStorageTextures useStorageTextures,
               std::string_view label);
 
@@ -298,8 +311,29 @@ private:
         return {fPlots.get(), SkToSizeT(this->numPlots())};
     }
 
+    static SkISize NextLargerPlotGridDims(SkISize dims, SkISize plotSize) {
+        if (dims.width() * plotSize.width() < dims.height() * plotSize.height()) {
+            dims.fWidth *= 2;
+        } else {
+            dims.fHeight *= 2;
+        }
+        return dims;
+    }
+
+    SkISize nextLargerPlotGridDims(SkISize dims) const {
+        return NextLargerPlotGridDims(dims, fPlotSize);
+    }
+
+    SkISize nextSmallerPlotGridDims(SkISize dims) const {
+        if (dims.width() * fPlotSize.width() >= dims.height() * fPlotSize.height()) {
+            dims.fWidth /= 2;
+        } else {
+            dims.fHeight /= 2;
+        }
+        return dims;
+    }
+
     int numPlots() const { return fPlotGridDimensions.area(); }
-    SkISize plotSize() const { return {fPlotWidth, fPlotHeight}; }
 
     std::optional<AddResult> addRectToAtlas(SkISize size, const std::byte* image);
 
@@ -311,7 +345,8 @@ private:
 
     void internalSetLastUseToken(Plot* plot, Token token);
 
-    [[nodiscard]] bool activateProxy(Recorder*);
+    [[nodiscard]] bool increaseProxySize(Recorder*, SkISize newPlotGridDims);
+    void decreaseProxySize(Recorder*, SkISize newPlotGridDims);
     void deactivateProxy();
 
 #if defined(GPU_TEST_UTILS)
@@ -339,12 +374,11 @@ private:
     };
     void processEvictionAndResetRects(Plot*, EvictionType);
 
-    MaskFormat fMaskFormat;
-    int        fTextureWidth;
-    int        fTextureHeight;
-    SkISize    fPlotGridDimensions;
-    int        fPlotWidth;
-    int        fPlotHeight;
+    MaskFormat         fMaskFormat;
+    SkISize            fPlotSize;
+    SkISize            fMinPlotGridDimensions;
+    SkISize            fMaxPlotGridDimensions;
+    SkISize            fPlotGridDimensions = {0, 0};
     UseStorageTextures fUseStorageTextures;
     const std::string  fLabel;
 
@@ -362,7 +396,10 @@ private:
 
     // the number of flushes since this atlas has been last used
     // TODO: rename
-    int fFlushesSinceLastUse;
+    int fFlushesSinceLastUse = 0;
+    // the first flush when that the Atlas has met the criteria
+    // for compaction to the next smaller size.
+    Token fFirstCompactibleToken = Token::InvalidToken();
 
     std::vector<EvictionCallback*> fEvictionCallbacks;
 
@@ -371,6 +408,19 @@ private:
     skia_private::THashMap<PlotID, Plot*> fPlotMap;
 
     sk_sp<TextureProxy> fProxy;
+
+    // When we create a larger proxy we still need to upload data to the old proxy because
+    // draws are already referring to it and the data needs to be there when they execute.
+    struct OldProxyUploads {
+        sk_sp<TextureProxy> fProxy;
+        struct Upload {
+            const std::byte* fDataPtr;
+            size_t           fRowBytes;
+            SkIRect          fDstRect;
+        };
+        skia_private::TArray<Upload> fUploads;
+    };
+    skia_private::TArray<OldProxyUploads> fOldProxyUploads;
 
     SkDEBUGCODE(void validate() const;)
 };

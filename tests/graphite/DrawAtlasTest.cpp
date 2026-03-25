@@ -24,12 +24,14 @@ using MaskFormat = skgpu::MaskFormat;
 
 namespace skgpu::graphite {
 struct DrawAtlasTest {
-    static constexpr auto kPlotRecentlyUsedCount = DrawAtlas::kPlotRecentlyUsedCount;
+    static constexpr auto kPlotRecentlyUsedCount       = DrawAtlas::kPlotRecentlyUsedCount;
+    static constexpr auto kCompactionRecentlyUsedCount = DrawAtlas::kCompactionRecentlyUsedCount;
 };
 }
 
 namespace {
-constexpr auto kPlotRecentlyUsedCount = DrawAtlasTest::kPlotRecentlyUsedCount;
+constexpr auto kPlotRecentlyUsedCount       = DrawAtlasTest::kPlotRecentlyUsedCount;
+constexpr auto kCompactionRecentlyUsedCount = DrawAtlasTest::kCompactionRecentlyUsedCount;
 
 const int kNumPlots = 2;
 const int kPlotSize = 32;
@@ -44,6 +46,20 @@ public:
 
 void check(skiatest::Reporter* r, int expectedEvictCount) {
     REPORTER_ASSERT(r, gEvictCount == expectedEvictCount);
+}
+
+// Simulates a flush: processes pending uploads, advances the flush token, and compacts.
+void simulateFlush(DrawAtlas* atlas, Recorder* recorder) {
+    atlas->clearPendingUploads();
+    recorder->priv().issueFlushToken();
+    atlas->compact(recorder);
+}
+
+// Simulates a flush then frees GPU resources (deactivates the proxy if nothing is in-flight).
+void simulateFlushAndFree(DrawAtlas* atlas, Recorder* recorder) {
+    atlas->clearPendingUploads();
+    recorder->priv().issueFlushToken();
+    atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
 }
 
 bool fill_plot(DrawAtlas* atlas, Recorder* recorder, DrawAtlas::AddResult* addResult, int alpha) {
@@ -62,77 +78,67 @@ bool fill_plot(DrawAtlas* atlas, Recorder* recorder, DrawAtlas::AddResult* addRe
 }
 }  // anonymous namespace
 
-// This is a basic DrawAtlas test. It verifies that the atlas correctly fills the plots,
-// evicts the LRU plot when full, compacts stale plots, and frees GPU resources.
+// This is a basic DrawAtlas test. It verifies that the atlas correctly fills plots, grows its
+// texture when full, compacts stale plots, and frees GPU resources.
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BasicDrawAtlas,
                                          reporter,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
-    constexpr int kTotalPlots = kNumPlots * kNumPlots;
+    constexpr int kInitialPlots = kNumPlots * kNumPlots;  // 4
 
     gEvictCount = 0;
     EvictionCounter evictor;
     std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
-                                                       kAtlasSize, kAtlasSize,
-                                                       kPlotSize, kPlotSize,
+                                                       {{kPlotSize, kPlotSize}, {kNumPlots, kNumPlots}},
+                                                       /*maxTextureSize=*/1 << 16,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
                                                        /*label=*/"BasicDrawAtlasTest");
     check(reporter, /*expectedEvictCount=*/0);
 
-    // Fill all 4 plots and mark them as in-use for the current flush.
+    // Fill all 4 initial plots and mark them as in-use for the current flush.
     DrawAtlas::AddResult addResult;
-    DrawAtlas::Record records[kTotalPlots];
-    for (int i = 0; i < kTotalPlots; ++i) {
-        bool result = fill_plot(atlas.get(), recorder.get(), &addResult, i * 32);
-        REPORTER_ASSERT(reporter, result);
-        records[i] = addResult.fRecord;
-        atlas->setLastUseToken(records[i], recorder->priv().tokenTracker()->nextFlushToken());
+    std::vector<DrawAtlas::Record> records;
+    for (int i = 0; i < kInitialPlots; ++i) {
+        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i * 32));
+        records.push_back(addResult.fRecord);
+        atlas->setLastUseToken(records.back(), recorder->priv().tokenTracker()->nextFlushToken());
     }
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == kTotalPlots);
+    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == kInitialPlots);
     check(reporter, /*expectedEvictCount=*/0);
 
-    // All plots are in-flight (lastUseToken == nextFlushToken), so a 5th add must fail.
-    REPORTER_ASSERT(reporter, !fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
-
-    // After a flush, the plots become evictable.
-    recorder->priv().issueFlushToken();
-    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-
-    // Now the 5th add should succeed by evicting the LRU plot.
+    // Adding a 5th plot should succeed by growing the texture.
     REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
-    check(reporter, /*expectedEvictCount=*/1);
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == kTotalPlots);
-    DrawAtlas::Record keepAliveRecord = addResult.fRecord;
+    records.push_back(addResult.fRecord);
+    atlas->setLastUseToken(records.back(), recorder->priv().tokenTracker()->nextFlushToken());
+    check(reporter, /*expectedEvictCount=*/0);
+    // Atlas grew, but only the filled plots have backing data.
+    REPORTER_ASSERT(reporter, atlas->numNonEmptyPlots() == kInitialPlots + 1);
 
-    // Use only the newly added plot for many flushes. The other 3 plots should become stale
+    // Use only the first plot for many flushes. The other plots should become stale
     // and be recycled by compact() after kPlotRecentlyUsedCount flushes.
-    for (int i = 0; i < kPlotRecentlyUsedCount + 1; ++i) {
-        atlas->setLastUseToken(keepAliveRecord,
-                               recorder->priv().tokenTracker()->nextFlushToken());
-        recorder->priv().issueFlushToken();
-        atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
+    // We need +2 because the initial compact before this loop counts all plots as "recently
+    // used" (their tokens fall in the initial interval), consuming one iteration.
+    for (int i = 0; i < kPlotRecentlyUsedCount + 2; ++i) {
+        atlas->setLastUseToken(records[0], recorder->priv().tokenTracker()->nextFlushToken());
+        simulateFlush(atlas.get(), recorder.get());
     }
-    // 3 stale plots were recycled (evicted).
-    check(reporter, /*expectedEvictCount=*/1 + 3);
+    // The 4 other non-empty plots were recycled (evicted). The 3 empty grown plots don't
+    // generate eviction callbacks.
+    check(reporter, /*expectedEvictCount=*/kInitialPlots);
     REPORTER_ASSERT(reporter, atlas->numNonEmptyPlots() == 1);
-    // compact recycles with kReuse_KeepData, so allocations are retained.
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == kTotalPlots);
 
     // freeGpuResources while one plot is still in-use should not free.
-    atlas->setLastUseToken(keepAliveRecord,
-                           recorder->priv().tokenTracker()->nextFlushToken());
+    atlas->setLastUseToken(records[0], recorder->priv().tokenTracker()->nextFlushToken());
     atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
     REPORTER_ASSERT(reporter, atlas->getProxy());
 
     // After a flush with no further use, freeGpuResources should deactivate everything.
-    recorder->priv().issueFlushToken();
-    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-    recorder->priv().issueFlushToken();
-    atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
+    simulateFlush(atlas.get(), recorder.get());
+    simulateFlushAndFree(atlas.get(), recorder.get());
     // The 1 remaining non-empty plot is evicted during deactivation.
-    check(reporter, /*expectedEvictCount=*/1 + 3 + 1);
+    check(reporter, /*expectedEvictCount=*/kInitialPlots + 1);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 0);
     REPORTER_ASSERT(reporter, !atlas->getProxy());
 }
@@ -147,78 +153,53 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ThrashDrawAtlasCache,
     constexpr int numPlots = 2;
     constexpr int plotSize = 32;
     constexpr int atlasSize = numPlots * plotSize;
-    constexpr int totalPlots = numPlots * numPlots;
+    constexpr int initialPlots = numPlots * numPlots;  // 4
 
     std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
-                                                       atlasSize,
-                                                       atlasSize,
-                                                       plotSize,
-                                                       plotSize,
+                                                       {{plotSize, plotSize}, {numPlots, numPlots}},
+                                                       /*maxTextureSize=*/1 << 16,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
                                                        /*label=*/"ThrashDrawAtlasTest");
-    std::vector<DrawAtlas::Record> records(totalPlots);
 
-    // Test kTryAgain failure and recovery.
-    // Fill all plots and mark them as in-use for the current flush.
+    // Fill all initial plots and mark them as in-use.
     gEvictCount = 0;
-    for (int i = 0; i < totalPlots; ++i) {
+    std::vector<DrawAtlas::Record> records;
+    for (int i = 0; i < initialPlots; ++i) {
         DrawAtlas::AddResult addResult;
         REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
-        records[i] = addResult.fRecord;
-        atlas->setLastUseToken(records[i], recorder->priv().tokenTracker()->nextFlushToken());
+        records.push_back(addResult.fRecord);
+        atlas->setLastUseToken(records.back(), recorder->priv().tokenTracker()->nextFlushToken());
     }
     check(reporter, /*expectedEvictCount=*/0);
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
+    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == initialPlots);
 
-    // Try to add one more. All plots are in-flight, so this must fail.
+    // Adding when full should grow the atlas, even with in-flight plots.
     DrawAtlas::AddResult addResult;
-    REPORTER_ASSERT(reporter, !fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
-
-    // Now, simulate a flush. This makes the plots evictable.
-    recorder->priv().issueFlushToken();
-    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-
-    // Try adding again. It should succeed by evicting the least recently used plot.
     REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, 0xff));
-    check(reporter, /*expectedEvictCount=*/1);
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
+    records.push_back(addResult.fRecord);
+    atlas->setLastUseToken(records.back(), recorder->priv().tokenTracker()->nextFlushToken());
+    check(reporter, /*expectedEvictCount=*/0);
+    // Atlas grew, but only the filled plots have backing data.
+    REPORTER_ASSERT(reporter, atlas->numNonEmptyPlots() == initialPlots + 1);
 
-    // evictAllPlots should evict all plots (including the newly added one).
-    gEvictCount = 0;
-    atlas->evictAllPlots();
-    REPORTER_ASSERT(reporter, gEvictCount == totalPlots);
-    // evictAllPlots should free their backing storage.
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 0);
+    // Flush to settle state, then test partial compaction with only one plot in use.
+    simulateFlush(atlas.get(), recorder.get());
 
-    // Test partial compaction: refill, then use only one plot.
-    gEvictCount = 0;
-    for (int i = 0; i < totalPlots; ++i) {
-        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
-        records[i] = addResult.fRecord;
-        atlas->setLastUseToken(records[i], recorder->priv().tokenTracker()->nextFlushToken());
-    }
-    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == totalPlots);
-    recorder->priv().issueFlushToken();
-    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-
-    // Use only one plot repeatedly, making the other 3 stale.
-    // Loop one more than kPlotRecentlyUsedCount to ensure eviction.
-    for (int i = 0; i < kPlotRecentlyUsedCount + 1; ++i) {
+    // Use only one plot repeatedly, making the others stale.
+    // +2 because the initial flush above counts all plots as "recently used".
+    for (int i = 0; i < kPlotRecentlyUsedCount + 2; ++i) {
         atlas->setLastUseToken(records[0], recorder->priv().tokenTracker()->nextFlushToken());
-        recorder->priv().issueFlushToken();
-        atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
+        simulateFlush(atlas.get(), recorder.get());
     }
 
-    // The other 3 plots should have been recycled. compact uses kReuse_KeepData so the
-    // backing data is retained but the plots are empty.
-    check(reporter, /*expectedEvictCount=*/totalPlots - 1);
+    // The other non-empty plots (initialPlots + 1 filled, minus 1 kept alive) should be recycled.
+    check(reporter, /*expectedEvictCount=*/initialPlots);
     REPORTER_ASSERT(reporter, atlas->numNonEmptyPlots() == 1);
 
     // freeGpuResources after flushing: deactivates the proxy and evicts the last non-empty plot.
-    recorder->priv().issueFlushToken();
-    atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
-    check(reporter, /*expectedEvictCount=*/totalPlots);
+    simulateFlushAndFree(atlas.get(), recorder.get());
+    check(reporter, /*expectedEvictCount=*/initialPlots + 1);
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 0);
 }
 
@@ -231,10 +212,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
     EvictionCounter evictor;
     constexpr int kTotalPlots = kNumPlots * kNumPlots;
     std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
-                                                       kAtlasSize,
-                                                       kAtlasSize,
-                                                       kPlotSize,
-                                                       kPlotSize,
+                                                       {{kPlotSize, kPlotSize}, {kNumPlots, kNumPlots}},
+                                                       /*maxTextureSize=*/1 << 16,
                                                        DrawAtlas::UseStorageTextures::kNo,
                                                        &evictor,
                                                        /*label=*/"DrawAtlasProxyTest");
@@ -269,10 +248,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
     REPORTER_ASSERT(reporter, !proxy->unique());
 
     // After a flush and compact with no further use, freeGpuResources releases the proxy.
-    recorder->priv().issueFlushToken();
-    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-    recorder->priv().issueFlushToken();
-    atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
+    simulateFlush(atlas.get(), recorder.get());
+    simulateFlushAndFree(atlas.get(), recorder.get());
     // Our ref is now the only one.
     REPORTER_ASSERT(reporter, proxy->unique());
     REPORTER_ASSERT(reporter, !atlas->getProxy());
@@ -284,75 +261,112 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasProxyLifetime,
     REPORTER_ASSERT(reporter, proxy2 != proxy);
 
     // Clean up.
-    recorder->priv().issueFlushToken();
-    atlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());
+    simulateFlushAndFree(atlas.get(), recorder.get());
+    REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 0);
+}
+
+// Verifies that the atlas shrinks its texture after sustained low usage.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasShrink,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    auto recorder = context->makeRecorder();
+    constexpr int kInitialPlots = kNumPlots * kNumPlots;  // 4
+
+    gEvictCount = 0;
+    EvictionCounter evictor;
+    std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
+                                                       {{kPlotSize, kPlotSize}, {kNumPlots, kNumPlots}},
+                                                       /*maxTextureSize=*/1 << 16,
+                                                       DrawAtlas::UseStorageTextures::kNo,
+                                                       &evictor,
+                                                       /*label=*/"DrawAtlasShrinkTest");
+
+    // Fill all initial plots, mark in-use, then grow by adding one more.
+    DrawAtlas::AddResult addResult;
+    std::vector<DrawAtlas::Record> records;
+    for (int i = 0; i < kInitialPlots + 1; ++i) {
+        REPORTER_ASSERT(reporter, fill_plot(atlas.get(), recorder.get(), &addResult, i));
+        records.push_back(addResult.fRecord);
+        atlas->setLastUseToken(records.back(), recorder->priv().tokenTracker()->nextFlushToken());
+    }
+    // Atlas grew from 64x64 to 64x128 (2x4 grid = 8 plots).
+    sk_sp<TextureProxy> grownProxy = atlas->getProxy();
+    REPORTER_ASSERT(reporter, grownProxy);
+    REPORTER_ASSERT(reporter, grownProxy->dimensions().width() == kAtlasSize);
+    REPORTER_ASSERT(reporter, grownProxy->dimensions().height() == kAtlasSize * 2);
+
+    // Flush to settle, then use only one plot for long enough to trigger both plot recycling
+    // and texture compaction.
+    simulateFlush(atlas.get(), recorder.get());
+
+    // We need:
+    //   kPlotRecentlyUsedCount + 1 flushes for stale plots to be recycled
+    //   (at which point the compaction timer starts)
+    //   kCompactionRecentlyUsedCount + 1 more flushes for the shrink to trigger
+    int totalFlushes = (kPlotRecentlyUsedCount + 1) + (kCompactionRecentlyUsedCount + 1);
+    for (int i = 0; i < totalFlushes; ++i) {
+        atlas->setLastUseToken(records[0], recorder->priv().tokenTracker()->nextFlushToken());
+        simulateFlush(atlas.get(), recorder.get());
+    }
+
+    // The proxy should have shrunk back to the initial size.
+    REPORTER_ASSERT(reporter, atlas->getProxy());
+    REPORTER_ASSERT(reporter, atlas->getProxy() != grownProxy);
+    REPORTER_ASSERT(reporter, atlas->getProxy()->dimensions().width() == kAtlasSize);
+    REPORTER_ASSERT(reporter, atlas->getProxy()->dimensions().height() == kAtlasSize);
+
+    // The kept-alive plot should still be present.
+    REPORTER_ASSERT(reporter, atlas->numNonEmptyPlots() == 1);
+
+    // Clean up.
+    simulateFlushAndFree(atlas.get(), recorder.get());
     REPORTER_ASSERT(reporter, atlas->numAllocatedPlots() == 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace {
-void test_draw_atlas_config(skiatest::Reporter* reporter, int maxTextureSize, size_t maxBytes,
-                            MaskFormat maskFormat, SkISize expectedDimensions,
-                            SkISize expectedPlotDimensions) {
-    TextAtlasManager::AtlasConfig config(maxTextureSize, maxBytes);
-    REPORTER_ASSERT(reporter, config.atlasDimensions(maskFormat) == expectedDimensions);
-    REPORTER_ASSERT(reporter, config.plotDimensions(maskFormat) == expectedPlotDimensions);
+void test_draw_atlas_config(skiatest::Reporter* reporter,
+                            size_t maxBytes,
+                            MaskFormat maskFormat,
+                            SkISize expectedPlotSize,
+                            SkISize expectedMinPlotGridDims) {
+    TextAtlasManager::AtlasConfig atlasConfig(maxBytes);
+    auto config = atlasConfig.config(maskFormat);
+    REPORTER_ASSERT(reporter, config.fPlotSize == expectedPlotSize);
+    REPORTER_ASSERT(reporter, config.fMinPlotGridDims == expectedMinPlotGridDims);
 }
 }  // anonymous namespace
 
 DEF_GRAPHITE_TEST(DrawAtlasConfig_Basic, reporter, CtsEnforcement::kNever) {
     // 1/4 MB
-    test_draw_atlas_config(reporter, 65536, 256 * 1024, MaskFormat::kARGB,
-                           { 256, 256 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 256 * 1024, MaskFormat::kA8,
-                           { 512, 512 }, { 256, 256 });
+    test_draw_atlas_config(reporter, 256 * 1024, MaskFormat::kARGB, {256, 256}, {1, 1});
+    test_draw_atlas_config(reporter, 256 * 1024, MaskFormat::kA8,   {256, 256}, {2, 2});
     // 1/2 MB
-    test_draw_atlas_config(reporter, 65536, 512 * 1024, MaskFormat::kARGB,
-                           { 512, 256 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 512 * 1024, MaskFormat::kA8,
-                           { 1024, 512 }, { 256, 256 });
+    test_draw_atlas_config(reporter, 512 * 1024, MaskFormat::kARGB, {256, 256}, {2, 1});
+    test_draw_atlas_config(reporter, 512 * 1024, MaskFormat::kA8,   {256, 256}, {4, 2});
     // 1 MB
-    test_draw_atlas_config(reporter, 65536, 1024 * 1024, MaskFormat::kARGB,
-                           { 512, 512 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 1024 * 1024, MaskFormat::kA8,
-                           { 1024, 1024 }, { 256, 256 });
+    test_draw_atlas_config(reporter, 1024 * 1024, MaskFormat::kARGB, {256, 256}, {2, 2});
+    test_draw_atlas_config(reporter, 1024 * 1024, MaskFormat::kA8,   {256, 256}, {4, 4});
     // 2 MB
-    test_draw_atlas_config(reporter, 65536, 2 * 1024 * 1024, MaskFormat::kARGB,
-                           { 1024, 512 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 2 * 1024 * 1024, MaskFormat::kA8,
-                           { 2048, 1024 }, { 512, 256 });
+    test_draw_atlas_config(reporter, 2 * 1024 * 1024, MaskFormat::kARGB, {256, 256}, {4, 2});
+    test_draw_atlas_config(reporter, 2 * 1024 * 1024, MaskFormat::kA8,   {512, 256}, {4, 4});
     // 4 MB
-    test_draw_atlas_config(reporter, 65536, 4 * 1024 * 1024, MaskFormat::kARGB,
-                           { 1024, 1024 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 4 * 1024 * 1024, MaskFormat::kA8,
-                           { 2048, 2048 }, { 512, 512 });
+    test_draw_atlas_config(reporter, 4 * 1024 * 1024, MaskFormat::kARGB, {256, 256}, {4, 4});
+    test_draw_atlas_config(reporter, 4 * 1024 * 1024, MaskFormat::kA8,   {512, 512}, {4, 4});
     // 8 MB
-    test_draw_atlas_config(reporter, 65536, 8 * 1024 * 1024, MaskFormat::kARGB,
-                           { 2048, 1024 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 8 * 1024 * 1024, MaskFormat::kA8,
-                           { 4096, 2048 }, { 512, 512 });
+    test_draw_atlas_config(reporter, 8 * 1024 * 1024, MaskFormat::kARGB, {256, 256}, {8, 4});
+    test_draw_atlas_config(reporter, 8 * 1024 * 1024, MaskFormat::kA8,   {512, 512}, {8, 4});
     // 16 MB (should be same as 8 MB)
-    test_draw_atlas_config(reporter, 65536, 16 * 1024 * 1024, MaskFormat::kARGB,
-                           { 2048, 1024 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 16 * 1024 * 1024, MaskFormat::kA8,
-                           { 4096, 2048 }, { 512, 512 });
-
-    // 4MB, restricted texture size
-    test_draw_atlas_config(reporter, 1024, 8 * 1024 * 1024, MaskFormat::kARGB,
-                           { 1024, 1024 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 1024, 8 * 1024 * 1024, MaskFormat::kA8,
-                           { 1024, 1024 }, { 256, 256 });
+    test_draw_atlas_config(reporter, 16 * 1024 * 1024, MaskFormat::kARGB, {256, 256}, {8, 4});
+    test_draw_atlas_config(reporter, 16 * 1024 * 1024, MaskFormat::kA8,   {512, 512}, {8, 4});
 
     // 3 MB (should be same as 2 MB)
-    test_draw_atlas_config(reporter, 65536, 3 * 1024 * 1024, MaskFormat::kARGB,
-                           { 1024, 512 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 3 * 1024 * 1024, MaskFormat::kA8,
-                           { 2048, 1024 }, { 512, 256 });
+    test_draw_atlas_config(reporter, 3 * 1024 * 1024, MaskFormat::kARGB, {256, 256}, {4, 2});
+    test_draw_atlas_config(reporter, 3 * 1024 * 1024, MaskFormat::kA8,   {512, 256}, {4, 4});
 
     // minimum size
-    test_draw_atlas_config(reporter, 65536, 0, MaskFormat::kARGB,
-                           { 256, 256 }, { 256, 256 });
-    test_draw_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
-                           { 512, 512 }, { 256, 256 });
+    test_draw_atlas_config(reporter, 0, MaskFormat::kARGB, {256, 256}, {1, 1});
+    test_draw_atlas_config(reporter, 0, MaskFormat::kA8,   {256, 256}, {2, 2});
 }
