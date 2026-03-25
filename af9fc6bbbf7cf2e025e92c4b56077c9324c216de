@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53e5cd5e_dde9fd6a",
+        "filename": "gn/skia.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T09:27:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e0d1c83c_560b47d1",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 28
+      },
+      "revId": "af9fc6bbbf7cf2e025e92c4b56077c9324c216de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36d51e40_1d0662cd",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-24T23:41:36Z",
       "side": 1,
       "message": "Would it be possible to use `mod exif_parse` here?  It seems that it should work and keeping modules and paths aligned would make things more readable and easy to understand.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "af9fc6bbbf7cf2e025e92c4b56077c9324c216de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "804547d7_4d8a7e1b",
+        "filename": "rust/exif/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T09:27:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36d51e40_1d0662cd",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea65b69_ea84ba84",
+        "filename": "rust/exif/exif_parse.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T09:27:03Z",
+      "side": 1,
+      "message": "Thanks for the suggestion, I like your proposal.",
+      "parentUuid": "0ea7aede_0843d555",
+      "range": {
+        "startLine": 32,
+        "startChar": 37,
+        "endLine": 32,
+        "endChar": 45
+      },
+      "revId": "af9fc6bbbf7cf2e025e92c4b56077c9324c216de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "932a6221_dfd657e7",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38d87c8f_62631b65",
+        "filename": "rust/exif/exif_parse.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T09:27:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932a6221_dfd657e7",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 1
+      },
+      "revId": "af9fc6bbbf7cf2e025e92c4b56077c9324c216de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84c60217_fa432116",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-03-24T23:41:36Z",
       "side": 1,
       "message": "optional nit:\n\n```suggestion\n        let count \u003d u32::from_be_bytes(entry[4..8].try_into().unwrap());\n```\n\nor alternatively:\n\n```\n        let count \u003d read_u32(entry, 4, Endianness::BigEndian).unwrap();\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 81
+      },
+      "revId": "af9fc6bbbf7cf2e025e92c4b56077c9324c216de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd2a0538_6d4b46fe",
+        "filename": "rust/exif/exif_parse.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-25T09:27:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84c60217_fa432116",
       "range": {
         "startLine": 76,
         "startChar": 8,
