@@ -128,7 +128,6 @@ protected:
         struct AtlasEntry {
             DrawAtlas::Record fRecord;
             SkIPoint16        fAtlasPosition{};
-            uint8_t           fPageIdx;
         };
 
         // Adds to the DrawAtlas and shape cache.
@@ -153,7 +152,7 @@ protected:
 
         bool recordUploads(DrawContext*, Recorder*);
         void evict(const DrawAtlas::RecordVisitor&) override;
-        void relocate(int, SkIVector, const DrawAtlas::RecordVisitor&) override;
+        void relocate(SkIVector, const DrawAtlas::RecordVisitor&) override;
         void compact(Recorder*);
         void freeGpuResources(Recorder*);
 

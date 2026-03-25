@@ -58,7 +58,6 @@ struct GlyphEntry {
     const GlyphEntryKey fGlyphEntryKey;
     DrawAtlas::Record   fAtlasRecord;
     DrawAtlas::Rect16   fRect;
-    uint8_t             fPageIdx;
     uint8_t             fPadding;
 };
 
@@ -108,7 +107,7 @@ public:
                           DrawWriter* dw,
                           int offset,
                           int count,
-                          unsigned short flags,
+                          unsigned int flags,
                           uint32_t ssboIndex,
                           SkScalar depth) const;
 

@@ -90,9 +90,6 @@ PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
                                  width, height,
                                  plotWidth, plotHeight,
-                                 caps->allowMultipleAtlasTextures()
-                                         ? DrawAtlas::AllowMultitexturing::kYes
-                                         : DrawAtlas::AllowMultitexturing::kNo,
                                  useStorageTextures,
                                  /*evictor=*/this,
                                  label);
@@ -104,7 +101,7 @@ inline PathAtlas::AtlasResult::value_type PathAtlas::DrawAtlasMgr::makeAtlasResu
     SkIPoint topLeft{entry.fAtlasPosition.fX, entry.fAtlasPosition.fY};
     skvx::half2 pos(topLeft.fX + kEntryPadding, topLeft.fY + kEntryPadding);
 
-    const auto& proxy = fDrawAtlas->getProxies()[entry.fPageIdx];
+    const auto& proxy = fDrawAtlas->getProxy();
 
     return std::make_tuple(proxy, pos);
 }
@@ -182,7 +179,6 @@ PathAtlas::DrawAtlasMgr::internalAddToAtlas(Recorder* recorder,
     AtlasEntry entry{
             .fRecord        = addResult.fRecord,
             .fAtlasPosition = {SkToS16(addResult.fPosition.fX), SkToS16(addResult.fPosition.fY)},
-            .fPageIdx       = SkToU8(addResult.fPageIdx)
     };
 
     // If the mask is empty, just return.
@@ -225,7 +221,8 @@ void PathAtlas::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visitor) {
     });
 }
 
-void PathAtlas::DrawAtlasMgr::relocate(int newPageIdx, SkIVector translation, const DrawAtlas::RecordVisitor& visitor) {
+void PathAtlas::DrawAtlasMgr::relocate(SkIVector translation,
+                                       const DrawAtlas::RecordVisitor& visitor) {
     // Remove all entries for this Plot from the ShapeCache
     visitor.visitRecords([&](DrawAtlas::Record record) {
         if (auto* key = fAtlasRecordMap.find(record)) {
@@ -234,7 +231,6 @@ void PathAtlas::DrawAtlasMgr::relocate(int newPageIdx, SkIVector translation, co
                 SkDebugf("Evicted entry not in cache!");
                 return;
             }
-            shape->fPageIdx = newPageIdx;
             auto newPos = SkIPoint{shape->fAtlasPosition.fX, shape->fAtlasPosition.fY} + translation;
             shape->fAtlasPosition = {SkToS16(newPos.fX), SkToS16(newPos.fY)};
         }

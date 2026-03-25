@@ -51,7 +51,6 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fMinDistanceFieldFontSize = options.fMinDistanceFieldFontSize;
     fGlyphsAsPathsFontSize = options.fGlyphsAsPathsFontSize;
     fMaxPathAtlasTextureSize = options.fMaxPathAtlasTextureSize;
-    fAllowMultipleAtlasTextures = options.fAllowMultipleAtlasTextures;
     fSupportBilerpFromGlyphAtlas = options.fSupportBilerpFromGlyphAtlas;
     fRequireOrderedRecordings = options.fRequireOrderedRecordings;
     fSetBackendLabels = options.fSetBackendLabels;

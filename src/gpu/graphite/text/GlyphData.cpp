@@ -45,9 +45,7 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
     auto tokenTracker = recorder->priv().tokenTracker();
 
     // TODO: this is not a great place for this -- need a better way to init atlases when needed
-    unsigned int numActiveProxies;
-    const sk_sp<TextureProxy>* proxies = atlasManager->getProxies(maskFormat, &numActiveProxies);
-    if (!proxies) {
+    if (!atlasManager->readyAtlas(maskFormat)) {
         SkDebugf("Could not allocate backing texture for atlas\n");
         return {false, 0};
     }
@@ -121,7 +119,7 @@ void GlyphData::fillInstanceData(const sktext::gpu::VertexFiller& vf,
                                  DrawWriter* dw,
                                  int offset,
                                  int count,
-                                 unsigned short flags,
+                                 unsigned int flags,
                                  uint32_t ssboIndex,
                                  SkScalar depth) const {
     auto quadData = [&]() {
@@ -134,14 +132,13 @@ void GlyphData::fillInstanceData(const sktext::gpu::VertexFiller& vf,
     // pre-transform coords = (s*w*b_x + t_x, s*h*b_y + t_y)
     // where (b_x, b_y) are the vertexID coords
     for (auto [glyph, leftTop] : quadData()) {
-        uint16_t pageIdx = glyph.entry().fPageIdx;
         SkIRect r        = glyph.entry().fRect;
         auto    [w, h]   = r.size();
         auto    [l, t]   = r.topLeft();
 
         instances.append(1) << AtlasPt{SkToU16(w), SkToU16(h)}
                             << AtlasPt{SkToU16(l), SkToU16(t)}
-                            << leftTop << pageIdx << flags
+                            << leftTop << flags
                             << 1.0f
                             << depth << ssboIndex;
     }
