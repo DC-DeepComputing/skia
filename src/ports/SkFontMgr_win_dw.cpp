@@ -10,6 +10,7 @@
 #if defined(SK_BUILD_FOR_WIN)
 
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkFontStyle.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -34,19 +35,8 @@ using namespace skia_private;
 
 namespace {
 
-// Korean fonts Gulim, Dotum, Batang, Gungsuh have bitmap strikes that get
-// artifically emboldened by Windows without antialiasing. Korean users prefer
-// these over the synthetic boldening performed by Skia. So let's make an
-// exception for fonts with bitmap strikes and allow passing through Windows
-// simulations for those, until Skia provides more control over simulations in
-// font matching, see https://crbug.com/1258378
-bool HasBitmapStrikes(const SkTScopedComPtr<IDWriteFont>& font) {
-  SkTScopedComPtr<IDWriteFontFace> fontFace;
-  HRB(font->CreateFontFace(&fontFace));
-
-  AutoDWriteTable ebdtTable(fontFace.get(),
-                            SkEndian_SwapBE32(SkSetFourByteTag('E', 'B', 'D', 'T')));
-  return ebdtTable.fExists;
+bool has_only_allowed(DWRITE_FONT_SIMULATIONS actual, DWRITE_FONT_SIMULATIONS allowed) {
+    return (actual & ~allowed) == 0;
 }
 
 // Iterate calls to GetFirstMatchingFont incrementally removing bold or italic
@@ -60,23 +50,15 @@ HRESULT FirstMatchingFontWithoutSimulations(const SkTScopedComPtr<IDWriteFontFam
                                             SkTScopedComPtr<IDWriteFont>& font) {
     bool noSimulations = false;
     while (!noSimulations) {
-        SkTScopedComPtr<IDWriteFont> searchFont;
-        HR(family->GetFirstMatchingFont(
-                dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &searchFont));
-        DWRITE_FONT_SIMULATIONS simulations = searchFont->GetSimulations();
-        // If we still get simulations even though we're not asking for bold or
-        // italic, we can't help it and exit the loop.
-
-#ifdef SK_WIN_FONTMGR_NO_SIMULATIONS
-        noSimulations = simulations == DWRITE_FONT_SIMULATIONS_NONE ||
+        SkTScopedComPtr<IDWriteFont> candidate;
+        HR(family->GetFirstMatchingFont(dwStyle.fWeight,dwStyle.fWidth,dwStyle.fSlant, &candidate));
+        DWRITE_FONT_SIMULATIONS simulations = candidate->GetSimulations();
+        // Accept simulations if not asking for bold or italic.
+        noSimulations = has_only_allowed(simulations, dwStyle.fSimulations) ||
                         (dwStyle.fWeight == DWRITE_FONT_WEIGHT_REGULAR &&
-                         dwStyle.fSlant == DWRITE_FONT_STYLE_NORMAL) ||
-                        HasBitmapStrikes(searchFont);
-#else
-        noSimulations = true;
-#endif
+                         dwStyle.fSlant == DWRITE_FONT_STYLE_NORMAL);
         if (noSimulations) {
-            font = std::move(searchFont);
+            font = std::move(candidate);
             break;
         }
         if (simulations & DWRITE_FONT_SIMULATIONS_BOLD) {
@@ -415,8 +397,7 @@ public:
             fResolvedTypeface = fOuter->makeTypefaceFromDWriteFont(glyphRun->fontFace,
                                                                    font.get(),
                                                                    fontFamily.get());
-            fHasSimulations = (font->GetSimulations() != DWRITE_FONT_SIMULATIONS_NONE) &&
-                              !HasBitmapStrikes(font);
+            fSimulations = font->GetSimulations();
         }
 
         return S_OK;
@@ -476,7 +457,7 @@ public:
 
     sk_sp<SkTypeface> ConsumeFallbackTypeface() { return std::move(fResolvedTypeface); }
 
-    bool FallbackTypefaceHasSimulations() { return fHasSimulations; }
+    DWRITE_FONT_SIMULATIONS FallbackTypefaceSimulations() { return fSimulations; }
 
 private:
     virtual ~FontFallbackRenderer() { }
@@ -485,7 +466,7 @@ private:
     sk_sp<const SkFontMgr_DirectWrite> fOuter;
     UINT32 fCharacter;
     sk_sp<SkTypeface> fResolvedTypeface;
-    bool fHasSimulations{false};
+    DWRITE_FONT_SIMULATIONS fSimulations{DWRITE_FONT_SIMULATIONS_NONE};
 };
 
 class FontFallbackSource : public IDWriteTextAnalysisSource {
@@ -664,18 +645,16 @@ sk_sp<SkTypeface> SkFontMgr_DirectWrite::fallback(const WCHAR* dwFamilyName,
         }
 
         DWRITE_FONT_SIMULATIONS simulations = font->GetSimulations();
-
-#ifdef SK_WIN_FONTMGR_NO_SIMULATIONS
-        noSimulations = simulations == DWRITE_FONT_SIMULATIONS_NONE || HasBitmapStrikes(font);
-#else
-        noSimulations = true;
-#endif
-
+        noSimulations = has_only_allowed(simulations, dwStyle.fSimulations) ||
+                        (dwStyle.fWeight == DWRITE_FONT_WEIGHT_REGULAR &&
+                         dwStyle.fSlant == DWRITE_FONT_STYLE_NORMAL);
+        if (noSimulations) {
+            break;
+        }
         if (simulations & DWRITE_FONT_SIMULATIONS_BOLD) {
             dwStyle.fWeight = DWRITE_FONT_WEIGHT_REGULAR;
             continue;
         }
-
         if (simulations & DWRITE_FONT_SIMULATIONS_OBLIQUE) {
             dwStyle.fSlant = DWRITE_FONT_STYLE_NORMAL;
             continue;
@@ -727,21 +706,18 @@ sk_sp<SkTypeface> SkFontMgr_DirectWrite::layoutFallback(const WCHAR* dwFamilyNam
         HRNM(fallbackLayout->Draw(nullptr, fontFallbackRenderer.get(), 50.0f, 50.0f),
              "Could not draw layout with renderer.");
 
-#ifdef SK_WIN_FONTMGR_NO_SIMULATIONS
-        noSimulations = !fontFallbackRenderer->FallbackTypefaceHasSimulations();
-#else
-        noSimulations = true;
-#endif
-
+        noSimulations = has_only_allowed(fontFallbackRenderer->FallbackTypefaceSimulations(),
+                                         dwStyle.fSimulations) ||
+                        (dwStyle.fWeight == DWRITE_FONT_WEIGHT_REGULAR &&
+                         dwStyle.fSlant == DWRITE_FONT_STYLE_NORMAL);
         if (noSimulations) {
             returnTypeface = fontFallbackRenderer->ConsumeFallbackTypeface();
+            break;
         }
-
         if (dwStyle.fWeight != DWRITE_FONT_WEIGHT_REGULAR) {
             dwStyle.fWeight = DWRITE_FONT_WEIGHT_REGULAR;
             continue;
         }
-
         if (dwStyle.fSlant != DWRITE_FONT_STYLE_NORMAL) {
             dwStyle.fSlant = DWRITE_FONT_STYLE_NORMAL;
             continue;

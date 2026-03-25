@@ -198,7 +198,9 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<const SkData> data,
     if (fontations_ffi::get_font_style(*bridgeFontRef, *normalizedCoords, fontStyle)) {
         style = SkFontStyle(fontStyle.weight,
                             fontStyle.width,
-                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
+                            static_cast<SkFontStyle::Slant>(fontStyle.slant),
+                            SkFontStyle::kNo_Synthetic,
+                            SkFontStyle::kNo_Synthetic);
     }
     rust::Box<fontations_ffi::BridgeOutlineCollection> outlines =
             fontations_ffi::get_outline_collection(*bridgeFontRef);
