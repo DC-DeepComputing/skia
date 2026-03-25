@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a281cda_903ef07d",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-25T14:03:36Z",
+      "side": 1,
+      "message": "Done, that is nicer",
+      "parentUuid": "7d6d0d76_ea743308",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 58
+      },
+      "revId": "e419bd8f17f3c0c064bfe3fdbf32e0543454beab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b21db5f_84d09835",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-24T20:56:34Z",
       "side": 1,
       "message": "Maybe a RPOps::setStrides(srcRowBytes, dstRowBytes) ?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 68
+      },
+      "revId": "e419bd8f17f3c0c064bfe3fdbf32e0543454beab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b8295a_16cb1b5e",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-25T14:03:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b21db5f_84d09835",
       "range": {
         "startLine": 302,
         "startChar": 0,
