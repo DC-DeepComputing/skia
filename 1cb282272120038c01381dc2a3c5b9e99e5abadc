@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "017e671e_2ed8a613",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-03-25T06:09:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84c3ce9d_d0f1150f",
+      "range": {
+        "startLine": 237,
+        "startChar": 43,
+        "endLine": 237,
+        "endChar": 45
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b618ff9b_42ff562b",
@@ -143,6 +167,30 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "81950009_aada3903",
+      "range": {
+        "startLine": 275,
+        "startChar": 34,
+        "endLine": 275,
+        "endChar": 91
+      },
+      "revId": "1cb282272120038c01381dc2a3c5b9e99e5abadc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae607170_f1b5c645",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-03-25T06:09:26Z",
+      "side": 1,
+      "message": "No, cause the signs of s[i-1] and s[i] are the same (and the h values are non-negative, and h[i] is positive)",
+      "parentUuid": "b618ff9b_42ff562b",
       "range": {
         "startLine": 275,
         "startChar": 34,
