@@ -390,7 +390,8 @@ sk_sp<SkFontStyleSet> SkFontMgr_Fuchsia::onMatchFamily(const char familyName[]) 
     std::vector<SkFontStyle> styles;
     for (auto& style : familyInfo.styles()) {
         styles.push_back(SkFontStyle(style.weight(), FuchsiaToSkWidth(style.width()),
-                                     FuchsiaToSkSlant(style.slant())));
+                                     FuchsiaToSkSlant(style.slant(),
+                                     SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic)));
     }
 
     return sk_sp<SkFontStyleSet>(

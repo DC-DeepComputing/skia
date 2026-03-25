@@ -360,7 +360,9 @@ static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
         default: SkASSERT(false); break;
     }
 
-    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant);
+    //TODO: need to consider FC_MATRIX and FC_EMBOLDEN
+    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant,
+                       SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 }
 
 static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
@@ -409,6 +411,8 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
     FcPatternAddInteger(pattern, FC_WEIGHT, weight);
     FcPatternAddInteger(pattern, FC_WIDTH , width);
     FcPatternAddInteger(pattern, FC_SLANT , slant);
+
+    //TODO: need to consider FC_MATRIX and FC_EMBOLDEN
 }
 
 class SkTypeface_fontconfig : public SkTypeface_proxy {
@@ -528,7 +532,9 @@ protected:
             originalProxyStyle.width() + (newRealStyle.width() - fOriginalRealStyle.width()),
             // the originalProxyStyle's slant is an override for the originalRealStyle's slant
             newRealStyle.slant() == fOriginalRealStyle.slant() ? originalProxyStyle.slant()
-                                                               : newRealStyle.slant());
+                                                               : newRealStyle.slant(),
+            // TODO: pass along?
+            SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 
         return sk_sp(new SkTypeface_fontconfig(std::move(realTypeface), std::move(pattern),
                                                newProxyStyle, &fOriginalRealStyle));

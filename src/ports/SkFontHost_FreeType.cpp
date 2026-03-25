@@ -2291,7 +2291,8 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
         name->set(face->family_name);
     }
     if (style != nullptr) {
-        *style = SkFontStyle(weight, width, slant);
+        *style = SkFontStyle(weight, width, slant,
+                             SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
     }
     if (isFixedPitch != nullptr) {
         *isFixedPitch = FT_IS_FIXED_WIDTH(face);
@@ -2435,7 +2436,8 @@ SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
     }
 
     if (style) {
-        *style = SkFontStyle(weight, width, slant);
+        *style = SkFontStyle(weight, width, slant,
+                             SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
     }
 
     SkDEBUGCODE(

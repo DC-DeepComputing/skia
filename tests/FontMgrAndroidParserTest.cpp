@@ -409,5 +409,5 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
     sk_sp<SkTypeface> typeface(fontMgr->matchFamilyStyleCharacter(
         "sans-serif", SkFontStyle(), nullptr, 0, '!'));
 
-    REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
+    REPORTER_ASSERT(reporter, typeface->fontStyle().weight() == SkFontStyle::kBold_Weight);
 }

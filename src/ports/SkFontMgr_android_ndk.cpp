@@ -1274,7 +1274,8 @@ protected:
             slant = SkFontStyle::kItalic_Slant;
         }
         int width = requestedWidth.value_or(style.width());
-        style = SkFontStyle(weight, width, slant);
+        style = SkFontStyle(weight, width, slant,
+                            SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 
         // The family name(s) are not reported.
         // This would be very helpful for aliases, like "sans-serif", "Arial", etc.

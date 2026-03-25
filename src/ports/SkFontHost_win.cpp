@@ -142,7 +142,8 @@ static void make_canonical(LOGFONT* lf) {
 static SkFontStyle get_style(const LOGFONT& lf) {
     return SkFontStyle(lf.lfWeight,
                        SkFontStyle::kNormal_Width,
-                       lf.lfItalic ? SkFontStyle::kItalic_Slant : SkFontStyle::kUpright_Slant);
+                       lf.lfItalic ? SkFontStyle::kItalic_Slant : SkFontStyle::kUpright_Slant,
+                       SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic);
 }
 
 static inline FIXED SkFixedToFIXED(SkFixed x) {
@@ -259,7 +260,8 @@ public:
 
         // The fixed pitch bit is set if the font is *not* fixed pitch.
         this->setIsFixedPitch((textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH) == 0);
-        this->setFontStyle(SkFontStyle(textMetric.tmWeight, style.width(), style.slant()));
+        this->setFontStyle(SkFontStyle(textMetric.tmWeight, style.width(), style.slant(),
+                                       SkFontStyle::kNo_Synthetic, SkFontStyle::kNo_Synthetic));
 
         // Used a logfont on a memory context, should never get a device font.
         // Therefore all TMPF_DEVICE will be PostScript (cubic) fonts.

@@ -90,10 +90,18 @@ struct DWriteStyle {
             case SkFontStyle::kOblique_Slant: fSlant = DWRITE_FONT_STYLE_OBLIQUE; break;
             default: SkASSERT(false); break;
         }
+        fSimulations = DWRITE_FONT_SIMULATIONS_NONE;
+        if (pattern.syntheticBold() != SkFontStyle::kNo_Synthetic) {
+            fSimulations |= DWRITE_FONT_SIMULATIONS_BOLD;
+        }
+        if (pattern.syntheticOblique() != SkFontStyle::kNo_Synthetic) {
+            fSimulations |= DWRITE_FONT_SIMULATIONS_OBLIQUE;
+        }
     }
     DWRITE_FONT_WEIGHT fWeight;
     DWRITE_FONT_STRETCH fWidth;
     DWRITE_FONT_STYLE fSlant;
+    DWRITE_FONT_SIMULATIONS fSimulations;
 };
 
 #endif
