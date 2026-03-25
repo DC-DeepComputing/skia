@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd3c97ba_c4b9f44e",
+        "filename": "include/core/SkFontStyle.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-25T21:08:27Z",
+      "side": 1,
+      "message": "The idea here is that reporting an SkFontStyle would reflect the SkTypeface state but providing an SkFontStyle to a lookup would allow synthetics if the corresponding bit is set. This is a bit awkward, but any sharing of \"reported state\" and \"request\" is always a bit awkward.\n\nAlso, as this is synthetics are off by default, which is true for most reported styles, but false for most requests. That being said, only the SkTypeface implementations actually report SkFontStyle and users are generally creating SkFontStyle for requests. So the SkTypefaces being updated would mean making them default allow (unless `SK_WIN_FONTMGR_NO_SIMULATIONS` is set).",
+      "revId": "16e839ec9771649050b01fed4ed7d0070b460148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ecf8e5a_29010932",
+        "filename": "include/core/SkFontStyle.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-25T21:08:27Z",
+      "side": 1,
+      "message": "Even worse, now these are confusing. Should this be a normal request (allow synthetics) or a normal return (does not implement synthetics).",
+      "revId": "16e839ec9771649050b01fed4ed7d0070b460148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
