@@ -13,6 +13,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/utils/SkFloatUtils.h"
 
@@ -31,8 +32,10 @@ enum {
     kItalic         = 0x13, // scalar (0 is Roman, 1 is fully Italic)
 
     // Related to font data. Can also be used with a requested font.
-    kSyntheticBold  = 0xF6, // no data
-    kSyntheticOblique = 0xF7, // no data
+    kSyntheticBold  = 0xF4, // int
+    kSyntheticOblique = 0xF5, // int
+    kIsSyntheticBold  = 0xF6, // no data -- deprecated, added and removed in version 109
+    kIsSyntheticOblique = 0xF7, // no data -- deprecated, added and removed in version 109
     kPaletteIndex   = 0xF8, // int
     kPaletteEntryOverrides = 0xF9, // int count, (int, u32)[count]
     kFontVariation  = 0xFA, // int count, (u32, scalar)[count]
@@ -42,6 +45,10 @@ enum {
     kFontIndex      = 0xFD, // int
     kSentinel       = 0xFF, // no data
 };
+static_assert(
+    SkPicturePriv::Version::kWorkingColorSpaceOutput >= SkPicturePriv::Version::kMin_Version,
+    "Remove kIsSyntheticBold and kIsSyntheticOblique"
+);
 
 SkFontDescriptor::SkFontDescriptor() { }
 
@@ -116,6 +123,8 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
     SkScalar width = SkFontStyle::kNormal_Width;
     SkScalar slant = 0;
     SkScalar italic = 0;
+    size_t syntheticBold = SkFontStyle::kAllowed_Synthetic;
+    size_t syntheticOblique = SkFontStyle::kAllowed_Synthetic;
 
     size_t styleBits;
     if (!stream->readPackedUInt(&styleBits)) { return false; }
@@ -146,6 +155,12 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                 break;
             case kItalic:
                 if (!stream->readScalar(&italic)) { return false; }
+                break;
+            case kSyntheticBold:
+                if (!stream->readPackedUInt(&syntheticBold)) { return false; }
+                break;
+            case kSyntheticOblique:
+                if (!stream->readPackedUInt(&syntheticOblique)) { return false; }
                 break;
             case kFontVariation:
                 if (!stream->readPackedUInt(&coordinateCount)) { return false; }
@@ -195,11 +210,11 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                     }
                 }
                 break;
-            case kSyntheticBold:
-                result->fSyntheticBold = true;
+            case kIsSyntheticBold:
+                syntheticBold = SkFontStyle::kYes_Synthetic;
                 break;
-            case kSyntheticOblique:
-                result->fSyntheticOblique = true;
+            case kIsSyntheticOblique:
+                syntheticOblique = SkFontStyle::kYes_Synthetic;
                 break;
             case kFactoryId:
                 if (!stream->readPackedUInt(&factoryId)) { return false; }
@@ -216,7 +231,9 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
     if (slant != 0) { slantEnum = SkFontStyle::kOblique_Slant; }
     if (0 < italic) { slantEnum = SkFontStyle::kItalic_Slant; }
     SkFontStyle::Width widthEnum = SkFontStyleWidthForWidthAxisValue(width);
-    result->fStyle = SkFontStyle(SkScalarRoundToInt(weight), widthEnum, slantEnum);
+    result->fStyle = SkFontStyle(SkScalarRoundToInt(weight), widthEnum, slantEnum,
+                                 static_cast<SkFontStyle::Synthetic>(syntheticBold),
+                                 static_cast<SkFontStyle::Synthetic>(syntheticOblique));
 
     size_t length;
     if (!stream->readPackedUInt(&length)) { return false; }
@@ -248,6 +265,8 @@ bool SkFontDescriptor::serialize(SkWStream* stream) const {
     if (!write_scalar(stream, slant, kSlant)) { return false; }
     SkScalar italic = fStyle.slant() == SkFontStyle::kItalic_Slant ? 1 : 0;
     if (!write_scalar(stream, italic, kItalic)) { return false; }
+    if (!write_uint(stream, fStyle.syntheticBold(), kSyntheticBold)) { return false; }
+    if (!write_uint(stream, fStyle.syntheticOblique(), kSyntheticBold)) { return false; }
 
     if (fCollectionIndex > 0) {
         if (!write_uint(stream, fCollectionIndex, kFontIndex)) { return false; }
@@ -268,12 +287,6 @@ bool SkFontDescriptor::serialize(SkWStream* stream) const {
             if (!stream->writePackedUInt(fPaletteEntryOverrides[i].index)) { return false; }
             if (!stream->write32(fPaletteEntryOverrides[i].color)) { return false; }
         }
-    }
-    if (fSyntheticBold) {
-        if (!write_id(stream, kSyntheticBold)) { return false; }
-    }
-    if (fSyntheticOblique) {
-        if (!write_id(stream, kSyntheticOblique)) { return false; }
     }
 
     if (!write_uint(stream, fFactoryId, kFactoryId)) { return false; }
