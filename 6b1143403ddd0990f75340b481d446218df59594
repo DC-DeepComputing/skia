@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "316f0e00_6e10dac7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-03-25T14:38:41Z",
+      "side": 1,
+      "message": "The approach looks solid, and this new behavior is a useful addition to SkParagraph.\nHowever, because several internal customers currently rely on the existing behavior, we can\u0027t safely roll this out as the new default without breaking their layouts.\nCould we wrap this new functionality behind a run-time flag (perhaps added to ParagraphStyle)?\nWe will need the flag to default to the legacy behavior so that our existing users aren\u0027t impacted unless they explicitly opt-in to the new logic.\nLet me know if you have any questions about where that flag should live.",
+      "revId": "6b1143403ddd0990f75340b481d446218df59594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
