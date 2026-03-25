@@ -16,22 +16,8 @@
 #include "src/gpu/graphite/geom/Transform.h"
 
 namespace skgpu::graphite {
-namespace {
 
-constexpr int kMinAtlasTextureSize = 512;  // the smallest we want the PathAtlas textures to be
-                                           // unless the device requires smaller
-
-}  // namespace
-
-PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t requestedHeight)
-        : fRecorder(recorder) {
-    const Caps* caps = recorder->priv().caps();
-    int maxTextureSize = std::max(caps->maxPathAtlasTextureSize(), kMinAtlasTextureSize);
-    maxTextureSize = std::min(maxTextureSize, caps->maxTextureSize());
-
-    fWidth = SkPrevPow2(std::min<uint32_t>(requestedWidth, maxTextureSize));
-    fHeight = SkPrevPow2(std::min<uint32_t>(requestedHeight, maxTextureSize));
-}
+PathAtlas::PathAtlas(Recorder* recorder) : fRecorder(recorder) {}
 
 PathAtlas::~PathAtlas() = default;
 
@@ -80,16 +66,15 @@ PathAtlas::AddShapeResult PathAtlas::addShape(const Rect& transformedShapeBounds
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
-                                      size_t plotWidth, size_t plotHeight,
+PathAtlas::DrawAtlasMgr::DrawAtlasMgr(const DrawAtlas::Config& config,
                                       DrawAtlas::UseStorageTextures useStorageTextures,
                                       std::string_view label,
                                       const Caps* caps) {
     static constexpr auto kMaskFormat = MaskFormat::kA8;
 
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
-                                 width, height,
-                                 plotWidth, plotHeight,
+                                 config,
+                                 caps->maxTextureSize(),
                                  useStorageTextures,
                                  /*evictor=*/this,
                                  label);
@@ -243,9 +228,7 @@ void PathAtlas::DrawAtlasMgr::evictAll() {
     SkASSERT(fAtlasRecordMap.empty());
 }
 
-void PathAtlas::DrawAtlasMgr::compact(Recorder* recorder) {
-    fDrawAtlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
-}
+void PathAtlas::DrawAtlasMgr::compact(Recorder* recorder) { fDrawAtlas->compact(recorder); }
 
 void PathAtlas::DrawAtlasMgr::freeGpuResources(Recorder* recorder) {
     fDrawAtlas->freeGpuResources(recorder->priv().tokenTracker()->nextFlushToken());

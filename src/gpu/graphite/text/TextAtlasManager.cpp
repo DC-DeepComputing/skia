@@ -44,7 +44,7 @@ namespace skgpu::graphite {
 
 using AtlasConfig = TextAtlasManager::AtlasConfig;
 
-AtlasConfig::AtlasConfig(int maxTextureSize, size_t maxBytes) {
+AtlasConfig::AtlasConfig(size_t maxBytes) {
     static const SkISize kARGBDimensions[] = {
             {256, 256},    // maxBytes < 2^19
             {512, 256},    // 2^19 <= maxBytes < 2^20
@@ -61,47 +61,37 @@ AtlasConfig::AtlasConfig(int maxTextureSize, size_t maxBytes) {
         ? SkTPin<int>(SkPrevLog2(maxBytes), 0, std::size(kARGBDimensions) - 1)
         : 0;
 
-    SkASSERT(kARGBDimensions[index].width() <= kMaxAtlasDim);
-    SkASSERT(kARGBDimensions[index].height() <= kMaxAtlasDim);
-    fARGBDimensions.set(std::min<int>(kARGBDimensions[index].width(), maxTextureSize),
-                        std::min<int>(kARGBDimensions[index].height(), maxTextureSize));
-    fMaxTextureSize = std::min<int>(maxTextureSize, kMaxAtlasDim);
+    fARGBDimensions = kARGBDimensions[index];
 }
 
-SkISize AtlasConfig::atlasDimensions(MaskFormat type) const {
+DrawAtlas::Config AtlasConfig::config(MaskFormat type) const {
+    SkISize plotSize;
+    SkISize atlasDims;
     if (MaskFormat::kA8 == type) {
-        // A8 is always 2x the ARGB dimensions, clamped to the max allowed texture size
-        return {std::min<int>(2 * fARGBDimensions.width(), fMaxTextureSize),
-                std::min<int>(2 * fARGBDimensions.height(), fMaxTextureSize)};
-    } else {
-        return fARGBDimensions;
-    }
-}
-
-SkISize AtlasConfig::plotDimensions(MaskFormat type) const {
-    if (MaskFormat::kA8 == type) {
-        SkISize atlasDimensions = this->atlasDimensions(type);
+        // A8 is always 2x the ARGB dimensions
+        atlasDims = {2 * fARGBDimensions.width(), 2 * fARGBDimensions.height()};
         // For A8 we want to grow the plots at larger texture sizes to accept more of the
         // larger SDF glyphs. Since the largest SDF glyph can be 170x170 with padding, this
         // allows us to pack 3 in a 512x256 plot, or 9 in a 512x512 plot.
-
+        //
         // This will give us 512x256 plots for 2048x1024, 512x512 plots for 2048x2048,
         // and 256x256 plots otherwise.
-        int plotWidth = atlasDimensions.width() >= 2048 ? 512 : 256;
-        int plotHeight = atlasDimensions.height() >= 2048 ? 512 : 256;
-
-        return {plotWidth, plotHeight};
+        int plotWidth = atlasDims.width() >= 2048 ? 512 : 256;
+        int plotHeight = atlasDims.height() >= 2048 ? 512 : 256;
+        plotSize = {plotWidth, plotHeight};
     } else {
+        atlasDims = fARGBDimensions;
         // ARGB and LCD always use 256x256 plots -- this has been shown to be faster
-        return {256, 256};
+        plotSize = {256, 256};
     }
+    return {plotSize, {atlasDims.width() / plotSize.width(),
+                       atlasDims.height() / plotSize.height()}};
 }
 
 TextAtlasManager::TextAtlasManager(Recorder* recorder)
         : fRecorder(recorder)
         , fSupportBilerpAtlas{recorder->priv().caps()->supportBilerpFromGlyphAtlas()}
-        , fAtlasConfig{recorder->priv().caps()->maxTextureSize(),
-                       recorder->priv().caps()->glyphCacheTextureMaximumBytes()} {}
+        , fAtlasConfig{recorder->priv().caps()->glyphCacheTextureMaximumBytes()} {}
 
 TextAtlasManager::~TextAtlasManager() = default;
 
@@ -369,17 +359,15 @@ void TextAtlasManager::setAtlasDimensionsToMinimum_ForTesting() {
     }
 
     // Set all the atlas sizes to 1x1 plot each.
-    new (&fAtlasConfig) AtlasConfig{2048, 0};
+    new (&fAtlasConfig) AtlasConfig{0};
 }
 
 bool TextAtlasManager::initAtlas(MaskFormat format) {
     int index = MaskFormatToAtlasIndex(format);
     if (fAtlases[index] == nullptr) {
-        SkISize atlasDimensions = fAtlasConfig.atlasDimensions(format);
-        SkISize plotDimensions = fAtlasConfig.plotDimensions(format);
         fAtlases[index] = DrawAtlas::Make(format,
-                                          atlasDimensions.width(), atlasDimensions.height(),
-                                          plotDimensions.width(), plotDimensions.height(),
+                                          fAtlasConfig.config(format),
+                                          fRecorder->priv().caps()->maxTextureSize(),
                                           DrawAtlas::UseStorageTextures::kNo,
                                           /*evictor=*/nullptr,
                                           /*label=*/"TextAtlas");
@@ -391,10 +379,9 @@ bool TextAtlasManager::initAtlas(MaskFormat format) {
 }
 
 void TextAtlasManager::compact() {
-    auto tokenTracker = fRecorder->priv().tokenTracker();
     for (int i = 0; i < kMaskFormatCount; ++i) {
         if (fAtlases[i]) {
-            fAtlases[i]->compact(tokenTracker->nextFlushToken());
+            fAtlases[i]->compact(fRecorder);
         }
     }
 }

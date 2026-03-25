@@ -39,11 +39,7 @@ class Transform;
  */
 class PathAtlas {
 public:
-    /**
-     * The PathAtlas will use textures of the requested size or the system's maximum texture size,
-     * whichever is smaller.
-     */
-    PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t requestedHeight);
+    explicit PathAtlas(Recorder* recorder);
     virtual ~PathAtlas();
 
     // Subclasses should ensure that the recorded masks have this much padding around each entry.
@@ -104,9 +100,6 @@ public:
         return true;
     }
 
-    uint32_t width() const { return fWidth; }
-    uint32_t height() const { return fHeight; }
-
 protected:
     // When adding a shape to an atlas we also return the unpadded origin of the shape as half2.
     using AtlasResult = std::optional<std::tuple<sk_sp<TextureProxy>,
@@ -159,10 +152,10 @@ protected:
         void evictAll();
 
     protected:
-        DrawAtlasMgr(size_t width, size_t height,
-                     size_t plotWidth, size_t plotHeight,
+        DrawAtlasMgr(const DrawAtlas::Config&,
                      DrawAtlas::UseStorageTextures useStorageTextures,
-                     std::string_view label, const Caps*);
+                     std::string_view label,
+                     const Caps*);
 
         AtlasResult::value_type makeAtlasResult(const AtlasEntry&);
 
@@ -197,9 +190,6 @@ protected:
 
     // The Recorder that created and owns this Atlas.
     Recorder* fRecorder;
-
-    uint32_t fWidth = 0;
-    uint32_t fHeight = 0;
 };
 
 }  // namespace skgpu::graphite

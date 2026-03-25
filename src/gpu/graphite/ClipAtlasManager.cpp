@@ -26,21 +26,22 @@
 
 namespace skgpu::graphite {
 
-static constexpr int kClipAtlasWidth = 2048;
-static constexpr int kClipAtlasHeight = 2048;
+static constexpr SkISize kPlotSize{1024, 1024};
+static constexpr SkISize kPathKeyPlotGridSize{2, 2};
+static constexpr SkISize kSaveRecordKeyPlotGridSize{1, 1};
 
 ClipAtlasManager::ClipAtlasManager(Recorder* recorder)
         : fRecorder(recorder)
-        , fPathKeyAtlasMgr(kClipAtlasWidth, kClipAtlasHeight,
-                           /*plotWidth=*/kClipAtlasWidth/2, /*plotHeight=*/kClipAtlasHeight/2,
+        , fPathKeyAtlasMgr({kPlotSize, kPathKeyPlotGridSize},
                            DrawAtlas::UseStorageTextures::kNo,
-                           "PathKeyClipAtlas", recorder->priv().caps())
+                           "PathKeyClipAtlas",
+                           recorder->priv().caps())
         // Examining the results from the top 20 or so webpages, the SaveRecord keyed clips
         // tend to be considerably smaller and rarer, so we use a smaller atlas here.
-        , fSaveRecordKeyAtlasMgr(kClipAtlasWidth/2, kClipAtlasHeight/2,
-                                 /*plotWidth=*/kClipAtlasWidth/2, /*plotHeight=*/kClipAtlasHeight/2,
+        , fSaveRecordKeyAtlasMgr({kPlotSize, kSaveRecordKeyPlotGridSize},
                                  DrawAtlas::UseStorageTextures::kNo,
-                                 "SaveRecordKeyClipAtlas", recorder->priv().caps()) {}
+                                 "SaveRecordKeyClipAtlas",
+                                 recorder->priv().caps()) {}
 
 namespace {
 // Needed to ensure that we have surrounding context, e.g. for inverse clips this would be solid.
@@ -181,15 +182,15 @@ void ClipAtlasManager::evictAtlases() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
-                                             size_t plotWidth, size_t plotHeight,
+ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(const DrawAtlas::Config& config,
                                              DrawAtlas::UseStorageTextures useStorageTextures,
-                                             std::string_view label, const Caps* caps) {
+                                             std::string_view label,
+                                             const Caps* caps) {
     static constexpr auto kMaskFormat = MaskFormat::kA8;
 
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
-                                 width, height,
-                                 plotWidth, plotHeight,
+                                 config,
+                                 caps->maxTextureSize(),
                                  useStorageTextures,
                                  /*evictor=*/this,
                                  label);
@@ -358,9 +359,8 @@ void ClipAtlasManager::DrawAtlasMgr::evictAll() {
 }
 
 void ClipAtlasManager::DrawAtlasMgr::compact(Recorder* recorder) {
-    auto tokenTracker = recorder->priv().tokenTracker();
     if (fDrawAtlas) {
-        fDrawAtlas->compact(tokenTracker->nextFlushToken());
+        fDrawAtlas->compact(recorder);
     }
 }
 
