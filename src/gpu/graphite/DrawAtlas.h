@@ -422,6 +422,17 @@ private:
     };
     skia_private::TArray<OldProxyUploads> fOldProxyUploads;
 
+    struct PendingProxyCopy {
+        sk_sp<TextureProxy> fSrcProxy;
+        sk_sp<TextureProxy> fDstProxy;
+        struct Region {
+            SkIRect  fSrcRect;
+            SkIPoint fDstPoint;
+        };
+        skia_private::TArray<Region> fRegions;
+    };
+    skia_private::TArray<PendingProxyCopy> fPendingCopies;
+
     SkDEBUGCODE(void validate() const;)
 };
 
@@ -547,16 +558,16 @@ public:
     bool isEmpty() const { return fRectanizer.percentFull() == 0; }
     bool hasAllocation() const { return fData != nullptr; }
 
-private:
-    std::byte* dataAt(SkIPoint atlasPoint);
-
-    SkISize dimensions() const { return SkISize(fPlotDimensions); }
-
     SkIPoint topLeftInAtlas() const {
         auto [w, h] = fPlotDimensions;
         auto [x, y] = fPlotCoord;
         return {x * w, y * h};
     }
+
+private:
+    std::byte* dataAt(SkIPoint atlasPoint);
+
+    SkISize dimensions() const { return SkISize(fPlotDimensions); }
 
     SkIRect boundsInAtlas() const {
         auto [w, h] = fPlotDimensions;
