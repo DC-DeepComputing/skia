@@ -57,7 +57,8 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                     const LayerKey& key,
                                     const DrawParams* drawParams,
                                     const Insertion& stop,
-                                    Insertion* capture) {
+                                    Insertion* capture,
+                                    bool canForwardMerge) {
     // Child stencils get a fast path to their parent
     if (isStencil) {
         if (stepIndex > 0) {
@@ -76,6 +77,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
     BindingWrapper* targetMatch = nullptr;
+    BindingWrapper* forwardMerge = nullptr;
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     if (!isStencil && !dependsOnDst) {
         // A valid stopLayer will never be null, because the depth draw will always return the layer
@@ -99,7 +101,16 @@ void DrawListLayer::recordBackwards(int stepIndex,
             if (result.first == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
-                    // TODO (thomsmit): Test performance of forward merging
+                    // Only single renderstep draws may forward merge, otherwise, forward merging
+                    // risks pulling a parent renderstep over its inserted child.
+                    if (canForwardMerge) {
+                        if (result.second && current->fBindings.head() != current->fBindings.tail()
+                            && (!requiresBarrier ||
+                                !result.second->fBounds.intersects(drawParams->drawBounds()))) {
+                            forwardMerge = result.second;
+                            targetMatch = forwardMerge;
+                        }
+                    }
                     return true;
                 } else {
                     // If !dependsOnDst, we just keep searching backwards.
@@ -134,7 +145,15 @@ void DrawListLayer::recordBackwards(int stepIndex,
     if (!targetLayer) {
         fOrderCounter = fOrderCounter.next();
         targetLayer = fStorage.make<Layer>(fOrderCounter);
-        fLayers.addToTail(targetLayer);
+        if (forwardMerge) {
+            SkASSERT(current);
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            forwardMerge->fOrder = CompressedPaintersOrder::First();
+            fLayers.addAfter(targetLayer, current);
+        } else {
+            fLayers.addToTail(targetLayer);
+        }
     }
 
     SkASSERT(targetLayer);
@@ -283,6 +302,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
 
     Insertion stepInsertion = {nullptr, nullptr};
     fRenderStepCount += renderer->numRenderSteps();
+    bool canForwardMerge = renderer->numRenderSteps() == 1;
     for (int stepIndex = 0; stepIndex < renderer->numRenderSteps(); ++stepIndex) {
         const RenderStep* const step = renderer->steps()[stepIndex];
 
@@ -315,7 +335,8 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                     LayerKey{pipelineIndex, textureBindingIndex},
                     drawParams,
                     /*stop=*/{},
-                    &stepInsertion);
+                    &stepInsertion,
+                    false);
         } else {
             if (latestInsertion.fLayer && !dependsOnDst) {
                 this->recordForwards(stepIndex,
@@ -338,7 +359,8 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                         LayerKey{pipelineIndex, textureBindingIndex},
                         drawParams,
                         latestInsertion,
-                        nullptr);
+                        nullptr,
+                        canForwardMerge);
             }
         }
         gatherer->rewindForRenderStep();
