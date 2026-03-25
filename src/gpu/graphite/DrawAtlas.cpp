@@ -23,6 +23,7 @@
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/task/CopyTask.h"
 #include "src/gpu/graphite/task/UploadTask.h"
 
 #include <algorithm>
@@ -221,45 +222,56 @@ inline void DrawAtlas::makeMRU(Plot* plot) {
 
 bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
-    auto process = [&](sk_sp<TextureProxy> proxy,
-                       const std::byte*    dataPtr,
-                       size_t              rowBytes,
-                       SkIRect             dstRect) {
-        if (dstRect.isEmpty()) {
-            return true;
-        }
 
-        std::vector<MipLevel> levels;
-        levels.push_back({dataPtr, rowBytes});
+    SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat), kUnknown_SkAlphaType, nullptr);
 
-        // Src and dst colorInfo are the same
-        SkColorInfo colorInfo(MaskFormatToColorType(fMaskFormat), kUnknown_SkAlphaType, nullptr);
-        const UploadSource uploadSource = UploadSource::Make(
-                recorder->priv().caps(), *proxy, colorInfo, colorInfo, levels, dstRect);
-        if (!uploadSource.isValid()) {
-            return false;
+    // Phase A: Upload pending dirty data to old proxies, then add as a dependency so it
+    // executes before the GPU copy.
+    if (!fOldProxyUploads.empty()) {
+        UploadList oldUploads;
+        for (const auto& opu : fOldProxyUploads) {
+            for (const auto& u : opu.fUploads) {
+                if (u.fDstRect.isEmpty()) {
+                    continue;
+                }
+                std::vector<MipLevel> levels;
+                levels.push_back({u.fDataPtr, u.fRowBytes});
+                const UploadSource uploadSource = UploadSource::Make(
+                        recorder->priv().caps(), *opu.fProxy, colorInfo, colorInfo,
+                        levels, u.fDstRect);
+                if (!uploadSource.isValid()) {
+                    return false;
+                }
+                if (!oldUploads.recordUpload(recorder,
+                                             opu.fProxy,
+                                             colorInfo,
+                                             colorInfo,
+                                             uploadSource,
+                                             u.fDstRect,
+                                             /*ConditionalUploadContext=*/nullptr)) {
+                    return false;
+                }
+            }
         }
-        if (!dc->recordUpload(recorder,
-                              std::move(proxy),
-                              colorInfo,
-                              colorInfo,
-                              uploadSource,
-                              dstRect,
-                              /*ConditionalUploadContext=*/nullptr)) {
-            return false;
+        if (oldUploads.size() > 0) {
+            dc->recordDependency(UploadTask::Make(&oldUploads));
         }
-        return true;
-    };
+        fOldProxyUploads = {};
+    }
 
-    for (const auto& opu : fOldProxyUploads) {
-        for (const auto& u : opu.fUploads) {
-            if (!process(opu.fProxy, u.fDataPtr, u.fRowBytes, u.fDstRect)) {
-                return false;
+    // Phase B: GPU texture-to-texture copies (old proxy → new proxy), added as dependencies.
+    for (auto& copy : fPendingCopies) {
+        for (auto& region : copy.fRegions) {
+            auto task = CopyTextureToTextureTask::Make(
+                copy.fSrcProxy, region.fSrcRect, copy.fDstProxy, region.fDstPoint);
+            if (task) {
+                dc->recordDependency(std::move(task));
             }
         }
     }
-    fOldProxyUploads = {};
+    fPendingCopies = {};
 
+    // Phase C: Upload any new dirty plots to the current proxy (normal path).
     if (!fProxy) {
         return true;
     }
@@ -269,7 +281,23 @@ bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
         }
 
         auto [dataPtr, dstRect] = plot->prepareForUpload();
-        if (!process(fProxy, dataPtr, plot->rowBytes(), dstRect)) {
+        if (dstRect.isEmpty()) {
+            continue;
+        }
+        std::vector<MipLevel> levels;
+        levels.push_back({dataPtr, plot->rowBytes()});
+        const UploadSource uploadSource = UploadSource::Make(
+                recorder->priv().caps(), *fProxy, colorInfo, colorInfo, levels, dstRect);
+        if (!uploadSource.isValid()) {
+            return false;
+        }
+        if (!dc->recordUpload(recorder,
+                              fProxy,
+                              colorInfo,
+                              colorInfo,
+                              uploadSource,
+                              dstRect,
+                              /*ConditionalUploadContext=*/nullptr)) {
             return false;
         }
     }
@@ -494,6 +522,8 @@ bool DrawAtlas::increaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
         return false;
     }
 
+    sk_sp<TextureProxy> oldProxy = fProxy;
+
     OldProxyUploads oldUploads;
     oldUploads.fProxy = fProxy;
 
@@ -504,8 +534,6 @@ bool DrawAtlas::increaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
             if (c.fX < fPlotGridDimensions.width() && c.fY < fPlotGridDimensions.height()) {
                 auto oldIndex = c.fY * fPlotGridDimensions.width() + c.fX;
                 newPlotArray[newIndex] = std::move(fPlots[oldIndex]);
-                // In the future we'd like to issue a GPU->GPU copy here. For now, we just mark the
-                // plot fully dirty in order to trigger a re-upload.
                 if (newPlotArray[newIndex]->needsUpload()) {
                     auto [dataPtr, dstRect] = newPlotArray[newIndex]->prepareForUpload();
                     if (!dstRect.isEmpty()) {
@@ -517,7 +545,6 @@ bool DrawAtlas::increaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
                         oldUploads.fUploads.push_back(upload);
                     }
                 }
-                newPlotArray[newIndex]->markAllEntriesDirty();
             } else {
                 newPlotArray[newIndex] = Plot::Make(c, fPlotSize, fMaskFormat);
                 fPlotMRUList.addToTail(newPlotArray[newIndex].get());
@@ -530,6 +557,17 @@ bool DrawAtlas::increaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
     fProxy = std::move(newProxy);
     if (!oldUploads.fUploads.empty()) {
         fOldProxyUploads.push_back(std::move(oldUploads));
+    }
+
+    // Schedule a GPU copy of the entire old texture into the new one.
+    // We could try to do minimal copies of each Plot but presumably
+    // the old atlas is dense if we're growing.
+    if (oldProxy) {
+        PendingProxyCopy copy;
+        copy.fSrcProxy = std::move(oldProxy);
+        copy.fDstProxy = fProxy;
+        copy.fRegions.push_back({SkIRect::MakeSize(copy.fSrcProxy->dimensions()), {0, 0}});
+        fPendingCopies.push_back(std::move(copy));
     }
     SkDEBUGCODE(this->validate());
     SKIA_LOG_I("Increased %s DrawAtlas size to %d x %d",
@@ -565,8 +603,10 @@ void DrawAtlas::decreaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
         return;
     }
 
-    OldProxyUploads oldUploads;
-    oldUploads.fProxy = fProxy;
+    sk_sp<TextureProxy> oldProxy = fProxy;
+    PendingProxyCopy copy;
+    copy.fSrcProxy = fProxy;
+    copy.fDstProxy = newProxy;
 
     int numNewPlots = newPlotGridDims.area();
     auto newPlotArray = std::make_unique<std::unique_ptr<Plot>[]>(numNewPlots);
@@ -586,7 +626,11 @@ void DrawAtlas::decreaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
         // be moved to the smaller texture.
         if (!plot->isEmpty()) {
             PlotCoord oldCoord = plot->plotCoord();
+            SkIRect oldBounds = SkIRect::MakeXYWH(oldCoord.fX * fPlotWidth,
+                                                   oldCoord.fY * fPlotHeight,
+                                                   fPlotWidth, fPlotHeight);
             plot->setPlotCoord(newCoord);
+            SkIPoint newTopLeft = {newCoord.fX * fPlotWidth, newCoord.fY * fPlotHeight};
             SkIVector translation{fPlotSize.width()  * (newCoord.fX - oldCoord.fX),
                                   fPlotSize.height() * (newCoord.fY - oldCoord.fY)};
             const RecordVisitor visitor{plot.get()};
@@ -599,7 +643,7 @@ void DrawAtlas::decreaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
             // However, we are assuming those have all been flushed before compact() is
             // called.
             SkASSERT(!plot->needsUpload());
-            plot->markAllEntriesDirty();
+            copy.fRegions.push_back({oldBounds, newTopLeft});
             newPlotArray[currNewPlotIdx++] = std::move(plot);
             advanceCoord();
         } else if (plot->hasAllocation()) {
@@ -635,6 +679,10 @@ void DrawAtlas::decreaseProxySize(Recorder* recorder, SkISize newPlotGridDims) {
     fPlots = std::move(newPlotArray);
     fProxy = std::move(newProxy);
 
+    if (!copy.fRegions.empty()) {
+        fPendingCopies.push_back(std::move(copy));
+    }
+
     SkDEBUGCODE(this->validate());
     SKIA_LOG_I("Decreased %s DrawAtlas size to %d x %d",
                fLabel.c_str(),
@@ -647,6 +695,7 @@ inline void DrawAtlas::deactivateProxy() {
     // Old proxy uploads contain data pointers into Plot data that will be destroyed below,
     // so discard them. Any draws referencing old proxies are also being discarded.
     fOldProxyUploads = {};
+    fPendingCopies = {};
 
     fPlotMRUList.reset();
     for (auto& plot : plots()) {
@@ -699,6 +748,7 @@ int DrawAtlas::numNonEmptyPlots() const {
 
 void DrawAtlas::clearPendingUploads() {
     fOldProxyUploads = {};
+    fPendingCopies = {};
     for (const auto& plot : this->plots()) {
         if (plot->needsUpload()) {
             plot->prepareForUpload();

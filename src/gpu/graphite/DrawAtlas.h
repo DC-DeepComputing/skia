@@ -422,6 +422,17 @@ private:
     };
     skia_private::TArray<OldProxyUploads> fOldProxyUploads;
 
+    struct PendingProxyCopy {
+        sk_sp<TextureProxy> fSrcProxy;
+        sk_sp<TextureProxy> fDstProxy;
+        struct Region {
+            SkIRect  fSrcRect;
+            SkIPoint fDstPoint;
+        };
+        skia_private::TArray<Region> fRegions;
+    };
+    skia_private::TArray<PendingProxyCopy> fPendingCopies;
+
     SkDEBUGCODE(void validate() const;)
 };
 
