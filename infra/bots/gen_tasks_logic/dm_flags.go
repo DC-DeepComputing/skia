@@ -559,6 +559,14 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 						skip(ALL, "test", ALL, "BigImageTest_Graphite")
 					}
 				}
+
+				if b.ExtraConfig("D3D11") {
+					if b.GPU("IntelIris6100") {
+						skip("grdawn_d3d11", "bench", ALL, "image_filter_xfermode_in")
+						skip("grdawn_d3d11", "gm", ALL, "strokedlines_drawPoints")
+					}
+				}
+
 			} else if b.ExtraConfig("Native") {
 				if b.ExtraConfig("Metal") {
 					if b.ExtraConfig("TestPrecompile") {
