@@ -13,6 +13,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
+#include "include/private/base/SkDebug.h"
 #include "modules/skottie/include/TextShaper.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/skunicode/include/SkUnicode.h"
@@ -560,6 +561,13 @@ DEF_TEST(Skottie_Shaper_CTStrict, r) {
         auto fact = sk_make_sp<SkShapers::CoreTextFactory>(tst.lbm);
         auto res = Shaper::Shape(SkString(tst.txt), desc, box, fontmgr, fact);
 
+        if (res.fFragments.size() != tst.line_map.size()) {
+            SkDebugf("*** txt: >%s<, frags: %zu, expected frags: %zu\n",
+                tst.txt, res.fFragments.size(), tst.line_map.size());
+            for (size_t i = 0; i < res.fFragments.size(); ++i) {
+                SkDebugf("** frag[%zu] line: %u\n", i, res.fFragments[i].fLineIndex);
+            }
+        }
         REPORTER_ASSERT(r, res.fFragments.size() == tst.line_map.size());
         for (size_t i = 0; i < res.fFragments.size(); ++i) {
             REPORTER_ASSERT(r, res.fFragments[i].fLineIndex == tst.line_map[i]);
