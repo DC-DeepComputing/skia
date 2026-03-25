@@ -37,20 +37,16 @@ public:
     // two atlases.
     class AtlasConfig {
     public:
-        // The capabilities of the GPU define maxTextureSize. The client provides maxBytes, and this
-        // represents the largest they want a single atlas texture to be. Due to multitexturing, we
-        // may expand temporarily to use more space as needed.
-        AtlasConfig(int maxTextureSize, size_t maxBytes);
+        // The client provides maxBytes, and this represents the largest they want a single atlas
+        // texture to be. For historical reasons, the maxBytes is actually used to control the
+        // initial/minimum texture size. The dynamic atlas may use more storage. We should change
+        // the knobs exposed on ContextOptions to give the client more direct control.
+        explicit AtlasConfig(size_t maxBytes);
 
-        SkISize atlasDimensions(MaskFormat type) const;
-        SkISize plotDimensions(MaskFormat type) const;
+        DrawAtlas::Config config(MaskFormat type) const;
 
     private:
-        // Minimum maximum texture size for webgpu. TODO: Make this be runtime determined.
-        inline static constexpr int kMaxAtlasDim = 1 << 13;
-
         SkISize fARGBDimensions;
-        int fMaxTextureSize;
     };
 
     TextAtlasManager(Recorder*);

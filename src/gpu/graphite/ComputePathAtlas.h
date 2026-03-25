@@ -52,6 +52,9 @@ public:
     // be in use by GPU commands that are in-flight or yet to be submitted.
     void reset();
 
+    uint32_t width() const { return fWidth; }
+    uint32_t height() const { return fHeight; }
+
 protected:
     explicit ComputePathAtlas(Recorder*);
 
@@ -65,6 +68,9 @@ protected:
 
 private:
     bool initializeTextureIfNeeded();
+
+    uint32_t fWidth = 0;
+    uint32_t fHeight = 0;
 
     //////////////////
     // Uncached data

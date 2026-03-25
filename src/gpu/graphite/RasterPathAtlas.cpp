@@ -19,25 +19,18 @@
 
 namespace skgpu::graphite {
 
-static constexpr uint32_t kDefaultAtlasDim = 2048;
-
-static constexpr uint32_t kSmallPathPlotWidth = 512;
-static constexpr uint32_t kSmallPathPlotHeight = 256;
-
-static constexpr uint32_t kUncachedAtlasDim = 2048;
+static constexpr SkISize kCachedPlotSize{1024, 1024};
+static constexpr SkISize kCachedPlotGridSize{2, 2};
+static constexpr SkISize kSmallPathPlotSize{512, 256};
+static constexpr SkISize kSmallPathPlotGridSize{1, 1};
+static constexpr SkISize kUncachedPlotSize{1024, 1024};
+static constexpr SkISize kUncachedPlotGridSize{2, 2};
 
 RasterPathAtlas::RasterPathAtlas(Recorder* recorder)
-        : PathAtlas(recorder, kDefaultAtlasDim, kDefaultAtlasDim)
-        , fCachedAtlasMgr(fWidth, fHeight,
-                          /*plotWidth=*/fWidth/2, /*plotHeight=*/fHeight/2,
-                          recorder->priv().caps())
-        , fSmallPathAtlasMgr(std::max(fWidth, kSmallPathPlotWidth),
-                             std::max(fHeight, kSmallPathPlotHeight),
-                             kSmallPathPlotWidth, kSmallPathPlotHeight,
-                             recorder->priv().caps())
-        , fUncachedAtlasMgr(kUncachedAtlasDim, kUncachedAtlasDim,
-                            /*plotWidth=*/kUncachedAtlasDim/2, /*plotHeight=*/kUncachedAtlasDim/2,
-                            recorder->priv().caps()) {
+        : PathAtlas(recorder)
+        , fCachedAtlasMgr({kCachedPlotSize, kCachedPlotGridSize}, recorder->priv().caps())
+        , fSmallPathAtlasMgr({kSmallPathPlotSize, kSmallPathPlotGridSize}, recorder->priv().caps())
+        , fUncachedAtlasMgr({kUncachedPlotSize, kUncachedPlotGridSize}, recorder->priv().caps()) {
     SkASSERT(recorder);
 }
 

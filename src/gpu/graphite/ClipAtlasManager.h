@@ -53,10 +53,10 @@ private:
     // Wrapper class to manage DrawAtlas and associated caching operations
     class DrawAtlasMgr : public DrawAtlas::EvictionCallback {
     public:
-        DrawAtlasMgr(size_t width, size_t height,
-                     size_t plotWidth, size_t plotHeight,
+        DrawAtlasMgr(const DrawAtlas::Config&,
                      DrawAtlas::UseStorageTextures useStorageTextures,
-                     std::string_view label, const Caps*);
+                     std::string_view label,
+                     const Caps*);
 
         Result findOrCreateEntry(Recorder* recorder,
                                  const UniqueKey&,

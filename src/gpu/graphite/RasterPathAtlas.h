@@ -57,13 +57,8 @@ protected:
 private:
     class RasterAtlasMgr : public DrawAtlasMgr {
     public:
-        RasterAtlasMgr(size_t width, size_t height,
-                       size_t plotWidth, size_t plotHeight,
-                       const Caps* caps)
-                : DrawAtlasMgr(width,
-                               height,
-                               plotWidth,
-                               plotHeight,
+        RasterAtlasMgr(const DrawAtlas::Config& config, const Caps* caps)
+                : DrawAtlasMgr(config,
                                DrawAtlas::UseStorageTextures::kNo,
                                /*label=*/"RasterPathAtlas",
                                caps) {}
