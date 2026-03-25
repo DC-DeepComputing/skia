@@ -104,13 +104,28 @@ public:
         });
     }
 
+    template <uint16_t TileWidth, uint16_t TileHeight>
+    static uint32_t MakeStripsGPU(const Tiles<TileWidth, TileHeight>& tileContainer,
+                                  SkTDArray<Strip>& stripBuf,
+                                  uint32_t alphaIdx,
+                                  bool isInverse,
+                                  const Polyline& polyline,
+                                  WideTiles<TileHeight>& wides,
+                                  bool isCulled,
+                                  const WindingHistogram& windingHistogram,
+                                  const SkIRect& clipRect
+#if defined(GPU_TEST_UTILS)
+                                  , MsaaExactMaskObserver observer = nullptr
+#endif
+    );
+
 private:
 #if defined(GPU_TEST_UTILS)
     template <uint16_t, uint16_t> friend class ClipTestRunner;
     template <uint16_t, uint16_t> friend class CoverageTestRunner;
     template <uint16_t, uint16_t> friend class CoverageBenchSimd;
 #endif
-    template <uint16_t, uint16_t> friend class StripGenerator;
+    template <uint16_t, uint16_t, uint32_t, typename> friend class StripGenerator;
 
     template <typename F> static void Dispatch(SkPathFillType fillType, F&& f) {
         switch (fillType) {
@@ -1319,6 +1334,207 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
 
     alphaBuffer.resize(localAlphaIdx);
     processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
+}
+
+template <uint16_t TileWidth, uint16_t TileHeight, uint32_t kWorkGroupSize, bool kIsWinding>
+uint32_t MakeStripsGPU(const Tiles<TileWidth, TileHeight, GpuTile<TileWidth, TileHeight>>& tileContainer,
+                       SkTDArray<Strip>& stripBuf,
+                       bool isInverse,
+                       const Polyline& polyline,
+                       WideTiles<TileHeight>& wides,
+                       bool isCulled,
+                       const WindingHistogram& windingHistogram,
+                       const SkIRect& clipRect
+#if defined(GPU_TEST_UTILS)
+                       , MsaaExactMaskObserver observer = nullptr
+#endif
+    ) {
+    static_assert(kWorkGroupSize != 0);
+    auto shouldFill = [](int32_t w) {
+        if constexpr (kIsWinding) {
+            return w != 0;
+        } else {
+            return (w & 1) != 0;
+        }
+    };
+
+    auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+        if (startTileY >= endTileY) {
+            return;
+        }
+
+        uint16_t y = startTileY;
+        uint16_t startX = static_cast<uint16_t>(clipRect.left());
+        uint16_t width = static_cast<uint16_t>(clipRect.width());
+
+        if (isCulled && isInverse) {
+            const auto& activeRows = windingHistogram.activeRows();
+            while (y < endTileY) {
+                int wordIdx = y >> 5;
+                uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                uint32_t mask = activeRows[wordIdx];
+                mask &= (~0u << (y & 31));
+
+                uint32_t endShift = wordEnd & 31;
+                if (endShift != 0) {
+                    mask &= (1u << endShift) - 1;
+                }
+
+                while (mask != 0) {
+                    int bit = std::countr_zero(mask);
+                    uint16_t nextActiveY = (wordIdx << 5) + bit;
+
+                    for (; y < nextActiveY; ++y) {
+                        wides.addTile(startX, y * TileHeight, width);
+                    }
+
+                    if (!shouldFill(windingHistogram[y])) {
+                        wides.addTile(startX, y * TileHeight, width);
+                    }
+
+                    y++;
+                    mask &= mask - 1;
+                }
+
+                for (; y < wordEnd; ++y) {
+                    wides.addTile(startX, y * TileHeight, width);
+                }
+            }
+        } else if (isCulled) {
+            const auto& activeRows = windingHistogram.activeRows();
+            while (y < endTileY) {
+                int wordIdx = y >> 5;
+                uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                uint32_t mask = activeRows[wordIdx];
+                mask &= (~0u << (y & 31));
+
+                uint32_t endShift = wordEnd & 31;
+                if (endShift != 0) {
+                    mask &= (1u << endShift) - 1;
+                }
+
+                while (mask != 0) {
+                    int bit = std::countr_zero(mask);
+                    y = (wordIdx << 5) + bit;
+
+                    if (shouldFill(windingHistogram[y])) {
+                        wides.addTile(startX, y * TileHeight, width);
+                    }
+                    mask &= mask - 1;
+                }
+
+                y = wordEnd;
+            }
+        } else if (isInverse) {
+            for (; y < endTileY; ++y) {
+                wides.addTile(startX, y * TileHeight, width);
+            }
+        }
+    };
+
+    const auto& tiles = tileContainer.getTiles();
+    if (tiles.empty()) {
+        processEmptyTileRows(0, windingHistogram.size());
+        return 0;
+    }
+
+    size_t totalCount = tiles.size();
+    Tile<TileWidth, TileHeight> prevTile = tiles[0];
+
+    constexpr int32_t kTileAlphaCount = TileWidth * TileHeight;
+    int32_t localAlphaIdx = 0;
+    int32_t windingDelta = windingHistogram[prevTile.y];
+
+    processEmptyTileRows(0, prevTile.y);
+    bool fillLeftStart = shouldFill(windingDelta) ^ isInverse;
+    if (isInverse || isCulled) {
+        // If the first tile isn't flush left, we need a 0-width strip to start filling
+        if (fillLeftStart) {
+            stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), prevTile.y * TileHeight, localAlphaIdx, false));
+        }
+    }
+
+    Strip currentStrip(
+            prevTile.x * TileWidth, prevTile.y * TileHeight, localAlphaIdx, fillLeftStart);
+
+    for (size_t i = 0; i <= totalCount; ++i) {
+        bool isSentinel = (i == totalCount);
+        Tile<TileWidth, TileHeight> tile;
+
+        if (isSentinel) {
+            tile = Tile<TileWidth, TileHeight>(0xFFFF, 0xFFFF, 0, 0);
+        } else {
+            tile = tiles[i];
+        }
+
+        bool tileStart = (tile.x != prevTile.x || tile.y != prevTile.y);
+        bool rowStart = (tile.y != prevTile.y);
+        bool segStart = tileStart && !((tile.y == prevTile.y) && (tile.x == prevTile.x + 1));
+
+        if (tileStart) {
+            localAlphaIdx += kTileAlphaCount;
+        }
+
+        if (segStart) {
+            stripBuf.push_back(currentStrip);
+
+            bool fillLeftCaptive = false;
+            if (rowStart) {
+                if (windingDelta != 0 || isInverse || isSentinel) {
+                    stripBuf.push_back(Strip(0xFFFF,
+                                             prevTile.y * TileHeight,
+                                             localAlphaIdx,
+                                             shouldFill(windingDelta) ^ isInverse));
+                }
+
+                if (!isSentinel) {
+                    processEmptyTileRows(prevTile.y + 1, tile.y);
+
+                    windingDelta = windingHistogram[tile.y];
+                    fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+                    if (fillLeftCaptive) {
+                        stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), tile.y * TileHeight, localAlphaIdx, false));
+                    }
+                }
+            } else {
+                fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+            }
+
+            if (!isSentinel) {
+                currentStrip = Strip(tile.x * TileWidth,
+                                     tile.y * TileHeight,
+                                     localAlphaIdx,
+                                     fillLeftCaptive);
+            }
+        }
+
+        if (isSentinel) {
+            break;
+        }
+
+        prevTile = tile;
+
+        Line line = polyline.getLine(tile.packedWindingLineIdx >> IntersectionBits::INT_MASK_SHIFT);
+        //float p0_x = line.p0.fX;
+        float p0_y = line.p0.fY;
+        //float p1_x = line.p1.fX;
+        float p1_y = line.p1.fY;
+
+        //bool canonicalXDir = p1_x >= p0_x;
+        bool canonicalYDir = p1_y >= p0_y;
+
+        uint32_t windingBit = (tile.packedWindingLineIdx & IntersectionBits::W) ? 1 : 0;
+        if constexpr (kIsWinding) {
+            windingDelta += (canonicalYDir ? 1 : -1) * static_cast<int32_t>(windingBit);
+        } else {
+            windingDelta ^= static_cast<int32_t>(windingBit);
+        }
+    }
+
+    processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
+    return localAlphaIdx;
 }
 
 }  // namespace skgpu::graphite

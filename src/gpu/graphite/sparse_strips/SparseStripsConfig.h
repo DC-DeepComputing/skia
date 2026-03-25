@@ -14,6 +14,8 @@ struct SparseStripConfig {
     static constexpr uint16_t kTileWidth  = 8;
     static constexpr uint16_t kTileHeight = 8;
     static_assert(kTileWidth == kTileHeight);
+
+    static constexpr uint32_t kWorkGroupSize = 256;
 };
 
 }  // namespace skgpu::graphite

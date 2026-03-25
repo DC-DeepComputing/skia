@@ -36,23 +36,50 @@
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight>
+template <uint16_t kTileWidth,
+          uint16_t kTileHeight,
+          uint32_t kWorkGroupSize = 0,
+          typename TileType = Tile<kTileWidth, kTileHeight>>
 class StripGenerator {
 public:
     StripGenerator(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
-            : fDeviceSize(SkIRect::MakeSize(deviceSize)), fCulled(true), fLUT(lut)
+            : fDeviceSize(SkIRect::MakeSize(deviceSize))
+            , fCulled(true)
+            , fLUT(lut)
             , fRecorder(recorder)
+            , fAlphaCount(0)
             , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
-            fAllocations.reserve(4);
-        }
-
-    ~StripGenerator() {
-        this->reset();
+        fAllocations.reserve(4);
     }
 
+    ~StripGenerator() { this->resetAll(); }
+
+public:
     const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> processGeometry(
-                const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
-        this->reset();
+            const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+        constexpr bool isCPU = std::is_same_v<TileType, Tile<kTileWidth, kTileHeight>>;
+        constexpr bool isGPU = std::is_same_v<TileType, GpuTile<kTileWidth, kTileHeight>>;
+        if constexpr (isCPU) {
+            return processGeometryCPU(path, ctm, clip);
+        } else if constexpr (isGPU) {
+            return processGeometryGPU(path, ctm, clip);
+        } else {
+            SkUNREACHABLE;
+        }
+    }
+
+    void resetGpu() {
+        constexpr bool isGPU = std::is_same_v<TileType, GpuTile<kTileWidth, kTileHeight>>;
+        if constexpr (isGPU) {
+            fFlattenned.reset();
+            fTiles.reset();
+        }  // else no-op
+    }
+
+private:
+    SK_ALWAYS_INLINE const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&>
+    processGeometryCPU(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+        this->resetAll();
 
         fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, fFlattenned);
 
@@ -68,12 +95,9 @@ public:
                                   fFlattenned, fLUT, fWides, fCulled, fWindingHistogram,
                                   fDeviceSize);
 
-        // Retrieve the mapping of offsets to proxies
         SkASSERT(fRecorder);
         int32_t globalOffset = manager->getUploadOffset();
         manager->getAssociatedProxies(fAllocations);
-        constexpr size_t kBytesPerTile = kTileWidth * kTileHeight;
-
         if (fStrips.size() > 1 && !fAllocations.empty()) {
             int32_t stripIdx = 1;
             for (const auto& alloc : fAllocations) {
@@ -81,26 +105,7 @@ public:
                 int32_t endIdx = alloc.first;
                 int32_t currEndIdx = 0;
                 while (currEndIdx < endIdx && stripIdx < fStrips.size()) {
-                    const Strip& prev = fStrips[stripIdx - 1];
-                    const Strip& curr = fStrips[stripIdx];
-                    int32_t startIdx =
-                            static_cast<int32_t>(prev.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
-                    currEndIdx =
-                            static_cast<int32_t>(curr.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
-
-                    int32_t totalBytes = currEndIdx - startIdx;
-                    int32_t numTiles = totalBytes / kBytesPerTile;
-                    uint16_t prevWidth = numTiles * kTileWidth;
-                    bool shouldFill = (curr.packedAlphaIdx >> Strip::FILL_SHIFT) & 1;
-                    if (shouldFill) {
-                        SkASSERT(prev.y == curr.y);
-                        uint16_t startX = prev.x + prevWidth;
-                        uint16_t width = curr.x - startX;
-                        fWides.addTile(startX, curr.y, width);
-                    }
-                    if (totalBytes > 0) {
-                        fEnds.addCap(prev.x, prev.y, prevWidth, startIdx + globalOffset);
-                    }
+                    currEndIdx = processStripPair(stripIdx, globalOffset);
                     stripIdx++;
                 }
             }
@@ -109,8 +114,56 @@ public:
         return {fWides, fEnds};
     }
 
-private:
-    void reset() {
+    SK_ALWAYS_INLINE const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&>
+    processGeometryGPU(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+        fWides.clear();
+        fEnds.clear();
+        fStrips.clear();
+
+        fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, fFlattenned);
+
+        if (fCulled) {
+            fWindingHistogram.clear();
+        }
+        fWindingHistogram.resize((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight);
+
+        int32_t prevTileCount = fTiles.getTiles().size();
+        fCulled = fTiles.makeTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram);
+        fTiles.sortTiles(prevTileCount); //adjust if sktdarray
+
+        Strip::MakeStripsGPU<kTileWidth, kTileHeight, true>(
+                fTiles, fStrips, false, fFlattenned, fWides, fCulled, fWindingHistogram, fDeviceSize);
+
+        for (int stripIdx = 1 ; stripIdx < fStrips.size(); ++stripIdx) {
+            processStripPair(stripIdx, 0);
+        }
+
+        return {fWides, fEnds};
+    }
+
+    SK_ALWAYS_INLINE int32_t processStripPair(int32_t stripIdx, int32_t globalOffset) {
+        constexpr size_t kBytesPerTile = kTileWidth * kTileHeight;
+        const Strip& prev = fStrips[stripIdx - 1];
+        const Strip& curr = fStrips[stripIdx];
+        int32_t startIdx = static_cast<int32_t>(prev.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
+        int32_t currEndIdx = static_cast<int32_t>(curr.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
+        int32_t totalBytes = currEndIdx - startIdx;
+        int32_t numTiles = totalBytes / kBytesPerTile;
+        uint16_t prevWidth = numTiles * kTileWidth;
+        bool shouldFill = (curr.packedAlphaIdx >> Strip::FILL_SHIFT) & 1;
+        if (shouldFill) {
+            SkASSERT(prev.y == curr.y);
+            uint16_t startX = prev.x + prevWidth;
+            uint16_t width = curr.x - startX;
+            fWides.addTile(startX, curr.y, width);
+        }
+        if (totalBytes > 0) {
+            fEnds.addCap(prev.x, prev.y, prevWidth, startIdx + globalOffset);
+        }
+        return currEndIdx;
+    }
+
+    void resetAll() {
         fFlattenned.reset();
         fTiles.reset();
         fStrips.clear();
@@ -122,19 +175,20 @@ private:
     SkIRect fDeviceSize;
     bool fCulled;
     Flatten fFlattener;
-    Tiles<kTileWidth, kTileHeight> fTiles;
+    Tiles<kTileWidth, kTileHeight, TileType> fTiles;
     Polyline fFlattenned;
     SkTDArray<Strip> fStrips;
     const SkTDArray<uint8_t>& fLUT;
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
     bool fDrawn = false;
     Recorder* fRecorder;
+    int32_t fAlphaCount;
     WindingHistogram fWindingHistogram;
 
     WideTiles<kTileHeight> fWides;
     EndCaps<kTileHeight> fEnds;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_sparse_strips_StripGenerator_DEFINED
+#endif  // skgpu_graphite_sparse_strips_StripGenerator_DEFINED

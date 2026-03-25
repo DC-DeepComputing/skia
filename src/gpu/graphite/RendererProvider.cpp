@@ -70,6 +70,12 @@ bool RendererProvider::IsSupported(PathRendererStrategy strategy, const Caps* ca
 #else
             return false;
 #endif
+        case PathRendererStrategy::kHybridSparseStripsMSAA8:
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+            return true;    //TODO caps compute support, caps subgroup support.
+#else
+            return false;
+#endif
     }
 
     SkUNREACHABLE;
