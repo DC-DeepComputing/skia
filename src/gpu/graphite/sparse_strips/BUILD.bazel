@@ -14,6 +14,7 @@ SPARSE_STRIPS_FILES = [
     "MSAA_LUT.h",
     "Polyline.h",
     "SparseStripTypes.h",
+    "SparseStripConfig.h",
     "Strip.h",
     "StripGenerator.cpp",
     "StripGenerator.h",
