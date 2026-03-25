@@ -171,6 +171,10 @@ void Run::addSpacesAtTheEnd(SkScalar space, Cluster* cluster) {
 }
 
 SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
+    if (this->isCursiveScript()) {
+        // Do not apply letter spacing for script languages
+        return 0.0;
+    }
     SkScalar shift = 0;
     for (size_t i = 0; i < this->size(); ++i) {
         fPositions[i].fX += shift;
@@ -182,6 +186,10 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
 }
 
 SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
+    if (this->isCursiveScript()) {
+        // Do not apply letter spacing for script languages
+        return 0.0;
+    }
     // Offset all the glyphs in the cluster
     SkScalar shift = 0;
     for (size_t i = cluster->startPos(); i < cluster->endPos(); ++i) {
@@ -363,6 +371,16 @@ SkFont Cluster::font() const {
 bool Cluster::isSoftBreak() const {
     return fOwner->codeUnitHasProperty(fTextRange.end,
                                        SkUnicode::CodeUnitFlags::kSoftLineBreakBefore);
+}
+
+bool Cluster::isSoftHyphen() const {
+    // U+00AD is encoded as 0xC2 0xAD in UTF-8
+    auto text = fOwner->text();
+    if (fTextRange.width() == 2) {
+        return (uint8_t)text[fTextRange.start] == 0xC2 &&
+               (uint8_t)text[fTextRange.start + 1] == 0xAD;
+    }
+    return false;
 }
 
 bool Cluster::isGraphemeBreak() const {
