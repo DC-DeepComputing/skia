@@ -22,6 +22,30 @@
       },
       "revId": "051beb9c412e839c001227c08cae2cc5d6359522",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d03a84e4_59bbe79e",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-25T13:48:56Z",
+      "side": 1,
+      "message": "`dependOnDst` can\u0027t get pulled into the same statement block as the forward merging because `dstDepending` which cannot forward merge still need to exit early.\n\nAlso, the yes, `canForwardMerge` implies the draw is not stencil, BUT I realized that I had made a mistake with the original logic. It should have been:\n`doesNotIntersect || (!requiresBarrier \u0026\u0026 !isStencil)`. So even though we can remove the isStencil check, we still need to check the intersection.",
+      "parentUuid": "540f14ac_d38bffbe",
+      "range": {
+        "startLine": 110,
+        "startChar": 32,
+        "endLine": 110,
+        "endChar": 92
+      },
+      "revId": "051beb9c412e839c001227c08cae2cc5d6359522",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
