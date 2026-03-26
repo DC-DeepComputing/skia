@@ -9,6 +9,7 @@
 #define skgpu_graphite_SharedContext_DEFINED
 
 #include <memory>
+#include <optional>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/base/SingleOwner.h"
@@ -64,6 +65,11 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    virtual TextureInfo getDefaultSampledTextureInfo(SkColorType,
+                                                     Mipmapped,
+                                                     Protected,
+                                                     Renderable) const;
+
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
@@ -80,6 +86,11 @@ public:
     virtual void deviceTick(Context*) {}
 
     virtual void syncPipelineData(PersistentPipelineStorage*, size_t maxSize) {}
+
+    virtual std::optional<BackendTexture>
+    convertBackendTextureIfNeeded(const BackendTexture&) const;
+
+    virtual std::optional<TextureInfo> convertTextureInfo(const TextureInfo&) const;
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 

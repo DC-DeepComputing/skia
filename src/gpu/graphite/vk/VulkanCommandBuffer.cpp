@@ -284,6 +284,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
         fCachedBlendConstant[i] = -1.0;
     }
     fHasStatsQuery = false;
+    fTexturesToResetLayout.reset();
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
@@ -349,6 +350,20 @@ void VulkanCommandBuffer::begin() {
 void VulkanCommandBuffer::end() {
     SkASSERT(fActive);
     SkASSERT(!fActiveRenderPass);
+
+    fTexturesToResetLayout.foreach(
+           [&](VulkanTexture* texture) {
+               VkImageLayout layout = texture->originalWrappedLayout();
+               VkAccessFlags dstAccessMask = VulkanTexture::LayoutToSrcAccessMask(layout);
+               VkPipelineStageFlags dstStageMask = VulkanTexture::LayoutToPipelineSrcStageFlags(layout);
+               texture->setImageLayout(this,
+                                       layout,
+                                       dstAccessMask,
+                                       dstStageMask);
+           }
+   );
+
+
 
     this->submitPipelineBarriers();
 
@@ -421,6 +436,7 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                          dstAccess,
                                          dstStage,
                                          newQueueFamilyIndex);
+    this->addResetTexture(texture);
 }
 
 // Requests a sampler. Dynamic samplers live in the global cache, requiring no tracking, but
@@ -484,9 +500,15 @@ static VkResult submit_to_queue(const VulkanSharedContext* sharedContext,
     submitInfo.signalSemaphoreCount = signalCount;
     submitInfo.pSignalSemaphores = signalSemaphores;
 
-    VkResult result;
-    VULKAN_CALL_RESULT(sharedContext, result, QueueSubmit(queue, 1, &submitInfo, fence));
-    return result;
+    VulkanSharedContext::QueueSubmitResult qsr = sharedContext->backendQueueSubmit(&submitInfo, &fence);
+    if (qsr == VulkanSharedContext::QueueSubmitResult::kNotSupported) {
+        VkResult result;
+        VULKAN_CALL_RESULT(sharedContext, result, QueueSubmit(queue, 1, &submitInfo, fence));
+        return result;
+    } else {
+        return qsr == VulkanSharedContext::QueueSubmitResult::kSuccess ? VK_SUCCESS : VK_ERROR_DEVICE_LOST;
+    }
+
 }
 
 bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
@@ -626,6 +648,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
                                           VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                           VK_ACCESS_SHADER_READ_BIT,
                                           VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+            this->addResetTexture(vulkanTexture);
         }
     }
     if (fDstCopy.first) {
@@ -635,6 +658,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
                                       VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                       VK_ACCESS_SHADER_READ_BIT,
                                       VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+        this->addResetTexture(vulkanTexture);
     }
     this->setViewport(viewport);
 
@@ -806,6 +830,12 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& rpDesc,
     return true;
 }
 
+void VulkanCommandBuffer::addResetTexture(VulkanTexture* texture) {
+    if (texture->hasOriginalWrappedLayout()) {
+        fTexturesToResetLayout.add(texture);
+    }
+}
+
 namespace {
 // Helpers for determining + updating texture layouts.
 void assign_color_texture_layout(VulkanCommandBuffer* cmdBuf,
@@ -824,6 +854,7 @@ void assign_color_texture_layout(VulkanCommandBuffer* cmdBuf,
     }
 
     colorTexture->setImageLayout(cmdBuf, layout, access, stageFlags);
+    cmdBuf->addResetTexture(colorTexture);
 }
 
 void assign_resolve_texture_layout(VulkanCommandBuffer* cmdBuf,
@@ -848,6 +879,7 @@ void assign_resolve_texture_layout(VulkanCommandBuffer* cmdBuf,
     }
 
     resolveTexture->setImageLayout(cmdBuf, layout, access, stageFlags);
+    cmdBuf->addResetTexture(resolveTexture);
 }
 
 void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
@@ -871,6 +903,7 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                                             VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT |
                                             VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
                                             VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT);
+        cmdBuf->addResetTexture(depthStencilTexture);
     }
 }
 
@@ -1763,6 +1796,7 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
                                                            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                                                            VK_ACCESS_TRANSFER_READ_BIT,
                                                            VK_PIPELINE_STAGE_TRANSFER_BIT);
+    this->addResetTexture(const_cast<VulkanTexture*>(srcTexture));
     // Set current access mask for buffer
     const_cast<VulkanBuffer*>(dstBuffer)->setBufferAccess(this,
                                                           VK_ACCESS_TRANSFER_WRITE_BIT,
@@ -1817,6 +1851,7 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
                                                            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                                            VK_ACCESS_TRANSFER_WRITE_BIT,
                                                            VK_PIPELINE_STAGE_TRANSFER_BIT);
+    this->addResetTexture(const_cast<VulkanTexture*>(dstTexture));
 
     this->submitPipelineBarriers();
 
@@ -1855,6 +1890,8 @@ bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
                                                            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                                            VK_ACCESS_TRANSFER_WRITE_BIT,
                                                            VK_PIPELINE_STAGE_TRANSFER_BIT);
+    this->addResetTexture(const_cast<VulkanTexture*>(srcTexture));
+    this->addResetTexture(const_cast<VulkanTexture*>(dstTexture));
 
     this->submitPipelineBarriers();
 

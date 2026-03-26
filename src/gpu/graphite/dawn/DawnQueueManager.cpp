@@ -114,6 +114,7 @@ std::unique_ptr<CommandBuffer> DawnQueueManager::getNewCommandBuffer(
 }
 
 QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu(const SubmitInfo&) {
+    //SkDebugf("Dawn submit to gpu\n");
     SkASSERT(fCurrentCommandBuffer);
     DawnCommandBuffer* dawnCmdBuffer = static_cast<DawnCommandBuffer*>(fCurrentCommandBuffer.get());
     auto wgpuCmdBuffer = dawnCmdBuffer->finishEncoding();

@@ -9,6 +9,7 @@
 #define skgpu_graphite_DawnBackendContext_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include <memory>
@@ -66,6 +67,7 @@ struct SK_API DawnBackendContext {
 #else
             DawnNativeProcessEventsFunction;
 #endif
+    sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
 };
 
 namespace ContextFactory {

@@ -70,7 +70,7 @@ bool validate_backend_texture(const Caps* caps,
 } // anonymous namespace
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
-                           const BackendTexture& backendTex,
+                           const BackendTexture& inBackendTex,
                            SkColorType ct,
                            SkAlphaType at,
                            sk_sp<SkColorSpace> cs,
@@ -89,7 +89,14 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
     SkColorInfo info(ct, at, std::move(cs));
 
-    if (!validate_backend_texture(caps, backendTex, info)) {
+    const BackendTexture* backendTex = &inBackendTex;
+    std::optional<BackendTexture> optBETex =
+        recorder->priv().convertBackendTextureIfNeeded(inBackendTex);
+    if (optBETex) {
+        backendTex = &optBETex.value();
+    }
+
+    if (!validate_backend_texture(caps, *backendTex, info)) {
         return nullptr;
     }
 
@@ -98,7 +105,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     }
 
     sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+            recorder->priv().resourceProvider()->createWrappedTexture(*backendTex, label);
     if (!texture) {
         SKGPU_LOG_W("Texture creation failed");
         return nullptr;
@@ -189,6 +196,12 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
         return nullptr;
     }
 
+    const TextureInfo* texInfoPtr = &textureInfo;
+    std::optional<TextureInfo> optInfo = recorder->priv().sharedContext()->convertTextureInfo(textureInfo);
+    if (optInfo) {
+        texInfoPtr = &optInfo.value();
+    }
+
     const Caps* caps = recorder->priv().caps();
 
     SkImageInfo info = SkImageInfo::Make(dimensions, colorInfo);
@@ -197,7 +210,7 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
         return nullptr;
     }
 
-    const TextureFormat format = TextureInfoPriv::ViewFormat(textureInfo);
+    const TextureFormat format = TextureInfoPriv::ViewFormat(*texInfoPtr);
     if (!AreColorTypeAndFormatCompatible(colorInfo.colorType(), format)) {
         SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
         return nullptr;
@@ -206,7 +219,7 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
     // Non-YUVA promise images use the 'imageContext' for both the release proc and fulfill proc.
     sk_sp<TextureProxy> proxy = MakePromiseImageLazyProxy(caps,
                                                           dimensions,
-                                                          textureInfo,
+                                                          *texInfoPtr,
                                                           isVolatile,
                                                           std::move(releaseHelper),
                                                           fulfillProc,
@@ -253,6 +266,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(Recorder* recorder,
                                       GraphitePromiseImageContext imageContext,
                                       GraphitePromiseTextureFulfillContext planeContexts[],
                                       std::string_view label) {
+    SkDebugf("promise YUV\n");
     // Our contract is that we will always call the _image_ release proc even on failure.
     // We use the helper to convey the imageContext, so we need to ensure Make doesn't fail.
     auto releaseHelper = skgpu::RefCntedCallback::Make(imageReleaseProc, imageContext);
@@ -523,8 +537,16 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < yuvaTextures.yuvaInfo().numPlanes(); ++i) {
+        BackendTexture inPlaneTex = yuvaTextures.planeTexture(i);
+        const BackendTexture* planeTex = &inPlaneTex;
+        std::optional<BackendTexture> optBETex =
+            recorder->priv().convertBackendTextureIfNeeded(inPlaneTex);
+        if (optBETex) {
+            planeTex = &optBETex.value();
+        }
+
         sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
-                yuvaTextures.planeTexture(i), labelStr);
+                *planeTex, labelStr);
         if (!texture) {
             SKGPU_LOG_W("Failed to wrap backend texture for YUVA plane %d", i);
             return nullptr;

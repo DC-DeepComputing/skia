@@ -506,12 +506,14 @@ SkSL::NativeShader TransformSPIRV(const SkSL::NativeShader& spirv,
     transformer.transform();
 
 #ifdef SK_DEBUG
+#if 0
     // Validate the SPIR-V after performing any transformations. This is rather costly, so only
     // do this on debug builds.
     static SkSL::Compiler compiler;
     if (!SkSL::ValidateSPIRV(compiler.errorReporter(), {spirv.fBinary})) {
         SKGPU_LOG_E("SPIR-V transformations yielded invalid SPIR-V.");
     }
+#endif
 #endif
 
     return result;

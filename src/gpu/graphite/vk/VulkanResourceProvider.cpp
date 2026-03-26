@@ -111,8 +111,9 @@ VulkanSharedContext* VulkanResourceProvider::nonConstVulkanSharedContext() {
     return static_cast<VulkanSharedContext*>(fSharedContext);
 }
 
-sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
-                                                              std::string_view label) {
+sk_sp<Texture> VulkanResourceProvider::internalCreateWrappedTexture(const BackendTexture& texture,
+                                                                    std::string_view label,
+                                                                    bool saveOriginalLayout) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(texture.info());
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
@@ -129,7 +130,12 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
                                       BackendTextures::GetVkImage(texture),
                                       /*alloc=*/{} /*Skia does not own wrapped texture memory*/,
                                       std::move(ycbcrConversion),
-                                      label);
+                                      label,
+                                      saveOriginalLayout);
+}
+
+sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture, std::string_view label) {
+    return this->internalCreateWrappedTexture(texture, label, /*saveOriginalLayout=*/false);
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
