@@ -16,6 +16,7 @@
 #include "src/base/SkFloatBits.h"
 #include "src/core/SkEdgeClipper.h"
 #include "src/core/SkGeometry.h"
+#include "src/core/SkPathData.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPathRawShapes.h"
@@ -740,7 +741,8 @@ SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPath& path) {
  *  (either from the client, or after a makeTransform() call).
  */
 SkPathData* SkPath::PeekErrorSingleton() {
-    static SkPathData* gErrorSingleton = SkPathData::MakeNoCheck({}, {}, {}, {}, {}).release();
+    static SkPathData* gErrorSingleton =
+        SkPathData::Make({}, {}, {}, {}, {}, SkPathData::Validate::kNo).release();
 
     // Make sure MakeNoCheck() didn't alias us to the standard Empty instance. We want our
     // pointer to be distinct from that one.

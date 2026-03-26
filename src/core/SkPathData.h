@@ -235,12 +235,15 @@ private:
 
     static sk_sp<SkPathData> Alloc(size_t npts, size_t nvbs, size_t ncns);
 
-    static sk_sp<SkPathData> MakeNoCheck(SkSpan<const SkPoint> pts,
-                                         SkSpan<const SkPathVerb> verbs,
-                                         SkSpan<const float> conics,
-                                         std::optional<SkRect> bounds,
-                                         std::optional<unsigned> segmentMask);
-    static sk_sp<SkPathData> MakeNoCheck(const SkPathRaw&);
+    // Whether or not the inputs require validation (untrusted vs trusted data).
+    enum class Validate { kYes, kNo };
+    static sk_sp<SkPathData> Make(SkSpan<const SkPoint> pts,
+                                  SkSpan<const SkPathVerb> verbs,
+                                  SkSpan<const float> conics,
+                                  std::optional<SkRect> bounds,
+                                  std::optional<unsigned> segmentMask,
+                                  Validate);
+    static sk_sp<SkPathData> Make(const SkPathRaw&, Validate);
 };
 
 #endif
