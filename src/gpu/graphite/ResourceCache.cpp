@@ -13,6 +13,7 @@
 #include "src/core/SkTMultiMap.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
 
@@ -137,6 +138,8 @@ void ResourceCache::insertResource(Resource* resource,
         this->processReturnedResources();
     }
 
+    SKGPU_LOG_W("Nikipre: Inserting Resource with key %s", key.asStr().c_str());
+
     resource->registerWithCache(sk_ref_sp(this), key, budgeted, shareable);
 
     // We must set the use token before adding to the array in case the token wraps and we wind
@@ -222,6 +225,14 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
     // cache, but still be overbudget due to shared resources. So to be safe we just always call it
     // here.
     this->purgeAsNeeded();
+
+    if (resource) {
+        SKGPU_LOG_W("Cache_Hit_Nikipre");
+        TRACE_EVENT_INSTANT0("skia.gpu.cache", "Cache_Hit_Nikipre", TRACE_EVENT_SCOPE_THREAD);
+    } else {
+        SKGPU_LOG_W("Cache_Miss_Nikipre");
+        TRACE_EVENT_INSTANT0("skia.gpu.cache", "Cache_Miss_Nikipre", TRACE_EVENT_SCOPE_THREAD);
+    }
 
     return resource;
 }
@@ -551,6 +562,8 @@ void ResourceCache::purgeResource(Resource* resource) {
     TRACE_EVENT_INSTANT1("skia.gpu.cache", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
                          "size", resource->gpuMemorySize());
 
+    SKGPU_LOG_W("Nikipre: Purging Resource with key %s", resource->key().asStr().c_str());
+
     this->removeFromResourceMap(resource);
 
     if (resource->shouldDeleteASAP() == Resource::DeleteASAP::kNo) {
@@ -566,6 +579,12 @@ void ResourceCache::purgeResource(Resource* resource) {
 
 void ResourceCache::purgeAsNeeded() {
     ASSERT_SINGLE_OWNER
+
+    const bool originallyOB = this->overbudget();
+
+    if (originallyOB) {
+        SKGPU_LOG_W("Nikipre: purgeAsNeeded() reports OVERBUDGET");
+    }
 
     if (this->overbudget() && fProxyCache) {
         fProxyCache->freeUniquelyHeld();
@@ -589,31 +608,45 @@ void ResourceCache::purgeAsNeeded() {
         this->purgeResource(resource);
     }
 
+    if (originallyOB && this->overbudget()) {
+        SKGPU_LOG_W("Nikipre: STILL OVERBUDGET");
+    } else if (originallyOB) {
+        SKGPU_LOG_W("Nikipre: overbudget REMEDIED");
+    }
+
     this->validate();
 }
 
-void ResourceCache::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+void ResourceCache::purgeResourcesNotUsedSince(
+        StdSteadyClock::time_point purgeTime,
+        const StdSteadyClock::time_point* stopPurgingPastTime) {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(&purgeTime);
+    SKGPU_LOG_W("Nikipre: Purging resources unused for certain time");
+    this->purgeResources(&purgeTime, stopPurgingPastTime);
 }
 
 void ResourceCache::purgeResources() {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(nullptr);
+    SKGPU_LOG_W("Nikipre: Purging resources generally");
+    this->purgeResources(/*purgeTime=*/nullptr, /*stopPurgingTime=*/nullptr);
 }
 
-void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) {
+void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime,
+                                   const StdSteadyClock::time_point* stopPurgingTime) {
     TRACE_EVENT0("skia.gpu.cache", TRACE_FUNC);
     if (fProxyCache) {
-        fProxyCache->purgeProxiesNotUsedSince(purgeTime);
+        fProxyCache->purgeProxiesNotUsedSince(purgeTime, stopPurgingTime);
     }
     this->processReturnedResources();
 
     // Early out if the very first item is too new to purge to avoid sorting the queue when
-    // nothing will be deleted.
+    // nothing will be deleted or if we have somehow already exceeded the time limit for purging.
     if (fPurgeableQueue.count() &&
         purgeTime &&
         fPurgeableQueue.peek()->lastAccessTime() >= *purgeTime) {
+        return;
+    }
+    if (stopPurgingTime && skgpu::StdSteadyClock::now() >= *stopPurgingTime) {
         return;
     }
 
@@ -634,15 +667,30 @@ void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) 
         *resourcesToPurge.append() = resource;
     }
 
-    // Delete the scratch resources. This must be done as a separate pass
-    // to avoid messing up the sorted order of the queue
+    // Delete the scratch resources. This must be done as a separate pass to avoid messing up the
+    // sorted order of the queue.
     for (int i = 0; i < resourcesToPurge.size(); i++) {
         this->purgeResource(resourcesToPurge[i]);
+        if (stopPurgingTime && skgpu::StdSteadyClock::now() >= *stopPurgingTime) {
+            SKGPU_LOG_D("Current time past the provided stop purging time. Purged %i resources, %i "
+                        "purgeable resources remained.", i + 1, resourcesToPurge.size() - (i + 1));
+
+            // temporary; for debugging
+            SKGPU_LOG_W("Nikipre_Stop_time_exceeded!%i of %i purgeable resources purged.",
+                        i + 1, resourcesToPurge.size() - (i + 1));
+
+            break;
+        }
+        if (i == resourcesToPurge.size() - 1) {
+            SKGPU_LOG_W("Purged all %i purgeable resources before reaching upper time limit",
+                        resourcesToPurge.size());
+        }
     }
 
     // Since we called process returned resources at the start of this call, we could still end up
     // over budget even after purging resources based on purgeTime. So we call purgeAsNeeded at the
-    // end here.
+    // end here. Not limited by latest purge end time - purging to not go over memory budget takes
+    // precedence.
     this->purgeAsNeeded();
 }
 
