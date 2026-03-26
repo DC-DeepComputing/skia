@@ -20,7 +20,7 @@ class ZoomInSlideDemo : public ZoomInSlide {
 public:
     ZoomInSlideDemo() : ZoomInSlide(kScale, kMaskWidth, kMaskHeight, SkString("ZoomInDemo")) {
         fPts[0] = {1.5, 1.5};
-        fPts[1] = {1.5, 10.5};
+        fPts[1] = {1.5, 1.5};
         fPts[2] = {10.5, 10.5};
         fPts[3] = {10.5, 1.5};
     }
@@ -29,8 +29,9 @@ public:
         return SkPathBuilder()
                 .moveTo(fPts[0])
                 .lineTo(fPts[1])
-                .lineTo(fPts[2])
-                .lineTo(fPts[3])
+                // .lineTo(fPts[2])
+                // .lineTo(fPts[3])
+                .close()
                 .detach();
     }
 
