@@ -530,7 +530,8 @@ template <typename T> bool optional_eq(std::optional<T> opt, T other) {
    the control point, use the next control point to create a tangent. If the curve
    is degenerate, move the cap out 1/2 unit horizontally. */
 template <SkPaint::Cap capStyle>
-void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> nextVerb,
+void extend_pts(std::optional<SkPathVerb> prevVerb,
+                std::optional<SkPathVerb> nextVerb,
                 SkSpan<SkPoint> pts) {
     SkASSERT(SkPaint::kSquare_Cap == capStyle || SkPaint::kRound_Cap == capStyle);
     // The area of a circle is PI*R*R. For a unit circle, R=1/2, and the cap covers half of that.
@@ -549,16 +550,14 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
         } else {
             tangent.normalize();
         }
-        do {    // If the end point and control points are equal, loop to move them in tandem.
+        do {  // If the end point and control points are equal, loop to move them in tandem.
             first->fX += tangent.fX * capOutset;
             first->fY += tangent.fY * capOutset;
             ++first;
         } while (++controls < pts.size());
     }
-    if (!nextVerb.has_value() ||
-        nextVerb.value() == SkPathVerb::kMove ||
-        nextVerb.value() == SkPathVerb::kClose)
-    {
+    if (!nextVerb.has_value() || nextVerb.value() == SkPathVerb::kMove ||
+        nextVerb.value() == SkPathVerb::kClose) {
         SkPoint* last = &pts.back();
         SkPoint* ctrl = last;
         size_t controls = pts.size() - 1;
@@ -581,8 +580,10 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
 }
 
 template <SkPaint::Cap capStyle>
-void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitter,
-                      SkScan::HairRgnProc lineproc) {
+void hair_path(const SkPathRaw& raw,
+               const SkRasterClip& rclip,
+               SkBlitter* blitter,
+               SkScan::HairRgnProc lineproc) {
     if (raw.empty()) {
         return;
     }
@@ -632,7 +633,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                  *  quick-accept, so we just mark the rect as empty (so the quick-accept check
                  *  will always fail.
                  */
-                insetStorage.setEmpty();    // just so we don't pass an inverted rect
+                insetStorage.setEmpty();  // just so we don't pass an inverted rect
             }
             if (rclip.isRect()) {
                 insetClip = &insetStorage;
@@ -641,58 +642,282 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
         }
     }
 
-    SkPoint               pts[4], firstPt, lastPt;
-    SkAutoConicToQuads    converter;
+    SkPoint pts[4], firstLine[4];
+    SkPoint firstPt, lastPt;
+    SkPathVerb firstLineVerbType;
+    SkAutoConicToQuads converter;
+
+    bool isButtCap = SkPaint::kButt_Cap == capStyle;
+
+    auto draw_conic = [&](const SkPoint* conicPts, float conicWeight) {
+        // how close should the quads be to the original conic?
+        const SkScalar tol = SK_Scalar1 / 4;
+        const SkPoint* quadPts = converter.computeQuads(conicPts, conicWeight, tol);
+        for (int i = 0; i < converter.countQuads(); ++i) {
+            int level = compute_quad_level(quadPts);
+            hairquad(quadPts, clip, insetClip, outsetClip, blitter, level, lineproc);
+            quadPts += 2;
+        }
+    };
 
     std::optional<SkPathVerb> prevVerb;
     for (auto iter = raw.iter(); auto rec = iter.next(); ) {
         const SkPoint* srcPts = rec->fPoints.data();
         SkPathVerb verb = rec->fVerb;
         auto nextVerb = iter.peekNextVerb();
+
+        bool isFirstVerb = !prevVerb.has_value();
+        bool isLastVerb = !nextVerb.has_value();
+        bool isPrevVerbALine = prevVerb.has_value() && prevVerb >= SkPathVerb::kLine &&
+                               prevVerb <= SkPathVerb::kCubic;
+        bool isVerbALine = verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic;
+        bool isFirstLine =
+                isVerbALine && (optional_eq(prevVerb, SkPathVerb::kMove) ||
+                                optional_eq(prevVerb, SkPathVerb::kClose) || isFirstVerb);
+        bool isLastLine = isVerbALine && (optional_eq(nextVerb, SkPathVerb::kMove) ||
+                                          optional_eq(nextVerb, SkPathVerb::kClose) || isLastVerb);
+        bool isDegenerate;
+
+
+        auto draw_first_line = [&]() {
+            switch (firstLineVerbType) {
+                case SkPathVerb::kLine:
+                    lineproc({firstLine, 2}, clip, blitter);
+                    break;
+                case SkPathVerb::kQuad:
+                    hairquad(firstLine,
+                             clip,
+                             insetClip,
+                             outsetClip,
+                             blitter,
+                             compute_quad_level(firstLine),
+                             lineproc);
+                    break;
+                case SkPathVerb::kConic:
+                    draw_conic(firstLine, rec->conicWeight());
+                    break;
+                case SkPathVerb::kCubic:
+                    haircubic(firstLine,
+                              clip,
+                              insetClip,
+                              outsetClip,
+                              blitter,
+                              kMaxCubicSubdivideLevel,
+                              lineproc);
+                    break;
+                default:
+                    break;
+            }
+        };
+
         switch (verb) {
             case SkPathVerb::kMove:
                 firstPt = lastPt = srcPts[0];
+                if (isPrevVerbALine && !isFirstVerb) {
+                    // if the current verb was a move and the previous verb is a line (i.e. not a
+                    // close) then that means we drew an open contour, and thus should draw the
+                    // firstLine we skipped
+                    draw_first_line();
+                }
                 break;
             case SkPathVerb::kLine:
                 std::copy(srcPts, srcPts + 2, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
-                    extend_pts<capStyle>(prevVerb, nextVerb, {pts, 2});
+                isDegenerate = SkPath::IsLineDegenerate(pts[0], pts[1], true);
+
+                if (isButtCap) {
+                    lineproc({pts, 2}, clip, blitter);
+                    lastPt = pts[1];
+                    break;
                 }
-                lineproc({pts, 2}, clip, blitter);
+
+                extend_pts<capStyle>(prevVerb, nextVerb, {pts, 2});
                 lastPt = pts[1];
+
+                if (isFirstLine) {
+                    std::copy(pts, pts + 2, firstLine);
+                    firstLineVerbType = SkPathVerb::kLine;
+                    if (isDegenerate) firstPt = pts[0];
+                    break;
+                }
+
+                if (!isLastLine) {
+                    lineproc({pts, 2}, clip, blitter);
+                    break;
+                }
+
+                if (isDegenerate) {
+                    lineproc({pts, 2}, clip, blitter);
+                    break;
+                } else if (optional_eq(nextVerb, SkPathVerb::kClose)) {
+                    lineproc({srcPts, 2}, clip, blitter);
+                    lastPt = srcPts[1];
+                    break;
+                }
+
+                lineproc({pts, 2}, clip, blitter);
                 break;
             case SkPathVerb::kQuad:
                 std::copy(srcPts, srcPts + 3, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
-                    extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
+                isDegenerate = SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true);
+
+                if (isButtCap) {
+                    lastPt = pts[2];
+                    break;
                 }
-                hairquad(pts, clip, insetClip, outsetClip, blitter, compute_quad_level(pts), lineproc);
+
+                extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
                 lastPt = pts[2];
+
+                if (isFirstLine) {
+                    std::copy(pts, pts + 3, firstLine);
+                    firstLineVerbType = SkPathVerb::kQuad;
+                    if (isDegenerate) firstPt = pts[0];
+                    break;
+                }
+
+                if (!isLastLine) {
+                    hairquad(pts,
+                             clip,
+                             insetClip,
+                             outsetClip,
+                             blitter,
+                             compute_quad_level(pts),
+                             lineproc);
+                    break;
+                }
+
+                if (isDegenerate) {
+                    hairquad(pts,
+                             clip,
+                             insetClip,
+                             outsetClip,
+                             blitter,
+                             compute_quad_level(pts),
+                             lineproc);
+                    break;
+                } else if (optional_eq(nextVerb, SkPathVerb::kClose)) {
+                    hairquad(srcPts,
+                             clip,
+                             insetClip,
+                             outsetClip,
+                             blitter,
+                             compute_quad_level(srcPts),
+                             lineproc);
+                    lastPt = srcPts[2];
+                    break;
+                }
+                hairquad(pts,
+                         clip,
+                         insetClip,
+                         outsetClip,
+                         blitter,
+                         compute_quad_level(pts),
+                         lineproc);
                 break;
+
             case SkPathVerb::kConic: {
                 std::copy(srcPts, srcPts + 3, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
-                    extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
+                isDegenerate = SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true);
+
+                if (isButtCap) {
+                    draw_conic(pts, rec->conicWeight());
+                    lastPt = pts[2];
+                    break;
                 }
-                // how close should the quads be to the original conic?
-                const SkScalar tol = SK_Scalar1 / 4;
-                const SkPoint* quadPts = converter.computeQuads(pts, rec->conicWeight(), tol);
-                for (int i = 0; i < converter.countQuads(); ++i) {
-                    int level = compute_quad_level(quadPts);
-                    hairquad(quadPts, clip, insetClip, outsetClip, blitter, level, lineproc);
-                    quadPts += 2;
-                }
+
+                extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
                 lastPt = pts[2];
+
+                if (isFirstLine) {
+                    std::copy(pts, pts + 3, firstLine);
+                    firstLineVerbType = SkPathVerb::kConic;
+                    if (isDegenerate) firstPt = pts[0];
+                    break;
+                }
+
+                if (!isLastLine) {
+                    draw_conic(pts, rec->conicWeight());
+                    break;
+                }
+
+                if (isDegenerate) {
+                    draw_conic(pts, rec->conicWeight());
+                    break;
+                } else if (optional_eq(nextVerb, SkPathVerb::kClose)) {
+                    draw_conic(srcPts, rec->conicWeight());
+                    lastPt = srcPts[2];
+                    break;
+                }
+                draw_conic(pts, rec->conicWeight());
                 break;
             }
             case SkPathVerb::kCubic: {
                 std::copy(srcPts, srcPts + 4, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
-                    extend_pts<capStyle>(prevVerb, nextVerb, {pts, 4});
+                isDegenerate = SkPath::IsCubicDegenerate(pts[0], pts[1], pts[2], pts[3], true);
+
+                if (isButtCap) {
+                    haircubic(pts,
+                              clip,
+                              insetClip,
+                              outsetClip,
+                              blitter,
+                              kMaxCubicSubdivideLevel,
+                              lineproc);
+                    lastPt = pts[3];
+                    break;
                 }
-                haircubic(pts, clip, insetClip, outsetClip, blitter, kMaxCubicSubdivideLevel, lineproc);
+
+                extend_pts<capStyle>(prevVerb, nextVerb, {pts, 4});
                 lastPt = pts[3];
-            } break;
+
+                if (isFirstLine) {
+                    std::copy(pts, pts + 4, firstLine);
+                    firstLineVerbType = SkPathVerb::kCubic;
+                    if (isDegenerate) firstPt = pts[0];
+                    break;
+                }
+
+                if (!isLastLine) {
+                    haircubic(pts,
+                              clip,
+                              insetClip,
+                              outsetClip,
+                              blitter,
+                              kMaxCubicSubdivideLevel,
+                              lineproc);
+                    break;
+                }
+
+                if (isDegenerate) {
+                    haircubic(pts,
+                              clip,
+                              insetClip,
+                              outsetClip,
+                              blitter,
+                              kMaxCubicSubdivideLevel,
+                              lineproc);
+                    break;
+                } else if (optional_eq(nextVerb, SkPathVerb::kClose)) {
+                    haircubic(srcPts,
+                              clip,
+                              insetClip,
+                              outsetClip,
+                              blitter,
+                              kMaxCubicSubdivideLevel,
+                              lineproc);
+                    lastPt = srcPts[3];
+                    break;
+                }
+
+                haircubic(pts,
+                          clip,
+                          insetClip,
+                          outsetClip,
+                          blitter,
+                          kMaxCubicSubdivideLevel,
+                          lineproc);
+                break;
+            }
             case SkPathVerb::kClose:
                 pts[0] = lastPt;
                 pts[1] = firstPt;
@@ -700,16 +925,28 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                     // cap moveTo/close to match svg expectations for degenerate segments
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 2});
                 }
+                if (!optional_eq(prevVerb, SkPathVerb::kMove)) {
+                    // if the current verb is a close and is not a degenerate move, then update the
+                    // firstLine[0] to be the firstPt. This is because the close should connect to
+                    // the "uncapped" firstPt. then draw the firstLine
+                    firstLine[0] = firstPt;
+                    draw_first_line();
+                }
                 lineproc({pts, 2}, clip, blitter);
                 break;
         }
-        if (SkPaint::kButt_Cap != capStyle) {
-            if (optional_eq(prevVerb, SkPathVerb::kMove) &&
-                verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic) {
-                firstPt = pts[0];  // the curve moved the initial point, so close to it instead
-            }
-            prevVerb = verb;
+
+        if (isButtCap) {
+            continue;
         }
+
+        if (isLastVerb && isVerbALine) {
+            // if the current verb is a line and it's the last verb, then that means we should draw
+            // the firstLine as normal with "capped" firstPt
+            draw_first_line();
+        }
+
+        prevVerb = verb;
     }
 }
 
