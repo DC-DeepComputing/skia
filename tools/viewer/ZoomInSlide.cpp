@@ -31,6 +31,7 @@ public:
                 .lineTo(fPts[1])
                 .lineTo(fPts[2])
                 .lineTo(fPts[3])
+                .close()
                 .detach();
     }
 
