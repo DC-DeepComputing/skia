@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b17473b1_17d31f14",
+        "filename": "src/gpu/graphite/text/GlyphData.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-26T17:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "883a19c4_a95f271e",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 45
+      },
+      "revId": "6d50e352f14b3d13504ab13f470202a69793dfeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba912a6d_3835010f",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-20T15:02:08Z",
       "side": 1,
       "message": "Remove?",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 76
+      },
+      "revId": "6d50e352f14b3d13504ab13f470202a69793dfeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02f8432_f281bb3d",
+        "filename": "src/gpu/graphite/text/GlyphData.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2026-03-26T17:51:48Z",
+      "side": 1,
+      "message": "I think this comment is still correct (and even will remain correct when we actually start moving things around).",
+      "parentUuid": "ba912a6d_3835010f",
       "range": {
         "startLine": 103,
         "startChar": 0,
