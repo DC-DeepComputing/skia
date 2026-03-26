@@ -294,6 +294,14 @@ func (b *TaskBuilder) nanobenchFlags(doUpload bool) {
 			match = append(match, "~bulkrect_1000_grid_uniqueimages")
 			match = append(match, "~bulkrect_1000_random_uniqueimages")
 		}
+		if b.ExtraConfig("D3D11") {
+			if b.GPU("IntelIris6100") {
+				match = append(match, "~image_filter_dag")
+				match = append(match, "~image_filter_displaced_blur")
+				match = append(match, "~image_filter_xfermode_in")
+				match = append(match, "~image_make_with_filter_dag")
+			}
+		}
 	}
 
 	if b.Model(DONT_REDUCE_OPS_TASK_SPLITTING_MODELS...) {
