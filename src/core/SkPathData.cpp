@@ -17,6 +17,7 @@
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkPathRaw.h"
 #include "src/core/SkPathRawShapes.h"
 #include "src/core/SkSpanPriv.h"
 
@@ -25,7 +26,7 @@
 #include <type_traits>
 
 SkPathData* SkPathData::PeekEmptySingleton() {
-    static SkPathData* gEmpty = SkPathData::MakeNoCheck({}, {}, {}, {}, {}).release();
+    static SkPathData* gEmpty = SkPathData::Make({}, {}, {}, {}, {}, Validate::kNo).release();
     return gEmpty;
 }
 
@@ -327,11 +328,12 @@ bool operator==(const SkPathData& a, const SkPathData& b) {
 
 /////////////////////////////////////
 
-sk_sp<SkPathData> SkPathData::MakeNoCheck(SkSpan<const SkPoint> pts,
-                                          SkSpan<const SkPathVerb> vbs,
-                                          SkSpan<const float> conics,
-                                          std::optional<SkRect> bounds,
-                                          std::optional<unsigned> segmentMask) {
+sk_sp<SkPathData> SkPathData::Make(SkSpan<const SkPoint> pts,
+                                   SkSpan<const SkPathVerb> vbs,
+                                   SkSpan<const float> conics,
+                                   std::optional<SkRect> bounds,
+                                   std::optional<unsigned> segmentMask,
+                                   Validate validate) {
     SkASSERT(valid_path_data(pts, vbs, conics));
 
     auto path = Alloc(pts.size(), vbs.size(), conics.size());
@@ -340,11 +342,17 @@ sk_sp<SkPathData> SkPathData::MakeNoCheck(SkSpan<const SkPoint> pts,
     SkSpanPriv::Copy(path->fConics, conics);
     SkSpanPriv::Copy(path->fVerbs,  vbs);
 
+    if (validate == Validate::kYes &&
+        !valid_path_data(path->fPoints, path->fVerbs, path->fConics)) {
+        report_pathdata_make_failure("invalid path data");
+        return nullptr;
+    }
+
     return path->finishInit(bounds, segmentMask) ? path : nullptr;
 }
 
-sk_sp<SkPathData> SkPathData::MakeNoCheck(const SkPathRaw& raw) {
-    return MakeNoCheck(raw.points(), raw.verbs(), raw.conics(), raw.fBounds, raw.fSegmentMask);
+sk_sp<SkPathData> SkPathData::Make(const SkPathRaw& raw, Validate validate) {
+    return Make(raw.points(), raw.verbs(), raw.conics(), raw.fBounds, raw.fSegmentMask, validate);
 }
 
 sk_sp<SkPathData> SkPathData::Empty() {
@@ -369,7 +377,7 @@ sk_sp<SkPathData> SkPathData::Rect(const SkRect& r, SkPathDirection dir, unsigne
         return nullptr;
     }
     SkPathRawShapes::Rect raw(r, dir, index);
-    return MakeNoCheck(raw.points(), raw.verbs(), raw.conics(), raw.fBounds, raw.fSegmentMask);
+    return Make(raw, Validate::kNo);
 }
 
 sk_sp<SkPathData> SkPathData::Oval(const SkRect& r, SkPathDirection dir, unsigned index) {
@@ -377,7 +385,7 @@ sk_sp<SkPathData> SkPathData::Oval(const SkRect& r, SkPathDirection dir, unsigne
         return nullptr;
     }
     SkPathRawShapes::Oval raw(r, dir, index);
-    auto path = MakeNoCheck(raw.points(), raw.verbs(), raw.conics(), raw.fBounds, raw.fSegmentMask);
+    auto path = Make(raw, Validate::kNo);
 
     path->setupIsA(SkPathIsAType::kOval, dir, index);
     return path;
@@ -388,8 +396,8 @@ sk_sp<SkPathData> SkPathData::RRect(const SkRRect& r, SkPathDirection dir, unsig
         return nullptr;
     }
     SkPathRawShapes::RRect raw(r, dir, index);
-    // we use Make, not MakeNoCheck, to confirm all points an conics are finite
-    if (auto path = Make(raw.points(), raw.verbs(), raw.conics())) {
+    // we validate, to confirm all points and conics are finite
+    if (auto path = Make(raw, Validate::kYes)) {
         path->setupIsA(SkPathIsAType::kRRect, dir, index);
         return path;
     }
@@ -511,11 +519,6 @@ bool SkPathData::contains(SkPoint p, SkPathFillType ft) const {
 sk_sp<SkPathData> SkPathData::Make(SkSpan<const SkPoint> pts,
                                    SkSpan<const SkPathVerb> vbs,
                                    SkSpan<const float> conics) {
-    if (!valid_path_data(pts, vbs, conics)) {
-        report_pathdata_make_failure("invalid path data");
-        return nullptr;
-    }
-
-    // MakeNoCheck *does* compute/check bounds if we don't pass them in
-    return MakeNoCheck(pts, vbs, conics, {}, {});
+    // Make *does* compute/check bounds if we don't pass them in
+    return Make(pts, vbs, conics, {}, {}, Validate::kYes);
 }
