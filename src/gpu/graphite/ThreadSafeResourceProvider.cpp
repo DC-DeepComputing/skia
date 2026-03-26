@@ -51,9 +51,11 @@ void ThreadSafeResourceProvider::freeGpuResources() {
     fWrappedProvider->freeGpuResources();
 }
 
-void ThreadSafeResourceProvider::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+void ThreadSafeResourceProvider::purgeResourcesNotUsedSince(
+        StdSteadyClock::time_point purgeTime,
+        const StdSteadyClock::time_point* stopPurgingPastTime) {
     SkAutoSpinlock lock{fSpinLock};
-    fWrappedProvider->purgeResourcesNotUsedSince(purgeTime);
+    fWrappedProvider->purgeResourcesNotUsedSince(purgeTime, stopPurgingPastTime);
 }
 
 void ThreadSafeResourceProvider::forceProcessReturnedResources() {
