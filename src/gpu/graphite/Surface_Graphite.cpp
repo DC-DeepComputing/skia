@@ -133,6 +133,10 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().caps()->capabilities();
 }
 
+uint32_t Surface::getPixelDataID() const {
+    return this->backingTextureProxy()->getId();
+}
+
 TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
 
 // Note, devices flushed with this method add their tasks to the provided drawContext's task list,

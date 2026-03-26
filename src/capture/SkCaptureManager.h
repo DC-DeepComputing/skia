@@ -13,6 +13,7 @@
 #include "include/private/base/SkTArray.h"
 
 #include <atomic>
+#include <map>
 
 class SkCanvas;
 class SkCapture;
@@ -25,7 +26,7 @@ public:
 
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
-    void snapPicture(SkSurface*);
+    uint32_t snapPicture(SkSurface*);
 
     void toggleCapture(bool capturing);
 
@@ -41,6 +42,7 @@ private:
     skia_private::TArray<sk_sp<SkPicture>>  fPictures;
 
     sk_sp<SkCapture> fLastCapture;
+    std::map<uint32_t, uint32_t> fSurfaceContentCounters;
 };
 
 #endif  // SkCaptureManager_DEFINED

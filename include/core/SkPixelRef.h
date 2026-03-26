@@ -27,6 +27,7 @@ class SkDiscardableMemory;
     This class can be shared/accessed between multiple threads.
 */
 class SK_API SkPixelRef : public SkPixelStorage, public SkRefCnt {
+
 public:
     SkPixelRef(int width, int height, void* addr, size_t rowBytes);
     ~SkPixelRef() override;

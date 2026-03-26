@@ -137,8 +137,9 @@ sk_sp<const SkCapabilities> SkSurface_Base::onCapabilities() {
     return SkCapabilities::RasterBackend();
 }
 
-void SkSurface_Base::createCaptureBreakpoint() {
+uint32_t SkSurface_Base::createCaptureBreakpoint() {
     if (this->baseRecorder()) {
-        this->baseRecorder()->createCaptureBreakpoint(this);
+        return this->baseRecorder()->createCaptureBreakpoint(this);
     }
+    return 0;
 }

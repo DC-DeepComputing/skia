@@ -174,6 +174,12 @@ public:
         return nullptr;
     }
 
+    uint32_t getDerivedSurfaceID() const { return fDerivedSurfaceID; }
+    void setDerivedSurfaceID(uint32_t id) { fDerivedSurfaceID = id; }
+
+    uint32_t getContentID() const { return fContentID; }
+    void setContentID(uint32_t id) { fContentID = id; }
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);
 
@@ -181,6 +187,9 @@ private:
     // Set true by caches when they cache content that's derived from the current pixels.
 
     mutable std::atomic<bool> fAddedToRasterCache;
+
+    uint32_t fDerivedSurfaceID = 0;
+    uint32_t fContentID = 0;
 };
 
 static inline SkImage_Base* as_IB(SkImage* image) {

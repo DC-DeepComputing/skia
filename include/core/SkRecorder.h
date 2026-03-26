@@ -8,9 +8,15 @@
 #define SkRecorder_DEFINED
 
 #include "include/private/base/SkAPI.h"
+#include <cstdint>
 
 class SkCanvas;
 class SkSurface;
+class SkGaneshRecorder;
+
+namespace skgpu::graphite {
+class Recorder;
+}
 
 namespace skcpu {
 class Recorder;
@@ -41,7 +47,7 @@ private:
     * Returns nullptr if capture is not enabled.
     */
     virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
-    virtual void createCaptureBreakpoint(SkSurface*) = 0;
+    virtual uint32_t createCaptureBreakpoint(SkSurface*) = 0;
 
     friend class SkSurface_Base; // for capture functionality
 };

@@ -86,6 +86,8 @@ public:
     bool onCopyOnWrite(ContentChangeMode) override;
     sk_sp<const SkCapabilities> onCapabilities() override;
 
+    uint32_t getPixelDataID() const override;
+
     TextureProxyView readSurfaceView() const;
     sk_sp<Image> asImage() const;
     // Shares the texture but returns an Image with adjusted SkColorInfo to reflect the compatible
