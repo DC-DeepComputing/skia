@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d7b7d51_66221949",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-26T14:42:25Z",
+      "side": 1,
+      "message": "I\u0027d also like unit tests to cover the two overflow cases here.",
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9873de11_41f121b3",
+        "filename": "src/core/SkReadPixelsRec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-26T14:42:25Z",
+      "side": 1,
+      "message": "While we are here checking for overflow, let\u0027s compare total to `fInfo.computeByteSize(fRowBytes) - [bytes needed by subset]` before adding it to fPixels.\n\nHere ane WritePixelsRec",
+      "range": {
+        "startLine": 46,
+        "startChar": 32,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
