@@ -30,7 +30,8 @@ KeyContext::KeyContext(const Caps* caps,
         , fPipelineDataGatherer(pipelineDataGatherer)
         , fDictionary(dict)
         , fRTEffectDict(std::move(rtEffectDict))
-        , fDstColorInfo(dstColorInfo) {}
+        , fDstColorInfo(dstColorInfo)
+        , fKeyGenFlags(KeyGenFlags::kEnableIdentityColorSpaceXform) {}
 
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        DrawContext* drawContext,
@@ -52,7 +53,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
-        , fKeyGenFlags(initialFlags) {\
+        , fKeyGenFlags(initialFlags | KeyGenFlags::kEnableIdentityColorSpaceXform) {\
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
     fPaintColor.fA = paintColor.fA;
 }
@@ -71,7 +72,7 @@ KeyContext::KeyContext(const KeyContext& other,
         , fLocalMatrix(other.fLocalMatrix)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)
-        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags) {}
+        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags | KeyGenFlags::kEnableIdentityColorSpaceXform) {}
 
 KeyContext::~KeyContext() {}
 
