@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f518fb_14568aa0",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-26T19:39:51Z",
+      "side": 1,
+      "message": "Bring back the \"//\" ?",
+      "revId": "1d66a7bed334fa4af636d5769de0ea848c711dd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
