@@ -32,6 +32,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "src/utils/SkShaderUtils.h"
 
 #include <atomic>
 #include <vector>
@@ -752,7 +753,9 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                      std::move(groupLayouts),
                                      step->primitiveType(),
                                      depthStencilSettings.fStencilReferenceValue,
-                                     std::move(immutableSamplers)));
+                                     std::move(immutableSamplers),
+                                     SkShaderUtils::PrettyPrint(vsSkSL),
+                                     SkShaderUtils::PrettyPrint(fsSkSL)));
 }
 
 DawnGraphicsPipeline::DawnGraphicsPipeline(
@@ -763,13 +766,17 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(
         BindGroupLayouts groupLayouts,
         PrimitiveType primitiveType,
         uint32_t refValue,
-        skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers)
-    : GraphicsPipeline(sharedContext, pipelineInfo, pipelineLabel)
-    , fAsyncPipelineCreation(std::move(asyncCreationInfo))
-    , fGroupLayouts(std::move(groupLayouts))
-    , fPrimitiveType(primitiveType)
-    , fStencilReferenceValue(refValue)
-    , fImmutableSamplers(std::move(immutableSamplers)) {
+        skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers,
+        std::string vsSkSL,
+        std::string fsSkSL)
+        : GraphicsPipeline(sharedContext, pipelineInfo, pipelineLabel)
+        , fAsyncPipelineCreation(std::move(asyncCreationInfo))
+        , fGroupLayouts(std::move(groupLayouts))
+        , fPrimitiveType(primitiveType)
+        , fStencilReferenceValue(refValue)
+        , fImmutableSamplers(std::move(immutableSamplers))
+        , fVertexSkSL(vsSkSL)
+        , fFragmentSkSL(fsSkSL) {
     // Update the newly-created underlying GPU object's label to match the Resource's
     this->synchronizeBackendLabel();
 }
@@ -836,6 +843,15 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
 #endif
 
     return fAsyncPipelineCreation->fRenderPipeline;
+}
+
+void DawnGraphicsPipeline::RecordSkSL() const {
+    TRACE_EVENT2("skia.shaders",
+                 "DawnGraphicsPipeline::bindPipeline",
+                 "vertex",
+                 TRACE_STR_COPY(fVertexSkSL.c_str()),
+                 "fragment",
+                 TRACE_STR_COPY(fFragmentSkSL.c_str()));
 }
 
 } // namespace skgpu::graphite

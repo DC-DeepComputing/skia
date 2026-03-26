@@ -55,7 +55,9 @@ public:
                       const UniformInfoArray& samplers,
                       std::unique_ptr<GrGeometryProcessor::ProgramImpl>,
                       std::unique_ptr<GrXferProcessor::ProgramImpl>,
-                      std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls);
+                      std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls,
+                      std::string fragmentSksl,
+                      std::string vertexSkSl);
 
     ~GrVkPipelineState();
 
@@ -118,6 +120,9 @@ private:
     GrVkPipelineStateDataManager fDataManager;
 
     int fNumSamplers;
+
+    std::string fVertexSksl;
+    std::string fFragmentSksl;
 };
 
 #endif

@@ -12,6 +12,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
@@ -58,14 +59,18 @@ GrVkPipelineState::GrVkPipelineState(
         const UniformInfoArray& samplers,
         std::unique_ptr<GrGeometryProcessor::ProgramImpl> gpImpl,
         std::unique_ptr<GrXferProcessor::ProgramImpl> xpImpl,
-        std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls)
+        std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls,
+        std::string fragmentSksl,
+        std::string vertexSkSl)
         : fPipeline(std::move(pipeline))
         , fSamplerDSHandle(samplerDSHandle)
         , fBuiltinUniformHandles(builtinUniformHandles)
         , fGPImpl(std::move(gpImpl))
         , fXPImpl(std::move(xpImpl))
         , fFPImpls(std::move(fpImpls))
-        , fDataManager(uniforms, uniformSize, usePushConstants) {
+        , fDataManager(uniforms, uniformSize, usePushConstants)
+        , fVertexSksl(std::move(vertexSkSl))
+        , fFragmentSksl(std::move(fragmentSksl)) {
     fNumSamplers = samplers.count();
     for (const auto& sampler : samplers.items()) {
         // We store the immutable samplers here and take a ref on the sampler. Once we switch to
@@ -291,5 +296,12 @@ void GrVkPipelineState::setRenderTargetState(SkISize colorAttachmentDimensions,
 }
 
 void GrVkPipelineState::bindPipeline(const GrVkGpu* gpu, GrVkCommandBuffer* commandBuffer) {
+    TRACE_EVENT2("skia.shaders",
+                 "GrVkPipelineState::bindPipeline",
+                 "vertex",
+                 TRACE_STR_COPY(fVertexSksl.c_str()),
+                 "fragment",
+                 TRACE_STR_COPY(fFragmentSksl.c_str()));
+
     commandBuffer->bindPipeline(gpu, fPipeline);
 }

@@ -234,10 +234,12 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     }
 
     int numShaderStages = 0;
-    if (kSPIRV_Tag == shaderType) {
-        numShaderStages = this->loadShadersFromCache(&reader, shaderModules, shaderStageInfo);
-    }
+    // if (kSPIRV_Tag == shaderType) {
+    //     numShaderStages = this->loadShadersFromCache(&reader, shaderModules, shaderStageInfo);
+    // }
 
+    std::string vertexSksl;
+    std::string fragmentSksl;
     // Proceed from sources if we didn't get a SPIRV cache (or the cache was invalid)
     if (!numShaderStages) {
         numShaderStages = 2; // We always have at least vertex and fragment stages.
@@ -261,6 +263,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
             }
         }
 
+        vertexSksl = *sksl[kVertex_GrShaderType];
         bool success = this->createVkShaderModule(VK_SHADER_STAGE_VERTEX_BIT,
                                                   *sksl[kVertex_GrShaderType],
                                                   &shaderModules[kVertex_GrShaderType],
@@ -269,6 +272,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
                                                   &shaders[kVertex_GrShaderType],
                                                   &interfaces[kVertex_GrShaderType]);
 
+        fragmentSksl = *sksl[kFragment_GrShaderType];
         success = success && this->createVkShaderModule(VK_SHADER_STAGE_FRAGMENT_BIT,
                                                         *sksl[kFragment_GrShaderType],
                                                         &shaderModules[kFragment_GrShaderType],
@@ -361,8 +365,8 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     }
 
     if (!pipeline) {
-        GR_VK_CALL(fGpu->vkInterface(), DestroyPipelineLayout(fGpu->device(), pipelineLayout,
-                                                              nullptr));
+        GR_VK_CALL(fGpu->vkInterface(),
+                   DestroyPipelineLayout(fGpu->device(), pipelineLayout, nullptr));
         return nullptr;
     }
 
@@ -376,5 +380,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
                                  fUniformHandler.fSamplers,
                                  std::move(fGPImpl),
                                  std::move(fXPImpl),
-                                 std::move(fFPImpls));
+                                 std::move(fFPImpls),
+                                 SkShaderUtils::PrettyPrint(vertexSksl),
+                                 SkShaderUtils::PrettyPrint(fragmentSksl));
 }

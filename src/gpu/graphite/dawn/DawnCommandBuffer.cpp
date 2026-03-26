@@ -782,6 +782,7 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
     }
     fActiveGraphicsPipeline = dawnGraphicsPipeline;
     fActiveRenderPassEncoder.SetPipeline(wgpuPipeline);
+    dawnGraphicsPipeline->RecordSkSL();
     fBoundUniformBuffersDirty = true;
 
     if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy &&

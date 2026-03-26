@@ -81,6 +81,8 @@ public:
         return fImmutableSamplers[index].get();
     }
 
+    void RecordSkSL() const;
+
 private:
     struct AsyncPipelineCreation;
 
@@ -91,7 +93,9 @@ private:
                          BindGroupLayouts groupLayouts,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
-                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers);
+                         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers,
+                         std::string vsSkSL,
+                         std::string fsSkSL);
 
     void freeGpuData() override;
 
@@ -102,6 +106,9 @@ private:
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
     const skia_private::TArray<sk_sp<DawnSampler>> fImmutableSamplers;
+
+    std::string fVertexSkSL;
+    std::string fFragmentSkSL;
 };
 
 } // namespace skgpu::graphite
