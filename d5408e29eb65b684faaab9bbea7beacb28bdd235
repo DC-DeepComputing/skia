@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988b737f_0f31a240",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-26T14:36:56Z",
+      "side": 0,
+      "message": "I would keep the assert here",
+      "range": {
+        "startLine": 824,
+        "startChar": 0,
+        "endLine": 824,
+        "endChar": 49
+      },
+      "revId": "d5408e29eb65b684faaab9bbea7beacb28bdd235",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
