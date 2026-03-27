@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7064cc3_d2126163",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-27T20:24:30Z",
+      "side": 1,
+      "message": "I was getting tired of always having to go into `TextureInfoPriv::ViewFormat(proxy-\u003etextureInfo())` vs. now `proxy-\u003eformat()`",
+      "revId": "060c92b15fce4aa5480f89540640d32375f5b3df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
