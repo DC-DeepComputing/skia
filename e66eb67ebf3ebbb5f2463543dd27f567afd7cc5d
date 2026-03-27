@@ -71,6 +71,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a6a224_c30a2800",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3244554
+      },
+      "writtenOn": "2026-03-27T07:15:58Z",
+      "side": 1,
+      "message": "Hi reviewers\n\nIt\u0027s urgently critical to land a \"stop-gap\" security fix asap (rather than landing the right solution with tests). Would you propose a minimum fix and LGTM this CL? We can add a TODO for the right fix. My team is processing tons of security bugs in a short timeline, and we must focus on \"stop-gap\" solutions in the first pass. Thanks for your support!",
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9873de11_41f121b3",
