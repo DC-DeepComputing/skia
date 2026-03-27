@@ -15,6 +15,25 @@
 #include <cstring>
 #include <limits>
 #include <string>
+#include <locale>
+
+namespace {
+#if defined(linux) || defined(__linux) || defined(__APPLE__)
+locale_t GetCLocale() {
+    static locale_t instance = newlocale(LC_NUMERIC, "C", nullptr);
+    SkASSERT(instance);
+    return instance;
+}
+#else  // defined(linux) || defined(__linux) || defined(__APPLE__)
+_locale_t GetCLocale() {
+    static _locale_t instance = _create_locale(LC_NUMERIC, "C");
+    SkASSERT(instance);
+    return instance;
+}
+
+auto* strtod_l = &_strtod_l;
+#endif  // defined(linux) || defined(__linux) || defined(__APPLE__)
+}  // namespace
 
 static inline bool is_between(int c, int min, int max)
 {
@@ -179,7 +198,7 @@ const char* SkParse::FindScalar(const char str[], SkScalar* value) {
     str = skip_ws(str);
 
     char* stop;
-    float v = (float)strtod(str, &stop);
+    float v = (float)strtod_l(str, &stop, GetCLocale());
     if (str == stop) {
         return nullptr;
     }
