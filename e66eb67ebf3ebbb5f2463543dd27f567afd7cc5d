@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9ee61c0_f3db048f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-27T03:43:01Z",
+      "side": 1,
+      "message": "I just did a quick check there are no tests for this function already so wouldn\u0027t as easy as just adding an additional case with large values. I\u0027ve never contributed to skia before and I see no tests in this directory at all. I\u0027d prefer if you could follow up on the bug and we submit this for now for phase 1 hardening.",
+      "parentUuid": "c0c7dbe6_f6158e6f",
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9873de11_41f121b3",
