@@ -49,6 +49,10 @@ SkPath& SkPath::operator=(SkPath&&) = default;
 
 SkPath::~SkPath() {
     SkDEBUGCODE(this->validate();)
+    // SkPath is used in unions (e.g., GrShape) where its destructor might be called manually.                                                                                              │
+    // We explicitly reset fPathData so that the internal pointer is zeroed out.                                                                                                            │
+    // This prevents double-free issues if the union's memory is later bitwise-copied or reused.                                                                                            │
+    fPathData.reset();
 }
 
 void SkPath::setConvexity(SkPathConvexity c) const {
