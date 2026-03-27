@@ -273,7 +273,7 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeGpuToCpu(
 }
 
 template <typename... RPModifiers>
-std::unique_ptr<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
+sk_sp<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
         SkColorType srcColorType,
         SkColorType dstColorType,
         RPModifiers... rpModifiers) {
@@ -281,8 +281,8 @@ std::unique_ptr<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
         (!SkToBool(rpModifiers) && ...)) {
         return nullptr; // Identity conversion
     }
-    std::unique_ptr<RPOps> ops{new RPOps(/*srcBpp=*/SkColorTypeBytesPerPixel(srcColorType),
-                                         /*dstBpp=*/SkColorTypeBytesPerPixel(dstColorType))};
+    sk_sp<RPOps> ops{new RPOps(/*srcBpp=*/SkColorTypeBytesPerPixel(srcColorType),
+                               /*dstBpp=*/SkColorTypeBytesPerPixel(dstColorType))};
 
     // NOTE: The src and dst memory contexts are not modified here, they just provide stable
     // pointers for the appended ops to reference, and will be patched during run().
@@ -389,3 +389,21 @@ void TextureFormatXferFn::run(int width, int height,
 }
 
 } // namespace skgpu::graphite
+
+// TODO(michaelludwig, b/): TextureUploadWriter isn't very useful with TextureFormatXferFn's
+// capabilities and the writer model doesn't work well with the more explicit placement of dst
+// data that has to happen. UploadBufferManager should just provide a span and then we can call
+// run() directly and delete TextureUploadWriter entirely.
+#include "src/gpu/BufferWriter.h"
+
+namespace skgpu {
+
+void TextureUploadWriter::convert(size_t offset, int width, int height,
+                                  const void* src, size_t srcRowBytes,
+                                  const graphite::TextureFormatXferFn& dst, size_t dstRowBytes) {
+    this->validate(offset + dstRowBytes * height);
+    void* dstPtr = SkTAddOffset<void>(fPtr, offset);
+    dst.run(width, height, src, srcRowBytes, dstPtr, dstRowBytes);
+}
+
+} // namespace skgpu
