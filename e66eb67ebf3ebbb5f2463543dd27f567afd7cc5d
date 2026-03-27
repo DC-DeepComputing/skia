@@ -133,6 +133,30 @@
       },
       "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b84517_c63d56d9",
+        "filename": "src/core/SkReadPixelsRec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-27T13:20:46Z",
+      "side": 1,
+      "message": "Please mention on the bug or here if you want me to do a follow up.",
+      "parentUuid": "d49802f9_a44791f3",
+      "range": {
+        "startLine": 46,
+        "startChar": 32,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
