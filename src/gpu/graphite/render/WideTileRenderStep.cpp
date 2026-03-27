@@ -75,7 +75,7 @@ void WideTileRenderStep::writeVertices(DrawWriter* writer,
         float l = static_cast<float>(tile.fX);
         float t = static_cast<float>(tile.fY);
         float r = static_cast<float>(tile.fX + tile.fWidth);
-        float b = static_cast<float>(tile.fY + SparseStripConfig::kTileHeight);
+        float b = static_cast<float>(tile.fY + SparseStripsConfig::kTileHeight);
 
         instances.append(1)
             << l << t << r << b

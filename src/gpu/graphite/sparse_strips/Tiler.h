@@ -13,6 +13,7 @@
 #include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <algorithm>
@@ -24,44 +25,7 @@
 
 namespace skgpu::graphite {
 
-struct IntersectionBits {
-    static constexpr uint32_t T = 0b00001;
-    static constexpr uint32_t B = 0b00010;
-    static constexpr uint32_t L = 0b00100;
-    static constexpr uint32_t R = 0b01000;
-    static constexpr uint32_t W = 0b10000;
-
-    static constexpr uint32_t BOT_SHIFT = 1;
-    static constexpr uint32_t LEFT_SHIFT = 2;
-    static constexpr uint32_t RIGHT_SHIFT = 3;
-    static constexpr uint32_t WINDING_SHIFT = 4;
-    static constexpr uint32_t INT_MASK_SHIFT = 5;
-
-    static constexpr uint32_t INTERSECTION_MASK = W | R | L | B | T;
-    static constexpr uint32_t MAX_LINES_PER_PATH = 1 << (32 - INT_MASK_SHIFT);
-
-    static std::string maskToString(uint32_t mask) {
-        if (mask == 0) return "0";
-
-        std::vector<std::string> parts;
-        if (mask & W) parts.push_back("W");
-        if (mask & T) parts.push_back("T");
-        if (mask & B) parts.push_back("B");
-        if (mask & L) parts.push_back("L");
-        if (mask & R) parts.push_back("R");
-
-        std::string s;
-        for (size_t i = 0; i < parts.size(); ++i) {
-            s += parts[i];
-            if (i < parts.size() - 1) {
-                s += " | ";
-            }
-        }
-        return s;
-    }
-};
-
-template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile : public IntersectionBits {
+template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile {
     uint16_t x;
     uint16_t y;
     uint32_t packedWindingLineIdx;
@@ -69,10 +33,13 @@ template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile : public IntersectionBits
     Tile() : x(0), y(0), packedWindingLineIdx(0) {}
 
     Tile(uint16_t x, uint16_t y, uint32_t lineIdx, uint32_t intersectionMask)
-            : x(x), y(y), packedWindingLineIdx((lineIdx << INT_MASK_SHIFT) | intersectionMask) {}
+            : x(x), y(y),
+            packedWindingLineIdx((lineIdx << SparseStripsConstants::INT_MASK_SHIFT) | intersectionMask) {}
 
     SK_ALWAYS_INLINE uint64_t toBits() const {
-        return (static_cast<uint64_t>(y) << 48) | (static_cast<uint64_t>(x) << 32) |
+        static constexpr uint32_t xyShift = sizeof(packedWindingLineIdx) * 8;
+        static constexpr uint32_t yShift = SparseStripsConstants::Y_SHIFT + xyShift;
+        return (static_cast<uint64_t>(y) << yShift) | (static_cast<uint64_t>(x) << xyShift) |
                static_cast<uint64_t>(packedWindingLineIdx);
     }
 
@@ -81,7 +48,8 @@ template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile : public IntersectionBits
     bool operator==(const Tile& other) const { return toBits() == other.toBits(); }
 };
 
-template <uint16_t WIDTH, uint16_t HEIGHT> class Tiles : public IntersectionBits {
+template <uint16_t WIDTH, uint16_t HEIGHT>
+class Tiles {
 public:
     using TileType = Tile<WIDTH, HEIGHT>;
 
@@ -103,7 +71,7 @@ public:
 
     bool makeTilesMSAA(const Polyline& polyline, SkIRect clip,
                        WindingHistogram& histogram) {
-        SkASSERT(polyline.count() <= MAX_LINES_PER_PATH);
+        SkASSERT(polyline.count() <= SparseStripsConstants::MAX_LINES_PER_PATH);
 
         bool cullingEventOccurred = false;
         if (clip.isEmpty()) {
@@ -293,6 +261,15 @@ public:
     }
 
 private:
+    static constexpr uint32_t W           = SparseStripsConstants::W;
+    static constexpr uint32_t T           = SparseStripsConstants::T;
+    static constexpr uint32_t B           = SparseStripsConstants::B;
+    static constexpr uint32_t L           = SparseStripsConstants::L;
+    static constexpr uint32_t R           = SparseStripsConstants::R;
+    static constexpr uint32_t LEFT_SHIFT  = SparseStripsConstants::LEFT_SHIFT;
+    static constexpr uint32_t RIGHT_SHIFT = SparseStripsConstants::RIGHT_SHIFT;
+    static constexpr uint32_t BOT_SHIFT   = SparseStripsConstants::BOT_SHIFT;
+
     std::vector<TileType> fTileBuf;
     SkDEBUGCODE(bool fSorted;)
 

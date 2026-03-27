@@ -36,10 +36,10 @@
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight>
+template <uint16_t kTileWidth, uint16_t kTileHeight, typename MSAAType>
 class StripGenerator {
 public:
-    StripGenerator(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
+    StripGenerator(SkISize deviceSize, const SkTDArray<MSAAType>& lut, Recorder* recorder)
             : fDeviceSize(SkIRect::MakeSize(deviceSize)), fCulled(true), fLUT(lut)
             , fRecorder(recorder)
             , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
@@ -133,7 +133,7 @@ private:
     Tiles<kTileWidth, kTileHeight> fTiles;
     Polyline fFlattenned;
     SkTDArray<Strip> fStrips;
-    const SkTDArray<uint8_t>& fLUT;
+    const SkTDArray<MSAAType>& fLUT;
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
     bool fDrawn = false;
     Recorder* fRecorder;

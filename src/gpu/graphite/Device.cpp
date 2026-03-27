@@ -441,8 +441,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 }
 
 struct StripGeneratorWrapper {
-    StripGenerator<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fGenerator;
-    StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
+    StripGenerator<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight, SparseStripsConfig::MSAAType> fGenerator;
+    StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<SparseStripsConfig::MSAAType>& lut, Recorder* recorder)
         : fGenerator(deviceSize, lut, recorder) {}
 };
 

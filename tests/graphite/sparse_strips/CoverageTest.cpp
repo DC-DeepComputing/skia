@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
@@ -27,6 +28,9 @@
 namespace skgpu::graphite {
 
 namespace {
+
+static constexpr uint32_t kMaskShift        = SparseStripsConstants::INT_MASK_SHIFT;
+static constexpr uint32_t kIntersectionMask = SparseStripsConstants::INTERSECTION_MASK;
 
 // Simplified point-in-polygon verification using Even-Odd rule.
 bool IsInside(SkPoint pt, const Polyline& polyline) {
@@ -238,13 +242,13 @@ private:
 
         out.append("Tile Intersections:\n");
         for (const auto& tile : tiler.getTiles()) {
-            uint32_t mask = tile.packedWindingLineIdx & Tile<TileW, TileH>::INTERSECTION_MASK;
-            uint32_t lineIdx = tile.packedWindingLineIdx >> Tile<TileW, TileH>::INT_MASK_SHIFT;
+            uint32_t mask = tile.packedWindingLineIdx & kIntersectionMask;
+            uint32_t lineIdx = tile.packedWindingLineIdx >> kMaskShift;
             out.appendf("  Tile(%u,%u) Line %u Mask: %s\n",
                         tile.x,
                         tile.y,
                         lineIdx,
-                        Tile<TileW, TileH>::maskToString(mask).c_str());
+                        SparseStripsConstants::maskToString(mask).c_str());
         }
 
         out.appendf("\nASCII Map Tile(%d,%d) [Left: Expected | Right: Actual]\n",
