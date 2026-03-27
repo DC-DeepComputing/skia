@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb3a5ea_744407c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4735435
+      },
+      "writtenOn": "2026-03-27T15:33:37Z",
+      "side": 1,
+      "message": "Please check a patch with a fix of SVG parsing with non-english locale.",
+      "revId": "61e880610407f6e72a4bfa84eb077f3c13e35375",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
