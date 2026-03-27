@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c7dbe6_f6158e6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-27T00:22:14Z",
+      "side": 1,
+      "message": "Given the time constraints could you take over the bug and add tests and further hardening as you see fit (I\u0027ll CC you on it now). Ah you are already CC\u0027d.\n\ngo/code-terracotta-review-explainer for details, lets land this for now and if you don\u0027t mind taking over the bug to confirm if\n\n1) This is legit issue\n2) if there is additional protections needed (or tests).",
+      "parentUuid": "7d7b7d51_66221949",
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9873de11_41f121b3",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-03-26T14:42:25Z",
       "side": 1,
       "message": "While we are here checking for overflow, let\u0027s compare total to `fInfo.computeByteSize(fRowBytes) - [bytes needed by subset]` before adding it to fPixels.\n\nHere ane WritePixelsRec",
+      "range": {
+        "startLine": 46,
+        "startChar": 32,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "e66eb67ebf3ebbb5f2463543dd27f567afd7cc5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d49802f9_a44791f3",
+        "filename": "src/core/SkReadPixelsRec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-27T00:22:14Z",
+      "side": 1,
+      "message": "I don\u0027t think I understand this comment, I don\u0027t know what subset refers to (I have no knowledge of what this code is doing. \n\n\nI know you want something like. `CHECK_EQ(total, fInfo.computeByteSize(fRowBytes) - \u003csomething\u003e);`\n\nBut what is subset? `fX * fY` perhaps?\n\nHappy to toss a explicit CHECK if if you know exactly what I should put, but also happy to do a follow up so probably lets submit this and I\u0027ll send you one to add the final check?",
+      "parentUuid": "9873de11_41f121b3",
       "range": {
         "startLine": 46,
         "startChar": 32,
