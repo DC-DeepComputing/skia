@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f5df64_3557e5bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-27T17:39:24Z",
+      "side": 1,
+      "message": "No, there is no stale pointer. The union has been destroyed, there is no pointer (or any other object) in it.",
+      "range": {
+        "startLine": 13,
+        "startChar": 48,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b6b4ee5_410305e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-27T17:39:24Z",
+      "side": 1,
+      "message": "Once again, there is no stale pointer, this is just uninitialized memory.",
+      "range": {
+        "startLine": 19,
+        "startChar": 41,
+        "endLine": 19,
+        "endChar": 72
+      },
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda59077_f7d739f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-27T17:39:24Z",
+      "side": 1,
+      "message": "That would be calling a destructor on uninitialized memory, that would need to be fixed.",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 39
+      },
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "105933d2_edb53718",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-27T17:39:24Z",
+      "side": 1,
+      "message": "Do you have a reproducing example?",
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51d54fa4_c9c31fa5",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-03-27T17:39:24Z",
+      "side": 1,
+      "message": "I don\u0027t understand, `sk_sp\u003cSkPathData\u003e fPathData` is about to be destroyed which will drop the reference. It makes no difference if the underlying memory still has the random bits (which used to represent a pointer).",
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
