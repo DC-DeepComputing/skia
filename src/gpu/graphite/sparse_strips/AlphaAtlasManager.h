@@ -35,6 +35,10 @@ public:
         return fTextures.back().fAlphaBuffer;
     }
 
+    int32_t getAlphaBufferSize() {
+        return fTextures.back().fAlphaBuffer.size();
+    }
+
     int32_t getUploadOffset() const {
         SkASSERT(!fTextures.empty() && fTextures.back().fTexture);
         return fTextures.back().fUploadSize;

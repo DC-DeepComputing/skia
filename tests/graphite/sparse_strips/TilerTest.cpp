@@ -5,11 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkRect.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 
 #include <cmath>
+#include <cstring>
 #include <sstream>
 #include <vector>
 
@@ -66,9 +68,15 @@ void check_tiles_match(skiatest::Reporter* reporter,
     build_polyline_and_mapping(lines, polyline, expectedToActualIdx);
 
     uint16_t kScaledDim = static_cast<uint16_t>(100.0f * scale);
+    int32_t numRows = (kScaledDim + kTileHeight - 1) / kTileHeight;
+    WindingHistogram culled(numRows);
+    culled.resize(numRows);
+    culled.clear();
+
+    SkIRect clip = SkIRect::MakeWH(kScaledDim, kScaledDim);
 
     tiles.reset();
-    tiles.makeTilesMSAA(polyline, kScaledDim, kScaledDim);
+    tiles.makeTilesMSAA(polyline, clip, culled);
 
     const std::vector<TileType>& actual = tiles.getTiles();
 
@@ -205,6 +213,57 @@ void check_sorted(skiatest::Reporter* reporter, const std::vector<TileType>& buf
                 ERRORF(reporter, "Sort Failure [Payload]: Tile[%zu] > Tile[%zu]", i, i + 1);
             }
         }
+    }
+}
+
+template <uint16_t kTileWidth, uint16_t kTileHeight>
+void check_culling(skiatest::Reporter* reporter,
+                   Tiles<kTileWidth, kTileHeight>& tiles,
+                   const std::vector<Line>& rawLines,
+                   const std::vector<int16_t>& expectedCulled,
+                   const char* testName,
+                   float scale) {
+    tiles.reset();
+
+    Polyline polyline;
+    std::vector<uint32_t> expectedToActualIdx;
+    std::vector<Line> lines = scale_lines(rawLines, scale);
+    build_polyline_and_mapping(lines, polyline, expectedToActualIdx);
+
+    uint16_t kScaledDim = static_cast<uint16_t>(100.0f * scale);
+    int32_t numRows = (kScaledDim + kTileHeight - 1) / kTileHeight;
+    WindingHistogram culled(numRows);
+    culled.resize(numRows);
+    culled.clear();
+
+    SkIRect clip = SkIRect::MakeWH(kScaledDim, kScaledDim);
+    bool cullingEventOccurred = tiles.makeTilesMSAA(polyline, clip, culled);
+
+    // If we expected culling data, we should have seen a culling event flag
+    if (!expectedCulled.empty() && !cullingEventOccurred) {
+        ERRORF(reporter,
+               "[%s] Expected culling to occur, but makeTilesMSAA returned false.",
+               testName);
+    }
+
+    for (size_t i = 0; i < expectedCulled.size(); ++i) {
+        REPORTER_ASSERT(reporter,
+                        culled[i] == expectedCulled[i],
+                        "[%s] Row[%zu] Cull mismatch. Want %d, Got %d",
+                        testName,
+                        i,
+                        expectedCulled[i],
+                        culled[i]);
+    }
+
+    // Ensure the rest of the array remains untouched (0)
+    for (size_t i = expectedCulled.size(); i < static_cast<size_t>(numRows); ++i) {
+        REPORTER_ASSERT(reporter,
+                        culled[i] == 0,
+                        "[%s] Row[%zu] Cull mismatch. Want 0, Got %d",
+                        testName,
+                        i,
+                        culled[i]);
     }
 }
 
@@ -363,8 +422,12 @@ public:
             std::vector<Line> lines = {
                     {{kUnscaledDim - 5.0f, 10.0f}, {kUnscaledDim + 5.0f, 10.0f}}};
             std::vector<TileType> expected = {TileType(23, 2, 0, R), TileType(24, 2, 0, L | R)};
-            check_tiles_match<kTileWidth, kTileHeight>(
-                    reporter, tiles, lines, expected, "HorizontalLineCrossingRightViewport", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(reporter,
+                                                       tiles,
+                                                       lines,
+                                                       expected,
+                                                       "HorizontalLineCrossingRightViewport",
+                                                       kScale);
         }
 
         {
@@ -811,20 +874,24 @@ public:
         }
 
         {
+            WindingHistogram culled;
             std::vector<Line> lines = {
                     {{22.0f * kScale, 552.0f * kScale}, {224.0f * kScale, 388.0f * kScale}}};
             tiles.reset();
-            tiles.makeTilesMSAA(
-                    make_polyline(lines), (uint16_t)(600 * kScale), (uint16_t)(600 * kScale));
+            tiles.makeTilesMSAA(make_polyline(lines),
+                                SkIRect::MakeWH((int)(600 * kScale), (int)(600 * kScale)),
+                                culled);
 
             lines = {{{59.60001f * kScale, 40.78f * kScale},
                       {520599.6f * kScale, 100.18f * kScale}}};
             tiles.reset();
-            tiles.makeTilesMSAA(
-                    make_polyline(lines), (uint16_t)(200 * kScale), (uint16_t)(100 * kScale));
+            tiles.makeTilesMSAA(make_polyline(lines),
+                                SkIRect::MakeWH((int)(200 * kScale), (int)(100 * kScale)),
+                                culled);
         }
 
         {
+            WindingHistogram culled;
             Polyline polyline;
 
             float step = 4.0f * kScale;
@@ -843,7 +910,7 @@ public:
             }
 
             tiles.reset();
-            tiles.makeTilesMSAA(polyline, kScaledDim, kScaledDim);
+            tiles.makeTilesMSAA(polyline, SkIRect::MakeWH(kScaledDim, kScaledDim), culled);
             const auto& buf = tiles.getTiles();
 
             REPORTER_ASSERT(reporter, !buf.empty(), "SortTest produced no tiles");
@@ -854,6 +921,181 @@ public:
 
             tiles.sortTiles();
             check_sorted(reporter, tiles.getTiles());
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, -0.1f}}};
+            std::vector<int16_t> expectedCulled = {};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Vertical_OneTile_AboveViewport",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 0.0f}}};
+            std::vector<int16_t> expectedCulled = {};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Vertical_OneTile_TouchViewport",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 0.1f}}};
+            std::vector<int16_t> expectedCulled = {1};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Vertical_SingleTile_CrossingViewport",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 4.0f}}};
+            std::vector<int16_t> expectedCulled = {1};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Vertical_OneTile_CrossingViewport",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, -4.0f}, {-1.0f, 8.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Vertical_TwoTile_CrossingViewport",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 8.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 0};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_VerticalLeft_TwoTiles_TopTouch",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 3.9f}}};
+            std::vector<int16_t> expectedCulled = {1, 0};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_VerticalLeft_SingleTiles_TopTouch",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 0.0f}, {-1.0f, 4.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 0};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_VerticalLeft_OneTiles_TopTouch",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-4.0f, 1.0f}, {-1.0f, 9.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 1, 1};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_SlopedLeft_Down_MultiTile",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-1.0f, 9.0f}, {-4.0f, 1.0f}}};
+            std::vector<int16_t> expectedCulled = {0, -1, -1};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, expectedCulled, "Cull_SlopedLeft_Up_MultiTile", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-4.0f, 4.0f}, {4.0f, 4.1f}}};
+            std::vector<int16_t> expectedCulled = {0, 1};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, expectedCulled, "Cull_SlopedLeft_OneTile", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 0.0f}, {0.1f, 14.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 1, 1};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Sloped_EnterViewport_Down",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 0.0f}, {8.0f, 16.0f}}};
+            std::vector<int16_t> expectedCulled = {1, 1, 0, 0};
+            check_culling<kTileWidth, kTileHeight>(reporter,
+                                                   tiles,
+                                                   lines,
+                                                   expectedCulled,
+                                                   "Cull_Sloped_EnterViewport_Down",
+                                                   kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-8.0f, 16.0f}, {8.0f, 0.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 0, 0, -1};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, expectedCulled, "Cull_Sloped_EnterViewport_Up", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-3.88f, 10.95f}, {-0.73f, 10.70f}}};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Cull_GhostWindingRepro_NoYCross", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Tiles_GhostWindingRepro_NoYCross", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-20.0f, 5.0f}, {-2.0f, 5.0f}}};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Cull_Offscreen_Horizontal", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Tiles_Offscreen_Horizontal", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{-5.0f, 2.0f}, {-2.0f, 6.0f}}};
+            std::vector<int16_t> expectedCulled = {0, 1};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, expectedCulled, "Cull_OffscreenLeft_YCross", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Tiles_OffscreenLeft_YCross", kScale);
+        }
+
+        {
+            std::vector<Line> lines = {{{kUnscaledDim + 5.0f, 2.0f}, {kUnscaledDim + 10.0f, 6.0f}}};
+            check_culling<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Cull_OffscreenRight", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(
+                    reporter, tiles, lines, {}, "Tiles_OffscreenRight", kScale);
         }
     }
 };
