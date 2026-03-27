@@ -14,7 +14,7 @@
 #include <cstddef>
 
 /**
- *  Helper class to package and trim the parameters passed to readPixels()
+ *  Helper class to package and trim the parameters passed to readPixels().
  */
 struct SkReadPixelsRec {
     SkReadPixelsRec(const SkImageInfo& info, void* pixels, size_t rowBytes, int x, int y)
