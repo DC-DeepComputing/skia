@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b01b9ae1_f9f74808",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-27T18:24:55Z",
+      "side": 1,
+      "message": "I don\u0027t follow this part either:\n\n  - `~SkPath` is only called when transitioning from `kPath` state to something else\n  - in order to be called again, we must have transitioned back to `kPath` at some point\n  - but transitioning to `kPath` [always re-initializes](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/geometry/GrShape.h;drc\u003d9c91b2494d4bf0a2d33b5985f7d1af79e72146f2;l\u003d182) the union member, overwriting whatever stale data might have been there",
+      "revId": "4e09586d58de4deb43e84bc08ad177661b1fca21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "105933d2_edb53718",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
