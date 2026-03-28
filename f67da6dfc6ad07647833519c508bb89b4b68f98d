@@ -16,6 +16,69 @@
       "message": "This was done by pattern-matching. Is this the correct way to set up a fuzzer?",
       "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f72c41f_83003338",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-28T18:10:56Z",
+      "side": 1,
+      "message": "We don\u0027t check in the corpora, but I can create a seed corpus from what you\u0027ve provided and upload it to GCS for our fuzzing infra to use.",
+      "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14c432b_04e27354",
+        "filename": "fuzz/oss_fuzz/FuzzHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-28T18:10:56Z",
+      "side": 1,
+      "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "376b7555_e20c145f",
+        "filename": "fuzz/oss_fuzz/FuzzHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-28T18:10:56Z",
+      "side": 1,
+      "message": "Can you also register this in FuzzMain (e.g. https://github.com/google/skia/blob/ca2d3c5ccac033a77147e6f27bd66a2b5346d52c/fuzz/FuzzMain.cpp#L424-L429). That binary has a few things that make reproducing issues easier.",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
