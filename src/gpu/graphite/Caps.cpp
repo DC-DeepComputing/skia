@@ -12,6 +12,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
+#include "src/core/SkImageInfoPriv.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -326,6 +327,54 @@ const Caps::ColorTypeInfo* Caps::getColorTypeInfo(SkColorType ct, const TextureI
     }
     return nullptr;
 }
+
+
+// SkColorType Caps::getDefaultColorType(const TextureInfo& info, SkAlphaType alphaType) const {
+//     if (!info.isValid()) {
+//         return kUnknown_SkColorType;
+//     }
+
+//     TextureFormat format = TextureInfoPriv::ViewFormat(info);
+//     uint32_t channels = TextureFormatChannelMask(format);
+//     const bool isSingleChannel = channels == kAlpha_SkColorChannelFlag ||
+//                                  channels == kRed_SkColorChannelFlag;
+
+//     const bool forceOpaque = alphaType == kUnknown_SkAlphaType;
+//     const bool hasAlpha = alphaType == kPremul_SkAlphaType || alphaType == kUnpremul_SkAlphaType;
+
+//     const bool isRenderable = this->isRenderable(info);
+//     for (const ColorTypeInfo& colorInfo : this->getColorTypeInfos(info)) {
+//         if (isSingleChannel) {
+//             // For single-channel texture formats, the alphaType determines whether or not we
+//             // pick the alpha-only colortype or a red-only color type.
+//             if (hasAlpha != SkColorTypeIsAlphaOnly(colorInfo.fColorType)) {
+//                 continue;
+//             }
+//         } else if (forceOpaque) {
+//             // For other texture formats that we force to opaque (vs. assume is opaque), prioritize
+//             // returning a colortype info that is always opaque (e.g. RGBx)
+//             if (!SkColorTypeIsAlwaysOpaque(colorInfo.fColorType)) {
+//                 continue;
+//             }
+//         }
+
+//         if (!isRenderable || (colorInfo.fFlags & ColorTypeInfo::kRenderable_Flag)) {
+//             return colorInfo.fColorType;
+//         }
+//     }
+
+//     // If we reached here, we may have excluded a config for a colortype that didn't already force
+//     // the color to opaque, so try again allowing for alpha. We *don't* do this for the similar
+//     // situation where there is an alpha-only colortype but no corresponding red-only colortype.
+//     // The semantics of an alpha-only colortype throughout higher level Skia behavior means we can't
+//     // just paper over the mismatch with a read swizzle later on (this currently only applies to
+//     // kA16_float_SkColorType with no kR16_float_SkColorType yet).
+//     if (!isSingleChannel && forceOpaque) {
+//         return this->getDefaultColorType(info, kPremul_SkAlphaType);
+//     }
+
+//     return kUnknown_SkColorType;
+// }
 
 SampleCount Caps::getCompatibleMSAASampleCount(const TextureInfo& info) const {
     if (info.sampleCount() > SampleCount::k1) {

@@ -105,7 +105,6 @@ sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
 
     return SkImages::WrapTexture(recorder,
                                  mbet->texture(),
-                                 pixmap.colorType(),
                                  pixmap.alphaType(),
                                  pixmap.refColorSpace(),
                                  origin,
