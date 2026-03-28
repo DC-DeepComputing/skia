@@ -56,8 +56,11 @@ namespace SkOpts {
             if (SkCpu::Supports(SkCpu::HSW)) { Init_hsw(); }
         #endif
 
-        #if (SK_CPU_SSE_LEVEL < SK_CPU_SSE_LEVEL_SKX) && defined(SK_ENABLE_AVX512_OPTS)
-            if (SkCpu::Supports(SkCpu::SKX)) { Init_skx(); }
+        #if (SK_CPU_SSE_LEVEL < SK_CPU_SSE_LEVEL_SKX)
+            // TODO(kjlubick): Remove the SK_ENABLE_AVX512_OPTS flag in favor of the disable one
+            #if defined(SK_ENABLE_AVX512_OPTS) && !defined(SK_DISABLE_AVX512_OPTS)
+                if (SkCpu::Supports(SkCpu::SKX)) { Init_skx(); }
+            #endif
         #endif
 
     #elif defined(SK_CPU_LOONGARCH)
