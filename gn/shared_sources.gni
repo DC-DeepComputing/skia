@@ -22,7 +22,9 @@ import("utils.gni")
 import("xml.gni")
 import("xps.gni")
 skia_opts = {
-  hsw_sources = hsw
-  skx_sources = skx
+  hsw_sources = ml3
+  skx_sources = ml4
   lasx_sources = lasx
+  ml3_sources = ml3
+  ml4_sources = ml4
 }
