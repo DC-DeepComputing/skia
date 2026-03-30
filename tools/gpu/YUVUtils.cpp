@@ -495,8 +495,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
                 }
                 planeImgs[i] = SkImages::WrapTexture(recorder,
                                                      mbet->texture(),
-                                                     plane.colorType(),
-                                                     plane.alphaType(),
+                                                     kUnknown_SkAlphaType,
                                                      fColorSpace,
                                                      skgpu::Origin::kTopLeft,
                                                      genMipmaps,
