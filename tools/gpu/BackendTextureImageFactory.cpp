@@ -103,9 +103,18 @@ sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
         return nullptr;
     }
 
+    if (pixmap.colorType() == kGray_8_SkColorType) {
+        return SkImages::WrapTexture(recorder,
+                                     mbet->texture(),
+                                     pixmap.colorType(),
+                                     pixmap.alphaType(),
+                                     pixmap.refColorSpace(),
+                                     origin,
+                                     sk_gpu_test::ManagedGraphiteTexture::ImageReleaseProc,
+                                     mbet->releaseContext());
+    }
     return SkImages::WrapTexture(recorder,
                                  mbet->texture(),
-                                 pixmap.colorType(),
                                  pixmap.alphaType(),
                                  pixmap.refColorSpace(),
                                  origin,

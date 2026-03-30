@@ -20,6 +20,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
@@ -152,24 +153,53 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context,
 
             sk_sp<SkImage> image = SkImages::WrapTexture(recorder.get(),
                                                          texture,
-                                                         kRGBA_8888_SkColorType,
                                                          kPremul_SkAlphaType,
                                                          /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kRGBA_8888_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
 
             image.reset();
 
-            // We should fail when trying to wrap the same texture in an image with a non-compatible
-            // color type.
+            // We should switch to k888x when possible for forceOpaque
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kAlpha_8_SkColorType,
-                                          kPremul_SkAlphaType,
-                                          /* colorSpace= */ nullptr);
-            REPORTER_ASSERT(reporter, !image);
+                                          kUnknown_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kRGB_888x_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+            image.reset();
+            recorder->deleteBackendTexture(texture);
+
+            // We should still be flagged as opaque and have a A=1 swizzle for color types that
+            // don't have an A->X variant
+            info = caps->getDefaultSampledTextureInfo(kARGB_4444_SkColorType,
+                                                      mipmapped,
+                                                      Protected::kNo,
+                                                      renderable);
+
+            texture = recorder->createBackendTexture(kSize, info);
+            REPORTER_ASSERT(reporter, texture.isValid());
+
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnknown_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kARGB_4444_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+            Swizzle readSwizzle = static_cast<Image*>(image.get())->textureProxyView().swizzle();
+            REPORTER_ASSERT(reporter, readSwizzle.asString().endsWith('1'));
 
             recorder->deleteBackendTexture(texture);
+
+            // FIXME handle red/alpha tests
         }
     }
 }
