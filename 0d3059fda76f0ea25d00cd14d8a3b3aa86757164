@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "729fa280_8877843f",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-30T17:10:24Z",
+      "side": 1,
+      "message": "This is automatically enforced by the linker. The definition of `convert` is only ever created if we\u0027re building Graphite.  This is also a short term \"hack\" to keep the review diff small.  TextureUploadWriter is almost able to be deleted entirely (and is actually not referenced in Ganesh, it just happens to be part of the BufferWriter header which is shared).",
+      "parentUuid": "0e774168_c3ad9810",
+      "range": {
+        "startLine": 476,
+        "startChar": 0,
+        "endLine": 479,
+        "endChar": 79
+      },
+      "revId": "0d3059fda76f0ea25d00cd14d8a3b3aa86757164",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fb72798_79d6fec7",
