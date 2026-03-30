@@ -1,0 +1,113 @@
+digraph G {
+    rankdir=TB;
+    node [shape=box, style=filled, fillcolor=lightcyan, fontname="Helvetica"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // Inputs
+    subgraph cluster_inputs {
+        label = "Memory Gather (32-bit RGBA for 1 pixel)";
+        style = dashed;
+        TL [label="Top-Left (TL)\n1 pixel"];
+        TR [label="Top-Right (TR)\n1 pixel"];
+        BL [label="Bottom-Left (BL)\n1 pixel"];
+        BR [label="Bottom-Right (BR)\n1 pixel"];
+    }
+
+    // Unpack
+    subgraph cluster_unpack {
+        label = "Unpack to 16-bit\nOutputs separate R, G, B, A values";
+        style = dashed;
+        fillcolor = lightyellow;
+
+        TL_unpack [label="TL_R, TL_G, TL_B, TL_A"];
+        TR_unpack [label="TR_R, TR_G, TR_B, TR_A"];
+        BL_unpack [label="BL_R, BL_G, BL_B, BL_A"];
+        BR_unpack [label="BR_R, BR_G, BR_B, BR_A"];
+
+        TL -> TL_unpack;
+        TR -> TR_unpack;
+        BL -> BL_unpack;
+        BR -> BR_unpack;
+    }
+
+    // Weights
+    subgraph cluster_weights {
+        label = "Interpolation Weights";
+        style = dashed;
+        tx [label="tx (Horizontal Weight)", shape=ellipse, fillcolor=lightpink];
+        ty [label="ty (Vertical Weight)", shape=ellipse, fillcolor=lightpink];
+    }
+
+    // Horizontal Lerp
+    subgraph cluster_lerpx {
+        label = "Horizontal Interpolation (lerpX)\nExecuted 8 times total";
+        style = dashed;
+        fillcolor = lightgreen;
+
+        top_R [label="topR = lerpX(TL_R, TR_R, tx)"];
+        top_G [label="topG = lerpX(TL_G, TR_G, tx)"];
+        top_B [label="topB = lerpX(TL_B, TR_B, tx)"];
+        top_A [label="topA = lerpX(TL_A, TR_A, tx)"];
+
+        bot_R [label="botR = lerpX(BL_R, BR_R, tx)"];
+        bot_G [label="botG = lerpX(BL_G, BR_G, tx)"];
+        bot_B [label="botB = lerpX(BL_B, BR_B, tx)"];
+        bot_A [label="botA = lerpX(BL_A, BR_A, tx)"];
+
+        TL_unpack -> top_R;
+        TR_unpack -> top_R;
+        TL_unpack -> top_G;
+        TR_unpack -> top_G;
+        TL_unpack -> top_B;
+        TR_unpack -> top_B;
+        TL_unpack -> top_A;
+        TR_unpack -> top_A;
+
+        BL_unpack -> bot_R;
+        BR_unpack -> bot_R;
+        BL_unpack -> bot_G;
+        BR_unpack -> bot_G;
+        BL_unpack -> bot_B;
+        BR_unpack -> bot_B;
+        BL_unpack -> bot_A;
+        BR_unpack -> bot_A;
+
+        tx -> top_R [color=red, style=dashed];
+        tx -> top_G [color=red, style=dashed];
+        tx -> top_B [color=red, style=dashed];
+        tx -> top_A [color=red, style=dashed];
+        tx -> bot_R [color=red, style=dashed];
+        tx -> bot_G [color=red, style=dashed];
+        tx -> bot_B [color=red, style=dashed];
+        tx -> bot_A [color=red, style=dashed];
+    }
+
+    // Vertical Lerp
+    subgraph cluster_lerpy {
+        label = "Vertical Interpolation (lerpY)\nExecuted 4 times total";
+        style = dashed;
+        fillcolor = lightgreen;
+
+        final_R [label="r = lerpY(topR, botR, ty)"];
+        final_G [label="g = lerpY(topG, botG, ty)"];
+        final_B [label="b = lerpY(topB, botB, ty)"];
+        final_A [label="a = lerpY(topA, botA, ty)"];
+
+        top_R -> final_R; bot_R -> final_R;
+        top_G -> final_G; bot_G -> final_G;
+        top_B -> final_B; bot_B -> final_B;
+        top_A -> final_A; bot_A -> final_A;
+
+        ty -> final_R [color=blue, style=dashed];
+        ty -> final_G [color=blue, style=dashed];
+        ty -> final_B [color=blue, style=dashed];
+        ty -> final_A [color=blue, style=dashed];
+    }
+
+    // Output
+    Output [label="Interpolated 1 Pixel\n(Separate R, G, B, A values)"];
+    final_R -> Output;
+    final_G -> Output;
+    final_B -> Output;
+    final_A -> Output;
+}
