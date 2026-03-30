@@ -16,6 +16,46 @@
       "message": "I defer to @kjlubick here.  I can add the first (out of two required) CR+1 stamp from my side, but I haven\u0027t really looked closely.",
       "revId": "ef26fe3e42d6bb8eeca2da904ffbff83af0cfef3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8744b1b4_b3841ead",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T13:49:04Z",
+      "side": 1,
+      "message": "I kicked off the new job to see if it passes",
+      "revId": "ef26fe3e42d6bb8eeca2da904ffbff83af0cfef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fa09f2a_958b9864",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1943,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T13:49:04Z",
+      "side": 1,
+      "message": "We can drop this from the CQ now that we have the RustPNG one",
+      "range": {
+        "startLine": 1943,
+        "startChar": 5,
+        "endLine": 1943,
+        "endChar": 19
+      },
+      "revId": "ef26fe3e42d6bb8eeca2da904ffbff83af0cfef3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
