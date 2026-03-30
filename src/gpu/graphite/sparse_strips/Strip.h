@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
 #include <algorithm>
@@ -22,83 +24,85 @@
 #include <cstring>
 #include <functional>
 #include <optional>
+#include <type_traits>
 
 namespace skgpu::graphite {
 
 #if defined(GPU_TEST_UTILS)
-using MsaaExactMaskObserver = std::function<void(uint8_t exactMask)>;
+template <typename MSAAType>
+using MsaaExactMaskObserver = std::function<void(MSAAType exactMask)>;
 #endif
 
-class Strip : IntersectionBits {
+class Strip {
 public:
     Strip(uint16_t x, uint16_t y, uint32_t alphaIdx, bool shouldFill)
             : x(x)
             , y(y)
             , packedAlphaIdx(alphaIdx | (static_cast<uint32_t>(shouldFill) << FILL_SHIFT)) {}
 
-    template <uint16_t TileWidth, uint16_t TileHeight>
+    template <uint16_t TileWidth, uint16_t TileHeight, typename MSAAType>
     static void MakeStripsMsaa(const Tiles<TileWidth, TileHeight>& tileContainer,
                                SkTDArray<Strip>& stripBuf,
-                               SkTDArray<uint8_t>& alphaBuf,
+                               SkTDArray<MSAAType>& alphaBuf,
                                SkPathFillType fillType,
                                const Polyline& polyline,
-                               const SkTDArray<uint8_t>& maskLut,
+                               const SkTDArray<MSAAType>& maskLut,
                                WideTiles<TileHeight>& wides,
                                bool isCulled,
                                const WindingHistogram& windingHistogram,
                                const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                               , MsaaExactMaskObserver observer = nullptr
+                               , MsaaExactMaskObserver<MSAAType> observer = nullptr
 #endif
     ) {
         Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
             constexpr bool kIsWinding = decltype(isWindingTag)::value;
-            MakeStripsImpl<TileWidth, TileHeight, kIsWinding>(tileContainer,
-                                                              stripBuf,
-                                                              alphaBuf,
-                                                              isInverse,
-                                                              polyline,
-                                                              maskLut,
-                                                              wides,
-                                                              isCulled,
-                                                              windingHistogram,
-                                                              clipRect
+            MakeStripsImpl<TileWidth, TileHeight, kIsWinding, MSAAType>(tileContainer,
+                                                                        stripBuf,
+                                                                        alphaBuf,
+                                                                        isInverse,
+                                                                        polyline,
+                                                                        maskLut,
+                                                                        wides,
+                                                                        isCulled,
+                                                                        windingHistogram,
+                                                                        clipRect
 #if defined(GPU_TEST_UTILS)
-                                                              , observer
+                                                                        , observer
 #endif
             );
         });
     }
 
-    template <uint16_t TileWidth, uint16_t TileHeight>
+    template <uint16_t TileWidth, uint16_t TileHeight, typename MSAAType>
     static void MakeStripsMsaaSimd(const Tiles<TileWidth, TileHeight>& tileContainer,
                                    SkTDArray<Strip>& stripBuf,
-                                   SkTDArray<uint8_t>& alphaBuf,
+                                   SkTDArray<MSAAType>& alphaBuf,
                                    SkPathFillType fillType,
                                    const Polyline& polyline,
-                                   const SkTDArray<uint8_t>& maskLut,
+                                   const SkTDArray<MSAAType>& maskLut,
                                    WideTiles<TileHeight>& wides,
                                    bool isCulled,
                                    const WindingHistogram& windingHistogram,
                                    const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                                   , MsaaExactMaskObserver observer = nullptr
+                                   , MsaaExactMaskObserver<MSAAType> observer = nullptr
 #endif
     ) {
         Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
             constexpr bool kIsWinding = decltype(isWindingTag)::value;
-            MakeStripsSimdImpl<TileWidth, TileHeight, kIsWinding>(tileContainer,
-                                                                  stripBuf,
-                                                                  alphaBuf,
-                                                                  isInverse,
-                                                                  polyline,
-                                                                  maskLut,
-                                                                  wides,
-                                                                  isCulled,
-                                                                  windingHistogram,
-                                                                  clipRect
+            MakeStripsSimdImpl<TileWidth, TileHeight, kIsWinding, MSAAType>(tileContainer,
+                                                                            stripBuf,
+                                                                            alphaBuf,
+                                                                            isInverse,
+                                                                            polyline,
+                                                                            maskLut,
+                                                                            wides,
+                                                                            isCulled,
+                                                                            windingHistogram,
+                                                                            clipRect
 #if defined(GPU_TEST_UTILS)
-                                                                  , observer
+                                                                            , observer
 #endif
             );
         });
@@ -107,10 +111,26 @@ public:
 private:
 #if defined(GPU_TEST_UTILS)
     template <uint16_t, uint16_t> friend class ClipTestRunner;
-    template <uint16_t, uint16_t> friend class CoverageTestRunner;
+    template <uint16_t, uint16_t, typename> friend class CoverageTestRunner;
     template <uint16_t, uint16_t> friend class CoverageBenchSimd;
 #endif
-    template <uint16_t, uint16_t> friend class StripGenerator;
+    friend class StripGenerator;
+
+    static constexpr int32_t  kMaskWidth      = SparseStripsConfig::kLutWidth;
+    static constexpr float    kMaskWidthF     = static_cast<float>(kMaskWidth);
+    static constexpr int32_t  kMaskWidthExcl  = kMaskWidth - 1;
+    static constexpr int32_t  kMaskHeight     = SparseStripsConfig::kLutHeight;
+
+    static constexpr uint32_t W                 = SparseStripsConstants::W;
+    static constexpr uint32_t T                 = SparseStripsConstants::T;
+    static constexpr uint32_t B                 = SparseStripsConstants::B;
+    static constexpr uint32_t L                 = SparseStripsConstants::L;
+    static constexpr uint32_t R                 = SparseStripsConstants::R;
+    static constexpr uint32_t INT_MASK_SHIFT    = SparseStripsConstants::INT_MASK_SHIFT;
+    static constexpr uint32_t INTERSECTION_MASK = SparseStripsConstants::INTERSECTION_MASK;
+    static constexpr uint32_t FILL_SHIFT        = SparseStripsConstants::FILL_SHIFT;
+
+    static constexpr float kStripEpsilon        = SparseStripsConstants::kStripEpsilon;
 
     template <typename F> static void Dispatch(SkPathFillType fillType, F&& f) {
         switch (fillType) {
@@ -130,50 +150,37 @@ private:
         SkUNREACHABLE;
     }
 
-    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
     static void MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                                SkTDArray<Strip>& stripBuf,
-                               SkTDArray<uint8_t>& alphaBuf,
+                               SkTDArray<MSAAType>& alphaBuf,
                                bool isInverse,
                                const Polyline& polyline,
-                               const SkTDArray<uint8_t>& maskLut,
+                               const SkTDArray<MSAAType>& maskLut,
                                WideTiles<TileHeight>& wides,
                                bool isCulled,
                                const WindingHistogram& windingHistogram,
                                const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                               , MsaaExactMaskObserver observer = nullptr
+                               , MsaaExactMaskObserver<MSAAType> observer = nullptr
 #endif
     );
 
-    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
     static void MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                                    SkTDArray<Strip>& stripBuf,
-                                   SkTDArray<uint8_t>& alphaBuf,
+                                   SkTDArray<MSAAType>& alphaBuf,
                                    bool isInverse,
                                    const Polyline& polyline,
-                                   const SkTDArray<uint8_t>& maskLut,
+                                   const SkTDArray<MSAAType>& maskLut,
                                    WideTiles<TileHeight>& wides,
                                    bool isCulled,
                                    const WindingHistogram& windingHistogram,
                                    const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                                   , MsaaExactMaskObserver observer = nullptr
+                                   , MsaaExactMaskObserver<MSAAType> observer = nullptr
 #endif
     );
-
-    static constexpr uint32_t FILL_SHIFT = 31;
-
-    static constexpr int kNumSubSamples = 8;
-    static constexpr float kPackingScale = 0.5f;
-    static constexpr int kMaskWidth = 64;
-    static constexpr int kMaskHeight = 64;
-    static constexpr float kMaskWidthF = static_cast<float>(kMaskWidth);
-    static constexpr float kMaskHeightF = static_cast<float>(kMaskHeight);
-    static constexpr int kMaskWidthExcl = kMaskWidth - 1;
-    static constexpr int kMaskHeightExcl = kMaskHeight - 1;
-
-    static constexpr float kStripEpsilon = 1e-5f;
 
     // Note: SIMD not worth for here!
     static SK_ALWAYS_INLINE std::array<SkPoint, 2> clipToTile(
@@ -306,21 +313,25 @@ private:
     uint32_t packedAlphaIdx;
 };
 
-template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
 void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                            SkTDArray<Strip>& stripBuf,
-                           SkTDArray<uint8_t>& alphaBuf,
+                           SkTDArray<MSAAType>& alphaBuf,
                            bool isInverse,
                            const Polyline& polyline,
-                           const SkTDArray<uint8_t>& maskLut,
+                           const SkTDArray<MSAAType>& maskLut,
                            WideTiles<TileHeight>& wides,
                            bool isCulled,
                            const WindingHistogram& windingHistogram,
                            const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                           , MsaaExactMaskObserver observer
+                           , MsaaExactMaskObserver<MSAAType> observer
 #endif
 ) {
+    constexpr int32_t  kNumSubSamples  = sizeof(MSAAType) * 8;
+    constexpr float    kNumSubSamplesF = static_cast<float>(kNumSubSamples);
+    constexpr MSAAType kSubSampleMask  = static_cast<MSAAType>((1 << kNumSubSamples) - 1);
+
     auto emitBackground = [&](uint16_t start, uint16_t end) {
         for (uint16_t row = start; row < end; row += TileHeight) {
             wides.addTile(static_cast<uint16_t>(clipRect.left()), row, static_cast<uint16_t>(clipRect.width()));
@@ -400,7 +411,7 @@ void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                 constexpr size_t kChunkSize = 4 * kTileAlphaCount;
                 alphaBuf.reserve(alphaBuf.capacity() + kChunkSize);
             }
-            uint8_t* alphaBase = alphaBuf.begin();
+            MSAAType* alphaBase = alphaBuf.begin();
 
             for (int32_t y = 0; y < TileHeight; ++y) {
                 for (int32_t x = 0; x < TileWidth; ++x) {
@@ -417,20 +428,20 @@ void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
 
 #if defined(GPU_TEST_UTILS)
                     if (observer) {
-                        uint8_t exactMask = 0;
+                        MSAAType exactMask = 0;
                         for (int32_t k = 0; k < kNumSubSamples; ++k) {
                             if (shouldFill(maskBuffer[y][x][k])) {
                                 exactMask |= (1 << k);
                             }
                         }
                         if (isInverse) {
-                            exactMask = ~exactMask & ((1 << kNumSubSamples) - 1);
+                            exactMask = ~exactMask & kSubSampleMask;
                         }
                         observer(exactMask);
                     }
 #endif
 
-                    uint8_t alpha = static_cast<uint8_t>((activeSamples * 255 + 4) / 8);
+                    MSAAType alpha = static_cast<MSAAType>((activeSamples * kSubSampleMask + (kNumSubSamples / 2)) / kNumSubSamples);
                     alphaBase[localAlphaIdx++] = alpha;
                 }
             }
@@ -606,34 +617,34 @@ void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
             int canonical_start_x = xDir ? xStart : xEnd;
             int canonical_end_x = xDir ? xEnd : xStart;
 
-            uint8_t start_mask_val = 0xff;
+            MSAAType start_mask_val = kSubSampleMask;
             bool start_bumped = default_bumped;
             if (is_startY) {
                 start_bumped = (p_top_x == 0.0f && pixelTopTouch);
                 if (!start_bumped) {
                     uint32_t shift = static_cast<uint32_t>(
-                            std::round(8.0f * (p_top_y - static_cast<float>(y))));
-                    start_mask_val = static_cast<uint8_t>(0xff << shift);
+                            std::round(kNumSubSamplesF * (p_top_y - static_cast<float>(y))));
+                    start_mask_val = static_cast<MSAAType>(kSubSampleMask << shift);
                 }
             }
 
-            uint8_t end_mask_val = 0xff;
+            MSAAType end_mask_val = kSubSampleMask;
             if (is_endY_minus_1 && p_bot_x != 0.0f) {
                 uint32_t shift =
-                        static_cast<uint32_t>(std::round(8.0f * (p_bot_y - static_cast<float>(y))));
-                end_mask_val = static_cast<uint8_t>(~(0xff << shift));
+                        static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_bot_y - static_cast<float>(y))));
+                end_mask_val = static_cast<MSAAType>(~(kSubSampleMask << shift));
             }
 
-            if (!is_startY) start_mask_val = 0xff;
-            if (!is_endY_minus_1) end_mask_val = 0xff;
+            if (!is_startY) start_mask_val = kSubSampleMask;
+            if (!is_endY_minus_1) end_mask_val = kSubSampleMask;
 
             for (int32_t x = xStart; x <= xEnd; ++x) {
                 int u = std::clamp(
                         static_cast<int>(std::floor(t_val * kMaskWidthF)), 0, kMaskWidthExcl);
                 SkASSERT(v * kMaskWidth + u < maskLut.size());
-                uint8_t maskVal = maskLut[v * kMaskWidth + u];
+                MSAAType maskVal = maskLut[v * kMaskWidth + u];
 
-                uint8_t edgeMask = 0xff;
+                MSAAType edgeMask = kSubSampleMask;
                 if (x == canonical_start_x) edgeMask &= start_mask_val;
                 if (x == canonical_end_x) edgeMask &= end_mask_val;
                 maskVal &= edgeMask;
@@ -686,21 +697,27 @@ void Strip::MakeStripsImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
     }
 }
 
-template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
 void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
                                SkTDArray<Strip>& stripBuf,
-                               SkTDArray<uint8_t>& alphaBuffer,
+                               SkTDArray<MSAAType>& alphaBuffer,
                                bool isInverse,
                                const Polyline& polyline,
-                               const SkTDArray<uint8_t>& maskLut,
+                               const SkTDArray<MSAAType>& maskLut,
                                WideTiles<TileHeight>& wides,
                                bool isCulled,
                                const WindingHistogram& windingHistogram,
                                const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                               , MsaaExactMaskObserver observer
+                               , MsaaExactMaskObserver<MSAAType> observer
 #endif
 ) {
+    constexpr int32_t  kNumSubSamples  = sizeof(MSAAType) * 8;
+    constexpr float    kNumSubSamplesF = static_cast<float>(kNumSubSamples);
+    constexpr MSAAType kSubSampleMask  = static_cast<MSAAType>((1 << kNumSubSamples) - 1);
+    constexpr MSAAType kMSAASubAsAdd   = static_cast<MSAAType>(-1);
+    constexpr MSAAType kMSAABias       = static_cast<MSAAType>(1 << (kNumSubSamples - 1));
+
     auto shouldFill = [](int32_t w) {
         if constexpr (kIsWinding) {
             return w != 0;
@@ -710,11 +727,11 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
     };
 
     auto deltaToMask = [&](int32_t w) {
-        uint8_t w_byte;
+        MSAAType w_byte;
         if constexpr (kIsWinding) {
-            w_byte = 0x80 + static_cast<uint8_t>(static_cast<int8_t>(w));
+            w_byte = kMSAABias + static_cast<MSAAType>(static_cast<int8_t>(w));
         } else {
-            w_byte = static_cast<uint8_t>(w & 1);
+            w_byte = static_cast<MSAAType>(w & 1);
         }
         return static_cast<uint32_t>(w_byte) * 0x01010101u;
     };
@@ -810,7 +827,7 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
     alphaBuffer.reserve(localAlphaIdx + megaGuess);
 
     using swar_pixel = skvx::Vec<2, uint32_t>;
-    using pixel_bytes = skvx::Vec<8, uint8_t>;
+    using pixel_bytes = skvx::Vec<8, MSAAType>;
     swar_pixel mask[TileHeight][TileWidth];
 
     auto resetMask = [&](uint32_t val) {
@@ -880,7 +897,7 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                 constexpr size_t kChunkSize = 4 * kTileAlphaCount;
                 alphaBuffer.reserve(alphaBuffer.capacity() + kChunkSize);
             }
-            uint8_t* alphaBase = alphaBuffer.begin();
+            MSAAType* alphaBase = alphaBuffer.begin();
 
             // Use skvx::Vec to perform true hardware SIMD byte comparisons. We cast the vector into
             // 8-bit byte lanes. In winding mode, the winding sum is biased by +128 (0x80), so a
@@ -892,9 +909,9 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             auto get_counts_wide = [&](auto v) {
                 using VecT = decltype(v);
                 if constexpr (kIsWinding) {
-                    using Vec8 = skvx::Vec<sizeof(VecT), uint8_t>;
+                    using Vec8 = skvx::Vec<sizeof(VecT), MSAAType>;
                     Vec8 v_bytes = sk_bit_cast<Vec8>(v);
-                    Vec8 bias_bytes(0x80);
+                    Vec8 bias_bytes(kMSAABias);
                     Vec8 cmp = (v_bytes != bias_bytes);
                     VecT active_bytes = sk_bit_cast<VecT>(cmp) & VecT(0x01010101u);
                     return (active_bytes * VecT(0x01010101u)) >> 24;
@@ -927,8 +944,8 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     activeSamples = skvx::Vec<ChunkSize, uint32_t>(kNumSubSamples) - activeSamples;
                 }
 
-                skvx::Vec<ChunkSize, uint32_t> alpha32 = (activeSamples * 255 + 4) >> 3;
-                skvx::cast<uint8_t>(alpha32).store(alphaBase + localAlphaIdx);
+                skvx::Vec<ChunkSize, uint32_t> alpha32 = (activeSamples * kSubSampleMask + (kNumSubSamples / 2)) / kNumSubSamples;
+                skvx::cast<MSAAType>(alpha32).store(alphaBase + localAlphaIdx);
                 localAlphaIdx += ChunkSize;
 
 #if defined(GPU_TEST_UTILS)
@@ -936,15 +953,15 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     for (int xx = x; xx < x + ChunkSize; ++xx) {
                         swar_pixel v = mask[y][xx];
 
-                        uint8_t exactMask = 0;
+                        MSAAType exactMask = 0;
                         uint32_t lo = v[0];
                         uint32_t hi = v[1];
                         for (int s = 0; s < 4; ++s) {
-                            int8_t s_lo = (int8_t)(lo & 0xFF);
-                            int8_t s_hi = (int8_t)(hi & 0xFF);
+                            int8_t s_lo = (int8_t)(lo & kSubSampleMask);
+                            int8_t s_hi = (int8_t)(hi & kSubSampleMask);
                             if constexpr (kIsWinding) {
-                                s_lo = (int8_t)((uint8_t)s_lo - 0x80);
-                                s_hi = (int8_t)((uint8_t)s_hi - 0x80);
+                                s_lo = (int8_t)((MSAAType)s_lo - kMSAABias);
+                                s_hi = (int8_t)((MSAAType)s_hi - kMSAABias);
                             }
                             if (shouldFill(s_lo)) exactMask |= (1 << s);
                             if (shouldFill(s_hi)) exactMask |= (1 << (s + 4));
@@ -952,7 +969,7 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                             hi >>= 8;
                         }
                         if (isInverse) {
-                            exactMask = ~exactMask & ((1 << kNumSubSamples) - 1);
+                            exactMask = ~exactMask & kSubSampleMask;
                         }
                         observer(exactMask);
                     }
@@ -1068,9 +1085,9 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
         // --- Wide SIMD L Boundary Fill ---
         if (tile.packedWindingLineIdx & L) {
             float yEdge = (pTop.fX < pBot.fX) ? pTop.fY : pBot.fY;
-            uint8_t fill_byte;
+            MSAAType fill_byte;
             if constexpr (kIsWinding) {
-                fill_byte = canonicalXDir ? 0xFF : 1;
+                fill_byte = canonicalXDir ? kMSAASubAsAdd : 1;
             } else {
                 fill_byte = 1;
             }
@@ -1084,8 +1101,8 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     for (int x = 0; x < TileWidth; x += 8) {
                         auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[y][x]);
                         if constexpr (kIsWinding) {
-                            auto m_b = sk_bit_cast<skvx::Vec<64, uint8_t>>(v_mask);
-                            auto f_b = sk_bit_cast<skvx::Vec<64, uint8_t>>(v_fill16_32);
+                            auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                            auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
                             v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
                         } else {
                             v_mask ^= v_fill16_32;
@@ -1098,8 +1115,8 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     for (int x = 0; x < TileWidth; x += 4) {
                         auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[y][x]);
                         if constexpr (kIsWinding) {
-                            auto m_b = sk_bit_cast<skvx::Vec<32, uint8_t>>(v_mask);
-                            auto f_b = sk_bit_cast<skvx::Vec<32, uint8_t>>(v_fill8_32);
+                            auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                            auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
                             v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
                         } else {
                             v_mask ^= v_fill8_32;
@@ -1193,30 +1210,30 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             bool pixelTopTouch = (p_top_y != std::floor(p_top_y));
             bool default_bumped = pixelTopTouch && xDir;
 
-            uint8_t start_mask_val = 0xff;
+            MSAAType start_mask_val = kSubSampleMask;
             bool start_bumped = default_bumped;
             if (is_startY) {
                 start_bumped = (p_top_x == 0.0f && pixelTopTouch);
                 if (!start_bumped) {
                     uint32_t shift = static_cast<uint32_t>(
-                            std::round(8.0f * (p_top_y - static_cast<float>(y))));
-                    start_mask_val = static_cast<uint8_t>(0xff << shift);
+                            std::round(kNumSubSamplesF * (p_top_y - static_cast<float>(y))));
+                    start_mask_val = static_cast<MSAAType>(kSubSampleMask << shift);
                 }
             }
 
-            uint8_t end_mask_val = 0xff;
+            MSAAType end_mask_val = kSubSampleMask;
             if (is_endY_minus_1 && p_bot_x != 0.0f) {
                 uint32_t shift =
-                        static_cast<uint32_t>(std::round(8.0f * (p_bot_y - static_cast<float>(y))));
-                end_mask_val = static_cast<uint8_t>(~(0xff << shift));
+                        static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_bot_y - static_cast<float>(y))));
+                end_mask_val = static_cast<MSAAType>(~(kSubSampleMask << shift));
             }
-            if (!is_startY) start_mask_val = 0xff;
-            if (!is_endY_minus_1) end_mask_val = 0xff;
+            if (!is_startY) start_mask_val = kSubSampleMask;
+            if (!is_endY_minus_1) end_mask_val = kSubSampleMask;
 
-            auto processPixel = [&](int px, uint8_t edgeMask, uint32_t bumpVal) {
+            auto processPixel = [&](int px, MSAAType edgeMask, uint32_t bumpVal) {
                 int u = std::clamp(t_fixed >> 16, 0, kMaskWidthExcl);
                 SkASSERT(v * kMaskWidth + u < maskLut.size());
-                uint8_t maskVal = maskLut[lut_row_offset + u] & edgeMask;
+                MSAAType maskVal = maskLut[lut_row_offset + u] & edgeMask;
 
                 uint32_t mask_lo = ((maskVal & 0x0F) * 0x00204081u) & 0x01010101u;
                 uint32_t mask_hi = (((maskVal >> 4) & 0x0F) * 0x00204081u) & 0x01010101u;
@@ -1243,26 +1260,26 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
             };
 
             if (xStart == xEnd) {
-                uint8_t combinedMask = start_mask_val & end_mask_val;
+                MSAAType combinedMask = start_mask_val & end_mask_val;
                 processPixel(xStart, combinedMask, start_bumped);
             } else {
-                uint8_t leftMask = xDir ? start_mask_val : end_mask_val;
+                MSAAType leftMask = xDir ? start_mask_val : end_mask_val;
                 processPixel(xStart, leftMask, xDir ? start_bumped : default_bumped);
 
                 uint32_t midBumped = default_bumped ? 1 : 0;
                 for (int x = xStart + 1; x < xEnd; ++x) {
-                    processPixel(x, 0xff, midBumped);
+                    processPixel(x, kSubSampleMask, midBumped);
                 }
 
-                uint8_t rightMask = xDir ? end_mask_val : start_mask_val;
+                MSAAType rightMask = xDir ? end_mask_val : start_mask_val;
                 processPixel(xEnd, rightMask, xDir ? default_bumped : start_bumped);
             }
 
             bool crossedTop = (y > startY) || (p_top_y == std::floor(p_top_y));
             if (crossedTop) {
-                uint8_t fill_byte;
+                MSAAType fill_byte;
                 if constexpr (kIsWinding) {
-                    fill_byte = canonicalYDir ? 1 : 0xFF;
+                    fill_byte = canonicalYDir ? 1 : kMSAASubAsAdd;
                 } else {
                     fill_byte = 1;
                 }
@@ -1276,8 +1293,8 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     while (x + 8 <= TileWidth) {
                         auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[y][x]);
                         if constexpr (kIsWinding) {
-                            auto m_b = sk_bit_cast<skvx::Vec<64, uint8_t>>(v_mask);
-                            auto f_b = sk_bit_cast<skvx::Vec<64, uint8_t>>(v_fill16_32);
+                            auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                            auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
                             v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
                         } else {
                             v_mask ^= v_fill16_32;
@@ -1291,8 +1308,8 @@ void Strip::MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer
                     while (x + 4 <= TileWidth) {
                         auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[y][x]);
                         if constexpr (kIsWinding) {
-                            auto m_b = sk_bit_cast<skvx::Vec<32, uint8_t>>(v_mask);
-                            auto f_b = sk_bit_cast<skvx::Vec<32, uint8_t>>(v_fill8_32);
+                            auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                            auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
                             v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
                         } else {
                             v_mask ^= v_fill8_32;

@@ -8,6 +8,7 @@
 #define skgpu_graphite_sparse_strips_MSAA_LUT_DEFINED
 
 #include "include/private/base/SkTDArray.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
 #include <array>
 #include <cmath>
@@ -99,10 +100,10 @@ namespace skgpu::graphite {
 
 template <typename T> class MSAA_LUT {
 public:
-    static constexpr int32_t kWidth       = 64;
-    static constexpr int32_t kHeight      = 64;
+    static constexpr int32_t kWidth       = SparseStripsConfig::kLutWidth;
+    static constexpr int32_t kHeight      = SparseStripsConfig::kLutWidth;
     static constexpr int32_t kHalfHeight  = kHeight / 2;
-    static constexpr size_t  kSampleCount = sizeof(T) * 8;
+    static constexpr int32_t kSampleCount = sizeof(T) * 8;
 
     static constexpr std::array<uint8_t, kSampleCount> kPattern = []() {
         if constexpr (std::is_same_v<T, uint8_t>) {

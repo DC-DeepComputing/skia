@@ -56,10 +56,10 @@ public:
     explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad(edgeAAQuad); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
     explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
-    explicit Geometry(const WideTiles<SparseStripConfig::kTileHeight>& wideTiles) {
+    explicit Geometry(const WideTiles<SparseStripsConfig::kTileHeight>& wideTiles) {
         this->setWideTiles(wideTiles);
     }
-    explicit Geometry(const EndCaps<SparseStripConfig::kTileHeight>& endCaps) {
+    explicit Geometry(const EndCaps<SparseStripsConfig::kTileHeight>& endCaps) {
         this->setEndCaps(endCaps);
     }
 
@@ -154,10 +154,10 @@ public:
         SkASSERT(this->isVertices());
         return fVertices;
     }
-    const WideTiles<SparseStripConfig::kTileHeight>& wideTiles() const {
+    const WideTiles<SparseStripsConfig::kTileHeight>& wideTiles() const {
         SkASSERT(this->isWideTiles()); return fWideTiles;
     }
-    const EndCaps<SparseStripConfig::kTileHeight>& endCaps() const {
+    const EndCaps<SparseStripsConfig::kTileHeight>& endCaps() const {
         SkASSERT(this->isEndCaps()); return fEndCaps;
     }
 
@@ -213,21 +213,21 @@ public:
         }
     }
 
-    void setWideTiles(const WideTiles<SparseStripConfig::kTileHeight>& wideTiles) {
+    void setWideTiles(const WideTiles<SparseStripsConfig::kTileHeight>& wideTiles) {
         if (fType == Type::kWideTiles) {
             fWideTiles = wideTiles;
         } else {
             this->setType(Type::kWideTiles);
-            new (&fWideTiles) WideTiles<SparseStripConfig::kTileHeight>(wideTiles);
+            new (&fWideTiles) WideTiles<SparseStripsConfig::kTileHeight>(wideTiles);
         }
     }
 
-    void setEndCaps(const EndCaps<SparseStripConfig::kTileHeight>& endCaps) {
+    void setEndCaps(const EndCaps<SparseStripsConfig::kTileHeight>& endCaps) {
         if (fType == Type::kEndCaps) {
             fEndCaps = endCaps;
         } else {
             this->setType(Type::kEndCaps);
-            new (&fEndCaps) EndCaps<SparseStripConfig::kTileHeight>(endCaps);
+            new (&fEndCaps) EndCaps<SparseStripsConfig::kTileHeight>(endCaps);
         }
     }
 
@@ -260,9 +260,9 @@ private:
         } else if (this->isAnalyticBlur() && type != Type::kAnalyticBlur) {
             fAnalyticBlurMask.~AnalyticBlurMask();
         } else if (this->isWideTiles() && type != Type::kWideTiles) {
-            fWideTiles.~WideTiles<SparseStripConfig::kTileHeight>();
+            fWideTiles.~WideTiles<SparseStripsConfig::kTileHeight>();
         } else if (this->isEndCaps() && type != Type::kEndCaps) {
-            fEndCaps.~EndCaps<SparseStripConfig::kTileHeight>();
+            fEndCaps.~EndCaps<SparseStripsConfig::kTileHeight>();
         }
         fType = type;
     }
@@ -275,8 +275,8 @@ private:
         EdgeAAQuad fEdgeAAQuad;
         CoverageMaskShape fCoverageMaskShape;
         AnalyticBlurMask fAnalyticBlurMask;
-        WideTiles<SparseStripConfig::kTileHeight> fWideTiles;
-        EndCaps<SparseStripConfig::kTileHeight> fEndCaps;
+        WideTiles<SparseStripsConfig::kTileHeight> fWideTiles;
+        EndCaps<SparseStripsConfig::kTileHeight> fEndCaps;
     };
 };
 

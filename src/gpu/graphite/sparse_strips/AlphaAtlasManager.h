@@ -52,7 +52,7 @@ public:
 
 private:
 #if defined(GPU_TEST_UTILS)
-    template <uint16_t, uint16_t> friend class CoverageTestRunner;
+    template <uint16_t, uint16_t, typename> friend class CoverageTestRunner;
     void resetBuffer() { fTextures.back().fAlphaBuffer.clear(); }
     uint8_t getAlpha(int32_t index) const { return fTextures.back().fAlphaBuffer[index]; }
 #endif

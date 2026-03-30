@@ -22,6 +22,8 @@
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
@@ -36,21 +38,24 @@
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight>
 class StripGenerator {
 public:
-    StripGenerator(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
+    using MSAAType = SparseStripsConfig::MSAAType;
+    static constexpr uint16_t kTileWidth  = SparseStripsConfig::kTileWidth;
+    static constexpr uint16_t kTileHeight = SparseStripsConfig::kTileHeight;
+
+    StripGenerator(SkISize deviceSize, const SkTDArray<MSAAType>& lut, Recorder* recorder)
             : fDeviceSize(SkIRect::MakeSize(deviceSize)), fCulled(true), fLUT(lut)
             , fRecorder(recorder)
             , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
-            fAllocations.reserve(4);
-        }
+        fAllocations.reserve(4);
+    }
 
     ~StripGenerator() {
         this->reset();
-        printf("Lines size %u\n", fFlattennedSize);
-        printf("Tiles size %u\n", fTilesSize);
-        printf("Alphas size %u\n", fAlphasSize);
+        // printf("Lines size %u\n", fFlattennedSize);
+        // printf("Tiles size %u\n", fTilesSize);
+        // printf("Alphas size %u\n", fAlphasSize);
     }
 
     const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&> processGeometry(
@@ -68,7 +73,7 @@ public:
 
         AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
         int32_t offset = manager->getAlphaBufferSize();
-        Strip::MakeStripsMsaaSimd(fTiles, fStrips, manager->getAlphaBuffer(), path.getFillType(),
+        Strip::MakeStripsMsaaSimd<kTileWidth, kTileHeight, MSAAType>(fTiles, fStrips, manager->getAlphaBuffer(), path.getFillType(),
                                   fFlattenned, fLUT, fWides, fCulled, fWindingHistogram,
                                   fDeviceSize);
         fAlphasSize += manager->getAlphaBufferSize() - offset;
@@ -89,14 +94,14 @@ public:
                     const Strip& prev = fStrips[stripIdx - 1];
                     const Strip& curr = fStrips[stripIdx];
                     int32_t startIdx =
-                            static_cast<int32_t>(prev.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
+                            static_cast<int32_t>(prev.packedAlphaIdx & ~(1u << SparseStripsConstants::FILL_SHIFT));
                     currEndIdx =
-                            static_cast<int32_t>(curr.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
+                            static_cast<int32_t>(curr.packedAlphaIdx & ~(1u << SparseStripsConstants::FILL_SHIFT));
 
                     int32_t totalBytes = currEndIdx - startIdx;
                     int32_t numTiles = totalBytes / kBytesPerTile;
                     uint16_t prevWidth = numTiles * kTileWidth;
-                    bool shouldFill = (curr.packedAlphaIdx >> Strip::FILL_SHIFT) & 1;
+                    bool shouldFill = (curr.packedAlphaIdx >> SparseStripsConstants::FILL_SHIFT) & 1;
                     if (shouldFill && prev.y == curr.y) {
                         SkASSERT(prev.y == curr.y);
                         uint16_t startX = prev.x + prevWidth;
@@ -133,9 +138,8 @@ private:
     Tiles<kTileWidth, kTileHeight> fTiles;
     Polyline fFlattenned;
     SkTDArray<Strip> fStrips;
-    const SkTDArray<uint8_t>& fLUT;
+    const SkTDArray<MSAAType>& fLUT;
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
-    bool fDrawn = false;
     Recorder* fRecorder;
     WindingHistogram fWindingHistogram;
 

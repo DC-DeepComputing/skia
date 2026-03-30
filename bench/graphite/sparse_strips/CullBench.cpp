@@ -15,18 +15,19 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight>
+template <uint16_t kTileWidth, uint16_t kTileHeight, typename MSAAType>
 class CullBench : public Benchmark {
 public:
     CullBench(int percentOnscreen)
             : fPercentOnscreen(percentOnscreen)
-            , fLUT(GenerateMSAALUT<uint8_t>()) {
+            , fLUT(GenerateMSAALUT<MSAAType>()) {
         fName.printf("SparseStrips_CullBench_%ux%u_%d_percent",
                      kTileWidth, kTileHeight, percentOnscreen);
     }
@@ -49,7 +50,7 @@ protected:
     void onDraw(int loops, SkCanvas* canvas) override {
         Flatten flattener;
         SkTDArray<Strip> strips;
-        SkTDArray<uint8_t> alphas;
+        SkTDArray<MSAAType> alphas;
         WideTiles<kTileHeight> wides;
 
         int32_t rows = (Tiger::kImageHeight + kTileHeight + 1) / kTileHeight;
@@ -68,7 +69,7 @@ protected:
 
                 tiler.sortTiles();
 
-                skgpu::graphite::Strip::MakeStripsMsaaSimd(
+                skgpu::graphite::Strip::MakeStripsMsaaSimd<kTileWidth, kTileHeight, MSAAType>(
                         tiler, strips, alphas, path.getFillType(), polyline, fLUT,
                         wides, culled, windingHistogram, Tiger::kDim, nullptr);
 
@@ -84,18 +85,18 @@ private:
     SkString fName;
     int fPercentOnscreen;
     skia_private::TArray<SkPath> fPaths;
-    SkTDArray<uint8_t> fLUT;
+    SkTDArray<MSAAType> fLUT;
 };
 
 }  // namespace skgpu::graphite
 
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(10));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(20));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(30));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(40));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(50));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(60));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(70));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(80));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(90));)
-DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8>(100));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(10));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(20));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(30));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(40));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(50));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(60));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(70));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(80));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(90));)
+DEF_BENCH(return (new skgpu::graphite::CullBench<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>(100));)

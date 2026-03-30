@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
 #include <functional>
 
@@ -141,7 +142,7 @@ public:
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     // Retrieve the static MSAA 8x mask lookup table.
-    const SkTDArray<uint8_t>& getMSAA8MaskLUT() const {
+    const SkTDArray<SparseStripsConfig::MSAAType>& getMSAA8MaskLUT() const {
         return fMSAAMaskLUT;
     }
 #endif
@@ -212,7 +213,7 @@ private:
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     // Static MSAA mask lookup table.
-    SkTDArray<uint8_t> fMSAAMaskLUT;
+    SkTDArray<SparseStripsConfig::MSAAType> fMSAAMaskLUT;
 #endif
 
 #if defined(GPU_TEST_UTILS)
