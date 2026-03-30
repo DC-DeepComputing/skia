@@ -294,6 +294,19 @@ func (b *TaskBuilder) nanobenchFlags(doUpload bool) {
 			match = append(match, "~bulkrect_1000_grid_uniqueimages")
 			match = append(match, "~bulkrect_1000_random_uniqueimages")
 		}
+		if b.ExtraConfig("D3D11") {
+			if b.GPU("IntelIris6100") {
+				match = append(match, "~blur_image_filter_large_cropped_expanded_80")
+				match = append(match, "~blur_image_filter_large_cropped_expanded_10.00_10.00")
+				match = append(match, "~blur_image_filter_small_cropped_expanded_10.00_10.00")
+				match = append(match, "~blur_image_filter_small_cropped_expanded_80.00_80.00")
+				match = append(match, "~blurrectsninepatch")
+				match = append(match, "~image_filter_dag")
+				match = append(match, "~image_filter_displaced_blur")
+				match = append(match, "~image_filter_xfermode_in")
+				match = append(match, "~image_make_with_filter_dag")
+			}
+		}
 	}
 
 	if b.Model(DONT_REDUCE_OPS_TASK_SPLITTING_MODELS...) {
