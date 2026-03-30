@@ -78,7 +78,11 @@ bool SkTableMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
     if (src.fFormat != SkMask::kA8_Format) {
         return false;
     }
-
+    // SkAlign4 overflows when too close to INT32_MAX, so reject when too big.
+    constexpr int32_t kMaxWidth = 1 << 30;
+    if (dst->fBounds.width() > kMaxWidth) {
+        return false;
+    }
     dst->bounds() = src.fBounds;
     dst->rowBytes() = SkAlign4(dst->fBounds.width());
     dst->format() = SkMask::kA8_Format;
