@@ -50,7 +50,9 @@ static constexpr char kMagic[] = "Skia Multi-Picture Doc\n\n";
 
 static constexpr char kEndPage[] = "SkMultiPictureEndPage";
 
-const uint32_t kVersion = 2;
+static constexpr uint32_t kVersion = 2;
+
+static constexpr uint32_t kMaxDimension = 1 << 16;
 
 static SkSize join(const TArray<SkSize>& sizes) {
     SkSize joined = {0, 0};
@@ -176,20 +178,26 @@ int ReadPageCount(SkStreamSeekable* src) {
     return SkTo<int>(pageCount);
 }
 
-bool ReadPageSizes(SkStreamSeekable* stream,
+bool ReadPageSizes(SkStreamSeekable* src,
                    SkDocumentPage* dstArray,
                    int dstArrayCount) {
     if (!dstArray || dstArrayCount < 1) {
         return false;
     }
-    int pageCount = ReadPageCount(stream);
+    int pageCount = ReadPageCount(src);
     if (pageCount < 1 || pageCount != dstArrayCount) {
         return false;
     }
+    if (src->hasLength() && src->getLength() < (static_cast<size_t>(pageCount) * sizeof(SkSize))) {
+        return false;  // not enough memory to read all the sizes
+    }
     for (int i = 0; i < pageCount; ++i) {
         SkSize& s = dstArray[i].fSize;
-        if (sizeof(s) != stream->read(&s, sizeof(s))) {
+        if (sizeof(s) != src->read(&s, sizeof(s))) {
             return false;
+        }
+        if (s.isEmpty() || s.width() >= kMaxDimension || s.height() >= kMaxDimension) {
+            return false;  // invalid sizes
         }
     }
     // leave stream position right here.
