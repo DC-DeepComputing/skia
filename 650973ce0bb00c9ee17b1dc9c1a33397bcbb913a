@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db1a5511_40a0aef7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-03-30T17:50:51Z",
+      "side": 1,
+      "message": "Note, I realized there is an edge case that I was not considering, which requires restricting forward merging to the tail only. See the comment for more details. \n\nCan discuss more offline, but it is possible to enable forward-merging in the general case, but that requires more tracking on the layer struct.",
+      "revId": "650973ce0bb00c9ee17b1dc9c1a33397bcbb913a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
