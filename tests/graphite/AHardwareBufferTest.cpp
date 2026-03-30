@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "tests/Test.h"
+#include "tests/TestAHardwareBuffer.h"
 
 #include <android/hardware_buffer.h>
 
@@ -95,11 +96,12 @@ bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBitmap,
     return result;
 }
 
-AHardwareBuffer* create_AHB(skiatest::Reporter* reporter,
-                            int width, int height,
-                            bool forSurface, bool isProtected,
-                            const SkBitmap* data) {
-
+static TestAHardwareBuffer create_AHB(skiatest::Reporter* reporter,
+                                      int width,
+                                      int height,
+                                      bool forSurface,
+                                      bool isProtected,
+                                      const SkBitmap* data) {
     AHardwareBuffer_Desc hwbDesc;
     hwbDesc.width = width;
     hwbDesc.height = height;
@@ -122,23 +124,23 @@ AHardwareBuffer* create_AHB(skiatest::Reporter* reporter,
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    AHardwareBuffer* buffer = nullptr;
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        return nullptr;
+    TestAHardwareBuffer buffer = TestAHardwareBuffer::Allocate(reporter, hwbDesc);
+    if (!buffer) {
+        return {};
     }
 
     if (data) {
         SkASSERT(data->width() == width && data->height() == height);
         // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-        AHardwareBuffer_describe(buffer, &hwbDesc);
+        buffer.describe(&hwbDesc);
 
         uint32_t* bufferAddr;
-        if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                                 reinterpret_cast<void**>(&bufferAddr))) {
+        if (buffer.lock(AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN,
+                        -1,
+                        nullptr,
+                        reinterpret_cast<void**>(&bufferAddr))) {
             ERRORF(reporter, "Failed to lock hardware buffer");
-            AHardwareBuffer_release(buffer);
-            return nullptr;
+            return {};
         }
 
         int bbp = data->bytesPerPixel();
@@ -150,17 +152,10 @@ AHardwareBuffer* create_AHB(skiatest::Reporter* reporter,
             src += nextLineStep;
             dst += hwbDesc.stride;
         }
-        AHardwareBuffer_unlock(buffer, nullptr);
+        buffer.unlock(nullptr);
     }
 
     return buffer;
-}
-
-void delete_buffer(void* context) {
-    AHardwareBuffer* buffer = static_cast<AHardwareBuffer*>(context);
-    if (buffer) {
-        AHardwareBuffer_release(buffer);
-    }
 }
 
 } // anonymous namespace
@@ -184,21 +179,22 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Graphite_AHardwareBuffer_ImportAsSurfac
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
-    AHardwareBuffer* buffer = create_AHB(reporter,
-                                         DEV_W, DEV_H,
-                                         /* writeable= */ true,
-                                         isProtected,
-                                         /* data= */ nullptr);
+    TestAHardwareBuffer buffer = create_AHB(reporter,
+                                            DEV_W,
+                                            DEV_H,
+                                            /*writeable=*/true,
+                                            isProtected,
+                                            /*data=*/nullptr);
     if (!buffer) {
         return;
     }
 
     sk_sp<SkSurface> surface = SkSurfaces::WrapAndroidHardwareBuffer(recorder.get(),
-                                                                     buffer,
-                                                                     /* colorSpace= */ nullptr,
-                                                                     /* surfaceProps= */ nullptr,
-                                                                     delete_buffer,
-                                                                     buffer);
+                                                                     buffer.get(),
+                                                                     /*colorSpace=*/nullptr,
+                                                                     /*surfaceProps=*/nullptr,
+                                                                     /*releaseProc=*/nullptr,
+                                                                     /*releaseContext=*/nullptr);
     if (!surface) {
         ERRORF(reporter, "Failed to make SkSurface.");
         return;
@@ -217,8 +213,6 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Graphite_AHardwareBuffer_ImportAsSurfac
         REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
         REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
     }
-
-    surface.reset();
 }
 
 #endif // __ANDROID_API__ >= 26

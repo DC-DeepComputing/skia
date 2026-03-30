@@ -2723,6 +2723,7 @@ if (skia_enable_tools) {
       "tests/CtsEnforcement.cpp",
       "tests/Test.cpp",
       "tests/Test.h",
+      "tests/TestAHardwareBuffer.h",
       "tests/TestHarness.cpp",
       "tests/TestHarness.h",
     ]
