@@ -109,7 +109,8 @@ public:
     }
 
     void freeGpuResources();
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
+    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime,
+                                    const StdSteadyClock::time_point* stopPurgingPastTime);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
 
 #if defined(GPU_TEST_UTILS)
@@ -175,7 +176,9 @@ private:
     virtual void onDeleteBackendTexture(const BackendTexture&) = 0;
 
     virtual void onFreeGpuResources() {}
-    virtual void onPurgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {}
+    virtual void onPurgeResourcesNotUsedSince(
+            StdSteadyClock::time_point purgeTime,
+            const StdSteadyClock::time_point* stopPurgingPastTime) {}
 };
 
 } // namespace skgpu::graphite
