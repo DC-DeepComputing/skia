@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d02888_7ba34137",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T13:43:18Z",
+      "side": 1,
+      "message": "nit: make the two variables on two longs - it\u0027s a bit awkward to have a cast and a comma here.\n\nOn second thought, don\u0027t worry about casting from an int32_t to int - it\u0027s not really a problem that needs calling out.",
+      "range": {
+        "startLine": 49,
+        "startChar": 38,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "bbabcead1310fd590340a0a5d2636e91fb2b25f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
