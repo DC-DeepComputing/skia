@@ -122,7 +122,7 @@ AHardwareBuffer* create_protected_buffer(int width, int height) {
     hwbDesc.rfu1= 0;
 
     if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        SkDebugf("Failed to allocated hardware buffer, error: %d\n", error);
+        SkDebugf("Failed to allocate hardware buffer, error: %d\n", error);
         release_buffer(buffer);
         return nullptr;
     }

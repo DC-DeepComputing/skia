@@ -24,10 +24,12 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "tests/Test.h"
+#include "tests/TestAHardwareBuffer.h"
 #include "tools/ganesh/GrContextFactory.h"
 
 #include <android/hardware_buffer.h>
 #include <cinttypes>
+#include <memory>
 
 static const int DEV_W = 16, DEV_H = 16;
 
@@ -97,12 +99,6 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBit
     return result;
 }
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
-    if (buffer) {
-        AHardwareBuffer_release(buffer);
-    }
-}
-
 static void basic_draw_test_helper(skiatest::Reporter* reporter,
                                    const sk_gpu_test::ContextInfo& info,
                                    GrSurfaceOrigin surfaceOrigin) {
@@ -122,8 +118,6 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
-    AHardwareBuffer* buffer = nullptr;
-
     AHardwareBuffer_Desc hwbDesc;
     hwbDesc.width = DEV_W;
     hwbDesc.height = DEV_H;
@@ -137,20 +131,18 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    TestAHardwareBuffer buffer = TestAHardwareBuffer::Allocate(reporter, hwbDesc);
+    if (!buffer) {
         return;
     }
 
     // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
+    buffer.describe(&hwbDesc);
 
     uint32_t* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                             reinterpret_cast<void**>(&bufferAddr))) {
+    if (buffer.lock(AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
+                    reinterpret_cast<void**>(&bufferAddr))) {
         ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
         return;
     }
 
@@ -167,14 +159,14 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
         src += nextLineStep;
         dst += hwbDesc.stride;
     }
-    AHardwareBuffer_unlock(buffer, nullptr);
+    buffer.unlock(nullptr);
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
     ///////////////////////////////////////////////////////////////////////////
 
     sk_sp<SkImage> image = SkImages::DeferredFromAHardwareBuffer(
-            buffer, kPremul_SkAlphaType, nullptr, surfaceOrigin);
+            buffer.get(), kPremul_SkAlphaType, nullptr, surfaceOrigin);
     REPORTER_ASSERT(reporter, image);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -204,9 +196,6 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
     REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
 
-    image.reset();
-
-    cleanup_resources(buffer);
 }
 
 // Basic test to make sure we can import an AHardwareBuffer into an SkImage and draw it into a
@@ -240,8 +229,6 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
-    AHardwareBuffer* buffer = nullptr;
-
     AHardwareBuffer_Desc hwbDesc;
     hwbDesc.width = DEV_W;
     hwbDesc.height = DEV_H;
@@ -258,17 +245,15 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    TestAHardwareBuffer buffer = TestAHardwareBuffer::Allocate(reporter, hwbDesc);
+    if (!buffer) {
         return;
     }
 
     sk_sp<SkSurface> surface =
-            SkSurfaces::WrapAndroidHardwareBuffer(context, buffer, surfaceOrigin, nullptr, nullptr);
+            SkSurfaces::WrapAndroidHardwareBuffer(context, buffer.get(), surfaceOrigin, nullptr, nullptr);
     if (!surface) {
         ERRORF(reporter, "Failed to make SkSurface.");
-        cleanup_resources(buffer);
         return;
     }
 
@@ -284,7 +269,6 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
         REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
     }
 
-    cleanup_resources(buffer);
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.

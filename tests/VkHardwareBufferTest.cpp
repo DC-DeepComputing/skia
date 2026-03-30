@@ -42,6 +42,7 @@
 #include "tools/ganesh/GrContextFactory.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
+#include "tests/TestAHardwareBuffer.h"
 #include <android/hardware_buffer.h>
 #include <cinttypes>
 
@@ -1075,16 +1076,12 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& srcBitmap,
     return result;
 }
 
-static void cleanup_resources(BaseTestHelper* srcHelper, BaseTestHelper* dstHelper,
-                              AHardwareBuffer* buffer) {
+static void cleanup_resources(BaseTestHelper* srcHelper, BaseTestHelper* dstHelper) {
     if (srcHelper) {
         srcHelper->cleanup();
     }
     if (dstHelper) {
         dstHelper->cleanup();
-    }
-    if (buffer) {
-        AHardwareBuffer_release(buffer);
     }
 }
 
@@ -1107,7 +1104,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     }
     std::unique_ptr<BaseTestHelper> srcHelper;
     std::unique_ptr<BaseTestHelper> dstHelper;
-    AHardwareBuffer* buffer = nullptr;
+    TestAHardwareBuffer buffer;
     if (SrcType::kVulkan == srcType) {
         srcHelper.reset(new VulkanTestHelper());
     } else if (SrcType::kEGL == srcType) {
@@ -1119,7 +1116,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     }
     if (srcHelper) {
         if (!srcHelper->init(reporter)) {
-            cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+            cleanup_resources(srcHelper.get(), dstHelper.get());
             return;
         }
     }
@@ -1136,7 +1133,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     }
     if (dstHelper) {
         if (!dstHelper->init(reporter)) {
-            cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+            cleanup_resources(srcHelper.get(), dstHelper.get());
             return;
         }
     }
@@ -1175,21 +1172,21 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+    buffer = TestAHardwareBuffer::Allocate(reporter, hwbDesc);
+    if (!buffer) {
+        cleanup_resources(srcHelper.get(), dstHelper.get());
         return;
     }
 
     if (SrcType::kCPU == srcType) {
         // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-        AHardwareBuffer_describe(buffer, &hwbDesc);
+        buffer.describe(&hwbDesc);
 
         uint32_t* bufferAddr;
-        if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                                 reinterpret_cast<void**>(&bufferAddr))) {
+        if (buffer.lock(AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
+                        reinterpret_cast<void**>(&bufferAddr))) {
             ERRORF(reporter, "Failed to lock hardware buffer");
-            cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+            cleanup_resources(srcHelper.get(), dstHelper.get());
             return;
         }
 
@@ -1213,14 +1210,14 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
             }
         }
 
-        AHardwareBuffer_unlock(buffer, nullptr);
+        buffer.unlock(nullptr);
 
     } else {
         srcHelper->makeCurrent();
-        sk_sp<SkSurface> surface = srcHelper->importHardwareBufferForWrite(reporter, buffer);
+        sk_sp<SkSurface> surface = srcHelper->importHardwareBufferForWrite(reporter, buffer.get());
 
         if (!surface) {
-            cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+            cleanup_resources(srcHelper.get(), dstHelper.get());
             return;
         }
 
@@ -1234,7 +1231,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
             if (!readResult) {
                 ERRORF(reporter, "Read Pixels on surface failed");
                 surface.reset();
-                cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+                cleanup_resources(srcHelper.get(), dstHelper.get());
                 return;
             }
             REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, dstBitmapSurface));
@@ -1246,7 +1243,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
 
         if (shareSyncs) {
             if (!srcHelper->flushSurfaceAndSignalSemaphore(reporter, std::move(surface))) {
-                cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+                cleanup_resources(srcHelper.get(), dstHelper.get());
                 return;
             }
         } else {
@@ -1262,10 +1259,10 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     ///////////////////////////////////////////////////////////////////////////
 
     dstHelper->makeCurrent();
-    sk_sp<SkImage> wrappedImage = dstHelper->importHardwareBufferForRead(reporter, buffer);
+    sk_sp<SkImage> wrappedImage = dstHelper->importHardwareBufferForRead(reporter, buffer.get());
 
     if (!wrappedImage) {
-        cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+        cleanup_resources(srcHelper.get(), dstHelper.get());
         return;
     }
 
@@ -1280,14 +1277,14 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     if (!dstSurf.get()) {
         ERRORF(reporter, "Failed to create destination SkSurface");
         wrappedImage.reset();
-        cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+        cleanup_resources(srcHelper.get(), dstHelper.get());
         return;
     }
 
     if (shareSyncs) {
         if (!dstHelper->importAndWaitOnSemaphore(reporter, srcHelper->getFdHandle(), dstSurf)) {
             wrappedImage.reset();
-            cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+            cleanup_resources(srcHelper.get(), dstHelper.get());
             return;
         }
     }
@@ -1299,7 +1296,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
         wrappedImage.reset();
         dstSurf.reset();
         dstHelper->doClientSync();
-        cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+        cleanup_resources(srcHelper.get(), dstHelper.get());
         return;
     }
 
@@ -1308,9 +1305,8 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     dstSurf.reset();
     wrappedImage.reset();
     dstHelper->doClientSync();
-    cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
+    cleanup_resources(srcHelper.get(), dstHelper.get());
 }
-
 DEF_GANESH_TEST(VulkanHardwareBuffer_CPU_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kCPU, DstType::kVulkan, false);
 }
