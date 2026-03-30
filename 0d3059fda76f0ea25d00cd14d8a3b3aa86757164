@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e774168_c3ad9810",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-30T15:43:37Z",
+      "side": 1,
+      "message": "AFAICT, this is a file shared between ganesh + graphite. For that reason, I would recommend enforcing or checking that we only call this in graphite. \n\nPerhaps a default implementation that\u0027s empty outside of an info/debug-level printout or log that says something like \"convert not supported\"? Then graphite\u0027s impl. can just override that? LMKWYT.",
+      "range": {
+        "startLine": 476,
+        "startChar": 0,
+        "endLine": 479,
+        "endChar": 79
+      },
+      "revId": "0d3059fda76f0ea25d00cd14d8a3b3aa86757164",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb72798_79d6fec7",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-30T15:43:37Z",
+      "side": 1,
+      "message": "nit: complete",
+      "range": {
+        "startLine": 415,
+        "startChar": 23,
+        "endLine": 415,
+        "endChar": 25
+      },
+      "revId": "0d3059fda76f0ea25d00cd14d8a3b3aa86757164",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
