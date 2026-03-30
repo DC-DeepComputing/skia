@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrip.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
@@ -53,7 +54,7 @@ bool IsInside(SkPoint pt, const Polyline& polyline) {
 // TODO (thomsmit): Expose 16xMSAA/uint16_t
 template <uint16_t TileW, uint16_t TileH, typename MSAAType> class CoverageTestRunner {
 public:
-    using StripFunc = void (*)(const Tiles<TileW, TileH>&,
+    using StripFunc = void (*)(Tiles<TileW, TileH>&,
                                SkTDArray<Strip>&,
                                SkTDArray<MSAAType>&,
                                bool,
@@ -65,7 +66,7 @@ public:
                                const SkIRect&,
                                MsaaExactMaskObserver<MSAAType>);
 
-    static void RunScalarWinding(const Tiles<TileW, TileH>& tileContainer,
+    static void RunScalarWinding(Tiles<TileW, TileH>& tileContainer,
                                  SkTDArray<Strip>& stripBuf,
                                  SkTDArray<MSAAType>& alphaBuf,
                                  bool isInverse,
@@ -76,12 +77,12 @@ public:
                                  const WindingHistogram& windingHistogram,
                                  const SkIRect& clipRect,
                                  MsaaExactMaskObserver<MSAAType> observer) {
-        Strip::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
+        MakeStripImpl::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
                 tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
                 windingHistogram, clipRect, observer);
     }
 
-    static void RunSimdWinding(const Tiles<TileW, TileH>& tileContainer,
+    static void RunSimdWinding(Tiles<TileW, TileH>& tileContainer,
                                SkTDArray<Strip>& stripBuf,
                                SkTDArray<MSAAType>& alphaBuf,
                                bool isInverse,
@@ -92,7 +93,7 @@ public:
                                const WindingHistogram& windingHistogram,
                                const SkIRect& clipRect,
                                MsaaExactMaskObserver<MSAAType> observer) {
-        Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
+        MakeStripImpl::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
                 tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
                 windingHistogram, clipRect, observer);
     }
@@ -230,7 +231,7 @@ private:
                                 const Tiles<TileW, TileH>& tiler,
                                 int failX,
                                 int failY,
-                                const SkTDArray<MSAAType>& actualMasks, // UPDATED
+                                const SkTDArray<MSAAType>& actualMasks,
                                 size_t tileStartIdx) {
         SkString out("\n--- FAILURE DIAGNOSTICS ---\n");
 
@@ -274,7 +275,7 @@ private:
                                 active = IsInside(cp, polyline);
                             } else {
                                 int32_t bufIdx = tileStartIdx + (y * TileW + x);
-                                MSAAType mask = // UPDATED
+                                MSAAType mask =
                                         (bufIdx < actualMasks.size()) ? actualMasks[bufIdx] : 0;
                                 active = (mask & (1 << sy));
                             }
@@ -301,7 +302,7 @@ private:
     bool runSingleTest(skiatest::Reporter* reporter,
                        const SkPath& path,
                        const char* name,
-                       const SkTDArray<MSAAType>& lut, // UPDATED
+                       const SkTDArray<MSAAType>& lut,
                        std::array<uint32_t, 3>& minorErrorCount) {
         Flatten flattener;
         Polyline polyline;
@@ -316,10 +317,10 @@ private:
         tiler.sortTiles();
 
         SkTDArray<Strip> stripBuf;
-        SkTDArray<MSAAType> alphaBuf; // UPDATED
-        SkTDArray<MSAAType> exactMasks; // UPDATED
+        SkTDArray<MSAAType> alphaBuf;
+        SkTDArray<MSAAType> exactMasks;
         WideTiles<TileH> wides;
-        auto observer = [&](MSAAType exactMask) { exactMasks.push_back(exactMask); }; // UPDATED
+        auto observer = [&](MSAAType exactMask) { exactMasks.push_back(exactMask); };
 
         // Call the configured function pointer (SIMD or Scalar)
         fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, wides,
@@ -338,18 +339,18 @@ private:
             const Strip& curr = stripBuf[i];
             const Strip& next = stripBuf[i + 1];
 
-            uint32_t startIdx = curr.packedAlphaIdx & 0x7FFFFFFF;
-            uint32_t endIdx = next.packedAlphaIdx & 0x7FFFFFFF;
+            uint32_t startIdx = curr.alphaIdx();
+            uint32_t endIdx = next.alphaIdx();
             uint16_t spannedTiles = (endIdx - startIdx) / (TileW * TileH);
 
-            uint16_t currX = curr.x;
-            uint16_t currY = curr.y;
+            uint16_t currX = curr.x();
+            uint16_t currY = curr.y();
 
             for (int32_t s = 0; s < spannedTiles; ++s) {
                 int32_t tileStartIdx = alphaIdx;
                 for (int32_t y = 0; y < TileH; ++y) {
                     for (int32_t x = 0; x < TileW; ++x) {
-                        MSAAType expectedMask = 0; // UPDATED
+                        MSAAType expectedMask = 0;
                         int expectedSamples = 0;
                         for (int k = 0; k < 8; ++k) {
                             if (IsInside({currX + x + (MSAA_LUT<MSAAType>::kPattern[k] + 0.5f) / 8.0f,
@@ -360,9 +361,9 @@ private:
                             }
                         }
 
-                        MSAAType actualMask = // UPDATED
+                        MSAAType actualMask =
                                 (alphaIdx < exactMasks.size()) ? exactMasks[alphaIdx] : 0;
-                        MSAAType actualAlpha = (alphaIdx < alphaBuf.size()) ? alphaBuf[alphaIdx] : 0; // UPDATED
+                        MSAAType actualAlpha = (alphaIdx < alphaBuf.size()) ? alphaBuf[alphaIdx] : 0;
 
                         int sampleDiff = 0;
                         int actualSamples = 0;
@@ -371,7 +372,7 @@ private:
                             if ((expectedMask & (1 << k)) != (actualMask & (1 << k))) sampleDiff++;
                         }
 
-                        MSAAType expectedAlphaFromMask = // UPDATED
+                        MSAAType expectedAlphaFromMask =
                                 static_cast<MSAAType>((actualSamples * 255 + 4) / 8);
 
                         if (actualAlpha != expectedAlphaFromMask) {

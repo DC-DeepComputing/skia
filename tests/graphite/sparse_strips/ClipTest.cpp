@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/graphite/sparse_strips/MakeStrip_impl.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
-#include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 
@@ -121,8 +121,8 @@ class ClipTestRunner {
         bool canonicalXDir = (dx >= 0);
         bool canonicalYDir = (dy >= 0);
 
-        std::array<SkPoint, 2> result =
-                Strip::clipToTile(line, bounds, derivatives, mask, canonicalXDir, canonicalYDir);
+        std::array<SkPoint, 2> result = MakeStripImpl::clipToTile(line, bounds, derivatives,
+                                                                  mask, canonicalXDir, canonicalYDir);
 
         auto lbOpt = reference_clip(line, tileMinX, tileMinY, tileMaxX, tileMaxY);
         float width = tileMaxX - tileMinX;

@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrip.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
@@ -38,16 +39,18 @@
 
 namespace skgpu::graphite {
 
-template<typename TileType>
-class StripGenerator {
+template <typename TileType> class StripGenerator {
 public:
     using MSAAType = SparseStripsConfig::MSAAType;
-    static constexpr uint16_t kTileWidth     = SparseStripsConfig::kTileWidth;
-    static constexpr uint16_t kTileHeight    = SparseStripsConfig::kTileHeight;
+    static constexpr uint16_t kTileWidth = SparseStripsConfig::kTileWidth;
+    static constexpr uint16_t kTileHeight = SparseStripsConfig::kTileHeight;
     static constexpr uint32_t kWorkgroupSize = SparseStripsConfig::kWorkgroupSize;
 
     StripGenerator(SkISize deviceSize, const SkTDArray<MSAAType>& lut, Recorder* recorder)
-            : fDeviceSize(SkIRect::MakeSize(deviceSize)), fCulled(true), fAlphaIndex(0), fLUT(lut)
+            : fDeviceSize(SkIRect::MakeSize(deviceSize))
+            , fCulled(true)
+            , fAlphaIndex(0)
+            , fLUT(lut)
             , fRecorder(recorder)
             , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
         fAllocations.reserve(4);
@@ -97,9 +100,16 @@ private:
 
         AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
         int32_t offset = manager->getAlphaBufferSize();
-        Strip::MakeStripsMsaaSimd(fTiles, fStrips, manager->getAlphaBuffer(), path.getFillType(),
-                                  fFlattenned, fLUT, fWides, fCulled, fWindingHistogram,
-                                  fDeviceSize);
+        MakeStrip::MakeStripsMsaaSimd(fTiles,
+                                      fStrips,
+                                      manager->getAlphaBuffer(),
+                                      path.getFillType(),
+                                      fFlattenned,
+                                      fLUT,
+                                      fWides,
+                                      fCulled,
+                                      fWindingHistogram,
+                                      fDeviceSize);
         fAlphasSize += manager->getAlphaBufferSize() - offset;
 
         SkASSERT(fRecorder);
@@ -137,12 +147,21 @@ private:
 
         int32_t prevTileCount = fTiles.getTiles().size();
         fCulled = fTiles.makeTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram, prevLineCount);
-        fTiles.sortTiles(prevTileCount); //adjust if sktdarray
+        fTiles.sortTiles(prevTileCount);  // adjust if sktdarray
 
-        int32_t alphaCount = Strip::MakeStripsGpu<kTileWidth, kTileHeight, kWorkgroupSize, MSAAType>(
-                fTiles, fStrips, path.getFillType(), fFlattenned, fWides, fCulled, fWindingHistogram, fDeviceSize, prevTileCount);
+        int32_t alphaCount =
+                MakeStrip::MakeStripsGpu<kTileWidth, kTileHeight, kWorkgroupSize, MSAAType>(
+                        fTiles,
+                        fStrips,
+                        path.getFillType(),
+                        fFlattenned,
+                        fWides,
+                        fCulled,
+                        fWindingHistogram,
+                        fDeviceSize,
+                        prevTileCount);
 
-        for (int stripIdx = 1 ; stripIdx < fStrips.size(); ++stripIdx) {
+        for (int stripIdx = 1; stripIdx < fStrips.size(); ++stripIdx) {
             processStripPair(stripIdx, fAlphaIndex);
         }
 
@@ -155,20 +174,20 @@ private:
         constexpr size_t kBytesPerTile = kTileWidth * kTileHeight;
         const Strip& prev = fStrips[stripIdx - 1];
         const Strip& curr = fStrips[stripIdx];
-        int32_t startIdx = static_cast<int32_t>(prev.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
-        int32_t currEndIdx = static_cast<int32_t>(curr.packedAlphaIdx & ~(1u << Strip::FILL_SHIFT));
+        int32_t startIdx = prev.alphaIdx();
+        int32_t currEndIdx = curr.alphaIdx();
         int32_t totalBytes = currEndIdx - startIdx;
         int32_t numTiles = totalBytes / kBytesPerTile;
         uint16_t prevWidth = numTiles * kTileWidth;
-        bool shouldFill = (curr.packedAlphaIdx >> Strip::FILL_SHIFT) & 1;
-        if (shouldFill && prev.y == curr.y) {
-            SkASSERT(prev.y == curr.y);
-            uint16_t startX = prev.x + prevWidth;
-            uint16_t width = curr.x - startX;
-            fWides.addTile(startX, curr.y, width);
+        bool shouldFill = curr.shouldFill();
+        if (shouldFill && prev.y() == curr.y()) {
+            SkASSERT(prev.y() == curr.y());
+            uint16_t startX = prev.x() + prevWidth;
+            uint16_t width = curr.x() - startX;
+            fWides.addTile(startX, curr.y(), width);
         }
         if (totalBytes > 0) {
-            fEnds.addCap(prev.x, prev.y, prevWidth, startIdx + globalOffset);
+            fEnds.addCap(prev.x(), prev.y(), prevWidth, startIdx + globalOffset);
         }
         return currEndIdx;
     }
@@ -202,6 +221,6 @@ private:
     uint32_t fAlphasSize = 0;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_sparse_strips_StripGenerator_DEFINED
+#endif  // skgpu_graphite_sparse_strips_StripGenerator_DEFINED
