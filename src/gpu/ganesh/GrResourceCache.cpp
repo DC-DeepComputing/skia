@@ -468,8 +468,12 @@ void GrResourceCache::purgeAsNeeded() {
     this->validate();
 }
 
-void GrResourceCache::purgeUnlockedResources(const skgpu::StdSteadyClock::time_point* purgeTime,
-                                             GrPurgeResourceOptions opts) {
+void GrResourceCache::purgeUnlockedResources(
+        const skgpu::StdSteadyClock::time_point* purgeTime,
+        GrPurgeResourceOptions opts,
+        const skgpu::StdSteadyClock::time_point* stopPurgingTime) {
+    // TODO implement stop time checking.
+
     if (opts == GrPurgeResourceOptions::kAllResources) {
         if (purgeTime) {
             fThreadSafeCache->dropUniqueRefsOlderThan(*purgeTime);

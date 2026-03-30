@@ -212,7 +212,8 @@ public:
      * milliseconds or are otherwise marked for deletion, regardless of whether the context is under
      * budget.
      */
-    void performDeferredCleanup(std::chrono::milliseconds msNotUsed);
+    void performDeferredCleanup(std::chrono::milliseconds msNotUsed,
+                                const std::chrono::milliseconds* stopPurgingPastDuration = nullptr);
 
     /**
      * Returns the number of bytes of the Recorder's gpu memory cache budget that are currently in

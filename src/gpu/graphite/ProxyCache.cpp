@@ -224,7 +224,9 @@ void ProxyCache::freeUniquelyHeld() {
     this->removeEntriesAndListeners(toRemove);
 }
 
-void ProxyCache::purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_point* purgeTime) {
+void ProxyCache::purgeProxiesNotUsedSince(
+        const skgpu::StdSteadyClock::time_point* purgeTime,
+        const skgpu::StdSteadyClock::time_point* stopPurgingPastTime) {
     this->processInvalidKeyMsgs();
 
     skia_private::TArray<skgpu::UniqueKey> toRemove;
@@ -236,6 +238,7 @@ void ProxyCache::purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_poin
             (!purgeTime || resource->lastAccessTime() < *purgeTime)) {
             toRemove.push_back(key);
         }
+        // TODO(nicolettep) check if we need to stop due to exceeding time limit
     });
 
     this->removeEntriesAndListeners(toRemove);
@@ -269,6 +272,7 @@ void ProxyCache::forceFreeUniquelyHeld() {
 }
 
 void ProxyCache::forcePurgeProxiesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime) {
+    // If forcing, do not limit how long the cache has to do so.
     this->purgeProxiesNotUsedSince(&purgeTime);
 }
 

@@ -355,8 +355,10 @@ void GrDirectContext::purgeUnlockedResources(GrPurgeResourceOptions opts) {
     fGpu->releaseUnlockedBackendObjects();
 }
 
-void GrDirectContext::performDeferredCleanup(std::chrono::milliseconds msNotUsed,
-                                             GrPurgeResourceOptions opts) {
+void GrDirectContext::performDeferredCleanup(
+        std::chrono::milliseconds msNotUsed,
+        GrPurgeResourceOptions opts,
+        const std::chrono::milliseconds* stopPurgingPastDuration) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     ASSERT_SINGLE_OWNER
@@ -367,10 +369,17 @@ void GrDirectContext::performDeferredCleanup(std::chrono::milliseconds msNotUsed
 
     this->checkAsyncWorkCompletion();
     fMappedBufferManager->process();
-    auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
 
+    auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
+    skgpu::StdSteadyClock::time_point* stopPurgingTime = nullptr;
+    if (stopPurgingPastDuration) {
+        stopPurgingTime = new skgpu::StdSteadyClock::time_point(
+                skgpu::StdSteadyClock::now() + *stopPurgingPastDuration);
+    }
     fResourceCache->purgeAsNeeded();
-    fResourceCache->purgeResourcesNotUsedSince(purgeTime, opts);
+    fResourceCache->purgeResourcesNotUsedSince(purgeTime, opts, stopPurgingTime);
+
+    delete stopPurgingTime;
 
     // The textBlob Cache doesn't actually hold any GPU resource but this is a convenient
     // place to purge stale blobs
