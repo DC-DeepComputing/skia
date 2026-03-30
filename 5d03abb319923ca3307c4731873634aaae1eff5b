@@ -33,6 +33,24 @@
       "message": "What is special about these asserts here that they should be done on release builds as well? Unless there is a whole Chrome wide mandate that all asserts must run in release mode, I don\u0027t see what is gained by doing this here. AFAIK even if these values were not valid all we\u0027ll end up doing is clobbering our own data in the uint32_t we store the key in. I don\u0027t see a security issue where we\u0027d write or read unintended memory.",
       "revId": "5d03abb319923ca3307c4731873634aaae1eff5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f780d99_3083ad68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-30T23:43:52Z",
+      "side": 1,
+      "message": "I added you to the bug which has the relevant context (along with go/code-terracotta-band-aid), there is a large scale effort reactive effort to address security bugs being found by LLMs before doing a full investigation.\n\nPlease do add your expertise to the bug, I.E. we want to know\n\n1) Is the potential bug real or not (could it happen and would it be a security issue in your security model), we track this to get the accuracy rate\n2) If it is, how can we quickly harden against it, and what is the \"proper\" fix.\n3) If it isn\u0027t, how we could update things like SECURITY.md to properly understand the security boundaries.\n\nAlso phase 1 is done without looking to far, but I\u0027ll make a post on the bug now with some further thoughts.",
+      "parentUuid": "b343a911_84d7c705",
+      "revId": "5d03abb319923ca3307c4731873634aaae1eff5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
