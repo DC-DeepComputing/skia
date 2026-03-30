@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e133e6e6_4a3a1580",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T18:01:02Z",
+      "side": 1,
+      "message": "nit: https://review.skia.org/988939 (we strive not to have corp links in commit messages or code; go/linkable-extension)",
+      "range": {
+        "startLine": 18,
+        "startChar": 41,
+        "endLine": 18,
+        "endChar": 96
+      },
+      "revId": "12e3327e75fea8e210eba6ddc9b04fee972bc2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf85a588_2e812226",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T18:01:02Z",
+      "side": 1,
+      "message": "nit: https://review.skia.org/1194816",
+      "range": {
+        "startLine": 20,
+        "startChar": 136,
+        "endLine": 20,
+        "endChar": 142
+      },
+      "revId": "12e3327e75fea8e210eba6ddc9b04fee972bc2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f58026_84d720da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T18:01:02Z",
+      "side": 1,
+      "message": "Bazel stuff lgtm. nits elsewhere",
+      "revId": "12e3327e75fea8e210eba6ddc9b04fee972bc2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5fbe6d_e4d3ca2d",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2647,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T18:01:02Z",
+      "side": 1,
+      "message": "Is this comment worth checking in?",
+      "range": {
+        "startLine": 2647,
+        "startChar": 19,
+        "endLine": 2647,
+        "endChar": 25
+      },
+      "revId": "12e3327e75fea8e210eba6ddc9b04fee972bc2ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
