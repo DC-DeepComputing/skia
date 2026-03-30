@@ -57,7 +57,8 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                     const LayerKey& key,
                                     const DrawParams* drawParams,
                                     const Insertion& stop,
-                                    Insertion* capture) {
+                                    Insertion* capture,
+                                    bool canForwardMerge) {
     // Child stencils get a fast path to their parent
     if (isStencil) {
         if (stepIndex > 0) {
@@ -76,6 +77,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     Layer* current = nullptr;
     Layer* targetLayer = nullptr;
     BindingWrapper* targetMatch = nullptr;
+    BindingWrapper* forwardMerge = nullptr;
     // If we're an easy draw (!kIsStencil and !dependsOnDst), try the head first.
     if (!isStencil && !dependsOnDst) {
         // A valid stopLayer will never be null, because the depth draw will always return the layer
@@ -99,7 +101,53 @@ void DrawListLayer::recordBackwards(int stepIndex,
             if (result.first == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
-                    // TODO (thomsmit): Test performance of forward merging
+                    // Forward merging attempts to pull an earlier, compatible draw out of the
+                    // current layer and push it into a newly created layer to improve
+                    // pipeline/texture batching.
+                    //
+                    // 1. Draw Type Restrictions (Single Renderstep & No Depth-Only):
+                    //    Forward merging is strictly limited to single-renderstep shading draws. We
+                    //    explicitly forbid depth-only draws (which pass `false` for
+                    //    `canForwardMerge`), and the single-step requirement inherently excludes
+                    //    stencil draws. If we allowed multi-step renderers to forward merge, we
+                    //    would risk pulling a parent renderstep forward and over its
+                    //    already-inserted child.
+                    //
+                    // 2. Directional & Spatial Validity:
+                    //    Because we evaluate bindings backwards (tail to head), any binding matches
+                    //    prior to intersection are necessarily execute *after* that intersecting
+                    //    draw. Furthermore, because standard shading draws within the same layer
+                    //    are guaranteed by the `test()` logic to be mutually disjoint, the matched
+                    //    draw does not overlap with any of the later bindings we evaluated and
+                    //    skipped. Therefore, it is visually safe to extract this disjoint match and
+                    //    defer its execution to a new, subsequent layer without violating the
+                    //    Painter's Algorithm.
+                    //
+                    // 3. The Tail-Only Restriction: We strictly limit forward merging to the *tail*
+                    //    of the layer list. If we allowed forward merging from a middle layer, we
+                    //    would be forced to insert the newly generated target layer into the middle
+                    //    of the list. This would break the structural invariant that
+                    //    `Layer::fOrder` strictly increases with the physical list order.
+                    //
+                    // 4. Drawn/Undrawn Clip State:
+                    //    The clip stack relies on the `CompressedPaintersOrder` invariant when
+                    //    processing a mix of drawn and undrawn elements, because
+                    //    `updateClipStateForDraw` uses the `Insertion::operator>` (which compares
+                    //    `fOrder`) to find the latest execution boundary across all depth-only
+                    //    clips affecting a draw. If a layer were middle-inserted, assigning it a
+                    //    valid order is intractable: giving it a new, highest `fOrder` breaks the
+                    //    topological sequence. The `max()` calculation would then incorrectly flag
+                    //    this middle layer as the absolute latest boundary, causing subsequent
+                    //    draws to execute too early and bypass actual later layers.
+                    // =============================================================================
+                    if (canForwardMerge && current == fLayers.tail()) {
+                        if (result.second && current->fBindings.head() != current->fBindings.tail()
+                            && (!requiresBarrier ||
+                                !result.second->fBounds.intersects(drawParams->drawBounds()))) {
+                            forwardMerge = result.second;
+                            targetMatch = forwardMerge;
+                        }
+                    }
                     return true;
                 } else {
                     // If !dependsOnDst, we just keep searching backwards.
@@ -135,6 +183,14 @@ void DrawListLayer::recordBackwards(int stepIndex,
         fOrderCounter = fOrderCounter.next();
         targetLayer = fStorage.make<Layer>(fOrderCounter);
         fLayers.addToTail(targetLayer);
+
+        if (forwardMerge) {
+            SkASSERT(current);
+            SkASSERT(current == fLayers.tail());
+            current->fBindings.remove(forwardMerge);
+            targetLayer->fBindings.addToHead(forwardMerge);
+            forwardMerge->fOrder = CompressedPaintersOrder::First();
+        }
     }
 
     SkASSERT(targetLayer);
@@ -283,6 +339,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
 
     Insertion stepInsertion = {nullptr, nullptr};
     fRenderStepCount += renderer->numRenderSteps();
+    bool canForwardMerge = renderer->numRenderSteps() == 1;
     for (int stepIndex = 0; stepIndex < renderer->numRenderSteps(); ++stepIndex) {
         const RenderStep* const step = renderer->steps()[stepIndex];
 
@@ -315,7 +372,8 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                     LayerKey{pipelineIndex, textureBindingIndex},
                     drawParams,
                     /*stop=*/{},
-                    &stepInsertion);
+                    &stepInsertion,
+                    false);
         } else {
             if (latestInsertion.fLayer && !dependsOnDst) {
                 this->recordForwards(stepIndex,
@@ -338,7 +396,8 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                         LayerKey{pipelineIndex, textureBindingIndex},
                         drawParams,
                         latestInsertion,
-                        nullptr);
+                        nullptr,
+                        canForwardMerge);
             }
         }
         gatherer->rewindForRenderStep();
