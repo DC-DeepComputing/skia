@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a6a185_96111941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-30T17:49:22Z",
+      "side": 1,
+      "message": "Adding egdaniel (owner of some files), Kaylee (bazel/ build extraordinaire). CCing Max (gardener).",
+      "revId": "02d22bab2666924202271b6be7da2f70e6db3bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
