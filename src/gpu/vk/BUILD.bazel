@@ -40,9 +40,11 @@ skia_cc_library(
     ],
     local_defines = ["SK_USE_INTERNAL_VULKAN_HEADERS"],
     visibility = [
+        # "//src/gpu/vk:vk:__pkg__",
         "//src/gpu/ganesh/vk:__pkg__",
         "//src/gpu/graphite/vk:__pkg__",
         "//src/gpu/vk/vulkanmemoryallocator:__pkg__",
+        # "//tools:__subpackages__",
     ],
     deps = [
         "//:core",

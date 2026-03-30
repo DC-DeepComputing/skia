@@ -168,6 +168,8 @@ skia_cc_library(
 
 # TODO(lovisolo, kjlubick): Do this with a macro.
 skia_cc_library(
+    # can't find skgpu::InvokeDeviceLostCallback from VulkanUtilsPriv files.
+    # included in src/gpu/vk "vk" library
     name = "ganesh_vulkan_TEST_UTIL",
     testonly = True,
     srcs = [
@@ -180,6 +182,7 @@ skia_cc_library(
         "//include/gpu/ganesh:ganesh_hdrs",
         "//include/gpu/ganesh/vk:public_hdrs",
         "//include/gpu/vk:shared_public_hdrs",
+        # "//include/private"
     ],
     defines = [
         "SK_VULKAN",
