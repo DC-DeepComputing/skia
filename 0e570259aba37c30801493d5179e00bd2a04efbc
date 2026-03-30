@@ -16,6 +16,29 @@
       "message": "Thanks, updated",
       "revId": "0e570259aba37c30801493d5179e00bd2a04efbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53f6e9ea_c53cb46c",
+        "filename": "fuzz/FuzzMain.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T12:55:10Z",
+      "side": 1,
+      "message": "nit: add it here too",
+      "range": {
+        "startLine": 60,
+        "startChar": 42,
+        "endLine": 60,
+        "endChar": 53
+      },
+      "revId": "0e570259aba37c30801493d5179e00bd2a04efbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
