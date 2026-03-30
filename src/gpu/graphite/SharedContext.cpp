@@ -147,8 +147,10 @@ void SharedContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) con
 void SharedContext::freeGpuResources() {
     fThreadSafeResourceProvider->freeGpuResources();
 }
-void SharedContext::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
-    fThreadSafeResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+void SharedContext::purgeResourcesNotUsedSince(
+        StdSteadyClock::time_point purgeTime,
+        const StdSteadyClock::time_point* stopPurgingPastTime) {
+    fThreadSafeResourceProvider->purgeResourcesNotUsedSince(purgeTime, stopPurgingPastTime);
 }
 void SharedContext::forceProcessReturnedResources() {
     fThreadSafeResourceProvider->forceProcessReturnedResources();

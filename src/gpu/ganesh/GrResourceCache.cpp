@@ -468,8 +468,15 @@ void GrResourceCache::purgeAsNeeded() {
     this->validate();
 }
 
-void GrResourceCache::purgeUnlockedResources(const skgpu::StdSteadyClock::time_point* purgeTime,
-                                             GrPurgeResourceOptions opts) {
+void GrResourceCache::purgeUnlockedResources(
+        const skgpu::StdSteadyClock::time_point* purgeTime,
+        GrPurgeResourceOptions opts,
+        const skgpu::StdSteadyClock::time_point* stopPurgingTime) {
+
+    auto time_remains_before_stop_time = [&]() {
+        return !stopPurgingTime || (skgpu::StdSteadyClock::now() < *stopPurgingTime);
+    };
+
     if (opts == GrPurgeResourceOptions::kAllResources) {
         if (purgeTime) {
             fThreadSafeCache->dropUniqueRefsOlderThan(*purgeTime);
@@ -479,7 +486,7 @@ void GrResourceCache::purgeUnlockedResources(const skgpu::StdSteadyClock::time_p
 
         // We could disable maintaining the heap property here, but it would add a lot of
         // complexity. Moreover, this is rarely called.
-        while (fPurgeableQueue.count()) {
+        while (fPurgeableQueue.count() && time_remains_before_stop_time()) {
             GrGpuResource* resource = fPurgeableQueue.peek();
 
             const skgpu::StdSteadyClock::time_point resourceTime =
@@ -499,9 +506,12 @@ void GrResourceCache::purgeUnlockedResources(const skgpu::StdSteadyClock::time_p
     } else {
         SkASSERT(opts == GrPurgeResourceOptions::kScratchResourcesOnly);
         // Early out if the very first item is too new to purge to avoid sorting the queue when
-        // nothing will be deleted.
-        if (purgeTime && fPurgeableQueue.count() &&
-            fPurgeableQueue.peek()->cacheAccess().timeWhenResourceBecamePurgeable() >= *purgeTime) {
+        // nothing will be deleted or if we have already exceeded the time limit for purging.
+        if ((purgeTime && fPurgeableQueue.count() &&
+            fPurgeableQueue.peek()->cacheAccess().timeWhenResourceBecamePurgeable() >= *purgeTime)) {
+            return;
+        }
+        if (!time_remains_before_stop_time()) {
             return;
         }
 
@@ -529,6 +539,9 @@ void GrResourceCache::purgeUnlockedResources(const skgpu::StdSteadyClock::time_p
         // to avoid messing up the sorted order of the queue
         for (int i = 0; i < scratchResources.size(); i++) {
             scratchResources[i]->cacheAccess().release();
+            if (!time_remains_before_stop_time()) {
+                break;
+            }
         }
     }
 
