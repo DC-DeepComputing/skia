@@ -26,6 +26,9 @@
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/gpu/vk/VulkanMutableTextureStatePriv.h"
 
+#include "src/core/SkTraceEvent.h"
+
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -340,6 +343,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
 }
 
 void VulkanTexture::freeGpuData() {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+
     // Need to delete any ImageViews first
     fImageViews.clear();
 

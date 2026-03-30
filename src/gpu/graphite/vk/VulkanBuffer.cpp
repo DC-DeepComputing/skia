@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
+#include "src/core/SkTraceEvent.h"
+
 namespace skgpu::graphite {
 
 sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
@@ -203,6 +205,7 @@ VulkanBuffer::VulkanBuffer(const VulkanSharedContext* sharedContext,
 }
 
 void VulkanBuffer::freeGpuData() {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     if (fMapPtr) {
         this->internalUnmap(0, this->size());
         fMapPtr = nullptr;

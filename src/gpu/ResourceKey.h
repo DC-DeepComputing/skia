@@ -19,6 +19,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <string>
 #include <new>
 #include <utility>
 
@@ -53,6 +54,19 @@ public:
     }
 
     bool isValid() const { return kInvalidDomain != this->domain(); }
+
+    std::string asStr() const {
+        if (this->dataSize() == 0) {
+            return "empty!";
+        }
+        std::string result;
+        // result.reserve((sizeof(uint32_t) + sizeof("_")) * this->dataSize());
+        for (int i = 0; i < this->dataSize(); i++) {
+            result += std::to_string(this->data()[i]);
+            result += "_";
+        }
+        return result;
+    }
 
     /** Used to initialize a key. */
     class Builder {

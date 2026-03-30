@@ -187,8 +187,9 @@ public:
     // kScratchResourcesOnly, the purgeable resources containing persistent data are spared.
     // If it is kAllResources then all purgeable resources older than 'purgeTime' will be deleted.
     void purgeResourcesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime,
-                                    GrPurgeResourceOptions opts) {
-        this->purgeUnlockedResources(&purgeTime, opts);
+                                    GrPurgeResourceOptions opts,
+                                    const skgpu::StdSteadyClock::time_point* stopPurgingTime) {
+        this->purgeUnlockedResources(&purgeTime, opts, stopPurgingTime);
     }
 
     /** If it's possible to purge enough resources to get the provided amount of budget
@@ -322,7 +323,8 @@ private:
     uint32_t getNextTimestamp();
 
     void purgeUnlockedResources(const skgpu::StdSteadyClock::time_point* purgeTime,
-                                GrPurgeResourceOptions opts);
+                                GrPurgeResourceOptions opts,
+                                const skgpu::StdSteadyClock::time_point* stopPurgingTime = nullptr);
 
 #ifdef SK_DEBUG
     bool isInCache(const GrGpuResource* r) const;
