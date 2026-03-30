@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13701b71_e10cf98f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-30T17:43:53Z",
+      "side": 1,
+      "message": "FYI: https://github.com/google/oss-fuzz/pull/15251 to incorporate this CL into OSS-Fuzz",
+      "revId": "0e570259aba37c30801493d5179e00bd2a04efbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53f6e9ea_c53cb46c",
