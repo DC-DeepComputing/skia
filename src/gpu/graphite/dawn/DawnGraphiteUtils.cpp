@@ -298,16 +298,16 @@ bool DawnDescriptorUsesExternalFormat(const wgpu::YCbCrVkDescriptor& desc) {
 
 ImmutableSamplerInfo DawnDescriptorToImmutableSamplerInfo(const wgpu::YCbCrVkDescriptor& desc) {
     static_assert(kComponentAShift + kComponentBits <= 32);
-    SkASSERT(desc.vkYCbCrModel                          < (1u << kYcbcrModelBits    ));
-    SkASSERT(desc.vkYCbCrRange                          < (1u << kYcbcrRangeBits    ));
-    SkASSERT(desc.vkXChromaOffset                       < (1u << kXChromaOffsetBits ));
-    SkASSERT(desc.vkYChromaOffset                       < (1u << kYChromaOffsetBits ));
-    SkASSERT(static_cast<uint32_t>(desc.vkChromaFilter) < (1u << kChromaFilterBits  ));
-    SkASSERT(desc.vkComponentSwizzleRed                 < (1u << kComponentBits     ));
-    SkASSERT(desc.vkComponentSwizzleGreen               < (1u << kComponentBits     ));
-    SkASSERT(desc.vkComponentSwizzleBlue                < (1u << kComponentBits     ));
-    SkASSERT(desc.vkComponentSwizzleAlpha               < (1u << kComponentBits     ));
-    SkASSERT(static_cast<uint32_t>(desc.forceExplicitReconstruction)
+    SkASSERT_RELEASE(desc.vkYCbCrModel                          < (1u << kYcbcrModelBits    ));
+    SkASSERT_RELEASE(desc.vkYCbCrRange                          < (1u << kYcbcrRangeBits    ));
+    SkASSERT_RELEASE(desc.vkXChromaOffset                       < (1u << kXChromaOffsetBits ));
+    SkASSERT_RELEASE(desc.vkYChromaOffset                       < (1u << kYChromaOffsetBits ));
+    SkASSERT_RELEASE(static_cast<uint32_t>(desc.vkChromaFilter) < (1u << kChromaFilterBits  ));
+    SkASSERT_RELEASE(desc.vkComponentSwizzleRed                 < (1u << kComponentBits     ));
+    SkASSERT_RELEASE(desc.vkComponentSwizzleGreen               < (1u << kComponentBits     ));
+    SkASSERT_RELEASE(desc.vkComponentSwizzleBlue                < (1u << kComponentBits     ));
+    SkASSERT_RELEASE(desc.vkComponentSwizzleAlpha               < (1u << kComponentBits     ));
+    SkASSERT_RELEASE(static_cast<uint32_t>(desc.forceExplicitReconstruction)
              < (1u << kForceExplicitReconBits));
 
     const bool usesExternalFormat = DawnDescriptorUsesExternalFormat(desc);
