@@ -15,6 +15,7 @@ SPARSE_STRIPS_FILES = [
     "MakeStrip_impl.h",
     "MSAA_LUT.h",
     "Polyline.h",
+    "shaders/NonSubgroupWGSL.h",
     "SparseStripTypes.h",
     "SparseStripsConfig.h",
     "Strip.h",
