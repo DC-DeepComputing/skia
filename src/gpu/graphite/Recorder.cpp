@@ -546,11 +546,19 @@ void Recorder::freeGpuResources() {
     fStrikeCache->freeAll();
 }
 
-void Recorder::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
+void Recorder::performDeferredCleanup(std::chrono::milliseconds msNotUsed,
+                                      const std::chrono::milliseconds* stopPurgingPastDuration) {
     ASSERT_SINGLE_OWNER
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
-    fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
+    StdSteadyClock::time_point* stopPurgingTime = nullptr;
+    if (stopPurgingPastDuration) {
+        stopPurgingTime = new skgpu::StdSteadyClock::time_point(
+                skgpu::StdSteadyClock::now() + *stopPurgingPastDuration);
+    }
+    fResourceProvider->purgeResourcesNotUsedSince(purgeTime, stopPurgingTime);
+    fResourceProvider->purgeResourcesNotUsedSince(purgeTime, stopPurgingTime);
+    delete stopPurgingTime;
 }
 
 size_t Recorder::currentBudgetedBytes() const {

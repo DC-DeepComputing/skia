@@ -224,7 +224,11 @@ public:
     // buffer.
     BindBufferInfo add(DawnCommandBuffer* cb, UniformDataBlock intrinsicValues);
 
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    void purgeResourcesNotUsedSince(
+            StdSteadyClock::time_point purgeTime,
+            const StdSteadyClock::time_point* stopPurgingPastTime) {
+        // TODO stopPurgingPastTime ?
+
         auto bufferNotUsedSince = [purgeTime, this](IntrinsicBuffer* buffer) {
             // We always keep the current buffer as it is likely to be used again soon.
             return buffer != fCurrentBuffer && buffer->lastAccessTime() < purgeTime;
@@ -753,8 +757,10 @@ void DawnResourceProvider::onFreeGpuResources() {
     fUniformBufferBindGroupCache.reset();
 }
 
-void DawnResourceProvider::onPurgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
-    fIntrinsicConstantsManager->purgeResourcesNotUsedSince(purgeTime);
+void DawnResourceProvider::onPurgeResourcesNotUsedSince(
+        StdSteadyClock::time_point purgeTime,
+        const StdSteadyClock::time_point* stopPurgingPastTime) {
+    fIntrinsicConstantsManager->purgeResourcesNotUsedSince(purgeTime, stopPurgingPastTime);
 }
 
 BindBufferInfo DawnResourceProvider::findOrCreateIntrinsicBindBufferInfo(
