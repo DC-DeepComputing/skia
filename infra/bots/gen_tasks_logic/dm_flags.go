@@ -559,6 +559,25 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 						skip(ALL, "test", ALL, "BigImageTest_Graphite")
 					}
 				}
+
+				if b.ExtraConfig("D3D11") {
+					if b.GPU("IntelIris6100") {
+						skip("grdawn_d3d11", "gm", ALL, "imagefilterstransformed")
+						skip("grdawn_d3d11", "gm", ALL, "imagemakewithfilter_crop_ref")
+						skip("grdawn_d3d11", "gm", ALL, "imagemakewithfilter_ref")
+						skip("grdawn_d3d11", "gm", ALL, "inverse_fill_filters")
+						skip("grdawn_d3d11", "gm", ALL, "inverse_windingmode_filters")
+						skip("grdawn_d3d11", "gm", ALL, "localmatriximagefilter")
+						skip("grdawn_d3d11", "gm", ALL, "rotate_imagefilter")
+						skip("grdawn_d3d11", "gm", ALL, "rrect_blurs")
+						skip("grdawn_d3d11", "gm", ALL, "rtif_unsharp")
+						skip("grdawn_d3d11", "gm", ALL, "skbug1719")
+						skip("grdawn_d3d11", "gm", ALL, "spritebitmap")
+						skip("grdawn_d3d11", "gm", ALL, "strokedlines")
+						skip("grdawn_d3d11", "gm", ALL, "strokedlines_drawPoints")
+					}
+				}
+
 			} else if b.ExtraConfig("Native") {
 				if b.ExtraConfig("Metal") {
 					if b.ExtraConfig("TestPrecompile") {
