@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ea97ace_84c9e144",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-03-30T08:43:16Z",
+      "side": 1,
+      "message": "Taking suggested \"General Contact\" owner, will CC you on the bug.",
+      "revId": "5d03abb319923ca3307c4731873634aaae1eff5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
