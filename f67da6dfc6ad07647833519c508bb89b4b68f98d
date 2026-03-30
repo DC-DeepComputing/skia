@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe81a69f_5b1bee1d",
+        "filename": "fuzz/oss_fuzz/FuzzHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-03-30T12:09:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e14c432b_04e27354",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "376b7555_e20c145f",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-03-28T18:10:56Z",
       "side": 1,
       "message": "Can you also register this in FuzzMain (e.g. https://github.com/google/skia/blob/ca2d3c5ccac033a77147e6f27bd66a2b5346d52c/fuzz/FuzzMain.cpp#L424-L429). That binary has a few things that make reproducing issues easier.",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "f67da6dfc6ad07647833519c508bb89b4b68f98d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cbecdf3_6fa793bf",
+        "filename": "fuzz/oss_fuzz/FuzzHdrAgtm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-03-30T12:09:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "376b7555_e20c145f",
       "range": {
         "startLine": 14,
         "startChar": 5,
