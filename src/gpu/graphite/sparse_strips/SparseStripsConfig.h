@@ -25,6 +25,8 @@ struct SparseStripsConfig {
     static_assert(std::is_same_v<MSAAType, uint8_t>);
     static constexpr int32_t kLutWidth  = 64;
     static constexpr int32_t kLutHeight = 64;
+
+    static constexpr uint32_t kWorkgroupSize = 256;
 };
 
 }  // namespace skgpu::graphite

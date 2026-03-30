@@ -61,18 +61,27 @@ struct SparseStripsConstants {
     //==============================================================================================
     // For the strip generation
     //==============================================================================================
-    static constexpr uint32_t FILL_SHIFT    = 31;
-    static constexpr float    kStripEpsilon = 1e-5f;
-
-    static constexpr uint32_t SCANNED_WINDING_SHIFT = 24;
-    static constexpr uint32_t INVALID_ID            = 256;
-
     static constexpr uint32_t kNumSubSamples  = sizeof(SparseStripsConfig::MSAAType) * 8;
     static constexpr uint32_t kSubSampleMask  = (1 << kNumSubSamples) - 1;
     static constexpr uint32_t kMSAASubAsAdd   = static_cast<uint32_t>(-1) & kSubSampleMask;
     static constexpr uint32_t kMSAABias       = 1 << (kNumSubSamples - 1);
     static constexpr float    kMSAAInvSamples = 1.0f / static_cast<float>(kNumSubSamples);
     static constexpr float    kMSAASamplesF   = static_cast<float>(kNumSubSamples);
+
+    static constexpr uint32_t FILL_SHIFT    = 31;
+    static constexpr float    kStripEpsilon = 1e-5f;
+
+    //==============================================================================================
+    // For the compute shader
+    //==============================================================================================
+    static constexpr uint32_t SCANNED_WINDING_SHIFT = 24;    // Upper 8 bits
+    static constexpr uint32_t INVALID_START_TILE    = SparseStripsConfig::kWorkgroupSize;
+    static constexpr uint32_t FILL_RULE_SHIFT       = 22;    // Next 2 bits
+    static constexpr uint32_t FILL_RULE_MASK        = 0x3;
+    static constexpr uint32_t IS_END_TILE_SHIFT     = 21;    // Next 1 bit
+    static constexpr uint32_t IS_END_TILE_MASK      = 0x1;
+    static constexpr uint32_t LOCAL_TILE_ID_MASK    = (1 << IS_END_TILE_SHIFT) - 1;
+    static constexpr uint32_t START_TILE_MASK       = 0x1ff; // Lower 9 bits
 };
 
 }  // namespace skgpu::graphite
