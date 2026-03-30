@@ -1,0 +1,75 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da24d39a_f9b760c7",
+        "filename": "tests/PixelsRecTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-30T15:17:16Z",
+      "side": 1,
+      "message": "nit: could be `info.minRowBytes()`, to avoid hardcoding bpp.",
+      "range": {
+        "startLine": 21,
+        "startChar": 32,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f08a1266_919ea533",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/PixelsRecTest.cpp",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "    const SkImageInfo info \u003d SkImageInfo::MakeN32Premul(W, H);\n    const size_t rowBytes \u003d info.minRowBytes();\n"
+            },
+            {
+              "path": "tests/PixelsRecTest.cpp",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "tests/PixelsRecTest.cpp",
+              "range": {
+                "startLine": 124,
+                "startChar": 0,
+                "endLine": 125,
+                "endChar": 0
+              },
+              "replacement": "    const SkImageInfo info \u003d SkImageInfo::MakeN32Premul(W, H);\n    const size_t rowBytes \u003d info.minRowBytes();\n"
+            },
+            {
+              "path": "tests/PixelsRecTest.cpp",
+              "range": {
+                "startLine": 127,
+                "startChar": 0,
+                "endLine": 128,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "bda34137f929d66fd4ff13f6a602ef6e2c349745",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
