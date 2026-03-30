@@ -274,7 +274,7 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
     hwbDesc.rfu1= 0;
 
     if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
+        ERRORF(reporter, "Failed to allocate hardware buffer, error: %d", error);
         cleanup_resources(buffer);
         return nullptr;
     }
