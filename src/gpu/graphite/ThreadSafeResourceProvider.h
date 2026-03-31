@@ -40,7 +40,9 @@ public:
 
     void dumpMemoryStatistics(SkTraceMemoryDump*) const SK_EXCLUDES(fSpinLock);
     void freeGpuResources() SK_EXCLUDES(fSpinLock);
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) SK_EXCLUDES(fSpinLock);
+    void purgeResourcesNotUsedSince(
+            StdSteadyClock::time_point purgeTime,
+            const StdSteadyClock::time_point* stopPurgingPastTime = nullptr) SK_EXCLUDES(fSpinLock);
     void forceProcessReturnedResources() SK_EXCLUDES(fSpinLock);
 
 protected:

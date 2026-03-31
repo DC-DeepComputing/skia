@@ -91,7 +91,9 @@ public:
 
     void dumpMemoryStatistics(SkTraceMemoryDump*) const;
     void freeGpuResources();
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
+    void purgeResourcesNotUsedSince(
+            StdSteadyClock::time_point purgeTime,
+            const StdSteadyClock::time_point* stopPurgingPastTime = nullptr);
     void forceProcessReturnedResources();
 
 protected:
