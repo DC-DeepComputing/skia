@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f7d5ae_c16b7713",
+        "filename": "src/core/SkCpu.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-31T17:59:16Z",
+      "side": 1,
+      "message": "(maybe followup) looks like this could be an enum now.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 6
+      },
+      "revId": "d3433ec3591675356c2f6d85c1d86d777a8f35e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
