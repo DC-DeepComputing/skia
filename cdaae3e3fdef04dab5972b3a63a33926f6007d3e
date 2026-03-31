@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "374112df_d7c7901b",
+        "filename": "tests/GrAHardwareBufferTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-03-31T11:18:14Z",
+      "side": 0,
+      "message": "**Note:**\nCorrect: image depends on buffer. image is released first.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 30
+      },
+      "revId": "cdaae3e3fdef04dab5972b3a63a33926f6007d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "892ae5e6_121564cb",
+        "filename": "tests/GrAHardwareBufferTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-03-31T11:18:14Z",
+      "side": 0,
+      "message": "**Note:**\nPotentially incorrect: image depends on buffer, but buffer is deleted first.\n\n\n---\n\n\nHi Kaylee, \nCould you please take a look? Note that I wasn\u0027t able to reproduce the issue detected with PartitionAlloc locally, so this is speculative.",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 30
+      },
+      "revId": "cdaae3e3fdef04dab5972b3a63a33926f6007d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
