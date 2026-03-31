@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d38bf93d_d096af24",
+        "filename": "gm/ycbcrimage.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T15:04:01Z",
+      "side": 1,
+      "message": "Or some gloss of the comment down in tools/gpu/YUVUtils.cpp",
+      "parentUuid": "d8e47630_6463315b",
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c297c4f5_164c8b44",
         "filename": "tests/graphite/BackendTextureTest.cpp",
         "patchSetId": 13
@@ -71,6 +89,30 @@
       "writtenOn": "2026-03-31T14:30:44Z",
       "side": 1,
       "message": "Have another spoof the alpha type comment here ?",
+      "range": {
+        "startLine": 466,
+        "startChar": 48,
+        "endLine": 466,
+        "endChar": 69
+      },
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6a4cd36_7828d0bc",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T15:04:01Z",
+      "side": 1,
+      "message": "Or, I guess, break this out into a helper function and call it here and above",
+      "parentUuid": "361371c6_adfccaa0",
       "range": {
         "startLine": 466,
         "startChar": 48,
