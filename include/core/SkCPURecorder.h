@@ -8,6 +8,7 @@
 #ifndef skcpu_Recorder_DEFINED
 #define skcpu_Recorder_DEFINED
 
+#include <cstdint>
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
@@ -57,7 +58,7 @@ public:
 private:
     // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
-    void createCaptureBreakpoint(SkSurface*) final {}
+    uint32_t createCaptureBreakpoint(SkSurface*) final { return 0; }
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {
