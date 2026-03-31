@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60e27ea2_aa140a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-31T16:15:26Z",
+      "side": 1,
+      "message": "The fix looks good, thanks!\n\nPlease also add yourself to `AUTHORS`.",
+      "revId": "ce97582e7a1dc242fbe0bde48c146e21ad1b8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131cdb64_9ced9264",
+        "filename": "modules/jsonreader/tests/SkJSONReaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-31T16:15:26Z",
+      "side": 1,
+      "message": "The json parser tests live in `tests/JSONTest.cpp` (for historical reasons).  Let\u0027s add your test there, then we don\u0027t need any build system changes.",
+      "revId": "ce97582e7a1dc242fbe0bde48c146e21ad1b8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331fe1d7_fc687558",
+        "filename": "modules/jsonreader/tests/SkJSONReaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-03-31T16:15:26Z",
+      "side": 1,
+      "message": "`DEF_SERIAL_TEST`, to avoid `setlocale` interference with other tests running in parallel.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 8
+      },
+      "revId": "ce97582e7a1dc242fbe0bde48c146e21ad1b8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
