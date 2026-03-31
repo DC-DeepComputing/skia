@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f805ea4_13d176dc",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 0,
+      "message": "Was this meant to be deleted in this CL?",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 24
+      },
+      "revId": "3d014aec545ac64c9afd304b84a20e0b95ac8607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

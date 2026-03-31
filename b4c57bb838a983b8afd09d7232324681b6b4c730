@@ -20,6 +20,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "710841a0_2b548a2f",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "update comments to include new param",
+      "range": {
+        "startLine": 226,
+        "startChar": 5,
+        "endLine": 226,
+        "endChar": 6
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87d240af_0f6ded6d",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "do we really need to add this functionality to Ganesh?",
+      "range": {
+        "startLine": 232,
+        "startChar": 45,
+        "endLine": 232,
+        "endChar": 68
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a07e6dff_693ef6a0",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "update comment",
+      "range": {
+        "startLine": 233,
+        "startChar": 13,
+        "endLine": 233,
+        "endChar": 14
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0d53620_6d484bd9",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "update comment",
+      "range": {
+        "startLine": 213,
+        "startChar": 13,
+        "endLine": 213,
+        "endChar": 14
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32e1834b_974f3528",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 12
@@ -36,6 +128,122 @@
         "startChar": 26,
         "endLine": 849,
         "endChar": 29
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7783a50c_cae7b8c5",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "I agree with Noelle that these should probably be stack variables. But if for some reason they really cannot be, I would at least make a std::unique_ptr\u003c\u003e so you don\u0027t have to call delete manually.",
+      "parentUuid": "32e1834b_974f3528",
+      "range": {
+        "startLine": 849,
+        "startChar": 26,
+        "endLine": 849,
+        "endChar": 29
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6227089_c888d97b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "So this call just goes down and purges the threadSafeResourceProvider. AFAIK that object doesn\u0027t really hold anything that interesting (maybe just immutable samplers), so things would be very trivially cheap to free from there. Additionally the plan is to get rid of that as we move things to be in a shared ResourceCache.\n\nSo my proposal is that we don\u0027t include this call in the purge duration. By doing that we can move the stop calculation down to a single place in ResourceProvider::purgeResourcesNotUsedSince, and thus don\u0027t need to have this same calculation logic in both Recorder and Context.",
+      "range": {
+        "startLine": 853,
+        "startChar": 4,
+        "endLine": 853,
+        "endChar": 75
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cca27f9_2ffb037e",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "duplicate?",
+      "range": {
+        "startLine": 560,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 78
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7113025a_42652738",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "Is the default value really buying us a lot here? Seems like there are minimal call sites and we can just force them to pass in the value they want like we do for purgeTime",
+      "range": {
+        "startLine": 65,
+        "startChar": 65,
+        "endLine": 65,
+        "endChar": 75
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "215cc6bc_862d196a",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T20:22:40Z",
+      "side": 1,
+      "message": "same question about need for a default",
+      "range": {
+        "startLine": 143,
+        "startChar": 76,
+        "endLine": 143,
+        "endChar": 83
       },
       "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
