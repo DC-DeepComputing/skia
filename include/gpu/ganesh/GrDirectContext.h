@@ -228,11 +228,14 @@ public:
 
     void performDeferredCleanup(
             std::chrono::milliseconds msNotUsed,
-            GrPurgeResourceOptions opts = GrPurgeResourceOptions::kAllResources);
+            GrPurgeResourceOptions opts = GrPurgeResourceOptions::kAllResources,
+            const std::chrono::milliseconds* stopPurgingPastDuration = nullptr);
 
     // Temporary compatibility API for Android.
-    void purgeResourcesNotUsedInMs(std::chrono::milliseconds msNotUsed) {
-        this->performDeferredCleanup(msNotUsed);
+    void purgeResourcesNotUsedInMs(
+            std::chrono::milliseconds msNotUsed,
+            const std::chrono::milliseconds* stopPurgingPastDuration = nullptr) {
+        this->performDeferredCleanup(msNotUsed, {}, stopPurgingPastDuration);
     }
 
     /**
