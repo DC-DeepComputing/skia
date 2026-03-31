@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e69878c_90a0fa72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T14:30:44Z",
+      "side": 1,
+      "message": "lg so far but I would like to take another pass",
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e47630_6463315b",
+        "filename": "gm/ycbcrimage.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T14:30:44Z",
+      "side": 1,
+      "message": "// force alpha channel to 1\n?",
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c297c4f5_164c8b44",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T14:30:44Z",
+      "side": 1,
+      "message": "I feel a desire to see what would happen with kAlpha_8_SkColorType in the following obstacle course. I assume:\nkOpaque -\u003e kAlpha_8 + a 0001 swizzle + kOpaque\nkUnknown -\u003e same\nkPremul/kUnpremul -\u003e kAlpha_8 w/ matching alpha type.",
+      "range": {
+        "startLine": 206,
+        "startChar": 54,
+        "endLine": 206,
+        "endChar": 75
+      },
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "361371c6_adfccaa0",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-03-31T14:30:44Z",
+      "side": 1,
+      "message": "Have another spoof the alpha type comment here ?",
+      "range": {
+        "startLine": 466,
+        "startChar": 48,
+        "endLine": 466,
+        "endChar": 69
+      },
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
