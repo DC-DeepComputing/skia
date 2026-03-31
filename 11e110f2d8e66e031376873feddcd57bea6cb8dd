@@ -22,6 +22,30 @@
       },
       "revId": "11e110f2d8e66e031376873feddcd57bea6cb8dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f60fc1a7_2368dbc6",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-03-31T19:53:57Z",
+      "side": 1,
+      "message": "Sorry, I think I missread previous comment. Added back to RustALL and Removed from RustPNG",
+      "parentUuid": "420c2a38_a66a8948",
+      "range": {
+        "startLine": 1938,
+        "startChar": 66,
+        "endLine": 1938,
+        "endChar": 73
+      },
+      "revId": "11e110f2d8e66e031376873feddcd57bea6cb8dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
