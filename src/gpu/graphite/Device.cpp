@@ -408,7 +408,7 @@ private:
 };
 
 struct Device::StripGeneratorWrapper {
-    StripGenerator<Tile<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight>> fGenerator;
+    StripGenerator<GpuTile<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight>> fGenerator;
 
     StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<SparseStripsConfig::MSAAType>& lut, Recorder* recorder)
         : fGenerator(deviceSize, lut, recorder) {}
@@ -2251,8 +2251,6 @@ void Device::internalFlush() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER
 
-    fStripGenerator->fGenerator.flushGpu();
-
     // Push any pending uploads from the atlas provider that pending draws reference.
     fRecorder->priv().atlasProvider()->recordUploads(fDC.get());
 
@@ -2261,6 +2259,7 @@ void Device::internalFlush() {
     fClip.recordDeferredClipDraws();
 
     // Flush all pending items to the internal task list and reset Device tracking state
+    fStripGenerator->fGenerator.flushGpu();
     fDC->flush(fRecorder);
 
     fColorDepthBoundsManager->reset();

@@ -29,10 +29,12 @@ void GpuAlphaAtlasManager::advanceAlphaIndex(int32_t alphaCount) {
 
 bool GpuAlphaAtlasManager::initializeTexture() {
     const Caps* caps = fRecorder->priv().caps();
-    SkColorType atlasColor =
-            caps->isStorage(caps->getDefaultStorageTextureInfo(kAlpha_8_SkColorType))
-                    ? kAlpha_8_SkColorType
-                    : kRGBA_8888_SkColorType;
+    // TODO (thomsmit) check this upstream when checking for compute capability
+    SkColorType atlasColor = kRGBA_8888_SkColorType;
+    // SkColorType atlasColor =
+    //         caps->isStorage(caps->getDefaultStorageTextureInfo(kAlpha_8_SkColorType))
+    //                 ? kAlpha_8_SkColorType
+    //                 : kRGBA_8888_SkColorType;
 
     // We use getDefaultStorageTextureInfo here because the compute shader will
     // write directly into this texture.

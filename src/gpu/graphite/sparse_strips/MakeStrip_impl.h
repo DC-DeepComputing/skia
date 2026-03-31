@@ -205,7 +205,8 @@ public:
                                       bool isCulled,
                                       const WindingHistogram& windingHistogram,
                                       const SkIRect& clipRect,
-                                      int32_t tileOffset);
+                                      int32_t tileOffset,
+                                      int32_t alphaOffset);
 
 private:
     // Core tile traversal state machine. This template completely deduplicates the complex outer
@@ -1051,7 +1052,8 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
         bool isCulled,
         const WindingHistogram& windingHistogram,
         const SkIRect& clipRect,
-        int32_t tileOffset) {
+        int32_t tileOffset,
+        int32_t alphaOffset) {
     static_assert(kWorkGroupSize != 0);
 
     constexpr int32_t kTileAlphaCount = TileWidth * TileHeight;
@@ -1083,11 +1085,11 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
                                             tileStartId - blockAligned;
             uint32_t fillRule = static_cast<uint32_t>(fillType);
             SkASSERT(fillRule <= SparseStripsConstants::FILL_RULE_MASK);
+            tile.alphaIdx = localAlphaIdx + alphaOffset;
             tile.packed = ((static_cast<uint32_t>(leftEdgeWindingDelta) & 0xff) << SparseStripsConstants::SCANNED_WINDING_SHIFT) |
                           (fillRule << SparseStripsConstants::FILL_RULE_SHIFT) |
                           (isEndTile << SparseStripsConstants::IS_END_TILE_SHIFT) |
                           (static_cast<uint32_t>(blockLocalTileStartId));
-            tile.alphaIdx = localAlphaIdx;
         }
     );
 

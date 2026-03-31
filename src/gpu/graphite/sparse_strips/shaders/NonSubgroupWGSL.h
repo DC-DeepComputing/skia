@@ -138,7 +138,7 @@ inline constexpr char kWgslBindings[] = R"(
 @group(0) @binding(2) var<storage, read> pmt_in: array<PreMergeTile>;
 @group(0) @binding(3) var<storage, read_write> part_indicator: array<u32>;
 @group(0) @binding(4) var<storage, read_write> part_red: array<array<array<vec2<u32>, VEC2_COLS>, TILE_HEIGHT>>;
-@group(0) @binding(5) var output: texture_storage_2d<rgba32uint, write>;
+@group(0) @binding(5) var output: texture_storage_2d<rgba8unorm, write>;    //Make this binding depend on the type available
 @group(0) @binding(6) var<storage, read_write> debug: array<vec2<u32>>;
 @group(0) @binding(7) var<storage, read> lines: array<vec4<f32>>;
 )";
@@ -258,7 +258,8 @@ const std::string kWgslRowSetup = R"(
     let startY = u32(floor(clipped_top.y));
     let endY = u32(ceil(clipped_bot.y));
     let xDir = clipped_top.x <= clipped_bot.x;
-    let is_winding = get_fill_rule(pmt.packed_scanned_winding) != 0u;
+    //let is_winding = get_fill_rule(pmt.packed_scanned_winding) != 0u;
+    let is_winding = true;
 
     // 2. Declare and Initialize Row Mask
     var mask: array<vec2u, TILE_WIDTH>;
@@ -501,26 +502,33 @@ inline constexpr char kWgslBitCountingInner[] = R"(
                     row_pixels[col] = f32(counts.x + counts.y) * MSAA_INV_SAMPLES;
 )";
 
+// We merge the texture store directly into this block to avoid 128-bit register bloat.
 inline const std::string kWgslBitCounting = std::string(R"(
-            for (var row = 0u; row < TILE_HEIGHT; row += 1u) {
-                var row_pixels: vec4<f32>;
-                for (var col = 0u; col < TILE_WIDTH; col += 1u) {
-                    let cov_mask = tile_masks[row][col];
-)") + kWgslBitCountingInner + R"(
-                }
-                final_alphas[row] = pack4x8unorm(abs(row_pixels));
-            }
-)";
-
-inline constexpr char kWgslTextureStore[] = R"(
             let tex_dims = textureDimensions(output);
             let tex_width = tex_dims.x;
-            let output_coords = vec2<u32>(
-                alpha_index % tex_width,
-                alpha_index / tex_width
-            );
-            if (output_coords.y < tex_dims.y) {
-                textureStore(output, output_coords, final_alphas);
+
+            // pmt.alpha_index is linear alphas. Divide by 4 to get the base physical texel.
+            let base_texel_idx = pmt.alpha_index >> 2u;
+
+            for (var row = 0u; row < TILE_HEIGHT; row += 1u) {
+                var row_pixels: vec4<f32>;
+
+                for (var col = 0u; col < TILE_WIDTH; col += 1u) {
+                    let cov_mask = wg_scan[tile_index][row][col];
+)") + kWgslBitCountingInner + R"(
+                }
+
+                // Each row is stored in its own continuous physical texel
+                let texel_idx = base_texel_idx + row;
+                let output_coords = vec2<u32>(
+                    texel_idx % tex_width,
+                    texel_idx / tex_width
+                );
+
+                if (output_coords.y < tex_dims.y) {
+                    // Write floats directly. Hardware packs them into rgba8unorm!
+                    textureStore(output, output_coords, abs(row_pixels));
+                }
             }
 )";
 

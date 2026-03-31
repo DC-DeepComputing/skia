@@ -1863,8 +1863,8 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
                                uint maskIndex) {
 
     // Cast the varying width passed from the vertex shader
-    int tileWidth = 8;
-    int tileHeight = 8;
+    int tileWidth = 4;
+    int tileHeight = 4;
 
     // Floor and cast the interpolated floating-point local coordinates
     int dx = int(floor(rectCoord.x));
@@ -1881,9 +1881,15 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
     int trueLinearIdx = int(maskIndex) + linearOffset;
     int atlasLinearIdx = trueLinearIdx & 0xffffff;
 
+    // 1 Texel = 4 Alphas. Find which physical texel holds our data.
+    int texelIdx = atlasLinearIdx >> 2;
+    int channelIdx = atlasLinearIdx & 3;
+
     int atlasWidth = int(atlasSize.x);
-    int atlasX = atlasLinearIdx % atlasWidth;
-    int atlasY = atlasLinearIdx / atlasWidth;
+
+    // Calculate 2D coordinates using the texel index, not the raw alpha index
+    int atlasX = texelIdx % atlasWidth;
+    int atlasY = texelIdx / atlasWidth;
 
     float2 uv = (float2(atlasX, atlasY) + 0.5) / atlasSize;
     half4 texColor;
@@ -1903,5 +1909,5 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
             break;
     }
 
-    return texColor.rrrr;
+    return texColor[channelIdx].rrrr;
 }

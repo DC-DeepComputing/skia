@@ -260,9 +260,9 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "float2 a,float4 b,half2 c,int d,sampler2D e){switch(d){case 0:{return $L(a,"
 "b,c.x,c.y,e);}case 2:{return $M(a,b,e);}case 1:{return $N(a,b,c.x,e);}}return"
 " half4(0.);}$pure half4 endcap_coverage_fn(float2 a,float2 b,sampler2D c,sampler2D"
-" d,sampler2D e,sampler2D f,uint g){int h=8;int i=8;int j=int(floor(a.x));int"
+" d,sampler2D e,sampler2D f,uint g){int h=4;int i=4;int j=int(floor(a.x));int"
 " k=int(floor(a.y));int l=j/h;int m=j%h;int n=k;int o=h*i;int p=(l*o+n*h)+m;"
-"int q=int(g)+p;int r=q&16777215;int s=int(b.x);int t=r%s;int u=r/s;float2 v"
-"=(float2(float(t),float(u))+.5)/b;half4 w;switch(q>>24){case 0:w=sample(c,v"
-");break;case 1:w=sample(d,v);break;case 2:w=sample(e,v);break;default:w=sample"
-"(f,v);break;}return w.xxxx;}";
+"int q=int(g)+p;int r=q&16777215;int s=r>>2;int t=r&3;int u=int(b.x);int v=s"
+"%u;int w=s/u;float2 x=(float2(float(v),float(w))+.5)/b;half4 y;switch(q>>24"
+"){case 0:y=sample(c,x);break;case 1:y=sample(d,x);break;case 2:y=sample(e,x"
+");break;default:y=sample(f,x);break;}return y[t].xxxx;}";

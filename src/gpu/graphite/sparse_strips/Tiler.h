@@ -51,10 +51,11 @@ template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile {
 
 template <uint16_t WIDTH, uint16_t HEIGHT>
 struct GpuTile : public Tile<WIDTH, HEIGHT> {
+    int32_t alphaIdx;   // The location in the alpha texture this will correspond to
+
     int32_t packed;     // PostScanned winding goes into the upper bits, so that pulling them down
                         // sign extends the value. the lower bits contain the localIdx of the
                         // parent tile.
-    int32_t alphaIdx;   // The location in the alpha texture this will correspond to
 
     GpuTile() : Tile<WIDTH, HEIGHT>() {}
 

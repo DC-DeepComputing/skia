@@ -109,7 +109,8 @@ public:
             bool isCulled,
             const WindingHistogram& windingHistogram,
             const SkIRect& clipRect,
-            int32_t tileOffset
+            int32_t tileOffset,
+            int32_t alphaOffset
     ) {
         uint32_t localAlphaIdx = 0;
         Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
@@ -117,7 +118,7 @@ public:
             localAlphaIdx = MakeStripImpl::
                     MakeStripsGpuImpl<TileWidth, TileHeight, kWorkGroupSize, kIsWinding, MSAAType>(
                             tileContainer, stripBuf, isInverse, fillType, polyline, wides,
-                            isCulled, windingHistogram, clipRect, tileOffset);
+                            isCulled, windingHistogram, clipRect, tileOffset, alphaOffset);
         });
         return localAlphaIdx;
     }

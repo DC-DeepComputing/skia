@@ -221,6 +221,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/compute/ComputeStep.h",
   "$_src/gpu/graphite/compute/DispatchGroup.cpp",
   "$_src/gpu/graphite/compute/DispatchGroup.h",
+  "$_src/gpu/graphite/compute/SparseStripsRenderer.cpp",
+  "$_src/gpu/graphite/compute/SparseStripsRenderer.h",
   "$_src/gpu/graphite/geom/AnalyticBlurMask.cpp",
   "$_src/gpu/graphite/geom/AnalyticBlurMask.h",
   "$_src/gpu/graphite/geom/BoundsManager.h",
