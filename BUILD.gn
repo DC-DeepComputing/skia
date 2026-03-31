@@ -2805,6 +2805,7 @@ if (skia_enable_tools) {
         ":tool_utils",
         ":typeface_fontations_tests",
         "modules/bentleyottmann:tests",
+        "modules/jsonreader:tests",
         "modules/skottie:tests",
         "modules/skparagraph:tests",
         "modules/sksg:tests",

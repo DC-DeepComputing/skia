@@ -10,3 +10,16 @@ skia_component("jsonreader") {
   sources = skia_jsonreader_sources
   deps = [ "../..:skia" ]
 }
+
+if (skia_enable_tools) {
+  skia_source_set("tests") {
+    testonly = true
+    configs = [ "../..:skia_private" ]
+    sources = [ "tests/SkJSONReaderTest.cpp" ]
+    deps = [
+      ":jsonreader",
+      "../..:skia",
+      "../..:test",
+    ]
+  }
+}

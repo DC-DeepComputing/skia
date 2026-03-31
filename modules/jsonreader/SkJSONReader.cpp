@@ -18,6 +18,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkUTF.h"
 
+#include <charconv>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -406,7 +407,7 @@ public:
             case '{':
                 goto match_object;
             default:
-                p = this->matchNumber(p);
+                p = this->matchNumber(p, p_stop);
                 break;
         }
 
@@ -861,15 +862,15 @@ private:
         return this->matchFastFloatPart(p, sign, n32);
     }
 
-    const char* matchNumber(const char* p) {
+    const char* matchNumber(const char* p, const char* p_stop) {
         if (const auto* fast = this->matchFast32OrFloat(p)) return fast;
 
         // slow fallback
-        char* matched;
-        float f = strtof(p, &matched);
-        if (matched > p) {
+        float f;
+        auto result = std::from_chars(p, p_stop + 1, f);
+        if (result.ec == std::errc{}) {
             this->pushFloat(f);
-            return matched;
+            return result.ptr;
         }
         return this->error(nullptr, p, "invalid numeric token");
     }
