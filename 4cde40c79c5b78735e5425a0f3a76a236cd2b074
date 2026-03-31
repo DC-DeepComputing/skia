@@ -16,6 +16,23 @@
       "message": "Seems reasonable to me. Over to Greg for a second opinion",
       "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42eb249c_7af713ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-03-31T13:19:43Z",
+      "side": 1,
+      "message": "So this is the wording the spec:\n\n\"Android hardware buffer objects are reference-counted using Android NDK functions outside of the scope of this specification. A VkDeviceMemory imported from an Android hardware buffer or that can be exported to an Android hardware buffer must acquire a reference to its AHardwareBuffer object, and must release this reference when the device memory is freed\".\n\nMy reading of that is that the driver should be taking a ref to the AHardwareBuffer when we import it into Vulkan and then releasing it when we eventually destroy the VkDeviceMemory. Thus it is perfectly safe for us to be releasing our ref to the AHardwareBuffer before we delete the internal VkImage/VkDeviceMemory. My guess is miracle pointer just can\u0027t see into the driver call to know it is taking and releasing refs.",
+      "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
