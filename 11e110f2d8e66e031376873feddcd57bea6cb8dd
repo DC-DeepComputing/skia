@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "420c2a38_a66a8948",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-31T19:47:49Z",
+      "side": 1,
+      "message": "You did the opposite of what I suggested. Put this on the CQ and remove cq_config from the RustPNG",
+      "range": {
+        "startLine": 1938,
+        "startChar": 66,
+        "endLine": 1938,
+        "endChar": 73
+      },
+      "revId": "11e110f2d8e66e031376873feddcd57bea6cb8dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
