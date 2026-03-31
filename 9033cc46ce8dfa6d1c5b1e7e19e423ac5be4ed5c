@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ceec26f_77791588",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-03-31T18:56:56Z",
+      "side": 1,
+      "message": "Note: I may create a follow-up change (perhaps the Android change to leverage the new purging time limit) that could delete this temporary method.",
+      "range": {
+        "startLine": 234,
+        "startChar": 4,
+        "endLine": 234,
+        "endChar": 47
+      },
+      "revId": "9033cc46ce8dfa6d1c5b1e7e19e423ac5be4ed5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
