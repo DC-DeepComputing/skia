@@ -175,6 +175,12 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> DawnCaps::get
         if ((formatInfo.fFlags & msaaFlag) == msaaFlag) {
             // WebGPU only supports 1x and 4x MSAA
             sampleCounts |= SampleCount::k4;
+            if (this->msaaRenderToSingleSampledSupport() &&
+                !TextureFormatIsDepthOrStencil(format)) {
+                // If WebGPU exposes the MSRTSS extension, assume that all color formats that
+                // support MSAA can support MSRTSS.
+                supported |= TextureUsage::kMSRTSS;
+            }
         }
     }
 
@@ -684,7 +690,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Float)];
         info->fFlags = FormatInfo::kAllFlags;
-        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfoCount = 2;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
         int ctIdx = 0;
         // Format: R16Float, Surface: kA16_float
@@ -695,6 +701,13 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
             ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
             ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
+        }
+        // Format: R16Float, Surface: kR16_float
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kR16_float_SkColorType;
+            ctInfo.fTransferColorType = kR16_float_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
     }
 
