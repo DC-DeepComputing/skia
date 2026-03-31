@@ -33,6 +33,24 @@
       "message": "So this is the wording the spec:\n\n\"Android hardware buffer objects are reference-counted using Android NDK functions outside of the scope of this specification. A VkDeviceMemory imported from an Android hardware buffer or that can be exported to an Android hardware buffer must acquire a reference to its AHardwareBuffer object, and must release this reference when the device memory is freed\".\n\nMy reading of that is that the driver should be taking a ref to the AHardwareBuffer when we import it into Vulkan and then releasing it when we eventually destroy the VkDeviceMemory. Thus it is perfectly safe for us to be releasing our ref to the AHardwareBuffer before we delete the internal VkImage/VkDeviceMemory. My guess is miracle pointer just can\u0027t see into the driver call to know it is taking and releasing refs.",
       "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "207084d2_343703ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-03-31T13:53:33Z",
+      "side": 1,
+      "message": "Thanks! You\u0027re right about the spec.\n\nAs I mentioned [1][2], this is speculative since I can\u0027t repro it locally. PA is catching a delete on an unknown buffer [3], pointing to a double free or shim malloc/free mismatch during this test.\n\nI\u0027m relatively new to this specific area, so I don\u0027t want to make strong assumptions about driver bugs. However, I\u0027d still like to try landing this. It makes the teardown match the previous test (which shouldn\u0027t hurt), and it will either fix the bot or not. I also didn\u0027t grab the CI bot failing, so a reland with a potential fix would still provide me some informations.\n\nDoes that seem reasonable to try?\n\n[1] https://skia-review.googlesource.com/c/skia/+/1189216/comment/374112df_d7c7901b/\n[2] https://skia-review.googlesource.com/c/skia/+/1189216/comment/374112df_d7c7901b/\n[3] https://skia-review.googlesource.com/c/skia/+/1190316",
+      "parentUuid": "42eb249c_7af713ec",
+      "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
