@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a23bb2_28fd6408",
+        "filename": "gm/ycbcrimage.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-31T15:59:45Z",
+      "side": 1,
+      "message": "Done; added `// force alpha channel to 1`.  The comment in YUVUtils doesn\u0027t apply here because this an external ycbcr image so it appears logically as a regular rgba texture that we can then force to opaque, vs. YUVUtils having to manipulate the data channels separately.",
+      "parentUuid": "d38bf93d_d096af24",
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c297c4f5_164c8b44",
@@ -66,6 +84,30 @@
       "writtenOn": "2026-03-31T14:30:44Z",
       "side": 1,
       "message": "I feel a desire to see what would happen with kAlpha_8_SkColorType in the following obstacle course. I assume:\nkOpaque -\u003e kAlpha_8 + a 0001 swizzle + kOpaque\nkUnknown -\u003e same\nkPremul/kUnpremul -\u003e kAlpha_8 w/ matching alpha type.",
+      "range": {
+        "startLine": 206,
+        "startChar": 54,
+        "endLine": 206,
+        "endChar": 75
+      },
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bcb1bdd_dad938dd",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-31T15:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c297c4f5_164c8b44",
       "range": {
         "startLine": 206,
         "startChar": 54,
@@ -113,6 +155,30 @@
       "side": 1,
       "message": "Or, I guess, break this out into a helper function and call it here and above",
       "parentUuid": "361371c6_adfccaa0",
+      "range": {
+        "startLine": 466,
+        "startChar": 48,
+        "endLine": 466,
+        "endChar": 69
+      },
+      "revId": "b1fe414e10699f6f29ba663aaf75da73839f56e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e78d6d86_935a2d36",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-03-31T15:59:45Z",
+      "side": 1,
+      "message": "I actually changed it to kOpaque, which I think follows pretty naturally from the comment.",
+      "parentUuid": "d6a4cd36_7828d0bc",
       "range": {
         "startLine": 466,
         "startChar": 48,
