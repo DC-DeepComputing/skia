@@ -683,9 +683,8 @@ GrSurfaceProxyView FindOrMakeCachedMipmappedView(GrRecordingContext* rContext,
     SkASSERT(baseKey.isValid());
     skgpu::UniqueKey mipmappedKey;
     static const skgpu::UniqueKey::Domain kMipmappedDomain = skgpu::UniqueKey::GenerateDomain();
-    {  // No extra values beyond the domain are required. Must name the var to please
-       // clang-tidy.
-        skgpu::UniqueKey::Builder b(&mipmappedKey, baseKey, kMipmappedDomain, 0);
+    {  // No extra values beyond the domain are required. Must name the var to please clang-tidy.
+        skgpu::UniqueKey::Builder b(&mipmappedKey, baseKey, kMipmappedDomain);
     }
     SkASSERT(mipmappedKey.isValid());
     if (sk_sp<GrTextureProxy> cachedMippedView =
