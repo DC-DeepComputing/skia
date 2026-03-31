@@ -147,6 +147,9 @@ config("default") {
       "-mlsx",
       "-Wno-switch-default",
     ]
+    if (!is_clang && !is_win) {
+      cflags += [ "-flax-vector-conversions" ]
+    }
   }
 
   if (malloc != "" && !is_win) {

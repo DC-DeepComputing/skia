@@ -139,6 +139,9 @@
 
         #if defined(__clang__)
           #pragma clang attribute push(__attribute__((target("lasx"))), apply_to=function)
+        #elif defined(__GNUC__)
+          #pragma GCC push_options
+          #pragma GCC target("lsx,lasx")
         #endif
 
     #else
