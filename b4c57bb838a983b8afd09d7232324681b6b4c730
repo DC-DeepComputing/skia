@@ -16,6 +16,29 @@
       "message": "Greg and Rob, feel free to duke out who reviews this. CCing Michael who took look at a high level and Noelle (who will likely be one of the reviewers on the Android-side CL to utilize this API once it lands).",
       "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32e1834b_974f3528",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-03-31T19:04:17Z",
+      "side": 1,
+      "message": "Could this be reworked to a stack allocation instead of a heap allocation?",
+      "range": {
+        "startLine": 849,
+        "startChar": 26,
+        "endLine": 849,
+        "endChar": 29
+      },
+      "revId": "b4c57bb838a983b8afd09d7232324681b6b4c730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
