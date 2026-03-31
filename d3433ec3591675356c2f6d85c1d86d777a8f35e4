@@ -22,6 +22,30 @@
       },
       "revId": "d3433ec3591675356c2f6d85c1d86d777a8f35e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d740c1_b0dbfd22",
+        "filename": "src/core/SkCpu.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-03-31T18:09:37Z",
+      "side": 1,
+      "message": "I tried making it an enum class, but that didn\u0027t go well with the bitwise or operators below and I don\u0027t like a regular enum because of it dumping the symbols in the namespace...",
+      "parentUuid": "a1f7d5ae_c16b7713",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 6
+      },
+      "revId": "d3433ec3591675356c2f6d85c1d86d777a8f35e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
