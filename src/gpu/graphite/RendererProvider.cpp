@@ -64,9 +64,17 @@ bool RendererProvider::IsSupported(PathRendererStrategy strategy, const Caps* ca
 #else
             return false;
 #endif
+
+        //Sparse
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
             return true;
+#else
+            return false;
+#endif
+        case PathRendererStrategy::kHybridSparseStripsMSAA8:
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+            return caps->computeSupport();
 #else
             return false;
 #endif
