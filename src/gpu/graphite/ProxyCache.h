@@ -79,8 +79,12 @@ private:
 
     void processInvalidKeyMsgs();
     void freeUniquelyHeld();
-    void purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_point* purgeTime);
-    void removeEntriesAndListeners(SkSpan<const UniqueKey> toRemove);
+    void purgeProxiesNotUsedSince(
+            const skgpu::StdSteadyClock::time_point* purgeTime,
+            const skgpu::StdSteadyClock::time_point* stopPurgingPastTime = nullptr);
+    void removeEntriesAndListeners(
+        SkSpan<const UniqueKey> toRemove,
+        const skgpu::StdSteadyClock::time_point* stopPurgingPastTime = nullptr);
 
     struct UniqueKeyHash {
         uint32_t operator()(const UniqueKey& key) const;

@@ -837,14 +837,21 @@ void Context::freeGpuResources() {
     fSharedContext->freeGpuResources();
 }
 
-void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
+void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed,
+                                     const std::chrono::milliseconds* stopPurgingPastDuration) {
     ASSERT_SINGLE_OWNER
 
     this->checkAsyncWorkCompletion();
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
-    fResourceProvider->purgeResourcesNotUsedSince(purgeTime);
-    fSharedContext->purgeResourcesNotUsedSince(purgeTime);
+    StdSteadyClock::time_point* stopPurgingTime = nullptr;
+    if (stopPurgingPastDuration) {
+        stopPurgingTime = new skgpu::StdSteadyClock::time_point(
+                skgpu::StdSteadyClock::now() + *stopPurgingPastDuration);
+    }
+    fResourceProvider->purgeResourcesNotUsedSince(purgeTime, stopPurgingTime);
+    fSharedContext->purgeResourcesNotUsedSince(purgeTime, stopPurgingTime);
+    delete stopPurgingTime;
 }
 
 size_t Context::currentBudgetedBytes() const {
