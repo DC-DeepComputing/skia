@@ -574,6 +574,11 @@ static const TagHandler topLevelHandler = {
                 }
             }
             return &jbParser::familySetHandler;
+        } else if (MEMEQ("fonts-modification", tag, len)) {
+            // Modern product customization files use this root tag.
+            // Force the modern parser.
+            self->fVersion = 21;
+            return &lmpParser::familySetHandler;
         }
         return nullptr;
     },
