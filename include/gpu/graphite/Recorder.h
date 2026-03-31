@@ -281,7 +281,7 @@ private:
     void deregisterDevice(const Device*);
 
     SkCanvas* makeCaptureCanvas(SkCanvas*) override;
-    void createCaptureBreakpoint(SkSurface*) override;
+    uint32_t createCaptureBreakpoint(SkSurface*) override;
 
     sk_sp<SharedContext> fSharedContext;
     ResourceProvider* fResourceProvider; // May point to the Context's resource provider
