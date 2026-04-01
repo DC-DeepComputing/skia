@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17295503_e653b116",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-04-01T00:44:16Z",
+      "side": 1,
+      "message": "When sending these you need to CC the reviewers on the security bug otherwise they won\u0027t be able to get proper context.",
+      "revId": "89f0b6cc7d1e017ea91e8913081c3ff9ffa370f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20bc9d0_5cb807d3",
+        "filename": "src/core/SkEdgeClipper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-04-01T00:44:16Z",
+      "side": 1,
+      "message": "If we increase the array size I wonder if perhaps we don\u0027t need to increase the SkAssert to a RELEASE version since we know the maximum size? Perhaps switch back and just fix the internal buffer sizes, makes the change more focused.",
+      "revId": "89f0b6cc7d1e017ea91e8913081c3ff9ffa370f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b9980d_89bc94a7",
+        "filename": "src/core/SkEdgeClipper.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-04-01T00:44:16Z",
+      "side": 1,
+      "message": "This isn\u0027t a security bug in chromium anymore due to `-fsanitize\u003darray-bounds` I.E. the OOBs would crash.\n\nThis might be a legit problem for other SKIA users though so might be worth increasing the array sizes if the calculations are correct.\n\nAlthough I don\u0027t fully trust an AI to reason through this all properly, so would lean on Eric for that one. I\u0027ll post to the bug as well.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 34
+      },
+      "revId": "89f0b6cc7d1e017ea91e8913081c3ff9ffa370f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
