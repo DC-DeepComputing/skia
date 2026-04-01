@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "296d02c5_d6ae5efd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-01T15:24:13Z",
+      "side": 1,
+      "message": "This will come in handy for a json parser fix (https://skia-review.googlesource.com/c/skia/+/1199376).",
+      "revId": "5833058b24855fc145425750213fae6ce7beb7d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
