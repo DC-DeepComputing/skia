@@ -313,9 +313,17 @@ void ResourceProvider::freeGpuResources() {
     fResourceCache->purgeResources();
 }
 
-void ResourceProvider::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
-    this->onPurgeResourcesNotUsedSince(purgeTime);
-    fResourceCache->purgeResourcesNotUsedSince(purgeTime);
+void ResourceProvider::purgeResourcesNotUsedSince(
+        StdSteadyClock::time_point purgeTime,
+        std::optional<std::chrono::milliseconds> stopPurgingPastDuration) {
+
+    std::optional<StdSteadyClock::time_point> stopPurgingPastTime;
+    if (stopPurgingPastDuration.has_value()) {
+        stopPurgingPastTime = { StdSteadyClock::now() + stopPurgingPastDuration.value() };
+    }
+
+    this->onPurgeResourcesNotUsedSince(purgeTime, stopPurgingPastTime);
+    fResourceCache->purgeResourcesNotUsedSince(purgeTime, stopPurgingPastTime);
 }
 
 const Caps* ResourceProvider::caps() const {
