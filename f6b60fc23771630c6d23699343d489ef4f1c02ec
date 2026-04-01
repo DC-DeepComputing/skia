@@ -22,6 +22,30 @@
       },
       "revId": "f6b60fc23771630c6d23699343d489ef4f1c02ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851d8145_4312d948",
+        "filename": "src/base/SkAutoLocaleSetter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-01T17:42:43Z",
+      "side": 1,
+      "message": "Done, with some fiddling to get rid of SkString in Win builds.",
+      "parentUuid": "30b04801_98b36357",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "f6b60fc23771630c6d23699343d489ef4f1c02ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
