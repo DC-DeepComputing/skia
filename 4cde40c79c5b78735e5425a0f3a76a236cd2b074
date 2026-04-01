@@ -104,6 +104,24 @@
       "message": "Thanks!",
       "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6bb80d6_1385c871",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-01T16:04:25Z",
+      "side": 1,
+      "message": "It didn\u0027t work!\n\nFortunately, I was able to acquire the exact device failing device (Pixel 4) and reproduce. This was caused by Qualcomm\u0027s proprietary gralloc module implementation (/vendor/lib64/libgralloccore.so)\n\nSee my plan:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/7718268",
+      "parentUuid": "838a71aa_a81a3c4f",
+      "revId": "4cde40c79c5b78735e5425a0f3a76a236cd2b074",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
