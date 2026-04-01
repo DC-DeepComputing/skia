@@ -898,7 +898,33 @@ skgpu::UniqueKey::Domain get_domain() {
 
 }
 
+<<<<<<< PATCH SET (f714ca32555fb60765e238747af280ea58dbf9e8 Use 16-bit size for ResourceKeys)
+SkSpan<const Caps::ColorTypeInfo> MtlCaps::getColorTypeInfos(const TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
+    if (mtlFormat == MTLPixelFormatInvalid) {
+        return {};
+    }
+
+    const FormatInfo& formatInfo = this->getFormatInfo(mtlFormat);
+    return {formatInfo.fColorTypeInfos.get(), formatInfo.fColorTypeInfoCount};
+}
+
+static constexpr uint16_t kMtlGraphicsPipelineKeyData32Count = 4;
+||||||| BASE      (a465876e3156ebec198165188002b3d5e2a0cdb1 [graphite] Avoid nan conversion in channel_to_bits in Textur)
+SkSpan<const Caps::ColorTypeInfo> MtlCaps::getColorTypeInfos(const TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
+    if (mtlFormat == MTLPixelFormatInvalid) {
+        return {};
+    }
+
+    const FormatInfo& formatInfo = this->getFormatInfo(mtlFormat);
+    return {formatInfo.fColorTypeInfos.get(), formatInfo.fColorTypeInfoCount};
+}
+
 static constexpr int kMtlGraphicsPipelineKeyData32Count = 4;
+=======
+static constexpr int kMtlGraphicsPipelineKeyData32Count = 4;
+>>>>>>> BASE      (9005eb9104787b97434f2a9c1a4934a8fa2446c7 [graphite] Start removing ColorTypeInfo from Caps)
 
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
@@ -1060,7 +1086,7 @@ void MtlCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(static_cast<uint32_t>(isFBOnly)    < (1u << 1));
 
     // We need two uint32_ts for dimensions, 2 for format, and 1 for the rest of the key;
-    static int kNum32DataCnt = 2 + 2 + 1;
+    static uint16_t kNum32DataCnt = 2 + 2 + 1;
 
     GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt);
 
