@@ -15,9 +15,46 @@
 #include "tests/Test.h"
 
 #include <cstring>
+#include <locale>
+#include <string>
 #include <string_view>
 
 using namespace skjson;
+
+namespace {
+class ScopedThreadLocale {
+public:
+    explicit ScopedThreadLocale(const char* locale) {
+#if defined(SK_BUILD_FOR_WIN)
+        _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
+        const char* prev = std::setlocale(LC_NUMERIC, locale);
+        if (prev) {
+            fSavedLocale = prev;
+        }
+#else
+        fNewLocale  = newlocale(LC_NUMERIC_MASK, locale, LC_GLOBAL_LOCALE);
+        fPrevLocale = uselocale(fNewLocale);
+#endif
+    }
+    ~ScopedThreadLocale() {
+#if defined(SK_BUILD_FOR_WIN)
+        std::setlocale(LC_NUMERIC, fSavedLocale.c_str());
+#else
+        uselocale(fPrevLocale);
+        freelocale(fNewLocale);
+#endif
+    }
+    ScopedThreadLocale(const ScopedThreadLocale&) = delete;
+    ScopedThreadLocale& operator=(const ScopedThreadLocale&) = delete;
+private:
+#if defined(SK_BUILD_FOR_WIN)
+    std::string fSavedLocale = "C";
+#else
+    locale_t fNewLocale  = LC_GLOBAL_LOCALE;
+    locale_t fPrevLocale = LC_GLOBAL_LOCALE;
+#endif
+};
+}
 
 DEF_TEST(JSON_Parse, reporter) {
     static constexpr struct {
@@ -434,7 +471,7 @@ DEF_TEST(JSON_DOM_build, reporter) {
                                             "}");
 }
 
-DEF_TEST(JSON_ParseNumber, reporter) {
+DEF_SERIAL_TEST(JSON_ParseNumber, reporter) {
     static constexpr struct {
         const char* string;
         SkScalar    value,
@@ -459,7 +496,29 @@ DEF_TEST(JSON_ParseNumber, reporter) {
 
         { "20.001111814444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444473",
           20.001f, 0.001f },
+
+        {"1e0",     1.0f,      0},
+        {"1e1",     10.0f,     0},
+        {"1e+1",    10.0f,     0},
+        {"1e-1",    0.1f,      0},
+        {"-1e1",    -10.0f,    0},
+        {"-1e-1",   -0.1f,     0},
+        {"3.14e2",  314.0f,    0},
+        {"3.14e-2", 0.0314f,   0},
+        {"1.23E4",  12300.0f,  0},
+        {"1.23E-4", 0.000123f, 0},
+        {"0e0",     0.0f,      0},
+        {"5E+0",    5.0f,      0},
+        {"1.0e+2",  100.0f,    0},
+        {"2.5e-3",  0.0025f,   0},
+        {"9.99e10", 9.99e10f,  0},
+        {"-7.5E-5", -7.5e-5f,  0},
     };
+
+    // Validation that skjson::DOM correctly parses floating-point numbers
+    // in scientific notation (e.g. "1.5e-3"). It shouldn't fail when system locale
+    // is using a comma as the decimal separator.
+    ScopedThreadLocale commaLocale("de_DE.UTF-8");
 
     for (const auto& test : gTests) {
         const auto json = SkStringPrintf("{ \"key\": %s }", test.string);
