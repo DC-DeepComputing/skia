@@ -51,6 +51,64 @@
       "parentUuid": "99fcf410_8115ed53",
       "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d4b724_2eda3464",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-01T18:37:37Z",
+      "side": 1,
+      "message": "Landed, you should be able to use `SkAutoLocaleSetter` now.",
+      "parentUuid": "f938c017_31347ddd",
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65b14405_48fe3350",
+        "filename": "modules/jsonreader/SkJSONReader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-01T18:37:37Z",
+      "side": 1,
+      "message": "Since this is not supported with all our toolchains, let\u0027s try resetting the locale with `SkAutoLocaleSetter` instead.",
+      "range": {
+        "startLine": 870,
+        "startChar": 22,
+        "endLine": 870,
+        "endChar": 37
+      },
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af091a86_bd73c6aa",
+        "filename": "tests/JSONTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-01T18:37:37Z",
+      "side": 1,
+      "message": "Prolly not needed anymore (use `SkAutoLocaleSetter`).",
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
