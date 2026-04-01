@@ -69,6 +69,24 @@
       "parentUuid": "c45d2bc0_50cda8a5",
       "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3fc06f_5c05afef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-01T18:44:01Z",
+      "side": 1,
+      "message": "`SkFontMgr_android_ndk` only attempts to parse the `fonts.xml` file because the current API is deficient, it does not report the system names and it does not report the order correctly. It was necessary to do this to get things to the point where it was possible to test with Chromium (and the WebView) which then pointed out that the Android NDK Font API is currently crashes too often on initialization to ship.\n\nThis issue of Chromium not having access to a suitable native font API has been an issue for even longer (at least since 2018). Even if the font issues on the Android side were fixed today it would be at least a year before a release existed where Chromium could use them.\n\nThat being said, these changes are probably fine. Nona, are you ok with landing all this to unblock things?",
+      "parentUuid": "fd13ed6f_287cea5a",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
