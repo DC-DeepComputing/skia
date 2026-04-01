@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrAutoLocaleSetter_DEFINED
-#define GrAutoLocaleSetter_DEFINED
+#ifndef SkAutoLocaleSetter_DEFINED
+#define SkAutoLocaleSetter_DEFINED
 
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkNoncopyable.h"
@@ -37,9 +37,9 @@
  * Helper class for ensuring that we don't use the wrong locale when building shaders. Android
  * doesn't support locale in the NDK, so this is a no-op there.
  */
-class GrAutoLocaleSetter : public SkNoncopyable {
+class SkAutoLocaleSetter : public SkNoncopyable {
 public:
-    GrAutoLocaleSetter (const char* name) {
+    SkAutoLocaleSetter (const char* name) {
 #if defined(SK_BUILD_FOR_WIN)
         fOldPerThreadLocale = _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
         char* oldLocale = setlocale(LC_ALL, name);
@@ -67,7 +67,7 @@ public:
 #endif
     }
 
-    ~GrAutoLocaleSetter () {
+    ~SkAutoLocaleSetter () {
 #if defined(SK_BUILD_FOR_WIN)
         if (fShouldRestoreLocale) {
             setlocale(LC_ALL, fOldLocale.c_str());
