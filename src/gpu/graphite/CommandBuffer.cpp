@@ -22,6 +22,9 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Sampler.h"  // IWYU pragma: keep
+#if defined(SK_DEBUG)
+#include "src/gpu/graphite/SharedContext.h"
+#endif
 #include "src/gpu/graphite/Texture.h"
 
 #include <algorithm>
@@ -57,6 +60,23 @@ void CommandBuffer::resetCommandBuffer() {
 void CommandBuffer::trackResource(sk_sp<Resource> resource) {
     fCommandBufferResources.push_back(std::move(resource));
 }
+
+#if defined(SK_DEBUG)
+bool CommandBuffer::isResourceTracked(const Resource* resource) {
+    for (const gr_cb<Resource>& trackedResource : fCommandBufferResources) {
+        if (trackedResource.get() == resource)
+            return true;
+    }
+
+    // If not tracked on this CommandBuffer then tracked globally?
+    auto const* globalCache =
+        this->resourceProvider()->sharedContext()->globalCache();
+    if (globalCache->isResourceTracked(resource))
+        return true;
+
+    return false;
+}
+#endif
 
 void CommandBuffer::addFinishedProc(sk_sp<RefCntedCallback> finishedProc) {
     fFinishedProcs.push_back(std::move(finishedProc));
@@ -100,6 +120,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   SkISize viewportDims,
                                   const DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    SkASSERT(!dstCopy || this->isResourceTracked(dstCopy));
 
     fRenderAreaBounds = SkIRect::MakeEmpty();
     for (const auto& drawPass : drawPasses) {
@@ -184,6 +205,7 @@ bool CommandBuffer::copyBufferToBuffer(const Buffer* srcBuffer,
                                        size_t dstOffset,
                                        size_t size) {
     SkASSERT(srcBuffer);
+    SkASSERT(this->isResourceTracked(srcBuffer));
     SkASSERT(dstBuffer);
 
     if (!this->onCopyBufferToBuffer(srcBuffer, srcOffset, dstBuffer.get(), dstOffset, size)) {
@@ -223,6 +245,7 @@ bool CommandBuffer::copyBufferToTexture(const Buffer* buffer,
                                         const BufferTextureCopyData* copyData,
                                         int count) {
     SkASSERT(buffer);
+    SkASSERT(this->isResourceTracked(buffer));
     SkASSERT(texture);
     SkASSERT(count > 0 && copyData);
 
@@ -280,6 +303,7 @@ bool CommandBuffer::synchronizeBufferToCpu(sk_sp<Buffer> buffer) {
 
 bool CommandBuffer::clearBuffer(const Buffer* buffer, size_t offset, size_t size) {
     SkASSERT(buffer);
+    SkASSERT(this->isResourceTracked(buffer));
 
     if (!this->onClearBuffer(buffer, offset, size)) {
         return false;
