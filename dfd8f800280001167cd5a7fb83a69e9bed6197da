@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f722451b_67b6491c",
+        "filename": "modules/skparagraph/include/ParagraphStyle.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-01T17:56:59Z",
+      "side": 0,
+      "message": "Was this just unused? Why is it being deleted? I\u0027d like the commit message to acknowledge the change.",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64ec9066_d400dc24",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8497,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-01T17:56:59Z",
+      "side": 0,
+      "message": "nit: is this a related change? If not, can it go in a different CL (see also below comment)",
+      "range": {
+        "startLine": 8497,
+        "startChar": 26,
+        "endLine": 8497,
+        "endChar": 41
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e7c726_75ad7e15",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8516,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-01T17:56:59Z",
+      "side": 0,
+      "message": "Did we delete these tests? If so, can we maybe split that into a second CL so it\u0027s easier to follow the changes here?",
+      "range": {
+        "startLine": 8516,
+        "startChar": 15,
+        "endLine": 8516,
+        "endChar": 69
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
