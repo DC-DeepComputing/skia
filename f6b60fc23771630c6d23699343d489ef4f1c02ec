@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b04801_98b36357",
+        "filename": "src/base/SkAutoLocaleSetter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-01T17:05:33Z",
+      "side": 1,
+      "message": "stuff in base can\u0027t depend on SkTypes (it\u0027s in \"core\"), but we can replace this with some more granular #includes",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "f6b60fc23771630c6d23699343d489ef4f1c02ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
