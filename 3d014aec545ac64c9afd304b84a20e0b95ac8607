@@ -22,6 +22,30 @@
       },
       "revId": "3d014aec545ac64c9afd304b84a20e0b95ac8607",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d823b18_5bc50bf3",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-01T18:34:49Z",
+      "side": 0,
+      "message": "Nope, I have a different change that makes these instant events scoped instead (and called at beginning of function) to better give an idea of time spent for certain cache operations and this got mixed in. Thank you; restored.",
+      "parentUuid": "5f805ea4_13d176dc",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 24
+      },
+      "revId": "3d014aec545ac64c9afd304b84a20e0b95ac8607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
