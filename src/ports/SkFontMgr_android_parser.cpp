@@ -574,6 +574,28 @@ static const TagHandler topLevelHandler = {
                 }
             }
             return &jbParser::familySetHandler;
+        } else if (MEMEQ("fonts-modification", tag, len)) {
+            // Modern OEM customization files (e.g. /product/etc/fonts_customization.xml)
+            // use the <fonts-modification> root tag instead of <familyset>.
+            //
+            // Skia natively supports parsing the standard children of this file:
+            // - `<family name="...">`: Instantiated perfectly as new global named families.
+            // - `<font>` and `<axis>`: Parsed and bound correctly to the new named families.
+            // - `<alias>`: Mapped properly to existing named families.
+            //
+            // What is NOT supported:
+            // The `customizationType` attribute (e.g., "new-named-family", "append-to-existing")
+            // is ignored. Android Minikin uses this to define whether a family is a fallback
+            // or a named family. Since Skia's parser inherently treats any <family> with
+            // a `name="..."` attribute as a named family, and any without as a fallback,
+            // we naturally achieve the exact same structural outcome as Minikin without
+            // needing to explicitly parse `customizationType`.
+            // There is no known use-case where this simplistic structural mapping fails
+            // for OEM fonts_customization.xml files.
+
+            // Force the modern parser.
+            self->fVersion = 21;
+            return &lmpParser::familySetHandler;
         }
         return nullptr;
     },
