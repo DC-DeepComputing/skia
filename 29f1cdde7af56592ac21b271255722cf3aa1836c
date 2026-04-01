@@ -51,6 +51,24 @@
       "parentUuid": "9f642d8b_6d32990d",
       "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd13ed6f_287cea5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18284
+      },
+      "writtenOn": "2026-04-01T17:49:43Z",
+      "side": 1,
+      "message": "Let me see if I understand this:\n\n`SkFontMgr_android_ndk` still calls [SkFontMgr_Android_Parser::GetSystemFontFamilies()](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontMgr_android_ndk.cpp;l\u003d999;drc\u003de4d0350f477005ae71691642ec0db96cce7e3266) today (which is what this CL touches). But you\u0027re saying that this is temporary. Eventually, the Android font code somewhere will pull font data from different sources (be it `/system/etc/fonts.xml`, `/data`, `/product`, or wherever else), parse the XML itself, and then expose all that font data via the NDK. So when b/297067890 is resolved, the Skia font code here doesn\u0027t have to do any XML or font file parsing itself and can just get this information from the NDK.\n\nIs that accurate?\n\nIf so, what do you suggest we do then? For context, on Android desktop, we want to implement some \"font replacements\". You can see a rough draft of that [here](https://googleplex-android-review.git.corp.google.com/c/device/google/desktop/common/+/38948316). This ultimately ends up modifying `/product/etc/fonts_customization.xml`. But because `SkFontMgr_Android_Parser::GetSystemFontFamilies()` does not parse this file, the font replacement does not work for anything web-related. Debugging led me to make these CLs (some of which are not ready for review yet):\n* https://skia-review.git.corp.google.com/c/skia/+/1199758\n* https://skia-review.git.corp.google.com/c/skia/+/1199756\n* https://skia-review.git.corp.google.com/c/skia/+/1199736\n\nThe timeline for these font replacements is on the order of a month or preferably less. We want to at least have SOMETHING in place very soon. Given that b/297067890 has been open since August 2023, I have a feeling it will not suddenly be resolved in this timeframe. But I respect your long-term plans as owners of this. Please advise.",
+      "parentUuid": "c45d2bc0_50cda8a5",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
