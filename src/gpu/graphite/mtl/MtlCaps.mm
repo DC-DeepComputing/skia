@@ -891,6 +891,7 @@ skgpu::UniqueKey::Domain get_domain() {
 
 }
 
+<<<<<<< HEAD   (4502f88af90279ad2685528bd3cf7e90ab140f19 Use SkSafeMath to prevent overflow in pixel offset calculati)
 SkSpan<const Caps::ColorTypeInfo> MtlCaps::getColorTypeInfos(const TextureInfo& textureInfo) const {
     MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
     if (mtlFormat == MTLPixelFormatInvalid) {
@@ -902,6 +903,11 @@ SkSpan<const Caps::ColorTypeInfo> MtlCaps::getColorTypeInfos(const TextureInfo& 
 }
 
 static constexpr int kMtlGraphicsPipelineKeyData32Count = 4;
+||||||| BASE   (cc0c72cd527646648686f30bc671b3ab2ca442be [skparagraph] Render visible hyphen at soft hyphen (U+00AD) )
+static constexpr int kMtlGraphicsPipelineKeyData32Count = 4;
+=======
+static constexpr uint16_t kMtlGraphicsPipelineKeyData32Count = 4;
+>>>>>>> CHANGE (0566b2f5f0d1f218d9990eba838af16826d2e7e3 Use 16-bit size for ResourceKeys)
 
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
@@ -1063,7 +1069,7 @@ void MtlCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(static_cast<uint32_t>(isFBOnly)    < (1u << 1));
 
     // We need two uint32_ts for dimensions, 2 for format, and 1 for the rest of the key;
-    static int kNum32DataCnt = 2 + 2 + 1;
+    static uint16_t kNum32DataCnt = 2 + 2 + 1;
 
     GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt);
 
