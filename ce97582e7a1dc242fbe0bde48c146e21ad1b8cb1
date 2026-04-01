@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "715c28bc_0fef9039",
+        "filename": "modules/jsonreader/tests/SkJSONReaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4729404
+      },
+      "writtenOn": "2026-04-01T11:04:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "131cdb64_9ced9264",
+      "revId": "ce97582e7a1dc242fbe0bde48c146e21ad1b8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "331fe1d7_fc687558",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-03-31T16:15:26Z",
       "side": 1,
       "message": "`DEF_SERIAL_TEST`, to avoid `setlocale` interference with other tests running in parallel.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 8
+      },
+      "revId": "ce97582e7a1dc242fbe0bde48c146e21ad1b8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad3b8fc_bee2b30f",
+        "filename": "modules/jsonreader/tests/SkJSONReaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4729404
+      },
+      "writtenOn": "2026-04-01T11:04:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "331fe1d7_fc687558",
       "range": {
         "startLine": 68,
         "startChar": 0,

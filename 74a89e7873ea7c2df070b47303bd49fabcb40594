@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76223bd_ddd25690",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729404
+      },
+      "writtenOn": "2026-04-01T11:04:41Z",
+      "side": 1,
+      "message": "I can see that the code is reviewed, but I have no clue how to continue ;)\nI tried running: `git cl try`, but apparently I don\u0027t have sufficient permissions",
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
