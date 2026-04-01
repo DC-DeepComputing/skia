@@ -16,6 +16,23 @@
       "message": "Thanks for the contribution! Rerouting to our text experts.",
       "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f642d8b_6d32990d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-01T16:09:15Z",
+      "side": 1,
+      "message": "Unfortunately, the old `fonts.xml` is deprecated and this is legacy code which should probably not be updated. In classic fashion, there is a \"not ready yet\" replacement `SkFontMgr_android_ndk` which should be used instead when it can be used.\n\nNot sure why `Canary-Android` is being run, this code isn\u0027t even compiled there (or if it is it should not be).",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
