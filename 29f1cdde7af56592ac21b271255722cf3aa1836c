@@ -33,6 +33,24 @@
       "message": "Unfortunately, the old `fonts.xml` is deprecated and this is legacy code which should probably not be updated. In classic fashion, there is a \"not ready yet\" replacement `SkFontMgr_android_ndk` which should be used instead when it can be used.\n\nNot sure why `Canary-Android` is being run, this code isn\u0027t even compiled there (or if it is it should not be).",
       "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c45d2bc0_50cda8a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-01T16:15:12Z",
+      "side": 1,
+      "message": "As to why Chromium (and by extension the WebView) aren\u0027t using the the replacement, b/297067890 .",
+      "parentUuid": "9f642d8b_6d32990d",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
