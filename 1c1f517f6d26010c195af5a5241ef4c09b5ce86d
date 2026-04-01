@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae2f238b_739aa4e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "Nit: bug ID",
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce29372c_2a05ba84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "I think this is great overall, tysm!",
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c571ea95_d9d4c86a",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "I think logging in failure cases for this function will likely be helpful, but I think you should double-check with some GPU folks to make sure it isn\u0027t sometimes used in a way that is fault-tolerant, and may introduce log spam.",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0807a904_b65c91af",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "The Android canary may complain about this not being `\"... blah blah %\" PRIu32 \" blah blah ...\"`, TBD",
+      "range": {
+        "startLine": 80,
+        "startChar": 60,
+        "endLine": 80,
+        "endChar": 61
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56da5998_0bd82a91",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "I would change this to just `vkCreateImage`, which is the explicit name of the actual Vulkan function that we\u0027re calling. Might just have more immediate recognition from other folks, and IMO it points more towards \"oh, the driver may have goofed.\"",
+      "range": {
+        "startLine": 290,
+        "startChar": 20,
+        "endLine": 290,
+        "endChar": 38
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e063b1dc_4c5cd7e9",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-01T19:28:11Z",
+      "side": 1,
+      "message": "I would remove the \"Vulkan \" prefix here, since it\u0027s a Skia-level helper function. That said, it would probably be useful to have logging in the failure cases of that helper function, since allocations can certainly fail! (Recent examples being protected memory issues :( )",
+      "range": {
+        "startLine": 302,
+        "startChar": 20,
+        "endLine": 302,
+        "endChar": 27
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
