@@ -1066,6 +1066,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||
                                fDstReadStrategy == DstReadStrategy::kTextureSample;
     {
+        // Anchor comment, change this to allow binding texture only
         int binding = 0;
         fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes, &binding,
                                                outDescs);
