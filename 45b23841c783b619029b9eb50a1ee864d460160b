@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef868484_ee120c8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-01T03:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7d66b2f_d7d9202b",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 21
+      },
+      "revId": "45b23841c783b619029b9eb50a1ee864d460160b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c82fad96_d88b4e46",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-30T13:43:18Z",
       "side": 1,
       "message": "I have a suggestion that might clean things up a bit. Can we pre-process SkPath and break it into a list of contours (or if we are worried about allocating extra memory, scan forward to find the end of the contour first)? Then, we\u0027ll know that we start with a moveTo (PathBuilder ensures this) and the last verb tells us if we need caps or not. Then, we can have one function to call if there are caps and one for no caps.",
+      "range": {
+        "startLine": 669,
+        "startChar": 13,
+        "endLine": 669,
+        "endChar": 24
+      },
+      "revId": "45b23841c783b619029b9eb50a1ee864d460160b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1053cf1f_76bc6c93",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-01T03:40:44Z",
+      "side": 1,
+      "message": "I went with the scan through approach to see if the contour was closed or not. Let me know what you think",
+      "parentUuid": "c82fad96_d88b4e46",
       "range": {
         "startLine": 669,
         "startChar": 13,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df4b53a1_e15273f6",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-01T03:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fc48cc4_98998465",
+      "range": {
+        "startLine": 673,
+        "startChar": 13,
+        "endLine": 673,
+        "endChar": 24
+      },
+      "revId": "45b23841c783b619029b9eb50a1ee864d460160b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2936568a_2e2bc4e6",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-03-30T13:43:18Z",
       "side": 1,
       "message": "Why declare this here? All the cases in the switch {} seem to use it as a local variable (you might need to wrap curly braces around the cases to keep it a local there).",
+      "range": {
+        "startLine": 679,
+        "startChar": 8,
+        "endLine": 679,
+        "endChar": 25
+      },
+      "revId": "45b23841c783b619029b9eb50a1ee864d460160b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c7e7ce0_1a23c162",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-01T03:40:44Z",
+      "side": 1,
+      "message": "no longer relevant. Got rid of it",
+      "parentUuid": "2936568a_2e2bc4e6",
       "range": {
         "startLine": 679,
         "startChar": 8,

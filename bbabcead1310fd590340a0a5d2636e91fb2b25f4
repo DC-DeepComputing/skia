@@ -22,6 +22,30 @@
       },
       "revId": "bbabcead1310fd590340a0a5d2636e91fb2b25f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "615aff2c_21b6d0a1",
+        "filename": "tests/CappedHairlinesTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-01T03:40:44Z",
+      "side": 1,
+      "message": "I was able to fix this by using SkIPoint. This way we don\u0027t have to worry about casting",
+      "parentUuid": "69d02888_7ba34137",
+      "range": {
+        "startLine": 49,
+        "startChar": 38,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "bbabcead1310fd590340a0a5d2636e91fb2b25f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
