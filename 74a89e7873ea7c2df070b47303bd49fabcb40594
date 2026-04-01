@@ -16,6 +16,23 @@
       "message": "I can see that the code is reviewed, but I have no clue how to continue ;)\nI tried running: `git cl try`, but apparently I don\u0027t have sufficient permissions",
       "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99fcf410_8115ed53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729404
+      },
+      "writtenOn": "2026-04-01T13:59:39Z",
+      "side": 1,
+      "message": "Could you guide me how to read build details/logs?\n\nI.e. on this page:\nhttps://ci.chromium.org/ui/p/skia/builders/skia.primary/Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs/b8685726176191338257/overview\nThere is only enigmatic \"Build failed\".",
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
