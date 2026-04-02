@@ -927,13 +927,28 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->write(")");
             return true;
         }
-        case k_textureWidth_IntrinsicKind: {
+        case k_textureDimensions_IntrinsicKind: {
+            const char* texExt = arguments[0]->type().typeKind() == Type::TypeKind::kSampler ? ".tex" : "";
+            this->write("uint2(");
             this->writeExpression(*arguments[0], Precedence::kExpression);
+            this->write(texExt);
+            this->write(".get_width(), ");
+            this->writeExpression(*arguments[0], Precedence::kExpression);
+            this->write(texExt);
+            this->write(".get_height())");
+            return true;
+        }
+        case k_textureWidth_IntrinsicKind: {
+            const char* texExt = arguments[0]->type().typeKind() == Type::TypeKind::kSampler ? ".tex" : "";
+            this->writeExpression(*arguments[0], Precedence::kExpression);
+            this->write(texExt);
             this->write(".get_width()");
             return true;
         }
         case k_textureHeight_IntrinsicKind: {
+            const char* texExt = arguments[0]->type().typeKind() == Type::TypeKind::kSampler ? ".tex" : "";
             this->writeExpression(*arguments[0], Precedence::kExpression);
+            this->write(texExt);
             this->write(".get_height()");
             return true;
         }

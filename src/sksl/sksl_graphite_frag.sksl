@@ -1481,7 +1481,10 @@ $pure half4 sdf_text_lcd_coverage_fn(float2 textureCoords,
     float2x2 jacobian = float2x2(dFdx(unormTexCoords), dFdy(unormTexCoords));
     half2 offset = half2(jacobian * pixelGeometryDelta);
 
-    half3 distance = $sample_indexed_atlas_lcd(textureCoords,
+    float2 dims = float2(textureDimensions(atlas0));
+    float2 texCoords = (unormTexCoords / dims);
+
+    half3 distance = $sample_indexed_atlas_lcd(texCoords,
                                                int(texIndex),
                                                offset,
                                                atlas0,

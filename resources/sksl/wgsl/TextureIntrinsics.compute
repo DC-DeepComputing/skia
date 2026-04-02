@@ -9,12 +9,18 @@ noinline void fill_texture(layout(rgba8) writeonly texture2D passedInTexRGBA,
 
     uint sizeX = textureWidth(passedInTexRGBA);
     uint sizeY = textureHeight(passedInTexRGBA);
+    uint2 sizeXY = textureDimensions(passedInTexRGBA);
+    uint2 redSizeXY = textureDimensions(passedInTexRed);
 
-    uint2 coords;
-    for (coords.y = 0; coords.y < sizeY; ++coords.y) {
-        for (coords.x = 0; coords.x < sizeX; ++coords.x) {
-            textureWrite(passedInTexRGBA, coords, red);
+    if (sizeXY.x == sizeX && sizeXY.y == sizeY && redSizeXY.x > 0) {
+        uint2 coords;
+        for (coords.y = 0; coords.y < sizeY; ++coords.y) {
+            for (coords.x = 0; coords.x < sizeX; ++coords.x) {
+                textureWrite(passedInTexRGBA, coords, red);
+            }
         }
+    } else {
+        textureWrite(passedInTexRGBA, uint2(0), half4(1.0));
     }
 }
 
