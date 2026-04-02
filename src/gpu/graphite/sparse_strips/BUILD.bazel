@@ -11,6 +11,8 @@ SPARSE_STRIPS_FILES = [
     "AlphaAtlasManager.h",
     "Flatten.cpp",
     "Flatten.h",
+    "GpuAlphaAtlasManager.cpp",
+    "GpuAlphaAtlasManager.h",
     "MakeStrip.h",
     "MakeStrip_impl.h",
     "MSAA_LUT.h",

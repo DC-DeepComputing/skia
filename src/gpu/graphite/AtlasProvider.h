@@ -24,6 +24,7 @@ class Caps;
 class ClipAtlasManager;
 class ComputePathAtlas;
 class DrawContext;
+class GpuAlphaAtlasManager;
 class RasterPathAtlas;
 class Recorder;
 class TextAtlasManager;
@@ -38,6 +39,7 @@ public:
     ~AtlasProvider();
 
     AlphaAtlasManager* alphaAtlasManager() const { return fAlphaAtlasManager.get(); }
+    GpuAlphaAtlasManager* gpuAlphaAtlasManager() const { return fGpuAlphaAtlasManager.get(); }
 
     // Returns the TextAtlasManager that provides access to persistent DrawAtlas instances used in
     // glyph rendering. This TextAtlasManager is always available.
@@ -77,6 +79,7 @@ public:
 
 private:
     std::unique_ptr<AlphaAtlasManager> fAlphaAtlasManager;
+    std::unique_ptr<GpuAlphaAtlasManager> fGpuAlphaAtlasManager;
 
     std::unique_ptr<TextAtlasManager> fTextAtlasManager;
 
