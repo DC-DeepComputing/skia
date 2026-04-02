@@ -22,6 +22,30 @@
       },
       "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d14215d6_8b2c5e7e",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-02T18:30:04Z",
+      "side": 0,
+      "message": "I thought dry firing the submit_recording on an empty command buffer was the cause of some of the test failures, so I suggested removing it. \n\nHowever, the actual issue, identified by Nelson, is that the static vertex buffer lives on the global cache, and wasn\u0027t being tracked.\n\nGiven that we *can* get rid of this line, I think we *should* ? Maybe not in this patch?",
+      "parentUuid": "2b2af546_fcbb7359",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 59
+      },
+      "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
