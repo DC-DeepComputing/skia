@@ -571,13 +571,15 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
 
     auto afterTime = force_newer_timepoint(skgpu::StdSteadyClock::now());
 
+    static constexpr std::optional<StdSteadyClock::time_point> kNoPurgingTimeLimit;
+
     // purging beforeTime should not get rid of the resource
-    resourceCache->purgeResourcesNotUsedSince(beforeTime);
+    resourceCache->purgeResourcesNotUsedSince(beforeTime, kNoPurgingTimeLimit);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
     // purging at afterTime which is after resource became purgeable should purge it.
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince(afterTime, kNoPurgingTimeLimit);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
@@ -600,19 +602,16 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr1));
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr2));
 
-    resourceCache->purgeResourcesNotUsedSince(betweenTime);
+    resourceCache->purgeResourcesNotUsedSince(betweenTime, kNoPurgingTimeLimit);
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr2));
 
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince(afterTime, kNoPurgingTimeLimit);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 
     // purgeResourcesNotUsedSince should have no impact on non-purgeable resources
-    auto resource = add_new_resource(reporter,
-                                     sharedContext,
-                                     resourceCache,
-                                     /*gpuMemorySize=*/1);
+    auto resource = add_new_resource(reporter, sharedContext, resourceCache, /*gpuMemorySize=*/1);
     if (!resource) {
         return;
     }
@@ -621,19 +620,20 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedSinceResourcesTest, repor
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
 
     afterTime = force_newer_timepoint(skgpu::StdSteadyClock::now());
-    resourceCache->purgeResourcesNotUsedSince(afterTime);
+    resourceCache->purgeResourcesNotUsedSince(afterTime, kNoPurgingTimeLimit);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, !resourceCache->testingInPurgeableQueue(resourcePtr));
 
     resource.reset();
     // purgeResourcesNotUsedSince should check the mailbox for the returned resource. Though the
     // time is set before that happens so nothing should purge.
-    resourceCache->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+    resourceCache->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now(), kNoPurgingTimeLimit);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
     REPORTER_ASSERT(reporter, resourceCache->testingInPurgeableQueue(resourcePtr));
 
     // Now it should be purged since it is already purgeable
-    resourceCache->purgeResourcesNotUsedSince(force_newer_timepoint(skgpu::StdSteadyClock::now()));
+    resourceCache->purgeResourcesNotUsedSince(force_newer_timepoint(skgpu::StdSteadyClock::now()),
+                                              kNoPurgingTimeLimit);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
 }
 
@@ -715,7 +715,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphitePurgeNotUsedOverBudgetTest, reporter,
     // newer than this time so they won't be purged by the time on this call. However, since we are
     // overbudget it should trigger us to purge two of them. Since each independently fits within
     // the budget, one (unspecified) will remain the purgeable queue.
-    resourceCache->purgeResourcesNotUsedSince(timeBeforeReturningToCache);
+    resourceCache->purgeResourcesNotUsedSince(timeBeforeReturningToCache,
+                                              /*quitPurgingTime=*/std::nullopt);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1,
         "count = %d", resourceCache->getResourceCount());
     if (resourceCache->currentBudgetedBytes() == kBudget - 1) {
