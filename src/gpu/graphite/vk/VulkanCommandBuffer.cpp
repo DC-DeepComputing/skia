@@ -352,6 +352,21 @@ void VulkanCommandBuffer::end() {
 
     this->submitPipelineBarriers();
 
+    VkMemoryBarrier memoryBarrier = {
+        VK_STRUCTURE_TYPE_MEMORY_BARRIER,
+        nullptr,
+        VK_ACCESS_MEMORY_READ_BIT | VK_ACCESS_MEMORY_WRITE_BIT,
+        VK_ACCESS_MEMORY_READ_BIT | VK_ACCESS_MEMORY_WRITE_BIT
+    };
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdPipelineBarrier(fPrimaryCommandBuffer,
+                                   VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                                   VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                                   0,
+                                   1, &memoryBarrier,
+                                   0, nullptr,
+                                   0, nullptr));
+
     VULKAN_CALL_ERRCHECK(fSharedContext, EndCommandBuffer(fPrimaryCommandBuffer));
 
     fActive = false;
