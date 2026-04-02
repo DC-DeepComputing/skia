@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/private/base/SkTDArray.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
@@ -53,6 +54,9 @@ public:
                                bool,
                                const Polyline&,
                                const SkTDArray<uint8_t>&,
+                               WideTiles<TileH>&,
+                               uint16_t viewportWidth,
+                               uint16_t viewportHeight,
                                MsaaExactMaskObserver);
 
     static void RunScalarWinding(const Tiles<TileW, TileH>& tileContainer,
@@ -61,9 +65,13 @@ public:
                                  bool isInverse,
                                  const Polyline& polyline,
                                  const SkTDArray<uint8_t>& maskLut,
+                                 WideTiles<TileH>& wides,
+                                 uint16_t viewportWidth,
+                                 uint16_t viewportHeight,
                                  MsaaExactMaskObserver observer) {
         Strip::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true>(
-                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, observer);
+                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, viewportWidth,
+                viewportHeight, observer);
     }
 
     static void RunSimdWinding(const Tiles<TileW, TileH>& tileContainer,
@@ -72,9 +80,13 @@ public:
                                bool isInverse,
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>& maskLut,
+                               WideTiles<TileH>& wides,
+                               uint16_t viewportWidth,
+                               uint16_t viewportHeight,
                                MsaaExactMaskObserver observer) {
         Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true>(
-                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, observer);
+                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, viewportWidth,
+                viewportHeight, observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -299,11 +311,11 @@ private:
         SkTDArray<Strip> stripBuf;
         SkTDArray<uint8_t> alphaBuf;
         SkTDArray<uint8_t> exactMasks;
-
+        WideTiles<TileH> wides;
         auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
-
         // Call the configured function pointer (SIMD or Scalar)
-        fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, observer);
+        fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, wides, width, height,
+              observer);
 
         if (stripBuf.empty()) {
             bool bufferSizeMatch = alphaBuf.empty();
