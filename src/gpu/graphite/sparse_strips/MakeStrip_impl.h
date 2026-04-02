@@ -205,7 +205,8 @@ public:
                                       bool isCulled,
                                       const WindingHistogram& windingHistogram,
                                       const SkIRect& clipRect,
-                                      int32_t tileOffset);
+                                      int32_t tileOffset,
+                                      int32_t alphaOffset);
 
 private:
     // Core tile traversal state machine. This template completely deduplicates the complex outer
@@ -315,8 +316,8 @@ private:
             bool isSentinel = (i == totalCount);
             TileType& tile = isSentinel ? sentinel : tiles[i];
 
-            bool tileStart = (tile.x != prevTile.x || tile.y != prevTile.y);
-            bool rowStart = (tile.y != prevTile.y);
+            bool tileStart = (i == tileOffset) || (tile.x != prevTile.x || tile.y != prevTile.y);
+            bool rowStart = (i == tileOffset) || (tile.y != prevTile.y);
             bool segStart = tileStart && !((tile.y == prevTile.y) && (tile.x == prevTile.x + 1));
 
             if (tileStart) {
@@ -1051,7 +1052,8 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
         bool isCulled,
         const WindingHistogram& windingHistogram,
         const SkIRect& clipRect,
-        int32_t tileOffset) {
+        int32_t tileOffset,
+        int32_t alphaOffset) {
     static_assert(kWorkGroupSize != 0);
 
     constexpr int32_t kTileAlphaCount = TileWidth * TileHeight;
@@ -1072,10 +1074,13 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
             tileStartId = i;
             leftEdgeWindingDelta = currentWd;
         },
-        /* onRowStart */ [&](int32_t wd) {},
+        /* onRowStart */ [&](int32_t wd) {
+            // Capture the correct left-edge winding for the new row
+            leftEdgeWindingDelta = wd;
+        },
         /* onLine */ [&](auto& tile, Line line, bool canonicalXDir, bool canonicalYDir, size_t i) {
             bool isEndTile = (i == totalCount - 1) || (tiles[i].x != tiles[i + 1].x || tiles[i].y != tiles[i + 1].y);
-            constexpr int32_t kPartSize = static_cast<int32_t>(kWorkGroupSize / TileWidth);
+            constexpr int32_t kPartSize = static_cast<int32_t>(kWorkGroupSize / TileHeight);
             int32_t blockAligned = i / kPartSize * kPartSize;
             SkASSERT(tileStartId - blockAligned < kPartSize);
             int32_t blockLocalTileStartId = tileStartId < blockAligned ?
@@ -1083,11 +1088,11 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
                                             tileStartId - blockAligned;
             uint32_t fillRule = static_cast<uint32_t>(fillType);
             SkASSERT(fillRule <= SparseStripsConstants::FILL_RULE_MASK);
+            tile.alphaIdx = localAlphaIdx + alphaOffset;
             tile.packed = ((static_cast<uint32_t>(leftEdgeWindingDelta) & 0xff) << SparseStripsConstants::SCANNED_WINDING_SHIFT) |
                           (fillRule << SparseStripsConstants::FILL_RULE_SHIFT) |
                           (isEndTile << SparseStripsConstants::IS_END_TILE_SHIFT) |
                           (static_cast<uint32_t>(blockLocalTileStartId));
-            tile.alphaIdx = localAlphaIdx;
         }
     );
 

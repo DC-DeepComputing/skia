@@ -31,7 +31,9 @@ struct SparseStripsConfig {
     static constexpr int32_t kLutWidth  = 64;
     static constexpr int32_t kLutHeight = 64;
 
-    static constexpr uint32_t kWorkgroupSize = 256;
+    static constexpr uint32_t kMSAAWorkgroupSize   = 256;
+    static constexpr uint32_t kPartSize            = kMSAAWorkgroupSize / kTileHeight;
+    static constexpr uint32_t kStitchWorkgroupSize = 128;
 
     static constexpr int32_t kTextureDims     = 4096;
     static constexpr int32_t kMaxTexturePages = 2;
