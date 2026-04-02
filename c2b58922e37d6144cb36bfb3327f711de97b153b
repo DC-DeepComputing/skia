@@ -46,6 +46,30 @@
       },
       "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75fc847f_ca493334",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T18:33:06Z",
+      "side": 0,
+      "message": "Thomas said to remove it because it makes a test fail and isn\u0027t necessary (maybe unrelated to my changes?). To be honest I don\u0027t know what difference it makes.",
+      "parentUuid": "2b2af546_fcbb7359",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 59
+      },
+      "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

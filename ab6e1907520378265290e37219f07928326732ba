@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88808b2d_75dac638",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T18:33:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fc38f26_b80acd39",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "ab6e1907520378265290e37219f07928326732ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aebc79b3_468616d9",
@@ -70,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11d2b3d0_0a0c1811",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T18:33:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aebc79b3_468616d9",
+      "range": {
+        "startLine": 72,
+        "startChar": 2,
+        "endLine": 72,
+        "endChar": 28
+      },
+      "revId": "ab6e1907520378265290e37219f07928326732ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "283f47e0_d5851cbd",
@@ -83,6 +131,30 @@
       "writtenOn": "2026-04-02T17:00:36Z",
       "side": 1,
       "message": "This can just be `return globalCache-\u003eisResourceTracked(resource);`.",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "ab6e1907520378265290e37219f07928326732ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cd00764_f76631af",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T18:33:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "283f47e0_d5851cbd",
       "range": {
         "startLine": 74,
         "startChar": 1,
