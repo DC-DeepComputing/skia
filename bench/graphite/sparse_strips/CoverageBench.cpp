@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrip.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
@@ -158,23 +159,23 @@ private:
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<16, 16,
                                                      skgpu::graphite::SparseStripsConfig::MSAAType>(
         "CoverageBenchSimd",
-        &skgpu::graphite::Strip::
+        &skgpu::graphite::MakeStrip::
                 MakeStripsMsaaSimd<16, 16, skgpu::graphite::SparseStripsConfig::MSAAType>));)
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<8, 8,
                                                      skgpu::graphite::SparseStripsConfig::MSAAType>(
         "CoverageBenchSimd",
-        &skgpu::graphite::Strip::
+        &skgpu::graphite::MakeStrip::
                 MakeStripsMsaaSimd<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>));)
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
                                                      skgpu::graphite::SparseStripsConfig::MSAAType>(
         "CoverageBenchSimd",
-        &skgpu::graphite::Strip::
+        &skgpu::graphite::MakeStrip::
                 MakeStripsMsaaSimd<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
                                                      skgpu::graphite::SparseStripsConfig::MSAAType>(
         "CoverageBench",
-        &skgpu::graphite::Strip::
+        &skgpu::graphite::MakeStrip::
                 MakeStripsMsaa<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)
 DEF_BENCH(return (new skgpu::graphite::CoverageBenchGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>(
         "CoverageBenchGPU",
-        &skgpu::graphite::Strip::MakeStripsGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+        &skgpu::graphite::MakeStrip::MakeStripsGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>));)

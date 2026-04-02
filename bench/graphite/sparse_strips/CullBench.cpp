@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrip.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
@@ -69,7 +70,7 @@ protected:
 
                 tiler.sortTiles();
 
-                skgpu::graphite::Strip::MakeStripsMsaaSimd<kTileWidth, kTileHeight, MSAAType>(
+                skgpu::graphite::MakeStrip::MakeStripsMsaaSimd<kTileWidth, kTileHeight, MSAAType>(
                         tiler, strips, alphas, path.getFillType(), polyline, fLUT,
                         wides, culled, windingHistogram, Tiger::kDim, nullptr);
 
