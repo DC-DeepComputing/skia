@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09e00346_7d60a76d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-02T17:00:36Z",
+      "side": 1,
+      "message": "nit: Can you add \"[graphite]\" to the front to tag the CL, and add a \"Bug: id\" as well?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 3
+      },
+      "revId": "ab6e1907520378265290e37219f07928326732ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2fc38f26_b80acd39",
         "filename": "src/gpu/graphite/CommandBuffer.cpp",
         "patchSetId": 4
@@ -42,6 +65,29 @@
         "startChar": 2,
         "endLine": 72,
         "endChar": 28
+      },
+      "revId": "ab6e1907520378265290e37219f07928326732ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "283f47e0_d5851cbd",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-02T17:00:36Z",
+      "side": 1,
+      "message": "This can just be `return globalCache-\u003eisResourceTracked(resource);`.",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 77,
+        "endChar": 17
       },
       "revId": "ab6e1907520378265290e37219f07928326732ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
