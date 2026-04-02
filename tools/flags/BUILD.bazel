@@ -89,6 +89,7 @@ skia_cc_library(
         "//bench:__pkg__",
         "//modules/skottie:__pkg__",
         "//tools:__subpackages__",
+        "//tests:__pkg__",
     ],
     deps = [
         "//:core",
