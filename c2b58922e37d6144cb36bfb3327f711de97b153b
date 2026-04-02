@@ -70,6 +70,30 @@
       },
       "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6e36941_b338a64b",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T19:43:42Z",
+      "side": 0,
+      "message": "Let\u0027s just make that change in a different CL then if it\u0027s not necessary for this one 😊",
+      "parentUuid": "75fc847f_ca493334",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 59
+      },
+      "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
