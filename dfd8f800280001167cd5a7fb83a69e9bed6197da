@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a71333c_6089ba52",
+        "filename": "modules/skparagraph/include/ParagraphStyle.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-02T15:12:00Z",
+      "side": 0,
+      "message": "Some changes were lost (I believe as a result of incorrect rebase). I restored them manually.",
+      "parentUuid": "f722451b_67b6491c",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64ec9066_d400dc24",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-01T17:56:59Z",
       "side": 0,
       "message": "nit: is this a related change? If not, can it go in a different CL (see also below comment)",
+      "range": {
+        "startLine": 8497,
+        "startChar": 26,
+        "endLine": 8497,
+        "endChar": 41
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1f9118_efdb192a",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8497,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-02T15:12:00Z",
+      "side": 0,
+      "message": "See my previous comment.",
+      "parentUuid": "64ec9066_d400dc24",
       "range": {
         "startLine": 8497,
         "startChar": 26,
@@ -84,6 +132,30 @@
       "side": 0,
       "message": "This test (and the rest of the code you questioned) is a part of my CL which was submitted on March, 25 (https://skia-review.googlesource.com/c/skia/+/1173936). I guess something happened with rebase?",
       "parentUuid": "62e7c726_75ad7e15",
+      "range": {
+        "startLine": 8516,
+        "startChar": 15,
+        "endLine": 8516,
+        "endChar": 69
+      },
+      "revId": "dfd8f800280001167cd5a7fb83a69e9bed6197da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3072ead0_e485749b",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8516,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-02T15:12:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f05b3bf1_f0ba2a80",
       "range": {
         "startLine": 8516,
         "startChar": 15,
