@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4829b641_089aa863",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-02T15:43:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2f238b_739aa4e3",
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ce29372c_2a05ba84",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -60,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1a762ab_c12ee5c8",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-02T15:43:36Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com I\u0027d appreciate eyes and opinions on this, as well as the logging priorities in general.",
+      "parentUuid": "c571ea95_d9d4c86a",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0807a904_b65c91af",
         "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
         "patchSetId": 1
@@ -71,6 +113,30 @@
       "writtenOn": "2026-04-01T19:28:11Z",
       "side": 1,
       "message": "The Android canary may complain about this not being `\"... blah blah %\" PRIu32 \" blah blah ...\"`, TBD",
+      "range": {
+        "startLine": 80,
+        "startChar": 60,
+        "endLine": 80,
+        "endChar": 61
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47cca8ba_5c955277",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-02T15:43:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0807a904_b65c91af",
       "range": {
         "startLine": 80,
         "startChar": 60,
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3de1ecb_ac5adfac",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-02T15:43:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56da5998_0bd82a91",
+      "range": {
+        "startLine": 290,
+        "startChar": 20,
+        "endLine": 290,
+        "endChar": 38
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e063b1dc_4c5cd7e9",
@@ -117,6 +207,30 @@
       "writtenOn": "2026-04-01T19:28:11Z",
       "side": 1,
       "message": "I would remove the \"Vulkan \" prefix here, since it\u0027s a Skia-level helper function. That said, it would probably be useful to have logging in the failure cases of that helper function, since allocations can certainly fail! (Recent examples being protected memory issues :( )",
+      "range": {
+        "startLine": 302,
+        "startChar": 20,
+        "endLine": 302,
+        "endChar": 27
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c7c135d_864bc215",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-02T15:43:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e063b1dc_4c5cd7e9",
       "range": {
         "startLine": 302,
         "startChar": 20,
