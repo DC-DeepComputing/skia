@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b1e0bcc_7f3b343a",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T18:52:08Z",
+      "side": 1,
+      "message": "Zero ?",
+      "range": {
+        "startLine": 255,
+        "startChar": 17,
+        "endLine": 255,
+        "endChar": 33
+      },
+      "revId": "f714ca32555fb60765e238747af280ea58dbf9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

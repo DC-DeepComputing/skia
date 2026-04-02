@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b1be48e_e9d6e10e",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T18:52:08Z",
+      "side": 1,
+      "message": "It seems like this could be uint16_t::max and then count could overflow.",
+      "range": {
+        "startLine": 176,
+        "startChar": 16,
+        "endLine": 176,
+        "endChar": 27
+      },
+      "revId": "fc39895f55c1c41a0d5bd8e641209ad91930b85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
