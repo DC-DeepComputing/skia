@@ -94,6 +94,30 @@
       },
       "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "557e00ac_3523ef53",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3791897
+      },
+      "writtenOn": "2026-04-02T19:43:55Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "c6e36941_b338a64b",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 59
+      },
+      "revId": "c2b58922e37d6144cb36bfb3327f711de97b153b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
