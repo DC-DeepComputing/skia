@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f03d5f36_8acc1cc6",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-02T12:05:41Z",
+      "side": 1,
+      "message": "Yes, Chrome, PDFium, V8, Dawn, and WebRTC all store `partition_alloc` in different paths. I recently updated the G3 config for Dawn to handle this (`go/shortlink-dawn-partition-alloc`) when porting partition_alloc to dawn.\n\nSince you mentioned nobody is using the Skia GN config, let\u0027s aim for a zero-impact solution, I guess I can\u0027t rely on embedders to depend on this config. What about adding an internal frontend header in `src/partition_alloc/pointers/raw_ptr.h`? Depending on a DEFINE, it redirects to either the real `partition_alloc` or our `raw_ptr_noop`.\n\nWe could put the 3 no-op files under a private subdirectory, like `src/partition_alloc/noop/pointers/raw_ptr.h`.\n\nThis way:\n\n* **Regular behavior:** No flags needed, internal code uses our no-op implementation.\n* **Behavior with partition_alloc (Chrome/Skia):** Requires 2 compiler flags: the DEFINE and the specific include directory.\n\nFor example, the frontend header `src/partition_alloc/pointers/raw_ptr.h` would  be:\n\n```cpp\n#if defined(SK_USE_PARTITION_ALLOC)\n    #include \"partition_alloc/pointers/raw_ptr.h\"\n#else\n    #include \"src/partition_alloc/pointers/noop/raw_ptr.h\"\n#endif\n```\n\nThis is different from what we did in Dawn, but that\u0027s a possibility. WDYT?",
+      "parentUuid": "5e1f395f_db68e63b",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d58a85fc_64d7ad49",
         "filename": "src/partition_alloc/BUILD.bazel",
         "patchSetId": 21
@@ -60,6 +84,30 @@
       "writtenOn": "2026-02-17T15:30:08Z",
       "side": 1,
       "message": "What is this? I don\u0027t see any docs or examples of it in https://source.chromium.org/chromium/chromium/src/+/main:base/memory/raw_ptr.md",
+      "range": {
+        "startLine": 46,
+        "startChar": 22,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5b2a70_5d020f7a",
+        "filename": "src/partition_alloc/partition_alloc/pointers/raw_ptr.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-02T12:05:41Z",
+      "side": 1,
+      "message": "There was some, but if someone believe it is not sufficient, we should update this:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/7718058",
+      "parentUuid": "0a8c740a_da55c876",
       "range": {
         "startLine": 46,
         "startChar": 22,
