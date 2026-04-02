@@ -15,6 +15,7 @@
 
 namespace skgpu::graphite {
 
+template <uint16_t kTileWidth, uint16_t kTileHeight>
 class StripGenerator {
 public:
     StripGenerator() {}
