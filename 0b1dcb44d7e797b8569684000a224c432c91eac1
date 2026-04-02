@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8463e795_13997b1d",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-02T14:24:11Z",
+      "side": 1,
+      "message": "That\u0027s probably fine and I\u0027d want to tuck that #ifdef in something like include/private/base/SkRawPtr.h so we don\u0027t litter the codebase with it.",
+      "parentUuid": "f03d5f36_8acc1cc6",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d58a85fc_64d7ad49",
         "filename": "src/partition_alloc/BUILD.bazel",
         "patchSetId": 21
