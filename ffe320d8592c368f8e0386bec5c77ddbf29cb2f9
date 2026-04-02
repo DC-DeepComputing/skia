@@ -22,6 +22,30 @@
       },
       "revId": "ffe320d8592c368f8e0386bec5c77ddbf29cb2f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea16586_da780d63",
+        "filename": "src/gpu/graphite/mtl/MtlComputeCommandEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-02T18:40:26Z",
+      "side": 1,
+      "message": "Oh, totally missed that available check. Removed it and the other uses of SK_API_AVAILABLE in MtlRenderCommandEncoder",
+      "parentUuid": "3b2a8889_a643cf35",
+      "range": {
+        "startLine": 69,
+        "startChar": 3,
+        "endLine": 70,
+        "endChar": 65
+      },
+      "revId": "ffe320d8592c368f8e0386bec5c77ddbf29cb2f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
