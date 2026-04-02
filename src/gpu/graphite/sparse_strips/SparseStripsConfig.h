@@ -10,6 +10,7 @@
 
 #include "include/core/SkColorType.h"
 
+#include <bit>
 #include <cstdint>
 #include <type_traits>
 
@@ -17,8 +18,10 @@ namespace skgpu::graphite {
 
 // Contains the *tune-able* constants related SparseStrips generation
 struct SparseStripsConfig {
-    static constexpr uint16_t kTileWidth  = 8;
-    static constexpr uint16_t kTileHeight = 8;
+    static constexpr uint16_t kTileWidth  = 4;
+    static constexpr uint16_t kTileHeight = 4;
+    static constexpr uint32_t kTileDimLog = std::popcount(static_cast<uint32_t>(kTileWidth) - 1);
+
     static_assert(kTileWidth == kTileHeight);
 
     // Note although LUT generation supports 16xMSAA/uint16_t strip generation does not. So this
