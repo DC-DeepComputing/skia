@@ -3495,14 +3495,30 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             return this->assembleSimpleIntrinsic("textureDimensions", call) + ".y";
 
         case k_textureRead_IntrinsicKind: {
+            // textureLoad takes a texture and coordinates. It does NOT take a sampler.
+            // If we are passed a combined sampler, we must extract just the texture.
+            std::string expr = "textureLoad(";
+            expr += this->assembleExpression(*arguments[0], Precedence::kSequence);
+
+            if (arguments[0]->type().typeKind() == Type::TypeKind::kSampler) {
+                expr += kTextureSuffix;
+            }
+
+            expr += ", ";
+            expr += this->assembleExpression(*arguments[1], Precedence::kSequence);
+
             // We need to inject an extra argument for the mip-level. We don't plan on using mipmaps
             // in our storage textures, so we can just pass zero.
-            auto [expr, close] = this->assemblePartialSampleCall("textureLoad",
-                                                                 call.type(),
-                                                                 *arguments[0],
-                                                                 *arguments[1]);
-            expr += ", 0";
-            return expr + close;
+            expr += ", 0)";
+
+            // WGSL does not support f16 textures while all of SkSL's sample functions return
+            // "half4", so add a cast back to f16 if necessary.
+            if (type_is_low_precision(call.type(), fContext)) {
+                std::string lowPType = to_wgsl_type(fContext, call.type());
+                return lowPType + "(" + expr + ")";
+            }
+
+            return expr;
         }
         case k_textureWidth_IntrinsicKind:
             return this->assembleSimpleIntrinsic("textureDimensions", call) + ".x";
