@@ -618,6 +618,7 @@ void main()
 	// [1] SrcOver
 	half4 outColor_1 = outColor_0;
 	half4 outputCoverage;
+    // textureCoords should be unorm now, but shouldn't affect the benchmark
 	outputCoverage = bitmap_text_coverage_fn(sample_indexed_atlas(textureCoords, int(texIndex), text_atlas_0, text_atlas_1, text_atlas_2, text_atlas_3), int(maskFormat));
 	sk_FragColor = outColor_1 * outputCoverage;
 }
