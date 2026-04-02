@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0539708_4901c383",
+        "filename": "src/gpu/ResourceKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T18:36:24Z",
+      "side": 1,
+      "message": "This is seems a bit convoluted. Wdyt about a single check:\n\nSkASSERT_RELEASE(std::numeric_limits\u003cuint16_t\u003e::max() \u003e\u003d\n                        (uint32_t) innerData32Cnt + (uint32_t) extraData32Cnt + 1);",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 311,
+        "endChar": 59
+      },
+      "revId": "6519f6fb1446e379d048c00c99cadcb082df5783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52177dd_b78d6ddf",
+        "filename": "src/gpu/ResourceKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T18:36:24Z",
+      "side": 1,
+      "message": "Do we actually need this ?",
+      "range": {
+        "startLine": 312,
+        "startChar": 19,
+        "endLine": 312,
+        "endChar": 26
+      },
+      "revId": "6519f6fb1446e379d048c00c99cadcb082df5783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb5fb42_ca96e2e3",
+        "filename": "src/gpu/ResourceKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T18:36:24Z",
+      "side": 1,
+      "message": "innerData32Cnt ?",
+      "range": {
+        "startLine": 312,
+        "startChar": 27,
+        "endLine": 312,
+        "endChar": 53
+      },
+      "revId": "6519f6fb1446e379d048c00c99cadcb082df5783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
