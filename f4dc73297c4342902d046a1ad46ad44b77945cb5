@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5cc937_9ac4c4bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-02T17:18:03Z",
+      "side": 1,
+      "message": "Please add `Bug: b/494062154` so we can keep track of this",
+      "revId": "f4dc73297c4342902d046a1ad46ad44b77945cb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
