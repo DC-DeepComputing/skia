@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d12dd8c1_c259542b",
+        "filename": "modules/skparagraph/slides/test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-02T18:00:31Z",
+      "side": 1,
+      "message": "What is this file and how does it work? This isn\u0027t exposed in a header?",
+      "range": {
+        "startLine": 20,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 61
+      },
+      "revId": "da944a2c53227ec2a346e91bfe4538beff8b6362",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
