@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cef3f68a_98481854",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-02T18:51:14Z",
+      "side": 1,
+      "message": "Minor nit: maybe `microsMaxPurgingDur`? That seems easier for me personally to parse, but I trust your judgement here if you wanna keep it as is.",
+      "range": {
+        "startLine": 238,
+        "startChar": 53,
+        "endLine": 238,
+        "endChar": 73
+      },
+      "revId": "d873655e225391baf57d157fe61e0a525802ad6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
