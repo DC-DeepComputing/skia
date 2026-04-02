@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c60086_19448c04",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-02T15:17:48Z",
+      "side": 1,
+      "message": "Good thinking, that does make way more sense. I had RE using 250 microseconds, so I\u0027ll go with micro. Made some variable name changes as well - LMK if you have additional thoughts.",
+      "parentUuid": "346faf11_0cb02d09",
+      "range": {
+        "startLine": 238,
+        "startChar": 39,
+        "endLine": 238,
+        "endChar": 51
+      },
+      "revId": "d1895532691acbab020fffdc2175bc78ae9e1fc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e07d97c_a17f06f8",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-01T19:04:54Z",
       "side": 1,
       "message": "Nit: consider updating the phrasing in these release notes to now reflect that the new API is Graphite-only.",
+      "range": {
+        "startLine": 1,
+        "startChar": 51,
+        "endLine": 1,
+        "endChar": 55
+      },
+      "revId": "d1895532691acbab020fffdc2175bc78ae9e1fc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9921888c_5f12bf2b",
+        "filename": "relnotes/cache_purge_time_limit.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-02T15:17:48Z",
+      "side": 1,
+      "message": "Good call; thanks!",
+      "parentUuid": "5e07d97c_a17f06f8",
       "range": {
         "startLine": 1,
         "startChar": 51,
