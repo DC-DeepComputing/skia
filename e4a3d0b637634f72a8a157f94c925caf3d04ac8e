@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce5f1c71_fe9f84de",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T19:57:43Z",
+      "side": 1,
+      "message": "kFamiliesToCheck ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 34,
+        "endLine": 45,
+        "endChar": 43
+      },
+      "revId": "e4a3d0b637634f72a8a157f94c925caf3d04ac8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032a5fd3_9e235eca",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-02T19:57:43Z",
+      "side": 1,
+      "message": "This seems odd ? Is it supposed to:\n\nfGPUFamily \u003e\u003d MTLGPUFamilyApple7 ?",
+      "range": {
+        "startLine": 130,
+        "startChar": 49,
+        "endLine": 130,
+        "endChar": 73
+      },
+      "revId": "e4a3d0b637634f72a8a157f94c925caf3d04ac8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
