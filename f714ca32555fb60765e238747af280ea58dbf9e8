@@ -22,6 +22,30 @@
       },
       "revId": "f714ca32555fb60765e238747af280ea58dbf9e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23e9b46c_0b609006",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-02T18:59:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b1e0bcc_7f3b343a",
+      "range": {
+        "startLine": 255,
+        "startChar": 17,
+        "endLine": 255,
+        "endChar": 33
+      },
+      "revId": "f714ca32555fb60765e238747af280ea58dbf9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

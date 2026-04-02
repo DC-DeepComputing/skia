@@ -22,6 +22,30 @@
       },
       "revId": "fc39895f55c1c41a0d5bd8e641209ad91930b85f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb2c21e_f184df40",
+        "filename": "src/gpu/ganesh/geometry/GrStyledShape.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-02T18:59:53Z",
+      "side": 1,
+      "message": "Added a comment calling out that this value is bounded by kMaxKeyFromDataVerbCnt",
+      "parentUuid": "3b1be48e_e9d6e10e",
+      "range": {
+        "startLine": 176,
+        "startChar": 16,
+        "endLine": 176,
+        "endChar": 27
+      },
+      "revId": "fc39895f55c1c41a0d5bd8e641209ad91930b85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
