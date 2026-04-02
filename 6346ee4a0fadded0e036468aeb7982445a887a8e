@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a0826b8_b60ee71d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-02T16:07:21Z",
+      "side": 1,
+      "message": "LGTM from my POV, but deferring to Michael for GPU thoughts.",
+      "revId": "6346ee4a0fadded0e036468aeb7982445a887a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
