@@ -57,7 +57,7 @@ protected:
                 flattener.processPaths<FlattenMode::kSimd>(path, SkMatrix(), Tiger::kDim, polyline);
                 Tiles<kTileWidth, kTileHeight> tiler;
                 tiler.reset();
-                tiler.makeTilesMSAA(polyline, Tiger::kDim, fCulled);
+                tiler.makeTilesMSAA(polyline, Tiger::kDim, fCulled, 0);
                 tiler.sortTiles();
                 fTiles.emplace_back(tiler);
                 fPolylines.emplace_back(polyline);
@@ -86,6 +86,73 @@ private:
     WindingHistogram fCulled;
 };
 
+template <uint16_t kTileWidth, uint16_t kTileHeight, uint32_t kWorkGroupSize, typename MSAAType>
+class CoverageBenchGpu : public Benchmark {
+public:
+    using GpuTileType = skgpu::graphite::GpuTile<kTileWidth, kTileHeight>;
+    using GpuTiles = Tiles<kTileWidth, kTileHeight, GpuTileType>;
+
+    using MakeStripsFn = uint32_t (*)(GpuTiles&,
+                                      SkTDArray<Strip>&,
+                                      SkPathFillType,
+                                      const Polyline&,
+                                      WideTiles<kTileHeight>&,
+                                      bool,
+                                      const WindingHistogram&,
+                                      const SkIRect&,
+                                      int32_t
+    );
+
+    CoverageBenchGpu(const char* name, MakeStripsFn func)
+            : fFunc(func)
+            , fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
+        fName.printf("SparseStrips_%s_%ux%u", name, kTileWidth, kTileHeight);
+        fCulled.resize((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight);
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+
+    void onDelayedSetup() override {
+        Flatten flattener;
+        for (const char* svgString : Tiger::kTigerPathStrings) {
+            SkPath path;
+            if (SkParsePath::FromSVGString(svgString, &path)) {
+                Polyline polyline;
+                flattener.processPaths<FlattenMode::kSimd>(path, SkMatrix(), Tiger::kDim, polyline);
+
+                GpuTiles tiler;
+                tiler.reset();
+                tiler.makeTilesMSAA(polyline, Tiger::kDim, fCulled);
+                tiler.sortTiles();
+                fTiles.emplace_back(tiler);
+                fPolylines.emplace_back(polyline);
+            }
+        }
+    }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        SkTDArray<Strip> strips;
+        WideTiles<kTileHeight> wides;
+
+        for (int i = 0; i < loops; ++i) {
+            for (int ii = 0; ii < fTiles.size(); ++ii) {
+                GpuTiles mutableTiles = fTiles[ii];
+
+                fFunc(mutableTiles, strips, SkPathFillType::kDefault, fPolylines[ii], wides,
+                      /*isCulled=*/false, fCulled, Tiger::kDim, /*tileOffset=*/0);
+            }
+        }
+    }
+
+private:
+    SkString fName;
+    MakeStripsFn fFunc;
+    skia_private::TArray<Polyline> fPolylines;
+    skia_private::TArray<GpuTiles> fTiles;
+    WindingHistogram fCulled;
+};
+
 }  // namespace skgpu::graphite
 
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<16, 16,
@@ -108,3 +175,6 @@ DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
         "CoverageBench",
         &skgpu::graphite::Strip::
                 MakeStripsMsaa<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBenchGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchGPU",
+        &skgpu::graphite::Strip::MakeStripsGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>));)

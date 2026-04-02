@@ -84,6 +84,11 @@ public:
         return LineIterator(fPoints.begin(), 0, fPoints.size());
     }
 
+    LineIterator beginFrom(int startingIndex) const {
+        SkASSERT(startingIndex < fPoints.size());
+        return LineIterator(fPoints.begin(), startingIndex, fPoints.size());
+    }
+
     LineIterator end() const {
         return LineIterator(fPoints.begin(), fPoints.size(), fPoints.size());
     }

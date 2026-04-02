@@ -407,6 +407,13 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
+struct Device::StripGeneratorWrapper {
+    StripGenerator<Tile<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight>> fGenerator;
+
+    StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<SparseStripsConfig::MSAAType>& lut, Recorder* recorder)
+        : fGenerator(deviceSize, lut, recorder) {}
+};
+
 sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
@@ -489,7 +496,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     sk_sp<Device> device{new Device(recorder, std::move(dc))};
     if (recorder->priv().rendererProvider()->IsSupported(
                 PathRendererStrategy::kCPUSparseStripsMSAA8, caps)) {
-        device->fStripGenerator = std::make_unique<StripGenerator>(
+        device->fStripGenerator = std::make_unique<StripGeneratorWrapper>(
                 deviceSize,
                 recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
                 recorder);
@@ -1876,7 +1883,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
             SkIRect clipBounds =
                     clip.transformedShapeBounds().makeIntersect(clip.scissor()).asSkIRect();
-            auto [wides, ends] = fStripGenerator->processGeometry(
+            auto [wides, ends] = fStripGenerator->fGenerator.processGeometry(
                     finalPath, localToDevice.matrix().asM33(), clipBounds);
 
             if (!ends.empty()) {
@@ -2235,6 +2242,8 @@ void Device::flushPendingWork(DrawContext* drawContext) {
 void Device::internalFlush() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER
+
+    fStripGenerator->fGenerator.flushGpu();
 
     // Push any pending uploads from the atlas provider that pending draws reference.
     fRecorder->priv().atlasProvider()->recordUploads(fDC.get());

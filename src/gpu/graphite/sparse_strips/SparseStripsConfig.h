@@ -28,6 +28,8 @@ struct SparseStripsConfig {
     static constexpr int32_t kLutWidth  = 64;
     static constexpr int32_t kLutHeight = 64;
 
+    static constexpr uint32_t kWorkgroupSize = 256;
+
     static constexpr int32_t kTextureDims     = 4096;
     static constexpr int32_t kMaxTexturePages = 2;
     static constexpr SkColorType kColorType   = SkColorType::kRGBA_8888_SkColorType;

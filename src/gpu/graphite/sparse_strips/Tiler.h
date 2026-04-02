@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstddef>
 #include <limits>
 #include <string>
 #include <vector>
@@ -49,9 +50,22 @@ template <uint16_t WIDTH, uint16_t HEIGHT> struct Tile {
 };
 
 template <uint16_t WIDTH, uint16_t HEIGHT>
+struct GpuTile : public Tile<WIDTH, HEIGHT> {
+    int32_t packed;     // PostScanned winding goes into the upper bits, so that pulling them down
+                        // sign extends the value. the lower bits contain the localIdx of the
+                        // parent tile.
+    int32_t alphaIdx;   // The location in the alpha texture this will correspond to
+
+    GpuTile() : Tile<WIDTH, HEIGHT>() {}
+
+    GpuTile(uint16_t xGpu, uint16_t yGpu, uint32_t lineIdx, uint32_t intersectionMask)
+            : Tile<WIDTH, HEIGHT>(xGpu, yGpu, lineIdx, intersectionMask) {}
+};
+
+template <uint16_t WIDTH, uint16_t HEIGHT, typename TileType = Tile<WIDTH, HEIGHT>>
 class Tiles {
 public:
-    using TileType = Tile<WIDTH, HEIGHT>;
+    using value_type = TileType;
 
     Tiles() {}
 
@@ -60,7 +74,7 @@ public:
     }
 
     void sortTiles(int32_t offset) {
-        std::sort(fTileBuf.begin() + offset, fTileBuf.end());
+        std::stable_sort(fTileBuf.begin() + offset, fTileBuf.end());
     }
 
     void sortTiles() {
@@ -68,9 +82,10 @@ public:
     }
 
     const std::vector<TileType>& getTiles() const { return fTileBuf; }
+    std::vector<TileType>& getTiles() { return fTileBuf; }
 
-    bool makeTilesMSAA(const Polyline& polyline, SkIRect clip,
-                       WindingHistogram& histogram) {
+    bool makeTilesMSAA(const Polyline& polyline, const SkIRect& clip, WindingHistogram& histogram,
+                       int32_t startingLineOffset) {
         SkASSERT(polyline.count() <= SparseStripsConstants::MAX_LINES_PER_PATH);
 
         bool cullingEventOccurred = false;
@@ -91,7 +106,7 @@ public:
         uint16_t minTileX = f32ToU16Sat(clipLeftTile);
         uint16_t minTileY = f32ToU16Sat(clipTopTile);
 
-        for (auto it = polyline.begin(); it != polyline.end(); ++it) {
+        for (auto it = polyline.beginFrom(startingLineOffset); it != polyline.end(); ++it) {
             auto [line, lineIdx] = *it;
 
             float p0X = line.p0.fX * invW;
@@ -258,6 +273,10 @@ public:
         }
 
         return cullingEventOccurred;
+    }
+
+    bool makeTilesMSAA(const Polyline& polyline, const SkIRect& clip, WindingHistogram& histogram) {
+        return this->makeTilesMSAA(polyline, clip, histogram, /*startingLineOffset=*/0);
     }
 
 private:
