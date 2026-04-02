@@ -14,29 +14,32 @@
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight> class CoverageBench : public Benchmark {
+template <uint16_t kTileWidth, uint16_t kTileHeight, typename MSAAType>
+class CoverageBench : public Benchmark {
 public:
     using MakeStripsFn = void (*)(const Tiles<kTileWidth, kTileHeight>&,
                                   SkTDArray<Strip>&,
-                                  SkTDArray<uint8_t>&,
+                                  SkTDArray<MSAAType>&,
                                   SkPathFillType,
                                   const Polyline&,
-                                  const SkTDArray<uint8_t>&,
+                                  const SkTDArray<MSAAType>&,
                                   WideTiles<kTileHeight>&,
                                   bool,
                                   const WindingHistogram&,
                                   const SkIRect&,
-                                  MsaaExactMaskObserver);
+                                  MsaaExactMaskObserver<MSAAType>
+    );
 
     CoverageBench(const char* name, MakeStripsFn func)
             : fFunc(func)
-            , fLUT(GenerateMSAALUT<uint8_t>())
+            , fLUT(GenerateMSAALUT<MSAAType>())
             , fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
         fName.printf("SparseStrips_%s_%ux%u", name, kTileWidth, kTileHeight);
         fCulled.resize((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight);
@@ -65,7 +68,7 @@ protected:
     void onDraw(int loops, SkCanvas* canvas) override {
         SkTDArray<Strip> strips;
         WideTiles<kTileHeight> wides;
-        SkTDArray<uint8_t> alphas;
+        SkTDArray<MSAAType> alphas;
         for (int i = 0; i < loops; ++i) {
             for (int ii = 0; ii < fTiles.size(); ++ii) {
                 fFunc(fTiles[ii], strips, alphas, SkPathFillType::kDefault, fPolylines[ii], fLUT,
@@ -79,17 +82,29 @@ private:
     MakeStripsFn fFunc;
     skia_private::TArray<Polyline> fPolylines;
     skia_private::TArray<Tiles<kTileWidth, kTileHeight>> fTiles;
-    SkTDArray<uint8_t> fLUT;
+    SkTDArray<MSAAType> fLUT;
     WindingHistogram fCulled;
 };
 
 }  // namespace skgpu::graphite
 
-DEF_BENCH(return (new skgpu::graphite::CoverageBench<16, 16>(
-        "CoverageBenchSimd", &skgpu::graphite::Strip::MakeStripsMsaaSimd));)
-DEF_BENCH(return (new skgpu::graphite::CoverageBench<8, 8>(
-        "CoverageBenchSimd", &skgpu::graphite::Strip::MakeStripsMsaaSimd));)
-DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4>(
-        "CoverageBenchSimd", &skgpu::graphite::Strip::MakeStripsMsaaSimd));)
-DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4>(
-        "CoverageBench", &skgpu::graphite::Strip::MakeStripsMsaa));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<16, 16,
+                                                     skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchSimd",
+        &skgpu::graphite::Strip::
+                MakeStripsMsaaSimd<16, 16, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<8, 8,
+                                                     skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchSimd",
+        &skgpu::graphite::Strip::
+                MakeStripsMsaaSimd<8, 8, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
+                                                     skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchSimd",
+        &skgpu::graphite::Strip::
+                MakeStripsMsaaSimd<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
+                                                     skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBench",
+        &skgpu::graphite::Strip::
+                MakeStripsMsaa<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)

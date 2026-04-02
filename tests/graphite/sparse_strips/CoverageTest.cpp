@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
@@ -27,6 +28,9 @@
 namespace skgpu::graphite {
 
 namespace {
+
+static constexpr uint32_t kMaskShift        = SparseStripsConstants::INT_MASK_SHIFT;
+static constexpr uint32_t kIntersectionMask = SparseStripsConstants::INTERSECTION_MASK;
 
 // Simplified point-in-polygon verification using Even-Odd rule.
 bool IsInside(SkPoint pt, const Polyline& polyline) {
@@ -46,48 +50,49 @@ bool IsInside(SkPoint pt, const Polyline& polyline) {
 
 }  // namespace
 
-template <uint16_t TileW, uint16_t TileH> class CoverageTestRunner {
+// TODO (thomsmit): Expose 16xMSAA/uint16_t
+template <uint16_t TileW, uint16_t TileH, typename MSAAType> class CoverageTestRunner {
 public:
     using StripFunc = void (*)(const Tiles<TileW, TileH>&,
                                SkTDArray<Strip>&,
-                               SkTDArray<uint8_t>&,
+                               SkTDArray<MSAAType>&,
                                bool,
                                const Polyline&,
-                               const SkTDArray<uint8_t>&,
+                               const SkTDArray<MSAAType>&,
                                WideTiles<TileH>&,
                                bool,
                                const WindingHistogram&,
                                const SkIRect&,
-                               MsaaExactMaskObserver);
+                               MsaaExactMaskObserver<MSAAType>);
 
     static void RunScalarWinding(const Tiles<TileW, TileH>& tileContainer,
                                  SkTDArray<Strip>& stripBuf,
-                                 SkTDArray<uint8_t>& alphaBuf,
+                                 SkTDArray<MSAAType>& alphaBuf,
                                  bool isInverse,
                                  const Polyline& polyline,
-                                 const SkTDArray<uint8_t>& maskLut,
+                                 const SkTDArray<MSAAType>& maskLut,
                                  WideTiles<TileH>& wides,
                                  bool isCulled,
                                  const WindingHistogram& windingHistogram,
                                  const SkIRect& clipRect,
-                                 MsaaExactMaskObserver observer) {
-        Strip::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true>(
+                                 MsaaExactMaskObserver<MSAAType> observer) {
+        Strip::MakeStripsImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
                 tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
                 windingHistogram, clipRect, observer);
     }
 
     static void RunSimdWinding(const Tiles<TileW, TileH>& tileContainer,
                                SkTDArray<Strip>& stripBuf,
-                               SkTDArray<uint8_t>& alphaBuf,
+                               SkTDArray<MSAAType>& alphaBuf,
                                bool isInverse,
                                const Polyline& polyline,
-                               const SkTDArray<uint8_t>& maskLut,
+                               const SkTDArray<MSAAType>& maskLut,
                                WideTiles<TileH>& wides,
                                bool isCulled,
                                const WindingHistogram& windingHistogram,
                                const SkIRect& clipRect,
-                               MsaaExactMaskObserver observer) {
-        Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true>(
+                               MsaaExactMaskObserver<MSAAType> observer) {
+        Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true, MSAAType>(
                 tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, wides, isCulled,
                 windingHistogram, clipRect, observer);
     }
@@ -95,7 +100,7 @@ public:
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
 
     void runAll(skiatest::Reporter* reporter) {
-        const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+        const SkTDArray<MSAAType> lut = GenerateMSAALUT<MSAAType>();
         constexpr int errorLimit = 3;
         std::array<uint32_t, errorLimit> minorErrorCount = {0, 0, 0};
         int totalTestsRun = 0;
@@ -225,7 +230,7 @@ private:
                                 const Tiles<TileW, TileH>& tiler,
                                 int failX,
                                 int failY,
-                                const SkTDArray<uint8_t>& actualMasks,
+                                const SkTDArray<MSAAType>& actualMasks, // UPDATED
                                 size_t tileStartIdx) {
         SkString out("\n--- FAILURE DIAGNOSTICS ---\n");
 
@@ -238,13 +243,13 @@ private:
 
         out.append("Tile Intersections:\n");
         for (const auto& tile : tiler.getTiles()) {
-            uint32_t mask = tile.packedWindingLineIdx & Tile<TileW, TileH>::INTERSECTION_MASK;
-            uint32_t lineIdx = tile.packedWindingLineIdx >> Tile<TileW, TileH>::INT_MASK_SHIFT;
+            uint32_t mask = tile.packedWindingLineIdx & kIntersectionMask;
+            uint32_t lineIdx = tile.packedWindingLineIdx >> kMaskShift;
             out.appendf("  Tile(%u,%u) Line %u Mask: %s\n",
                         tile.x,
                         tile.y,
                         lineIdx,
-                        Tile<TileW, TileH>::maskToString(mask).c_str());
+                        SparseStripsConstants::maskToString(mask).c_str());
         }
 
         out.appendf("\nASCII Map Tile(%d,%d) [Left: Expected | Right: Actual]\n",
@@ -269,12 +274,13 @@ private:
                                 active = IsInside(cp, polyline);
                             } else {
                                 int32_t bufIdx = tileStartIdx + (y * TileW + x);
-                                uint8_t mask =
+                                MSAAType mask = // UPDATED
                                         (bufIdx < actualMasks.size()) ? actualMasks[bufIdx] : 0;
                                 active = (mask & (1 << sy));
                             }
 
-                            if (MSAA_LUT<uint8_t>::kPattern[sy] == sx) {
+                            // Note: if you bump MSAA, kPattern needs to be updated here too
+                            if (MSAA_LUT<MSAAType>::kPattern[sy] == sx) {
                                 out.append(active ? (onLine ? "*#" : " #")
                                                   : (onLine ? "*o" : " o"));
                             } else {
@@ -295,7 +301,7 @@ private:
     bool runSingleTest(skiatest::Reporter* reporter,
                        const SkPath& path,
                        const char* name,
-                       const SkTDArray<uint8_t>& lut,
+                       const SkTDArray<MSAAType>& lut, // UPDATED
                        std::array<uint32_t, 3>& minorErrorCount) {
         Flatten flattener;
         Polyline polyline;
@@ -310,10 +316,11 @@ private:
         tiler.sortTiles();
 
         SkTDArray<Strip> stripBuf;
-        SkTDArray<uint8_t> alphaBuf;
-        SkTDArray<uint8_t> exactMasks;
+        SkTDArray<MSAAType> alphaBuf; // UPDATED
+        SkTDArray<MSAAType> exactMasks; // UPDATED
         WideTiles<TileH> wides;
-        auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
+        auto observer = [&](MSAAType exactMask) { exactMasks.push_back(exactMask); }; // UPDATED
+
         // Call the configured function pointer (SIMD or Scalar)
         fFunc(tiler, stripBuf, alphaBuf, /*isInverse=*/false, polyline, lut, wides,
               /*isCulled=*/false, culled, SkIRect::MakeWH(kViewDim, kViewDim), observer);
@@ -342,10 +349,10 @@ private:
                 int32_t tileStartIdx = alphaIdx;
                 for (int32_t y = 0; y < TileH; ++y) {
                     for (int32_t x = 0; x < TileW; ++x) {
-                        uint8_t expectedMask = 0;
+                        MSAAType expectedMask = 0; // UPDATED
                         int expectedSamples = 0;
                         for (int k = 0; k < 8; ++k) {
-                            if (IsInside({currX + x + (MSAA_LUT<uint8_t>::kPattern[k] + 0.5f) / 8.0f,
+                            if (IsInside({currX + x + (MSAA_LUT<MSAAType>::kPattern[k] + 0.5f) / 8.0f,
                                           currY + y + (k + 0.5f) / 8.0f},
                                          polyline)) {
                                 expectedSamples++;
@@ -353,9 +360,9 @@ private:
                             }
                         }
 
-                        uint8_t actualMask =
+                        MSAAType actualMask = // UPDATED
                                 (alphaIdx < exactMasks.size()) ? exactMasks[alphaIdx] : 0;
-                        uint8_t actualAlpha = (alphaIdx < alphaBuf.size()) ? alphaBuf[alphaIdx] : 0;
+                        MSAAType actualAlpha = (alphaIdx < alphaBuf.size()) ? alphaBuf[alphaIdx] : 0; // UPDATED
 
                         int sampleDiff = 0;
                         int actualSamples = 0;
@@ -364,8 +371,9 @@ private:
                             if ((expectedMask & (1 << k)) != (actualMask & (1 << k))) sampleDiff++;
                         }
 
-                        uint8_t expectedAlphaFromMask =
-                                static_cast<uint8_t>((actualSamples * 255 + 4) / 8);
+                        MSAAType expectedAlphaFromMask = // UPDATED
+                                static_cast<MSAAType>((actualSamples * 255 + 4) / 8);
+
                         if (actualAlpha != expectedAlphaFromMask) {
                             REPORTER_ASSERT(
                                     reporter,
@@ -425,20 +433,20 @@ private:
 };
 
 DEF_TEST(SparseStrips_CoverageScalar_4x4, reporter) {
-    skgpu::graphite::CoverageTestRunner<4, 4> scalarRunner(
-            &skgpu::graphite::CoverageTestRunner<4, 4>::RunScalarWinding, "Scalar");
+    skgpu::graphite::CoverageTestRunner<4, 4, uint8_t> scalarRunner(
+            &skgpu::graphite::CoverageTestRunner<4, 4, uint8_t>::RunScalarWinding, "Scalar");
     scalarRunner.runAll(reporter);
 }
 
 DEF_TEST(SparseStrips_CoverageSIMD_4x4, reporter) {
-    skgpu::graphite::CoverageTestRunner<4, 4> simdRunner(
-            &skgpu::graphite::CoverageTestRunner<4, 4>::RunSimdWinding, "SIMD");
+    skgpu::graphite::CoverageTestRunner<4, 4, uint8_t> simdRunner(
+            &skgpu::graphite::CoverageTestRunner<4, 4, uint8_t>::RunSimdWinding, "SIMD");
     simdRunner.runAll(reporter);
 }
 
 DEF_TEST(SparseStrips_CoverageSIMD_8x8, reporter) {
-    skgpu::graphite::CoverageTestRunner<8, 8> simdRunner(
-            &skgpu::graphite::CoverageTestRunner<8, 8>::RunSimdWinding, "SIMD");
+    skgpu::graphite::CoverageTestRunner<8, 8, uint8_t> simdRunner(
+            &skgpu::graphite::CoverageTestRunner<8, 8, uint8_t>::RunSimdWinding, "SIMD");
     simdRunner.runAll(reporter);
 }
 

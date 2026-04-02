@@ -97,7 +97,6 @@
 #include "src/gpu/graphite/geom/SubRunData.h"
 #include "src/gpu/graphite/geom/Transform.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
-#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/StripGenerator.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/UploadTask.h"
@@ -440,12 +439,6 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                 registerWithRecorder);
 }
 
-struct StripGeneratorWrapper {
-    StripGenerator<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fGenerator;
-    StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
-        : fGenerator(deviceSize, lut, recorder) {}
-};
-
 sk_sp<Device> Device::Make(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            SkISize deviceSize,
@@ -496,7 +489,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     sk_sp<Device> device{new Device(recorder, std::move(dc))};
     if (recorder->priv().rendererProvider()->IsSupported(
                 PathRendererStrategy::kCPUSparseStripsMSAA8, caps)) {
-        device->fStripGenerator = std::make_unique<StripGeneratorWrapper>(
+        device->fStripGenerator = std::make_unique<StripGenerator>(
                 deviceSize,
                 recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
                 recorder);
@@ -1883,7 +1876,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
             SkIRect clipBounds =
                     clip.transformedShapeBounds().makeIntersect(clip.scissor()).asSkIRect();
-            auto [wides, ends] = fStripGenerator->fGenerator.processGeometry(
+            auto [wides, ends] = fStripGenerator->processGeometry(
                     finalPath, localToDevice.matrix().asM33(), clipBounds);
 
             if (!ends.empty()) {

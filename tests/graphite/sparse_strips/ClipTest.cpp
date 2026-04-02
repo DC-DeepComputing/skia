@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
@@ -18,6 +19,14 @@
 namespace skgpu::graphite {
 
 namespace {
+
+static constexpr uint32_t W                 = SparseStripsConstants::W;
+static constexpr uint32_t T                 = SparseStripsConstants::T;
+static constexpr uint32_t B                 = SparseStripsConstants::B;
+static constexpr uint32_t L                 = SparseStripsConstants::L;
+static constexpr uint32_t R                 = SparseStripsConstants::R;
+static constexpr uint32_t kMaskShift        = SparseStripsConstants::INT_MASK_SHIFT;
+static constexpr uint32_t kIntersectionMask = SparseStripsConstants::INTERSECTION_MASK;
 
 std::vector<Line> scale_lines(const std::vector<Line>& input, float scale) {
     if (scale == 1.0f) return input;
@@ -80,7 +89,7 @@ std::optional<std::array<SkPoint, 2>> reference_clip(
 }  // namespace
 
 template <uint16_t WIDTH, uint16_t HEIGHT>
-class ClipTestRunner : IntersectionBits {
+class ClipTestRunner {
     using TileType = Tile<WIDTH, HEIGHT>;
 
     static constexpr float SCALE = (float)WIDTH / 4.0f;
@@ -107,7 +116,7 @@ class ClipTestRunner : IntersectionBits {
 
         std::array<float, 4> bounds = {tileMinX, tileMinY, tileMaxX, tileMaxY};
         std::array<float, 4> derivatives = {dx, dy, idx, idy};
-        uint32_t mask = tile.packedWindingLineIdx & IntersectionBits::INTERSECTION_MASK;
+        uint32_t mask = tile.packedWindingLineIdx & kIntersectionMask;
 
         bool canonicalXDir = (dx >= 0);
         bool canonicalYDir = (dy >= 0);
@@ -187,7 +196,7 @@ public:
                             const std::vector<TileType>& expectedTiles,
                             const char* testName) {
         for (const auto& tile : expectedTiles) {
-            uint32_t lineIdx = tile.packedWindingLineIdx >> TileType::INT_MASK_SHIFT;
+            uint32_t lineIdx = tile.packedWindingLineIdx >> kMaskShift;
             if (lineIdx < lines.size()) {
                 verifyClip(reporter, lines[lineIdx], tile, testName);
             } else {

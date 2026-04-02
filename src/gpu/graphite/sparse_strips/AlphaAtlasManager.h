@@ -22,10 +22,10 @@ class Recorder;
 
 class AlphaAtlasManager {
 public:
-    static constexpr int32_t kAtlasTextureDims = SparseStripConfig::kTextureDims;
+    static constexpr int32_t kAtlasTextureDims = SparseStripsConfig::kTextureDims;
     static constexpr int32_t kAtlasDimsBytes = kAtlasTextureDims * 4;
     static constexpr int32_t kMaxCapBytes = kAtlasTextureDims * kAtlasDimsBytes;
-    static constexpr SkColorType kColorType = SparseStripConfig::kColorType;
+    static constexpr SkColorType kColorType = SparseStripsConfig::kColorType;
 
     AlphaAtlasManager(Recorder* recorder);
 
@@ -50,7 +50,7 @@ public:
 
 private:
 #if defined(GPU_TEST_UTILS)
-    template <uint16_t, uint16_t> friend class CoverageTestRunner;
+    template <uint16_t, uint16_t, typename> friend class CoverageTestRunner;
     void resetBuffer() { fTextures.back().fAlphaBuffer.clear(); }
     uint8_t getAlpha(int32_t index) const { return fTextures.back().fAlphaBuffer[index]; }
 #endif

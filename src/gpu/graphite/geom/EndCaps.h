@@ -39,7 +39,7 @@ public:
     }
 
     void addProxy(sk_sp<TextureProxy> texture) {
-        if (fProxies.size() < SparseStripConfig::kMaxTexturePages) {
+        if (fProxies.size() < SparseStripsConfig::kMaxTexturePages) {
             fProxies.push_back(texture);
         } else {
             SKGPU_LOG_W("Warning, exceeded max textures per endcap renderstep");
@@ -58,7 +58,7 @@ public:
 
 private:
     std::vector<EndCap> fCaps;
-    skia_private::STArray<SparseStripConfig::kMaxTexturePages, sk_sp<TextureProxy>> fProxies;
+    skia_private::STArray<SparseStripsConfig::kMaxTexturePages, sk_sp<TextureProxy>> fProxies;
 };
 
 }  // namespace skgpu::graphite

@@ -83,7 +83,7 @@ class Shape;
 class Task;
 class TextureProxy;
 class TextureProxyView;
-struct StripGeneratorWrapper;
+class StripGenerator;
 
 class Device final : public SkDevice {
 public:
@@ -402,7 +402,7 @@ private:
     friend class ClipStack; // for drawClipShape
 
     // TODO thomsmit: put this behind the sparse_strips define guard
-    std::unique_ptr<StripGeneratorWrapper> fStripGenerator;
+    std::unique_ptr<StripGenerator> fStripGenerator;
 };
 
 } // namespace skgpu::graphite

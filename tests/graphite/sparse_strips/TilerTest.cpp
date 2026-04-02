@@ -7,6 +7,7 @@
 
 #include "include/core/SkRect.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 
@@ -18,6 +19,14 @@
 namespace skgpu::graphite {
 
 namespace {
+
+static constexpr uint32_t W          = SparseStripsConstants::W;
+static constexpr uint32_t T          = SparseStripsConstants::T;
+static constexpr uint32_t B          = SparseStripsConstants::B;
+static constexpr uint32_t L          = SparseStripsConstants::L;
+static constexpr uint32_t R          = SparseStripsConstants::R;
+static constexpr uint32_t kMaskShift = SparseStripsConstants::INT_MASK_SHIFT;
+static constexpr uint32_t kMask      = SparseStripsConstants::INTERSECTION_MASK;
 
 std::vector<Line> scale_lines(const std::vector<Line>& input, float scale) {
     if (scale == 1.0f) return input;
@@ -101,8 +110,8 @@ void check_tiles_match(skiatest::Reporter* reporter,
                     dump.appendf("%s:\n", label);
                     for (size_t i = 0; i < tileArray.size(); ++i) {
                         const auto& t = tileArray[i];
-                        uint32_t rawLine = t.packedWindingLineIdx >> TileType::INT_MASK_SHIFT;
-                        uint32_t mask = t.packedWindingLineIdx & TileType::INTERSECTION_MASK;
+                        uint32_t rawLine = t.packedWindingLineIdx >> kMaskShift;
+                        uint32_t mask = t.packedWindingLineIdx & kMask;
 
                         uint32_t logicalLine = rawLine;
                         if (isActual) {
@@ -114,7 +123,7 @@ void check_tiles_match(skiatest::Reporter* reporter,
                             }
                         }
 
-                        std::string maskStr = IntersectionBits::maskToString(mask);
+                        std::string maskStr = SparseStripsConstants::maskToString(mask);
                         if (maskStr.empty()) {
                             maskStr = "0";
                         }
@@ -163,8 +172,8 @@ void check_tiles_match(skiatest::Reporter* reporter,
                         want.y,
                         got.y);
 
-        uint32_t gotLine = got.packedWindingLineIdx >> TileType::INT_MASK_SHIFT;
-        uint32_t wantLogicalLine = want.packedWindingLineIdx >> TileType::INT_MASK_SHIFT;
+        uint32_t gotLine = got.packedWindingLineIdx >> kMaskShift;
+        uint32_t wantLogicalLine = want.packedWindingLineIdx >> kMaskShift;
 
         uint32_t wantLine = wantLogicalLine < expectedToActualIdx.size()
                                     ? expectedToActualIdx[wantLogicalLine]
@@ -178,12 +187,12 @@ void check_tiles_match(skiatest::Reporter* reporter,
                         wantLine,
                         gotLine);
 
-        uint32_t gotMask = got.packedWindingLineIdx & TileType::INTERSECTION_MASK;
-        uint32_t wantMask = want.packedWindingLineIdx & TileType::INTERSECTION_MASK;
+        uint32_t gotMask = got.packedWindingLineIdx & kMask;
+        uint32_t wantMask = want.packedWindingLineIdx & kMask;
 
         if (gotMask != wantMask) {
-            std::string got_str = IntersectionBits::maskToString(gotMask);
-            std::string want_str = IntersectionBits::maskToString(wantMask);
+            std::string got_str = SparseStripsConstants::maskToString(gotMask);
+            std::string want_str = SparseStripsConstants::maskToString(wantMask);
             ERRORF(reporter,
                    "[%s] Tile[%zu] Mask mismatch. Want [%s], Got [%s]",
                    testName,
@@ -269,7 +278,7 @@ void check_culling(skiatest::Reporter* reporter,
 
 }  // namespace
 
-template <uint16_t kTileWidth, uint16_t kTileHeight> class TileTestRunner : IntersectionBits {
+template <uint16_t kTileWidth, uint16_t kTileHeight> class TileTestRunner {
 public:
     using TileType = Tile<kTileWidth, kTileHeight>;
     using TilesType = Tiles<kTileWidth, kTileHeight>;

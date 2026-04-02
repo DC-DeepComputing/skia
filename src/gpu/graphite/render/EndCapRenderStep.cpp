@@ -70,7 +70,7 @@ std::string EndCapRenderStep::vertexSkSL() const {
 std::string EndCapRenderStep::texturesAndSamplersSkSL(
         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
-    for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
+    for (int i = 0; i < SparseStripsConfig::kMaxTexturePages; ++i) {
         result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
         SkSL::String::appendf(&result, " sampler2D alpha_text_%d;", i);
     }
@@ -103,7 +103,7 @@ void EndCapRenderStep::writeVertices(DrawWriter* writer,
     instances.reserve(caps.size());
 
     float depth = params.order().depthAsFloat();
-    float height = static_cast<float>(SparseStripConfig::kTileHeight);
+    float height = static_cast<float>(SparseStripsConfig::kTileHeight);
 
     for (const auto& cap : caps) {
         float l = static_cast<float>(cap.fX);
@@ -140,7 +140,7 @@ void EndCapRenderStep::writeUniformsAndTextures(const DrawParams& params,
                      static_cast<float>(proxies[0]->dimensions().height())};
     gatherer->write(atlasDim);
 
-    for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
+    for (int i = 0; i < SparseStripsConfig::kMaxTexturePages; ++i) {
         int proxyIdx = std::min(i, proxies.size() - 1);
         gatherer->add(proxies[proxyIdx], {SkFilterMode::kNearest, SkTileMode::kClamp});
     }
