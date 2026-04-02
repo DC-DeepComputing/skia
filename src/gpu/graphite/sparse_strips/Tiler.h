@@ -8,9 +8,12 @@
 #ifndef skgpu_graphite_Tiler_DEFINED
 #define skgpu_graphite_Tiler_DEFINED
 
+#include "include/core/SkRect.h"
 #include "include/private/base/SkAssert.h"
+#include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <algorithm>
 #include <cmath>
@@ -98,18 +101,27 @@ public:
 
     const std::vector<TileType>& getTiles() const { return fTileBuf; }
 
-    void makeTilesMSAA(const Polyline& polyline, uint16_t width, uint16_t height) {
+    bool makeTilesMSAA(const Polyline& polyline, SkIRect clip,
+                       WindingHistogram& histogram) {
         SkASSERT(polyline.count() <= MAX_LINES_PER_PATH);
 
-        if (width == 0 || height == 0) {
-            return;
+        bool cullingEventOccurred = false;
+        if (clip.isEmpty()) {
+            return cullingEventOccurred;
         }
 
-        uint16_t tileColumns = divCeil(width, WIDTH);
-        uint16_t tileRows = divCeil(height, HEIGHT);
+        uint16_t tileColumns = divCeil(clip.right(), WIDTH);
+        uint16_t tileRows = divCeil(clip.bottom(), HEIGHT);
 
         constexpr float invW = 1.0f / static_cast<float>(WIDTH);
         constexpr float invH = 1.0f / static_cast<float>(HEIGHT);
+
+        float clipLeftTile = clip.left() * invW;
+        float clipTopTile = clip.top() * invH;
+        float clipRightTile = clip.right() * invW;
+
+        uint16_t minTileX = f32ToU16Sat(clipLeftTile);
+        uint16_t minTileY = f32ToU16Sat(clipTopTile);
 
         for (auto it = polyline.begin(); it != polyline.end(); ++it) {
             auto [line, lineIdx] = *it;
@@ -128,26 +140,29 @@ public:
                 lineRightX = p0X;
             }
 
-            if (lineLeftX > static_cast<float>(tileColumns)) {
+            if (lineLeftX > clipRightTile) {
                 continue;
             }
 
             float lineTopY, lineTopX, lineBottomY, lineBottomX;
+            int16_t windingDir;
             if (p0Y < p1Y) {
                 lineTopY = p0Y;
                 lineTopX = p0X;
                 lineBottomY = p1Y;
                 lineBottomX = p1X;
+                windingDir = 1;
             } else {
                 lineTopY = p1Y;
                 lineTopX = p1X;
                 lineBottomY = p0Y;
                 lineBottomX = p0X;
+                windingDir = -1;
             }
 
-            uint16_t yTopTiles = std::min(f32ToU16Sat(lineTopY), tileRows);
+            uint16_t yTopTiles = std::max(minTileY, std::min(f32ToU16Sat(lineTopY), tileRows));
             float lineBottomYCeil = std::ceil(lineBottomY);
-            uint16_t yBottomTiles = std::min(f32ToU16Sat(lineBottomYCeil), tileRows);
+            uint16_t yBottomTiles = std::max(minTileY, std::min(f32ToU16Sat(lineBottomYCeil), tileRows));
 
             if (yTopTiles >= yBottomTiles) {
                 continue;
@@ -165,12 +180,35 @@ public:
             }
 
             bool notSameTile = (p0TileY != p1TileY) || (p0TileX != p1TileX);
+
+            // If the line is fully left of the viewport, it is culled, and the resulting
+            // winding is stored in a histogram forwarded to the strip generation.
+            if (lineRightX < clipLeftTile) {
+                cullingEventOccurred = true;
+                bool isStartCulled = (lineTopY < clipTopTile);
+                if (!isStartCulled) {
+                    if (static_cast<float>(yTopTiles) >= lineTopY) {
+                        histogram.addWinding(yTopTiles, windingDir);
+                    }
+                }
+
+                uint16_t yStart = isStartCulled ? yTopTiles : (yTopTiles + 1);
+                float lineBottomFloor = std::floor(lineBottomY);
+                uint16_t yEndIdx = std::min(f32ToU16Sat(lineBottomFloor), tileRows);
+                histogram.addWindingRange(yStart, yEndIdx, windingDir);
+
+                if ((p0TileY != p1TileY) && lineBottomY != lineBottomFloor && yEndIdx < tileRows) {
+                    histogram.addWinding(yEndIdx, windingDir);
+                }
+                continue;
+            }
+
             if (notSameTile) {
                 if (lineLeftX == lineRightX) {
-                    uint16_t x =
-                            std::min(f32ToU16Sat(lineLeftX),
-                                     static_cast<uint16_t>(tileColumns > 0 ? tileColumns - 1 : 0));
-                    bool isStartCulled = (lineTopY < 0.0f);
+                    uint16_t x = std::min(f32ToU16Sat(lineLeftX),
+                                          static_cast<uint16_t>(tileColumns > 0 ? tileColumns - 1 : 0));
+                    x = std::max(minTileX, x);
+                    bool isStartCulled = (lineTopY < clipTopTile);
                     if (!isStartCulled) {
                         uint32_t winding = (static_cast<float>(yTopTiles) >= lineTopY) ? W : 0;
                         uint32_t intersectionMask = B | winding;
@@ -212,34 +250,46 @@ public:
                         lineLeftX, lineRightX,
                         p0TileX, p0TileY,
                         p1TileX, p1TileY,
-                        tileColumns
+                        tileColumns,
+                        windingDir,
+                        clipLeftTile,
+                        clipTopTile,
+                        minTileX
                     };
 
-                    float minX = std::min(p0X, p1X);
-                    float maxX = std::max(p0X, p1X);
-                    bool needsClamping = (minX < lineLeftX) || (maxX >= lineRightX);
-                    bool kXDir = lineBottomX >= lineTopX;
+                    bool leftCrossing = lineLeftX < clipLeftTile;
+                    bool rightCrossing = lineRightX >= clipRightTile;
 
-                    if (needsClamping) {
+                    bool kXDir = lineBottomX >= lineTopX;
+                    bool crossesEdge = leftCrossing || rightCrossing;
+
+                    if (crossesEdge) {
+                        if (leftCrossing) {
+                            cullingEventOccurred = true;
+                        }
+
                         if (kXDir)
-                            runLoops<true, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                            runLoops<true, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                         else
-                            runLoops<false, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                            runLoops<false, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                     } else {
                         if (kXDir)
-                            runLoops<true, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                            runLoops<true, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                         else
-                            runLoops<false, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                            runLoops<false, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                     }
                 }
 
             } else {
                 uint16_t xClamped =
                         std::min(f32ToU16Sat(lineLeftX), static_cast<uint16_t>(tileColumns + 1));
+                xClamped = std::max(minTileX, xClamped);
                 uint32_t winding = static_cast<float>(yTopTiles) >= lineTopY ? W : 0;
                 fTileBuf.push_back(TileType(xClamped, yTopTiles, lineIdx, winding));
             }
         }
+
+        return cullingEventOccurred;
     }
 
 private:
@@ -255,6 +305,10 @@ private:
         int32_t  p0TileX, p0TileY;
         int32_t  p1TileX, p1TileY;
         uint16_t tileColumns;
+        int16_t  windingDir;
+        float    clipLeftTile;
+        float    clipTopTile;
+        uint16_t minTileX;
     };
 
     static SK_ALWAYS_INLINE uint16_t divCeil(uint16_t a, uint16_t b) {
@@ -323,20 +377,33 @@ private:
         fTileBuf.push_back(TileType(xIdx, y, ctx.lineIdx, mask));
     }
 
-    template <bool kXDir, bool kNeedsClamping, bool kCheckStart, bool kCheckEnd>
+    template <bool kXDir, bool kCrossesEdge, bool kCheckStart, bool kCheckEnd>
     SK_ALWAYS_INLINE void processRow(const LineContext& ctx,
                                      uint16_t yIdx,
                                      float rowTopX,
                                      float rowBottomX,
-                                     uint32_t wMask) {
+                                     uint32_t wMask,
+                                     WindingHistogram& histogram) {
         float lx, rx;
         uint16_t xEndVal;
 
-        if constexpr (kNeedsClamping) {
-            float minRowX = std::fmin(rowTopX, rowBottomX);
-            float maxRowX = std::fmax(rowTopX, rowBottomX);
-            lx = std::fmax(minRowX, ctx.lineLeftX);
-            rx = std::fmin(maxRowX, ctx.lineRightX);
+        if constexpr (kCrossesEdge) {
+            if (rowTopX < ctx.clipLeftTile) {
+                if (wMask & W) {
+                    histogram.addWinding(yIdx, ctx.windingDir);
+                }
+
+                if (rowBottomX < ctx.clipLeftTile) {
+                    return;
+                } else {
+                    // Strip the winding bit so the winding isn't double counted.
+                    wMask &= ~W;
+                }
+            }
+
+            lx = std::fmax(std::fmin(rowTopX, rowBottomX), ctx.lineLeftX);
+            rx = std::fmin(std::fmax(rowTopX, rowBottomX), ctx.lineRightX);
+
             xEndVal =
                     std::min(f32ToU16Sat(rx),
                              static_cast<uint16_t>(ctx.tileColumns > 0 ? ctx.tileColumns - 1 : 0));
@@ -348,7 +415,7 @@ private:
 
         int32_t canonicalXStart = static_cast<int32_t>(std::floor(lx));
         uint16_t canonicalXEnd = f32ToU16Sat(rx);
-        uint16_t xStart = f32ToU16Sat(lx);
+        uint16_t xStart = std::max(ctx.minTileX, f32ToU16Sat(lx));
 
         if (xStart <= xEndVal) {
             uint32_t isSingle = (xStart == xEndVal) ? 1 : 0;
@@ -383,13 +450,14 @@ private:
         }
     }
 
-    template <bool kXDir, bool kNeedsClamping>
+    template <bool kXDir, bool kCrossesEdge>
     SK_ALWAYS_INLINE void runLoops(const LineContext& ctx,
                                    float lineTopY,
                                    float lineBottomY,
                                    uint16_t yTopTiles,
-                                   uint16_t tileRows) {
-        bool isStartCulled = (lineTopY < 0.0f);
+                                   uint16_t tileRows,
+                                   WindingHistogram& histogram) {
+        bool isStartCulled = (lineTopY < ctx.clipTopTile);
         if (!isStartCulled) {
             float y = static_cast<float>(yTopTiles);
             float rowBottomY = std::min(y + 1.0f, lineBottomY);
@@ -400,8 +468,8 @@ private:
                                        : ctx.topX + (rowBottomY - ctx.topY) * ctx.xSlope;
 
             uint32_t mask = (y >= lineTopY) ? W : 0;
-            processRow<kXDir, kNeedsClamping, true, true>(
-                    ctx, yTopTiles, rowTopX, rowBottomX, mask);
+            processRow<kXDir, kCrossesEdge, true, true>(
+                    ctx, yTopTiles, rowTopX, rowBottomX, mask, histogram);
         }
 
         uint16_t yStartMiddle = isStartCulled ? yTopTiles : (yTopTiles + 1);
@@ -421,8 +489,8 @@ private:
                 float y = static_cast<float>(yIdx);
                 float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
                 float rowBottomX = ctx.topX + (y + 1.0f - ctx.topY) * ctx.xSlope;
-                processRow<kXDir, kNeedsClamping, false, false>(
-                        ctx, yIdx, rowTopX, rowBottomX, 0xffffffff);
+                processRow<kXDir, kCrossesEdge, false, false>(
+                        ctx, yIdx, rowTopX, rowBottomX, 0xffffffff, histogram);
             }
 
             if (!hasSeparateBottomRow && yEndMiddle > yStartMiddle) {
@@ -434,8 +502,8 @@ private:
                 float rowBottomX = (rowBottomY == ctx.bottomY)
                                            ? ctx.bottomX
                                            : ctx.topX + (rowBottomY - ctx.topY) * ctx.xSlope;
-                processRow<kXDir, kNeedsClamping, false, true>(
-                        ctx, yIdx, rowTopX, rowBottomX, 0xffffffff);
+                processRow<kXDir, kCrossesEdge, false, true>(
+                        ctx, yIdx, rowTopX, rowBottomX, 0xffffffff, histogram);
             }
         }
 
@@ -445,8 +513,8 @@ private:
 
             float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
             float rowBottomX = ctx.bottomX;
-            processRow<kXDir, kNeedsClamping, false, true>(
-                    ctx, yIdx, rowTopX, rowBottomX, 0xffffffff);
+            processRow<kXDir, kCrossesEdge, false, true>(
+                    ctx, yIdx, rowTopX, rowBottomX, 0xffffffff, histogram);
         }
     }
 };

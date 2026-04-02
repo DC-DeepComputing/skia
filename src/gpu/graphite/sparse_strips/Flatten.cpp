@@ -621,15 +621,15 @@ size_t Flatten::flattenCubicSimd(const SkPoint pts[4]) {
 }
 
 void Flatten::processPathsSimd(
-        const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline& polyline) {
+        const SkPath& path, const SkMatrix& ctm, SkIRect clip, Polyline& polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, &polyline](const SkPoint pts[3]) {
+    auto processQuad = [this, clip, &polyline](const SkPoint pts[3]) {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[2].fX);
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[2].fY);
 
-        bool culled = skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height);
-        bool isLine = skvx::all(X < 0.0f) || isWithinDistSq(pts[1], pts[0], pts[2], 4.0f * kTol2);
+        bool culled = skvx::all(X > clip.right()) || skvx::all(Y < clip.top()) || skvx::all(Y > clip.bottom());
+        bool isLine = skvx::all(X < clip.left()) || isWithinDistSq(pts[1], pts[0], pts[2], 4.0f * kTol2);
 
         if (culled || isLine) {
             polyline.appendPoint(pts[2]);
@@ -647,13 +647,13 @@ void Flatten::processPathsSimd(
         }
     };
 
-    auto processCubic = [this, width, height, &polyline](const SkPoint pts[4]) {
+    auto processCubic = [this, clip, &polyline](const SkPoint pts[4]) {
         skvx::float8 P = skvx::float8::Load(pts);
         skvx::float4 X = skvx::shuffle<0, 2, 4, 6>(P);
         skvx::float4 Y = skvx::shuffle<1, 3, 5, 7>(P);
 
-        bool culled = skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height);
-        bool isLine = skvx::all(X < 0.0f) ||
+        bool culled = skvx::all(X > clip.right()) || skvx::all(Y < clip.top()) || skvx::all(Y > clip.bottom());
+        bool isLine = skvx::all(X < clip.left()) ||
                       (isWithinDistSq(pts[1], pts[0], pts[3], (16.0f / 9.0f) * kTol2) &&
                        isWithinDistSq(pts[2], pts[0], pts[3], (16.0f / 9.0f) * kTol2));
 
@@ -675,14 +675,14 @@ void Flatten::processPathsSimd(
 }
 
 void Flatten::processPathsScalar(
-        const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline& polyline) {
+        const SkPath& path, const SkMatrix& ctm, SkIRect clip, Polyline& polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, &polyline](const SkPoint pts[3]) {
-        bool culled = (pts[0].fX > width && pts[1].fX > width && pts[2].fX > width) ||
-                      (pts[0].fY < 0.0f && pts[1].fY < 0.0f && pts[2].fY < 0.0f) ||
-                      (pts[0].fY > height && pts[1].fY > height && pts[2].fY > height);
-        bool isLine = (pts[0].fX < 0.0f && pts[1].fX < 0.0f && pts[2].fX < 0.0f) ||
+    auto processQuad = [this, clip, &polyline](const SkPoint pts[3]) {
+        bool culled = (pts[0].fX > clip.right() && pts[1].fX > clip.right() && pts[2].fX > clip.right()) ||
+                      (pts[0].fY < clip.top() && pts[1].fY < clip.top() && pts[2].fY < clip.top()) ||
+                      (pts[0].fY > clip.bottom() && pts[1].fY > clip.bottom() && pts[2].fY > clip.bottom());
+        bool isLine = (pts[0].fX < clip.left() && pts[1].fX < clip.left() && pts[2].fX < clip.left()) ||
                       isWithinDistSq(pts[1], pts[0], pts[2], 4.0f * kTol2);
 
         if (culled || isLine) {
@@ -701,15 +701,15 @@ void Flatten::processPathsScalar(
         }
     };
 
-    auto processCubic = [this, width, height, &polyline](const SkPoint pts[4]) {
+    auto processCubic = [this, clip, &polyline](const SkPoint pts[4]) {
         bool culled =
-                (pts[0].fX > width && pts[1].fX > width && pts[2].fX > width &&
-                 pts[3].fX > width) ||
-                (pts[0].fY < 0.0f && pts[1].fY < 0.0f && pts[2].fY < 0.0f && pts[3].fY < 0.0f) ||
-                (pts[0].fY > height && pts[1].fY > height && pts[2].fY > height &&
-                 pts[3].fY > height);
+                (pts[0].fX > clip.right() && pts[1].fX > clip.right() && pts[2].fX > clip.right() &&
+                 pts[3].fX > clip.right()) ||
+                (pts[0].fY < clip.top() && pts[1].fY < clip.top() && pts[2].fY < clip.top() && pts[3].fY < clip.top()) ||
+                (pts[0].fY > clip.bottom() && pts[1].fY > clip.bottom() && pts[2].fY > clip.bottom() &&
+                 pts[3].fY > clip.bottom());
         bool isLine =
-                (pts[0].fX < 0.0f && pts[1].fX < 0.0f && pts[2].fX < 0.0f && pts[3].fX < 0.0f) ||
+                (pts[0].fX < clip.left() && pts[1].fX < clip.left() && pts[2].fX < clip.left() && pts[3].fX < clip.left()) ||
                 (isWithinDistSq(pts[1], pts[0], pts[3], (16.0f / 9.0f) * kTol2) &&
                  isWithinDistSq(pts[2], pts[0], pts[3], (16.0f / 9.0f) * kTol2));
 

@@ -12,6 +12,7 @@ struct Tiger {
     static constexpr uint16_t kImageHeight = 200;
     static constexpr float kImageWidthF = static_cast<float>(kImageWidth);
     static constexpr float kImageHeightF = static_cast<float>(kImageHeight);
+    static constexpr SkIRect kDim = SkIRect::MakeWH(kImageWidth, kImageHeight);
 
     static constexpr const char* kTigerPathStrings[] = {
             "M27.014 90.57s.039.744-.287.736c-.322-.007-6.776-18.87-14.831-17.99 0 0 6.976-2.885 "

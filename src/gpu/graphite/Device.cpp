@@ -442,11 +442,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 
 struct StripGeneratorWrapper {
     StripGenerator<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fGenerator;
-    StripGeneratorWrapper(uint16_t viewportWidth,
-                          uint16_t viewportHeight,
-                          const SkTDArray<uint8_t>& lut,
-                          Recorder* recorder)
-        : fGenerator(viewportWidth, viewportHeight, lut, recorder) {}
+    StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
+        : fGenerator(deviceSize, lut, recorder) {}
 };
 
 sk_sp<Device> Device::Make(Recorder* recorder,
@@ -500,8 +497,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     if (recorder->priv().rendererProvider()->IsSupported(
                 PathRendererStrategy::kCPUSparseStripsMSAA8, caps)) {
         device->fStripGenerator = std::make_unique<StripGeneratorWrapper>(
-                deviceSize.width(),
-                deviceSize.height(),
+                deviceSize,
                 recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
                 recorder);
     }
@@ -1885,8 +1881,10 @@ void Device::drawGeometry(const Transform& localToDevice,
                 finalPath = geometry.shape().asPath();
             }
 
+            SkIRect clipBounds =
+                    clip.transformedShapeBounds().makeIntersect(clip.scissor()).asSkIRect();
             auto [wides, ends] = fStripGenerator->fGenerator.processGeometry(
-                    finalPath, localToDevice.matrix().asM33());
+                    finalPath, localToDevice.matrix().asM33(), clipBounds);
 
             if (!ends.empty()) {
                 fDC->recordDraw(&renderer[0], localToDevice, Geometry(ends), clip, order, paintID,

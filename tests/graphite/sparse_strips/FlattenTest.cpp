@@ -18,6 +18,8 @@ namespace skgpu::graphite {
 
 namespace {
 
+static constexpr int32_t kViewDim = 100;
+
 SkPoint evalQuad(const SkPoint pts[3], float t) {
     float mt = 1.0f - t;
     return pts[0] * (mt * mt) + pts[1] * (2.0f * mt * t) + pts[2] * (t * t);
@@ -142,8 +144,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
                                    const char* testName) {
         Flatten flattener;
         Polyline polyline;
-        const float kViewDim = 10000.0f;
-        flattener.processPaths<kMode>(path, SkMatrix(), kViewDim, kViewDim, polyline);
+        flattener.processPaths<kMode>(
+                path, SkMatrix(), SkIRect::MakeWH(kViewDim, kViewDim), polyline);
 
         if (path.isEmpty()) {
             REPORTER_ASSERT(reporter, polyline.empty(), "[%s] Expected empty output", testName);
@@ -205,13 +207,11 @@ template <FlattenMode kMode> class FlattenTestRunner {
     }
 
     static void testCulling(skiatest::Reporter* reporter) {
-        const float kViewW = 100.0f;
-        const float kViewH = 100.0f;
-
         auto checkCull = [&](const SkPath& path, bool expectCulled, const char* testName) {
             Flatten flattener;
             Polyline polyline;
-            flattener.processPaths<kMode>(path, SkMatrix(), kViewW, kViewH, polyline);
+            flattener.processPaths<kMode>(
+                    path, SkMatrix(), SkIRect::MakeWH(kViewDim, kViewDim), polyline);
 
             // TODO (thomsmit): check that the simplified produces the correct equivalent winding
             // A single contour that is culled should output exactly 4 points:
