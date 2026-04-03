@@ -304,6 +304,29 @@ DEF_TEST_SCANNERS(FontMgrAndroidParserFamilyList, reporter) {
     }
 }
 
+DEF_TEST_SCANNERS(FontMgrAndroidParserFontsModification, reporter) {
+    bool resourcesMissing = false;
+    std::vector<std::unique_ptr<FontFamily>> families;
+    SkFontMgr_Android_Parser::GetCustomFontFamilies(
+            families,
+            SkString("/custom/font/path/"),
+            GetResourcePath("android_fonts/mod/fonts_modification.xml").c_str(),
+            nullptr);
+
+    if (families.size() > 0) {
+        REPORTER_ASSERT(reporter, families.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames[0].equals("mod-family"));
+        REPORTER_ASSERT(reporter, families[0]->fFonts[0].fFileName.equals("ModFont.ttf"));
+    } else {
+        resourcesMissing = true;
+    }
+
+    if (resourcesMissing) {
+        SkDebugf("---- Resource files missing for FontConfigParser fonts-modification test\n");
+    }
+}
+
 DEF_TEST_SCANNERS(FontMgrAndroidLegacyMakeTypeface, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
