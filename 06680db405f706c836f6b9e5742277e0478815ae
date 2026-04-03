@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7936b7a_e0630d57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-03T13:55:01Z",
+      "side": 1,
+      "message": "This change appears to increase the size of surfaceflinger by 10% (~1MiB).",
+      "revId": "06680db405f706c836f6b9e5742277e0478815ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
