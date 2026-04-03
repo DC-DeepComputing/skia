@@ -213,6 +213,16 @@ public:
         }
     }
 
+    // Reset to an empty key
+    void resetForDraw() {
+        SkASSERT(!fLocked);
+        fData.clear();
+        fHasError = false;
+
+        SkDEBUGCODE(fStack.clear();)
+        SkDEBUGCODE(this->checkReset();)
+    }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
@@ -230,15 +240,10 @@ private:
     // Invalidates any PaintParamsKey returned by lockAsKey() unless it has been cloned.
     void unlock() {
         SkASSERT(fLocked);
-        fData.clear();
-        fHasError = false;
-
         SkDEBUGCODE(fLocked = false;)
-        SkDEBUGCODE(fStack.clear();)
-        SkDEBUGCODE(this->checkReset();)
     }
 
-    // The data array uses clear() on unlock so that it's underlying storage and repeated use of the
+    // The data array uses clear() on reset so that it's underlying storage and repeated use of the
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<uint32_t> fData;
     bool fHasError = false; // if true, fData may not encode a valid/complete ShaderNode tree.

@@ -60,6 +60,9 @@ PaintOption::PaintOption(bool opaquePaintColor,
 }
 
 void PaintOption::toKey(const KeyContext& keyContext) const {
+    // Don't bother checking the uniform data manager, precompile doesn't depend on those values
+    SkDEBUGCODE(keyContext.paintParamsKeyBuilder()->checkReset();)
+
     // Root Node 0 is the source color, which is the output of all effects post dithering
     this->handleDithering(keyContext);
 

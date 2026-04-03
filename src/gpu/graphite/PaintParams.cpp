@@ -422,6 +422,9 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
 }
 
 std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyContext) const {
+    SkDEBUGCODE(keyContext.pipelineDataGatherer()->checkReset());
+    SkDEBUGCODE(keyContext.paintParamsKeyBuilder()->checkReset());
+
     // Root Node 0 is the source color, which is the output of all effects post dithering
     bool isOpaque = this->handleDithering(keyContext);
 

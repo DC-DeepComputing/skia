@@ -329,14 +329,17 @@ public:
             : fRecorder(recorder),
               fKeyAndDataBuilder(fRecorder->priv().popOrCreateKeyAndDataBuilder()) {
         SkASSERT(fKeyAndDataBuilder);
-        SkDEBUGCODE(this->gatherer()->checkReset());
-        SkDEBUGCODE(this->builder()->checkReset());
+        // The PipelineDataGatherer and builder must be reset before being returned to the pool for
+        // reuse, so they should be empty when we fetch them here
+        SkDEBUGCODE(this->gatherer()->checkReset();)
+        SkDEBUGCODE(this->builder()->checkReset();)
     }
 
     ~ScopedDrawBuilder() {
         SkASSERT(fKeyAndDataBuilder && fRecorder);
-        // The PipelineDataGatherer must be reset before being returned to the pool for reuse.
+        // The PipelineDataGatherer and builder must be reset before being returned to the pool.
         this->gatherer()->resetForDraw();
+        this->builder()->resetForDraw();
         fRecorder->priv().pushKeyAndDataBuilder(std::move(fKeyAndDataBuilder));
     }
 

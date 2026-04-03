@@ -33,6 +33,7 @@ void PaintParamsKeyBuilder::checkReset() {
 }
 
 void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
+    SkASSERT(!fLocked);
     SkASSERT(fDict->isValidID(codeSnippetID));
     // If the kError ID is pushed, fHasError must have been set already.
     SkASSERT(codeSnippetID != (int) BuiltInCodeSnippetID::kError || fHasError);
@@ -47,6 +48,7 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
 }
 
 void PaintParamsKeyBuilder::validateData(size_t dataSize) {
+    SkASSERT(!fLocked);
     SkASSERT(!fStack.empty()); // addData() called within code snippet block
     // Check that addData() is only called for snippets that support it and is only called once
     const ShaderSnippet* snippet = fDict->getEntry(fStack.back().fCodeSnippetID);
@@ -57,6 +59,7 @@ void PaintParamsKeyBuilder::validateData(size_t dataSize) {
 }
 
 void PaintParamsKeyBuilder::popStack() {
+    SkASSERT(!fLocked);
     SkASSERT(!fStack.empty());
     SkASSERT(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren);
     const bool expectsData = fDict->getEntry(fStack.back().fCodeSnippetID)->storesSamplerDescData();
