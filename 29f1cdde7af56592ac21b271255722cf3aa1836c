@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5d5bea73_84f3bbc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18284
+      },
+      "writtenOn": "2026-04-03T16:48:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07cf0e67_ba4abc44",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "65939a53_df8e4a2b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -120,6 +138,24 @@
       "side": 1,
       "message": "I\u0027m sorry about the current state of the Android NDK API. I\u0027m okay with landing this change. FYI, I\u0027m now actively working on adding a bunch of NDK APIs (as well as Java APIs) to provide full access to the fonts installed on Android. This is not yet approved and it\u0027s not clear which release it will be included in, but hopefully, these new APIs will solve the long-standing issue.\n\nhttps://docs.google.com/document/d/1EQFdq2Y6OZwoB49CE-3ItnPKYrgL4Ky9XU_lZprvAPs/edit?resourcekey\u003d0-0fCTzM6IUh9gS_kEPWUXNg\u0026tab\u003dt.0#heading\u003dh.uqp5kjf2son0",
       "parentUuid": "2e3fc06f_5c05afef",
+      "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cadc98ff_4107297b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18284
+      },
+      "writtenOn": "2026-04-03T16:48:13Z",
+      "side": 1,
+      "message": "Thanks for getting back to us. OK, sounds like we\u0027ll proceed with these changes just to meet the immediate requirements and bank on improvements to the NDK long-term.",
+      "parentUuid": "b33a4c74_81c3823b",
       "revId": "29f1cdde7af56592ac21b271255722cf3aa1836c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
