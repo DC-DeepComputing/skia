@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c5810a_8e70cd40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18284
+      },
+      "writtenOn": "2026-04-03T23:08:43Z",
+      "side": 1,
+      "message": "@bungeman@google.com\n\nGerrit removed your +1 when I rebased to resolve merge conflicts. Could you please have another look? Thanks.",
+      "revId": "235a893d9e7b598eda77ab453aaa684f3044a616",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
