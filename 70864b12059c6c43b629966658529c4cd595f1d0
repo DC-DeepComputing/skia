@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "287d236d_e5b9f4df",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-03T18:51:57Z",
+      "side": 1,
+      "message": "This does not exist on the old branch. Thus it fails to compile locally.",
+      "range": {
+        "startLine": 185,
+        "startChar": 44,
+        "endLine": 185,
+        "endChar": 55
+      },
+      "revId": "70864b12059c6c43b629966658529c4cd595f1d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
