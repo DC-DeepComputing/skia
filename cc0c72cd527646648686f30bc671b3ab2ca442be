@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c5ef23_7968c52d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-03T14:12:52Z",
+      "side": 1,
+      "message": "Since this landed `Ubuntu-NativeFonts` jobs have been failing on `SkParagraph_SoftHyphenAtLineBreak` and `SkParagraph_SoftHyphenLineWidth`. These tests should either be run with just the test fonts (I think that is enough) or should be made more robust for native fonts.",
+      "revId": "cc0c72cd527646648686f30bc671b3ab2ca442be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
