@@ -250,7 +250,7 @@ bool ImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
         return false;
     }
     for (uint32_t i = 0; i < count; ++i) {
-        const uint8_t* data = entryData + i * BytesForType(kTypeUnsignedLong);
+        const uint8_t* data = entryData + i * BytesForType(type);
         switch (type) {
             case kTypeUnsignedShort:
                 reinterpret_cast<uint16_t*>(values)[i] =

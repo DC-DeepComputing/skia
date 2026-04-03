@@ -34,7 +34,7 @@ static void copy(void* dst, const uint8_t* src, int width, int bpp, int deltaSrc
     // sampling, deltaSrc should equal bpp.
     SkASSERT(deltaSrc == bpp);
 
-    memcpy(dst, src + offset, width * bpp);
+    memcpy(dst, src + offset, (size_t)width * bpp);
 }
 
 static void sample1(void* dst, const uint8_t* src, int width, int bpp, int deltaSrc, int offset,
@@ -1197,8 +1197,8 @@ SkSwizzler::SkSwizzler(RowProc fastProc, RowProc proc, const SkPMColor* ctable, 
     , fColorTable(ctable)
     , fSrcOffset(srcOffset)
     , fDstOffset(dstOffset)
-    , fSrcOffsetUnits(srcOffset * srcBPP)
-    , fDstOffsetBytes(dstOffset * dstBPP)
+    , fSrcOffsetUnits((int)((int64_t)srcOffset * srcBPP))
+    , fDstOffsetBytes((int)((int64_t)dstOffset * dstBPP))
     , fSrcWidth(srcWidth)
     , fDstWidth(dstWidth)
     , fSwizzleWidth(srcWidth)
@@ -1212,7 +1212,7 @@ int SkSwizzler::onSetSampleX(int sampleX) {
     SkASSERT(sampleX > 0);
 
     fSampleX = sampleX;
-    fDstOffsetBytes = (fDstOffset / sampleX) * fDstBPP;
+    fDstOffsetBytes = (int)((int64_t)(fDstOffset / sampleX) * fDstBPP);
     fSwizzleWidth = SkCodecPriv::GetSampledDimension(fSrcWidth, sampleX);
     fAllocatedWidth = SkCodecPriv::GetSampledDimension(fDstWidth, sampleX);
 
@@ -1226,11 +1226,11 @@ int SkSwizzler::onSetSampleX(int sampleX) {
         // frame width to ensure that fSrcOffsetUnits is sensible.
         frameSampleX = fSrcWidth / fSwizzleWidth;
     }
-    fSrcOffsetUnits = (SkCodecPriv::GetStartCoord(frameSampleX) + fSrcOffset) * fSrcBPP;
+    fSrcOffsetUnits = (int)((int64_t)(SkCodecPriv::GetStartCoord(frameSampleX) + fSrcOffset) * fSrcBPP);
 
     if (fDstOffsetBytes > 0) {
-        const size_t dstSwizzleBytes   = fSwizzleWidth   * fDstBPP;
-        const size_t dstAllocatedBytes = fAllocatedWidth * fDstBPP;
+        const size_t dstSwizzleBytes   = (size_t)fSwizzleWidth   * fDstBPP;
+        const size_t dstAllocatedBytes = (size_t)fAllocatedWidth * fDstBPP;
         if (fDstOffsetBytes + dstSwizzleBytes > dstAllocatedBytes) {
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
             SkAndroidFrameworkUtils::SafetyNetLog("118143775");
