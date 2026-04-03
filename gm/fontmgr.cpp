@@ -42,7 +42,7 @@ static SkScalar drawString(SkCanvas* canvas, const SkString& text, SkScalar x,
     return x + font.measureText(text.c_str(), text.size(), SkTextEncoding::kUTF8);
 }
 
-static SkScalar drawCharacter(SkCanvas* canvas, uint32_t character, SkScalar x,
+static SkScalar drawCharacter(SkCanvas* canvas, SkUnichar character, SkScalar x,
                               SkScalar y, const SkFont& origFont, SkFontMgr* fm,
                               const char* fontName, const char* bcp47[], int bcp47Count,
                               const SkFontStyle& fontStyle) {
@@ -50,21 +50,32 @@ static SkScalar drawCharacter(SkCanvas* canvas, uint32_t character, SkScalar x,
     // find typeface containing the requested character and draw it
     SkString ch;
     ch.appendUnichar(character);
-    sk_sp<SkTypeface> typeface(fm->matchFamilyStyleCharacter(fontName, fontStyle,
-                                                             bcp47, bcp47Count, character));
-    font.setTypeface(typeface);
+    sk_sp<SkTypeface> typeface0(fm->matchFamilyStyleCharacter(fontName, fontStyle,
+                                                              bcp47, bcp47Count, character));
+    font.setTypeface(typeface0);
     x = drawString(canvas, ch, x, y, font) + 20;
 
-    if (nullptr == typeface) {
+    SkFontMgr::Request request;
+    SkFontMgr::Request::CMapEntry characters{character, 0};
+    request.characters = SkSpan(&characters, 1);
+    request.bcp47 = SkSpan(bcp47, bcp47Count);
+    request.familyName = fontName;
+    SkFontArguments::VariationPosition::Coordinate model[4];
+    SkFontMgr::Request ::MakeModel(fontStyle, model);
+    request.model = SkSpan(model);
+    sk_sp<SkTypeface> typeface1 = fm->fallback(request);
+    font.setTypeface(typeface1);
+    x = drawString(canvas, ch, x, y, font) + 20;
+
+    if (nullptr == typeface0) {
         return x;
     }
-
     // repeat the process, but this time use the family name of the typeface
     // from the first pass.  This emulates the behavior in Blink where it
     // it expects to get the same glyph when following this pattern.
     SkString familyName;
-    typeface->getFamilyName(&familyName);
-    font.setTypeface(fm->legacyMakeTypeface(familyName.c_str(), typeface->fontStyle()));
+    typeface0->getFamilyName(&familyName);
+    font.setTypeface(fm->legacyMakeTypeface(familyName.c_str(), typeface0->fontStyle()));
     return drawString(canvas, ch, x, y, font) + 20;
 }
 
