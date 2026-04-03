@@ -57,9 +57,7 @@ private:
         kMac,
         kMacIntel,
     };
-    static bool GetGPUFamily(id<MTLDevice>, GPUFamily*, int* group);
 
-    SkSpan<const ColorTypeInfo> getColorTypeInfos(const TextureInfo&) const override;
     TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
                                         TextureFormat,
                                         SampleCount,
