@@ -100,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efcbe29c_6912e028",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-03T16:33:55Z",
+      "side": 1,
+      "message": "I think all the logs added here represent either rare circumstances we wouldn\u0027t expect to happen (unless the device was in a bad state, so error logs are helpful) or a pretty serious holding-it-wrong error (so log spam is good).",
+      "parentUuid": "c1a762ab_c12ee5c8",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "1c1f517f6d26010c195af5a5241ef4c09b5ce86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0807a904_b65c91af",
