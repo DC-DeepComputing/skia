@@ -493,27 +493,41 @@ SI U32 gather_32(const uint8_t* p, I32 ix) {
 }
 
 SI U32 gather_24(const uint8_t* p, I32 ix) {
-    // First, back up a byte.  Any place we're gathering from has a safe junk byte to read
-    // in front of it, either a previous table value, or some tag metadata.
-    p -= 1;
-
-    // Load the i'th 24-bit value from p, and 1 extra byte.
-    auto load_24_32 = [p](int i) {
-        return load<uint32_t>(p + 3*i);
+    // Safe fallback load of one 24-bit entry without under/over-reading neighbors.
+    auto load_24_32_safe = [p](int i) {
+        const uint8_t* ptr = p + 3*i;
+        return (uint32_t)load<uint16_t>(ptr + 0)
+             | (uint32_t)load<uint8_t>(ptr + 2) << 16;
     };
 
-    // Now load multiples of 4 bytes (a junk byte, then r,g,b).
 #if N == 1
-    U32 v = load_24_32(ix);
+    return load_24_32_safe(ix);
 #elif N == 4
-    U32 v = { load_24_32(ix[0]), load_24_32(ix[1]), load_24_32(ix[2]), load_24_32(ix[3]) };
+    return U32{
+        load_24_32_safe(ix[0]), load_24_32_safe(ix[1]),
+        load_24_32_safe(ix[2]), load_24_32_safe(ix[3]),
+    };
 #elif N == 8 && !defined(USING_AVX2)
-    U32 v = { load_24_32(ix[0]), load_24_32(ix[1]), load_24_32(ix[2]), load_24_32(ix[3]),
-              load_24_32(ix[4]), load_24_32(ix[5]), load_24_32(ix[6]), load_24_32(ix[7]) };
+    return U32{
+        load_24_32_safe(ix[0]), load_24_32_safe(ix[1]),
+        load_24_32_safe(ix[2]), load_24_32_safe(ix[3]),
+        load_24_32_safe(ix[4]), load_24_32_safe(ix[5]),
+        load_24_32_safe(ix[6]), load_24_32_safe(ix[7]),
+    };
 #elif N == 8
-    (void)load_24_32;
-    // The gather instruction here doesn't need any particular alignment,
-    // but the intrinsic takes a const int*.
+    // Fast AVX2 path still uses p-1, so avoid it when any lane indexes entry 0.
+    if (ix[0] == 0 || ix[1] == 0 || ix[2] == 0 || ix[3] == 0 ||
+        ix[4] == 0 || ix[5] == 0 || ix[6] == 0 || ix[7] == 0) {
+        return U32{
+            load_24_32_safe(ix[0]), load_24_32_safe(ix[1]),
+            load_24_32_safe(ix[2]), load_24_32_safe(ix[3]),
+            load_24_32_safe(ix[4]), load_24_32_safe(ix[5]),
+            load_24_32_safe(ix[6]), load_24_32_safe(ix[7]),
+        };
+    }
+
+    // Back up a byte and gather (junk,r,g,b), then shift off junk.
+    p -= 1;
     const int* p4 = bit_pun<const int*>(p);
     I32 zero = { 0, 0, 0, 0,  0, 0, 0, 0},
         mask = {-1,-1,-1,-1, -1,-1,-1,-1};
@@ -522,47 +536,77 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
     #elif defined(__GNUC__)
         U32 v = (U32)__builtin_ia32_gathersiv8si(zero, p4, 3*ix, mask, 1);
     #endif
+    return v >> 8;
 #elif N == 16
-    (void)load_24_32;
+    // Fast AVX-512 path still uses p-1, so avoid it when any lane indexes entry 0.
+    if (ix[ 0] == 0 || ix[ 1] == 0 || ix[ 2] == 0 || ix[ 3] == 0 ||
+        ix[ 4] == 0 || ix[ 5] == 0 || ix[ 6] == 0 || ix[ 7] == 0 ||
+        ix[ 8] == 0 || ix[ 9] == 0 || ix[10] == 0 || ix[11] == 0 ||
+        ix[12] == 0 || ix[13] == 0 || ix[14] == 0 || ix[15] == 0) {
+        return U32{
+            load_24_32_safe(ix[ 0]), load_24_32_safe(ix[ 1]),
+            load_24_32_safe(ix[ 2]), load_24_32_safe(ix[ 3]),
+            load_24_32_safe(ix[ 4]), load_24_32_safe(ix[ 5]),
+            load_24_32_safe(ix[ 6]), load_24_32_safe(ix[ 7]),
+            load_24_32_safe(ix[ 8]), load_24_32_safe(ix[ 9]),
+            load_24_32_safe(ix[10]), load_24_32_safe(ix[11]),
+            load_24_32_safe(ix[12]), load_24_32_safe(ix[13]),
+            load_24_32_safe(ix[14]), load_24_32_safe(ix[15]),
+        };
+    }
+
+    // Back up a byte and gather (junk,r,g,b), then shift off junk.
+    p -= 1;
     // The intrinsic is supposed to take const void* now, but it takes const int*, just like AVX2.
     // And AVX-512 swapped the order of arguments.  :/
     const int* p4 = bit_pun<const int*>(p);
     U32 v = (U32)_mm512_i32gather_epi32((__m512i)(3*ix), p4, 1);
-#endif
-
-    // Shift off the junk byte, leaving r,g,b in low 24 bits (and zero in the top 8).
     return v >> 8;
+#endif
 }
 
 #if !defined(__arm__)
     SI void gather_48(const uint8_t* p, I32 ix, U64* v) {
-        // As in gather_24(), with everything doubled.
-        p -= 2;
-
-        // Load the i'th 48-bit value from p, and 2 extra bytes.
-        auto load_48_64 = [p](int i) {
-            return load<uint64_t>(p + 6*i);
+        // Safe fallback load of one 48-bit entry without under/over-reading neighbors.
+        auto load_48_64_safe = [p](int i) {
+            const uint8_t* ptr = p + 6*i;
+            return (uint64_t)load<uint32_t>(ptr + 0)
+                 | (uint64_t)load<uint16_t>(ptr + 4) << 32;
         };
 
     #if N == 1
-        *v = load_48_64(ix);
+        *v = load_48_64_safe(ix);
     #elif N == 4
         *v = U64{
-            load_48_64(ix[0]), load_48_64(ix[1]), load_48_64(ix[2]), load_48_64(ix[3]),
+            load_48_64_safe(ix[0]), load_48_64_safe(ix[1]),
+            load_48_64_safe(ix[2]), load_48_64_safe(ix[3]),
         };
     #elif N == 8 && !defined(USING_AVX2)
         *v = U64{
-            load_48_64(ix[0]), load_48_64(ix[1]), load_48_64(ix[2]), load_48_64(ix[3]),
-            load_48_64(ix[4]), load_48_64(ix[5]), load_48_64(ix[6]), load_48_64(ix[7]),
+            load_48_64_safe(ix[0]), load_48_64_safe(ix[1]),
+            load_48_64_safe(ix[2]), load_48_64_safe(ix[3]),
+            load_48_64_safe(ix[4]), load_48_64_safe(ix[5]),
+            load_48_64_safe(ix[6]), load_48_64_safe(ix[7]),
         };
     #elif N == 8
-        (void)load_48_64;
+        // Fast AVX2 path still uses p-2, so avoid it when any lane indexes entry 0.
+        if (ix[0] == 0 || ix[1] == 0 || ix[2] == 0 || ix[3] == 0 ||
+            ix[4] == 0 || ix[5] == 0 || ix[6] == 0 || ix[7] == 0) {
+            *v = U64{
+                load_48_64_safe(ix[0]), load_48_64_safe(ix[1]),
+                load_48_64_safe(ix[2]), load_48_64_safe(ix[3]),
+                load_48_64_safe(ix[4]), load_48_64_safe(ix[5]),
+                load_48_64_safe(ix[6]), load_48_64_safe(ix[7]),
+            };
+            return;
+        }
+
         typedef int32_t   __attribute__((vector_size(16))) Half_I32;
         typedef long long __attribute__((vector_size(32))) Half_I64;
 
         // The gather instruction here doesn't need any particular alignment,
         // but the intrinsic takes a const long long*.
-        const long long int* p8 = bit_pun<const long long int*>(p);
+        const long long int* p8 = bit_pun<const long long int*>(p - 2);
 
         Half_I64 zero = { 0, 0, 0, 0},
                  mask = {-1,-1,-1,-1};
@@ -580,16 +624,33 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
         #endif
         store((char*)v +  0, lo);
         store((char*)v + 32, hi);
+        *v >>= 16;
     #elif N == 16
-        (void)load_48_64;
-        const long long int* p8 = bit_pun<const long long int*>(p);
+        // Fast AVX-512 path still uses p-2, so avoid it when any lane indexes entry 0.
+        if (ix[ 0] == 0 || ix[ 1] == 0 || ix[ 2] == 0 || ix[ 3] == 0 ||
+            ix[ 4] == 0 || ix[ 5] == 0 || ix[ 6] == 0 || ix[ 7] == 0 ||
+            ix[ 8] == 0 || ix[ 9] == 0 || ix[10] == 0 || ix[11] == 0 ||
+            ix[12] == 0 || ix[13] == 0 || ix[14] == 0 || ix[15] == 0) {
+            *v = U64{
+                load_48_64_safe(ix[ 0]), load_48_64_safe(ix[ 1]),
+                load_48_64_safe(ix[ 2]), load_48_64_safe(ix[ 3]),
+                load_48_64_safe(ix[ 4]), load_48_64_safe(ix[ 5]),
+                load_48_64_safe(ix[ 6]), load_48_64_safe(ix[ 7]),
+                load_48_64_safe(ix[ 8]), load_48_64_safe(ix[ 9]),
+                load_48_64_safe(ix[10]), load_48_64_safe(ix[11]),
+                load_48_64_safe(ix[12]), load_48_64_safe(ix[13]),
+                load_48_64_safe(ix[14]), load_48_64_safe(ix[15]),
+            };
+            return;
+        }
+
+        const long long int* p8 = bit_pun<const long long int*>(p - 2);
         __m512i lo = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)(6*ix), 0), p8, 1),
                 hi = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)(6*ix), 1), p8, 1);
         store((char*)v +  0, lo);
         store((char*)v + 64, hi);
-    #endif
-
         *v >>= 16;
+    #endif
     }
 #endif
 
