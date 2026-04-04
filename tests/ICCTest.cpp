@@ -18,6 +18,11 @@
 #include <cstdint>
 #include <cstdlib>
 
+#if defined(SK_BUILD_FOR_UNIX)
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
+
 DEF_TEST(AdobeRGB, r) {
     if (sk_sp<SkData> profile = GetResourceAsData("icc_profiles/AdobeRGB1998.icc")) {
         skcms_ICCProfile parsed;
@@ -148,4 +153,165 @@ DEF_TEST(HDR_ICC, r) {
             }
         }
     }
+}
+
+DEF_TEST(SkCMS_CLUT16_GuardPageBeforeGrid, r) {
+#if !defined(SK_BUILD_FOR_UNIX)
+    REPORTER_ASSERT(r, true);
+#else
+    const long raw_page_size = sysconf(_SC_PAGESIZE);
+    REPORTER_ASSERT(r, raw_page_size > 0);
+    if (raw_page_size <= 0) {
+        return;
+    }
+
+    const size_t page_size = static_cast<size_t>(raw_page_size);
+    void* mapping = mmap(nullptr,
+                         page_size * 2,
+                         PROT_READ | PROT_WRITE,
+                         MAP_PRIVATE | MAP_ANONYMOUS,
+                         -1,
+                         0);
+    REPORTER_ASSERT(r, mapping != MAP_FAILED);
+    if (mapping == MAP_FAILED) {
+        return;
+    }
+
+    uint8_t* guard_page = static_cast<uint8_t*>(mapping);
+    uint8_t* grid_16 = guard_page + page_size;
+
+    int protect_result = mprotect(guard_page, page_size, PROT_NONE);
+    REPORTER_ASSERT(r, protect_result == 0);
+    if (protect_result != 0) {
+        munmap(mapping, page_size * 2);
+        return;
+    }
+
+    auto store_u16_be = [grid_16](size_t offset, uint16_t v) {
+        grid_16[offset + 0] = static_cast<uint8_t>(v >> 8);
+        grid_16[offset + 1] = static_cast<uint8_t>(v >> 0);
+    };
+
+    for (size_t i = 0; i < 8; ++i) {
+        const size_t offset = i * 6;
+        store_u16_be(offset + 0, static_cast<uint16_t>(i * 10 + 0));
+        store_u16_be(offset + 2, static_cast<uint16_t>(i * 10 + 1));
+        store_u16_be(offset + 4, static_cast<uint16_t>(i * 10 + 2));
+    }
+
+    skcms_ICCProfile src_profile;
+    skcms_Init(&src_profile);
+    src_profile.has_A2B = true;
+    src_profile.A2B.input_channels = 3;
+    src_profile.A2B.grid_points[0] = 2;
+    src_profile.A2B.grid_points[1] = 2;
+    src_profile.A2B.grid_points[2] = 2;
+    src_profile.A2B.grid_8 = nullptr;
+    src_profile.A2B.grid_16 = grid_16;
+    src_profile.A2B.matrix_channels = 0;
+    src_profile.A2B.output_channels = 3;
+
+    const skcms_TransferFunction* identity_tf = skcms_Identity_TransferFunction();
+    for (int i = 0; i < 3; ++i) {
+        src_profile.A2B.input_curves[i].table_entries = 0;
+        src_profile.A2B.input_curves[i].parametric = *identity_tf;
+
+        src_profile.A2B.output_curves[i].table_entries = 0;
+        src_profile.A2B.output_curves[i].parametric = *identity_tf;
+    }
+
+    float src_pixels[16 * 3] = {};
+    float dst_pixels[16 * 3] = {};
+
+    bool ok = skcms_Transform(src_pixels,
+                              skcms_PixelFormat_RGB_fff,
+                              skcms_AlphaFormat_Opaque,
+                              &src_profile,
+                              dst_pixels,
+                              skcms_PixelFormat_RGB_fff,
+                              skcms_AlphaFormat_Opaque,
+                              skcms_sRGB_profile(),
+                              16);
+
+    munmap(mapping, page_size * 2);
+    REPORTER_ASSERT(r, ok);
+#endif
+}
+
+DEF_TEST(SkCMS_CLUT8_GuardPageBeforeGrid, r) {
+#if !defined(SK_BUILD_FOR_UNIX)
+    REPORTER_ASSERT(r, true);
+#else
+    const long raw_page_size = sysconf(_SC_PAGESIZE);
+    REPORTER_ASSERT(r, raw_page_size > 0);
+    if (raw_page_size <= 0) {
+        return;
+    }
+
+    const size_t page_size = static_cast<size_t>(raw_page_size);
+    void* mapping = mmap(nullptr,
+                         page_size * 2,
+                         PROT_READ | PROT_WRITE,
+                         MAP_PRIVATE | MAP_ANONYMOUS,
+                         -1,
+                         0);
+    REPORTER_ASSERT(r, mapping != MAP_FAILED);
+    if (mapping == MAP_FAILED) {
+        return;
+    }
+
+    uint8_t* guard_page = static_cast<uint8_t*>(mapping);
+    uint8_t* grid_8 = guard_page + page_size;
+
+    int protect_result = mprotect(guard_page, page_size, PROT_NONE);
+    REPORTER_ASSERT(r, protect_result == 0);
+    if (protect_result != 0) {
+        munmap(mapping, page_size * 2);
+        return;
+    }
+
+    for (size_t i = 0; i < 8; ++i) {
+        const size_t offset = i * 3;
+        grid_8[offset + 0] = static_cast<uint8_t>(i * 10 + 0);
+        grid_8[offset + 1] = static_cast<uint8_t>(i * 10 + 1);
+        grid_8[offset + 2] = static_cast<uint8_t>(i * 10 + 2);
+    }
+
+    skcms_ICCProfile src_profile;
+    skcms_Init(&src_profile);
+    src_profile.has_A2B = true;
+    src_profile.A2B.input_channels = 3;
+    src_profile.A2B.grid_points[0] = 2;
+    src_profile.A2B.grid_points[1] = 2;
+    src_profile.A2B.grid_points[2] = 2;
+    src_profile.A2B.grid_8 = grid_8;
+    src_profile.A2B.grid_16 = nullptr;
+    src_profile.A2B.matrix_channels = 0;
+    src_profile.A2B.output_channels = 3;
+
+    const skcms_TransferFunction* identity_tf = skcms_Identity_TransferFunction();
+    for (int i = 0; i < 3; ++i) {
+        src_profile.A2B.input_curves[i].table_entries = 0;
+        src_profile.A2B.input_curves[i].parametric = *identity_tf;
+
+        src_profile.A2B.output_curves[i].table_entries = 0;
+        src_profile.A2B.output_curves[i].parametric = *identity_tf;
+    }
+
+    float src_pixels[16 * 3] = {};
+    float dst_pixels[16 * 3] = {};
+
+    bool ok = skcms_Transform(src_pixels,
+                              skcms_PixelFormat_RGB_fff,
+                              skcms_AlphaFormat_Opaque,
+                              &src_profile,
+                              dst_pixels,
+                              skcms_PixelFormat_RGB_fff,
+                              skcms_AlphaFormat_Opaque,
+                              skcms_sRGB_profile(),
+                              16);
+
+    munmap(mapping, page_size * 2);
+    REPORTER_ASSERT(r, ok);
+#endif
 }
