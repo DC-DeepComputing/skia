@@ -248,9 +248,13 @@ def get_cmake_os_cpu(os, cpu):
   sys.exit(1)
 
 
-def get_windows_settings(args):
+def get_windows_settings(args, for_dll=False):
   """The Windows toolchain requires a lot of setup for cmake to use it.
      This encapsulates all that setup.
+     Set for_dll=True when building a shared DLL: in that case the DLL carries
+     its own CRT boundary so we skip the MT override and let cmake use the
+     build-type default (MTd for Debug), keeping all objects consistent inside
+     the DLL.
   """
 
   assert(args.win_vc)
@@ -321,10 +325,13 @@ def get_windows_settings(args):
         "/I" + quote_if_needed(os.path.join(args.win_sdk, "Include", args.win_sdk_version, "winrt")),
     ]
 
-  # We want to build Dawn (and its dependencies) with /MT so we can statically
-  # link it into Skia.
-  win_cfgs.append("-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded")
-  win_cfgs.append("-DABSL_MSVC_STATIC_RUNTIME=ON")
+  if not for_dll:
+    # For static builds, force /MT so all objects match Skia's release CRT.
+    # Skipped for DLL builds: the DLL has its own CRT boundary, so we let cmake
+    # use the build-type default (MTd in Debug) to keep all objects consistent
+    # inside the DLL.
+    win_cfgs.append("-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded")
+    win_cfgs.append("-DABSL_MSVC_STATIC_RUNTIME=ON")
 
   return win_cfgs, win_cxx, win_ld
 

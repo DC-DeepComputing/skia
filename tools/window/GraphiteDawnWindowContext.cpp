@@ -128,8 +128,12 @@ void GraphiteDawnWindowContext::setDisplayParams(std::unique_ptr<const DisplayPa
 }
 
 wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
+    // When Dawn is a monolithic DLL (WGPU_SHARED_LIBRARY), wgpu functions are
+    // direct exports and the proc table is already wired up inside the DLL.
+#ifndef WGPU_SHARED_LIBRARY
     DawnProcTable backendProcs = dawn::native::GetProcs();
     dawnProcSetProcs(&backendProcs);
+#endif
 
     wgpu::RequestAdapterOptions adapterOptions;
     adapterOptions.backendType = type;

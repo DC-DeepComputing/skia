@@ -39,8 +39,12 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     // but then the results are cached on the Instance object. So save the Instance here so we can
     // avoid the overhead of EnumerateAdapters on every test.
     sOnce([&] {
+        // When Dawn is a monolithic DLL (WGPU_SHARED_LIBRARY), wgpu functions are
+        // direct exports and the proc table is already wired up inside the DLL.
+#ifndef WGPU_SHARED_LIBRARY
         DawnProcTable backendProcs = dawn::native::GetProcs();
         dawnProcSetProcs(&backendProcs);
+#endif
         wgpu::InstanceDescriptor desc{};
         // need for WaitAny with timeout > 0
         static const auto kTimedWaitAny = wgpu::InstanceFeatureName::TimedWaitAny;

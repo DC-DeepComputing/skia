@@ -54,6 +54,13 @@ def main():
       "--dawn_enable_metal", default="false", help="Enable Metal backend.")
   parser.add_argument(
       "--dawn_enable_vulkan", default="false", help="Enable Vulkan backend.")
+  parser.add_argument(
+      "--build_dll",
+      action="store_true",
+      default=False,
+      help="Build Dawn as a monolithic shared DLL (DAWN_BUILD_MONOLITHIC_LIBRARY=SHARED). "
+           "--output_path must point to the import lib (.lib); the DLL is placed alongside "
+           "it with the same stem and a .dll extension.")
   args = parser.parse_args()
 
   cmake_exe = shutil.which("cmake")
@@ -70,10 +77,21 @@ def main():
 
   output_path = args.output_path
   gen_dir = args.gen_dir
-  # The headers are a dependency for all libraries.
-  # We want to build the other listed dawn components into one big library.
-  build_targets = ["webgpu_headers_gen", "dawn_proc", "dawn_native"]
   depfile_path = args.depfile_path
+
+  build_as_dll = args.build_dll
+
+  if build_as_dll:
+    # Monolithic shared library bundles all deps (absl, spirv-tools, etc.) into
+    # one DLL. The DLL carries its own CRT so there is no MT/MTd mismatch with
+    # the Skia side. BUILD_SHARED_LIBS must stay OFF (Dawn enforces this).
+    monolithic_mode = "SHARED"
+    build_targets = ["webgpu_dawn"]
+  else:
+    monolithic_mode = "OFF"
+    # The headers are a dependency for all libraries.
+    # We want to build the other listed dawn components into one big library.
+    build_targets = ["webgpu_headers_gen", "dawn_proc", "dawn_native"]
 
   script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -92,7 +110,7 @@ def main():
       f"--install-prefix={os.path.abspath(gen_dir)}",
       f"-DCMAKE_SYSTEM_NAME={target_os}",
       f"-DCMAKE_SYSTEM_PROCESSOR={target_cpu}",
-      "-DDAWN_BUILD_MONOLITHIC_LIBRARY=OFF",
+      f"-DDAWN_BUILD_MONOLITHIC_LIBRARY={monolithic_mode}",
       f"-DCMAKE_BUILD_TYPE={args.build_type}",
       # Explicitly set the C++ standard to avoid issues with CMake's feature
       # detection for Clang on Windows.
@@ -120,7 +138,7 @@ def main():
   ld_flags = args.ld_flags or []
 
   if target_os == "Windows":
-    win_cfgs, win_cxx, win_ld = get_windows_settings(args)
+    win_cfgs, win_cxx, win_ld = get_windows_settings(args, for_dll=build_as_dll)
     configure_cmd += win_cfgs
     cxx_flags += win_cxx
     ld_flags += win_ld
@@ -155,6 +173,15 @@ def main():
 
   if target_os == "Darwin" or target_os == "iOS":
     configure_cmd.append(f"-DCMAKE_OSX_ARCHITECTURES={target_cpu}")
+
+  if build_as_dll:
+    # Place the DLL and its import lib at the root of the build dir so they are
+    # easy to locate without traversing the cmake subdirectory tree.
+    abs_build_dir = os.path.abspath(build_dir)
+    configure_cmd.append(f"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY={abs_build_dir}")
+    configure_cmd.append(f"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG={abs_build_dir}")
+    configure_cmd.append(f"-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY={abs_build_dir}")
+    configure_cmd.append(f"-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG={abs_build_dir}")
 
   env = os.environ.copy()
   # Don't write .pyc files, which can cause race conditions when building
@@ -195,7 +222,18 @@ def main():
   dependencies, object_files = discover_dependencies(build_dir, build_targets)
   write_depfile(output_path, depfile_path, dependencies)
 
-  combine_into_library(args, output_path, build_dir, target_os, object_files)
+  if build_as_dll:
+    from cmake_utils import copy_if_changed
+    abs_build_dir = os.path.abspath(build_dir)
+    # Dawn's cmake always produces webgpu_dawn.dll/.lib. Copy them to the
+    # names GN expects, derived from output_path (the import lib destination).
+    output_stem = os.path.splitext(output_path)[0]
+    copy_if_changed(os.path.join(abs_build_dir, "webgpu_dawn.dll"),
+                    output_stem + ".dll")
+    copy_if_changed(os.path.join(abs_build_dir, "webgpu_dawn.lib"),
+                    output_path)
+  else:
+    combine_into_library(args, output_path, build_dir, target_os, object_files)
 
 if __name__ == "__main__":
   main()
