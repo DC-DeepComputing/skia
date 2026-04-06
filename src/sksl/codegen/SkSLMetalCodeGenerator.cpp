@@ -912,7 +912,10 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
     const ExpressionArray& arguments = c.arguments();
     switch (kind) {
         case k_textureRead_IntrinsicKind: {
+            const char* texExt =
+                    arguments[0]->type().typeKind() == Type::TypeKind::kSampler ? ".tex" : "";
             this->writeExpression(*arguments[0], Precedence::kExpression);
+            this->write(texExt);
             this->write(".read(");
             this->writeExpression(*arguments[1], Precedence::kSequence);
             this->write(")");

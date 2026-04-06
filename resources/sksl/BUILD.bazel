@@ -907,6 +907,8 @@ skia_filegroup(
         "intrinsics/Step.sksl",
         "intrinsics/Tan.sksl",
         "intrinsics/Tanh.sksl",
+        "intrinsics/TextureReadImage.sksl",
+        "intrinsics/TextureReadSampler.sksl",
         "intrinsics/Transpose.sksl",
         "intrinsics/Trunc.sksl",
         "intrinsics/UintBitsToFloat.sksl",
