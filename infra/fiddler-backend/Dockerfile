@@ -1,4 +1,4 @@
-FROM gcr.io/skia-public/fiddler-base@sha256:0f8c900876083561d7c78df77b33375e7fb0a5b88c8047095ee2e57706636ef4 AS skia-build
+FROM gcr.io/skia-public/fiddler-base@sha256:46dfbade2bea8022b8ac3fbabafa21ac3a29843ef3728f0fe1d728130148b69e AS skia-build
 
 # We need to call gclient config so gclient sync works later to get our third party deps
 # We want --unmanaged to make gclient not sync Skia and instead use the files we copied
@@ -58,5 +58,5 @@ RUN ninja -C out/Static fiddle
 # (can't do this sooner because we need to create VERSION)
 RUN find . -name .git -print0 | xargs -0 rm -rf
 
-FROM gcr.io/skia-public/fiddler-base@sha256:0f8c900876083561d7c78df77b33375e7fb0a5b88c8047095ee2e57706636ef4
+FROM gcr.io/skia-public/fiddler-base@sha256:46dfbade2bea8022b8ac3fbabafa21ac3a29843ef3728f0fe1d728130148b69e
 COPY --from=skia-build /tmp/skia /tmp/skia
