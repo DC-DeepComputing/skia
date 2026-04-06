@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "6e6d001bbc48bc37fc69fd6ac4d6155a96e0575f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13b3a1fc_87ab9dd7",
+        "filename": "src/gpu/graphite/sparse_strips/Polyline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-06T19:16:54Z",
+      "side": 1,
+      "message": "It seems like this could also be const",
+      "revId": "6e6d001bbc48bc37fc69fd6ac4d6155a96e0575f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
