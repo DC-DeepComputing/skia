@@ -16,6 +16,69 @@
       "message": "PTAL",
       "revId": "a86ac0c822d4ad06cba6c0c77a736eaeec271940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "509bdbc2_557fb4c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-06T15:02:00Z",
+      "side": 1,
+      "message": "Can you add some fragment SkSL tests for textureRead? Currently it\u0027s only used in compute scenarios in `resources/sksl/compute`?",
+      "revId": "a86ac0c822d4ad06cba6c0c77a736eaeec271940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6362ec6f_e8c939c0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2335,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-06T15:02:00Z",
+      "side": 1,
+      "message": "What are the implications of using SpvOpImageFetch on a combined texture+sampler? Should we have passed in the original combined unit or is extracting just the texture okay?",
+      "range": {
+        "startLine": 2335,
+        "startChar": 0,
+        "endLine": 2335,
+        "endChar": 87
+      },
+      "revId": "a86ac0c822d4ad06cba6c0c77a736eaeec271940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "395f8260_69744f3a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3519,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-06T15:02:00Z",
+      "side": 1,
+      "message": "Will we need to generalize this helper when we also allow `textureDimensions` in fragment shaders?",
+      "range": {
+        "startLine": 3500,
+        "startChar": 0,
+        "endLine": 3519,
+        "endChar": 13
+      },
+      "revId": "a86ac0c822d4ad06cba6c0c77a736eaeec271940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
