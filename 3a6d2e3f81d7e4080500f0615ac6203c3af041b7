@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d349ddf9_ef185625",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-06T14:18:19Z",
+      "side": 1,
+      "message": "At some point you didn\u0027t merge the code properly and some of Skia changes were lost. I manually updated it in the previous CL but now it\u0027s the same problem again. Look at ParagraphStyle.h, for example. It replaces an existing flag with your new one. It\u0027s incorrect. Please, update you code. You can check what I did in your previous CL: https://skia-review.git.corp.google.com/c/skia/+/1193736/8..9",
+      "revId": "3a6d2e3f81d7e4080500f0615ac6203c3af041b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
