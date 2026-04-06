@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2aa80b2_73d9036f",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dd28611_b1422ca4",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a12a310_5ef09b61",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-03T18:36:13Z",
       "side": 1,
       "message": "nit: checked",
+      "range": {
+        "startLine": 179,
+        "startChar": 36,
+        "endLine": 179,
+        "endChar": 41
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a5bc31_06788611",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Past tense not needed?",
+      "parentUuid": "1a12a310_5ef09b61",
       "range": {
         "startLine": 179,
         "startChar": 36,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e94e425_bde44c79",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85d9fed4_d1afdca4",
+      "range": {
+        "startLine": 183,
+        "startChar": 90,
+        "endLine": 183,
+        "endChar": 98
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "207dbf9a_72e3bcf7",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-04-03T18:36:13Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 101
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09421132_7d17189e",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "207dbf9a_72e3bcf7",
       "range": {
         "startLine": 190,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fb8b239_c01013a7",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6be6984_e6e3d974",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 66
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "327b069f_0c696741",
@@ -146,6 +266,30 @@
       "writtenOn": "2026-04-03T18:36:13Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 101
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa579d68_2bde4307",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "327b069f_0c696741",
       "range": {
         "startLine": 224,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d8269e_36e7158b",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a24caafc_ca5d1373",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 59
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f98b51d3_fed52f04",
@@ -192,6 +360,30 @@
       "writtenOn": "2026-04-03T18:36:13Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 104
+      },
+      "revId": "24021afc87424d4377b7fcb79c30475d9ebf9b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81d69cee_b37cac9e",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T15:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f98b51d3_fed52f04",
       "range": {
         "startLine": 260,
         "startChar": 0,
