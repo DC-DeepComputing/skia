@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6660857e_70fde57a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T20:09:23Z",
+      "side": 1,
+      "message": "If you look at the current failures on the patch, the assert we added to the previous CL, `SkASSERT(kIsDepthOnly \u003d\u003d list-\u003efIsDepthOnly);`,is firing.\n\nHowever,now that stencils and non-stencils are stored on the same binding lists, that I don\u0027t think that assert holds anymore? Prior to this patch, it was impossible to check for matches between stencil and depth draws because they were held on different types of binding lists. (And so checking for matching typing precluded checking matching keys).\n\nWhat is happening now is that depth only draws are matching on identical keys with the stencil part of stencil draws. I think this is still valid?",
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
