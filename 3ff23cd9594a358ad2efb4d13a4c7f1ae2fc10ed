@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aea5622_a8b3ea51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-06T20:15:29Z",
+      "side": 1,
+      "message": "PTAL, I think the bazel failures are from the issues with chromium.",
+      "revId": "3ff23cd9594a358ad2efb4d13a4c7f1ae2fc10ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
