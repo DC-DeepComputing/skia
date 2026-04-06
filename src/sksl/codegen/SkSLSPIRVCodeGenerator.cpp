@@ -2318,7 +2318,17 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             SpvId coord = this->writeExpression(*arguments[1], out);
 
             const Type& arg0Type = arguments[0]->type();
-            SkASSERT(arg0Type.typeKind() == Type::TypeKind::kTexture);
+            SkASSERT(arg0Type.typeKind() == Type::TypeKind::kTexture ||
+                     arg0Type.typeKind() == Type::TypeKind::kSampler);
+
+            // OpImageFetch and OpImageRead strictly require an OpTypeImage.
+            // If the user passed a combined sampler, we must extract the image from it first.
+            if (arg0Type.typeKind() == Type::TypeKind::kSampler) {
+                SpvId extractedImage = this->nextId(nullptr);
+                SpvId imageType = this->getType(arg0Type.textureType());
+                this->writeInstruction(SpvOpImage, imageType, extractedImage, image, out);
+                image = extractedImage;
+            }
 
             switch (arg0Type.textureAccess()) {
                 case Type::TextureAccess::kSample:
