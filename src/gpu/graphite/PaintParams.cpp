@@ -47,25 +47,6 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
     return p.imageShader() || (p.shader() && !as_SB(p.shader())->isConstant());
 }
 
-bool blendmode_depends_on_dst(SkBlendMode blendMode, bool srcIsOpaque) {
-    // kClear doesn't depend on dst, but it should have been converted to kSrc already.
-    SkASSERT(blendMode != SkBlendMode::kClear);
-    if (blendMode == SkBlendMode::kSrc) {
-        // src blending never depends on dst
-        return false;
-    }
-
-    // kDstOut can simplify to kClear when srcIsOpaque, but we assume that kDstOut is only really
-    // used in scenarios where it's meant to be transparent. If it is transiently opaque, we keep it
-    // as the original pipeline.
-    if (blendMode == SkBlendMode::kSrcOver) {
-        // src-over depends on dst if src is transparent (a != 1)
-        return !srcIsOpaque;
-    }
-
-    return true;
-}
-
 std::pair<const SkBlender*, SkBlendMode> get_final_blend(const SkBlender* blender) {
     if (!blender) {
         return {nullptr, SkBlendMode::kSrcOver};
@@ -447,18 +428,30 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
         // Cannot inspect runtime blenders to pessimistically assume they will always use the dst.
         paintDependsOnDst = true;
     } else {
-        // We convert kClear blends to kSrc; the PaintParams constructor already set every other
-        // paint effect to match a transparent solid color.
         SkBlendMode finalBlendMode = fPaint.finalBlendMode();
-        if (finalBlendMode == SkBlendMode::kClear) {
+        if (finalBlendMode == SkBlendMode::kClear ||
+            (finalBlendMode == SkBlendMode::kSrcOver &&
+             fDstUsage == DstUsage::kNone &&
+             isOpaque)) {
+            // We convert kClear blends to kSrc; the PaintParams constructor already set every other
+            // paint effect to match a transparent solid color. We convert opaque kSrcOver to kSrc
+            // if that was the only effect that would have triggered DstUsage != kNone.
             finalBlendMode = SkBlendMode::kSrc;
         }
 
-        if (!(fDstUsage & DstUsage::kDstReadRequired)) {
-            // With no shader blending, be as explicit as possible about the final blend
+        if (!(fDstUsage & DstUsage::kDstReadRequired) || finalBlendMode == SkBlendMode::kSrc) {
+            // With no shader blending, be as explicit as possible about the final blend.
             AddFixedBlendMode(keyContext, finalBlendMode);
-            // Blend modes can be analyzed to determine if specific src colors depend on the dst.
-            paintDependsOnDst = blendmode_depends_on_dst(finalBlendMode, isOpaque);
+            // kSrc is the only remaining blend mode that unconditionally does not depend on the
+            // dst. If we didn't convert an opaque src-over, we need to keep paintDependsOnDst =
+            // true so that the DstUsage forces the draws to be ordered correctly as the draw will
+            // be using a pipeline that has blending still enabled.
+            //
+            // If we got here when fDstUsage requires a dst-read and have kSrc blending, the
+            // returned dstUsage will already include kDependsOnDst from the renderer's analytic
+            // coverage. Keeping the key with a fixed kSrc blend allows such a draw's inner fill
+            // to be optimized to a draw with DstUsage = kNone.
+            paintDependsOnDst = finalBlendMode != SkBlendMode::kSrc;
         } else {
             // With shader blending, use AddBlendMode() to select the more universal blend functions
             // when possible. Technically we could always use a fixed blend mode but would then
@@ -466,12 +459,6 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
             // on devices that wouldn't support dual-source blending, so help them out by at least
             // not requiring lots of pipelines.
             AddBlendMode(keyContext, finalBlendMode);
-            // TODO(b/478239991): With shader-based blending, always treat the paint as depending
-            // on the dst. Almost all blend modes that trigger a dst read wouldn't have returned
-            // true from `blendmode_depends_on_dst`, but the exception is kSrc triggering a dst
-            // read when the renderer has coverage and there's no dual-src blending support. In that
-            // case we can't support an inner fill operation w/o coverage that shares the same
-            // paint key (it would be expecting a fixed blend mode node here).
             paintDependsOnDst = true;
         }
     }
