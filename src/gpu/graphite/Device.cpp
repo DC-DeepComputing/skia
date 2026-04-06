@@ -1589,8 +1589,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     }
 
     // A renderer that emits a primitive color should only be used by a drawX() call that sets a
-    // non-null primitive blender.
-    SkASSERT(SkToBool(paint.primitiveBlender()) == (renderer && renderer->emitsPrimitiveColor()));
+    // non-null primitive blender. kClear blending throws all that away, so don't complain just
+    // because PaintParams optimized it away.
+    SkASSERT(SkToBool(paint.primitiveBlender()) == (renderer && renderer->emitsPrimitiveColor()) ||
+             paint.finalBlendMode() == SkBlendMode::kClear);
 
     TextureFormat format = fDC->target().proxy()->format();
     ShadingParams shading{fRecorder->priv().caps(),
