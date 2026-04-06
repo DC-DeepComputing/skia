@@ -3491,8 +3491,6 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             expr += ", " + this->assembleExpression(*arguments[3], Precedence::kSequence);
             return expr + close;
         }
-        case k_textureHeight_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".y";
 
         case k_textureRead_IntrinsicKind: {
             // We need to inject an extra argument for the mip-level. We don't plan on using mipmaps
@@ -3504,9 +3502,22 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             expr += ", 0";
             return expr + close;
         }
+        case k_textureDimensions_IntrinsicKind:
         case k_textureWidth_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".x";
-
+        case k_textureHeight_IntrinsicKind: {
+            std::string expr = "textureDimensions(";
+            expr += this->assembleExpression(*arguments[0], Precedence::kSequence);
+            if (arguments[0]->type().typeKind() == Type::TypeKind::kSampler) {
+                expr += kTextureSuffix;
+            }
+            expr += ")";
+            if (kind == k_textureWidth_IntrinsicKind) {
+                expr += ".x";
+            } else if (kind == k_textureHeight_IntrinsicKind) {
+                expr += ".y";
+            }
+            return expr;
+        }
         case k_textureWrite_IntrinsicKind:
             return this->assembleSimpleIntrinsic("textureStore", call,
                                                  /*wgslOnlySupportsHighPrecision=*/true);
