@@ -75,6 +75,15 @@ def main():
   build_targets = ["webgpu_headers_gen", "dawn_proc", "dawn_native"]
   depfile_path = args.depfile_path
 
+  # DebugWin / DebugWinClang are custom build types meaning "RelWithDebInfo but
+  # with optimizations disabled so the build is fully debuggable". They use
+  # RelWithDebInfo so the CRT stays MT, avoiding MTd/MT LNK2038 mismatches.
+  # The optimization flags are overridden below after configure_cmd is built.
+  if args.build_type in ("DebugWin", "DebugWinClang"):
+    cmake_build_type = "RelWithDebInfo"
+  else:
+    cmake_build_type = args.build_type
+
   script_dir = os.path.dirname(os.path.realpath(__file__))
 
   dawn_dir = os.path.join(script_dir, "..", "externals", "dawn")
@@ -93,7 +102,7 @@ def main():
       f"-DCMAKE_SYSTEM_NAME={target_os}",
       f"-DCMAKE_SYSTEM_PROCESSOR={target_cpu}",
       "-DDAWN_BUILD_MONOLITHIC_LIBRARY=OFF",
-      f"-DCMAKE_BUILD_TYPE={args.build_type}",
+      f"-DCMAKE_BUILD_TYPE={cmake_build_type}",
       # Explicitly set the C++ standard to avoid issues with CMake's feature
       # detection for Clang on Windows.
       "-DCMAKE_CXX_STANDARD=20",
@@ -155,6 +164,19 @@ def main():
 
   if target_os == "Darwin" or target_os == "iOS":
     configure_cmd.append(f"-DCMAKE_OSX_ARCHITECTURES={target_cpu}")
+
+  if args.build_type == "DebugWin":
+    # Override RelWithDebInfo defaults to be unoptimized and debuggable.
+    # /DNDEBUG is intentionally omitted so Dawn's debug assertions stay active.
+    # CRT stays MT (no MTd/MT mismatch) because the build type is RelWithDebInfo.
+    configure_cmd.append("-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=/Od /Ob0 /Zi")
+    configure_cmd.append("-DCMAKE_C_FLAGS_RELWITHDEBINFO=/Od /Ob0 /Zi")
+    configure_cmd.append("-DDAWN_ALWAYS_ASSERT=ON")
+  elif args.build_type == "DebugWinClang":
+    # Same intent as DebugWin but using clang-style -O0 instead of MSVC /Od.
+    configure_cmd.append("-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O0 /Zi")
+    configure_cmd.append("-DCMAKE_C_FLAGS_RELWITHDEBINFO=-O0 /Zi")
+    configure_cmd.append("-DDAWN_ALWAYS_ASSERT=ON")
 
   env = os.environ.copy()
   # Don't write .pyc files, which can cause race conditions when building

@@ -236,13 +236,23 @@ action("dawn_cmake") {
   if (is_clang) {
     args += [ "--is_clang" ]
   }
-  if (is_debug && !is_win) {
-    args += [
-      "--build_type=Debug",
+  if (is_debug) {
+    if (!is_win) {
+      args += [
+        "--build_type=Debug",
 
-      # For performance, set O1 optimization.
-      "--cxx_flags=-O1",
-    ]
+        # For performance, set O1 optimization.
+        "--cxx_flags=-O1",
+      ]
+    } else {
+      # Use a custom debug build type on Windows — the default Debug build type
+      # has CRT compatibility issues with Skia. See build_dawn.py for details.
+      if (is_clang) {
+        args += [ "--build_type=DebugWinClang" ]
+      } else {
+        args += [ "--build_type=DebugWin" ]
+      }
+    }
   } else {
     args += [ "--build_type=Release" ]
   }
