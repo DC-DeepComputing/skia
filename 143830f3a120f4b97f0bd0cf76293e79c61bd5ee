@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0891e7ff_193bc601",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-07T15:38:31Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 598,
+        "startChar": 0,
+        "endLine": 598,
+        "endChar": 20
+      },
+      "revId": "143830f3a120f4b97f0bd0cf76293e79c61bd5ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "305ea17c_b0d0c41a",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-07T15:38:31Z",
+      "side": 1,
+      "message": "nit: can just return here - no break needed",
+      "range": {
+        "startLine": 692,
+        "startChar": 12,
+        "endLine": 692,
+        "endChar": 26
+      },
+      "revId": "143830f3a120f4b97f0bd0cf76293e79c61bd5ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
