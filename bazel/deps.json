@@ -26,7 +26,7 @@
       "patches": [
         "//bazel/external/expat:config_files.patch"
       ],
-      "remote": "https://chromium.googlesource.com/external/github.com/libexpat/libexpat.git"
+      "remote": "https://github.com/libexpat/libexpat.git"
     },
     {
       "build_file": "//bazel/external/freetype:BUILD.bazel",
@@ -35,7 +35,7 @@
       "patches": [
         "//bazel/external/freetype:config_files.patch"
       ],
-      "remote": "https://chromium.googlesource.com/chromium/src/third_party/freetype2.git"
+      "remote": "https://github.com/freetype/freetype"
     },
     {
       "build_file": "//bazel/external/harfbuzz:BUILD.bazel",
@@ -44,7 +44,7 @@
       "patches": [
         "//bazel/external/harfbuzz:config_files.patch"
       ],
-      "remote": "https://chromium.googlesource.com/external/github.com/harfbuzz/harfbuzz.git"
+      "remote": "https://github.com/harfbuzz/harfbuzz.git"
     },
     {
       "build_file": "//bazel/external/icu:BUILD.bazel",
@@ -69,7 +69,7 @@
       "build_file": "//bazel/external/icu4x:BUILD.bazel",
       "commit": "bcf4f7198d4dc5f3127e84a6ca657c88e7d07a13",
       "name": "icu4x",
-      "remote": "https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git"
+      "remote": "https://github.com/unicode-org/icu4x.git"
     },
     {
       "build_file": "//bazel/external/imgui:BUILD.bazel",
@@ -99,7 +99,7 @@
       "build_file": "//bazel/external/libjxl:BUILD.bazel",
       "commit": "a205468bc5d3a353fb15dae2398a101dff52f2d3",
       "name": "libjxl",
-      "remote": "https://chromium.googlesource.com/external/gitlab.com/wg1/jpeg-xl.git"
+      "remote": "https://gitlab.com/wg1/jpeg-xl.git"
     },
     {
       "build_file": "//bazel/external/libpng:BUILD.bazel",
@@ -135,13 +135,13 @@
       "build_file": "//bazel/external/vulkanmemoryallocator:BUILD.bazel",
       "commit": "a6bfc237255a6bac1513f7c1ebde6d8aed6b5191",
       "name": "vulkanmemoryallocator",
-      "remote": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator"
+      "remote": "https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator"
     },
     {
       "build_file": "//bazel/external/spirv_cross:BUILD.bazel",
       "commit": "b8fcf307f1f347089e3c46eb4451d27f32ebc8d3",
       "name": "spirv_cross",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross"
+      "remote": "https://github.com/KhronosGroup/SPIRV-Cross"
     },
     {
       "commit": "6dd7ba990830f7c15ac1345ff3b43ef6ffdad216",
@@ -163,19 +163,19 @@
       "build_file": "//bazel/external/vulkan_headers:BUILD.bazel",
       "commit": "afe9eb980aa928a66d1c9c06f38c55dd59868720",
       "name": "vulkan_headers",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers"
+      "remote": "https://github.com/KhronosGroup/Vulkan-Headers"
     },
     {
       "build_file": "//bazel/external/vulkan_tools:BUILD.bazel",
       "commit": "90bf5bc4fd8bea0d300f6564af256a51a34124b8",
       "name": "vulkan_tools",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools"
+      "remote": "https://github.com/KhronosGroup/Vulkan-Tools"
     },
     {
       "build_file": "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
       "commit": "48b1fd1a65e436bae806cb6180c9338846b9de97",
       "name": "vulkan_utility_libraries",
-      "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries"
+      "remote": "https://github.com/KhronosGroup/Vulkan-Utility-Libraries"
     },
     {
       "build_file": "//bazel/external/wuffs:BUILD.bazel",
@@ -204,7 +204,7 @@
     {
       "commit": "424360251cdcfc314cfc528f53c872ecd63af0f0",
       "name": "highway",
-      "remote": "https://chromium.googlesource.com/external/github.com/google/highway.git"
+      "remote": "https://github.com/google/highway.git"
     }
   ]
 }
