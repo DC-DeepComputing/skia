@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5d6aab0_aa180a30",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:46:10Z",
+      "side": 1,
+      "message": "Yes, let\u0027s make removing w/h a separate patch.",
+      "parentUuid": "d8b51bda_2292c481",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 39
+      },
+      "revId": "3ff23cd9594a358ad2efb4d13a4c7f1ae2fc10ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f3a678b_aa68eced",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-07T14:15:07Z",
       "side": 1,
       "message": "nit: line length here and below (if we\u0027re keeping the width/height blocks for now)",
+      "range": {
+        "startLine": 931,
+        "startChar": 0,
+        "endLine": 931,
+        "endChar": 107
+      },
+      "revId": "3ff23cd9594a358ad2efb4d13a4c7f1ae2fc10ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c53e011a_8e8d0d60",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f3a678b_aa68eced",
       "range": {
         "startLine": 931,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "528ab1b5_19df9938",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54734a5e_b18a0e98",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 47
+      },
+      "revId": "3ff23cd9594a358ad2efb4d13a4c7f1ae2fc10ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94e3e84c_637260ea",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-04-07T14:15:07Z",
       "side": 1,
       "message": "I think you have to do some sampler/texture type checking in the SkSLSPIRVGenerator",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 72
+      },
+      "revId": "3ff23cd9594a358ad2efb4d13a4c7f1ae2fc10ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dadb88f2_53ccab20",
+        "filename": "tests/sksl/intrinsics/TextureDimensionsSampler.asm.frag",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94e3e84c_637260ea",
       "range": {
         "startLine": 3,
         "startChar": 0,
