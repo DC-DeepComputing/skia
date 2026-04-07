@@ -20,6 +20,7 @@ type depConfig struct {
 	patchCmds         []string
 	patchCmdsWin      []string
 	isIndirect        bool // if True, it's used by another dependency, not by Skia directly
+	remoteOverride    string
 }
 
 // These are all C++ deps or Rust deps (with a compatible C++ FFI) used by the Bazel build.
@@ -28,7 +29,7 @@ type depConfig struct {
 var depsOverrides = map[string]depConfig{
 	"abseil-cpp":  {bazelNameOverride: "abseil_cpp", isIndirect: true},
 	"brotli":      {isIndirect: true},
-	"highway":     {isIndirect: true},
+	"highway":     {isIndirect: true, remoteOverride: "https://github.com/google/highway.git"},
 	"spirv-tools": {bazelNameOverride: "spirv_tools"},
 	// This name is important because spirv_tools expects @spirv_headers to exist by that name.
 	"spirv-headers": {bazelNameOverride: "spirv_headers"},
@@ -39,14 +40,17 @@ var depsOverrides = map[string]depConfig{
 	"expat": {
 		needsBazelFile: true,
 		patches:        []string{"//bazel/external/expat:config_files.patch"},
+		remoteOverride: "https://github.com/libexpat/libexpat.git",
 	},
 	"freetype": {
 		needsBazelFile: true,
 		patches:        []string{"//bazel/external/freetype:config_files.patch"},
+		remoteOverride: "https://github.com/freetype/freetype",
 	},
 	"harfbuzz": {
 		needsBazelFile: true,
 		patches:        []string{"//bazel/external/harfbuzz:config_files.patch"},
+		remoteOverride: "https://github.com/harfbuzz/harfbuzz.git",
 	},
 	"icu": {
 		needsBazelFile: true,
@@ -62,23 +66,23 @@ var depsOverrides = map[string]depConfig{
 			"del source/stubdata/BUILD.bazel",
 		},
 	},
-	"icu4x":                    {needsBazelFile: true},
+	"icu4x":                    {needsBazelFile: true, remoteOverride: "https://github.com/unicode-org/icu4x.git"},
 	"imgui":                    {needsBazelFile: true},
 	"libavif":                  {needsBazelFile: true},
 	"libgav1":                  {needsBazelFile: true},
 	"libjpeg-turbo":            {bazelNameOverride: "libjpeg_turbo", needsBazelFile: true},
-	"libjxl":                   {needsBazelFile: true},
+	"libjxl":                   {needsBazelFile: true, remoteOverride: "https://gitlab.com/wg1/jpeg-xl.git"},
 	"libpng":                   {needsBazelFile: true},
 	"libwebp":                  {needsBazelFile: true},
 	"libyuv":                   {needsBazelFile: true},
-	"spirv-cross":              {bazelNameOverride: "spirv_cross", needsBazelFile: true},
+	"spirv-cross":              {bazelNameOverride: "spirv_cross", needsBazelFile: true, remoteOverride: "https://github.com/KhronosGroup/SPIRV-Cross"},
 	"perfetto":                 {needsBazelFile: true},
 	"piex":                     {needsBazelFile: true},
 	"vello":                    {needsBazelFile: true},
-	"vulkan-headers":           {bazelNameOverride: "vulkan_headers", needsBazelFile: true},
-	"vulkan-tools":             {bazelNameOverride: "vulkan_tools", needsBazelFile: true},
-	"vulkan-utility-libraries": {bazelNameOverride: "vulkan_utility_libraries", needsBazelFile: true},
-	"vulkanmemoryallocator":    {needsBazelFile: true},
+	"vulkan-headers":           {bazelNameOverride: "vulkan_headers", needsBazelFile: true, remoteOverride:  "https://github.com/KhronosGroup/Vulkan-Headers"},
+	"vulkan-tools":             {bazelNameOverride: "vulkan_tools", needsBazelFile: true, remoteOverride:  "https://github.com/KhronosGroup/Vulkan-Tools"},
+	"vulkan-utility-libraries": {bazelNameOverride: "vulkan_utility_libraries", needsBazelFile: true, remoteOverride: "https://github.com/KhronosGroup/Vulkan-Utility-Libraries"},
+	"vulkanmemoryallocator":    {needsBazelFile: true, remoteOverride: "https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator"},
 	"wuffs":                    {needsBazelFile: true},
 	"zlib":                     {needsBazelFile: true},
 }
@@ -173,6 +177,9 @@ func parseDEPSFile(contents []string) (string, int, error) {
 			rc.PatchCmdsWin = cfg.patchCmdsWin
 			if cfg.needsBazelFile {
 				rc.BuildFile = fmt.Sprintf("//bazel/external/%s:BUILD.bazel", rc.Name)
+			}
+			if cfg.remoteOverride != "" {
+				rc.Remote = cfg.remoteOverride
 			}
 			if cfg.isIndirect {
 				d.Indirect = append(d.Indirect, rc)
