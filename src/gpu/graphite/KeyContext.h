@@ -14,6 +14,7 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 class SkRuntimeEffect;
@@ -21,7 +22,6 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class Caps;
-class DrawContext;
 enum class DstReadStrategy : uint8_t;
 class FloatStorageManager;
 class PaintParamsKeyBuilder;
@@ -110,6 +110,7 @@ public:
     PaintParamsKeyBuilder* paintParamsKeyBuilder() const { return fPaintParamsKeyBuilder; }
     PipelineDataGatherer* pipelineDataGatherer() const { return fPipelineDataGatherer; }
     ShaderCodeDictionary* dict() const { return fDictionary; }
+    TextureFormat targetFormat() const { return fDC->target().proxy()->format(); }
 
     sk_sp<RuntimeEffectDictionary> rtEffectDict() const;
 
