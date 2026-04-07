@@ -16,6 +16,24 @@
       "message": "PTAL. I *think* I made the SkSL tests correctly? It\u0027s getting an error on SkRP but I think that is the expected behavior?",
       "revId": "b0b04a660e19518193787f504c9f1ef621363e1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18aeeffb_7949a65b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T17:56:16Z",
+      "side": 1,
+      "message": "Yeah that\u0027s expected. SkRP has no concept of textures or samplers.",
+      "parentUuid": "7194183e_96ca0037",
+      "revId": "b0b04a660e19518193787f504c9f1ef621363e1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
