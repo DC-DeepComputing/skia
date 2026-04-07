@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "596416de_56d74a2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-07T20:02:15Z",
+      "side": 1,
+      "message": "oh sorry, forgot to update the commit message to remove refactor",
+      "parentUuid": "115876e3_f54194b9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "9c867e6c41026bb2760d072be038878a747519f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5dc6fb8_a705eeca",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-07T15:38:31Z",
       "side": 1,
       "message": "nit: update docs to indicate what the return value is.",
+      "range": {
+        "startLine": 532,
+        "startChar": 6,
+        "endLine": 532,
+        "endChar": 16
+      },
+      "revId": "9c867e6c41026bb2760d072be038878a747519f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f21503c_9b22356d",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-07T20:02:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e5dc6fb8_a705eeca",
       "range": {
         "startLine": 532,
         "startChar": 6,
