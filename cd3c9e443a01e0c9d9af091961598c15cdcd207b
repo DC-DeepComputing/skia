@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5494f95_9ffdf1c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T14:42:34Z",
+      "side": 1,
+      "message": "I think describing the pilot draw system in this message would be helpful for history",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6660857e_70fde57a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -14,6 +37,98 @@
       "writtenOn": "2026-04-06T20:09:23Z",
       "side": 1,
       "message": "If you look at the current failures on the patch, the assert we added to the previous CL, `SkASSERT(kIsDepthOnly \u003d\u003d list-\u003efIsDepthOnly);`,is firing.\n\nHowever,now that stencils and non-stencils are stored on the same binding lists, that I don\u0027t think that assert holds anymore? Prior to this patch, it was impossible to check for matches between stencil and depth draws because they were held on different types of binding lists. (And so checking for matching typing precluded checking matching keys).\n\nWhat is happening now is that depth only draws are matching on identical keys with the stencil part of stencil draws. I think this is still valid?",
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76ac83b_77dfd8e6",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T14:42:34Z",
+      "side": 1,
+      "message": "No escape!",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60df36df_ca97fcd2",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T14:42:34Z",
+      "side": 1,
+      "message": "I think this needs more clarification for the change from `false` to `isStencil`.",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 65
+      },
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "361391a4_6a40f977",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T14:42:34Z",
+      "side": 1,
+      "message": "Is this because we are calling `recordForwards` for stencil draws when it\u0027s a step \u003e 0, so we want to start on the layer after the first stencil draw step?\n\nRegardless, I think this is subtle enough that we should explain what `bound` is doing here.",
+      "range": {
+        "startLine": 196,
+        "startChar": 37,
+        "endLine": 196,
+        "endChar": 55
+      },
+      "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681c3d89_3f228621",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T14:42:34Z",
+      "side": 1,
+      "message": "All the current stencil-based renderers have all steps that useing stencil buffer (either for reading or writing), even if they are the shading step. I think we can just say that it\u0027s convenient to treat the entire renderer as using the stencil buffer, but we could move the rendererIsStencil check into the for loop and look it up from just the step\u0027s flags.\n\nOn the other hand, the pilot draw system is also enforcing the the logical ordering of render steps executing in the order they were declared by the renderer, even if the renderer didn\u0027t use stencil buffers. We don\u0027t have any renderer that uses multiple steps that doesn\u0027t use stencil buffers, but this behavior is probably worth calling out as part of recordForwards.",
+      "range": {
+        "startLine": 248,
+        "startChar": 89,
+        "endLine": 249,
+        "endChar": 19
+      },
       "revId": "cd3c9e443a01e0c9d9af091961598c15cdcd207b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
