@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cd9e209_482c7e99",
+        "filename": "src/gpu/graphite/sparse_strips/Polyline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T15:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "429f9b7c_be945e92",
+      "range": {
+        "startLine": 54,
+        "startChar": 80,
+        "endLine": 54,
+        "endChar": 85
+      },
+      "revId": "d77868c60ce0a6593e350f4296920876c876f22d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7c693a0_df2353b5",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a803a48f_925e6804",
+        "filename": "tests/graphite/sparse_strips/PolylineTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T15:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7c693a0_df2353b5",
+      "range": {
+        "startLine": 77,
+        "startChar": 20,
+        "endLine": 77,
+        "endChar": 23
+      },
+      "revId": "d77868c60ce0a6593e350f4296920876c876f22d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a97d8bad_37d19f58",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-04-07T14:54:52Z",
       "side": 1,
       "message": "static const SkPoint kPathologicalPts[] \u003d { ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 43
+      },
+      "revId": "d77868c60ce0a6593e350f4296920876c876f22d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "130fcbef_dd448a39",
+        "filename": "tests/graphite/sparse_strips/PolylineTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T15:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a97d8bad_37d19f58",
       "range": {
         "startLine": 78,
         "startChar": 0,
