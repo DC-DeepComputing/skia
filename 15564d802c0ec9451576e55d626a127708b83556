@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90385306_cbe89b6c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T17:28:09Z",
+      "side": 1,
+      "message": "I agree, but I think it changes the semantics to be that the headroom is the headroom of the whole allocation (or binding chunk), vs. after the last stride-instance. I think that is more intuitive, and is equivalent in the current case where count\u003d1. If that matches your understanding, I think the comment for `getMappedSubrangeWithHeadroom` is slightly out of date.",
+      "parentUuid": "240179d9_15e0be69",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 60
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15264460_e16d8236",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 2
@@ -61,6 +85,30 @@
       "writtenOn": "2026-04-07T13:52:43Z",
       "side": 1,
       "message": "If `bytes64` is updated to not have `headroomPad` yet, we can safely subtract it from `::max()` alongside the alignment term to make sure the subsequent addition won\u0027t overflow in the return statement.",
+      "range": {
+        "startLine": 59,
+        "startChar": 18,
+        "endLine": 59,
+        "endChar": 72
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f17a89_ccb29144",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T17:28:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15264460_e16d8236",
       "range": {
         "startLine": 59,
         "startChar": 18,
