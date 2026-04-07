@@ -137,6 +137,7 @@ private:
     sk_sp<SkTypeface> makeTypefaceFromDWriteFont(IDWriteFontFace* fontFace,
                                                  IDWriteFont* font,
                                                  IDWriteFontFamily* fontFamily) const;
+    sk_sp<SkTypeface> makeTypefaceFromDWriteFontFace(IDWriteFontFace3* fontFace) const;
 
     SkTScopedComPtr<IDWriteFactory> fFactory;
     SkTScopedComPtr<IDWriteFontFallback> fFontFallback;
@@ -198,14 +199,14 @@ static bool FindByDWriteFont(SkTypeface* cached, void* ctx) {
         return cshFontFace5->Equals(ctxFontFace5.get());
     }
 
+    SkTScopedComPtr<IDWriteFontFace3> cshFontFace3;
+    SkTScopedComPtr<IDWriteFontFace3> ctxFontFace3;
+    cshFace->fDWriteFontFace->QueryInterface(&cshFontFace3);
+    ctxFace->fDWriteFontFace->QueryInterface(&ctxFontFace3);
+
     bool same;
 
     //Check to see if the two fonts are identical.
-    HRB(are_same(cshFace->fDWriteFont.get(), ctxFace->fDWriteFont, same));
-    if (same) {
-        return true;
-    }
-
     HRB(are_same(cshFace->fDWriteFontFace.get(), ctxFace->fDWriteFontFace, same));
     if (same) {
         return true;
@@ -253,8 +254,13 @@ static bool FindByDWriteFont(SkTypeface* cached, void* ctx) {
     //NOTE: .ttc and fake bold/italic will end up here.
     SkTScopedComPtr<IDWriteLocalizedStrings> cshFamilyNames;
     SkTScopedComPtr<IDWriteLocalizedStrings> cshFaceNames;
-    HRB(cshFace->fDWriteFontFamily->GetFamilyNames(&cshFamilyNames));
-    HRB(cshFace->fDWriteFont->GetFaceNames(&cshFaceNames));
+    if (cshFontFace3) {
+        HRB(cshFontFace3->GetFamilyNames(&cshFamilyNames));
+        HRB(cshFontFace3->GetFaceNames(&cshFaceNames));
+    } else {
+        HRB(cshFace->fDWriteFontFamily->GetFamilyNames(&cshFamilyNames));
+        HRB(cshFace->fDWriteFont->GetFaceNames(&cshFaceNames));
+    }
     UINT32 cshFamilyNameLength;
     UINT32 cshFaceNameLength;
     HRB(cshFamilyNames->GetStringLength(0, &cshFamilyNameLength));
@@ -262,8 +268,13 @@ static bool FindByDWriteFont(SkTypeface* cached, void* ctx) {
 
     SkTScopedComPtr<IDWriteLocalizedStrings> ctxFamilyNames;
     SkTScopedComPtr<IDWriteLocalizedStrings> ctxFaceNames;
-    HRB(ctxFace->fDWriteFontFamily->GetFamilyNames(&ctxFamilyNames));
-    HRB(ctxFace->fDWriteFont->GetFaceNames(&ctxFaceNames));
+    if (ctxFontFace3) {
+        HRB(ctxFontFace3->GetFamilyNames(&ctxFamilyNames));
+        HRB(ctxFontFace3->GetFaceNames(&ctxFaceNames));
+    } else {
+        HRB(ctxFace->fDWriteFontFamily->GetFamilyNames(&ctxFamilyNames));
+        HRB(ctxFace->fDWriteFont->GetFaceNames(&ctxFaceNames));
+    }
     UINT32 ctxFamilyNameLength;
     UINT32 ctxFaceNameLength;
     HRB(ctxFamilyNames->GetStringLength(0, &ctxFamilyNameLength));
@@ -304,6 +315,11 @@ sk_sp<SkTypeface> SkFontMgr_DirectWrite::makeTypefaceFromDWriteFont(
         }
     }
     return face;
+}
+
+sk_sp<SkTypeface> SkFontMgr_DirectWrite::makeTypefaceFromDWriteFontFace(
+        IDWriteFontFace3* fontFace) const {
+    return this->makeTypefaceFromDWriteFont(fontFace, nullptr, nullptr);
 }
 
 int SkFontMgr_DirectWrite::onCountFamilies() const {
