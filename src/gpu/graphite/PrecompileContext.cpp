@@ -90,16 +90,21 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 #endif
 }
 
-std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipelineKey) {
+std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipelineKey,
+                                                uint32_t* uniqueHash) {
 #if defined(SK_ENABLE_PRECOMPILE)
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
 
+    // Deep in deserialize_graphics_pipeline_desc, this will have unpacked the PaintParamsKey
+    // and then registered it with the ShaderCodeDictionary to get this session's
+    // UniquePaintParamsID for it.
     if (!DataToPipelineDesc(fSharedContext->caps(),
                             fSharedContext->shaderCodeDictionary(),
                             serializedPipelineKey.get(),
                             &pipelineDesc,
                             &renderPassDesc)) {
+        if (uniqueHash) { *uniqueHash = 0; }
         return "";
     }
 
@@ -107,7 +112,17 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
 
     const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
     if (!renderStep) {
+        if (uniqueHash) { *uniqueHash = 0; }
         return "";
+    }
+
+    if (uniqueHash) {
+        const Caps* caps = fSharedContext->caps();
+
+        // This will make use of the UniquePaintParamsID registered in DataToPipelineDesc.
+        UniqueKey pipelineKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
+
+        *uniqueHash = pipelineKey.hash();
     }
 
     return GetPipelineLabel(fSharedContext->caps(),
@@ -116,6 +131,7 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
                             renderStep,
                             pipelineDesc.paintParamsID());
 #else
+    if (uniqueHash) { *uniqueHash = 0; }
     return "";
 #endif
 }
