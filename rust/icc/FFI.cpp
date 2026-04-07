@@ -10,11 +10,21 @@
 #include "modules/skcms/skcms.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <cstring>
 #include <type_traits>
 
 namespace rust_icc {
+
+// Padding prepended to CLUT grid buffers in FFI.rs (see CLUT_GRID_PREFIX_PADDING).
+static constexpr size_t kClutGridPrefixPadding = 2;
+
+// Runtime check that C++ and Rust agree on the padding value.
+static const bool kClutGridPrefixPaddingChecked = [] {
+    assert(clut_grid_prefix_padding() == kClutGridPrefixPadding);
+    return true;
+}();
 
 void ToSkcmsMatrix3x3(const Matrix3x3& rust_matrix, skcms_Matrix3x3* out_skcms) {
     // Note: std::is_layout_compatible_v (C++20) is not yet implemented in LLVM (P0466R5).
@@ -89,10 +99,11 @@ static bool ToSkcmsA2B(const rust_icc::A2B& rust_a2b, skcms_A2B* out_skcms) {
     }
     memcpy(out_skcms->grid_points, rust_a2b.grid_points.data(), 4);
     if (!rust_a2b.grid_data.empty()) {
+        const uint8_t* grid = rust_a2b.grid_data.data() + kClutGridPrefixPadding;
         if (rust_a2b.is_16bit_grid) {
-            out_skcms->grid_16 = rust_a2b.grid_data.data();
+            out_skcms->grid_16 = grid;
         } else {
-            out_skcms->grid_8 = rust_a2b.grid_data.data();
+            out_skcms->grid_8 = grid;
         }
     }
 
@@ -203,10 +214,11 @@ static bool ToSkcmsB2A(const rust_icc::B2A& rust_b2a, skcms_B2A* out_skcms) {
     }
     memcpy(out_skcms->grid_points, rust_b2a.grid_points.data(), 4);
     if (!rust_b2a.grid_data.empty()) {
+        const uint8_t* grid = rust_b2a.grid_data.data() + kClutGridPrefixPadding;
         if (rust_b2a.is_16bit_grid) {
-            out_skcms->grid_16 = rust_b2a.grid_data.data();
+            out_skcms->grid_16 = grid;
         } else {
-            out_skcms->grid_8 = rust_b2a.grid_data.data();
+            out_skcms->grid_8 = grid;
         }
     }
 
