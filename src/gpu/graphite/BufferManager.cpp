@@ -256,6 +256,7 @@ void BufferSubAllocator::reset() {
 
         DrawBufferManager::BufferState& state = fOwner->fCurrentBuffers[fStateIndex];
         if (fBuffer->shareable() == Shareable::kScratch) {
+            SKGPU_LOG_W("nikipre: resetting scratch buffer");
             // TODO: Merge this reuse of scratch resources with the ScratchResourceManager, but
             // currently this is resolved outside of Task::prepareResources().
 
@@ -273,6 +274,7 @@ void BufferSubAllocator::reset() {
         } else if (state.fAvailableBuffer.fBuffer.get() == fBuffer.get() || // can't stash itself
                    this->remainingBytes() < state.fAvailableBuffer.remainingBytes() || // too small
                    this->remainingBytes() < state.fMinAlignment) { // basically empty
+            SKGPU_LOG_W("nikipre: transfer ownership of buffer (and if present transfer) buffer back to mgr");
             // Transfer ownership of the buffer (and any transfer buffer) back to the manager, using
             // the current offset as a more restricted limit for copying.
             if (fTransferBuffer) {
@@ -281,6 +283,7 @@ void BufferSubAllocator::reset() {
             }
             fOwner->fUsedBuffers.emplace_back(std::move(fBuffer), fTransferBuffer);
         } else {
+            SKGPU_LOG_W("nikipre: saving buffer for later");
             // Save this buffer for later, which leaves this instance empty and resets the prior
             // value of fAvailableBuffer (which then goes through the true branch of this if).
             state.fAvailableBuffer = std::move(*this);
@@ -317,6 +320,7 @@ sk_sp<Buffer> DrawBufferManager::BufferState::findOrCreateBuffer(ResourceProvide
                                                                  Shareable shareable,
                                                                  uint32_t byteCount) {
     if (shareable == Shareable::kScratch) {
+        SKGPU_LOG_W("nikipre: SF: scratch buffer");
         sk_sp<Buffer> scratchBuffer = provider->findOrCreateScratchBuffer(
                 byteCount, fType, fAccessPattern, fLabel, fUnavailableScratchBuffers);
         if (scratchBuffer) {
@@ -498,6 +502,7 @@ BufferSubAllocator DrawBufferManager::getBuffer(
     }
     SkASSERT(bufferSize >= requiredBytes32 && bufferSize >= state.fMinBlockSize);
 
+    SKGPU_LOG_W("nikipre: SF: regular buffer for DrawBufferManager");
     sk_sp<Buffer> buffer = state.findOrCreateBuffer(fResourceProvider, shareable, bufferSize);
     if (!buffer) {
         this->onFailedBuffer();
