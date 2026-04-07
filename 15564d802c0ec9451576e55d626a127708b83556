@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1221a44_7b71c98c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-07T17:44:09Z",
+      "side": 1,
+      "message": "In theory if we used headroom in the future for counts \u003e 1 though (since this validate is a generic function that doesn\u0027t know the use case of what called it), we are just trying to bump up the size of the whole bindinfo size to be power of 2. The current bind info uses a size of count*stride. So I think it makes sense for headroom to be relative to that full required bytes",
+      "parentUuid": "90385306_cbe89b6c",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 60
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15264460_e16d8236",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 2
