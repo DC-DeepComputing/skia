@@ -161,6 +161,9 @@ mod ffi {
         /// Parses ICC profile from `data`. If successful, returns `true`
         /// and writes result to `out`. If failure, returns `false`.
         fn parse_icc_profile(data: &[u8], out: &mut IccProfile) -> bool;
+
+        /// Returns CLUT_GRID_PREFIX_PADDING so C++ can assert its copy matches.
+        fn clut_grid_prefix_padding() -> usize;
     }
 }
 
@@ -415,13 +418,42 @@ fn a2b_to_b2a(a2b: ffi::A2B) -> ffi::B2A {
     }
 }
 
-/// Convert LutStore grid data to bytes.
-/// Returns (grid_data, is_16bit_grid).
+/// Padding bytes prepended/appended to CLUT grid buffers.  skcms's gather_24/48
+/// over-read by up to 2 bytes before the grid pointer (b/498869813).  With moxcms
+/// each CLUT is its own Vec so we pad both ends to absorb the over-read.
+const CLUT_GRID_PREFIX_PADDING: usize = 2;
+const CLUT_GRID_SUFFIX_PADDING: usize = 2;
+
+fn clut_grid_prefix_padding() -> usize {
+    CLUT_GRID_PREFIX_PADDING
+}
+
+/// Converts LutStore grid data to bytes with prefix/suffix padding.
+/// The C++ side (FFI.cpp) offsets by CLUT_GRID_PREFIX_PADDING when reading.
 fn convert_grid_data(clut: &moxcms::LutStore) -> (Vec<u8>, bool) {
     use moxcms::LutStore;
     match clut {
-        LutStore::Store8(data) => (data.clone(), false),
-        LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
+        LutStore::Store8(data) => {
+            let mut buf = Vec::with_capacity(
+                CLUT_GRID_PREFIX_PADDING + data.len() + CLUT_GRID_SUFFIX_PADDING,
+            );
+            buf.extend(std::iter::repeat(0u8).take(CLUT_GRID_PREFIX_PADDING));
+            buf.extend_from_slice(data);
+            buf.extend(std::iter::repeat(0u8).take(CLUT_GRID_SUFFIX_PADDING));
+            (buf, false)
+        }
+        LutStore::Store16(data) => {
+            let payload_len = data.len() * 2;
+            let mut buf = Vec::with_capacity(
+                CLUT_GRID_PREFIX_PADDING + payload_len + CLUT_GRID_SUFFIX_PADDING,
+            );
+            buf.extend(std::iter::repeat(0u8).take(CLUT_GRID_PREFIX_PADDING));
+            for value in data {
+                buf.extend(value.to_be_bytes());
+            }
+            buf.extend(std::iter::repeat(0u8).take(CLUT_GRID_SUFFIX_PADDING));
+            (buf, true)
+        }
     }
 }
 
