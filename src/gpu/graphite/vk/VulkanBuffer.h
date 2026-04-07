@@ -43,7 +43,8 @@ private:
                  const skgpu::VulkanAlloc&,
                  VkBufferUsageFlags,
                  Protected isProtected,
-                 std::string_view label);
+                 std::string_view label,
+                 std::string props);
 
     void onMap() override;
     void onUnmap() override;
@@ -70,6 +71,8 @@ private:
      *    the memory may not be cached).
      */
     bool fBufferUsedForCPURead = false;
+
+    std::string fBufferProperties;
 };
 
 } // namespace skgpu::graphite
