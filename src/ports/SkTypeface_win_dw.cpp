@@ -37,10 +37,23 @@
 using namespace skia_private;
 
 SkFontStyle DWriteFontTypeface::GetStyle(IDWriteFont* font, IDWriteFontFace* fontFace) {
-    int weight = font->GetWeight();
-    int width = font->GetStretch();
+    SkTScopedComPtr<IDWriteFontFace3> ff3;
+    fontFace->QueryInterface(&ff3);
+
+    int weight;
+    int width;
+    DWRITE_FONT_STYLE dwFontStyle;
+    if (ff3) {
+        weight = ff3->GetWeight();
+        width = ff3->GetStretch();
+        dwFontStyle = ff3->GetStyle();
+    } else {
+        weight = font->GetWeight();
+        width = font->GetStretch();
+        dwFontStyle = font->GetStyle();
+    }
     SkFontStyle::Slant slant = SkFontStyle::kUpright_Slant;
-    switch (font->GetStyle()) {
+    switch (dwFontStyle) {
         case DWRITE_FONT_STYLE_NORMAL: slant = SkFontStyle::kUpright_Slant; break;
         case DWRITE_FONT_STYLE_OBLIQUE: slant = SkFontStyle::kOblique_Slant; break;
         case DWRITE_FONT_STYLE_ITALIC: slant = SkFontStyle::kItalic_Slant; break;
@@ -164,8 +177,8 @@ DWriteFontTypeface::DWriteFontTypeface(const SkFontStyle& style,
                                        const SkFontArguments::Palette& palette)
     : SkTypeface(style, false)
     , fFactory(SkRefComPtr(factory))
-    , fDWriteFontFamily(SkRefComPtr(fontFamily))
-    , fDWriteFont(SkRefComPtr(font))
+    , fDWriteFontFamily(SkSafeRefComPtr(fontFamily))
+    , fDWriteFont(SkSafeRefComPtr(font))
     , fDWriteFontFace(SkRefComPtr(fontFace))
     , fRequestedPaletteEntryOverrides(palette.overrideCount
         ? (SkFontArguments::Palette::Override*)memcpy(
@@ -203,6 +216,9 @@ DWriteFontTypeface::DWriteFontTypeface(const SkFontStyle& style,
     if (!SUCCEEDED(fFactory->QueryInterface(&fFactory2))) {
         SkASSERT_RELEASE(nullptr == fFactory2.get());
     }
+
+    // Before FontFace3, need Font and Family for names.
+    SkASSERT(fDWriteFontFace3 || (fDWriteFont && fDWriteFontFamily));
 
     if (fDWriteFontFace1 && fDWriteFontFace1->IsMonospacedFont()) {
         this->setIsFixedPitch(true);
