@@ -33,6 +33,24 @@
       "message": "CQ failures involve `use_partition_alloc_as_malloc_on_win_component_build`?",
       "revId": "aa231b1f315b56c13e4ee48a56c65d2ba6d4dbf0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6070fd52_968dd59f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-07T15:24:17Z",
+      "side": 1,
+      "message": "Ooops.\n\nThis should be:\n```\n\u003d is_clang\n```\ndone.",
+      "parentUuid": "52bb25e3_fdce3da7",
+      "revId": "aa231b1f315b56c13e4ee48a56c65d2ba6d4dbf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
