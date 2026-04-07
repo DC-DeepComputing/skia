@@ -39,6 +39,30 @@
       },
       "revId": "1b65768768400c3dc2cff1508146e2a4ce8fc9ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d43215f1_07b4c5e8",
+        "filename": "third_party/dawn/build_dawn.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-04-07T16:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f94b89a_e7bc279d",
+      "range": {
+        "startLine": 176,
+        "startChar": 40,
+        "endLine": 176,
+        "endChar": 51
+      },
+      "revId": "1b65768768400c3dc2cff1508146e2a4ce8fc9ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
