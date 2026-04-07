@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4672d2d_4fa7f869",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T13:52:43Z",
+      "side": 1,
+      "message": "count64*stride64 won\u0027t overflow, but hypothetically adding +headroomPad could.\n\nI think we should keep bytes64 as it was and then add headroomPad in the return statement.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 60
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15264460_e16d8236",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T13:52:43Z",
+      "side": 1,
+      "message": "If `bytes64` is updated to not have `headroomPad` yet, we can safely subtract it from `::max()` alongside the alignment term to make sure the subsequent addition won\u0027t overflow in the return statement.",
+      "range": {
+        "startLine": 59,
+        "startChar": 18,
+        "endLine": 59,
+        "endChar": 72
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3df4f2_7ce1f2da",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T13:52:43Z",
+      "side": 1,
+      "message": "Since this API is intended for the single blob + rebind use case, do you think its worth having it automatically do the two steps inside UniformTracker for UBOs?\n\nSince it\u0027s forcing count\u003d1, it could adjust the BindBufferInfo\u0027s size to include the headroom and it could call resetForNextBinding()? Maybe that gets weird because the BufferWriter will still be locked into only writing `stride` bytes.",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 4
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15dc5121_ad08e84f",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T13:52:43Z",
+      "side": 1,
+      "message": "nit: 2 tabs indent",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 87
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
