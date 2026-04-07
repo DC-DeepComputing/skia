@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8044d887_46f409a3",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90b994ac_46162bc8",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 38
+      },
+      "revId": "343ef1820ae27c9a53c325cfe1e6d7ab989dc28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9ed6d61_ed439c97",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-07T16:50:31Z",
       "side": 1,
       "message": "line length",
+      "range": {
+        "startLine": 2376,
+        "startChar": 0,
+        "endLine": 2376,
+        "endChar": 102
+      },
+      "revId": "343ef1820ae27c9a53c325cfe1e6d7ab989dc28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5de9652d_bae04479",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2376,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-07T16:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9ed6d61_ed439c97",
       "range": {
         "startLine": 2376,
         "startChar": 0,
