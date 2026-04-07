@@ -459,7 +459,7 @@ int DWriteFontTypeface::onGetVariationDesignPosition(
     UINT32 coordIndex = 0;
     for (UINT32 axisIndex = 0; axisIndex < fontAxisCount; ++axisIndex) {
         if (fontResource->GetFontAxisAttributes(axisIndex) & DWRITE_FONT_AXIS_ATTRIBUTES_VARIABLE) {
-            coordinates[coordIndex].axis = SkEndian_SwapBE32(fontAxisValue[axisIndex].axisTag);
+            coordinates[coordIndex].axis = SkEndianSwap32(fontAxisValue[axisIndex].axisTag);
             coordinates[coordIndex].value = fontAxisValue[axisIndex].value;
             ++coordIndex;
         }
@@ -504,7 +504,7 @@ int DWriteFontTypeface::onGetVariationDesignParameters(
 
     for (UINT32 axisIndex = 0; axisIndex < fontAxisCount; ++axisIndex) {
         if (fontResource->GetFontAxisAttributes(axisIndex) & DWRITE_FONT_AXIS_ATTRIBUTES_VARIABLE) {
-            parameters[coordIndex].tag = SkEndian_SwapBE32(fontAxisDefaultValue[axisIndex].axisTag);
+            parameters[coordIndex].tag = SkEndianSwap32(fontAxisDefaultValue[axisIndex].axisTag);
             parameters[coordIndex].min = fontAxisRange[axisIndex].minValue;
             parameters[coordIndex].def = fontAxisDefaultValue[axisIndex].value;
             parameters[coordIndex].max = fontAxisRange[axisIndex].maxValue;
@@ -542,7 +542,7 @@ int DWriteFontTypeface::onGetTableTags(SkSpan<SkFontTableTag> tags) const {
 size_t DWriteFontTypeface::onGetTableData(SkFontTableTag tag, size_t offset,
                                           size_t length, void* data) const
 {
-    AutoDWriteTable table(fDWriteFontFace.get(), SkEndian_SwapBE32(tag));
+    AutoDWriteTable table(fDWriteFontFace.get(), SkEndianSwap32(tag));
     if (!table.fExists) {
         return 0;
     }
@@ -563,7 +563,7 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
     UINT32 size;
     void* lock;
     BOOL exists;
-    fDWriteFontFace->TryGetFontTable(SkEndian_SwapBE32(tag),
+    fDWriteFontFace->TryGetFontTable(SkEndianSwap32(tag),
                                      reinterpret_cast<const void**>(&data), &size, &lock, &exists);
     if (!exists) {
         return nullptr;
@@ -611,8 +611,9 @@ sk_sp<SkTypeface> DWriteFontTypeface::onMakeClone(const SkFontArguments& args) c
 
         for (UINT32 fontIndex = 0; fontIndex < fontAxisCount; ++fontIndex) {
             for (UINT32 argsIndex = 0; argsIndex < argsCoordCount; ++argsIndex) {
-                if (SkEndian_SwapBE32(fontAxisValue[fontIndex].axisTag) ==
-                    args.getVariationDesignPosition().coordinates[argsIndex].axis) {
+                if (SkEndianSwap32(fontAxisValue[fontIndex].axisTag) ==
+                    args.getVariationDesignPosition().coordinates[argsIndex].axis)
+                {
                     fontAxisValue[fontIndex].value =
                         args.getVariationDesignPosition().coordinates[argsIndex].value;
                 }
@@ -1169,7 +1170,7 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
         for (UINT32 argsCoordIndex = argsCoordCount; argsCoordIndex --> 0;) {
             const SkFontArguments::VariationPosition::Coordinate& argsCoordinate =
                 args.getVariationDesignPosition().coordinates[argsCoordIndex];
-            if (SkEndian_SwapBE32(fontCoordinate.axisTag) == argsCoordinate.axis) {
+            if (SkEndianSwap32(fontCoordinate.axisTag) == argsCoordinate.axis) {
                 fontCoordinate.value = argsCoordinate.value;
                 break;
             }
