@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48f3a712_f26f8b73",
+        "filename": "src/gpu/graphite/PrecompileContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T19:54:57Z",
+      "side": 1,
+      "message": "Should we do this initialization in the beginning so that the early outs don\u0027t have to keep setting it?",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 44
+      },
+      "revId": "62d6f92086b2a27e2b949712fa9a2fc97a1aa3e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
