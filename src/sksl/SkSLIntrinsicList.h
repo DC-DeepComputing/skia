@@ -106,6 +106,7 @@
     SKSL_INTRINSIC(tanh)             \
     SKSL_INTRINSIC(tan)              \
     SKSL_INTRINSIC(textureHeight)    \
+    SKSL_INTRINSIC(textureSize)      \
     SKSL_INTRINSIC(textureRead)      \
     SKSL_INTRINSIC(textureWidth)     \
     SKSL_INTRINSIC(textureWrite)     \
