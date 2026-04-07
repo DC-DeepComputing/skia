@@ -44,8 +44,7 @@ bool HasBitmapStrikes(const SkTScopedComPtr<IDWriteFont>& font) {
   SkTScopedComPtr<IDWriteFontFace> fontFace;
   HRB(font->CreateFontFace(&fontFace));
 
-  AutoDWriteTable ebdtTable(fontFace.get(),
-                            SkEndian_SwapBE32(SkSetFourByteTag('E', 'B', 'D', 'T')));
+  AutoDWriteTable ebdtTable(fontFace.get(), DWRITE_MAKE_OPENTYPE_TAG('E', 'B', 'D', 'T'));
   return ebdtTable.fExists;
 }
 
