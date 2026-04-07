@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85a6a92e_237d1148",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-07T00:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "780d4752_01d193c3",
+      "range": {
+        "startLine": 123,
+        "startChar": 51,
+        "endLine": 123,
+        "endChar": 63
+      },
+      "revId": "8ca2c6570968531a617bc34cf36b027c5c8ae889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83b42b55_74346be1",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91e2588c_ba52a325",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-07T00:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83b42b55_74346be1",
+      "range": {
+        "startLine": 127,
+        "startChar": 21,
+        "endLine": 127,
+        "endChar": 25
+      },
+      "revId": "8ca2c6570968531a617bc34cf36b027c5c8ae889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5f92f00_134669fb",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-04-06T19:08:00Z",
       "side": 1,
       "message": "I don\u0027t think that this is necessary, but that\u0027s because the stride is derived from the declared uniforms and in order to get something where the SkNextSizePow2(uniformDataSize) overflowed uint32_t::max(), we\u0027d be looking at ~2GB of uniform data for a single draw call. Something would likely have OOM\u0027ed at that point, but I think a better way to impose some constraints is when collecting data the original key and uniform data to detect when the UniformManager\u0027s size exceeds some reasonable limit like 16k and mark the PaintParamsKey as error\u0027ed out.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 13
+      },
+      "revId": "8ca2c6570968531a617bc34cf36b027c5c8ae889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae31fdf8_7cb9d384",
+        "filename": "src/gpu/graphite/DrawListBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-07T00:34:14Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "e5f92f00_134669fb",
       "range": {
         "startLine": 159,
         "startChar": 0,
