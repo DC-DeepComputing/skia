@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d727b3aa_a68aa455",
+        "filename": "src/core/SkEdgeClipper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-04-07T17:12:43Z",
+      "side": 1,
+      "message": "I have not verified AI calculations on the new size, so I think it would be better if we just leave the `SkAssert`s and later revisit and reason deeply about them.\nWhat do you think?",
+      "parentUuid": "c20bc9d0_5cb807d3",
+      "revId": "89f0b6cc7d1e017ea91e8913081c3ff9ffa370f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d5b9980d_89bc94a7",
