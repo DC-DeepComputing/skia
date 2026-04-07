@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "647201dc_a3c92373",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-07T17:54:40Z",
+      "side": 1,
+      "message": "I agree, I just wasn\u0027t sure if this change is what you\u0027d expect the behavior to be after reading \"Headroom is used to make sure there are at least headroom bytes from the last possible stride instance and the end of the buffer.\" in `getMappedSubrangeWithHeadroom`. \n\nBecause count\u003d1 currently, they are one and the same, but maybe we update the public comment to be \"Headroom is used to make sure there is at least headroom bytes from the beginning of the returned subrange to the end of the buffer\"?",
+      "parentUuid": "f1221a44_7b71c98c",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 60
+      },
+      "revId": "15564d802c0ec9451576e55d626a127708b83556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15264460_e16d8236",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 2
