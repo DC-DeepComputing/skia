@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7e447d0_7a98978a",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8516,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-04-07T20:54:44Z",
+      "side": 1,
+      "message": "Fixed in PS2 — the patchset is now properly rebased on current main with no deletions of existing tests. All Arabic letter-spacing tests are preserved.",
+      "parentUuid": "16560df7_1db60d26",
+      "revId": "9c0d1c2e6d1aa17f7f1c2b6bd850a6c49e45a054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
