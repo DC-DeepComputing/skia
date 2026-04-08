@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1964fb5c_d869dd47",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T21:21:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aec53fe_da857509",
+      "range": {
+        "startLine": 423,
+        "startChar": 4,
+        "endLine": 423,
+        "endChar": 31
+      },
+      "revId": "03f5ba657553483b1b090f2131e4d2046baeb42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b13db22_a0f78b55",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-08T20:25:25Z",
       "side": 1,
       "message": "nit: Can this be simplified to something like below (removing the helper function above):\n\n```suggestion\n    let (mut grid_data, is_16bit_grid) \u003d match clut {\n        LutStore::Store8(data) \u003d\u003e (data.clone(), false),\n        LutStore::Store16(data) \u003d\u003e (u16_vec_to_bytes(data), true),\n    };\n\n    // Padded to a 4-byte boundary per ICC.1:2022 §7.1.2(c): \"all tagged element\n    // data [...] shall be padded by no more than three following pad bytes to\n    // reach a 4-byte boundary\".\n    // Spec: https://www.color.org/specification/ICC.1-2022-05.pdf\n    grid_data.resize(grid_data.len().next_multiple_of(4), 0);\n\n    (grid_data, is_16bit_grid)\n```",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 447,
+        "endChar": 5
+      },
+      "revId": "03f5ba657553483b1b090f2131e4d2046baeb42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "362b3c12_e3681715",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T21:21:26Z",
+      "side": 1,
+      "message": "Yes, it has same behaviour while simplifying code, great suggestion!",
+      "parentUuid": "2b13db22_a0f78b55",
       "range": {
         "startLine": 429,
         "startChar": 0,
