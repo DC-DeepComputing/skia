@@ -619,6 +619,118 @@ DEF_TEST(RustIcc_profile_with_b2a, r) {
     REPORTER_ASSERT(r, fabsf(skcms_profile.B2A.output_curves[0].parametric.g - 1.0f) < 0.0001f);
 }
 
+// ---------------------------------------------------------------------------
+// CLUT gather over-read tests (b/498869813, b/498927031).
+//
+// skcms gather_24/48 over-read by 1-2 bytes after the grid entry.
+// With moxcms each CLUT is its own Vec, so we pad the end.
+// ---------------------------------------------------------------------------
+
+// Minimal A2B-only profile whose CLUT grid borrows |grid_buf|.
+static skcms_ICCProfile make_clut_profile(const uint8_t* grid_buf, bool is_16bit) {
+    skcms_ICCProfile p;
+    memset(&p, 0, sizeof(p));
+
+    p.data_color_space = skcms_Signature_RGB;
+    p.pcs              = skcms_Signature_XYZ;
+    p.has_A2B          = true;
+
+    skcms_A2B& a2b     = p.A2B;
+    a2b.input_channels  = 3;
+    a2b.output_channels = 3;
+    a2b.grid_points[0]  = 2;
+    a2b.grid_points[1]  = 2;
+    a2b.grid_points[2]  = 2;
+
+    if (is_16bit) {
+        a2b.grid_16 = grid_buf;
+    } else {
+        a2b.grid_8  = grid_buf;
+    }
+
+    // Identity curves.
+    for (int i = 0; i < 3; ++i) {
+        a2b.input_curves[i].parametric  = {1, 1, 0, 0, 0, 0, 0};
+        a2b.output_curves[i].parametric = {1, 1, 0, 0, 0, 0, 0};
+    }
+    return p;
+}
+
+// Allocates a suffix-padded CLUT grid buffer and runs skcms_Transform on it.
+// |is_16bit| selects 16-bit (gather_48) vs 8-bit (gather_24) grid.
+// Forces scalar baseline so ASAN can detect the gather over-read.
+static void test_clut_gather_overread(skiatest::Reporter* r, bool is_16bit) {
+    skcms_DisableRuntimeCPUDetection();
+    const size_t kGridSize = is_16bit ? 48 : 24;  // 2×2×2 × 3ch × (2|1) bytes
+    const size_t kPad = 4;
+    uint8_t* buf = (uint8_t*)malloc(kGridSize + kPad);
+    REPORTER_ASSERT(r, buf != nullptr);
+    memset(buf, 0x42, kGridSize);
+    memset(buf + kGridSize, 0, kPad);
+
+    skcms_ICCProfile src = make_clut_profile(buf, is_16bit);
+    uint8_t src_px[] = {0, 0, 0,  128, 128, 128,  255, 255, 255};
+    uint8_t dst_px[9] = {};
+    bool ok = skcms_Transform(src_px, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque, &src,
+                    dst_px, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque,
+                    skcms_sRGB_profile(), 3);
+    REPORTER_ASSERT(r, ok);
+    free(buf);
+}
+
+DEF_TEST(RustIcc_clut_gather48_overread_cpp_alloc, r) {
+    test_clut_gather_overread(r, /*is_16bit=*/true);
+}
+
+DEF_TEST(RustIcc_clut_gather24_overread_cpp_alloc, r) {
+    test_clut_gather_overread(r, /*is_16bit=*/false);
+}
+
+// End-to-end: Rust-parsed ICC profiles with 3-channel CLUTs through skcms_Transform.
+// Validates that the suffix padding added by convert_grid_data() in FFI.rs prevents
+// the skcms gather over-read (b/498869813) from causing ASAN failures.
+DEF_TEST(RustIcc_clut_transform_exercises_gather_overread, r) {
+    skcms_DisableRuntimeCPUDetection();
+    const char* profiles_with_cluts[] = {
+        "icc_profiles/apng19.icc",
+        "icc_profiles/srgb_lab_pcs.icc",
+        "icc_profiles/upperRight.icc",
+    };
+
+    for (const char* path : profiles_with_cluts) {
+        auto data = GetResourceAsData(path);
+        if (!data) {
+            ERRORF(r, "Failed to load: %s", path);
+            continue;
+        }
+
+        // Parse through the Rust FFI path.
+        auto profile = SkCodecs::MakeICCProfileWithRust(data);
+        if (!profile) {
+            ERRORF(r, "Rust parser failed for: %s", path);
+            continue;
+        }
+
+        const skcms_ICCProfile* src = profile->profile();
+        if (!src->has_A2B) {
+            ERRORF(r, "[%s] Expected has_A2B but got false", path);
+            continue;
+        }
+
+        // Transform pixels to exercise the CLUT gather path.
+        uint8_t src_pixels[] = {0, 0, 0,  128, 128, 128,  255, 255, 255};
+        uint8_t dst_pixels[9] = {};
+        bool transformed = skcms_Transform(
+                src_pixels, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque, src,
+                dst_pixels, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque,
+                skcms_sRGB_profile(),
+                3);
+        if (!transformed) {
+            ERRORF(r, "[%s] skcms_Transform failed", path);
+        }
+    }
+}
+
 // Helper to compare two skcms_Curve objects by evaluating them at sample points.
 // Works for both parametric and table-based curves. For table curves, reads the
 // raw big-endian bytes the same way skcms_Transform would.
