@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d572105_72f57eab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4727287
+      },
+      "writtenOn": "2026-04-08T06:35:45Z",
+      "side": 1,
+      "message": "Consistent performance improvements are observed on Intel platforms.",
+      "revId": "08626bc4898218abb9c54d0cb3a590edea72c6b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

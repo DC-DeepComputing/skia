@@ -33,6 +33,24 @@
       "message": "I\u0027m not inclined to land more code for AVX512 given it being disabled on many newer Intel CPUs and activating AVX512 can cause surprising knock-on performance impacts because devices that do support AVX512 might then lower their clock significantly in order to run the 512 instructions, negatively affecting all the other instructions we execute.",
       "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8e411b_caed3cac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4727287
+      },
+      "writtenOn": "2026-04-08T06:35:45Z",
+      "side": 1,
+      "message": "Consistent performance improvements are observed on Intel platforms.\nIntel platforms:\n\nTiger Lake (i5-8250U, UHD 620)\n\nAVX512:\n- Before: 6580.807 ms\n- After : 5737.445 ms   (~13% faster)\n\nAVX2 / Default SSE version\n- No significant change (within noise)\n\n\nIce Lake (i5-1035G1, UHD)\n\nAVX512:\n- Before: 8473.315 ms\n- After : 8199.523 ms   (~3% faster)\n\nAVX2 / Default:\n- No meaningful improvement (within noise)\n\nSummary:\n- Consistent improvements observed on Intel AVX-512 platforms:\n  - Tiger Lake: ~13% speedup\n  - Ice Lake: ~3% speedup",
+      "parentUuid": "c6ac6a97_0d185339",
+      "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
