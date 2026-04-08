@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "598aa5ff_76776b9a",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c01807e_7088e935",
+      "range": {
+        "startLine": 419,
+        "startChar": 12,
+        "endLine": 419,
+        "endChar": 17
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d234b87_07159875",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-08T14:26:07Z",
       "side": 1,
       "message": "nit: after",
+      "range": {
+        "startLine": 625,
+        "startChar": 45,
+        "endLine": 625,
+        "endChar": 51
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49376dce_e3265fc0",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d234b87_07159875",
       "range": {
         "startLine": 625,
         "startChar": 45,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "295be755_aca027b2",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05abe43a_6155b948",
+      "range": {
+        "startLine": 626,
+        "startChar": 51,
+        "endLine": 626,
+        "endChar": 55
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd31e7a0_e79ff61c",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "384748ad_0935763d",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd31e7a0_e79ff61c",
+      "range": {
+        "startLine": 662,
+        "startChar": 12,
+        "endLine": 662,
+        "endChar": 37
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37efe28f_61c78f2a",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-04-08T14:26:07Z",
       "side": 1,
       "message": "Is this test necessary here? I think it\u0027s redundant with the test added in https://review.skia.org/1201671",
+      "range": {
+        "startLine": 692,
+        "startChar": 12,
+        "endLine": 692,
+        "endChar": 41
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa75e85_2c07745d",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:11:01Z",
+      "side": 1,
+      "message": "Right, this is not covering the issue we fix here, it should be removed as will be covered on the other CL",
+      "parentUuid": "37efe28f_61c78f2a",
       "range": {
         "startLine": 692,
         "startChar": 12,
