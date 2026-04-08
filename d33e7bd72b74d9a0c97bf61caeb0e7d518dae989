@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82538a23_4e2bc654",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T15:43:42Z",
+      "side": 1,
+      "message": "question: are these comments still useful with the ones below?",
+      "range": {
+        "startLine": 623,
+        "startChar": 8,
+        "endLine": 623,
+        "endChar": 14
+      },
+      "revId": "d33e7bd72b74d9a0c97bf61caeb0e7d518dae989",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
