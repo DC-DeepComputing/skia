@@ -415,13 +415,34 @@ fn a2b_to_b2a(a2b: ffi::A2B) -> ffi::B2A {
     }
 }
 
-/// Convert LutStore grid data to bytes.
-/// Returns (grid_data, is_16bit_grid).
+/// Suffix padding added to CLUT grid buffers so that skcms gather_24/gather_48
+/// forward reads (which load 4 or 8 bytes at a time) don't walk off the end of
+/// the Vec.
+fn suffix_padding_for(payload_len: usize) -> usize {
+    (4 - (payload_len % 4)) % 4
+}
+
+/// Converts LutStore grid data to bytes with suffix padding for skcms gather safety.
 fn convert_grid_data(clut: &moxcms::LutStore) -> (Vec<u8>, bool) {
     use moxcms::LutStore;
     match clut {
-        LutStore::Store8(data) => (data.clone(), false),
-        LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
+        LutStore::Store8(data) => {
+            let pad = suffix_padding_for(data.len());
+            let mut buf = Vec::with_capacity(data.len() + pad);
+            buf.extend_from_slice(data);
+            buf.extend(std::iter::repeat(0u8).take(pad));
+            (buf, false)
+        }
+        LutStore::Store16(data) => {
+            let payload_len = data.len() * 2;
+            let pad = suffix_padding_for(payload_len);
+            let mut buf = Vec::with_capacity(payload_len + pad);
+            for value in data {
+                buf.extend(value.to_be_bytes());
+            }
+            buf.extend(std::iter::repeat(0u8).take(pad));
+            (buf, true)
+        }
     }
 }
 
