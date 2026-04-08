@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41ec9bca_a77a043c",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T12:53:07Z",
+      "side": 1,
+      "message": "nit: make these two functions static since they aren\u0027t used outside of this file (and have snake_case names)",
+      "range": {
+        "startLine": 583,
+        "startChar": 5,
+        "endLine": 583,
+        "endChar": 25
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c283434_e4f13a71",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T12:53:07Z",
+      "side": 1,
+      "message": "Could we check this with an SkAssert?",
+      "range": {
+        "startLine": 599,
+        "startChar": 67,
+        "endLine": 599,
+        "endChar": 71
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3319f135_3410965f",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T12:53:07Z",
+      "side": 1,
+      "message": "Let\u0027s initialize this just in case we don\u0027t have a move first (e.g. corrupt data)",
+      "range": {
+        "startLine": 674,
+        "startChar": 9,
+        "endLine": 674,
+        "endChar": 17
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
