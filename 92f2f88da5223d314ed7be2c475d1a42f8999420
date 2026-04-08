@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d94551e_a02032c9",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-08T15:56:04Z",
+      "side": 1,
+      "message": "include buffer / resource ID in log statements for processing returned resources (purgeable / reusable? this is where that may be changed).",
+      "range": {
+        "startLine": 257,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 23
+      },
+      "revId": "92f2f88da5223d314ed7be2c475d1a42f8999420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60ea8b91_16e8842e",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-08T15:56:04Z",
+      "side": 1,
+      "message": "report # of resources that have this key\nhow many are purgeable and how many are not (for this and when we create)",
+      "range": {
+        "startLine": 260,
+        "startChar": 2,
+        "endLine": 260,
+        "endChar": 75
+      },
+      "revId": "92f2f88da5223d314ed7be2c475d1a42f8999420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
