@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3983d165_dbacc634",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-08T18:41:16Z",
+      "side": 1,
+      "message": "PTAL! Dropped the +1, but also, the test files had the wrong name (were still called `textureDimensions`) and now that `textureRead` merged, I pulled texture extraction from combined tex+sampler into a helper function.",
+      "revId": "a548f4c9955d5a1d1ad31e9e3f8564e6efe224ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
