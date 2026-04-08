@@ -59,6 +59,12 @@ bool SkCanvasPriv::ReadLattice(SkReadBuffer& buffer, SkCanvas::Lattice* lattice)
     lattice->fYCount = buffer.readInt();
     lattice->fYDivs = buffer.skipT<int32_t>(lattice->fYCount);
     int flagCount = buffer.readInt();
+    SkSafeMath safe;
+    const int expected = SkToInt(safe.mul(safe.addInt(lattice->fXCount, 1),
+                                          safe.addInt(lattice->fYCount, 1)));
+    if (!buffer.validate(safe.ok() && (flagCount == 0 || flagCount == expected))) {
+        return false;
+    }
     lattice->fRectTypes = nullptr;
     lattice->fColors = nullptr;
     if (flagCount) {
