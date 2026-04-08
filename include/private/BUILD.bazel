@@ -61,7 +61,10 @@ skia_filegroup(
 skia_filegroup(
     name = "jpeg_decode_srcs",
     srcs = JPEG_DECODE_SRCS_HDRS,
-    visibility = ["//src/codec:__pkg__"],
+    visibility = [
+        "//experimental/rust_jpeg/decoder/impl:__pkg__",
+        "//src/codec:__pkg__",
+    ],
 )
 
 generate_cpp_files_for_headers(
