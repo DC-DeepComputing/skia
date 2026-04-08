@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c01807e_7088e935",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T14:26:07Z",
+      "side": 1,
+      "message": "Can you add a reference to the spec?",
+      "range": {
+        "startLine": 419,
+        "startChar": 12,
+        "endLine": 419,
+        "endChar": 17
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d234b87_07159875",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T14:26:07Z",
+      "side": 1,
+      "message": "nit: after",
+      "range": {
+        "startLine": 625,
+        "startChar": 45,
+        "endLine": 625,
+        "endChar": 51
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05abe43a_6155b948",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T14:26:07Z",
+      "side": 1,
+      "message": "nit: only one end",
+      "range": {
+        "startLine": 626,
+        "startChar": 51,
+        "endLine": 626,
+        "endChar": 55
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd31e7a0_e79ff61c",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T14:26:07Z",
+      "side": 1,
+      "message": "We won\u0027t need the before padding, right?",
+      "range": {
+        "startLine": 662,
+        "startChar": 12,
+        "endLine": 662,
+        "endChar": 37
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37efe28f_61c78f2a",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T14:26:07Z",
+      "side": 1,
+      "message": "Is this test necessary here? I think it\u0027s redundant with the test added in https://review.skia.org/1201671",
+      "range": {
+        "startLine": 692,
+        "startChar": 12,
+        "endLine": 692,
+        "endChar": 41
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
