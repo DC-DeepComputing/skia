@@ -1,0 +1,231 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eddc08f_16cb876b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Description ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22982487_231ca8fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Bug# !",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c86d6b96_3c0f4e45",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Translation unit local methods get snake case\nHere and in following",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdbd62f9_8ccb8225",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "It seems like this should have a suffix: estimate_num_quads_from_lut ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5a54500_255ba714",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "What kind of LUT is this? kParabolicSpaceAwesomeErrorLUT ? Maybe with a comment ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cec7931b_8879358a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "This seems magical. Where did it come from ?",
+      "range": {
+        "startLine": 80,
+        "startChar": 26,
+        "endLine": 80,
+        "endChar": 30
+      },
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9c601f_519a79d1",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e93384d6_21df8987",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "// The maximum number of Quads that can result from ... ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6060992b_8abf85ca",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Is there a more descriptive name? kQuadErrorTol ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d09d17f_b19a96f4",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "If we\u0027re going to change it we usually pass it as a pointer. This gives a hint at the call site.",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b1deef_2fe9c548",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "We usually call these sort of classes *TestUtils.",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4151103e_92c45afb",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "What is all this stuff - add a comment ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8580e71f_1362d46c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-08T19:45:18Z",
+      "side": 1,
+      "message": "Should this have a Scalar suffix ?",
+      "revId": "6d3a8ed315b7ca244a855d3e66d55f134c2148f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
