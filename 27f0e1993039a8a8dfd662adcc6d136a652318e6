@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89037ab_6f3e3580",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-08T13:46:09Z",
+      "side": 1,
+      "message": "Can we add a comment on what this value is? Or better yet can we make an SkContentID object (basically just wraps the uint32_t) that is returned here",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 20
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6cc1b5c_9b57f4e8",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-08T13:46:09Z",
+      "side": 1,
+      "message": "Are these annotations meant to be landed or were they for debugging?",
+      "range": {
+        "startLine": 273,
+        "startChar": 9,
+        "endLine": 273,
+        "endChar": 29
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3c23f57_058470e7",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-08T13:46:09Z",
+      "side": 1,
+      "message": "This fix should just be in its own CL as it is not directly related to content id",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
