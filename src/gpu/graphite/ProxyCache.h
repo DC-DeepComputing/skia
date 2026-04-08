@@ -14,6 +14,8 @@
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 
+#include <optional>
+
 class SkBitmap;
 class SkIDChangeListener;
 
