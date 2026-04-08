@@ -22,6 +22,30 @@
       },
       "revId": "d33e7bd72b74d9a0c97bf61caeb0e7d518dae989",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffc6a172_8a23a737",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:55:21Z",
+      "side": 1,
+      "message": "Right, the comment is redundant, removing it.",
+      "parentUuid": "82538a23_4e2bc654",
+      "range": {
+        "startLine": 623,
+        "startChar": 8,
+        "endLine": 623,
+        "endChar": 14
+      },
+      "revId": "d33e7bd72b74d9a0c97bf61caeb0e7d518dae989",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
