@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba0dcb0_3ece6072",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-08T13:25:17Z",
+      "side": 1,
+      "message": "Hopefully this unblocks the chrome roll",
+      "revId": "cfca9d99f02f2f300f02b21184314283f0d50839",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
