@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "849483e0_520cbcae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-04-08T13:40:07Z",
+      "side": 1,
+      "message": "The bug was approved for M138 LTS. PTAL.",
+      "revId": "306f36b276576f663ec8843e15a28ed1502df287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
