@@ -189,6 +189,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
                                                                BufferType type,
                                                                AccessPattern accessPattern,
                                                                std::string_view label) {
+    // SKGPU_LOG_W("nikipre: SF: nonshareable buffer");
     return this->findOrCreateBuffer(size, type, accessPattern, label, Shareable::kNo);
 }
 
@@ -201,6 +202,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
     // Scratch buffers must be GPU only, mapped access makes it too difficult to scope their
     // reads and writes within the actual command buffer execution.
     SkASSERT(access != AccessPattern::kHostVisible);
+    // SKGPU_LOG_W("nikipre: SF: scratch buffer");
     return this->findOrCreateBuffer(size, type, access, label, Shareable::kScratch, &unvailable);
 }
 
@@ -215,6 +217,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     GraphiteResourceKey key;
+    std::string keyStr = "[";
     {
         // For the key we need ((sizeof(size_t) + (sizeof(uint32_t) - 1)) / (sizeof(uint32_t))
         // uint32_t's for the size and one uint32_t for the rest.
@@ -228,9 +231,36 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt);
         builder[0] = (static_cast<uint32_t>(type) << 0) |
                      (static_cast<uint32_t>(accessPattern) << 4);
+
+        keyStr += " type: ";
+        switch (type) {
+            case BufferType::kVertex: keyStr+="kVertex"; break;
+            case BufferType::kIndex: keyStr+="kIndex"; break;
+            case BufferType::kXferCpuToGpu: keyStr+="kXferCpuToGpu"; break;
+            case BufferType::kXferGpuToCpu: keyStr+="kXferGpuToCpu"; break;
+            case BufferType::kUniform: keyStr+="kUniform"; break;
+            case BufferType::kStorage: keyStr+="kStorage"; break;
+            case BufferType::kQuery: keyStr+="kQuery"; break;
+            case BufferType::kIndirect: keyStr+="kIndirect"; break;
+            case BufferType::kVertexStorage: keyStr+="kVertexStorage"; break;
+            case BufferType::kIndexStorage: keyStr+="kIndexStorage"; break;
+            default: keyStr+="impossible"; break;
+        }
+
+        keyStr += " | accessPattern: ";
+        switch (accessPattern) {
+            case AccessPattern::kGpuOnly: keyStr += "gpu_only"; break;
+            case AccessPattern::kHostVisible: keyStr += "host_visible"; break;
+            case AccessPattern::kGpuOnlyCopySrc: keyStr += "gpu_only_copy_src"; break;
+            default: keyStr += "impossible"; break;
+        }
+
+        keyStr += " | szKey: [ ";
         size_t szKey = size;
         for (int i = 0; i < kSizeKeyNum32DataCnt; ++i) {
             builder[i + 1] = (uint32_t) szKey;
+            keyStr += std::to_string((uint32_t)szKey);
+            keyStr += " ";
 
             // If size_t is 4 bytes, we cannot do a shift of 32 or else we get a warning/error that
             // shift amount is >= width of the type.
@@ -239,17 +269,48 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
             }
         }
     }
+    keyStr += "] ]";
 
+
+    SKGPU_LOG_W("nikipre: Before searching, %i resources with key; %i complete matches",
+                fResourceCache->numResourcesWithKey(key),
+                fResourceCache->numResourcesWithKeyAndShareability(key,
+                                                                   kBudgeted,
+                                                                   shareable,
+                                                                   unavailable));
     if (Resource* resource =
             fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
+        SKGPU_LOG_W("=== nikipre: Reusing buffer %u with key { %s } ===",
+                    resource->uniqueID().asUInt(),
+                    keyStr.c_str());
+        SKGPU_LOG_W("nikipre: After processing, %i resources with key; %i complete matches",
+                    fResourceCache->numResourcesWithKey(key),
+                    fResourceCache->numResourcesWithKeyAndShareability(key,
+                                                                       kBudgeted,
+                                                                       shareable,
+                                                                       unavailable));
+        SKGPU_LOG_W("nikipre: ===================================");
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 
     if (auto buffer = this->createBuffer(size, type, accessPattern, label)) {
+        SKGPU_LOG_W("=== nikipre: Creating buffer with key { %s } ===", keyStr.c_str());
+
         fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable);
+
+        SKGPU_LOG_W("nikipre: New buffer resource ID: %u", buffer->uniqueID().asUInt());
+
+        SKGPU_LOG_W("nikipre: After inserting, %i resources with key; %i complete matches",
+                    fResourceCache->numResourcesWithKey(key),
+                    fResourceCache->numResourcesWithKeyAndShareability(key,
+                                                                       kBudgeted,
+                                                                       shareable,
+                                                                       unavailable));
+        SKGPU_LOG_W("nikipre: ===================================");
         return buffer;
     }
 
+    SKGPU_LOG_W("nikipre: Returning nullptr from findOrCreateBuffer");
     return nullptr;
 }
 

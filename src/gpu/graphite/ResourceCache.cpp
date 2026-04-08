@@ -16,6 +16,8 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include "src/gpu/graphite/Log.h"
+
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
 #endif
@@ -261,6 +263,60 @@ void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
 }
+
+// This is just findAndRefResource code repurposed to find but not ref, and keep finding keys that
+// match.
+int ResourceCache::numResourcesWithKey(const GraphiteResourceKey& key) {
+    ASSERT_SINGLE_OWNER
+
+    SkASSERT(key.isValid());
+
+    int count = fResourceMap.numEntriesWithKey(key);
+
+    // if (count == 0 && this->processReturnedResources()) {
+    //     count = fResourceMap.numEntriesWithKey(key);
+    //     if (count != 0) {
+    //         SKGPU_LOG_W("nikipre: processing led to finding resource.");
+    //     } else {
+    //         SKGPU_LOG_W("nikipre: processing did NOT lead to finding resource.");
+    //     }
+    // }
+
+    return count;
+}
+
+int ResourceCache::numResourcesWithKeyAndShareability(const GraphiteResourceKey& key,
+                                                      Budgeted budgeted,
+                                                      Shareable shareable,
+                                                      const ScratchResourceSet* unavailable) {
+    ASSERT_SINGLE_OWNER
+
+    SkASSERT(key.isValid());
+    SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
+
+    auto shareablePredicate = [shareable, unavailable](Resource* r) {
+        // If the resource is in fResourceMap then it's available, so a non-shareable state means
+        // it really has no outstanding uses and can be converted to any other shareable state.
+        // Otherwise, if it's available, it can only be reused with the same mode. Additionally,
+        // for kScratch resources, they cannot already be in the `unavailable` set passed in.
+        return (r->shareable() == Shareable::kNo || r->shareable() == shareable) &&
+               (shareable != Shareable::kScratch || !unavailable->contains(r));
+    };
+
+    int count = fResourceMap.numEntriesWithKeyAndPredicate(key, shareablePredicate);
+
+    // if (count == 0 && this->processReturnedResources()) {
+    //     count = fResourceMap.numEntriesWithKeyAndPredicate(key, shareablePredicate);
+    //     if (count != 0) {
+    //         SKGPU_LOG_W("nikipre: processing led to finding resource w/ predicate.");
+    //     } else {
+    //         SKGPU_LOG_W("nikipre: processing did NOT lead to finding resource w/ predicate.");
+    //     }
+    // }
+
+    return count;
+}
+
 
 bool ResourceCache::returnResource(Resource* resource) {
     SkASSERT(resource && resource->cache() == this);

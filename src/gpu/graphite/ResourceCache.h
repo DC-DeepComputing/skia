@@ -87,6 +87,11 @@ public:
 
     void forceProcessReturnedResources();
 
+    int numResourcesWithKey(const GraphiteResourceKey&);
+
+    int numResourcesWithKeyAndShareability(
+            const GraphiteResourceKey&, Budgeted, Shareable, const ScratchResourceSet* unavailable);
+
 #if defined(GPU_TEST_UTILS)
     void forcePurgeAsNeeded() { this->purgeAsNeeded(); }
 
