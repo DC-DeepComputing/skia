@@ -16,6 +16,23 @@
       "message": "The bug was approved for M138 LTS. PTAL.",
       "revId": "306f36b276576f663ec8843e15a28ed1502df287",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d295e46_11c91754",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14529
+      },
+      "writtenOn": "2026-04-08T13:42:18Z",
+      "side": 1,
+      "message": "[LTS sheriff] LGTM",
+      "revId": "306f36b276576f663ec8843e15a28ed1502df287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
