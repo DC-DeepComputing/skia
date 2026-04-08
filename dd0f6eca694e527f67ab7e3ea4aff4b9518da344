@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab68a8a3_fed5ccf0",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-08T15:41:35Z",
+      "side": 1,
+      "message": "Done — removed make_clut_profile, test_clut_gather_overread, and both RustIcc_clut_gather{48,24}_overread_cpp_alloc tests.\n\nThese were originally added to validate the CLUT padding in isolation with a controlled buffer, but you\u0027re right — they only exercise skcms directly with a C++ malloc\u0027d buffer and don\u0027t test any Rust FFI code.",
+      "parentUuid": "a99469bc_4d1520d8",
+      "range": {
+        "startLine": 662,
+        "startChar": 12,
+        "endLine": 662,
+        "endChar": 37
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37efe28f_61c78f2a",
