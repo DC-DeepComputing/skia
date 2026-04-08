@@ -1218,6 +1218,7 @@ static bool validate_run(const int32_t* runs,
     const int32_t* const end = runs + runCount;
     SkIRect bounds = {0, 0, 0 ,0};  // calulated bounds
     SkIRect rect = {0, 0, 0, 0};    // current rect
+    bool prevWasEmpty = false;
     rect.fTop = *runs++;
     if (rect.fTop == SkRegion_kRunTypeSentinel) {
         return false;  // no rect can contain SkRegion_kRunTypeSentinel
@@ -1246,6 +1247,16 @@ static bool validate_run(const int32_t* runs,
         if (xIntervals < 0 || xIntervals > intervalCount || runs + 1 + 2 * xIntervals > end) {
             return false;
         }
+        // Consecutive empty y-spans are never produced by SkRegion's own ops
+        // and they desync SkRegion::Iterator::next(): after handling a single
+        // empty span (runs+=3) it unconditionally reads runs[2],runs[3] as the
+        // next span's first interval. If that span is also empty, runs[2] is
+        // its sentinel and the iterator's parse position desynchronizes,
+        // yielding more rects than computeRegionComplexity() reports.
+        if (xIntervals == 0 && prevWasEmpty) {
+            return false;
+        }
+        prevWasEmpty = (xIntervals == 0);
         intervalCount -= xIntervals;
         bool firstInterval = true;
         int32_t lastRight = 0;  // check that x-intervals are distinct and ordered.
