@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d7b870_be865ba1",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-08T19:59:03Z",
+      "side": 1,
+      "message": "It probably would be better to have a flag on Run (isHyphen) than compare the Run objects",
+      "revId": "2041c92d11a06ec0fbaf1e3321413cb65720f84d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
