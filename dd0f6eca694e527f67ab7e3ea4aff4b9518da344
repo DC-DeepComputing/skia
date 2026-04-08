@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a99469bc_4d1520d8",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T15:21:50Z",
+      "side": 1,
+      "message": "Actually, we don\u0027t need this test either since it\u0027s only testing skcms?",
+      "parentUuid": "384748ad_0935763d",
+      "range": {
+        "startLine": 662,
+        "startChar": 12,
+        "endLine": 662,
+        "endChar": 37
+      },
+      "revId": "dd0f6eca694e527f67ab7e3ea4aff4b9518da344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37efe28f_61c78f2a",
         "filename": "tests/RustIccTest.cpp",
         "patchSetId": 6
