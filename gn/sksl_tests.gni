@@ -590,6 +590,8 @@ sksl_shared_tests = [
   "intrinsics/Tanh.sksl",
   "intrinsics/TextureReadImage.sksl",
   "intrinsics/TextureReadSampler.sksl",
+  "intrinsics/TextureSizeImage.sksl",
+  "intrinsics/TextureSizeSampler.sksl",
   "intrinsics/Transpose.sksl",
   "intrinsics/Trunc.sksl",
   "intrinsics/UintBitsToFloat.sksl",

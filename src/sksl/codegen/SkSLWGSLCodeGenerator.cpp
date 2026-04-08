@@ -327,6 +327,9 @@ private:
                                            Operator op,
                                            Precedence parentPrecedence);
 
+    // Helper for accessing textures from polyfilled texture and samplers
+    std::string assembleTextureFromImageOrSampler(const Expression& arg);
+
     // Writes a scratch variable into the program and returns its name (e.g. `_skTemp123`).
     std::string writeScratchVar(const Type& type, const std::string& value = "");
 
@@ -3491,18 +3494,13 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             expr += ", " + this->assembleExpression(*arguments[3], Precedence::kSequence);
             return expr + close;
         }
-        case k_textureHeight_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".y";
 
         case k_textureRead_IntrinsicKind: {
             // textureLoad takes a texture and coordinates. It does NOT take a sampler.
             // If we are passed a combined sampler, we must extract just the texture.
             std::string expr = "textureLoad(";
-            expr += this->assembleExpression(*arguments[0], Precedence::kSequence);
 
-            if (arguments[0]->type().typeKind() == Type::TypeKind::kSampler) {
-                expr += kTextureSuffix;
-            }
+            expr += this->assembleTextureFromImageOrSampler(*arguments[0]);
 
             expr += ", ";
             expr += this->assembleExpression(*arguments[1], Precedence::kSequence);
@@ -3520,9 +3518,22 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
 
             return expr;
         }
+        case k_textureSize_IntrinsicKind:
         case k_textureWidth_IntrinsicKind:
-            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".x";
+        case k_textureHeight_IntrinsicKind: {
+            std::string expr = "textureDimensions(";
 
+            // Use our helper to safely extract the texture
+            expr += this->assembleTextureFromImageOrSampler(*arguments[0]);
+
+            expr += ")";
+            if (kind == k_textureWidth_IntrinsicKind) {
+                expr += ".x";
+            } else if (kind == k_textureHeight_IntrinsicKind) {
+                expr += ".y";
+            }
+            return expr;
+        }
         case k_textureWrite_IntrinsicKind:
             return this->assembleSimpleIntrinsic("textureStore", call,
                                                  /*wgslOnlySupportsHighPrecision=*/true);
@@ -4420,6 +4431,16 @@ std::string WGSLCodeGenerator::assembleEqualityExpression(const Expression& left
     std::string rightName = this->assembleExpression(right, Precedence::kParentheses, mode);
     return this->assembleEqualityExpression(left.type(), leftName, right.type(), rightName,
                                             op, parentPrecedence);
+}
+
+std::string WGSLCodeGenerator::assembleTextureFromImageOrSampler(const Expression& arg) {
+    SkASSERT(arg.type().typeKind() == Type::TypeKind::kTexture ||
+             arg.type().typeKind() == Type::TypeKind::kSampler);
+    std::string expr = this->assembleExpression(arg, Precedence::kSequence);
+    if (arg.type().typeKind() == Type::TypeKind::kSampler) {
+        expr += kTextureSuffix;
+    }
+    return expr;
 }
 
 void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
