@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a13b51_7cfdd55f",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-08T17:47:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41ec9bca_a77a043c",
+      "range": {
+        "startLine": 583,
+        "startChar": 5,
+        "endLine": 583,
+        "endChar": 25
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c283434_e4f13a71",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7b5787b_69f6e60b",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-08T17:47:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c283434_e4f13a71",
+      "range": {
+        "startLine": 599,
+        "startChar": 67,
+        "endLine": 599,
+        "endChar": 71
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3319f135_3410965f",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-04-08T12:53:07Z",
       "side": 1,
       "message": "Let\u0027s initialize this just in case we don\u0027t have a move first (e.g. corrupt data)",
+      "range": {
+        "startLine": 674,
+        "startChar": 9,
+        "endLine": 674,
+        "endChar": 17
+      },
+      "revId": "bc260788201d50650c00092f3feeaa18cc898a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e294dea_5d18a572",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-08T17:47:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3319f135_3410965f",
       "range": {
         "startLine": 674,
         "startChar": 9,
