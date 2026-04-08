@@ -666,6 +666,51 @@ DEF_TEST(RustIcc_profile_with_b2a, r) {
     REPORTER_ASSERT(r, fabsf(skcms_profile.B2A.output_curves[0].parametric.g - 1.0f) < 0.0001f);
 }
 
+// End-to-end: Rust-parsed ICC profiles with 3-channel CLUTs through skcms_Transform.
+// Validates that the suffix padding added by convert_grid_data() in FFI.rs prevents
+// the skcms gather over-read (b/498869813) from causing ASAN failures.
+DEF_TEST(RustIcc_clut_transform_exercises_gather_overread, r) {
+    skcms_DisableRuntimeCPUDetection();
+    const char* profiles_with_cluts[] = {
+        "icc_profiles/apng19.icc",
+        "icc_profiles/srgb_lab_pcs.icc",
+        "icc_profiles/upperRight.icc",
+    };
+
+    for (const char* path : profiles_with_cluts) {
+        auto data = GetResourceAsData(path);
+        if (!data) {
+            ERRORF(r, "Failed to load: %s", path);
+            continue;
+        }
+
+        // Parse through the Rust FFI path.
+        auto profile = SkCodecs::MakeICCProfileWithRust(data);
+        if (!profile) {
+            ERRORF(r, "Rust parser failed for: %s", path);
+            continue;
+        }
+
+        const skcms_ICCProfile* src = profile->profile();
+        if (!src->has_A2B) {
+            ERRORF(r, "[%s] Expected has_A2B but got false", path);
+            continue;
+        }
+
+        // Transform pixels to exercise the CLUT gather path.
+        uint8_t src_pixels[] = {0, 0, 0,  128, 128, 128,  255, 255, 255};
+        uint8_t dst_pixels[9] = {};
+        bool transformed = skcms_Transform(
+                src_pixels, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque, src,
+                dst_pixels, skcms_PixelFormat_RGB_888, skcms_AlphaFormat_Opaque,
+                skcms_sRGB_profile(),
+                3);
+        if (!transformed) {
+            ERRORF(r, "[%s] skcms_Transform failed", path);
+        }
+    }
+}
+
 // Helper to compare two skcms_Curve objects by evaluating them at sample points.
 // Works for both parametric and table-based curves. For table curves, reads the
 // raw big-endian bytes the same way skcms_Transform would.
