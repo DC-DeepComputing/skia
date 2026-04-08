@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc396ee_babedf51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-08T20:06:52Z",
+      "side": 1,
+      "message": "Do you want to add you name/email to `AUTHORS` before landing?",
+      "revId": "db3fae39afd8f94e275fc3d12af05b9bc02b4557",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7af8a840_e8b505ab",
@@ -14,6 +31,30 @@
       "writtenOn": "2026-04-08T18:45:45Z",
       "side": 1,
       "message": "Let\u0027s try this on the bots, but it may not be sufficient: IIUC some libs do have the integral flavors of `to_chars`, but not the float version.  If it doesn\u0027t work I think it\u0027d be fine to always reset the locale.",
+      "range": {
+        "startLine": 339,
+        "startChar": 21,
+        "endLine": 339,
+        "endChar": 39
+      },
+      "revId": "db3fae39afd8f94e275fc3d12af05b9bc02b4557",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa3332a_cec7e700",
+        "filename": "modules/jsonreader/SkJSONReader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-08T20:06:52Z",
+      "side": 1,
+      "message": "I stand corrected, LGTM!",
+      "parentUuid": "7af8a840_e8b505ab",
       "range": {
         "startLine": 339,
         "startChar": 21,

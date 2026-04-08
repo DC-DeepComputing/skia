@@ -94,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4df141c2_d72342f4",
+        "filename": "modules/jsonreader/SkJSONReader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-08T20:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65b14405_48fe3350",
+      "range": {
+        "startLine": 870,
+        "startChar": 22,
+        "endLine": 870,
+        "endChar": 37
+      },
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af091a86_bd73c6aa",
@@ -107,6 +131,24 @@
       "writtenOn": "2026-04-01T18:37:37Z",
       "side": 1,
       "message": "Prolly not needed anymore (use `SkAutoLocaleSetter`).",
+      "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98aea43e_cdb9e791",
+        "filename": "tests/JSONTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-08T20:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af091a86_bd73c6aa",
       "revId": "74a89e7873ea7c2df070b47303bd49fabcb40594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
