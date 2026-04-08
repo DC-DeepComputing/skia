@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3065b2_e2acc7f6",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-08T20:18:23Z",
+      "side": 1,
+      "message": "suggestion: short names fine, e.g. `d` or `params`",
+      "range": {
+        "startLine": 492,
+        "startChar": 69,
+        "endLine": 492,
+        "endChar": 82
+      },
+      "revId": "e2f987638d4ba91ae6066f37d462d7bbcfd5e118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
