@@ -1218,6 +1218,13 @@ void TextLine::getRectsForRange(TextRange textRange0,
     this->iterateThroughVisualRuns(true,
         [textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
         (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+        // The rendered soft hyphen is a synthetic glyph run that does not correspond
+        // to any source text. Its synthetic textRange (offsets into the "-" string)
+        // would falsely intersect caller-supplied source ranges and produce a
+        // spurious selection rect at the line-end hyphen position. Skip it.
+        if (run == fHyphen.get()) {
+            return true;
+        }
         *runWidthInLine = this->iterateThroughSingleRunByStyles(
         TextAdjustment::GraphemeGluster, run, runOffsetInLine, textRange, StyleType::kNone,
         [run, runOffsetInLine, textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
