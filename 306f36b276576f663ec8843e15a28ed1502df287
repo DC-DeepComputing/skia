@@ -33,6 +33,23 @@
       "message": "[LTS sheriff] LGTM",
       "revId": "306f36b276576f663ec8843e15a28ed1502df287",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e19f7b42_b1ee7361",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-04-08T13:47:05Z",
+      "side": 1,
+      "message": "I got a \"submit not permitted\". Michael, could you do it please? Thank you.",
+      "revId": "306f36b276576f663ec8843e15a28ed1502df287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
