@@ -36,6 +36,33 @@ public:
         this->reset();
     }
 
+    int numEntriesWithKey(const Key& key) const {
+        ValueList* list = fHash.find(key);
+        if (list) {
+            return list->fCount;
+        }
+        return 0;
+    }
+
+    template<class FindPredicate>
+    int numEntriesWithKeyAndPredicate(const Key& key, const FindPredicate f) const {
+        ValueList* root = fHash.find(key);
+        if (!root) {
+            return 0;
+        }
+
+        int matchingEntryCount = 0;
+        ValueList* curr = root;
+        while (curr) {
+            if (f(curr->fValue)) {
+                matchingEntryCount++;
+            }
+            curr = curr->fNext;
+        }
+
+        return matchingEntryCount;
+    }
+
     void reset() {
         fHash.foreach([&](ValueList* vl) {
             ValueList* next;
