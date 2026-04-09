@@ -896,4 +896,82 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchResourcesTest, reporter, conte
     resourcePtr2->unref();
 }
 
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNextRelease) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+    ResourceCache* resourceCache = resourceProvider->resourceCache();
+    const SharedContext* sharedContext = resourceProvider->sharedContext();
+
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+    REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 0);
+
+    // Add a singular purgeable resource to the cache.
+    auto resourcePtr = add_new_purgeable_resource(reporter,
+                                                  sharedContext,
+                                                  resourceCache,
+                                                  /*gpuMemorySize=*/1);
+    REPORTER_ASSERT(reporter, resourcePtr != nullptr);
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
+
+    // Trigger the purging of the resource with an impossibly small duration limit, confirming that
+    // the resource remains in the cache.
+    static constexpr auto kZeroMs = std::chrono::milliseconds(0);
+    static constexpr auto kNoPurgingTimeLimit = std::nullopt;
+    recorder->performDeferredCleanup(kZeroMs, {kZeroMs});
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
+
+    // Now purge with no time limit given to actually empty out the cache.
+    recorder->performDeferredCleanup(kZeroMs, kNoPurgingTimeLimit);
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+
+    // Now fill up the cache with kLargeResourceCount purgeable resources.
+    static constexpr int kLargeResourceCount = 1000;
+    for (int i = 0; i < kLargeResourceCount; i++) {
+        resourcePtr = add_new_purgeable_resource(reporter,
+                                                 sharedContext,
+                                                 resourceCache,
+                                                 /*gpuMemorySize=*/1);
+        REPORTER_ASSERT(reporter, resourcePtr != nullptr);
+    }
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == kLargeResourceCount);
+
+    // Record how long it takes to completely purge all kLargeResourceCount resources.
+    auto timeBeforeFullPurge = skgpu::StdSteadyClock::now();
+    recorder->performDeferredCleanup(kZeroMs, kNoPurgingTimeLimit);
+    auto timeAfterFullPurge = skgpu::StdSteadyClock::now();
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+    auto actualFullPurgeDuration = timeAfterFullPurge - timeBeforeFullPurge;
+    REPORTER_ASSERT(reporter, actualFullPurgeDuration.count() > 0);
+
+    // Re-populate the cache.
+    for (int i = 0; i < kLargeResourceCount; i++) {
+        resourcePtr = add_new_purgeable_resource(reporter,
+                                                 sharedContext,
+                                                 resourceCache,
+                                                 /*gpuMemorySize=*/1);
+        REPORTER_ASSERT(reporter, resourcePtr != nullptr);
+    }
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == kLargeResourceCount);
+
+    // Finally, try purging with a time duration significantly smaller than the actual time recorded
+    // in the previous step. This should force only a subset of the resources to be purged.
+    auto timeBeforePartialPurge = skgpu::StdSteadyClock::now();
+    auto smallDuration =
+            std::chrono::duration_cast<std::chrono::microseconds>(actualFullPurgeDuration / 5);
+    recorder->performDeferredCleanup(kZeroMs, {smallDuration});
+    auto actualPartialPurgeDuration = skgpu::StdSteadyClock::now() - timeBeforePartialPurge;
+
+    // The actual duration should be >0. We expect resources to be purged until we have *exceeded*
+    // the duration given. However, we should be able to see that not *all* purgeable resources were
+    // purged (i.e. the stop time triggered an early exit of purging).
+    REPORTER_ASSERT(reporter, actualPartialPurgeDuration.count() > 0 &&
+                              actualPartialPurgeDuration > smallDuration);
+
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() > 0);
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() < kLargeResourceCount);
+}
+
 }  // namespace skgpu::graphite
