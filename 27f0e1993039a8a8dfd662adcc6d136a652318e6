@@ -234,6 +234,30 @@
       },
       "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3c8d1b_64fc5437",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T18:13:46Z",
+      "side": 1,
+      "message": "yeah maybe we rename it getPixelStorageID(). More verbose, but the current one makes it look like you\u0027re getting the id of a textureProxy or bitmap.",
+      "parentUuid": "45730065_50de0f86",
+      "range": {
+        "startLine": 137,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
