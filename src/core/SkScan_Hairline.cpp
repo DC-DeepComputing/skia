@@ -594,6 +594,20 @@ static inline bool determine_degeneracy(const SkPoint* pts, int numPts) {
     return isDegenerate;
 }
 
+static inline bool determine_degeneracy(const SkPoint* pts, int numPts) {
+    SkASSERT(numPts <= 4);
+    bool isDegenerate = false;
+    switch (numPts) {
+        case 2:
+            return SkPath::IsLineDegenerate(pts[0], pts[1], true);
+        case 3:
+            return SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true);
+        case 4:
+            return SkPath::IsCubicDegenerate(pts[0], pts[1], pts[2], pts[3], true);
+    }
+    return isDegenerate;
+}
+
 // This function assumes that iter is currently ON a SkPathVerb::kMove verb
 static inline bool is_next_contour_closed(SkPathIter iter) {
     auto scanner = iter;  // Create a copy for lookahead
@@ -615,8 +629,10 @@ static inline bool is_next_contour_closed(SkPathIter iter) {
 }
 
 template <SkPaint::Cap capStyle>
-void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitter,
-                      SkScan::HairRgnProc lineproc) {
+void hair_path(const SkPathRaw& raw,
+               const SkRasterClip& rclip,
+               SkBlitter* blitter,
+               SkScan::HairRgnProc lineproc) {
     if (raw.empty()) {
         return;
     }
@@ -676,6 +692,7 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
     }
 
     SkPoint               pts[4], firstPt, lastPt;
+    SkPoint               firstLine[2];
     SkAutoConicToQuads    converter;
     bool isClosed = false;
 
