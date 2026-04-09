@@ -16,6 +16,24 @@
       "message": "While this change in general isn\u0027t a bad one, we want to move (and have already transitioned many users) to a model where clients of Skia are creating their own vulkan allocator and passing it into Skia. That way they would have full control of tuning it however they\u0027d like without Skia needing to support being customizable for every use case.\n\nSo I would say lets not land this, to instead encourage clients to create their own allocators.",
       "revId": "78338cf454b4b4ea2ebec689c67cc230948203dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b103a32_405a202d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9310
+      },
+      "writtenOn": "2026-04-09T23:41:02Z",
+      "side": 1,
+      "message": "I agree that creating a custom allocator for each case is the most ideal approach. However, as seen in the patch below (though it was reverted), what we aim for is not to create a new allocator but simply to adjust its size. By adjusting this size, we can reduce the resident memory on Android devices. And in every updates, we have to change this magic number. Sometimes it brings human error. This was the reason I wrote this patch. I kindly ask for your reconsideration from this perspective. If you still find this approach inappropriate, I will not proceed with landing this patch.\nThank you for sharing your opinion and pointing the final aim of the change. \n\nhttps://skia-review.googlesource.com/c/skia/+/1206056?tab\u003dcomments",
+      "parentUuid": "6ef4b118_ac763b17",
+      "revId": "78338cf454b4b4ea2ebec689c67cc230948203dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
