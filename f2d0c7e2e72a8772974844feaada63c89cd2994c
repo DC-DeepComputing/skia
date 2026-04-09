@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28acb315_d7acc256",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-09T18:51:15Z",
+      "side": 1,
+      "message": "PTAL. Dropped +1 on caps removal.",
+      "revId": "f2d0c7e2e72a8772974844feaada63c89cd2994c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
