@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5aa20ce_0c1ad3c8",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-09T17:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d89037ab_6f3e3580",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 20
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6cc1b5c_9b57f4e8",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-08T13:46:09Z",
       "side": 1,
       "message": "Are these annotations meant to be landed or were they for debugging?",
+      "range": {
+        "startLine": 273,
+        "startChar": 9,
+        "endLine": 273,
+        "endChar": 29
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "709b09e7_a07cabf3",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-09T17:33:11Z",
+      "side": 1,
+      "message": "Yes, I think it\u0027s valuable to capture the image\u0027s source info in the SKP itself, but I can see this being replaced with something that sits at the SkCapture level instead of the individual SkPicture level.",
+      "parentUuid": "f6cc1b5c_9b57f4e8",
       "range": {
         "startLine": 273,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f15778_9b9296d1",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-09T17:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3c23f57_058470e7",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92c64241_32e6670b",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd7cbee_08612428",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-09T17:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92c64241_32e6670b",
+      "range": {
+        "startLine": 52,
+        "startChar": 1,
+        "endLine": 52,
+        "endChar": 60
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65289147_34b0d692",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-04-09T14:40:24Z",
       "side": 1,
       "message": "something feels off with using the internal texture proxy\u0027s ID to be the surfaces ID. What happens if someone is intermixing drawing CPU surfaces and Graphite surfaces, do we make sure the proxys IDs won\u0027t conflict with bitmap IDs?\n\nI think this is screaming that we need some shared class that part of all SkSurfaces and maybe SkImages and we can hold/create an ID on that object.",
+      "range": {
+        "startLine": 137,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45730065_50de0f86",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-09T17:33:11Z",
+      "side": 1,
+      "message": "We do, see SkPixelStorage. TextureProxy::getId() overrides PixelStorage::getId() and returns the PixelStorage ID that is unique across all PixelStorage type objects.\n\nThat being said, is it worth renaming to make this relationship clear? The name ID can be vague/overloaded.",
+      "parentUuid": "65289147_34b0d692",
       "range": {
         "startLine": 137,
         "startChar": 1,
