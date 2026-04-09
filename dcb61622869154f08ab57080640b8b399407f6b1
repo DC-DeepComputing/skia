@@ -46,6 +46,30 @@
       },
       "revId": "dcb61622869154f08ab57080640b8b399407f6b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6581ddd0_0b25b5cd",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBackendSurface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T15:42:31Z",
+      "side": 1,
+      "message": "I forget all the exact reason, but I believe it was just because it is not really a function anyone would want or need to call from a public API. And maybe the actual equal check were doing is a little hand wavy and works for what we need in tests but isn\u0027t robust to all usages??  So regardless it is best to keep the public API narrow and just what is actually needed by clients.\n\nIf the virtual equal is really only used by tests then yes I think we would guard the whole function for all backends",
+      "parentUuid": "036a6c7a_8081b60b",
+      "range": {
+        "startLine": 117,
+        "startChar": 1,
+        "endLine": 117,
+        "endChar": 27
+      },
+      "revId": "dcb61622869154f08ab57080640b8b399407f6b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
