@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d1fecd8_b251e554",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-09T20:12:21Z",
+      "side": 1,
+      "message": "Some notes:\n\n1. Locally tested (without the font service, see https://chromium-review.googlesource.com/c/chromium/src/+/7746024) and it appears to fix remaining issues with system sythetics.\n\n2. The Chromium font service (and Blink\u0027s use of it) will need to be updated to actually take advantage of this.\n\n3. This does hard separate slnt and ital, but adds back the idea that on fallback an italic request has an implicit weak oblique fallback.\n\n4. Fixes issues with weight and width requests.",
+      "revId": "d77af4f4470f5e0c414fdb83aedbf9f1b3d407d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
