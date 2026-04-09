@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89ad5a94_a0401bbd",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T19:08:07Z",
+      "side": 1,
+      "message": "SkContextID?",
+      "range": {
+        "startLine": 209,
+        "startChar": 8,
+        "endLine": 209,
+        "endChar": 16
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ec03e9_bed2b79c",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T19:08:07Z",
+      "side": 1,
+      "message": "This returns an SkContentID but none of the callers use the returned value.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 11
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaac0c1b_bebace7d",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T19:08:07Z",
+      "side": 1,
+      "message": "Do you think it is worth hiding publicing that there is a uint32_t id inside SkContentID? If we made that private, are there a simple enough set of public functions that we\u0027d need to expose to get all the functionality we need (e.g. operator::\u003d\u003d, set?, asUint). That way we could always change how we interally store the ID without needing to update all users. As an example see Resource.h::UniqueID",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d22814ec_aa824892",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T19:08:07Z",
+      "side": 1,
+      "message": "fId?",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
