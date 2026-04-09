@@ -1,0 +1,152 @@
+From b0a582f2e5630fc38a877702a872092a81fd0479 Mon Sep 17 00:00:00 2001
+From: Minkyoung Kim <sleepigmk@gmail.com>
+Date: Mon, 19 Jan 2026 15:07:56 +0900
+Subject: [PATCH] Preserve input dst when builder is created to get the result
+ path as before.
+
+---
+ src/core/SkContourMeasure.cpp   | 2 +-
+ src/core/SkPathEffect.cpp       | 2 +-
+ src/core/SkPathMeasure.cpp      | 2 +-
+ src/core/SkPathUtils.cpp        | 4 ++--
+ src/gpu/ganesh/GrStyle.cpp      | 4 ++--
+ src/pdf/SkPDFDevice.cpp         | 4 ++--
+ src/svg/SkSVGDevice.cpp         | 2 +-
+ tools/fonts/TestSVGTypeface.cpp | 2 +-
+ 8 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/src/core/SkContourMeasure.cpp b/src/core/SkContourMeasure.cpp
+index fea06cb..1fc4930 100644
+--- a/src/core/SkContourMeasure.cpp
++++ b/src/core/SkContourMeasure.cpp
+@@ -735,7 +735,7 @@ SkContourMeasure::VerbMeasure SkContourMeasure::ForwardVerbIterator::operator*()
+ #ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
+ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+                                   bool startWithMoveTo) const {
+-    SkPathBuilder builder;
++    SkPathBuilder builder(*dst);
+     if (this->getSegment(startD, stopD, &builder, startWithMoveTo)) {
+         *dst = builder.detach();
+         return true;
+diff --git a/src/core/SkPathEffect.cpp b/src/core/SkPathEffect.cpp
+index e35a35d..85c7aac 100644
+--- a/src/core/SkPathEffect.cpp
++++ b/src/core/SkPathEffect.cpp
+@@ -32,7 +32,7 @@ bool SkPathEffect::filterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
+ 
+ bool SkPathEffect::filterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec, const SkRect* cullR,
+                               const SkMatrix& ctm) const {
+-    SkPathBuilder builder;
++    SkPathBuilder builder(*dst);
+     if (this->filterPath(&builder, src, rec, cullR, ctm)) {
+         *dst = builder.detach();
+         return true;
+diff --git a/src/core/SkPathMeasure.cpp b/src/core/SkPathMeasure.cpp
+index e621df5..bff3c67 100644
+--- a/src/core/SkPathMeasure.cpp
++++ b/src/core/SkPathMeasure.cpp
+@@ -63,7 +63,7 @@ bool SkPathMeasure::nextContour() {
+ #ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
+ bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+                                bool startWithMoveTo) {
+-    SkPathBuilder builder;
++    SkPathBuilder builder(*dst);
+     if (this->getSegment(startD, stopD, &builder, startWithMoveTo)) {
+         *dst = builder.detach();
+         return true;
+diff --git a/src/core/SkPathUtils.cpp b/src/core/SkPathUtils.cpp
+index a893e72..accca49 100644
+--- a/src/core/SkPathUtils.cpp
++++ b/src/core/SkPathUtils.cpp
+@@ -31,7 +31,7 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
+ 
+ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
+                        const SkRect* cullRect, const SkMatrix& ctm) {
+-    SkPathBuilder builder;
++    SkPathBuilder builder(*dst);
+     bool isFilled = FillPathWithPaint(src, paint, &builder, cullRect, ctm);
+     *dst = builder.detach();
+     return isFilled;
+@@ -40,8 +40,8 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
+ 
+ bool FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilder* builder,
+                        const SkRect* cullRect, const SkMatrix& ctm) {
+-    builder->reset();
+     if (!origSrc.isFinite()) {
++        builder->reset();
+         return false;
+     }
+ 
+diff --git a/src/gpu/ganesh/GrStyle.cpp b/src/gpu/ganesh/GrStyle.cpp
+index 5d7bc9c..6149441 100644
+--- a/src/gpu/ganesh/GrStyle.cpp
++++ b/src/gpu/ganesh/GrStyle.cpp
+@@ -139,7 +139,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
+     // TODO: [skbug.com/40043046] Plumb CTM callers and pass it to filterPath().
+     SkASSERT(!fPathEffect->needsCTM());
+ 
+-    SkPathBuilder builder;  // todo: change our api to take builder
++    SkPathBuilder builder(*dst);  // todo: change our api to take builder
+ 
+     if (DashType::kDash == fDashInfo.fType) {
+         // We apply the dash ourselves here rather than using the path effect. This is so that
+@@ -192,7 +192,7 @@ bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPa
+     }
+     // todo: change our signature to take pathbuilder, or return an optional<SkPath>
+     if (strokeRec.needToApply()) {
+-        SkPathBuilder builder;
++        SkPathBuilder builder(*dst);
+         if (!strokeRec.applyToPath(&builder, *pathForStrokeRec)) {
+             return false;
+         }
+diff --git a/src/pdf/SkPDFDevice.cpp b/src/pdf/SkPDFDevice.cpp
+index ea67ede..1738da0 100644
+--- a/src/pdf/SkPDFDevice.cpp
++++ b/src/pdf/SkPDFDevice.cpp
+@@ -591,7 +591,7 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
+                                              const SkPath& origPath,
+                                              const SkPaint& origPaint) {
+     SkASSERT(origPaint.getMaskFilter());
+-    SkPathBuilder builder;
++    SkPathBuilder builder(origPath);
+     SkTCopyOnFirstWrite<SkPaint> paint(origPaint);
+ 
+     SkStrokeRec::InitStyle initStyle = skpathutils::FillPathWithPaint(origPath, *paint, &builder)
+@@ -679,7 +679,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
+         if (clipStack.isEmpty(this->bounds())) {
+             return;
+         }
+-        SkPathBuilder builder;
++        SkPathBuilder builder(origPath);
+         if (skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder)) {
+             set_style(&paint, SkPaint::kFill_Style);
+         } else {
+diff --git a/src/svg/SkSVGDevice.cpp b/src/svg/SkSVGDevice.cpp
+index f9dffff..fadd10e 100644
+--- a/src/svg/SkSVGDevice.cpp
++++ b/src/svg/SkSVGDevice.cpp
+@@ -988,7 +988,7 @@ void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint, bool pathIs
+ 
+     // Apply path effect from paint to path.
+     if (path_paint->getPathEffect()) {
+-      SkPathBuilder builder;
++      SkPathBuilder builder(path);
+       bool fill = skpathutils::FillPathWithPaint(path, *path_paint, &builder);
+       pathStorage = builder.detach();
+       pathPtr = &pathStorage;
+diff --git a/tools/fonts/TestSVGTypeface.cpp b/tools/fonts/TestSVGTypeface.cpp
+index 62c6284..89ee496 100644
+--- a/tools/fonts/TestSVGTypeface.cpp
++++ b/tools/fonts/TestSVGTypeface.cpp
+@@ -1360,7 +1360,7 @@ public:
+ 
+         // Apply the path effect.
+         if (paint.getPathEffect() || paint.getStyle() != SkPaint::kFill_Style) {
+-            SkPathBuilder builder;
++            SkPathBuilder builder(path);
+             bool fill = skpathutils::FillPathWithPaint(path, paint, &builder);
+             path = builder.detach();
+ 
+-- 
+2.41.0
+

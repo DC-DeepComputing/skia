@@ -19,6 +19,15 @@
 
 #include <cstring>
 
+
+// 4MB was picked for the size here by looking at memory usage of Android apps and runs of DM.
+// It seems to be a good compromise of not wasting unused allocated space and not making too
+// many small allocations. The AMD allocator will start making blocks at 1/8 the max size and
+// builds up block size as needed before capping at the max set here.
+#ifndef SK_DEFAULT_BLOCK_SIZE
+#define SK_DEFAULT_BLOCK_SIZE (4 * 1024 * 1024)
+#endif
+
 namespace skgpu {
 
 sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
@@ -73,12 +82,7 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
 
     info.physicalDevice = physicalDevice;
     info.device = device;
-    // 4MB was picked for the size here by looking at memory usage of Android apps and runs of DM.
-    // It seems to be a good compromise of not wasting unused allocated space and not making too
-    // many small allocations. The AMD allocator will start making blocks at 1/8 the max size and
-    // builds up block size as needed before capping at the max set here.
-    constexpr size_t kBlockSize = 4 * 1024 * 1024;
-    info.preferredLargeHeapBlockSize = kBlockSize;
+    info.preferredLargeHeapBlockSize = SK_DEFAULT_BLOCK_SIZE;
     info.pAllocationCallbacks = nullptr;
     info.pDeviceMemoryCallbacks = nullptr;
     info.pHeapSizeLimit = nullptr;
