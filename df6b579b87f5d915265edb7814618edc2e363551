@@ -22,6 +22,30 @@
       },
       "revId": "df6b579b87f5d915265edb7814618edc2e363551",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d9ab5e_ef81143d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-09T15:54:02Z",
+      "side": 1,
+      "message": "This one is a bit tricky because the type is so long. What I\u0027d like to do in a follow up CL (after DawnCaps stops using its old format tables), is to refactor this into the base Caps class. Then I can add a `using` name for the pair of texture usage and sample count to make the type shorter and use it in the `getTextureSupport()` functions in the caps backends as well.",
+      "parentUuid": "8c55e0ef_bf7d3a5d",
+      "range": {
+        "startLine": 211,
+        "startChar": 25,
+        "endLine": 211,
+        "endChar": 66
+      },
+      "revId": "df6b579b87f5d915265edb7814618edc2e363551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
