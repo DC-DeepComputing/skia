@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c55e0ef_bf7d3a5d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-09T15:06:37Z",
+      "side": 1,
+      "message": "nit: Formatting",
+      "range": {
+        "startLine": 211,
+        "startChar": 25,
+        "endLine": 211,
+        "endChar": 66
+      },
+      "revId": "df6b579b87f5d915265edb7814618edc2e363551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
