@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e95863c6_fd059c68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T20:11:18Z",
+      "side": 1,
+      "message": "This CL is causing failures.\n\nE.g. \tstart unit test  SkParagraph_SoftHyphenAtLineBreak\n\n\nFAILURE: ../../../../../skia/modules/skparagraph/tests/SkParagraphTest.cpp:8625\t [SkParagraph_SoftHyphenAtLineBreak]: impl-\u003elines().size() \u003d\u003d 2",
+      "revId": "9a0def8b84f596e62583859cf534d9ad21fe8a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
