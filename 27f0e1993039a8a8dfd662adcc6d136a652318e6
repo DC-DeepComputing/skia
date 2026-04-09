@@ -68,6 +68,52 @@
       },
       "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c64241_32e6670b",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T14:40:24Z",
+      "side": 1,
+      "message": "is there a reasonable way to refactor this call and the snapPictures call above to share the internal logic?",
+      "range": {
+        "startLine": 52,
+        "startChar": 1,
+        "endLine": 52,
+        "endChar": 60
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65289147_34b0d692",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T14:40:24Z",
+      "side": 1,
+      "message": "something feels off with using the internal texture proxy\u0027s ID to be the surfaces ID. What happens if someone is intermixing drawing CPU surfaces and Graphite surfaces, do we make sure the proxys IDs won\u0027t conflict with bitmap IDs?\n\nI think this is screaming that we need some shared class that part of all SkSurfaces and maybe SkImages and we can hold/create an ID on that object.",
+      "range": {
+        "startLine": 137,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "27f0e1993039a8a8dfd662adcc6d136a652318e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
