@@ -22,6 +22,30 @@
       },
       "revId": "dcb61622869154f08ab57080640b8b399407f6b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036a6c7a_8081b60b",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBackendSurface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-09T15:36:39Z",
+      "side": 1,
+      "message": "Well, if we guard the entire equals function, I\u0027ll have to change all the other backends to also guard it and that seems like overkill. I confess I don\u0027t quite understand why the operator\u003d\u003d is guarded in the first place - I\u0027d prefer to unguard that if it\u0027s \"safe\"",
+      "parentUuid": "60cdd2a8_146bd225",
+      "range": {
+        "startLine": 117,
+        "startChar": 1,
+        "endLine": 117,
+        "endChar": 27
+      },
+      "revId": "dcb61622869154f08ab57080640b8b399407f6b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
