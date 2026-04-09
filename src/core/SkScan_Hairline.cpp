@@ -580,6 +580,40 @@ void extend_pts(std::optional<SkPathVerb> prevVerb, std::optional<SkPathVerb> ne
     }
 }
 
+static inline bool determine_degeneracy(const SkPoint* pts, int numPts) {
+    SkASSERT(numPts <= 4);
+    bool isDegenerate = false;
+    switch (numPts) {
+        case 2:
+            return SkPath::IsLineDegenerate(pts[0], pts[1], true);
+        case 3:
+            return SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true);
+        case 4:
+            return SkPath::IsCubicDegenerate(pts[0], pts[1], pts[2], pts[3], true);
+    }
+    return isDegenerate;
+}
+
+// This function assumes that iter is currently ON a SkPathVerb::kMove verb
+static inline bool is_next_contour_closed(SkPathIter iter) {
+    auto scanner = iter;  // Create a copy for lookahead
+    // we assume the first verb is already a move, so do scanner.next() to proceed to the next verb.
+    // This will ideally be a contour verb or a close
+    auto rec = scanner.next();
+    if (rec->fVerb == SkPathVerb::kClose) return true;
+    if (rec->fVerb == SkPathVerb::kMove) return false;
+
+    while (scanner.peekNextVerb().has_value()) {
+        SkPathVerb next_verb = scanner.peekNextVerb().value();
+        // The current contour ends here, before this kMove.
+        if (next_verb == SkPathVerb::kMove) return false;
+        // This kClose ends the current contour.
+        if (next_verb == SkPathVerb::kClose) return true;
+        scanner.next();  // Consume the record
+    }
+    return false;
+}
+
 template <SkPaint::Cap capStyle>
 void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitter,
                       SkScan::HairRgnProc lineproc) {
@@ -643,19 +677,23 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
 
     SkPoint               pts[4], firstPt, lastPt;
     SkAutoConicToQuads    converter;
+    bool isClosed = false;
 
     std::optional<SkPathVerb> prevVerb;
-    for (auto iter = raw.iter(); auto rec = iter.next(); ) {
+    for (auto iter = raw.iter(); auto rec = iter.next();) {
         const SkPoint* srcPts = rec->fPoints.data();
+        const int numPts = rec->fPoints.size();
         SkPathVerb verb = rec->fVerb;
         auto nextVerb = iter.peekNextVerb();
         switch (verb) {
             case SkPathVerb::kMove:
                 firstPt = lastPt = srcPts[0];
+                isClosed = is_next_contour_closed(iter);
                 break;
             case SkPathVerb::kLine:
                 std::copy(srcPts, srcPts + 2, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
+                if (SkPaint::kButt_Cap != capStyle &&
+                    (!isClosed || determine_degeneracy(srcPts, numPts))) {
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 2});
                 }
                 lineproc({pts, 2}, clip, blitter);
@@ -663,15 +701,23 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                 break;
             case SkPathVerb::kQuad:
                 std::copy(srcPts, srcPts + 3, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
+                if (SkPaint::kButt_Cap != capStyle &&
+                    (!isClosed || determine_degeneracy(srcPts, numPts))) {
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
                 }
-                hairquad(pts, clip, insetClip, outsetClip, blitter, compute_quad_level(pts), lineproc);
+                hairquad(pts,
+                         clip,
+                         insetClip,
+                         outsetClip,
+                         blitter,
+                         compute_quad_level(pts),
+                         lineproc);
                 lastPt = pts[2];
                 break;
             case SkPathVerb::kConic: {
                 std::copy(srcPts, srcPts + 3, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
+                if (SkPaint::kButt_Cap != capStyle &&
+                    (!isClosed || determine_degeneracy(srcPts, numPts))) {
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 3});
                 }
                 // how close should the quads be to the original conic?
@@ -687,10 +733,17 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
             }
             case SkPathVerb::kCubic: {
                 std::copy(srcPts, srcPts + 4, pts);
-                if (SkPaint::kButt_Cap != capStyle) {
+                if (SkPaint::kButt_Cap != capStyle &&
+                    (!isClosed || determine_degeneracy(srcPts, numPts))) {
                     extend_pts<capStyle>(prevVerb, nextVerb, {pts, 4});
                 }
-                haircubic(pts, clip, insetClip, outsetClip, blitter, kMaxCubicSubdivideLevel, lineproc);
+                haircubic(pts,
+                          clip,
+                          insetClip,
+                          outsetClip,
+                          blitter,
+                          kMaxCubicSubdivideLevel,
+                          lineproc);
                 lastPt = pts[3];
             } break;
             case SkPathVerb::kClose:
@@ -704,8 +757,8 @@ void hair_path(const SkPathRaw& raw, const SkRasterClip& rclip, SkBlitter* blitt
                 break;
         }
         if (SkPaint::kButt_Cap != capStyle) {
-            if (optional_eq(prevVerb, SkPathVerb::kMove) &&
-                verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic) {
+            if (optional_eq(prevVerb, SkPathVerb::kMove) && verb >= SkPathVerb::kLine &&
+                verb <= SkPathVerb::kCubic) {
                 firstPt = pts[0];  // the curve moved the initial point, so close to it instead
             }
             prevVerb = verb;
