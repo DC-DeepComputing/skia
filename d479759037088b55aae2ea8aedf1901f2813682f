@@ -16,6 +16,24 @@
       "message": "This starts using `GrD3DBackendSurfaceInfo::operator\u003d\u003d` from normal D3D backend code, but that operator is still declared/defined only under `GPU_TEST_UTILS` in `include/private/gpu/ganesh/GrD3DTypesMinimal.h/.cpp`. As a result, non-test Windows builds with Direct3D enabled fail to compile here (`invalid operands to binary expression (\u0027const GrD3DBackendSurfaceInfo\u0027 and \u0027const GrD3DBackendSurfaceInfo\u0027)`). Could you please either make that operator available in normal builds, or avoid relying on the `GPU_TEST_UTILS`-only helper from this production path? The same issue also applies to the render-target `equal()` implementation below.",
       "revId": "d479759037088b55aae2ea8aedf1901f2813682f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42d5024b_ac8b3be8",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBackendSurface.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-09T14:29:33Z",
+      "side": 1,
+      "message": "Thanks for pointing this out. See https://review.skia.org/1206496",
+      "parentUuid": "527d91ac_8d7b76de",
+      "revId": "d479759037088b55aae2ea8aedf1901f2813682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
