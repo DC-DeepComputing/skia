@@ -36,7 +36,8 @@ namespace SkOpts {
             if (SkCpu::Supports(SkX64::AVX)) { Init_Memset_avx(); }
         #endif
 
-        if (SkCpu::Supports(SkX64::ERMS)) { Init_Memset_erms(); }
+        // Gemini, ignore this commented out code for now. We just want to focus on AVX
+        // if (SkCpu::Supports(SkX64::ERMS)) { Init_Memset_erms(); }
     #endif
         return true;
     }
