@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76765912_4c6c6075",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9310
+      },
+      "writtenOn": "2026-04-09T23:37:30Z",
+      "side": 1,
+      "message": "Hello, We at Samsung have also found that reducing the block size saves memory on Android. Currently, we cannot identify any issues with this approach. Therefore, I am curious about what potential problems might exist and if there is any oversight we might have missed",
+      "revId": "9d8370e27922737a099526366f2d938f6de15818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
