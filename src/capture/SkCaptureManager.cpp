@@ -11,6 +11,7 @@
 #include "include/core/SkSurface.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureCanvas.h"
+#include "src/image/SkSurface_Base.h"
 
 #include <memory>
 
@@ -28,37 +29,43 @@ void SkCaptureManager::snapPictures() {
         if (canvas) {
             auto picture = canvas->snapPicture();
             if (picture) {
+                uint32_t surfaceID = asSB(canvas->getBaseCanvasSurface())->getPixelStorageID();
+                ++fSurfaceContentCounters[surfaceID].id;
                 fPictures.emplace_back(picture);
             }
         }
     }
 }
 
-// TODO: make thread saffe by using exchange() and a mutex.
+// TODO: make thread safe by using exchange() and a mutex.
 void SkCaptureManager::toggleCapture(bool capturing) {
     if (capturing != fIsCurrentlyCapturing && !capturing) {
         // on capture stop, save the capture and reset
         this->snapPictures();
         fLastCapture = SkCapture::MakeFromPictures(fPictures);
         fPictures.clear();
+        fSurfaceContentCounters.clear();
     }
     fIsCurrentlyCapturing = capturing;
 }
 
-void SkCaptureManager::snapPicture(SkSurface* surface) {
+SkContentID SkCaptureManager::snapPicture(SkSurface* surface) {
     for (auto& canvas : fTrackedCanvases) {
         if (canvas) {
             if (canvas->getBaseCanvasSurface() == surface) {
                 auto picture = canvas->snapPicture();
                 if (picture) {
-                    // TODO(412351769): for every storing of a picture, we should track a content id
-                    // and the surface it was drawn to.
+                    uint32_t surfaceID = asSB(canvas->getBaseCanvasSurface())->getPixelStorageID();
+                    SkContentID contentID = fSurfaceContentCounters[surfaceID];
+                    contentID.id++;
                     fPictures.emplace_back(picture);
+                    return contentID;
                 }
-                return;
+                return SkContentID();
             }
         }
     }
+    return SkContentID();
 }
 
 sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {

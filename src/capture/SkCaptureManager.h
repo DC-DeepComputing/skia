@@ -13,19 +13,29 @@
 #include "include/private/base/SkTArray.h"
 
 #include <atomic>
+#include <cstdint>
+#include <map>
 
 class SkCanvas;
 class SkCapture;
 class SkCaptureCanvas;
 class SkSurface;
 
+struct SkContentID {
+    uint32_t id = 0;
+};
+
+/**
+ * SkCaptureManager is in charge of knowing the current state of capture, handling the creation of
+ * capture canvases, and tracking and recording metadata to the final SkCapture.
+ */
 class SkCaptureManager : public SkRefCnt {
 public:
     SkCaptureManager();
 
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
-    void snapPicture(SkSurface*);
+    SkContentID snapPicture(SkSurface*);
 
     void toggleCapture(bool capturing);
 
@@ -41,6 +51,7 @@ private:
     skia_private::TArray<sk_sp<SkPicture>>  fPictures;
 
     sk_sp<SkCapture> fLastCapture;
+    std::map<uint32_t, SkContentID> fSurfaceContentCounters;
 };
 
 #endif  // SkCaptureManager_DEFINED
