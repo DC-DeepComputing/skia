@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ef4b118_ac763b17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T13:13:30Z",
+      "side": 1,
+      "message": "While this change in general isn\u0027t a bad one, we want to move (and have already transitioned many users) to a model where clients of Skia are creating their own vulkan allocator and passing it into Skia. That way they would have full control of tuning it however they\u0027d like without Skia needing to support being customizable for every use case.\n\nSo I would say lets not land this, to instead encourage clients to create their own allocators.",
+      "revId": "78338cf454b4b4ea2ebec689c67cc230948203dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
