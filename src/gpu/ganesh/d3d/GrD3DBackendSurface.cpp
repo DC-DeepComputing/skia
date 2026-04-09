@@ -114,9 +114,11 @@ private:
 
     bool equal(const GrBackendTextureData* that) const override {
         SkASSERT(!that || that->type() == GrBackendApi::kDirect3D);
+#if defined(GPU_TEST_UTILS)
         if (auto otherD3D = static_cast<const GrD3DBackendTextureData*>(that)) {
             return fInfo == otherD3D->fInfo;
         }
+#endif
         return false;
     }
 
@@ -244,9 +246,11 @@ private:
 
     bool equal(const GrBackendRenderTargetData* that) const override {
         SkASSERT(!that || that->type() == GrBackendApi::kDirect3D);
+#if defined(GPU_TEST_UTILS)
         if (auto otherD3D = static_cast<const GrD3DBackendRenderTargetData*>(that)) {
             return fInfo == otherD3D->fInfo;
         }
+#endif
         return false;
     }
 
