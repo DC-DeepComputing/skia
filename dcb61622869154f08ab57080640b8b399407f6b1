@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60cdd2a8_146bd225",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBackendSurface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-09T14:42:15Z",
+      "side": 1,
+      "message": "why isn\u0027t this guarding the entire equal function? Seems like this is asking to be a pitfall of someone trying to use equal in non testing code and having it always return false.",
+      "range": {
+        "startLine": 117,
+        "startChar": 1,
+        "endLine": 117,
+        "endChar": 27
+      },
+      "revId": "dcb61622869154f08ab57080640b8b399407f6b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
