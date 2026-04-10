@@ -58,7 +58,7 @@ RUN cd /tmp \
 # https://stackoverflow.com/a/44766666
 # Copy the skia files that Louhi has cloned into the image. Louhi hasn't synced third party
 # deps, so we will need to do that before compiling (see next steps).
-COPY --chown=skia:skia . /tmp/skia
+COPY . /tmp/skia
 
 RUN cd /tmp/skia \
   && ./bin/fetch-gn \
