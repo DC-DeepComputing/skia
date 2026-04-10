@@ -39,6 +39,30 @@
       },
       "revId": "870889e2335fe8268d74c42252e952abfa00c647",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81a4d11f_b341b13a",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2026-04-10T14:32:30Z",
+      "side": 1,
+      "message": "Yes, we can get OOMed by a bad image here.\n\nBut we would first get OOMed when we try to allocate `fControlPoints`. So I\u0027m going to have to update the IPC deserialization to reject `fControlPoints` being too large.",
+      "parentUuid": "8e7c6254_3278905a",
+      "range": {
+        "startLine": 317,
+        "startChar": 12,
+        "endLine": 317,
+        "endChar": 31
+      },
+      "revId": "870889e2335fe8268d74c42252e952abfa00c647",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
