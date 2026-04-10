@@ -24,6 +24,7 @@ namespace SkOpts {
     DEFINE_DEFAULT(rect_memset16);
     DEFINE_DEFAULT(rect_memset32);
     DEFINE_DEFAULT(rect_memset64);
+    DEFINE_DEFAULT(rect_memset128);
 
     void Init_Memset_avx();
     void Init_Memset_erms();

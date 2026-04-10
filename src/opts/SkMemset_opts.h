@@ -11,11 +11,15 @@
 #include <stdint.h>
 #include "src/base/SkVx.h"
 
+#if !defined(SK_CPU_X64_LEVEL)
+#error "not set"
+#endif
+
 namespace SK_OPTS_NS {
 
     template <typename T>
     static void memsetT(T buffer[], T value, int count) {
-    #if defined(SK_CPU_X64_LEVEL) && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_AVX
+    #if SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_AVX
         static constexpr int VecSize = 32 / sizeof(T);
     #else
         static constexpr int VecSize = 16 / sizeof(T);
@@ -64,6 +68,10 @@ namespace SK_OPTS_NS {
     /*not static*/ inline void rect_memset64(uint64_t buffer[], uint64_t value, int count,
                                              size_t rowBytes, int height) {
         rect_memsetT(buffer, value, count, rowBytes, height);
+    }
+    /*not static*/ inline void rect_memset128(void* buffer, SkColor4f value, int count,
+                                              size_t rowBytes, int height) {
+        rect_memsetT((SkColor4f*)buffer, value, count, rowBytes, height);
     }
 
 }  // namespace SK_OPTS_NS
