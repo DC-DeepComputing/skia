@@ -150,8 +150,8 @@ private:
     const SkEnumBitMask<DstUsage> fDstUsage;
 
     // Used for asserts
-    SkDEBUGCODE(const SkEnumBitMask<DstUsage> fDstUsageNoCoverage;)
-    SkDEBUGCODE(const Coverage fRendererCoverage;)
+    SkDEBUGCODE(const Caps* fCaps;)
+    SkDEBUGCODE(const Coverage fCoverage;)
 };
 
 } // namespace skgpu::graphite
