@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c0d47bc_415550d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-10T19:09:26Z",
+      "side": 1,
+      "message": "PTAL. This change is pretty simple, so I\u0027m skipping gold for this one? LMK",
+      "revId": "f12444bd88dc5d36aaadda10a1b79aa98e2fa93f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
